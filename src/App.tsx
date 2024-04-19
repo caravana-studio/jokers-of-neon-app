@@ -4,8 +4,11 @@ import {
   theme as chakraTheme,
   extendBaseTheme,
 } from "@chakra-ui/react";
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import "./App.scss";
 import { Game } from "./pages/Game";
+import { Home } from "./pages/Home";
+import { Poc } from "./pages/Poc";
 
 const { Button } = chakraTheme.components;
 
@@ -18,18 +21,37 @@ const theme = extendBaseTheme({
 function App() {
   return (
     <ChakraBaseProvider theme={theme}>
-      <Box
-        sx={{
-          height: "100vh",
-          width: "100vw",
-          backgroundColor: "#000",
-          color: "#FFF",
-          p: 10,
-          imageRendering: "pixelated !important",
-        }}
-      >
-        <Game />
-      </Box>
+      <main className="scanlines">
+        <div className="screen">
+          <canvas id="canvas" className="picture"></canvas>
+          <div className="overlay">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/demo"
+                element={
+                  <Box
+                    sx={{
+                      backgroundColor: "darkgreen",
+                      height: "100vh",
+                      width: "100vw",
+                      p: 10,
+                      imageRendering: "pixelated !important",
+                      fontFamily: "Sys",
+                      pointerEvents: "all",
+                      fontSize: 30,
+                      color: "#FFF",
+                    }}
+                  >
+                    <Game />
+                  </Box>
+                }
+              />
+              <Route path="/poc" element={<Poc />} />
+            </Routes>
+          </div>
+        </div>
+      </main>
     </ChakraBaseProvider>
   );
 }

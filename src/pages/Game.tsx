@@ -1,5 +1,6 @@
-import { Box, Button, GridItem, Image, SimpleGrid } from "@chakra-ui/react";
+import { Box, GridItem, Heading, Image, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "../components/Button";
 import { PLAYS } from "../constants/plays";
 import { HandCard } from "../types/Card";
 import { Plays } from "../types/Plays";
@@ -51,57 +52,71 @@ export const Game = () => {
   }, []);
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <Box sx={{ width: "100%", height: "calc(100% - 60px)" }}>
-        <Box sx={{ height: "10%" }}>CURRENT PLAY: {PLAYS[preSelectedPlay]}</Box>{" "}
-        <Box sx={{ height: "45%" }}>asd</Box>
-        <Box sx={{ height: "45%" }}>
-          <SimpleGrid columns={8} spacing={4}>
-            {hand.map((card, index) => {
-              return (
-                <GridItem key={card.img} w="100%">
-                  <Image
-                    key={card.img}
-                    sx={{
-                      transform: card.preSelected
-                        ? "translateY(-30px)"
-                        : "none",
-                      ":hover": {
+    <Box
+      sx={{
+        height: "100%",
+        animation:
+          "5s ease 20000ms normal none infinite running glitch",
+      }}
+    >
+      <div className="text strk">
+        <span>$STRK</span>
+      </div>
+      <Box
+        sx={{
+          height: "100%",
+          width: "100%",
+          filter: "blur(0.7px)",
+          animation: "jerkup-mild 100ms infinite",
+        }}
+      >
+        <Box sx={{ width: "100%", height: "calc(100% - 60px)" }}>
+          <Box sx={{ height: "10%" }}>
+            <Heading sx={{ textAlign: "right" }}>
+              CURRENT PLAY: {PLAYS[preSelectedPlay]}
+            </Heading>
+          </Box>{" "}
+          <Box sx={{ height: "45%" }}></Box>
+          <Box sx={{ height: "45%" }}>
+            <SimpleGrid columns={8} spacing={4}>
+              {hand.map((card, index) => {
+                return (
+                  <GridItem key={card.img} w="100%">
+                    <Image
+                      key={card.img}
+                      sx={{
                         transform: card.preSelected
-                          ? "translateY(-30px) scale(1.1)"
-                          : "scale(1.1)",
-                      },
-                    }}
-                    src={`Cards/${card.img}`}
-                    alt={card.img}
-                    width="100%"
-                    onClick={() => preSelectCard(index)}
-                  />
-                </GridItem>
-              );
-            })}
-          </SimpleGrid>
+                          ? "translateY(-30px)"
+                          : "none",
+                        ":hover": {
+                          transform: card.preSelected
+                            ? "translateY(-30px) scale(1.1)"
+                            : "scale(1.1)",
+                        },
+                      }}
+                      src={`Cards/${card.img}`}
+                      alt={card.img}
+                      width="100%"
+                      onClick={() => preSelectCard(index)}
+                    />
+                  </GridItem>
+                );
+              })}
+            </SimpleGrid>
+          </Box>
         </Box>
-      </Box>
 
-      <SimpleGrid columns={2} spacing={4}>
-        <GridItem h="60px" w="100%">
-          <Button
-            isDisabled={preSelectedCards?.length === 0}
-            sx={{ width: "100%" }}
-          >
-            play hand
-          </Button>
-        </GridItem>
-        <GridItem h="60px" w="100%">
-          <Button
-            isDisabled={preSelectedCards?.length === 0}
-            sx={{ width: "100%" }}
-          >
-            discard
-          </Button>
-        </GridItem>
-      </SimpleGrid>
+        <SimpleGrid columns={2} spacing={4}>
+          <GridItem h="60px" w="100%">
+            <Button isDisabled={preSelectedCards?.length === 0}>
+              play hand
+            </Button>
+          </GridItem>
+          <GridItem h="60px" w="100%">
+            <Button isDisabled={preSelectedCards?.length === 0}>discard</Button>
+          </GridItem>
+        </SimpleGrid>
+      </Box>
     </Box>
   );
 };
