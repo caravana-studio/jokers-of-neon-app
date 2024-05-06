@@ -6,7 +6,7 @@ import {
   Image,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { PLAYS } from "../constants/plays";
 import { HandCard } from "../types/Card";
 import { Plays } from "../types/Plays";
@@ -17,11 +17,8 @@ let deck = getInitialDeck();
 
 export const Game = () => {
   const [hand, setHand] = useState<HandCard[]>([]);
+  const [preSelectedCards, setPreSelectedCards] = useState<HandCard[]>([]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
-  const preSelectedCards = useMemo(
-    () => hand?.filter((card) => card.preSelected) ?? [],
-    [hand]
-  );
 
   const drawCard = () => {
     const newCard = deck.pop();
@@ -35,16 +32,15 @@ export const Game = () => {
   };
 
   const preSelectCard = (cardIndex: number) => {
-    if (preSelectedCards.length < 5 || hand[cardIndex].preSelected) {
-      const nextHand = hand.map((card, i) => {
-        if (i === cardIndex) {
-          return { ...card, preSelected: !card.preSelected };
-        } else {
-          return card;
-        }
-      });
-      setHand(nextHand);
+    if (preSelectedCards.length < 5) {
+      const movingCard = hand.splice(cardIndex, 1)?.[0];
+      setPreSelectedCards([...preSelectedCards, movingCard]);
     }
+  };
+
+  const unPreSelectCard = (cardIndex: number) => {
+    const movingCard = preSelectedCards.splice(cardIndex, 1)?.[0];
+    setHand([...hand, movingCard]);
   };
 
   useEffect(() => {
@@ -81,30 +77,35 @@ export const Game = () => {
             <SimpleGrid columns={5} gap={4}>
               <GridItem colSpan={4}>
                 <SimpleGrid columns={5} gap={2}>
-                  {hand
-                    .filter((card) => card.preSelected)
-                    .map((card, index) => {
-                      return (
-                        <GridItem key={card.img} w="100%">
-                          <Image
-                            key={card.img}
-                            src={`Cards/${card.img}`}
-                            alt={card.img}
-                            width="100%"
-                            sx={{
-                              ":hover": {
-                                transform: "scale(1.1) ",
-                              },
-                            }}
-                            onClick={() => preSelectCard(index)}
-                          />
-                        </GridItem>
-                      );
-                    })}
+                  {preSelectedCards.map((card, index) => {
+                    return (
+                      <GridItem key={card.img} w="100%">
+                        <Image
+                          key={card.img}
+                          src={`Cards/${card.img}`}
+                          alt={card.img}
+                          width="100%"
+                          sx={{
+                            ":hover": {
+                              transform: "scale(1.1) ",
+                            },
+                          }}
+                          onClick={() => unPreSelectCard(index)}
+                        />
+                      </GridItem>
+                    );
+                  })}
                 </SimpleGrid>
               </GridItem>
               <GridItem>
-                <Box sx={{ width: "100%", display: "flex", flexDirection: 'column', gap: 4 }}>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                  }}
+                >
                   <Heading>CURRENT PLAY: {PLAYS[preSelectedPlay]}</Heading>
                   <Button
                     className="fullWidth"
@@ -122,36 +123,34 @@ export const Game = () => {
               </GridItem>
             </SimpleGrid>
           </Box>
-          <Box sx={{ height: " 30%" }}>
-            <SimpleGrid columns={8}>
-              {hand
-                .filter((card) => !card.preSelected)
-                .map((card, index) => {
-                  return (
-                    <GridItem
+          <Box sx={{ display: "flex", height: " 30%", alignItems: "flex-end" }}>
+            <SimpleGrid sx={{ width: "100%" }} columns={8}>
+              {hand.map((card, index) => {
+                return (
+                  <GridItem
+                    key={card.img}
+                    w="100%"
+                    sx={{
+                      transform: `scale(1.1) rotate(${
+                        (index - 3.5) * 2
+                      }deg) translateY(${Math.abs(index - 3.5) * 15}px)`,
+                    }}
+                  >
+                    <Image
                       key={card.img}
-                      w="100%"
                       sx={{
-                        transform: `scale(1.1) rotate(${
-                          (index - 3.5) * 2
-                        }deg) translateY(${Math.abs(index - 3.5) * 15}px)`,
+                        ":hover": {
+                          transform: "translateY(-30px) ",
+                        },
                       }}
-                    >
-                      <Image
-                        key={card.img}
-                        sx={{
-                          ":hover": {
-                            transform: "translateY(-30px) ",
-                          },
-                        }}
-                        src={`Cards/${card.img}`}
-                        alt={card.img}
-                        width="100%"
-                        onClick={() => preSelectCard(index)}
-                      />
-                    </GridItem>
-                  );
-                })}
+                      src={`Cards/${card.img}`}
+                      alt={card.img}
+                      width="100%"
+                      onClick={() => preSelectCard(index)}
+                    />
+                  </GridItem>
+                );
+              })}
             </SimpleGrid>
           </Box>
         </Box>
