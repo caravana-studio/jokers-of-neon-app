@@ -3,8 +3,7 @@ import {
   Button,
   GridItem,
   Heading,
-  Image,
-  SimpleGrid,
+  SimpleGrid
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TiltCard } from "../components/TiltCard";
@@ -104,18 +103,12 @@ export const Game = () => {
                   {preSelectedCards.map((card, index) => {
                     return (
                       <Box key={card.img} sx={{ width: "20%", px: 2 }}>
-                        <TiltCard>
-                          <Image
-                            key={card.img}
-                            src={`Cards/${card.img}`}
-                            alt={card.img}
-                            width="100%"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              unPreSelectCard(card.img);
-                            }}
-                          />
-                        </TiltCard>
+                        <TiltCard
+                          card={card}
+                          onClick={() => {
+                            unPreSelectCard(card.img);
+                          }}
+                        />
                       </Box>
                     );
                   })}
@@ -167,23 +160,17 @@ export const Game = () => {
                     }}
                   >
                     {!card.preSelected && (
-                      <TiltCard>
-                        <Image
-                          key={card.img}
-                          sx={{
-                            ":hover": {
-                              transform: "translateY(-30px) ",
-                            },
-                          }}
-                          src={`Cards/${card.img}`}
-                          alt={card.img}
-                          width="100%"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            preSelectCard(index);
-                          }}
-                        />
-                      </TiltCard>
+                      <TiltCard
+                        sx={{
+                          ":hover": {
+                            transform: "translateY(-30px) ",
+                          },
+                        }}
+                        card={card}
+                        onClick={() => {
+                          preSelectCard(index);
+                        }}
+                      />
                     )}
                   </GridItem>
                 );
