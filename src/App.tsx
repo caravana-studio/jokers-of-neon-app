@@ -32,14 +32,15 @@ function App() {
                 element={
                   <Box
                     sx={{
-                      backgroundColor: "darkgreen",
+                      backgroundImage: "url(arcade-neon.gif)",
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
                       height: "100vh",
                       width: "100vw",
                       p: 10,
                       imageRendering: "pixelated !important",
                       fontFamily: "Sys",
                       pointerEvents: "all",
-                      fontSize: 30,
                       color: "#FFF",
                     }}
                   >

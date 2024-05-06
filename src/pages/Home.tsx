@@ -1,42 +1,32 @@
+import { useCallback, useEffect, useState } from "react";
+import { Menu } from "../components/Menu";
+
 export const Home = () => {
+  const [open, setOpen] = useState(false);
+  const onKeyDown = useCallback((event: { key: string }) => {
+    setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown, false);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown, false);
+    };
+  }, [onKeyDown]);
+
   return (
     <>
-      <div className="text">
+      <div className="text av1">
         <span>AV-1</span>
       </div>
-      <div className="menu">
-        <header>Main Menu</header>
-        <ul>
-          <li className="active">
-            <a href="/demo" title="">
-              Play demo
-            </a>
-          </li>
-          <li>
-            <a href="#" title="">
-              Picture
-            </a>
-          </li>{" "}
-          <li>
-            <a href="#" title="">
-              Sound
-            </a>
-          </li>
-          <li>
-            <a href="#" title="">
-              Contact
-            </a>
-          </li>
-        </ul>
-        <footer>
-          {/*           <div className="key">
-            Exit: <span>1</span>
-          </div> */}
-          <div className="key">
-            Select: <span>ENTER</span>
-          </div>
-        </footer>
-      </div>
+      {open ? (
+        <Menu />
+      ) : (
+        <div className="text press">
+          <span>PRESS A KEY TO START</span>
+        </div>
+      )}
     </>
   );
 };

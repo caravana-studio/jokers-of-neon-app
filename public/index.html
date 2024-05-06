@@ -30,7 +30,9 @@
         var main = document.querySelector("main");
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
-        var text = document.querySelector(".text");
+        var av1 = document.querySelector(".av1");
+        var strk = document.querySelector(".strk");
+        var press = document.querySelector(".press");
         var ww = window.innerWidth;
         var menu = document.querySelector(".menu");
         var ul = menu?.querySelector("ul");
@@ -65,17 +67,27 @@
 
         // Glitch
         for (i = 0; i < 4; i++) {
-          var span = text.firstElementChild.cloneNode(true);
-          text.appendChild(span);
+          if (av1) {
+            var av1Span = av1.firstElementChild.cloneNode(true);
+            av1.appendChild(av1Span);
+          }
+          if (strk) {
+            var strkSpan = strk.firstElementChild.cloneNode(true);
+            strk.appendChild(strkSpan);
+          }
+          if (press) {
+            var pressSpan = press.firstElementChild.cloneNode(true);
+            press.appendChild(pressSpan);
+          }
         }
 
         /*         window.addEventListener("DOMContentLoaded", function (e) {
-          setTimeout(function () {
-            main.classList.add("on");
-            main.classList.remove("off");
-            animate();
-          }, 1000);
         }); */
+        setTimeout(function () {
+          main.classList.add("on");
+          main.classList.remove("off");
+          animate();
+        }, 1000);
 
         window.addEventListener(
           "keydown",

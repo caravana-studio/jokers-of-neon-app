@@ -5,10 +5,11 @@ export const Button = (props: ButtonProps) => {
     <ChakraButton
       sx={{
         borderRadius: 0,
-        width: "100%",
         fontSize: 25,
         paddingY: 7,
+        paddingX: 40,
         border: "4px black solid",
+        fontFamily: 'Sys'
       }}
       {...props}
     />
