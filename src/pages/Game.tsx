@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  GridItem,
-  Heading,
-  SimpleGrid
-} from "@chakra-ui/react";
+import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
@@ -146,7 +140,14 @@ export const Game = () => {
               </GridItem>
             </SimpleGrid>
           </Box>
-          <Box sx={{ display: "flex", height: " 30%", alignItems: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              height: " 30%",
+              mx: 20,
+              alignItems: "flex-end",
+            }}
+          >
             <SimpleGrid sx={{ width: "100%" }} columns={8}>
               {hand.map((card, index) => {
                 return (
@@ -154,9 +155,9 @@ export const Game = () => {
                     key={card.img}
                     w="100%"
                     sx={{
-                      transform: `scale(1.1) rotate(${
-                        (index - 3.5) * 2
-                      }deg) translateY(${Math.abs(index - 3.5) * 15}px)`,
+                      transform: `scale(1.2) rotate(${
+                        (index - 3.5) * 3
+                      }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
                     }}
                   >
                     {!card.preSelected && (
