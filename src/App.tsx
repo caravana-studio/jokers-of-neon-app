@@ -33,8 +33,10 @@ function App() {
                   <Box
                     sx={{
                       backgroundImage: "url(arcade-neon.gif)",
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                      boxShadow: "inset 0 0 0 1000px rgba(0,0,0,.3)",
+
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                       height: "100vh",
                       width: "100vw",
                       p: 10,
