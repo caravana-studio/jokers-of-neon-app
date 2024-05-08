@@ -2,6 +2,7 @@ import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
+import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { HandCard } from "../types/Card";
 import { getInitialDeck } from "../utils/getInitialDeck";
@@ -9,6 +10,14 @@ import { getInitialDeck } from "../utils/getInitialDeck";
 let deck = getInitialDeck();
 
 export const Game = () => {
+  const {
+    setup: {
+      systemCalls: { checkHand },
+      clientComponents: { Card, PokerHandEvent, Game },
+    },
+    account,
+  } = useDojo();
+
   const [hand, setHand] = useState<HandCard[]>([]);
   const [preSelectedCards, setPreSelectedCards] = useState<HandCard[]>([]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
@@ -59,8 +68,15 @@ export const Game = () => {
   };
 
   useEffect(() => {
-    console.log('should calculate play')
-    // setPreSelectedPlay(calculatePlay(preSelectedCards));
+    if (preSelectedCards.length > 0) {
+      checkHand(account.account, preSelectedCards).then(
+        (play: Plays | undefined) => {
+          setPreSelectedPlay(play ?? Plays.NONE);
+        }
+      );
+    } else {
+      setPreSelectedPlay(Plays.NONE);
+    }
   }, [preSelectedCards]);
 
   useEffect(() => {

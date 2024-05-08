@@ -1,14 +1,13 @@
-
 export const PLAYS: string[] = [
   "None",
-  "High card",
-  "Pair",
-  "Two pair",
-  "Three of a kind",
+  "Royal flush",
+  "Straight flush",
+  "Four of a kind",
+  "Full house",
   "Straight",
   "Flush",
-  "Full house",
-  "Four of a kind",
-  "Straight flush",
-  "Royal flush"
+  "Three of a kind",
+  "Two pair",
+  "Pair",
+  "High card",
 ];
