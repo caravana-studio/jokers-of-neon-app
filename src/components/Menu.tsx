@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const OPTIONS = [
   {
@@ -21,14 +22,25 @@ const OPTIONS = [
 
 export const Menu = () => {
   const [activeOption, setActiveOption] = useState(0);
-  const onKeyDown = useCallback((event: { key: string }) => {
-    console.log("event.key", event.key);
-    if (event.key === "ArrowDown" && activeOption < 3) {
-      setActiveOption((prev) => prev + 1);
-    } else if (event.key === "ArrowUp" && activeOption > 0) {
-      setActiveOption((prev) => prev - 1);
+  const navigate = useNavigate();
+
+  const onKeyDown = (event: { key: string }) => {
+    if (event.key === "ArrowDown") {
+      setActiveOption((prev) => {
+        return prev < 3 ? prev + 1 : prev;
+      });
+    } else if (event.key === "ArrowUp") {
+      setActiveOption((prev) => {
+        return prev > 0 ? prev - 1 : prev;
+      });
+    } else if (event.key === "Enter") {
+      const href = OPTIONS.at(activeOption)?.href;
+      console.log("href", href);
+      console.log("activeOption", activeOption);
+      console.log("OPTIONS.at(activeOption)", OPTIONS.at(activeOption));
+      href && navigate(href);
     }
-  }, []);
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown, false);
@@ -43,7 +55,10 @@ export const Menu = () => {
       <header>Main Menu</header>
       <ul>
         {OPTIONS.map((option, index) => (
-          <li className={index === activeOption ? "active" : ""}>
+          <li
+            key={option.label}
+            className={index === activeOption ? "active" : ""}
+          >
             <a href={option.href} title="">
               {option.label}
             </a>
