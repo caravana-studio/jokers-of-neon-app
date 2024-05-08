@@ -35,9 +35,6 @@ export const Menu = () => {
       });
     } else if (event.key === "Enter") {
       const href = OPTIONS.at(activeOption)?.href;
-      console.log("href", href);
-      console.log("activeOption", activeOption);
-      console.log("OPTIONS.at(activeOption)", OPTIONS.at(activeOption));
       href && navigate(href);
     }
   };

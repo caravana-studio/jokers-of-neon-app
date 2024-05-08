@@ -93,7 +93,9 @@ $font-size: 20px;
         transparentize(#0000ff, 0.94)
       );
     z-index: 2;
-    background-size: 100% 2px, 3px 100%;
+    background-size:
+      100% 2px,
+      3px 100%;
     pointer-events: none;
   }
 }
@@ -126,7 +128,10 @@ $font-size: 20px;
   font-size: 35px;
   height: auto;
   text-transform: uppercase;
-  text-shadow: 1px 1px 0 #000000, -1px -1px 0 #000000, 1px -1px 0 #000000,
+  text-shadow:
+    1px 1px 0 #000000,
+    -1px -1px 0 #000000,
+    1px -1px 0 #000000,
     -1px 1px 0 #000000;
   filter: blur(1px);
   color: #fff;
@@ -320,7 +325,9 @@ $delay: 2000ms;
 }
 
 .text span {
-  animation: blur 30ms infinite, jerk 50ms infinite;
+  animation:
+    blur 30ms infinite,
+    jerk 50ms infinite;
 }
 
 @keyframes blur {
