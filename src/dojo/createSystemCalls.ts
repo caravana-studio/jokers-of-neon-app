@@ -18,6 +18,39 @@ export function createSystemCalls(
   contractComponents: ContractComponents,
   { Card, PokerHandEvent, Game }: ClientComponents
 ) {
+  const createGame = async (account: AccountInterface) => {
+    try {
+      const { transaction_hash } = await client.actions.createGame({
+        account,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      console.log("create game tx", tx);
+
+      if (tx.isSuccess()) {
+      }
+
+      setComponentsFromEvents(
+        contractComponents,
+        getEvents(
+          await account.waitForTransaction(transaction_hash, {
+            retryInterval: 100,
+          })
+        )
+      );
+    } catch (e) {
+      console.log(e);
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    } finally {
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    }
+  };
+
   const checkHand = async (account: AccountInterface, cards: Card[]) => {
     /*         const entityId = getEntityIdFromKeys([
             BigInt(account.address),
@@ -132,6 +165,7 @@ export function createSystemCalls(
     }; */
 
   return {
+    createGame,
     checkHand,
     // move,
   };

@@ -32,6 +32,19 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    CurrentSpecialCards: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, id: RecsType.BigInt, name: RecsType.BigInt },
+        {
+          metadata: {
+            name: "CurrentSpecialCards",
+            types: ["u32","felt252","felt252"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     Game: (() => {
       return defineComponent(
         world,
@@ -39,7 +52,98 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: "Game",
-            types: ["u32","contractaddress","u8","u8","u8","u128","u8","u8","bool"],
+            types: ["u32","contractaddress","u8","u8","u8","u128","u32","u32","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    PlayerCards: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, value: RecsType.Number, suit: RecsType.Number, points: RecsType.Number, multi: RecsType.Number },
+        {
+          metadata: {
+            name: "PlayerCards",
+            types: ["u32","enum","enum","u8","u8"],
+            customTypes: ["Value","Suit"],
+          },
+        }
+      );
+    })(),
+    PlayerCurrentSpecialCards: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, id: RecsType.BigInt, name: RecsType.BigInt },
+        {
+          metadata: {
+            name: "PlayerCurrentSpecialCards",
+            types: ["u32","felt252","felt252"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    PlayerModifierCards: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, id: RecsType.BigInt, name: RecsType.BigInt },
+        {
+          metadata: {
+            name: "PlayerModifierCards",
+            types: ["u32","felt252","felt252"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    PlayerSpecialCards: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, id: RecsType.BigInt, name: RecsType.BigInt },
+        {
+          metadata: {
+            name: "PlayerSpecialCards",
+            types: ["u32","felt252","felt252"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    CurrentHand: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number },
+        {
+          metadata: {
+            name: "CurrentHand",
+            types: ["u32","u32","enum","felt252","enum","enum"],
+            customTypes: ["TypeCard","Value","Suit"],
+          },
+        }
+      );
+    })(),
+    Deck: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number },
+        {
+          metadata: {
+            name: "Deck",
+            types: ["u32","u32","enum","felt252","enum","enum"],
+            customTypes: ["TypeCard","Value","Suit"],
+          },
+        }
+      );
+    })(),
+    Round: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, hands: RecsType.Number, discard: RecsType.Number, current_len_deck: RecsType.Number },
+        {
+          metadata: {
+            name: "Round",
+            types: ["u32","u8","u8","u32"],
             customTypes: [],
           },
         }

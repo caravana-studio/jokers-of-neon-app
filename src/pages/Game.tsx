@@ -15,11 +15,19 @@ let deck = getInitialDeck();
 export const Game = () => {
   const {
     setup: {
-      systemCalls: { checkHand },
+      systemCalls: { createGame, checkHand },
       clientComponents: { Card, PokerHandEvent, Game },
     },
     account,
   } = useDojo();
+
+  const [gameLoading, setGameLoading] = useState(true);
+
+  useEffect(() => {
+    createGame(account.account).then(() => {
+      setGameLoading(false);
+    });
+  }, []);
 
   const [hand, setHand] = useState<Card[]>([]);
   const [preSelectedCards, setPreSelectedCards] = useState<Card[]>([]);
@@ -115,6 +123,10 @@ export const Game = () => {
     }
   };
 
+  if (gameLoading) {
+    return <div>Loading game...</div>;
+  }
+
   return (
     <Box
       sx={{
@@ -195,7 +207,7 @@ export const Game = () => {
                 height: " 30%",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                mx: 4
+                mx: 4,
               }}
             >
               <SimpleGrid
