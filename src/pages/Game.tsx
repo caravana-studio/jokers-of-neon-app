@@ -1,10 +1,11 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { Tilt } from "react-tilt";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
-import { CARD_WIDTH } from "../constants/visualProps";
+import { CARD_WIDTH, TILT_OPTIONS } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
@@ -37,9 +38,12 @@ export const Game = () => {
   };
 
   const togglePreselected = (cardIndex: number) => {
+    console.log("pre");
     if (preSelectedCards.length < 5 || hand[cardIndex].preSelected) {
+      console.log("in");
       const nextHand = hand.map((card, i) => {
         if (i === cardIndex) {
+          console.log("doublein", card.preSelected);
           return { ...card, preSelected: !card.preSelected };
         } else {
           return card;
@@ -65,8 +69,17 @@ export const Game = () => {
     setPreSelectedCards([]);
   };
 
-  const unPreSelectCard = (id: string) => {
+  const unPreSelectCard = (card: Card) => {
+    const { id } = card;
+    console.log("unpreselecting", card);
     setPreSelectedCards(preSelectedCards.filter((card) => card.id !== id));
+    card.modifiers?.forEach((modifier) => {
+      console.log(
+        "mod",
+        hand.findIndex((card) => card.id === modifier.id)
+      );
+      togglePreselected(hand.findIndex((card) => card.id === modifier.id));
+    });
     togglePreselected(hand.findIndex((card) => card.id === id));
   };
 
@@ -89,7 +102,6 @@ export const Game = () => {
   }, []);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    console.log(event);
     const modifiedCard = event.over?.id;
     const modifier = event.active?.id;
     if (modifiedCard && modifier) {
@@ -137,57 +149,84 @@ export const Game = () => {
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%" }}></Box>
           <DndContext onDragEnd={handleDragEnd}>
-            <Box sx={{ height: "40%", mx: 35 }}>
-              <SimpleGrid columns={5} gap={4}>
-                <GridItem colSpan={4}>
-                  <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    {preSelectedCards.map((card) => {
-                      return (
-                        <Box key={card.id} sx={{ width: "20%", mx: 4 }}>
-                          <ModifiableCard id={card.id}>
-                            <TiltCard
-                              card={card}
-                              onClick={() => {
-                                unPreSelectCard(card.id);
-                              }}
-                            />
-                          </ModifiableCard>
-                        </Box>
-                      );
-                    })}
-                  </Box>
-                </GridItem>
-                <GridItem>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 4,
-                    }}
-                  >
-                    <Heading>CURRENT PLAY: {PLAYS[preSelectedPlay]}</Heading>
-                    <Button
-                      className="fullWidth"
-                      isDisabled={preSelectedCards?.length === 0}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      play hand
-                    </Button>
-                    <Button
-                      className="fullWidth"
-                      isDisabled={preSelectedCards?.length === 0}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      discard
-                    </Button>
-                  </Box>
-                </GridItem>
-              </SimpleGrid>
+            <Box
+              sx={{
+                height: "40%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Tilt options={{ ...TILT_OPTIONS, scale: 1.2 }}>
+                <Button
+                  sx={{
+                    borderRadius: 2000,
+                    height: 300,
+                    width: 300,
+                    ml: -180,
+                    pl: 150,
+                    fontSize: 35,
+                  }}
+                  isDisabled={preSelectedCards?.length === 0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  PLAY <br /> HAND
+                </Button>
+              </Tilt>
+              <Box
+                sx={{
+                  width: `${CARD_WIDTH * 7}px`,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 14,
+                }}
+              >
+                <Heading sx={{ fontSize: 25 }}>
+                  CURRENT PLAY: {PLAYS[preSelectedPlay]}
+                </Heading>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  {preSelectedCards.map((card) => {
+                    return (
+                      <Box key={card.id} sx={{ mx: 5 }}>
+                        <ModifiableCard id={card.id}>
+                          <TiltCard
+                            card={card}
+                            onClick={() => {
+                              unPreSelectCard(card);
+                            }}
+                          />
+                        </ModifiableCard>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+              <Tilt options={TILT_OPTIONS}>
+                <Button
+                  sx={{
+                    borderRadius: 2000,
+                    height: 300,
+                    width: 300,
+                    mr: -180,
+                    pr: 150,
+                    fontSize: 35,
+                    textAlign: "right",
+                  }}
+                  isDisabled={preSelectedCards?.length === 0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  DIS <br />
+                  CARD
+                </Button>
+              </Tilt>
+              
             </Box>
             <Box
               sx={{
@@ -195,13 +234,13 @@ export const Game = () => {
                 height: " 30%",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                mx: 4
+                mx: 4,
               }}
             >
               <SimpleGrid
                 sx={{
-                  minWidth: `${CARD_WIDTH * 5}px`,
-                  maxWidth: `${CARD_WIDTH * 7}px`,
+                  minWidth: `${CARD_WIDTH * 4}px`,
+                  maxWidth: `${CARD_WIDTH * 6.5}px`,
                 }}
                 columns={8}
               >
