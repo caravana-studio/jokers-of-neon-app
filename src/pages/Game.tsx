@@ -1,10 +1,12 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
-import { HandCard } from "../types/Card";
+import { Card } from "../types/Card";
 import { getInitialDeck } from "../utils/getInitialDeck";
 
 let deck = getInitialDeck();
@@ -18,8 +20,8 @@ export const Game = () => {
     account,
   } = useDojo();
 
-  const [hand, setHand] = useState<HandCard[]>([]);
-  const [preSelectedCards, setPreSelectedCards] = useState<HandCard[]>([]);
+  const [hand, setHand] = useState<Card[]>([]);
+  const [preSelectedCards, setPreSelectedCards] = useState<Card[]>([]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const drawCard = () => {
@@ -62,9 +64,9 @@ export const Game = () => {
     setPreSelectedCards([]);
   };
 
-  const unPreSelectCard = (img: string) => {
-    setPreSelectedCards(preSelectedCards.filter((card) => card.img !== img));
-    togglePreselected(hand.findIndex((card) => card.img === img));
+  const unPreSelectCard = (id: string) => {
+    setPreSelectedCards(preSelectedCards.filter((card) => card.id !== id));
+    togglePreselected(hand.findIndex((card) => card.id === id));
   };
 
   useEffect(() => {
@@ -84,6 +86,33 @@ export const Game = () => {
       drawCard();
     });
   }, []);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    console.log(event);
+    const modifiedCard = event.over?.id;
+    const modifier = event.active?.id;
+    if (modifiedCard && modifier) {
+      const handModifier = hand.find(
+        (handModifier) => handModifier.id === modifier
+      );
+      if (handModifier) {
+        const nextPreselectedCards = preSelectedCards.map((card) => {
+          if (card.id === modifiedCard) {
+            return {
+              ...card,
+              modifiers: [...(card.modifiers ?? []), handModifier],
+            };
+          } else {
+            return card;
+          }
+        });
+        setPreSelectedCards(nextPreselectedCards);
+        togglePreselected(
+          hand.findIndex((handCard) => handCard.id === modifier)
+        );
+      }
+    }
+  };
 
   return (
     <Box
@@ -106,94 +135,100 @@ export const Game = () => {
       >
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%" }}></Box>
-          <Box sx={{ height: "40%", mx: 35 }}>
-            <SimpleGrid columns={5} gap={4}>
-              <GridItem colSpan={4}>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  {preSelectedCards.map((card, index) => {
-                    return (
-                      <Box key={card.img} sx={{ width: "20%", px: 2 }}>
+          <DndContext onDragEnd={handleDragEnd}>
+            <Box sx={{ height: "40%", mx: 35 }}>
+              <SimpleGrid columns={5} gap={4}>
+                <GridItem colSpan={4}>
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    {preSelectedCards.map((card) => {
+                      return (
+                        <Box key={card.id} sx={{ width: "20%", mx: 4 }}>
+                          <ModifiableCard id={card.id}>
+                            <TiltCard
+                              card={card}
+                              onClick={() => {
+                                unPreSelectCard(card.id);
+                              }}
+                            />
+                          </ModifiableCard>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 4,
+                    }}
+                  >
+                    <Heading>CURRENT PLAY: {PLAYS[preSelectedPlay]}</Heading>
+                    <Button
+                      className="fullWidth"
+                      isDisabled={preSelectedCards?.length === 0}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      play hand
+                    </Button>
+                    <Button
+                      className="fullWidth"
+                      isDisabled={preSelectedCards?.length === 0}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      discard
+                    </Button>
+                  </Box>
+                </GridItem>
+              </SimpleGrid>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                height: " 30%",
+                mx: 20,
+                alignItems: "flex-end",
+              }}
+            >
+              <SimpleGrid sx={{ width: "100%" }} columns={8}>
+                {hand.map((card, index) => {
+                  return (
+                    <GridItem
+                      key={card.id}
+                      w="100%"
+                      sx={{
+                        transform: ` rotate(${
+                          (index - 3.5) * 3
+                        }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
+                      }}
+                    >
+                      {!card.preSelected && (
                         <TiltCard
+                          sx={{
+                            ":hover": {
+                              transform: "translateY(-30px) ",
+                            },
+                          }}
                           card={card}
                           onClick={() => {
-                            unPreSelectCard(card.img);
+                            if (!card.isModifier) {
+                              preSelectCard(index);
+                            }
                           }}
                         />
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 4,
-                  }}
-                >
-                  <Heading>CURRENT PLAY: {PLAYS[preSelectedPlay]}</Heading>
-                  <Button
-                    className="fullWidth"
-                    isDisabled={preSelectedCards?.length === 0}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    play hand
-                  </Button>
-                  <Button
-                    className="fullWidth"
-                    isDisabled={preSelectedCards?.length === 0}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    discard
-                  </Button>
-                </Box>
-              </GridItem>
-            </SimpleGrid>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              height: " 30%",
-              mx: 20,
-              alignItems: "flex-end",
-            }}
-          >
-            <SimpleGrid sx={{ width: "100%" }} columns={8}>
-              {hand.map((card, index) => {
-                return (
-                  <GridItem
-                    key={card.img}
-                    w="100%"
-                    sx={{
-                      transform: `scale(1.2) rotate(${
-                        (index - 3.5) * 3
-                      }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
-                    }}
-                  >
-                    {!card.preSelected && (
-                      <TiltCard
-                        sx={{
-                          ":hover": {
-                            transform: "translateY(-30px) ",
-                          },
-                        }}
-                        card={card}
-                        onClick={() => {
-                          preSelectCard(index);
-                        }}
-                      />
-                    )}
-                  </GridItem>
-                );
-              })}
-            </SimpleGrid>
-          </Box>
+                      )}
+                    </GridItem>
+                  );
+                })}
+              </SimpleGrid>
+            </Box>
+          </DndContext>
         </Box>
       </Box>
     </Box>
