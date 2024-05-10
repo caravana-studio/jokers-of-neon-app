@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
+import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
@@ -192,11 +193,18 @@ export const Game = () => {
               sx={{
                 display: "flex",
                 height: " 30%",
-                mx: 20,
                 alignItems: "flex-end",
+                justifyContent: "center",
+                mx: 4
               }}
             >
-              <SimpleGrid sx={{ width: "100%" }} columns={8}>
+              <SimpleGrid
+                sx={{
+                  minWidth: `${CARD_WIDTH * 5}px`,
+                  maxWidth: `${CARD_WIDTH * 7}px`,
+                }}
+                columns={8}
+              >
                 {hand.map((card, index) => {
                   return (
                     <GridItem
