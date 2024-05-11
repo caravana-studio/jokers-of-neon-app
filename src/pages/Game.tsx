@@ -1,6 +1,7 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { HasValue, getComponentValue, Has } from '@dojoengine/recs';
 import { Entity } from "@dojoengine/recs/src/types";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useEffect, useState } from "react";
@@ -40,11 +41,12 @@ export const Game = () => {
   } = useDojo();
 
   // entity id we are syncing
-  const entityId = getEntityIdFromKeys([
-    BigInt(account?.account.address),
+  const entityId = getEntityIdFromKeys([BigInt(0),
+    BigInt(account?.account.address)
   ]) as Entity;
 
-  console.log("entityId", entityId);
+  const gameEntities = useEntityQuery([Has(Game)]);
+  console.log('gameEntities :', gameEntities);
 
   // get current component values
   const currentHand = useComponentValue(CurrentHand, entityId);
