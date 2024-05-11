@@ -14,6 +14,19 @@ const modifier2 = {
   isModifier: true,
 };
 
+export const SPECIAL_DOUBLE = {
+  id: "double",
+  img: "Special/double.png",
+  name: "double",
+  isSpecial: true
+}
+export const SPECIAL_100 = {
+  id: "plus100",
+  img: "Special/plus100.png",
+  name: "plus 100",
+  isSpecial: true
+}
+
 export const getInitialDeck = (): Card[] => {
   const deck: Card[] = [];
   [1, 2, 3, 4].forEach((suit) => {

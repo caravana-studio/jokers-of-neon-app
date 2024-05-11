@@ -28,26 +28,21 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
+      const events = getEvents(
+        tx
+      )
+
       console.log("create game tx", tx);
-
-      if (tx.isSuccess()) {
-      }
-
+      console.log('events', events)
+      
       setComponentsFromEvents(
         contractComponents,
-        getEvents(
-          await account.waitForTransaction(transaction_hash, {
-            retryInterval: 100,
-          })
-        )
+        events
       );
+      return !!tx.isSuccess();
     } catch (e) {
       console.log(e);
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
+      return false;
     }
   };
 

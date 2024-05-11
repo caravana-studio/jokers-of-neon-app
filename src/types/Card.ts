@@ -10,4 +10,5 @@ export interface Card {
   modifiers?: Card[];
   name?: string;
   isModifier?: boolean;
+  isSpecial?: boolean;
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { dojoConfig } from "../dojoConfig.ts";
@@ -15,13 +14,13 @@ async function init() {
   const setupResult = await setup(dojoConfig);
 
   root.render(
-    <React.StrictMode>
-      <DojoProvider value={setupResult}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </DojoProvider>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <DojoProvider value={setupResult}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </DojoProvider>
+    // </React.StrictMode>
   );
 }
 

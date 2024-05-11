@@ -1,15 +1,21 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useComponentValue } from "@dojoengine/react";
+import { Entity } from "@dojoengine/recs/src/types";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useEffect, useState } from "react";
-import { Tilt } from "react-tilt";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
 import { PLAYS } from "../constants/plays";
-import { CARD_WIDTH, TILT_OPTIONS } from "../constants/visualProps";
+import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
-import { getInitialDeck } from "../utils/getInitialDeck";
+import {
+  SPECIAL_100,
+  SPECIAL_DOUBLE,
+  getInitialDeck,
+} from "../utils/getInitialDeck";
 
 let deck = getInitialDeck();
 
@@ -17,21 +23,76 @@ export const Game = () => {
   const {
     setup: {
       systemCalls: { createGame, checkHand },
-      clientComponents: { Card, PokerHandEvent, Game },
+      clientComponents: {
+        Card,
+        PokerHandEvent,
+        CurrentSpecialCards,
+        Game,
+        PlayerCurrentSpecialCards,
+        PlayerModifierCards,
+        PlayerSpecialCards,
+        CurrentHand,
+        Deck,
+        Round,
+      },
     },
     account,
   } = useDojo();
 
+  // entity id we are syncing
+  const entityId = getEntityIdFromKeys([
+    BigInt(account?.account.address),
+  ]) as Entity;
+
+  console.log("entityId", entityId);
+
+  // get current component values
+  const currentHand = useComponentValue(CurrentHand, entityId);
+  const game = useComponentValue(Game, entityId);
+  const card = useComponentValue(Card, entityId);
+  const pokerHandEvent = useComponentValue(PokerHandEvent, entityId);
+  const currentSpecialCards = useComponentValue(CurrentSpecialCards, entityId);
+  const playerCurrentSpecialCards = useComponentValue(
+    PlayerCurrentSpecialCards,
+    entityId
+  );
+  const playerModifierCards = useComponentValue(PlayerModifierCards, entityId);
+  const playerSpecialCards = useComponentValue(PlayerSpecialCards, entityId);
+  const deck2 = useComponentValue(Deck, entityId);
+  const round = useComponentValue(Round, entityId);
+  console.log("currentHand", currentHand);
+  console.log("game", game);
+  console.log("card", card);
+  console.log("pokerHandEvent", pokerHandEvent);
+  console.log("currentSpecialCards", currentSpecialCards);
+  console.log("playerCurrentSpecialCards", playerCurrentSpecialCards);
+  console.log("playerModifierCards", playerModifierCards);
+  console.log("playerSpecialCards", playerSpecialCards);
+  console.log("deck", deck2);
+  console.log("round", round);
+  /*   console.log(CurrentHand.values);
+  console.log(CurrentHand.metadata);
+  console.log(CurrentHand.entities); */
+
   const [gameLoading, setGameLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    createGame(account.account).then(() => {
+    createGame(account.account).then((response) => {
       setGameLoading(false);
+      console.log("sresponse", response);
+      if (!response) {
+        setError(true);
+      }
     });
   }, []);
 
   const [hand, setHand] = useState<Card[]>([]);
   const [preSelectedCards, setPreSelectedCards] = useState<Card[]>([]);
+  const [specialCards, setSpecialCards] = useState<Card[]>([
+    SPECIAL_DOUBLE,
+    SPECIAL_100,
+  ]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const drawCard = () => {
@@ -138,6 +199,9 @@ export const Game = () => {
   if (gameLoading) {
     return <div>Loading game...</div>;
   }
+  if (error) {
+    return <div>Error creating game</div>;
+  }
 
   return (
     <Box
@@ -159,7 +223,19 @@ export const Game = () => {
         onClick={clearPreSelection}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%" }}></Box>
+          <Box sx={{ height: "30%" }}>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {specialCards.map((card) => {
+                return (
+                  <Box key={card.id} sx={{ mx: 5 }}>
+                    <TiltCard
+                      card={card}
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
           <DndContext onDragEnd={handleDragEnd}>
             <Box
               sx={{
@@ -171,24 +247,22 @@ export const Game = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Tilt options={{ ...TILT_OPTIONS, scale: 1.2 }}>
-                <Button
-                  sx={{
-                    borderRadius: 2000,
-                    height: 300,
-                    width: 300,
-                    ml: -180,
-                    pl: 150,
-                    fontSize: 35,
-                  }}
-                  isDisabled={preSelectedCards?.length === 0}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  PLAY <br /> HAND
-                </Button>
-              </Tilt>
+              <Button
+                sx={{
+                  borderRadius: 2000,
+                  height: 300,
+                  width: 300,
+                  ml: -180,
+                  pl: 150,
+                  fontSize: 35,
+                }}
+                isDisabled={preSelectedCards?.length === 0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                PLAY <br /> HAND
+              </Button>
               <Box
                 sx={{
                   width: `${CARD_WIDTH * 7}px`,
@@ -218,27 +292,24 @@ export const Game = () => {
                   })}
                 </Box>
               </Box>
-              <Tilt options={TILT_OPTIONS}>
-                <Button
-                  sx={{
-                    borderRadius: 2000,
-                    height: 300,
-                    width: 300,
-                    mr: -180,
-                    pr: 150,
-                    fontSize: 35,
-                    textAlign: "right",
-                  }}
-                  isDisabled={preSelectedCards?.length === 0}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  DIS <br />
-                  CARD
-                </Button>
-              </Tilt>
-              
+              <Button
+                sx={{
+                  borderRadius: 2000,
+                  height: 300,
+                  width: 300,
+                  mr: -180,
+                  pr: 150,
+                  fontSize: 35,
+                  textAlign: "right",
+                }}
+                isDisabled={preSelectedCards?.length === 0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                DIS <br />
+                CARD
+              </Button>
             </Box>
             <Box
               sx={{

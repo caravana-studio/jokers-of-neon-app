@@ -18,7 +18,6 @@ export async function setupWorld(provider: DojoProvider) {
 
     const createGame = async ({ account }: { account: AccountInterface }) => {
       try {
-        console.log("account", account);
         return await provider.execute(
           account,
           contract_name,
@@ -26,7 +25,7 @@ export async function setupWorld(provider: DojoProvider) {
           []
         );
       } catch (error) {
-        console.error("Error executing checkHand:", error);
+        console.error("Error executing createGame:", error);
         throw error;
       }
     };
