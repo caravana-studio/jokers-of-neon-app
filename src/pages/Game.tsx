@@ -40,8 +40,9 @@ export const Game = () => {
 
   // entity id we are syncing
   const entityId = getEntityIdFromKeys([
-    BigInt(account?.account.address),
-  ]) as Entity;
+    BigInt(0),
+    BigInt(0),
+  ]) as Entity; 
 
   console.log("entityId", entityId);
 
