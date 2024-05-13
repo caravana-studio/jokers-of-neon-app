@@ -28,23 +28,38 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      const events = getEvents(
-        tx
-      )
-      
-      setComponentsFromEvents(
-        contractComponents,
-        events
-      );
-      return !!tx.isSuccess();
+      if (tx.isSuccess()) {
+        const events = tx.events;
+  
+        const gameIdEvent = events?.find((e) => {
+          return (
+            e.keys[0] ===
+            "0xf7ed1ec3a2efb4c4ff4451b344e4a3c4f8bbd6a437e31765a32df3c3a44cdd"
+          );
+        });
+  
+        console.log("gameIdEvent", gameIdEvent);
+  
+        setComponentsFromEvents(contractComponents, getEvents(tx));
+  
+        const gameIdValue = gameIdEvent?.data.at(0);
+        const value = gameIdValue && (parseComponentValue(gameIdValue, Type.Number) as number)
+        return value;
+      } else {
+        return null;
+      }
+
     } catch (e) {
       console.log(e);
       return false;
     }
   };
 
-  const checkHand = async (account: AccountInterface, gameId: number, cards: Card[]) => {
-
+  const checkHand = async (
+    account: AccountInterface,
+    gameId: number,
+    cards: Card[]
+  ) => {
     try {
       const { transaction_hash } = await client.actions.checkHand({
         account,
@@ -82,9 +97,11 @@ export function createSystemCalls(
     }
   };
 
-
-  const discard = async (account: AccountInterface, gameId: number, cards: Card[]) => {
-
+  const discard = async (
+    account: AccountInterface,
+    gameId: number,
+    cards: Card[]
+  ) => {
     try {
       const { transaction_hash } = await client.actions.discard({
         account,
@@ -109,7 +126,7 @@ export function createSystemCalls(
       console.log(e);
     }
   };
-  
+
   return {
     createGame,
     checkHand,

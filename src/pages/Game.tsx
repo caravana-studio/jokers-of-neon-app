@@ -1,8 +1,10 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { AccountAddress } from "../components/AccountAddress";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
+import { GAME_ID } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
@@ -10,18 +12,10 @@ import { getCurrentHandCards } from "../dojo/utils/getCurrentHandCards";
 import { gameExists } from "../dojo/utils/getGame";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
-import {
-  SPECIAL_100,
-  SPECIAL_DOUBLE,
-  getInitialDeck,
-} from "../utils/getInitialDeck";
-
-// let deck = getInitialDeck();
-
-//TODO: dehardcode
-const gameId = 0;
+import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
 
 export const Game = () => {
+  const [gameId, setGameId] = useState<number>(Number(localStorage.getItem(GAME_ID)) ?? 0)
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard },
@@ -40,41 +34,9 @@ export const Game = () => {
     account,
   } = useDojo();
 
-  useEffect(() => {
-    console.log("CurrentHandCard got updated");
+  const refreshHand = () => {
     setHand(getCurrentHandCards(gameId, CurrentHandCard));
-  }, [CurrentHandCard]);
-
-  // entity id we are syncing
-  /*   const entityId = getEntityIdFromKeys([
-    BigInt(0),
-    BigInt(0),
-  ]) as Entity; 
-
-  console.log("entityId", entityId); */
-
-  // get current component values
-  /*    const currentHand = useComponentValue(CurrentHandCard, entityId);
-  const game = useComponentValue(Game, entityId);
-  const card = useComponentValue(Card, entityId);
-  const pokerHandEvent = useComponentValue(PokerHandEvent, entityId);
-  const currentSpecialCards = useComponentValue(CurrentSpecialCards, entityId);
-  const playerModifierCards = useComponentValue(PlayerModifierCards, entityId);
-  const playerSpecialCards = useComponentValue(PlayerSpecialCards, entityId);
-  const deck2 = useComponentValue(DeckCard, entityId);
-  const round = useComponentValue(Round, entityId);
- console.log("currentHandCard", currentHand);
-  console.log("game", game);
-  console.log("card", card);
-  console.log("pokerHandEvent", pokerHandEvent);
-  console.log("currentSpecialCards", currentSpecialCards);
-  console.log("playerModifierCards", playerModifierCards);
-  console.log("playerSpecialCards", playerSpecialCards);
-  console.log("deck", deck2);
-  console.log("round", round); */
-  /*   console.log(CurrentHand.values);
-  console.log(CurrentHand.metadata);
-  console.log(CurrentHand.entities); */
+  };
 
   const [gameLoading, setGameLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -88,34 +50,25 @@ export const Game = () => {
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   useEffect(() => {
-    if (!gameExists(Game)) {
+    if (!gameExists(Game, account.account.address, gameId)) {
       console.log("Creating game...");
-      createGame(account.account).then((response) => {
+      createGame(account.account).then((newGameId) => {
         setGameLoading(false);
-        if (response) {
-          setHand(getCurrentHandCards(gameId, CurrentHandCard));
-          console.log("game created");
+        if (newGameId) {
+          setGameId(newGameId)
+          localStorage.setItem(GAME_ID, newGameId.toString())
+          refreshHand();
+          console.log(`game ${newGameId} created`);
         } else {
           setError(true);
         }
       });
     } else {
       setGameLoading(false);
-      setHand(getCurrentHandCards(gameId, CurrentHandCard));
+      refreshHand();
       console.log("Game found, no need to create a new one");
     }
   }, []);
-
-/*   const drawCard = () => {
-    const newCard = deck.pop();
-    if (newCard) {
-      setHand((prevHand) => {
-        return prevHand.length < 8
-          ? [...prevHand, { ...newCard, preSelected: false }]
-          : prevHand;
-      });
-    }
-  }; */
 
   const togglePreselected = (cardIndex: number) => {
     console.log("pre");
@@ -175,12 +128,6 @@ export const Game = () => {
     }
   }, [preSelectedCards]);
 
-/*   useEffect(() => {
-    Array.from(Array(8)).forEach(() => {
-      drawCard();
-    });
-  }, []); */
-
   const handleDragEnd = (event: DragEndEvent) => {
     const modifiedCard = event.over?.id;
     const modifier = event.active?.id;
@@ -224,6 +171,7 @@ export const Game = () => {
       <div className="text strk">
         <span>$STRK</span>
       </div>
+      <AccountAddress />
       <Box
         sx={{
           height: "100%",
@@ -314,7 +262,16 @@ export const Game = () => {
                 isDisabled={preSelectedCards?.length === 0}
                 onClick={(e) => {
                   e.stopPropagation();
-                  discard(account.account, gameId, preSelectedCards)
+                  discard(account.account, gameId, preSelectedCards).then(
+                    (response) => {
+                      if (response) {
+                        clearPreSelection();
+                        setTimeout(() => {
+                          refreshHand();
+                        }, 200);
+                      }
+                    }
+                  );
                 }}
               >
                 DIS <br />

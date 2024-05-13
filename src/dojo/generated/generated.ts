@@ -2,7 +2,7 @@
 
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
-import { Card } from "../../types/card";
+import { Card } from "../../types/Card";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
@@ -40,7 +40,6 @@ export async function setupWorld(provider: DojoProvider) {
       cards: Card[];
     }) => {
       try {
-        console.log('cards', cards)
         const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
         console.log(cardArray);
         return await provider.execute(
@@ -65,7 +64,6 @@ export async function setupWorld(provider: DojoProvider) {
       cards: Card[];
     }) => {
       try {
-        console.log('cards', cards)
         const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
         console.log(cardArray);
         return await provider.execute(
