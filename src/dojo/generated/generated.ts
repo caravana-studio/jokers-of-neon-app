@@ -3,12 +3,12 @@
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
 import { Card } from "../../types/card";
-import { cardArrayGenerator } from "../../utils/cardArrayGenerator";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
 export interface CheckHandProps {
   account: Account | AccountInterface;
+  gameId: number;
   cards: Card[];
 }
 
@@ -32,13 +32,16 @@ export async function setupWorld(provider: DojoProvider) {
 
     const checkHand = async ({
       account,
+      gameId,
       cards,
     }: {
       account: AccountInterface;
+      gameId: number;
       cards: Card[];
     }) => {
       try {
-        const cardArray = cardArrayGenerator(cards);
+        console.log('cards', cards)
+        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
         console.log(cardArray);
         return await provider.execute(
           account,
@@ -51,8 +54,33 @@ export async function setupWorld(provider: DojoProvider) {
         throw error;
       }
     };
+    
+    const discard = async ({
+      account,
+      gameId,
+      cards,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      cards: Card[];
+    }) => {
+      try {
+        console.log('cards', cards)
+        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
+        console.log(cardArray);
+        return await provider.execute(
+          account,
+          contract_name,
+          "discard",
+          cardArray
+        );
+      } catch (error) {
+        console.error("Error executing discard:", error);
+        throw error;
+      }
+    };
 
-    return { checkHand, createGame };
+    return { checkHand, createGame, discard };
   }
   return {
     actions: actions(),

@@ -35,7 +35,7 @@ export function defineContractComponents(world: World) {
     CurrentHandCard: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.Number, value: RecsType.Number, suit: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.String, card_id: RecsType.Number, value: RecsType.String, suit: RecsType.String },
         {
           metadata: {
             name: "CurrentHandCard",

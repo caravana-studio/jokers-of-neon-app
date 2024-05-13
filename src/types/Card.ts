@@ -11,4 +11,5 @@ export interface Card {
   name?: string;
   isModifier?: boolean;
   isSpecial?: boolean;
+  idx?: number;
 }

@@ -128,7 +128,7 @@ function App() {
       </div>
 
       <div className="card">
-        <button onClick={() => checkHand(account.account, cards)}>
+        <button onClick={() => checkHand(account.account, 0, cards)}>
           Check hand
         </button>
       </div>
