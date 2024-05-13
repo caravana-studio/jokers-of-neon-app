@@ -28,11 +28,10 @@ export const Game = () => {
         PokerHandEvent,
         CurrentSpecialCards,
         Game,
-        PlayerCurrentSpecialCards,
         PlayerModifierCards,
         PlayerSpecialCards,
-        CurrentHand,
-        Deck,
+        CurrentHandCard,
+        DeckCard,
         Round,
       },
     },
@@ -47,25 +46,20 @@ export const Game = () => {
   console.log("entityId", entityId);
 
   // get current component values
-  const currentHand = useComponentValue(CurrentHand, entityId);
+  const currentHand = useComponentValue(CurrentHandCard, entityId);
   const game = useComponentValue(Game, entityId);
   const card = useComponentValue(Card, entityId);
   const pokerHandEvent = useComponentValue(PokerHandEvent, entityId);
   const currentSpecialCards = useComponentValue(CurrentSpecialCards, entityId);
-  const playerCurrentSpecialCards = useComponentValue(
-    PlayerCurrentSpecialCards,
-    entityId
-  );
   const playerModifierCards = useComponentValue(PlayerModifierCards, entityId);
   const playerSpecialCards = useComponentValue(PlayerSpecialCards, entityId);
-  const deck2 = useComponentValue(Deck, entityId);
+  const deck2 = useComponentValue(DeckCard, entityId);
   const round = useComponentValue(Round, entityId);
   console.log("currentHand", currentHand);
   console.log("game", game);
   console.log("card", card);
   console.log("pokerHandEvent", pokerHandEvent);
   console.log("currentSpecialCards", currentSpecialCards);
-  console.log("playerCurrentSpecialCards", playerCurrentSpecialCards);
   console.log("playerModifierCards", playerModifierCards);
   console.log("playerSpecialCards", playerSpecialCards);
   console.log("deck", deck2);

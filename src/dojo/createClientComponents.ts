@@ -14,11 +14,10 @@ export function createClientComponents({
         PokerHandEvent: overridableComponent(contractComponents.PokerHandEvent),
         CurrentSpecialCards: overridableComponent(contractComponents.CurrentSpecialCards),
         Game: overridableComponent(contractComponents.Game),
-        PlayerCurrentSpecialCards: overridableComponent(contractComponents.PlayerCurrentSpecialCards),
         PlayerModifierCards: overridableComponent(contractComponents.PlayerModifierCards),
         PlayerSpecialCards: overridableComponent(contractComponents.PlayerSpecialCards),
-        CurrentHand: overridableComponent(contractComponents.CurrentHand),
-        Deck: overridableComponent(contractComponents.Deck),
+        CurrentHandCard: overridableComponent(contractComponents.CurrentHandCard),
+        DeckCard: overridableComponent(contractComponents.DeckCard),
         Round: overridableComponent(contractComponents.Round),
     };
 }

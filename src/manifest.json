@@ -660,10 +660,10 @@
         ]
       }
     ],
-    "address": "0x1892f9f999ac182fc99e66995aea5ee89216978ac4b4dda018f07d47d42df47",
-    "transaction_hash": "0x510dec6f3fe1bc09752a4c31badc33bae769f652050378b1cb7f779f75e9948",
+    "address": "0xf41e582d141adc7bc20d78a8a8b26c6d262114e72361a03881ccf9193fc97c",
+    "transaction_hash": "0xab7d9b58acfabe25e5ea66ad0a1a04b71a1836f53efc49429d687ba2f09d0c",
     "block_number": 3,
-    "seed": "project_b",
+    "seed": "jokers_of_neon",
     "name": "dojo::world::world"
   },
   "base": {
@@ -676,9 +676,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x7723582a23b8e066337fa92ce539cee71ccde55e7811ca4ce3aa8fb15509c45",
-      "class_hash": "0x1bfcd92e62a02c28591244bb47c6f1844f72b1c2a268ef77034ac38cb41d01b",
-      "original_class_hash": "0x1bfcd92e62a02c28591244bb47c6f1844f72b1c2a268ef77034ac38cb41d01b",
+      "address": "0x57e3a921a94df6c6893eb3fcc06d69b45faf1b48592a6b4aff59a3fdaeb1fe0",
+      "class_hash": "0x24c0ddd666f207e0a50d5daef60e15836a4c93ccc51ad7949b60a12a016a4c5",
+      "original_class_hash": "0x24c0ddd666f207e0a50d5daef60e15836a4c93ccc51ad7949b60a12a016a4c5",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -738,11 +738,11 @@
         {
           "type": "impl",
           "name": "ConfigImpl",
-          "interface_name": "project_b::systems::config_system::IConfigSystem"
+          "interface_name": "jokers_of_neon::systems::config_system::IConfigSystem"
         },
         {
           "type": "interface",
-          "name": "project_b::systems::config_system::IConfigSystem",
+          "name": "jokers_of_neon::systems::config_system::IConfigSystem",
           "items": [
             {
               "type": "function",
@@ -802,7 +802,7 @@
         },
         {
           "type": "event",
-          "name": "project_b::systems::config_system::config_system::Event",
+          "name": "jokers_of_neon::systems::config_system::config_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -816,13 +816,13 @@
       "reads": [],
       "writes": [],
       "computed": [],
-      "name": "project_b::systems::config_system::config_system"
+      "name": "jokers_of_neon::systems::config_system::config_system"
     },
     {
       "kind": "DojoContract",
-      "address": "0x20c5730d70bb92e5602b2303fdca311d1b33f2befba99d514d36e87cde6fb2e",
-      "class_hash": "0x567302a2ce5fadfa77920bcdc4ceb5ebc98279e6098e568192920128ddff6ac",
-      "original_class_hash": "0x567302a2ce5fadfa77920bcdc4ceb5ebc98279e6098e568192920128ddff6ac",
+      "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
+      "class_hash": "0x7efe58962a759e5b3f97c5117e8bd648d3f880a3eda1613b90e5bf23c31c353",
+      "original_class_hash": "0x7efe58962a759e5b3f97c5117e8bd648d3f880a3eda1613b90e5bf23c31c353",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -882,11 +882,11 @@
         {
           "type": "impl",
           "name": "ActionsImpl",
-          "interface_name": "project_b::systems::game_system::IGameSystem"
+          "interface_name": "jokers_of_neon::systems::game_system::IGameSystem"
         },
         {
           "type": "enum",
-          "name": "project_b::models::data::card::PokerHand",
+          "name": "jokers_of_neon::models::data::card::PokerHand",
           "variants": [
             {
               "name": "RoyalFlush",
@@ -932,7 +932,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::systems::game_system::IGameSystem",
+          "name": "jokers_of_neon::systems::game_system::IGameSystem",
           "items": [
             {
               "type": "function",
@@ -950,8 +950,8 @@
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "cards_id",
-                  "type": "core::array::Array::<core::integer::u8>"
+                  "name": "cards_index",
+                  "type": "core::array::Array::<core::integer::u32>"
                 }
               ],
               "outputs": [],
@@ -966,8 +966,8 @@
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "cards_id",
-                  "type": "core::array::Array::<core::integer::u8>"
+                  "name": "cards_index",
+                  "type": "core::array::Array::<core::integer::u32>"
                 }
               ],
               "outputs": [],
@@ -988,7 +988,7 @@
               ],
               "outputs": [
                 {
-                  "type": "project_b::models::data::card::PokerHand"
+                  "type": "jokers_of_neon::models::data::card::PokerHand"
                 }
               ],
               "state_mutability": "view"
@@ -1044,7 +1044,7 @@
         },
         {
           "type": "event",
-          "name": "project_b::systems::game_system::game_system::Event",
+          "name": "jokers_of_neon::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1058,7 +1058,7 @@
       "reads": [],
       "writes": [],
       "computed": [],
-      "name": "project_b::systems::game_system::game_system"
+      "name": "jokers_of_neon::systems::game_system::game_system"
     }
   ],
   "models": [
@@ -1081,8 +1081,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6079140e81a7f53ac4d9368b22d765cbe1ca91eea3f518044ba10d0ffc0f4ea",
-      "original_class_hash": "0x6079140e81a7f53ac4d9368b22d765cbe1ca91eea3f518044ba10d0ffc0f4ea",
+      "class_hash": "0x65370915672d61e34366ac3a0ed7192f3da9996487c59ce0cda5c8c87b610d6",
+      "original_class_hash": "0x65370915672d61e34366ac3a0ed7192f3da9996487c59ce0cda5c8c87b610d6",
       "abi": [
         {
           "type": "impl",
@@ -1255,11 +1255,11 @@
         {
           "type": "impl",
           "name": "cardImpl",
-          "interface_name": "project_b::models::data::card::Icard"
+          "interface_name": "jokers_of_neon::models::data::card::Icard"
         },
         {
           "type": "enum",
-          "name": "project_b::models::data::card::Value",
+          "name": "jokers_of_neon::models::data::card::Value",
           "variants": [
             {
               "name": "Two",
@@ -1317,7 +1317,7 @@
         },
         {
           "type": "enum",
-          "name": "project_b::models::data::card::Suit",
+          "name": "jokers_of_neon::models::data::card::Suit",
           "variants": [
             {
               "name": "Clubs",
@@ -1339,15 +1339,15 @@
         },
         {
           "type": "struct",
-          "name": "project_b::models::data::card::Card",
+          "name": "jokers_of_neon::models::data::card::Card",
           "members": [
             {
               "name": "value",
-              "type": "project_b::models::data::card::Value"
+              "type": "jokers_of_neon::models::data::card::Value"
             },
             {
               "name": "suit",
-              "type": "project_b::models::data::card::Suit"
+              "type": "jokers_of_neon::models::data::card::Suit"
             },
             {
               "name": "points",
@@ -1357,7 +1357,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::data::card::Icard",
+          "name": "jokers_of_neon::models::data::card::Icard",
           "items": [
             {
               "type": "function",
@@ -1365,7 +1365,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::data::card::Card"
+                  "type": "jokers_of_neon::models::data::card::Card"
                 }
               ],
               "outputs": [],
@@ -1375,12 +1375,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::data::card::card::Event",
+          "name": "jokers_of_neon::models::data::card::card::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::data::card::card"
+      "name": "jokers_of_neon::models::data::card::card"
     },
     {
       "kind": "DojoModel",
@@ -1396,8 +1396,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5fd92667ce28f2acafba9d0085a82083bc21f01688501655ccc56e5da290afe",
-      "original_class_hash": "0x5fd92667ce28f2acafba9d0085a82083bc21f01688501655ccc56e5da290afe",
+      "class_hash": "0x1fa3a77a196b9b592a1dbf27d2bca49f53b73cfd9f94fe215fc45fff478ccdf",
+      "original_class_hash": "0x1fa3a77a196b9b592a1dbf27d2bca49f53b73cfd9f94fe215fc45fff478ccdf",
       "abi": [
         {
           "type": "impl",
@@ -1570,11 +1570,11 @@
         {
           "type": "impl",
           "name": "poker_hand_eventImpl",
-          "interface_name": "project_b::models::data::card::Ipoker_hand_event"
+          "interface_name": "jokers_of_neon::models::data::card::Ipoker_hand_event"
         },
         {
           "type": "struct",
-          "name": "project_b::models::data::card::PokerHandEvent",
+          "name": "jokers_of_neon::models::data::card::PokerHandEvent",
           "members": [
             {
               "name": "player",
@@ -1588,7 +1588,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::data::card::Ipoker_hand_event",
+          "name": "jokers_of_neon::models::data::card::Ipoker_hand_event",
           "items": [
             {
               "type": "function",
@@ -1596,7 +1596,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::data::card::PokerHandEvent"
+                  "type": "jokers_of_neon::models::data::card::PokerHandEvent"
                 }
               ],
               "outputs": [],
@@ -1606,12 +1606,742 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::data::card::poker_hand_event::Event",
+          "name": "jokers_of_neon::models::data::card::poker_hand_event::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::data::card::poker_hand_event"
+      "name": "jokers_of_neon::models::data::card::poker_hand_event"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "idx",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "type_card",
+          "type": "TypeCard",
+          "key": false
+        },
+        {
+          "name": "card_id",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "value",
+          "type": "Value",
+          "key": false
+        },
+        {
+          "name": "suit",
+          "type": "Suit",
+          "key": false
+        }
+      ],
+      "class_hash": "0x5c9306a568dc8c214e42e1c01950cb78024718930a3f0ca618c74eca0911e00",
+      "original_class_hash": "0x5c9306a568dc8c214e42e1c01950cb78024718930a3f0ca618c74eca0911e00",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "current_hand_cardImpl",
+          "interface_name": "jokers_of_neon::models::status::current_hand_card::Icurrent_hand_card"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::TypeCard",
+          "variants": [
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Special",
+              "type": "()"
+            },
+            {
+              "name": "Modifier",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::Value",
+          "variants": [
+            {
+              "name": "Two",
+              "type": "()"
+            },
+            {
+              "name": "Three",
+              "type": "()"
+            },
+            {
+              "name": "Four",
+              "type": "()"
+            },
+            {
+              "name": "Five",
+              "type": "()"
+            },
+            {
+              "name": "Six",
+              "type": "()"
+            },
+            {
+              "name": "Seven",
+              "type": "()"
+            },
+            {
+              "name": "Eight",
+              "type": "()"
+            },
+            {
+              "name": "Nine",
+              "type": "()"
+            },
+            {
+              "name": "Ten",
+              "type": "()"
+            },
+            {
+              "name": "Jack",
+              "type": "()"
+            },
+            {
+              "name": "Queen",
+              "type": "()"
+            },
+            {
+              "name": "King",
+              "type": "()"
+            },
+            {
+              "name": "Ace",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::Suit",
+          "variants": [
+            {
+              "name": "Clubs",
+              "type": "()"
+            },
+            {
+              "name": "Diamonds",
+              "type": "()"
+            },
+            {
+              "name": "Hearts",
+              "type": "()"
+            },
+            {
+              "name": "Spades",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::current_hand_card::CurrentHandCard",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "type_card",
+              "type": "jokers_of_neon::models::data::card::TypeCard"
+            },
+            {
+              "name": "card_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "value",
+              "type": "jokers_of_neon::models::data::card::Value"
+            },
+            {
+              "name": "suit",
+              "type": "jokers_of_neon::models::data::card::Suit"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::status::current_hand_card::Icurrent_hand_card",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::status::current_hand_card::CurrentHandCard"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::status::current_hand_card::current_hand_card::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::status::current_hand_card::current_hand_card"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "idx",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "type_card",
+          "type": "TypeCard",
+          "key": false
+        },
+        {
+          "name": "card_id",
+          "type": "felt252",
+          "key": false
+        },
+        {
+          "name": "value",
+          "type": "Value",
+          "key": false
+        },
+        {
+          "name": "suit",
+          "type": "Suit",
+          "key": false
+        }
+      ],
+      "class_hash": "0x45299aa12254a06452fabecdeeaeee47fa3125b3148204f0d8fa28a4dc783ff",
+      "original_class_hash": "0x45299aa12254a06452fabecdeeaeee47fa3125b3148204f0d8fa28a4dc783ff",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "deck_cardImpl",
+          "interface_name": "jokers_of_neon::models::status::deck_card::Ideck_card"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::TypeCard",
+          "variants": [
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Special",
+              "type": "()"
+            },
+            {
+              "name": "Modifier",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::Value",
+          "variants": [
+            {
+              "name": "Two",
+              "type": "()"
+            },
+            {
+              "name": "Three",
+              "type": "()"
+            },
+            {
+              "name": "Four",
+              "type": "()"
+            },
+            {
+              "name": "Five",
+              "type": "()"
+            },
+            {
+              "name": "Six",
+              "type": "()"
+            },
+            {
+              "name": "Seven",
+              "type": "()"
+            },
+            {
+              "name": "Eight",
+              "type": "()"
+            },
+            {
+              "name": "Nine",
+              "type": "()"
+            },
+            {
+              "name": "Ten",
+              "type": "()"
+            },
+            {
+              "name": "Jack",
+              "type": "()"
+            },
+            {
+              "name": "Queen",
+              "type": "()"
+            },
+            {
+              "name": "King",
+              "type": "()"
+            },
+            {
+              "name": "Ace",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::card::Suit",
+          "variants": [
+            {
+              "name": "Clubs",
+              "type": "()"
+            },
+            {
+              "name": "Diamonds",
+              "type": "()"
+            },
+            {
+              "name": "Hearts",
+              "type": "()"
+            },
+            {
+              "name": "Spades",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::deck_card::DeckCard",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "type_card",
+              "type": "jokers_of_neon::models::data::card::TypeCard"
+            },
+            {
+              "name": "card_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "value",
+              "type": "jokers_of_neon::models::data::card::Value"
+            },
+            {
+              "name": "suit",
+              "type": "jokers_of_neon::models::data::card::Suit"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::status::deck_card::Ideck_card",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::status::deck_card::DeckCard"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::status::deck_card::deck_card::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::status::deck_card::deck_card"
     },
     {
       "kind": "DojoModel",
@@ -1632,8 +2362,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x20ac7fb749c271aa3275a3471748160d8b0f226bba0fc77ab488b0fef4b8ad3",
-      "original_class_hash": "0x20ac7fb749c271aa3275a3471748160d8b0f226bba0fc77ab488b0fef4b8ad3",
+      "class_hash": "0x58be38a840674371de52c837225fe2f8b7f9b217811d8d23df35386d9726083",
+      "original_class_hash": "0x58be38a840674371de52c837225fe2f8b7f9b217811d8d23df35386d9726083",
       "abi": [
         {
           "type": "impl",
@@ -1806,11 +2536,11 @@
         {
           "type": "impl",
           "name": "current_special_cardsImpl",
-          "interface_name": "project_b::models::status::game::Icurrent_special_cards"
+          "interface_name": "jokers_of_neon::models::status::game::Icurrent_special_cards"
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::game::CurrentSpecialCards",
+          "name": "jokers_of_neon::models::status::game::CurrentSpecialCards",
           "members": [
             {
               "name": "game_id",
@@ -1828,7 +2558,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::game::Icurrent_special_cards",
+          "name": "jokers_of_neon::models::status::game::Icurrent_special_cards",
           "items": [
             {
               "type": "function",
@@ -1836,7 +2566,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::game::CurrentSpecialCards"
+                  "type": "jokers_of_neon::models::status::game::CurrentSpecialCards"
                 }
               ],
               "outputs": [],
@@ -1846,12 +2576,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::game::current_special_cards::Event",
+          "name": "jokers_of_neon::models::status::game::current_special_cards::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::game::current_special_cards"
+      "name": "jokers_of_neon::models::status::game::current_special_cards"
     },
     {
       "kind": "DojoModel",
@@ -1902,8 +2632,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x2b0f978699646cb342097e52cd5529ccb47e6efe3d4773e8d209170bc9c3d87",
-      "original_class_hash": "0x2b0f978699646cb342097e52cd5529ccb47e6efe3d4773e8d209170bc9c3d87",
+      "class_hash": "0x48118c897ef096d5334cd253c9123fdfef027638b4bde24fc9b724c82780b56",
+      "original_class_hash": "0x48118c897ef096d5334cd253c9123fdfef027638b4bde24fc9b724c82780b56",
       "abi": [
         {
           "type": "impl",
@@ -2076,7 +2806,7 @@
         {
           "type": "impl",
           "name": "gameImpl",
-          "interface_name": "project_b::models::status::game::Igame"
+          "interface_name": "jokers_of_neon::models::status::game::Igame"
         },
         {
           "type": "enum",
@@ -2094,7 +2824,7 @@
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::game::Game",
+          "name": "jokers_of_neon::models::status::game::Game",
           "members": [
             {
               "name": "id",
@@ -2136,7 +2866,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::game::Igame",
+          "name": "jokers_of_neon::models::status::game::Igame",
           "items": [
             {
               "type": "function",
@@ -2144,7 +2874,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::game::Game"
+                  "type": "jokers_of_neon::models::status::game::Game"
                 }
               ],
               "outputs": [],
@@ -2154,12 +2884,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::game::game::Event",
+          "name": "jokers_of_neon::models::status::game::game::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::game::game"
+      "name": "jokers_of_neon::models::status::game::game"
     },
     {
       "kind": "DojoModel",
@@ -2180,18 +2910,13 @@
           "key": true
         },
         {
-          "name": "points",
-          "type": "u8",
-          "key": false
-        },
-        {
-          "name": "multi",
+          "name": "count",
           "type": "u8",
           "key": false
         }
       ],
-      "class_hash": "0x7650ab49d2242a82594c59495e226fb8d7a3d1e834938abb0b1131507f8392e",
-      "original_class_hash": "0x7650ab49d2242a82594c59495e226fb8d7a3d1e834938abb0b1131507f8392e",
+      "class_hash": "0x6e4bd3e444951a882a69acabe8e42531e4d0d872f8ecbf85f26248050ff5f28",
+      "original_class_hash": "0x6e4bd3e444951a882a69acabe8e42531e4d0d872f8ecbf85f26248050ff5f28",
       "abi": [
         {
           "type": "impl",
@@ -2363,12 +3088,12 @@
         },
         {
           "type": "impl",
-          "name": "player_cardsImpl",
-          "interface_name": "project_b::models::status::game::Iplayer_cards"
+          "name": "player_common_cardsImpl",
+          "interface_name": "jokers_of_neon::models::status::player::Iplayer_common_cards"
         },
         {
           "type": "enum",
-          "name": "project_b::models::data::card::Value",
+          "name": "jokers_of_neon::models::data::card::Value",
           "variants": [
             {
               "name": "Two",
@@ -2426,7 +3151,7 @@
         },
         {
           "type": "enum",
-          "name": "project_b::models::data::card::Suit",
+          "name": "jokers_of_neon::models::data::card::Suit",
           "variants": [
             {
               "name": "Clubs",
@@ -2448,7 +3173,7 @@
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::game::PlayerCards",
+          "name": "jokers_of_neon::models::status::player::PlayerCommonCards",
           "members": [
             {
               "name": "game_id",
@@ -2456,25 +3181,21 @@
             },
             {
               "name": "value",
-              "type": "project_b::models::data::card::Value"
+              "type": "jokers_of_neon::models::data::card::Value"
             },
             {
               "name": "suit",
-              "type": "project_b::models::data::card::Suit"
+              "type": "jokers_of_neon::models::data::card::Suit"
             },
             {
-              "name": "points",
-              "type": "core::integer::u8"
-            },
-            {
-              "name": "multi",
+              "name": "count",
               "type": "core::integer::u8"
             }
           ]
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::game::Iplayer_cards",
+          "name": "jokers_of_neon::models::status::player::Iplayer_common_cards",
           "items": [
             {
               "type": "function",
@@ -2482,7 +3203,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::game::PlayerCards"
+                  "type": "jokers_of_neon::models::status::player::PlayerCommonCards"
                 }
               ],
               "outputs": [],
@@ -2492,12 +3213,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::game::player_cards::Event",
+          "name": "jokers_of_neon::models::status::player::player_common_cards::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::game::player_cards"
+      "name": "jokers_of_neon::models::status::player::player_common_cards"
     },
     {
       "kind": "DojoModel",
@@ -2518,248 +3239,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x32a948dfc53feeab3c1f7e2d0e8b12c94a38af6b76de513b3ec5ff8e136a216",
-      "original_class_hash": "0x32a948dfc53feeab3c1f7e2d0e8b12c94a38af6b76de513b3ec5ff8e136a216",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "DojoModelImpl",
-          "interface_name": "dojo::model::IDojoModel"
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::integer::u8>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u8>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::felt252>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::felt252>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Struct",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Enum",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "dojo::database::introspect::Ty",
-          "variants": [
-            {
-              "name": "Primitive",
-              "type": "core::felt252"
-            },
-            {
-              "name": "Struct",
-              "type": "dojo::database::introspect::Struct"
-            },
-            {
-              "name": "Enum",
-              "type": "dojo::database::introspect::Enum"
-            },
-            {
-              "name": "Tuple",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            },
-            {
-              "name": "Array",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::model::IDojoModel",
-          "items": [
-            {
-              "type": "function",
-              "name": "name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "unpacked_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "packed_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "layout",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::array::Span::<core::integer::u8>"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "schema",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::database::introspect::Ty"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "player_current_special_cardsImpl",
-          "interface_name": "project_b::models::status::game::Iplayer_current_special_cards"
-        },
-        {
-          "type": "struct",
-          "name": "project_b::models::status::game::PlayerCurrentSpecialCards",
-          "members": [
-            {
-              "name": "game_id",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "id",
-              "type": "core::felt252"
-            },
-            {
-              "name": "name",
-              "type": "core::felt252"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "project_b::models::status::game::Iplayer_current_special_cards",
-          "items": [
-            {
-              "type": "function",
-              "name": "ensure_abi",
-              "inputs": [
-                {
-                  "name": "model",
-                  "type": "project_b::models::status::game::PlayerCurrentSpecialCards"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "project_b::models::status::game::player_current_special_cards::Event",
-          "kind": "enum",
-          "variants": []
-        }
-      ],
-      "name": "project_b::models::status::game::player_current_special_cards"
-    },
-    {
-      "kind": "DojoModel",
-      "members": [
-        {
-          "name": "game_id",
-          "type": "u32",
-          "key": true
-        },
-        {
-          "name": "id",
-          "type": "felt252",
-          "key": true
-        },
-        {
-          "name": "name",
-          "type": "felt252",
-          "key": false
-        }
-      ],
-      "class_hash": "0x4f2c09be0d5a966a9f05a805375fff76576712fd182217f5fb57e243d1297",
-      "original_class_hash": "0x4f2c09be0d5a966a9f05a805375fff76576712fd182217f5fb57e243d1297",
+      "class_hash": "0xccda2183a6cd3db50a6beec0bab93500000ebbe825ae5d6f46bdb8406bfac9",
+      "original_class_hash": "0xccda2183a6cd3db50a6beec0bab93500000ebbe825ae5d6f46bdb8406bfac9",
       "abi": [
         {
           "type": "impl",
@@ -2932,11 +3413,11 @@
         {
           "type": "impl",
           "name": "player_modifier_cardsImpl",
-          "interface_name": "project_b::models::status::game::Iplayer_modifier_cards"
+          "interface_name": "jokers_of_neon::models::status::player::Iplayer_modifier_cards"
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::game::PlayerModifierCards",
+          "name": "jokers_of_neon::models::status::player::PlayerModifierCards",
           "members": [
             {
               "name": "game_id",
@@ -2954,7 +3435,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::game::Iplayer_modifier_cards",
+          "name": "jokers_of_neon::models::status::player::Iplayer_modifier_cards",
           "items": [
             {
               "type": "function",
@@ -2962,7 +3443,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::game::PlayerModifierCards"
+                  "type": "jokers_of_neon::models::status::player::PlayerModifierCards"
                 }
               ],
               "outputs": [],
@@ -2972,12 +3453,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::game::player_modifier_cards::Event",
+          "name": "jokers_of_neon::models::status::player::player_modifier_cards::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::game::player_modifier_cards"
+      "name": "jokers_of_neon::models::status::player::player_modifier_cards"
     },
     {
       "kind": "DojoModel",
@@ -2998,8 +3479,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x45b9b4a67f3446ec8eca6bcb8a5a2f0167370ac0efd6e2631a94326d8a809b3",
-      "original_class_hash": "0x45b9b4a67f3446ec8eca6bcb8a5a2f0167370ac0efd6e2631a94326d8a809b3",
+      "class_hash": "0x2eab7f317609c0f3eeb88e3caf063feb66361f11fb92d1ca8f10d59de2cb01c",
+      "original_class_hash": "0x2eab7f317609c0f3eeb88e3caf063feb66361f11fb92d1ca8f10d59de2cb01c",
       "abi": [
         {
           "type": "impl",
@@ -3172,11 +3653,11 @@
         {
           "type": "impl",
           "name": "player_special_cardsImpl",
-          "interface_name": "project_b::models::status::game::Iplayer_special_cards"
+          "interface_name": "jokers_of_neon::models::status::player::Iplayer_special_cards"
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::game::PlayerSpecialCards",
+          "name": "jokers_of_neon::models::status::player::PlayerSpecialCards",
           "members": [
             {
               "name": "game_id",
@@ -3194,7 +3675,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::game::Iplayer_special_cards",
+          "name": "jokers_of_neon::models::status::player::Iplayer_special_cards",
           "items": [
             {
               "type": "function",
@@ -3202,7 +3683,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::game::PlayerSpecialCards"
+                  "type": "jokers_of_neon::models::status::player::PlayerSpecialCards"
                 }
               ],
               "outputs": [],
@@ -3212,742 +3693,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::game::player_special_cards::Event",
+          "name": "jokers_of_neon::models::status::player::player_special_cards::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::game::player_special_cards"
-    },
-    {
-      "kind": "DojoModel",
-      "members": [
-        {
-          "name": "game_id",
-          "type": "u32",
-          "key": true
-        },
-        {
-          "name": "idx",
-          "type": "u32",
-          "key": true
-        },
-        {
-          "name": "type_card",
-          "type": "TypeCard",
-          "key": false
-        },
-        {
-          "name": "card_id",
-          "type": "felt252",
-          "key": false
-        },
-        {
-          "name": "value",
-          "type": "Value",
-          "key": false
-        },
-        {
-          "name": "suit",
-          "type": "Suit",
-          "key": false
-        }
-      ],
-      "class_hash": "0x36cc4f33cfa3fcc7289bbae18120a5ebab7cace547dec893915bea5a22666d2",
-      "original_class_hash": "0x36cc4f33cfa3fcc7289bbae18120a5ebab7cace547dec893915bea5a22666d2",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "DojoModelImpl",
-          "interface_name": "dojo::model::IDojoModel"
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::integer::u8>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u8>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::felt252>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::felt252>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Struct",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Enum",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "dojo::database::introspect::Ty",
-          "variants": [
-            {
-              "name": "Primitive",
-              "type": "core::felt252"
-            },
-            {
-              "name": "Struct",
-              "type": "dojo::database::introspect::Struct"
-            },
-            {
-              "name": "Enum",
-              "type": "dojo::database::introspect::Enum"
-            },
-            {
-              "name": "Tuple",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            },
-            {
-              "name": "Array",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::model::IDojoModel",
-          "items": [
-            {
-              "type": "function",
-              "name": "name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "unpacked_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "packed_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "layout",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::array::Span::<core::integer::u8>"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "schema",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::database::introspect::Ty"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "current_handImpl",
-          "interface_name": "project_b::models::status::round::Icurrent_hand"
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::status::game::TypeCard",
-          "variants": [
-            {
-              "name": "Common",
-              "type": "()"
-            },
-            {
-              "name": "Special",
-              "type": "()"
-            },
-            {
-              "name": "Modifier",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::data::card::Value",
-          "variants": [
-            {
-              "name": "Two",
-              "type": "()"
-            },
-            {
-              "name": "Three",
-              "type": "()"
-            },
-            {
-              "name": "Four",
-              "type": "()"
-            },
-            {
-              "name": "Five",
-              "type": "()"
-            },
-            {
-              "name": "Six",
-              "type": "()"
-            },
-            {
-              "name": "Seven",
-              "type": "()"
-            },
-            {
-              "name": "Eight",
-              "type": "()"
-            },
-            {
-              "name": "Nine",
-              "type": "()"
-            },
-            {
-              "name": "Ten",
-              "type": "()"
-            },
-            {
-              "name": "Jack",
-              "type": "()"
-            },
-            {
-              "name": "Queen",
-              "type": "()"
-            },
-            {
-              "name": "King",
-              "type": "()"
-            },
-            {
-              "name": "Ace",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::data::card::Suit",
-          "variants": [
-            {
-              "name": "Clubs",
-              "type": "()"
-            },
-            {
-              "name": "Diamonds",
-              "type": "()"
-            },
-            {
-              "name": "Hearts",
-              "type": "()"
-            },
-            {
-              "name": "Spades",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "project_b::models::status::round::CurrentHand",
-          "members": [
-            {
-              "name": "game_id",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "idx",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "type_card",
-              "type": "project_b::models::status::game::TypeCard"
-            },
-            {
-              "name": "card_id",
-              "type": "core::felt252"
-            },
-            {
-              "name": "value",
-              "type": "project_b::models::data::card::Value"
-            },
-            {
-              "name": "suit",
-              "type": "project_b::models::data::card::Suit"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "project_b::models::status::round::Icurrent_hand",
-          "items": [
-            {
-              "type": "function",
-              "name": "ensure_abi",
-              "inputs": [
-                {
-                  "name": "model",
-                  "type": "project_b::models::status::round::CurrentHand"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "project_b::models::status::round::current_hand::Event",
-          "kind": "enum",
-          "variants": []
-        }
-      ],
-      "name": "project_b::models::status::round::current_hand"
-    },
-    {
-      "kind": "DojoModel",
-      "members": [
-        {
-          "name": "game_id",
-          "type": "u32",
-          "key": true
-        },
-        {
-          "name": "idx",
-          "type": "u32",
-          "key": true
-        },
-        {
-          "name": "type_card",
-          "type": "TypeCard",
-          "key": false
-        },
-        {
-          "name": "card_id",
-          "type": "felt252",
-          "key": false
-        },
-        {
-          "name": "value",
-          "type": "Value",
-          "key": false
-        },
-        {
-          "name": "suit",
-          "type": "Suit",
-          "key": false
-        }
-      ],
-      "class_hash": "0x3ac310dc67b050ba548e59f5c60a3a5e9021a28ff753d267dfa404307f45477",
-      "original_class_hash": "0x3ac310dc67b050ba548e59f5c60a3a5e9021a28ff753d267dfa404307f45477",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "DojoModelImpl",
-          "interface_name": "dojo::model::IDojoModel"
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::integer::u8>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u8>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::felt252>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::felt252>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Struct",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "dojo::database::introspect::Enum",
-          "members": [
-            {
-              "name": "name",
-              "type": "core::felt252"
-            },
-            {
-              "name": "attrs",
-              "type": "core::array::Span::<core::felt252>"
-            },
-            {
-              "name": "children",
-              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "dojo::database::introspect::Ty",
-          "variants": [
-            {
-              "name": "Primitive",
-              "type": "core::felt252"
-            },
-            {
-              "name": "Struct",
-              "type": "dojo::database::introspect::Struct"
-            },
-            {
-              "name": "Enum",
-              "type": "dojo::database::introspect::Enum"
-            },
-            {
-              "name": "Tuple",
-              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
-            },
-            {
-              "name": "Array",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::model::IDojoModel",
-          "items": [
-            {
-              "type": "function",
-              "name": "name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::felt252"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "unpacked_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "packed_size",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u32"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "layout",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::array::Span::<core::integer::u8>"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "schema",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::database::introspect::Ty"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "deckImpl",
-          "interface_name": "project_b::models::status::round::Ideck"
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::status::game::TypeCard",
-          "variants": [
-            {
-              "name": "Common",
-              "type": "()"
-            },
-            {
-              "name": "Special",
-              "type": "()"
-            },
-            {
-              "name": "Modifier",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::data::card::Value",
-          "variants": [
-            {
-              "name": "Two",
-              "type": "()"
-            },
-            {
-              "name": "Three",
-              "type": "()"
-            },
-            {
-              "name": "Four",
-              "type": "()"
-            },
-            {
-              "name": "Five",
-              "type": "()"
-            },
-            {
-              "name": "Six",
-              "type": "()"
-            },
-            {
-              "name": "Seven",
-              "type": "()"
-            },
-            {
-              "name": "Eight",
-              "type": "()"
-            },
-            {
-              "name": "Nine",
-              "type": "()"
-            },
-            {
-              "name": "Ten",
-              "type": "()"
-            },
-            {
-              "name": "Jack",
-              "type": "()"
-            },
-            {
-              "name": "Queen",
-              "type": "()"
-            },
-            {
-              "name": "King",
-              "type": "()"
-            },
-            {
-              "name": "Ace",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "project_b::models::data::card::Suit",
-          "variants": [
-            {
-              "name": "Clubs",
-              "type": "()"
-            },
-            {
-              "name": "Diamonds",
-              "type": "()"
-            },
-            {
-              "name": "Hearts",
-              "type": "()"
-            },
-            {
-              "name": "Spades",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "project_b::models::status::round::Deck",
-          "members": [
-            {
-              "name": "game_id",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "idx",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "type_card",
-              "type": "project_b::models::status::game::TypeCard"
-            },
-            {
-              "name": "card_id",
-              "type": "core::felt252"
-            },
-            {
-              "name": "value",
-              "type": "project_b::models::data::card::Value"
-            },
-            {
-              "name": "suit",
-              "type": "project_b::models::data::card::Suit"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "project_b::models::status::round::Ideck",
-          "items": [
-            {
-              "type": "function",
-              "name": "ensure_abi",
-              "inputs": [
-                {
-                  "name": "model",
-                  "type": "project_b::models::status::round::Deck"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "project_b::models::status::round::deck::Event",
-          "kind": "enum",
-          "variants": []
-        }
-      ],
-      "name": "project_b::models::status::round::deck"
+      "name": "jokers_of_neon::models::status::player::player_special_cards"
     },
     {
       "kind": "DojoModel",
@@ -3973,8 +3724,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x644e3dac214b662029d8f8cdb445ef35373a2025f1125a66886d7b6ece78651",
-      "original_class_hash": "0x644e3dac214b662029d8f8cdb445ef35373a2025f1125a66886d7b6ece78651",
+      "class_hash": "0x73ab5378e986a48101225de1f3c610c33fb90ed4c0dc75151dcbe63b09de5fe",
+      "original_class_hash": "0x73ab5378e986a48101225de1f3c610c33fb90ed4c0dc75151dcbe63b09de5fe",
       "abi": [
         {
           "type": "impl",
@@ -4147,11 +3898,11 @@
         {
           "type": "impl",
           "name": "roundImpl",
-          "interface_name": "project_b::models::status::round::Iround"
+          "interface_name": "jokers_of_neon::models::status::round::Iround"
         },
         {
           "type": "struct",
-          "name": "project_b::models::status::round::Round",
+          "name": "jokers_of_neon::models::status::round::Round",
           "members": [
             {
               "name": "game_id",
@@ -4173,7 +3924,7 @@
         },
         {
           "type": "interface",
-          "name": "project_b::models::status::round::Iround",
+          "name": "jokers_of_neon::models::status::round::Iround",
           "items": [
             {
               "type": "function",
@@ -4181,7 +3932,7 @@
               "inputs": [
                 {
                   "name": "model",
-                  "type": "project_b::models::status::round::Round"
+                  "type": "jokers_of_neon::models::status::round::Round"
                 }
               ],
               "outputs": [],
@@ -4191,12 +3942,12 @@
         },
         {
           "type": "event",
-          "name": "project_b::models::status::round::round::Event",
+          "name": "jokers_of_neon::models::status::round::round::Event",
           "kind": "enum",
           "variants": []
         }
       ],
-      "name": "project_b::models::status::round::round"
+      "name": "jokers_of_neon::models::status::round::round"
     }
   ]
 }
