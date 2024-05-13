@@ -1,7 +1,7 @@
 import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { HasValue, getComponentValue, Has } from '@dojoengine/recs';
+import { Has, getComponentValue } from '@dojoengine/recs';
 import { Entity } from "@dojoengine/recs/src/types";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useEffect, useState } from "react";
@@ -50,31 +50,25 @@ export const Game = () => {
 
   // get current component values
   const currentHand = useComponentValue(CurrentHand, entityId);
-  const game = useComponentValue(Game, entityId);
-  const card = useComponentValue(Card, entityId);
-  const pokerHandEvent = useComponentValue(PokerHandEvent, entityId);
-  const currentSpecialCards = useComponentValue(CurrentSpecialCards, entityId);
-  const playerCurrentSpecialCards = useComponentValue(
-    PlayerCurrentSpecialCards,
-    entityId
-  );
-  const playerModifierCards = useComponentValue(PlayerModifierCards, entityId);
-  const playerSpecialCards = useComponentValue(PlayerSpecialCards, entityId);
-  const deck2 = useComponentValue(Deck, entityId);
-  const round = useComponentValue(Round, entityId);
-  console.log("currentHand", currentHand);
+
+  const gameId = 1
+
+
+  const game = useComponentValue(Game, getEntityIdFromKeys([
+    BigInt(gameId),
+    BigInt(account?.account.address),
+  ]));
+
+
+
+  console.log("Game", Game);
   console.log("game", game);
-  console.log("card", card);
-  console.log("pokerHandEvent", pokerHandEvent);
-  console.log("currentSpecialCards", currentSpecialCards);
-  console.log("playerCurrentSpecialCards", playerCurrentSpecialCards);
-  console.log("playerModifierCards", playerModifierCards);
-  console.log("playerSpecialCards", playerSpecialCards);
-  console.log("deck", deck2);
-  console.log("round", round);
-  /*   console.log(CurrentHand.values);
-  console.log(CurrentHand.metadata);
-  console.log(CurrentHand.entities); */
+
+  console.log("get", getEntityIdFromKeys([
+    BigInt(0),
+    BigInt(account?.account.address),
+  ]))
+
 
   const [gameLoading, setGameLoading] = useState(true);
   const [error, setError] = useState(false);
