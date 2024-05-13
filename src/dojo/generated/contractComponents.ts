@@ -35,11 +35,11 @@ export function defineContractComponents(world: World) {
     CurrentHandCard: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.Number, value: RecsType.Number, suit: RecsType.Number },
         {
           metadata: {
             name: "CurrentHandCard",
-            types: ["u32","u32","enum","felt252","enum","enum"],
+            types: ["u32","u32","enum","u8","enum","enum"],
             customTypes: ["TypeCard","Value","Suit"],
           },
         }
@@ -48,11 +48,11 @@ export function defineContractComponents(world: World) {
     DeckCard: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, type_card: RecsType.Number, card_id: RecsType.Number, value: RecsType.Number, suit: RecsType.Number },
         {
           metadata: {
             name: "DeckCard",
-            types: ["u32","u32","enum","felt252","enum","enum"],
+            types: ["u32","u32","enum","u8","enum","enum"],
             customTypes: ["TypeCard","Value","Suit"],
           },
         }

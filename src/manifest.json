@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x7efe58962a759e5b3f97c5117e8bd648d3f880a3eda1613b90e5bf23c31c353",
-      "original_class_hash": "0x7efe58962a759e5b3f97c5117e8bd648d3f880a3eda1613b90e5bf23c31c353",
+      "class_hash": "0xd1cdb6848c6fb80b0fced4fe8aeb274b891e415488ffb187f822a4d00ee7cd",
+      "original_class_hash": "0xd1cdb6848c6fb80b0fced4fe8aeb274b891e415488ffb187f822a4d00ee7cd",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -1633,7 +1633,7 @@
         },
         {
           "name": "card_id",
-          "type": "felt252",
+          "type": "u8",
           "key": false
         },
         {
@@ -1647,8 +1647,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5c9306a568dc8c214e42e1c01950cb78024718930a3f0ca618c74eca0911e00",
-      "original_class_hash": "0x5c9306a568dc8c214e42e1c01950cb78024718930a3f0ca618c74eca0911e00",
+      "class_hash": "0xe4e3cfa561c57132bf693d754fc03b4f6ff8470733b5a98eacf47a3784b352",
+      "original_class_hash": "0xe4e3cfa561c57132bf693d754fc03b4f6ff8470733b5a98eacf47a3784b352",
       "abi": [
         {
           "type": "impl",
@@ -1939,7 +1939,7 @@
             },
             {
               "name": "card_id",
-              "type": "core::felt252"
+              "type": "core::integer::u8"
             },
             {
               "name": "value",
@@ -1998,7 +1998,7 @@
         },
         {
           "name": "card_id",
-          "type": "felt252",
+          "type": "u8",
           "key": false
         },
         {
@@ -2012,8 +2012,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x45299aa12254a06452fabecdeeaeee47fa3125b3148204f0d8fa28a4dc783ff",
-      "original_class_hash": "0x45299aa12254a06452fabecdeeaeee47fa3125b3148204f0d8fa28a4dc783ff",
+      "class_hash": "0x47db30ebdf6fcfbb634f60fe16f48985747630e0b4463fccf3cab21c5d77c4b",
+      "original_class_hash": "0x47db30ebdf6fcfbb634f60fe16f48985747630e0b4463fccf3cab21c5d77c4b",
       "abi": [
         {
           "type": "impl",
@@ -2304,7 +2304,7 @@
             },
             {
               "name": "card_id",
-              "type": "core::felt252"
+              "type": "core::integer::u8"
             },
             {
               "name": "value",
