@@ -5,6 +5,7 @@ import {
   setComponentsFromEvents,
 } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
+import { GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { ClientComponents } from "./createClientComponents";
@@ -34,7 +35,7 @@ export function createSystemCalls(
         const gameIdEvent = events?.find((e) => {
           return (
             e.keys[0] ===
-            "0xf7ed1ec3a2efb4c4ff4451b344e4a3c4f8bbd6a437e31765a32df3c3a44cdd"
+            GAME_ID_EVENT
           );
         });
   

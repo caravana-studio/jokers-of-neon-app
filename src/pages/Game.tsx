@@ -10,12 +10,16 @@ import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { getCurrentHandCards } from "../dojo/utils/getCurrentHandCards";
 import { gameExists } from "../dojo/utils/getGame";
+import { getRound } from "../dojo/utils/getRound";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
+import { useCard } from "../dojo/utils/useCard";
 
 export const Game = () => {
-  const [gameId, setGameId] = useState<number>(Number(localStorage.getItem(GAME_ID)) ?? 0)
+  const [gameId, setGameId] = useState<number>(
+    Number(localStorage.getItem(GAME_ID)) ?? 0
+  );
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard },
@@ -35,6 +39,7 @@ export const Game = () => {
   } = useDojo();
 
   const refreshHand = () => {
+    console.log("refreshing hand");
     setHand(getCurrentHandCards(gameId, CurrentHandCard));
   };
 
@@ -49,14 +54,40 @@ export const Game = () => {
   ]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
+  const round = getRound(gameId, Round);
+  const handsLeft = round?.hands;
+  const discardsLeft = round?.discard;
+
+  const card0 = useCard(gameId, 0);
+  const card1 = useCard(gameId, 1);
+  const card2 = useCard(gameId, 2);
+  const card3 = useCard(gameId, 3);
+  const card4 = useCard(gameId, 4);
+  const card5 = useCard(gameId, 5);
+  const card6 = useCard(gameId, 6);
+  const card7 = useCard(gameId, 7);
+
+  useEffect(() => {
+    console.log("card changed");
+    refreshHand()
+  }, [card0, card1, card2, card3, card4, card5, card6, card7]);
+
+/*   if (hand.length < 8) {
+    setTimeout(() => {
+      if (hand.length < 8) {
+        refreshHand()
+      }
+    }, 100)
+  } */
+
   useEffect(() => {
     if (!gameExists(Game, account.account.address, gameId)) {
       console.log("Creating game...");
       createGame(account.account).then((newGameId) => {
         setGameLoading(false);
         if (newGameId) {
-          setGameId(newGameId)
-          localStorage.setItem(GAME_ID, newGameId.toString())
+          setGameId(newGameId);
+          localStorage.setItem(GAME_ID, newGameId.toString());
           refreshHand();
           console.log(`game ${newGameId} created`);
         } else {
@@ -213,12 +244,21 @@ export const Game = () => {
                   pl: 150,
                   fontSize: 35,
                 }}
-                isDisabled={preSelectedCards?.length === 0}
+                isDisabled={
+                  preSelectedCards?.length === 0 ||
+                  !handsLeft ||
+                  handsLeft === 0
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
               >
-                PLAY <br /> HAND
+                <Box>
+                  <Box>
+                    PLAY <br /> HAND
+                  </Box>
+                  <Box sx={{ fontSize: 20, mt: 2 }}>{handsLeft} left</Box>
+                </Box>
               </Button>
               <Box
                 sx={{
@@ -259,7 +299,11 @@ export const Game = () => {
                   fontSize: 35,
                   textAlign: "right",
                 }}
-                isDisabled={preSelectedCards?.length === 0}
+                isDisabled={
+                  preSelectedCards?.length === 0 ||
+                  !discardsLeft ||
+                  discardsLeft === 0
+                }
                 onClick={(e) => {
                   e.stopPropagation();
                   discard(account.account, gameId, preSelectedCards).then(
@@ -274,8 +318,12 @@ export const Game = () => {
                   );
                 }}
               >
-                DIS <br />
-                CARD
+                <Box>
+                  <Box>
+                    DIS <br /> CARD
+                  </Box>
+                  <Box sx={{ fontSize: 20, mt: 2 }}>{discardsLeft} left</Box>
+                </Box>
               </Button>
             </Box>
             <Box

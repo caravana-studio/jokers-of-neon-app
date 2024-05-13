@@ -1,0 +1,1 @@
+export const GAME_ID_EVENT = "0xf7ed1ec3a2efb4c4ff4451b344e4a3c4f8bbd6a437e31765a32df3c3a44cdd"
