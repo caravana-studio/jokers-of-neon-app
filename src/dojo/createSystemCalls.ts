@@ -31,25 +31,22 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-  
+
         const gameIdEvent = events?.find((e) => {
-          return (
-            e.keys[0] ===
-            GAME_ID_EVENT
-          );
+          return e.keys[0] === GAME_ID_EVENT;
         });
-  
-        console.log("gameIdEvent", gameIdEvent);
-  
-        setComponentsFromEvents(contractComponents, getEvents(tx));
-  
+
+        // setComponentsFromEvents(contractComponents, getEvents(tx));
+
         const gameIdValue = gameIdEvent?.data.at(0);
-        const value = gameIdValue && (parseComponentValue(gameIdValue, Type.Number) as number)
+        const value =
+          gameIdValue &&
+          (parseComponentValue(gameIdValue, Type.Number) as number);
+        console.log("Game " + value + " created");
         return value;
       } else {
         return null;
       }
-
     } catch (e) {
       console.log(e);
       return false;
@@ -128,9 +125,40 @@ export function createSystemCalls(
     }
   };
 
+  const play = async (
+    account: AccountInterface,
+    gameId: number,
+    cards: Card[]
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.play({
+        account,
+        gameId,
+        cards,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(
+        contractComponents,
+        getEvents(
+          await account.waitForTransaction(transaction_hash, {
+            retryInterval: 100,
+          })
+        )
+      );
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return {
     createGame,
     checkHand,
     discard,
+    play,
   };
 }

@@ -11,10 +11,11 @@ import { useDojo } from "../dojo/useDojo";
 import { getCurrentHandCards } from "../dojo/utils/getCurrentHandCards";
 import { gameExists } from "../dojo/utils/getGame";
 import { getRound } from "../dojo/utils/getRound";
+import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
-import { useCard } from "../dojo/utils/useCard";
+import { GameOver } from "../components/GameOver";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -22,7 +23,7 @@ export const Game = () => {
   );
   const {
     setup: {
-      systemCalls: { createGame, checkHand, discard },
+      systemCalls: { createGame, checkHand, discard, play },
       clientComponents: {
         Card,
         PokerHandEvent,
@@ -55,6 +56,7 @@ export const Game = () => {
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const round = getRound(gameId, Round);
+  const score = round?.score ? Number(round?.score) : 0;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discard;
 
@@ -69,10 +71,10 @@ export const Game = () => {
 
   useEffect(() => {
     console.log("card changed");
-    refreshHand()
+    refreshHand();
   }, [card0, card1, card2, card3, card4, card5, card6, card7]);
 
-/*   if (hand.length < 8) {
+  /*   if (hand.length < 8) {
     setTimeout(() => {
       if (hand.length < 8) {
         refreshHand()
@@ -80,20 +82,24 @@ export const Game = () => {
     }, 100)
   } */
 
+  const executeCreateGame = () => {
+    console.log("Creating game...");
+    createGame(account.account).then((newGameId) => {
+      setGameLoading(false);
+      if (newGameId) {
+        setGameId(newGameId);
+        localStorage.setItem(GAME_ID, newGameId.toString());
+        refreshHand();
+        console.log(`game ${newGameId} created`);
+      } else {
+        setError(true);
+      }
+    });
+  };
+
   useEffect(() => {
     if (!gameExists(Game, gameId)) {
-      console.log("Creating game...");
-      createGame(account.account).then((newGameId) => {
-        setGameLoading(false);
-        if (newGameId) {
-          setGameId(newGameId);
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          refreshHand();
-          console.log(`game ${newGameId} created`);
-        } else {
-          setError(true);
-        }
-      });
+      executeCreateGame();
     } else {
       setGameLoading(false);
       refreshHand();
@@ -192,6 +198,10 @@ export const Game = () => {
     return <div>Error creating game</div>;
   }
 
+  if (handsLeft === 0) {
+    return <GameOver score={score} onCreateGameClick={() => {executeCreateGame()}} />
+  }
+
   return (
     <Box
       sx={{
@@ -202,7 +212,6 @@ export const Game = () => {
       <div className="text strk">
         <span>$STRK</span>
       </div>
-      <AccountAddress />
       <Box
         sx={{
           height: "100%",
@@ -214,14 +223,35 @@ export const Game = () => {
       >
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%" }}>
+            <Box
+              sx={{
+                position: "fixed",
+                display: "flex",
+                flexDirection: "column",
+                right: 0,
+                top: 0,
+                gap: 2,
+              }}
+            >
+              <AccountAddress />
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  executeCreateGame();
+                }}
+              >
+                START NEW GAME
+              </Button>
+            </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              {specialCards.map((card) => {
+              <Heading sx={{ fontSize: 25 }}>SCORE: {score}</Heading>
+              {/* {specialCards.map((card) => {
                 return (
                   <Box key={card.id} sx={{ mx: 5 }}>
                     <TiltCard card={card} />
                   </Box>
                 );
-              })}
+              })} */}
             </Box>
           </Box>
           <DndContext onDragEnd={handleDragEnd}>
@@ -251,6 +281,16 @@ export const Game = () => {
                 }
                 onClick={(e) => {
                   e.stopPropagation();
+                  play(account.account, gameId, preSelectedCards).then(
+                    (response) => {
+                      if (response) {
+                        clearPreSelection();
+                        setTimeout(() => {
+                          refreshHand();
+                        }, 200);
+                      }
+                    }
+                  );
                 }}
               >
                 <Box>

@@ -77,8 +77,32 @@ export async function setupWorld(provider: DojoProvider) {
         throw error;
       }
     };
+    
+    const play = async ({
+      account,
+      gameId,
+      cards,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      cards: Card[];
+    }) => {
+      try {
+        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
+        console.log(cardArray);
+        return await provider.execute(
+          account,
+          contract_name,
+          "play",
+          cardArray
+        );
+      } catch (error) {
+        console.error("Error executing discard:", error);
+        throw error;
+      }
+    };
 
-    return { checkHand, createGame, discard };
+    return { checkHand, createGame, discard, play };
   }
   return {
     actions: actions(),
