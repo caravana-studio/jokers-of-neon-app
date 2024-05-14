@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x47513184f144dad5fdb74f4a71ab5d0c88e0b9227a6a0fbdfbd54b8b367db95",
-      "original_class_hash": "0x47513184f144dad5fdb74f4a71ab5d0c88e0b9227a6a0fbdfbd54b8b367db95",
+      "class_hash": "0x52446d6ae25db92b9f5b2e418c8837298f47284dbc89a668ceaa8c936a9513",
+      "original_class_hash": "0x52446d6ae25db92b9f5b2e418c8837298f47284dbc89a668ceaa8c936a9513",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -3078,7 +3078,7 @@
         {
           "name": "owner",
           "type": "ContractAddress",
-          "key": true
+          "key": false
         },
         {
           "name": "max_hands",
@@ -3116,8 +3116,8 @@
           "key": false
         }
       ],
-      "class_hash": "0xeaefda147fd667612f94fb268771d18d8e7896ee34dbc378330f11bb5aa4b6",
-      "original_class_hash": "0xeaefda147fd667612f94fb268771d18d8e7896ee34dbc378330f11bb5aa4b6",
+      "class_hash": "0x1e8173123d7a8f1e6b7022986fae9c7b001fc6031f76205e74bbda4a7a41e42",
+      "original_class_hash": "0x1e8173123d7a8f1e6b7022986fae9c7b001fc6031f76205e74bbda4a7a41e42",
       "abi": [
         {
           "type": "impl",

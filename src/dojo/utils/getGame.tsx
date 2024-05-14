@@ -4,21 +4,18 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export const getGame = (
   gameId: number,
-  account: string,
   Game: OverridableComponent
 ) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
-    BigInt(account),
   ]) as Entity;
   return getComponentValue(Game, entityId);
 };
 
 export const gameExists = (
   Game: OverridableComponent,
-  account: string,
   gameId: number
 ) => {
-  const game = getGame(gameId, account, Game);
+  const game = getGame(gameId, Game);
   return !!game;
 };

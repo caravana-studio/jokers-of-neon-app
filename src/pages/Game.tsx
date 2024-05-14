@@ -81,7 +81,7 @@ export const Game = () => {
   } */
 
   useEffect(() => {
-    if (!gameExists(Game, account.account.address, gameId)) {
+    if (!gameExists(Game, gameId)) {
       console.log("Creating game...");
       createGame(account.account).then((newGameId) => {
         setGameLoading(false);
