@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x52446d6ae25db92b9f5b2e418c8837298f47284dbc89a668ceaa8c936a9513",
-      "original_class_hash": "0x52446d6ae25db92b9f5b2e418c8837298f47284dbc89a668ceaa8c936a9513",
+      "class_hash": "0x51c4534ba70562ea4112a8e2eb44c737da94c1ac7b12e56767c391d724a8153",
+      "original_class_hash": "0x51c4534ba70562ea4112a8e2eb44c737da94c1ac7b12e56767c391d724a8153",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -1868,12 +1868,12 @@
         },
         {
           "name": "score",
-          "type": "u64",
+          "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x131b08661e44150d420952a44a95d1b090b0369577d281af5f15915c8ba3c52",
-      "original_class_hash": "0x131b08661e44150d420952a44a95d1b090b0369577d281af5f15915c8ba3c52",
+      "class_hash": "0x63d47d773a1ecc3359e86af036c2c3c4e97ee1df32a7b080fe570f0150a5099",
+      "original_class_hash": "0x63d47d773a1ecc3359e86af036c2c3c4e97ee1df32a7b080fe570f0150a5099",
       "abi": [
         {
           "type": "impl",
@@ -2066,7 +2066,7 @@
             },
             {
               "name": "score",
-              "type": "core::integer::u64"
+              "type": "core::integer::u32"
             }
           ]
         },
@@ -3097,7 +3097,7 @@
         },
         {
           "name": "score",
-          "type": "u64",
+          "type": "u32",
           "key": false
         },
         {
@@ -3116,8 +3116,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x1e8173123d7a8f1e6b7022986fae9c7b001fc6031f76205e74bbda4a7a41e42",
-      "original_class_hash": "0x1e8173123d7a8f1e6b7022986fae9c7b001fc6031f76205e74bbda4a7a41e42",
+      "class_hash": "0x6975174c17ea2553ea5edd57174039309d647fdb298a1cddd591adbc0ffe974",
+      "original_class_hash": "0x6975174c17ea2553ea5edd57174039309d647fdb298a1cddd591adbc0ffe974",
       "abi": [
         {
           "type": "impl",
@@ -3332,7 +3332,7 @@
             },
             {
               "name": "score",
-              "type": "core::integer::u64"
+              "type": "core::integer::u32"
             },
             {
               "name": "current_len_hand",
@@ -4194,7 +4194,7 @@
         },
         {
           "name": "score",
-          "type": "u64",
+          "type": "u32",
           "key": false
         },
         {
@@ -4213,8 +4213,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4a76ff6aabdbc657db54986e5e3e422c9708f11a1382e114bea378d2393e78a",
-      "original_class_hash": "0x4a76ff6aabdbc657db54986e5e3e422c9708f11a1382e114bea378d2393e78a",
+      "class_hash": "0x6aacc7fcfa13a60ebc2f5158f8841858e35473c67026393333bcaf6034a1150",
+      "original_class_hash": "0x6aacc7fcfa13a60ebc2f5158f8841858e35473c67026393333bcaf6034a1150",
       "abi": [
         {
           "type": "impl",
@@ -4399,7 +4399,7 @@
             },
             {
               "name": "score",
-              "type": "core::integer::u64"
+              "type": "core::integer::u32"
             },
             {
               "name": "hands",

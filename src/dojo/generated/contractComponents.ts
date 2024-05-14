@@ -48,11 +48,11 @@ export function defineContractComponents(world: World) {
     ScoreEvent: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number, score: RecsType.BigInt },
+        { player: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number, score: RecsType.Number },
         {
           metadata: {
             name: "ScoreEvent",
-            types: ["contractaddress","u8","u8","u64"],
+            types: ["contractaddress","u8","u8","u32"],
             customTypes: [],
           },
         }
@@ -100,11 +100,11 @@ export function defineContractComponents(world: World) {
     Game: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, owner: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, score: RecsType.BigInt, current_len_hand: RecsType.Number, current_len_special_cards: RecsType.Number, game_over: RecsType.Boolean },
+        { id: RecsType.Number, owner: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, score: RecsType.Number, current_len_hand: RecsType.Number, current_len_special_cards: RecsType.Number, game_over: RecsType.Boolean },
         {
           metadata: {
             name: "Game",
-            types: ["u32","contractaddress","u8","u8","u8","u64","u32","u32","bool"],
+            types: ["u32","contractaddress","u8","u8","u8","u32","u32","u32","bool"],
             customTypes: [],
           },
         }
@@ -152,11 +152,11 @@ export function defineContractComponents(world: World) {
     Round: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, score: RecsType.BigInt, hands: RecsType.Number, discard: RecsType.Number, current_len_deck: RecsType.Number },
+        { game_id: RecsType.Number, score: RecsType.Number, hands: RecsType.Number, discard: RecsType.Number, current_len_deck: RecsType.Number },
         {
           metadata: {
             name: "Round",
-            types: ["u32","u64","u8","u8","u32"],
+            types: ["u32","u32","u8","u8","u32"],
             customTypes: [],
           },
         }
