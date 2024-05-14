@@ -42,7 +42,6 @@ export const ActionButton = ({
           backgroundColor: "black",
         },
         "&:disabled": {
-
           backgroundColor: "black",
         },
         ...extraSx,
