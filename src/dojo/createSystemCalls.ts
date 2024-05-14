@@ -36,7 +36,7 @@ export function createSystemCalls(
           return e.keys[0] === GAME_ID_EVENT;
         });
 
-        // setComponentsFromEvents(contractComponents, getEvents(tx));
+        setComponentsFromEvents(contractComponents, getEvents(tx));
 
         const gameIdValue = gameIdEvent?.data.at(0);
         const value =
@@ -81,14 +81,7 @@ export function createSystemCalls(
         }
       }
 
-      setComponentsFromEvents(
-        contractComponents,
-        getEvents(
-          await account.waitForTransaction(transaction_hash, {
-            retryInterval: 100,
-          })
-        )
-      );
+      setComponentsFromEvents(contractComponents, getEvents(tx));
       return play;
     } catch (e) {
       console.log(e);
@@ -111,14 +104,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(
-        contractComponents,
-        getEvents(
-          await account.waitForTransaction(transaction_hash, {
-            retryInterval: 100,
-          })
-        )
-      );
+      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -141,14 +127,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(
-        contractComponents,
-        getEvents(
-          await account.waitForTransaction(transaction_hash, {
-            retryInterval: 100,
-          })
-        )
-      );
+      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);

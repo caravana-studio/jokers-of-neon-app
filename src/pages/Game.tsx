@@ -287,7 +287,7 @@ export const Game = () => {
                         clearPreSelection();
                         setTimeout(() => {
                           refreshHand();
-                        }, 200);
+                        }, 1000);
                       }
                     }
                   );
@@ -352,7 +352,7 @@ export const Game = () => {
                         clearPreSelection();
                         setTimeout(() => {
                           refreshHand();
-                        }, 200);
+                        }, 1000);
                       }
                     }
                   );
