@@ -45,6 +45,19 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    ScoreEvent: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number, score: RecsType.BigInt },
+        {
+          metadata: {
+            name: "ScoreEvent",
+            types: ["contractaddress","u8","u8","u64"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     CurrentHandCard: (() => {
       return defineComponent(
         world,
@@ -91,7 +104,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: "Game",
-            types: ["u32","contractaddress","u8","u8","u8","u128","u32","u32","bool"],
+            types: ["u32","contractaddress","u8","u8","u8","u64","u32","u32","bool"],
             customTypes: [],
           },
         }
@@ -143,7 +156,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: "Round",
-            types: ["u32","u128","u8","u8","u32"],
+            types: ["u32","u64","u8","u8","u32"],
             customTypes: [],
           },
         }
