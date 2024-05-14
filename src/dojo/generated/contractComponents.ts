@@ -19,6 +19,19 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    CardScoreEvent: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, index: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
+        {
+          metadata: {
+            name: "CardScoreEvent",
+            types: ["contractaddress","u32","u32","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     CreateGameEvent: (() => {
       return defineComponent(
         world,
@@ -32,6 +45,32 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    LevelPokerHand: (() => {
+      return defineComponent(
+        world,
+        { poker_hand: RecsType.Number, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
+        {
+          metadata: {
+            name: "LevelPokerHand",
+            types: ["enum","u8","u32","u32"],
+            customTypes: ["PokerHand"],
+          },
+        }
+      );
+    })(),
+    PlayScoreEvent: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, multi: RecsType.Number, points: RecsType.Number },
+        {
+          metadata: {
+            name: "PlayScoreEvent",
+            types: ["contractaddress","u32","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     PokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -40,19 +79,6 @@ export function defineContractComponents(world: World) {
           metadata: {
             name: "PokerHandEvent",
             types: ["contractaddress","u8"],
-            customTypes: [],
-          },
-        }
-      );
-    })(),
-    ScoreEvent: (() => {
-      return defineComponent(
-        world,
-        { player: RecsType.BigInt, value: RecsType.Number, suit: RecsType.Number, score: RecsType.Number },
-        {
-          metadata: {
-            name: "ScoreEvent",
-            types: ["contractaddress","u8","u8","u32"],
             customTypes: [],
           },
         }
