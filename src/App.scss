@@ -212,6 +212,21 @@ $delay: 2000ms;
   text-shadow: 0 0 3px lime;
 }
 
+.ui-text {
+  color: lime;
+  filter: blur(0.5px);
+  font-family: Sys;
+  font-size: 6vmin;
+  text-shadow: 0 0 3px lime;
+  
+}
+
+.anim {
+  animation:
+    blur 600ms infinite,
+    jerk 50ms infinite;
+}
+
 .av1 {
   content: "AV-1";
   left: 5%;
@@ -223,6 +238,10 @@ $delay: 2000ms;
 .text.strk {
   content: "$STRK";
   opacity: 1;
+  span {
+    color: $color !important;
+    
+  }
 }
 
 .text.press {

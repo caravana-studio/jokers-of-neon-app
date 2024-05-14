@@ -2,6 +2,8 @@ import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { AccountAddress } from "../components/AccountAddress";
+import { ActionButton } from "../components/ActionButton";
+import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
 import { GAME_ID } from "../constants/localStorage";
@@ -15,7 +17,6 @@ import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
-import { GameOver } from "../components/GameOver";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -199,7 +200,14 @@ export const Game = () => {
   }
 
   if (handsLeft === 0) {
-    return <GameOver score={score} onCreateGameClick={() => {executeCreateGame()}} />
+    return (
+      <GameOver
+        score={score}
+        onCreateGameClick={() => {
+          executeCreateGame();
+        }}
+      />
+    );
   }
 
   return (
@@ -209,7 +217,7 @@ export const Game = () => {
         // animation: "5s ease 20000ms normal none infinite running glitch",
       }}
     >
-      <div className="text strk">
+      <div className="text strk green">
         <span>$STRK</span>
       </div>
       <Box
@@ -244,7 +252,9 @@ export const Game = () => {
               </Button>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Heading sx={{ fontSize: 25 }}>SCORE: {score}</Heading>
+              <Heading className="ui-text" sx={{ fontSize: 30 }}>
+                SCORE: {score}
+              </Heading>
               {/* {specialCards.map((card) => {
                 return (
                   <Box key={card.id} sx={{ mx: 5 }}>
@@ -263,24 +273,17 @@ export const Game = () => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
+                backgroundColor: "rgba(0,0,0,0.7)",
               }}
             >
-              <Button
-                sx={{
-                  borderRadius: 2000,
-                  height: 300,
-                  width: 300,
-                  ml: -180,
-                  pl: 150,
-                  fontSize: 35,
-                }}
-                isDisabled={
+              <ActionButton
+                position="LEFT"
+                disabled={
                   preSelectedCards?.length === 0 ||
                   !handsLeft ||
                   handsLeft === 0
                 }
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   play(account.account, gameId, preSelectedCards).then(
                     (response) => {
                       if (response) {
@@ -292,14 +295,10 @@ export const Game = () => {
                     }
                   );
                 }}
-              >
-                <Box>
-                  <Box>
-                    PLAY <br /> HAND
-                  </Box>
-                  <Box sx={{ fontSize: 20, mt: 2 }}>{handsLeft} left</Box>
-                </Box>
-              </Button>
+                label={["PLAY", "HAND"]}
+                secondLabel={`${handsLeft} left`}
+              />
+
               <Box
                 sx={{
                   width: `${CARD_WIDTH * 7}px`,
@@ -309,7 +308,7 @@ export const Game = () => {
                   gap: 14,
                 }}
               >
-                <Heading sx={{ fontSize: 25 }}>
+                <Heading className="ui-text" sx={{ fontSize: 25 }}>
                   CURRENT PLAY: {PLAYS[preSelectedPlay]}
                 </Heading>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -329,23 +328,14 @@ export const Game = () => {
                   })}
                 </Box>
               </Box>
-              <Button
-                sx={{
-                  borderRadius: 2000,
-                  height: 300,
-                  width: 300,
-                  mr: -180,
-                  pr: 150,
-                  fontSize: 35,
-                  textAlign: "right",
-                }}
-                isDisabled={
+              <ActionButton
+                position="RIGHT"
+                disabled={
                   preSelectedCards?.length === 0 ||
                   !discardsLeft ||
                   discardsLeft === 0
                 }
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   discard(account.account, gameId, preSelectedCards).then(
                     (response) => {
                       if (response) {
@@ -357,14 +347,10 @@ export const Game = () => {
                     }
                   );
                 }}
-              >
-                <Box>
-                  <Box>
-                    DIS <br /> CARD
-                  </Box>
-                  <Box sx={{ fontSize: 20, mt: 2 }}>{discardsLeft} left</Box>
-                </Box>
-              </Button>
+                label={["DIS", "CARD"]}
+                secondLabel={`${discardsLeft} left`}
+              />
+
             </Box>
             <Box
               sx={{
