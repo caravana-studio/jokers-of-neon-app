@@ -19,6 +19,19 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    CreateGameEvent: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, game_id: RecsType.Number },
+        {
+          metadata: {
+            name: "CreateGameEvent",
+            types: ["contractaddress","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     PokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -126,11 +139,11 @@ export function defineContractComponents(world: World) {
     Round: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, hands: RecsType.Number, discard: RecsType.Number, current_len_deck: RecsType.Number },
+        { game_id: RecsType.Number, score: RecsType.BigInt, hands: RecsType.Number, discard: RecsType.Number, current_len_deck: RecsType.Number },
         {
           metadata: {
             name: "Round",
-            types: ["u32","u8","u8","u32"],
+            types: ["u32","u128","u8","u8","u32"],
             customTypes: [],
           },
         }
