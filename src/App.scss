@@ -213,18 +213,18 @@ $delay: 2000ms;
 }
 
 .ui-text {
-  color: lime;
+  color: #33effa;
   filter: blur(0.5px);
   font-family: Sys;
-  font-size: 6vmin;
-  text-shadow: 0 0 3px lime;
+  text-shadow: 0 0 3px #33effa;
   
 }
 
 .anim {
   animation:
     blur 600ms infinite,
-    jerk 50ms infinite;
+    jerk 50ms infinite,
+    glitch 2000ms infinite;
 }
 
 .av1 {
@@ -442,6 +442,7 @@ $delay: 2000ms;
 .overlay .text {
   animation: 5s ease 2000ms normal none infinite running glitch;
 }
+
 @keyframes glitch {
   30% {
   }

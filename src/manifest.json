@@ -661,7 +661,7 @@
       }
     ],
     "address": "0xf41e582d141adc7bc20d78a8a8b26c6d262114e72361a03881ccf9193fc97c",
-    "transaction_hash": "0xab7d9b58acfabe25e5ea66ad0a1a04b71a1836f53efc49429d687ba2f09d0c",
+    "transaction_hash": "0x7c80b6d27e09558f27c7387a5dd868a7793e4d2606e0943258525e474af8a6f",
     "block_number": 3,
     "seed": "jokers_of_neon",
     "name": "dojo::world::world"

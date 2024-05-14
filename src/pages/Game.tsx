@@ -1,4 +1,4 @@
-import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { AccountAddress } from "../components/AccountAddress";
@@ -17,6 +17,7 @@ import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
+import { Button } from "../components/Button";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -57,6 +58,7 @@ export const Game = () => {
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const round = getRound(gameId, Round);
+  console.log("round", round);
   const score = round?.score ? Number(round?.score) : 0;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discard;
@@ -217,9 +219,6 @@ export const Game = () => {
         // animation: "5s ease 20000ms normal none infinite running glitch",
       }}
     >
-      <div className="text strk green">
-        <span>$STRK</span>
-      </div>
       <Box
         sx={{
           height: "100%",
@@ -230,14 +229,17 @@ export const Game = () => {
         onClick={clearPreSelection}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%" }}>
+          <Box sx={{ height: "30%", p: 10 }}>
+            <div className="text strk green">
+              <span>$STRK</span>
+            </div>
             <Box
               sx={{
                 position: "fixed",
                 display: "flex",
                 flexDirection: "column",
-                right: 0,
-                top: 0,
+                right: 10,
+                top: 10,
                 gap: 2,
               }}
             >
@@ -350,7 +352,6 @@ export const Game = () => {
                 label={["DIS", "CARD"]}
                 secondLabel={`${discardsLeft} left`}
               />
-
             </Box>
             <Box
               sx={{
@@ -359,6 +360,7 @@ export const Game = () => {
                 alignItems: "flex-end",
                 justifyContent: "center",
                 mx: 4,
+                pb: 10,
               }}
             >
               <SimpleGrid
@@ -401,6 +403,16 @@ export const Game = () => {
             </Box>
           </DndContext>
         </Box>
+        <Heading
+          sx={{
+            position: "absolute",
+            bottom: 7,
+            right: 10,
+            textAlign: "right",
+          }}
+        >
+          game id: {gameId}
+        </Heading>
       </Box>
     </Box>
   );

@@ -38,7 +38,6 @@ function App() {
                       backgroundPosition: "center",
                       height: "100vh",
                       width: "100vw",
-                      p: 10,
                       imageRendering: "pixelated !important",
                       fontFamily: "Sys",
                       pointerEvents: "all",
