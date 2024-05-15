@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
@@ -12,12 +13,15 @@ async function init() {
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
   const setupResult = await setup(dojoConfig);
+  const queryClient = new QueryClient();
 
   root.render(
     // <React.StrictMode>
     <DojoProvider value={setupResult}>
       <BrowserRouter>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </BrowserRouter>
     </DojoProvider>
     // </React.StrictMode>

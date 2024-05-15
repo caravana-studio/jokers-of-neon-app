@@ -37,10 +37,10 @@ export async function setupWorld(provider: DojoProvider) {
     }: {
       account: AccountInterface;
       gameId: number;
-      cards: Card[];
+      cards: number[];
     }) => {
       try {
-        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
+        const cardArray = [gameId,cards.length,  ...cards]
         console.log(cardArray);
         return await provider.execute(
           account,
@@ -61,10 +61,10 @@ export async function setupWorld(provider: DojoProvider) {
     }: {
       account: AccountInterface;
       gameId: number;
-      cards: Card[];
+      cards: number[];
     }) => {
       try {
-        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
+        const cardArray = [gameId,cards.length,  ...cards]
         console.log(cardArray);
         return await provider.execute(
           account,
@@ -85,10 +85,10 @@ export async function setupWorld(provider: DojoProvider) {
     }: {
       account: AccountInterface;
       gameId: number;
-      cards: Card[];
+      cards: number[];
     }) => {
       try {
-        const cardArray = [gameId,cards.length,  ...cards.map(card => card.idx ?? 0)]
+        const cardArray = [gameId,cards.length,  ...cards]
         console.log(cardArray);
         return await provider.execute(
           account,

@@ -1,6 +1,7 @@
 import { Box, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { Button } from "../components/Button";
@@ -13,13 +14,13 @@ import { GAME_ID } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
-import { getCurrentHandCards } from "../dojo/utils/getCurrentHandCards";
 import { gameExists } from "../dojo/utils/getGame";
 import { getRound } from "../dojo/utils/getRound";
-import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
-import { Card } from "../types/Card";
-import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
+import {
+  CURRENT_HAND_QUERY_KEY,
+  useGetCurrentHand,
+} from "../queries/useGetCurrentHand";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -27,6 +28,15 @@ export const Game = () => {
   );
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
+
+  const {
+    data: hand,
+    error: gqlError,
+    isLoading,
+    refetch: refetchHand,
+  } = useGetCurrentHand(gameId);
+
+  const queryClient = useQueryClient();
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -53,38 +63,20 @@ export const Game = () => {
 
   const refreshHand = () => {
     console.log("refreshing hand");
-    setHand(getCurrentHandCards(gameId, CurrentHandCard));
+    refetchHand()
   };
 
   const [gameLoading, setGameLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const [hand, setHand] = useState<Card[]>([]);
-  const [preSelectedCards, setPreSelectedCards] = useState<Card[]>([]);
-  const [specialCards, setSpecialCards] = useState<Card[]>([
-    SPECIAL_DOUBLE,
-    SPECIAL_100,
-  ]);
+  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const round = getRound(gameId, Round);
   const score = round?.score ? Number(round?.score) : 0;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discard;
-
-  const card0 = useCard(gameId, 0);
-  const card1 = useCard(gameId, 1);
-  const card2 = useCard(gameId, 2);
-  const card3 = useCard(gameId, 3);
-  const card4 = useCard(gameId, 4);
-  const card5 = useCard(gameId, 5);
-  const card6 = useCard(gameId, 6);
-  const card7 = useCard(gameId, 7);
-
-  useEffect(() => {
-    console.log("card changed");
-    refreshHand();
-  }, [card0, card1, card2, card3, card4, card5, card6, card7]);
 
   const executeCreateGame = () => {
     console.log("Creating game...");
@@ -93,8 +85,8 @@ export const Game = () => {
       if (newGameId) {
         setGameId(newGameId);
         localStorage.setItem(GAME_ID, newGameId.toString());
-        refreshHand();
         console.log(`game ${newGameId} created`);
+        refreshHand();
       } else {
         setError(true);
       }
@@ -111,51 +103,33 @@ export const Game = () => {
     }
   }, []);
 
-  const togglePreselected = (cardIndex: number) => {
-    console.log("pre");
-    if (preSelectedCards.length < 5 || hand[cardIndex].preSelected) {
-      console.log("in");
-      const nextHand = hand.map((card, i) => {
-        if (i === cardIndex) {
-          console.log("doublein", card.preSelected);
-          return { ...card, preSelected: !card.preSelected };
-        } else {
-          return card;
-        }
-      });
-      setHand(nextHand);
-    }
+  const cardIsPreselected = (cardIndex: number) => {
+    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
+  };
+
+  const unPreSelectCard = (cardIndex: number) => {
+    setPreSelectedCards((prev) => {
+      return prev.filter((idx) => idx !== cardIndex);
+    });
   };
 
   const preSelectCard = (cardIndex: number) => {
-    if (preSelectedCards.length < 5) {
-      const movingCard = hand[cardIndex];
-      setPreSelectedCards([...preSelectedCards, movingCard]);
+    setPreSelectedCards((prev) => {
+      return [...prev, cardIndex];
+    });
+  };
+
+  const togglePreselected = (cardIndex: number) => {
+    if (cardIsPreselected(cardIndex)) {
+      unPreSelectCard(cardIndex);
+    } else if (preSelectedCards.length < 5) {
+      preSelectCard(cardIndex);
     }
-    togglePreselected(cardIndex);
   };
 
   const clearPreSelection = () => {
     resetMultiPoints();
-    const nextHand = hand.map((card) => {
-      return { ...card, preSelected: false };
-    });
-    setHand(nextHand);
     setPreSelectedCards([]);
-  };
-
-  const unPreSelectCard = (card: Card) => {
-    const { id } = card;
-    console.log("unpreselecting", card);
-    setPreSelectedCards(preSelectedCards.filter((card) => card.id !== id));
-    card.modifiers?.forEach((modifier) => {
-      console.log(
-        "mod",
-        hand.findIndex((card) => card.id === modifier.id)
-      );
-      togglePreselected(hand.findIndex((card) => card.id === modifier.id));
-    });
-    togglePreselected(hand.findIndex((card) => card.id === id));
   };
 
   useEffect(() => {
@@ -167,11 +141,13 @@ export const Game = () => {
       });
     } else {
       setPreSelectedPlay(Plays.NONE);
+      resetMultiPoints();
     }
   }, [preSelectedCards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const modifiedCard = event.over?.id;
+    //TODO: Review when we introduce modifiers
+    /* const modifiedCard = event.over?.id;
     const modifier = event.active?.id;
     if (modifiedCard && modifier) {
       const handModifier = hand.find(
@@ -193,7 +169,7 @@ export const Game = () => {
           hand.findIndex((handCard) => handCard.id === modifier)
         );
       }
-    }
+    } */
   };
 
   if (gameLoading) {
@@ -309,9 +285,7 @@ export const Game = () => {
                       if (response) {
                         console.log(response);
                         clearPreSelection();
-                        setTimeout(() => {
-                          refreshHand();
-                        }, 1000);
+                        refreshHand();
                       }
                     }
                   );
@@ -330,18 +304,21 @@ export const Game = () => {
                 }}
               >
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  {preSelectedCards.map((card) => {
+                  {preSelectedCards.map((idx) => {
+                    const card = hand.find((c) => c.idx === idx);
                     return (
-                      <Box key={card.id} sx={{ mx: 5 }}>
-                        <ModifiableCard id={card.id}>
-                          <TiltCard
-                            card={card}
-                            onClick={() => {
-                              unPreSelectCard(card);
-                            }}
-                          />
-                        </ModifiableCard>
-                      </Box>
+                      card && (
+                        <Box key={card.id} sx={{ mx: 5 }}>
+                          <ModifiableCard id={card.id}>
+                            <TiltCard
+                              card={card}
+                              onClick={() => {
+                                togglePreselected(idx);
+                              }}
+                            />
+                          </ModifiableCard>
+                        </Box>
+                      )
                     );
                   })}
                 </Box>
@@ -358,9 +335,7 @@ export const Game = () => {
                     (response) => {
                       if (response) {
                         clearPreSelection();
-                        setTimeout(() => {
-                          refreshHand();
-                        }, 1000);
+                        refreshHand();
                       }
                     }
                   );
@@ -389,7 +364,7 @@ export const Game = () => {
                 {hand.map((card, index) => {
                   return (
                     <GridItem
-                      key={card.id}
+                      key={card.img}
                       w="100%"
                       sx={{
                         transform: ` rotate(${
@@ -397,7 +372,7 @@ export const Game = () => {
                         }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
                       }}
                     >
-                      {!card.preSelected && (
+                      {!cardIsPreselected(card.idx) && (
                         <TiltCard
                           sx={{
                             ":hover": {
@@ -407,7 +382,7 @@ export const Game = () => {
                           card={card}
                           onClick={() => {
                             if (!card.isModifier) {
-                              preSelectCard(index);
+                              togglePreselected(card.idx);
                             }
                           }}
                         />

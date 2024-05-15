@@ -47,7 +47,7 @@ export function createSystemCalls(
   const checkHand = async (
     account: AccountInterface,
     gameId: number,
-    cards: Card[]
+    cards: number[]
   ) => {
     try {
       const { transaction_hash } = await client.actions.checkHand({
@@ -86,7 +86,7 @@ export function createSystemCalls(
   const discard = async (
     account: AccountInterface,
     gameId: number,
-    cards: Card[]
+    cards: number[]
   ) => {
     try {
       const { transaction_hash } = await client.actions.discard({
@@ -109,7 +109,7 @@ export function createSystemCalls(
   const play = async (
     account: AccountInterface,
     gameId: number,
-    cards: Card[]
+    cards: number[]
   ) => {
     try {
       const { transaction_hash } = await client.actions.play({
