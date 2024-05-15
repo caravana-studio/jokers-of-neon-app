@@ -9,6 +9,7 @@ import { ChannelText } from "../components/ChannelText";
 import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { MultiPoints } from "../components/MultiPoints";
+import { RollingNumber } from "../components/RollingNumber";
 import { TiltCard } from "../components/TiltCard";
 import { GAME_ID } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
@@ -245,7 +246,7 @@ export const Game = () => {
                   textShadow: "0 0 20px #fd4bad",
                 }}
               >
-                SCORE: {score}
+                SCORE: <RollingNumber n={score} />
               </Heading>
               <Heading className="ui-text" sx={{ fontSize: 25, mb: 2 }}>
                 CURRENT PLAY: {PLAYS[preSelectedPlay]}
