@@ -58,27 +58,14 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    PlayScoreEvent: (() => {
-      return defineComponent(
-        world,
-        { player: RecsType.BigInt, multi: RecsType.Number, points: RecsType.Number },
-        {
-          metadata: {
-            name: "PlayScoreEvent",
-            types: ["contractaddress","u32","u32"],
-            customTypes: [],
-          },
-        }
-      );
-    })(),
     PokerHandEvent: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, poker_hand: RecsType.Number },
+        { player: RecsType.BigInt, poker_hand: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
         {
           metadata: {
             name: "PokerHandEvent",
-            types: ["contractaddress","u8"],
+            types: ["contractaddress","u8","u32","u32"],
             customTypes: [],
           },
         }
