@@ -44,6 +44,7 @@ export const ActionButton = ({
         filter: "blur(0.5px)",
         boxShadow: `0px 0px 10px 0px ${color}`,
         cursor: disabled ? 'not-allowed' : 'pointer',
+        textShadow: `0 0 5px ${color}`,
         "&:hover": {
           border: `5px solid ${color}`,
           boxShadow: `0px 0px 30px 0px ${color}`,
@@ -67,7 +68,7 @@ export const ActionButton = ({
             );
           })}
         </Box>
-        <Box sx={{ fontSize: 20, mt: 2 }}>{secondLabel}</Box>
+        <Box sx={{ fontSize: 20, mt: 2, color: 'white' }}>{secondLabel}</Box>
       </Box>
     </Box>
   );
