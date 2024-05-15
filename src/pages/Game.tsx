@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { Button } from "../components/Button";
+import { ChannelText } from "../components/ChannelText";
 import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
@@ -18,6 +19,7 @@ import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
+import { MultiPoints } from "../components/MultiPoints";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -221,14 +223,7 @@ export const Game = () => {
       >
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%", p: 10 }}>
-            <div className="text strk">
-              <span>$STRK</span>
-              <span>$STRK</span>
-              <span>$STRK</span>
-              <span>$STRK</span>
-              <span>$STRK</span>
-              <span>$STRK</span>
-            </div>
+            <ChannelText />
             <Box
               sx={{
                 position: "fixed",
@@ -249,10 +244,17 @@ export const Game = () => {
                 START NEW GAME
               </Button>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Heading className="ui-text" sx={{ fontSize: 30 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Heading className="ui-text" sx={{ fontSize: 35, mb: 2 }}>
                 SCORE: {score}
               </Heading>
+              <MultiPoints multi={0} points={0} />
               {/* {specialCards.map((card) => {
                 return (
                   <Box key={card.id} sx={{ mx: 5 }}>
@@ -285,7 +287,7 @@ export const Game = () => {
                   play(account.account, gameId, preSelectedCards).then(
                     (response) => {
                       if (response) {
-                        console.log(response)
+                        console.log(response);
                         clearPreSelection();
                         setTimeout(() => {
                           refreshHand();
