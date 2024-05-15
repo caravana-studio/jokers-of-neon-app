@@ -3,14 +3,14 @@ import {
   setComponentsFromEvents
 } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
-import { GAME_ID_EVENT, PLAY_SCORE_EVENT } from "../constants/dojoEventKeys";
+import { GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { getNumberValueFromEvent, getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
+import { getScoreData } from "../utils/getScoreData";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
-import { getScoreData } from "../utils/getScoreData";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -60,19 +60,24 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      let play: Plays = Plays.NONE;
-
       if (tx.isSuccess()) {
         const event = tx.events?.at(0)
-        const value = event && getNumberValueFromEvent(event, 0)
-        console.log("play", value);
-        if (value) {
-          play = value;
+        const play = event && getNumberValueFromEvent(event, 0)
+        const multi = event && getNumberValueFromEvent(event, 1)
+        const points = event && getNumberValueFromEvent(event, 2)
+        setComponentsFromEvents(contractComponents, getEvents(tx));
+        return {
+          play,
+          multi,
+          points
         }
       }
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
-      return play;
+      return {
+        play: Plays.NONE,
+        multi: 0,
+        points: 0
+      };
     } catch (e) {
       console.log(e);
     }

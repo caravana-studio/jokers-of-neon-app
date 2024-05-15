@@ -14,6 +14,7 @@ export const ActionButton = ({
   onClick,
   secondLabel,
 }: IActionButtonProps) => {
+  const color = position === 'RIGHT' ? '#2fcdd7' : '#fd4bad'
   const extraSx =
     position === "LEFT"
       ? {
@@ -37,16 +38,16 @@ export const ActionButton = ({
         width: 300,
         fontSize: 35,
         opacity: disabled ? 0.7 : 1,
-        backgroundColor: "black",
-        border: "5px solid #fd4bad",
-        color: "#fd4bad",
+        backgroundColor: "transparent",
+        border: `5px solid ${color}`,
+        color: color,
         filter: "blur(0.5px)",
-        boxShadow: "0px 0px 10px 0px rgba(253,75,173,1)",
+        boxShadow: `0px 0px 10px 0px ${color}`,
         cursor: disabled ? 'not-allowed' : 'pointer',
         "&:hover": {
-          border: "5px solid #fd4bad",
-          boxShadow: "0px 0px 30px 0px rgba(253,75,173,1)",
-          backgroundColor: "black",
+          border: `5px solid ${color}`,
+          boxShadow: `0px 0px 30px 0px ${color}`,
+          backgroundColor: "transparent",
         },
         ...extraSx,
       }}

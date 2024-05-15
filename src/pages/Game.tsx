@@ -7,6 +7,7 @@ import { Button } from "../components/Button";
 import { ChannelText } from "../components/ChannelText";
 import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
+import { MultiPoints } from "../components/MultiPoints";
 import { TiltCard } from "../components/TiltCard";
 import { GAME_ID } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
@@ -19,12 +20,19 @@ import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
-import { MultiPoints } from "../components/MultiPoints";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
     Number(localStorage.getItem(GAME_ID)) ?? 0
   );
+  const [points, setPoints] = useState(0);
+  const [multi, setMulti] = useState(0);
+
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
+
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard, play },
@@ -128,6 +136,7 @@ export const Game = () => {
   };
 
   const clearPreSelection = () => {
+    resetMultiPoints();
     const nextHand = hand.map((card) => {
       return { ...card, preSelected: false };
     });
@@ -151,11 +160,11 @@ export const Game = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(account.account, gameId, preSelectedCards).then(
-        (play: Plays | undefined) => {
-          setPreSelectedPlay(play ?? Plays.NONE);
-        }
-      );
+      checkHand(account.account, gameId, preSelectedCards).then((result) => {
+        setPreSelectedPlay(result?.play ?? Plays.NONE);
+        setMulti(result?.multi ?? 0);
+        setPoints(result?.points ?? 0);
+      });
     } else {
       setPreSelectedPlay(Plays.NONE);
     }
@@ -251,10 +260,21 @@ export const Game = () => {
                 alignItems: "center",
               }}
             >
-              <Heading className="ui-text" sx={{ fontSize: 35, mb: 2 }}>
+              <Heading
+                className="ui-text"
+                sx={{
+                  fontSize: 40,
+                  mb: 4,
+                  color: "white",
+                  textShadow: "0 0 20px #fd4bad",
+                }}
+              >
                 SCORE: {score}
               </Heading>
-              <MultiPoints multi={0} points={0} />
+              <Heading className="ui-text" sx={{ fontSize: 25, mb: 2 }}>
+                CURRENT PLAY: {PLAYS[preSelectedPlay]}
+              </Heading>
+              <MultiPoints multi={multi} points={points} />
               {/* {specialCards.map((card) => {
                 return (
                   <Box key={card.id} sx={{ mx: 5 }}>
@@ -309,9 +329,6 @@ export const Game = () => {
                   gap: 14,
                 }}
               >
-                <Heading className="ui-text" sx={{ fontSize: 25 }}>
-                  CURRENT PLAY: {PLAYS[preSelectedPlay]}
-                </Heading>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   {preSelectedCards.map((card) => {
                     return (
