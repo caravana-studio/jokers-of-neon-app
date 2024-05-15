@@ -18,8 +18,7 @@ import { gameExists } from "../dojo/utils/getGame";
 import { getRound } from "../dojo/utils/getRound";
 import { Plays } from "../enums/plays";
 import {
-  CURRENT_HAND_QUERY_KEY,
-  useGetCurrentHand,
+  useGetCurrentHand
 } from "../queries/useGetCurrentHand";
 
 export const Game = () => {
@@ -63,7 +62,7 @@ export const Game = () => {
 
   const refreshHand = () => {
     console.log("refreshing hand");
-    refetchHand()
+    refetchHand();
   };
 
   const [gameLoading, setGameLoading] = useState(true);
@@ -84,6 +83,7 @@ export const Game = () => {
       setGameLoading(false);
       if (newGameId) {
         setGameId(newGameId);
+        clearPreSelection();
         localStorage.setItem(GAME_ID, newGameId.toString());
         console.log(`game ${newGameId} created`);
         refreshHand();
