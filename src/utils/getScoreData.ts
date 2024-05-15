@@ -8,8 +8,8 @@ import {
 
 export const getScoreData = (events: DojoEvent[]): ScoreData => {
   // play score
-  const playMulti = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 0);
-  const playPoints = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 1);
+  const playMulti = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 1);
+  const playPoints = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 2);
   const scoreData = {
     play: {
       multi: playMulti ?? 1,
