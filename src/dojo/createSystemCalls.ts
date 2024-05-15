@@ -1,16 +1,16 @@
-import { Type } from "@dojoengine/recs";
 import {
   getEvents,
-  parseComponentValue,
-  setComponentsFromEvents,
+  setComponentsFromEvents
 } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
-import { GAME_ID_EVENT } from "../constants/dojoEventKeys";
+import { GAME_ID_EVENT, PLAY_SCORE_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
+import { getNumberValueFromEvent, getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
+import { getScoreData } from "../utils/getScoreData";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -31,17 +31,8 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-
-        const gameIdEvent = events?.find((e) => {
-          return e.keys[0] === GAME_ID_EVENT;
-        });
-
         setComponentsFromEvents(contractComponents, getEvents(tx));
-
-        const gameIdValue = gameIdEvent?.data.at(0);
-        const value =
-          gameIdValue &&
-          (parseComponentValue(gameIdValue, Type.Number) as number);
+        const value = getNumberValueFromEvents(events, GAME_ID_EVENT, 0)
         console.log("Game " + value + " created");
         return value;
       } else {
@@ -72,10 +63,9 @@ export function createSystemCalls(
       let play: Plays = Plays.NONE;
 
       if (tx.isSuccess()) {
-        const txValue = tx.events?.at(0)?.data.at(0);
-        const value =
-          txValue && (parseComponentValue(txValue, Type.Number) as number);
-        console.log("value", value);
+        const event = tx.events?.at(0)
+        const value = event && getNumberValueFromEvent(event, 0)
+        console.log("play", value);
         if (value) {
           play = value;
         }
@@ -128,7 +118,12 @@ export function createSystemCalls(
       });
 
       setComponentsFromEvents(contractComponents, getEvents(tx));
-      return tx.isSuccess();
+
+      if (tx.isSuccess()) {
+        const events = tx.events
+        return getScoreData(events)
+      }
+      return undefined;
     } catch (e) {
       console.log(e);
     }

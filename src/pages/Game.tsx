@@ -3,6 +3,7 @@ import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
+import { Button } from "../components/Button";
 import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { TiltCard } from "../components/TiltCard";
@@ -17,7 +18,6 @@ import { useCard } from "../dojo/utils/useCard";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SPECIAL_100, SPECIAL_DOUBLE } from "../utils/getInitialDeck";
-import { Button } from "../components/Button";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -58,7 +58,6 @@ export const Game = () => {
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   const round = getRound(gameId, Round);
-  console.log("round", round);
   const score = round?.score ? Number(round?.score) : 0;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discard;
@@ -76,14 +75,6 @@ export const Game = () => {
     console.log("card changed");
     refreshHand();
   }, [card0, card1, card2, card3, card4, card5, card6, card7]);
-
-  /*   if (hand.length < 8) {
-    setTimeout(() => {
-      if (hand.length < 8) {
-        refreshHand()
-      }
-    }, 100)
-  } */
 
   const executeCreateGame = () => {
     console.log("Creating game...");
@@ -230,7 +221,12 @@ export const Game = () => {
       >
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%", p: 10 }}>
-            <div className="text strk green">
+            <div className="text strk">
+              <span>$STRK</span>
+              <span>$STRK</span>
+              <span>$STRK</span>
+              <span>$STRK</span>
+              <span>$STRK</span>
               <span>$STRK</span>
             </div>
             <Box
@@ -289,6 +285,7 @@ export const Game = () => {
                   play(account.account, gameId, preSelectedCards).then(
                     (response) => {
                       if (response) {
+                        console.log(response)
                         clearPreSelection();
                         setTimeout(() => {
                           refreshHand();

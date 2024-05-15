@@ -1,1 +1,3 @@
 export const GAME_ID_EVENT = "0xf7ed1ec3a2efb4c4ff4451b344e4a3c4f8bbd6a437e31765a32df3c3a44cdd"
+export const PLAY_SCORE_EVENT = "0x2a82c444d33c73888b6d755c8deced2644eb01623c548291a07ce7f7bf51812"
+export const CARD_SCORE_EVENT = "0x12cd4a05377738b2a3ec9fe1eacf44ee4b49bb84bd4aef5c689d3f637cfde12"
