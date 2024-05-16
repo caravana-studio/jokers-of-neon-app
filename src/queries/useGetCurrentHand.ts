@@ -5,7 +5,7 @@ import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
 import { sortCards } from "../utils/sortCards";
 import { zeroPad } from "../utils/zeroPad";
-import { GET_CURRENT_HAND_QUERY } from "./getCurrentHandQuery";
+import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 

@@ -16,9 +16,9 @@ import { PLAYS } from "../constants/plays";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
-import { getRound } from "../dojo/utils/getRound";
 import { Plays } from "../enums/plays";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { useGetRound } from "../queries/useGetRound";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
 
 export const Game = () => {
@@ -41,6 +41,7 @@ export const Game = () => {
   const navigate = useNavigate();
 
   const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
   const {
     setup: {
@@ -51,26 +52,17 @@ export const Game = () => {
   } = useDojo();
 
   // dojo variables
-  const round = getRound(gameId, Round);
-  const score = round?.score ? Number(round?.score) : 0;
+  const score = round?.score;
   const handsLeft = round?.hands;
-  const discardsLeft = round?.discard;
+  const discardsLeft = round?.discards;
 
   //effects
-  useEffect(() => {
-    if (handsLeft === 0 && playAnimation === false) {
-      setTimeout(() => {
-        navigate("/gameover");
-      }, 4000);
-    }
-  }, [handsLeft, playAnimation]);
-
   useEffect(() => {
     if (!gameExists(Game, gameId)) {
       executeCreateGame();
     } else {
       setGameLoading(false);
-      refreshHand();
+      refetch();
       console.log("Game found, no need to create a new one");
     }
   }, []);
@@ -89,8 +81,16 @@ export const Game = () => {
   }, [preSelectedCards]);
 
   // functions
-  const refreshHand = () => {
+  const refetch = () => {
     refetchHand();
+    refetchRound().then((response) => {
+      if (response.data?.roundModels?.edges?.[0]?.node?.hands === 0) {
+        console.log("GAME OVER");
+        setTimeout(() => {
+          navigate("/gameover");
+        }, 1000);
+      }
+    });
   };
 
   const resetMultiPoints = () => {
@@ -110,7 +110,7 @@ export const Game = () => {
         setTimeout(() => {
           setPreSelectionLocked(false);
           setGameLoading(false);
-          refreshHand();
+          refetch();
         }, 1000);
       } else {
         setError(true);
@@ -181,7 +181,6 @@ export const Game = () => {
   const onPlayClick = () => {
     play(account.account, gameId, preSelectedCards).then((response) => {
       if (response) {
-        console.log(response);
         setPreSelectionLocked(true);
         response.cards.forEach((card, index) => {
           setTimeout(() => {
@@ -203,7 +202,7 @@ export const Game = () => {
             setCardPoints({});
             setPlayAnimation(false);
             clearPreSelection();
-            refreshHand();
+            refetch();
             handsLeft > 0 && setPreSelectionLocked(false);
           },
           700 * response.cards.length + 400
@@ -220,7 +219,7 @@ export const Game = () => {
         setTimeout(() => {
           setPreSelectionLocked(false);
           clearPreSelection();
-          refreshHand();
+          refetch();
           setDiscardAnimation(false);
         }, 1500);
       }
