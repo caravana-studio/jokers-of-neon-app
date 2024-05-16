@@ -20,6 +20,7 @@ import { Plays } from "../enums/plays";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetRound } from "../queries/useGetRound";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
+import AudioPlayer from "../components/AudioPlayer";
 
 export const Game = () => {
   // state
@@ -255,6 +256,7 @@ export const Game = () => {
         height: "100%",
       }}
     >
+      <AudioPlayer />
       <Box
         sx={{
           height: "100%",
