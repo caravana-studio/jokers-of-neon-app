@@ -1,22 +1,25 @@
 import { Box } from "@chakra-ui/react";
-import { faVolumeHigh, faVolumeXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeHigh, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
+import { SOUND_OFF } from "../constants/localStorage";
 
 const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(!localStorage.getItem(SOUND_OFF));
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((error: any) => {
-          console.error("Auto-play failed:", error);
-        });
+      if (!localStorage.getItem(SOUND_OFF)) {
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error: any) => {
+            console.error("Auto-play failed:", error);
+          });
+      }
     }
   }, []);
 
@@ -24,8 +27,10 @@ const AudioPlayer = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        localStorage.setItem(SOUND_OFF, "true");
       } else {
         audioRef.current.play();
+        localStorage.removeItem(SOUND_OFF);
       }
       setIsPlaying(!isPlaying);
     }

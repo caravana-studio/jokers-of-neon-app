@@ -26,9 +26,13 @@ export const Home = () => {
         <span>AV-1</span>
       </div>
       {open ? (
-        <Menu />
+        <Menu onClose={() => setOpen(false)} />
       ) : (
         <div className="text press">
+          <span>PRESS A KEY TO START</span>
+          <span>PRESS A KEY TO START</span>
+          <span>PRESS A KEY TO START</span>
+          <span>PRESS A KEY TO START</span>
           <span>PRESS A KEY TO START</span>
         </div>
       )}

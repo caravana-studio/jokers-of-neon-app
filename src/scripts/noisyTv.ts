@@ -6,7 +6,7 @@ export const noisyTv = (time: number) => {
     var ctx = canvas.getContext("2d");
     var av1 = document.querySelector(".av1");
     var strk = document.querySelector(".strk");
-    var press = document.querySelector(".press");
+    // var press = document.querySelector(".press");
     var ww = window.innerWidth;
     var menu = document.querySelector(".menu");
     var ul = menu?.querySelector("ul");
@@ -54,10 +54,10 @@ export const noisyTv = (time: number) => {
         var strkSpan = strk.firstElementChild.cloneNode(true);
         strk.appendChild(strkSpan);
       }
-      if (press?.firstElementChild) {
+/*       if (press?.firstElementChild) {
         var pressSpan = press.firstElementChild.cloneNode(true);
         press.appendChild(pressSpan);
-      }
+      } */
     }
 
     setTimeout(function () {

@@ -1,5 +1,7 @@
+import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SOUND_OFF } from "../constants/localStorage";
 
 const OPTIONS = [
   {
@@ -7,24 +9,27 @@ const OPTIONS = [
     href: "/demo",
   },
   {
-    label: "picture",
-    href: "/",
-  },
-  {
     label: "sound",
-    href: "/",
   },
   {
-    label: "contact",
-    href: "/",
+    label: "about us",
   },
 ];
 
-export const Menu = () => {
+interface MenuProps {
+  onClose: () => void;
+}
+
+export const Menu = ({ onClose }: MenuProps) => {
   const [activeOption, setActiveOption] = useState(0);
   const navigate = useNavigate();
+  const [soundActive, setSoundActive] = useState(
+    !localStorage.getItem(SOUND_OFF)
+  );
+  const [showAbout, setShowAbout] = useState(false);
 
   const onKeyDown = (event: { key: string }) => {
+    console.log(event.key);
     if (event.key === "ArrowDown") {
       setActiveOption((prev) => {
         return prev < 3 ? prev + 1 : prev;
@@ -33,9 +38,24 @@ export const Menu = () => {
       setActiveOption((prev) => {
         return prev > 0 ? prev - 1 : prev;
       });
-    } else if (event.key === "Enter") {
-      const href = OPTIONS.at(activeOption)?.href;
-      href && navigate(href);
+    } else if (event.key === "Enter" || event.key === " ") {
+      if (activeOption === 0) {
+        const href = OPTIONS.at(activeOption)?.href;
+        href && navigate(href);
+      } else if (activeOption === 1) {
+        setSoundActive((prev) => {
+          if (prev) {
+            localStorage.setItem(SOUND_OFF, "true");
+          } else {
+            localStorage.removeItem(SOUND_OFF);
+          }
+          return !prev;
+        });
+      } else {
+        setShowAbout((prev) => !prev);
+      }
+    } else if (event.key === "Escape") {
+      onClose();
     }
   };
 
@@ -49,19 +69,39 @@ export const Menu = () => {
 
   return (
     <div className="menu">
-      <header>Main Menu</header>
-      <ul>
-        {OPTIONS.map((option, index) => (
-          <li
-            key={option.label}
-            className={index === activeOption ? "active" : ""}
-          >
-            <a href={option.href} title="">
-              {option.label}
+      <header>Jokers of Neon</header>
+      {showAbout ? (
+        <Box sx={{ px: 10 }}>
+          About us:
+          <br />
+          <Box sx={{ my: 4 }}>
+            <a href="https://x.com/dpinoness" target="_blank">
+              @dpinoness
             </a>
-          </li>
-        ))}
-      </ul>
+            {" - "} Cairo dev
+            <br />
+            <a href="https://x.com/nico_n44" target="_blank">
+              @nico_n44
+            </a>
+            {" - "} Frontend dev
+          </Box>
+          DM us on X
+        </Box>
+      ) : (
+        <ul>
+          {OPTIONS.map((option, index) => (
+            <li
+              key={option.label}
+              className={index === activeOption ? "active" : ""}
+            >
+              <a href={option.href} title="">
+                {option.label}{" "}
+                {option.label === "sound" && (soundActive ? "on" : "off")}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
       <footer>
         <div className="key">
           Exit: <span>ESC</span>
