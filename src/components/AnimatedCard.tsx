@@ -16,20 +16,23 @@ export const AnimatedCard = ({
   played = false,
 }: IAnimatedCardProps) => {
   const [cardSprings, cardApi] = useSpring(() => ({
-    from: { transform: "scale(1)", opacity: 1, x: 0 },
+    from: { transform: "scale(1)", opacity: 1, x: 0, boxShadow: "0px" },
     config: { tension: 200, friction: 10 },
   }));
 
   const [pointsSprings, pointsApi] = useSpring(() => ({
-    from: { opacity: 0, transform: "translateY(-30px) scale(1)" },
+    from: {
+      opacity: 0,
+      transform: "translateY(-30px) scale(1)",
+    },
     config: { tension: 300, friction: 20 },
   }));
 
   useEffect(() => {
     if (points) {
       cardApi.start({
-        from: { transform: "scale(1)" },
-        to: { transform: "scale(1.1)" },
+        from: { transform: "scale(1)", boxShadow: "0px 0px 5px 0px #33effa" },
+        to: { transform: "scale(1.1)", boxShadow: "0px 0px 30px 0px #33effa" },
         onRest: () => cardApi.start({ transform: "scale(1)" }),
       });
 
