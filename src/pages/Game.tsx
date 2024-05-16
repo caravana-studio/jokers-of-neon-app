@@ -1,7 +1,6 @@
 import { Box, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { AnimatedCard } from "../components/AnimatedCard";
@@ -30,12 +29,8 @@ export const Game = () => {
 
   const {
     data: hand,
-    error: gqlError,
-    isLoading,
     refetch: refetchHand,
   } = useGetCurrentHand(gameId);
-
-  const queryClient = useQueryClient();
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -46,14 +41,7 @@ export const Game = () => {
     setup: {
       systemCalls: { createGame, checkHand, discard, play },
       clientComponents: {
-        Card,
-        PokerHandEvent,
-        CurrentSpecialCards,
         Game,
-        PlayerModifierCards,
-        PlayerSpecialCards,
-        CurrentHandCard,
-        DeckCard,
         Round,
       },
     },
@@ -61,7 +49,6 @@ export const Game = () => {
   } = useDojo();
 
   const refreshHand = () => {
-    console.log("refreshing hand");
     refetchHand();
   };
 
@@ -258,7 +245,6 @@ export const Game = () => {
     <Box
       sx={{
         height: "100%",
-        // animation: "5s ease 20000ms normal none infinite running glitch",
       }}
     >
       <Box
