@@ -5,11 +5,18 @@ import { animated, useSpring } from "react-spring";
 export interface IAnimatedCardProps {
   children: JSX.Element;
   points?: number;
+  discarded?: boolean;
+  played?: boolean;
 }
 
-export const AnimatedCard = ({ children, points = 0 }: IAnimatedCardProps) => {
+export const AnimatedCard = ({
+  children,
+  points = 0,
+  discarded = false,
+  played = false,
+}: IAnimatedCardProps) => {
   const [cardSprings, cardApi] = useSpring(() => ({
-    from: { transform: "scale(1)" },
+    from: { transform: "scale(1)", opacity: 1, x: 0 },
     config: { tension: 200, friction: 10 },
   }));
 
@@ -36,6 +43,15 @@ export const AnimatedCard = ({ children, points = 0 }: IAnimatedCardProps) => {
       });
     }
   }, [points]);
+
+  useEffect(() => {
+    if (discarded || played) {
+      cardApi.start({
+        to: { x: discarded ? 1000 : -1000, opacity: 0 },
+        config: { duration: 200 },
+      });
+    }
+  }, [discarded, played]);
 
   return (
     <animated.div style={{ position: "relative", ...cardSprings }}>

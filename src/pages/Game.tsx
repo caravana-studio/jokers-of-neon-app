@@ -182,13 +182,14 @@ export const Game = () => {
 
   const [cardPoints, setCardPoints] = useState<AnimatedCardPoints>({});
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
+  const [discardAnimation, setDiscardAnimation] = useState(false);
+  const [playAnimation, setPlayAnimation] = useState(false);
 
   const onPlayClick = () => {
     play(account.account, gameId, preSelectedCards).then((response) => {
       if (response) {
         console.log(response);
         setPreSelectionLocked(true);
-
         response.cards.forEach((card, index) => {
           setTimeout(() => {
             const { idx, points } = card;
@@ -199,34 +200,39 @@ export const Game = () => {
 
         setTimeout(
           () => {
+            setPlayAnimation(true);
+          },
+          700 * response.cards.length + 100
+        );
+
+        setTimeout(
+          () => {
             setCardPoints({});
+            setPlayAnimation(false);
             clearPreSelection();
             refreshHand();
             handsLeft > 0 && setPreSelectionLocked(false);
           },
-          700 * response.cards.length + 200
+          700 * response.cards.length + 400
         );
       }
     });
   };
 
   const onDiscardClick = () => {
-    setPreSelectionLocked(true)
-    discard(account.account, gameId, preSelectedCards).then(
-      (response) => {
-        if (response) {
-          setTimeout(
-            () => {
-              setPreSelectionLocked(false)
-              clearPreSelection();
-              refreshHand();
-            },
-            1000
-          );
-        }
+    setPreSelectionLocked(true);
+    discard(account.account, gameId, preSelectedCards).then((response) => {
+      if (response) {
+        setDiscardAnimation(true);
+        setTimeout(() => {
+          setPreSelectionLocked(false);
+          clearPreSelection();
+          refreshHand();
+          setDiscardAnimation(false);
+        }, 1500);
       }
-    );
-  }
+    });
+  };
 
   if (gameLoading) {
     return (
@@ -309,13 +315,6 @@ export const Game = () => {
                 CURRENT PLAY: {PLAYS[preSelectedPlay]}
               </Heading>
               <MultiPoints multi={multi} points={points} />
-              {/* {specialCards.map((card) => {
-                return (
-                  <Box key={card.id} sx={{ mx: 5 }}>
-                    <TiltCard card={card} />
-                  </Box>
-                );
-              })} */}
             </Box>
           </Box>
           <DndContext onDragEnd={handleDragEnd}>
@@ -362,6 +361,8 @@ export const Game = () => {
                               points={
                                 cardPoints.idx === idx ? cardPoints.points : 0
                               }
+                              discarded={discardAnimation}
+                              played={playAnimation}
                             >
                               <TiltCard
                                 card={card}
@@ -420,11 +421,6 @@ export const Game = () => {
                     >
                       {!cardIsPreselected(card.idx) && (
                         <TiltCard
-                          sx={{
-                            ":hover": {
-                              transform: "translateY(-30px) ",
-                            },
-                          }}
                           card={card}
                           onClick={() => {
                             if (!card.isModifier) {
@@ -440,7 +436,7 @@ export const Game = () => {
               {handsLeft === 0 && (
                 <Heading
                   className="ui-text"
-                  sx={{ position: "fixed", bottom: '100px', fontSize: 30 }}
+                  sx={{ position: "fixed", bottom: "100px", fontSize: 30 }}
                 >
                   you ran out of hands to play
                 </Heading>
