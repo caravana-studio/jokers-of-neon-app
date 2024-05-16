@@ -1,6 +1,7 @@
 import { Box, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { AnimatedCard } from "../components/AnimatedCard";
@@ -21,21 +22,29 @@ import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
 
 export const Game = () => {
+
+  // state
   const [gameId, setGameId] = useState<number>(
     Number(localStorage.getItem(GAME_ID)) ?? 0
   );
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
+  const [cardPoints, setCardPoints] = useState<AnimatedCardPoints>({});
+  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
+  const [discardAnimation, setDiscardAnimation] = useState(false);
+  const [playAnimation, setPlayAnimation] = useState(false);
+  const [gameLoading, setGameLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
+
+  // hooks
+  const navigate = useNavigate();
 
   const {
     data: hand,
     refetch: refetchHand,
   } = useGetCurrentHand(gameId);
-
-  const resetMultiPoints = () => {
-    setPoints(0);
-    setMulti(0);
-  };
 
   const {
     setup: {
@@ -47,22 +56,54 @@ export const Game = () => {
     },
     account,
   } = useDojo();
-
-  const refreshHand = () => {
-    refetchHand();
-  };
-
-  const [gameLoading, setGameLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
-
-  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
-
+  
+  // dojo variables
   const round = getRound(gameId, Round);
   const score = round?.score ? Number(round?.score) : 0;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discard;
+
+  //effects
+  useEffect(() => {
+    if (handsLeft === 0 && playAnimation === false) {
+      setTimeout(() => {
+        navigate('/gameover')
+      }, 4000)
+    }
+  }, [handsLeft, playAnimation])
+
+  useEffect(() => {
+    if (!gameExists(Game, gameId)) {
+      executeCreateGame();
+    } else {
+      setGameLoading(false);
+      refreshHand();
+      console.log("Game found, no need to create a new one");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (preSelectedCards.length > 0) {
+      checkHand(account.account, gameId, preSelectedCards).then((result) => {
+        setPreSelectedPlay(result?.play ?? Plays.NONE);
+        setMulti(result?.multi ?? 0);
+        setPoints(result?.points ?? 0);
+      });
+    } else {
+      setPreSelectedPlay(Plays.NONE);
+      resetMultiPoints();
+    }
+  }, [preSelectedCards]);
+  
+  // functions
+    const refreshHand = () => {
+      refetchHand();
+    };
+
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
 
   const executeCreateGame = () => {
     console.log("Creating game...");
@@ -83,16 +124,6 @@ export const Game = () => {
       }
     });
   };
-
-  useEffect(() => {
-    if (!gameExists(Game, gameId)) {
-      executeCreateGame();
-    } else {
-      setGameLoading(false);
-      refreshHand();
-      console.log("Game found, no need to create a new one");
-    }
-  }, []);
 
   const cardIsPreselected = (cardIndex: number) => {
     return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
@@ -127,19 +158,6 @@ export const Game = () => {
     }
   };
 
-  useEffect(() => {
-    if (preSelectedCards.length > 0) {
-      checkHand(account.account, gameId, preSelectedCards).then((result) => {
-        setPreSelectedPlay(result?.play ?? Plays.NONE);
-        setMulti(result?.multi ?? 0);
-        setPoints(result?.points ?? 0);
-      });
-    } else {
-      setPreSelectedPlay(Plays.NONE);
-      resetMultiPoints();
-    }
-  }, [preSelectedCards]);
-
   const handleDragEnd = (event: DragEndEvent) => {
     //TODO: Review when we introduce modifiers
     /* const modifiedCard = event.over?.id;
@@ -166,11 +184,6 @@ export const Game = () => {
       }
     } */
   };
-
-  const [cardPoints, setCardPoints] = useState<AnimatedCardPoints>({});
-  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
-  const [discardAnimation, setDiscardAnimation] = useState(false);
-  const [playAnimation, setPlayAnimation] = useState(false);
 
   const onPlayClick = () => {
     play(account.account, gameId, preSelectedCards).then((response) => {

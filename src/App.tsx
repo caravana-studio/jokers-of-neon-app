@@ -9,6 +9,7 @@ import "./App.scss";
 import { Game } from "./pages/Game";
 import { Home } from "./pages/Home";
 import { Poc } from "./pages/Poc";
+import { GameOver } from "./pages/GameOver";
 
 const { Button } = chakraTheme.components;
 
@@ -27,6 +28,7 @@ function App() {
           <div className="overlay">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/gameover" element={<GameOver />} />
               <Route
                 path="/demo"
                 element={
