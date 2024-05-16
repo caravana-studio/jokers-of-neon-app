@@ -112,7 +112,7 @@ export const Game = () => {
           setPreSelectionLocked(false);
           setGameLoading(false);
           refetch();
-        }, 1000);
+        }, 3000);
       } else {
         setError(true);
       }
