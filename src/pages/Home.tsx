@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { Menu } from "../components/Menu";
 import { noisyTv } from "../scripts/noisyTv";
@@ -17,12 +18,16 @@ export const Home = () => {
   }, [onKeyDown]);
 
   useEffect(() => {
-    noisyTv(1000)
+    noisyTv(1000);
   }, []);
 
   return (
     <>
       <div className="text av1">
+        <span>AV-1</span>
+        <span>AV-1</span>
+        <span>AV-1</span>
+        <span>AV-1</span>
         <span>AV-1</span>
       </div>
       {open ? (
@@ -36,6 +41,20 @@ export const Home = () => {
           <span>PRESS A KEY TO START</span>
         </div>
       )}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 10,
+          zIndex: 1000,
+          color: "white",
+          fontFamily: "Sys",
+          fontSize: 17,
+          filter: "blur(1px)",
+          opacity: 0.7,
+        }}
+      >
+        powered by Dojo and Starknet
+      </Box>
     </>
   );
 };

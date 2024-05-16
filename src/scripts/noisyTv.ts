@@ -46,14 +46,14 @@ export const noisyTv = (time: number) => {
 
     // Glitch
     for (let i = 0; i < 4; i++) {
-      if (av1?.firstElementChild) {
+/*       if (av1?.firstElementChild) {
         var av1Span = av1.firstElementChild.cloneNode(true);
         av1.appendChild(av1Span);
       }
       if (strk?.firstElementChild) {
         var strkSpan = strk.firstElementChild.cloneNode(true);
         strk.appendChild(strkSpan);
-      }
+      } */
 /*       if (press?.firstElementChild) {
         var pressSpan = press.firstElementChild.cloneNode(true);
         press.appendChild(pressSpan);

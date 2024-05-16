@@ -68,48 +68,50 @@ export const Menu = ({ onClose }: MenuProps) => {
   }, [onKeyDown]);
 
   return (
-    <div className="menu">
-      <header>Jokers of Neon</header>
-      {showAbout ? (
-        <Box sx={{ px: 10 }}>
-          About us:
-          <br />
-          <Box sx={{ my: 4 }}>
-            <a href="https://x.com/dpinoness" target="_blank">
-              @dpinoness
-            </a>
-            {" - "} Cairo dev
+    <>
+      <div className="menu">
+        <header>Jokers of Neon</header>
+        {showAbout ? (
+          <Box sx={{ px: 10 }}>
+            About us:
             <br />
-            <a href="https://x.com/nico_n44" target="_blank">
-              @nico_n44
-            </a>
-            {" - "} Frontend dev
-          </Box>
-          DM us on X
-        </Box>
-      ) : (
-        <ul>
-          {OPTIONS.map((option, index) => (
-            <li
-              key={option.label}
-              className={index === activeOption ? "active" : ""}
-            >
-              <a href={option.href} title="">
-                {option.label}{" "}
-                {option.label === "sound" && (soundActive ? "on" : "off")}
+            <Box sx={{ my: 4 }}>
+              <a href="https://x.com/dpinoness" target="_blank">
+                @dpinoness
               </a>
-            </li>
-          ))}
-        </ul>
-      )}
-      <footer>
-        <div className="key">
-          Exit: <span>ESC</span>
-        </div>
-        <div className="key">
-          Select: <span>ENTER</span>
-        </div>
-      </footer>
-    </div>
+              {" - "} Cairo dev
+              <br />
+              <a href="https://x.com/nico_n44" target="_blank">
+                @nico_n44
+              </a>
+              {" - "} Frontend dev
+            </Box>
+            DM us on X
+          </Box>
+        ) : (
+          <ul>
+            {OPTIONS.map((option, index) => (
+              <li
+                key={option.label}
+                className={index === activeOption ? "active" : ""}
+              >
+                <a href={option.href} title="">
+                  {option.label}{" "}
+                  {option.label === "sound" && (soundActive ? "on" : "off")}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        <footer>
+          <div className="key">
+            Exit: <span>ESC</span>
+          </div>
+          <div className="key">
+            Select: <span>ENTER</span>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 };
