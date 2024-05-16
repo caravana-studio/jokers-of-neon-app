@@ -22,7 +22,6 @@ import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
 
 export const Game = () => {
-
   // state
   const [gameId, setGameId] = useState<number>(
     Number(localStorage.getItem(GAME_ID)) ?? 0
@@ -41,22 +40,16 @@ export const Game = () => {
   // hooks
   const navigate = useNavigate();
 
-  const {
-    data: hand,
-    refetch: refetchHand,
-  } = useGetCurrentHand(gameId);
+  const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
 
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard, play },
-      clientComponents: {
-        Game,
-        Round,
-      },
+      clientComponents: { Game, Round },
     },
     account,
   } = useDojo();
-  
+
   // dojo variables
   const round = getRound(gameId, Round);
   const score = round?.score ? Number(round?.score) : 0;
@@ -67,10 +60,10 @@ export const Game = () => {
   useEffect(() => {
     if (handsLeft === 0 && playAnimation === false) {
       setTimeout(() => {
-        navigate('/gameover')
-      }, 4000)
+        navigate("/gameover");
+      }, 4000);
     }
-  }, [handsLeft, playAnimation])
+  }, [handsLeft, playAnimation]);
 
   useEffect(() => {
     if (!gameExists(Game, gameId)) {
@@ -94,11 +87,11 @@ export const Game = () => {
       resetMultiPoints();
     }
   }, [preSelectedCards]);
-  
+
   // functions
-    const refreshHand = () => {
-      refetchHand();
-    };
+  const refreshHand = () => {
+    refetchHand();
+  };
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -244,7 +237,10 @@ export const Game = () => {
           alignItems: "center",
         }}
       >
-        <Heading className="ui-text" sx={{ m: 10, fontSize: 60 }}>
+        <Heading
+          className="ui-text"
+          sx={{ m: 10, fontSize: 60, textShadow: "0 0 20px #33effa" }}
+        >
           Loading game...
         </Heading>
       </Box>
