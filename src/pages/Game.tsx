@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
+import { AnimatedCard } from "../components/AnimatedCard";
 import { Button } from "../components/Button";
 import { ChannelText } from "../components/ChannelText";
-import { GameOver } from "../components/GameOver";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { MultiPoints } from "../components/MultiPoints";
 import { RollingNumber } from "../components/RollingNumber";
@@ -18,9 +18,8 @@ import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getRound } from "../dojo/utils/getRound";
 import { Plays } from "../enums/plays";
-import {
-  useGetCurrentHand
-} from "../queries/useGetCurrentHand";
+import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
 
 export const Game = () => {
   const [gameId, setGameId] = useState<number>(
@@ -80,14 +79,18 @@ export const Game = () => {
 
   const executeCreateGame = () => {
     console.log("Creating game...");
+    setGameLoading(true);
     createGame(account.account).then((newGameId) => {
-      setGameLoading(false);
       if (newGameId) {
         setGameId(newGameId);
         clearPreSelection();
         localStorage.setItem(GAME_ID, newGameId.toString());
         console.log(`game ${newGameId} created`);
-        refreshHand();
+        setTimeout(() => {
+          setPreSelectionLocked(false);
+          setGameLoading(false);
+          refreshHand();
+        }, 1000);
       } else {
         setError(true);
       }
@@ -121,16 +124,20 @@ export const Game = () => {
   };
 
   const togglePreselected = (cardIndex: number) => {
-    if (cardIsPreselected(cardIndex)) {
-      unPreSelectCard(cardIndex);
-    } else if (preSelectedCards.length < 5) {
-      preSelectCard(cardIndex);
+    if (!preSelectionLocked && handsLeft > 0) {
+      if (cardIsPreselected(cardIndex)) {
+        unPreSelectCard(cardIndex);
+      } else if (preSelectedCards.length < 5) {
+        preSelectCard(cardIndex);
+      }
     }
   };
 
   const clearPreSelection = () => {
-    resetMultiPoints();
-    setPreSelectedCards([]);
+    if (!preSelectionLocked && handsLeft > 0) {
+      resetMultiPoints();
+      setPreSelectedCards([]);
+    }
   };
 
   useEffect(() => {
@@ -173,22 +180,72 @@ export const Game = () => {
     } */
   };
 
-  if (gameLoading) {
-    return <div>Loading game...</div>;
-  }
-  if (error) {
-    return <div>Error creating game</div>;
+  const [cardPoints, setCardPoints] = useState<AnimatedCardPoints>({});
+  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
+
+  const onPlayClick = () => {
+    play(account.account, gameId, preSelectedCards).then((response) => {
+      if (response) {
+        console.log(response);
+        setPreSelectionLocked(true);
+
+        response.cards.forEach((card, index) => {
+          setTimeout(() => {
+            const { idx, points } = card;
+            setCardPoints({ idx, points });
+            setPoints((prev) => prev + points);
+          }, 700 * index);
+        });
+
+        setTimeout(
+          () => {
+            setCardPoints({});
+            clearPreSelection();
+            refreshHand();
+            handsLeft > 0 && setPreSelectionLocked(false);
+          },
+          700 * response.cards.length + 200
+        );
+      }
+    });
+  };
+
+  const onDiscardClick = () => {
+    setPreSelectionLocked(true)
+    discard(account.account, gameId, preSelectedCards).then(
+      (response) => {
+        if (response) {
+          setTimeout(
+            () => {
+              setPreSelectionLocked(false)
+              clearPreSelection();
+              refreshHand();
+            },
+            1000
+          );
+        }
+      }
+    );
   }
 
-  if (handsLeft === 0) {
+  if (gameLoading) {
     return (
-      <GameOver
-        score={score}
-        onCreateGameClick={() => {
-          executeCreateGame();
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
+      >
+        <Heading className="ui-text" sx={{ m: 10, fontSize: 60 }}>
+          Loading game...
+        </Heading>
+      </Box>
     );
+  }
+  if (error) {
+    return <Heading sx={{ m: 10, fontSize: 30 }}>Error creating game</Heading>;
   }
 
   return (
@@ -280,17 +337,7 @@ export const Game = () => {
                   !handsLeft ||
                   handsLeft === 0
                 }
-                onClick={() => {
-                  play(account.account, gameId, preSelectedCards).then(
-                    (response) => {
-                      if (response) {
-                        console.log(response);
-                        clearPreSelection();
-                        refreshHand();
-                      }
-                    }
-                  );
-                }}
+                onClick={onPlayClick}
                 label={["PLAY", "HAND"]}
                 secondLabel={`${handsLeft} left`}
               />
@@ -311,12 +358,18 @@ export const Game = () => {
                       card && (
                         <Box key={card.id} sx={{ mx: 5 }}>
                           <ModifiableCard id={card.id}>
-                            <TiltCard
-                              card={card}
-                              onClick={() => {
-                                togglePreselected(idx);
-                              }}
-                            />
+                            <AnimatedCard
+                              points={
+                                cardPoints.idx === idx ? cardPoints.points : 0
+                              }
+                            >
+                              <TiltCard
+                                card={card}
+                                onClick={() => {
+                                  togglePreselected(idx);
+                                }}
+                              />
+                            </AnimatedCard>
                           </ModifiableCard>
                         </Box>
                       )
@@ -331,16 +384,7 @@ export const Game = () => {
                   !discardsLeft ||
                   discardsLeft === 0
                 }
-                onClick={() => {
-                  discard(account.account, gameId, preSelectedCards).then(
-                    (response) => {
-                      if (response) {
-                        clearPreSelection();
-                        refreshHand();
-                      }
-                    }
-                  );
-                }}
+                onClick={onDiscardClick}
                 label={["DIS", "CARD"]}
                 secondLabel={`${discardsLeft} left`}
               />
@@ -357,6 +401,7 @@ export const Game = () => {
             >
               <SimpleGrid
                 sx={{
+                  opacity: handsLeft > 0 ? 1 : 0.3,
                   minWidth: `${CARD_WIDTH * 4}px`,
                   maxWidth: `${CARD_WIDTH * 6.5}px`,
                 }}
@@ -392,6 +437,14 @@ export const Game = () => {
                   );
                 })}
               </SimpleGrid>
+              {handsLeft === 0 && (
+                <Heading
+                  className="ui-text"
+                  sx={{ position: "fixed", bottom: '100px', fontSize: 30 }}
+                >
+                  you ran out of hands to play
+                </Heading>
+              )}
             </Box>
           </DndContext>
         </Box>

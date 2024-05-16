@@ -50,7 +50,7 @@ export const useGetCurrentHand = (gameId: number) => {
       // staleTime: 0, // Always consider the data as stale
       // refetchOnMount: true, // Refetch on every mount
       // refetchOnWindowFocus: true, // Refetch on window focus
-      refetchInterval: 500,
+      // refetchInterval: 500,
     }
   );
   const { data } = queryResponse;
