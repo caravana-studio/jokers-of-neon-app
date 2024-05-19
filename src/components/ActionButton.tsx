@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useTheme } from "@chakra-ui/react";
 
 interface IActionButtonProps {
   position: "LEFT" | "RIGHT";
@@ -14,25 +14,26 @@ export const ActionButton = ({
   onClick,
   secondLabel,
 }: IActionButtonProps) => {
-  const color = position === 'RIGHT' ? '#2fcdd7' : '#fd4bad'
+  const { colors } = useTheme();
+  const color = position === "RIGHT" ? colors.opaqueNeonGreen : colors.neonPink;
   const extraSx =
     position === "LEFT"
       ? {
           ml: -130,
           pl: 120,
-          textAlign: 'left'
+          textAlign: "left",
         }
       : {
           mr: -130,
           pr: 120,
-          textAlign: 'right'
+          textAlign: "right",
         };
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 2000,
         height: 300,
         width: 300,
@@ -43,7 +44,7 @@ export const ActionButton = ({
         color: color,
         filter: "blur(0.5px)",
         boxShadow: `0px 0px 10px 0px ${color}`,
-        cursor: disabled ? 'not-allowed' : 'pointer',
+        cursor: disabled ? "not-allowed" : "pointer",
         textShadow: `0 0 5px ${color}`,
         "&:hover": {
           border: `5px solid ${color}`,
@@ -68,7 +69,7 @@ export const ActionButton = ({
             );
           })}
         </Box>
-        <Box sx={{ fontSize: 20, mt: 2, color: 'white' }}>{secondLabel}</Box>
+        <Box sx={{ fontSize: 20, mt: 2, color: "white" }}>{secondLabel}</Box>
       </Box>
     </Box>
   );

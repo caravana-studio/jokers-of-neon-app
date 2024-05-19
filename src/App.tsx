@@ -7,17 +7,12 @@ import {
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
 import { Game } from "./pages/Game";
+import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Poc } from "./pages/Poc";
-import { GameOver } from "./pages/GameOver";
+import customTheme from "./theme";
 
-const { Button } = chakraTheme.components;
-
-const theme = extendBaseTheme({
-  components: {
-    Button,
-  },
-});
+const theme = extendBaseTheme(customTheme);
 
 function App() {
   return (

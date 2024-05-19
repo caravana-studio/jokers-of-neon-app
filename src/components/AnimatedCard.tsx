@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/react";
+import { Heading, useTheme } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { animated, useSpring } from "react-spring";
 
@@ -15,6 +15,8 @@ export const AnimatedCard = ({
   discarded = false,
   played = false,
 }: IAnimatedCardProps) => {
+  const { colors } = useTheme();
+
   const [cardSprings, cardApi] = useSpring(() => ({
     from: { transform: "scale(1)", opacity: 1, x: 0, boxShadow: "0px" },
     config: { tension: 200, friction: 10 },
@@ -31,8 +33,14 @@ export const AnimatedCard = ({
   useEffect(() => {
     if (points) {
       cardApi.start({
-        from: { transform: "scale(1)", boxShadow: "0px 0px 5px 0px #33effa" },
-        to: { transform: "scale(1.1)", boxShadow: "0px 0px 30px 0px #33effa" },
+        from: {
+          transform: "scale(1)",
+          boxShadow: `0px 0px 5px 0px ${colors.neonGreen}`,
+        },
+        to: {
+          transform: "scale(1.1)",
+          boxShadow: `0px 0px 30px 0px  ${colors.neonGreen}`,
+        },
         onRest: () => cardApi.start({ transform: "scale(1)" }),
       });
 
@@ -67,7 +75,13 @@ export const AnimatedCard = ({
             ...pointsSprings,
           }}
         >
-          <Heading sx={{ fontSize: 40, mb: 3, textShadow: "0 0 20px #33effa" }}>
+          <Heading
+            sx={{
+              fontSize: 40,
+              mb: 3,
+              textShadow: `0 0 20px  ${colors.neonGreen}`,
+            }}
+          >
             +{points}
           </Heading>
         </animated.div>

@@ -1,17 +1,17 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, useTheme } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Button } from "../components/Button";
+import { useNavigate } from "react-router-dom";
 import { RollingNumber } from "../components/RollingNumber";
 import { GAME_ID } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
 import { getRound } from "../dojo/utils/getRound";
 import { noisyTv } from "../scripts/noisyTv";
-import { useNavigate } from "react-router-dom";
 
 export const GameOver = () => {
   const [gameId, setGameId] = useState<number>(
     Number(localStorage.getItem(GAME_ID)) ?? 0
   );
+  const { colors } = useTheme();
 
   const {
     setup: {
@@ -25,7 +25,7 @@ export const GameOver = () => {
   const score = round?.score ? Number(round?.score) : 0;
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     noisyTv(100);
   }, []);
@@ -60,32 +60,21 @@ export const GameOver = () => {
       <Heading
         sx={{
           mt: "180px",
-          fontSize: 50,
-          color: "white",
-          textShadow: "0 0 20px #fd4bad",
-          filter: "blur(1px)",
         }}
-        className="ui-text"
+        variant="neonWhite"
+        size="xl"
       >
         SCORE: <RollingNumber n={score} />
       </Heading>
       <Button
+        size="l"
         sx={{
-          fontSize: 40,
-          px: 90,
-          py: 8,
-          borderRadius: 0,
           mt: 10,
-          fontFamily: "Sys",
-          filter: "blur(1px)",
-          textShadow: "0 0 20px #33effa",
           backgroundColor: "transparent",
-          boxShadow: `0px 0px 15px 0px #33effa `,
-          pointerEvents: "all",
         }}
         onClick={() => {
-          localStorage.removeItem(GAME_ID)
-          navigate('/demo')
+          localStorage.removeItem(GAME_ID);
+          navigate("/demo");
         }}
       >
         START NEW GAME

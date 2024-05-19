@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, useTheme } from "@chakra-ui/react";
 import { RollingNumber } from "./RollingNumber";
 
 interface MultiPointsProps {
@@ -11,16 +11,14 @@ export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
     <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
       <PointBox type="points">
         <Heading>POINTS</Heading>
-        <Heading sx={{ fontSize: 40, color: "#33effa" }}>
+        <Heading sx={{ fontSize: 40, color: "neonGreen" }}>
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
       <Heading sx={{ fontSize: 25 }}>x</Heading>
       <PointBox type="multi">
         <Heading>MULTI</Heading>
-        <Heading sx={{ fontSize: 40, color: "#fd4bad" }}>
-          {multi}
-        </Heading>
+        <Heading sx={{ fontSize: 40, color: "neonPink" }}>{multi}</Heading>
       </PointBox>
     </Box>
   );
@@ -31,7 +29,8 @@ interface PointBoxProps {
   type: "points" | "multi";
 }
 export const PointBox = ({ children, type }: PointBoxProps) => {
-  const color = type === "points" ? "#33effa" : "#fd4bad";
+  const { colors } = useTheme();
+  const color = type === "points" ? colors.neonGreen : colors.neonPink;
   return (
     <Box
       sx={{

@@ -1,11 +1,18 @@
-import { Box, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  GridItem,
+  Heading,
+  SimpleGrid,
+  useTheme,
+} from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { AnimatedCard } from "../components/AnimatedCard";
-import { Button } from "../components/Button";
+import AudioPlayer from "../components/AudioPlayer";
 import { ChannelText } from "../components/ChannelText";
 import { ModifiableCard } from "../components/ModifiableCard";
 import { MultiPoints } from "../components/MultiPoints";
@@ -20,7 +27,6 @@ import { Plays } from "../enums/plays";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetRound } from "../queries/useGetRound";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
-import AudioPlayer from "../components/AudioPlayer";
 
 export const Game = () => {
   // state
@@ -40,7 +46,7 @@ export const Game = () => {
 
   // hooks
   const navigate = useNavigate();
-
+  const { colors } = useTheme();
   const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
@@ -238,8 +244,12 @@ export const Game = () => {
         }}
       >
         <Heading
-          className="ui-text"
-          sx={{ m: 10, fontSize: 60, textShadow: "0 0 20px #33effa" }}
+          variant="neonGreen"
+          sx={{
+            m: 10,
+            fontSize: 60,
+            textShadow: `0 0 20px ${colors.neonGreen}`,
+          }}
         >
           Loading game...
         </Heading>
@@ -297,17 +307,15 @@ export const Game = () => {
               }}
             >
               <Heading
-                className="ui-text"
+                variant="neonWhite"
+                size="l"
                 sx={{
-                  fontSize: 40,
                   mb: 4,
-                  color: "white",
-                  textShadow: "0 0 20px #fd4bad",
                 }}
               >
                 SCORE: <RollingNumber n={score} />
               </Heading>
-              <Heading className="ui-text" sx={{ fontSize: 25, mb: 2 }}>
+              <Heading variant="neonGreen" size="m" sx={{ mb: 2 }}>
                 CURRENT PLAY: {PLAYS[preSelectedPlay]}
               </Heading>
               <MultiPoints multi={multi} points={points} />
@@ -431,7 +439,7 @@ export const Game = () => {
               </SimpleGrid>
               {handsLeft === 0 && (
                 <Heading
-                  className="ui-text"
+                  variant="neonGreen"
                   sx={{ position: "fixed", bottom: "100px", fontSize: 30 }}
                 >
                   you ran out of hands to play
