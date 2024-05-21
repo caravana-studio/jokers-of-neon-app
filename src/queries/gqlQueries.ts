@@ -5,11 +5,10 @@ export const GET_CURRENT_HAND_QUERY = gql`
     currentHandCardModels(first: 30, where: { game_idEQ: $gameId }) {
       edges {
         node {
-          suit
           idx
           type_card
-          value
           game_id
+          player_card_id
         }
       }
     }
@@ -24,6 +23,21 @@ export const GET_ROUND_QUERY = gql`
           score
           hands
           discard
+        }
+      }
+    }
+  }
+`;
+
+export const GET_COMMON_CARDS = gql`
+  query GetCommonCards($gameId: ID!) {
+    playerCommonCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
+      edges {
+        node {
+          idx
+          game_id
+          value
+          suit
         }
       }
     }

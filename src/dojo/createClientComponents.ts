@@ -19,5 +19,6 @@ export function createClientComponents({
         CurrentHandCard: overridableComponent(contractComponents.CurrentHandCard),
         DeckCard: overridableComponent(contractComponents.DeckCard),
         Round: overridableComponent(contractComponents.Round),
+        PlayerCommonCards: overridableComponent(contractComponents.PlayerCommonCards),
     };
 }

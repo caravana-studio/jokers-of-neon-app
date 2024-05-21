@@ -24,6 +24,7 @@ import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { Plays } from "../enums/plays";
+import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetRound } from "../queries/useGetRound";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
@@ -47,7 +48,12 @@ export const Game = () => {
   // hooks
   const navigate = useNavigate();
   const { colors } = useTheme();
-  const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const { data: playerCommonCards, refetch: refetchCommonCards } =
+    useGetCommonCards(gameId);
+  const { data: hand, refetch: refetchHand } = useGetCurrentHand(
+    gameId,
+    playerCommonCards
+  );
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
   const {
@@ -117,7 +123,9 @@ export const Game = () => {
         setTimeout(() => {
           setPreSelectionLocked(false);
           setGameLoading(false);
-          refetch();
+          refetchCommonCards().then(() => {
+            refetch();
+          });
         }, 3000);
       } else {
         setError(true);

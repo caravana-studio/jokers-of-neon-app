@@ -1,11 +1,9 @@
 import { useQuery } from "react-query";
-import { Cards } from "../enums/cards";
-import { Suits } from "../enums/suits";
 import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
 import { sortCards } from "../utils/sortCards";
-import { zeroPad } from "../utils/zeroPad";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
+import { useGetCommonCards } from "./useGetCommonCards";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -13,9 +11,8 @@ interface CardEdge {
   node: {
     game_id: number;
     idx: number;
-    suit: string;
     type_card: string;
-    value: string;
+    player_card_id: number;
   };
 }
 
@@ -41,35 +38,30 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-export const useGetCurrentHand = (gameId: number) => {
+export const useGetCurrentHand = (gameId: number, playerCommonCards: Card[]) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
-    {
-      // cacheTime: 0, // Immediately remove the query from the cache
-      // staleTime: 0, // Always consider the data as stale
-      // refetchOnMount: true, // Refetch on every mount
-      // refetchOnWindowFocus: true, // Refetch on window focus
-      // refetchInterval: 500,
-    }
+    {enabled: playerCommonCards.length > 0}
   );
   const { data } = queryResponse;
 
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []
-  ).map((edge) => {
-    const dojoCard = edge.node;
-    const value = Cards[dojoCard!.value.toUpperCase() as keyof typeof Cards];
-    const suit = Suits[dojoCard!.suit.toUpperCase() as keyof typeof Suits];
-    const img = `${dojoCard!.suit.charAt(0)}${zeroPad(value, 2)}.png`;
-    return {
-      id: dojoCard!.idx.toString(),
-      value,
-      idx: dojoCard!.idx,
-      suit,
-      img,
-    };
-  });
+  )
+    .filter((edge) => {
+      const dojoCard = edge.node;
+      return !!playerCommonCards.find(
+        (card) => card.idx === dojoCard.player_card_id
+      );
+    })
+    .map((edge) => {
+      const dojoCard = edge.node;
+      const commonCard = playerCommonCards.find(
+        (card) => card.idx === dojoCard.player_card_id
+      )!;
+      return { ...commonCard, idx: dojoCard.idx, id: dojoCard.idx.toString() };
+    });
 
   return {
     ...queryResponse,
