@@ -6,7 +6,7 @@ export const GET_CURRENT_HAND_QUERY = gql`
       edges {
         node {
           idx
-          type_card
+          type_player_card
           game_id
           player_card_id
         }
