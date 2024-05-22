@@ -3,7 +3,6 @@ import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
-import { useGetCommonCards } from "./useGetCommonCards";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -11,7 +10,7 @@ interface CardEdge {
   node: {
     game_id: number;
     idx: number;
-    type_card: string;
+    type_player_card: string;
     player_card_id: number;
   };
 }
