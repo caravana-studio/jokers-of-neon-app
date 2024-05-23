@@ -37,11 +37,15 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-export const useGetCurrentHand = (gameId: number, playerCommonCards: Card[]) => {
+export const useGetCurrentHand = (
+  gameId: number,
+  playerCommonCards: Card[],
+  playerEffectCards: Card[]
+) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
-    {enabled: playerCommonCards.length > 0}
+    { enabled: playerCommonCards.length > 0 }
   );
   const { data } = queryResponse;
 
@@ -59,11 +63,17 @@ export const useGetCurrentHand = (gameId: number, playerCommonCards: Card[]) => 
       const commonCard = playerCommonCards.find(
         (card) => card.idx === dojoCard.player_card_id
       )!;
-      return { ...commonCard, idx: dojoCard.idx, id: dojoCard.idx.toString() };
+      const effectCard = playerEffectCards.find(
+        (card) => card.idx === dojoCard.player_card_id
+      )!;
+      const card =
+        dojoCard.type_player_card === "Effect" ? effectCard : commonCard;
+      return { ...card, idx: dojoCard.idx, id: dojoCard.idx.toString() };
     });
 
+  const sortedCards = sortCards(cards);
   return {
     ...queryResponse,
-    data: sortCards(cards),
+    data: sortedCards,
   };
 };

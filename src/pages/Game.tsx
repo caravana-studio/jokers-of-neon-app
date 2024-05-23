@@ -26,8 +26,10 @@ import { gameExists } from "../dojo/utils/getGame";
 import { Plays } from "../enums/plays";
 import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
+import { Card } from "../types/Card";
 
 export const Game = () => {
   // state
@@ -50,9 +52,13 @@ export const Game = () => {
   const { colors } = useTheme();
   const { data: playerCommonCards, refetch: refetchCommonCards } =
     useGetCommonCards(gameId);
+
+  const { data: playerEffectCards, refetch: refetchEffectCards } =
+    useGetEffectCards(gameId);
   const { data: hand, refetch: refetchHand } = useGetCurrentHand(
     gameId,
-    playerCommonCards
+    playerCommonCards,
+    playerEffectCards
   );
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
@@ -124,7 +130,9 @@ export const Game = () => {
           setPreSelectionLocked(false);
           setGameLoading(false);
           refetchCommonCards().then(() => {
-            refetch();
+            refetchEffectCards().then(() => {
+              refetch();
+            });
           });
         }, 3000);
       } else {
@@ -167,15 +175,18 @@ export const Game = () => {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    //TODO: Review when we introduce modifiers
-    /* const modifiedCard = event.over?.id;
+    const modifiedCard = event.over?.id;
     const modifier = event.active?.id;
+    console.log(modifiedCard);
+    console.log(modifier);
     if (modifiedCard && modifier) {
       const handModifier = hand.find(
         (handModifier) => handModifier.id === modifier
       );
+      console.log("handModifier", handModifier);
       if (handModifier) {
-        const nextPreselectedCards = preSelectedCards.map((card) => {
+        
+        /*         const nextPreselectedCards = preSelectedCards.map((card) => {
           if (card.id === modifiedCard) {
             return {
               ...card,
@@ -188,9 +199,9 @@ export const Game = () => {
         setPreSelectedCards(nextPreselectedCards);
         togglePreselected(
           hand.findIndex((handCard) => handCard.id === modifier)
-        );
+        ); */
       }
-    } */
+    }
   };
 
   const onPlayClick = () => {
@@ -423,7 +434,7 @@ export const Game = () => {
                 {hand.map((card, index) => {
                   return (
                     <GridItem
-                      key={card.img}
+                      key={card.idx}
                       w="100%"
                       sx={{
                         transform: ` rotate(${
