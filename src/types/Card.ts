@@ -1,5 +1,6 @@
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
+import { Effect } from "./Effect";
 
 export interface Card {
   id: string;
@@ -11,4 +12,12 @@ export interface Card {
   isModifier?: boolean;
   isSpecial?: boolean;
   idx: number;
+}
+
+export interface StaticEffectCard extends Effect {
+  id: number;
+  effect_id: number;
+  type_effect_card: string;
+  price: number;
+  probability: number;
 }

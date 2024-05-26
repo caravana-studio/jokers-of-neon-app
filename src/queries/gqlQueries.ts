@@ -6,7 +6,7 @@ export const GET_CURRENT_HAND_QUERY = gql`
       edges {
         node {
           idx
-          type_card
+          type_player_card
           game_id
           player_card_id
         }
@@ -37,6 +37,52 @@ export const GET_COMMON_CARDS = gql`
           idx
           game_id
           value
+          suit
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PLAYER_EFFECT_CARDS = gql`
+  query GetPlayerEffectCards($gameId: ID!) {
+    playerEffectCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
+      edges {
+        node {
+          idx
+          game_id
+          effect_card_id
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STATIC_EFFECT_CARDS = gql`
+  query {
+    effectCardModels(first: 1000) {
+      edges {
+        node {
+          id
+          effect_id
+          type_effect_card
+          price
+          probability
+        }
+      }
+    }
+  }
+`;
+
+export const GET_STATIC_EFFECTS = gql`
+  query {
+    effectModels(first: 1000) {
+      edges {
+        node {
+          id
+          points
+          multi_add
+          multi_multi
           suit
         }
       }
