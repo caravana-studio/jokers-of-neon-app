@@ -44,7 +44,7 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
           sx={{
             zIndex: 5 - index,
             marginTop: `-${CARD_HEIGHT + MODIFIERS_OFFSET}px`,
-            marginLeft: `-${MODIFIERS_OFFSET * (index + 1)}px`,
+            marginLeft: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
             position: "relative",
           }}
         >

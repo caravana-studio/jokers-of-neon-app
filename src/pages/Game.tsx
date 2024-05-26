@@ -74,6 +74,10 @@ export const Game = () => {
   const score = round?.score;
   const handsLeft = round?.hands;
   const discardsLeft = round?.discards;
+  const regularPreSelectedCards = preSelectedCards.filter((idx) => {
+    const card = hand.find((c) => c.idx === idx);
+    return !card?.isModifier;
+  });
 
   //effects
   useEffect(() => {
@@ -146,8 +150,14 @@ export const Game = () => {
   };
 
   const unPreSelectCard = (cardIndex: number) => {
+    const preSelectedIndex = preSelectedCards.findIndex(
+      (idx) => idx === cardIndex
+    );
+    const modifiers = getModifiers(preSelectedIndex);
+    const modifierIndexes = modifiers.map((modifier) => modifier.idx);
+    const indexes = [...modifierIndexes, cardIndex];
     setPreSelectedCards((prev) => {
-      return prev.filter((idx) => idx !== cardIndex);
+      return prev.filter((idx) => !indexes.includes(idx));
     });
   };
 
@@ -161,7 +171,7 @@ export const Game = () => {
     if (!preSelectionLocked && handsLeft > 0) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
-      } else if (preSelectedCards.length < 5) {
+      } else if (regularPreSelectedCards.length < 5) {
         preSelectCard(cardIndex);
       }
     }
@@ -175,31 +185,21 @@ export const Game = () => {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const modifiedCard = event.over?.id;
-    const modifier = event.active?.id;
-    console.log(modifiedCard);
-    console.log(modifier);
-    if (modifiedCard && modifier) {
-      const handModifier = hand.find(
-        (handModifier) => handModifier.id === modifier
-      );
-      console.log("handModifier", handModifier);
-      if (handModifier) {
-        
-        /*         const nextPreselectedCards = preSelectedCards.map((card) => {
-          if (card.id === modifiedCard) {
-            return {
-              ...card,
-              modifiers: [...(card.modifiers ?? []), handModifier],
-            };
-          } else {
-            return card;
-          }
-        });
-        setPreSelectedCards(nextPreselectedCards);
-        togglePreselected(
-          hand.findIndex((handCard) => handCard.id === modifier)
-        ); */
+    const modifiedCard = Number(event.over?.id);
+    const modifier = Number(event.active?.id);
+    if (!isNaN(modifiedCard) && !isNaN(modifier)) {
+      const index = preSelectedCards.indexOf(modifiedCard);
+      if (index !== -1) {
+        const modifiers = getModifiers(index);
+        if (modifiers.length < 2) {
+          const updatedPreselectedCards = [...preSelectedCards];
+          updatedPreselectedCards.splice(
+            modifiers.length === 1 ? index - 1 : index,
+            0,
+            modifier
+          );
+          setPreSelectedCards(updatedPreselectedCards);
+        }
       }
     }
   };
@@ -250,6 +250,22 @@ export const Game = () => {
         }, 1500);
       }
     });
+  };
+
+  const getModifiers = (preSelectedCardIndex: number): Card[] => {
+    let modifiers: Card[] = [];
+    const modifier1Idx = preSelectedCards[preSelectedCardIndex - 1];
+    const modifier2Idx = preSelectedCards[preSelectedCardIndex - 2];
+    const modifier1 = hand.find((c) => c.idx === modifier1Idx);
+    const modifier2 = hand.find((c) => c.idx === modifier2Idx);
+    if (modifier1?.isModifier) {
+      if (modifier2?.isModifier) {
+        modifiers = [modifier1, modifier2];
+      } else {
+        modifiers = [modifier1];
+      }
+    }
+    return modifiers;
   };
 
   if (gameLoading) {
@@ -374,11 +390,16 @@ export const Game = () => {
                 }}
               >
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  {preSelectedCards.map((idx) => {
+                  {regularPreSelectedCards.map((idx) => {
                     const card = hand.find((c) => c.idx === idx);
+                    const preSelectedCardIndex = preSelectedCards.findIndex(
+                      (c) => c === idx
+                    );
+                    const modifiers = getModifiers(preSelectedCardIndex);
+                    const modifiedCard: Card = { ...card!, modifiers };
                     return (
                       card && (
-                        <Box key={card.id} sx={{ mx: 5 }}>
+                        <Box key={card.id} sx={{ mx: 6 }}>
                           <ModifiableCard id={card.id}>
                             <AnimatedCard
                               points={
@@ -388,7 +409,7 @@ export const Game = () => {
                               played={playAnimation}
                             >
                               <TiltCard
-                                card={card}
+                                card={modifiedCard}
                                 onClick={() => {
                                   togglePreselected(idx);
                                 }}

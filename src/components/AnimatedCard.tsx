@@ -73,6 +73,7 @@ export const AnimatedCard = ({
             top: 0,
             left: "50%",
             ...pointsSprings,
+            zIndex: 99,
           }}
         >
           <Heading
