@@ -8,6 +8,7 @@ import "./App.scss";
 import { Game } from "./pages/Game";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
+import { Login } from './pages/Login'
 import { Poc } from "./pages/Poc";
 import { StaticCardsProvider } from "./providers/StaticCardsProvider";
 import customTheme from "./theme";
@@ -24,6 +25,7 @@ function App() {
             <div className="overlay">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/gameover" element={<GameOver />} />
                 <Route
                   path="/demo"
