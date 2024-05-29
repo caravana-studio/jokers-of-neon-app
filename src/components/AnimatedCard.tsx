@@ -1,6 +1,7 @@
 import { Heading, useTheme } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { animated, useSpring } from "react-spring";
+import { CARD_WIDTH_PX } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 
 export interface IAnimatedCardProps {
@@ -35,7 +36,7 @@ export const AnimatedCard = ({
 
   useEffect(() => {
     if ((points || multi) && animatedCardIdx === idx) {
-      const animateColor = points ? colors.neonGreen : colors.neonPink
+      const animateColor = points ? colors.neonGreen : colors.neonPink;
       cardApi.start({
         from: {
           transform: "scale(1)",
@@ -69,7 +70,9 @@ export const AnimatedCard = ({
   }, [discarded, played]);
 
   return (
-    <animated.div style={{ position: "relative", ...cardSprings }}>
+    <animated.div
+      style={{ position: "relative", width: CARD_WIDTH_PX, ...cardSprings }}
+    >
       {!!(points || multi) && animatedCardIdx === idx && (
         <animated.div
           style={{
