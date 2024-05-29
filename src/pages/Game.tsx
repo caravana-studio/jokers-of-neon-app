@@ -24,11 +24,11 @@ import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { Plays } from "../enums/plays";
+import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
-import { AnimatedCardPoints } from "../types/AnimatedCardPoints";
 import { Card } from "../types/Card";
 
 export const Game = () => {
@@ -38,7 +38,6 @@ export const Game = () => {
   );
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
-  const [cardPoints, setCardPoints] = useState<AnimatedCardPoints>({});
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [discardAnimation, setDiscardAnimation] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
@@ -69,6 +68,12 @@ export const Game = () => {
     },
     account,
   } = useDojo();
+
+  const {
+    setAnimatedCardIdx,
+    setPoints: setAnimatedPoints,
+    setMulti: setAnimatedMulti,
+  } = useCardAnimations();
 
   // dojo variables
   const score = round?.score;
@@ -211,9 +216,12 @@ export const Game = () => {
         setPreSelectionLocked(true);
         response.cards.forEach((card, index) => {
           setTimeout(() => {
-            const { idx, points } = card;
-            setCardPoints({ idx, points });
+            const { idx, points, multi } = card;
+            setAnimatedCardIdx(idx);
+            setAnimatedPoints(points);
+            multi && setAnimatedMulti(multi);
             setPoints((prev) => prev + points);
+            multi && setMulti((prev) => prev + multi);
           }, 700 * index);
         });
 
@@ -226,7 +234,10 @@ export const Game = () => {
 
         setTimeout(
           () => {
-            setCardPoints({});
+            setAnimatedCardIdx(undefined);
+            setAnimatedPoints(0);
+            setAnimatedMulti(0);
+
             setPlayAnimation(false);
             clearPreSelection();
             refetch();
@@ -403,9 +414,7 @@ export const Game = () => {
                         <Box key={card.id} sx={{ mx: 6 }}>
                           <ModifiableCard id={card.id}>
                             <AnimatedCard
-                              points={
-                                cardPoints.idx === idx ? cardPoints.points : 0
-                              }
+                              idx={card.idx}
                               discarded={discardAnimation}
                               played={playAnimation}
                             >
