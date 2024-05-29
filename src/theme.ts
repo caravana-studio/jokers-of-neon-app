@@ -73,6 +73,9 @@ export default {
         xl: {
           fontSize: 50,
           filter: "blur(1px)",
+        },        xxl: {
+          fontSize: 80,
+          filter: "blur(1px)",
         },
       },
     },
