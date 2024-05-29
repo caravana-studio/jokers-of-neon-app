@@ -194,7 +194,7 @@ export const Game = () => {
         if (modifiers.length < 2) {
           const updatedPreselectedCards = [...preSelectedCards];
           updatedPreselectedCards.splice(
-            modifiers.length === 1 ? index - 1 : index,
+            index + 1 + modifiers.length,
             0,
             modifier
           );
@@ -206,6 +206,7 @@ export const Game = () => {
 
   const onPlayClick = () => {
     play(account.account, gameId, preSelectedCards).then((response) => {
+      console.log("response", response);
       if (response) {
         setPreSelectionLocked(true);
         response.cards.forEach((card, index) => {
@@ -254,8 +255,8 @@ export const Game = () => {
 
   const getModifiers = (preSelectedCardIndex: number): Card[] => {
     let modifiers: Card[] = [];
-    const modifier1Idx = preSelectedCards[preSelectedCardIndex - 1];
-    const modifier2Idx = preSelectedCards[preSelectedCardIndex - 2];
+    const modifier1Idx = preSelectedCards[preSelectedCardIndex + 1];
+    const modifier2Idx = preSelectedCards[preSelectedCardIndex + 2];
     const modifier1 = hand.find((c) => c.idx === modifier1Idx);
     const modifier2 = hand.find((c) => c.idx === modifier2Idx);
     if (modifier1?.isModifier) {
