@@ -6,7 +6,7 @@ import { SOUND_OFF } from "../constants/localStorage";
 const OPTIONS = [
   {
     label: "Play demo",
-    href: "/demo",
+    href: "/login",
   },
   {
     label: "sound",
