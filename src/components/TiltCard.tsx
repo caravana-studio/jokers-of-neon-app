@@ -41,6 +41,7 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
       </Box>
       {card.modifiers?.map((c, index) => (
         <Box
+          key={c.id}
           sx={{
             zIndex: 5 - index,
             marginTop: `-${CARD_HEIGHT + MODIFIERS_OFFSET}px`,
