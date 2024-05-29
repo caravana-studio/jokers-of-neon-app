@@ -45,17 +45,36 @@ export const GET_COMMON_CARDS = gql`
 `;
 
 export const GET_PLAYER_EFFECT_CARDS = gql`
-  query GetPlayerEffectCards($gameId: ID!) {
-    playerEffectCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
-      edges {
-        node {
-          idx
-          game_id
-          effect_card_id
+    query GetPlayerEffectCards($gameId: ID!) {
+        playerEffectCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
+            edges {
+                node {
+                    idx
+                    game_id
+                    effect_card_id
+                }
+            }
         }
-      }
     }
-  }
+`;
+
+export const GET_DECK_QUERY = gql`
+    query GetDeck($gameId: ID!) {
+        roundModels(where: { game_idEQ: $gameId }) {
+            edges {
+                node {
+                    current_len_deck
+                }
+            }
+        }
+        playerCommonCardsModels(where: { game_idEQ: $gameId }) {
+            totalCount
+        }
+        playerEffectCardsModels(where: { game_idEQ: $gameId }) {
+            totalCount
+        }
+    }
+
 `;
 
 export const GET_STATIC_EFFECT_CARDS = gql`
