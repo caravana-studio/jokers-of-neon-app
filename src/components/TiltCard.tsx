@@ -7,6 +7,7 @@ import {
   TILT_OPTIONS,
 } from "../constants/visualProps";
 import { Card } from "../types/Card";
+import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 
 interface ICardProps {
@@ -50,16 +51,18 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
           }}
         >
           <Tilt options={TILT_OPTIONS}>
-            <Image
-              sx={{ maxWidth: "unset" }}
-              src={`Cards/${c.img}`}
-              alt={c.img}
-              width={CARD_WIDTH_PX}
-              onClick={(e) => {
-                e.stopPropagation();
-                onClick?.();
-              }}
-            />
+            <AnimatedCard idx={c.idx}>
+              <Image
+                sx={{ maxWidth: "unset" }}
+                src={`Cards/${c.img}`}
+                alt={c.img}
+                width={CARD_WIDTH_PX}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClick?.();
+                }}
+              />
+            </AnimatedCard>
           </Tilt>
         </Box>
       ))}

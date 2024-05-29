@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
 import { useGetStaticEffectCards } from "../queries/useGetStaticEffectCards";
 import { StaticEffectCard } from "../types/Card";
 import { useGetStaticEffects } from "../queries/useGetStaticEffects";
@@ -12,11 +12,7 @@ const StaticCardsContext = createContext<IStaticCardsContext>({
 });
 export const useStaticCards = () => useContext(StaticCardsContext);
 
-interface StaticCardProviderProps {
-  children: React.ReactNode;
-}
-
-export const StaticCardsProvider = ({ children }: StaticCardProviderProps) => {
+export const StaticCardsProvider = ({ children }: PropsWithChildren) => {
   const { data: effects } = useGetStaticEffects();
   const { data: effectCards } = useGetStaticEffectCards(effects);
   return (
