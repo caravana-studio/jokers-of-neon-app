@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { Menu } from "../components/Menu";
+import { PoweredBy } from "../components/PoweredBy";
 import { noisyTv } from "../scripts/noisyTv";
 
 export const Home = () => {
@@ -41,20 +41,7 @@ export const Home = () => {
           <span>PRESS A KEY TO START</span>
         </div>
       )}
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 10,
-          zIndex: 1000,
-          color: "white",
-          fontFamily: "Sys",
-          fontSize: 17,
-          filter: "blur(1px)",
-          opacity: 0.7,
-        }}
-      >
-        powered by Dojo and Starknet
-      </Box>
+      <PoweredBy />
     </>
   );
 };

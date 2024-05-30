@@ -18,7 +18,7 @@ import { ModifiableCard } from "../components/ModifiableCard";
 import { MultiPoints } from "../components/MultiPoints";
 import { RollingNumber } from "../components/RollingNumber";
 import { TiltCard } from "../components/TiltCard";
-import { GAME_ID } from "../constants/localStorage";
+import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
@@ -83,6 +83,9 @@ export const Game = () => {
     const card = hand.find((c) => c.idx === idx);
     return !card?.isModifier;
   });
+  const lsUser = localStorage.getItem(LOGGED_USER);
+  const address = account?.account?.address;
+  const username = lsUser ?? address ?? '0xtest'
 
   //effects
   useEffect(() => {
@@ -129,7 +132,7 @@ export const Game = () => {
   const executeCreateGame = () => {
     console.log("Creating game...");
     setGameLoading(true);
-    createGame(account.account).then((newGameId) => {
+    createGame(account.account, username).then((newGameId) => {
       if (newGameId) {
         setGameId(newGameId);
         clearPreSelection();

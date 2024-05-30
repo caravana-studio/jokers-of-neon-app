@@ -113,11 +113,11 @@ export function defineContractComponents(world: World) {
     Game: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, owner: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, score: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_current_special_cards: RecsType.Number, game_over: RecsType.Boolean },
+        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, score: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_current_special_cards: RecsType.Number, game_over: RecsType.Boolean },
         {
           metadata: {
             name: "Game",
-            types: ["u32","contractaddress","u8","u8","u8","u32","u32","u32","u32","u32","bool"],
+            types: ["u32","contractaddress","felt252","u8","u8","u8","u32","u32","u32","u32","u32","bool"],
             customTypes: [],
           },
         }

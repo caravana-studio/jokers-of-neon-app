@@ -677,8 +677,8 @@
     {
       "kind": "DojoContract",
       "address": "0x57e3a921a94df6c6893eb3fcc06d69b45faf1b48592a6b4aff59a3fdaeb1fe0",
-      "class_hash": "0x4595115ea3949b9261609db80c8986331c7a1852ce52d68deb5337e6fa61bbf",
-      "original_class_hash": "0x4595115ea3949b9261609db80c8986331c7a1852ce52d68deb5337e6fa61bbf",
+      "class_hash": "0x133e54ffeee989a9f85319a7daddbf4cb0356640b9d6016c35cda65b967a647",
+      "original_class_hash": "0x133e54ffeee989a9f85319a7daddbf4cb0356640b9d6016c35cda65b967a647",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x14ef99e23836e14fa7e1cd043b931a37d0332a1d09a7808d78259c30b40f971",
-      "original_class_hash": "0x14ef99e23836e14fa7e1cd043b931a37d0332a1d09a7808d78259c30b40f971",
+      "class_hash": "0x1c2f7d5442faa792e5a2fdc01ba79b07161c3e7035df69d2f15978f7b94e6e1",
+      "original_class_hash": "0x1c2f7d5442faa792e5a2fdc01ba79b07161c3e7035df69d2f15978f7b94e6e1",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -941,7 +941,12 @@
             {
               "type": "function",
               "name": "create_game",
-              "inputs": [],
+              "inputs": [
+                {
+                  "name": "player_name",
+                  "type": "core::felt252"
+                }
+              ],
               "outputs": [
                 {
                   "type": "core::integer::u32"
@@ -1089,8 +1094,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6c5c534545a045962ebcc414b57582c5b7deb266c0bb1bac13a2938c2dabf99",
-      "original_class_hash": "0x6c5c534545a045962ebcc414b57582c5b7deb266c0bb1bac13a2938c2dabf99",
+      "class_hash": "0x6314bc1cde5e1b217d103f19b75a0d05904c2e262f40f913c4a9794a0787705",
+      "original_class_hash": "0x6314bc1cde5e1b217d103f19b75a0d05904c2e262f40f913c4a9794a0787705",
       "abi": [
         {
           "type": "impl",
@@ -1269,6 +1274,10 @@
           "type": "enum",
           "name": "jokers_of_neon::models::data::card::Value",
           "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
             {
               "name": "Two",
               "type": "()"
@@ -3291,6 +3300,11 @@
           "key": false
         },
         {
+          "name": "player_name",
+          "type": "felt252",
+          "key": false
+        },
+        {
           "name": "max_hands",
           "type": "u8",
           "key": false
@@ -3336,8 +3350,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x3993ab7bfecd8160a5fc259d49be99e4962f8e9a859448994e520e1dc43af90",
-      "original_class_hash": "0x3993ab7bfecd8160a5fc259d49be99e4962f8e9a859448994e520e1dc43af90",
+      "class_hash": "0x65ef4e35b101d6e69cc5bbeaea2e75cb99e604efe01bb9e2925cc6294b7d89e",
+      "original_class_hash": "0x65ef4e35b101d6e69cc5bbeaea2e75cb99e604efe01bb9e2925cc6294b7d89e",
       "abi": [
         {
           "type": "impl",
@@ -3539,6 +3553,10 @@
               "type": "core::starknet::contract_address::ContractAddress"
             },
             {
+              "name": "player_name",
+              "type": "core::felt252"
+            },
+            {
               "name": "max_hands",
               "type": "core::integer::u8"
             },
@@ -3627,8 +3645,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x95220cba5eb707d4f190a0d4c5448e6d2c0fa89ac96938dc137e9bf2cd2679",
-      "original_class_hash": "0x95220cba5eb707d4f190a0d4c5448e6d2c0fa89ac96938dc137e9bf2cd2679",
+      "class_hash": "0x53eb22ad26a80d6bcc45b374a79fe9e8db4b5ce04da839ce21307eec272455f",
+      "original_class_hash": "0x53eb22ad26a80d6bcc45b374a79fe9e8db4b5ce04da839ce21307eec272455f",
       "abi": [
         {
           "type": "impl",
@@ -3807,6 +3825,10 @@
           "type": "enum",
           "name": "jokers_of_neon::models::data::card::Value",
           "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
             {
               "name": "Two",
               "type": "()"
