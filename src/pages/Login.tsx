@@ -1,8 +1,10 @@
-import { Box, Input, useToast } from "@chakra-ui/react"
-import { useEffect, useState, useRef } from "react";
+import { Box, Heading, Input, useToast } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PoweredBy } from "../components/PoweredBy";
+import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useDojo } from "../dojo/useDojo";
 import { noisyTv } from "../scripts/noisyTv";
-import { useNavigate } from 'react-router-dom'
-import { LOGGED_USER } from "../constants/localStorage";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -10,56 +12,76 @@ export const Login = () => {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [username, setUsername] = useState("");
-  const toast = useToast()
+  const [creatingGame, setCreatingGame] = useState(false);
+  const toast = useToast();
+
+  const {
+    setup: {
+      systemCalls: { createGame },
+    },
+    account,
+  } = useDojo();
 
   const redirectToGame = () => {
-    navigate('/demo');
-  }
+    navigate("/demo");
+  };
 
   useEffect(() => {
     // if user is logged in, redirect to game
     const user = localStorage.getItem(LOGGED_USER);
-    if(user) {
+    if (user) {
       redirectToGame();
     }
   }, []);
 
   const showErrorToast = (message: string): void => {
     toast({
-      title: 'Validation error',
+      title: "Validation error",
       description: message,
-      status: 'error',
+      status: "error",
       duration: 9000,
-      isClosable: true
-    })
-  }
+      isClosable: true,
+    });
+  };
 
   const validateAndCreateUser = () => {
-    if(!username) {
-      showErrorToast('Please enter username');
+    setCreatingGame(true);
+    if (!username) {
+      showErrorToast("Please enter username");
       return;
     }
-    if(username.length < 3) {
-      showErrorToast('Username must be at least 3 characters');
+    if (username.length < 3) {
+      showErrorToast("Username must be at least 3 characters");
       return;
     }
-    if(username.length > 15) {
-      showErrorToast('Username must be at most 15 characters');
+    if (username.length > 15) {
+      showErrorToast("Username must be at most 15 characters");
       return;
     }
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
-    if(!regExpression.test(username)) {
-      showErrorToast('Username must contain only letters, numbers, . , - , _');
+    if (!regExpression.test(username)) {
+      showErrorToast("Username must contain only letters, numbers, . , - , _");
       return;
     }
     localStorage.setItem(LOGGED_USER, username);
-    redirectToGame();
-  }
+    createGame(account.account, username).then((newGameId) => {
+      if (newGameId) {
+        localStorage.setItem(GAME_ID, newGameId.toString());
+        console.log(`game ${newGameId} created`);
+        setTimeout(() => {
+          redirectToGame();
+        }, 3000);
+      } else {
+        setCreatingGame(false);
+        showErrorToast("Error creating game");
+      }
+    });
+  };
 
   const onKeyDown = (event: { key: string }) => {
     if (event.key === "Enter" || event.key === " ") {
-      validateAndCreateUser()
+      validateAndCreateUser();
     } else if (event.key === "Escape") {
       navigate("/");
     }
@@ -90,21 +112,26 @@ export const Login = () => {
         <span>AV-1</span>
         <span>AV-1</span>
       </div>
-      {
+
+      {creatingGame ? (
+        <Heading variant="neonGreen" size="l">
+          creating game...
+        </Heading>
+      ) : (
         <div className="menu">
           <header>Introduce username</header>
-          <Box mb={'10px'} px={'15px'}>
+          <Box mb={7} px={5}>
             <Input
               isInvalid
               id="usernameInputField"
               type="text"
               placeholder="Username"
-              _placeholder={{ p: 3}}
-              color={'gray'}
+              color={"gray"}
               ref={inputRef}
               maxLength={15}
+              sx={{ px: 5 }}
               onChange={(e) => {
-                setUsername(e.target.value)
+                setUsername(e.target.value);
               }}
             />
           </Box>
@@ -117,21 +144,9 @@ export const Login = () => {
             </div>
           </footer>
         </div>
-      }
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 10,
-          zIndex: 1000,
-          color: "white",
-          fontFamily: "Sys",
-          fontSize: 17,
-          filter: "blur(1px)",
-          opacity: 0.7,
-        }}
-      >
-        powered by Dojo and Starknet
-      </Box>
+      )}
+
+      <PoweredBy />
     </>
   );
 };
