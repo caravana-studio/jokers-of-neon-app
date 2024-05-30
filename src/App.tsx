@@ -1,4 +1,4 @@
-import { Box, ChakraBaseProvider, extendBaseTheme } from "@chakra-ui/react";
+import { Box, ChakraBaseProvider, extendBaseTheme, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
 import { Game } from "./pages/Game";
@@ -10,7 +10,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { StaticCardsProvider } from "./providers/StaticCardsProvider";
 import customTheme from "./theme";
 
-const theme = extendBaseTheme(customTheme);
+const theme = extendTheme(customTheme);
 
 function App() {
   return (

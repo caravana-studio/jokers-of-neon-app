@@ -12,7 +12,7 @@ export const AccountAddress = () => {
     : "No account";
 
   return (
-    <Heading sx={{ textAlign: "right" }}>
+    <Heading size='s' sx={{ textAlign: "right" }}>
       {`${addressText} - ${userText}`}
     </Heading>
   );

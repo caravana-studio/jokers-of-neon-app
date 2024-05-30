@@ -1,9 +1,8 @@
-import { Box, Heading, Input, useToast } from "@chakra-ui/react";
+import { Box, Input, useToast } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PoweredBy } from "../components/PoweredBy";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useDojo } from "../dojo/useDojo";
 import { noisyTv } from "../scripts/noisyTv";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
@@ -12,15 +11,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [username, setUsername] = useState("");
-  const [creatingGame, setCreatingGame] = useState(false);
   const toast = useToast();
-
-  const {
-    setup: {
-      systemCalls: { createGame },
-    },
-    account,
-  } = useDojo();
 
   const redirectToGame = () => {
     navigate("/demo");
@@ -36,16 +27,23 @@ export const Login = () => {
 
   const showErrorToast = (message: string): void => {
     toast({
-      title: "Validation error",
-      description: message,
-      status: "error",
-      duration: 9000,
-      isClosable: true,
+      duration: 5000,
+      position: "top-right",
+      render: () => (
+        <Box
+          sx={{ fontFamily: "Sys", mt: 4, mr: 6, filter: "blur(0.5px)" }}
+          color="white"
+          py={3}
+          px={6}
+          bg="red.500"
+        >
+          {message}
+        </Box>
+      ),
     });
   };
 
   const validateAndCreateUser = () => {
-    setCreatingGame(true);
     if (!username) {
       showErrorToast("Please enter username");
       return;
@@ -61,26 +59,16 @@ export const Login = () => {
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
     if (!regExpression.test(username)) {
-      showErrorToast("Username must contain only letters, numbers, . , - , _");
+      showErrorToast("Username must contain only letters, numbers, points or dashes");
       return;
     }
+    localStorage.removeItem(GAME_ID);
     localStorage.setItem(LOGGED_USER, username);
-    createGame(account.account, username).then((newGameId) => {
-      if (newGameId) {
-        localStorage.setItem(GAME_ID, newGameId.toString());
-        console.log(`game ${newGameId} created`);
-        setTimeout(() => {
-          redirectToGame();
-        }, 3000);
-      } else {
-        setCreatingGame(false);
-        showErrorToast("Error creating game");
-      }
-    });
+    redirectToGame();
   };
 
   const onKeyDown = (event: { key: string }) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === "Enter") {
       validateAndCreateUser();
     } else if (event.key === "Escape") {
       navigate("/");
@@ -113,38 +101,31 @@ export const Login = () => {
         <span>AV-1</span>
       </div>
 
-      {creatingGame ? (
-        <Heading variant="neonGreen" size="l">
-          creating game...
-        </Heading>
-      ) : (
-        <div className="menu">
-          <header>Introduce username</header>
-          <Box mb={7} px={5}>
-            <Input
-              isInvalid
-              id="usernameInputField"
-              type="text"
-              placeholder="Username"
-              color={"gray"}
-              ref={inputRef}
-              maxLength={15}
-              sx={{ px: 5 }}
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-            />
-          </Box>
-          <footer>
-            <div className="key">
-              Exit: <span>ESC</span>
-            </div>
-            <div className="key">
-              Continue: <span>ENTER</span>
-            </div>
-          </footer>
-        </div>
-      )}
+      <div className="menu">
+        <header>Introduce username</header>
+        <Box mb={7} px={5}>
+          <Input
+            isInvalid
+            id="usernameInputField"
+            type="text"
+            placeholder="Username"
+            ref={inputRef}
+            maxLength={15}
+            sx={{ backgroundColor: "white", border: "3px solid black" }}
+            onChange={(e) => {
+              setUsername(e.target.value.trim());
+            }}
+          />
+        </Box>
+        <footer>
+          <div className="key">
+            Exit: <span>ESC</span>
+          </div>
+          <div className="key">
+            Continue: <span>ENTER</span>
+          </div>
+        </footer>
+      </div>
 
       <PoweredBy />
     </>

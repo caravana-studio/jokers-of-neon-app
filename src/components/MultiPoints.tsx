@@ -10,15 +10,15 @@ export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
   return (
     <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
       <PointBox type="points">
-        <Heading>POINTS</Heading>
-        <Heading sx={{ fontSize: 40, color: "neonGreen" }}>
+        <Heading size='s'>POINTS</Heading>
+        <Heading size='l' sx={{ color: "neonGreen" }}>
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
       <Heading sx={{ fontSize: 25 }}>x</Heading>
       <PointBox type="multi">
-        <Heading>MULTI</Heading>
-        <Heading sx={{ fontSize: 40, color: "neonPink" }}>{multi}</Heading>
+        <Heading size='s'>MULTI</Heading>
+        <Heading size='l' sx={{ color: "neonPink" }}>{multi}</Heading>
       </PointBox>
     </Box>
   );
