@@ -1,3 +1,21 @@
+import { inputAnatomy } from "@chakra-ui/anatomy";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(inputAnatomy.keys);
+
+const baseStyle = definePartsStyle({
+  field: {
+    color: '#555',
+    fontSize: 30,
+    borderRadius: 0,
+    py: 7,
+    px: 7
+  },
+});
+
+const inputTheme = defineMultiStyleConfig({ baseStyle });
+
 const NEON_GREEN = "#33effa";
 const NEON_PINK = "#fd4bad";
 
@@ -23,10 +41,7 @@ export default {
       baseStyle: {
         fontFamily: "Sys",
         borderRadius: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        color: "neonGreen",
         fontSize: 17,
-        border: `3px solid ${NEON_GREEN}`,
         px: 5,
         py: 1,
         pointerEvents: "all",
@@ -34,6 +49,13 @@ export default {
           backgroundColor: "black",
           border: `3px solid ${NEON_GREEN}`,
           boxShadow: `0px 0px 5px 0px ${NEON_GREEN}`,
+        },
+      },
+      variants: {
+        outline: {
+          backgroundColor: "rgba(0,0,0,0.5)",
+          border: `3px solid ${NEON_GREEN} !important`,
+          color: "neonGreen",
         },
       },
       sizes: {
@@ -64,6 +86,9 @@ export default {
         },
       },
       sizes: {
+        s: {
+          fontSize: 17,
+        },
         m: {
           fontSize: 25,
         },
@@ -76,5 +101,6 @@ export default {
         },
       },
     },
+    Input: inputTheme,
   },
 };

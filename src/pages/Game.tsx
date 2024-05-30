@@ -85,7 +85,7 @@ export const Game = () => {
   });
   const lsUser = localStorage.getItem(LOGGED_USER);
   const address = account?.account?.address;
-  const username = lsUser ?? address ?? '0xtest'
+  const username = lsUser ?? address ?? "0xtest";
 
   //effects
   useEffect(() => {
@@ -341,6 +341,7 @@ export const Game = () => {
             >
               <AccountAddress />
               <Button
+                variant="outline"
                 onClick={(e) => {
                   e.stopPropagation();
                   executeCreateGame();
@@ -502,6 +503,7 @@ export const Game = () => {
           </DndContext>
         </Box>
         <Heading
+          size="s"
           sx={{
             position: "absolute",
             bottom: 7,

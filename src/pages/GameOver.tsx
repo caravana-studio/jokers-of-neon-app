@@ -68,6 +68,7 @@ export const GameOver = () => {
       </Heading>
       <Button
         size="l"
+        variant="outline"
         sx={{
           mt: 10,
           backgroundColor: "transparent",
