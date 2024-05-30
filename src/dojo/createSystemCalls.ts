@@ -7,6 +7,7 @@ import {
   getNumberValueFromEvents,
 } from "../utils/getNumberValueFromEvent";
 import { getScoreData } from "../utils/getScoreData";
+import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 
@@ -14,7 +15,8 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
   { client }: { client: IWorld },
-  contractComponents: ContractComponents
+  contractComponents: ContractComponents,
+  { Card, PokerHandEvent, Game }: ClientComponents
 ) {
   const createGame = async (account: AccountInterface, username: string) => {
     try {
