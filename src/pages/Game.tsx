@@ -30,6 +30,8 @@ import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
+import { GameDeck } from '../components/GameDeck.tsx'
+import { useGetDeck } from '../queries/useGetDeck.ts'
 
 export const Game = () => {
   // state
@@ -60,6 +62,7 @@ export const Game = () => {
     playerEffectCards
   );
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
+  const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
   const {
     setup: {
@@ -114,6 +117,7 @@ export const Game = () => {
   // functions
   const refetch = () => {
     refetchHand();
+    refetchDeckData();
     refetchRound().then((response) => {
       if (response.data?.roundModels?.edges?.[0]?.node?.hands === 0) {
         console.log("GAME OVER");
@@ -340,6 +344,12 @@ export const Game = () => {
               }}
             >
               <AccountAddress />
+              <Heading
+                size="s"
+                textAlign={"right"}
+              >
+                game id: {gameId}
+              </Heading>
               <Button
                 variant="outline"
                 onClick={(e) => {
@@ -502,17 +512,7 @@ export const Game = () => {
             </Box>
           </DndContext>
         </Box>
-        <Heading
-          size="s"
-          sx={{
-            position: "absolute",
-            bottom: 7,
-            right: 10,
-            textAlign: "right",
-          }}
-        >
-          game id: {gameId}
-        </Heading>
+        <GameDeck deck={deck}/>
       </Box>
     </Box>
   );
