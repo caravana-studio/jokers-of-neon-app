@@ -344,6 +344,12 @@ export const Game = () => {
               }}
             >
               <AccountAddress />
+              <Heading
+                size="s"
+                textAlign={"right"}
+              >
+                game id: {gameId}
+              </Heading>
               <Button
                 variant="outline"
                 onClick={(e) => {
@@ -507,17 +513,6 @@ export const Game = () => {
           </DndContext>
         </Box>
         <GameDeck deck={deck}/>
-        <Heading
-          size="s"
-          sx={{
-            position: "absolute",
-            bottom: 7,
-            right: 10,
-            textAlign: "right",
-          }}
-        >
-          game id: {gameId}
-        </Heading>
       </Box>
     </Box>
   );
