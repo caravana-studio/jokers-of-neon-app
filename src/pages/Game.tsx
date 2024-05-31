@@ -146,7 +146,7 @@ export const Game = () => {
               refetch();
             });
           });
-        }, 5000);
+        }, 3000);
       } else {
         setError(true);
       }
