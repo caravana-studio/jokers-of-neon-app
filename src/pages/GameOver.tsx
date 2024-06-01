@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RollingNumber } from "../components/RollingNumber";
 import { GAME_ID } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
-import { getRound } from "../dojo/utils/getRound";
+import { getGame } from "../dojo/utils/getGame";
 import { noisyTv } from "../scripts/noisyTv";
 
 export const GameOver = () => {
@@ -21,8 +21,11 @@ export const GameOver = () => {
     account,
   } = useDojo();
 
-  const round = getRound(gameId, Round);
-  const score = round?.score ? Number(round?.score) : 0;
+  const game = getGame(gameId, Game);
+  console.log("game", game);
+
+  const score = game?.player_score ?? 0;
+  const level = game?.level ?? 0;
 
   const navigate = useNavigate();
 
@@ -64,7 +67,10 @@ export const GameOver = () => {
         variant="neonWhite"
         size="xl"
       >
-        SCORE: <RollingNumber n={score} />
+        LEVEL <RollingNumber n={level} />
+      </Heading>
+      <Heading variant="neonGreen" size="l">
+        <RollingNumber n={score} /> points
       </Heading>
       <Button
         size="l"

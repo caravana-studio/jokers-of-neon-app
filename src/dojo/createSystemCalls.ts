@@ -6,7 +6,7 @@ import {
   getNumberValueFromEvent,
   getNumberValueFromEvents,
 } from "../utils/getNumberValueFromEvent";
-import { getScoreData } from "../utils/getScoreData";
+import { getPlayEvents } from "../utils/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
@@ -126,7 +126,7 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        return getScoreData(events);
+        return getPlayEvents(events);
       }
       return undefined;
     } catch (e) {

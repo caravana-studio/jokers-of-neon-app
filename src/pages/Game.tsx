@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   GridItem,
   Heading,
   SimpleGrid,
@@ -13,25 +14,25 @@ import { AccountAddress } from "../components/AccountAddress";
 import { ActionButton } from "../components/ActionButton";
 import { AnimatedCard } from "../components/AnimatedCard";
 import AudioPlayer from "../components/AudioPlayer";
-import { ChannelText } from "../components/ChannelText";
+import { GameDeck } from "../components/GameDeck.tsx";
 import { ModifiableCard } from "../components/ModifiableCard";
-import { MultiPoints } from "../components/MultiPoints";
+import { MultiPoints, PointBox } from "../components/MultiPoints";
 import { RollingNumber } from "../components/RollingNumber";
 import { TiltCard } from "../components/TiltCard";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { PLAYS } from "../constants/plays";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useDojo } from "../dojo/useDojo";
-import { gameExists } from "../dojo/utils/getGame";
+import { gameExists, getGame } from "../dojo/utils/getGame";
 import { Plays } from "../enums/plays";
+import { useCustomToast } from "../hooks/useCustomToast.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { useGetDeck } from "../queries/useGetDeck.ts";
 import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
-import { GameDeck } from '../components/GameDeck.tsx'
-import { useGetDeck } from '../queries/useGetDeck.ts'
 
 export const Game = () => {
   // state
@@ -49,6 +50,7 @@ export const Game = () => {
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
 
   // hooks
+  const { showSuccessToast } = useCustomToast();
   const navigate = useNavigate();
   const { colors } = useTheme();
   const { data: playerCommonCards, refetch: refetchCommonCards } =
@@ -89,6 +91,8 @@ export const Game = () => {
   const lsUser = localStorage.getItem(LOGGED_USER);
   const address = account?.account?.address;
   const username = lsUser ?? address ?? "0xtest";
+  const game = getGame(gameId, Game);
+  const level = game?.level;
 
   //effects
   useEffect(() => {
@@ -118,14 +122,7 @@ export const Game = () => {
   const refetch = () => {
     refetchHand();
     refetchDeckData();
-    refetchRound().then((response) => {
-      if (response.data?.roundModels?.edges?.[0]?.node?.hands === 0) {
-        console.log("GAME OVER");
-        setTimeout(() => {
-          navigate("/gameover");
-        }, 1000);
-      }
-    });
+    refetchRound();
   };
 
   const resetMultiPoints = () => {
@@ -249,6 +246,20 @@ export const Game = () => {
             clearPreSelection();
             refetch();
             handsLeft > 0 && setPreSelectionLocked(false);
+
+            if (response.gameOver) {
+              console.log("GAME OVER");
+              setTimeout(() => {
+                navigate("/gameover");
+              }, 1000);
+            }
+
+            if (response.levelPassed) {
+              const { level, score } = response.levelPassed;
+              setTimeout(() => {
+                showSuccessToast(`level ${level} passed with score ${score}`, 'CONGRATULATIONS!!!');
+              }, 200);
+            }
           },
           700 * response.cards.length + 400
         );
@@ -331,56 +342,85 @@ export const Game = () => {
         onClick={clearPreSelection}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%", p: 10 }}>
-            <ChannelText />
-            <Box
-              sx={{
-                position: "fixed",
-                display: "flex",
-                flexDirection: "column",
-                right: 10,
-                top: 10,
-                gap: 2,
-              }}
-            >
-              <AccountAddress />
-              <Heading
-                size="s"
-                textAlign={"right"}
-              >
-                game id: {gameId}
-              </Heading>
-              <Button
-                variant="outline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  executeCreateGame();
-                }}
-              >
-                START NEW GAME
-              </Button>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Heading
-                variant="neonWhite"
-                size="l"
-                sx={{
-                  mb: 4,
-                }}
-              >
-                SCORE: <RollingNumber n={score} />
-              </Heading>
-              <Heading variant="neonGreen" size="m" sx={{ mb: 2 }}>
-                CURRENT PLAY: {PLAYS[preSelectedPlay]}
-              </Heading>
-              <MultiPoints multi={multi} points={points} />
-            </Box>
+          <Box sx={{ height: "30%", p: 10, width: "100%" }}>
+            <SimpleGrid columns={3}>
+              <GridItem>
+                <Box>
+                  <Flex gap={4}>
+                    <PointBox type="level">
+                      <Heading size="s">LEVEL</Heading>
+                      <Heading size="l" sx={{ color: "white" }}>
+                        {level ?? 0}
+                      </Heading>
+                    </PointBox>
+                    <PointBox type="points">
+                      <Heading size="s">POINTS</Heading>
+                      <Heading size="l" sx={{ color: "neonGreen", px: 2 }}>
+                        {round.levelScore}
+                      </Heading>
+                    </PointBox>
+                  </Flex>
+                  <Heading
+                    size="s"
+                    sx={{ mt: 4, fontSize: 20, width: 260 }}
+                    textAlign="center"
+                  >
+                    score {round.levelScore} points <br /> to beat level{" "}
+                    {level ?? 0}
+                  </Heading>
+                </Box>
+              </GridItem>
+              <GridItem>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Heading
+                    variant="neonWhite"
+                    size="l"
+                    sx={{
+                      mb: 4,
+                    }}
+                  >
+                    SCORE: <RollingNumber n={score} />
+                  </Heading>
+                  <Heading variant="neonGreen" size="m" sx={{ mb: 2 }}>
+                    CURRENT PLAY: {PLAYS[preSelectedPlay]}
+                  </Heading>
+                  <MultiPoints multi={multi} points={points} />
+                </Box>
+              </GridItem>
+              <GridItem>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    right: 10,
+                    top: 10,
+                    gap: 2,
+                    alignItems: "end",
+                  }}
+                >
+                  <AccountAddress />
+                  <Heading size="s" textAlign={"right"}>
+                    game id: {gameId}
+                  </Heading>
+                  <Button
+                    variant="outline"
+                    sx={{ width: 300 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      executeCreateGame();
+                    }}
+                  >
+                    START NEW GAME
+                  </Button>
+                </Box>
+              </GridItem>
+            </SimpleGrid>
           </Box>
           <DndContext onDragEnd={handleDragEnd}>
             <Box
@@ -512,7 +552,7 @@ export const Game = () => {
             </Box>
           </DndContext>
         </Box>
-        <GameDeck deck={deck}/>
+        <GameDeck deck={deck} />
       </Box>
     </Box>
   );

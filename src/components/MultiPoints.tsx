@@ -10,15 +10,17 @@ export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
   return (
     <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
       <PointBox type="points">
-        <Heading size='s'>POINTS</Heading>
-        <Heading size='l' sx={{ color: "neonGreen" }}>
+        <Heading size="s">POINTS</Heading>
+        <Heading size="l" sx={{ color: "neonGreen" }}>
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
       <Heading sx={{ fontSize: 25 }}>x</Heading>
       <PointBox type="multi">
-        <Heading size='s'>MULTI</Heading>
-        <Heading size='l' sx={{ color: "neonPink" }}>{multi}</Heading>
+        <Heading size="s">MULTI</Heading>
+        <Heading size="l" sx={{ color: "neonPink" }}>
+          {multi}
+        </Heading>
       </PointBox>
     </Box>
   );
@@ -26,17 +28,24 @@ export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
 
 interface PointBoxProps {
   children: JSX.Element[];
-  type: "points" | "multi";
+  type: "points" | "multi" | "level";
 }
+
 export const PointBox = ({ children, type }: PointBoxProps) => {
   const { colors } = useTheme();
-  const color = type === "points" ? colors.neonGreen : colors.neonPink;
+  const colorMap = {
+    points: colors.neonGreen,
+    multi: colors.neonPink,
+    level: "#FFF",
+  };
+
+  const color = colorMap[type];
   return (
     <Box
       sx={{
         border: `2px solid ${color}`,
         p: 2,
-        width: 150,
+        minWidth: type === 'level' ? 100: 150,
         height: 100,
         display: "flex",
         flexDirection: "column",

@@ -83,6 +83,10 @@ export default {
         },
         neonWhite: {
           textShadow: `0 0 20px ${NEON_PINK}`,
+        },        
+        neonPink: {
+          color: NEON_PINK,
+          textShadow: `0 0 20px ${NEON_PINK}`,
         },
       },
       sizes: {
@@ -94,6 +98,7 @@ export default {
         },
         l: {
           fontSize: 40,
+          filter: "blur(1px)",
         },
         xl: {
           fontSize: 50,
