@@ -1,8 +1,9 @@
-import { Box, Input, useToast } from "@chakra-ui/react";
+import { Box, Input } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PoweredBy } from "../components/PoweredBy";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useCustomToast } from "../hooks/useCustomToast";
 import { noisyTv } from "../scripts/noisyTv";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
@@ -11,7 +12,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [username, setUsername] = useState("");
-  const toast = useToast();
+  const { showErrorToast } = useCustomToast();
 
   const redirectToGame = () => {
     navigate("/demo");
@@ -24,24 +25,6 @@ export const Login = () => {
       redirectToGame();
     }
   }, []);
-
-  const showErrorToast = (message: string): void => {
-    toast({
-      duration: 5000,
-      position: "top-right",
-      render: () => (
-        <Box
-          sx={{ fontFamily: "Sys", mt: 4, mr: 6, filter: "blur(0.5px)" }}
-          color="white"
-          py={3}
-          px={6}
-          bg="red.500"
-        >
-          {message}
-        </Box>
-      ),
-    });
-  };
 
   const validateAndCreateUser = () => {
     if (!username) {
@@ -59,7 +42,9 @@ export const Login = () => {
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
     if (!regExpression.test(username)) {
-      showErrorToast("Username must contain only letters, numbers, points or dashes");
+      showErrorToast(
+        "Username must contain only letters, numbers, points or dashes"
+      );
       return;
     }
     localStorage.removeItem(GAME_ID);

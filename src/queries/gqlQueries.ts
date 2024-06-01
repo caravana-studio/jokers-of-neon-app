@@ -20,7 +20,8 @@ export const GET_ROUND_QUERY = gql`
     roundModels(first: 30, where: { game_idEQ: $gameId }) {
       edges {
         node {
-          score
+          player_score
+          level_score
           hands
           discard
         }

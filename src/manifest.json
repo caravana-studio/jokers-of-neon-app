@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x1c2f7d5442faa792e5a2fdc01ba79b07161c3e7035df69d2f15978f7b94e6e1",
-      "original_class_hash": "0x1c2f7d5442faa792e5a2fdc01ba79b07161c3e7035df69d2f15978f7b94e6e1",
+      "class_hash": "0x48f2fc71fd53451dc1445fb0544ec68f9c9fb88907397a039c4df493258ef57",
+      "original_class_hash": "0x48f2fc71fd53451dc1445fb0544ec68f9c9fb88907397a039c4df493258ef57",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -1004,6 +1004,22 @@
                   "type": "jokers_of_neon::models::data::poker_hand::PokerHand"
                 }
               ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "discard_effect_card",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "card_index",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
               "state_mutability": "view"
             }
           ]
@@ -3320,7 +3336,12 @@
           "key": false
         },
         {
-          "name": "score",
+          "name": "player_score",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "level",
           "type": "u32",
           "key": false
         },
@@ -3350,8 +3371,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x65ef4e35b101d6e69cc5bbeaea2e75cb99e604efe01bb9e2925cc6294b7d89e",
-      "original_class_hash": "0x65ef4e35b101d6e69cc5bbeaea2e75cb99e604efe01bb9e2925cc6294b7d89e",
+      "class_hash": "0x44b0640260c2d8051673d4ca7c06745844307e206bcfcb7733ce34e10a9d72e",
+      "original_class_hash": "0x44b0640260c2d8051673d4ca7c06745844307e206bcfcb7733ce34e10a9d72e",
       "abi": [
         {
           "type": "impl",
@@ -3569,7 +3590,11 @@
               "type": "core::integer::u8"
             },
             {
-              "name": "score",
+              "name": "player_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level",
               "type": "core::integer::u32"
             },
             {
@@ -5023,7 +5048,12 @@
           "key": true
         },
         {
-          "name": "score",
+          "name": "player_score",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "level_score",
           "type": "u32",
           "key": false
         },
@@ -5043,8 +5073,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x8cc02cc7b51abf2dc23f6d92ebe1dbdddf32a3d2e7e732f95c2180e2d58860",
-      "original_class_hash": "0x8cc02cc7b51abf2dc23f6d92ebe1dbdddf32a3d2e7e732f95c2180e2d58860",
+      "class_hash": "0x6b422a7aca18bd9b0710e075a3c73b1feed9b0e684549257c073fa9a968c8d8",
+      "original_class_hash": "0x6b422a7aca18bd9b0710e075a3c73b1feed9b0e684549257c073fa9a968c8d8",
       "abi": [
         {
           "type": "impl",
@@ -5228,7 +5258,11 @@
               "type": "core::integer::u32"
             },
             {
-              "name": "score",
+              "name": "player_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level_score",
               "type": "core::integer::u32"
             },
             {
