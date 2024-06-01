@@ -19,7 +19,7 @@ export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
       <PointBox type="multi">
         <Heading size="s">MULTI</Heading>
         <Heading size="l" sx={{ color: "neonPink" }}>
-          {multi}
+          <RollingNumber n={multi} />
         </Heading>
       </PointBox>
     </Box>
@@ -45,7 +45,7 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
       sx={{
         border: `2px solid ${color}`,
         p: 2,
-        minWidth: type === 'level' ? 100: 150,
+        minWidth: type === "level" ? 100 : 150,
         height: 100,
         display: "flex",
         flexDirection: "column",
