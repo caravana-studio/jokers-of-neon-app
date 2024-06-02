@@ -1,16 +1,17 @@
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+import { tableTheme } from "./table";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(inputAnatomy.keys);
 
 const baseStyle = definePartsStyle({
   field: {
-    color: '#555',
+    color: "#555",
     fontSize: 30,
     borderRadius: 0,
     py: 7,
-    px: 7
+    px: 7,
   },
 });
 
@@ -24,6 +25,7 @@ export default {
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
     neonPink: NEON_PINK,
+    limeGreen: 'lime'
   },
   styles: {
     global: {
@@ -37,6 +39,7 @@ export default {
     },
   },
   components: {
+    Table: tableTheme,
     Button: {
       baseStyle: {
         fontFamily: "Sys",
@@ -83,7 +86,7 @@ export default {
         },
         neonWhite: {
           textShadow: `0 0 20px ${NEON_PINK}`,
-        },        
+        },
         neonPink: {
           color: NEON_PINK,
           textShadow: `0 0 20px ${NEON_PINK}`,
