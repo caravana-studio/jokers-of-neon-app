@@ -1,7 +1,7 @@
 import { Box, ChakraBaseProvider, extendBaseTheme, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import { Game } from "./pages/Game";
+import { GameContent } from "./pages/Game/GameContent";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -9,6 +9,7 @@ import { Poc } from "./pages/Poc";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { StaticCardsProvider } from "./providers/StaticCardsProvider";
 import customTheme from "./theme/theme";
+import { GamePage } from "./pages/Game/GamePage";
 
 const theme = extendTheme(customTheme);
 
@@ -42,7 +43,7 @@ function App() {
                           color: "#FFF",
                         }}
                       >
-                        <Game />
+                        <GamePage />
                       </Box>
                     }
                   />
