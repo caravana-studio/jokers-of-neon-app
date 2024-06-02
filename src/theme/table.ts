@@ -5,16 +5,6 @@ const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tableAnatomy.keys);
 
 const baseStyle = definePartsStyle({
-  tr: {
-    "td:first-child": {
-      borderTopLeftRadius: "full",
-      borderBottomLeftRadius: "full",
-    },
-    "td:last-child": {
-      borderTopRightRadius: "full",
-      borderBottomRightRadius: "full",
-    },
-  },
   td: {
     color: "limeGreen",
     fontFamily: "Sys",
@@ -43,13 +33,6 @@ const baseStyle = definePartsStyle({
           borderBottomWidth: 0,
         },
         td: {},
-      },
-    },
-  },
-  tfoot: {
-    tr: {
-      "&:last-of-type": {
-        th: { borderBottomWidth: 0 },
       },
     },
   },
