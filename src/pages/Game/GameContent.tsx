@@ -1,8 +1,4 @@
-import {
-  Box,
-  Heading,
-  useTheme
-} from "@chakra-ui/react";
+import { Box, Heading, Spinner, useTheme } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
 import { GameDeck } from "../../components/GameDeck.tsx";
@@ -17,6 +13,7 @@ export const GameContent = () => {
     getModifiers,
     setPreSelectedCards,
     gameLoading,
+    loadingStates,
     error,
     clearPreSelection,
   } = useGameContext();
@@ -42,7 +39,7 @@ export const GameContent = () => {
     }
   };
 
-  if (gameLoading) {
+  if (gameLoading || loadingStates) {
     return (
       <Box
         sx={{
@@ -60,7 +57,7 @@ export const GameContent = () => {
             textShadow: `0 0 20px ${colors.neonGreen}`,
           }}
         >
-          Loading game...
+          <Spinner size="xl" />
         </Heading>
       </Box>
     );

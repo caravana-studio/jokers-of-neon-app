@@ -4,7 +4,7 @@ import { PointBox } from "./MultiPoints";
 
 export const LevelPoints = () => {
   const { round, game } = useGameContext();
-  const level = game.level;
+  const level = game?.level ?? 0;
 
   return (
     <Box>

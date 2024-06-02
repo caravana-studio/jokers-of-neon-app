@@ -44,6 +44,7 @@ interface IGameContext {
   discard: () => void;
   error: boolean;
   clearPreSelection: () => void;
+  loadingStates: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -75,7 +76,8 @@ const GameContext = createContext<IGameContext>({
   playAnimation: false,
   discard: () => {},
   error: false,
-  clearPreSelection: () => {}
+  clearPreSelection: () => {},
+  loadingStates: false
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -94,6 +96,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
+  const { data: commonCards, refetch: refetchCommonCards } =
+    useGetCommonCards(gameId);
+  const { data: effectCards, refetch: refetchEffectCards } =
+    useGetEffectCards(gameId);
+
   const game = useGame();
   const {
     setup: {
@@ -103,17 +110,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: playerCommonCards, refetch: refetchCommonCards } =
-    useGetCommonCards(gameId);
-
-  const { data: playerEffectCards, refetch: refetchEffectCards } =
-    useGetEffectCards(gameId);
-
-  const { data: hand, refetch: refetchHand } = useGetCurrentHand(
-    gameId,
-    playerCommonCards,
-    playerEffectCards
-  );
+  const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -166,15 +163,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         clearPreSelection();
         localStorage.setItem(GAME_ID, newGameId.toString());
         console.log(`game ${newGameId} created`);
-        setTimeout(() => {
-          setPreSelectionLocked(false);
-          setGameLoading(false);
-          refetchCommonCards().then(() => {
-            refetchEffectCards().then(() => {
-              refetch();
-            });
-          });
-        }, 3000);
+        setGameLoading(false);
       } else {
         setError(true);
       }
@@ -325,6 +314,70 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [preSelectedCards]);
 
+  //make sure data is legit
+
+  useEffect(() => {
+    if (commonCards.length === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchCommonCards().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [commonCards]);
+
+  useEffect(() => {
+    if (effectCards.length === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchEffectCards().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [effectCards]);
+
+  useEffect(() => {
+    if (round.levelScore === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchRound().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [round]);
+
+  useEffect(() => {
+    if (hand.length === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchHand().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [hand]);
+
+  useEffect(() => {
+    if (deck.size === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchDeckData().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [deck]);
+
+  const loadingStates =
+    deck.size === 0 ||
+    hand.length === 0 ||
+    round.levelScore === 0 ||
+    effectCards.length === 0 ||
+    commonCards.length === 0;
+
   return (
     <GameContext.Provider
       value={{
@@ -347,7 +400,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         playAnimation,
         discard: onDiscardClick,
         error,
-        clearPreSelection
+        clearPreSelection,
+        loadingStates
       }}
     >
       {children}
