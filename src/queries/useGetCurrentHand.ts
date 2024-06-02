@@ -3,6 +3,8 @@ import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
+import { useGetCommonCards } from "./useGetCommonCards";
+import { useGetEffectCards } from "./useGetEffectCards";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -37,11 +39,10 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-export const useGetCurrentHand = (
-  gameId: number,
-  playerCommonCards: Card[],
-  playerEffectCards: Card[]
-) => {
+export const useGetCurrentHand = (gameId: number) => {
+  const { data: playerCommonCards } = useGetCommonCards(gameId);
+  const { data: playerEffectCards } = useGetEffectCards(gameId);
+
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),

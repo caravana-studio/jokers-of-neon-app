@@ -1,12 +1,9 @@
 import { Box, Heading, useTheme } from "@chakra-ui/react";
+import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
 
-interface MultiPointsProps {
-  multi: number;
-  points: number;
-}
-
-export const MultiPoints = ({ multi, points }: MultiPointsProps) => {
+export const MultiPoints = () => {
+  const { points, multi } = useGameContext();
   return (
     <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
       <PointBox type="points">

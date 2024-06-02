@@ -1,14 +1,14 @@
 import {
-    Box,
-    Heading,
-    Spinner,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Thead,
-    Tr,
-    useTheme,
+  Box,
+  Heading,
+  Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Thead,
+  Tr,
+  useTheme,
 } from "@chakra-ui/react";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
@@ -71,7 +71,10 @@ export const Leaderboard = ({ lines = 10 }: LeaderboardProps) => {
                   return index < limit;
                 })
                 .map((leader) => (
-                  <Tr sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}>
+                  <Tr
+                    key={leader.id}
+                    sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
+                  >
                     <Td>{leader.position}</Td>
                     <Td>{leader.player_name}</Td>
                     <Td isNumeric>

@@ -1,32 +1,11 @@
-import { Box, Button, useTheme } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Button } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
-import { useDojo } from "../dojo/useDojo";
-import { getGame } from "../dojo/utils/getGame";
 import { noisyTv } from "../scripts/noisyTv";
 
 export const GameOver = () => {
-  const [gameId, setGameId] = useState<number>(
-    Number(localStorage.getItem(GAME_ID)) ?? 0
-  );
-  const { colors } = useTheme();
-
-  const {
-    setup: {
-      systemCalls: { createGame, checkHand, discard, play },
-      clientComponents: { Game, Round },
-    },
-    account,
-  } = useDojo();
-
-  const game = getGame(gameId, Game);
-  console.log("game", game);
-
-  const score = game?.player_score ?? 0;
-  const level = game?.level ?? 0;
-
   const navigate = useNavigate();
 
   useEffect(() => {
