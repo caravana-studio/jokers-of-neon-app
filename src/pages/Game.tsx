@@ -33,11 +33,12 @@ import { useGetDeck } from "../queries/useGetDeck.ts";
 import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
+import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
 
 export const Game = () => {
   // state
   const [gameId, setGameId] = useState<number>(
-    Number(localStorage.getItem(GAME_ID)) ?? 0
+    getLSGameId()
   );
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);

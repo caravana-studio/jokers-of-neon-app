@@ -1,7 +1,7 @@
-import { Box, Button, Heading, useTheme } from "@chakra-ui/react";
+import { Box, Button, useTheme } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RollingNumber } from "../components/RollingNumber";
+import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
 import { getGame } from "../dojo/utils/getGame";
@@ -59,7 +59,7 @@ export const GameOver = () => {
         <span>GAME OVER</span>
         <span>GAME OVER</span>
       </Box>
-
+      {/* 
       <Heading
         sx={{
           mt: "180px",
@@ -71,7 +71,10 @@ export const GameOver = () => {
       </Heading>
       <Heading variant="neonGreen" size="l">
         <RollingNumber n={score} /> points
-      </Heading>
+      </Heading> */}
+      <Box sx={{ mt: "180px" }}>
+        <Leaderboard lines={4} />
+      </Box>
       <Button
         size="l"
         variant="outline"

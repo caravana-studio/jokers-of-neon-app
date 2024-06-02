@@ -8,7 +8,7 @@ import { Login } from "./pages/Login";
 import { Poc } from "./pages/Poc";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { StaticCardsProvider } from "./providers/StaticCardsProvider";
-import customTheme from "./theme";
+import customTheme from "./theme/theme";
 
 const theme = extendTheme(customTheme);
 
