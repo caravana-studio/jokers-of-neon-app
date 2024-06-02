@@ -112,11 +112,18 @@ export function createSystemCalls(
     cards: number[]
   ) => {
     try {
+      const beforeDate = new Date().getTime();
+      console.log("Before", new Date().toUTCString());
       const { transaction_hash } = await client.actions.play({
         account,
         gameId,
         cards,
       });
+      console.log("After", new Date().toUTCString());
+      const afterDate = new Date().getTime();
+      console.log('beforeDate', beforeDate);
+      console.log('afterDate', afterDate);
+      console.log('resta papa', afterDate - beforeDate);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
