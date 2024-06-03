@@ -77,7 +77,7 @@ const GameContext = createContext<IGameContext>({
   discard: () => {},
   error: false,
   clearPreSelection: () => {},
-  loadingStates: false,
+  loadingStates: false
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -350,7 +350,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [round]);
 
   useEffect(() => {
-    if (hand.length < 8) {
+    if (hand.length === 0) {
       setGameLoading(true);
       setTimeout(() => {
         refetchHand().then(() => {
@@ -373,7 +373,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const loadingStates =
     deck.size === 0 ||
-    hand.length < 8 ||
+    hand.length === 0 ||
     round.levelScore === 0 ||
     effectCards.length === 0 ||
     commonCards.length === 0;
@@ -401,7 +401,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discard: onDiscardClick,
         error,
         clearPreSelection,
-        loadingStates,
+        loadingStates
       }}
     >
       {children}
