@@ -42,6 +42,7 @@ interface IGameContext {
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
+  discardEffectCard: (cardIdx: number) => void;
   error: boolean;
   clearPreSelection: () => void;
   loadingStates: boolean;
@@ -75,6 +76,7 @@ const GameContext = createContext<IGameContext>({
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
+  discardEffectCard: () => {},
   error: false,
   clearPreSelection: () => {},
   loadingStates: false
@@ -104,7 +106,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const game = useGame();
   const {
     setup: {
-      systemCalls: { createGame, checkHand, discard, play },
+      systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
       clientComponents: { Game },
     },
     account,
@@ -290,6 +292,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
+  const onDiscardEffectCard = (cardIdx: number) => {
+    discardEffectCard(account.account, gameId, cardIdx).then((response): void => {
+      if (response) {
+        setTimeout(() => {
+          refetch();
+        }, 1500);
+      }
+    });
+  };
+
   //effects
   useEffect(() => {
     if (!gameExists(Game, gameId)) {
@@ -399,6 +411,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discardAnimation,
         playAnimation,
         discard: onDiscardClick,
+        discardEffectCard: onDiscardEffectCard,
         error,
         clearPreSelection,
         loadingStates
