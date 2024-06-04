@@ -12,6 +12,7 @@ export interface Card {
   isModifier?: boolean;
   isSpecial?: boolean;
   idx: number;
+  points?: number;
 }
 
 export interface StaticEffectCard extends Effect {
@@ -20,4 +21,12 @@ export interface StaticEffectCard extends Effect {
   type_effect_card: string;
   price: number;
   probability: number;
+}
+
+export interface StaticCommonCard {
+  id: number;
+  value: Cards;
+  suit: Suits;
+  points: number;
+  img: string;
 }

@@ -1,19 +1,30 @@
+import gql from "graphql-tag";
 import { useQuery } from "react-query";
-import { Cards } from "../enums/cards";
-import { Suits } from "../enums/suits";
 import graphQLClient from "../graphQLClient";
+import { useStaticCards } from "../providers/StaticCardsProvider";
 import { Card } from "../types/Card";
-import { zeroPad } from "../utils/zeroPad";
-import { GET_COMMON_CARDS } from "./gqlQueries";
 
 export const COMMON_CARD_QUERY_KEY = "common-cards";
+
+const GET_COMMON_CARDS = gql`
+  query GetCommonCards($gameId: ID!) {
+    playerCommonCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
+      edges {
+        node {
+          idx
+          game_id
+          common_card_id
+        }
+      }
+    }
+  }
+`;
 
 interface CommonCardEdge {
   node: {
     idx: number;
     gameId: number;
-    value: string;
-    suit: string;
+    common_card_id: number;
   };
 }
 
@@ -30,9 +41,12 @@ const fetchGraphQLData = async (
 };
 
 export const useGetCommonCards = (gameId: number) => {
+  const { commonCards: staticCommonCards } = useStaticCards();
+
   const queryResponse = useQuery<CommonCardsResponse>(
     [COMMON_CARD_QUERY_KEY, gameId],
-    () => fetchGraphQLData(gameId)
+    () => fetchGraphQLData(gameId),
+    {enabled: staticCommonCards.length > 0}
   );
   const { data } = queryResponse;
 
@@ -41,9 +55,10 @@ export const useGetCommonCards = (gameId: number) => {
   const cards: Card[] =
     dojoCommonCards?.map((edge) => {
       const dojoCard = edge.node;
-      const value = Cards[dojoCard!.value.toUpperCase() as keyof typeof Cards];
-      const suit = Suits[dojoCard!.suit.toUpperCase() as keyof typeof Suits];
-      const img = `${dojoCard!.suit.charAt(0)}${zeroPad(value, 2)}.png`;
+      const staticCommonCard = staticCommonCards.find(
+        (card) => card.id === dojoCard.common_card_id
+      );
+      const { value, suit, img} = staticCommonCard!
       return {
         id: dojoCard!.idx.toString(),
         value,
