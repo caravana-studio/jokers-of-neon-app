@@ -30,21 +30,6 @@ export const GET_ROUND_QUERY = gql`
   }
 `;
 
-export const GET_COMMON_CARDS = gql`
-  query GetCommonCards($gameId: ID!) {
-    playerCommonCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
-      edges {
-        node {
-          idx
-          game_id
-          value
-          suit
-        }
-      }
-    }
-  }
-`;
-
 export const GET_PLAYER_EFFECT_CARDS = gql`
     query GetPlayerEffectCards($gameId: ID!) {
         playerEffectCardsModels(first: 1000, where: { game_idEQ: $gameId }) {
