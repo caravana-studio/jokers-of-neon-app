@@ -72,6 +72,29 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+    const discardEffectCard = async ({
+      account,
+      gameId,
+      card,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      card: number;
+    }) => {
+      try {
+        const cardArray = [gameId, card];
+        return await provider.execute(
+          account,
+          contract_name,
+          "discard_effect_card",
+          cardArray
+        );
+      } catch (error) {
+        console.error("Error executing discardEffectCard:", error);
+        throw error;
+      }
+    };
+
     const play = async ({
       account,
       gameId,
@@ -96,7 +119,7 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
-    return { checkHand, createGame, discard, play };
+    return { checkHand, createGame, discard, discardEffectCard, play };
   }
   return {
     actions: actions(),
