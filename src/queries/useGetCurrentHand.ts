@@ -40,8 +40,10 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-const REFETCH_HAND_INTERVAL_ACTIVE = getEnvNumber('VITE_REFETCH_HAND_INTERVAL_ACTIVE') || 100;
-const REFETCH_HAND_INTERVAL_INACTIVE = getEnvNumber('VITE_REFETCH_HAND_INTERVAL_INACTIVE') || 5000;
+const REFETCH_HAND_INTERVAL_ACTIVE =
+  getEnvNumber("VITE_REFETCH_HAND_INTERVAL_ACTIVE") || 100;
+const REFETCH_HAND_INTERVAL_INACTIVE =
+  getEnvNumber("VITE_REFETCH_HAND_INTERVAL_INACTIVE") || 5000;
 
 export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
   const { data: playerCommonCards } = useGetCommonCards(gameId);
@@ -51,7 +53,7 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
     {
-      enabled: playerCommonCards.length > 0,
+      enabled: playerCommonCards.length > 0 && playerEffectCards.length > 0,
       refetchInterval: refetchingHand
         ? REFETCH_HAND_INTERVAL_ACTIVE
         : REFETCH_HAND_INTERVAL_INACTIVE, // if refetching hand is active, refetch hand more often
@@ -62,35 +64,29 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
     }
   );
   const { data } = queryResponse;
-  console.log('data', data);
-  console.log('after duplicates', filterDuplicates(
-    data?.currentHandCardModels?.edges ?? []
-  ))
+  console.log("data", data);
+  console.log(
+    "after duplicates",
+    filterDuplicates(data?.currentHandCardModels?.edges ?? [])
+  );
 
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []
-  )
-/*     .filter((edge) => {
-      const dojoCard = edge.node;
-      return !!playerCommonCards.find(
-        (card) => card.idx === dojoCard.player_card_id
-      );
-    }) */
-    .map((edge) => {
-      const dojoCard = edge.node;
-      const commonCard = playerCommonCards.find(
-        (card) => card.idx === dojoCard.player_card_id
-      )!;
-      const effectCard = playerEffectCards.find(
-        (card) => card.idx === dojoCard.player_card_id
-      )!;
-      console.log('dojo card', dojoCard);
-      console.log('common card', commonCard);
-      console.log('effect card', effectCard);
-      const card =
-        dojoCard.type_player_card === "Effect" ? effectCard : commonCard;
-      return { ...card, idx: dojoCard.idx, id: dojoCard.idx.toString() };
-    });
+  ).map((edge) => {
+    const dojoCard = edge.node;
+    const commonCard = playerCommonCards.find(
+      (card) => card.idx === dojoCard.player_card_id
+    )!;
+    const effectCard = playerEffectCards.find(
+      (card) => card.idx === dojoCard.player_card_id
+    )!;
+    console.log("dojo card", dojoCard);
+    console.log("common card", commonCard);
+    console.log("effect card", effectCard);
+    const card =
+      dojoCard.type_player_card === "Effect" ? effectCard : commonCard;
+    return { ...card, idx: dojoCard.idx, id: dojoCard.idx.toString() };
+  });
 
   const sortedCards = sortCards(cards);
   return {
