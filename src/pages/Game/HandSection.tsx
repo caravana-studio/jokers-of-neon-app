@@ -1,15 +1,32 @@
-import { GridItem, Heading, Menu, MenuItem, MenuList, SimpleGrid, useDisclosure } from "@chakra-ui/react"
+import {
+  GridItem,
+  Heading,
+  Menu,
+  MenuItem,
+  MenuList,
+  SimpleGrid,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useState } from "react";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 
 export const HandSection = () => {
-  const { round, hand, preSelectedCards, togglePreselected, discardEffectCard } = useGameContext();
+  const {
+    hand,
+    round,
+    preSelectedCards,
+    togglePreselected,
+    discardEffectCard,
+  } = useGameContext();
   const handsLeft = round.hands;
 
   const cardIsPreselected = (cardIndex: number) => {
     return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [menuIdx, setMenuIdx] = useState<number | undefined>();
 
   return (
     <>
@@ -22,42 +39,44 @@ export const HandSection = () => {
         columns={8}
       >
         {hand.map((card, index) => {
-          const { isOpen, onOpen, onClose } = useDisclosure();
           const isPreselected = cardIsPreselected(card.idx);
           return (
             <GridItem
-            key={card.idx}
-            w="100%"
-            sx={{
-              transform: ` rotate(${
-                (index - 3.5) * 3
-              }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
-            }}
-            onContextMenu={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onOpen();
-            }}>
-              {(card.isModifier && !isPreselected) &&
-                <Menu isOpen={isOpen} onClose={onClose}>
-                <MenuList
-                  textColor='black'
-                  minWidth='max-content'
-                  borderRadius='0'
-                  zIndex='7'
-                >
-                  <MenuItem
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      discardEffectCard(card.idx);
-                      onClose();
-                    }}
-                    borderRadius='0'
+              key={card.idx}
+              w="100%"
+              sx={{
+                transform: ` rotate(${
+                  (index - 3.5) * 3
+                }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
+              }}
+              onContextMenu={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setMenuIdx(card.idx);
+                onOpen();
+              }}
+            >
+              {card.isModifier && !isPreselected && (
+                <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
+                  <MenuList
+                    textColor="black"
+                    minWidth="max-content"
+                    borderRadius="0"
+                    zIndex="7"
                   >
-                  Discard
-                  </MenuItem>
-                </MenuList>
-              </Menu>}
+                    <MenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        discardEffectCard(card.idx);
+                        onClose();
+                      }}
+                      borderRadius="0"
+                    >
+                      Discard
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
               {!isPreselected && (
                 <TiltCard
                   card={card}
