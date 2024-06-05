@@ -63,6 +63,9 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
   );
   const { data } = queryResponse;
   console.log('data', data);
+  console.log('after duplicates', filterDuplicates(
+    data?.currentHandCardModels?.edges ?? []
+  ))
 
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []
@@ -81,6 +84,9 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
       const effectCard = playerEffectCards.find(
         (card) => card.idx === dojoCard.player_card_id
       )!;
+      console.log('dojo card', dojoCard);
+      console.log('common card', commonCard);
+      console.log('effect card', effectCard);
       const card =
         dojoCard.type_player_card === "Effect" ? effectCard : commonCard;
       return { ...card, idx: dojoCard.idx, id: dojoCard.idx.toString() };
