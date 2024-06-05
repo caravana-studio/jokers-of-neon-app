@@ -179,6 +179,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     createGame(account.account, username).then((newGameId) => {
       if (newGameId) {
+        refetchHand();
         setGameId(newGameId);
         clearPreSelection();
         localStorage.setItem(GAME_ID, newGameId.toString());
