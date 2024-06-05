@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
+import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
 import { useGetCommonCards } from "./useGetCommonCards";
 import { useGetEffectCards } from "./useGetEffectCards";
-import { getEnvNumber } from "../utils/getEnvValue";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -62,6 +62,7 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
     }
   );
   const { data } = queryResponse;
+  console.log('data', data);
 
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []

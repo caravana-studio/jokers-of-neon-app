@@ -122,6 +122,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   } = useDojo();
 
   const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
+  console.log('fozen hand', frozenHand);
+  console.log('updated hand', updatedHand);
   const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
@@ -407,7 +409,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setRefetchingHand(false);
       setGameLoading(false);
     }
-  }, [deck]);
+  }, [hand]);
 
   const loadingStates =
     deck.size === 0 ||
