@@ -335,6 +335,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     } else {
       setGameLoading(false);
       refetch();
+      refetchHand();
       console.log("Game found, no need to create a new one");
     }
   }, []);
