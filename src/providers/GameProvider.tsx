@@ -399,9 +399,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [deck]);
 
+  useEffect(() => {
+    if (hand.length < 8) {
+      setGameLoading(true);
+      setRefetchingHand(true);
+    } else if (gameLoading) {
+      setRefetchingHand(false);
+      setGameLoading(false);
+    }
+  }, [deck]);
+
   const loadingStates =
     deck.size === 0 ||
-    hand.length === 0 ||
+    hand.length < 8 ||
     round.levelScore === 0 ||
     effectCards.length === 0 ||
     commonCards.length === 0;
