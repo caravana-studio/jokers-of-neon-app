@@ -20,7 +20,10 @@ import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { Round } from "../types/Round";
+import { getEnvNumber } from "../utils/getEnvValue";
 import { useCardAnimations } from "./CardAnimationsProvider";
+
+const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 
 interface IGameContext {
   gameId: number;
@@ -46,6 +49,8 @@ interface IGameContext {
   error: boolean;
   clearPreSelection: () => void;
   loadingStates: boolean;
+  refetchingHand: boolean;
+  refetchHand: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -80,6 +85,8 @@ const GameContext = createContext<IGameContext>({
   error: false,
   clearPreSelection: () => {},
   loadingStates: false,
+  refetchingHand: false,
+  refetchHand: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -96,6 +103,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [error, setError] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
+  const [refetchingHand, setRefetchingHand] = useState(false);
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
@@ -113,7 +121,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: updatedHand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
   const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
@@ -140,8 +148,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   });
 
   //functions
+  const refetchHand = () => {
+    console.log("refetching hand");
+    setRefetchingHand(true);
+    setTimeout(() => {
+      console.log("refetching hand done");
+      setRefetchingHand(false);
+    }, REFETCH_HAND_GAP); // Will keep refetching hand for REFETCH_HAND_GAP ms
+  };
+
   const refetch = () => {
-    refetchHand();
     refetchDeckData();
     refetchRound();
   };
@@ -207,6 +223,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation(false);
             clearPreSelection();
             refetch();
+            refetchHand();
             handsLeft > 0 && setPreSelectionLocked(false);
             setFrozenHand(undefined);
 
@@ -285,6 +302,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
     discard(account.account, gameId, preSelectedCards).then((response) => {
+      refetchHand();
       if (response) {
         setTimeout(() => {
           setPreSelectionLocked(false);
@@ -299,6 +317,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardEffectCard = (cardIdx: number) => {
     discardEffectCard(account.account, gameId, cardIdx).then(
       (response): void => {
+        refetchHand();
         if (response) {
           setTimeout(() => {
             refetch();
@@ -368,17 +387,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [round]);
 
   useEffect(() => {
-    if (hand.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchHand().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [hand]);
-
-  useEffect(() => {
     if (deck.size === 0) {
       setGameLoading(true);
       setTimeout(() => {
@@ -421,6 +429,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         error,
         clearPreSelection,
         loadingStates,
+        refetchingHand,
+        refetchHand,
       }}
     >
       {children}

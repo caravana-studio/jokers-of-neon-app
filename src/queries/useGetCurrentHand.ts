@@ -5,6 +5,7 @@ import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
 import { useGetCommonCards } from "./useGetCommonCards";
 import { useGetEffectCards } from "./useGetEffectCards";
+import { getEnvNumber } from "../utils/getEnvValue";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -39,7 +40,10 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-export const useGetCurrentHand = (gameId: number) => {
+const REFETCH_HAND_INTERVAL_ACTIVE = getEnvNumber('VITE_REFETCH_HAND_INTERVAL_ACTIVE') || 100;
+const REFETCH_HAND_INTERVAL_INACTIVE = getEnvNumber('VITE_REFETCH_HAND_INTERVAL_INACTIVE') || 5000;
+
+export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
   const { data: playerCommonCards } = useGetCommonCards(gameId);
   const { data: playerEffectCards } = useGetEffectCards(gameId);
 
@@ -48,7 +52,9 @@ export const useGetCurrentHand = (gameId: number) => {
     () => fetchGraphQLData(gameId),
     {
       enabled: playerCommonCards.length > 0,
-      refetchInterval: 500, // Refetch every 100 milliseconds
+      refetchInterval: refetchingHand
+        ? REFETCH_HAND_INTERVAL_ACTIVE
+        : REFETCH_HAND_INTERVAL_INACTIVE, // if refetching hand is active, refetch hand more often
       cacheTime: 0, // Disable caching
       staleTime: 0, // Make data stale immediately
       refetchOnWindowFocus: true,
