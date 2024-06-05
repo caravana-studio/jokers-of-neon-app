@@ -79,7 +79,7 @@ const GameContext = createContext<IGameContext>({
   discardEffectCard: () => {},
   error: false,
   clearPreSelection: () => {},
-  loadingStates: false
+  loadingStates: false,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -95,6 +95,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
@@ -112,7 +113,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const { data: updatedHand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -173,6 +175,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
+    setFrozenHand(hand);
     play(account.account, gameId, preSelectedCards).then((response) => {
       console.log("response", response);
       if (response) {
@@ -205,6 +208,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             clearPreSelection();
             refetch();
             handsLeft > 0 && setPreSelectionLocked(false);
+            setFrozenHand(undefined);
 
             if (response.gameOver) {
               console.log("GAME OVER");
@@ -279,9 +283,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
+    setDiscardAnimation(true);
     discard(account.account, gameId, preSelectedCards).then((response) => {
       if (response) {
-        setDiscardAnimation(true);
         setTimeout(() => {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -293,13 +297,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
-    discardEffectCard(account.account, gameId, cardIdx).then((response): void => {
-      if (response) {
-        setTimeout(() => {
-          refetch();
-        }, 1500);
+    discardEffectCard(account.account, gameId, cardIdx).then(
+      (response): void => {
+        if (response) {
+          setTimeout(() => {
+            refetch();
+          }, 1500);
+        }
       }
-    });
+    );
   };
 
   //effects
@@ -414,7 +420,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discardEffectCard: onDiscardEffectCard,
         error,
         clearPreSelection,
-        loadingStates
+        loadingStates,
       }}
     >
       {children}

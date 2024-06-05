@@ -46,7 +46,14 @@ export const useGetCurrentHand = (gameId: number) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
-    { enabled: playerCommonCards.length > 0 }
+    {
+      enabled: playerCommonCards.length > 0,
+      refetchInterval: 500, // Refetch every 100 milliseconds
+      cacheTime: 0, // Disable caching
+      staleTime: 0, // Make data stale immediately
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+    }
   );
   const { data } = queryResponse;
 
