@@ -13,14 +13,15 @@ import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGame } from "../dojo/utils/useGame";
 import { Plays } from "../enums/plays";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
-import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { Round } from "../types/Round";
+import { getEnvNumber } from "../utils/getEnvValue";
 import { useCardAnimations } from "./CardAnimationsProvider";
+
+const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 
 interface IGameContext {
   gameId: number;
@@ -46,6 +47,8 @@ interface IGameContext {
   error: boolean;
   clearPreSelection: () => void;
   loadingStates: boolean;
+  refetchingHand: boolean;
+  refetchHand: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -79,7 +82,9 @@ const GameContext = createContext<IGameContext>({
   discardEffectCard: () => {},
   error: false,
   clearPreSelection: () => {},
-  loadingStates: false
+  loadingStates: false,
+  refetchingHand: false,
+  refetchHand: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -95,13 +100,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
+  const [refetchingHand, setRefetchingHand] = useState(false);
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
-  const { data: commonCards, refetch: refetchCommonCards } =
-    useGetCommonCards(gameId);
-  const { data: effectCards, refetch: refetchEffectCards } =
-    useGetEffectCards(gameId);
 
   const game = useGame();
   const {
@@ -112,7 +115,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: hand, refetch: refetchHand } = useGetCurrentHand(gameId);
+  const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
+  const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -138,8 +142,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   });
 
   //functions
+  const refetchHand = () => {
+    console.log("refetching hand");
+    setRefetchingHand(true);
+    setTimeout(() => {
+      console.log("refetching hand done");
+      setRefetchingHand(false);
+    }, REFETCH_HAND_GAP); // Will keep refetching hand for REFETCH_HAND_GAP ms
+  };
+
   const refetch = () => {
-    refetchHand();
     refetchDeckData();
     refetchRound();
   };
@@ -161,6 +173,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     createGame(account.account, username).then((newGameId) => {
       if (newGameId) {
+        refetchHand();
         setGameId(newGameId);
         clearPreSelection();
         localStorage.setItem(GAME_ID, newGameId.toString());
@@ -173,6 +186,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
+    setFrozenHand(hand);
     play(account.account, gameId, preSelectedCards).then((response) => {
       console.log("response", response);
       if (response) {
@@ -204,7 +218,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation(false);
             clearPreSelection();
             refetch();
+            refetchHand();
             handsLeft > 0 && setPreSelectionLocked(false);
+            setFrozenHand(undefined);
 
             if (response.gameOver) {
               console.log("GAME OVER");
@@ -279,9 +295,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
+    setDiscardAnimation(true);
     discard(account.account, gameId, preSelectedCards).then((response) => {
+      refetchHand();
       if (response) {
-        setDiscardAnimation(true);
         setTimeout(() => {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -293,13 +310,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
-    discardEffectCard(account.account, gameId, cardIdx).then((response): void => {
-      if (response) {
-        setTimeout(() => {
-          refetch();
-        }, 1500);
+    discardEffectCard(account.account, gameId, cardIdx).then(
+      (response): void => {
+        refetchHand();
+        if (response) {
+          setTimeout(() => {
+            refetch();
+          }, 1500);
+        }
       }
-    });
+    );
   };
 
   //effects
@@ -309,6 +329,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     } else {
       setGameLoading(false);
       refetch();
+      refetchHand();
       console.log("Game found, no need to create a new one");
     }
   }, []);
@@ -329,28 +350,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //make sure data is legit
 
   useEffect(() => {
-    if (commonCards.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchCommonCards().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [commonCards]);
-
-  useEffect(() => {
-    if (effectCards.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchEffectCards().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [effectCards]);
-
-  useEffect(() => {
     if (round.levelScore === 0) {
       setGameLoading(true);
       setTimeout(() => {
@@ -360,17 +359,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }, 500);
     }
   }, [round]);
-
-  useEffect(() => {
-    if (hand.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchHand().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [hand]);
 
   useEffect(() => {
     if (deck.size === 0) {
@@ -383,12 +371,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [deck]);
 
+  useEffect(() => {
+    if (hand.length < 8) {
+      setGameLoading(true);
+      setRefetchingHand(true);
+    } else if (gameLoading) {
+      setRefetchingHand(false);
+      setGameLoading(false);
+    }
+  }, [hand]);
+
   const loadingStates =
-    deck.size === 0 ||
-    hand.length === 0 ||
-    round.levelScore === 0 ||
-    effectCards.length === 0 ||
-    commonCards.length === 0;
+    deck.size === 0 || hand.length < 8 || round.levelScore === 0;
 
   return (
     <GameContext.Provider
@@ -414,7 +408,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discardEffectCard: onDiscardEffectCard,
         error,
         clearPreSelection,
-        loadingStates
+        loadingStates,
+        refetchingHand,
+        refetchHand,
       }}
     >
       {children}
