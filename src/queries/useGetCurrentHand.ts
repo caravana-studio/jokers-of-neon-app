@@ -70,12 +70,12 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []
   )
-    .filter((edge) => {
+/*     .filter((edge) => {
       const dojoCard = edge.node;
       return !!playerCommonCards.find(
         (card) => card.idx === dojoCard.player_card_id
       );
-    })
+    }) */
     .map((edge) => {
       const dojoCard = edge.node;
       const commonCard = playerCommonCards.find(
