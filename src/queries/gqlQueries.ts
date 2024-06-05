@@ -9,6 +9,7 @@ export const GET_CURRENT_HAND_QUERY = gql`
           type_player_card
           game_id
           player_card_id
+          card_id
         }
       }
     }

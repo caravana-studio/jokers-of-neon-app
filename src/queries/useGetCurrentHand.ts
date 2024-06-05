@@ -4,8 +4,6 @@ import { Card } from "../types/Card";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
-import { useGetCommonCards } from "./useGetCommonCards";
-import { useGetEffectCards } from "./useGetEffectCards";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -15,6 +13,7 @@ interface CardEdge {
     idx: number;
     type_player_card: string;
     player_card_id: number;
+    card_id: number;
   };
 }
 
@@ -46,14 +45,10 @@ const REFETCH_HAND_INTERVAL_INACTIVE =
   getEnvNumber("VITE_REFETCH_HAND_INTERVAL_INACTIVE") || 5000;
 
 export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
-  const { data: playerCommonCards } = useGetCommonCards(gameId);
-  const { data: playerEffectCards } = useGetEffectCards(gameId);
-
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
     {
-      enabled: playerCommonCards.length > 0 && playerEffectCards.length > 0,
       refetchInterval: refetchingHand
         ? REFETCH_HAND_INTERVAL_ACTIVE
         : REFETCH_HAND_INTERVAL_INACTIVE, // if refetching hand is active, refetch hand more often
@@ -69,19 +64,13 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
     data?.currentHandCardModels?.edges ?? []
   ).map((edge) => {
     const dojoCard = edge.node;
-    console.log("dojo card", dojoCard);
-    const card =
-      dojoCard.type_player_card === "Effect"
-        ? playerEffectCards.find(
-            (card) => card.idx === dojoCard.player_card_id
-          )!
-        : playerCommonCards.find(
-            (card) => card.idx === dojoCard.player_card_id
-          )!;
-    console.log("playerCommonCards", playerCommonCards);
-    console.log("playerEffectCards", playerEffectCards);
-    console.log("card", card);
-    return { ...card, idx: dojoCard.idx, id: dojoCard.idx.toString() };
+    return {
+      ...dojoCard,
+      img: `${dojoCard.type_player_card === "Effect" ? "effect/" : ""}${dojoCard.card_id}.png`,
+      isModifier: dojoCard.type_player_card === "Effect",
+      idx: dojoCard.idx,
+      id: dojoCard.idx.toString(),
+    };
   });
 
   const sortedCards = sortCards(cards);
