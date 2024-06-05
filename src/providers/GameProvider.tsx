@@ -13,10 +13,8 @@ import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGame } from "../dojo/utils/useGame";
 import { Plays } from "../enums/plays";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { useGetCommonCards } from "../queries/useGetCommonCards";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
-import { useGetEffectCards } from "../queries/useGetEffectCards";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { Round } from "../types/Round";
@@ -107,10 +105,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
-  const { data: commonCards, refetch: refetchCommonCards } =
-    useGetCommonCards(gameId);
-  const { data: effectCards, refetch: refetchEffectCards } =
-    useGetEffectCards(gameId);
 
   const game = useGame();
   const {
@@ -356,28 +350,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //make sure data is legit
 
   useEffect(() => {
-    if (commonCards.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchCommonCards().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [commonCards]);
-
-  useEffect(() => {
-    if (effectCards.length === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchEffectCards().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [effectCards]);
-
-  useEffect(() => {
     if (round.levelScore === 0) {
       setGameLoading(true);
       setTimeout(() => {
@@ -410,11 +382,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [hand]);
 
   const loadingStates =
-    deck.size === 0 ||
-    hand.length < 8 ||
-    round.levelScore === 0 ||
-    effectCards.length === 0 ||
-    commonCards.length === 0;
+    deck.size === 0 || hand.length < 8 || round.levelScore === 0;
 
   return (
     <GameContext.Provider
