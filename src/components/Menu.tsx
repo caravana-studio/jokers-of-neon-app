@@ -1,12 +1,15 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SOUND_OFF } from "../constants/localStorage";
+import { GAME_ID, SOUND_OFF } from "../constants/localStorage";
 
 const OPTIONS = [
   {
     label: "Play demo",
-    href: "/demo",
+    href: "/login",
+  },
+  {
+    label: "leaderboard",
   },
   {
     label: "sound",
@@ -18,9 +21,10 @@ const OPTIONS = [
 
 interface MenuProps {
   onClose: () => void;
+  onOpenLeaderboardClick: () => void;
 }
 
-export const Menu = ({ onClose }: MenuProps) => {
+export const Menu = ({ onClose, onOpenLeaderboardClick }: MenuProps) => {
   const [activeOption, setActiveOption] = useState(0);
   const navigate = useNavigate();
   const [soundActive, setSoundActive] = useState(
@@ -41,8 +45,11 @@ export const Menu = ({ onClose }: MenuProps) => {
     } else if (event.key === "Enter" || event.key === " ") {
       if (activeOption === 0) {
         const href = OPTIONS.at(activeOption)?.href;
+        window.localStorage.removeItem(GAME_ID);
         href && navigate(href);
       } else if (activeOption === 1) {
+        onOpenLeaderboardClick();
+      } else if (activeOption === 2) {
         setSoundActive((prev) => {
           if (prev) {
             localStorage.setItem(SOUND_OFF, "true");

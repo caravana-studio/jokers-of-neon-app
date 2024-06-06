@@ -1,20 +1,24 @@
 import { Heading, useTheme } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { animated, useSpring } from "react-spring";
+import { CARD_WIDTH_PX } from "../constants/visualProps";
+import { useCardAnimations } from "../providers/CardAnimationsProvider";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
-  points?: number;
+  idx: number;
   discarded?: boolean;
   played?: boolean;
 }
 
 export const AnimatedCard = ({
   children,
-  points = 0,
+  idx,
   discarded = false,
   played = false,
 }: IAnimatedCardProps) => {
+  const { points, multi, animatedCardIdx } = useCardAnimations();
+
   const { colors } = useTheme();
 
   const [cardSprings, cardApi] = useSpring(() => ({
@@ -31,15 +35,16 @@ export const AnimatedCard = ({
   }));
 
   useEffect(() => {
-    if (points) {
+    if ((points || multi) && animatedCardIdx === idx) {
+      const animateColor = points ? colors.neonGreen : colors.neonPink;
       cardApi.start({
         from: {
           transform: "scale(1)",
-          boxShadow: `0px 0px 5px 0px ${colors.neonGreen}`,
+          boxShadow: `0px 0px 5px 0px ${animateColor}`,
         },
         to: {
           transform: "scale(1.1)",
-          boxShadow: `0px 0px 30px 0px  ${colors.neonGreen}`,
+          boxShadow: `0px 0px 30px 0px  ${animateColor}`,
         },
         onRest: () => cardApi.start({ transform: "scale(1)" }),
       });
@@ -53,7 +58,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points]);
+  }, [points, multi, animatedCardIdx]);
 
   useEffect(() => {
     if (discarded || played) {
@@ -65,8 +70,10 @@ export const AnimatedCard = ({
   }, [discarded, played]);
 
   return (
-    <animated.div style={{ position: "relative", ...cardSprings }}>
-      {!!points && (
+    <animated.div
+      style={{ position: "relative", width: CARD_WIDTH_PX, ...cardSprings }}
+    >
+      {!!(points || multi) && animatedCardIdx === idx && (
         <animated.div
           style={{
             position: "absolute",
@@ -80,10 +87,10 @@ export const AnimatedCard = ({
             sx={{
               fontSize: 40,
               mb: 3,
-              textShadow: `0 0 20px  ${colors.neonGreen}`,
+              textShadow: `0 0 20px  ${points ? colors.neonGreen : colors.neonPink}`,
             }}
           >
-            +{points}
+            +{points || multi}
           </Heading>
         </animated.div>
       )}

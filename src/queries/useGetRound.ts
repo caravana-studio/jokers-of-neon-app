@@ -7,7 +7,8 @@ export const ROUND_QUERY_KEY = "round";
 
 interface RoundEdge {
   node: {
-    score: number,
+    player_score: number,
+    level_score: number,
     hands: number,
     discard: number
   };
@@ -43,9 +44,10 @@ export const useGetRound = (gameId: number) => {
   const dojoRound = data?.roundModels?.edges[0]?.node
 
   const round: Round = {
-    score: dojoRound?.score ?? 0,
+    score: dojoRound?.player_score ?? 0,
     hands: dojoRound?.hands ?? 0,
-    discards: dojoRound?.discard ?? 0
+    discards: dojoRound?.discard ?? 0,
+    levelScore: dojoRound?.level_score ?? 0
   }
   return {
     ...queryResponse,

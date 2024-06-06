@@ -1,20 +1,20 @@
-import { ChakraBaseProvider, extendBaseTheme } from "@chakra-ui/react";
+import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
 import { FullScreenArcade } from "./components/FullScreenArcade";
-import { Game } from "./pages/Game";
+import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Store } from "./pages/store/Store";
-import { StaticCardsProvider } from "./providers/StaticCardsProvider";
-import customTheme from "./theme";
+import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
+import customTheme from "./theme/theme";
 
-const theme = extendBaseTheme(customTheme);
+const theme = extendTheme(customTheme);
 
 function App() {
   return (
     <ChakraBaseProvider theme={theme}>
-      <StaticCardsProvider>
+      <CardAnimationsProvider>
         <main className="scanlines">
           <div className="screen">
             <canvas id="canvas" className="picture"></canvas>
@@ -26,7 +26,7 @@ function App() {
                   path="/demo"
                   element={
                     <FullScreenArcade>
-                      <Game />
+                      <GamePage />
                     </FullScreenArcade>
                   }
                 />
@@ -42,7 +42,7 @@ function App() {
             </div>
           </div>
         </main>
-      </StaticCardsProvider>
+      </CardAnimationsProvider>
     </ChakraBaseProvider>
   );
 }

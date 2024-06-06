@@ -1,29 +1,11 @@
-import { Box, Button, Heading, useTheme } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Button } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { RollingNumber } from "../components/RollingNumber";
+import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
-import { useDojo } from "../dojo/useDojo";
-import { getRound } from "../dojo/utils/getRound";
 import { noisyTv } from "../scripts/noisyTv";
 
 export const GameOver = () => {
-  const [gameId, setGameId] = useState<number>(
-    Number(localStorage.getItem(GAME_ID)) ?? 0
-  );
-  const { colors } = useTheme();
-
-  const {
-    setup: {
-      systemCalls: { createGame, checkHand, discard, play },
-      clientComponents: { Game, Round },
-    },
-    account,
-  } = useDojo();
-
-  const round = getRound(gameId, Round);
-  const score = round?.score ? Number(round?.score) : 0;
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,7 +38,7 @@ export const GameOver = () => {
         <span>GAME OVER</span>
         <span>GAME OVER</span>
       </Box>
-
+      {/* 
       <Heading
         sx={{
           mt: "180px",
@@ -64,10 +46,17 @@ export const GameOver = () => {
         variant="neonWhite"
         size="xl"
       >
-        SCORE: <RollingNumber n={score} />
+        LEVEL <RollingNumber n={level} />
       </Heading>
+      <Heading variant="neonGreen" size="l">
+        <RollingNumber n={score} /> points
+      </Heading> */}
+      <Box sx={{ mt: "180px" }}>
+        <Leaderboard lines={4} />
+      </Box>
       <Button
         size="l"
+        variant="outline"
         sx={{
           mt: 10,
           backgroundColor: "transparent",
