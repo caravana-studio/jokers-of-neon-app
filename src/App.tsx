@@ -5,6 +5,7 @@ import { FullScreenArcade } from "./components/FullScreenArcade";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 import { Store } from "./pages/store/Store";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import customTheme from "./theme/theme";
@@ -21,6 +22,7 @@ function App() {
             <div className="overlay">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/gameover" element={<GameOver />} />
                 <Route
                   path="/demo"

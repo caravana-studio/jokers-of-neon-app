@@ -20,7 +20,7 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
   const { img } = card;
 
   const tiltCardComponent = (
-    <Box>
+    <Box width={CARD_WIDTH_PX}>
       <Box
         sx={{
           zIndex: 6,
@@ -38,6 +38,23 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
               onClick?.();
             }}
           />
+          {card.price && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: 1,
+                right: 1,
+                zIndex: 10,
+                backgroundColor: "rgba(0,0,0,0.7)",
+                color: "white",
+                fontSize: 20,
+                px: 2,
+                py: 1,
+              }}
+            >
+              {card.price}ȼ
+            </Box>
+          )}
         </Tilt>
       </Box>
       {card.modifiers?.map((c, index) => (

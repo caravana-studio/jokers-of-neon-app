@@ -36,7 +36,8 @@ export function createSystemCalls(
         console.log("Game " + value + " created");
         return value;
       } else {
-        return null;
+        console.error("Error creating game:", tx);
+        return false;
       }
     } catch (e) {
       console.log(e);
