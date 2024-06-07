@@ -34,7 +34,7 @@ export async function setupWorld(provider: DojoProvider) {
 
     const checkHand = async ({ account, gameId, cards }: CheckHandProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
+        const cardArray = [gameId, cards.length, 1, ...[0], 1, ...[1], 1, ...[2]];
         console.log(cardArray);
         return await provider.execute(
           account,
@@ -105,7 +105,7 @@ export async function setupWorld(provider: DojoProvider) {
       cards: number[];
     }) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
+        const cardArray = [gameId, 1, ...[0], 1, ...[1], 1, ...[2]];
         console.log(cardArray);
         return await provider.execute(
           account,

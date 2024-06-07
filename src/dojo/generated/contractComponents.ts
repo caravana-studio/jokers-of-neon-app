@@ -9,12 +9,25 @@ export function defineContractComponents(world: World) {
     Card: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, suit: RecsType.Number, value: RecsType.Number, points: RecsType.Number },
+        { id: RecsType.Number, suit: RecsType.Number, value: RecsType.Number, points: RecsType.Number, multi_add: RecsType.Number },
         {
           metadata: {
             name: "Card",
-            types: ["u32","enum","enum","u8"],
+            types: ["u32","enum","enum","u32","u32"],
             customTypes: ["Suit","Value"],
+          },
+        }
+      );
+    })(),
+    ConfigEarningCash: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, base: RecsType.Number, config_hands_played: RecsType.Number, config_remaining_discards: RecsType.Number, config_extra_points: RecsType.Number },
+        {
+          metadata: {
+            name: "ConfigEarningCash",
+            types: ["u32","u32","u32","u32","u32"],
+            customTypes: [],
           },
         }
       );
@@ -66,6 +79,19 @@ export function defineContractComponents(world: World) {
           metadata: {
             name: "CreateGameEvent",
             types: ["contractaddress","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    DetailEarnedEvent: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, game_id: RecsType.Number, round_defeat: RecsType.Number, level_bonus: RecsType.Number, hands_left: RecsType.Number, hands_left_cash: RecsType.Number, discard_left: RecsType.Number, discard_left_cash: RecsType.Number, total: RecsType.Number },
+        {
+          metadata: {
+            name: "DetailEarnedEvent",
+            types: ["contractaddress","u32","u32","u32","u32","u32","u32","u32","u32"],
             customTypes: [],
           },
         }
@@ -139,12 +165,12 @@ export function defineContractComponents(world: World) {
     Game: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_current_special_cards: RecsType.Number, game_over: RecsType.Boolean },
+        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_current_special_cards: RecsType.Number, state: RecsType.Number, cash: RecsType.Number },
         {
           metadata: {
             name: "Game",
-            types: ["u32","contractaddress","felt252","u8","u8","u8","u32","u32","u32","u32","u32","u32","bool"],
-            customTypes: [],
+            types: ["u32","contractaddress","felt252","u8","u8","u8","u32","u32","u32","u32","u32","u32","enum","u32"],
+            customTypes: ["GameState"],
           },
         }
       );
@@ -178,11 +204,11 @@ export function defineContractComponents(world: World) {
     PlayerLevelPokerHand: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, poker_hand: RecsType.Number, level: RecsType.Number },
+        { game_id: RecsType.Number, poker_hand: RecsType.Number, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
         {
           metadata: {
             name: "PlayerLevelPokerHand",
-            types: ["u32","enum","u8"],
+            types: ["u32","enum","u8","u32","u32"],
             customTypes: ["PokerHand"],
           },
         }
@@ -222,6 +248,32 @@ export function defineContractComponents(world: World) {
           metadata: {
             name: "Round",
             types: ["u32","u32","u32","u8","u8","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    CardItem: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, item_type: RecsType.Number, card_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
+        {
+          metadata: {
+            name: "CardItem",
+            types: ["u32","enum","u32","u32","bool"],
+            customTypes: ["CardItemType"],
+          },
+        }
+      );
+    })(),
+    Shop: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, len_item_common_cards: RecsType.Number, len_item_modifier_cards: RecsType.Number, len_item_special_cards: RecsType.Number },
+        {
+          metadata: {
+            name: "Shop",
+            types: ["u32","u32","u32","u32"],
             customTypes: [],
           },
         }
