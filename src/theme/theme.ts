@@ -1,6 +1,9 @@
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
+import { NEON_GREEN, NEON_PINK } from "./colors";
+import button from "./button";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(inputAnatomy.keys);
@@ -17,8 +20,7 @@ const baseStyle = definePartsStyle({
 
 const inputTheme = defineMultiStyleConfig({ baseStyle });
 
-const NEON_GREEN = "#33effa";
-const NEON_PINK = "#fd4bad";
+
 
 export default {
   colors: {
@@ -40,39 +42,7 @@ export default {
   },
   components: {
     Table: tableTheme,
-    Button: {
-      baseStyle: {
-        fontFamily: "Sys",
-        borderRadius: 0,
-        fontSize: 17,
-        px: 5,
-        py: 1,
-        pointerEvents: "all",
-        "&:hover": {
-          backgroundColor: "black",
-          border: `3px solid ${NEON_GREEN}`,
-          boxShadow: `0px 0px 5px 0px ${NEON_GREEN}`,
-        },
-      },
-      variants: {
-        outline: {
-          backgroundColor: "rgba(0,0,0,0.5)",
-          border: `3px solid ${NEON_GREEN} !important`,
-          color: "neonGreen",
-        },
-      },
-      sizes: {
-        l: {
-          fontSize: 40,
-          px: 90,
-          py: 2,
-          borderRadius: 0,
-          filter: "blur(1px)",
-          textShadow: `0 0 20px ${NEON_GREEN}`,
-          boxShadow: `0px 0px 15px 0px ${NEON_GREEN} `,
-        },
-      },
-    },
+    Button: button,
     Heading: {
       baseStyle: {
         fontFamily: "Sys",
@@ -106,9 +76,13 @@ export default {
         xl: {
           fontSize: 50,
           filter: "blur(1px)",
+        },        xxl: {
+          fontSize: 80,
+          filter: "blur(1px)",
         },
       },
     },
     Input: inputTheme,
+    Modal: modalTheme
   },
 };

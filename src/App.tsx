@@ -1,11 +1,13 @@
 import { Box, ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
+import { FullScreenArcade } from "./components/FullScreenArcade";
+
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
-import { Poc } from "./pages/Poc";
+import { Store } from "./pages/store/Store";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import customTheme from "./theme/theme";
 
@@ -26,25 +28,20 @@ function App() {
                 <Route
                   path="/demo"
                   element={
-                    <Box
-                      sx={{
-                        backgroundImage: "url(arcade-neon.gif)",
-                        boxShadow: "inset 0 0 0 1000px rgba(0,0,0,.3)",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        height: "100vh",
-                        width: "100vw",
-                        imageRendering: "pixelated !important",
-                        fontFamily: "Sys",
-                        pointerEvents: "all",
-                        color: "#FFF",
-                      }}
-                    >
+                    <FullScreenArcade>
                       <GamePage />
-                    </Box>
+                    </FullScreenArcade>
                   }
                 />
-                <Route path="/poc" element={<Poc />} />
+                <Route
+                  path="/store"
+                  element={
+                    <FullScreenArcade>
+                      <Store />
+                    </FullScreenArcade>
+                  }
+                />
+
               </Routes>
             </div>
           </div>
