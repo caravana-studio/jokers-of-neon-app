@@ -1,7 +1,8 @@
-import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
+import { Box, ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
 import { FullScreenArcade } from "./components/FullScreenArcade";
+
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
@@ -40,6 +41,7 @@ function App() {
                     </FullScreenArcade>
                   }
                 />
+
               </Routes>
             </div>
           </div>
