@@ -14,6 +14,7 @@ export interface Card {
   idx: number;
   points?: number;
   price?: number;
+  card_id?: number;
 }
 
 export interface StaticEffectCard extends Effect {
