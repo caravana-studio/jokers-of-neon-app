@@ -3,7 +3,7 @@ import { CardDataMap } from "../types/CardData";
 export const MODIFIER_CARDS_DATA: CardDataMap = {
   17: {
     name: "+10 Points",
-    description: "The modified card will score +10 additionalpoints",
+    description: "The modified card will score +10 additional points",
   },
   18: {
     name: "+20 Points",

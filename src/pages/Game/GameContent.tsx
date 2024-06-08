@@ -1,4 +1,11 @@
-import { Box, Button, Flex, Heading, Spinner, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spinner,
+  useTheme,
+} from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
 import { GameDeck } from "../../components/GameDeck.tsx";
@@ -42,8 +49,16 @@ export const GameContent = () => {
 
   if (error) {
     return (
-      <Flex flexDirection='column' justifyContent="center" alignItems="center" gap={8} sx={{ height: "100%" }}>
-        <Heading size='xl' variant='neonGreen'>error creating game</Heading>
+      <Flex
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap={8}
+        sx={{ height: "100%" }}
+      >
+        <Heading size="xl" variant="neonGreen">
+          error creating game
+        </Heading>
         <Button
           variant="outline"
           sx={{ width: 300 }}
@@ -130,7 +145,15 @@ export const GameContent = () => {
             </Box>
           </DndContext>
         </Box>
-        <GameDeck />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 7,
+            right: 10,
+          }}
+        >
+          <GameDeck />
+        </Box>
       </Box>
     </Box>
   );

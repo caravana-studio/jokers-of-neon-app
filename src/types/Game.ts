@@ -14,5 +14,5 @@ export interface IGame {
   player_name: BigNumberish;
   player_score: number;
   round: number;
-  state: number;
+  state: 'IN_GAME' | 'AT_SHOP' | 'FINISHED';
 }

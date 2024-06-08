@@ -5,7 +5,7 @@ import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { PlaysLayout } from '../../components/PlaysLayout.tsx'
+import { PlaysLayout } from '../../components/Plays/PlaysLayout.tsx'
 import { useState } from 'react'
 
 export const TopSection = () => {

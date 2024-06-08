@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x51e1418978501cafd8bb6205810668992ec9cf90d5bd9493aeb2ad808a3efdc",
-      "original_class_hash": "0x51e1418978501cafd8bb6205810668992ec9cf90d5bd9493aeb2ad808a3efdc",
+      "class_hash": "0x21af727b6da39d27c00f9812c22c1d870303d101cdd03076551446d8a8f4de4",
+      "original_class_hash": "0x21af727b6da39d27c00f9812c22c1d870303d101cdd03076551446d8a8f4de4",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -1092,8 +1092,8 @@
     {
       "kind": "DojoContract",
       "address": "0x2c3763c9d026a38481336ddc0a89281e375608293364f8323dc6217f25a6ce0",
-      "class_hash": "0x4da31df22f6f172437dbd075de7e9e4400e3ac4af1edf5574b65684b42a4532",
-      "original_class_hash": "0x4da31df22f6f172437dbd075de7e9e4400e3ac4af1edf5574b65684b42a4532",
+      "class_hash": "0x383a7182e2b79af953b9da2d24bb357a1f9446d05f504d4e3ddc180fe5424ba",
+      "original_class_hash": "0x383a7182e2b79af953b9da2d24bb357a1f9446d05f504d4e3ddc180fe5424ba",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -6485,7 +6485,12 @@
       "kind": "DojoModel",
       "members": [
         {
-          "name": "id",
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "idx",
           "type": "u32",
           "key": true
         },
@@ -6510,8 +6515,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5d4aaacb719b0cd74fa984fa6298eadf8d3fc2ff35e80cc8936247392bd41f6",
-      "original_class_hash": "0x5d4aaacb719b0cd74fa984fa6298eadf8d3fc2ff35e80cc8936247392bd41f6",
+      "class_hash": "0x469f5b26b41881d4a02140517563703e4313ac92a12d2a4f691ee39647a0e75",
+      "original_class_hash": "0x469f5b26b41881d4a02140517563703e4313ac92a12d2a4f691ee39647a0e75",
       "abi": [
         {
           "type": "impl",
@@ -6727,7 +6732,11 @@
           "name": "jokers_of_neon::models::status::shop::shop::CardItem",
           "members": [
             {
-              "name": "id",
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
               "type": "core::integer::u32"
             },
             {
