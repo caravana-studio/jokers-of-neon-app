@@ -1,59 +1,15 @@
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
+import { PlaysTable } from "../../components/Plays/PlaysTable";
+import { useGame } from "../../dojo/utils/useGame";
+import { useGetShopItems } from "../../queries/useGetShopItems";
 import { CardsRow } from "./CardsRow";
 
-const SPECIAL_CARDS_INDEX = [17, 19, 21];
-const SPECIAL_CARDS = SPECIAL_CARDS_INDEX.map((number) => {
-  return {
-    id: number.toString(),
-    idx: number,
-    img: `effect/special-${number}.png`,
-    price: 1500,
-    isSpecial: true,
-  };
-});
-const MODIFIER_CARDS = [
-  {
-    id: "26",
-    idx: 26,
-    img: "effect/26.png",
-    price: 500,
-    isModifier: true,
-  },
-  {
-    id: "20",
-    idx: 20,
-    img: "effect/20.png",
-    price: 500,
-    isModifier: true,
-  },
-  {
-    id: "28",
-    idx: 28,
-    img: "effect/28.png",
-    price: 300,
-    isModifier: true,
-  },
-  {
-    id: "23",
-    idx: 23,
-    img: "effect/23.png",
-    price: 600,
-    isModifier: true,
-  },
-];
-
-const COMMON_CARDS_INDEX = [3, 51, 22, 45, 34];
-const COMMON_CARDS = COMMON_CARDS_INDEX.map((number) => {
-  return {
-    id: number.toString(),
-    idx: number,
-    img: `${number}.png`,
-    price: 150,
-  };
-});
-
 export const Store = () => {
+  const { id, cash, state } = useGame();
+  const { data: shopItems } = useGetShopItems(id);
+  console.log(shopItems);
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <Flex
@@ -63,9 +19,11 @@ export const Store = () => {
         sx={{ height: "15%", mx: 10 }}
       >
         <PointBox type="level">
-          <Heading size="s">MY COINS</Heading>
+          <Heading size="s" sx={{ mx: 4 }}>
+            MY COINS
+          </Heading>
           <Heading size="l" sx={{ mx: 4, color: "white" }}>
-            2000ȼ
+            {`${cash}ȼ`}
           </Heading>
         </PointBox>
         <Heading size="xl" variant="neonWhite">
@@ -90,29 +48,27 @@ export const Store = () => {
             rowSpan={3}
           >
             <Heading variant="neonGreen" size="m" sx={{ m: 3 }}>
-              plays
+              level up your plays
             </Heading>
+            <PlaysTable inStore />
           </GridItem>
           <GridItem colSpan={5}>
+            <CardsRow cards={shopItems.commonCards} title="traditional cards" />
+          </GridItem>
+          <GridItem colSpan={5}>
+            <CardsRow cards={shopItems.modifierCards} title="modifiers" />
+          </GridItem>
+          <GridItem colSpan={4}>
             <CardsRow
-              cards={SPECIAL_CARDS}
+              cards={shopItems.specialCards}
               title="special cards"
               button={{ label: "see my special cards", onClick: () => {} }}
             />
           </GridItem>
-          <GridItem colSpan={5}>
-            <CardsRow
-              cards={MODIFIER_CARDS}
-              title="modifiers"
-              button={{ label: "see my modifiers", onClick: () => {} }}
-            />
-          </GridItem>
-          <GridItem colSpan={5}>
-            <CardsRow
-              cards={COMMON_CARDS}
-              title="traditional cards"
-              button={{ label: "see my traditional cards", onClick: () => {} }}
-            />
+          <GridItem colSpan={1}>
+            <Flex justifyContent="center" alignItems="flex-end" height="100%">
+              <GameDeck />
+            </Flex>
           </GridItem>
         </Grid>
       </Flex>

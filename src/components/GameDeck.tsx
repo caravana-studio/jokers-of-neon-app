@@ -8,13 +8,7 @@ export const GameDeck = () => {
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
   return (
-    <Box
-      sx={{
-        position: "absolute",
-        bottom: 7,
-        right: 10,
-      }}
-    >
+    <Box>
       <Image
         sx={{ maxWidth: "unset" }}
         src={`Cards/Backs/B1.png`}

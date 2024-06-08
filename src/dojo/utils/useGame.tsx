@@ -1,3 +1,4 @@
+import { IGame } from "../../types/Game";
 import { useDojo } from "../useDojo";
 import { getGame } from "./getGame";
 import { getLSGameId } from "./getLSGameId";
@@ -9,5 +10,5 @@ export const useGame = () => {
     },
   } = useDojo();
   const gameId = getLSGameId();
-  return getGame(gameId, Game);
+  return getGame(gameId, Game) as IGame;
 };
