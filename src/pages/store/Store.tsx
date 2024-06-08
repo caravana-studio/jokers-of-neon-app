@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { PointBox } from "../../components/MultiPoints";
+import { useGame } from "../../dojo/utils/useGame";
 import { CardsRow } from "./CardsRow";
 
 const SPECIAL_CARDS_INDEX = [17, 19, 21];
@@ -54,6 +55,8 @@ const COMMON_CARDS = COMMON_CARDS_INDEX.map((number) => {
 });
 
 export const Store = () => {
+  const { cash } = useGame();
+
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <Flex
@@ -63,9 +66,9 @@ export const Store = () => {
         sx={{ height: "15%", mx: 10 }}
       >
         <PointBox type="level">
-          <Heading size="s">MY COINS</Heading>
+          <Heading size="s" sx={{mx: 4}}>MY COINS</Heading>
           <Heading size="l" sx={{ mx: 4, color: "white" }}>
-            2000ȼ
+            {`${cash}ȼ`}
           </Heading>
         </PointBox>
         <Heading size="xl" variant="neonWhite">

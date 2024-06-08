@@ -10,7 +10,6 @@ import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { useGame } from "../dojo/utils/useGame";
 import { Plays } from "../enums/plays";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
@@ -27,8 +26,6 @@ interface IGameContext {
   gameId: number;
   round: Round;
   refetchRound: () => void;
-  //TODO: type
-  game: any;
   preSelectedPlay: Plays;
   points: number;
   multi: number;
@@ -58,9 +55,6 @@ const GameContext = createContext<IGameContext>({
     levelScore: 0,
     hands: 0,
     discards: 0,
-  },
-  game: {
-    level: 0,
   },
   refetchRound: () => {},
   preSelectedPlay: Plays.NONE,
@@ -106,7 +100,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
-  const game = useGame();
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
@@ -390,7 +383,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       value={{
         gameId,
         round,
-        game,
         refetchRound,
         preSelectedPlay,
         points,
