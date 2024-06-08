@@ -13,6 +13,7 @@ export interface Card {
   isSpecial?: boolean;
   idx: number;
   points?: number;
+  card_id?: number;
 }
 
 export interface StaticEffectCard extends Effect {
