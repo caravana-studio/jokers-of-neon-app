@@ -9,32 +9,37 @@ const SPECIAL_CARDS = SPECIAL_CARDS_INDEX.map((number) => {
     idx: number,
     img: `effect/special-${number}.png`,
     price: 1500,
+    isSpecial: true,
   };
 });
 const MODIFIER_CARDS = [
   {
-    id: "1",
-    idx: 1,
+    id: "26",
+    idx: 26,
     img: "effect/26.png",
     price: 500,
+    isModifier: true,
   },
   {
-    id: "2",
-    idx: 2,
+    id: "20",
+    idx: 20,
     img: "effect/20.png",
     price: 500,
+    isModifier: true,
   },
   {
-    id: "3",
-    idx: 3,
+    id: "28",
+    idx: 28,
     img: "effect/28.png",
     price: 300,
+    isModifier: true,
   },
   {
-    id: "4",
-    idx: 4,
+    id: "23",
+    idx: 23,
     img: "effect/23.png",
     price: 600,
+    isModifier: true,
   },
 ];
 
@@ -67,7 +72,7 @@ export const Store = () => {
           LEVEL UP YOUR GAME
         </Heading>
         <Box>
-          <Button sx={{lineHeight: 1.6}} size="m" variant="outline">
+          <Button sx={{ lineHeight: 1.6 }} size="m" variant="outline">
             go to <br />
             NEXT LEVEL
           </Button>

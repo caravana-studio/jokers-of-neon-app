@@ -14,13 +14,14 @@ interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
+  pointer?: boolean;
 }
 
-export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
+export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
   const { img } = card;
 
   const tiltCardComponent = (
-    <Box width={CARD_WIDTH_PX}>
+    <Box width={CARD_WIDTH_PX} sx={{ cursor: pointer ? "pointer" : "default" }}>
       <Box
         sx={{
           zIndex: 6,
