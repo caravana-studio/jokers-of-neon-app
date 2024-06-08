@@ -170,6 +170,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const executeCreateGame = () => {
     console.log("Creating game...");
+    setError(false);
     setGameLoading(true);
     createGame(account.account, username).then((newGameId) => {
       if (newGameId) {

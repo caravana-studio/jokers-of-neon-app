@@ -21,7 +21,6 @@ export async function setupWorld(provider: DojoProvider) {
     const contract_name = "game_system";
 
     const createGame = async ({ account, username }: CreateGameProps) => {
-      console.log("creting username", shortString.encodeShortString(username));
       try {
         return await provider.execute(account, contract_name, "create_game", [
           shortString.encodeShortString(username),
