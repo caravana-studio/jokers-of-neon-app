@@ -5,13 +5,25 @@ import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { PlaysLayout } from '../../components/PlaysLayout.tsx'
+import { useState } from 'react'
 
 export const TopSection = () => {
   const { gameId, executeCreateGame } = useGameContext();
+  const [playsView, setPlaysView] = useState(false);
+
   return (
     <SimpleGrid columns={3}>
       <GridItem>
         <LevelPoints />
+        <Button
+          mt={8}
+          variant="outline" onClick={(e) => {
+          e.stopPropagation();
+          setPlaysView(!playsView);
+        }}>
+          See plays
+        </Button>
       </GridItem>
       <GridItem>
         <Box
@@ -24,6 +36,11 @@ export const TopSection = () => {
           <Score />
           <CurrentPlay />
           <MultiPoints />
+          {playsView && (
+            <Box position={"relative"} zIndex={2}>
+              <PlaysLayout />
+            </Box>
+          )}
         </Box>
       </GridItem>
       <GridItem>

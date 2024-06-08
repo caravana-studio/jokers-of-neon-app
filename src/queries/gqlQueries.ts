@@ -95,3 +95,18 @@ export const GET_STATIC_EFFECTS = gql`
     }
   }
 `;
+
+export const GET_PLAYS_LEVEL_QUERY = gql`
+    query GetLevelPokerHand {
+        playerLevelPokerHandModels {
+            edges {
+                node {
+                    poker_hand
+                    level
+                    multi
+                    points
+                }
+            }
+        }
+    }
+`;
