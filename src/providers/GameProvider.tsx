@@ -19,6 +19,7 @@ import { Card } from "../types/Card";
 import { Round } from "../types/Round";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { RoundRewards } from '../types/RoundRewards.ts'
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 
@@ -46,6 +47,7 @@ interface IGameContext {
   loadingStates: boolean;
   refetchingHand: boolean;
   refetchHand: (times?: number) => void;
+  roundRewards: RoundRewards | undefined;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -79,6 +81,7 @@ const GameContext = createContext<IGameContext>({
   loadingStates: false,
   refetchingHand: false,
   refetchHand: (_) => {},
+  roundRewards: undefined,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -96,6 +99,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
   const [refetchingHand, setRefetchingHand] = useState(false);
+  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(undefined);
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
@@ -223,17 +227,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               }, 1000);
             }
 
-            if (response.levelPassed) {
-              const { level, score } = response.levelPassed;
-              setTimeout(() => {
-                showSuccessToast(
-                  `level ${level} passed with score ${score}`,
-                  "CONGRATULATIONS!!!"
-                );
-              }, 200);
-              setTimeout(() => {
-                navigate("/store");
-              }, 1200);
+            if (response.levelPassed && response.detailEarned) {
+              const { level } = response.levelPassed;
+              setRoundRewards({
+                ...response.detailEarned,
+                level: level,
+              });
+            }
+            else {
+              setRoundRewards(undefined);
             }
           },
           700 * response.cards.length + 400
@@ -409,6 +411,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         loadingStates,
         refetchingHand,
         refetchHand,
+        roundRewards
       }}
     >
       {children}
