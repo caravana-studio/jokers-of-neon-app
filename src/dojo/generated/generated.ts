@@ -111,6 +111,29 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+    const buyCard = async ({
+      account,
+      gameId,
+      card_idx,
+      card_type,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      card_idx: number;
+      card_type: number;
+    }) => {
+      try {
+        return await provider.execute(account, shop_contract, "buy_card_item", [
+          gameId,
+          card_idx,
+          card_type,
+        ]);
+      } catch (error) {
+        console.error("Error executing buy_card_item:", error);
+        throw error;
+      }
+    };
+
     const play = async ({
       account,
       gameId,
@@ -142,6 +165,7 @@ export async function setupWorld(provider: DojoProvider) {
       discardEffectCard,
       play,
       skipShop,
+      buyCard,
     };
   }
   return {

@@ -1,10 +1,10 @@
-import { Box, Image, SystemStyleObject } from "@chakra-ui/react";
+import { Box, Heading, Image, SystemStyleObject } from "@chakra-ui/react";
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH_PX,
   MODIFIERS_OFFSET,
-  TILT_OPTIONS,
+  TILT_OPTIONS
 } from "../constants/visualProps";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
@@ -18,10 +18,13 @@ interface ICardProps {
 }
 
 export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
-  const { img } = card;
+  const { img, purchased = false } = card;
 
   const tiltCardComponent = (
-    <Box width={CARD_WIDTH_PX} sx={{ cursor: pointer ? "pointer" : "default" }}>
+    <Box
+      width={CARD_WIDTH_PX}
+      sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
+    >
       <Box
         sx={{
           zIndex: 6,
@@ -30,7 +33,7 @@ export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
       >
         <Tilt options={TILT_OPTIONS}>
           <Image
-            sx={{ maxWidth: "unset" }}
+            sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
             src={`Cards/${img}`}
             alt={img}
             width={CARD_WIDTH_PX}
@@ -51,9 +54,24 @@ export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
                 fontSize: 20,
                 px: 2,
                 py: 1,
+                opacity: purchased ? 0.5 : 1,
               }}
             >
               {card.price}ȼ
+            </Box>
+          )}
+          {card.purchased && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: `${CARD_HEIGHT / 2 - 20}px`,
+                left: 0,
+                zIndex: 10,
+              }}
+            >
+              <Heading variant="neonWhite" size="m">
+                PURCHASED
+              </Heading>
             </Box>
           )}
         </Tilt>
