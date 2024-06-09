@@ -4,6 +4,7 @@ import { Leaderboard } from "../components/Leaderboard";
 import { Menu } from "../components/Menu";
 import { PoweredBy } from "../components/PoweredBy";
 import { noisyTv } from "../scripts/noisyTv";
+import { preloadImages } from "../utils/preloadImages";
 
 export const Home = () => {
   const [open, setOpen] = useState(false);
@@ -11,6 +12,16 @@ export const Home = () => {
   const onKeyDown = useCallback((event: { key: string }) => {
     setOpen(true);
     setLeaderboardOpen(false);
+  }, []);
+
+  useEffect(() => {
+    preloadImages()
+      .then(() => {
+        console.log("All images preloaded");
+      })
+      .catch((err) => {
+        console.error("Error preloading images:", err);
+      });
   }, []);
 
   useEffect(() => {

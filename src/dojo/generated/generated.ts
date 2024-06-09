@@ -15,15 +15,14 @@ interface CreateGameProps {
   account: AccountInterface;
   username: string;
 }
+const game_contract = "game_system";
+const shop_contract = "shop_system";
 
 export async function setupWorld(provider: DojoProvider) {
   function actions() {
-    const contract_name = "game_system";
-
     const createGame = async ({ account, username }: CreateGameProps) => {
-      console.log("creting username", shortString.encodeShortString(username));
       try {
-        return await provider.execute(account, contract_name, "create_game", [
+        return await provider.execute(account, game_contract, "create_game", [
           shortString.encodeShortString(username),
         ]);
       } catch (error) {
@@ -38,7 +37,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "check_hand",
           cardArray
         );
@@ -62,7 +61,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "discard",
           cardArray
         );
@@ -85,12 +84,74 @@ export async function setupWorld(provider: DojoProvider) {
         const cardArray = [gameId, card];
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "discard_effect_card",
           cardArray
         );
       } catch (error) {
         console.error("Error executing discardEffectCard:", error);
+        throw error;
+      }
+    };
+
+    const skipShop = async ({
+      account,
+      gameId,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+    }) => {
+      try {
+        return await provider.execute(account, shop_contract, "skip_shop", [
+          gameId,
+        ]);
+      } catch (error) {
+        console.error("Error executing skip_shop:", error);
+        throw error;
+      }
+    };
+
+    const buyCard = async ({
+      account,
+      gameId,
+      card_idx,
+      card_type,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      card_idx: number;
+      card_type: number;
+    }) => {
+      try {
+        return await provider.execute(account, shop_contract, "buy_card_item", [
+          gameId,
+          card_idx,
+          card_type,
+        ]);
+      } catch (error) {
+        console.error("Error executing buy_card_item:", error);
+        throw error;
+      }
+    };
+
+    const levelUpPokerHand = async ({
+      account,
+      gameId,
+      item_id,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      item_id: number;
+    }) => {
+      try {
+        return await provider.execute(
+          account,
+          shop_contract,
+          "buy_poker_hand_item",
+          [gameId, item_id]
+        );
+      } catch (error) {
+        console.error("Error executing buy_poker_hand_item:", error);
         throw error;
       }
     };
@@ -109,7 +170,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "play",
           cardArray
         );
@@ -119,7 +180,16 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
-    return { checkHand, createGame, discard, discardEffectCard, play };
+    return {
+      checkHand,
+      createGame,
+      discard,
+      discardEffectCard,
+      play,
+      skipShop,
+      buyCard,
+      levelUpPokerHand,
+    };
   }
   return {
     actions: actions(),

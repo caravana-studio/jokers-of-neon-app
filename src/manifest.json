@@ -677,8 +677,8 @@
     {
       "kind": "DojoContract",
       "address": "0x57e3a921a94df6c6893eb3fcc06d69b45faf1b48592a6b4aff59a3fdaeb1fe0",
-      "class_hash": "0x1b7f781d5292c0500100aa312d505ec97b53054795628350933178f0cf4f3dd",
-      "original_class_hash": "0x1b7f781d5292c0500100aa312d505ec97b53054795628350933178f0cf4f3dd",
+      "class_hash": "0x6e7db2effc007e7bc6bf85368cc77edc690c890615042c1e2955ff092f5d335",
+      "original_class_hash": "0x6e7db2effc007e7bc6bf85368cc77edc690c890615042c1e2955ff092f5d335",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -821,8 +821,8 @@
     {
       "kind": "DojoContract",
       "address": "0x7b38145c90e7abfd23423b00f33cf856bb7b3eb88c394400912d3dc92c7d02e",
-      "class_hash": "0x7a5324b6f985ee014594b2b51355438bc7764a923d6d55cdfd5b2406f7b0fa3",
-      "original_class_hash": "0x7a5324b6f985ee014594b2b51355438bc7764a923d6d55cdfd5b2406f7b0fa3",
+      "class_hash": "0x52edf55037fae554da8e1152c18f7fad2a8a5aa1f2b7b60dd75ec9c3ac775bf",
+      "original_class_hash": "0x52edf55037fae554da8e1152c18f7fad2a8a5aa1f2b7b60dd75ec9c3ac775bf",
       "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
       "abi": [
         {
@@ -1088,6 +1088,213 @@
       "writes": [],
       "computed": [],
       "name": "jokers_of_neon::systems::game_system::game_system"
+    },
+    {
+      "kind": "DojoContract",
+      "address": "0x2c3763c9d026a38481336ddc0a89281e375608293364f8323dc6217f25a6ce0",
+      "class_hash": "0x61aba5b4b0ce25f07ee47df6cc4d6515da4c164d4d9c366b30bd8d1a0062853",
+      "original_class_hash": "0x61aba5b4b0ce25f07ee47df6cc4d6515da4c164d4d9c366b30bd8d1a0062853",
+      "base_class_hash": "0x679177a2cb757694ac4f326d01052ff0963eac0bc2a17116a2b87badcdf6f76",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoResourceProviderImpl",
+          "interface_name": "dojo::world::IDojoResourceProvider"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::world::IDojoResourceProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_resource",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::world::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::world::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ShopImpl",
+          "interface_name": "jokers_of_neon::systems::shop_system::IShopSystem"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::status::shop::shop::CardItemType",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Modifier",
+              "type": "()"
+            },
+            {
+              "name": "Special",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::systems::shop_system::IShopSystem",
+          "items": [
+            {
+              "type": "function",
+              "name": "skip_shop",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "buy_card_item",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "card_item_type",
+                  "type": "jokers_of_neon::models::status::shop::shop::CardItemType"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "buy_poker_hand_item",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradableImpl",
+          "interface_name": "dojo::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::components::upgradeable::upgradeable::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::components::upgradeable::upgradeable::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::components::upgradeable::upgradeable::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::systems::shop_system::shop_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::components::upgradeable::upgradeable::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "reads": [],
+      "writes": [],
+      "computed": [],
+      "name": "jokers_of_neon::systems::shop_system::shop_system"
     }
   ],
   "models": [
@@ -1427,6 +1634,264 @@
         }
       ],
       "name": "jokers_of_neon::models::data::card::card"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "base",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "config_hands_played",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "config_remaining_discards",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "config_extra_points",
+          "type": "u32",
+          "key": false
+        }
+      ],
+      "class_hash": "0x15c711212ad12b58f82d6fd7a941d4d61fe3a66bfbce817071b3b82e3e9acb3",
+      "original_class_hash": "0x15c711212ad12b58f82d6fd7a941d4d61fe3a66bfbce817071b3b82e3e9acb3",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "config_earning_cashImpl",
+          "interface_name": "jokers_of_neon::models::data::config::Iconfig_earning_cash"
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::data::config::ConfigEarningCash",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "base",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "config_hands_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "config_remaining_discards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "config_extra_points",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::data::config::Iconfig_earning_cash",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::data::config::ConfigEarningCash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::data::config::config_earning_cash::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::data::config::config_earning_cash"
     },
     {
       "kind": "DojoModel",
@@ -2522,6 +2987,300 @@
         }
       ],
       "name": "jokers_of_neon::models::data::events::create_game_event"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "player",
+          "type": "ContractAddress",
+          "key": true
+        },
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "round_defeat",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "level_bonus",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "hands_left",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "hands_left_cash",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "discard_left",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "discard_left_cash",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "total",
+          "type": "u32",
+          "key": false
+        }
+      ],
+      "class_hash": "0x6b9bddf82e09aff3f0bd8c25ad153bd4d3bd5ef05e68f327676f65c5af8dd59",
+      "original_class_hash": "0x6b9bddf82e09aff3f0bd8c25ad153bd4d3bd5ef05e68f327676f65c5af8dd59",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "detail_earned_eventImpl",
+          "interface_name": "jokers_of_neon::models::data::events::Idetail_earned_event"
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::data::events::DetailEarnedEvent",
+          "members": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "round_defeat",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level_bonus",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "hands_left",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "hands_left_cash",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discard_left",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discard_left_cash",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "total",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::data::events::Idetail_earned_event",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::data::events::DetailEarnedEvent"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::data::events::detail_earned_event::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::data::events::detail_earned_event"
     },
     {
       "kind": "DojoModel",
@@ -3855,13 +4614,18 @@
           "key": false
         },
         {
-          "name": "game_over",
-          "type": "bool",
+          "name": "state",
+          "type": "GameState",
+          "key": false
+        },
+        {
+          "name": "cash",
+          "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x44b0640260c2d8051673d4ca7c06745844307e206bcfcb7733ce34e10a9d72e",
-      "original_class_hash": "0x44b0640260c2d8051673d4ca7c06745844307e206bcfcb7733ce34e10a9d72e",
+      "class_hash": "0x470dd46eca6945c0fe03be26ec4e62e577e381d96c774300f595647fdc4a450",
+      "original_class_hash": "0x470dd46eca6945c0fe03be26ec4e62e577e381d96c774300f595647fdc4a450",
       "abi": [
         {
           "type": "impl",
@@ -4038,14 +4802,18 @@
         },
         {
           "type": "enum",
-          "name": "core::bool",
+          "name": "jokers_of_neon::models::status::game::game::GameState",
           "variants": [
             {
-              "name": "False",
+              "name": "IN_GAME",
               "type": "()"
             },
             {
-              "name": "True",
+              "name": "AT_SHOP",
+              "type": "()"
+            },
+            {
+              "name": "FINISHED",
               "type": "()"
             }
           ]
@@ -4103,8 +4871,12 @@
               "type": "core::integer::u32"
             },
             {
-              "name": "game_over",
-              "type": "core::bool"
+              "name": "state",
+              "type": "jokers_of_neon::models::status::game::game::GameState"
+            },
+            {
+              "name": "cash",
+              "type": "core::integer::u32"
             }
           ]
         },
@@ -4632,10 +5404,20 @@
           "name": "level",
           "type": "u8",
           "key": false
+        },
+        {
+          "name": "multi",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "points",
+          "type": "u32",
+          "key": false
         }
       ],
-      "class_hash": "0x30177d55c2f50609e726fb10222f8ecd0853539e2167edc23586a571b2f2327",
-      "original_class_hash": "0x30177d55c2f50609e726fb10222f8ecd0853539e2167edc23586a571b2f2327",
+      "class_hash": "0x32c0b2a082fc643a1c0b81eacc536cd0bc03ede82843192f6e39f48b74752e8",
+      "original_class_hash": "0x32c0b2a082fc643a1c0b81eacc536cd0bc03ede82843192f6e39f48b74752e8",
       "abi": [
         {
           "type": "impl",
@@ -4875,6 +5657,14 @@
             {
               "name": "level",
               "type": "core::integer::u8"
+            },
+            {
+              "name": "multi",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "points",
+              "type": "core::integer::u32"
             }
           ]
         },
@@ -5706,6 +6496,898 @@
         }
       ],
       "name": "jokers_of_neon::models::status::round::round::round"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "idx",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "item_type",
+          "type": "CardItemType",
+          "key": true
+        },
+        {
+          "name": "card_id",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "cost",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "purchased",
+          "type": "bool",
+          "key": false
+        }
+      ],
+      "class_hash": "0x469f5b26b41881d4a02140517563703e4313ac92a12d2a4f691ee39647a0e75",
+      "original_class_hash": "0x469f5b26b41881d4a02140517563703e4313ac92a12d2a4f691ee39647a0e75",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "card_itemImpl",
+          "interface_name": "jokers_of_neon::models::status::shop::shop::Icard_item"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::status::shop::shop::CardItemType",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Modifier",
+              "type": "()"
+            },
+            {
+              "name": "Special",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::CardItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "item_type",
+              "type": "jokers_of_neon::models::status::shop::shop::CardItemType"
+            },
+            {
+              "name": "card_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::status::shop::shop::Icard_item",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::status::shop::shop::CardItem"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::status::shop::shop::card_item::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::status::shop::shop::card_item"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "idx",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "poker_hand",
+          "type": "PokerHand",
+          "key": false
+        },
+        {
+          "name": "level",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "cost",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "purchased",
+          "type": "bool",
+          "key": false
+        }
+      ],
+      "class_hash": "0x373ca84a9d43a16dff51efededb7f51c0613cafdc8a4bb0cdb3282500f6a0f0",
+      "original_class_hash": "0x373ca84a9d43a16dff51efededb7f51c0613cafdc8a4bb0cdb3282500f6a0f0",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "poker_hand_itemImpl",
+          "interface_name": "jokers_of_neon::models::status::shop::shop::Ipoker_hand_item"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::poker_hand::PokerHand",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "RoyalFlush",
+              "type": "()"
+            },
+            {
+              "name": "StraightFlush",
+              "type": "()"
+            },
+            {
+              "name": "FourOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "FullHouse",
+              "type": "()"
+            },
+            {
+              "name": "Straight",
+              "type": "()"
+            },
+            {
+              "name": "Flush",
+              "type": "()"
+            },
+            {
+              "name": "ThreeOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "TwoPair",
+              "type": "()"
+            },
+            {
+              "name": "OnePair",
+              "type": "()"
+            },
+            {
+              "name": "HighCard",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::PokerHandItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "poker_hand",
+              "type": "jokers_of_neon::models::data::poker_hand::PokerHand"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::status::shop::shop::Ipoker_hand_item",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::status::shop::shop::PokerHandItem"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::status::shop::shop::poker_hand_item::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::status::shop::shop::poker_hand_item"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u32",
+          "key": true
+        },
+        {
+          "name": "len_item_common_cards",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "len_item_modifier_cards",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "len_item_special_cards",
+          "type": "u32",
+          "key": false
+        },
+        {
+          "name": "len_item_poker_hands",
+          "type": "u32",
+          "key": false
+        }
+      ],
+      "class_hash": "0x3dba976973d8d347e5594b6811df3d1324440dda684af8dbe60fbe29156c6ac",
+      "original_class_hash": "0x3dba976973d8d347e5594b6811df3d1324440dda684af8dbe60fbe29156c6ac",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::IDojoModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::felt252>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::database::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, core::array::Span::<core::felt252>)>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::database::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::database::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::database::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<core::array::Span::<core::felt252>>"
+            },
+            {
+              "name": "Array",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::IDojoModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u8>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::database::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "shopImpl",
+          "interface_name": "jokers_of_neon::models::status::shop::shop::Ishop"
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::Shop",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "len_item_common_cards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "len_item_modifier_cards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "len_item_special_cards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "len_item_poker_hands",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::models::status::shop::shop::Ishop",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "jokers_of_neon::models::status::shop::shop::Shop"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::models::status::shop::shop::shop::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "name": "jokers_of_neon::models::status::shop::shop::shop"
     }
   ]
 }

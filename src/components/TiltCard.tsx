@@ -1,10 +1,10 @@
-import { Box, Image, SystemStyleObject } from "@chakra-ui/react";
+import { Box, Heading, Image, SystemStyleObject } from "@chakra-ui/react";
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH_PX,
   MODIFIERS_OFFSET,
-  TILT_OPTIONS,
+  TILT_OPTIONS
 } from "../constants/visualProps";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
@@ -14,13 +14,17 @@ interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
+  pointer?: boolean;
 }
 
-export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
-  const { img } = card;
+export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
+  const { img, purchased = false } = card;
 
   const tiltCardComponent = (
-    <Box>
+    <Box
+      width={CARD_WIDTH_PX}
+      sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
+    >
       <Box
         sx={{
           zIndex: 6,
@@ -29,7 +33,7 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
       >
         <Tilt options={TILT_OPTIONS}>
           <Image
-            sx={{ maxWidth: "unset" }}
+            sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
             src={`Cards/${img}`}
             alt={img}
             width={CARD_WIDTH_PX}
@@ -38,6 +42,38 @@ export const TiltCard = ({ sx, card, onClick }: ICardProps) => {
               onClick?.();
             }}
           />
+          {card.price && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: 1,
+                right: 1,
+                zIndex: 10,
+                backgroundColor: "rgba(0,0,0,0.7)",
+                color: "white",
+                fontSize: 20,
+                px: 2,
+                py: 1,
+                opacity: purchased ? 0.5 : 1,
+              }}
+            >
+              {card.price}ȼ
+            </Box>
+          )}
+          {card.purchased && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: `${CARD_HEIGHT / 2 - 20}px`,
+                left: 0,
+                zIndex: 10,
+              }}
+            >
+              <Heading variant="neonWhite" size="m">
+                PURCHASED
+              </Heading>
+            </Box>
+          )}
         </Tilt>
       </Box>
       {card.modifiers?.map((c, index) => (

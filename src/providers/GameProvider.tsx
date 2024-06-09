@@ -10,7 +10,6 @@ import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { useGame } from "../dojo/utils/useGame";
 import { Plays } from "../enums/plays";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
@@ -27,8 +26,6 @@ interface IGameContext {
   gameId: number;
   round: Round;
   refetchRound: () => void;
-  //TODO: type
-  game: any;
   preSelectedPlay: Plays;
   points: number;
   multi: number;
@@ -48,7 +45,7 @@ interface IGameContext {
   clearPreSelection: () => void;
   loadingStates: boolean;
   refetchingHand: boolean;
-  refetchHand: () => void;
+  refetchHand: (times?: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -58,9 +55,6 @@ const GameContext = createContext<IGameContext>({
     levelScore: 0,
     hands: 0,
     discards: 0,
-  },
-  game: {
-    level: 0,
   },
   refetchRound: () => {},
   preSelectedPlay: Plays.NONE,
@@ -84,7 +78,7 @@ const GameContext = createContext<IGameContext>({
   clearPreSelection: () => {},
   loadingStates: false,
   refetchingHand: false,
-  refetchHand: () => {},
+  refetchHand: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -106,7 +100,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
-  const game = useGame();
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
@@ -142,13 +135,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   });
 
   //functions
-  const refetchHand = () => {
+  const refetchHand = (times: number = 1) => {
     console.log("refetching hand");
     setRefetchingHand(true);
     setTimeout(() => {
       console.log("refetching hand done");
       setRefetchingHand(false);
-    }, REFETCH_HAND_GAP); // Will keep refetching hand for REFETCH_HAND_GAP ms
+    }, REFETCH_HAND_GAP * times); // Will keep refetching hand for REFETCH_HAND_GAP ms
   };
 
   const refetch = () => {
@@ -170,6 +163,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const executeCreateGame = () => {
     console.log("Creating game...");
+    setError(false);
     setGameLoading(true);
     createGame(account.account, username).then((newGameId) => {
       if (newGameId) {
@@ -237,6 +231,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   "CONGRATULATIONS!!!"
                 );
               }, 200);
+              setTimeout(() => {
+                navigate("/store");
+              }, 1200);
             }
           },
           700 * response.cards.length + 400
@@ -324,7 +321,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //effects
   useEffect(() => {
+    console.log("checking game exists", gameId);
     if (!gameExists(Game, gameId)) {
+      console.log("it doesnt");
       executeCreateGame();
     } else {
       setGameLoading(false);
@@ -389,7 +388,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       value={{
         gameId,
         round,
-        game,
         refetchRound,
         preSelectedPlay,
         points,

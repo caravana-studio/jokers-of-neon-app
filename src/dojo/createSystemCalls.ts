@@ -36,7 +36,8 @@ export function createSystemCalls(
         console.log("Game " + value + " created");
         return value;
       } else {
-        return null;
+        console.error("Error creating game:", tx);
+        return false;
       }
     } catch (e) {
       console.log(e);
@@ -129,6 +130,71 @@ export function createSystemCalls(
     }
   };
 
+  const skipShop = async (account: AccountInterface, gameId: number) => {
+    try {
+      const { transaction_hash } = await client.actions.skipShop({
+        account,
+        gameId,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const buyCard = async (
+    account: AccountInterface,
+    gameId: number,
+    card_idx: number,
+    card_type: number
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.buyCard({
+        account,
+        gameId,
+        card_idx,
+        card_type,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const levelUpPokerHand = async (
+    account: AccountInterface,
+    gameId: number,
+    item_id: number
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.levelUpPokerHand({
+        account,
+        gameId,
+        item_id,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const play = async (
     account: AccountInterface,
     gameId: number,
@@ -163,5 +229,8 @@ export function createSystemCalls(
     discard,
     discardEffectCard,
     play,
+    skipShop,
+    buyCard,
+    levelUpPokerHand,
   };
 }
