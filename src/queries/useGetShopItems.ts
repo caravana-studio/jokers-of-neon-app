@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import graphQLClient from "../graphQLClient";
 import { ShopItem } from "../types/ShopItem";
 
-export const SHOP_ITEMS_KEY = "round";
+export const SHOP_ITEMS_KEY = "shop-items";
 
 export const GET_SHOP_ITEMS_QUERY = gql`
   query GetShopItems($gameId: ID!) {
@@ -34,9 +34,9 @@ const fetchGraphQLData = async (gameId: number): Promise<ShopItemsResponse> => {
   return await graphQLClient.request(GET_SHOP_ITEMS_QUERY, { gameId });
 };
 
-export const useGetShopItems = (gameId: number) => {
+export const useGetShopItems = (gameId: number, round: number) => {
   const queryResponse = useQuery<ShopItemsResponse>(
-    [SHOP_ITEMS_KEY, gameId],
+    [SHOP_ITEMS_KEY, gameId, round],
     () => fetchGraphQLData(gameId),
     {
       enabled: !!gameId,

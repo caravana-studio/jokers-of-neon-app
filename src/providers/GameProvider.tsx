@@ -45,7 +45,7 @@ interface IGameContext {
   clearPreSelection: () => void;
   loadingStates: boolean;
   refetchingHand: boolean;
-  refetchHand: () => void;
+  refetchHand: (times?: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -78,7 +78,7 @@ const GameContext = createContext<IGameContext>({
   clearPreSelection: () => {},
   loadingStates: false,
   refetchingHand: false,
-  refetchHand: () => {},
+  refetchHand: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -135,13 +135,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   });
 
   //functions
-  const refetchHand = () => {
+  const refetchHand = (times: number = 1) => {
     console.log("refetching hand");
     setRefetchingHand(true);
     setTimeout(() => {
       console.log("refetching hand done");
       setRefetchingHand(false);
-    }, REFETCH_HAND_GAP); // Will keep refetching hand for REFETCH_HAND_GAP ms
+    }, REFETCH_HAND_GAP * times); // Will keep refetching hand for REFETCH_HAND_GAP ms
   };
 
   const refetch = () => {
@@ -231,6 +231,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   "CONGRATULATIONS!!!"
                 );
               }, 200);
+              setTimeout(() => {
+                navigate("/store");
+              }, 1200);
             }
           },
           700 * response.cards.length + 400
@@ -318,7 +321,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //effects
   useEffect(() => {
+    console.log("checking game exists", gameId);
     if (!gameExists(Game, gameId)) {
+      console.log("it doesnt");
       executeCreateGame();
     } else {
       setGameLoading(false);

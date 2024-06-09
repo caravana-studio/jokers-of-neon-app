@@ -1,15 +1,33 @@
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
+import { useDojo } from "../../dojo/useDojo";
 import { useGame } from "../../dojo/utils/useGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { CardsRow } from "./CardsRow";
 
 export const Store = () => {
-  const { id, cash, state } = useGame();
-  const { data: shopItems } = useGetShopItems(id);
-  console.log(shopItems);
+  const { id, cash, state, round } = useGame();
+  const { data: shopItems } = useGetShopItems(id, round);
+  const {
+    setup: {
+      systemCalls: { skipShop },
+    },
+    account,
+  } = useDojo();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state === "FINISHED") {
+      navigate("/gameover");
+    } else if (state === "IN_GAME") {
+      navigate("/demo");
+    }
+  }, []);
+
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <Flex
@@ -30,7 +48,18 @@ export const Store = () => {
           LEVEL UP YOUR GAME
         </Heading>
         <Box>
-          <Button sx={{ lineHeight: 1.6 }} size="m" variant="outline">
+          <Button
+            onClick={() => {
+              skipShop(account.account, id).then((response): void => {
+                if (response) {
+                  navigate("/demo");
+                }
+              });
+            }}
+            sx={{ lineHeight: 1.6 }}
+            size="m"
+            variant="outline"
+          >
             go to <br />
             NEXT LEVEL
           </Button>

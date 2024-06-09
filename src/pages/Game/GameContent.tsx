@@ -7,8 +7,11 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
 import { GameDeck } from "../../components/GameDeck.tsx";
+import { useGame } from "../../dojo/utils/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
@@ -24,8 +27,21 @@ export const GameContent = () => {
     error,
     clearPreSelection,
     executeCreateGame,
+    refetchHand,
   } = useGameContext();
   const { colors } = useTheme();
+
+  const game = useGame();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (game?.state === "FINISHED") {
+      navigate("/gameover");
+    } else if (game?.state === "AT_SHOP") {
+      navigate("/store");
+    }
+    refetchHand(2);
+  }, []);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const modifiedCard = Number(event.over?.id);

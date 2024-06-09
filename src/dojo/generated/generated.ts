@@ -15,14 +15,14 @@ interface CreateGameProps {
   account: AccountInterface;
   username: string;
 }
+const game_contract = "game_system";
+const shop_contract = "shop_system";
 
 export async function setupWorld(provider: DojoProvider) {
   function actions() {
-    const contract_name = "game_system";
-
     const createGame = async ({ account, username }: CreateGameProps) => {
       try {
-        return await provider.execute(account, contract_name, "create_game", [
+        return await provider.execute(account, game_contract, "create_game", [
           shortString.encodeShortString(username),
         ]);
       } catch (error) {
@@ -37,7 +37,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "check_hand",
           cardArray
         );
@@ -61,7 +61,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "discard",
           cardArray
         );
@@ -84,12 +84,29 @@ export async function setupWorld(provider: DojoProvider) {
         const cardArray = [gameId, card];
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "discard_effect_card",
           cardArray
         );
       } catch (error) {
         console.error("Error executing discardEffectCard:", error);
+        throw error;
+      }
+    };
+
+    const skipShop = async ({
+      account,
+      gameId,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+    }) => {
+      try {
+        return await provider.execute(account, shop_contract, "skip_shop", [
+          gameId,
+        ]);
+      } catch (error) {
+        console.error("Error executing skip_shop:", error);
         throw error;
       }
     };
@@ -108,7 +125,7 @@ export async function setupWorld(provider: DojoProvider) {
         console.log(cardArray);
         return await provider.execute(
           account,
-          contract_name,
+          game_contract,
           "play",
           cardArray
         );
@@ -118,7 +135,14 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
-    return { checkHand, createGame, discard, discardEffectCard, play };
+    return {
+      checkHand,
+      createGame,
+      discard,
+      discardEffectCard,
+      play,
+      skipShop,
+    };
   }
   return {
     actions: actions(),
