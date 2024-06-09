@@ -134,6 +134,28 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+    const levelUpPokerHand = async ({
+      account,
+      gameId,
+      item_id,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      item_id: number;
+    }) => {
+      try {
+        return await provider.execute(
+          account,
+          shop_contract,
+          "buy_poker_hand_item",
+          [gameId, item_id]
+        );
+      } catch (error) {
+        console.error("Error executing buy_poker_hand_item:", error);
+        throw error;
+      }
+    };
+
     const play = async ({
       account,
       gameId,
@@ -166,6 +188,7 @@ export async function setupWorld(provider: DojoProvider) {
       play,
       skipShop,
       buyCard,
+      levelUpPokerHand,
     };
   }
   return {

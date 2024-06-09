@@ -172,6 +172,28 @@ export function createSystemCalls(
       console.log(e);
     }
   };
+  const levelUpPokerHand = async (
+    account: AccountInterface,
+    gameId: number,
+    item_id: number
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.levelUpPokerHand({
+        account,
+        gameId,
+        item_id,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const play = async (
     account: AccountInterface,
@@ -209,5 +231,6 @@ export function createSystemCalls(
     play,
     skipShop,
     buyCard,
+    levelUpPokerHand,
   };
 }

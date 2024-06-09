@@ -19,6 +19,17 @@ export const GET_SHOP_ITEMS_QUERY = gql`
         }
       }
     }
+    pokerHandItemModels(first: 30, where: { game_idEQ: $gameId }) {
+      edges {
+        node {
+          idx
+          poker_hand
+          level
+          cost
+          purchased
+        }
+      }
+    }
   }
 `;
 
@@ -26,9 +37,22 @@ interface ShopItemEdge {
   node: ShopItem;
 }
 
+interface PokerHandItemEdge {
+  node: {
+    idx: number;
+    poker_hand: string;
+    level: number;
+    cost: number;
+    purchased: boolean;
+  };
+}
+
 interface ShopItemsResponse {
   cardItemModels: {
     edges: ShopItemEdge[];
+  };
+  pokerHandItemModels: {
+    edges: PokerHandItemEdge[];
   };
 }
 
@@ -36,12 +60,12 @@ const fetchGraphQLData = async (gameId: number): Promise<ShopItemsResponse> => {
   return await graphQLClient.request(GET_SHOP_ITEMS_QUERY, { gameId });
 };
 
-export const useGetShopItems = (gameId: number, round: number) => {
+export const useGetShopItems = (gameId: number, round: number, enabled = true) => {
   const queryResponse = useQuery<ShopItemsResponse>(
     [SHOP_ITEMS_KEY, gameId, round],
     () => fetchGraphQLData(gameId),
     {
-      enabled: !!gameId,
+      enabled: !!gameId && enabled,
       refetchInterval: 500,
       cacheTime: 0, // Disable caching
       staleTime: 0, // Make data stale immediately
@@ -64,6 +88,10 @@ export const useGetShopItems = (gameId: number, round: number) => {
     };
   });
 
+  const pokerHandItems = data?.pokerHandItemModels?.edges.map((edge) => {
+    return edge.node;
+  });
+
   const specialCards = dojoShopItems?.filter((item) => item.isSpecial) ?? [];
   const modifierCards = dojoShopItems?.filter((item) => item.isModifier) ?? [];
   const commonCards =
@@ -73,6 +101,7 @@ export const useGetShopItems = (gameId: number, round: number) => {
     specialCards,
     modifierCards,
     commonCards,
+    pokerHandItems
   };
 
   return {

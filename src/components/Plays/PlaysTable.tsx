@@ -1,21 +1,32 @@
 import {
-    Box,
-    Button,
-    Heading,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Thead,
-    Tr,
+  Box,
+  Button,
+  Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
+import { useGame } from "../../dojo/utils/useGame";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
+import { useGetShopItems } from "../../queries/useGetShopItems";
 interface PlaysTableProps {
   inStore?: boolean;
+  onBuyPlayLevelUp?: (playIdx: number) => void;
 }
 
-export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
+export const PlaysTable = ({
+  inStore = false,
+  onBuyPlayLevelUp,
+}: PlaysTableProps) => {
   const { data: plays } = useGetPlaysLevelDetail();
+  const game = useGame();
+  const id = game?.id;
+  const round = game?.round;
+  const { data: shopItems } = useGetShopItems(id, round, inStore);
+  console.log(shopItems);
 
   return (
     <>
@@ -45,9 +56,20 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             </Thead>
             <Tbody>
               {plays.map((play, index) => {
-                const levelTd = <Td color={"aqua"}>{play.level}</Td>;
+                const storePlay = shopItems?.pokerHandItems?.find(
+                  (item) => item.poker_hand === play.pokerHand.id
+                );
+                const opacitySx = {
+                  opacity:
+                    inStore && (!storePlay || storePlay.purchased) ? 0.4 : 1,
+                };
+                const levelTd = (
+                  <Td sx={opacitySx} color={"aqua"}>
+                    {play.level}
+                  </Td>
+                );
                 const nameTd = (
-                  <Td textAlign={"start"} color={"white"}>
+                  <Td sx={opacitySx} textAlign={"start"} color={"white"}>
                     {play.pokerHand.name}
                   </Td>
                 );
@@ -81,7 +103,15 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
 
                 return (
-                  <Tr key={index} backgroundColor={"gray.700"} height={"30px"}>
+                  <Tr
+                    key={index}
+                    backgroundColor={
+                      !storePlay || storePlay.purchased
+                        ? "gray.900"
+                        : "gray.700"
+                    }
+                    height={"30px"}
+                  >
                     {inStore ? (
                       <>
                         {nameTd}
@@ -94,15 +124,36 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       </>
                     )}
 
-                    {inStore ? <>
-                    <Td color='neonPink'>
-                        300ȼ
-                    </Td>
-                                        <Td>
-                        <Button variant='ghost'>level up</Button>
-                    </Td> 
-                    </>
-                    : pointsMultiTd}
+                    {inStore ? (
+                      <>
+                        <Td sx={opacitySx} color="neonPink">
+                          {storePlay?.cost ? `${storePlay.cost}ȼ` : ""}
+                        </Td>
+                        <Td>
+                          {!!storePlay ? (
+                            storePlay?.purchased ? (
+                              <Heading variant="neonWhite" size="s">
+                                PURCHASED
+                              </Heading>
+                            ) : (
+                              <Button
+                                onClick={() => {
+                                  onBuyPlayLevelUp?.(storePlay.idx);
+                                }}
+                                disabled={!!storePlay}
+                                variant="outline"
+                              >
+                                level up
+                              </Button>
+                            )
+                          ) : (
+                            ""
+                          )}
+                        </Td>
+                      </>
+                    ) : (
+                      pointsMultiTd
+                    )}
                   </Tr>
                 );
               })}
