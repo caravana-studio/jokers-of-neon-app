@@ -24,6 +24,19 @@ const getLevelPassedEvent = (
 };
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
+  console.log("events", events);
+  console.log(
+    "0x035120e18b88d08bf66d8bf06b82d5ee6f4689d33ea646ce9598fd3d62a83cd7 event",
+    events.filter(
+      (event) =>
+        event.keys[0] ===
+        "0x035120e18b88d08bf66d8bf06b82d5ee6f4689d33ea646ce9598fd3d62a83cd7"
+    )
+  );
+  console.log(
+    "eventos con 9 datos",
+    events.filter((event) => event.data.length === 9)
+  );
 
   // play score
   const playMulti = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 1);
