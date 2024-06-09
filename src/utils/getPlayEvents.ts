@@ -24,10 +24,7 @@ const getLevelPassedEvent = (
 };
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
-  console.log(
-    "events pass level",
-    events.filter((event) => event.data.length === 3)
-  );
+
   // play score
   const playMulti = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 1);
   const playPoints = getNumberValueFromEvents(events, PLAY_SCORE_EVENT, 2);

@@ -1,9 +1,11 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useGame } from "../dojo/utils/useGame";
 import { useGameContext } from "../providers/GameProvider";
 import { PointBox } from "./MultiPoints";
 
 export const LevelPoints = () => {
-  const { round, game } = useGameContext();
+  const { round } = useGameContext();
+  const game = useGame();
   const level = game?.level ?? 0;
 
   return (

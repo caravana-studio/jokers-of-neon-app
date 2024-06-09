@@ -45,7 +45,6 @@ export const Menu = ({ onClose, onOpenLeaderboardClick }: MenuProps) => {
     } else if (event.key === "Enter" || event.key === " ") {
       if (activeOption === 0) {
         const href = OPTIONS.at(activeOption)?.href;
-        window.localStorage.removeItem(GAME_ID);
         href && navigate(href);
       } else if (activeOption === 1) {
         onOpenLeaderboardClick();

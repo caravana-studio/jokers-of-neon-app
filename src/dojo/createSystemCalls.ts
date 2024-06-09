@@ -130,6 +130,24 @@ export function createSystemCalls(
     }
   };
 
+  const skipShop = async (account: AccountInterface, gameId: number) => {
+    try {
+      const { transaction_hash } = await client.actions.skipShop({
+        account,
+        gameId,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const play = async (
     account: AccountInterface,
     gameId: number,
@@ -164,5 +182,6 @@ export function createSystemCalls(
     discard,
     discardEffectCard,
     play,
+    skipShop,
   };
 }

@@ -10,6 +10,7 @@ export const GameOver = () => {
 
   useEffect(() => {
     noisyTv(100);
+    localStorage.removeItem(GAME_ID);
   }, []);
 
   return (
