@@ -59,7 +59,7 @@ export const useGetShopItems = (gameId: number, round: number) => {
       idx: edge.node.idx,
       card_id: edge.node.card_id,
       id: edge.node.idx.toString(),
-      img: `${edge.node.item_type === CardTypes.COMMON ? "" : "effect/"}${edge.node.item_type === "Special" ? "special-" : ""}${edge.node.card_id}.png`,
+      img: `${edge.node.item_type === CardTypes.COMMON ? "" : "effect/"}${edge.node.card_id}.png`,
       purchased: edge.node.purchased,
     };
   });
