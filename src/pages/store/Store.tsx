@@ -4,18 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
+import { RollingNumber } from "../../components/RollingNumber";
 import { useDojo } from "../../dojo/useDojo";
 import { useGame } from "../../dojo/utils/useGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { CardsRow } from "./CardsRow";
-import { RollingNumber } from "../../components/RollingNumber";
 
 export const Store = () => {
   const { id, cash, state, round } = useGame();
-  const { data: shopItems, refetch } = useGetShopItems(id, round);
+  const { data: shopItems } = useGetShopItems(id, round);
   const {
     setup: {
-      systemCalls: { skipShop, buyCard },
+      systemCalls: { skipShop, buyCard, levelUpPokerHand },
     },
     account,
   } = useDojo();
@@ -33,6 +33,10 @@ export const Store = () => {
     buyCard(account.account, id, card_idx, card_type);
   };
 
+  const onBuyPlayLevelUp = (item_id: number) => {
+    levelUpPokerHand(account.account, id, item_id);
+  };
+
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <Flex
@@ -46,7 +50,7 @@ export const Store = () => {
             MY COINS
           </Heading>
           <Heading size="l" sx={{ mx: 4, color: "white" }}>
-            <RollingNumber  n={cash} />ȼ
+            <RollingNumber n={cash} />ȼ
           </Heading>
         </PointBox>
         <Heading size="xl" variant="neonWhite">
@@ -84,7 +88,7 @@ export const Store = () => {
             <Heading variant="neonGreen" size="m" sx={{ m: 3 }}>
               level up your plays
             </Heading>
-            <PlaysTable inStore />
+            <PlaysTable inStore onBuyPlayLevelUp={onBuyPlayLevelUp} />
           </GridItem>
           <GridItem colSpan={5}>
             <CardsRow
