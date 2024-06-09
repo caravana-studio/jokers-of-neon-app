@@ -26,7 +26,6 @@ export const PlaysTable = ({
   const id = game?.id;
   const round = game?.round;
   const { data: shopItems } = useGetShopItems(id, round, inStore);
-  console.log(shopItems);
 
   return (
     <>
