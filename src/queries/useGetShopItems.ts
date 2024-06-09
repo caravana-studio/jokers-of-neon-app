@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
 import { useQuery } from "react-query";
+import { CardTypes } from "../enums/cardTypes";
 import graphQLClient from "../graphQLClient";
 import { ShopItem } from "../types/ShopItem";
 
@@ -14,6 +15,7 @@ export const GET_SHOP_ITEMS_QUERY = gql`
           card_id
           idx
           item_type
+          purchased
         }
       }
     }
@@ -40,6 +42,11 @@ export const useGetShopItems = (gameId: number, round: number) => {
     () => fetchGraphQLData(gameId),
     {
       enabled: !!gameId,
+      refetchInterval: 500,
+      cacheTime: 0, // Disable caching
+      staleTime: 0, // Make data stale immediately
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
     }
   );
   const { data } = queryResponse;
@@ -47,12 +54,13 @@ export const useGetShopItems = (gameId: number, round: number) => {
   const dojoShopItems = data?.cardItemModels?.edges.map((edge) => {
     return {
       price: edge.node.cost,
-      isModifier: edge.node.item_type === "Modifier",
-      isSpecial: edge.node.item_type === "Special",
+      isModifier: edge.node.item_type === CardTypes.MODIFIER,
+      isSpecial: edge.node.item_type === CardTypes.SPECIAL,
       idx: edge.node.idx,
       card_id: edge.node.card_id,
       id: edge.node.idx.toString(),
-      img: `${edge.node.item_type === "Common" ? "" : "effect/"}${edge.node.card_id}.png`,
+      img: `${edge.node.item_type === CardTypes.COMMON ? "" : "effect/"}${edge.node.card_id}.png`,
+      purchased: edge.node.purchased,
     };
   });
 

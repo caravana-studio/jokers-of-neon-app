@@ -12,9 +12,15 @@ interface CardsRowProps {
     onClick: () => void;
     label: string;
   };
+  onBuyCard: (idx: number) => void;
 }
 
-export const CardsRow = ({ title, cards, button }: CardsRowProps) => {
+export const CardsRow = ({
+  title,
+  cards,
+  button,
+  onBuyCard,
+}: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   return (
     <>
@@ -47,7 +53,7 @@ export const CardsRow = ({ title, cards, button }: CardsRowProps) => {
                   pointer
                   card={card}
                   onClick={() => {
-                    setSelectedCard(card);
+                    !card.purchased && setSelectedCard(card);
                   }}
                 />
               </Flex>
@@ -57,6 +63,7 @@ export const CardsRow = ({ title, cards, button }: CardsRowProps) => {
       </Box>
       {selectedCard && (
         <ShowCardModal
+          onBuyClick={() => onBuyCard(selectedCard.idx)}
           card={selectedCard}
           close={() => setSelectedCard(undefined)}
         />

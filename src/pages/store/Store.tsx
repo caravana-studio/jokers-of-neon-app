@@ -8,13 +8,14 @@ import { useDojo } from "../../dojo/useDojo";
 import { useGame } from "../../dojo/utils/useGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { CardsRow } from "./CardsRow";
+import { RollingNumber } from "../../components/RollingNumber";
 
 export const Store = () => {
   const { id, cash, state, round } = useGame();
-  const { data: shopItems } = useGetShopItems(id, round);
+  const { data: shopItems, refetch } = useGetShopItems(id, round);
   const {
     setup: {
-      systemCalls: { skipShop },
+      systemCalls: { skipShop, buyCard },
     },
     account,
   } = useDojo();
@@ -27,6 +28,10 @@ export const Store = () => {
       navigate("/demo");
     }
   }, []);
+
+  const onBuyCard = (card_idx: number, card_type: number) => {
+    buyCard(account.account, id, card_idx, card_type);
+  };
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
@@ -41,7 +46,7 @@ export const Store = () => {
             MY COINS
           </Heading>
           <Heading size="l" sx={{ mx: 4, color: "white" }}>
-            {`${cash}ȼ`}
+            <RollingNumber  n={cash} />ȼ
           </Heading>
         </PointBox>
         <Heading size="xl" variant="neonWhite">
@@ -82,15 +87,30 @@ export const Store = () => {
             <PlaysTable inStore />
           </GridItem>
           <GridItem colSpan={5}>
-            <CardsRow cards={shopItems.commonCards} title="traditional cards" />
+            <CardsRow
+              cards={shopItems.commonCards}
+              title="traditional cards"
+              onBuyCard={(card_idx: number) => {
+                onBuyCard(card_idx, 1);
+              }}
+            />
           </GridItem>
           <GridItem colSpan={5}>
-            <CardsRow cards={shopItems.modifierCards} title="modifiers" />
+            <CardsRow
+              cards={shopItems.modifierCards}
+              title="modifiers"
+              onBuyCard={(card_idx: number) => {
+                onBuyCard(card_idx, 2);
+              }}
+            />
           </GridItem>
           <GridItem colSpan={4}>
             <CardsRow
               cards={shopItems.specialCards}
               title="special cards"
+              onBuyCard={(card_idx: number) => {
+                onBuyCard(card_idx, 3);
+              }}
               button={{ label: "see my special cards", onClick: () => {} }}
             />
           </GridItem>

@@ -1,15 +1,15 @@
 import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    Image,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
@@ -17,9 +17,14 @@ import { getCardData } from "../../utils/getCardData";
 interface IShowCardModalProps {
   card: Card;
   close: () => void;
+  onBuyClick: (idx: number) => void;
 }
 
-export const ShowCardModal = ({ card, close }: IShowCardModalProps) => {
+export const ShowCardModal = ({
+  card,
+  close,
+  onBuyClick,
+}: IShowCardModalProps) => {
   const { name, description } = getCardData(card);
   return (
     <Modal size="xxl" isOpen={true} onClose={close}>
@@ -51,9 +56,9 @@ export const ShowCardModal = ({ card, close }: IShowCardModalProps) => {
                 <Heading color="white" size="m">
                   description:
                 </Heading>
-              <Heading variant="neonGreen" size="m">
-                {description}
-              </Heading>
+                <Heading variant="neonGreen" size="m">
+                  {description}
+                </Heading>
               </Box>
               <Box>
                 <Heading color="white" size="m">
@@ -67,7 +72,15 @@ export const ShowCardModal = ({ card, close }: IShowCardModalProps) => {
                 <Button sx={{ width: "50%" }} variant="outline" onClick={close}>
                   close
                 </Button>
-                <Button sx={{ width: "50%" }}>BUY</Button>
+                <Button
+                  onClick={() => {
+                    onBuyClick(card.idx);
+                    close();
+                  }}
+                  sx={{ width: "50%" }}
+                >
+                  BUY
+                </Button>
               </Flex>
             </Flex>
           </Flex>

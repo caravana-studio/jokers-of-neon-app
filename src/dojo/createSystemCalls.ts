@@ -148,6 +148,31 @@ export function createSystemCalls(
     }
   };
 
+  const buyCard = async (
+    account: AccountInterface,
+    gameId: number,
+    card_idx: number,
+    card_type: number
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.buyCard({
+        account,
+        gameId,
+        card_idx,
+        card_type,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const play = async (
     account: AccountInterface,
     gameId: number,
@@ -183,5 +208,6 @@ export function createSystemCalls(
     discardEffectCard,
     play,
     skipShop,
+    buyCard,
   };
 }
