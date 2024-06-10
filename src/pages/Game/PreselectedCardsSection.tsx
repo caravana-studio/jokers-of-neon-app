@@ -6,6 +6,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
+import { RewardsDetail } from '../../components/RewardsDetail.tsx'
 
 export const PreselectedCardsSection = () => {
   const {
@@ -17,7 +18,8 @@ export const PreselectedCardsSection = () => {
     togglePreselected,
     discardAnimation,
     playAnimation,
-    discard
+    discard,
+    roundRewards,
   } = useGameContext();
 
   const handsLeft = round?.hands;
@@ -28,7 +30,8 @@ export const PreselectedCardsSection = () => {
     return !card?.isModifier;
   });
 
-  return (
+  return roundRewards ? (<RewardsDetail roundRewards={roundRewards} />)
+    : (
     <>
       <ActionButton
         position="LEFT"

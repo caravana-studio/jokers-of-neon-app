@@ -19,6 +19,7 @@ export const HandSection = () => {
     preSelectedCards,
     togglePreselected,
     discardEffectCard,
+    roundRewards,
   } = useGameContext();
   const handsLeft = round.hands;
 
@@ -32,7 +33,7 @@ export const HandSection = () => {
     <>
       <SimpleGrid
         sx={{
-          opacity: handsLeft > 0 ? 1 : 0.3,
+          opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
           minWidth: `${CARD_WIDTH * 4}px`,
           maxWidth: `${CARD_WIDTH * 6.5}px`,
         }}
