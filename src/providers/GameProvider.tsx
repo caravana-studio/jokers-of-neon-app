@@ -7,12 +7,12 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useGetDojoHand } from "../dojo/queries/useGetDojoHand";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
@@ -108,7 +108,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
+  // const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
+  const updatedHand = useGetDojoHand(gameId);
+
   const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
@@ -370,18 +372,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [deck]);
 
-  useEffect(() => {
-    if (hand.length < 8) {
-      setGameLoading(true);
-      setRefetchingHand(true);
-    } else if (gameLoading) {
-      setRefetchingHand(false);
-      setGameLoading(false);
-    }
-  }, [hand]);
-
   const loadingStates =
-    deck.size === 0 || hand.length < 8 || round.levelScore === 0;
+    deck.size === 0 || round.levelScore === 0;
 
   return (
     <GameContext.Provider
