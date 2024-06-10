@@ -46,6 +46,8 @@ interface IGameContext {
   loadingStates: boolean;
   refetchingHand: boolean;
   refetchHand: (times?: number) => void;
+  preSelectedModifiers: { [key: number]: number[] };
+  addModifier: (cardIdx: number, modifierIdx: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -79,6 +81,8 @@ const GameContext = createContext<IGameContext>({
   loadingStates: false,
   refetchingHand: false,
   refetchHand: (_) => {},
+  preSelectedModifiers: {},
+  addModifier: (_, __) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -94,6 +98,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
+    [key: number]: number[];
+  }>({});
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
   const [refetchingHand, setRefetchingHand] = useState(false);
 
@@ -129,12 +136,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const username = lsUser ?? address ?? "0xtest";
   const handsLeft = round?.hands;
 
-  const regularPreSelectedCards = preSelectedCards.filter((idx) => {
-    const card = hand.find((c) => c.idx === idx);
-    return !card?.isModifier;
-  });
-
   //functions
+  const addModifier = (cardIdx: number, modifierIdx: number) => {
+    const modifiers = preSelectedModifiers[cardIdx] ?? [];
+    if (modifiers.length < 2) {
+      const newModifiers = [...modifiers, modifierIdx];
+      setPreSelectedModifiers((prev) => {
+        return {
+          ...prev,
+          [cardIdx]: newModifiers,
+        };
+      });
+    }
+  };
+
   const refetchHand = (times: number = 1) => {
     console.log("refetching hand");
     setRefetchingHand(true);
@@ -153,6 +168,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!preSelectionLocked && handsLeft > 0) {
       resetMultiPoints();
       setPreSelectedCards([]);
+      setPreSelectedModifiers({});
     }
   };
 
@@ -247,30 +263,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getModifiers = (preSelectedCardIndex: number): Card[] => {
-    let modifiers: Card[] = [];
-    const modifier1Idx = preSelectedCards[preSelectedCardIndex + 1];
-    const modifier2Idx = preSelectedCards[preSelectedCardIndex + 2];
-    const modifier1 = hand.find((c) => c.idx === modifier1Idx);
-    const modifier2 = hand.find((c) => c.idx === modifier2Idx);
-    if (modifier1?.isModifier) {
-      if (modifier2?.isModifier) {
-        modifiers = [modifier1, modifier2];
-      } else {
-        modifiers = [modifier1];
-      }
-    }
-    return modifiers;
+    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
+    return (
+      modifierIndexes?.map((modifierIdx) => {
+        return hand.find((c) => c.idx === modifierIdx)!;
+      }) ?? []
+    );
   };
 
   const unPreSelectCard = (cardIndex: number) => {
-    const preSelectedIndex = preSelectedCards.findIndex(
-      (idx) => idx === cardIndex
-    );
-    const modifiers = getModifiers(preSelectedIndex);
-    const modifierIndexes = modifiers.map((modifier) => modifier.idx);
-    const indexes = [...modifierIndexes, cardIndex];
+    setPreSelectedModifiers((prev) => {
+      return {
+        ...prev,
+        [cardIndex]: [],
+      };
+    });
     setPreSelectedCards((prev) => {
-      return prev.filter((idx) => !indexes.includes(idx));
+      return prev.filter((idx) => cardIndex !== idx);
     });
   };
 
@@ -284,7 +293,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!preSelectionLocked && handsLeft > 0) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
-      } else if (regularPreSelectedCards.length < 5) {
+      } else if (preSelectedCards.length < 5) {
         preSelectCard(cardIndex);
       }
     }
@@ -335,7 +344,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(account.account, gameId, preSelectedCards).then((result) => {
+      checkHand(account.account, gameId, preSelectedCards, preSelectedModifiers).then((result) => {
         setPreSelectedPlay(result?.play ?? Plays.NONE);
         setMulti(result?.multi ?? 0);
         setPoints(result?.points ?? 0);
@@ -344,7 +353,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
     }
-  }, [preSelectedCards]);
+  }, [preSelectedCards, preSelectedModifiers]);
 
   //make sure data is legit
 
@@ -409,6 +418,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         loadingStates,
         refetchingHand,
         refetchHand,
+        preSelectedModifiers,
+        addModifier,
       }}
     >
       {children}

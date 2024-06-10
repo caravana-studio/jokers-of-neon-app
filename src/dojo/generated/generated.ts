@@ -9,6 +9,8 @@ interface CheckHandProps {
   account: AccountInterface;
   gameId: number;
   cards: number[];
+  modifiers1: number[];
+  modifiers2: number[];
 }
 
 interface CreateGameProps {
@@ -31,9 +33,23 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
-    const checkHand = async ({ account, gameId, cards }: CheckHandProps) => {
+    const checkHand = async ({
+      account,
+      gameId,
+      cards,
+      modifiers1,
+      modifiers2,
+    }: CheckHandProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         console.log(cardArray);
         return await provider.execute(
           account,

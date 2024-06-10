@@ -10,6 +10,7 @@ import { getPlayEvents } from "../utils/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
+import { getModifiersForContract } from "./utils/getModifiersForContract";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -48,13 +49,20 @@ export function createSystemCalls(
   const checkHand = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
     try {
+      const { modifiers1, modifiers2 } = getModifiersForContract(
+        cards,
+        modifiers
+      );
       const { transaction_hash } = await client.actions.checkHand({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {
