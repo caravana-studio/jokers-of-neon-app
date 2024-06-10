@@ -7,6 +7,7 @@ import { Score } from "../../components/Score.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { PlaysLayout } from '../../components/Plays/PlaysLayout.tsx'
 import { useState } from 'react'
+import { SpecialCards } from "../../components/SpecialCards.tsx";
 
 export const TopSection = () => {
   const { gameId, executeCreateGame } = useGameContext();
@@ -26,6 +27,9 @@ export const TopSection = () => {
         </Button>
       </GridItem>
       <GridItem>
+        <SpecialCards />
+      </GridItem>
+      <GridItem>
         <Box
           sx={{
             display: "flex",
@@ -43,7 +47,7 @@ export const TopSection = () => {
           )}
         </Box>
       </GridItem>
-      <GridItem>
+      {/* <GridItem>
         <Box
           sx={{
             display: "flex",
@@ -69,7 +73,7 @@ export const TopSection = () => {
             START NEW GAME
           </Button>
         </Box>
-      </GridItem>
+      </GridItem> */}
     </SimpleGrid>
   );
 };
