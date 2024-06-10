@@ -11,7 +11,7 @@ interface RewardItemProps {
 const RewardItem = ({ label, value, maxLabelLength }: RewardItemProps) => {
   const fillCharacters = '_'.repeat(maxLabelLength - label.length + 5);
   return (
-    <Heading size='lg' pt={2} pb={2}>
+    <Heading size='md' pt={1} pb={1}>
       {label} {fillCharacters} {value}ȼ
     </Heading>
   );
@@ -50,7 +50,7 @@ export const RewardsDetail = ( { roundRewards }: RewardsDetailProps) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" w="100%">
-      <Heading size='2xl'>CONGRATS!</Heading>
+      <Heading size='lg'>CONGRATS!</Heading>
       <table>
         <tbody>
         <RewardItem label={labels[0]} value={round_defeat} maxLabelLength={maxLabelLength}/>
@@ -59,9 +59,9 @@ export const RewardsDetail = ( { roundRewards }: RewardsDetailProps) => {
         <RewardItem label={labels[3]} value={discard_left_cash} maxLabelLength={maxLabelLength}/>
         </tbody>
       </table>
-      <Heading size='3xl' pt={6} pb={8}>Total: {total}ȼ</Heading>
+      <Heading size='lg' pt={4} pb={4}>Total: {total}ȼ</Heading>
 
-      <Button variant='outline' size='l' onClick={() => navigate('/store')}>Continue</Button>
+      <Button variant='outline' size='lg' onClick={() => navigate('/store')}>Continue</Button>
     </Box>
   );
 }

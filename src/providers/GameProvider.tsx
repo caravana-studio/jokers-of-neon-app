@@ -233,6 +233,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 ...response.detailEarned,
                 level: level,
               });
+              setPreSelectionLocked(true)
             }
             else {
               setRoundRewards(undefined);
