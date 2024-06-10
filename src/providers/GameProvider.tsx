@@ -197,65 +197,67 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onPlayClick = () => {
     setFrozenHand(hand);
-    play(account.account, gameId, preSelectedCards).then((response) => {
-      console.log("response", response);
-      if (response) {
-        setPreSelectionLocked(true);
-        response.cards.forEach((card, index) => {
-          setTimeout(() => {
-            const { idx, points, multi } = card;
-            setAnimatedCardIdx(idx);
-            setAnimatedPoints(points);
-            multi && setAnimatedMulti(multi);
-            setPoints((prev) => prev + points);
-            multi && setMulti((prev) => prev + multi);
-          }, 700 * index);
-        });
+    play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
+      (response) => {
+        console.log("response", response);
+        if (response) {
+          setPreSelectionLocked(true);
+          response.cards.forEach((card, index) => {
+            setTimeout(() => {
+              const { idx, points, multi } = card;
+              setAnimatedCardIdx(idx);
+              setAnimatedPoints(points);
+              multi && setAnimatedMulti(multi);
+              setPoints((prev) => prev + points);
+              multi && setMulti((prev) => prev + multi);
+            }, 700 * index);
+          });
 
-        setTimeout(
-          () => {
-            setPlayAnimation(true);
-          },
-          700 * response.cards.length + 100
-        );
+          setTimeout(
+            () => {
+              setPlayAnimation(true);
+            },
+            700 * response.cards.length + 100
+          );
 
-        setTimeout(
-          () => {
-            setAnimatedCardIdx(undefined);
-            setAnimatedPoints(0);
-            setAnimatedMulti(0);
+          setTimeout(
+            () => {
+              setAnimatedCardIdx(undefined);
+              setAnimatedPoints(0);
+              setAnimatedMulti(0);
 
-            setPlayAnimation(false);
-            clearPreSelection();
-            refetch();
-            refetchHand();
-            handsLeft > 0 && setPreSelectionLocked(false);
-            setFrozenHand(undefined);
+              setPlayAnimation(false);
+              clearPreSelection();
+              refetch();
+              refetchHand();
+              handsLeft > 0 && setPreSelectionLocked(false);
+              setFrozenHand(undefined);
 
-            if (response.gameOver) {
-              console.log("GAME OVER");
-              setTimeout(() => {
-                navigate("/gameover");
-              }, 1000);
-            }
+              if (response.gameOver) {
+                console.log("GAME OVER");
+                setTimeout(() => {
+                  navigate("/gameover");
+                }, 1000);
+              }
 
-            if (response.levelPassed) {
-              const { level, score } = response.levelPassed;
-              setTimeout(() => {
-                showSuccessToast(
-                  `level ${level} passed with score ${score}`,
-                  "CONGRATULATIONS!!!"
-                );
-              }, 200);
-              setTimeout(() => {
-                navigate("/store");
-              }, 1200);
-            }
-          },
-          700 * response.cards.length + 400
-        );
+              if (response.levelPassed) {
+                const { level, score } = response.levelPassed;
+                setTimeout(() => {
+                  showSuccessToast(
+                    `level ${level} passed with score ${score}`,
+                    "CONGRATULATIONS!!!"
+                  );
+                }, 200);
+                setTimeout(() => {
+                  navigate("/store");
+                }, 1200);
+              }
+            },
+            700 * response.cards.length + 400
+          );
+        }
       }
-    });
+    );
   };
 
   const cardIsPreselected = (cardIndex: number) => {
@@ -302,7 +304,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(account.account, gameId, preSelectedCards).then((response) => {
+    discard(
+      account.account,
+      gameId,
+      preSelectedCards,
+      preSelectedModifiers
+    ).then((response) => {
       refetchHand();
       if (response) {
         setTimeout(() => {
@@ -344,7 +351,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(account.account, gameId, preSelectedCards, preSelectedModifiers).then((result) => {
+      checkHand(
+        account.account,
+        gameId,
+        preSelectedCards,
+        preSelectedModifiers
+      ).then((result) => {
         setPreSelectedPlay(result?.play ?? Plays.NONE);
         setMulti(result?.multi ?? 0);
         setPoints(result?.points ?? 0);

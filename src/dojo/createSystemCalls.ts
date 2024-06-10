@@ -1,11 +1,8 @@
 import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
-import { GAME_ID_EVENT } from "../constants/dojoEventKeys";
+import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
-import {
-  getNumberValueFromEvent,
-  getNumberValueFromEvents,
-} from "../utils/getNumberValueFromEvent";
+import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
@@ -70,10 +67,10 @@ export function createSystemCalls(
       });
 
       if (tx.isSuccess()) {
-        const event = tx.events?.at(0);
-        const play = event && getNumberValueFromEvent(event, 0);
-        const multi = event && getNumberValueFromEvent(event, 1);
-        const points = event && getNumberValueFromEvent(event, 2);
+        const events = tx.events;
+        const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
+        const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
+        const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
         setComponentsFromEvents(contractComponents, getEvents(tx));
         return {
           play,
@@ -98,7 +95,6 @@ export function createSystemCalls(
     cards: number[],
     modifiers: { [key: number]: number[] }
   ) => {
-
     const { modifiers1, modifiers2 } = getModifiersForContract(
       cards,
       modifiers
@@ -217,7 +213,6 @@ export function createSystemCalls(
     cards: number[],
     modifiers: { [key: number]: number[] }
   ) => {
-
     const { modifiers1, modifiers2 } = getModifiersForContract(
       cards,
       modifiers
