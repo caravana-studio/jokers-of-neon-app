@@ -5,7 +5,7 @@ import { AccountInterface, shortString } from "starknet";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
-interface CheckHandProps {
+interface HandActionProps {
   account: AccountInterface;
   gameId: number;
   cards: number[];
@@ -39,7 +39,7 @@ export async function setupWorld(provider: DojoProvider) {
       cards,
       modifiers1,
       modifiers2,
-    }: CheckHandProps) => {
+    }: HandActionProps) => {
       try {
         const cardArray = [
           gameId,
@@ -67,13 +67,19 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-    }: {
-      account: AccountInterface;
-      gameId: number;
-      cards: number[];
-    }) => {
+      modifiers1,
+      modifiers2,
+    }: HandActionProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         console.log(cardArray);
         return await provider.execute(
           account,
@@ -176,13 +182,19 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-    }: {
-      account: AccountInterface;
-      gameId: number;
-      cards: number[];
-    }) => {
+      modifiers1,
+      modifiers2,
+    }: HandActionProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         console.log(cardArray);
         return await provider.execute(
           account,

@@ -95,13 +95,21 @@ export function createSystemCalls(
   const discard = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
+
+    const { modifiers1, modifiers2 } = getModifiersForContract(
+      cards,
+      modifiers
+    );
     try {
       const { transaction_hash } = await client.actions.discard({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -206,13 +214,21 @@ export function createSystemCalls(
   const play = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
+
+    const { modifiers1, modifiers2 } = getModifiersForContract(
+      cards,
+      modifiers
+    );
     try {
       const { transaction_hash } = await client.actions.play({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {
