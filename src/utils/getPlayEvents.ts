@@ -3,9 +3,10 @@ import {
   GAME_OVER_EVENT,
   LEVEL_PASSED_EVENT,
   PLAY_SCORE_EVENT,
-} from "../constants/dojoEventKeys";
+  DETAIL_EARNED_EVENT
+} from "../constants/dojoEventKeys"
 import { DojoEvent } from "../types/DojoEvent";
-import { LevelPassedEvent, PlayEvents } from "../types/ScoreData";
+import { DetailEarned, LevelPassedEvent, PlayEvents } from "../types/ScoreData"
 import {
   getNumberValueFromEvent,
   getNumberValueFromEvents,
@@ -22,6 +23,30 @@ const getLevelPassedEvent = (
   const score = getNumberValueFromEvent(levelPassedEvent, 2) ?? 0;
   return { level, score };
 };
+
+const getDetailEarnedEvent = (events: DojoEvent[]): DetailEarned | undefined => {
+  const detailEarnedEvent = events.find(
+    (event) => event.keys[0] === DETAIL_EARNED_EVENT
+  );
+  if (!detailEarnedEvent) return undefined;
+  const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 1) ?? 0;
+  const level_bonus = getNumberValueFromEvent(detailEarnedEvent, 2) ?? 0;
+  const hands_left = getNumberValueFromEvent(detailEarnedEvent, 3) ?? 0;
+  const hands_left_cash = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;
+  const discard_left = getNumberValueFromEvent(detailEarnedEvent, 5) ?? 0;
+  const discard_left_cash = getNumberValueFromEvent(detailEarnedEvent, 6) ?? 0;
+  const total = getNumberValueFromEvent(detailEarnedEvent, 7) ?? 0;
+
+  return {
+    round_defeat,
+    level_bonus,
+    hands_left,
+    hands_left_cash,
+    discard_left,
+    discard_left_cash,
+    total
+  };
+}
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
   // play score
@@ -47,6 +72,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       }),
     gameOver: !!events.find((event) => event.keys[0] === GAME_OVER_EVENT),
     levelPassed: getLevelPassedEvent(events),
+    detailEarned: getDetailEarnedEvent(events),
   };
 
   return playEvents;
