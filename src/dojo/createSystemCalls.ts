@@ -1,15 +1,13 @@
 import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
-import { GAME_ID_EVENT } from "../constants/dojoEventKeys";
+import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
-import {
-  getNumberValueFromEvent,
-  getNumberValueFromEvents,
-} from "../utils/getNumberValueFromEvent";
+import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
+import { getModifiersForContract } from "./utils/getModifiersForContract";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -48,13 +46,20 @@ export function createSystemCalls(
   const checkHand = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
     try {
+      const { modifiers1, modifiers2 } = getModifiersForContract(
+        cards,
+        modifiers
+      );
       const { transaction_hash } = await client.actions.checkHand({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -62,10 +67,10 @@ export function createSystemCalls(
       });
 
       if (tx.isSuccess()) {
-        const event = tx.events?.at(0);
-        const play = event && getNumberValueFromEvent(event, 0);
-        const multi = event && getNumberValueFromEvent(event, 1);
-        const points = event && getNumberValueFromEvent(event, 2);
+        const events = tx.events;
+        const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
+        const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
+        const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
         setComponentsFromEvents(contractComponents, getEvents(tx));
         return {
           play,
@@ -87,13 +92,20 @@ export function createSystemCalls(
   const discard = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
+    const { modifiers1, modifiers2 } = getModifiersForContract(
+      cards,
+      modifiers
+    );
     try {
       const { transaction_hash } = await client.actions.discard({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -198,13 +210,20 @@ export function createSystemCalls(
   const play = async (
     account: AccountInterface,
     gameId: number,
-    cards: number[]
+    cards: number[],
+    modifiers: { [key: number]: number[] }
   ) => {
+    const { modifiers1, modifiers2 } = getModifiersForContract(
+      cards,
+      modifiers
+    );
     try {
       const { transaction_hash } = await client.actions.play({
         account,
         gameId,
         cards,
+        modifiers1,
+        modifiers2,
       });
 
       const tx = await account.waitForTransaction(transaction_hash, {

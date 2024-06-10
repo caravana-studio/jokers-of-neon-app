@@ -17,9 +17,9 @@ import { useGetDeck } from "../queries/useGetDeck";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { Round } from "../types/Round";
+import { RoundRewards } from "../types/RoundRewards.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { useCardAnimations } from "./CardAnimationsProvider";
-import { RoundRewards } from '../types/RoundRewards.ts'
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 
@@ -47,6 +47,8 @@ interface IGameContext {
   loadingStates: boolean;
   refetchingHand: boolean;
   refetchHand: (times?: number) => void;
+  preSelectedModifiers: { [key: number]: number[] };
+  addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
 }
 
@@ -81,6 +83,8 @@ const GameContext = createContext<IGameContext>({
   loadingStates: false,
   refetchingHand: false,
   refetchHand: (_) => {},
+  preSelectedModifiers: {},
+  addModifier: (_, __) => {},
   roundRewards: undefined,
 });
 export const useGameContext = () => useContext(GameContext);
@@ -97,9 +101,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
+    [key: number]: number[];
+  }>({});
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
   const [refetchingHand, setRefetchingHand] = useState(false);
-  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(undefined);
+  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
+    undefined
+  );
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
@@ -133,12 +142,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const username = lsUser ?? address ?? "0xtest";
   const handsLeft = round?.hands;
 
-  const regularPreSelectedCards = preSelectedCards.filter((idx) => {
-    const card = hand.find((c) => c.idx === idx);
-    return !card?.isModifier;
-  });
-
   //functions
+  const addModifier = (cardIdx: number, modifierIdx: number) => {
+    const modifiers = preSelectedModifiers[cardIdx] ?? [];
+    if (modifiers.length < 2) {
+      const newModifiers = [...modifiers, modifierIdx];
+      setPreSelectedModifiers((prev) => {
+        return {
+          ...prev,
+          [cardIdx]: newModifiers,
+        };
+      });
+    }
+  };
+
   const refetchHand = (times: number = 1) => {
     console.log("refetching hand");
     setRefetchingHand(true);
@@ -157,6 +174,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!preSelectionLocked && handsLeft > 0) {
       resetMultiPoints();
       setPreSelectedCards([]);
+      setPreSelectedModifiers({});
     }
   };
 
@@ -185,64 +203,64 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onPlayClick = () => {
     setFrozenHand(hand);
-    play(account.account, gameId, preSelectedCards).then((response) => {
-      console.log("response", response);
-      if (response) {
-        setPreSelectionLocked(true);
-        response.cards.forEach((card, index) => {
-          setTimeout(() => {
-            const { idx, points, multi } = card;
-            setAnimatedCardIdx(idx);
-            setAnimatedPoints(points);
-            multi && setAnimatedMulti(multi);
-            setPoints((prev) => prev + points);
-            multi && setMulti((prev) => prev + multi);
-          }, 700 * index);
-        });
+    play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
+      (response) => {
+        if (response) {
+          setPreSelectionLocked(true);
+          response.cards.forEach((card, index) => {
+            setTimeout(() => {
+              const { idx, points, multi } = card;
+              setAnimatedCardIdx(idx);
+              setAnimatedPoints(points);
+              multi && setAnimatedMulti(multi);
+              setPoints((prev) => prev + points);
+              multi && setMulti((prev) => prev + multi);
+            }, 700 * index);
+          });
 
-        setTimeout(
-          () => {
-            setPlayAnimation(true);
-          },
-          700 * response.cards.length + 100
-        );
+          setTimeout(
+            () => {
+              setPlayAnimation(true);
+            },
+            700 * response.cards.length + 100
+          );
 
-        setTimeout(
-          () => {
-            setAnimatedCardIdx(undefined);
-            setAnimatedPoints(0);
-            setAnimatedMulti(0);
+          setTimeout(
+            () => {
+              setAnimatedCardIdx(undefined);
+              setAnimatedPoints(0);
+              setAnimatedMulti(0);
 
-            setPlayAnimation(false);
-            clearPreSelection();
-            refetch();
-            refetchHand();
-            handsLeft > 0 && setPreSelectionLocked(false);
-            setFrozenHand(undefined);
+              setPlayAnimation(false);
+              clearPreSelection();
+              refetch();
+              refetchHand();
+              handsLeft > 0 && setPreSelectionLocked(false);
+              setFrozenHand(undefined);
 
-            if (response.gameOver) {
-              console.log("GAME OVER");
-              setTimeout(() => {
-                navigate("/gameover");
-              }, 1000);
-            }
+              if (response.gameOver) {
+                console.log("GAME OVER");
+                setTimeout(() => {
+                  navigate("/gameover");
+                }, 1000);
+              }
 
-            if (response.levelPassed && response.detailEarned) {
-              const { level } = response.levelPassed;
-              setRoundRewards({
-                ...response.detailEarned,
-                level: level,
-              });
-              setPreSelectionLocked(true)
-            }
-            else {
-              setRoundRewards(undefined);
-            }
-          },
-          700 * response.cards.length + 400
-        );
+              if (response.levelPassed && response.detailEarned) {
+                const { level } = response.levelPassed;
+                setRoundRewards({
+                  ...response.detailEarned,
+                  level: level,
+                });
+                setPreSelectionLocked(true);
+              } else {
+                setRoundRewards(undefined);
+              }
+            },
+            700 * response.cards.length + 400
+          );
+        }
       }
-    });
+    );
   };
 
   const cardIsPreselected = (cardIndex: number) => {
@@ -250,30 +268,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getModifiers = (preSelectedCardIndex: number): Card[] => {
-    let modifiers: Card[] = [];
-    const modifier1Idx = preSelectedCards[preSelectedCardIndex + 1];
-    const modifier2Idx = preSelectedCards[preSelectedCardIndex + 2];
-    const modifier1 = hand.find((c) => c.idx === modifier1Idx);
-    const modifier2 = hand.find((c) => c.idx === modifier2Idx);
-    if (modifier1?.isModifier) {
-      if (modifier2?.isModifier) {
-        modifiers = [modifier1, modifier2];
-      } else {
-        modifiers = [modifier1];
-      }
-    }
-    return modifiers;
+    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
+    return (
+      modifierIndexes?.map((modifierIdx) => {
+        return hand.find((c) => c.idx === modifierIdx)!;
+      }) ?? []
+    );
   };
 
   const unPreSelectCard = (cardIndex: number) => {
-    const preSelectedIndex = preSelectedCards.findIndex(
-      (idx) => idx === cardIndex
-    );
-    const modifiers = getModifiers(preSelectedIndex);
-    const modifierIndexes = modifiers.map((modifier) => modifier.idx);
-    const indexes = [...modifierIndexes, cardIndex];
+    setPreSelectedModifiers((prev) => {
+      return {
+        ...prev,
+        [cardIndex]: [],
+      };
+    });
     setPreSelectedCards((prev) => {
-      return prev.filter((idx) => !indexes.includes(idx));
+      return prev.filter((idx) => cardIndex !== idx);
     });
   };
 
@@ -287,7 +298,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!preSelectionLocked && handsLeft > 0) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
-      } else if (regularPreSelectedCards.length < 5) {
+      } else if (preSelectedCards.length < 5) {
         preSelectCard(cardIndex);
       }
     }
@@ -296,7 +307,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(account.account, gameId, preSelectedCards).then((response) => {
+    discard(
+      account.account,
+      gameId,
+      preSelectedCards,
+      preSelectedModifiers
+    ).then((response) => {
       refetchHand();
       if (response) {
         setTimeout(() => {
@@ -326,7 +342,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     console.log("checking game exists", gameId);
     if (!gameExists(Game, gameId)) {
-      console.log("it doesnt");
       executeCreateGame();
     } else {
       setGameLoading(false);
@@ -338,7 +353,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(account.account, gameId, preSelectedCards).then((result) => {
+      checkHand(
+        account.account,
+        gameId,
+        preSelectedCards,
+        preSelectedModifiers
+      ).then((result) => {
         setPreSelectedPlay(result?.play ?? Plays.NONE);
         setMulti(result?.multi ?? 0);
         setPoints(result?.points ?? 0);
@@ -347,7 +367,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
     }
-  }, [preSelectedCards]);
+  }, [preSelectedCards, preSelectedModifiers]);
 
   //make sure data is legit
 
@@ -412,7 +432,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         loadingStates,
         refetchingHand,
         refetchHand,
-        roundRewards
+        preSelectedModifiers,
+        addModifier,
+        roundRewards,
       }}
     >
       {children}

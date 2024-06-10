@@ -5,10 +5,12 @@ import { AccountInterface, shortString } from "starknet";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
-interface CheckHandProps {
+interface HandActionProps {
   account: AccountInterface;
   gameId: number;
   cards: number[];
+  modifiers1: number[];
+  modifiers2: number[];
 }
 
 interface CreateGameProps {
@@ -31,10 +33,23 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
-    const checkHand = async ({ account, gameId, cards }: CheckHandProps) => {
+    const checkHand = async ({
+      account,
+      gameId,
+      cards,
+      modifiers1,
+      modifiers2,
+    }: HandActionProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
-        console.log(cardArray);
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         return await provider.execute(
           account,
           game_contract,
@@ -51,14 +66,19 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-    }: {
-      account: AccountInterface;
-      gameId: number;
-      cards: number[];
-    }) => {
+      modifiers1,
+      modifiers2,
+    }: HandActionProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
-        console.log(cardArray);
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         return await provider.execute(
           account,
           game_contract,
@@ -160,14 +180,19 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-    }: {
-      account: AccountInterface;
-      gameId: number;
-      cards: number[];
-    }) => {
+      modifiers1,
+      modifiers2,
+    }: HandActionProps) => {
       try {
-        const cardArray = [gameId, cards.length, ...cards];
-        console.log(cardArray);
+        const cardArray = [
+          gameId,
+          cards.length,
+          ...cards,
+          modifiers1.length,
+          ...modifiers1,
+          modifiers2.length,
+          ...modifiers2,
+        ];
         return await provider.execute(
           account,
           game_contract,
