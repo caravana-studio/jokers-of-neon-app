@@ -50,7 +50,6 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        console.log(cardArray);
         return await provider.execute(
           account,
           game_contract,
@@ -80,7 +79,6 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        console.log(cardArray);
         return await provider.execute(
           account,
           game_contract,
@@ -195,7 +193,6 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        console.log(cardArray);
         return await provider.execute(
           account,
           game_contract,

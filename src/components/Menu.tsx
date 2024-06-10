@@ -33,7 +33,6 @@ export const Menu = ({ onClose, onOpenLeaderboardClick }: MenuProps) => {
   const [showAbout, setShowAbout] = useState(false);
 
   const onKeyDown = (event: { key: string }) => {
-    console.log(event.key);
     if (event.key === "ArrowDown") {
       setActiveOption((prev) => {
         return prev < 3 ? prev + 1 : prev;

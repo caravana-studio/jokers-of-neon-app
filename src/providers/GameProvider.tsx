@@ -199,7 +199,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setFrozenHand(hand);
     play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
       (response) => {
-        console.log("response", response);
         if (response) {
           setPreSelectionLocked(true);
           response.cards.forEach((card, index) => {
@@ -339,7 +338,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     console.log("checking game exists", gameId);
     if (!gameExists(Game, gameId)) {
-      console.log("it doesnt");
       executeCreateGame();
     } else {
       setGameLoading(false);
