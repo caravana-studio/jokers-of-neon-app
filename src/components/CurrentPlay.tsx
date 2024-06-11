@@ -6,7 +6,7 @@ export const CurrentPlay = () => {
   const { preSelectedPlay } = useGameContext();
 
   return (
-    <Heading variant="neonGreen" size="m" sx={{ mb: 2 }}>
+    <Heading variant="neonGreen" size="m" sx={{ my: 2 }}>
       CURRENT PLAY: {PLAYS[preSelectedPlay]}
     </Heading>
   );
