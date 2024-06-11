@@ -19,12 +19,18 @@ export const HandSection = () => {
     preSelectedCards,
     togglePreselected,
     discardEffectCard,
+    preSelectedModifiers,
     roundRewards,
   } = useGameContext();
   const handsLeft = round.hands;
 
   const cardIsPreselected = (cardIndex: number) => {
-    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
+    return (
+      preSelectedCards.filter((idx) => idx === cardIndex).length > 0 ||
+      Object.values(preSelectedModifiers).some((array) =>
+        array.includes(cardIndex)
+      )
+    );
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuIdx, setMenuIdx] = useState<number | undefined>();

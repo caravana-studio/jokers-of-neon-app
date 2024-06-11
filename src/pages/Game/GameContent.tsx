@@ -20,14 +20,13 @@ import { TopSection } from "./TopSection.tsx";
 export const GameContent = () => {
   const {
     preSelectedCards,
-    getModifiers,
-    setPreSelectedCards,
     gameLoading,
     loadingStates,
     error,
     clearPreSelection,
     executeCreateGame,
     refetchHand,
+    addModifier,
   } = useGameContext();
   const { colors } = useTheme();
 
@@ -49,16 +48,7 @@ export const GameContent = () => {
     if (!isNaN(modifiedCard) && !isNaN(modifier)) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
-        const modifiers = getModifiers(index);
-        if (modifiers.length < 2) {
-          const updatedPreselectedCards = [...preSelectedCards];
-          updatedPreselectedCards.splice(
-            index + 1 + modifiers.length,
-            0,
-            modifier
-          );
-          setPreSelectedCards(updatedPreselectedCards);
-        }
+        addModifier(modifiedCard, modifier);
       }
     }
   };

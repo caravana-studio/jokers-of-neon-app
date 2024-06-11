@@ -25,11 +25,6 @@ export const PreselectedCardsSection = () => {
   const handsLeft = round?.hands;
   const discardsLeft = round?.discards;
 
-  const regularPreSelectedCards = preSelectedCards.filter((idx) => {
-    const card = hand.find((c) => c.idx === idx);
-    return !card?.isModifier;
-  });
-
   return roundRewards ? (<RewardsDetail roundRewards={roundRewards} />)
     : (
     <>
@@ -53,12 +48,9 @@ export const PreselectedCardsSection = () => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {regularPreSelectedCards.map((idx) => {
+          {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
-            const preSelectedCardIndex = preSelectedCards.findIndex(
-              (c) => c === idx
-            );
-            const modifiers = getModifiers(preSelectedCardIndex);
+            const modifiers = getModifiers(idx)
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
