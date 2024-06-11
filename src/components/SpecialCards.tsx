@@ -1,5 +1,5 @@
-import { Box, Flex, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
-import { TiltCard } from "./TiltCard";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { CardsRow } from "./CardsRow";
 
 const cards = [
   {
@@ -17,7 +17,7 @@ const cards = [
     idx: 1,
     img: "effect/15.png",
   },
-  {
+    {
     id: "4",
     idx: 1,
     img: "effect/7.png",
@@ -31,19 +31,11 @@ const cards = [
 
 export const SpecialCards = () => {
   return (
-    <Box>
-      <SimpleGrid columns={5}>
-        {cards.map((card) => {
-          return (
-            <GridItem key={card.id} sx={{ mx: 1 }} justifyContent='flex-end' alignItems="right">
-              <TiltCard card={card} />
-            </GridItem>
-          );
-        })}
-      </SimpleGrid>
-      <Flex sx={{px: 2, mt: 1}} justifyContent='space-between'>
+    <Box minWidth="300px" maxWidth="1000px" backgroundColor={"pink"}>
+      <CardsRow cards={cards} />
+      <Flex sx={{ px: 2, mt: 1 }} justifyContent="space-between">
         <Heading size="s">special cards</Heading>
-        <Heading size="s">(5/5)</Heading>
+        <Heading size="s">({cards.length}/5)</Heading>
       </Flex>
     </Box>
   );
