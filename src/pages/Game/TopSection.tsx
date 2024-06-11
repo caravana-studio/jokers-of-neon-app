@@ -1,79 +1,44 @@
-import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
-import { AccountAddress } from "../../components/AccountAddress.tsx";
-import { CurrentPlay } from "../../components/CurrentPlay.tsx";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
+import { PlaysLayout } from "../../components/Plays/PlaysLayout.tsx";
 import { Score } from "../../components/Score.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
-import { PlaysLayout } from '../../components/Plays/PlaysLayout.tsx'
-import { useState } from 'react'
 import { SpecialCards } from "../../components/SpecialCards.tsx";
+import { useGameContext } from "../../providers/GameProvider.tsx";
 
 export const TopSection = () => {
   const { gameId, executeCreateGame } = useGameContext();
   const [playsView, setPlaysView] = useState(false);
 
   return (
-    <SimpleGrid columns={3}>
-      <GridItem>
+    <Flex
+      height="100%"
+      width="100%"
+      justifyContent={"space-between"}
+      alignItems={"center"}
+    >
+      <Box sx={{ ml: 10 }} width="320px">
         <LevelPoints />
-        <Button
-          mt={8}
-          variant="outline" onClick={(e) => {
-          e.stopPropagation();
-          setPlaysView(!playsView);
-        }}>
-          See plays
-        </Button>
-      </GridItem>
-      <GridItem>
+      </Box>
+      <Box sx={{ p: 2 }} minWidth="200px" backgroundColor="darkGrey">
         <SpecialCards />
-      </GridItem>
-      <GridItem>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Score />
-          <CurrentPlay />
-          <MultiPoints />
-          {playsView && (
-            <Box position={"relative"} zIndex={2}>
-              <PlaysLayout />
-            </Box>
-          )}
-        </Box>
-      </GridItem>
-      {/* <GridItem>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            right: 10,
-            top: 10,
-            gap: 2,
-            alignItems: "end",
-          }}
-        >
-          <AccountAddress />
-          <Heading size="s" textAlign={"right"}>
-            game id: {gameId}
-          </Heading>
-          <Button
-            variant="outline"
-            sx={{ width: 300 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              executeCreateGame();
-            }}
-          >
-            START NEW GAME
-          </Button>
-        </Box>
-      </GridItem> */}
-    </SimpleGrid>
+      </Box>
+      <Flex
+        flexDirection="column"
+        justifyContent="center"
+        sx={{ mx: 3 }}
+        height="100%"
+        width="400px"
+      >
+        <Score />
+        <MultiPoints />
+        {playsView && (
+          <Box position={"relative"} zIndex={2}>
+            <PlaysLayout />
+          </Box>
+        )}
+      </Flex>
+    </Flex>
   );
 };

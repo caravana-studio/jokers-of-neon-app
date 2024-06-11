@@ -7,6 +7,7 @@ import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 import { RewardsDetail } from '../../components/RewardsDetail.tsx'
+import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 
 export const PreselectedCardsSection = () => {
   const {
@@ -44,9 +45,10 @@ export const PreselectedCardsSection = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 14,
+          gap: 5,
         }}
       >
+          <CurrentPlay />
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
@@ -65,14 +67,14 @@ export const PreselectedCardsSection = () => {
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);
-                        }}
+                          }}
                       />
                     </AnimatedCard>
                   </ModifiableCard>
                 </Box>
               )
-            );
-          })}
+              );
+              })}
         </Box>
       </Box>
       <ActionButton

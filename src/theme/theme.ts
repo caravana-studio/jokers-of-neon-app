@@ -27,7 +27,8 @@ export default {
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
     neonPink: NEON_PINK,
-    limeGreen: 'lime'
+    limeGreen: 'lime',
+    darkGrey: '#04162d'
   },
   styles: {
     global: {

@@ -19,11 +19,12 @@ interface ICardProps {
 
 export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
   const { img, purchased = false } = card;
+  const modifiersLength = card.modifiers?.length ?? 0;
 
   const tiltCardComponent = (
     <Box
       width={CARD_WIDTH_PX}
-      sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
+      sx={{ cursor: pointer && !purchased ? "pointer" : "default", transform: `translateY(${modifiersLength * 20}px)` }}
     >
       <Box
         sx={{
