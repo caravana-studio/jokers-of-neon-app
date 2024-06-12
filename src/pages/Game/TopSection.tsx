@@ -1,14 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useState } from "react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
-import { PlaysLayout } from "../../components/Plays/PlaysLayout.tsx";
 import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
+import { CARD_WIDTH } from "../../constants/visualProps.ts";
 
 export const TopSection = () => {
-  const [playsView, setPlaysView] = useState(false);
-
   return (
     <Flex
       height="100%"
@@ -24,7 +21,7 @@ export const TopSection = () => {
         flexGrow={1}
         sx={{ p: 2 }}
         minWidth="500px"
-        maxWidth="900px"
+        maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
         backgroundColor="darkGrey"
       >
         <SpecialCards />
@@ -38,11 +35,6 @@ export const TopSection = () => {
       >
         <Score />
         <MultiPoints />
-        {playsView && (
-          <Box position={"relative"} zIndex={2}>
-            <PlaysLayout />
-          </Box>
-        )}
       </Flex>
     </Flex>
   );

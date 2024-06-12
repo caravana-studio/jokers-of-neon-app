@@ -17,7 +17,7 @@ const cards = [
     idx: 1,
     img: "effect/15.png",
   },
-    {
+  {
     id: "4",
     idx: 1,
     img: "effect/7.png",
@@ -31,7 +31,7 @@ const cards = [
 
 export const SpecialCards = () => {
   return (
-    <Box width='100%' p={2}>
+    <Box width="100%" p={2}>
       <CardsRow cards={cards} />
       <Flex sx={{ px: 4, mt: 1 }} justifyContent="space-between">
         <Heading size="s">special cards</Heading>
