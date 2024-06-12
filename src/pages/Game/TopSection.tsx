@@ -1,29 +1,30 @@
-import { Box, Button, GridItem, Heading, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  GridItem,
+  Heading,
+  IconButton,
+  SimpleGrid,
+  Tooltip,
+  useDisclosure
+} from "@chakra-ui/react"
 import { AccountAddress } from "../../components/AccountAddress.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { PlaysLayout } from '../../components/Plays/PlaysLayout.tsx'
-import { useState } from 'react'
+import { InfoIcon } from '@chakra-ui/icons';
+import {PlaysModal} from '../../components/Plays/PlaysModal.tsx'
 
 export const TopSection = () => {
   const { gameId, executeCreateGame } = useGameContext();
-  const [playsView, setPlaysView] = useState(false);
+  const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <SimpleGrid columns={3}>
       <GridItem>
         <LevelPoints />
-        <Button
-          mt={8}
-          variant="outline" onClick={(e) => {
-          e.stopPropagation();
-          setPlaysView(!playsView);
-        }}>
-          See plays
-        </Button>
       </GridItem>
       <GridItem>
         <Box
@@ -34,13 +35,26 @@ export const TopSection = () => {
           }}
         >
           <Score />
-          <CurrentPlay />
+          <Box sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 4,
+            mb: 2
+          }}>
+            <Tooltip label={"Show plays"} variant="outline" placement={"left"}>
+              <IconButton
+                aria-label={"Show plays"}
+                icon={<InfoIcon />}
+                variant="outline"
+                onClick={() => onOpen()}
+              />
+            </Tooltip>
+            <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose}/>
+            <CurrentPlay />
+          </Box>
           <MultiPoints />
-          {playsView && (
-            <Box position={"relative"} zIndex={2}>
-              <PlaysLayout />
-            </Box>
-          )}
         </Box>
       </GridItem>
       <GridItem>
