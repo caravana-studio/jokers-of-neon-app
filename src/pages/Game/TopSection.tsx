@@ -3,9 +3,7 @@ import {
   Button,
   GridItem,
   Heading,
-  IconButton, Modal,
-  ModalBody,
-  ModalContent,
+  IconButton,
   SimpleGrid,
   Tooltip,
   useDisclosure
@@ -16,24 +14,12 @@ import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { PlaysLayout } from '../../components/Plays/PlaysLayout.tsx';
 import { InfoIcon } from '@chakra-ui/icons';
+import {PlaysModal} from '../../components/Plays/PlaysModal.tsx'
 
 export const TopSection = () => {
   const { gameId, executeCreateGame } = useGameContext();
   const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
-
-  const playsModal = () => {
-    return (
-      <Modal isOpen={isPlaysModalOpen} onClose={onClose}>
-        <ModalContent>
-          <ModalBody>
-            <PlaysLayout />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    )
-  }
 
   return (
     <SimpleGrid columns={3}>
@@ -65,7 +51,7 @@ export const TopSection = () => {
                 onClick={() => onOpen()}
               />
             </Tooltip>
-            {playsModal()}
+            <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose}/>
             <CurrentPlay />
           </Box>
           <MultiPoints />
