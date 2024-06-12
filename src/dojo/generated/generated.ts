@@ -24,9 +24,11 @@ export async function setupWorld(provider: DojoProvider) {
   function actions() {
     const createGame = async ({ account, username }: CreateGameProps) => {
       try {
-        return await provider.execute(account, game_contract, "create_game", [
-          shortString.encodeShortString(username),
-        ]);
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "create_game",
+          calldata: [shortString.encodeShortString(username)],
+        });
       } catch (error) {
         console.error("Error executing createGame:", error);
         throw error;
@@ -41,7 +43,7 @@ export async function setupWorld(provider: DojoProvider) {
       modifiers2,
     }: HandActionProps) => {
       try {
-        const cardArray = [
+        const calldata = [
           gameId,
           cards.length,
           ...cards,
@@ -50,12 +52,11 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        return await provider.execute(
-          account,
-          game_contract,
-          "check_hand",
-          cardArray
-        );
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "check_hand",
+          calldata,
+        });
       } catch (error) {
         console.error("Error executing checkHand:", error);
         throw error;
@@ -70,7 +71,7 @@ export async function setupWorld(provider: DojoProvider) {
       modifiers2,
     }: HandActionProps) => {
       try {
-        const cardArray = [
+        const calldata = [
           gameId,
           cards.length,
           ...cards,
@@ -79,12 +80,11 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        return await provider.execute(
-          account,
-          game_contract,
-          "discard",
-          cardArray
-        );
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "discard",
+          calldata,
+        });
       } catch (error) {
         console.error("Error executing discard:", error);
         throw error;
@@ -101,13 +101,12 @@ export async function setupWorld(provider: DojoProvider) {
       card: number;
     }) => {
       try {
-        const cardArray = [gameId, card];
-        return await provider.execute(
-          account,
-          game_contract,
-          "discard_effect_card",
-          cardArray
-        );
+        const calldata = [gameId, card];
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "discard_effect_card",
+          calldata,
+        });
       } catch (error) {
         console.error("Error executing discardEffectCard:", error);
         throw error;
@@ -122,9 +121,11 @@ export async function setupWorld(provider: DojoProvider) {
       gameId: number;
     }) => {
       try {
-        return await provider.execute(account, shop_contract, "skip_shop", [
-          gameId,
-        ]);
+        return await provider.execute(account, {
+          contractName: shop_contract,
+          entrypoint: "skip_shop",
+          calldata: [gameId],
+        });
       } catch (error) {
         console.error("Error executing skip_shop:", error);
         throw error;
@@ -143,11 +144,11 @@ export async function setupWorld(provider: DojoProvider) {
       card_type: number;
     }) => {
       try {
-        return await provider.execute(account, shop_contract, "buy_card_item", [
-          gameId,
-          card_idx,
-          card_type,
-        ]);
+        return await provider.execute(account, {
+          contractName: shop_contract,
+          entrypoint: "buy_card_item",
+          calldata: [gameId, card_idx, card_type],
+        });
       } catch (error) {
         console.error("Error executing buy_card_item:", error);
         throw error;
@@ -164,12 +165,11 @@ export async function setupWorld(provider: DojoProvider) {
       item_id: number;
     }) => {
       try {
-        return await provider.execute(
-          account,
-          shop_contract,
-          "buy_poker_hand_item",
-          [gameId, item_id]
-        );
+        return await provider.execute(account, {
+          contractName: shop_contract,
+          entrypoint: "buy_poker_hand_item",
+          calldata: [gameId, item_id],
+        });
       } catch (error) {
         console.error("Error executing buy_poker_hand_item:", error);
         throw error;
@@ -184,7 +184,7 @@ export async function setupWorld(provider: DojoProvider) {
       modifiers2,
     }: HandActionProps) => {
       try {
-        const cardArray = [
+        const calldata = [
           gameId,
           cards.length,
           ...cards,
@@ -193,12 +193,11 @@ export async function setupWorld(provider: DojoProvider) {
           modifiers2.length,
           ...modifiers2,
         ];
-        return await provider.execute(
-          account,
-          game_contract,
-          "play",
-          cardArray
-        );
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "play",
+          calldata,
+        });
       } catch (error) {
         console.error("Error executing discard:", error);
         throw error;

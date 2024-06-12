@@ -16,7 +16,6 @@ async function init() {
   const queryClient = new QueryClient();
 
   root.render(
-    // <React.StrictMode>
     <DojoProvider value={setupResult}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
@@ -24,7 +23,6 @@ async function init() {
         </QueryClientProvider>
       </BrowserRouter>
     </DojoProvider>
-    // </React.StrictMode>
   );
 }
 

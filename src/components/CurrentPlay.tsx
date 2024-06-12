@@ -23,7 +23,7 @@ export const CurrentPlay = () => {
       <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />
       <Heading variant="neonGreen" size="m">
         {preSelectedPlay === Plays.NONE
-          ? "plays information"
+          ? "select some cards to play"
           : `CURRENT PLAY: ${PLAYS[preSelectedPlay]}`}
       </Heading>
     </Flex>
