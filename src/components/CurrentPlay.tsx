@@ -11,9 +11,9 @@ export const CurrentPlay = () => {
 
   return (
     <Flex gap={4} alignItems={"center"}>
-      <Tooltip label={"Show plays"} variant="outline" placement={"left"}>
+      <Tooltip fontFamily='Sys' label={"Show plays"} variant="outline" placement={"left"}>
         <InfoIcon
-          sx={{ fontSize: "20px" }}
+          sx={{ fontSize: "20px", cursor: 'pointer' }}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
