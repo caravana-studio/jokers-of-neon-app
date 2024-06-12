@@ -5,7 +5,7 @@ import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
 import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_WIDTH } from "../../constants/visualProps";
+import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 
@@ -49,8 +49,7 @@ export const PreselectedCardsSection = () => {
           gap: 5,
         }}
       >
-        <CurrentPlay />
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", height: CARD_HEIGHT_PX }}>
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
             const modifiers = getModifiers(idx);
@@ -77,6 +76,7 @@ export const PreselectedCardsSection = () => {
             );
           })}
         </Box>
+        <CurrentPlay />
       </Box>
       <ActionButton
         position="RIGHT"

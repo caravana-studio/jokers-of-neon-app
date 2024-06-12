@@ -24,7 +24,7 @@ export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
   const tiltCardComponent = (
     <Box
       width={CARD_WIDTH_PX}
-      sx={{ cursor: pointer && !purchased ? "pointer" : "default", transform: `translateY(${modifiersLength * 20}px)` }}
+      sx={{ cursor: pointer && !purchased ? "pointer" : "default", /* transform: `translateY(${modifiersLength * 20}px)` */ }}
     >
       <Box
         sx={{
