@@ -31,9 +31,9 @@ const cards = [
 
 export const SpecialCards = () => {
   return (
-    <Box minWidth="300px" maxWidth="1000px" backgroundColor={"pink"}>
+    <Box width='100%' p={2}>
       <CardsRow cards={cards} />
-      <Flex sx={{ px: 2, mt: 1 }} justifyContent="space-between">
+      <Flex sx={{ px: 4, mt: 1 }} justifyContent="space-between">
         <Heading size="s">special cards</Heading>
         <Heading size="s">({cards.length}/5)</Heading>
       </Flex>

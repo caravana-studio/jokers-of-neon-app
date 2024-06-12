@@ -1,14 +1,12 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { PlaysLayout } from "../../components/Plays/PlaysLayout.tsx";
 import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
 
 export const TopSection = () => {
-  const { gameId, executeCreateGame } = useGameContext();
   const [playsView, setPlaysView] = useState(false);
 
   return (
@@ -21,9 +19,16 @@ export const TopSection = () => {
       <Box sx={{ ml: 10 }} width="320px">
         <LevelPoints />
       </Box>
-      <Box sx={{ p: 2 }} minWidth="200px" backgroundColor="darkGrey">
+      <Flex
+        mx={2}
+        flexGrow={1}
+        sx={{ p: 2 }}
+        minWidth="500px"
+        maxWidth="900px"
+        backgroundColor="darkGrey"
+      >
         <SpecialCards />
-      </Box>
+      </Flex>
       <Flex
         flexDirection="column"
         justifyContent="center"

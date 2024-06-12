@@ -8,10 +8,10 @@ interface CardsRowProps {
 
 export const CardsRow = ({ cards }: CardsRowProps) => {
   return (
-    <Flex backgroundColor={"red"} gap={2} width="100%">
+    <Flex justifyContent={"space-between"} width="100%" px={4}>
       {cards.map((card) => {
         return (
-          <Flex width={`${100 / cards.length}%`} sx={{position: 'relative', right: 0}}>
+          <Flex justifyContent="center" width={`${100 / cards.length}%`}>
             <TiltCard card={card} />
           </Flex>
         );
