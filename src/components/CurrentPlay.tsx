@@ -11,7 +11,7 @@ export const CurrentPlay = () => {
 
   return (
     <Flex gap={4} alignItems={"center"}>
-      <Tooltip fontFamily='Sys' label={"Show plays"} variant="outline" placement={"left"}>
+      <Tooltip label={"Show plays"} placement={"left"}>
         <InfoIcon
           sx={{ fontSize: "20px", cursor: 'pointer' }}
           onClick={(e) => {

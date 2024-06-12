@@ -14,7 +14,7 @@ export const getCardData = (card: Card): CardData => {
     return TRADITIONAL_CARDS_DATA[cardId];
   } else {
     return {
-      name: "Not found",
+      name: "",
       description: "",
     };
   }
