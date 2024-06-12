@@ -1,22 +1,20 @@
-import { getSyncEntities } from "@dojoengine/state";
 import {
     DojoConfig,
-    DojoProvider,
-    createModelTypedData,
+    DojoProvider
 } from "@dojoengine/core";
+import { BurnerManager } from "@dojoengine/create-burner";
+import { getSyncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
+import {
+    Account,
+    TypedData,
+    WeierstrassSignatureType
+} from "starknet";
 import { createClientComponents } from "../createClientComponents";
 import { createSystemCalls } from "../createSystemCalls";
 import { defineContractComponents } from "./contractComponents";
-import { world } from "./world";
 import { setupWorld } from "./generated";
-import {
-    Account,
-    ProviderOptions,
-    TypedData,
-    WeierstrassSignatureType,
-} from "starknet";
-import { BurnerManager } from "@dojoengine/create-burner";
+import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -36,7 +34,7 @@ export async function setup({ ...config }: DojoConfig) {
     const clientComponents = createClientComponents({ contractComponents });
 
     // fetch all existing entities from torii
-    await getSyncEntities(toriiClient, contractComponents as any);
+    await getSyncEntities(toriiClient, contractComponents as any, []);
 
     // create dojo provider
     const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
@@ -88,5 +86,6 @@ export async function setup({ ...config }: DojoConfig) {
         config,
         dojoProvider,
         burnerManager,
+        toriiClient,
     };
 }
