@@ -1,12 +1,19 @@
-import { Box, Heading, Image, SystemStyleObject } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Image,
+  SystemStyleObject,
+  Tooltip,
+} from "@chakra-ui/react";
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH_PX,
   MODIFIERS_OFFSET,
-  TILT_OPTIONS
+  TILT_OPTIONS,
 } from "../constants/visualProps";
 import { Card } from "../types/Card";
+import { getTooltip } from "../utils/getTooltip";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 
@@ -17,14 +24,12 @@ interface ICardProps {
   pointer?: boolean;
 }
 
-export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
+export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
   const { img, purchased = false } = card;
-  const modifiersLength = card.modifiers?.length ?? 0;
-
   const tiltCardComponent = (
     <Box
       width={CARD_WIDTH_PX}
-      sx={{ cursor: pointer && !purchased ? "pointer" : "default", /* transform: `translateY(${modifiersLength * 20}px)` */ }}
+      sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
     >
       <Box
         sx={{
@@ -33,16 +38,19 @@ export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
         }}
       >
         <Tilt options={TILT_OPTIONS}>
-          <Image
-            sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-            src={`Cards/${img}`}
-            alt={img}
-            width={CARD_WIDTH_PX}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick?.();
-            }}
-          />
+          <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown>
+            <Image
+              sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+              src={`Cards/${img}`}
+              alt={img}
+              width={CARD_WIDTH_PX}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick?.();
+              }}
+            />
+          </Tooltip>
+
           {card.price && (
             <Box
               sx={{
@@ -77,32 +85,36 @@ export const TiltCard = ({ sx, card, onClick, pointer }: ICardProps) => {
           )}
         </Tilt>
       </Box>
-      {card.modifiers?.map((c, index) => (
-        <Box
-          key={c.id}
-          sx={{
-            zIndex: 5 - index,
-            marginTop: `-${CARD_HEIGHT + MODIFIERS_OFFSET}px`,
-            marginLeft: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
-            position: "relative",
-          }}
-        >
-          <Tilt options={TILT_OPTIONS}>
-            <AnimatedCard idx={c.idx}>
-              <Image
-                sx={{ maxWidth: "unset" }}
-                src={`Cards/${c.img}`}
-                alt={c.img}
-                width={CARD_WIDTH_PX}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClick?.();
-                }}
-              />
-            </AnimatedCard>
-          </Tilt>
-        </Box>
-      ))}
+      {card.modifiers?.map((c, index) => {
+        return (
+          <Box
+            key={c.id}
+            sx={{
+              zIndex: 5 - index,
+              marginTop: `-${CARD_HEIGHT + MODIFIERS_OFFSET}px`,
+              marginLeft: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
+              position: "relative",
+            }}
+          >
+            <Tilt options={TILT_OPTIONS}>
+              <AnimatedCard idx={c.idx}>
+                <Tooltip hasArrow label={getTooltip(c)} placement="top" closeOnPointerDown>
+                  <Image
+                    sx={{ maxWidth: "unset" }}
+                    src={`Cards/${c.img}`}
+                    alt={c.img}
+                    width={CARD_WIDTH_PX}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClick?.();
+                    }}
+                  />
+                </Tooltip>
+              </AnimatedCard>
+            </Tilt>
+          </Box>
+        );
+      })}
     </Box>
   );
 

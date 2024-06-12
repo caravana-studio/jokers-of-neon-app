@@ -5,27 +5,37 @@ const cards = [
   {
     id: "1",
     idx: 1,
-    img: "effect/1.png",
+    img: "effect/13.png",
+    isSpecial: true,
+    card_id: 13
   },
   {
     id: "2",
     idx: 1,
     img: "effect/10.png",
+    isSpecial: true,
+    card_id: 10
   },
   {
     id: "3",
     idx: 1,
     img: "effect/15.png",
+    isSpecial: true,
+    card_id: 15
   },
   {
     id: "4",
     idx: 1,
     img: "effect/7.png",
+    isSpecial: true,
+    card_id: 7
   },
   {
     id: "5",
     idx: 1,
     img: "effect/12.png",
+    isSpecial: true,
+    card_id: 12
   },
 ];
 
