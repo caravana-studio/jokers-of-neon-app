@@ -16,6 +16,7 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { GameMenu } from "../../components/GameMenu.tsx";
 
 export const GameContent = () => {
   const {
@@ -109,7 +110,7 @@ export const GameContent = () => {
         height: "100%",
       }}
     >
-      <AudioPlayer />
+      <GameMenu />
       <Box
         sx={{
           height: "100%",
@@ -120,7 +121,7 @@ export const GameContent = () => {
         onClick={clearPreSelection}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%", p: 10, width: "100%" }}>
+          <Box sx={{ height: "30%", width: "100%" }}>
             <TopSection />
           </Box>
           <DndContext onDragEnd={handleDragEnd}>

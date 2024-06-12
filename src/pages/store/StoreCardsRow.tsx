@@ -15,7 +15,7 @@ interface CardsRowProps {
   onBuyCard: (idx: number) => void;
 }
 
-export const CardsRow = ({
+export const StoreCardsRow = ({
   title,
   cards,
   button,

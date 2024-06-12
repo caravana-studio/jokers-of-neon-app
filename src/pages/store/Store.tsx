@@ -8,7 +8,7 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { useDojo } from "../../dojo/useDojo";
 import { useGame } from "../../dojo/utils/useGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
-import { CardsRow } from "./CardsRow";
+import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
   const { id, cash, state, round } = useGame();
@@ -91,7 +91,7 @@ export const Store = () => {
             <PlaysTable inStore onBuyPlayLevelUp={onBuyPlayLevelUp} />
           </GridItem>
           <GridItem colSpan={5}>
-            <CardsRow
+            <StoreCardsRow
               cards={shopItems.commonCards}
               title="traditional cards"
               onBuyCard={(card_idx: number) => {
@@ -100,7 +100,7 @@ export const Store = () => {
             />
           </GridItem>
           <GridItem colSpan={5}>
-            <CardsRow
+            <StoreCardsRow
               cards={shopItems.modifierCards}
               title="modifiers"
               onBuyCard={(card_idx: number) => {
@@ -109,7 +109,7 @@ export const Store = () => {
             />
           </GridItem>
           <GridItem colSpan={4}>
-            <CardsRow
+            <StoreCardsRow
               cards={shopItems.specialCards}
               title="special cards"
               onBuyCard={(card_idx: number) => {

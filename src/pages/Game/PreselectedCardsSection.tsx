@@ -1,12 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { ActionButton } from "../../components/ActionButton";
 import { AnimatedCard } from "../../components/AnimatedCard";
+import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
+import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_WIDTH } from "../../constants/visualProps";
+import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
-import { RewardsDetail } from '../../components/RewardsDetail.tsx'
 
 export const PreselectedCardsSection = () => {
   const {
@@ -25,8 +26,9 @@ export const PreselectedCardsSection = () => {
   const handsLeft = round?.hands;
   const discardsLeft = round?.discards;
 
-  return roundRewards ? (<RewardsDetail roundRewards={roundRewards} />)
-    : (
+  return roundRewards ? (
+    <RewardsDetail roundRewards={roundRewards} />
+  ) : (
     <>
       <ActionButton
         position="LEFT"
@@ -44,13 +46,13 @@ export const PreselectedCardsSection = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 14,
+          gap: 5,
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", height: CARD_HEIGHT_PX }}>
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
-            const modifiers = getModifiers(idx)
+            const modifiers = getModifiers(idx);
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
@@ -74,6 +76,7 @@ export const PreselectedCardsSection = () => {
             );
           })}
         </Box>
+        <CurrentPlay />
       </Box>
       <ActionButton
         position="RIGHT"
