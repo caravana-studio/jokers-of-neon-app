@@ -1,51 +1,18 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useGame } from "../dojo/queries/useGame";
 import { CardsRow } from "./CardsRow";
 
-const cards = [
-  {
-    id: "1",
-    idx: 1,
-    img: "effect/13.png",
-    isSpecial: true,
-    card_id: 13
-  },
-  {
-    id: "2",
-    idx: 1,
-    img: "effect/10.png",
-    isSpecial: true,
-    card_id: 10
-  },
-  {
-    id: "3",
-    idx: 1,
-    img: "effect/15.png",
-    isSpecial: true,
-    card_id: 15
-  },
-  {
-    id: "4",
-    idx: 1,
-    img: "effect/7.png",
-    isSpecial: true,
-    card_id: 7
-  },
-  {
-    id: "5",
-    idx: 1,
-    img: "effect/12.png",
-    isSpecial: true,
-    card_id: 12
-  },
-];
-
 export const SpecialCards = () => {
+  const game = useGame()
+  const maxLength = game?.len_max_current_special_cards ?? 5
+  const specialCards = useCurrentSpecialCards();
   return (
     <Box width="100%" p={2}>
-      <CardsRow cards={cards} />
+      <CardsRow cards={specialCards} />
       <Flex sx={{ px: 4, mt: 1 }} justifyContent="space-between">
         <Heading size="s">special cards</Heading>
-        <Heading size="s">({cards.length}/5)</Heading>
+        <Heading size="s">({specialCards.length}/{maxLength})</Heading>
       </Flex>
     </Box>
   );

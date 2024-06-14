@@ -5,6 +5,7 @@ export interface IGame {
   id: number;
   len_common_cards: number;
   len_current_special_cards: number;
+  len_max_current_special_cards: number;
   len_effect_cards: number;
   len_hand: number;
   level: number;

@@ -18,10 +18,12 @@ import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { Round } from "../types/Round";
 import { RoundRewards } from "../types/RoundRewards.ts";
+import { PlayEvents } from "../types/ScoreData.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
+const PLAY_ANIMATION_DURATION = 700;
 
 interface IGameContext {
   gameId: number;
@@ -130,11 +132,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const navigate = useNavigate();
 
-  const {
-    setAnimatedCardIdx,
-    setPoints: setAnimatedPoints,
-    setMulti: setAnimatedMulti,
-  } = useCardAnimations();
+  const { setAnimatedCard } = useCardAnimations();
 
   //variables
   const lsUser = localStorage.getItem(LOGGED_USER);
@@ -201,64 +199,79 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
+  const animatePlay = (playEvents: PlayEvents) => {
+    if (playEvents) {
+      const COMMON_CARDS_DURATION =
+        PLAY_ANIMATION_DURATION * playEvents.cards.length;
+      const SPECIAL_CARDS_DURATION =
+        PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
+      const ALL_CARDS_DURATION =
+        COMMON_CARDS_DURATION + SPECIAL_CARDS_DURATION + 500;
+
+      setPreSelectionLocked(true);
+
+      //traditional cards and modifiers
+      playEvents.cards.forEach((card, index) => {
+        setTimeout(() => {
+          const { idx, points, multi } = card;
+          setAnimatedCard({ idx, points, multi, animationIndex: index });
+          points && setPoints((prev) => prev + points);
+          multi && setMulti((prev) => prev + multi);
+        }, PLAY_ANIMATION_DURATION * index);
+      });
+
+      //special cards
+      setTimeout(() => {
+        playEvents.specialCards?.forEach((event, index) => {
+          setTimeout(() => {
+            const { idx, points, multi, special_idx } = event;
+            setAnimatedCard({ idx, points, multi, special_idx, animationIndex: index });
+            points && setPoints((prev) => prev + points);
+            multi && setMulti((prev) => prev + multi);
+          }, PLAY_ANIMATION_DURATION * index);
+        });
+      }, COMMON_CARDS_DURATION);
+
+      setTimeout(() => {
+        setPlayAnimation(true);
+      }, ALL_CARDS_DURATION);
+
+      setTimeout(() => {
+        setAnimatedCard(undefined);
+
+        setPlayAnimation(false);
+        clearPreSelection();
+        refetch();
+        refetchHand();
+        handsLeft > 0 && setPreSelectionLocked(false);
+        setFrozenHand(undefined);
+
+        if (playEvents.gameOver) {
+          console.log("GAME OVER");
+          setTimeout(() => {
+            navigate("/gameover");
+          }, 1000);
+        }
+
+        if (playEvents.levelPassed && playEvents.detailEarned) {
+          const { level } = playEvents.levelPassed;
+          setRoundRewards({
+            ...playEvents.detailEarned,
+            level: level,
+          });
+          setPreSelectionLocked(true);
+        } else {
+          setRoundRewards(undefined);
+        }
+      }, ALL_CARDS_DURATION + 500);
+    }
+  };
+
   const onPlayClick = () => {
     setFrozenHand(hand);
     play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
       (response) => {
-        if (response) {
-          setPreSelectionLocked(true);
-          response.cards.forEach((card, index) => {
-            setTimeout(() => {
-              const { idx, points, multi } = card;
-              setAnimatedCardIdx(idx);
-              setAnimatedPoints(points);
-              multi && setAnimatedMulti(multi);
-              setPoints((prev) => prev + points);
-              multi && setMulti((prev) => prev + multi);
-            }, 700 * index);
-          });
-
-          setTimeout(
-            () => {
-              setPlayAnimation(true);
-            },
-            700 * response.cards.length + 100
-          );
-
-          setTimeout(
-            () => {
-              setAnimatedCardIdx(undefined);
-              setAnimatedPoints(0);
-              setAnimatedMulti(0);
-
-              setPlayAnimation(false);
-              clearPreSelection();
-              refetch();
-              refetchHand();
-              handsLeft > 0 && setPreSelectionLocked(false);
-              setFrozenHand(undefined);
-
-              if (response.gameOver) {
-                console.log("GAME OVER");
-                setTimeout(() => {
-                  navigate("/gameover");
-                }, 1000);
-              }
-
-              if (response.levelPassed && response.detailEarned) {
-                const { level } = response.levelPassed;
-                setRoundRewards({
-                  ...response.detailEarned,
-                  level: level,
-                });
-                setPreSelectionLocked(true);
-              } else {
-                setRoundRewards(undefined);
-              }
-            },
-            700 * response.cards.length + 400
-          );
-        }
+        response && animatePlay(response);
       }
     );
   };
