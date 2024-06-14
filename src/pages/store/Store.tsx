@@ -6,7 +6,7 @@ import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useDojo } from "../../dojo/useDojo";
-import { useGame } from "../../dojo/utils/useGame";
+import { useGame } from "../../dojo/queries/useGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { StoreCardsRow } from "./StoreCardsRow";
 

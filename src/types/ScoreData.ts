@@ -4,6 +4,7 @@ export interface PlayEvents {
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
   detailEarned?: DetailEarned;
+  specialCards?: CardScore[];
 }
 
 export interface LevelPassedEvent {
@@ -13,11 +14,12 @@ export interface LevelPassedEvent {
 
 export interface MultiPoints {
   multi?: number;
-  points: number;
+  points?: number;
 }
 
 export interface CardScore extends MultiPoints {
   idx: number;
+  special_idx?: number;
 }
 
 export interface DetailEarned {

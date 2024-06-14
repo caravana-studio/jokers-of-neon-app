@@ -9,6 +9,7 @@ export interface IAnimatedCardProps {
   idx: number;
   discarded?: boolean;
   played?: boolean;
+  isSpecial?: boolean;
 }
 
 export const AnimatedCard = ({
@@ -16,8 +17,14 @@ export const AnimatedCard = ({
   idx,
   discarded = false,
   played = false,
+  isSpecial = false,
 }: IAnimatedCardProps) => {
-  const { points, multi, animatedCardIdx } = useCardAnimations();
+  const { animatedCard } = useCardAnimations();
+  const animatedCardIdx = isSpecial
+    ? animatedCard?.special_idx
+    : animatedCard?.idx;
+  const points = animatedCard?.points;
+  const multi = animatedCard?.multi;
 
   const { colors } = useTheme();
 
@@ -46,7 +53,8 @@ export const AnimatedCard = ({
           transform: "scale(1.1)",
           boxShadow: `0px 0px 30px 0px  ${animateColor}`,
         },
-        onRest: () => cardApi.start({ transform: "scale(1)" }),
+        onRest: () =>
+          cardApi.start({ transform: "scale(1)", boxShadow: `0px 0px 0px 0px ${animateColor}` }),
       });
 
       pointsApi.start({

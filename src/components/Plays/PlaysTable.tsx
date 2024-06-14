@@ -9,7 +9,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useGame } from "../../dojo/utils/useGame";
+import { useGame } from "../../dojo/queries/useGame";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 interface PlaysTableProps {
