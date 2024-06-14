@@ -10,6 +10,7 @@ interface IAnimatedCard {
   points?: number;
   multi?: number;
   special_idx?: number;
+  animationIndex: number;
 }
 
 const CardAnimationsContext = createContext<ICardAnimationsContext>({

@@ -14,6 +14,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
       {cards.map((card) => {
         return (
           <Flex
+            key={card.idx}
             justifyContent="center"
             width={`${100 / cards.length}%`}
             maxWidth={`${CARD_WIDTH + 7}px`}

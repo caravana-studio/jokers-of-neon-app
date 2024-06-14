@@ -25,6 +25,7 @@ export const AnimatedCard = ({
     : animatedCard?.idx;
   const points = animatedCard?.points;
   const multi = animatedCard?.multi;
+  const animationIndex = animatedCard?.animationIndex;
 
   const { colors } = useTheme();
 
@@ -66,7 +67,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, animatedCardIdx]);
+  }, [points, multi, animatedCardIdx, animationIndex]);
 
   useEffect(() => {
     if (discarded || played) {

@@ -214,7 +214,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       playEvents.cards.forEach((card, index) => {
         setTimeout(() => {
           const { idx, points, multi } = card;
-          setAnimatedCard({ idx, points, multi });
+          setAnimatedCard({ idx, points, multi, animationIndex: index });
           points && setPoints((prev) => prev + points);
           multi && setMulti((prev) => prev + multi);
         }, PLAY_ANIMATION_DURATION * index);
@@ -225,7 +225,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         playEvents.specialCards?.forEach((event, index) => {
           setTimeout(() => {
             const { idx, points, multi, special_idx } = event;
-            setAnimatedCard({ idx, points, multi, special_idx });
+            setAnimatedCard({ idx, points, multi, special_idx, animationIndex: index });
             points && setPoints((prev) => prev + points);
             multi && setMulti((prev) => prev + multi);
           }, PLAY_ANIMATION_DURATION * index);
