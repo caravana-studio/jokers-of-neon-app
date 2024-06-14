@@ -1,18 +1,9 @@
 import {
-  Box,
-  Heading,
   Modal,
   ModalBody,
-  ModalContent, ModalOverlay,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Thead,
-  Tr
+  ModalContent,
+  ModalOverlay,
 } from '@chakra-ui/react'
-import { useGetPlaysLevelDetail } from '../../queries/useGetPlaysLevelDetail'
-import { PlaysTable } from './PlaysTable';
 import {PlaysLayout} from './PlaysLayout.tsx'
 
 interface PlaysModalProps {

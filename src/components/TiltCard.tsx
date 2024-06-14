@@ -8,27 +8,29 @@ import {
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
-  CARD_WIDTH_PX,
+  CARD_WIDTH,
   MODIFIERS_OFFSET,
-  TILT_OPTIONS,
-} from "../constants/visualProps";
+  TILT_OPTIONS
+} from "../constants/visualProps"
 import { Card } from "../types/Card";
-import { getTooltip } from "../utils/getTooltip";
 import { AnimatedCard } from "./AnimatedCard";
-import { DraggableCard } from "./DraggableCard";
+import {getTooltip} from '../utils/getTooltip.ts'
+import { DraggableCard } from "./DraggableCard.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
   pointer?: boolean;
+  scale?: number;
 }
 
-export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
+export const TiltCard = ({ card, onClick, pointer, scale = 1 }: ICardProps) => {
   const { img, purchased = false } = card;
+  const cardWidthPx = `${CARD_WIDTH * scale}px`;
   const tiltCardComponent = (
     <Box
-      width={CARD_WIDTH_PX}
+      width={cardWidthPx}
       sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
     >
       <Box
@@ -43,7 +45,7 @@ export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
               sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
               src={`Cards/${img}`}
               alt={img}
-              width={CARD_WIDTH_PX}
+              width={cardWidthPx}
               onClick={(e) => {
                 e.stopPropagation();
                 onClick?.();
@@ -108,7 +110,7 @@ export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
                     sx={{ maxWidth: "unset" }}
                     src={`Cards/${c.img}`}
                     alt={c.img}
-                    width={CARD_WIDTH_PX}
+                    width={cardWidthPx}
                     onClick={(e) => {
                       e.stopPropagation();
                       onClick?.();
