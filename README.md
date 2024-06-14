@@ -1,4 +1,7 @@
-# Jokers of Neon
+<p align="center" width="100%">
+    <img src="https://github.com/jokers-of-neon/jokers-of-neon-app/assets/24213554/8c72b427-fbbb-430e-8575-86d3d99cb7c8"> 
+</p>
+
 “Jokers of Neon” is a roguelike deck-builder fully on-chain card game inspired by the mechanics of the game "Balatro". Throughout the game, players face progressive challenges, testing their ability to accumulate points playing hands and enhance their deck with increasingly powerful special cards and modifiers.
 
 Branding design, logo and Twitter account are on the way.
