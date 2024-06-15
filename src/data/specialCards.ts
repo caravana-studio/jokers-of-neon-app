@@ -2,19 +2,19 @@ import { CardDataMap } from "../types/CardData";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {
   1: {
-    name: "Multipied Hearts",
+    name: "Multiplied Hearts",
     description: "Adds +5 multi for every played Heart suited card",
   },
   2: {
-    name: "Multipied Clubs",
+    name: "Multiplied Clubs",
     description: "Adds +5 multi for every played Clubs suited card",
   },
   3: {
-    name: "Multipied Diamonds",
+    name: "Multiplied Diamonds",
     description: "Adds +5 multi for every played Diamonds suited card",
   },
   4: {
-    name: "Multipied Spades",
+    name: "Multiplied Spades",
     description: "Adds +5 multi for every played Spades suited card",
   },
   5: {
