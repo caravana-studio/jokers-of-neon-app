@@ -1,7 +1,7 @@
 import { IGame } from "../../types/Game";
 import { useDojo } from "../useDojo";
-import { getGame } from "./getGame";
-import { getLSGameId } from "./getLSGameId";
+import { getGame } from "../utils/getGame";
+import { getLSGameId } from "../utils/getLSGameId";
 
 export const useGame = () => {
   const {

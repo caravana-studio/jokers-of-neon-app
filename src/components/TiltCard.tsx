@@ -98,7 +98,12 @@ export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
           >
             <Tilt options={TILT_OPTIONS}>
               <AnimatedCard idx={c.idx}>
-                <Tooltip hasArrow label={getTooltip(c)} placement="top" closeOnPointerDown>
+                <Tooltip
+                  hasArrow
+                  label={getTooltip(c)}
+                  placement="top"
+                  closeOnPointerDown
+                >
                   <Image
                     sx={{ maxWidth: "unset" }}
                     src={`Cards/${c.img}`}

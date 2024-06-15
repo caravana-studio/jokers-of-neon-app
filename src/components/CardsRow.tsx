@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../constants/visualProps";
 import { Card } from "../types/Card";
+import { AnimatedCard } from "./AnimatedCard";
 import { TiltCard } from "./TiltCard";
 
 interface CardsRowProps {
@@ -13,11 +14,14 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
       {cards.map((card) => {
         return (
           <Flex
+            key={card.idx}
             justifyContent="center"
             width={`${100 / cards.length}%`}
             maxWidth={`${CARD_WIDTH + 7}px`}
           >
-            <TiltCard card={card} />
+            <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
+              <TiltCard card={card} />
+            </AnimatedCard>
           </Flex>
         );
       })}
