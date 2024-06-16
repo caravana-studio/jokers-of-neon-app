@@ -1,13 +1,15 @@
 import {
+  Box,
   GridItem,
   Heading,
   Menu,
   MenuItem,
   MenuList,
   SimpleGrid,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
@@ -37,6 +39,9 @@ export const HandSection = () => {
 
   return (
     <>
+      <Box sx={{ mr: 4 }}>
+        <SortBy />
+      </Box>
       <SimpleGrid
         sx={{
           opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,

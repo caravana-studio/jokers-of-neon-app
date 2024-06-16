@@ -143,7 +143,7 @@ export const GameContent = () => {
                 height: " 30%",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                mx: 4,
+                mr: 20,
                 pb: 10,
               }}
             >
