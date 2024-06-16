@@ -6,13 +6,13 @@ import { ModifiableCard } from "../../components/ModifiableCard";
 import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
+import { useRound } from "../../dojo/queries/useRound.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 
 export const PreselectedCardsSection = () => {
   const {
     preSelectedCards,
-    round,
     play,
     hand,
     getModifiers,
@@ -23,8 +23,10 @@ export const PreselectedCardsSection = () => {
     roundRewards,
   } = useGameContext();
 
+  const round = useRound();
+
   const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
+  const discardsLeft = round?.discard;
 
   return roundRewards ? (
     <RewardsDetail roundRewards={roundRewards} />
@@ -49,7 +51,13 @@ export const PreselectedCardsSection = () => {
           gap: 5,
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center", height: CARD_HEIGHT_PX }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: CARD_HEIGHT_PX,
+          }}
+        >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
             const modifiers = getModifiers(idx);

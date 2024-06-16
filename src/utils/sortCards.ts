@@ -22,11 +22,15 @@ export const sortCards = (cards: Card[], sortBy: SortBy): Card[] => {
       }
     }
     // sort by rank
-    const cardA = a.card_id && TRADITIONAL_CARDS_DATA[a.card_id];
-    const cardB = b.card_id && TRADITIONAL_CARDS_DATA[b.card_id];
+    const cardA =
+      (a.card_id || a.card_id === 0) && TRADITIONAL_CARDS_DATA[a.card_id];
+    const cardB =
+      (b.card_id || b.card_id === 0) && TRADITIONAL_CARDS_DATA[b.card_id];
     if (cardA && cardB) {
       if (cardA.card !== cardB.card) {
         return (cardA.card ?? 0) - (cardB.card ?? 0);
+      } else {
+        return (a.card_id ?? 0) - (b.card_id ?? 0);
       }
     }
 
