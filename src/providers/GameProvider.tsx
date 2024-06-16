@@ -6,12 +6,12 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
-import { useCustomToast } from "../hooks/useCustomToast";
+import { SortBy } from "../enums/sortBy.ts";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
 import { useGetRound } from "../queries/useGetRound";
@@ -52,6 +52,8 @@ interface IGameContext {
   preSelectedModifiers: { [key: number]: number[] };
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
+  sortBy: SortBy;
+  toggleSortBy: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -88,6 +90,8 @@ const GameContext = createContext<IGameContext>({
   preSelectedModifiers: {},
   addModifier: (_, __) => {},
   roundRewards: undefined,
+  sortBy: SortBy.RANK,
+  toggleSortBy: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -111,6 +115,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
     undefined
   );
+  const [sortBySuit, setSortBySuit] = useState(
+    !!localStorage.getItem(SORT_BY_SUIT)
+  );
+  const sortBy: SortBy = sortBySuit ? SortBy.SUIT : SortBy.RANK;
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
@@ -122,13 +130,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     },
     account,
   } = useDojo();
-
-  const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand);
+  
+  const { data: updatedHand } = useGetCurrentHand(gameId, refetchingHand, sortBy);
   const hand = frozenHand ? frozenHand : updatedHand;
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
-
-  const { showSuccessToast } = useCustomToast();
 
   const navigate = useNavigate();
 
@@ -141,6 +147,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const handsLeft = round?.hands;
 
   //functions
+  const toggleSortBy = () => {
+    if (sortBySuit) {
+      localStorage.removeItem(SORT_BY_SUIT);
+      setSortBySuit(false);
+    } else {
+      setSortBySuit(true);
+      localStorage.setItem(SORT_BY_SUIT, "true");
+    }
+  };
   const addModifier = (cardIdx: number, modifierIdx: number) => {
     const modifiers = preSelectedModifiers[cardIdx] ?? [];
     if (modifiers.length < 2) {
@@ -225,7 +240,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         playEvents.specialCards?.forEach((event, index) => {
           setTimeout(() => {
             const { idx, points, multi, special_idx } = event;
-            setAnimatedCard({ idx, points, multi, special_idx, animationIndex: index });
+            setAnimatedCard({
+              idx,
+              points,
+              multi,
+              special_idx,
+              animationIndex: index,
+            });
             points && setPoints((prev) => prev + points);
             multi && setMulti((prev) => prev + multi);
           }, PLAY_ANIMATION_DURATION * index);
@@ -448,6 +469,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         preSelectedModifiers,
         addModifier,
         roundRewards,
+        sortBy,
+        toggleSortBy,
       }}
     >
       {children}

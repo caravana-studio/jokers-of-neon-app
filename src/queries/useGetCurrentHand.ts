@@ -4,6 +4,7 @@ import { Card } from "../types/Card";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
+import { SortBy } from "../enums/sortBy";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -44,7 +45,7 @@ const REFETCH_HAND_INTERVAL_ACTIVE =
 const REFETCH_HAND_INTERVAL_INACTIVE =
   getEnvNumber("VITE_REFETCH_HAND_INTERVAL_INACTIVE") || 5000;
 
-export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
+export const useGetCurrentHand = (gameId: number, refetchingHand: boolean, sortBy: SortBy) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
@@ -73,7 +74,7 @@ export const useGetCurrentHand = (gameId: number, refetchingHand: boolean) => {
     };
   });
 
-  const sortedCards = sortCards(cards);
+  const sortedCards = sortCards(cards, sortBy);
   return {
     ...queryResponse,
     data: sortedCards,

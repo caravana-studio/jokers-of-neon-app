@@ -1,13 +1,11 @@
 import { Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { faHashtag, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { SORT_BY_SUIT } from "../constants/localStorage";
+import { SortBy as SortByEnum } from "../enums/sortBy.ts";
+import { useGameContext } from "../providers/GameProvider";
 
 export const SortBy = () => {
-  const [sortBySuit, setSortBySuit] = useState(
-    !!localStorage.getItem(SORT_BY_SUIT)
-  );
+  const { sortBy, toggleSortBy } = useGameContext();
 
   return (
     <Flex
@@ -22,25 +20,23 @@ export const SortBy = () => {
       <Flex gap={4} alignItems="center">
         <Tooltip hasArrow label="Suit" placement="bottom">
           <FontAwesomeIcon
-            opacity={sortBySuit ? 1 : 0.3}
-            cursor={!sortBySuit ? "pointer" : "unset"}
+            opacity={sortBy === SortByEnum.SUIT ? 1 : 0.3}
+            cursor={sortBy === SortByEnum.SUIT ? "unset" : "pointer"}
             fontSize={25}
             icon={faHeart}
             onClick={() => {
-              localStorage.setItem(SORT_BY_SUIT, "true");
-              setSortBySuit(true);
+              toggleSortBy();
             }}
           />
         </Tooltip>
-        <Tooltip hasArrow label="Value" placement="bottom">
+        <Tooltip hasArrow label="Rank" placement="bottom">
           <FontAwesomeIcon
-            opacity={!sortBySuit ? 1 : 0.3}
-            cursor={sortBySuit ? "pointer" : "unset"}
+            opacity={sortBy === SortByEnum.SUIT ? 0.3 : 1}
+            cursor={sortBy === SortByEnum.SUIT ? "pointer" : "unset"}
             fontSize={25}
             icon={faHashtag}
             onClick={() => {
-              localStorage.removeItem(SORT_BY_SUIT);
-              setSortBySuit(false);
+              toggleSortBy();
             }}
           />
         </Tooltip>
