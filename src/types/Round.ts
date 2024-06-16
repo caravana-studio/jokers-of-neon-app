@@ -1,6 +1,7 @@
-export interface Round {
-    score: number,
-    levelScore: number,
+export interface IRound {
+    player_score: number,
+    level_score: number,
     hands: number,
-    discards: number
+    discard: number,
+    current_len_deck: number
 }

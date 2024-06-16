@@ -13,17 +13,18 @@ import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
+import { useRound } from "../../dojo/queries/useRound";
 
 export const HandSection = () => {
   const {
     hand,
-    round,
     preSelectedCards,
     togglePreselected,
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
   } = useGameContext();
+  const round = useRound();
   const handsLeft = round.hands;
 
   const cardIsPreselected = (cardIndex: number) => {

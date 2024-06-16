@@ -5,13 +5,15 @@ import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useDojo } from "../../dojo/useDojo";
 import { useGame } from "../../dojo/queries/useGame";
+import { useDojo } from "../../dojo/useDojo";
+import { useGameContext } from "../../providers/GameProvider";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
   const { id, cash, state, round } = useGame();
+  const { onShopSkip } = useGameContext();
   const { data: shopItems } = useGetShopItems(id, round);
   const {
     setup: {
@@ -59,6 +61,7 @@ export const Store = () => {
         <Box>
           <Button
             onClick={() => {
+              onShopSkip();
               skipShop(account.account, id).then((response): void => {
                 if (response) {
                   navigate("/demo");
