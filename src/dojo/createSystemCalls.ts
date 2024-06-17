@@ -182,6 +182,7 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
+      return false;
     }
   };
   const levelUpPokerHand = async (
@@ -204,6 +205,7 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
+      return false;
     }
   };
 

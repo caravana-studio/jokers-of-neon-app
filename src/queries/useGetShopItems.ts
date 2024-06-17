@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 import { useQuery } from "react-query";
 import { CardTypes } from "../enums/cardTypes";
 import graphQLClient from "../graphQLClient";
+import { Card } from "../types/Card";
 import { ShopItem } from "../types/ShopItem";
 
 export const SHOP_ITEMS_KEY = "shop-items";
@@ -37,14 +38,16 @@ interface ShopItemEdge {
   node: ShopItem;
 }
 
+interface PokerHandItem {
+  idx: number;
+  poker_hand: string;
+  level: number;
+  cost: number;
+  purchased: boolean;
+}
+
 interface PokerHandItemEdge {
-  node: {
-    idx: number;
-    poker_hand: string;
-    level: number;
-    cost: number;
-    purchased: boolean;
-  };
+  node: PokerHandItem;
 }
 
 interface ShopItemsResponse {
@@ -60,12 +63,23 @@ const fetchGraphQLData = async (gameId: number): Promise<ShopItemsResponse> => {
   return await graphQLClient.request(GET_SHOP_ITEMS_QUERY, { gameId });
 };
 
-export const useGetShopItems = (gameId: number, round: number, enabled = true) => {
+const sortByCardId = (a: Card, b: Card) => {
+  return (a.card_id ?? 0) - (b.card_id ?? 0);
+};
+const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
+  return a.poker_hand.localeCompare(b.poker_hand);
+};
+
+export const useGetShopItems = (
+  gameId: number,
+  round: number,
+  enabled = true
+) => {
   const queryResponse = useQuery<ShopItemsResponse>(
     [SHOP_ITEMS_KEY, gameId, round],
     () => fetchGraphQLData(gameId),
     {
-      enabled: !!gameId && enabled,
+      enabled: !!gameId && enabled && !!round,
       refetchInterval: 500,
       cacheTime: 0, // Disable caching
       staleTime: 0, // Make data stale immediately
@@ -88,20 +102,26 @@ export const useGetShopItems = (gameId: number, round: number, enabled = true) =
     };
   });
 
-  const pokerHandItems = data?.pokerHandItemModels?.edges.map((edge) => {
-    return edge.node;
-  });
+  const pokerHandItems = data?.pokerHandItemModels?.edges
+    .map((edge) => {
+      return edge.node;
+    })
+    ?.sort(sortByPokerHand);
 
-  const specialCards = dojoShopItems?.filter((item) => item.isSpecial) ?? [];
-  const modifierCards = dojoShopItems?.filter((item) => item.isModifier) ?? [];
+  const specialCards =
+    dojoShopItems?.filter((item) => item.isSpecial)?.sort(sortByCardId) ?? [];
+  const modifierCards =
+    dojoShopItems?.filter((item) => item.isModifier)?.sort(sortByCardId) ?? [];
   const commonCards =
-    dojoShopItems?.filter((item) => !item.isSpecial && !item.isModifier) ?? [];
+    dojoShopItems
+      ?.filter((item) => !item.isSpecial && !item.isModifier)
+      ?.sort(sortByCardId) ?? [];
 
   const shopItems = {
     specialCards,
     modifierCards,
     commonCards,
-    pokerHandItems
+    pokerHandItems,
   };
 
   return {

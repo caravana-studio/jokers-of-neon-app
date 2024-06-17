@@ -1,20 +1,25 @@
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useGame } from "../../dojo/queries/useGame";
 import { useDojo } from "../../dojo/useDojo";
+import { useCustomToast } from "../../hooks/useCustomToast";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGetGame } from "../../queries/useGetGame";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { id, cash, state, round } = useGame();
+  const { gameId } = useGameContext();
+  const { data: game } = useGetGame(gameId);
+  const round = game?.round ?? 0;
+  const [cash, setCash] = useState(game?.cash ?? 0);
+  const state = game?.state
   const { onShopSkip } = useGameContext();
-  const { data: shopItems } = useGetShopItems(id, round);
+  const { data: shopItems } = useGetShopItems(gameId, round);
   const {
     setup: {
       systemCalls: { skipShop, buyCard, levelUpPokerHand },
@@ -22,6 +27,13 @@ export const Store = () => {
     account,
   } = useDojo();
   const navigate = useNavigate();
+  const { showErrorToast } = useCustomToast();
+
+  useEffect(() => {
+    if (game && game.cash > 1) {
+      setCash(game.cash);
+    }
+  }, [game?.cash])
 
   useEffect(() => {
     if (state === "FINISHED") {
@@ -29,14 +41,26 @@ export const Store = () => {
     } else if (state === "IN_GAME") {
       navigate("/demo");
     }
-  }, []);
+  }, [state]);
 
-  const onBuyCard = (card_idx: number, card_type: number) => {
-    buyCard(account.account, id, card_idx, card_type);
+  const onBuyCard = (card_idx: number, card_type: number, price: number) => {
+    buyCard(account.account, gameId, card_idx, card_type).then((response) => {
+      if (response) {
+        setCash(prev => prev - price);
+      } else {
+        showErrorToast("Error buying card");
+      }
+    })
   };
 
-  const onBuyPlayLevelUp = (item_id: number) => {
-    levelUpPokerHand(account.account, id, item_id);
+  const onBuyPlayLevelUp = (item_id: number, price: number) => {
+    levelUpPokerHand(account.account, gameId, item_id).then((response) => {
+      if (response) {
+        setCash(prev => prev - price);
+      } else {
+        showErrorToast("Error leveling hand");
+      }
+    })
   };
 
   return (
@@ -62,7 +86,7 @@ export const Store = () => {
           <Button
             onClick={() => {
               onShopSkip();
-              skipShop(account.account, id).then((response): void => {
+              skipShop(account.account, gameId).then((response): void => {
                 if (response) {
                   navigate("/demo");
                 }
@@ -97,8 +121,8 @@ export const Store = () => {
             <StoreCardsRow
               cards={shopItems.commonCards}
               title="traditional cards"
-              onBuyCard={(card_idx: number) => {
-                onBuyCard(card_idx, 1);
+              onBuyCard={(card_idx: number, price: number) => {
+                onBuyCard(card_idx, 1, price);
               }}
             />
           </GridItem>
@@ -106,8 +130,8 @@ export const Store = () => {
             <StoreCardsRow
               cards={shopItems.modifierCards}
               title="modifiers"
-              onBuyCard={(card_idx: number) => {
-                onBuyCard(card_idx, 2);
+              onBuyCard={(card_idx: number, price: number) => {
+                onBuyCard(card_idx, 2, price);
               }}
             />
           </GridItem>
@@ -115,8 +139,8 @@ export const Store = () => {
             <StoreCardsRow
               cards={shopItems.specialCards}
               title="special cards"
-              onBuyCard={(card_idx: number) => {
-                onBuyCard(card_idx, 3);
+              onBuyCard={(card_idx: number, price: number) => {
+                onBuyCard(card_idx, 3, price);
               }}
               button={{ label: "see my special cards", onClick: () => {} }}
             />

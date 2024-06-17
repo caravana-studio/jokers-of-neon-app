@@ -12,7 +12,7 @@ interface CardsRowProps {
     onClick: () => void;
     label: string;
   };
-  onBuyCard: (idx: number) => void;
+  onBuyCard: (idx: number, price: number) => void;
 }
 
 export const StoreCardsRow = ({
@@ -63,7 +63,7 @@ export const StoreCardsRow = ({
       </Box>
       {selectedCard && (
         <ShowCardModal
-          onBuyClick={() => onBuyCard(selectedCard.idx)}
+          onBuyClick={() => onBuyCard(selectedCard.idx, selectedCard.price ?? 0)}
           card={selectedCard}
           close={() => setSelectedCard(undefined)}
         />

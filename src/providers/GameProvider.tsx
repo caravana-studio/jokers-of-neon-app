@@ -7,7 +7,6 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -15,6 +14,7 @@ import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
+import { useGetRound } from "../queries/useGetRound.ts";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData.ts";
@@ -117,8 +117,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const sortBy: SortBy = sortBySuit ? SortBy.SUIT : SortBy.RANK;
 
   //hooks
+  const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
-  const round = useRound();
   const {
     setup: {
       systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
@@ -162,10 +162,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
     refetchHand();
+    refetchRound();
   };
 
   const onShopSkip = () => {
-    console.log("onShopSkip", currentHandId);
     setPreviousLevelHandId(currentHandId);
     resetLevel();
   };
@@ -194,6 +194,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const refetch = () => {
     refetchDeckData();
+    refetchRound();
   };
 
   const clearPreSelection = () => {
@@ -420,6 +421,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //make sure data is legit
 
   useEffect(() => {
+    if (round.levelScore === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchRound().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [round]);
+
+  useEffect(() => {
     if (deck.size === 0) {
       setGameLoading(true);
       setTimeout(() => {
@@ -441,7 +453,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [hand]);
 
   const loadingStates =
-    deck.size === 0 || hand.length < 8 || previousLevelHandId === currentHandId;
+    deck.size === 0 ||
+    hand.length < 8 ||
+    round.levelScore === 0 ||
+    previousLevelHandId === currentHandId;
 
   return (
     <GameContext.Provider

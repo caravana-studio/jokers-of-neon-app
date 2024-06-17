@@ -14,7 +14,7 @@ import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import { useGetShopItems } from "../../queries/useGetShopItems";
 interface PlaysTableProps {
   inStore?: boolean;
-  onBuyPlayLevelUp?: (playIdx: number) => void;
+  onBuyPlayLevelUp?: (playIdx: number, price: number) => void;
 }
 
 export const PlaysTable = ({
@@ -137,7 +137,10 @@ export const PlaysTable = ({
                             ) : (
                               <Button
                                 onClick={() => {
-                                  onBuyPlayLevelUp?.(storePlay.idx);
+                                  onBuyPlayLevelUp?.(
+                                    storePlay.idx,
+                                    storePlay.cost
+                                  );
                                 }}
                                 disabled={!!storePlay}
                                 variant="outline"
