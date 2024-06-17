@@ -1,11 +1,13 @@
 import { Heading } from "@chakra-ui/react";
-import { useRound } from "../dojo/queries/useRound";
+import { useGameContext } from "../providers/GameProvider";
+import { useGetRound } from "../queries/useGetRound";
 import { RollingNumber } from "./RollingNumber";
 
 export const Score = () => {
-  const round = useRound();
-  const score = round.player_score;
-  
+  const { gameId } = useGameContext();
+  const { data: round } = useGetRound(gameId);
+  const score = round?.score ?? 0;
+
   return (
     <Heading
       variant="neonWhite"

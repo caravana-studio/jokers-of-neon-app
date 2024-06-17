@@ -6,8 +6,8 @@ import { ModifiableCard } from "../../components/ModifiableCard";
 import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
-import { useRound } from "../../dojo/queries/useRound.tsx";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card";
 
 export const PreselectedCardsSection = () => {
@@ -21,12 +21,12 @@ export const PreselectedCardsSection = () => {
     playAnimation,
     discard,
     roundRewards,
+    gameId,
   } = useGameContext();
 
-  const round = useRound();
-
+  const { data: round } = useGetRound(gameId);
   const handsLeft = round?.hands;
-  const discardsLeft = round?.discard;
+  const discardsLeft = round?.discards;
 
   return roundRewards ? (
     <RewardsDetail roundRewards={roundRewards} />

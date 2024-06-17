@@ -6,14 +6,14 @@ import {
   MenuItem,
   MenuList,
   SimpleGrid,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
-import { useRound } from "../../dojo/queries/useRound";
+import { useGetRound } from "../../queries/useGetRound";
 
 export const HandSection = () => {
   const {
@@ -23,8 +23,10 @@ export const HandSection = () => {
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
+    gameId,
   } = useGameContext();
-  const round = useRound();
+  const { data: round } = useGetRound(gameId);
+
   const handsLeft = round.hands;
 
   const cardIsPreselected = (cardIndex: number) => {
