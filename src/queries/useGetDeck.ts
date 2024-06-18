@@ -3,6 +3,7 @@ import graphQLClient from "../graphQLClient";
 import { GET_DECK_QUERY } from "./gqlQueries";
 import { Deck } from '../types/Deck.ts';
 import { Card } from '../types/Card.ts'
+import { MODIFIER_CARDS_DATA } from '../data/modifiers.ts'
 
 export const DECK_QUERY_KEY = "deck";
 
@@ -86,7 +87,8 @@ export const useGetDeck = (gameId: number) => {
       ) ?? [];
 
   const currentEffectCards = data?.deckCardModels?.edges
-      .filter(({node: dojoCard}) => dojoCard.type_player_card === 'Effect')
+      .filter(({node: dojoCard}) =>
+        dojoCard.player_card_id in MODIFIER_CARDS_DATA)
       .map(({node: dojoCard}) =>
         createCard(dojoCard.player_card_id, dojoCard.idx, true)
       ) ?? [];

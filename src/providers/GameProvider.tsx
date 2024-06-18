@@ -22,9 +22,11 @@ import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { getHandId } from "../utils/getHandId.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { Deck } from '../types/Deck.ts'
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
+const EMPTY_DECK = { size: 0, commonCards: [], effectCards: [] , currentCommonCards: [], currentEffectCards: [], currentLength: 0};
 
 interface IGameContext {
   gameId: number;
@@ -54,6 +56,7 @@ interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
+  deck: Deck;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -86,6 +89,7 @@ const GameContext = createContext<IGameContext>({
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
+  deck: EMPTY_DECK,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -587,6 +591,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         toggleSortBy,
         onShopSkip,
+        deck
       }}
     >
       {children}
