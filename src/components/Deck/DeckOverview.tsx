@@ -17,9 +17,6 @@ export const DeckOverview = ({ commonCards, effectCards }: DeckOverviewProps) =>
 
   return (
     <Box backgroundColor="darkGrey" py={4} px={8}>
-      <Heading size="lg" color="aqua" textAlign="center">
-        CURRENT DECK
-      </Heading>
       <DeckOverviewRowCards cards={spadesCards} suit="Spades" />
       <DeckOverviewRowCards cards={heartsCards} suit="Hearts" />
       <DeckOverviewRowCards cards={clubsCards} suit="Clubs" />

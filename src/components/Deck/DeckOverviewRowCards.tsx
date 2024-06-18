@@ -9,13 +9,15 @@ interface DeckOverviewRowCardsProps {
   suit: string;
 }
 
-const SCALE = 0.45;
-const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
-const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
+const MIN_SCREEN_HEIGHT = 720;
+const MIN_SCALE = 0.5;
 
 const DeckOverviewRowCards = ({ cards, suit }: DeckOverviewRowCardsProps) => {
   const labelRef = useRef(null);
   const [flexWidth, setFlexWidth] = useState(0);
+  const [scale, setScale] = useState(0.5);
+  const CUSTOM_CARD_WIDTH = CARD_WIDTH * scale;
+  const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * scale;
 
   // Effect to update flexWidth when label width changes
   useEffect(() => {
@@ -36,6 +38,15 @@ const DeckOverviewRowCards = ({ cards, suit }: DeckOverviewRowCardsProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    const clientHeight = document.body.clientHeight;
+    if(clientHeight <= MIN_SCREEN_HEIGHT) {
+      setScale(0.5);
+    }
+    const scale = (clientHeight * MIN_SCALE) / MIN_SCREEN_HEIGHT;
+    setScale(scale);
+  }, [document.body.clientHeight]);
+
   // Calculate card position based on index
   const calculateCardPosition = (index: number) => {
     if (cards.length === 1) return flexWidth / 2 - CUSTOM_CARD_WIDTH / 2; // Center single card
@@ -47,10 +58,7 @@ const DeckOverviewRowCards = ({ cards, suit }: DeckOverviewRowCardsProps) => {
 
   return (
     <Box mb={4}>
-      <Flex justifyContent="start" mb={1} id="label" ref={labelRef}>
-        <Heading size="s" color="white" textAlign="center">
-          {suit}
-        </Heading>
+      <Flex justifyContent="start" id="label" ref={labelRef}>
       </Flex>
       <Box position="relative" height={CUSTOM_CARD_HEIGHT} id="cards-container">
         {cards.map((card, index) => {
@@ -63,7 +71,7 @@ const DeckOverviewRowCards = ({ cards, suit }: DeckOverviewRowCardsProps) => {
               m={1}
               transform={`translateX(-${CUSTOM_CARD_WIDTH / 2}px)`} // Adjust based on card width
             >
-              <TiltCard card={card} scale={SCALE} />
+              <TiltCard card={card} scale={scale} />
             </Box>
           );
         })}
