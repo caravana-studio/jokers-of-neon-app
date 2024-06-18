@@ -5,4 +5,5 @@ export interface Hand {
   value: Plays;
   name: string;
   description: string;
+  order: number;
 }

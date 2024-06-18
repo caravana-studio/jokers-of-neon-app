@@ -34,6 +34,13 @@ export const GET_SHOP_ITEMS_QUERY = gql`
   }
 `;
 
+export interface ShopItems {
+  specialCards: Card[];
+  modifierCards: Card[];
+  commonCards: Card[];
+  pokerHandItems: PokerHandItem[];
+}
+
 interface ShopItemEdge {
   node: ShopItem;
 }
@@ -102,11 +109,12 @@ export const useGetShopItems = (
     };
   });
 
-  const pokerHandItems = data?.pokerHandItemModels?.edges
-    .map((edge) => {
-      return edge.node;
-    })
-    ?.sort(sortByPokerHand);
+  const pokerHandItems =
+    data?.pokerHandItemModels?.edges
+      .map((edge) => {
+        return edge.node;
+      })
+      ?.sort(sortByPokerHand) ?? [];
 
   const specialCards =
     dojoShopItems?.filter((item) => item.isSpecial)?.sort(sortByCardId) ?? [];
@@ -117,7 +125,7 @@ export const useGetShopItems = (
       ?.filter((item) => !item.isSpecial && !item.isModifier)
       ?.sort(sortByCardId) ?? [];
 
-  const shopItems = {
+  const shopItems: ShopItems = {
     specialCards,
     modifierCards,
     commonCards,

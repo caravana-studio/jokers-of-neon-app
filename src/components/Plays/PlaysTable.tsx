@@ -7,25 +7,22 @@ import {
   Tbody,
   Td,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { useGame } from "../../dojo/queries/useGame";
+import { useStore } from "../../providers/StoreProvider";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
-import { useGetShopItems } from "../../queries/useGetShopItems";
 interface PlaysTableProps {
   inStore?: boolean;
-  onBuyPlayLevelUp?: (playIdx: number, price: number) => void;
 }
 
-export const PlaysTable = ({
-  inStore = false,
-  onBuyPlayLevelUp,
-}: PlaysTableProps) => {
+export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { data: plays } = useGetPlaysLevelDetail();
-  const game = useGame();
-  const id = game?.id;
-  const round = game?.round;
-  const { data: shopItems } = useGetShopItems(id, round, inStore);
+
+  const store = useStore();
+  const levelUpPlay = store?.levelUpPlay;
+  const cash = store?.cash ?? 0;
+  const pokerHandItems = store?.shopItems?.pokerHandItems;
 
   return (
     <>
@@ -55,7 +52,7 @@ export const PlaysTable = ({
             </Thead>
             <Tbody>
               {plays.map((play, index) => {
-                const storePlay = shopItems?.pokerHandItems?.find(
+                const storePlay = pokerHandItems?.find(
                   (item) => item.poker_hand === play.pokerHand.id
                 );
                 const opacitySx = {
@@ -101,6 +98,20 @@ export const PlaysTable = ({
                   </Td>
                 );
 
+                const notEnoughCash = !!storePlay && cash < storePlay.cost;
+
+                const buyButton = (
+                  <Button
+                    onClick={() => {
+                      levelUpPlay?.(storePlay?.idx ?? 0, storePlay?.cost ?? 0);
+                    }}
+                    isDisabled={notEnoughCash}
+                    variant="outline"
+                  >
+                    level up
+                  </Button>
+                );
+
                 return (
                   <Tr
                     key={index}
@@ -134,19 +145,12 @@ export const PlaysTable = ({
                               <Heading variant="neonWhite" size="s">
                                 PURCHASED
                               </Heading>
+                            ) : notEnoughCash ? (
+                              <Tooltip label="You don't have enough coins to buy this item">
+                                {buyButton}
+                              </Tooltip>
                             ) : (
-                              <Button
-                                onClick={() => {
-                                  onBuyPlayLevelUp?.(
-                                    storePlay.idx,
-                                    storePlay.cost
-                                  );
-                                }}
-                                disabled={!!storePlay}
-                                variant="outline"
-                              >
-                                level up
-                              </Button>
+                              buyButton
                             )
                           ) : (
                             ""

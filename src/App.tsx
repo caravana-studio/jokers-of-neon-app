@@ -10,6 +10,7 @@ import { Login } from "./pages/Login";
 import { Store } from "./pages/store/Store";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
+import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 
 const theme = extendTheme(customTheme);
@@ -39,7 +40,9 @@ function App() {
                     path="/store"
                     element={
                       <FullScreenArcade>
-                        <Store />
+                        <StoreProvider>
+                          <Store />
+                        </StoreProvider>
                       </FullScreenArcade>
                     }
                   />

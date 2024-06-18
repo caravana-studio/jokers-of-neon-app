@@ -12,6 +12,8 @@ export const GAME_QUERY = gql`
           cash
           state
           round
+          len_max_current_special_cards
+          len_current_special_cards
         }
       }
     }
@@ -23,6 +25,8 @@ interface GameEdge {
     cash: number;
     state: string;
     round: number;
+    len_max_current_special_cards: number;
+    len_current_special_cards: number;
   };
 }
 
@@ -42,7 +46,7 @@ export const useGetGame = (id: number) => {
   );
   const { data } = queryResponse;
 
-  const game = data?.gameModels?.edges[0]?.node
+  const game = data?.gameModels?.edges[0]?.node;
 
   return {
     ...queryResponse,
