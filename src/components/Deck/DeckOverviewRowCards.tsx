@@ -8,12 +8,13 @@ import { SortBy } from '../../enums/sortBy.ts'
 
 interface DeckOverviewRowCardsProps {
   cards: Card[];
+  reverse?: boolean
 }
 
 const MIN_SCREEN_HEIGHT = 720;
 const MIN_SCALE = 0.5;
 
-const DeckOverviewRowCards = ({ cards }: DeckOverviewRowCardsProps) => {
+const DeckOverviewRowCards = ({ cards, reverse = false }: DeckOverviewRowCardsProps) => {
   const labelRef = useRef(null);
   const [flexWidth, setFlexWidth] = useState(0);
   const [scale, setScale] = useState(0.5);
@@ -45,7 +46,7 @@ const DeckOverviewRowCards = ({ cards }: DeckOverviewRowCardsProps) => {
       setScale(0.5);
     }
     const scale = (clientHeight * MIN_SCALE) / MIN_SCREEN_HEIGHT;
-    setScale(scale);
+    setScale(scale > 1 ? 1 : scale);
   }, [document.body.clientHeight]);
 
   // Calculate card position based on index
@@ -57,14 +58,23 @@ const DeckOverviewRowCards = ({ cards }: DeckOverviewRowCardsProps) => {
     return position + CUSTOM_CARD_WIDTH / 2;
   };
 
+  const getSortedCards = (cards: Card[]) => {
+    let sortedCards = sortCards(cards, SortBy.RANK)
+
+    if (reverse) {
+      sortedCards = sortedCards.reverse();
+    }
+
+    return sortedCards;
+  }
+
   return (
     <Box mb={4}>
       <Flex justifyContent="start" id="label" ref={labelRef}>
       </Flex>
       <Box position="relative" height={CUSTOM_CARD_HEIGHT} id="cards-container">
         {
-          sortCards(cards, SortBy.RANK)
-            .reverse()
+          getSortedCards(cards)
             .map((card, index) => {
               const cardPosX = calculateCardPosition(index);
               return (

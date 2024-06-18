@@ -14,14 +14,15 @@ export const DeckOverview = ({ commonCards, effectCards }: DeckOverviewProps) =>
   const heartsCards = commonCards.filter((card) => getCardData(card).suit === Suits.HEARTS);
   const diamondsCards = commonCards.filter((card) => getCardData(card).suit === Suits.DIAMONDS);
   const spadesCards = commonCards.filter((card) => getCardData(card).suit === Suits.SPADES);
+  const jokerCards = commonCards.filter((card) => getCardData(card).suit === Suits.JOKER);
 
   return (
     <Box backgroundColor="darkGrey" py={4} px={8}>
-      <DeckOverviewRowCards cards={spadesCards} suit="Spades" />
-      <DeckOverviewRowCards cards={heartsCards} suit="Hearts" />
-      <DeckOverviewRowCards cards={clubsCards} suit="Clubs" />
-      <DeckOverviewRowCards cards={diamondsCards} suit="Diamonds" />
-      <DeckOverviewRowCards cards={effectCards} suit="Effect Cards" />
+      <DeckOverviewRowCards cards={spadesCards} reverse={true} />
+      <DeckOverviewRowCards cards={heartsCards} reverse={true} />
+      <DeckOverviewRowCards cards={clubsCards} reverse={true} />
+      <DeckOverviewRowCards cards={diamondsCards} reverse={true} />
+      <DeckOverviewRowCards cards={jokerCards.concat(effectCards)} />
     </Box>
   );
 };
