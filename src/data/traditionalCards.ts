@@ -3,322 +3,316 @@ import { Suits } from "../enums/suits";
 import { CardDataMap } from "../types/CardData";
 
 export const TRADITIONAL_CARDS_DATA: CardDataMap = {
-  1: {
+  0: {
     name: "2 of Clubs",
     description: "Scores +2 points",
     card: Cards.TWO,
     suit: Suits.CLUBS,
   },
-  2: {
+  1: {
     name: "3 of Clubs",
     description: "Scores +3 points",
     card: Cards.THREE,
     suit: Suits.CLUBS,
   },
-  3: {
+  2: {
     name: "4 of Clubs",
     description: "Scores +4 points",
     card: Cards.FOUR,
     suit: Suits.CLUBS,
   },
-  4: {
+  3: {
     name: "5 of Clubs",
     description: "Scores +5 points",
     card: Cards.FIVE,
     suit: Suits.CLUBS,
   },
-  5: {
+  4: {
     name: "6 of Clubs",
     description: "Scores +6 points",
     card: Cards.SIX,
     suit: Suits.CLUBS,
   },
-  6: {
+  5: {
     name: "7 of Clubs",
     description: "Scores +7 points",
     card: Cards.SEVEN,
     suit: Suits.CLUBS,
   },
-  7: {
+  6: {
     name: "8 of Clubs",
     description: "Scores +8 points",
     card: Cards.EIGHT,
     suit: Suits.CLUBS,
   },
-  8: {
+  7: {
     name: "9 of Clubs",
     description: "Scores +9 points",
     card: Cards.NINE,
     suit: Suits.CLUBS,
   },
-  9: {
+  8: {
     name: "10 of Clubs",
     description: "Scores +10 points",
     card: Cards.TEN,
     suit: Suits.CLUBS,
   },
-  10: {
+  9: {
     name: "Jack of Clubs",
     description: "Scores +10 points",
     card: Cards.JACK,
     suit: Suits.CLUBS,
   },
-  11: {
+  10: {
     name: "Queen of Clubs",
     description: "Scores +10 points",
     card: Cards.QUEEN,
     suit: Suits.CLUBS,
   },
-  12: {
+  11: {
     name: "King of Clubs",
     description: "Scores +10 points",
     card: Cards.KING,
     suit: Suits.CLUBS,
   },
-  0: {
+  12: {
     name: "Ace of Clubs",
     description: "Scores +11 points",
     card: Cards.ACE,
     suit: Suits.CLUBS,
   },
-  14: {
+  13: {
     name: "2 of Diamonds",
     description: "Scores +2 points",
     card: Cards.TWO,
     suit: Suits.DIAMONDS,
   },
-  15: {
+  14: {
     name: "3 of Diamonds",
     description: "Scores +3 points",
     card: Cards.THREE,
     suit: Suits.DIAMONDS,
   },
-  16: {
+  15: {
     name: "4 of Diamonds",
     description: "Scores +4 points",
     card: Cards.FOUR,
     suit: Suits.DIAMONDS,
   },
-  17: {
+  16: {
     name: "5 of Diamonds",
     description: "Scores +5 points",
     card: Cards.FIVE,
     suit: Suits.DIAMONDS,
   },
-  18: {
+  17: {
     name: "6 of Diamonds",
     description: "Scores +6 points",
     card: Cards.SIX,
     suit: Suits.DIAMONDS,
   },
-  19: {
+  18: {
     name: "7 of Diamonds",
     description: "Scores +7 points",
     card: Cards.SEVEN,
     suit: Suits.DIAMONDS,
   },
-  20: {
+  19: {
     name: "8 of Diamonds",
     description: "Scores +8 points",
     card: Cards.EIGHT,
     suit: Suits.DIAMONDS,
   },
-  21: {
+  20: {
     name: "9 of Diamonds",
     description: "Scores +9 points",
     card: Cards.NINE,
     suit: Suits.DIAMONDS,
   },
-  22: {
+  21: {
     name: "10 of Diamonds",
     description: "Scores +10 points",
     card: Cards.TEN,
     suit: Suits.DIAMONDS,
   },
-  23: {
+  22: {
     name: "Jack of Diamonds",
     description: "Scores +10 points",
     card: Cards.JACK,
     suit: Suits.DIAMONDS,
   },
-  24: {
+  23: {
     name: "Queen of Diamonds",
     description: "Scores +10 points",
     card: Cards.QUEEN,
     suit: Suits.DIAMONDS,
   },
-  25: {
+  24: {
     name: "King of Diamonds",
     description: "Scores +10 points",
     card: Cards.KING,
     suit: Suits.DIAMONDS,
   },
-  13: {
+  25: {
     name: "Ace of Diamonds",
     description: "Scores +11 points",
     card: Cards.ACE,
     suit: Suits.DIAMONDS,
   },
-  27: {
+  26: {
     name: "2 of Hearts",
     description: "Scores +2 points",
     card: Cards.TWO,
     suit: Suits.HEARTS,
   },
-  28: {
+  27: {
     name: "3 of Hearts",
     description: "Scores +3 points",
     card: Cards.THREE,
     suit: Suits.HEARTS,
   },
-  29: {
+  28: {
     name: "4 of Hearts",
     description: "Scores +4 points",
     card: Cards.FOUR,
     suit: Suits.HEARTS,
   },
-  30: {
+  29: {
     name: "5 of Hearts",
     description: "Scores +5 points",
     card: Cards.FIVE,
     suit: Suits.HEARTS,
   },
-  31: {
+  30: {
     name: "6 of Hearts",
     description: "Scores +6 points",
     card: Cards.SIX,
     suit: Suits.HEARTS,
   },
-  32: {
+  31: {
     name: "7 of Hearts",
     description: "Scores +7 points",
     card: Cards.SEVEN,
     suit: Suits.HEARTS,
   },
-  33: {
+  32: {
     name: "8 of Hearts",
     description: "Scores +8 points",
     card: Cards.EIGHT,
     suit: Suits.HEARTS,
   },
-  34: {
+  33: {
     name: "9 of Hearts",
     description: "Scores +9 points",
     card: Cards.NINE,
     suit: Suits.HEARTS,
   },
-  35: {
+  34: {
     name: "10 of Hearts",
     description: "Scores +10 points",
     card: Cards.TEN,
     suit: Suits.HEARTS,
   },
-  36: {
+  35: {
     name: "Jack of Hearts",
     description: "Scores +10 points",
     card: Cards.JACK,
     suit: Suits.HEARTS,
   },
-  37: {
+  36: {
     name: "Queen of Hearts",
     description: "Scores +10 points",
     card: Cards.QUEEN,
     suit: Suits.HEARTS,
   },
-  38: {
+  37: {
     name: "King of Hearts",
     description: "Scores +10 points",
     card: Cards.KING,
     suit: Suits.HEARTS,
   },
-  26: {
+  38: {
     name: "Ace of Hearts",
     description: "Scores +11 points",
     card: Cards.ACE,
     suit: Suits.HEARTS,
   },
-  40: {
+  39: {
     name: "2 of Spades",
     description: "Scores +2 points",
     card: Cards.TWO,
     suit: Suits.SPADES,
   },
-  41: {
+  40: {
     name: "3 of Spades",
     description: "Scores +3 points",
     card: Cards.THREE,
     suit: Suits.SPADES,
   },
-  42: {
+  41: {
     name: "4 of Spades",
     description: "Scores +4 points",
     card: Cards.FOUR,
     suit: Suits.SPADES,
   },
-  43: {
+  42: {
     name: "5 of Spades",
     description: "Scores +5 points",
     card: Cards.FIVE,
     suit: Suits.SPADES,
   },
-  44: {
+  43: {
     name: "6 of Spades",
     description: "Scores +6 points",
     card: Cards.SIX,
     suit: Suits.SPADES,
   },
-  45: {
+  44: {
     name: "7 of Spades",
     description: "Scores +7 points",
     card: Cards.SEVEN,
     suit: Suits.SPADES,
   },
-  46: {
+  45: {
     name: "8 of Spades",
     description: "Scores +8 points",
     card: Cards.EIGHT,
     suit: Suits.SPADES,
   },
-  47: {
+  46: {
     name: "9 of Spades",
     description: "Scores +9 points",
     card: Cards.NINE,
     suit: Suits.SPADES,
   },
-  48: {
+  47: {
     name: "10 of Spades",
     description: "Scores +10 points",
     card: Cards.TEN,
     suit: Suits.SPADES,
   },
-  49: {
+  48: {
     name: "Jack of Spades",
     description: "Scores +10 points",
     card: Cards.JACK,
     suit: Suits.SPADES,
   },
-  50: {
+  49: {
     name: "Queen of Spades",
     description: "Scores +10 points",
     card: Cards.QUEEN,
     suit: Suits.SPADES,
   },
-  51: {
+  50: {
     name: "King of Spades",
     description: "Scores +10 points",
     card: Cards.KING,
     suit: Suits.SPADES,
   },
-  39: {
+  51: {
     name: "Ace of Spades",
     description: "Scores +11 points",
     card: Cards.ACE,
     suit: Suits.SPADES,
-  },
-  52: {
-    name: "Joker",
-    description: "Scores +15 points",
-    card: Cards.JOKER,
-    suit: Suits.JOKER,
   },
 };
