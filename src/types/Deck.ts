@@ -5,4 +5,6 @@ export interface Deck {
   currentLength: number;
   commonCards: Card[];
   effectCards: Card[];
+  currentEffectCards: Card[];
+  currentCommonCards: Card[];
 }

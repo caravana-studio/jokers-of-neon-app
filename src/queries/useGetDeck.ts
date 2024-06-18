@@ -16,6 +16,15 @@ interface DeckQueryResponse {
   roundModels: {
     edges: RoundEdge[];
   };
+  deckCardModels: {
+    edges: {
+      node: {
+        idx: number;
+        player_card_id: number;
+        type_player_card: string;
+      }
+    }[]
+  };
   playerCommonCardsModels: {
     totalCount: number;
     edges: {
@@ -33,6 +42,16 @@ interface DeckQueryResponse {
         effect_card_id: number;
       }
     }[]
+  };
+}
+
+const createCard = (card_id: number, idx: number, isEffectCard: boolean) => {
+  return {
+    card_id: card_id,
+    id: idx.toString(),
+    idx: idx,
+    img: `${isEffectCard ? "effect/" : ""}${card_id}.png`,
+    isModifier: isEffectCard,
   };
 }
 
@@ -57,36 +76,34 @@ export const useGetDeck = (gameId: number) => {
                             + (data?.playerEffectCardsModels?.totalCount ?? 0);
 
   const commonCards = data?.playerCommonCardsModels?.edges
-    .map(({node: dojoCard}) => {
-      const card_id = dojoCard.common_card_id;
-      return {
-        card_id: card_id,
-        id: dojoCard.idx.toString(),
-        idx: dojoCard.idx,
-        img: `${card_id}.png`
-      };
-    })
-    ?? [];
+      .map(({node: dojoCard}) =>
+        createCard(dojoCard.common_card_id, dojoCard.idx, false)
+      ) ?? [];
 
   const effectCards: Card[] = data?.playerEffectCardsModels?.edges
-      .map(({node: dojoCard}) => {
-        const card_id = dojoCard.effect_card_id;
-        return {
-          card_id: card_id,
-          isModifier: true,
-          id: dojoCard.idx.toString(),
-          idx: dojoCard.idx,
-          img: `effect/${card_id}.png`
-        };
-      })
-    ?? [];
+      .map(({node: dojoCard}) =>
+        createCard(dojoCard.effect_card_id, dojoCard.idx, true)
+      ) ?? [];
+
+  const currentEffectCards = data?.deckCardModels?.edges
+      .filter(({node: dojoCard}) => dojoCard.type_player_card === 'Effect')
+      .map(({node: dojoCard}) =>
+        createCard(dojoCard.player_card_id, dojoCard.idx, true)
+      ) ?? [];
+
+  const currentCommonCards = data?.deckCardModels?.edges
+      .filter(({node: dojoCard}) => dojoCard.type_player_card === 'Common')
+      .map(({node: dojoCard}) =>
+        createCard(dojoCard.player_card_id, dojoCard.idx, false)
+      ) ?? [];
 
   const deck: Deck = {
     currentLength: deckLength,
     size: deckSize,
     commonCards: commonCards,
-    effectCards: effectCards
-
+    effectCards: effectCards,
+    currentEffectCards: currentEffectCards,
+    currentCommonCards: currentCommonCards,
   }
   return {
     ...queryResponse,
