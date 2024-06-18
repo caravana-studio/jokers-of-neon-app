@@ -10,7 +10,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Tooltip,
 } from "@chakra-ui/react";
+import { useGameContext } from "../../providers/GameProvider";
+import { useStore } from "../../providers/StoreProvider";
+import { useGetGame } from "../../queries/useGetGame";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
 
@@ -26,6 +30,28 @@ export const ShowCardModal = ({
   onBuyClick,
 }: IShowCardModalProps) => {
   const { name, description } = getCardData(card);
+  const { cash } = useStore();
+  const { gameId } = useGameContext();
+  const { data: game } = useGetGame(gameId);
+  const specialMaxLength = game?.len_max_current_special_cards ?? 0;
+  const specialLength = game?.len_current_special_cards ?? 0;
+
+  const notEnoughCash = !card.price || cash < card.price;
+  const noSpaceForSpecialCards = card.isSpecial &&specialLength >= specialMaxLength;
+
+  const buyButton = (
+    <Button
+      onClick={() => {
+        onBuyClick(card.idx);
+        close();
+      }}
+      sx={{ width: "50%" }}
+      isDisabled={notEnoughCash || noSpaceForSpecialCards}
+    >
+      BUY
+    </Button>
+  );
+
   return (
     <Modal size="xxl" isOpen={true} onClose={close}>
       <ModalOverlay />
@@ -72,15 +98,19 @@ export const ShowCardModal = ({
                 <Button sx={{ width: "50%" }} variant="outline" onClick={close}>
                   close
                 </Button>
-                <Button
-                  onClick={() => {
-                    onBuyClick(card.idx);
-                    close();
-                  }}
-                  sx={{ width: "50%" }}
-                >
-                  BUY
-                </Button>
+                {notEnoughCash || noSpaceForSpecialCards ? (
+                  <Tooltip
+                    label={
+                      noSpaceForSpecialCards
+                        ? "You don't have enough space for another special card. Remove one to buy this card"
+                        : "You don't have enough coins to buy this card"
+                    }
+                  >
+                    {buyButton}
+                  </Tooltip>
+                ) : (
+                  buyButton
+                )}
               </Flex>
             </Flex>
           </Flex>

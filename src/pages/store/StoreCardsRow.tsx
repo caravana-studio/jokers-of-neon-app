@@ -1,7 +1,9 @@
 import { Box, Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 import { TiltCard } from "../../components/TiltCard";
+import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
+import { getCardType } from "../../utils/getCardType";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
 
@@ -12,16 +14,12 @@ interface CardsRowProps {
     onClick: () => void;
     label: string;
   };
-  onBuyCard: (idx: number, price: number) => void;
 }
 
-export const StoreCardsRow = ({
-  title,
-  cards,
-  button,
-  onBuyCard,
-}: CardsRowProps) => {
+export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
+  const { buyCard } = useStore();
+
   return (
     <>
       <Box
@@ -63,7 +61,13 @@ export const StoreCardsRow = ({
       </Box>
       {selectedCard && (
         <ShowCardModal
-          onBuyClick={() => onBuyCard(selectedCard.idx, selectedCard.price ?? 0)}
+          onBuyClick={() =>
+            buyCard(
+              selectedCard.idx,
+              getCardType(selectedCard),
+              selectedCard.price ?? 0
+            )
+          }
           card={selectedCard}
           close={() => setSelectedCard(undefined)}
         />

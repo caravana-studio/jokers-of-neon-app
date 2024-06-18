@@ -41,7 +41,7 @@ export const useGetPlaysLevelDetail = () => {
       points: edge.node.points
     };
     return play;
-  });
+  }).sort((a, b) => a.pokerHand.order - b.pokerHand.order);
 
   return {
     ...queryResponse,
