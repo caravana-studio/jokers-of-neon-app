@@ -123,7 +123,7 @@ export const GameContent = () => {
           <Box sx={{ height: "30%", width: "100%" }}>
             <TopSection />
           </Box>
-          <DndContext onDragEnd={handleDragEnd}>
+          <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
             <Box
               sx={{
                 height: "40%",
