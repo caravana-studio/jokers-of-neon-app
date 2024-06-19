@@ -10,7 +10,6 @@ import {
   Tr,
   useTheme,
 } from "@chakra-ui/react";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { RollingNumber } from "./RollingNumber";
 
@@ -25,10 +24,10 @@ const CURRENT_LEADER_STYLES = {
 
 interface LeaderboardProps {
   lines?: number;
+  gameId?: number;
 }
-export const Leaderboard = ({ lines = 10 }: LeaderboardProps) => {
+export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
   const { colors } = useTheme();
-  const gameId = getLSGameId();
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard();
   const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
