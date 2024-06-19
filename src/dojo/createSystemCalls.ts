@@ -3,7 +3,7 @@ import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
-import { getPlayEvents } from "../utils/getPlayEvents";
+import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";

@@ -5,11 +5,18 @@ export interface PlayEvents {
   levelPassed?: LevelPassedEvent;
   detailEarned?: DetailEarned;
   specialCards?: CardScore[];
+  levelEvent?: LevelEvent;
 }
 
 export interface LevelPassedEvent {
   level: number;
   score: number;
+}
+
+export interface LevelEvent {
+  special_idx: number;
+  multi: number;
+  points: number;
 }
 
 export interface MultiPoints {
