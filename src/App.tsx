@@ -12,46 +12,51 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { AudioPlayerProvider } from './providers/AudioPlayerProvider.tsx'
 
 const theme = extendTheme(customTheme);
 
 function App() {
   return (
     <ChakraBaseProvider theme={theme}>
-      <CardAnimationsProvider>
-        <GameProvider>
-          <main className="scanlines">
-            <div className="screen">
-              <canvas id="canvas" className="picture"></canvas>
-              <div className="overlay">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/gameover" element={<GameOver />} />
-                  <Route
-                    path="/demo"
-                    element={
-                      <FullScreenArcade>
-                        <GamePage />
-                      </FullScreenArcade>
-                    }
-                  />
-                  <Route
-                    path="/store"
-                    element={
-                      <FullScreenArcade>
-                        <StoreProvider>
-                          <Store />
-                        </StoreProvider>
-                      </FullScreenArcade>
-                    }
-                  />
-                </Routes>
+        <CardAnimationsProvider>
+          <GameProvider>
+            <main className="scanlines">
+              <div className="screen">
+                <canvas id="canvas" className="picture"></canvas>
+                <div className="overlay">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/gameover" element={<GameOver />} />
+                    <Route
+                      path="/demo"
+                      element={
+                        <AudioPlayerProvider songPath={'/music/track1.mp3'}>
+                          <FullScreenArcade>
+                            <GamePage />
+                          </FullScreenArcade>
+                        </AudioPlayerProvider>
+                      }
+                    />
+                    <Route
+                      path="/store"
+                      element={
+                        <AudioPlayerProvider songPath={'/music/track1.mp3'}>
+                          <FullScreenArcade>
+                            <StoreProvider>
+                              <Store />
+                            </StoreProvider>
+                          </FullScreenArcade>
+                        </AudioPlayerProvider>
+                      }
+                    />
+                  </Routes>
+                </div>
               </div>
-            </div>
-          </main>
-        </GameProvider>
-      </CardAnimationsProvider>
+            </main>
+          </GameProvider>
+        </CardAnimationsProvider>
     </ChakraBaseProvider>
   );
 }
