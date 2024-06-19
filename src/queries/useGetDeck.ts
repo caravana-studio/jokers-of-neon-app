@@ -23,6 +23,7 @@ interface DeckQueryResponse {
         idx: number;
         player_card_id: number;
         type_player_card: string;
+        card_id: number;
       }
     }[]
   };
@@ -86,18 +87,21 @@ export const useGetDeck = (gameId: number) => {
         createCard(dojoCard.effect_card_id, dojoCard.idx, true)
       ) ?? [];
 
-  const currentEffectCards = data?.deckCardModels?.edges
-      .filter(({node: dojoCard}) =>
-        dojoCard.player_card_id in MODIFIER_CARDS_DATA)
-      .map(({node: dojoCard}) =>
-        createCard(dojoCard.player_card_id, dojoCard.idx, true)
-      ) ?? [];
 
-  const currentCommonCards = data?.deckCardModels?.edges
-      .filter(({node: dojoCard}) => dojoCard.type_player_card === 'Common')
-      .map(({node: dojoCard}) =>
-        createCard(dojoCard.player_card_id, dojoCard.idx, false)
-      ) ?? [];
+  const currentCommonCards = [];
+  const currentEffectCards = [];
+  const edges = data?.deckCardModels?.edges ?? [];
+  for (let i = 0; i < deckLength; i++) {
+    const dojoCard = edges[i].node;
+    if (dojoCard.type_player_card === 'Common') {
+      currentCommonCards.push(createCard(dojoCard.card_id, dojoCard.idx, false));
+    } else {
+      currentEffectCards.push(createCard(dojoCard.card_id, dojoCard.idx, false));
+    }
+  }
+
+  console.log("currentEffectCards: ", currentEffectCards.length);
+  console.log("currentCommonCards: ", currentCommonCards.length);
 
   const deck: Deck = {
     currentLength: deckLength,

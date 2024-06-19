@@ -60,6 +60,7 @@ export const GET_DECK_QUERY = gql`
                     player_card_id
                     idx
                     type_player_card
+                    card_id
                 }
             }
         }
