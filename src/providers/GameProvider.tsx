@@ -231,42 +231,75 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
+        ? PLAY_ANIMATION_DURATION * 2
+        : 0;
       const COMMON_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * playEvents.cards.length;
       const SPECIAL_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
-        COMMON_CARDS_DURATION + SPECIAL_CARDS_DURATION + 500;
+        LEVEL_BOOSTER_DURATION +
+        COMMON_CARDS_DURATION +
+        SPECIAL_CARDS_DURATION +
+        500;
 
       setPreSelectionLocked(true);
 
-      //traditional cards and modifiers
-      playEvents.cards.forEach((card, index) => {
-        setTimeout(() => {
-          const { idx, points, multi } = card;
-          setAnimatedCard({ idx, points, multi, animationIndex: index });
-          points && setPoints((prev) => prev + points);
-          multi && setMulti((prev) => prev + multi);
-        }, PLAY_ANIMATION_DURATION * index);
-      });
-
-      //special cards
-      setTimeout(() => {
-        playEvents.specialCards?.forEach((event, index) => {
+      //level boosters
+      if (playEvents.levelEvent) {
+        const { special_idx, multi: eventMulti, points: eventPoints } = playEvents.levelEvent;
+        //animate points
+        if (eventPoints) {
+          setAnimatedCard({
+            special_idx,
+            points: eventPoints - points,
+            animationIndex: -2,
+          });
+          setPoints(eventPoints);
+        }
+        if (eventMulti) {
           setTimeout(() => {
-            const { idx, points, multi, special_idx } = event;
+            //animate multi
             setAnimatedCard({
-              idx,
-              points,
-              multi,
               special_idx,
-              animationIndex: index,
+              multi: eventMulti - multi,
+              animationIndex: -1,
             });
+            setMulti(eventMulti);
+          }, PLAY_ANIMATION_DURATION);
+        }
+      }
+
+      setTimeout(() => {
+        //traditional cards and modifiers
+        playEvents.cards.forEach((card, index) => {
+          setTimeout(() => {
+            const { idx, points, multi } = card;
+            setAnimatedCard({ idx, points, multi, animationIndex: index });
             points && setPoints((prev) => prev + points);
             multi && setMulti((prev) => prev + multi);
           }, PLAY_ANIMATION_DURATION * index);
         });
-      }, COMMON_CARDS_DURATION);
+
+        //special cards
+        setTimeout(() => {
+          playEvents.specialCards?.forEach((event, index) => {
+            setTimeout(() => {
+              const { idx, points, multi, special_idx } = event;
+              setAnimatedCard({
+                idx,
+                points,
+                multi,
+                special_idx,
+                animationIndex: index,
+              });
+              points && setPoints((prev) => prev + points);
+              multi && setMulti((prev) => prev + multi);
+            }, PLAY_ANIMATION_DURATION * index);
+          });
+        }, COMMON_CARDS_DURATION);
+      }, LEVEL_BOOSTER_DURATION);
 
       setTimeout(() => {
         setPlayAnimation(true);
