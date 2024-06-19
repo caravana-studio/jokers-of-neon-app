@@ -28,6 +28,11 @@ export default {
     neonPink: NEON_PINK,
     limeGreen: "lime",
     darkGrey: "#04162d",
+    // suits
+    1: "#278757",
+    2: "#346090",
+    3: "#b8202b",
+    4: "#7e3073",
   },
   styles: {
     global: {

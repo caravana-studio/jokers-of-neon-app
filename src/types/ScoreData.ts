@@ -1,3 +1,5 @@
+import { Suits } from "../enums/suits";
+
 export interface PlayEvents {
   play: MultiPoints;
   cards: CardScore[];
@@ -6,6 +8,7 @@ export interface PlayEvents {
   detailEarned?: DetailEarned;
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
+  suitEvents?: SuitEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -27,6 +30,12 @@ export interface MultiPoints {
 export interface CardScore extends MultiPoints {
   idx: number;
   special_idx?: number;
+}
+
+export interface SuitEvent {
+  suit: Suits;
+  special_idx?: number;
+  idx: number;
 }
 
 export interface DetailEarned {

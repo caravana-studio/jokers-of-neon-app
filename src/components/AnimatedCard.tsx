@@ -25,9 +25,20 @@ export const AnimatedCard = ({
     : animatedCard?.idx;
   const points = animatedCard?.points;
   const multi = animatedCard?.multi;
+  const suit = animatedCard?.suit;
   const animationIndex = animatedCard?.animationIndex;
 
   const { colors } = useTheme();
+
+  const getColor = () => {
+    if (suit) {
+      return colors[suit];
+    } else if (multi) {
+      return colors.neonPink;
+    } else {
+      return colors.neonGreen;
+    }
+  }
 
   const [cardSprings, cardApi] = useSpring(() => ({
     from: { transform: "scale(1)", opacity: 1, x: 0, boxShadow: "0px" },
@@ -43,8 +54,8 @@ export const AnimatedCard = ({
   }));
 
   useEffect(() => {
-    if ((points || multi) && animatedCardIdx === idx) {
-      const animateColor = points ? colors.neonGreen : colors.neonPink;
+    if ((points || multi || suit) && animatedCardIdx === idx) {
+      const animateColor = getColor();
       cardApi.start({
         from: {
           transform: "scale(1)",
@@ -67,7 +78,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, animatedCardIdx, animationIndex]);
+  }, [points, multi, suit, animatedCardIdx, animationIndex]);
 
   useEffect(() => {
     if (discarded || played) {
