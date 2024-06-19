@@ -1,12 +1,14 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { noisyTv } from "../scripts/noisyTv";
 
 export const GameOver = () => {
   const navigate = useNavigate();
+  const [lastGameId, setLastGameId] = useState(getLSGameId());
 
   useEffect(() => {
     noisyTv(100);
@@ -53,7 +55,7 @@ export const GameOver = () => {
         <RollingNumber n={score} /> points
       </Heading> */}
       <Box sx={{ mt: "180px" }}>
-        <Leaderboard lines={4} />
+        <Leaderboard gameId={lastGameId} lines={4} />
       </Box>
       <Button
         size="l"
