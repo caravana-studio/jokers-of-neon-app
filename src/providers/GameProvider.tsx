@@ -255,24 +255,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       if (playEvents.modifierSuitEvents) {
         playEvents.modifierSuitEvents.forEach((event, index) => {
-          setAnimatedCard({
-            suit: event.suit,
-            idx: [event.idx],
-            animationIndex: index,
-            
-          });
-          setFrozenHand((prev) => {
-            const newHand = prev?.map((card) => {
-              if (event.idx === card.idx) {
-                return {
-                  ...card,
-                  img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                };
-              }
-              return card;
+          setTimeout(() => {
+            setAnimatedCard({
+              suit: event.suit,
+              idx: [event.idx],
+              animationIndex: index,
             });
-            return newHand;
-          });
+            setFrozenHand((prev) => {
+              const newHand = prev?.map((card) => {
+                if (event.idx === card.idx) {
+                  return {
+                    ...card,
+                    img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                  };
+                }
+                return card;
+              });
+              return newHand;
+            });
+          }, PLAY_ANIMATION_DURATION * index);
         });
       }
       setTimeout(() => {

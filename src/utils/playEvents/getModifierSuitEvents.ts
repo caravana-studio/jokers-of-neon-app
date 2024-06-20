@@ -13,8 +13,8 @@ export const getModifierSuitEvents = (
   );
 
   return modifierSuitEvents.map((event) => {
-    const idx = getNumberValueFromEvent(event, 1) ?? 0;
-    const suit = getNumberValueFromEvent(event, 2) as Suits;
+    const idx = getNumberValueFromEvent(event, 2) ?? 0;
+    const suit = getNumberValueFromEvent(event, 3) as Suits;
     return {
       idx,
       suit,
