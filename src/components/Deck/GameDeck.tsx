@@ -1,7 +1,7 @@
 import { Box, Image, Tooltip, useDisclosure } from "@chakra-ui/react"
-import { CARD_WIDTH_PX } from "../constants/visualProps.ts";
-import { useGameContext } from "../providers/GameProvider.tsx";
-import { DeckModal } from './Deck/DeckModal.tsx'
+import { CARD_WIDTH_PX } from "../../constants/visualProps.ts";
+import { useGameContext } from "../../providers/GameProvider.tsx";
+import { DeckModal } from './DeckModal.tsx'
 
 export const GameDeck = () => {
   const { deck } = useGameContext();
@@ -14,6 +14,7 @@ export const GameDeck = () => {
   const commonCards = isPlayerPlaying ? deck.currentCommonCards : deck.commonCards;
   const effectCards = isPlayerPlaying ? deck.currentEffectCards : deck.effectCards;
   const currentLength = isPlayerPlaying ? deck.currentLength : deck.size;
+  console.log("currentLength", currentLength);
 
   return (
     <Tooltip label="See deck" placement="top">

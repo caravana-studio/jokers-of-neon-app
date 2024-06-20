@@ -9,7 +9,7 @@ import {
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameDeck } from "../../components/GameDeck.tsx";
+import { GameDeck } from "../../components/Deck/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";

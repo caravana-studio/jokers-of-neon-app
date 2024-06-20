@@ -57,6 +57,7 @@ interface IGameContext {
   toggleSortBy: () => void;
   onShopSkip: () => void;
   deck: Deck;
+  refetchDeckData: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -90,6 +91,7 @@ const GameContext = createContext<IGameContext>({
   toggleSortBy: () => {},
   onShopSkip: () => {},
   deck: EMPTY_DECK,
+  refetchDeckData: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -411,6 +413,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
       (response) => {
         response && animatePlay(response);
+        refetch();
       }
     );
   };
@@ -591,7 +594,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         toggleSortBy,
         onShopSkip,
-        deck
+        deck,
+        refetchDeckData
       }}
     >
       {children}

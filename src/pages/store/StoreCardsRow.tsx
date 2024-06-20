@@ -6,6 +6,7 @@ import { Card } from "../../types/Card";
 import { getCardType } from "../../utils/getCardType";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
+import { useGameContext } from '../../providers/GameProvider.tsx'
 
 interface CardsRowProps {
   title: string;
@@ -19,6 +20,7 @@ interface CardsRowProps {
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard } = useStore();
+  const { refetchDeckData } = useGameContext();
 
   return (
     <>
@@ -66,7 +68,10 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
               selectedCard.idx,
               getCardType(selectedCard),
               selectedCard.price ?? 0
-            )
+            ).then( async () => {
+              await new Promise(r => setTimeout(r, 1000));
+              refetchDeckData();
+            })
           }
           card={selectedCard}
           close={() => setSelectedCard(undefined)}

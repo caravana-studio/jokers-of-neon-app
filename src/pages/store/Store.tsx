@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameDeck } from "../../components/GameDeck";
+import { GameDeck } from "../../components/Deck/GameDeck.tsx";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";

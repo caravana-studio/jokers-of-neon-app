@@ -23,6 +23,7 @@ interface DeckQueryResponse {
         idx: number;
         player_card_id: number;
         type_player_card: string;
+        card_id: number;
       }
     }[]
   };
@@ -87,16 +88,15 @@ export const useGetDeck = (gameId: number) => {
       ) ?? [];
 
   const currentEffectCards = data?.deckCardModels?.edges
-      .filter(({node: dojoCard}) =>
-        dojoCard.player_card_id in MODIFIER_CARDS_DATA)
-      .map(({node: dojoCard}) =>
-        createCard(dojoCard.player_card_id, dojoCard.idx, true)
-      ) ?? [];
+    .filter(({node: dojoCard}) => dojoCard.card_id in MODIFIER_CARDS_DATA)
+    .map(({node: dojoCard}) =>
+        createCard(dojoCard.card_id, dojoCard.idx, true)
+    ) ?? [];
 
   const currentCommonCards = data?.deckCardModels?.edges
       .filter(({node: dojoCard}) => dojoCard.type_player_card === 'Common')
       .map(({node: dojoCard}) =>
-        createCard(dojoCard.player_card_id, dojoCard.idx, false)
+        createCard(dojoCard.card_id, dojoCard.idx, false)
       ) ?? [];
 
   const deck: Deck = {
