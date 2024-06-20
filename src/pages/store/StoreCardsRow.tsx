@@ -48,7 +48,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
-                  pointer
+                  cursor="pointer"
                   card={card}
                   onClick={() => {
                     !card.purchased && setSelectedCard(card);

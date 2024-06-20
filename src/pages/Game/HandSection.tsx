@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
@@ -28,6 +29,8 @@ export const HandSection = () => {
   const { data: round } = useGetRound(gameId);
 
   const handsLeft = round.hands;
+
+  const { activeNode } = useDndContext();
 
   const cardIsPreselected = (cardIndex: number) => {
     return (
@@ -95,6 +98,13 @@ export const HandSection = () => {
               {!isPreselected && (
                 <TiltCard
                   card={card}
+                  cursor={
+                    card.isModifier
+                      ? activeNode
+                        ? "grabbing"
+                        : "grab"
+                      : "pointer"
+                  }
                   onClick={() => {
                     if (!card.isModifier) {
                       togglePreselected(card.idx);

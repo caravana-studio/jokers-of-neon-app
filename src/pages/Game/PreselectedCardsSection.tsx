@@ -72,6 +72,7 @@ export const PreselectedCardsSection = () => {
                       played={playAnimation}
                     >
                       <TiltCard
+                        cursor="pointer"
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);

@@ -21,15 +21,15 @@ interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
-  pointer?: boolean;
+  cursor?: string;
 }
 
-export const TiltCard = ({ card, onClick, pointer }: ICardProps) => {
+export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
   const { img, purchased = false } = card;
   const tiltCardComponent = (
     <Box
       width={CARD_WIDTH_PX}
-      sx={{ cursor: pointer && !purchased ? "pointer" : "default" }}
+      sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
         sx={{
