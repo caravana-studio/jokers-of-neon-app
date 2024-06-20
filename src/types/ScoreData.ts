@@ -9,6 +9,7 @@ export interface PlayEvents {
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
   specialSuitEvents?: SpecialSuitEvent[];
+  modifierSuitEvents?: ModifierSuitEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -36,6 +37,11 @@ export interface SpecialSuitEvent {
   suit: Suits;
   special_idx?: number;
   idx: number[];
+}
+
+export interface ModifierSuitEvent {
+  suit: Suits;
+  idx: number;
 }
 
 export interface DetailEarned {
