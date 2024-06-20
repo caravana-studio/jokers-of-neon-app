@@ -232,9 +232,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
-      const SUIT_CHANGE_DURATION =
+      const MODIFIER_SUIT_CHANGE_DURATION =
+        (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+      const SPECIAL_SUIT_CHANGE_DURATION =
         (playEvents.specialSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
-
       const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
         ? PLAY_ANIMATION_DURATION * 2
         : 0;
@@ -243,7 +244,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const SPECIAL_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
-        SUIT_CHANGE_DURATION +
+        MODIFIER_SUIT_CHANGE_DURATION +
+        SPECIAL_SUIT_CHANGE_DURATION +
         LEVEL_BOOSTER_DURATION +
         COMMON_CARDS_DURATION +
         SPECIAL_CARDS_DURATION +
@@ -251,94 +253,119 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPreSelectionLocked(true);
 
-      if (playEvents.specialSuitEvents) {
-        playEvents.specialSuitEvents.forEach((event, index) => {
-          setAnimatedCard({
-            suit: event.suit,
-            special_idx: event.special_idx,
-            idx: event.idx,
-            animationIndex: index,
-          });
-          setFrozenHand((prev) => {
-            const newHand = prev?.map((card) => {
-              if (event.idx.includes(card.idx)) {
-                return {
-                  ...card,
-                  img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                };
-              }
-              return card;
+      if (playEvents.modifierSuitEvents) {
+        playEvents.modifierSuitEvents.forEach((event, index) => {
+          setTimeout(() => {
+            setAnimatedCard({
+              suit: event.suit,
+              idx: [event.idx],
+              animationIndex: index,
             });
-            return newHand;
-          });
+            setFrozenHand((prev) => {
+              const newHand = prev?.map((card) => {
+                if (event.idx === card.idx) {
+                  return {
+                    ...card,
+                    img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                  };
+                }
+                return card;
+              });
+              return newHand;
+            });
+          }, PLAY_ANIMATION_DURATION * index);
         });
       }
-
       setTimeout(() => {
-        //level boosters
-        if (playEvents.levelEvent) {
-          const {
-            special_idx,
-            multi: eventMulti,
-            points: eventPoints,
-          } = playEvents.levelEvent;
-          //animate points
-          if (eventPoints) {
+        if (playEvents.specialSuitEvents) {
+          playEvents.specialSuitEvents.forEach((event, index) => {
             setAnimatedCard({
-              special_idx,
-              points: eventPoints - points,
-              animationIndex: 11,
+              suit: event.suit,
+              special_idx: event.special_idx,
+              idx: event.idx,
+              animationIndex: 10 + index,
             });
-            setPoints(eventPoints);
-          }
-          if (eventMulti) {
-            setTimeout(() => {
-              //animate multi
-              setAnimatedCard({
-                special_idx,
-                multi: eventMulti - multi,
-                animationIndex: 21,
+            setFrozenHand((prev) => {
+              const newHand = prev?.map((card) => {
+                if (event.idx.includes(card.idx)) {
+                  return {
+                    ...card,
+                    img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                  };
+                }
+                return card;
               });
-              setMulti(eventMulti);
-            }, PLAY_ANIMATION_DURATION);
-          }
+              return newHand;
+            });
+          });
         }
 
         setTimeout(() => {
-          //traditional cards and modifiers
-          playEvents.cards.forEach((card, index) => {
-            setTimeout(() => {
-              const { idx, points, multi } = card;
+          //level boosters
+          if (playEvents.levelEvent) {
+            const {
+              special_idx,
+              multi: eventMulti,
+              points: eventPoints,
+            } = playEvents.levelEvent;
+            //animate points
+            if (eventPoints) {
               setAnimatedCard({
-                idx: [idx],
-                points,
-                multi,
-                animationIndex: 30 + index,
+                special_idx,
+                points: eventPoints - points,
+                animationIndex: 21,
               });
-              points && setPoints((prev) => prev + points);
-              multi && setMulti((prev) => prev + multi);
-            }, PLAY_ANIMATION_DURATION * index);
-          });
-
-          //special cards
-          setTimeout(() => {
-            playEvents.specialCards?.forEach((event, index) => {
+              setPoints(eventPoints);
+            }
+            if (eventMulti) {
               setTimeout(() => {
-                const { idx, points, multi, special_idx } = event;
+                //animate multi
+                setAnimatedCard({
+                  special_idx,
+                  multi: eventMulti - multi,
+                  animationIndex: 31,
+                });
+                setMulti(eventMulti);
+              }, PLAY_ANIMATION_DURATION);
+            }
+          }
+
+          setTimeout(() => {
+            //traditional cards and modifiers
+            playEvents.cards.forEach((card, index) => {
+              setTimeout(() => {
+                const { idx, points, multi } = card;
                 setAnimatedCard({
                   idx: [idx],
                   points,
                   multi,
-                  special_idx,
                   animationIndex: 40 + index,
                 });
                 points && setPoints((prev) => prev + points);
                 multi && setMulti((prev) => prev + multi);
               }, PLAY_ANIMATION_DURATION * index);
             });
-          }, COMMON_CARDS_DURATION);
-        }, LEVEL_BOOSTER_DURATION);
-      }, SUIT_CHANGE_DURATION);
+
+            //special cards
+            setTimeout(() => {
+              playEvents.specialCards?.forEach((event, index) => {
+                setTimeout(() => {
+                  const { idx, points, multi, special_idx } = event;
+                  setAnimatedCard({
+                    idx: [idx],
+                    points,
+                    multi,
+                    special_idx,
+                    animationIndex: 50 + index,
+                  });
+                  points && setPoints((prev) => prev + points);
+                  multi && setMulti((prev) => prev + multi);
+                }, PLAY_ANIMATION_DURATION * index);
+              });
+            }, COMMON_CARDS_DURATION);
+          }, LEVEL_BOOSTER_DURATION);
+        }, SPECIAL_SUIT_CHANGE_DURATION);
+      }, MODIFIER_SUIT_CHANGE_DURATION);
 
       setTimeout(() => {
         setPlayAnimation(true);
