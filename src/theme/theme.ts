@@ -1,7 +1,14 @@
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import button from "./button";
-import { NEON_GREEN, NEON_PINK } from "./colors";
+import {
+  CLUBS,
+  DIAMONDS,
+  HEARTS,
+  NEON_GREEN,
+  NEON_PINK,
+  SPADES,
+} from "./colors";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
 import { tooltipTheme } from "./tooltip";
@@ -28,11 +35,16 @@ export default {
     neonPink: NEON_PINK,
     limeGreen: "lime",
     darkGrey: "#04162d",
-    // suits
-    1: "#278757",
-    2: "#346090",
-    3: "#b8202b",
-    4: "#7e3073",
+    // suits - accessible through colors[Suits.CLUBS]
+    1: CLUBS,
+    2: DIAMONDS,
+    3: HEARTS,
+    4: SPADES,
+    // suits - accessible through colors['CLUBS'] or 'CLUBS'
+    CLUBS,
+    DIAMONDS,
+    HEARTS,
+    SPADES,
   },
   styles: {
     global: {
