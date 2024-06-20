@@ -232,9 +232,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
-      const SUIT_CHANGE_DURATION = playEvents.suitEvents
-        ? PLAY_ANIMATION_DURATION
-        : 0;
+      const SUIT_CHANGE_DURATION =
+        (playEvents.specialSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+
       const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
         ? PLAY_ANIMATION_DURATION * 2
         : 0;
@@ -251,16 +251,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPreSelectionLocked(true);
 
-      if (playEvents.suitEvents) {
-        setAnimatedCard({
-          suit: playEvents.suitEvents[0].suit,
-          special_idx: playEvents.suitEvents[0].special_idx,
-          animationIndex: -3,
-        });
-        playEvents.suitEvents.forEach((event) => {
+      if (playEvents.specialSuitEvents) {
+        playEvents.specialSuitEvents.forEach((event, index) => {
+          setAnimatedCard({
+            suit: event.suit,
+            special_idx: event.special_idx,
+            idx: event.idx,
+            animationIndex: index,
+          });
           setFrozenHand((prev) => {
             const newHand = prev?.map((card) => {
-              if (card.idx === event.idx) {
+              if (event.idx.includes(card.idx)) {
                 return {
                   ...card,
                   img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
@@ -286,7 +287,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedCard({
               special_idx,
               points: eventPoints - points,
-              animationIndex: -2,
+              animationIndex: 11,
             });
             setPoints(eventPoints);
           }
@@ -296,7 +297,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setAnimatedCard({
                 special_idx,
                 multi: eventMulti - multi,
-                animationIndex: -1,
+                animationIndex: 21,
               });
               setMulti(eventMulti);
             }, PLAY_ANIMATION_DURATION);
@@ -308,7 +309,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           playEvents.cards.forEach((card, index) => {
             setTimeout(() => {
               const { idx, points, multi } = card;
-              setAnimatedCard({ idx, points, multi, animationIndex: index });
+              setAnimatedCard({
+                idx: [idx],
+                points,
+                multi,
+                animationIndex: 30 + index,
+              });
               points && setPoints((prev) => prev + points);
               multi && setMulti((prev) => prev + multi);
             }, PLAY_ANIMATION_DURATION * index);
@@ -320,11 +326,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setTimeout(() => {
                 const { idx, points, multi, special_idx } = event;
                 setAnimatedCard({
-                  idx,
+                  idx: [idx],
                   points,
                   multi,
                   special_idx,
-                  animationIndex: index,
+                  animationIndex: 40 + index,
                 });
                 points && setPoints((prev) => prev + points);
                 multi && setMulti((prev) => prev + multi);

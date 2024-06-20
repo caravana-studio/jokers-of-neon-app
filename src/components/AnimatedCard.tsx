@@ -20,8 +20,8 @@ export const AnimatedCard = ({
   isSpecial = false,
 }: IAnimatedCardProps) => {
   const { animatedCard } = useCardAnimations();
-  const animatedCardIdx = isSpecial
-    ? animatedCard?.special_idx
+  const animatedCardIdxArray = isSpecial
+    ? [animatedCard?.special_idx]
     : animatedCard?.idx;
   const points = animatedCard?.points;
   const multi = animatedCard?.multi;
@@ -54,7 +54,7 @@ export const AnimatedCard = ({
   }));
 
   useEffect(() => {
-    if ((points || multi || suit) && animatedCardIdx === idx) {
+    if ((points || multi || suit) && animatedCardIdxArray?.includes(idx)) {
       const animateColor = getColor();
       cardApi.start({
         from: {
@@ -78,7 +78,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, suit, animatedCardIdx, animationIndex]);
+  }, [points, multi, suit, animatedCardIdxArray, animationIndex]);
 
   useEffect(() => {
     if (discarded || played) {
@@ -93,7 +93,7 @@ export const AnimatedCard = ({
     <animated.div
       style={{ position: "relative", width: CARD_WIDTH_PX, ...cardSprings }}
     >
-      {!!(points || multi) && animatedCardIdx === idx && (
+      {!!(points || multi) && animatedCardIdxArray?.includes(idx) && (
         <animated.div
           style={{
             position: "absolute",

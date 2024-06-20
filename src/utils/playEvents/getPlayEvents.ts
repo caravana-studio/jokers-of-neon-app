@@ -8,7 +8,7 @@ import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getMultiPointEvents } from "./getMultiPointEvents";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
-import { getSuitEvents } from "./getSuitEvents";
+import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
@@ -20,7 +20,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     levelPassed: getLevelPassedEvent(events),
     detailEarned: getDetailEarnedEvent(events),
     levelEvent: getSpecialLevelEvent(events),
-    suitEvents: getSuitEvents(events)
+    specialSuitEvents: getSpecialSuitEvents(events)
   };
 
   return playEvents;

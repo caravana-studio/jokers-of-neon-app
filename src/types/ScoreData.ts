@@ -8,7 +8,7 @@ export interface PlayEvents {
   detailEarned?: DetailEarned;
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
-  suitEvents?: SuitEvent[];
+  specialSuitEvents?: SpecialSuitEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -32,10 +32,10 @@ export interface CardScore extends MultiPoints {
   special_idx?: number;
 }
 
-export interface SuitEvent {
+export interface SpecialSuitEvent {
   suit: Suits;
   special_idx?: number;
-  idx: number;
+  idx: number[];
 }
 
 export interface DetailEarned {

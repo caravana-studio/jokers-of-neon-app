@@ -7,7 +7,7 @@ interface ICardAnimationsContext {
 }
 
 interface IAnimatedCard {
-  idx?: number;
+  idx?: number[];
   points?: number;
   multi?: number;
   suit?: Suits;
