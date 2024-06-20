@@ -1,4 +1,5 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { Suits } from "../enums/suits";
 
 interface ICardAnimationsContext {
   animatedCard: IAnimatedCard | undefined;
@@ -6,9 +7,10 @@ interface ICardAnimationsContext {
 }
 
 interface IAnimatedCard {
-  idx?: number;
+  idx?: number[];
   points?: number;
   multi?: number;
+  suit?: Suits;
   special_idx?: number;
   animationIndex: number;
 }
