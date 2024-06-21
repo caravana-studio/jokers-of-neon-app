@@ -9,7 +9,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
@@ -42,6 +43,12 @@ export const HandSection = () => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
+  const [discardedCard, setDiscardedCard] = useState<number | undefined>();
+
+  useEffect(() => {
+    console.log('done')
+    setDiscardedCard(undefined);
+  }, [hand]);
 
   return (
     <>
@@ -86,6 +93,7 @@ export const HandSection = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         discardEffectCard(card.idx);
+                        setDiscardedCard(card.idx);
                         onClose();
                       }}
                       borderRadius="0"
@@ -96,21 +104,26 @@ export const HandSection = () => {
                 </Menu>
               )}
               {!isPreselected && (
-                <TiltCard
-                  card={card}
-                  cursor={
-                    card.isModifier
-                      ? activeNode
-                        ? "grabbing"
-                        : "grab"
-                      : "pointer"
-                  }
-                  onClick={() => {
-                    if (!card.isModifier) {
-                      togglePreselected(card.idx);
+                <AnimatedCard
+                  idx={card.idx}
+                  discarded={discardedCard === card.idx}
+                >
+                  <TiltCard
+                    card={card}
+                    cursor={
+                      card.isModifier
+                        ? activeNode
+                          ? "grabbing"
+                          : "grab"
+                        : "pointer"
                     }
-                  }}
-                />
+                    onClick={() => {
+                      if (!card.isModifier) {
+                        togglePreselected(card.idx);
+                      }
+                    }}
+                  />
+                </AnimatedCard>
               )}
             </GridItem>
           );
