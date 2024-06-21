@@ -10,6 +10,7 @@ import { useCustomToast } from "../hooks/useCustomToast";
 import { useGetGame } from "../queries/useGetGame";
 import { ShopItems, useGetShopItems } from "../queries/useGetShopItems";
 import { useGameContext } from "./GameProvider";
+import { useGetStore } from "../queries/useGetStore";
 
 interface IStoreContext {
   cash: number;
@@ -20,6 +21,7 @@ interface IStoreContext {
   ) => Promise<boolean>;
   levelUpPlay: (item_id: number, price: number) => Promise<boolean>;
   shopItems: ShopItems;
+  reroll: () => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -28,6 +30,8 @@ const StoreContext = createContext<IStoreContext>({
     return new Promise((resolve) => resolve(false));
   },
   levelUpPlay: (_, __) => {
+    return new Promise((resolve) => resolve(false));
+  },  reroll: () => {
     return new Promise((resolve) => resolve(false));
   },
   shopItems: {
@@ -47,9 +51,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const { data: shopItems } = useGetShopItems(gameId, round);
 
+  const { data: store } = useGetStore(gameId);
+
+  const rerollCost = store?.reroll_cost ?? 0;
+
   const {
     setup: {
-      systemCalls: { buyCard: dojoBuyCard, levelUpPokerHand: dojoLevelUpHand },
+      systemCalls: { buyCard: dojoBuyCard, levelUpPokerHand: dojoLevelUpHand, storeReroll },
     },
     account,
   } = useDojo();
@@ -72,6 +80,18 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     });
     return promise;
   };
+
+  const reroll = () => {
+    const promise = storeReroll(account.account, gameId)
+    promise.then((response) => {
+      if (response) {
+        setCash((prev) => prev - rerollCost);
+      } else {
+        showErrorToast("Error rerolling");
+      }
+    });
+    return promise
+  }
 
   const levelUpPlay = (item_id: number, price: number): Promise<boolean> => {
     const promise = dojoLevelUpHand(account.account, gameId, item_id);
@@ -98,6 +118,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         buyCard,
         levelUpPlay,
         shopItems,
+        reroll
       }}
     >
       {children}
