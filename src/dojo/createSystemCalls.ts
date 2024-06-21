@@ -116,6 +116,7 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
+      return false;
     }
   };
 
@@ -139,6 +140,7 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
+      return false;
     }
   };
 
@@ -244,6 +246,27 @@ export function createSystemCalls(
     }
   };
 
+  const storeReroll = async (
+    account: AccountInterface,
+    gameId: number,
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.storeReroll({
+        account,
+        gameId,
+      });
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      setComponentsFromEvents(contractComponents, getEvents(tx));
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
   return {
     createGame,
     checkHand,
@@ -253,5 +276,6 @@ export function createSystemCalls(
     skipShop,
     buyCard,
     levelUpPokerHand,
+    storeReroll,
   };
 }

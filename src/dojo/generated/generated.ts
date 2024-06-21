@@ -5,9 +5,7 @@ import { AccountInterface, shortString } from "starknet";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
-interface HandActionProps {
-  account: AccountInterface;
-  gameId: number;
+interface HandActionProps extends BaseProps {
   cards: number[];
   modifiers1: number[];
   modifiers2: number[];
@@ -16,6 +14,11 @@ interface HandActionProps {
 interface CreateGameProps {
   account: AccountInterface;
   username: string;
+}
+
+interface BaseProps {
+  account: AccountInterface;
+  gameId: number;
 }
 const game_contract = "game_system";
 const shop_contract = "shop_system";
@@ -116,10 +119,7 @@ export async function setupWorld(provider: DojoProvider) {
     const skipShop = async ({
       account,
       gameId,
-    }: {
-      account: AccountInterface;
-      gameId: number;
-    }) => {
+    }: BaseProps) => {
       try {
         return await provider.execute(account, {
           contractName: shop_contract,
@@ -204,6 +204,25 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+    const storeReroll = async ({
+      account,
+      gameId,
+    }: BaseProps) => {
+      try {
+        const calldata = [
+          gameId,
+        ];
+        return await provider.execute(account, {
+          contractName: shop_contract,
+          entrypoint: "reroll",
+          calldata,
+        });
+      } catch (error) {
+        console.error("Error executing reroll:", error);
+        throw error;
+      }
+    };
+
     return {
       checkHand,
       createGame,
@@ -213,6 +232,7 @@ export async function setupWorld(provider: DojoProvider) {
       skipShop,
       buyCard,
       levelUpPokerHand,
+      storeReroll
     };
   }
   return {

@@ -1,5 +1,13 @@
-import { Box, Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Tooltip,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
 import { PointBox } from "../../components/MultiPoints";
@@ -9,13 +17,23 @@ import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
+import { useGetStore } from "../../queries/useGetStore";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
   const { gameId } = useGameContext();
   const { data: game } = useGetGame(gameId);
+  const { data: store } = useGetStore(gameId);
   const state = game?.state;
   const { onShopSkip } = useGameContext();
+
+  const rerollCost = store?.reroll_cost ?? 0;
+
+  const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
+
+  useEffect(() => {
+    store && setRerolled(store.reroll_executed);
+  }, [store?.reroll_executed]);
 
   const {
     setup: {
@@ -24,7 +42,7 @@ export const Store = () => {
     account,
   } = useDojo();
 
-  const { cash, shopItems } = useStore();
+  const { cash, shopItems, reroll } = useStore();
 
   const navigate = useNavigate();
 
@@ -44,14 +62,38 @@ export const Store = () => {
         alignItems="center"
         sx={{ height: "15%", mx: 10 }}
       >
-        <PointBox type="level">
-          <Heading size="s" sx={{ mx: 4 }}>
-            MY COINS
-          </Heading>
-          <Heading size="l" sx={{ mx: 4, color: "white" }}>
-            <RollingNumber n={cash} />ȼ
-          </Heading>
-        </PointBox>
+        <Flex gap={6} alignItems="center">
+          <PointBox type="level">
+            <Heading size="s" sx={{ mx: 4 }}>
+              MY COINS
+            </Heading>
+            <Heading size="l" sx={{ mx: 4, color: "white" }}>
+              <RollingNumber n={cash} />ȼ
+            </Heading>
+          </PointBox>
+          <Tooltip
+            placement="right"
+            label={
+              rerolled
+                ? "Available only once per level"
+                : "Update available items"
+            }
+          >
+            <Button
+              isDisabled={rerolled}
+              onClick={() => {
+                reroll().then((response) => {
+                  if (response) {
+                    setRerolled(true);
+                  }
+                });
+              }}
+              sx={{ py: 8 }}
+            >
+              Reroll <br /> {rerollCost}ȼ
+            </Button>
+          </Tooltip>
+        </Flex>
         <Heading size="xl" variant="neonWhite">
           LEVEL UP YOUR GAME
         </Heading>
