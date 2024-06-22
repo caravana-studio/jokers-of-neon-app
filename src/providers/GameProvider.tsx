@@ -22,6 +22,7 @@ import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { getHandId } from "../utils/getHandId.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { handsAreDifferent } from "../utils/handsAreDifferent.ts";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -132,15 +133,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { data: apiHand } = useGetCurrentHand(gameId, refetchingHand, sortBy);
   const hand = frozenHand ?? updatedHand ?? apiHand;
 
-  const different = (a: Card[], b: Card[]) => {
-    return (
-      a.some((card, index) => card.img !== b[index].img) ||
-      a.length !== b.length
-    );
-  };
-
   useEffect(() => {
-    if (updatedHand && different(apiHand, updatedHand)) {
+    if (updatedHand && handsAreDifferent(apiHand, updatedHand)) {
       setUpdatedHand(undefined);
     }
   });
@@ -501,7 +495,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         if (response) {
           setTimeout(() => {
             refetch();
-            setFrozenHand(undefined);
           }, 1500);
         }
       }
