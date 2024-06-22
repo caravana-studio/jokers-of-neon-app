@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
+import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
@@ -96,21 +97,26 @@ export const HandSection = () => {
                 </Menu>
               )}
               {!isPreselected && (
-                <TiltCard
-                  card={card}
-                  cursor={
-                    card.isModifier
-                      ? activeNode
-                        ? "grabbing"
-                        : "grab"
-                      : "pointer"
-                  }
-                  onClick={() => {
-                    if (!card.isModifier) {
-                      togglePreselected(card.idx);
+                <AnimatedCard
+                  idx={card.idx}
+                  discarded={card.discarded}
+                >
+                  <TiltCard
+                    card={card}
+                    cursor={
+                      card.isModifier
+                        ? activeNode
+                          ? "grabbing"
+                          : "grab"
+                        : "pointer"
                     }
-                  }}
-                />
+                    onClick={() => {
+                      if (!card.isModifier) {
+                        togglePreselected(card.idx);
+                      }
+                    }}
+                  />
+                </AnimatedCard>
               )}
             </GridItem>
           );

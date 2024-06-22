@@ -38,7 +38,7 @@ export const AnimatedCard = ({
     } else {
       return colors.neonGreen;
     }
-  }
+  };
 
   const [cardSprings, cardApi] = useSpring(() => ({
     from: { transform: "scale(1)", opacity: 1, x: 0, boxShadow: "0px" },
@@ -66,7 +66,10 @@ export const AnimatedCard = ({
           boxShadow: `0px 0px 30px 0px  ${animateColor}`,
         },
         onRest: () =>
-          cardApi.start({ transform: "scale(1)", boxShadow: `0px 0px 0px 0px ${animateColor}` }),
+          cardApi.start({
+            transform: "scale(1)",
+            boxShadow: `0px 0px 0px 0px ${animateColor}`,
+          }),
       });
 
       pointsApi.start({
@@ -81,13 +84,27 @@ export const AnimatedCard = ({
   }, [points, multi, suit, animatedCardIdxArray, animationIndex]);
 
   useEffect(() => {
-    if (discarded || played) {
+    if (played) {
       cardApi.start({
-        to: { x: discarded ? 1000 : -1000, opacity: 0 },
+        to: { x: -1000, opacity: 0 },
         config: { duration: 200 },
       });
     }
-  }, [discarded, played]);
+  }, [played]);
+
+  useEffect(() => {
+    if (discarded) {
+      cardApi.start({
+        to: { x: 1000, opacity: 0 },
+        config: { duration: 200 },
+      });
+    } else {
+      cardApi.start({
+        to: { x: 0, opacity: 1 },
+        config: { duration: 200 },
+      });
+    }
+  }, [discarded]);
 
   return (
     <animated.div

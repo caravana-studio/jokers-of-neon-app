@@ -22,6 +22,7 @@ import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { getHandId } from "../utils/getHandId.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { handsAreDifferent } from "../utils/handsAreDifferent.ts";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -105,6 +106,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     [key: number]: number[];
   }>({});
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
+  const [updatedHand, setUpdatedHand] = useState<Card[] | undefined>();
   const [previousLevelHandId, setPreviousLevelHandId] = useState<
     string | undefined
   >();
@@ -128,12 +130,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: updatedHand } = useGetCurrentHand(
-    gameId,
-    refetchingHand,
-    sortBy
-  );
-  const hand = frozenHand ? frozenHand : updatedHand;
+  const { data: apiHand } = useGetCurrentHand(gameId, refetchingHand, sortBy);
+  const hand = frozenHand ?? updatedHand ?? apiHand;
+
+  useEffect(() => {
+    if (updatedHand && handsAreDifferent(apiHand, updatedHand)) {
+      setUpdatedHand(undefined);
+    }
+  });
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -474,6 +478,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
+    const newHand = hand?.map((card) => {
+      if (card.idx === cardIdx) {
+        return {
+          ...card,
+          discarded: true,
+        };
+      }
+      return card;
+    });
+    setUpdatedHand(newHand);
+
     discardEffectCard(account.account, gameId, cardIdx).then(
       (response): void => {
         refetchHand();
