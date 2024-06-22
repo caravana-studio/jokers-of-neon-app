@@ -105,6 +105,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     [key: number]: number[];
   }>({});
   const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
+  const [updatedHand, setUpdatedHand] = useState<Card[] | undefined>();
   const [previousLevelHandId, setPreviousLevelHandId] = useState<
     string | undefined
   >();
@@ -128,12 +129,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: updatedHand } = useGetCurrentHand(
-    gameId,
-    refetchingHand,
-    sortBy
-  );
-  const hand = frozenHand ? frozenHand : updatedHand;
+  const { data: apiHand } = useGetCurrentHand(gameId, refetchingHand, sortBy);
+  const hand = frozenHand ?? updatedHand ?? apiHand;
+
+  const different = (a: Card[], b: Card[]) => {
+    return (
+      a.some((card, index) => card.img !== b[index].img) ||
+      a.length !== b.length
+    );
+  };
+
+  useEffect(() => {
+    if (updatedHand && different(apiHand, updatedHand)) {
+      setUpdatedHand(undefined);
+    }
+  });
 
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -474,12 +484,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
+    const newHand = hand?.map((card) => {
+      if (card.idx === cardIdx) {
+        return {
+          ...card,
+          discarded: true,
+        };
+      }
+      return card;
+    });
+    setUpdatedHand(newHand);
+
     discardEffectCard(account.account, gameId, cardIdx).then(
       (response): void => {
         refetchHand();
         if (response) {
           setTimeout(() => {
             refetch();
+            setFrozenHand(undefined);
           }, 1500);
         }
       }

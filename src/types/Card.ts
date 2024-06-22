@@ -16,6 +16,7 @@ export interface Card {
   price?: number;
   card_id?: number;
   purchased?: boolean;
+  discarded?: boolean;
 }
 
 export interface StaticEffectCard extends Effect {

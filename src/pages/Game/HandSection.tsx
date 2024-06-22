@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
@@ -43,12 +43,6 @@ export const HandSection = () => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
-  const [discardedCard, setDiscardedCard] = useState<number | undefined>();
-
-  useEffect(() => {
-    console.log('done')
-    setDiscardedCard(undefined);
-  }, [hand]);
 
   return (
     <>
@@ -93,7 +87,6 @@ export const HandSection = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         discardEffectCard(card.idx);
-                        setDiscardedCard(card.idx);
                         onClose();
                       }}
                       borderRadius="0"
@@ -106,7 +99,7 @@ export const HandSection = () => {
               {!isPreselected && (
                 <AnimatedCard
                   idx={card.idx}
-                  discarded={discardedCard === card.idx}
+                  discarded={card.discarded}
                 >
                   <TiltCard
                     card={card}
