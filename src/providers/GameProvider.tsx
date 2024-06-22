@@ -224,6 +224,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         console.log(`game ${newGameId} created`);
         setGameLoading(false);
         setPreSelectionLocked(false);
+        setRoundRewards(undefined);
       } else {
         setError(true);
       }
