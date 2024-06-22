@@ -10,4 +10,5 @@ export const PLAYS: string[] = [
   "Two pair",
   "Pair",
   "High card",
+  "Five of a kind",
 ];

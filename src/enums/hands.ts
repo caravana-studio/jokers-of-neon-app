@@ -81,6 +81,13 @@ export const Hands: Hands = {
     description: "Highest card",
     order: 1,
   },
+  FIVE_OF_A_KIND: {
+    id: "FiveOfAKind",
+    value: Plays.FIVE_OF_A_KIND,
+    name: "Five of a Kind",
+    description: "All five cards of the same rank",
+    order: 11,
+  },
 };
 
 export function parseHand(handId: string | undefined): Hand {

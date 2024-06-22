@@ -10,4 +10,5 @@ export enum Plays {
   TWO_PAIR = 8,
   PAIR = 9,
   HIGH_CARD = 10,
+  FIVE_OF_A_KIND = 11,
 }
