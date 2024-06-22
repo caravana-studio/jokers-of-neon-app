@@ -55,6 +55,7 @@ interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
+  discardSpecialCard: (cardIdx: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -87,6 +88,7 @@ const GameContext = createContext<IGameContext>({
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
+  discardSpecialCard: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -124,7 +126,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     setup: {
-      systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
+      systemCalls: { createGame, checkHand, discard, discardEffectCard, discardSpecialCard, play },
       clientComponents: { Game },
     },
     account,
@@ -502,6 +504,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
+  const onDiscardSpecialCard = (cardIdx: number) => {
+    discardSpecialCard(account.account, gameId, cardIdx).then(
+      (response): void => {
+        if (response) {
+          setDiscardAnimation(true);
+          setTimeout(() => {
+            setDiscardAnimation(false);
+          }, 1500);
+        }
+      }
+    );
+  };
+
   //effects
   useEffect(() => {
     console.log("checking game exists", gameId);
@@ -603,6 +618,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         toggleSortBy,
         onShopSkip,
+        discardSpecialCard: onDiscardSpecialCard,
       }}
     >
       {children}

@@ -116,6 +116,28 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+    const discardSpecialCard = async ({
+      account,
+      gameId,
+      card,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      card: number;
+    }) => {
+      try {
+        const calldata = [gameId, card];
+        return await provider.execute(account, {
+          contractName: game_contract,
+          entrypoint: "discard_special_card",
+          calldata,
+        });
+      } catch (error) {
+        console.error("Error executing discardSpecialCard:", error);
+        throw error;
+      }
+    };
+
     const skipShop = async ({
       account,
       gameId,
@@ -228,6 +250,7 @@ export async function setupWorld(provider: DojoProvider) {
       createGame,
       discard,
       discardEffectCard,
+      discardSpecialCard,
       play,
       skipShop,
       buyCard,
