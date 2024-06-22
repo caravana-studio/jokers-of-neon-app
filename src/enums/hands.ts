@@ -16,14 +16,14 @@ export const Hands: Hands = {
     value: Plays.ROYAL_FLUSH,
     name: "Royal Flush",
     description: "A, K, Q, J, 10, all the same suit",
-    order: 10,
+    order: 11,
   },
   STRAIGHT_FLUSH: {
     id: "StraightFlush",
     value: Plays.STRAIGHT_FLUSH,
     name: "Straight Flush",
     description: "Five cards in a sequence, all in the same suit",
-    order: 9,
+    order: 10,
   },
   FOUR_OF_A_KIND: {
     id: "FourOfAKind",
@@ -80,6 +80,13 @@ export const Hands: Hands = {
     name: "High Card",
     description: "Highest card",
     order: 1,
+  },
+  FIVE_OF_A_KIND: {
+    id: "FiveOfAKind",
+    value: Plays.FIVE_OF_A_KIND,
+    name: "Five of a Kind",
+    description: "All five cards of the same rank",
+    order: 9,
   },
 };
 
