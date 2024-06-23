@@ -40,9 +40,12 @@ const fetchGraphQLData = async (id: number): Promise<GameResponse> => {
   return await graphQLClient.request(GAME_QUERY, { gameId: id });
 };
 
-export const useGetGame = (id: number) => {
+export const useGetGame = (id: number, refetching: boolean = false) => {
   const queryResponse = useQuery<GameResponse>([GAME_QUERY_KEY, id], () =>
-    fetchGraphQLData(id)
+    fetchGraphQLData(id),
+  {
+    refetchInterval: refetching ? 500 : undefined,
+  }
   );
   const { data } = queryResponse;
 
