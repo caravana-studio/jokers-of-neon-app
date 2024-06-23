@@ -10,10 +10,12 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
+import { Loading } from "../../components/Loading";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useDojo } from "../../dojo/useDojo";
+import { useCustomToast } from "../../hooks/useCustomToast";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
@@ -22,7 +24,7 @@ import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
   const { gameId } = useGameContext();
-  const { data: game } = useGetGame(gameId);
+  const { data: game} = useGetGame(gameId);
   const { data: store } = useGetStore(gameId);
   const state = game?.state;
   const { onShopSkip } = useGameContext();
@@ -30,6 +32,9 @@ export const Store = () => {
   const rerollCost = store?.reroll_cost ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
+  const { showErrorToast } = useCustomToast();
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
@@ -53,6 +58,10 @@ export const Store = () => {
       navigate("/demo");
     }
   }, [state]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
@@ -100,10 +109,14 @@ export const Store = () => {
         <Box>
           <Button
             onClick={() => {
+              setLoading(true);
               onShopSkip();
               skipShop(account.account, gameId).then((response): void => {
                 if (response) {
-                  navigate("/demo");
+                  navigate("/redirect/demo");
+                } else {
+                  setLoading(false);
+                  showErrorToast("Error skipping shop");
                 }
               });
             }}
