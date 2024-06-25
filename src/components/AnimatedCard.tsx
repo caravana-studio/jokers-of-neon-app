@@ -1,5 +1,5 @@
 import { Heading, useTheme } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH_PX } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
@@ -20,13 +20,16 @@ export const AnimatedCard = ({
   isSpecial = false,
 }: IAnimatedCardProps) => {
   const { animatedCard } = useCardAnimations();
-  const animatedCardIdxArray = isSpecial
-    ? [animatedCard?.special_idx]
-    : animatedCard?.idx;
-  const points = animatedCard?.points;
-  const multi = animatedCard?.multi;
-  const suit = animatedCard?.suit;
-  const animationIndex = animatedCard?.animationIndex;
+  const animatedCardIdxArray = useMemo(() => {
+    return isSpecial ? [animatedCard?.special_idx] : animatedCard?.idx;
+  }, [animatedCard?.idx, animatedCard?.special_idx, isSpecial]);
+  const points = useMemo(() => animatedCard?.points, [animatedCard?.points]);
+  const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
+  const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
+  const animationIndex = useMemo(
+    () => animatedCard?.animationIndex,
+    [animatedCard?.animationIndex]
+  );
 
   const { colors } = useTheme();
 
