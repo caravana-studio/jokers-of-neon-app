@@ -1,18 +1,13 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Spinner,
-  useTheme,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
+import { Loading } from "../../components/Loading.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
@@ -27,20 +22,31 @@ export const GameContent = () => {
     executeCreateGame,
     refetchHand,
     addModifier,
+    roundRewards,
+    gameId,
+    checkOrCreateGame,
   } = useGameContext();
-  const { colors } = useTheme();
 
-  const game = useGame();
+  const { data: game } = useGetGame(gameId);
+  const {
+    setup: {
+      clientComponents: { Game },
+    },
+  } = useDojo();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (game?.state === "FINISHED") {
-      navigate("/gameover");
-    } else if (game?.state === "AT_SHOP") {
-      navigate("/store");
+    // if roundRewards is true, we don't want to redirect user
+    if (!roundRewards) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "AT_SHOP") {
+        navigate("/store");
+      }
+      refetchHand(2);
     }
-    refetchHand(2);
-  }, []);
+  }, [game?.state, roundRewards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const modifiedCard = Number(event.over?.id);
@@ -52,6 +58,10 @@ export const GameContent = () => {
       }
     }
   };
+
+  useEffect(() => {
+    checkOrCreateGame();
+  }, []);
 
   if (error) {
     return (
@@ -80,27 +90,7 @@ export const GameContent = () => {
   }
 
   if (gameLoading || loadingStates) {
-    return (
-      <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Heading
-          variant="neonGreen"
-          sx={{
-            m: 10,
-            fontSize: 60,
-            textShadow: `0 0 20px ${colors.neonGreen}`,
-          }}
-        >
-          <Spinner size="xl" />
-        </Heading>
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (

@@ -23,6 +23,8 @@ const getSpecialCard = (
     id: card_id.toString(),
     idx: index,
     img: `effect/${card_id}.png`,
+    temporary: specialCard.is_temporary,
+    remaining: specialCard.remaining,
   };
 };
 

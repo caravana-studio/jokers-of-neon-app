@@ -21,8 +21,8 @@ import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { getHandId } from "../utils/getHandId.ts";
-import { useCardAnimations } from "./CardAnimationsProvider";
 import { handsAreDifferent } from "../utils/handsAreDifferent.ts";
+import { useCardAnimations } from "./CardAnimationsProvider";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -56,6 +56,7 @@ interface IGameContext {
   toggleSortBy: () => void;
   onShopSkip: () => void;
   discardSpecialCard: (cardIdx: number) => void;
+  checkOrCreateGame: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -89,6 +90,7 @@ const GameContext = createContext<IGameContext>({
   toggleSortBy: () => {},
   onShopSkip: () => {},
   discardSpecialCard: () => {},
+  checkOrCreateGame: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -126,7 +128,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     setup: {
-      systemCalls: { createGame, checkHand, discard, discardEffectCard, discardSpecialCard, play },
+      systemCalls: {
+        createGame,
+        checkHand,
+        discard,
+        discardEffectCard,
+        discardSpecialCard,
+        play,
+      },
       clientComponents: { Game },
     },
     account,
@@ -149,8 +158,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //variables
   const lsUser = localStorage.getItem(LOGGED_USER);
-  const address = account?.account?.address;
-  const username = lsUser ?? address ?? "0xtest";
+  const username = lsUser;
   const handsLeft = round?.hands;
   const currentHandId = getHandId(hand);
 
@@ -218,23 +226,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCreateGame = () => {
-    console.log("Creating game...");
     setError(false);
     setGameLoading(true);
-    createGame(account.account, username).then((newGameId) => {
-      if (newGameId) {
-        refetchHand();
-        setGameId(newGameId);
-        clearPreSelection();
-        localStorage.setItem(GAME_ID, newGameId.toString());
-        console.log(`game ${newGameId} created`);
-        setGameLoading(false);
-        setPreSelectionLocked(false);
-        setRoundRewards(undefined);
-      } else {
-        setError(true);
-      }
-    });
+    if (username) {
+      console.log("Creating game...");
+      createGame(account.account, username).then((newGameId) => {
+        if (newGameId) {
+          refetchHand();
+          setGameId(newGameId);
+          clearPreSelection();
+          localStorage.setItem(GAME_ID, newGameId.toString());
+          console.log(`game ${newGameId} created`);
+          setGameLoading(false);
+          setPreSelectionLocked(false);
+          setRoundRewards(undefined);
+        } else {
+          setError(true);
+        }
+      });
+    }
   };
 
   const animatePlay = (playEvents: PlayEvents) => {
@@ -517,10 +527,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
-  //effects
-  useEffect(() => {
+  const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
-    if (!gameExists(Game, gameId)) {
+    if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       executeCreateGame();
     } else {
       setGameLoading(false);
@@ -528,6 +537,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       refetchHand();
       console.log("Game found, no need to create a new one");
     }
+  };
+
+  //effects
+  useEffect(() => {
+    checkOrCreateGame();
   }, []);
 
   useEffect(() => {
@@ -619,6 +633,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         toggleSortBy,
         onShopSkip,
         discardSpecialCard: onDiscardSpecialCard,
+        checkOrCreateGame,
       }}
     >
       {children}

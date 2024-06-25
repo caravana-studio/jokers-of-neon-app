@@ -1,4 +1,3 @@
-import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
 import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
@@ -29,7 +28,6 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        setComponentsFromEvents(contractComponents, getEvents(tx));
         const value = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
         console.log("Game " + value + " created");
         return value;
@@ -71,7 +69,6 @@ export function createSystemCalls(
         const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
         const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
         const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
-        setComponentsFromEvents(contractComponents, getEvents(tx));
         return {
           play,
           multi,
@@ -112,7 +109,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -136,7 +132,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -179,7 +174,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -204,7 +198,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -227,7 +220,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
@@ -258,8 +250,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
-
       if (tx.isSuccess()) {
         const events = tx.events;
         return getPlayEvents(events);
@@ -283,7 +273,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
