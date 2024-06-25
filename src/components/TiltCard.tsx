@@ -4,6 +4,7 @@ import {
   Image,
   SystemStyleObject,
   Tooltip,
+  Text,
 } from "@chakra-ui/react";
 import { Tilt } from "react-tilt";
 import {
@@ -98,9 +99,16 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
                   backgroundColor: "rgba(255, 253, 208)",
                   borderRadius: "25%",
                   border: "4px solid black",
+                  display: "flex",
+                  alignItems: "center",
+                  direction: "row",
+                  gap: 1.5,
                 }}
               >
-                <TimeIcon boxSize={5} color={"black"} />
+                <TimeIcon boxSize={4} color={"black"} />
+                { card.remaining && (
+                  <Text color="black" fontSize="medium">{card.remaining}</Text>
+                )}
               </Box>
             </Tooltip>
           )}

@@ -9,14 +9,15 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalOverlay,
-  Tooltip,
-} from "@chakra-ui/react";
+  ModalOverlay, Text,
+  Tooltip
+} from "@chakra-ui/react"
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
+import {getTemporalCardText} from '../../utils/getTemporalCardText.ts'
 
 interface IShowCardModalProps {
   card: Card;
@@ -76,6 +77,7 @@ export const ShowCardModal = ({
                     : card.isModifier
                       ? "modifier"
                       : "traditional"}
+                  { card.temporary && (" (temporary)") }
                 </Heading>
               </Box>
               <Box>
@@ -84,6 +86,9 @@ export const ShowCardModal = ({
                 </Heading>
                 <Heading variant="neonGreen" size="m">
                   {description}
+                </Heading>
+                <Heading variant="neonGreen" size="md" pt={2}>
+                  {getTemporalCardText(card.remaining)}
                 </Heading>
               </Box>
               <Box>
