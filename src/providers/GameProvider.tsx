@@ -506,17 +506,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const checkOrCreateGame = () => {
-    // if game id is valid
-    if (gameId > 0) {
-      console.log("checking game exists", gameId);
-      if (!gameExists(Game, gameId)) {
-        executeCreateGame();
-      } else {
-        setGameLoading(false);
-        refetch();
-        refetchHand();
-        console.log("Game found, no need to create a new one");
-      }
+    console.log("checking game exists", gameId);
+    if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
+      executeCreateGame();
+    } else {
+      setGameLoading(false);
+      refetch();
+      refetchHand();
+      console.log("Game found, no need to create a new one");
     }
   };
 
