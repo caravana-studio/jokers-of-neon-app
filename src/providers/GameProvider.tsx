@@ -21,8 +21,8 @@ import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { getHandId } from "../utils/getHandId.ts";
-import { useCardAnimations } from "./CardAnimationsProvider";
 import { handsAreDifferent } from "../utils/handsAreDifferent.ts";
+import { useCardAnimations } from "./CardAnimationsProvider";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -55,6 +55,7 @@ interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
+  checkOrCreateGame: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -87,6 +88,7 @@ const GameContext = createContext<IGameContext>({
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
+  checkOrCreateGame: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -147,8 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //variables
   const lsUser = localStorage.getItem(LOGGED_USER);
-  const address = account?.account?.address;
-  const username = lsUser ?? address ?? "0xtest";
+  const username = lsUser;
   const handsLeft = round?.hands;
   const currentHandId = getHandId(hand);
 
@@ -216,23 +217,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCreateGame = () => {
-    console.log("Creating game...");
     setError(false);
     setGameLoading(true);
-    createGame(account.account, username).then((newGameId) => {
-      if (newGameId) {
-        refetchHand();
-        setGameId(newGameId);
-        clearPreSelection();
-        localStorage.setItem(GAME_ID, newGameId.toString());
-        console.log(`game ${newGameId} created`);
-        setGameLoading(false);
-        setPreSelectionLocked(false);
-        setRoundRewards(undefined);
-      } else {
-        setError(true);
-      }
-    });
+    if (username) {
+      console.log("Creating game...");
+      createGame(account.account, username).then((newGameId) => {
+        if (newGameId) {
+          refetchHand();
+          setGameId(newGameId);
+          clearPreSelection();
+          localStorage.setItem(GAME_ID, newGameId.toString());
+          console.log(`game ${newGameId} created`);
+          setGameLoading(false);
+          setPreSelectionLocked(false);
+          setRoundRewards(undefined);
+        } else {
+          setError(true);
+        }
+      });
+    }
   };
 
   const animatePlay = (playEvents: PlayEvents) => {
@@ -502,17 +505,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
+  const checkOrCreateGame = () => {
+    // if game id is valid
+    if (gameId > 0) {
+      console.log("checking game exists", gameId);
+      if (!gameExists(Game, gameId)) {
+        executeCreateGame();
+      } else {
+        setGameLoading(false);
+        refetch();
+        refetchHand();
+        console.log("Game found, no need to create a new one");
+      }
+    }
+  };
+
   //effects
   useEffect(() => {
-    console.log("checking game exists", gameId);
-    if (!gameExists(Game, gameId)) {
-      executeCreateGame();
-    } else {
-      setGameLoading(false);
-      refetch();
-      refetchHand();
-      console.log("Game found, no need to create a new one");
-    }
+    checkOrCreateGame();
   }, []);
 
   useEffect(() => {
@@ -603,6 +613,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         toggleSortBy,
         onShopSkip,
+        checkOrCreateGame,
       }}
     >
       {children}

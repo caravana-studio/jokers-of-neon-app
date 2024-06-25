@@ -1,15 +1,11 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
@@ -28,9 +24,16 @@ export const GameContent = () => {
     addModifier,
     roundRewards,
     gameId,
+    checkOrCreateGame,
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
+  const {
+    setup: {
+      clientComponents: { Game },
+    },
+  } = useDojo();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +58,10 @@ export const GameContent = () => {
       }
     }
   };
+
+  useEffect(() => {
+    checkOrCreateGame();
+  }, []);
 
   if (error) {
     return (
