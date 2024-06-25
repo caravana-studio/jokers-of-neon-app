@@ -6,4 +6,5 @@ export interface ShopItem  {
     idx: number;
     item_type: CardTypes;
     purchased: boolean;
+    temporary: boolean;
 }

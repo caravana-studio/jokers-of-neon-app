@@ -17,6 +17,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
+import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
 interface IShowCardModalProps {
   card: Card;
@@ -37,7 +38,8 @@ export const ShowCardModal = ({
   const specialLength = game?.len_current_special_cards ?? 0;
 
   const notEnoughCash = !card.price || cash < card.price;
-  const noSpaceForSpecialCards = card.isSpecial &&specialLength >= specialMaxLength;
+  const noSpaceForSpecialCards =
+    card.isSpecial && specialLength >= specialMaxLength;
 
   const buyButton = (
     <Button
@@ -76,6 +78,7 @@ export const ShowCardModal = ({
                     : card.isModifier
                       ? "modifier"
                       : "traditional"}
+                  {card.temporary && " (temporary)"}
                 </Heading>
               </Box>
               <Box>
@@ -85,6 +88,11 @@ export const ShowCardModal = ({
                 <Heading variant="neonGreen" size="m">
                   {description}
                 </Heading>
+                {card.temporary && (
+                  <Heading variant="neonGreen" size="md" pt={2}>
+                    {getTemporalCardText(card.remaining)}
+                  </Heading>
+                )}
               </Box>
               <Box>
                 <Heading color="white" size="m">

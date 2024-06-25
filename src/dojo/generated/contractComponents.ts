@@ -152,11 +152,11 @@ export function defineContractComponents(world: World) {
     CurrentSpecialCards: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, effect_card_id: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, effect_card_id: RecsType.Number, is_temporary: RecsType.Boolean, remaining: RecsType.Number },
         {
           metadata: {
             name: "CurrentSpecialCards",
-            types: ["u32","u32","u32"],
+            types: ["u32","u32","u32", "bool", "u32"],
             customTypes: [],
           },
         }
