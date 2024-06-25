@@ -17,6 +17,7 @@ export const GET_SHOP_ITEMS_QUERY = gql`
           idx
           item_type
           purchased
+          temporary
         }
       }
     }
@@ -106,6 +107,7 @@ export const useGetShopItems = (
       id: edge.node.idx.toString(),
       img: `${edge.node.item_type === CardTypes.COMMON ? "" : "effect/"}${edge.node.card_id}.png`,
       purchased: edge.node.purchased,
+      temporary: edge.node.temporary,
     };
   });
 
