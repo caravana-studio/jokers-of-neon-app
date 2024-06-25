@@ -63,6 +63,7 @@ export function createSystemCalls(
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
+      console.log("tx: ", tx);
 
       if (tx.isSuccess()) {
         const events = tx.events;
@@ -225,6 +226,7 @@ export function createSystemCalls(
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
+      console.log("tx: ", tx);
 
       if (tx.isSuccess()) {
         const events = tx.events;
