@@ -128,6 +128,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     setup: {
+      masterAccount,
       systemCalls: {
         createGame,
         checkHand,
@@ -515,7 +516,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardSpecialCard = (cardIdx: number) => {
-    return discardSpecialCard(account.account, gameId, cardIdx)
+    return discardSpecialCard(account.account, gameId, cardIdx);
   };
 
   const checkOrCreateGame = () => {
@@ -532,8 +533,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   //effects
   useEffect(() => {
-    checkOrCreateGame();
-  }, []);
+    // if masterAccount === account.account, it means the burner did not get created yet
+    if (account.account !== masterAccount && username) {
+      checkOrCreateGame();
+    }
+  }, [account.account, username]);
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
