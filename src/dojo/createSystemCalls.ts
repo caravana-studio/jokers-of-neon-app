@@ -155,7 +155,6 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      setComponentsFromEvents(contractComponents, getEvents(tx));
       return tx.isSuccess();
     } catch (e) {
       console.log(e);

@@ -55,7 +55,7 @@ interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
-  discardSpecialCard: (cardIdx: number) => void;
+  discardSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
 }
 
@@ -89,7 +89,7 @@ const GameContext = createContext<IGameContext>({
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
-  discardSpecialCard: () => {},
+  discardSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
@@ -515,16 +515,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardSpecialCard = (cardIdx: number) => {
-    discardSpecialCard(account.account, gameId, cardIdx).then(
-      (response): void => {
-        if (response) {
-          setDiscardAnimation(true);
-          setTimeout(() => {
-            setDiscardAnimation(false);
-          }, 1500);
-        }
-      }
-    );
+    return discardSpecialCard(account.account, gameId, cardIdx)
   };
 
   const checkOrCreateGame = () => {
