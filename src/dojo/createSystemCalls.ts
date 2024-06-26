@@ -7,6 +7,7 @@ import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
+import { getCheckHandEvents } from "../utils/playEvents/getCheckHandEvents";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -66,21 +67,11 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
-        const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
-        const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
         return {
-          play,
-          multi,
-          points,
+          checkHandEvents: getCheckHandEvents(events),
         };
       }
-
-      return {
-        play: Plays.NONE,
-        multi: 0,
-        points: 0,
-      };
+      return undefined;
     } catch (e) {
       console.log(e);
     }

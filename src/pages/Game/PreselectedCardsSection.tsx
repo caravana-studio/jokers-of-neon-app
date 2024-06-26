@@ -22,6 +22,7 @@ export const PreselectedCardsSection = () => {
     discard,
     roundRewards,
     gameId,
+    checkingHand,
   } = useGameContext();
 
   const { data: round } = useGetRound(gameId);
@@ -35,7 +36,10 @@ export const PreselectedCardsSection = () => {
       <ActionButton
         position="LEFT"
         disabled={
-          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+          preSelectedCards?.length === 0 ||
+          !handsLeft ||
+          handsLeft === 0 ||
+          checkingHand
         }
         onClick={play}
         label={["PLAY", "HAND"]}
