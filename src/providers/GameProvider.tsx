@@ -55,6 +55,7 @@ interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
+  discardSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
 }
 
@@ -88,6 +89,7 @@ const GameContext = createContext<IGameContext>({
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
+  discardSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
@@ -126,7 +128,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     setup: {
-      systemCalls: { createGame, checkHand, discard, discardEffectCard, play },
+      systemCalls: {
+        createGame,
+        checkHand,
+        discard,
+        discardEffectCard,
+        discardSpecialCard,
+        play,
+      },
       clientComponents: { Game },
     },
     account,
@@ -505,6 +514,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
+  const onDiscardSpecialCard = (cardIdx: number) => {
+    return discardSpecialCard(account.account, gameId, cardIdx)
+  };
+
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
@@ -610,6 +623,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         toggleSortBy,
         onShopSkip,
+        discardSpecialCard: onDiscardSpecialCard,
         checkOrCreateGame,
       }}
     >

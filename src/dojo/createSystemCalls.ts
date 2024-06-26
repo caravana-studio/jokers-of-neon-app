@@ -139,6 +139,29 @@ export function createSystemCalls(
     }
   };
 
+  const discardSpecialCard = async (
+    account: AccountInterface,
+    gameId: number,
+    card: number
+  ) => {
+    try {
+      const { transaction_hash } = await client.actions.discardSpecialCard({
+        account,
+        gameId,
+        card,
+      });
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return tx.isSuccess();
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
   const skipShop = async (account: AccountInterface, gameId: number) => {
     try {
       const { transaction_hash } = await client.actions.skipShop({
@@ -261,6 +284,7 @@ export function createSystemCalls(
     checkHand,
     discard,
     discardEffectCard,
+    discardSpecialCard,
     play,
     skipShop,
     buyCard,

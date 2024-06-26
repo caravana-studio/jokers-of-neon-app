@@ -20,7 +20,7 @@ const getSpecialCard = (
   return {
     card_id,
     isSpecial: true,
-    id: index.toString(),
+    id: card_id.toString(),
     idx: index,
     img: `effect/${card_id}.png`,
     temporary: specialCard.is_temporary,
