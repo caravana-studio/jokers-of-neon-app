@@ -23,7 +23,7 @@ import { useGetStore } from "../../queries/useGetStore";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { gameId } = useGameContext();
+  const { gameId, setHand } = useGameContext();
   const { data: game} = useGetGame(gameId);
   const { data: store } = useGetStore(gameId);
   const state = game?.state;
@@ -112,7 +112,8 @@ export const Store = () => {
               setLoading(true);
               onShopSkip();
               skipShop(account.account, gameId).then((response): void => {
-                if (response) {
+                if (response.success) {
+                  setHand(response.cards);
                   navigate("/redirect/demo");
                 } else {
                   setLoading(false);

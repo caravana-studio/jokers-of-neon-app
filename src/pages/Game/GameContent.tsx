@@ -20,7 +20,6 @@ export const GameContent = () => {
     error,
     clearPreSelection,
     executeCreateGame,
-    refetchHand,
     addModifier,
     roundRewards,
     gameId,
@@ -44,7 +43,6 @@ export const GameContent = () => {
       } else if (game?.state === "AT_SHOP") {
         navigate("/store");
       }
-      refetchHand(2);
     }
   }, [game?.state, roundRewards]);
 
