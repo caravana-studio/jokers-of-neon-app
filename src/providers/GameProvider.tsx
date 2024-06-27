@@ -478,14 +478,33 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
-    discardEffectCard(account.account, gameId, cardIdx).then(
-      (response): void => {
+    const newHand = hand?.map((card) => {
+      if (card.idx === cardIdx) {
+        return {
+          ...card,
+          discarded: true,
+        };
+      }
+      return card;
+    });
+    setHand(newHand);
+    discardEffectCard(account.account, gameId, cardIdx)
+      .then((response): void => {
         if (response.success) {
           refetch();
           replaceCards(response.cards);
         }
-      }
-    );
+      })
+      .catch(() => {
+        // rollback, remove discarded boolean from all cards
+        const newHand = hand?.map((card) => {
+          return {
+            ...card,
+            discarded: false,
+          };
+        });
+        setHand(newHand);
+      });
   };
 
   const onDiscardSpecialCard = (cardIdx: number) => {
