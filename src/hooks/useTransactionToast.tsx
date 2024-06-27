@@ -1,7 +1,7 @@
 import { ExternalToast, toast } from 'sonner'
 import { shortenHex } from "@dojoengine/utils";
 import { getEnvString} from '../utils/getEnvValue.ts'
-import { CLUBS, NEON_GREEN, NEON_PINK } from '../theme/colors.tsx'
+import { LOADING_TOAST, SUCCESS_TOAST, ERROR_TOAST } from '../theme/colors.tsx'
 
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
@@ -20,7 +20,7 @@ const STYLES = {
   marginRight: "6px",
   color: "white",
   padding: "3px 6px",
-  backgroundColor: NEON_GREEN,
+  backgroundColor: LOADING_TOAST,
 }
 
 const getToastAction = (transaction_hash: string) => {
@@ -51,7 +51,7 @@ export const useTransactionToast = () => {
 
     const styles = {
       ...STYLES,
-      backgroundColor: type == 'success' ? CLUBS : NEON_PINK,
+      backgroundColor: type == 'success' ? SUCCESS_TOAST : ERROR_TOAST,
     };
 
     if (type === 'success') {
