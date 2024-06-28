@@ -20,11 +20,9 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CheckHandEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
-import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
-const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
 
 interface IGameContext {
@@ -402,9 +400,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setTimeout(() => {
                 navigate("/gameover");
               }, 1000);
-            }
-
-            if (response.levelPassed && response.detailEarned) {
+            } else if (response.levelPassed && response.detailEarned) {
               const { level } = response.levelPassed;
               setRoundRewards({
                 ...response.detailEarned,
@@ -412,8 +408,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               });
               setPreSelectionLocked(true);
             } else {
+              response.cards && replaceCards(response.cards);
               setRoundRewards(undefined);
             }
+
           }, ALL_CARDS_DURATION + 500);
         }
       }

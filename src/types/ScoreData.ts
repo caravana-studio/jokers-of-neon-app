@@ -5,6 +5,7 @@ export interface PlayEvents {
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
   detailEarned?: DetailEarned;
+  cards: Card[];
 }
 
 export interface CheckHandEvents {
@@ -15,7 +16,6 @@ export interface CheckHandEvents {
   levelEvent?: LevelEvent;
   specialSuitEvents?: SpecialSuitEvent[];
   modifierSuitEvents?: ModifierSuitEvent[];
-  cards: Card[];
 }
 
 export interface LevelPassedEvent {

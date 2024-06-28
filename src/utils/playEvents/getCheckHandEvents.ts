@@ -18,7 +18,6 @@ export const getCheckHandEvents = (events: DojoEvent[]): CheckHandEvents => {
     levelEvent: getSpecialLevelEvent(events),
     specialSuitEvents: getSpecialSuitEvents(events),
     modifierSuitEvents: getModifierSuitEvents(events),
-    cards: getCardsFromEvents(events),
   };
 
   return checkHandEvents;
