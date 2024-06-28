@@ -1,15 +1,21 @@
 import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
+import { useTransactionToast } from '../hooks/useTransactionToast.tsx';
+import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { useTransactionToast } from '../hooks/useTransactionToast.tsx'
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
+
+const createGameEmptyResponse = {
+  gameId: 0,
+  hand: [],
+}
 
 export function createSystemCalls(
   { client }: { client: IWorld },
@@ -44,19 +50,22 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        const value = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
         updateTransactionToast(transaction_hash, 'success');
-        console.log("Game " + value + " created");
-        return value;
+        const gameId = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
+        console.log("Game " + gameId + " created");
+        return {
+          gameId,
+          hand: getCardsFromEvents(events),
+        };
       } else {
         updateTransactionToast(transaction_hash, 'error');
         console.error("Error creating game:", tx);
-        return false;
+        return createGameEmptyResponse;
       }
     } catch (e) {
       updateTransactionToast('error', 'error');
       console.log(e);
-      return false;
+      return createGameEmptyResponse;
     }
   };
 
@@ -130,10 +139,25 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      return updateToast(tx.isSuccess(), transaction_hash);
+      updateToast(tx.isSuccess(), transaction_hash);
+      if (tx.isSuccess()) {
+        return {
+          success: true,
+          cards: getCardsFromEvents(tx.events),
+        };
+      } else {
+        return {
+          success: false,
+          cards: [],
+        };
+      }
+
     } catch (e) {
       console.log(e);
-      return false;
+      return {
+        success: false,
+        cards: [],
+      };;
     }
   };
 
@@ -155,11 +179,25 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      return updateToast(tx.isSuccess(), transaction_hash);
+      updateToast(tx.isSuccess(), transaction_hash);
+      if (tx.isSuccess()) {
+        return {
+          success: true,
+          cards: getCardsFromEvents(tx.events),
+        };
+      } else {
+        return {
+          success: false,
+          cards: [],
+        };
+      }
     } catch (e) {
       updateTransactionToast('Error', 'error');
       console.log(e);
-      return false;
+      return {
+        success: false,
+        cards: [],
+      };
     }
   };
 
@@ -199,9 +237,24 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      return updateToast(tx.isSuccess(), transaction_hash);
+      updateToast(tx.isSuccess(), transaction_hash);
+      if (tx.isSuccess()) {
+        return {
+          success: true,
+          cards: getCardsFromEvents(tx.events),
+        };
+      } else {
+        return {
+          success: false,
+          cards: [],
+        };
+      }
     } catch (e) {
       console.log(e);
+      return {
+        success: false,
+        cards: [],
+      };
     }
   };
 

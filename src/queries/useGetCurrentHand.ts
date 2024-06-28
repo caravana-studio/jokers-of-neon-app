@@ -1,10 +1,9 @@
 import { useQuery } from "react-query";
+import { SortBy } from "../enums/sortBy";
 import graphQLClient from "../graphQLClient";
 import { Card } from "../types/Card";
-import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards";
 import { GET_CURRENT_HAND_QUERY } from "./gqlQueries";
-import { SortBy } from "../enums/sortBy";
 
 export const CURRENT_HAND_QUERY_KEY = "current-hand";
 
@@ -40,24 +39,10 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
   });
 };
 
-const REFETCH_HAND_INTERVAL_ACTIVE =
-  getEnvNumber("VITE_REFETCH_HAND_INTERVAL_ACTIVE") || 100;
-const REFETCH_HAND_INTERVAL_INACTIVE =
-  getEnvNumber("VITE_REFETCH_HAND_INTERVAL_INACTIVE") || 5000;
-
-export const useGetCurrentHand = (gameId: number, refetchingHand: boolean, sortBy: SortBy) => {
+export const useGetCurrentHand = (gameId: number, sortBy: SortBy) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
     () => fetchGraphQLData(gameId),
-    {
-      refetchInterval: refetchingHand
-        ? REFETCH_HAND_INTERVAL_ACTIVE
-        : REFETCH_HAND_INTERVAL_INACTIVE, // if refetching hand is active, refetch hand more often
-      cacheTime: 0, // Disable caching
-      staleTime: 0, // Make data stale immediately
-      refetchOnWindowFocus: true,
-      refetchOnMount: true,
-    }
   );
   const { data } = queryResponse;
 
