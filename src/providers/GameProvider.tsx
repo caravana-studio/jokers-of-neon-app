@@ -213,6 +213,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       createGame(account.account, username).then((response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
+          navigate("/redirect/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
