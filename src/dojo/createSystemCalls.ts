@@ -363,6 +363,7 @@ export function createSystemCalls(
       });
 
       updateTransactionToast(transaction_hash, 'success');
+      return tx.isSuccess();
     } catch (e) {
       console.log(e);
       return false;
