@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck";
+import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
@@ -24,7 +25,7 @@ import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
-  const { data: game} = useGetGame(gameId);
+  const { data: game } = useGetGame(gameId);
   const { data: store } = useGetStore(gameId);
   const state = game?.state;
   const { onShopSkip } = useGameContext();
@@ -65,6 +66,7 @@ export const Store = () => {
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
+      <GameMenu />
       <Flex
         justifyContent="space-between"
         gap={50}
