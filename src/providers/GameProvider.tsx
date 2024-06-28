@@ -341,7 +341,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
           setTimeout(() => {
             //traditional cards and modifiers
-              cardAnimationEvents.cardScore.forEach((card, index) => {
+            cardAnimationEvents.cardScore.forEach((card, index) => {
               setTimeout(() => {
                 const { idx, points, multi } = card;
                 setAnimatedCard({
@@ -379,7 +379,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setTimeout(() => {
         setPlayAnimation(true);
       }, ALL_CARDS_DURATION);
-
     }
   };
 
@@ -411,7 +410,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               response.cards && replaceCards(response.cards);
               setRoundRewards(undefined);
             }
-
           }, ALL_CARDS_DURATION + 500);
         }
       }
@@ -553,8 +551,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (preSelectedCards.length > 0) {
       setCheckingHand(true);
-      checkHand(account.account, gameId, preSelectedCards, preSelectedModifiers)
+      console.log("checking hand");
+      const checkHandPromise = checkHand(
+        account.account,
+        gameId,
+        preSelectedCards,
+        preSelectedModifiers
+      );
+      checkHandPromise
         .then((result) => {
+          console.log("checkHand result", result);
           setCheckingHand(false);
           if (result?.checkHandEvents.checkHand) {
             setPreSelectedPlay(

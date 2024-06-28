@@ -68,7 +68,8 @@ export function createSystemCalls(
         modifiers1,
         modifiers2,
       });
-
+      console.log("checkHand tx", transaction_hash);
+      
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
