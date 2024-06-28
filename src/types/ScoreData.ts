@@ -1,4 +1,5 @@
 import { Suits } from "../enums/suits";
+import { Card } from "./Card";
 
 export interface PlayEvents {
   gameOver: boolean;
@@ -9,11 +10,12 @@ export interface PlayEvents {
 export interface CheckHandEvents {
   checkHand: PlayEvent;
   play: MultiPoints;
-  cards: CardScore[];
+  cardScore: CardScore[];
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
   specialSuitEvents?: SpecialSuitEvent[];
   modifierSuitEvents?: ModifierSuitEvent[];
+  cards: Card[];
 }
 
 export interface LevelPassedEvent {

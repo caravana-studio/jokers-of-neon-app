@@ -1,5 +1,6 @@
 import { DojoEvent } from "../../types/DojoEvent";
 import { CheckHandEvents } from "../../types/ScoreData";
+import { getCardsFromEvents } from "../getCardsFromEvents";
 import { getCheckHandEvent } from "./getCheckHandEvent";
 import { getHandEvent } from "./getHandEvent";
 import { getModifierSuitEvents } from "./getModifierSuitEvents";
@@ -12,11 +13,12 @@ export const getCheckHandEvents = (events: DojoEvent[]): CheckHandEvents => {
   const checkHandEvents: CheckHandEvents = {
     checkHand: getCheckHandEvent(events),
     play: getHandEvent(events),
-    cards: getTraditionalCardsEvents(events),
+    cardScore: getTraditionalCardsEvents(events),
     specialCards: getMultiPointEvents(events),
     levelEvent: getSpecialLevelEvent(events),
     specialSuitEvents: getSpecialSuitEvents(events),
     modifierSuitEvents: getModifierSuitEvents(events),
+    cards: getCardsFromEvents(events),
   };
 
   return checkHandEvents;

@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,16 +13,15 @@ import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
-import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { useGetCurrentHand } from "../queries/useGetCurrentHand.ts";
 import { useGetDeck } from "../queries/useGetDeck";
 import { useGetRound } from "../queries/useGetRound.ts";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
-import { CheckHandEvents, PlayEvents } from "../types/ScoreData.ts";
+import { CheckHandEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
-import { getHandId } from "../utils/getHandId.ts";
-import { handsAreDifferent } from "../utils/handsAreDifferent.ts";
+import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
@@ -38,6 +38,7 @@ interface IGameContext {
   setPreSelectedCards: (cards: number[]) => void;
   play: () => void;
   hand: Card[];
+  setHand: (cards: Card[]) => void;
   getModifiers: (preSelectedCardIndex: number) => Card[];
   togglePreselected: (cardIndex: number) => void;
   discardAnimation: boolean;
@@ -47,8 +48,6 @@ interface IGameContext {
   error: boolean;
   clearPreSelection: () => void;
   loadingStates: boolean;
-  refetchingHand: boolean;
-  refetchHand: (times?: number) => void;
   preSelectedModifiers: { [key: number]: number[] };
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
@@ -71,6 +70,7 @@ const GameContext = createContext<IGameContext>({
   setPreSelectedCards: (_) => {},
   play: () => {},
   hand: [],
+  setHand: (_) => {},
   getModifiers: (_) => {
     return [];
   },
@@ -82,8 +82,6 @@ const GameContext = createContext<IGameContext>({
   error: false,
   clearPreSelection: () => {},
   loadingStates: false,
-  refetchingHand: false,
-  refetchHand: (_) => {},
   preSelectedModifiers: {},
   addModifier: (_, __) => {},
   roundRewards: undefined,
@@ -111,15 +109,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
     [key: number]: number[];
   }>({});
-  const [frozenHand, setFrozenHand] = useState<Card[] | undefined>();
-  const [updatedHand, setUpdatedHand] = useState<Card[] | undefined>();
-  const [previousLevelHandId, setPreviousLevelHandId] = useState<
-    string | undefined
-  >();
-  const [refetchingHand, setRefetchingHand] = useState(false);
   const [cardAnimationEvents, setCardAnimationEvents] = useState<
     CheckHandEvents | undefined
   >(undefined);
+  const [hand, setHand] = useState<Card[]>([]);
   const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
     undefined
   );
@@ -127,10 +120,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [sortBySuit, setSortBySuit] = useState(
     !!localStorage.getItem(SORT_BY_SUIT)
   );
-  const sortBy: SortBy = sortBySuit ? SortBy.SUIT : SortBy.RANK;
+  const sortBy: SortBy = useMemo(
+    () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
+    [sortBySuit]
+  );
+
+  const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
   //hooks
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
+
+  const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
 
   const {
     setup: {
@@ -148,15 +148,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: apiHand } = useGetCurrentHand(gameId, refetchingHand, sortBy);
-  const hand = frozenHand ?? updatedHand ?? apiHand;
-
-  useEffect(() => {
-    if (updatedHand && handsAreDifferent(apiHand, updatedHand)) {
-      setUpdatedHand(undefined);
-    }
-  });
-
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
   const navigate = useNavigate();
@@ -167,7 +158,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
   const handsLeft = round?.hands;
-  const currentHandId = getHandId(hand);
 
   //animation durations variables
   const MODIFIER_SUIT_CHANGE_DURATION =
@@ -180,7 +170,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     ? PLAY_ANIMATION_DURATION * 2
     : 0;
   const COMMON_CARDS_DURATION =
-    PLAY_ANIMATION_DURATION * (cardAnimationEvents?.cards.length ?? 0);
+    PLAY_ANIMATION_DURATION * (cardAnimationEvents?.cardScore.length ?? 0);
   const SPECIAL_CARDS_DURATION =
     PLAY_ANIMATION_DURATION * (cardAnimationEvents?.specialCards?.length ?? 0);
   const ALL_CARDS_DURATION =
@@ -205,14 +195,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
-    refetchHand();
     refetchRound();
     setCardAnimationEvents(undefined);
     setCheckingHand(false);
   };
 
   const onShopSkip = () => {
-    setPreviousLevelHandId(currentHandId);
     resetLevel();
   };
 
@@ -227,15 +215,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         };
       });
     }
-  };
-
-  const refetchHand = (times: number = 1) => {
-    console.log("refetching hand");
-    setRefetchingHand(true);
-    setTimeout(() => {
-      console.log("refetching hand done");
-      setRefetchingHand(false);
-    }, REFETCH_HAND_GAP * times); // Will keep refetching hand for REFETCH_HAND_GAP ms
   };
 
   const refetch = () => {
@@ -263,9 +242,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     if (username) {
       console.log("Creating game...");
-      createGame(account.account, username).then((newGameId) => {
+      createGame(account.account, username).then((response) => {
+        const { gameId: newGameId, hand } = response;
         if (newGameId) {
-          refetchHand();
+          setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
@@ -292,7 +272,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               idx: [event.idx],
               animationIndex: index,
             });
-            setFrozenHand((prev) => {
+            setHand((prev) => {
               const newHand = prev?.map((card) => {
                 if (event.idx === card.idx) {
                   return {
@@ -316,7 +296,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               idx: event.idx,
               animationIndex: 10 + index,
             });
-            setFrozenHand((prev) => {
+            setHand((prev) => {
               const newHand = prev?.map((card) => {
                 if (event.idx.includes(card.idx)) {
                   return {
@@ -363,7 +343,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
           setTimeout(() => {
             //traditional cards and modifiers
-            cardAnimationEvents.cards.forEach((card, index) => {
+              cardAnimationEvents.cardScore.forEach((card, index) => {
               setTimeout(() => {
                 const { idx, points, multi } = card;
                 setAnimatedCard({
@@ -401,11 +381,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setTimeout(() => {
         setPlayAnimation(true);
       }, ALL_CARDS_DURATION);
+
     }
   };
 
   const onPlayClick = () => {
-    setFrozenHand(hand);
     play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
       (response) => {
         if (response) {
@@ -415,9 +395,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation(false);
             clearPreSelection();
             refetch();
-            refetchHand();
             handsLeft > 0 && setPreSelectionLocked(false);
-            setFrozenHand(undefined);
 
             if (response.gameOver) {
               console.log("GAME OVER");
@@ -484,6 +462,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const replaceCards = (cards: Card[]) => {
+    const newHand = hand?.map((card) => {
+      const newCard = cards.find((c) => c.idx === card.idx);
+      if (newCard) {
+        return newCard;
+      } else {
+        return card;
+      }
+    });
+    setHand(newHand);
+  };
+
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
@@ -493,14 +483,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       preSelectedCards,
       preSelectedModifiers
     ).then((response) => {
-      refetchHand();
-      if (response) {
-        setTimeout(() => {
-          setPreSelectionLocked(false);
-          clearPreSelection();
-          refetch();
-          setDiscardAnimation(false);
-        }, 1500);
+      if (response.success) {
+        replaceCards(response.cards);
+        setPreSelectionLocked(false);
+        clearPreSelection();
+        refetch();
+        setDiscardAnimation(false);
       }
     });
   };
@@ -515,18 +503,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }
       return card;
     });
-    setUpdatedHand(newHand);
-
-    discardEffectCard(account.account, gameId, cardIdx).then(
-      (response): void => {
-        refetchHand();
-        if (response) {
-          setTimeout(() => {
-            refetch();
-          }, 1500);
+    setHand(newHand);
+    discardEffectCard(account.account, gameId, cardIdx)
+      .then((response): void => {
+        if (response.success) {
+          refetch();
+          replaceCards(response.cards);
         }
-      }
-    );
+      })
+      .catch(() => {
+        // rollback, remove discarded boolean from all cards
+        const newHand = hand?.map((card) => {
+          return {
+            ...card,
+            discarded: false,
+          };
+        });
+        setHand(newHand);
+      });
   };
 
   const onDiscardSpecialCard = (cardIdx: number) => {
@@ -540,7 +534,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     } else {
       setGameLoading(false);
       refetch();
-      refetchHand();
       console.log("Game found, no need to create a new one");
     }
   };
@@ -552,6 +545,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       checkOrCreateGame();
     }
   }, [account.account, username]);
+
+  useEffect(() => {
+    if (apiHand?.length > 0 && hand.length === 0) {
+      setHand(apiHand);
+    }
+  }, [apiHand]);
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
@@ -603,21 +602,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [deck]);
 
-  useEffect(() => {
-    if (hand.length < 8) {
-      setGameLoading(true);
-      setRefetchingHand(true);
-    } else if (gameLoading) {
-      setRefetchingHand(false);
-      setGameLoading(false);
-    }
-  }, [hand]);
-
-  const loadingStates =
-    deck.size === 0 ||
-    hand.length < 8 ||
-    round.levelScore === 0 ||
-    previousLevelHandId === currentHandId;
+  const loadingStates = deck.size === 0 || round.levelScore === 0;
 
   return (
     <GameContext.Provider
@@ -631,7 +616,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         preSelectedCards,
         setPreSelectedCards,
         play: onPlayClick,
-        hand,
+        hand: sortedHand,
+        setHand,
         getModifiers,
         togglePreselected,
         discardAnimation,
@@ -641,8 +627,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         error,
         clearPreSelection,
         loadingStates,
-        refetchingHand,
-        refetchHand,
         preSelectedModifiers,
         addModifier,
         roundRewards,
