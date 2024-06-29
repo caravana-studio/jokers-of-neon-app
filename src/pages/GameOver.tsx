@@ -5,10 +5,12 @@ import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { noisyTv } from "../scripts/noisyTv";
+import { useGameContext } from '../providers/GameProvider'
 
 export const GameOver = () => {
   const navigate = useNavigate();
   const [lastGameId, setLastGameId] = useState(getLSGameId());
+  const { restartGame } = useGameContext();
 
   useEffect(() => {
     noisyTv(100);
@@ -66,6 +68,7 @@ export const GameOver = () => {
         }}
         onClick={() => {
           localStorage.removeItem(GAME_ID);
+          restartGame();
           navigate("/demo");
         }}
       >

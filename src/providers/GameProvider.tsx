@@ -56,6 +56,7 @@ interface IGameContext {
   onShopSkip: () => void;
   discardSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
+  restartGame: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -89,6 +90,7 @@ const GameContext = createContext<IGameContext>({
   onShopSkip: () => {},
   discardSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
+  restartGame: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -512,6 +514,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     return discardSpecialCard(account.account, gameId, cardIdx);
   };
 
+  const cleanGameId = () => {
+    setGameId(0);
+  }
+
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
@@ -612,6 +618,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         onShopSkip,
         discardSpecialCard: onDiscardSpecialCard,
         checkOrCreateGame,
+        restartGame: cleanGameId,
       }}
     >
       {children}
