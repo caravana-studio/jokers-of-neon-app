@@ -14,6 +14,7 @@ export const GAME_QUERY = gql`
           round
           len_max_current_special_cards
           len_current_special_cards
+          player_score
         }
       }
     }
@@ -27,6 +28,7 @@ interface GameEdge {
     round: number;
     len_max_current_special_cards: number;
     len_current_special_cards: number;
+    player_score: number;
   };
 }
 
