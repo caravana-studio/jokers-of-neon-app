@@ -1,20 +1,25 @@
 import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
+import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
+import {
+  failedTransactionToast,
+  showTransactionToast,
+  updateTransactionToast,
+} from "../utils/transactionNotifications.tsx";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 const createGameEmptyResponse = {
   gameId: 0,
   hand: [],
-}
+};
 
 export function createSystemCalls(
   { client }: { client: IWorld },
@@ -23,15 +28,18 @@ export function createSystemCalls(
 ) {
   const createGame = async (account: AccountInterface, username: string) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.createGame({
         account,
         username,
       });
+      showTransactionToast(transaction_hash, "Creating game...");
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
         const gameId = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
@@ -45,6 +53,7 @@ export function createSystemCalls(
         return createGameEmptyResponse;
       }
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return createGameEmptyResponse;
     }
@@ -75,9 +84,9 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
-        const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
-        const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
+        const play = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
+        const multi = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
+        const points = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
         return {
           play,
           multi,
@@ -106,6 +115,7 @@ export function createSystemCalls(
       modifiers
     );
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.discard({
         account,
         gameId,
@@ -113,11 +123,13 @@ export function createSystemCalls(
         modifiers1,
         modifiers2,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -129,13 +141,13 @@ export function createSystemCalls(
           cards: [],
         };
       }
-
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
         cards: [],
-      };;
+      };
     }
   };
 
@@ -145,16 +157,19 @@ export function createSystemCalls(
     card: number
   ) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.discardEffectCard({
         account,
         gameId,
         card,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -167,6 +182,7 @@ export function createSystemCalls(
         };
       }
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
@@ -194,21 +210,24 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
   const skipShop = async (account: AccountInterface, gameId: number) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.skipShop({
         account,
         gameId,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -221,6 +240,7 @@ export function createSystemCalls(
         };
       }
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
@@ -236,43 +256,48 @@ export function createSystemCalls(
     card_type: number
   ) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.buyCard({
         account,
         gameId,
         card_idx,
         card_type,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
-      return tx.isSuccess();
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
+
   const levelUpPokerHand = async (
     account: AccountInterface,
     gameId: number,
     item_id: number
   ) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.levelUpPokerHand({
         account,
         gameId,
         item_id,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
-      return tx.isSuccess();
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
@@ -287,6 +312,7 @@ export function createSystemCalls(
       modifiers
     );
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.play({
         account,
         gameId,
@@ -294,38 +320,41 @@ export function createSystemCalls(
         modifiers1,
         modifiers2,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
         return getPlayEvents(events);
       }
-      return undefined;
+      return;
     } catch (e) {
       console.log(e);
+      failedTransactionToast();
+      return;
     }
   };
 
-  const storeReroll = async (
-    account: AccountInterface,
-    gameId: number,
-  ) => {
+  const storeReroll = async (account: AccountInterface, gameId: number) => {
     try {
+      showTransactionToast();
       const { transaction_hash } = await client.actions.storeReroll({
         account,
         gameId,
       });
+      showTransactionToast(transaction_hash);
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
-      return tx.isSuccess();
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 

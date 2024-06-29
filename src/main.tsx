@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/generated/setup.ts";
 import "./index.css";
+import { Toaster } from 'sonner'
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -19,6 +20,7 @@ async function init() {
     <DojoProvider value={setupResult}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
+          <Toaster/>
           <App />
         </QueryClientProvider>
       </BrowserRouter>
