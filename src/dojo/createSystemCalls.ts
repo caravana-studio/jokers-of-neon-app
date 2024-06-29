@@ -1,7 +1,11 @@
 import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
-import { useTransactionToast } from '../hooks/useTransactionToast.tsx';
+import {
+  failedTransactionToast,
+  showTransactionToast,
+  updateTransactionToast
+} from '../utils/transactionNotifications.tsx'
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
@@ -22,19 +26,6 @@ export function createSystemCalls(
   contractComponents: ContractComponents,
   { Card, PokerHandEvent, Game }: ClientComponents
 ) {
-  const { showTransactionToast, updateTransactionToast } = useTransactionToast();
-
-  const updateToast = (success: boolean, transaction_hash: string) => {
-    if(success) {
-      updateTransactionToast(transaction_hash, 'success');
-      return true;
-    }
-    else {
-      updateTransactionToast(transaction_hash, 'error');
-      return false;
-    }
-  }
-
   const createGame = async (account: AccountInterface, username: string) => {
     try {
       showTransactionToast();
@@ -48,9 +39,9 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        updateTransactionToast(transaction_hash, 'success');
         const gameId = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
         console.log("Game " + gameId + " created");
         return {
@@ -58,12 +49,11 @@ export function createSystemCalls(
           hand: getCardsFromEvents(events),
         };
       } else {
-        updateTransactionToast(transaction_hash, 'error');
         console.error("Error creating game:", tx);
         return createGameEmptyResponse;
       }
     } catch (e) {
-      updateTransactionToast('error', 'error');
+      failedTransactionToast();
       console.log(e);
       return createGameEmptyResponse;
     }
@@ -139,7 +129,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      updateToast(tx.isSuccess(), transaction_hash);
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -153,11 +143,12 @@ export function createSystemCalls(
       }
 
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
         cards: [],
-      };;
+      };
     }
   };
 
@@ -179,7 +170,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      updateToast(tx.isSuccess(), transaction_hash);
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -192,7 +183,7 @@ export function createSystemCalls(
         };
       }
     } catch (e) {
-      updateTransactionToast('Error', 'error');
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
@@ -220,7 +211,7 @@ export function createSystemCalls(
       return tx.isSuccess();
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
@@ -237,7 +228,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      updateToast(tx.isSuccess(), transaction_hash);
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         return {
           success: true,
@@ -250,6 +241,7 @@ export function createSystemCalls(
         };
       }
     } catch (e) {
+      failedTransactionToast();
       console.log(e);
       return {
         success: false,
@@ -278,11 +270,10 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      return updateToast(tx.isSuccess(), transaction_hash);
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
-      updateTransactionToast('error', 'error');
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
@@ -304,10 +295,10 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      return updateToast(tx.isSuccess(), transaction_hash);
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
@@ -336,14 +327,15 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
+      updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        updateTransactionToast(transaction_hash, 'success');
         return getPlayEvents(events);
       }
       return undefined;
     } catch (e) {
       console.log(e);
+      return failedTransactionToast();
     }
   };
 
@@ -362,11 +354,10 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      updateTransactionToast(transaction_hash, 'success');
-      return tx.isSuccess();
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
-      return false;
+      return failedTransactionToast();
     }
   };
 
