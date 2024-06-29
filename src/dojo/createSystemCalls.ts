@@ -1,14 +1,14 @@
 import { AccountInterface } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
-import {
-  failedTransactionToast,
-  showTransactionToast,
-  updateTransactionToast
-} from '../utils/transactionNotifications.tsx'
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
+import {
+  failedTransactionToast,
+  showTransactionToast,
+  updateTransactionToast,
+} from "../utils/transactionNotifications.tsx";
 import { ClientComponents } from "./createClientComponents";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
@@ -19,7 +19,7 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 const createGameEmptyResponse = {
   gameId: 0,
   hand: [],
-}
+};
 
 export function createSystemCalls(
   { client }: { client: IWorld },
@@ -84,9 +84,9 @@ export function createSystemCalls(
 
       if (tx.isSuccess()) {
         const events = tx.events;
-        const play =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
-        const multi =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
-        const points =getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
+        const play = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
+        const multi = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
+        const points = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
         return {
           play,
           multi,
@@ -141,7 +141,6 @@ export function createSystemCalls(
           cards: [],
         };
       }
-
     } catch (e) {
       failedTransactionToast();
       console.log(e);
@@ -332,17 +331,15 @@ export function createSystemCalls(
         const events = tx.events;
         return getPlayEvents(events);
       }
-      return undefined;
+      return;
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return;
     }
   };
 
-  const storeReroll = async (
-    account: AccountInterface,
-    gameId: number,
-  ) => {
+  const storeReroll = async (account: AccountInterface, gameId: number) => {
     try {
       showTransactionToast();
       const { transaction_hash } = await client.actions.storeReroll({
