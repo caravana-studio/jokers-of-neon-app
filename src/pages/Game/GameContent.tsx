@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
@@ -139,15 +140,17 @@ export const GameContent = () => {
             </Box>
           </DndContext>
         </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 7,
-            right: 10,
-          }}
-        >
-          <GameDeck />
-        </Box>
+        {!isMobile && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 7,
+              right: 10,
+            }}
+          >
+            <GameDeck />
+          </Box>
+        )}
       </Box>
     </Box>
   );
