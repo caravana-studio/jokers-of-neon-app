@@ -13,14 +13,14 @@ export const TopSection = () => {
       justifyContent={"space-between"}
       alignItems={"center"}
     >
-      <Box sx={{ ml: 10 }} width="320px">
+      <Box ml={{ base: 4, md: 10 }} width={{ base: "160px", md: "320px" }}>
         <LevelPoints />
       </Box>
       <Flex
         mx={2}
         flexGrow={1}
         sx={{ p: 2 }}
-        minWidth={{base: '250px', md: "500px"}}
+        minWidth={{ base: "250px", md: "500px" }}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
         backgroundColor="darkGrey"
       >
@@ -31,7 +31,7 @@ export const TopSection = () => {
         justifyContent="center"
         sx={{ mx: 3 }}
         height="100%"
-        width="400px"
+        width={{ base: "210px", md: "400px" }}
       >
         <Score />
         <MultiPoints />

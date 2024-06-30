@@ -43,12 +43,12 @@ export const PreselectedCardsSection = () => {
       />
 
       <Box
+        gap={{ base: 2, md: 5 }}
         sx={{
           width: `${CARD_WIDTH * 7}px`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 5,
         }}
       >
         <Box
@@ -64,7 +64,7 @@ export const PreselectedCardsSection = () => {
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
-                <Box key={card.id} sx={{ mx: 6 }}>
+                <Box key={card.id} mx={{ base: 3, md: 6 }}>
                   <ModifiableCard id={card.id}>
                     <AnimatedCard
                       idx={card.idx}

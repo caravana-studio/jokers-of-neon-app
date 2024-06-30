@@ -4,7 +4,7 @@ export const CARD_WIDTH = isMobile ? 80 :150;
 export const CARD_WIDTH_PX = `${CARD_WIDTH}px`;
 export const CARD_HEIGHT = CARD_WIDTH * 1.4;
 export const CARD_HEIGHT_PX = `${CARD_HEIGHT}px`;
-export const MODIFIERS_OFFSET = 27;
+export const MODIFIERS_OFFSET = isMobile? 20 : 27;
 export const TILT_OPTIONS = {
   reverse: true, // reverse the tilt direction
   max: 30, // max tilt rotation (degrees)
