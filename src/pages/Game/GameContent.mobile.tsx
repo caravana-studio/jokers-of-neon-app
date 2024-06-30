@@ -23,6 +23,8 @@ export const MobileGameContent = () => {
     roundRewards,
     gameId,
     checkOrCreateGame,
+    play,
+    discard,
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
@@ -123,8 +125,12 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex height="10%" mt={2} mx={4} justifyContent={"space-between"}>
-              <Button width="48%">play</Button>
-              <Button width="48%">discard</Button>
+              <Button onClick={play} width="48%">
+                play
+              </Button>
+              <Button onClick={discard} width="48%">
+                discard
+              </Button>
             </Flex>
             <Box
               sx={{
@@ -138,7 +144,7 @@ export const MobileGameContent = () => {
                 <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
                   <SortBy />
                 </Box>
-                <Box pb='65px' mx={6} mr={14}>
+                <Box pb="65px" mx={6} mr={14}>
                   <HandSection />
                 </Box>
               </Box>
