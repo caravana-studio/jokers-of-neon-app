@@ -9,6 +9,7 @@ import {
   NEON_PINK,
   SPADES,
 } from "./colors";
+import { headingTheme } from "./heading";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
 import { tooltipTheme } from "./tooltip";
@@ -57,51 +58,19 @@ export default {
       },
     },
   },
+  breakpoints: {
+    base: "0px",
+    sm: "1000px",
+    md: "1200px",
+    lg: "1400x",
+    xl: "1800px",
+  },
   components: {
     Table: tableTheme,
     Button: button,
-    Heading: {
-      baseStyle: {
-        fontFamily: "Sys",
-        filter: "blur(0.5px)",
-        color: "white",
-      },
-      variants: {
-        neonGreen: {
-          color: NEON_GREEN,
-          textShadow: `0 0 3px ${NEON_GREEN}`,
-        },
-        neonWhite: {
-          textShadow: `0 0 20px ${NEON_PINK}`,
-        },
-        neonPink: {
-          color: NEON_PINK,
-          textShadow: `0 0 20px ${NEON_PINK}`,
-        },
-      },
-      sizes: {
-        s: {
-          fontSize: 17,
-        },
-        m: {
-          fontSize: 25,
-        },
-        l: {
-          fontSize: 40,
-          filter: "blur(1px)",
-        },
-        xl: {
-          fontSize: 50,
-          filter: "blur(1px)",
-        },
-        xxl: {
-          fontSize: 80,
-          filter: "blur(1px)",
-        },
-      },
-    },
     Input: inputTheme,
     Modal: modalTheme,
     Tooltip: tooltipTheme,
+    Heading: headingTheme,
   },
 };

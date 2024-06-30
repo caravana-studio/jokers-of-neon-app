@@ -28,7 +28,7 @@ export const LevelPoints = () => {
       </Flex>
       <Heading
         size="s"
-        sx={{ mt: 4, fontSize: 20, width: 260 }}
+        sx={{ mt: 4, width: 260 }}
         textAlign="center"
       >
         score {round.levelScore} points <br /> to beat level {level ?? 0}

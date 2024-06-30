@@ -20,7 +20,7 @@ export const TopSection = () => {
         mx={2}
         flexGrow={1}
         sx={{ p: 2 }}
-        minWidth="500px"
+        minWidth={{base: '250px', md: "500px"}}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
         backgroundColor="darkGrey"
       >

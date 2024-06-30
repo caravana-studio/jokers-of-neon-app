@@ -127,13 +127,13 @@ export const GameContent = () => {
               <PreselectedCardsSection />
             </Box>
             <Box
+              pb={{ base: 2, md: 10 }}
+              mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
                 height: " 30%",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                mr: 20,
-                pb: 10,
               }}
             >
               <HandSection />

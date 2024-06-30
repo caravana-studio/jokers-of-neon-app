@@ -16,6 +16,9 @@ import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound";
+import { isMobile } from "react-device-detect";
+
+const TRANSLATE_Y_PX = isMobile ? 6 : 10;
 
 export const HandSection = () => {
   const {
@@ -66,7 +69,7 @@ export const HandSection = () => {
               sx={{
                 transform: ` rotate(${
                   (index - 3.5) * 3
-                }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
+                }deg) translateY(${Math.abs(index - 3.5) * TRANSLATE_Y_PX}px)`,
               }}
               onContextMenu={(e) => {
                 e.stopPropagation();
