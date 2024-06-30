@@ -2,17 +2,16 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameDeck } from "../../components/GameDeck.tsx";
-import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { SortBy } from "../../components/SortBy.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
-import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
-import { TopSection } from "./TopSection.tsx";
+import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
+import { MobileTopSection } from "./TopSection.mobile.tsx";
 
-export const GameContent = () => {
+export const MobileGameContent = () => {
   const {
     preSelectedCards,
     gameLoading,
@@ -97,19 +96,17 @@ export const GameContent = () => {
         height: "100%",
       }}
     >
-      <GameMenu />
+      {/* <GameMenu /> */}
       <Box
         sx={{
           height: "100%",
           width: "100%",
-          filter: "blur(0.7px)",
-          animation: "jerkup-mild 100ms infinite",
         }}
         onClick={clearPreSelection}
       >
         <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ height: "30%", width: "100%" }}>
-            <TopSection />
+            <MobileTopSection />
           </Box>
           <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
             <Box
@@ -123,30 +120,30 @@ export const GameContent = () => {
                 backgroundColor: "rgba(0,0,0,0.7)",
               }}
             >
-              <PreselectedCardsSection />
+              <MobilePreselectedCardsSection />
             </Box>
+            <Flex height="10%" mt={2} mx={4} justifyContent={"space-between"}>
+              <Button width="48%">play</Button>
+              <Button width="48%">discard</Button>
+            </Flex>
             <Box
-              pb={{ base: 2, md: 10 }}
-              mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
-                height: " 30%",
+                height: " 20%",
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
             >
-              <HandSection />
+              <Box>
+                <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
+                  <SortBy />
+                </Box>
+                <Box pb={14} mx={6} mr={12}>
+                  <HandSection />
+                </Box>
+              </Box>
             </Box>
           </DndContext>
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 7,
-            right: 10,
-          }}
-        >
-          <GameDeck />
         </Box>
       </Box>
     </Box>
