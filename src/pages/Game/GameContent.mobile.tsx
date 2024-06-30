@@ -106,15 +106,15 @@ export const MobileGameContent = () => {
         }}
         onClick={clearPreSelection}
       >
-        <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%", width: "100%" }}>
+        <Box sx={{ width: "100%", height: "100%", alignItems: "center", display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ height: "34%", width: "100%" }}>
             <MobileTopSection />
           </Box>
           <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
             <Box
               sx={{
                 height: "40%",
-                width: "100%",
+                width: "90%",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
@@ -124,8 +124,9 @@ export const MobileGameContent = () => {
             >
               <MobilePreselectedCardsSection />
             </Box>
-            <Flex height="10%" mt={2} mx={4} justifyContent={"space-between"}>
+            <Flex height="6%" width="90%" mt={2} mx={4} justifyContent={"space-between"}>
               <Button
+              size='m'
                 onClick={(e) => {
                   e.stopPropagation();
                   play();
@@ -135,6 +136,7 @@ export const MobileGameContent = () => {
                 play
               </Button>
               <Button
+              size='m'
                 onClick={(e) => {
                   e.stopPropagation();
                   discard();
@@ -156,7 +158,7 @@ export const MobileGameContent = () => {
                 <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
                   <SortBy />
                 </Box>
-                <Box pb="65px" mx={6} mr={14}>
+                <Box pb="20px" mx={6} mr={14}>
                   <HandSection />
                 </Box>
               </Box>

@@ -4,7 +4,7 @@ export default {
   baseStyle: {
     fontFamily: "Sys",
     borderRadius: 0,
-    fontSize: 17,
+    fontSize: { base: 12, md: 17 },
     px: 5,
     py: 1,
     pointerEvents: "all",
@@ -24,6 +24,11 @@ export default {
     },
   },
   sizes: {
+    m: {
+      fontSize: { base: 14, md: 17 },
+      px: { base: 3, md: 5 },
+      py: { base: 0, md: 1 },
+    },
     l: {
       fontSize: 40,
       px: 90,

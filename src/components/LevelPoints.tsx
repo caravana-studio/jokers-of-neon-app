@@ -32,3 +32,20 @@ export const LevelPoints = () => {
     </Box>
   );
 };
+
+export const MobileLevelPoints = () => {
+  const game = useGame();
+  const { gameId } = useGameContext();
+  const { data: round } = useGetRound(gameId);
+  const level = game?.level ?? 0;
+  return (
+    <Flex gap={2} alignItems='center'>
+      <Heading size="l" sx={{ color: "white" }}>
+            {level ?? 0}
+          </Heading>
+    <Heading size="s" textAlign="center">
+      score {round.levelScore} points <br /> to beat level {level ?? 0}
+    </Heading>
+    </Flex>
+  );
+};

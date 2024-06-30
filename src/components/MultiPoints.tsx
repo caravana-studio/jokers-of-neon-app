@@ -42,13 +42,13 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   const color = colorMap[type];
   return (
     <Box
-      height={{ base: 65, md: 100 }}
+      height={{ base: 55, md: 100 }}
       minWidth={
-        type === "level" ? { base: 50, md: 100 } : { base: 85, md: 150 }
+        type === "level" ? { base: 50, md: 100 } : { base: 75, md: 150 }
       }
+      p={{ base: 1, md: 2 }}
       sx={{
         border: `2px solid ${color}`,
-        p: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

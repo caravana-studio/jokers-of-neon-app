@@ -22,10 +22,10 @@ function App() {
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
         <GameProvider>
-          <main className="scanlines">
+{/*           <main className="scanlines">
             <div className="screen">
               <canvas id="canvas" className="picture"></canvas>
-              <div className="overlay">
+              <div className="overlay"> */}
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
@@ -63,9 +63,9 @@ function App() {
                     }
                   />
                 </Routes>
-              </div>
+{/*               </div>
             </div>
-          </main>
+          </main> */}
         </GameProvider>
       </CardAnimationsProvider>
     </ChakraBaseProvider>

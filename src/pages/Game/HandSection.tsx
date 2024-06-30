@@ -18,7 +18,7 @@ import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound";
 
-const TRANSLATE_Y_PX = isMobile ? 4 : 10;
+const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
 export const HandSection = () => {
   const {
@@ -127,7 +127,8 @@ export const HandSection = () => {
       {handsLeft === 0 && (
         <Heading
           variant="neonGreen"
-          sx={{ position: "fixed", bottom: "100px", fontSize: 30 }}
+          size="m"
+          sx={{ position: "fixed", bottom: "100px" }}
         >
           you ran out of hands to play
         </Heading>
