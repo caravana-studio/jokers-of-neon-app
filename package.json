@@ -47,6 +47,7 @@
     "react-dom": "^18.2.0",
     "react-full-screen": "^1.1.1",
     "react-query": "^3.39.3",
+    "react-remove-scroll": "^2.5.10",
     "react-router-dom": "^6.22.3",
     "react-spring": "^9.7.3",
     "react-tilt": "^1.0.2",
