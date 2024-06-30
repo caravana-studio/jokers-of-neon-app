@@ -125,10 +125,22 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex height="10%" mt={2} mx={4} justifyContent={"space-between"}>
-              <Button onClick={play} width="48%">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  play();
+                }}
+                width="48%"
+              >
                 play
               </Button>
-              <Button onClick={discard} width="48%">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  discard();
+                }}
+                width="48%"
+              >
                 discard
               </Button>
             </Flex>
