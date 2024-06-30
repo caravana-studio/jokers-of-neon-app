@@ -138,7 +138,7 @@ export const MobileGameContent = () => {
                 <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
                   <SortBy />
                 </Box>
-                <Box pb={14} mx={6} mr={12}>
+                <Box pb='65px' mx={6} mr={14}>
                   <HandSection />
                 </Box>
               </Box>

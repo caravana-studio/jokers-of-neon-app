@@ -18,7 +18,7 @@ import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound";
 
-const TRANSLATE_Y_PX = isMobile ? 6 : 10;
+const TRANSLATE_Y_PX = isMobile ? 4 : 10;
 
 export const HandSection = () => {
   const {
