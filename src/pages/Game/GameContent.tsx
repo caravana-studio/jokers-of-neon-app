@@ -97,7 +97,16 @@ export const GameContent = () => {
         height: "100%",
       }}
     >
-      <GameMenu />
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "20px",
+          left: "20px",
+          zIndex: 1000,
+        }}
+      >
+        <GameMenu />
+      </Box>
       <Box
         sx={{
           height: "100%",

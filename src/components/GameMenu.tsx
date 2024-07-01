@@ -1,10 +1,9 @@
 import {
-    Box,
-    IconButton,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,9 +11,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useAudioPlayer } from '../providers/AudioPlayerProvider.tsx';
 import { useGameContext } from "../providers/GameProvider";
 import { GameInfoModal } from "./GameInfoModal";
-import { useAudioPlayer } from '../providers/AudioPlayerProvider.tsx'
 
 export const GameMenu = () => {
   const username = useUsername();
@@ -29,29 +28,23 @@ export const GameMenu = () => {
   };
 
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: "20px",
-        left: "20px",
-        zIndex: 1000,
-      }}
-    >
+    <>
       <Menu>
         <MenuButton
           as={IconButton}
           sx={{
             color: "white",
             border: "3px solid white",
-            px: 3,
-            py: 5,
             boxShadow: `0px 0px 10px 0px white `,
             "&:active": {
               backgroundColor: "black",
             },
           }}
+          px={{ base: 1, md: 3 }}
+          py={{ base: 1, md: 5 }}
+          fontSize={{ base: 20, md: 25 }}
           aria-label="Options"
-          icon={<FontAwesomeIcon fontSize={25} icon={faBars} />}
+          icon={<FontAwesomeIcon icon={faBars} />}
           variant="outline"
         />
         <MenuList backgroundColor="black" sx={{ borderRadius: 0 }}>
@@ -69,7 +62,11 @@ export const GameMenu = () => {
           >
             Turn sound {isPlaying ? "OFF" : "ON"}
           </MenuItem>
-          <MenuItem backgroundColor="black" sx={{ borderRadius: 0 }} onClick={() => setShowInfoModal(true)}>
+          <MenuItem
+            backgroundColor="black"
+            sx={{ borderRadius: 0 }}
+            onClick={() => setShowInfoModal(true)}
+          >
             Game info
           </MenuItem>
           <MenuItem
@@ -86,6 +83,6 @@ export const GameMenu = () => {
         </MenuList>
       </Menu>
       {showInfoModal && <GameInfoModal close={() => setShowInfoModal(false)} />}
-    </Box>
+    </>
   );
 };

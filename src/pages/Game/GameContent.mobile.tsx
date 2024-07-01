@@ -10,6 +10,7 @@ import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { GameMenu } from "../../components/GameMenu.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -98,7 +99,17 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
-      {/* <GameMenu /> */}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "30px",
+          right: "15px",
+          zIndex: 1000,
+          transform: 'scale(0.7)',
+        }}
+      >
+      <GameMenu />
+      </Box>
       <Box
         sx={{
           height: "100%",

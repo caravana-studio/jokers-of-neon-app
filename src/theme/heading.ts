@@ -21,7 +21,7 @@ export const headingTheme = {
   sizes: {
     xxl: { fontSize: { base: 40, sm: 50, md: 65, lg: 80 } },
     xl: { fontSize: { base: 25, sm: 30, md: 42, lg: 50 } },
-    l: { fontSize: { base: 20, sm: 25, md: 32, lg: 40} },
+    l: { fontSize: { base: 20, sm: 25, md: 38, lg: 45} },
     m: { fontSize: { base: 14, sm: 17, md: 20, lg: 25 } },
     s: { fontSize: { base: 11, sm: 13, md: 15, lg: 17 } },
   },
