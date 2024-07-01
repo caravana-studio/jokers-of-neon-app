@@ -4,30 +4,20 @@ import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
-import {
-  CARD_HEIGHT
-} from "../../constants/visualProps.ts";
+import { CARD_HEIGHT } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card.ts";
 
 export const MobilePreselectedCardsSection = () => {
   const {
     preSelectedCards,
-    play,
     hand,
     getModifiers,
     togglePreselected,
     discardAnimation,
     playAnimation,
-    discard,
     roundRewards,
-    gameId,
   } = useGameContext();
-
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
 
   return roundRewards ? (
     <RewardsDetail roundRewards={roundRewards} />

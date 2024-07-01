@@ -2,15 +2,16 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
+import { PlayDiscardSection } from "./PlayDiscardSection.mobile.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { GameMenu } from "../../components/GameMenu.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -102,13 +103,13 @@ export const MobileGameContent = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: "10px",
-          right: "10px",
+          bottom: "5px",
+          right: "5px",
           zIndex: 1000,
-          transform: 'scale(0.7)',
+          transform: "scale(0.7)",
         }}
       >
-      <GameMenu />
+        <GameMenu />
       </Box>
       <Box
         sx={{
@@ -117,7 +118,15 @@ export const MobileGameContent = () => {
         }}
         onClick={clearPreSelection}
       >
-        <Box sx={{ width: "100%", height: "100%", alignItems: "center", display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Box sx={{ height: "34%", width: "100%" }}>
             <MobileTopSection />
           </Box>
@@ -135,27 +144,14 @@ export const MobileGameContent = () => {
             >
               <MobilePreselectedCardsSection />
             </Box>
-            <Flex height="6%" width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <Button
-              size='m'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  play();
-                }}
-                width="48%"
-              >
-                play
-              </Button>
-              <Button
-              size='m'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  discard();
-                }}
-                width="48%"
-              >
-                discard
-              </Button>
+            <Flex
+              height="6%"
+              width="90%"
+              mt={2}
+              mx={4}
+              justifyContent={"space-between"}
+            >
+              <PlayDiscardSection />
             </Flex>
             <Box
               sx={{
