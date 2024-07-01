@@ -11,7 +11,7 @@ interface RewardItemProps {
 const RewardItem = ({ label, value, maxLabelLength }: RewardItemProps) => {
   const fillCharacters = "_".repeat(maxLabelLength - label.length + 5);
   return (
-    <Heading size="md" pt={1} pb={1}>
+    <Heading size="m" pt={1} pb={1}>
       {label} {fillCharacters} {value}ȼ
     </Heading>
   );
@@ -48,7 +48,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" w="100%">
-      <Heading size="lg">CONGRATS!</Heading>
+      <Heading size="l">CONGRATS!</Heading>
       <table>
         <tbody>
           <RewardItem
@@ -73,13 +73,13 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           />
         </tbody>
       </table>
-      <Heading size="lg" pt={4} pb={4}>
+      <Heading size="l" pt={4} pb={4}>
         Total: {total}ȼ
       </Heading>
 
       <Button
         variant="outline"
-        size="lg"
+        size="md"
         onClick={() => navigate("/redirect/store")}
       >
         Continue

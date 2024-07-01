@@ -23,7 +23,7 @@ export const PlayDiscardSection = () => {
       >
         <Box>
           play
-          <Heading mt={0.5} fontSize={8} color="black">
+          <Heading mt={0.5} fontSize={9} color="black">
             {handsLeft} left
           </Heading>
         </Box>
@@ -41,7 +41,7 @@ export const PlayDiscardSection = () => {
       >
         <Box>
           discard
-          <Heading mt={0.5} fontSize={8} color="black">
+          <Heading mt={0.5} fontSize={9} color="black">
             {discardsLeft} left
           </Heading>
         </Box>
