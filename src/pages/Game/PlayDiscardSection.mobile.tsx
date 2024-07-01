@@ -3,7 +3,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound";
 
 export const PlayDiscardSection = () => {
-  const { play, discard, gameId } = useGameContext();
+  const { play, discard, gameId, preSelectedCards } = useGameContext();
   const { data: round } = useGetRound(gameId);
   const handsLeft = round?.hands;
   const discardsLeft = round?.discards;
@@ -17,6 +17,9 @@ export const PlayDiscardSection = () => {
           play();
         }}
         width="48%"
+        isDisabled={
+          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+        }
       >
         <Box>
           play
@@ -32,6 +35,9 @@ export const PlayDiscardSection = () => {
           discard();
         }}
         width="48%"
+        isDisabled={
+          preSelectedCards?.length === 0 || !discardsLeft || discardsLeft === 0
+        }
       >
         <Box>
           discard
