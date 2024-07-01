@@ -102,8 +102,8 @@ export const MobileGameContent = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: "30px",
-          right: "15px",
+          bottom: "10px",
+          right: "10px",
           zIndex: 1000,
           transform: 'scale(0.7)',
         }}
