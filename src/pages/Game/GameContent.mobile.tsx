@@ -2,17 +2,18 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { SortBy } from "../../components/SortBy.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
-import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
-import { TopSection } from "./TopSection.tsx";
+import { PlayDiscardSection } from "./PlayDiscardSection.mobile.tsx";
+import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
+import { MobileTopSection } from "./TopSection.mobile.tsx";
 
-export const GameContent = () => {
+export const MobileGameContent = () => {
   const {
     preSelectedCards,
     gameLoading,
@@ -24,6 +25,8 @@ export const GameContent = () => {
     roundRewards,
     gameId,
     checkOrCreateGame,
+    play,
+    discard,
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
@@ -100,9 +103,10 @@ export const GameContent = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: "20px",
-          left: "20px",
+          bottom: "5px",
+          right: "5px",
           zIndex: 1000,
+          transform: "scale(0.7)",
         }}
       >
         <GameMenu />
@@ -111,20 +115,26 @@ export const GameContent = () => {
         sx={{
           height: "100%",
           width: "100%",
-          filter: "blur(0.7px)",
-          animation: "jerkup-mild 100ms infinite",
         }}
         onClick={clearPreSelection}
       >
-        <Box sx={{ width: "100%", height: "100%" }}>
-          <Box sx={{ height: "30%", width: "100%" }}>
-            <TopSection />
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Box sx={{ height: "34%", width: "100%" }}>
+            <MobileTopSection />
           </Box>
           <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
             <Box
               sx={{
                 height: "40%",
-                width: "100%",
+                width: "90%",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
@@ -132,30 +142,35 @@ export const GameContent = () => {
                 backgroundColor: "rgba(0,0,0,0.7)",
               }}
             >
-              <PreselectedCardsSection />
+              <MobilePreselectedCardsSection />
             </Box>
+            <Flex
+              height="6%"
+              width="90%"
+              mt={2}
+              mx={4}
+              justifyContent={"space-between"}
+            >
+              <PlayDiscardSection />
+            </Flex>
             <Box
-              pb={{ base: 2, md: 10 }}
-              mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
-                height: " 30%",
+                height: " 20%",
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
             >
-              <HandSection />
+              <Box>
+                <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
+                  <SortBy />
+                </Box>
+                <Box pb="20px" mx={6} mr={14}>
+                  <HandSection />
+                </Box>
+              </Box>
             </Box>
           </DndContext>
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 7,
-            right: 10,
-          }}
-        >
-          <GameDeck />
         </Box>
       </Box>
     </Box>

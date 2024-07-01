@@ -1,5 +1,6 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { Leaderboard } from "../components/Leaderboard";
 import { Menu } from "../components/Menu";
 import { PoweredBy } from "../components/PoweredBy";
@@ -62,15 +63,25 @@ export const Home = () => {
           </Heading>
         </Flex>
       )}
-      {!open && !leaderboardOpen && (
-        <div className="text press">
-          <span>PRESS A KEY TO START</span>
-          <span>PRESS A KEY TO START</span>
-          <span>PRESS A KEY TO START</span>
-          <span>PRESS A KEY TO START</span>
-          <span>PRESS A KEY TO START</span>
-        </div>
-      )}
+      {!open &&
+        !leaderboardOpen &&
+        (isMobile ? (
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            CLICK HERE TO START
+          </Button>
+        ) : (
+          <div className="text press">
+            <span>PRESS A KEY TO START</span>
+            <span>PRESS A KEY TO START</span>
+            <span>PRESS A KEY TO START</span>
+            <span>PRESS A KEY TO START</span>
+            <span>PRESS A KEY TO START</span>
+          </div>
+        ))}
       <PoweredBy />
     </>
   );

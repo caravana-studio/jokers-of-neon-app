@@ -1,51 +1,32 @@
 import { Box } from "@chakra-ui/react";
-import { ActionButton } from "../../components/ActionButton";
-import { AnimatedCard } from "../../components/AnimatedCard";
+import { AnimatedCard } from "../../components/AnimatedCard.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
-import { ModifiableCard } from "../../components/ModifiableCard";
+import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { RewardsDetail } from "../../components/RewardsDetail.tsx";
-import { TiltCard } from "../../components/TiltCard";
-import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
-import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound.ts";
-import { Card } from "../../types/Card";
+import { TiltCard } from "../../components/TiltCard.tsx";
+import { CARD_HEIGHT } from "../../constants/visualProps.ts";
+import { useGameContext } from "../../providers/GameProvider.tsx";
+import { Card } from "../../types/Card.ts";
 
-export const PreselectedCardsSection = () => {
+export const MobilePreselectedCardsSection = () => {
   const {
     preSelectedCards,
-    play,
     hand,
     getModifiers,
     togglePreselected,
     discardAnimation,
     playAnimation,
-    discard,
     roundRewards,
-    gameId,
   } = useGameContext();
-
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
 
   return roundRewards ? (
     <RewardsDetail roundRewards={roundRewards} />
   ) : (
     <>
-      <ActionButton
-        position="LEFT"
-        disabled={
-          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
-        }
-        onClick={play}
-        label={["PLAY", "HAND"]}
-        secondLabel={`${handsLeft} left`}
-      />
-
       <Box
-        gap={{ base: 2, md: 5 }}
+        gap={2}
         sx={{
-          width: `${CARD_WIDTH * 7}px`,
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -55,7 +36,9 @@ export const PreselectedCardsSection = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            height: CARD_HEIGHT_PX,
+            alignItems: "center",
+            height: `${CARD_HEIGHT * 2 + 15}px`,
+            flexWrap: "wrap",
           }}
         >
           {preSelectedCards.map((idx) => {
@@ -64,7 +47,7 @@ export const PreselectedCardsSection = () => {
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
-                <Box key={card.id} mx={{ base: 3, md: 6 }}>
+                <Box key={card.id} mx={3} mb={3}>
                   <ModifiableCard id={card.id}>
                     <AnimatedCard
                       idx={card.idx}
@@ -87,15 +70,6 @@ export const PreselectedCardsSection = () => {
         </Box>
         <CurrentPlay />
       </Box>
-      <ActionButton
-        position="RIGHT"
-        disabled={
-          preSelectedCards?.length === 0 || !discardsLeft || discardsLeft === 0
-        }
-        onClick={discard}
-        label={["DIS", "CARD"]}
-        secondLabel={`${discardsLeft} left`}
-      />
     </>
   );
 };

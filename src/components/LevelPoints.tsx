@@ -26,13 +26,26 @@ export const LevelPoints = () => {
           </Heading>
         </PointBox>
       </Flex>
-      <Heading
-        size="s"
-        sx={{ mt: 4, fontSize: 20, width: 260 }}
-        textAlign="center"
-      >
+      <Heading size="s" mt={{ base: 2, md: 4 }} textAlign="center">
         score {round.levelScore} points <br /> to beat level {level ?? 0}
       </Heading>
     </Box>
+  );
+};
+
+export const MobileLevelPoints = () => {
+  const game = useGame();
+  const { gameId } = useGameContext();
+  const { data: round } = useGetRound(gameId);
+  const level = game?.level ?? 0;
+  return (
+    <Flex gap={2} alignItems='center'>
+      <Heading size="l" sx={{ color: "white" }}>
+            {level ?? 0}
+          </Heading>
+    <Heading size="s" textAlign="center">
+      score {round.levelScore} points <br /> to beat level {level ?? 0}
+    </Heading>
+    </Flex>
   );
 };

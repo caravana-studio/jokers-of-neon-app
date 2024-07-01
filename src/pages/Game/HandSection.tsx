@@ -10,12 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound";
+
+const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
 export const HandSection = () => {
   const {
@@ -46,9 +49,11 @@ export const HandSection = () => {
 
   return (
     <>
-      <Box sx={{ mr: 4 }}>
-        <SortBy />
-      </Box>
+      {!isMobile && (
+        <Box sx={{ mr: 4 }}>
+          <SortBy />
+        </Box>
+      )}
       <SimpleGrid
         sx={{
           opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
@@ -66,7 +71,7 @@ export const HandSection = () => {
               sx={{
                 transform: ` rotate(${
                   (index - 3.5) * 3
-                }deg) translateY(${Math.abs(index - 3.5) * 10}px)`,
+                }deg) translateY(${Math.abs(index - 3.5) * TRANSLATE_Y_PX}px)`,
               }}
               onContextMenu={(e) => {
                 e.stopPropagation();
@@ -97,10 +102,7 @@ export const HandSection = () => {
                 </Menu>
               )}
               {!isPreselected && (
-                <AnimatedCard
-                  idx={card.idx}
-                  discarded={card.discarded}
-                >
+                <AnimatedCard idx={card.idx} discarded={card.discarded}>
                   <TiltCard
                     card={card}
                     cursor={
@@ -125,7 +127,8 @@ export const HandSection = () => {
       {handsLeft === 0 && (
         <Heading
           variant="neonGreen"
-          sx={{ position: "fixed", bottom: "100px", fontSize: 30 }}
+          size="m"
+          sx={{ position: "fixed", bottom: "100px" }}
         >
           you ran out of hands to play
         </Heading>
