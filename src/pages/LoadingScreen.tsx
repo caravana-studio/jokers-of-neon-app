@@ -1,5 +1,5 @@
 import { Box, Heading, Spinner } from "@chakra-ui/react";
-import { FullScreenArcade } from "../components/FullScreenArcade";
+import { Background } from "../components/Background";
 
 interface LoadingScreenProps {
   error?: boolean;
@@ -7,7 +7,7 @@ interface LoadingScreenProps {
 
 export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
   return (
-    <FullScreenArcade>
+    <Background>
       <Box
         sx={{
           height: "100%",
@@ -22,6 +22,6 @@ export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
           <Spinner size="xl" />
         )}
       </Box>
-    </FullScreenArcade>
+    </Background>
   );
 };

@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Background } from "../../components/Background";
 import { GameDeck } from "../../components/GameDeck";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
@@ -65,121 +66,123 @@ export const Store = () => {
   }
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <GameMenu />
-      <Flex
-        justifyContent="space-between"
-        gap={50}
-        alignItems="center"
-        sx={{ height: "15%", mx: 10 }}
-      >
-        <Flex gap={6} alignItems="center">
-          <PointBox type="level">
-            <Heading size="s" sx={{ mx: 4 }}>
-              MY COINS
-            </Heading>
-            <Heading size="l" sx={{ mx: 4, color: "white" }}>
-              <RollingNumber n={cash} />ȼ
-            </Heading>
-          </PointBox>
-          <Tooltip
-            placement="right"
-            label={
-              rerolled
-                ? "Available only once per level"
-                : "Update available items"
-            }
-          >
+    <Background type="store">
+      <Box sx={{ height: "100%", width: "100%" }}>
+        <GameMenu />
+        <Flex
+          justifyContent="space-between"
+          gap={50}
+          alignItems="center"
+          sx={{ height: "15%", mx: 10 }}
+        >
+          <Flex gap={6} alignItems="center">
+            <PointBox type="level">
+              <Heading size="s" sx={{ mx: 4 }}>
+                MY COINS
+              </Heading>
+              <Heading size="l" sx={{ mx: 4, color: "white" }}>
+                <RollingNumber n={cash} />ȼ
+              </Heading>
+            </PointBox>
+            <Tooltip
+              placement="right"
+              label={
+                rerolled
+                  ? "Available only once per level"
+                  : "Update available items"
+              }
+            >
+              <Button
+                isDisabled={rerolled}
+                onClick={() => {
+                  reroll().then((response) => {
+                    if (response) {
+                      setRerolled(true);
+                    }
+                  });
+                }}
+                sx={{ py: 8 }}
+              >
+                Reroll <br /> {rerollCost}ȼ
+              </Button>
+            </Tooltip>
+          </Flex>
+          <Heading size="xl" variant="neonWhite">
+            LEVEL UP YOUR GAME
+          </Heading>
+          <Box>
             <Button
-              isDisabled={rerolled}
               onClick={() => {
-                reroll().then((response) => {
-                  if (response) {
-                    setRerolled(true);
+                setLoading(true);
+                onShopSkip();
+                skipShop(account.account, gameId).then((response): void => {
+                  if (response.success) {
+                    setHand(response.cards);
+                    navigate("/redirect/demo");
+                  } else {
+                    setLoading(false);
+                    showErrorToast("Error skipping shop");
                   }
                 });
               }}
-              sx={{ py: 8 }}
+              sx={{ lineHeight: 1.6 }}
+              size="m"
+              variant="outline"
             >
-              Reroll <br /> {rerollCost}ȼ
+              go to <br />
+              NEXT LEVEL
             </Button>
-          </Tooltip>
+          </Box>
         </Flex>
-        <Heading size="xl" variant="neonWhite">
-          LEVEL UP YOUR GAME
-        </Heading>
-        <Box>
-          <Button
-            onClick={() => {
-              setLoading(true);
-              onShopSkip();
-              skipShop(account.account, gameId).then((response): void => {
-                if (response.success) {
-                  setHand(response.cards);
-                  navigate("/redirect/demo");
-                } else {
-                  setLoading(false);
-                  showErrorToast("Error skipping shop");
-                }
-              });
-            }}
-            sx={{ lineHeight: 1.6 }}
-            size="m"
-            variant="outline"
+        <Flex sx={{ height: "85%" }}>
+          <Grid
+            templateColumns="repeat(8, 1fr)"
+            gap={4}
+            sx={{ width: "100%", m: 4 }}
           >
-            go to <br />
-            NEXT LEVEL
-          </Button>
-        </Box>
-      </Flex>
-      <Flex sx={{ height: "85%" }}>
-        <Grid
-          templateColumns="repeat(8, 1fr)"
-          gap={4}
-          sx={{ width: "100%", m: 4 }}
-        >
-          <GridItem
-            sx={{ backgroundColor: "rgba(0,0,0,0.7)" }}
-            colSpan={3}
-            rowSpan={3}
-          >
-            <Heading variant="neonGreen" size="m" sx={{ m: 3 }}>
-              level up your plays
-            </Heading>
-            {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
-          </GridItem>
-          <GridItem colSpan={5}>
-            {shopItems.commonCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.commonCards}
-                title="traditional cards"
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={5}>
-            {shopItems.modifierCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.modifierCards}
-                title="modifiers"
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={4}>
-            {shopItems.specialCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.specialCards}
-                title="special cards"
-                button={{ label: "see my special cards", onClick: () => {} }}
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={1}>
-            <Flex justifyContent="center" alignItems="flex-end" height="100%">
-              <GameDeck />
-            </Flex>
-          </GridItem>
-        </Grid>
-      </Flex>
-    </Box>
+            <GridItem
+              sx={{ backgroundColor: "rgba(0,0,0,0.7)" }}
+              colSpan={3}
+              rowSpan={3}
+            >
+              <Heading variant="neonGreen" size="m" sx={{ m: 3 }}>
+                level up your plays
+              </Heading>
+              {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
+            </GridItem>
+            <GridItem colSpan={5}>
+              {shopItems.commonCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.commonCards}
+                  title="traditional cards"
+                />
+              )}
+            </GridItem>
+            <GridItem colSpan={5}>
+              {shopItems.modifierCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.modifierCards}
+                  title="modifiers"
+                />
+              )}
+            </GridItem>
+            <GridItem colSpan={4}>
+              {shopItems.specialCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.specialCards}
+                  title="special cards"
+                  button={{ label: "see my special cards", onClick: () => {} }}
+                />
+              )}
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Flex justifyContent="center" alignItems="flex-end" height="100%">
+                <GameDeck />
+              </Flex>
+            </GridItem>
+          </Grid>
+        </Flex>
+      </Box>
+    </Background>
   );
 };

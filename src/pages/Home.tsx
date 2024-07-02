@@ -1,10 +1,8 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { Leaderboard } from "../components/Leaderboard";
 import { Menu } from "../components/Menu";
 import { PoweredBy } from "../components/PoweredBy";
-import { noisyTv } from "../scripts/noisyTv";
 import { preloadImages } from "../utils/preloadImages";
 
 export const Home = () => {
@@ -33,19 +31,8 @@ export const Home = () => {
     };
   }, [onKeyDown]);
 
-  useEffect(() => {
-    noisyTv(1000);
-  }, []);
-
   return (
     <>
-      <div className="text av1">
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-      </div>
       {open && (
         <Menu
           onClose={() => setOpen(false)}
@@ -63,25 +50,15 @@ export const Home = () => {
           </Heading>
         </Flex>
       )}
-      {!open &&
-        !leaderboardOpen &&
-        (isMobile ? (
-          <Button
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            CLICK HERE TO START
-          </Button>
-        ) : (
-          <div className="text press">
-            <span>PRESS A KEY TO START</span>
-            <span>PRESS A KEY TO START</span>
-            <span>PRESS A KEY TO START</span>
-            <span>PRESS A KEY TO START</span>
-            <span>PRESS A KEY TO START</span>
-          </div>
-        ))}
+      {!open && !leaderboardOpen && (
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          CLICK HERE TO START
+        </Button>
+      )}
       <PoweredBy />
     </>
   );

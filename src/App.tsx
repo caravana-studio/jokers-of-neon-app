@@ -1,7 +1,6 @@
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import { FullScreenArcade } from "./components/FullScreenArcade";
 
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
@@ -22,50 +21,23 @@ function App() {
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
         <GameProvider>
-          <main className="scanlines">
-            <div className="screen">
-              <canvas id="canvas" className="picture"></canvas>
-              <div className="overlay">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/gameover" element={<GameOver />} />
-                  <Route
-                    path="/demo"
-                    element={
-                      <AudioPlayerProvider songPath={"/music/track1.mp3"}>
-                        <FullScreenArcade>
-                          <GamePage />
-                        </FullScreenArcade>
-                      </AudioPlayerProvider>
-                    }
-                  />
-                  <Route
-                    path="/store"
-                    element={
-                      <AudioPlayerProvider songPath={"/music/track1.mp3"}>
-                        <FullScreenArcade>
-                          <StoreProvider>
-                            <Store />
-                          </StoreProvider>
-                        </FullScreenArcade>
-                      </AudioPlayerProvider>
-                    }
-                  />
-                  <Route
-                    path="/redirect/:page"
-                    element={
-                      <AudioPlayerProvider songPath={"/music/track1.mp3"}>
-                        <FullScreenArcade>
-                          <Redirect />
-                        </FullScreenArcade>
-                      </AudioPlayerProvider>
-                    }
-                  />
-                </Routes>
-              </div>
-            </div>
-          </main>
+          <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/gameover" element={<GameOver />} />
+              <Route path="/demo" element={<GamePage />} />
+              <Route
+                path="/store"
+                element={
+                  <StoreProvider>
+                    <Store />
+                  </StoreProvider>
+                }
+              />
+              <Route path="/redirect/:page" element={<Redirect />} />
+            </Routes>
+          </AudioPlayerProvider>
         </GameProvider>
       </CardAnimationsProvider>
     </ChakraBaseProvider>
