@@ -1,8 +1,8 @@
 import { Button, Flex, Heading, Img, Spinner } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
-import { Menu } from "../components/Menu";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
 
@@ -11,12 +11,7 @@ interface HomeProps {
 }
 
 export const Home = ({ loading = false }: HomeProps) => {
-  const [open, setOpen] = useState(false);
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
-  const onKeyDown = useCallback((event: { key: string }) => {
-    setOpen(true);
-    setLeaderboardOpen(false);
-  }, []);
 
   useEffect(() => {
     preloadImages()
@@ -28,13 +23,7 @@ export const Home = ({ loading = false }: HomeProps) => {
       });
   }, []);
 
-  useEffect(() => {
-    document.addEventListener("keydown", onKeyDown, false);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown, false);
-    };
-  }, [onKeyDown]);
+  const navigate = useNavigate();
 
   return (
     <Background type="home">
@@ -45,25 +34,19 @@ export const Home = ({ loading = false }: HomeProps) => {
         alignItems="center"
         gap={4}
       >
-        {open && (
-          <Menu
-            onClose={() => setOpen(false)}
-            onOpenLeaderboardClick={() => {
-              setOpen(false);
-              setLeaderboardOpen(true);
-            }}
-          />
-        )}
-        {leaderboardOpen && (
+        {leaderboardOpen ? (
           <Flex flexDirection="column" alignItems="center" gap={4}>
             <Leaderboard />
             <Heading size="m" color="limegreen">
               PRESS A KEY TO GO BACK TO MENU
             </Heading>
           </Flex>
-        )}
-        {!open && !leaderboardOpen && (
-          <Flex flexDirection="column" alignItems="center" gap={{ base: 6, sm: 8, md: 12 }}>
+        ) : (
+          <Flex
+            flexDirection="column"
+            alignItems="center"
+            gap={{ base: 6, sm: 8, md: 12 }}
+          >
             <Heading
               size="xl"
               color="white"
@@ -71,19 +54,35 @@ export const Home = ({ loading = false }: HomeProps) => {
             >
               BUIDL YOUR DECK, RULE THE GAME
             </Heading>
-            <Img width={{base: '95%', sm: '85%', md: '80%'}} src="/logo.jpg" alt="logo" />
+            <Img
+              width={{ base: "95%", sm: "85%", md: "80%" }}
+              src="/logo.jpg"
+              alt="logo"
+            />
             {loading ? (
               <Spinner color="white" size="xl" />
             ) : (
-              <Button
-                variant="solid"
-                size="md"
-                onClick={() => {
-                  setOpen(true);
-                }}
+              <Flex
+                gap={{ base: 4, sm: 6 }}
+                flexWrap={{ base: "wrap", sm: "nowrap" }}
+                justifyContent="center"
               >
-                CLICK HERE TO START
-              </Button>
+                <Button
+                  onClick={() => {
+                    setLeaderboardOpen(true);
+                  }}
+                >
+                  SEE LEADERBOARD
+                </Button>
+                <Button
+                  variant="secondarySolid"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  PLAY DEMO
+                </Button>
+              </Flex>
             )}
           </Flex>
         )}

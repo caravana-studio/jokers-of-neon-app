@@ -1,11 +1,22 @@
-import { BLUE, NEON_GREEN } from "./colors";
+import { BLUE, NEON_GREEN, VIOLET } from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
 const solid = defineStyle({
   backgroundColor: "blue !important",
   color: "white",
-  boxShadow: {base: `0px 0px 10px 6px ${BLUE}`, md: `0px 0px 20px 12px ${BLUE}`},
+  boxShadow: {
+    base: `0px 0px 10px 6px ${BLUE}`,
+    md: `0px 0px 20px 12px ${BLUE}`,
+  },
+});
+
+const secondarySolid = defineStyle({
+  backgroundColor: "violet",
+  boxShadow: {
+    base: `0px 0px 10px 6px ${VIOLET}`,
+    md: `0px 0px 20px 12px ${VIOLET}`,
+  },
 });
 
 const outline = defineStyle({
@@ -28,12 +39,12 @@ export const buttonTheme = defineStyleConfig({
     backgroundColor: "blue",
     color: "white",
   },
-  variants: { solid, outline },
+  variants: { solid, outline, secondarySolid },
   sizes: {
     md: {
       fontSize: { base: 12, md: 19 },
       px: { base: 3, md: 7 },
-      py: { base: 0, md: '10px !important' },
+      py: { base: 0, md: "10px !important" },
       fontWeight: 500,
     },
     lg: {

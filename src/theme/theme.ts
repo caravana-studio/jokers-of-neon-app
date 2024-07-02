@@ -9,6 +9,7 @@ import {
   NEON_GREEN,
   NEON_PINK,
   SPADES,
+  VIOLET,
 } from "./colors";
 import { headingTheme } from "./heading";
 import { modalTheme } from "./modal";
@@ -33,6 +34,7 @@ const inputTheme = defineMultiStyleConfig({ baseStyle });
 export default {
   colors: {
     blue: BLUE,
+    violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
     neonPink: NEON_PINK,
