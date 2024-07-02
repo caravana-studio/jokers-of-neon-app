@@ -8,7 +8,6 @@ import { GAME_ID, LAST_GAME_ID } from "../constants/localStorage";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetGame } from "../queries/useGetGame";
-import { noisyTv } from "../scripts/noisyTv";
 
 const GAME_URL = "https://jokersofneon.com/play";
 
@@ -24,7 +23,6 @@ export const GameOver = () => {
   const score = data?.player_score ?? 0;
 
   useEffect(() => {
-    noisyTv(100);
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
   }, []);

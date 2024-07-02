@@ -1,7 +1,8 @@
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
-import button from "./button";
+import { buttonTheme } from "./button";
 import {
+  BLUE,
   CLUBS,
   DIAMONDS,
   HEARTS,
@@ -31,6 +32,7 @@ const inputTheme = defineMultiStyleConfig({ baseStyle });
 
 export default {
   colors: {
+    blue: BLUE,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
     neonPink: NEON_PINK,
@@ -60,14 +62,14 @@ export default {
   },
   breakpoints: {
     base: "0px",
-    sm: "1000px",
+    sm: "600px",
     md: "1200px",
-    lg: "1400x",
-    xl: "1800px",
+    lg: "1600x",
+    xl: "2000px",
   },
   components: {
     Table: tableTheme,
-    Button: button,
+    Button: buttonTheme,
     Input: inputTheme,
     Modal: modalTheme,
     Tooltip: tooltipTheme,

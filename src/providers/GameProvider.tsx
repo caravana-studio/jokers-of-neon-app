@@ -20,11 +20,9 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
-import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
-const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
 
 interface IGameContext {
@@ -530,12 +528,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   //effects
-  useEffect(() => {
-    // if masterAccount === account.account, it means the burner did not get created yet
-    if (account.account !== masterAccount && username) {
-      checkOrCreateGame();
-    }
-  }, [account.account, username]);
 
   useEffect(() => {
     if (apiHand?.length > 0 && hand.length === 0) {

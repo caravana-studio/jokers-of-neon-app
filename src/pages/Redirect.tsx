@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Background } from "../components/Background";
 import { Loading } from "../components/Loading";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetGame } from "../queries/useGetGame";
@@ -22,5 +23,9 @@ export const Redirect = () => {
     }
   }, [state]);
 
-  return <Loading />;
+  return (
+    <Background type="game">
+      <Loading />;
+    </Background>
+  );
 };

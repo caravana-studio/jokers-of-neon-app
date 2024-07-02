@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { PoweredBy } from "../components/PoweredBy";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { noisyTv } from "../scripts/noisyTv";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -67,10 +66,6 @@ export const Login = () => {
       document.removeEventListener("keydown", onKeyDown, false);
     };
   }, [onKeyDown]);
-
-  useEffect(() => {
-    noisyTv(1000);
-  }, []);
 
   useEffect(() => {
     document.getElementById("usernameInputField")?.focus();
