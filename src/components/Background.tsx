@@ -9,7 +9,7 @@ export const Background = ({ children, type = 'game' }: BackgroundProps) => {
   return (
     <Box
       sx={{
-        backgroundImage: `url(${type}-bg.jpg)`,
+        backgroundImage: `url(bg/${type}-bg.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",

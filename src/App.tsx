@@ -12,16 +12,13 @@ import { AudioPlayerProvider } from "./providers/AudioPlayerProvider.tsx";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import customTheme from "./theme/theme";
 
-const theme = extendTheme(customTheme);
 
 function App() {
   return (
-    <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
-        <GameProvider>
-          <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+        <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+          <GameProvider>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -37,10 +34,9 @@ function App() {
               />
               <Route path="/redirect/:page" element={<Redirect />} />
             </Routes>
-          </AudioPlayerProvider>
-        </GameProvider>
+          </GameProvider>
+        </AudioPlayerProvider>
       </CardAnimationsProvider>
-    </ChakraBaseProvider>
   );
 }
 

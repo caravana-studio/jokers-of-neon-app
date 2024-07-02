@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
 export const PoweredBy = () => {
   return (
@@ -8,13 +8,11 @@ export const PoweredBy = () => {
         bottom: 10,
         zIndex: 1000,
         color: "white",
-        fontFamily: "Sys",
-        fontSize: 17,
-        filter: "blur(1px)",
+        filter: "blur(0.5px)",
         opacity: 0.7,
       }}
     >
-      powered by Dojo and Starknet
+      <Heading size="s">powered by Dojo and Starknet</Heading>
     </Box>
   );
 };
