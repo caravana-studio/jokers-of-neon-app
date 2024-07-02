@@ -1,4 +1,3 @@
-import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -8,22 +7,14 @@ import App from "./App.tsx";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/generated/setup.ts";
 import "./index.css";
-import { ErrorScreen } from "./pages/ErrorScreen.tsx";
-import { Home } from "./pages/Home.tsx";
-import customTheme from "./theme/theme";
+import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
-  const theme = extendTheme(customTheme);
-
-  root.render(
-    <ChakraBaseProvider theme={theme}>
-      <Home loading />
-    </ChakraBaseProvider>
-  );
+  root.render(<LoadingScreen />);
 
   try {
     const setupResult = await setup(dojoConfig);
@@ -32,20 +23,14 @@ async function init() {
       <DojoProvider value={setupResult}>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
-            <ChakraBaseProvider theme={theme}>
-              <Toaster />
-              <App />
-            </ChakraBaseProvider>
+            <Toaster />
+            <App />
           </QueryClientProvider>
         </BrowserRouter>
       </DojoProvider>
     );
   } catch {
-    root.render(
-      <ChakraBaseProvider theme={theme}>
-        <ErrorScreen />
-      </ChakraBaseProvider>
-    );
+    root.render(<LoadingScreen error />);
   }
 }
 

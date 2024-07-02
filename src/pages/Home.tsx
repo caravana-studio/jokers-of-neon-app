@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Img, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
@@ -6,11 +6,7 @@ import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
 
-interface HomeProps {
-  loading?: boolean;
-}
-
-export const Home = ({ loading = false }: HomeProps) => {
+export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   useEffect(() => {
@@ -59,31 +55,28 @@ export const Home = ({ loading = false }: HomeProps) => {
               src="/logo.jpg"
               alt="logo"
             />
-            {loading ? (
-              <Spinner color="white" size="xl" />
-            ) : (
-              <Flex
-                gap={{ base: 4, sm: 6 }}
-                flexWrap={{ base: "wrap", sm: "nowrap" }}
-                justifyContent="center"
+
+            <Flex
+              gap={{ base: 4, sm: 6 }}
+              flexWrap={{ base: "wrap", sm: "nowrap" }}
+              justifyContent="center"
+            >
+              <Button
+                onClick={() => {
+                  setLeaderboardOpen(true);
+                }}
               >
-                <Button
-                  onClick={() => {
-                    setLeaderboardOpen(true);
-                  }}
-                >
-                  SEE LEADERBOARD
-                </Button>
-                <Button
-                  variant="secondarySolid"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  PLAY DEMO
-                </Button>
-              </Flex>
-            )}
+                SEE LEADERBOARD
+              </Button>
+              <Button
+                variant="secondarySolid"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                PLAY DEMO
+              </Button>
+            </Flex>
           </Flex>
         )}
         <PoweredBy />
