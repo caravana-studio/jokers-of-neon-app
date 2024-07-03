@@ -10,8 +10,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { BLUE } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
-import { BLUE } from '../theme/colors.tsx'
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -38,7 +38,7 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
   );
   return (
     <Box>
-      <Heading size="l" textAlign={"center"} mb={8}>
+      <Heading size="l" variant="italic" textAlign={"center"} mb={12}>
         LEADERBOARD
       </Heading>
       <Box
@@ -105,10 +105,10 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
                       <Td>{currentLeader.position}</Td>
                       <Td>{currentLeader.player_name}</Td>
                       <Td isNumeric>
-                        <RollingNumber n={currentLeader.player_score}/>
+                        <RollingNumber n={currentLeader.player_score} />
                       </Td>
                       <Td>
-                        <RollingNumber n={currentLeader.level}/>
+                        <RollingNumber n={currentLeader.level} />
                       </Td>
                     </Tr>
                   </>

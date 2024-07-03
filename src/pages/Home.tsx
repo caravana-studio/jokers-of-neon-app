@@ -1,4 +1,4 @@
-import {Button, Flex, GridItem, Heading, Image, Img, SimpleGrid} from "@chakra-ui/react"
+import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
@@ -31,14 +31,8 @@ export const Home = () => {
         gap={4}
       >
         {leaderboardOpen ? (
-          <SimpleGrid  templateColumns='repeat(3, 1fr)' gap={5} >
-            <Image
-              alignSelf="center"
-              justifySelf="end"
-              src={`logos/jn-logo.png`}
-              alt={`logos/jn-logo.png`}
-            />
-            <GridItem>
+
+            <Box>
               <Leaderboard />
               <Button
                 mt={8}
@@ -49,14 +43,8 @@ export const Home = () => {
               >
                 GO BACK HOME
               </Button>
-            </GridItem>
-            <Image
-              alignSelf="center"
-              justifySelf="start"
-              src={`logos/joker-logo.png`}
-              alt={`logos/joker-logo.png`}
-            />
-          </SimpleGrid>
+            </Box>
+
         ) : (
           <Flex
             flexDirection="column"
