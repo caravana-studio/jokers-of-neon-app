@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { ActionButton } from "../../components/ActionButton";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
@@ -8,7 +8,6 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card";
-import { useNavigate } from "react-router-dom";
 
 export const PreselectedCardsSection = () => {
   const {
@@ -35,31 +34,37 @@ export const PreselectedCardsSection = () => {
 
   return (
     <>
-      <ActionButton
-        position="LEFT"
-        disabled={
-          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
-        }
-        onClick={play}
-        label={["PLAY", "HAND"]}
-        secondLabel={`${handsLeft} left`}
-      />
+      <Flex flexDirection="column" alignItems="center" gap={4}>
+        <Button
+          width='160px'
+          onClick={(e) => {
+            e.stopPropagation();
+            play();
+          }}
+          isDisabled={
+            preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+          }
+        >
+          PLAY HAND
+        </Button>
+        <Text size="l">{handsLeft} left</Text>
+      </Flex>
 
       <Box
-        gap={{ base: 2, md: 5 }}
+        gap={{ base: 2, md: 8 }}
         sx={{
-          width: `${CARD_WIDTH * 7}px`,
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            height: CARD_HEIGHT_PX,
-          }}
+        <Flex
+          justifyContent="center"
+          alignItems={"center"}
+          height="230px"
+          background={"url(grid.png)"}
+          width="100%"
         >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
@@ -87,18 +92,27 @@ export const PreselectedCardsSection = () => {
               )
             );
           })}
-        </Box>
+        </Flex>
         <CurrentPlay />
       </Box>
-      <ActionButton
-        position="RIGHT"
-        disabled={
-          preSelectedCards?.length === 0 || !discardsLeft || discardsLeft === 0
-        }
-        onClick={discard}
-        label={["DIS", "CARD"]}
-        secondLabel={`${discardsLeft} left`}
-      />
+      <Flex flexDirection="column" alignItems="center" gap={4}>
+        <Button
+          width='160px'
+          onClick={(e) => {
+            e.stopPropagation();
+            discard();
+          }}
+          variant="secondarySolid"
+          isDisabled={
+            preSelectedCards?.length === 0 ||
+            !discardsLeft ||
+            discardsLeft === 0
+          }
+        >
+          DISCARD
+        </Button>
+        <Text size="l">{discardsLeft} left</Text>
+      </Flex>
     </>
   );
 };

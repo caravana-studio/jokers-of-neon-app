@@ -1,5 +1,5 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Flex, Heading, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
@@ -13,6 +13,7 @@ export const CurrentPlay = () => {
     <Flex gap={4} alignItems={"center"}>
       <Tooltip label={"Show plays"} placement={"left"}>
         <InfoIcon
+        color='white'
           sx={{ fontSize: "20px", cursor: 'pointer' }}
           onClick={(e) => {
             e.stopPropagation();
@@ -21,11 +22,11 @@ export const CurrentPlay = () => {
         />
       </Tooltip>
       <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />
-      <Heading variant="neonGreen" size="m">
+      <Text size="xl">
         {preSelectedPlay === Plays.NONE
-          ? "select some cards to play"
-          : `CURRENT PLAY: ${PLAYS[preSelectedPlay]}`}
-      </Heading>
+          ? "Select some cards to play"
+          : `Current Play: ${PLAYS[preSelectedPlay]}`}
+      </Text>
     </Flex>
   );
 };

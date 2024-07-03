@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetRound } from "../queries/useGetRound";
@@ -12,23 +12,23 @@ export const LevelPoints = () => {
 
   return (
     <Box>
-      <Flex gap={4}>
+      <Flex gap={8}>
         <PointBox type="level">
           <Heading size="s">LEVEL</Heading>
-          <Heading size="l" sx={{ color: "white" }}>
+          <Heading size="m" sx={{ color: "white" }}>
             {level ?? 0}
           </Heading>
         </PointBox>
         <PointBox type="points">
           <Heading size="s">POINTS</Heading>
-          <Heading size="l" sx={{ color: "neonGreen", px: 2 }}>
+          <Heading size="m" sx={{ color: "neonGreen", px: 2 }}>
             {round.levelScore}
           </Heading>
         </PointBox>
       </Flex>
-      <Heading size="s" mt={{ base: 2, md: 4 }} textAlign="center">
-        score {round.levelScore} points <br /> to beat level {level ?? 0}
-      </Heading>
+      <Text size="s" mt={{ base: 2, md: 4 }} textAlign="center">
+        score {round.levelScore} points to beat level {level ?? 0}
+      </Text>
     </Box>
   );
 };

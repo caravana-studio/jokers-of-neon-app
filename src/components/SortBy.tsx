@@ -1,4 +1,4 @@
-import { Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { faHashtag, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isMobile } from "react-device-detect";
@@ -17,14 +17,23 @@ export const SortBy = () => {
       gap={2}
       mb={{ base: 0, md: 2 }}
     >
-      <Heading size="s" mr='2'>sort by</Heading>
-      <Flex gap={4} alignItems="center">
+      <Text size="l" variant="underlined">
+        Sort by
+      </Text>
+      <Flex
+        gap={3}
+        alignItems="center"
+        border="1px solid white"
+        borderRadius="8px"
+        p="15px 10px"
+      >
         <Tooltip hasArrow label="Suit" placement="bottom">
           <FontAwesomeIcon
             opacity={sortBy === SortByEnum.SUIT ? 1 : 0.3}
             cursor={sortBy === SortByEnum.SUIT ? "unset" : "pointer"}
-            fontSize={isMobile ? 18 : 25}
+            fontSize={isMobile ? 18 : 20}
             icon={faHeart}
+            color="white"
             onClick={() => {
               toggleSortBy();
             }}
@@ -34,8 +43,9 @@ export const SortBy = () => {
           <FontAwesomeIcon
             opacity={sortBy === SortByEnum.SUIT ? 0.3 : 1}
             cursor={sortBy === SortByEnum.SUIT ? "pointer" : "unset"}
-            fontSize={isMobile ? 18 : 25}
+            fontSize={isMobile ? 18 : 20}
             icon={faHashtag}
+            color="white"
             onClick={() => {
               toggleSortBy();
             }}
