@@ -161,8 +161,11 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
     </Box>
   );
 
-  return card.isModifier ? (
-    <DraggableCard id={card.id ?? ""}>{tiltCardComponent}</DraggableCard>
+  // when is a special card, prefix with s and use idx instead of id
+  const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
+
+  return (card.isModifier || card.isSpecial) ? (
+    <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>
   ) : (
     tiltCardComponent
   );

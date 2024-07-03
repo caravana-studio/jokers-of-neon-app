@@ -12,6 +12,7 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayDiscardSection } from "./PlayDiscardSection.mobile.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { useCurrentSpecialCards } from '../../dojo/queries/useCurrentSpecialCards.tsx'
 
 export const MobileGameContent = () => {
   const {
@@ -26,6 +27,7 @@ export const MobileGameContent = () => {
     gameId,
     checkOrCreateGame,
     discardEffectCard,
+    discardSpecialCard
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
@@ -37,6 +39,7 @@ export const MobileGameContent = () => {
 
   const navigate = useNavigate();
   const [ isItemDragged, setIsItemDragged ] = useState<boolean>(false);
+  const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -52,15 +55,35 @@ export const MobileGameContent = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     setIsItemDragged(false);
     const modifiedCard = Number(event.over?.id);
-    const modifier = Number(event.active?.id);
-    if (!isNaN(modifiedCard) && !isNaN(modifier)) {
+
+    // TODO: Improve this
+    let isSpecial = false;
+    let draggedCardId;
+    const activeId = String(event.active?.id);
+
+    if (activeId.startsWith("s")) {
+      draggedCardId = Number(activeId.slice(1));
+      isSpecial = true;
+    }
+    else {
+      draggedCardId = Number(activeId);
+    }
+
+    if (!isNaN(modifiedCard) && !isNaN(draggedCardId)) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
-        addModifier(modifiedCard, modifier);
+        addModifier(modifiedCard, draggedCardId);
       }
     }
-    if(event.over?.id === "play-discard"){
-      discardEffectCard(modifier);
+    if(isSpecial && event.over?.id === "play-discard") {
+      discardSpecialCard(draggedCardId).then((response) => {
+        if (response) {
+          refetchSpecialCards();
+        }
+      });
+    }
+    else if(event.over?.id === "play-discard"){
+      discardEffectCard(draggedCardId);
     }
   };
 
@@ -131,10 +154,10 @@ export const MobileGameContent = () => {
             flexDirection: "column",
           }}
         >
+          <DndContext onDragEnd={handleDragEnd} onDragStart={ () => {setIsItemDragged(true)}} autoScroll={false}>
           <Box sx={{ height: "34%", width: "100%" }}>
             <MobileTopSection />
           </Box>
-          <DndContext onDragEnd={handleDragEnd} onDragStart={ () => {setIsItemDragged(true)}} autoScroll={false}>
             <Box
               sx={{
                 height: "40%",

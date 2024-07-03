@@ -1,9 +1,10 @@
+import { useState, useEffect, useCallback } from 'react';
+import { useGame } from './useGame.tsx'
 import { getComponentValue } from "@dojoengine/recs";
-import { Entity } from "@dojoengine/recs/src/types";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { Card } from "../../types/Card";
-import { useDojo } from "../useDojo";
-import { useGame } from "./useGame";
+import { useDojo } from '../useDojo.tsx'
+import { Card } from '../../types/Card.ts'
+import { getEntityIdFromKeys } from '@dojoengine/utils'
+import { Entity } from '@dojoengine/recs/src/types.ts'
 
 const getSpecialCard = (
   gameId: number,
@@ -28,21 +29,26 @@ const getSpecialCard = (
   };
 };
 
-export const useCurrentSpecialCards = (): Card[] => {
+export const useCurrentSpecialCards = () => {
+  const [specialCards, setSpecialCards] = useState<Card[]>([]);
   const game = useGame();
-  const {
-    setup: {
-      clientComponents: { CurrentSpecialCards },
-    },
-  } = useDojo();
-  if (!game) return [];
-  const gameId = game.id ?? 0;
-  const length = game.len_current_special_cards ?? 0;
+  const { setup: { clientComponents: { CurrentSpecialCards } } } = useDojo();
 
-  let specialCards = [];
-  for (let i = 0; i < length; i++) {
-    const card = getSpecialCard(gameId, i, CurrentSpecialCards);
-    card && specialCards.push(card);
-  }
-  return specialCards;
+  const fetchSpecialCards = useCallback(async () => {
+    if (!game) return;
+    const gameId = game.id ?? 0;
+    const length = game.len_current_special_cards ?? 0;
+    let cards: Card[] = [];
+    for (let i = 0; i < length; i++) {
+      const card = getSpecialCard(gameId, i, CurrentSpecialCards);
+      card && cards.push(card);
+    }
+    setSpecialCards(cards);
+  }, [game, CurrentSpecialCards]);
+
+  useEffect(() => {
+    fetchSpecialCards();
+  }, [fetchSpecialCards]);
+
+  return { specialCards, refetch: fetchSpecialCards };
 };
