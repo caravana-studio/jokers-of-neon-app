@@ -10,7 +10,7 @@ const baseStyle = definePartsStyle({
     color: "white",
     fontFamily: "Orbitron",
     textAlign: "center",
-    fontSize: 18,
+    fontSize: ["sm", "sm", "sm", "lg"],
   },
   thead: {
     tr: {
@@ -19,6 +19,7 @@ const baseStyle = definePartsStyle({
     td: {
       color: "white",
       borderBottomWidth: 0,
+      px: [2, 2, 4],
     },
   },
   tbody: {
@@ -29,8 +30,9 @@ const baseStyle = definePartsStyle({
         },
         td: {
           color: ROYAL_BLUE,
-          fontSize: "xl",
+          fontSize: ["sm", "sm", "lg"],
           fontWeight: "bold",
+          px: [1, 1, 4],
         },
       },
       "&:nth-of-type(even)": {
@@ -39,8 +41,9 @@ const baseStyle = definePartsStyle({
         },
         td: {
           color: ROYAL_BLUE,
-          fontSize: "xl",
+          fontSize: ["sm", "sm", "lg"],
           fontWeight: "bold",
+          px: [1, 1, 4],
         },
       },
     },

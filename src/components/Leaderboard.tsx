@@ -51,11 +51,11 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
         }}
         m={4}
         py={4}
-        px={8}
+        px={[1, 2, 4, 8]}
       >
         {isLoading && <Spinner />}
         {leaderboard && (
-          <TableContainer >
+          <TableContainer>
             <Table>
               <Thead>
                 <Tr>
