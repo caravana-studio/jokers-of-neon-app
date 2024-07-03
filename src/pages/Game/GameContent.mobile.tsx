@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { useEffect } from "react";
+import {useEffect, useState} from "react"
 import { useNavigate } from "react-router-dom";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -25,8 +25,7 @@ export const MobileGameContent = () => {
     roundRewards,
     gameId,
     checkOrCreateGame,
-    play,
-    discard,
+    discardEffectCard,
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
@@ -37,6 +36,7 @@ export const MobileGameContent = () => {
   } = useDojo();
 
   const navigate = useNavigate();
+  const [ isItemDragged, setIsItemDragged ] = useState<boolean>(false);
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -50,6 +50,7 @@ export const MobileGameContent = () => {
   }, [game?.state, roundRewards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
+    setIsItemDragged(false);
     const modifiedCard = Number(event.over?.id);
     const modifier = Number(event.active?.id);
     if (!isNaN(modifiedCard) && !isNaN(modifier)) {
@@ -57,6 +58,9 @@ export const MobileGameContent = () => {
       if (index !== -1) {
         addModifier(modifiedCard, modifier);
       }
+    }
+    if(event.over?.id === "play-discard"){
+      discardEffectCard(modifier);
     }
   };
 
@@ -130,7 +134,7 @@ export const MobileGameContent = () => {
           <Box sx={{ height: "34%", width: "100%" }}>
             <MobileTopSection />
           </Box>
-          <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
+          <DndContext onDragEnd={handleDragEnd} onDragStart={ () => {setIsItemDragged(true)}} autoScroll={false}>
             <Box
               sx={{
                 height: "40%",
@@ -151,7 +155,7 @@ export const MobileGameContent = () => {
               mx={4}
               justifyContent={"space-between"}
             >
-              <PlayDiscardSection />
+              <PlayDiscardSection itemDragged={isItemDragged} />
             </Flex>
             <Box
               sx={{

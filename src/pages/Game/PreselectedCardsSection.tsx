@@ -8,6 +8,7 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card";
+import { useDroppable } from '@dnd-kit/core'
 
 export const PreselectedCardsSection = () => {
   const {
@@ -23,6 +24,9 @@ export const PreselectedCardsSection = () => {
     gameId,
   } = useGameContext();
 
+  const { setNodeRef } = useDroppable({
+    id: "play-discard",
+  });
   const navigate = useNavigate();
   const { data: round } = useGetRound(gameId);
   const handsLeft = round?.hands;
@@ -97,6 +101,7 @@ export const PreselectedCardsSection = () => {
       </Box>
       <Flex flexDirection="column" alignItems="center" gap={4}>
         <Button
+          ref={setNodeRef}
           width='160px'
           onClick={(e) => {
             e.stopPropagation();
