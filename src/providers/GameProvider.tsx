@@ -544,60 +544,55 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      const specialAllCardsToHearts = specialCards.some(s => s.card_id == 15);
-      const easyFlush = specialCards.some(s => s.card_id == 10);
-      const easyStraigh = specialCards.some(s => s.card_id == 9);
+      const specialAllCardsToHearts = specialCards.some(s => s.card_id === 15);
+      const easyFlush = specialCards.some(s => s.card_id === 10);
+      const easyStraight = specialCards.some(s => s.card_id === 9);
+
+      const getNewSuit = (modifierCardId?: number) => {
+        switch (modifierCardId) {
+          case 25: return Suits.CLUBS;
+          case 26: return Suits.DIAMONDS;
+          case 27: return Suits.HEARTS;
+          case 28: return Suits.SPADES;
+          default: return null;
+        }
+      };
+
+      const modifyCardData = (card: Card, modifiers: number[]) => {
+        let modifiedCardData = { ...getCardData(card) };
+
+        modifiers.forEach(modifierIdx => {
+          const modifierCard = hand.find(mc => mc.idx === modifierIdx);
+          if (modifierCard) {
+            const newSuit = getNewSuit(modifierCard.card_id);
+            if (newSuit) {
+              modifiedCardData.suit = newSuit;
+            }
+          }
+        });
+
+        if (specialAllCardsToHearts) {
+          modifiedCardData.suit = Suits.HEARTS;
+        }
+
+        return modifiedCardData;
+      };
 
       const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
         const card = hand.find(c => c.idx === card_index);
         if (card) {
-          let cardData = getCardData(card);
-          let modifiedCardData = { ...cardData };
           const modifiers = preSelectedModifiers[card_index] ?? [];
-          if (modifiers.length > 0) {
-            modifiers.forEach(modifierIdx => {
-              const modifierCard = hand.find(mc => mc.idx === modifierIdx);
-              if (modifierCard) {
-                const newSuit = (() => {
-                  switch (modifierCard.card_id) {
-                      case 25:
-                          return Suits.CLUBS;
-                      case 26:
-                          return Suits.DIAMONDS;
-                      case 27:
-                          return Suits.HEARTS;
-                      case 28:
-                          return Suits.SPADES;
-                      default:
-                          return null;
-                  }
-                })();
-                if (newSuit) {
-                  modifiedCardData.suit = newSuit;
-                }
-              }
-            });
-          }
-          if (specialAllCardsToHearts) {
-            modifiedCardData.suit = Suits.HEARTS;
-          }
+          const modifiedCardData = modifyCardData(card, modifiers);
           acc.push(modifiedCardData);
         }
         return acc;
       }, []);
 
-      let play = checkHand(cardsData, easyFlush, easyStraigh);
+      let play = checkHand(cardsData, easyFlush, easyStraight);
 
-      // checkHand(
-      //   account.account,
-      //   gameId,
-      //   preSelectedCards,
-      //   preSelectedModifiers
-      // ).then((result) => {
       setPreSelectedPlay(play);
-      //   setMulti(result?.multi ?? 0);
-      //   setPoints(result?.points ?? 0);
-      // });
+      // setMulti(result?.multi ?? 0);
+      // setPoints(result?.points ?? 0);
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
