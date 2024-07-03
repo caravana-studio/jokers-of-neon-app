@@ -3,12 +3,12 @@ import { ActionButton } from "../../components/ActionButton";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
-import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card";
+import { useNavigate } from "react-router-dom";
 
 export const PreselectedCardsSection = () => {
   const {
@@ -24,13 +24,16 @@ export const PreselectedCardsSection = () => {
     gameId,
   } = useGameContext();
 
+  const navigate = useNavigate();
   const { data: round } = useGetRound(gameId);
   const handsLeft = round?.hands;
   const discardsLeft = round?.discards;
 
-  return roundRewards ? (
-    <RewardsDetail roundRewards={roundRewards} />
-  ) : (
+  if (roundRewards) {
+    navigate("/rewards");
+  }
+
+  return (
     <>
       <ActionButton
         position="LEFT"
