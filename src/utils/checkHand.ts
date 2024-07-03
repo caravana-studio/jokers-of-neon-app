@@ -2,7 +2,7 @@ import { CardData } from "../types/CardData";
 import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
 
-export const checkHand = (cards: CardData[]): Plays => {
+export const checkHand = (cards: CardData[], easyFlush: boolean, easyStraigh: boolean): Plays => {
     const valuesCount = new Map<number, number>();
     const suitsCount = new Map<Suits, number>();
     const counts: number[] = [];
@@ -21,12 +21,12 @@ export const checkHand = (cards: CardData[]): Plays => {
         suitsCount.set(card.suit as Suits, suitCount + 1);
     }
 
-    const countCardFlush = 5;
+    const countCardFlush = easyFlush ? 4 : 5;
     const isFlush = [Suits.CLUBS, Suits.DIAMONDS, Suits.HEARTS, Suits.SPADES].some(
         suit => (suitsCount.get(suit) || 0) >= countCardFlush
     );
 
-    const countCardStraight = 5;
+    const countCardStraight = easyStraigh ? 4 : 5;
     const isStraight = cardsSorted.length >= countCardStraight &&
         cardsSorted.every((card, idx, arr) =>
             idx === 0 || (card.card || 0) === ((arr[idx - 1].card || 0) + 1)

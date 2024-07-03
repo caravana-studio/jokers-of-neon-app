@@ -27,6 +27,7 @@ import { getCardData } from "../utils/getCardData";
 import { checkHand } from "../utils/checkHand";
 import { CardData } from "../types/CardData";
 import { Suits } from "../enums/suits.ts";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -131,6 +132,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
   const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
+
+  const specialCards = useCurrentSpecialCards();
 
   const {
     setup: {
@@ -553,6 +556,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       console.log('preSelectedCards: ', preSelectedCards);
       console.log('preSelectedModifiers: ', preSelectedModifiers);
 
+      console.log("specialCards: ", specialCards);
+      const specialAllCardsToHearts = specialCards.find(s => s.card_id == 15);
+      const easyFlush = specialCards.find(s => s.card_id == 10);
+      const easyStraigh = specialCards.find(s => s.card_id == 9);
+
       const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
         const card = hand.find(c => c.idx === card_index);
         if (card) {
@@ -583,12 +591,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               }
             });
           }
+          if (specialAllCardsToHearts) {
+            modifiedCardData.suit = Suits.HEARTS;
+          }
           acc.push(modifiedCardData);
         }
         return acc;
       }, []);
 
-      let play = checkHand(cardsData);
+      let play = checkHand(cardsData, easyFlush, easyStraigh);
 
       // checkHand(
       //   account.account,
