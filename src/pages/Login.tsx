@@ -1,9 +1,11 @@
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Input } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PoweredBy } from "../components/PoweredBy";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
+import { Background } from '../components/Background.tsx'
+import { VIOLET } from '../theme/colors.tsx'
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -72,42 +74,68 @@ export const Login = () => {
   }, []);
 
   return (
-    <>
-      <div className="text av1">
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-      </div>
-
-      <div className="menu">
-        <header>Introduce username</header>
-        <Box mb={7} px={5}>
-          <Input
-            isInvalid
-            id="usernameInputField"
-            type="text"
-            placeholder="Username"
-            ref={inputRef}
-            maxLength={15}
-            sx={{ backgroundColor: "white", border: "3px solid black" }}
-            onChange={(e) => {
-              setUsername(e.target.value.trim());
-            }}
-          />
+    <Background type="home">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+        width="100%"
+      >
+        <Box
+          border="2px solid #DAA1E8FF"
+          boxShadow={`0px 0px 20px 15px ${VIOLET}`}
+          filter="blur(0.5px)"
+          backgroundColor="rgba(0, 0, 0, 1)"
+          borderRadius="10px"
+          display="grid"
+          justifyItems="center"
+          px={[4, 8]}
+          py={4}
+        >
+          <Heading color={VIOLET} size={["md", "lg"]}>Introduce username</Heading>
+          <Box pt={3}
+               w="95%"
+               sx={{
+                   position: "relative",
+                   "&::after": {
+                     content: '""',
+                     position: "absolute",
+                     bottom: 0,
+                     left: 0,
+                     width: "100%",
+                     height: "1px",
+                     background: "white",
+                     boxShadow: "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
+                   }
+                }}
+              >
+              <Input
+                variant="neon-white"
+                id="usernameInputField"
+                type="text"
+                placeholder="Username"
+                ref={inputRef}
+                maxLength={15}
+                onChange={(e) => {
+                  setUsername(e.target.value.trim());
+                }}
+              />
+          </Box>
         </Box>
-        <footer>
-          <div className="key">
-            Exit: <span>ESC</span>
-          </div>
-          <div className="key">
-            Continue: <span>ENTER</span>
-          </div>
-        </footer>
-      </div>
-
+        <Box pt={12}>
+          <Button mr={4} onClick={() => { navigate("/")}}>
+            GO BACK
+          </Button>
+          <Button ml={4}
+                  onClick={validateAndCreateUser}
+                  variant="secondarySolid"
+          >
+            START GAME
+          </Button>
+        </Box>
+      </Flex>
       <PoweredBy />
-    </>
+    </Background>
   );
 };

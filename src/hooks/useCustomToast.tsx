@@ -13,6 +13,7 @@ const CustomToast = ({ type, children }: ICustomToastProps) => {
       py={3}
       px={6}
       bg={type === "error" ? "red.500" : "green.500"}
+      borderRadius="10px"
     >
       {children}
     </Box>
