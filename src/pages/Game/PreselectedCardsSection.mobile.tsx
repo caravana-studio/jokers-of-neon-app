@@ -2,11 +2,11 @@ import { Box } from "@chakra-ui/react";
 import { AnimatedCard } from "../../components/AnimatedCard.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard.tsx";
-import { RewardsDetail } from "../../components/RewardsDetail.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
 import { CARD_HEIGHT } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { Card } from "../../types/Card.ts";
+import { useNavigate } from "react-router-dom";
 
 export const MobilePreselectedCardsSection = () => {
   const {
@@ -18,10 +18,13 @@ export const MobilePreselectedCardsSection = () => {
     playAnimation,
     roundRewards,
   } = useGameContext();
+  const navigate = useNavigate();
 
-  return roundRewards ? (
-    <RewardsDetail roundRewards={roundRewards} />
-  ) : (
+  if (roundRewards) {
+    navigate("/rewards");
+  }
+
+  return (
     <>
       <Box
         gap={2}

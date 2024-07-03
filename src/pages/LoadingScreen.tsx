@@ -27,8 +27,8 @@ export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
         <div>error loading game</div>
       ) : (
         <>
-          <img style={{marginTop: '80px'}} width="70%" src="logo.jpg" alt="logo" />
-          <img src="loader.gif" alt="loader" />
+          <img style={{marginTop: '80px'}} width="70%" src="logos/logo.png" alt="logo" />
+          <img src="loader.gif" alt="loader" width='100px' />
         </>
       )}
     </div>
