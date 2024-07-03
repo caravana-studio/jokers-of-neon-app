@@ -12,3 +12,5 @@ export const SPADES = "#7e3073";
 export const LOADING_TOAST = "#26619b"
 export const SUCCESS_TOAST = "#278757"
 export const ERROR_TOAST = "#b8202b"
+
+export const ROYAL_BLUE = "#066A9AFF";

@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Img } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
@@ -31,12 +31,20 @@ export const Home = () => {
         gap={4}
       >
         {leaderboardOpen ? (
-          <Flex flexDirection="column" alignItems="center" gap={4}>
-            <Leaderboard />
-            <Heading size="m" color="limegreen">
-              PRESS A KEY TO GO BACK TO MENU
-            </Heading>
-          </Flex>
+
+            <Box>
+              <Leaderboard />
+              <Button
+                mt={8}
+                width="100%"
+                onClick={() => {
+                  setLeaderboardOpen(false);
+                }}
+              >
+                GO BACK HOME
+              </Button>
+            </Box>
+
         ) : (
           <Flex
             flexDirection="column"
@@ -52,7 +60,7 @@ export const Home = () => {
             </Heading>
             <Img
               width={{ base: "95%", sm: "85%", md: "80%" }}
-              src="/logo.jpg"
+              src="/logos/logo.png"
               alt="logo"
             />
 
