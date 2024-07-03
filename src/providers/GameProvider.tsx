@@ -552,11 +552,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      console.log('call checkHand');
-      console.log('preSelectedCards: ', preSelectedCards);
-      console.log('preSelectedModifiers: ', preSelectedModifiers);
-
-      console.log("specialCards: ", specialCards);
       const specialAllCardsToHearts = specialCards.find(s => s.card_id == 15);
       const easyFlush = specialCards.find(s => s.card_id == 10);
       const easyStraigh = specialCards.find(s => s.card_id == 9);
