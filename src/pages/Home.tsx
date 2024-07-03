@@ -52,7 +52,7 @@ export const Home = () => {
             </Heading>
             <Img
               width={{ base: "95%", sm: "85%", md: "80%" }}
-              src="/logo.jpg"
+              src="/logos/logo.png"
               alt="logo"
             />
 
