@@ -48,7 +48,7 @@ export const useCurrentSpecialCards = () => {
 
   useEffect(() => {
     fetchSpecialCards();
-  }, [fetchSpecialCards]);
+  }, []);
 
   return { specialCards, refetch: fetchSpecialCards };
 };

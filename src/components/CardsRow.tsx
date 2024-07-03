@@ -44,6 +44,8 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
             justifyContent="center"
             width={`${100 / cards.length}%`}
             maxWidth={`${CARD_WIDTH + 7}px`}
+            position="relative"
+            zIndex={1}
           >
             {!isDiscarded && (
               <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
