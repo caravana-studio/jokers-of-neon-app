@@ -23,7 +23,6 @@ export const TopSection = () => {
         sx={{ p: 2 }}
         minWidth={{ base: "250px", md: "500px" }}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
-        backgroundColor="darkGrey"
       >
         <SpecialCards />
       </Flex>

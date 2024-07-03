@@ -50,7 +50,7 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow: `0px 0px 15px 0px ${color} `,
+        boxShadow: `0px 0px 17px 7px ${color} `,
         textShadow: `0 0 5px ${color}`,
         borderRadius: 20,
       }}

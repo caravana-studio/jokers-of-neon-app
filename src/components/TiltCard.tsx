@@ -1,24 +1,25 @@
+import { TimeIcon } from "@chakra-ui/icons";
 import {
   Box,
   Heading,
   Image,
   SystemStyleObject,
-  Tooltip,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
+  CARD_HEIGHT_PX,
   CARD_WIDTH_PX,
   MODIFIERS_OFFSET,
   TILT_OPTIONS,
 } from "../constants/visualProps";
 import { Card } from "../types/Card";
+import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
-import { TimeIcon } from '@chakra-ui/icons';
-import { getTemporalCardText } from '../utils/getTemporalCardText.ts';
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -47,6 +48,7 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
               src={`Cards/${img}`}
               alt={img}
               width={CARD_WIDTH_PX}
+              height={CARD_HEIGHT_PX}
               onClick={(e) => {
                 e.stopPropagation();
                 onClick?.();
@@ -87,7 +89,11 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
             </Box>
           )}
           {card.temporary && (
-            <Tooltip hasArrow label={getTemporalCardText(card.remaining)} closeOnPointerDown>
+            <Tooltip
+              hasArrow
+              label={getTemporalCardText(card.remaining)}
+              closeOnPointerDown
+            >
               <Box
                 sx={{
                   position: "absolute",
@@ -106,8 +112,10 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
                 }}
               >
                 <TimeIcon boxSize={4} color={"black"} />
-                { card.remaining && (
-                  <Text color="black" fontSize="medium">{card.remaining}</Text>
+                {card.remaining && (
+                  <Text color="black" fontSize="medium">
+                    {card.remaining}
+                  </Text>
                 )}
               </Box>
             </Tooltip>
@@ -138,6 +146,7 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
                     src={`Cards/${c.img}`}
                     alt={c.img}
                     width={CARD_WIDTH_PX}
+                    height={CARD_HEIGHT_PX}
                     onClick={(e) => {
                       e.stopPropagation();
                       onClick?.();

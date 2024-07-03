@@ -99,16 +99,6 @@ export const GameContent = () => {
     >
       <Box
         sx={{
-          position: "fixed",
-          bottom: "20px",
-          left: "20px",
-          zIndex: 1000,
-        }}
-      >
-        <GameMenu />
-      </Box>
-      <Box
-        sx={{
           height: "100%",
           width: "100%",
         }}
@@ -127,13 +117,12 @@ export const GameContent = () => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                backgroundColor: "rgba(0,0,0,0.7)",
               }}
             >
               <PreselectedCardsSection />
             </Box>
             <Box
-              pb={{ base: 2, md: 10 }}
+              pb={{ base: 2, md: 20 }}
               mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
@@ -148,7 +137,17 @@ export const GameContent = () => {
         </Box>
         <Box
           sx={{
-            position: "absolute",
+            position: "fixed",
+            bottom: 7,
+            left: 10,
+            zIndex: 1000,
+          }}
+        >
+          <GameMenu />
+        </Box>
+        <Box
+          sx={{
+            position: "fixed",
             bottom: 7,
             right: 10,
           }}

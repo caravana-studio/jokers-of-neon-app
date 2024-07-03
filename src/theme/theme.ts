@@ -38,7 +38,7 @@ export default {
     violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
-    neonPink: NEON_PINK,
+    neonPink: VIOLET,
     limeGreen: "lime",
     darkGrey: "#04162d",
     // suits - accessible through colors[Suits.CLUBS]
