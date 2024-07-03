@@ -22,6 +22,11 @@ import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { getCardData } from "../utils/getCardData";
+import { checkHand } from "../utils/checkHand";
+import { CardData } from "../types/CardData";
+import { Suits } from "../enums/suits.ts";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -126,12 +131,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
 
+  const specialCards = useCurrentSpecialCards();
+
   const {
     setup: {
       masterAccount,
       systemCalls: {
         createGame,
-        checkHand,
+        // checkHand,
         discard,
         discardEffectCard,
         discardSpecialCard,
@@ -537,16 +544,60 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(
-        account.account,
-        gameId,
-        preSelectedCards,
-        preSelectedModifiers
-      ).then((result) => {
-        setPreSelectedPlay(result?.play ?? Plays.NONE);
-        setMulti(result?.multi ?? 0);
-        setPoints(result?.points ?? 0);
-      });
+      const specialAllCardsToHearts = specialCards.find(s => s.card_id == 15);
+      const easyFlush = specialCards.find(s => s.card_id == 10);
+      const easyStraigh = specialCards.find(s => s.card_id == 9);
+
+      const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
+        const card = hand.find(c => c.idx === card_index);
+        if (card) {
+          let cardData = getCardData(card);
+          let modifiedCardData = { ...cardData };
+          const modifiers = preSelectedModifiers[card_index] ?? [];
+          if (modifiers.length > 0) {
+            modifiers.forEach(modifierIdx => {
+              const modifierCard = hand.find(mc => mc.idx === modifierIdx);
+              if (modifierCard) {
+                const newSuit = (() => {
+                  switch (modifierCard.card_id) {
+                      case 25:
+                          return Suits.CLUBS;
+                      case 26:
+                          return Suits.DIAMONDS;
+                      case 27:
+                          return Suits.HEARTS;
+                      case 28:
+                          return Suits.SPADES;
+                      default:
+                          return null;
+                  }
+                })();
+                if (newSuit) {
+                  modifiedCardData.suit = newSuit;
+                }
+              }
+            });
+          }
+          if (specialAllCardsToHearts) {
+            modifiedCardData.suit = Suits.HEARTS;
+          }
+          acc.push(modifiedCardData);
+        }
+        return acc;
+      }, []);
+
+      let play = checkHand(cardsData, easyFlush, easyStraigh);
+
+      // checkHand(
+      //   account.account,
+      //   gameId,
+      //   preSelectedCards,
+      //   preSelectedModifiers
+      // ).then((result) => {
+      setPreSelectedPlay(play);
+      //   setMulti(result?.multi ?? 0);
+      //   setPoints(result?.points ?? 0);
+      // });
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
