@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Img } from "@chakra-ui/react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
@@ -13,7 +13,8 @@ export const TopSection = () => {
       justifyContent={"space-between"}
       alignItems={"center"}
     >
-      <Box ml={{ base: 4, md: 10 }} width={{ base: "160px", md: "320px" }}>
+      <Box mr={4}>
+        <Img src="logos/logo-variant.png" width={{base: '120px', md: '330px'}} alt="logo" />
         <LevelPoints />
       </Box>
       <Flex
@@ -29,9 +30,8 @@ export const TopSection = () => {
       <Flex
         flexDirection="column"
         justifyContent="center"
-        sx={{ mx: 3 }}
+        ml={4}
         height="100%"
-        width={{ base: "210px", md: "400px" }}
       >
         <Score />
         <MultiPoints />

@@ -111,12 +111,10 @@ export const GameContent = () => {
         sx={{
           height: "100%",
           width: "100%",
-          filter: "blur(0.7px)",
-          animation: "jerkup-mild 100ms infinite",
         }}
         onClick={clearPreSelection}
       >
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box sx={{ width: "100%", height: "100%" }} px={8}>
           <Box sx={{ height: "30%", width: "100%" }}>
             <TopSection />
           </Box>

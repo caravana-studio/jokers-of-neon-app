@@ -8,7 +8,7 @@ export interface ICustomToastProps extends PropsWithChildren {
 const CustomToast = ({ type, children }: ICustomToastProps) => {
   return (
     <Box
-      sx={{ fontFamily: "Sys", mt: 4, mr: 6, filter: "blur(0.5px)" }}
+      sx={{ fontFamily: "Sys", mt: 4, mr: 6 }}
       color="white"
       py={3}
       px={6}

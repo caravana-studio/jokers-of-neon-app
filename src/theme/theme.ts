@@ -14,6 +14,7 @@ import {
 import { headingTheme } from "./heading";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
+import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
 
 const { definePartsStyle, defineMultiStyleConfig } =
@@ -76,5 +77,6 @@ export default {
     Modal: modalTheme,
     Tooltip: tooltipTheme,
     Heading: headingTheme,
+    Text: textTheme,
   },
 };
