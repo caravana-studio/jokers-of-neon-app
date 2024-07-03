@@ -1,19 +1,48 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { RoundRewards } from "../types/RoundRewards.ts";
+import { NEON_PINK, VIOLET } from "../theme/colors";
 
 interface RewardItemProps {
   label: string;
   value: number;
-  maxLabelLength: number;
 }
 
-const RewardItem = ({ label, value, maxLabelLength }: RewardItemProps) => {
-  const fillCharacters = "_".repeat(maxLabelLength - label.length + 5);
+const RewardItem = ({ label, value }: RewardItemProps) => {
   return (
-    <Heading size="m" pt={1} pb={1}>
-      {label} {fillCharacters} {value}ȼ
-    </Heading>
+    <Box
+      color="white"
+      px={[2, 4, 8]}
+      w="100%"
+    >
+      <Flex
+        mt={2}
+        pt={1}
+        pb={1}
+        justifyContent="space-between"
+        fontSize={["md", "md", "lg", "xl"]}
+        sx={{
+          position: "relative",
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            height: "1px",
+            background: "white",
+            boxShadow: "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)"
+          }
+        }}
+      >
+        <Text>
+          {label.toUpperCase()}
+        </Text>
+        <Text>
+          {value}Ȼ
+        </Text>
+      </Flex>
+    </Box>
   );
 };
 
@@ -42,43 +71,62 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     `${discard_left} Discards left`,
   ];
 
-  const maxLabelLength = Math.max(...labels.map((label) => label.length));
-
   const navigate = useNavigate();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" w="100%">
-      <Heading size="l">CONGRATS!</Heading>
-      <table>
-        <tbody>
-          <RewardItem
-            label={labels[0]}
-            value={round_defeat}
-            maxLabelLength={maxLabelLength}
-          />
-          <RewardItem
-            label={labels[1]}
-            value={level_bonus}
-            maxLabelLength={maxLabelLength}
-          />
-          <RewardItem
-            label={labels[2]}
-            value={hands_left_cash}
-            maxLabelLength={maxLabelLength}
-          />
-          <RewardItem
-            label={labels[3]}
-            value={discard_left_cash}
-            maxLabelLength={maxLabelLength}
-          />
-        </tbody>
-      </table>
-      <Heading size="l" pt={4} pb={4}>
-        Total: {total}ȼ
-      </Heading>
+    <Box display="flex" flexDirection="column" alignItems="center" w="80%" maxW="550px" fontFamily="Orbitron">
+      <Heading size="lg" fontWeight={""} color={VIOLET}>CONGRATS!</Heading>
+      <Box
+        w="100%"
+        px={[1, 2, 4]}
+        py={2}
+        mt={8}
+        border="2px solid #DAA1E8FF"
+        boxShadow= {`0px 0px 20px 15px ${VIOLET}`}
+        filter= "blur(0.5px)"
+        backgroundColor= "rgba(0, 0, 0, 1)"
+        borderRadius= "10px"
+        display="grid"
+        justifyItems="center"
+      >
+        <RewardItem
+          label={labels[0]}
+          value={round_defeat}
+        />
+        <RewardItem
+          label={labels[1]}
+          value={level_bonus}
+        />
+        <RewardItem
+          label={labels[2]}
+          value={hands_left_cash}
+        />
+        <RewardItem
+          label={labels[3]}
+          value={discard_left_cash}
+        />
+
+        <Flex
+          color={VIOLET}
+          pt={4}
+          pb={4}
+          w="80%"
+          justifyContent="space-between"
+          fontWeight="bold"
+          fontSize={["lg", "xl", "2xl"]}
+        >
+          <Text>
+            Total:
+          </Text>
+          <Text>
+            {total}ȼ
+          </Text>
+        </Flex>
+      </Box>
 
       <Button
-        variant="outline"
+        mt={8}
+        w="100%"
         size="md"
         onClick={() => navigate("/redirect/store")}
       >

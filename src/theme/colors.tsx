@@ -1,5 +1,5 @@
 export const BLUE = '#066b9b';
-export const VIOLET = '#a144b2';
+export const VIOLET = '#A144B2';
 
 export const NEON_GREEN = "#33effa";
 export const NEON_PINK = "#fd4bad";

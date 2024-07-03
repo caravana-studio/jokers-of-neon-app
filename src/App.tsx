@@ -8,9 +8,10 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Redirect } from "./pages/Redirect.tsx";
 import { Store } from "./pages/store/Store";
-import { AudioPlayerProvider } from "./providers/AudioPlayerProvider.tsx";
+import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
+import { RewardsPage } from "./pages/RewardsPage";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 
@@ -26,6 +27,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/gameover" element={<GameOver />} />
               <Route path="/demo" element={<GamePage />} />
+              <Route path="/rewards" element={<RewardsPage />} />
               <Route
                 path="/store"
                 element={
