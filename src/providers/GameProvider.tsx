@@ -544,9 +544,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      const specialAllCardsToHearts = specialCards.find(s => s.card_id == 15);
-      const easyFlush = specialCards.find(s => s.card_id == 10);
-      const easyStraigh = specialCards.find(s => s.card_id == 9);
+      const specialAllCardsToHearts = specialCards.some(s => s.card_id == 15);
+      const easyFlush = specialCards.some(s => s.card_id == 10);
+      const easyStraigh = specialCards.some(s => s.card_id == 9);
 
       const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
         const card = hand.find(c => c.idx === card_index);
