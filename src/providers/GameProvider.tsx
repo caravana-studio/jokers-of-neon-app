@@ -23,6 +23,10 @@ import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { getEnvNumber } from "../utils/getEnvValue";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { getCardData } from "../utils/getCardData";
+import { checkHand } from "../utils/checkHand";
+import { CardData } from "../types/CardData";
+import { Suits } from "../enums/suits.ts";
 
 const REFETCH_HAND_GAP = getEnvNumber("VITE_REFETCH_HAND_GAP") || 2000;
 const PLAY_ANIMATION_DURATION = 700;
@@ -133,7 +137,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       masterAccount,
       systemCalls: {
         createGame,
-        checkHand,
+        // checkHand,
         discard,
         discardEffectCard,
         discardSpecialCard,
@@ -545,16 +549,57 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(
-        account.account,
-        gameId,
-        preSelectedCards,
-        preSelectedModifiers
-      ).then((result) => {
-        setPreSelectedPlay(result?.play ?? Plays.NONE);
-        setMulti(result?.multi ?? 0);
-        setPoints(result?.points ?? 0);
-      });
+      console.log('call checkHand');
+      console.log('preSelectedCards: ', preSelectedCards);
+      console.log('preSelectedModifiers: ', preSelectedModifiers);
+
+      const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
+        const card = hand.find(c => c.idx === card_index);
+        if (card) {
+          let cardData = getCardData(card);
+          let modifiedCardData = { ...cardData };
+          const modifiers = preSelectedModifiers[card_index] ?? [];
+          if (modifiers.length > 0) {
+            modifiers.forEach(modifierIdx => {
+              const modifierCard = hand.find(mc => mc.idx === modifierIdx);
+              if (modifierCard) {
+                const newSuit = (() => {
+                  switch (modifierCard.card_id) {
+                      case 25:
+                          return Suits.CLUBS;
+                      case 26:
+                          return Suits.DIAMONDS;
+                      case 27:
+                          return Suits.HEARTS;
+                      case 28:
+                          return Suits.SPADES;
+                      default:
+                          return null;
+                  }
+                })();
+                if (newSuit) {
+                  modifiedCardData.suit = newSuit;
+                }
+              }
+            });
+          }
+          acc.push(modifiedCardData);
+        }
+        return acc;
+      }, []);
+
+      let play = checkHand(cardsData);
+
+      // checkHand(
+      //   account.account,
+      //   gameId,
+      //   preSelectedCards,
+      //   preSelectedModifiers
+      // ).then((result) => {
+      setPreSelectedPlay(play);
+      //   setMulti(result?.multi ?? 0);
+      //   setPoints(result?.points ?? 0);
+      // });
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
