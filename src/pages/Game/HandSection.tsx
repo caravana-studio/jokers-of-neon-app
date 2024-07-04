@@ -84,7 +84,6 @@ export const HandSection = () => {
                   <MenuList
                     textColor="black"
                     minWidth="max-content"
-                    borderRadius="0"
                     zIndex="7"
                   >
                     <MenuItem
@@ -93,7 +92,6 @@ export const HandSection = () => {
                         discardEffectCard(card.idx);
                         onClose();
                       }}
-                      borderRadius="0"
                       isDisabled={preSelectionLocked}
                     >
                       Discard
