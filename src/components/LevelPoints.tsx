@@ -21,12 +21,12 @@ export const LevelPoints = () => {
         </PointBox>
         <PointBox type="points">
           <Heading size="s">POINTS</Heading>
-          <Heading size="m" sx={{ color: "neonGreen", px: 2 }}>
+          <Heading size="m" px={2}>
             {round.levelScore}
           </Heading>
         </PointBox>
       </Flex>
-      <Text size="s" mt={{ base: 2, md: 4 }} textAlign="center">
+      <Text size="s" mt={{ base: 3, md: 6 }} textAlign="center">
         score {round.levelScore} points to beat level {level ?? 0}
       </Text>
     </Box>

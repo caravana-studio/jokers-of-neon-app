@@ -1,18 +1,21 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound";
 import { useDroppable } from '@dnd-kit/core';
+import { useGameContext } from "../../providers/GameProvider";
 
 interface PlayDiscardSectionProps {
   itemDragged?: boolean;
 }
 
 export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionProps) => {
-  const { play, discard, gameId, preSelectedCards } = useGameContext();
+  const {
+    play,
+    discard,
+    preSelectedCards,
+    preSelectionLocked,
+    handsLeft,
+    discardsLeft,
+  } = useGameContext();
   const { setNodeRef } = useDroppable({ id: "play-discard",});
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
 
   return (
     <>
@@ -24,7 +27,10 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
         }}
         width="48%"
         isDisabled={
-          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+          preSelectionLocked ||
+          preSelectedCards?.length === 0 ||
+          !handsLeft ||
+          handsLeft === 0
         }
       >
         <Box>
@@ -44,7 +50,10 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
         width="48%"
         isDisabled={
           !itemDragged && (
-          preSelectedCards?.length === 0 || !discardsLeft || discardsLeft === 0)
+          preSelectionLocked ||
+          preSelectedCards?.length === 0 ||
+          !discardsLeft ||
+          discardsLeft === 0)
         }
       >
         <Box>

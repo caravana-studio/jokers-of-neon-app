@@ -11,14 +11,14 @@ export const MultiPoints = () => {
     >
       <PointBox type="points">
         <Heading size="s">POINTS</Heading>
-        <Heading size="m" sx={{ color: "neonGreen" }}>
+        <Heading size="m">
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
       <Heading size="s">x</Heading>
       <PointBox type="multi">
         <Heading size="s">MULTI</Heading>
-        <Heading size="m" sx={{ color: "neonPink" }}>
+        <Heading size="m">
           <RollingNumber n={multi} />
         </Heading>
       </PointBox>

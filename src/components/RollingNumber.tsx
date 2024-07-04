@@ -2,9 +2,10 @@ import { Box } from "@chakra-ui/react";
 import { animated, useSpring } from "react-spring";
 interface RollingNumberProps {
   n: number;
+  className?: string;
 }
 
-export const RollingNumber = ({ n }: RollingNumberProps) => {
+export const RollingNumber = ({ n, className = 'headline' }: RollingNumberProps) => {
   const { number } = useSpring({
     from: { number: 0 },
     number: n,
@@ -13,7 +14,7 @@ export const RollingNumber = ({ n }: RollingNumberProps) => {
   });
   return (
     <Box sx={{ display: "inline-block" }}>
-      <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>
+      <animated.div className={className}>{number.to((n) => n.toFixed(0))}</animated.div>
     </Box>
   );
 };

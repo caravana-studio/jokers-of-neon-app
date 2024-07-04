@@ -29,10 +29,9 @@ export const HandSection = () => {
     preSelectedModifiers,
     roundRewards,
     gameId,
+    preSelectionLocked,
+    handsLeft,
   } = useGameContext();
-  const { data: round } = useGetRound(gameId);
-
-  const handsLeft = round.hands;
 
   const { activeNode } = useDndContext();
 
@@ -95,6 +94,7 @@ export const HandSection = () => {
                         onClose();
                       }}
                       borderRadius="0"
+                      isDisabled={preSelectionLocked}
                     >
                       Discard
                     </MenuItem>
@@ -126,9 +126,10 @@ export const HandSection = () => {
       </SimpleGrid>
       {handsLeft === 0 && (
         <Heading
-          variant="neonGreen"
+          ml={{ base: "25px", md: "100px" }}
           size="m"
-          sx={{ position: "fixed", bottom: "100px" }}
+          bottom={{ base: "70px", md: "100px" }}
+          sx={{ position: "fixed" }}
         >
           you ran out of hands to play
         </Heading>

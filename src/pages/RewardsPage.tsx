@@ -14,7 +14,7 @@ export const RewardsPage = () => {
   }
 
   return (
-    <Background type="game">
+    <Background type="game" dark>
       <Box sx={{ width: "100%", height: "100%" }}>
         <Box
           height="15%"
@@ -22,7 +22,7 @@ export const RewardsPage = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          padding="0 5%"
+          padding="0 50px"
         >
           <Image
             alignSelf="center"
@@ -30,7 +30,7 @@ export const RewardsPage = () => {
             src="/logos/logo-variant.png"
             alt="/logos/logo-variant.png"
             width={"65%"}
-            maxW={"400px"}
+            maxW={"350px"}
           />
           {!isMobile && (
             <Image
@@ -54,23 +54,7 @@ export const RewardsPage = () => {
         >
           <RewardsDetail roundRewards={roundRewards} />
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "15%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {!isMobile && (
-            <Image
-              src="/logos/jn-logo.png"
-              alt="/logos/jn-logo.png"
-              width={"50%"}
-              maxW={"250px"}
-            />
-          )}
-        </Box>
+
       </Box>
     </Background>
   );
