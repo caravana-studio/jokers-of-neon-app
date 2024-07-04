@@ -62,7 +62,6 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                     <MenuList
                       textColor="black"
                       minWidth="max-content"
-                      borderRadius="0"
                       zIndex="7"
                     >
                       <MenuItem
@@ -75,7 +74,6 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                           });
                           onClose();
                         }}
-                        borderRadius="0"
                       >
                         Drop card
                       </MenuItem>

@@ -1,20 +1,12 @@
 import { buttonTheme } from "./button";
-import {
-  BLUE,
-  CLUBS,
-  DIAMONDS,
-  HEARTS,
-  NEON_GREEN,
-  NEON_PINK,
-  SPADES,
-  VIOLET,
-} from "./colors";
+import { BLUE, CLUBS, DIAMONDS, HEARTS, NEON_GREEN, SPADES, VIOLET, } from "./colors";
 import { headingTheme } from "./heading";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
 import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
-import { inputTheme } from './input'
+import { inputTheme } from "./input";
+import { menuTheme } from "./menu.ts";
 
 export default {
   colors: {
@@ -62,5 +54,6 @@ export default {
     Tooltip: tooltipTheme,
     Heading: headingTheme,
     Text: textTheme,
+    Menu: menuTheme,
   },
 };
