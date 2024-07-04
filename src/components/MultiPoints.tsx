@@ -6,19 +6,19 @@ export const MultiPoints = () => {
   const { points, multi } = useGameContext();
   return (
     <Box
-      gap={{ base: 2, md: 4 }}
+      gap={{ base: 1, md: 2 }}
       sx={{ display: "flex", alignItems: "center" }}
     >
       <PointBox type="points">
         <Heading size="s">POINTS</Heading>
-        <Heading size="l" sx={{ color: "neonGreen" }}>
+        <Heading size="m">
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
-      <Heading size="m">x</Heading>
+      <Heading size="s">x</Heading>
       <PointBox type="multi">
         <Heading size="s">MULTI</Heading>
-        <Heading size="l" sx={{ color: "neonPink" }}>
+        <Heading size="m">
           <RollingNumber n={multi} />
         </Heading>
       </PointBox>
@@ -42,18 +42,17 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   const color = colorMap[type];
   return (
     <Box
-      height={{ base: 55, md: 100 }}
-      minWidth={
-        type === "level" ? { base: 50, md: 100 } : { base: 75, md: 150 }
-      }
+      height={{ base: 35, md: 81 }}
+      minWidth={{ base: 75, md: 140 }}
       p={{ base: 1, md: 2 }}
       sx={{
         border: `2px solid ${color}`,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow: `0px 0px 15px 0px ${color} `,
+        boxShadow: `0px 0px 17px 7px ${color} `,
         textShadow: `0 0 5px ${color}`,
+        borderRadius: 20,
       }}
     >
       {children}

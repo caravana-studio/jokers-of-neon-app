@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
@@ -32,8 +32,8 @@ const RewardItem = ({ label, value }: RewardItemProps) => {
           },
         }}
       >
-        <Text>{label.toUpperCase()}</Text>
-        <Text>{value}Ȼ</Text>
+        <Heading size="s">{label.toUpperCase()}</Heading>
+        <Heading size="s">{value}</Heading>
       </Flex>
     </Box>
   );
@@ -58,7 +58,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   } = roundRewards;
 
   const labels = [
-    `Round ${level} defeat`,
+    `base`,
     "Level bonus",
     `${hands_left} Hands left`,
     `${discard_left} Discards left`,
@@ -76,7 +76,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       fontFamily="Orbitron"
     >
       <Heading size="lg" variant="italic" color={VIOLET}>
-        CONGRATS!
+        LEVEL {level} DEFEATED
       </Heading>
       <Box
         w="100%"
@@ -98,20 +98,22 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
         <Flex
           color={VIOLET}
-          pt={4}
+          pt={{ base: 4, sm: 8 }}
           pb={4}
-          w="80%"
+          w="90%"
           justifyContent="space-between"
-          fontWeight="bold"
-          fontSize={["lg", "xl", "2xl"]}
         >
-          <Text>Total:</Text>
-          <Text>{total}ȼ</Text>
+          <Heading color="neonPink" variant="italic">
+            Total:
+          </Heading>
+          <Heading color="neonPink" variant="italic">
+            {total}ȼ
+          </Heading>
         </Flex>
       </Box>
 
       <Button
-        mt={10}
+        mt={14}
         w="100%"
         size="md"
         variant="secondarySolid"

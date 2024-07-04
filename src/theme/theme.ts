@@ -1,5 +1,3 @@
-import { inputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import { buttonTheme } from "./button";
 import {
   BLUE,
@@ -14,22 +12,9 @@ import {
 import { headingTheme } from "./heading";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
+import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
-
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(inputAnatomy.keys);
-
-const baseStyle = definePartsStyle({
-  field: {
-    color: "#555",
-    fontSize: 30,
-    borderRadius: 0,
-    py: 7,
-    px: 7,
-  },
-});
-
-const inputTheme = defineMultiStyleConfig({ baseStyle });
+import { inputTheme } from './input'
 
 export default {
   colors: {
@@ -37,7 +22,7 @@ export default {
     violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
-    neonPink: NEON_PINK,
+    neonPink: VIOLET,
     limeGreen: "lime",
     darkGrey: "#04162d",
     // suits - accessible through colors[Suits.CLUBS]
@@ -76,5 +61,6 @@ export default {
     Modal: modalTheme,
     Tooltip: tooltipTheme,
     Heading: headingTheme,
+    Text: textTheme,
   },
 };
