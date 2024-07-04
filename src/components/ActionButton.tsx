@@ -6,8 +6,10 @@ interface IActionButtonProps {
   secondLabel: string;
   disabled: boolean;
   onClick: () => void;
+  setNodeRef?: (element: HTMLElement | null) => void;
 }
 export const ActionButton = ({
+  setNodeRef,
   position,
   label,
   disabled,
@@ -30,6 +32,7 @@ export const ActionButton = ({
         };
   return (
     <Box
+      ref={setNodeRef}
       sx={{
         display: "flex",
         justifyContent: "center",

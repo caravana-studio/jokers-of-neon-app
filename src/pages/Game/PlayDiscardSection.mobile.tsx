@@ -1,7 +1,12 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { useDroppable } from '@dnd-kit/core';
 import { useGameContext } from "../../providers/GameProvider";
 
-export const PlayDiscardSection = () => {
+interface PlayDiscardSectionProps {
+  itemDragged?: boolean;
+}
+
+export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionProps) => {
   const {
     play,
     discard,
@@ -10,6 +15,7 @@ export const PlayDiscardSection = () => {
     handsLeft,
     discardsLeft,
   } = useGameContext();
+  const { setNodeRef } = useDroppable({ id: "play-discard",});
 
   return (
     <>
@@ -35,6 +41,7 @@ export const PlayDiscardSection = () => {
         </Box>
       </Button>
       <Button
+        ref={setNodeRef}
         size="m"
         onClick={(e) => {
           e.stopPropagation();
@@ -42,14 +49,17 @@ export const PlayDiscardSection = () => {
         }}
         width="48%"
         isDisabled={
+          !itemDragged && (
           preSelectionLocked ||
           preSelectedCards?.length === 0 ||
           !discardsLeft ||
-          discardsLeft === 0
+          discardsLeft === 0)
         }
       >
         <Box>
-          discard
+          <Text fontSize={itemDragged ? 12 : 16} height={"16px"}>
+            {itemDragged ? "drop here to " : ""}discard
+          </Text>
           <Heading mt={0.5} fontSize={9} color="black">
             {discardsLeft} left
           </Heading>

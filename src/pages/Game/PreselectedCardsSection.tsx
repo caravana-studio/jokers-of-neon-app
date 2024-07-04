@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useDroppable } from "@dnd-kit/core";
 import { useNavigate } from "react-router-dom";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
@@ -23,6 +24,9 @@ export const PreselectedCardsSection = () => {
     preSelectionLocked,
   } = useGameContext();
 
+  const { setNodeRef } = useDroppable({
+    id: "play-discard",
+  });
   const navigate = useNavigate();
 
   if (roundRewards) {
@@ -97,6 +101,7 @@ export const PreselectedCardsSection = () => {
       </Box>
       <Flex flexDirection="column" alignItems="center" gap={4}>
         <Button
+          ref={setNodeRef}
           width="160px"
           onClick={(e) => {
             e.stopPropagation();
