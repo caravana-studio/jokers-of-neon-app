@@ -133,7 +133,7 @@ export const AnimatedCard = ({
             color={points ? colors.neonGreen : colors.neonPink}
             mb={{ base: 4, md: 6 }}
             sx={{
-              textShadow: `0 0 5px  white`,
+              textShadow: `0 0 5px  ${points ? colors.neonGreen : colors.neonPink}`,
             }}
           >
             +{points || multi}
