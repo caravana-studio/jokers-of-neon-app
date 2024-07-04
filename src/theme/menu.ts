@@ -1,5 +1,5 @@
-import { menuAnatomy } from '@chakra-ui/anatomy'
-import { createMultiStyleConfigHelpers } from '@chakra-ui/react'
+import { menuAnatomy } from '@chakra-ui/anatomy';
+import { createMultiStyleConfigHelpers } from '@chakra-ui/react';
 import { PASTEL_PINK, PASTEL_PINK_DARK } from "../theme/colors";
 
 const { definePartsStyle, defineMultiStyleConfig } =
@@ -49,6 +49,7 @@ const baseStyle = definePartsStyle({
     color: "white",
     bg: "black",
     borderRadius: 'xl',
+    border: '2px solid rgba(0,0,0,0)',
     _hover: {
       color: "pink",
       border: `2px solid white`,
