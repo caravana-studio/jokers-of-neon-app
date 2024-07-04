@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -15,20 +16,15 @@ import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand.ts";
 import { useGetDeck } from "../queries/useGetDeck";
+import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { useGetRound } from "../queries/useGetRound.ts";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
+import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
-import { getCardData } from "../utils/getCardData";
-import { checkHand } from "../utils/checkHand";
-import { CardData } from "../types/CardData";
-import { Suits } from "../enums/suits.ts";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
-import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
-import { json } from "stream/consumers";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -142,7 +138,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       masterAccount,
       systemCalls: {
         createGame,
-        // checkHand,
         discard,
         discardEffectCard,
         discardSpecialCard,
@@ -525,7 +520,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const cleanGameId = () => {
     setGameId(0);
-  }
+  };
 
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
@@ -548,54 +543,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      const specialAllCardsToHearts = specialCards.some(s => s.card_id === 15);
-      const easyFlush = specialCards.some(s => s.card_id === 10);
-      const easyStraight = specialCards.some(s => s.card_id === 9);
-
-      const getNewSuit = (modifierCardId?: number) => {
-        switch (modifierCardId) {
-          case 25: return Suits.CLUBS;
-          case 26: return Suits.DIAMONDS;
-          case 27: return Suits.HEARTS;
-          case 28: return Suits.SPADES;
-          default: return null;
-        }
-      };
-
-      const modifyCardData = (card: Card, modifiers: number[]) => {
-        let modifiedCardData = { ...getCardData(card) };
-
-        modifiers.forEach(modifierIdx => {
-          const modifierCard = hand.find(mc => mc.idx === modifierIdx);
-          if (modifierCard) {
-            const newSuit = getNewSuit(modifierCard.card_id);
-            if (newSuit) {
-              modifiedCardData.suit = newSuit;
-            }
-          }
-        });
-
-        if (specialAllCardsToHearts) {
-          modifiedCardData.suit = Suits.HEARTS;
-        }
-
-        return modifiedCardData;
-      };
-
-      const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
-        const card = hand.find(c => c.idx === card_index);
-        if (card) {
-          const modifiers = preSelectedModifiers[card_index] ?? [];
-          const modifiedCardData = modifyCardData(card, modifiers);
-          acc.push(modifiedCardData);
-        }
-        return acc;
-      }, []);
-
-      let play = checkHand(cardsData, easyFlush, easyStraight);
+      let play = checkHand(
+        specialCards,
+        hand,
+        preSelectedCards,
+        preSelectedModifiers
+      );
       setPreSelectedPlay(play);
       if (play != Plays.NONE) {
-        const playerPokerHand = plays?.find(p => p.pokerHand.value == play);
+        const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
         setMulti(playerPokerHand?.multi ?? 0);
         setPoints(playerPokerHand?.points ?? 0);
       }
