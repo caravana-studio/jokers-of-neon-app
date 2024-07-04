@@ -27,6 +27,8 @@ import { checkHand } from "../utils/checkHand";
 import { CardData } from "../types/CardData";
 import { Suits } from "../enums/suits.ts";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
+import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
+import { json } from "stream/consumers";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -132,6 +134,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
 
   const specialCards = useCurrentSpecialCards();
+
+  const { data: plays } = useGetPlaysLevelDetail();
 
   const {
     setup: {
@@ -589,10 +593,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }, []);
 
       let play = checkHand(cardsData, easyFlush, easyStraight);
-
       setPreSelectedPlay(play);
-      // setMulti(result?.multi ?? 0);
-      // setPoints(result?.points ?? 0);
+      if (play != Plays.NONE) {
+        const playerPokerHand = plays?.find(p => p.pokerHand.value == play);
+        setMulti(playerPokerHand?.multi ?? 0);
+        setPoints(playerPokerHand?.points ?? 0);
+      }
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
