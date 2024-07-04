@@ -11,12 +11,10 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
   dismissible: false,
   actionButtonStyle: {
     padding: '3px 6px',
-    fontFamily: 'Sys'
   }
 }
 
 const STYLES = {
-  fontFamily: "Sys",
   marginTop: "4px",
   marginRight: "6px",
   color: "white",

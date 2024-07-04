@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
+import { GameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
@@ -23,6 +24,16 @@ export const Home = () => {
 
   return (
     <Background type="home">
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 7,
+          left: 10,
+          zIndex: 1000,
+        }}
+      >
+        <GameMenu onlySound />
+      </Box>
       <Flex
         height="100%"
         justifyContent="center"
@@ -31,20 +42,18 @@ export const Home = () => {
         gap={4}
       >
         {leaderboardOpen ? (
-
-            <Box>
-              <Leaderboard />
-              <Button
-                mt={8}
-                width="100%"
-                onClick={() => {
-                  setLeaderboardOpen(false);
-                }}
-              >
-                GO BACK HOME
-              </Button>
-            </Box>
-
+          <Box>
+            <Leaderboard />
+            <Button
+              mt={8}
+              width="100%"
+              onClick={() => {
+                setLeaderboardOpen(false);
+              }}
+            >
+              GO BACK HOME
+            </Button>
+          </Box>
         ) : (
           <Flex
             flexDirection="column"

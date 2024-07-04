@@ -1,9 +1,11 @@
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Input } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PoweredBy } from "../components/PoweredBy";
+import { Background } from "../components/Background.tsx";
+import { GameMenu } from "../components/GameMenu.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
+import { VIOLET } from "../theme/colors.tsx";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -72,42 +74,93 @@ export const Login = () => {
   }, []);
 
   return (
-    <>
-      <div className="text av1">
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-        <span>AV-1</span>
-      </div>
-
-      <div className="menu">
-        <header>Introduce username</header>
-        <Box mb={7} px={5}>
-          <Input
-            isInvalid
-            id="usernameInputField"
-            type="text"
-            placeholder="Username"
-            ref={inputRef}
-            maxLength={15}
-            sx={{ backgroundColor: "white", border: "3px solid black" }}
-            onChange={(e) => {
-              setUsername(e.target.value.trim());
+    <Background type="home">
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 7,
+          left: 10,
+          zIndex: 1000,
+        }}
+      >
+        <GameMenu onlySound />
+      </Box>
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+        width="100%"
+      >
+        <Box
+          border="2px solid #DAA1E8FF"
+          boxShadow={`0px 0px 20px 15px ${VIOLET}`}
+          filter="blur(0.5px)"
+          backgroundColor="rgba(0, 0, 0, 1)"
+          borderRadius="20px"
+          display="grid"
+          px={[4, 8]}
+          py={4}
+          pl={[10, 12]}
+          width={{ base: "90%", sm: "600px" }}
+        >
+          <Heading variant="italic" color={VIOLET} size={"m"}>
+            Introduce username
+          </Heading>
+          <Box
+            pt={3}
+            mb={6}
+            w="95%"
+            sx={{
+              position: "relative",
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "1px",
+                background: "white",
+                boxShadow:
+                  "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
+              },
             }}
-          />
+          >
+            <Input
+              variant="neon-white"
+              id="usernameInputField"
+              type="text"
+              placeholder="Username"
+              ref={inputRef}
+              maxLength={15}
+              onChange={(e) => {
+                setUsername(e.target.value.trim());
+              }}
+            />
+          </Box>
         </Box>
-        <footer>
-          <div className="key">
-            Exit: <span>ESC</span>
-          </div>
-          <div className="key">
-            Continue: <span>ENTER</span>
-          </div>
-        </footer>
-      </div>
-
-      <PoweredBy />
-    </>
+        <Flex
+          justifyContent="space-between"
+          width={{ base: "90%", sm: "600px" }}
+          pt={{ base: 10, sm: 14 }}
+        >
+          <Button
+            width="46%"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            GO BACK
+          </Button>
+          <Button
+            width="46%"
+            onClick={validateAndCreateUser}
+            variant="secondarySolid"
+          >
+            START GAME
+          </Button>
+        </Flex>
+      </Flex>
+    </Background>
   );
 };
