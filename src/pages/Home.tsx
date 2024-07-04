@@ -43,6 +43,9 @@ export const Home = () => {
       >
         {leaderboardOpen ? (
           <Box>
+            <Heading size="l" variant="italic" textAlign={"center"} mb={12}>
+              LEADERBOARD
+            </Heading>
             <Leaderboard />
             <Button
               mt={8}

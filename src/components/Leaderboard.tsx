@@ -37,10 +37,6 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
     (leader) => leader.id === gameId
   );
   return (
-    <Box>
-      <Heading size="l" variant="italic" textAlign={"center"} mb={12}>
-        LEADERBOARD
-      </Heading>
       <Box
         sx={{
           border: `2px solid #20C4EBFF`,
@@ -118,6 +114,5 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
           </TableContainer>
         )}
       </Box>
-    </Box>
   );
 };

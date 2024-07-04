@@ -26,7 +26,7 @@ export const LevelPoints = () => {
           </Heading>
         </PointBox>
       </Flex>
-      <Text size="s" mt={{ base: 2, md: 4 }} textAlign="center">
+      <Text size="s" mt={{ base: 3, md: 6 }} textAlign="center">
         score {round.levelScore} points to beat level {level ?? 0}
       </Text>
     </Box>
