@@ -55,6 +55,7 @@ interface IGameContext {
   discardSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
   restartGame: () => void;
+  preSelectionLocked: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -89,6 +90,7 @@ const GameContext = createContext<IGameContext>({
   discardSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   restartGame: () => {},
+  preSelectionLocked: false,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -399,11 +401,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
-    play(account.account, gameId, preSelectedCards, preSelectedModifiers).then(
-      (response) => {
+    setPreSelectionLocked(true);
+    play(account.account, gameId, preSelectedCards, preSelectedModifiers)
+      .then((response) => {
         response && animatePlay(response);
-      }
-    );
+      })
+      .finally(() => {
+        setPreSelectionLocked(false);
+      });
   };
 
   const cardIsPreselected = (cardIndex: number) => {
@@ -479,6 +484,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
+    setPreSelectionLocked(true);
     const newHand = hand?.map((card) => {
       if (card.idx === cardIdx) {
         return {
@@ -505,16 +511,22 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           };
         });
         setHand(newHand);
+      })
+      .finally(() => {
+        setPreSelectionLocked(false);
       });
   };
 
   const onDiscardSpecialCard = (cardIdx: number) => {
-    return discardSpecialCard(account.account, gameId, cardIdx);
+    setPreSelectionLocked(true);
+    return discardSpecialCard(account.account, gameId, cardIdx).finally(() => {
+      setPreSelectionLocked(false);
+    });
   };
 
   const cleanGameId = () => {
     setGameId(0);
-  }
+  };
 
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
@@ -611,6 +623,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discardSpecialCard: onDiscardSpecialCard,
         checkOrCreateGame,
         restartGame: cleanGameId,
+        preSelectionLocked,
       }}
     >
       {children}

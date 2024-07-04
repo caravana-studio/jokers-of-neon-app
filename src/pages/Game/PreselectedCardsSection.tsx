@@ -21,6 +21,7 @@ export const PreselectedCardsSection = () => {
     discard,
     roundRewards,
     gameId,
+    preSelectionLocked
   } = useGameContext();
 
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const PreselectedCardsSection = () => {
             play();
           }}
           isDisabled={
-            preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+            preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
           }
         >
           PLAY HAND
@@ -103,7 +104,7 @@ export const PreselectedCardsSection = () => {
             discard();
           }}
           variant="secondarySolid"
-          isDisabled={
+          isDisabled={preSelectionLocked || 
             preSelectedCards?.length === 0 ||
             !discardsLeft ||
             discardsLeft === 0
