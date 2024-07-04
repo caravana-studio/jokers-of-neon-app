@@ -21,7 +21,7 @@ export const LevelPoints = () => {
         </PointBox>
         <PointBox type="points">
           <Heading size="s">POINTS</Heading>
-          <Heading size="m" sx={{ color: "neonGreen", px: 2 }}>
+          <Heading size="m" px={2}>
             {round.levelScore}
           </Heading>
         </PointBox>

@@ -10,7 +10,7 @@ export const Score = () => {
 
   return (
     <Heading variant="italic" size="m" mb={{ base: 1, md: 4 }}>
-      SCORE: <RollingNumber n={score} />
+      SCORE: <RollingNumber className="italic" n={score} />
     </Heading>
   );
 };
