@@ -1,4 +1,5 @@
 import { Box, Heading, useTheme } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
 
@@ -10,15 +11,15 @@ export const MultiPoints = () => {
       sx={{ display: "flex", alignItems: "center" }}
     >
       <PointBox type="points">
-        <Heading size="s">POINTS</Heading>
-        <Heading size="m">
+        <Heading size={{ base: "xs", md: "s" }}>POINTS</Heading>
+        <Heading size={{ base: "s", md: "m" }}>
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
-      <Heading size="s">x</Heading>
+      {!isMobile && <Heading size="s">x</Heading>}
       <PointBox type="multi">
-        <Heading size="s">MULTI</Heading>
-        <Heading size="m">
+        <Heading size={{ base: "xs", md: "s" }}>MULTI</Heading>
+        <Heading size={{ base: "s", md: "m" }}>
           <RollingNumber n={multi} />
         </Heading>
       </PointBox>
@@ -42,18 +43,19 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   const color = colorMap[type];
   return (
     <Box
-      height={{ base: 35, md: 81 }}
-      minWidth={{ base: 75, md: 140 }}
+      height={{ base: 43, md: 81 }}
+      minWidth={{ base: 70, md: 140 }}
       p={{ base: 1, md: 2 }}
       sx={{
         border: `2px solid ${color}`,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow: `0px 0px 17px 7px ${color} `,
         textShadow: `0 0 5px ${color}`,
-        borderRadius: 20,
       }}
+
+      boxShadow={{base: `0px 0px 10px 4px ${color} `, sm: `0px 0px 17px 7px ${color}`}}
+      borderRadius={{ base: 15, sm: 20 }}
     >
       {children}
     </Box>
