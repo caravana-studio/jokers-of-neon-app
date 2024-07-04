@@ -1,13 +1,15 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound";
 
 export const PlayDiscardSection = () => {
-  const { play, discard, gameId, preSelectedCards, preSelectionLocked } =
-    useGameContext();
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
+  const {
+    play,
+    discard,
+    preSelectedCards,
+    preSelectionLocked,
+    handsLeft,
+    discardsLeft,
+  } = useGameContext();
 
   return (
     <>

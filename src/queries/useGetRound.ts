@@ -26,16 +26,8 @@ const fetchGraphQLData = async (gameId: number): Promise<RoundResponse> => {
 };
 
 export const useGetRound = (gameId: number) => {
-  const queryResponse = useQuery<RoundResponse>(
-    [ROUND_QUERY_KEY, gameId],
-    () => fetchGraphQLData(gameId),
-    {
-      // cacheTime: 0, // Immediately remove the query from the cache
-      // staleTime: 0, // Always consider the data as stale
-      // refetchOnMount: true, // Refetch on every mount
-      // refetchOnWindowFocus: true, // Refetch on window focus
-      // refetchInterval: 500,
-    }
+  const queryResponse = useQuery<RoundResponse>([ROUND_QUERY_KEY, gameId], () =>
+    fetchGraphQLData(gameId)
   );
   const { data } = queryResponse;
 
