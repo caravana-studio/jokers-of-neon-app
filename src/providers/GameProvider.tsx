@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -15,11 +16,13 @@ import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand.ts";
 import { useGetDeck } from "../queries/useGetDeck";
+import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { useGetRound } from "../queries/useGetRound.ts";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData.ts";
 import { changeCardSuit } from "../utils/changeCardSuit.ts";
+import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
@@ -128,12 +131,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
 
+  const specialCards = useCurrentSpecialCards();
+
+  const { data: plays } = useGetPlaysLevelDetail();
+
   const {
     setup: {
       masterAccount,
       systemCalls: {
         createGame,
-        checkHand,
         discard,
         discardEffectCard,
         discardSpecialCard,
@@ -549,16 +555,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      checkHand(
-        account.account,
-        gameId,
+      let play = checkHand(
+        specialCards,
+        hand,
         preSelectedCards,
         preSelectedModifiers
-      ).then((result) => {
-        setPreSelectedPlay(result?.play ?? Plays.NONE);
-        setMulti(result?.multi ?? 0);
-        setPoints(result?.points ?? 0);
-      });
+      );
+      setPreSelectedPlay(play);
+      if (play != Plays.NONE) {
+        const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
+        setMulti(playerPokerHand?.multi ?? 0);
+        setPoints(playerPokerHand?.points ?? 0);
+      }
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
