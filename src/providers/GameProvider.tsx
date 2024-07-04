@@ -433,6 +433,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         if (response) {
           animatePlay(response);
           setHandsLeft((prev) => prev - 1);
+        } else {
+          setPreSelectionLocked(false);
+          clearPreSelection();
         }
       })
       .catch(() => {
@@ -505,11 +508,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       if (response.success) {
         setDiscardsLeft((prev) => prev - 1);
         replaceCards(response.cards);
-        setPreSelectionLocked(false);
-        clearPreSelection();
         refetch();
-        setDiscardAnimation(false);
       }
+      setPreSelectionLocked(false);
+      clearPreSelection();
+      setDiscardAnimation(false);
     });
   };
 
@@ -525,22 +528,27 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       return card;
     });
     setHand(newHand);
+    const rollback = () => {
+      // rollback, remove discarded boolean from all cards
+      const newHand = hand?.map((card) => {
+        return {
+          ...card,
+          discarded: false,
+        };
+      });
+      setHand(newHand);
+    };
     discardEffectCard(account.account, gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
           refetch();
           replaceCards(response.cards);
+        } else {
+          rollback();
         }
       })
       .catch(() => {
-        // rollback, remove discarded boolean from all cards
-        const newHand = hand?.map((card) => {
-          return {
-            ...card,
-            discarded: false,
-          };
-        });
-        setHand(newHand);
+        rollback();
       })
       .finally(() => {
         setPreSelectionLocked(false);
