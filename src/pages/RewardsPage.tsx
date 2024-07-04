@@ -20,7 +20,7 @@ export const RewardsPage = () => {
           height="15%"
           width="100%"
           display="flex"
-          justifyContent="space-between"
+          justifyContent={isMobile ? "center" : "space-between"}
           alignItems="center"
           padding="0 50px"
         >
@@ -54,7 +54,6 @@ export const RewardsPage = () => {
         >
           <RewardsDetail roundRewards={roundRewards} />
         </Box>
-
       </Box>
     </Background>
   );

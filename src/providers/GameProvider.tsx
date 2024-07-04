@@ -147,7 +147,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const apiHandsLeft = round?.hands;
   const apiDiscardsLeft = round?.discards;
 
-  const specialCards = useCurrentSpecialCards();
+  const {specialCards} = useCurrentSpecialCards();
 
   const { data: plays } = useGetPlaysLevelDetail();
 
