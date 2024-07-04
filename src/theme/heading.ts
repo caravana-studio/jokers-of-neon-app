@@ -30,7 +30,7 @@ export const headingTheme = {
       letterSpacing: '0.25em',
     },
     l: { fontSize: { base: 20, sm: 25, md: 38, lg: 45 } },
-    m: { fontSize: { base: 20, sm: 24, md: 28, lg: 32 } },
+    m: { fontSize: { base: 20, sm: 24, md: 26, lg: 30 } },
     s: { fontSize: { base: 11, sm: 13, md: 15, lg: 17 }, 
     letterSpacing: '0.15em', },
   },

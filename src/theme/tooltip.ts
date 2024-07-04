@@ -2,7 +2,6 @@ import { background, defineStyleConfig } from "@chakra-ui/react";
 
 // define the base component styles
 const baseStyle = {
-  fontFamily: "Sys",
   width: '150px',
   textAlign: 'center',
   p: 2
