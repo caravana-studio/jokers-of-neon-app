@@ -317,7 +317,7 @@ export const TRADITIONAL_CARDS_DATA: CardDataMap = {
   },
   52: {
     name: "Joker",
-    description: "Scores +15 points",
+    description: "Always scores. +15 points and +1 multi",
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
