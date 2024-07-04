@@ -10,12 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../dojo/useDojo";
-import { gameExists } from "../dojo/utils/getGame";
+import { gameExists } from "../dojo/utils/getGame.tsx";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useGetCurrentHand } from "../queries/useGetCurrentHand.ts";
 import { useGetDeck } from "../queries/useGetDeck";
+import { useGetGame } from "../queries/useGetGame.ts";
 import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { useGetRound } from "../queries/useGetRound.ts";
 import { Card } from "../types/Card";
@@ -59,6 +60,9 @@ interface IGameContext {
   checkOrCreateGame: () => void;
   restartGame: () => void;
   preSelectionLocked: boolean;
+  score: number;
+  handsLeft: number;
+  discardsLeft: number;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -94,6 +98,9 @@ const GameContext = createContext<IGameContext>({
   checkOrCreateGame: () => {},
   restartGame: () => {},
   preSelectionLocked: false,
+  score: 0,
+  handsLeft: 4,
+  discardsLeft: 4,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -119,6 +126,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [sortBySuit, setSortBySuit] = useState(
     !!localStorage.getItem(SORT_BY_SUIT)
   );
+  const [score, setScore] = useState(0);
+  const [handsLeft, setHandsLeft] = useState(4);
+  const [discardsLeft, setDiscardsLeft] = useState(4);
+  const { data: game } = useGetGame(gameId);
+
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
     [sortBySuit]
@@ -130,6 +142,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { data: round, refetch: refetchRound } = useGetRound(gameId);
 
   const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
+
+  const apiScore = round?.score ?? 0;
+  const apiHandsLeft = round?.hands;
+  const apiDiscardsLeft = round?.discards;
 
   const specialCards = useCurrentSpecialCards();
 
@@ -159,7 +175,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   //variables
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
-  const handsLeft = round?.hands;
 
   //functions
   const toggleSortBy = () => {
@@ -175,7 +190,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
-    refetchRound();
+    setScore(0);
+    setHandsLeft(game?.max_hands ?? 1);
+    setDiscardsLeft(game?.max_discard ?? 1);
   };
 
   const onShopSkip = () => {
@@ -197,7 +214,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const refetch = () => {
     refetchDeckData();
-    refetchRound();
   };
 
   const clearPreSelection = () => {
@@ -221,6 +237,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       createGame(account.account, username).then((response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
+          resetLevel();
           navigate("/redirect/demo");
           setHand(hand);
           setGameId(newGameId);
@@ -376,6 +393,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setTimeout(() => {
         setPlayAnimation(true);
+        playEvents.score && setScore(playEvents.score);
       }, ALL_CARDS_DURATION);
 
       setTimeout(() => {
@@ -393,10 +411,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           }, 1000);
         } else if (playEvents.levelPassed && playEvents.detailEarned) {
           const { level } = playEvents.levelPassed;
-          setRoundRewards({
-            ...playEvents.detailEarned,
-            level: level,
-          });
+          setTimeout(() => {
+            setRoundRewards({
+              ...playEvents.detailEarned!,
+              level: level,
+            });
+          }, 1000);
           setPreSelectionLocked(true);
         } else {
           playEvents.cards && replaceCards(playEvents.cards);
@@ -410,9 +430,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
     play(account.account, gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
-        response && animatePlay(response);
+        if (response) {
+          animatePlay(response);
+          setHandsLeft((prev) => prev - 1);
+        }
       })
-      .finally(() => {
+      .catch(() => {
         setPreSelectionLocked(false);
       });
   };
@@ -480,6 +503,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       preSelectedModifiers
     ).then((response) => {
       if (response.success) {
+        setDiscardsLeft((prev) => prev - 1);
         replaceCards(response.cards);
         setPreSelectionLocked(false);
         clearPreSelection();
@@ -540,7 +564,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       executeCreateGame();
     } else {
       setGameLoading(false);
-      refetch();
       console.log("Game found, no need to create a new one");
     }
   };
@@ -552,6 +575,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setHand(apiHand);
     }
   }, [apiHand]);
+
+  useEffect(() => {
+    if (!score && apiScore > 0) {
+      setScore(apiScore);
+    }
+    if (apiHandsLeft > 0) {
+      setHandsLeft(apiHandsLeft);
+    }
+    if (apiDiscardsLeft > 0) {
+      setDiscardsLeft(apiDiscardsLeft);
+    }
+  }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
@@ -632,6 +667,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         checkOrCreateGame,
         restartGame: cleanGameId,
         preSelectionLocked,
+        score,
+        handsLeft,
+        discardsLeft,
       }}
     >
       {children}

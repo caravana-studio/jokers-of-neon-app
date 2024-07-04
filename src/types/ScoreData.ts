@@ -12,6 +12,7 @@ export interface PlayEvents {
   specialSuitEvents?: SpecialSuitEvent[];
   modifierSuitEvents?: ModifierSuitEvent[];
   cards: Card[];
+  score: number;
 }
 
 export interface LevelPassedEvent {

@@ -30,10 +30,8 @@ export const HandSection = () => {
     roundRewards,
     gameId,
     preSelectionLocked,
+    handsLeft,
   } = useGameContext();
-  const { data: round } = useGetRound(gameId);
-
-  const handsLeft = round.hands;
 
   const { activeNode } = useDndContext();
 

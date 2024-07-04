@@ -4,9 +4,7 @@ import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound.ts";
 import { Card } from "../../types/Card";
 
 export const PreselectedCardsSection = () => {
@@ -20,14 +18,12 @@ export const PreselectedCardsSection = () => {
     playAnimation,
     discard,
     roundRewards,
-    gameId,
-    preSelectionLocked
+    handsLeft,
+    discardsLeft,
+    preSelectionLocked,
   } = useGameContext();
 
   const navigate = useNavigate();
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
 
   if (roundRewards) {
     navigate("/rewards");
@@ -37,13 +33,16 @@ export const PreselectedCardsSection = () => {
     <>
       <Flex flexDirection="column" alignItems="center" gap={4}>
         <Button
-          width='160px'
+          width="160px"
           onClick={(e) => {
             e.stopPropagation();
             play();
           }}
           isDisabled={
-            preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+            preSelectionLocked ||
+            preSelectedCards?.length === 0 ||
+            !handsLeft ||
+            handsLeft === 0
           }
         >
           PLAY HAND
@@ -98,13 +97,14 @@ export const PreselectedCardsSection = () => {
       </Box>
       <Flex flexDirection="column" alignItems="center" gap={4}>
         <Button
-          width='160px'
+          width="160px"
           onClick={(e) => {
             e.stopPropagation();
             discard();
           }}
           variant="secondarySolid"
-          isDisabled={preSelectionLocked || 
+          isDisabled={
+            preSelectionLocked ||
             preSelectedCards?.length === 0 ||
             !discardsLeft ||
             discardsLeft === 0
