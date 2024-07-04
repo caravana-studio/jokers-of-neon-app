@@ -11,7 +11,6 @@ const baseStyle = definePartsStyle({
   dialog: {
     borderRadius: '0',
     color: 'white',
-    fontFamily: 'Sys',
     bg: `black`,
     marginTop: '20vh',
     width: '70%',
