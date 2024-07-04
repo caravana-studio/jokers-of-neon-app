@@ -29,6 +29,7 @@ export const HandSection = () => {
     preSelectedModifiers,
     roundRewards,
     gameId,
+    preSelectionLocked,
   } = useGameContext();
   const { data: round } = useGetRound(gameId);
 
@@ -95,6 +96,7 @@ export const HandSection = () => {
                         onClose();
                       }}
                       borderRadius="0"
+                      isDisabled={preSelectionLocked}
                     >
                       Discard
                     </MenuItem>
