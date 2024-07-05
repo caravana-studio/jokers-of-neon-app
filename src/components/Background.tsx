@@ -17,8 +17,8 @@ export const Background = ({
         backgroundImage: `url(bg/${type}-bg.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100%",
-        width: "100%",
+        height: "100svh",
+        width: "100vw",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
       }}
     >
