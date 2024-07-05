@@ -10,10 +10,10 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import theme from "../../theme/theme";
-import { isMobile } from "react-device-detect";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -22,12 +22,20 @@ interface PlaysTableProps {
 const { blue, white, purple } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
-  const { data: plays } = useGetPlaysLevelDetail();
+  const { data: apiPlays } = useGetPlaysLevelDetail();
 
   const store = useStore();
   const levelUpPlay = store?.levelUpPlay;
   const cash = store?.cash ?? 0;
   const pokerHandItems = store?.shopItems?.pokerHandItems;
+
+  const plays =
+    inStore && isMobile
+      ? apiPlays?.filter(
+          (p) =>
+            !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
+        )
+      : apiPlays;
 
   return (
     <>
@@ -43,34 +51,40 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             variant={isMobile ? "store-mobile" : "store"}
           >
             <Thead
-            sx={{
-              position: "relative",
-              _after: {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "1px",
-                background: "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                boxShadow: "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)"
-              },
-              _before: {
-                content: '""',
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-                height: "1px",
-                background: "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                boxShadow: "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)"
-              },
+              sx={{
+                position: "relative",
+                _after: {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "1px",
+                  background:
+                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
+                  boxShadow:
+                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
+                },
+                _before: {
+                  content: '""',
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "1px",
+                  background:
+                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
+                  boxShadow:
+                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
+                },
               }}
             >
               <Tr>
                 {inStore ? (
                   <>
-                    <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>HAND</Td>
+                    <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>
+                      HAND
+                    </Td>
                     <Td>LEVEL</Td>
                     <Td>PRICE</Td>
                     <Td></Td>
@@ -91,11 +105,14 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
                 const purchased = storePlay?.purchased || false;
 
-                const textColor = storePlay ? purchased ? blue : white : purple;
+                const textColor = storePlay
+                  ? purchased
+                    ? blue
+                    : white
+                  : purple;
 
                 const opacitySx = {
-                  opacity:
-                    inStore && (!storePlay || purchased) ? 0.9 : 1,
+                  opacity: inStore && (!storePlay || purchased) ? 0.9 : 1,
                 };
 
                 const levelTd = (
@@ -153,10 +170,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
 
                 return (
-                  <Tr
-                    key={index}
-                    height={"30px"}
-                  >
+                  <Tr key={index} height={"30px"}>
                     {inStore ? (
                       <>
                         {nameTd}
@@ -177,7 +191,10 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         <Td>
                           {!!storePlay ? (
                             storePlay?.purchased ? (
-                              <Heading color="blue" size={isMobile ? "base" : "sm"}>
+                              <Heading
+                                color="blue"
+                                size={isMobile ? "base" : "sm"}
+                              >
                                 PURCHASED
                               </Heading>
                             ) : notEnoughCash ? (

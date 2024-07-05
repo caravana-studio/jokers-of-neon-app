@@ -3,6 +3,7 @@ import { useEffect, useMemo } from "react";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { isMobile } from "react-device-detect";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -115,7 +116,7 @@ export const AnimatedCard = ({
         position: "relative",
         padding: "4px",
         width: `${CARD_WIDTH + 8}px`,
-        borderRadius: "10px",
+        borderRadius: isMobile ? '5px' : "10px",
         ...cardSprings,
       }}
     >

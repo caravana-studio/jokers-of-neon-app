@@ -122,18 +122,18 @@ export const Store = () => {
 
   return (
     <Background type="store">
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 7,
-          left: 10,
-          zIndex: 1000,
-          scale: isMobile ? 0.7 : 1,
-        }}
-      >
-        <GameMenu />
-      </Box>
-
+      {!isMobile && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 7,
+            left: 10,
+            zIndex: 1000,
+          }}
+        >
+          <GameMenu />
+        </Box>
+      )}
       <Flex
         width="100%"
         height="100%"
@@ -271,7 +271,7 @@ export const Store = () => {
                 </Flex>
               </>
             ) : (
-              <Flex width="95%" justifyContent="space-between" mt={4}>
+              <Flex width="95%" justifyContent="space-between" my={4}>
                 {rerollButton}
                 {specialsButton}
                 {nextLevelButton}
