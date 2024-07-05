@@ -121,7 +121,7 @@ export const Store = () => {
   }
 
   return (
-    <Background type="store">
+    <Background type="store" scrollOnMobile>
       {!isMobile && (
         <Box
           sx={{

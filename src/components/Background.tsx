@@ -1,15 +1,18 @@
 import { Box } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
+import { isMobile } from "react-device-detect";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home";
   dark?: boolean;
+  scrollOnMobile?: boolean;
 }
 
 export const Background = ({
   children,
   type = "game",
   dark = false,
+  scrollOnMobile = false,
 }: BackgroundProps) => {
   return (
     <Box
@@ -19,6 +22,8 @@ export const Background = ({
         backgroundPosition: "center",
         height: "100svh",
         width: "100vw",
+        position: isMobile && !scrollOnMobile ? "absolute" : "unset",
+        bottom: isMobile && !scrollOnMobile ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
       }}
     >
