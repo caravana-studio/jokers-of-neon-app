@@ -1,5 +1,6 @@
 import { modalAnatomy as parts } from '@chakra-ui/anatomy'
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system'
+import { isMobile } from 'react-device-detect'
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys)
@@ -12,7 +13,7 @@ const baseStyle = definePartsStyle({
     borderRadius: '0',
     color: 'white',
     bg: `black`,
-    marginTop: '20vh',
+    marginTop: isMobile ? 0 : '20vh',
     width: '70%',
     maxWidth: '1100px',
   },
