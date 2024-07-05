@@ -145,7 +145,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       levelUpPlay?.(storePlay?.idx ?? 0, storePlay?.cost ?? 0);
                     }}
                     isDisabled={notEnoughCash}
-                    size="base"
+                    size="sm"
                     px={isMobile ? 2 : 4}
                   >
                     level up

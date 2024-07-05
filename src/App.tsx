@@ -7,11 +7,11 @@ import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Redirect } from "./pages/Redirect.tsx";
+import { RewardsPage } from "./pages/RewardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
-import { RewardsPage } from "./pages/RewardsPage";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 
@@ -20,26 +20,55 @@ function App() {
   return (
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
-        <AudioPlayerProvider songPath={"/music/track1.mp3"}>
-          <GameProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/gameover" element={<GameOver />} />
-              <Route path="/demo" element={<GamePage />} />
-              <Route path="/rewards" element={<RewardsPage />} />
-              <Route
-                path="/store"
-                element={
+        <GameProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/gameover"
+              element={
+                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                  <GameOver />
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/demo"
+              element={
+                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                  <GamePage />
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/rewards"
+              element={
+                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                  <RewardsPage />
+                </AudioPlayerProvider>
+              }
+            />
+
+            <Route
+              path="/store"
+              element={
+                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
                   <StoreProvider>
                     <Store />
                   </StoreProvider>
-                }
-              />
-              <Route path="/redirect/:page" element={<Redirect />} />
-            </Routes>
-          </GameProvider>
-        </AudioPlayerProvider>
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/redirect/:page"
+              element={
+                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                  <Redirect />
+                </AudioPlayerProvider>
+              }
+            />
+          </Routes>
+        </GameProvider>
       </CardAnimationsProvider>
     </ChakraBaseProvider>
   );

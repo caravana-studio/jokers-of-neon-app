@@ -27,24 +27,22 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     const breakpoint = useBreakpoint();
 
     if (isMobile) {
-      return 0.81;
+      return 0.85;
     }
 
     if (breakpoint == "base") {
       return 0.75;
     } else if (breakpoint == "md") {
       return 0.81;
-    } else if (breakpoint == "lg") {
-      return 0.91;
     }
     return 1;
   }
 
   return (
     <>
-      <Box mb={4}>
+      <Box>
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading variant="italic" size={["sm", "sm", "sm", "md", "lg"]} mb={[1, 1, 1, 2, 4]}>
+          <Heading size={'s'} mb={[1, 1, 1, 2, 2]}>
             {title}
           </Heading>
           {button && (

@@ -75,16 +75,6 @@ export const Login = () => {
 
   return (
     <Background type="home">
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 7,
-          left: 10,
-          zIndex: 1000,
-        }}
-      >
-        <GameMenu onlySound />
-      </Box>
       <Flex
         direction="column"
         justifyContent="center"

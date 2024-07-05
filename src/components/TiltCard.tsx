@@ -20,6 +20,7 @@ import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 import { isMobile } from "react-device-detect";
+import { PASTEL_PINK } from "../theme/colors.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -100,14 +101,14 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
               <Box
                 sx={{
                   position: "absolute",
-                  top: 2,
+                  bottom: 2,
                   left: 2,
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
                   padding: 0.5,
-                  backgroundColor: "rgba(255, 253, 208)",
+                  backgroundColor: "pastelPink",
+                  boxShadow: `0px 0px 5px 0px ${PASTEL_PINK}`,
                   borderRadius: "25%",
-                  border: "4px solid black",
                   display: "flex",
                   alignItems: "center",
                   direction: "row",
