@@ -1,5 +1,5 @@
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 
 import { GamePage } from "./pages/Game/GamePage";
@@ -67,6 +67,7 @@ function App() {
                 </AudioPlayerProvider>
               }
             />
+            <Route path="/play" element={<Navigate to="/" />} />
           </Routes>
         </GameProvider>
       </CardAnimationsProvider>
