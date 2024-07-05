@@ -68,15 +68,17 @@ export const checkHand = (
   );
 
   for (const card of cardsSorted) {
-    const valueCount = valuesCount.get(card.card || 0) || 0;
-    const suitCount = suitsCount.get(card.suit as Suits) || 0;
+    if (card.suit != Suits.JOKER) {
+      const valueCount = valuesCount.get(card.card || 0) || 0;
+      const suitCount = suitsCount.get(card.suit as Suits) || 0;
 
-    if (valueCount === 0) {
-      counts.push(card.card || 0);
+      if (valueCount === 0) {
+        counts.push(card.card || 0);
+      }
+
+      valuesCount.set(card.card || 0, valueCount + 1);
+      suitsCount.set(card.suit as Suits, suitCount + 1);
     }
-
-    valuesCount.set(card.card || 0, valueCount + 1);
-    suitsCount.set(card.suit as Suits, suitCount + 1);
   }
 
   const countCardFlush = easyFlush ? 4 : 5;
