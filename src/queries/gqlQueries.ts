@@ -64,6 +64,21 @@ export const GET_DECK_QUERY = gql`
 
 `;
 
+export const GET_SPECIALS_CARDS_QUERY = gql`
+    query GetSpecialCards($gameId: ID!) {
+        currentSpecialCardsModels (first: 1000, where: { game_idEQ: $gameId }) {
+            edges {
+                node {
+                    idx
+                    effect_card_id
+                    is_temporary
+                    remaining
+                }
+            }
+        }
+    }
+`;
+
 export const GET_STATIC_EFFECT_CARDS = gql`
   query {
     effectCardModels(first: 1000) {

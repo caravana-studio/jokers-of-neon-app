@@ -39,7 +39,6 @@ export const MobileGameContent = () => {
 
   const navigate = useNavigate();
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
-  const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -75,11 +74,7 @@ export const MobileGameContent = () => {
       }
     }
     if (isSpecial && event.over?.id === "play-discard") {
-      discardSpecialCard(draggedCardId).then((response) => {
-        if (response) {
-          refetchSpecialCards();
-        }
-      });
+      discardSpecialCard(draggedCardId);
     } else if (event.over?.id === "play-discard") {
       discardEffectCard(draggedCardId);
     }

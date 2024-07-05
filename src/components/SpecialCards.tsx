@@ -1,13 +1,13 @@
 import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
 import { useGame } from "../dojo/queries/useGame";
 import { CardsRow } from "./CardsRow";
-import { useCurrentSpecialCards } from '../dojo/queries/useCurrentSpecialCards.tsx'
+import { useGameContext } from "../providers/GameProvider.tsx";
 
 export const SpecialCards = () => {
   const { colors } = useTheme();
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
-  const { specialCards } = useCurrentSpecialCards();
+  const { specialCards } = useGameContext();
 
   return (
     <Box width="100%" p={2} boxShadow={`0px 26px 30px -30px ${colors.neonGreen}`}>

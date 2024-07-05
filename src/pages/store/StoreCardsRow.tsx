@@ -7,6 +7,7 @@ import { getCardType } from "../../utils/getCardType";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
 import { isMobile } from "react-device-detect";
+import { useGameContext } from "../../providers/GameProvider.tsx";
 
 interface CardsRowProps {
   title: string;
@@ -20,6 +21,7 @@ interface CardsRowProps {
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard } = useStore();
+  const { addBoughtSpecialCard } = useGameContext();
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
@@ -80,7 +82,11 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
               selectedCard.idx,
               getCardType(selectedCard),
               selectedCard.price ?? 0
-            )
+            ).then((response) => {
+              if (response) {
+                addBoughtSpecialCard(selectedCard);
+              }
+            })
           }
           card={selectedCard}
           close={() => setSelectedCard(undefined)}

@@ -196,18 +196,20 @@ export function createSystemCalls(
     gameId: number,
     card: number
   ) => {
+    showTransactionToast();
     try {
       const { transaction_hash } = await client.actions.discardSpecialCard({
         account,
         gameId,
         card,
       });
+      showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
 
-      return tx.isSuccess();
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
       return failedTransactionToast();

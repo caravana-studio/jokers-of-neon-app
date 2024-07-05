@@ -8,7 +8,6 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame.tsx";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -26,6 +25,7 @@ import { changeCardSuit } from "../utils/changeCardSuit.ts";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { useGetSpecialCards } from "../queries/useGetSpecialCards.ts";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -63,6 +63,8 @@ interface IGameContext {
   score: number;
   handsLeft: number;
   discardsLeft: number;
+  specialCards: Card[];
+  addBoughtSpecialCard: (card: Card) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -101,6 +103,8 @@ const GameContext = createContext<IGameContext>({
   score: 0,
   handsLeft: 4,
   discardsLeft: 4,
+  specialCards: [],
+  addBoughtSpecialCard: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -147,8 +151,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const apiHandsLeft = round?.hands;
   const apiDiscardsLeft = round?.discards;
 
-  const {specialCards} = useCurrentSpecialCards();
-
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail();
 
   const {
@@ -172,6 +174,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { setAnimatedCard } = useCardAnimations();
 
+  const { data: apiSpecialCards, refetch: refetchSpecialCards } = useGetSpecialCards(gameId);
+  const [ specialCards, setSpecialCards ] = useState<Card[]>([]);
+
+  const addBoughtSpecialCard = (card: Card) => {
+    setSpecialCards([...specialCards, card]);
+  }
+
   //variables
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
@@ -193,6 +202,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setScore(0);
     setHandsLeft(game?.max_hands ?? 1);
     setDiscardsLeft(game?.max_discard ?? 1);
+    setSpecialCards([]);
   };
 
   const onShopSkip = () => {
@@ -557,9 +567,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account.account, gameId, cardIdx).finally(() => {
-      setPreSelectionLocked(false);
-    });
+    return discardSpecialCard(account.account, gameId, cardIdx)
+      .then((response) => {
+        if (response) {
+          setSpecialCards(specialCards.filter((special) => special.idx !== cardIdx));
+        }
+        return response;
+      })
+      .catch(() => {
+        return false;
+      })
+      .finally(() => {
+        setPreSelectionLocked(false);
+      });
   };
 
   const cleanGameId = () => {
@@ -577,6 +597,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   //effects
+  useEffect(() => {
+    if(apiSpecialCards && JSON.stringify(specialCards) !== JSON.stringify(apiSpecialCards) && specialCards.length == 0) {
+      setSpecialCards(apiSpecialCards);
+    }
+  },[apiSpecialCards]);
 
   useEffect(() => {
     if (apiHand?.length > 0 && hand.length === 0) {
@@ -686,6 +711,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         score,
         handsLeft,
         discardsLeft,
+        specialCards,
+        addBoughtSpecialCard,
       }}
     >
       {children}
