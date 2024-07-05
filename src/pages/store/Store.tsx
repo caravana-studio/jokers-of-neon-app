@@ -262,7 +262,7 @@ export const Store = () => {
                 {nextLevelButton}
                 <Flex flexDirection="column" gap={14}>
                   {rerollButton}
-                  {specialsButton}
+                  {/* {specialsButton} */}
                   <Image
                     src="/logos/logo-variant.png"
                     alt="store-bg"
@@ -271,9 +271,9 @@ export const Store = () => {
                 </Flex>
               </>
             ) : (
-              <Flex width="95%" justifyContent="space-between" my={4}>
+              <Flex width="95%" justifyContent="space-between" my={4} mb={'100px'}>
                 {rerollButton}
-                {specialsButton}
+                {/* {specialsButton} */}
                 {nextLevelButton}
               </Flex>
             )}
