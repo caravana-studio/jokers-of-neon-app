@@ -17,6 +17,8 @@ export default {
     neonPink: VIOLET,
     limeGreen: "lime",
     darkGrey: "#04162d",
+    purple: "#9940aa",
+    white: "white",
     // suits - accessible through colors[Suits.CLUBS]
     1: CLUBS,
     2: DIAMONDS,
@@ -43,7 +45,7 @@ export default {
     base: "0px",
     sm: "600px",
     md: "1200px",
-    lg: "1600x",
+    lg: "1600px",
     xl: "2000px",
   },
   components: {

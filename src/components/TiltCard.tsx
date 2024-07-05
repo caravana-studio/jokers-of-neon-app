@@ -10,8 +10,7 @@ import {
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
-  CARD_HEIGHT_PX,
-  CARD_WIDTH_PX,
+  CARD_WIDTH,
   MODIFIERS_OFFSET,
   TILT_OPTIONS,
 } from "../constants/visualProps";
@@ -20,19 +19,23 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
+import { isMobile } from "react-device-detect";
 
 interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
   cursor?: string;
+  scale?: number;
 }
 
-export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
+export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
   const { img, purchased = false } = card;
+  const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
+  const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
   const tiltCardComponent = (
     <Box
-      width={CARD_WIDTH_PX}
+      width={cardWith}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
@@ -47,8 +50,8 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
               sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
               src={`Cards/${img}`}
               alt={img}
-              width={CARD_WIDTH_PX}
-              height={CARD_HEIGHT_PX}
+              w={`${cardWith}px`}
+              height={`${cardHeight}px`}
               onClick={(e) => {
                 e.stopPropagation();
                 onClick?.();
@@ -65,7 +68,7 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
                 zIndex: 10,
                 backgroundColor: "rgba(0,0,0,0.7)",
                 color: "white",
-                fontSize: 20,
+                fontSize: 20 * scale,
                 px: 2,
                 py: 1,
                 opacity: purchased ? 0.5 : 1,
@@ -78,12 +81,12 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
             <Box
               sx={{
                 position: "absolute",
-                top: `${CARD_HEIGHT / 2 - 20}px`,
+                top: `${cardHeight / 2 - 10}px`,
                 left: 0,
                 zIndex: 10,
               }}
             >
-              <Heading variant="neonWhite" size="m">
+              <Heading variant="italic" fontSize={isMobile ? 6 : 14 * scale}>
                 PURCHASED
               </Heading>
             </Box>
@@ -128,7 +131,7 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              marginTop: `-${CARD_HEIGHT + MODIFIERS_OFFSET}px`,
+              marginTop: `-${cardHeight + MODIFIERS_OFFSET}px`,
               marginLeft: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
               position: "relative",
             }}
@@ -145,8 +148,8 @@ export const TiltCard = ({ card, onClick, cursor }: ICardProps) => {
                     sx={{ maxWidth: "unset" }}
                     src={`Cards/${c.img}`}
                     alt={c.img}
-                    width={CARD_WIDTH_PX}
-                    height={CARD_HEIGHT_PX}
+                    width={`${cardWith}px`}
+                    height={`${cardHeight}px`}
                     onClick={(e) => {
                       e.stopPropagation();
                       onClick?.();

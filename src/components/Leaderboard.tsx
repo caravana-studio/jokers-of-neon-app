@@ -1,6 +1,5 @@
 import {
   Box,
-  Heading,
   Spinner,
   Table,
   TableContainer,
@@ -52,7 +51,7 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
         {isLoading && <Spinner />}
         {leaderboard && (
           <TableContainer>
-            <Table>
+            <Table variant="leaderboard">
               <Thead>
                 <Tr>
                   <Td>POSITION</Td>
