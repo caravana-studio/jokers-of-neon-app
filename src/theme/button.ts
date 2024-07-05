@@ -38,9 +38,15 @@ export const buttonTheme = defineStyleConfig({
     py: 0,
     backgroundColor: "blue",
     color: "white",
+    textTransform: "uppercase",
   },
   variants: { solid, outline, secondarySolid },
   sizes: {
+    sm: {
+      fontSize: { base: 8, md: 11 },
+      px: { base: 3, md: 7 },
+      borderRadius: 7,
+    },
     md: {
       fontSize: { base: 12, md: 19 },
       px: { base: 3, md: 7 },

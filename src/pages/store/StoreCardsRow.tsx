@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
 import { useState } from "react";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
@@ -6,6 +6,7 @@ import { Card } from "../../types/Card";
 import { getCardType } from "../../utils/getCardType";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
+import { isMobile } from "react-device-detect";
 
 interface CardsRowProps {
   title: string;
@@ -20,16 +21,28 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard } = useStore();
 
+  const getCardScale = () => {
+    // TODO: Remove after improve TiltCard styles
+    // This code sets the required scale of the card to keep responsiveness
+    const breakpoint = useBreakpoint();
+
+    if (isMobile) {
+      return 0.85;
+    }
+
+    if (breakpoint == "base") {
+      return 0.75;
+    } else if (breakpoint == "md") {
+      return 0.81;
+    }
+    return 1;
+  }
+
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: "rgba(0,0,0,0.7)",
-          p: 2,
-        }}
-      >
-        <Flex justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
-          <Heading variant="neonGreen" size="m" sx={{ mb: 2, ml: 3 }}>
+      <Box>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading size={'s'} mb={[1, 1, 1, 2, 2]}>
             {title}
           </Heading>
           {button && (
@@ -43,7 +56,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           )}
         </Flex>
 
-        <SimpleGrid columns={cards.length}>
+        <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
           {cards.map((card) => {
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
@@ -53,11 +66,12 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
                   onClick={() => {
                     !card.purchased && setSelectedCard(card);
                   }}
+                  scale={getCardScale()}
                 />
               </Flex>
             );
           })}
-        </SimpleGrid>
+        </Flex>
       </Box>
       {selectedCard && (
         <ShowCardModal

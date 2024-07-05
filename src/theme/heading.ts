@@ -4,6 +4,7 @@ export const headingTheme = {
   baseStyle: {
     fontFamily: "Orbitron",
     color: "white",
+    textTransform: "uppercase",
   },
   variants: {
     neonGreen: {
@@ -29,9 +30,9 @@ export const headingTheme = {
       fontWeight: 400,
       letterSpacing: '0.25em',
     },
-    l: { fontSize: { base: 20, sm: 25, md: 38, lg: 45 } },
-    m: { fontSize: { base: 18, sm: 24, md: 26, lg: 30 } },
-    s: { fontSize: { base: 15, sm: 17, md: 18, lg: 20 } },
+    l: { fontSize: { base: 20, sm: 25, md: 28, lg: 30 } },
+    m: { fontSize: { base: 18, sm: 22, md: 24, lg: 24 } },
+    s: { fontSize: { base: 15, sm: 15, md: 16, lg: 16 } },
     xs: { fontSize: { base: 8, sm: 12, md: 14, lg: 16 }},
     letterSpacing: '0.15em', 
   },

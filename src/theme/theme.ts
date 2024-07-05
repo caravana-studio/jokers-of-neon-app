@@ -1,12 +1,21 @@
 import { buttonTheme } from "./button";
-import { BLUE, CLUBS, DIAMONDS, HEARTS, NEON_GREEN, SPADES, VIOLET, } from "./colors";
+import {
+  BLUE,
+  CLUBS,
+  DIAMONDS,
+  HEARTS,
+  NEON_GREEN,
+  PASTEL_PINK,
+  SPADES,
+  VIOLET,
+} from "./colors";
 import { headingTheme } from "./heading";
+import { inputTheme } from "./input";
+import { menuTheme } from "./menu.ts";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
 import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
-import { inputTheme } from "./input";
-import { menuTheme } from "./menu.ts";
 
 export default {
   colors: {
@@ -17,6 +26,9 @@ export default {
     neonPink: VIOLET,
     limeGreen: "lime",
     darkGrey: "#04162d",
+    purple: "#9940aa",
+    white: "white",
+    pastelPink: PASTEL_PINK,
     // suits - accessible through colors[Suits.CLUBS]
     1: CLUBS,
     2: DIAMONDS,
@@ -43,7 +55,7 @@ export default {
     base: "0px",
     sm: "600px",
     md: "1200px",
-    lg: "1600x",
+    lg: "1600px",
     xl: "2000px",
   },
   components: {
