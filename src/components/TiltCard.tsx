@@ -7,6 +7,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { Tilt } from "react-tilt";
 import {
   CARD_HEIGHT,
@@ -14,13 +15,12 @@ import {
   MODIFIERS_OFFSET,
   TILT_OPTIONS,
 } from "../constants/visualProps";
+import { PASTEL_PINK } from "../theme/colors.tsx";
 import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
-import { isMobile } from "react-device-detect";
-import { PASTEL_PINK } from "../theme/colors.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -69,7 +69,7 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
                 zIndex: 10,
                 backgroundColor: "rgba(0,0,0,0.7)",
                 color: "white",
-                fontSize: 20 * scale,
+                fontSize: isMobile ? 15 * scale : 20 * scale,
                 px: 2,
                 py: 1,
                 opacity: purchased ? 0.5 : 1,
@@ -168,7 +168,7 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
   // when is a special card, prefix with s and use idx instead of id
   const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
 
-  return (card.isModifier || card.isSpecial) ? (
+  return card.isModifier || card.isSpecial ? (
     <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>
   ) : (
     tiltCardComponent

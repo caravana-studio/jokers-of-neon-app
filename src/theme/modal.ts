@@ -15,7 +15,6 @@ const baseStyle = definePartsStyle({
     marginTop: '20vh',
     width: '70%',
     maxWidth: '1100px',
-    minWidth: '800px',
   },
 })
 

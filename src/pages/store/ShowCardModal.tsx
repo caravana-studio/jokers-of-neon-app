@@ -10,20 +10,25 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { isMobile } from "react-device-detect";
 
 interface IShowCardModalProps {
   card: Card;
   close: () => void;
   onBuyClick: (idx: number) => void;
 }
+
+const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 
 export const ShowCardModal = ({
   card,
@@ -48,6 +53,7 @@ export const ShowCardModal = ({
         close();
       }}
       sx={{ width: "50%" }}
+      variant="secondarySolid"
       isDisabled={notEnoughCash || noSpaceForSpecialCards}
     >
       BUY
@@ -59,50 +65,70 @@ export const ShowCardModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Heading size="l" variant="neonWhite">
+          <Heading size="l" variant="italic">
             {name}
           </Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex gap={8} width="100%">
-            <Image src={`Cards/${card?.img}`} />
-            <Flex flexDirection="column" gap={8} width="100%">
+          <Flex
+            gap={isMobile ? 2 : 8}
+            width="100%"
+            flexDirection={{ base: "column", sm: "row" }}
+            alignItems='center'
+          >
+            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+              <Box
+                p={"5px"}
+                borderRadius={isMobile ? "10px" : "20px"}
+                boxShadow={"0px 0px 20px 3px white"}
+                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
+                height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
+              >
+                <Image
+                  width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
+                  height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
+                  src={`Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : card?.img}`}
+                />
+              </Box>
+            </Box>
+            <Flex flexDirection="column" 
+            gap={isMobile ? 4 : 8} width="100%">
               <Box>
-                <Heading color="white" size="m">
+                <Heading color="white" size={isMobile ? "s" : "m"}>
                   card type:
                 </Heading>
-                <Heading variant="neonGreen" size="m">
+                <Text variant="neonGreen" size="l">
                   {card.isSpecial
                     ? "special"
                     : card.isModifier
                       ? "modifier"
                       : "traditional"}
                   {card.temporary && " (temporary)"}
-                </Heading>
+                </Text>
               </Box>
               <Box>
-                <Heading color="white" size="m">
+                <Heading color="white"  size={isMobile ? "s" : "m"}>
                   description:
                 </Heading>
-                <Heading variant="neonGreen" size="m">
+                <Text variant="neonGreen" size="l">
                   {description}
-                </Heading>
+                </Text>
                 {card.temporary && (
-                  <Heading variant="neonGreen" size="md" pt={2}>
+                  <Text variant="neonGreen" size="l" pt={2}>
                     {getTemporalCardText(card.remaining)}
-                  </Heading>
+                  </Text>
                 )}
               </Box>
-              <Box>
-                <Heading color="white" size="m">
+              <Flex gap={3}>
+                <Heading color="white"  size={isMobile ? "s" : "m"}>
                   price:
                 </Heading>
-                <Heading variant="neonGreen" size="l">
+                <Heading variant="neonGreen"  size={isMobile ? "s" : "m"}>
                   {card.price}ȼ
                 </Heading>
-              </Box>
-              <Flex gap={4} width="100%">
+              </Flex>
+              <Flex gap={4} mb={2}>
                 <Button sx={{ width: "50%" }} variant="outline" onClick={close}>
                   close
                 </Button>

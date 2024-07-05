@@ -69,7 +69,7 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} ({rerollCost}ȼ)
+        REROLL{isMobile ? <br /> : "-"} {rerollCost}ȼ
       </Button>
     </Tooltip>
   );
@@ -79,7 +79,7 @@ export const Store = () => {
       fontSize={[10, 10, 10, 14, 14]}
       w={["unset", "unset", "unset", "100%", "100%"]}
     >
-      SEE MY{isMobile && <br />} SPECIALS
+      SEE MY{isMobile && <br />} SPECIAL CARDS
     </Button>
   );
 
@@ -271,7 +271,7 @@ export const Store = () => {
                 </Flex>
               </>
             ) : (
-              <Flex width='95%' justifyContent='space-between' mt={4}>
+              <Flex width="95%" justifyContent="space-between" mt={4}>
                 {rerollButton}
                 {specialsButton}
                 {nextLevelButton}
