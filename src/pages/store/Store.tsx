@@ -122,13 +122,25 @@ export const Store = () => {
 
   return (
     <Background type="store" scrollOnMobile>
-      {!isMobile && (
+      {!isMobile ? (
         <Box
           sx={{
             position: "fixed",
             bottom: 7,
             left: 10,
             zIndex: 1000,
+          }}
+        >
+          <GameMenu />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: "5px",
+            right: "5px",
+            zIndex: 1000,
+            transform: "scale(0.7)",
           }}
         >
           <GameMenu />
@@ -271,7 +283,12 @@ export const Store = () => {
                 </Flex>
               </>
             ) : (
-              <Flex width="95%" justifyContent="space-between" my={4} mb={'100px'}>
+              <Flex
+                width="95%"
+                justifyContent="space-between"
+                my={4}
+                mb={"100px"}
+              >
                 {rerollButton}
                 {/* {specialsButton} */}
                 {nextLevelButton}
