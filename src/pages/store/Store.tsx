@@ -69,7 +69,7 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile ? <br /> : "-"} {rerollCost}ȼ
+        REROLL{isMobile && <br />} {rerollCost}ȼ
       </Button>
     </Tooltip>
   );
