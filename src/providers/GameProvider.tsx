@@ -149,7 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {specialCards} = useCurrentSpecialCards();
 
-  const { data: plays } = useGetPlaysLevelDetail();
+  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail();
 
   const {
     setup: {
@@ -596,6 +596,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
 
+  const setMultiAndPoints = (play: Plays) => {
+    const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
+        setMulti(playerPokerHand?.multi ?? 0);
+        setPoints(playerPokerHand?.points ?? 0);
+  }
+
   useEffect(() => {
     if (preSelectedCards.length > 0) {
       let play = checkHand(
@@ -605,10 +611,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         preSelectedModifiers
       );
       setPreSelectedPlay(play);
-      if (play != Plays.NONE) {
-        const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
-        setMulti(playerPokerHand?.multi ?? 0);
-        setPoints(playerPokerHand?.points ?? 0);
+      if (plays?.length == 0) {
+        refetchPlays().then(() => {
+          setMultiAndPoints(play);
+        })
+      } else {
+        setMultiAndPoints(play);
       }
     } else {
       setPreSelectedPlay(Plays.NONE);
