@@ -117,7 +117,7 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
               >
                 <TimeIcon boxSize={4} color={"black"} />
                 {card.remaining && (
-                  <Text color="black" fontSize="medium">
+                  <Text color="black" size='l'>
                     {card.remaining}
                   </Text>
                 )}

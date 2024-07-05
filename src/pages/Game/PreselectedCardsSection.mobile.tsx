@@ -1,12 +1,12 @@
 import { Box } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { AnimatedCard } from "../../components/AnimatedCard.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
-import { CARD_HEIGHT } from "../../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { Card } from "../../types/Card.ts";
-import { useNavigate } from "react-router-dom";
 
 export const MobilePreselectedCardsSection = () => {
   const {
@@ -28,20 +28,23 @@ export const MobilePreselectedCardsSection = () => {
     <>
       <Box
         gap={2}
+        py={2}
         sx={{
-          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          minHeight: `${CARD_HEIGHT * 2 + 70}px`,
+          width: "100%",
         }}
       >
         <Box
           sx={{
+            maxWidth: `${CARD_WIDTH * 5}px`,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: `${CARD_HEIGHT * 2 + 15}px`,
             flexWrap: "wrap",
+            minHeight: `${CARD_HEIGHT * 2 + 30}px`,
           }}
         >
           {preSelectedCards.map((idx) => {

@@ -11,21 +11,25 @@ export const SortBy = () => {
   return (
     <Flex
       backgroundColor="rgba(0,0,0,0.7)"
-      p={2}
+      p={{ base: 0.5, sm: 2 }}
       flexDirection={isMobile ? "row" : "column"}
       alignItems="center"
       gap={2}
       mb={{ base: 0, md: 2 }}
     >
-      <Text size="l" variant="underlined">
+      <Text
+        size="l"
+        pl={{ base: 1, sm: 0 }}
+        variant={isMobile ? "none" : "underlined"}
+      >
         Sort by
       </Text>
       <Flex
         gap={3}
         alignItems="center"
-        border="1px solid white"
+        border={isMobile ? "none" : "1px solid white"}
         borderRadius="8px"
-        p="15px 10px"
+        p={{ base: "5px 5px", sm: "15px 10px" }}
       >
         <Tooltip hasArrow label="Suit" placement="bottom">
           <FontAwesomeIcon

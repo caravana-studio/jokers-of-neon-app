@@ -1,12 +1,14 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { useDroppable } from '@dnd-kit/core';
+import { useDroppable } from "@dnd-kit/core";
 import { useGameContext } from "../../providers/GameProvider";
 
 interface PlayDiscardSectionProps {
   itemDragged?: boolean;
 }
 
-export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionProps) => {
+export const PlayDiscardSection = ({
+  itemDragged = false,
+}: PlayDiscardSectionProps) => {
   const {
     play,
     discard,
@@ -15,7 +17,7 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
     handsLeft,
     discardsLeft,
   } = useGameContext();
-  const { setNodeRef } = useDroppable({ id: "play-discard",});
+  const { setNodeRef } = useDroppable({ id: "play-discard" });
 
   return (
     <>
@@ -26,6 +28,7 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
           play();
         }}
         width="48%"
+        py={1}
         isDisabled={
           preSelectionLocked ||
           preSelectedCards?.length === 0 ||
@@ -34,8 +37,10 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
         }
       >
         <Box>
-          play
-          <Heading mt={0.5} fontSize={9} color="black">
+          <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
+            play
+          </Text>
+          <Heading mt={1} fontSize={9} color="black">
             {handsLeft} left
           </Heading>
         </Box>
@@ -43,24 +48,30 @@ export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionP
       <Button
         ref={setNodeRef}
         size="m"
+        variant="secondarySolid"
         onClick={(e) => {
           e.stopPropagation();
           discard();
         }}
         width="48%"
+        py={1}
         isDisabled={
-          !itemDragged && (
-          preSelectionLocked ||
-          preSelectedCards?.length === 0 ||
-          !discardsLeft ||
-          discardsLeft === 0)
+          !itemDragged &&
+          (preSelectionLocked ||
+            preSelectedCards?.length === 0 ||
+            !discardsLeft ||
+            discardsLeft === 0)
         }
       >
         <Box>
-          <Text fontSize={itemDragged ? 12 : 16} height={"16px"}>
+          <Text
+            fontFamily="Orbitron"
+            fontSize={itemDragged ? 12 : 16}
+            height={"16px"}
+          >
             {itemDragged ? "drop here to " : ""}discard
           </Text>
-          <Heading mt={0.5} fontSize={9} color="black">
+          <Heading mt={1} fontSize={9} color="black">
             {discardsLeft} left
           </Heading>
         </Box>

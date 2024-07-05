@@ -45,7 +45,6 @@ export const MobileLevelPoints = () => {
         border="1px solid white"
         borderRadius={10}
         px={1.5}
-        pr={2}
         height={10}
         alignItems="center"
       >
@@ -54,7 +53,7 @@ export const MobileLevelPoints = () => {
         </Heading>
       </Flex>
       <Flex flexDirection='column' gap={1} justifyContent={'center'}>
-        <Text size="l" lineHeight={1} mt={2}>
+        <Text size="m" lineHeight={1} mt={2}>
           score {round.levelScore} points  to beat level {level ?? 0}
         </Text>
         <Score />

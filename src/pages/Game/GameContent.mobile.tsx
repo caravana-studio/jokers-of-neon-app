@@ -1,10 +1,11 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
+import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
@@ -12,7 +13,6 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayDiscardSection } from "./PlayDiscardSection.mobile.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { useCurrentSpecialCards } from '../../dojo/queries/useCurrentSpecialCards.tsx'
 
 export const MobileGameContent = () => {
   const {
@@ -27,7 +27,7 @@ export const MobileGameContent = () => {
     gameId,
     checkOrCreateGame,
     discardEffectCard,
-    discardSpecialCard
+    discardSpecialCard,
   } = useGameContext();
 
   const { data: game } = useGetGame(gameId);
@@ -38,7 +38,7 @@ export const MobileGameContent = () => {
   } = useDojo();
 
   const navigate = useNavigate();
-  const [ isItemDragged, setIsItemDragged ] = useState<boolean>(false);
+  const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
   const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
 
   useEffect(() => {
@@ -64,8 +64,7 @@ export const MobileGameContent = () => {
     if (activeId.startsWith("s")) {
       draggedCardId = Number(activeId.slice(1));
       isSpecial = true;
-    }
-    else {
+    } else {
       draggedCardId = Number(activeId);
     }
 
@@ -75,14 +74,13 @@ export const MobileGameContent = () => {
         addModifier(modifiedCard, draggedCardId);
       }
     }
-    if(isSpecial && event.over?.id === "play-discard") {
+    if (isSpecial && event.over?.id === "play-discard") {
       discardSpecialCard(draggedCardId).then((response) => {
         if (response) {
           refetchSpecialCards();
         }
       });
-    }
-    else if(event.over?.id === "play-discard"){
+    } else if (event.over?.id === "play-discard") {
       discardEffectCard(draggedCardId);
     }
   };
@@ -145,22 +143,28 @@ export const MobileGameContent = () => {
         }}
         onClick={clearPreSelection}
       >
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-            alignItems: "center",
-            display: "flex",
-            flexDirection: "column",
+        <DndContext
+          onDragEnd={handleDragEnd}
+          onDragStart={() => {
+            setIsItemDragged(true);
           }}
+          autoScroll={false}
         >
-          <DndContext onDragEnd={handleDragEnd} onDragStart={ () => {setIsItemDragged(true)}} autoScroll={false}>
-          <Box sx={{ height: "34%", width: "100%" }}>
-            <MobileTopSection />
-          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ height: "205px", width: "100%" }}>
+              <MobileTopSection />
+            </Box>
             <Box
               sx={{
-                height: "40%",
                 width: "90%",
                 display: "flex",
                 flexDirection: "row",
@@ -171,34 +175,27 @@ export const MobileGameContent = () => {
             >
               <MobilePreselectedCardsSection />
             </Box>
-            <Flex
-              height="6%"
-              width="90%"
-              mt={2}
-              mx={4}
-              justifyContent={"space-between"}
-            >
+            <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
               <PlayDiscardSection itemDragged={isItemDragged} />
             </Flex>
             <Box
               sx={{
                 display: "flex",
-                height: " 20%",
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
             >
               <Box>
-                <Box position={"absolute"} bottom={0} zIndex={6} width="140px">
+                <Box position={"absolute"} bottom={0} zIndex={6} width="115px">
                   <SortBy />
                 </Box>
-                <Box pb="20px" mx={6} mr={14}>
+                <Box pb="30px" mx={6} mr={14}>
                   <HandSection />
                 </Box>
               </Box>
             </Box>
-          </DndContext>
-        </Box>
+          </Box>
+        </DndContext>
       </Box>
     </Box>
   );

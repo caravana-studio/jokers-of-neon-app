@@ -122,18 +122,18 @@ export const Store = () => {
 
   return (
     <Background type="store">
-      {!isMobile && (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 7,
-            left: 10,
-            zIndex: 1000,
-          }}
-        >
-          <GameMenu />
-        </Box>
-      )}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 7,
+          left: 10,
+          zIndex: 1000,
+          scale: isMobile ? 0.7 : 1,
+        }}
+      >
+        <GameMenu />
+      </Box>
+
       <Flex
         width="100%"
         height="100%"
