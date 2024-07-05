@@ -87,7 +87,7 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
                 zIndex: 10,
               }}
             >
-              <Heading variant="italic" fontSize={isMobile ? 6 : 14 * scale}>
+              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
                 PURCHASED
               </Heading>
             </Box>
