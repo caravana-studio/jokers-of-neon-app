@@ -35,7 +35,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   }, [roundRewards]);
 
   return (
-    <Flex width="100%" height={CARD_HEIGHT_PX} px={4}>
+    <Flex width="100%" height={CARD_HEIGHT_PX} >
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
@@ -44,6 +44,8 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
             justifyContent="center"
             width={`${100 / cards.length}%`}
             maxWidth={`${CARD_WIDTH + 7}px`}
+            position="relative"
+            zIndex={1}
           >
             {!isDiscarded && (
               <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
@@ -62,7 +64,6 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                     <MenuList
                       textColor="black"
                       minWidth="max-content"
-                      borderRadius="0"
                       zIndex="7"
                     >
                       <MenuItem
@@ -75,7 +76,6 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                           });
                           onClose();
                         }}
-                        borderRadius="0"
                       >
                         Drop card
                       </MenuItem>

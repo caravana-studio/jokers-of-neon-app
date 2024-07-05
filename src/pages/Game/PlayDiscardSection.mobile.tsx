@@ -1,12 +1,21 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { useDroppable } from '@dnd-kit/core';
 import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound";
 
-export const PlayDiscardSection = () => {
-  const { play, discard, gameId, preSelectedCards } = useGameContext();
-  const { data: round } = useGetRound(gameId);
-  const handsLeft = round?.hands;
-  const discardsLeft = round?.discards;
+interface PlayDiscardSectionProps {
+  itemDragged?: boolean;
+}
+
+export const PlayDiscardSection = ({ itemDragged = false } : PlayDiscardSectionProps) => {
+  const {
+    play,
+    discard,
+    preSelectedCards,
+    preSelectionLocked,
+    handsLeft,
+    discardsLeft,
+  } = useGameContext();
+  const { setNodeRef } = useDroppable({ id: "play-discard",});
 
   return (
     <>
@@ -18,7 +27,10 @@ export const PlayDiscardSection = () => {
         }}
         width="48%"
         isDisabled={
-          preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0
+          preSelectionLocked ||
+          preSelectedCards?.length === 0 ||
+          !handsLeft ||
+          handsLeft === 0
         }
       >
         <Box>
@@ -29,6 +41,7 @@ export const PlayDiscardSection = () => {
         </Box>
       </Button>
       <Button
+        ref={setNodeRef}
         size="m"
         onClick={(e) => {
           e.stopPropagation();
@@ -36,11 +49,17 @@ export const PlayDiscardSection = () => {
         }}
         width="48%"
         isDisabled={
-          preSelectedCards?.length === 0 || !discardsLeft || discardsLeft === 0
+          !itemDragged && (
+          preSelectionLocked ||
+          preSelectedCards?.length === 0 ||
+          !discardsLeft ||
+          discardsLeft === 0)
         }
       >
         <Box>
-          discard
+          <Text fontSize={itemDragged ? 12 : 16} height={"16px"}>
+            {itemDragged ? "drop here to " : ""}discard
+          </Text>
           <Heading mt={0.5} fontSize={9} color="black">
             {discardsLeft} left
           </Heading>

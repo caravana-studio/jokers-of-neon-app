@@ -1,42 +1,65 @@
-import { NEON_GREEN } from "./colors";
+import { BLUE, NEON_GREEN, VIOLET } from "./colors";
 
-export default {
+import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
+
+const solid = defineStyle({
+  backgroundColor: "blue !important",
+  color: "white",
+  boxShadow: {
+    base: `0px 0px 10px 6px ${BLUE}`,
+    md: `0px 0px 20px 12px ${BLUE}`,
+  },
+});
+
+const secondarySolid = defineStyle({
+  backgroundColor: "violet",
+  boxShadow: {
+    base: `0px 0px 10px 6px ${VIOLET}`,
+    md: `0px 0px 20px 12px ${VIOLET}`,
+  },
+});
+
+const outline = defineStyle({
+  backgroundColor: "rgba(0,0,0,0.5)",
+  border: `3px solid ${NEON_GREEN} !important`,
+  color: "neonGreen",
+  "&:hover": {
+    backgroundColor: "black",
+    border: `3px solid ${NEON_GREEN}`,
+    boxShadow: `0px 0px 5px 0px ${NEON_GREEN}`,
+  },
+});
+
+export const buttonTheme = defineStyleConfig({
   baseStyle: {
-    fontFamily: "Sys",
-    borderRadius: 0,
-    fontSize: { base: 12, md: 17 },
-    px: 5,
-    py: 1,
-    pointerEvents: "all",
-    backgroundColor: "neonGreen",
-    color: "neonGreen",
+    fontFamily: "Orbitron",
+    borderRadius: 15,
+    px: 7,
+    py: 0,
+    backgroundColor: "blue",
+    color: "white",
+    textTransform: "uppercase",
   },
-  variants: {
-    outline: {
-      backgroundColor: "rgba(0,0,0,0.5)",
-      border: `3px solid ${NEON_GREEN} !important`,
-      color: "neonGreen",
-      "&:hover": {
-        backgroundColor: "black",
-        border: `3px solid ${NEON_GREEN}`,
-        boxShadow: `0px 0px 5px 0px ${NEON_GREEN}`,
-      },
-    },
-  },
+  variants: { solid, outline, secondarySolid },
   sizes: {
-    m: {
-      fontSize: { base: 14, md: 17 },
-      px: { base: 3, md: 5 },
-      py: { base: 0, md: 1 },
+    sm: {
+      fontSize: { base: 8, md: 11 },
+      px: { base: 3, md: 7 },
+      borderRadius: 7,
     },
-    l: {
+    md: {
+      fontSize: { base: 12, md: 19 },
+      px: { base: 3, md: 7 },
+      py: { base: 0, md: "10px !important" },
+      fontWeight: 500,
+    },
+    lg: {
       fontSize: 40,
       px: 90,
       py: 2,
       borderRadius: 0,
-      filter: "blur(1px)",
       textShadow: `0 0 20px ${NEON_GREEN}`,
       boxShadow: `0px 0px 15px 0px ${NEON_GREEN} `,
     },
   },
-};
+});

@@ -1,7 +1,7 @@
 import { Heading, useTheme } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { animated, useSpring } from "react-spring";
-import { CARD_WIDTH_PX } from "../constants/visualProps";
+import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 
 export interface IAnimatedCardProps {
@@ -66,7 +66,7 @@ export const AnimatedCard = ({
         },
         to: {
           transform: "scale(1.1)",
-          boxShadow: `0px 0px 30px 0px  ${animateColor}`,
+          boxShadow: `0px 0px 20px 12px  ${animateColor}`,
         },
         onRest: () =>
           cardApi.start({
@@ -111,23 +111,29 @@ export const AnimatedCard = ({
 
   return (
     <animated.div
-      style={{ position: "relative", width: CARD_WIDTH_PX, ...cardSprings }}
+      style={{
+        position: "relative",
+        padding: "4px",
+        width: `${CARD_WIDTH + 8}px`,
+        borderRadius: "10px",
+        ...cardSprings,
+      }}
     >
       {!!(points || multi) && animatedCardIdxArray?.includes(idx) && (
         <animated.div
           style={{
             position: "absolute",
             top: 0,
-            left: "50%",
+            left: "10px",
             ...pointsSprings,
             zIndex: 99,
           }}
         >
           <Heading
+            color={points ? colors.neonGreen : colors.neonPink}
+            mb={{ base: 4, md: 6 }}
             sx={{
-              fontSize: 40,
-              mb: 3,
-              textShadow: `0 0 20px  ${points ? colors.neonGreen : colors.neonPink}`,
+              textShadow: `0 0 5px  ${points ? colors.neonGreen : colors.neonPink}`,
             }}
           >
             +{points || multi}

@@ -1,5 +1,4 @@
-import { Box, Heading, Spinner } from "@chakra-ui/react";
-import { FullScreenArcade } from "../components/FullScreenArcade";
+import "../App.scss";
 
 interface LoadingScreenProps {
   error?: boolean;
@@ -7,21 +6,31 @@ interface LoadingScreenProps {
 
 export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
   return (
-    <FullScreenArcade>
-      <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {error ? (
-          <Heading size="lg">error loading game</Heading>
-        ) : (
-          <Spinner size="xl" />
-        )}
-      </Box>
-    </FullScreenArcade>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        fontFamily: "Orbitron",
+        fontSize: 30,
+        letterSpacing: "0.25em",
+        background: `url(bg/home-bg.jpg)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      {error ? (
+        <div>error loading game</div>
+      ) : (
+        <>
+          <img style={{marginTop: '80px'}} width="70%" src="logos/logo.png" alt="logo" />
+          <img src="loader.gif" alt="loader" width='100px' />
+        </>
+      )}
+    </div>
   );
 };

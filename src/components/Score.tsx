@@ -1,16 +1,19 @@
 import { Heading } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
-import { useGetRound } from "../queries/useGetRound";
 import { RollingNumber } from "./RollingNumber";
 
 export const Score = () => {
-  const { gameId } = useGameContext();
-  const { data: round } = useGetRound(gameId);
-  const score = round?.score ?? 0;
+  const { score } = useGameContext();
 
   return (
-    <Heading variant="neonWhite" size="l" mb={{ base: 1, md: 4 }}>
-      SCORE: <RollingNumber n={score} />
+    <Heading
+      variant="italic"
+      size="m"
+      mb={{ base: 1, md: 4 }}
+      textShadow="0 0 10px white"
+      whiteSpace="nowrap"
+    >
+      SCORE: <RollingNumber className="italic" n={score} />
     </Heading>
   );
 };

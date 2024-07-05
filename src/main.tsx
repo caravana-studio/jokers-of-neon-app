@@ -1,4 +1,3 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -15,11 +14,7 @@ async function init() {
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
-  root.render(
-    <ChakraProvider>
-      <LoadingScreen />
-    </ChakraProvider>    
-  );
+  root.render(<LoadingScreen />);
 
   try {
     const setupResult = await setup(dojoConfig);
@@ -35,13 +30,8 @@ async function init() {
       </DojoProvider>
     );
   } catch {
-    root.render(
-      <ChakraProvider>
-        <LoadingScreen error />
-      </ChakraProvider>    
-    );
+    root.render(<LoadingScreen error />);
   }
-
 }
 
 init();

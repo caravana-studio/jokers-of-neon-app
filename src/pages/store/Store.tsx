@@ -1,18 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import { GameDeck } from "../../components/GameDeck";
+import { Background } from "../../components/Background";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PointBox } from "../../components/MultiPoints";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useDojo } from "../../dojo/useDojo";
@@ -52,6 +44,70 @@ export const Store = () => {
 
   const navigate = useNavigate();
 
+  const levelUpTable = (
+    <Box py={[2, 2, 2, 2, 4]}>
+      {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
+    </Box>
+  );
+
+  const rerollButton = (
+    <Tooltip
+      placement="right"
+      label={
+        rerolled ? "Available only once per level" : "Update available items"
+      }
+    >
+      <Button
+        fontSize={[10, 10, 10, 14, 14]}
+        w={["unset", "unset", "unset", "100%", "100%"]}
+        isDisabled={rerolled}
+        onClick={() => {
+          reroll().then((response) => {
+            if (response) {
+              setRerolled(true);
+            }
+          });
+        }}
+      >
+        REROLL{isMobile && <br />} ({rerollCost}ȼ)
+      </Button>
+    </Tooltip>
+  );
+
+  const specialsButton = (
+    <Button
+      fontSize={[10, 10, 10, 14, 14]}
+      w={["unset", "unset", "unset", "100%", "100%"]}
+    >
+      SEE MY{isMobile && <br />} SPECIALS
+    </Button>
+  );
+
+  const nextLevelButton = (
+    <Button
+      my={{ base: 0, md: 6 }}
+      w={["unset", "unset", "unset", "100%", "100%"]}
+      onClick={() => {
+        setLoading(true);
+        onShopSkip();
+        skipShop(account.account, gameId).then((response): void => {
+          if (response.success) {
+            setHand(response.cards);
+            navigate("/redirect/demo");
+          } else {
+            setLoading(false);
+            showErrorToast("Error skipping shop");
+          }
+        });
+      }}
+      lineHeight={1.6}
+      variant="secondarySolid"
+      fontSize={[10, 10, 10, 14, 14]}
+    >
+      GO TO {isMobile && <br />} NEXT LEVEL
+    </Button>
+  );
+
   useEffect(() => {
     if (state === "FINISHED") {
       navigate("/gameover");
@@ -65,121 +121,165 @@ export const Store = () => {
   }
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <GameMenu />
+    <Background type="store">
+      {!isMobile && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 7,
+            left: 10,
+            zIndex: 1000,
+          }}
+        >
+          <GameMenu />
+        </Box>
+      )}
       <Flex
-        justifyContent="space-between"
-        gap={50}
+        width="100%"
+        height="100%"
+        flexDirection="column"
         alignItems="center"
-        sx={{ height: "15%", mx: 10 }}
+        justifyContent="center"
       >
-        <Flex gap={6} alignItems="center">
-          <PointBox type="level">
-            <Heading size="s" sx={{ mx: 4 }}>
-              MY COINS
-            </Heading>
-            <Heading size="l" sx={{ mx: 4, color: "white" }}>
-              <RollingNumber n={cash} />ȼ
-            </Heading>
-          </PointBox>
-          <Tooltip
-            placement="right"
-            label={
-              rerolled
-                ? "Available only once per level"
-                : "Update available items"
-            }
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          alignItems="center"
+          width="100%"
+          overflow={isMobile ? "scroll" : "auto"}
+          pt={isMobile ? 4 : 0}
+          px={{ base: 2, md: 14 }}
+        >
+          <Box
+            display="flex"
+            w={["100%", "100%", "35%", "35%", "35%"]}
+            h={[null, null, "100%", "100%", "100%"]}
+            flexDirection="column"
+            justifyContent="space-between"
+            pb={isMobile ? 4 : 0}
           >
-            <Button
-              isDisabled={rerolled}
-              onClick={() => {
-                reroll().then((response) => {
-                  if (response) {
-                    setRerolled(true);
-                  }
-                });
-              }}
-              sx={{ py: 8 }}
+            <Heading variant="italic" size="l" ml={4}>
+              LEVEL UP YOUR GAME
+            </Heading>
+            {!isMobile && levelUpTable}
+            <Box>
+              <Heading
+                variant={"italic"}
+                size={"m"}
+                mb={[2, 2, 2, 6, 6]}
+                mt={[4, 4, 0, 0, 0]}
+                sx={{
+                  ml: 4,
+                  position: "relative",
+                  textShadow: `0 0 10px white`,
+                  /* _after: {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -2,
+                    left: 0,
+                    width: "100%",
+                    height: "1px",
+                    background: "white",
+                    boxShadow:
+                      "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
+                  }, */
+                }}
+              >
+                MY COINS: <RollingNumber className="italic" n={cash} /> ȼ
+              </Heading>
+            </Box>
+          </Box>
+          <Box
+            w={["100%", "100%", "50%", "50%", "50%"]}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            pb={isMobile ? 4 : 0}
+            pl={4}
+            gap={[2, 2, 4, 6, 6]}
+          >
+            <Box>
+              {shopItems.commonCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.commonCards}
+                  title="traditional cards"
+                />
+              )}
+            </Box>
+            <Box>
+              {shopItems.modifierCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.modifierCards}
+                  title="modifiers"
+                />
+              )}
+            </Box>
+            <Box>
+              {shopItems.specialCards.length > 0 && (
+                <StoreCardsRow
+                  cards={shopItems.specialCards}
+                  title="special cards"
+                />
+              )}
+            </Box>
+          </Box>
+          {isMobile && (
+            <Box
+              w="100%"
+              background="rgba(0,0,0,0.5)"
+              px={4}
+              borderRadius="10px"
             >
-              Reroll <br /> {rerollCost}ȼ
-            </Button>
-          </Tooltip>
-        </Flex>
-        <Heading size="xl" variant="neonWhite">
-          LEVEL UP YOUR GAME
-        </Heading>
-        <Box>
-          <Button
-            onClick={() => {
-              setLoading(true);
-              onShopSkip();
-              skipShop(account.account, gameId).then((response): void => {
-                if (response.success) {
-                  setHand(response.cards);
-                  navigate("/redirect/demo");
-                } else {
-                  setLoading(false);
-                  showErrorToast("Error skipping shop");
-                }
-              });
-            }}
-            sx={{ lineHeight: 1.6 }}
-            size="m"
-            variant="outline"
+              <Heading variant="italic" size="m" mt={4}>
+                IMPROVE YOUR PLAYS
+              </Heading>
+              {levelUpTable}
+            </Box>
+          )}
+          <Box
+            display="flex"
+            flexDirection={[
+              "row-reverse",
+              "row-reverse",
+              "row-reverse",
+              "column",
+              "column",
+            ]}
+            w={["100%", "100%", "100%", "15%", "15%"]}
+            h={[null, null, null, "100%", "100%"]}
+            justifyContent={[
+              "center",
+              "center",
+              "center",
+              "space-between",
+              "space-between",
+            ]}
+            gap={10}
+            px={isMobile ? 2 : 0}
           >
-            go to <br />
-            NEXT LEVEL
-          </Button>
+            {!isMobile ? (
+              <>
+                {nextLevelButton}
+                <Flex flexDirection="column" gap={14}>
+                  {rerollButton}
+                  {specialsButton}
+                  <Image
+                    src="/logos/logo-variant.png"
+                    alt="store-bg"
+                    width="100%"
+                  />
+                </Flex>
+              </>
+            ) : (
+              <Flex width='95%' justifyContent='space-between' mt={4}>
+                {rerollButton}
+                {specialsButton}
+                {nextLevelButton}
+              </Flex>
+            )}
+          </Box>
         </Box>
       </Flex>
-      <Flex sx={{ height: "85%" }}>
-        <Grid
-          templateColumns="repeat(8, 1fr)"
-          gap={4}
-          sx={{ width: "100%", m: 4 }}
-        >
-          <GridItem
-            sx={{ backgroundColor: "rgba(0,0,0,0.7)" }}
-            colSpan={3}
-            rowSpan={3}
-          >
-            <Heading variant="neonGreen" size="m" sx={{ m: 3 }}>
-              level up your plays
-            </Heading>
-            {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
-          </GridItem>
-          <GridItem colSpan={5}>
-            {shopItems.commonCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.commonCards}
-                title="traditional cards"
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={5}>
-            {shopItems.modifierCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.modifierCards}
-                title="modifiers"
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={4}>
-            {shopItems.specialCards.length > 0 && (
-              <StoreCardsRow
-                cards={shopItems.specialCards}
-                title="special cards"
-                button={{ label: "see my special cards", onClick: () => {} }}
-              />
-            )}
-          </GridItem>
-          <GridItem colSpan={1}>
-            <Flex justifyContent="center" alignItems="flex-end" height="100%">
-              <GameDeck />
-            </Flex>
-          </GridItem>
-        </Grid>
-      </Flex>
-    </Box>
+    </Background>
   );
 };

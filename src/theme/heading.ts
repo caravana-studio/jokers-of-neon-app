@@ -2,8 +2,9 @@ import { NEON_GREEN, NEON_PINK } from "./colors";
 
 export const headingTheme = {
   baseStyle: {
-    fontFamily: "Sys",
+    fontFamily: "Orbitron",
     color: "white",
+    textTransform: "uppercase",
   },
   variants: {
     neonGreen: {
@@ -13,6 +14,9 @@ export const headingTheme = {
     neonWhite: {
       textShadow: `0 0 20px ${NEON_PINK}`,
     },
+    italic: {
+      fontFamily: "Sonara",
+    },
     neonPink: {
       color: NEON_PINK,
       textShadow: `0 0 20px ${NEON_PINK}`,
@@ -20,10 +24,17 @@ export const headingTheme = {
   },
   sizes: {
     xxl: { fontSize: { base: 40, sm: 50, md: 65, lg: 80 } },
-    xl: { fontSize: { base: 25, sm: 30, md: 42, lg: 50 } },
-    l: { fontSize: { base: 20, sm: 25, md: 38, lg: 45} },
-    m: { fontSize: { base: 14, sm: 17, md: 20, lg: 25 } },
-    s: { fontSize: { base: 11, sm: 13, md: 15, lg: 17 } },
+    xl: {
+      fontSize: { base: 20, sm: 25, md: 35, lg: 40 },
+      fontFamily: "Oxanium",
+      fontWeight: 400,
+      letterSpacing: '0.25em',
+    },
+    l: { fontSize: { base: 20, sm: 25, md: 28, lg: 30 } },
+    m: { fontSize: { base: 18, sm: 22, md: 24, lg: 24 } },
+    s: { fontSize: { base: 15, sm: 15, md: 16, lg: 16 } },
+    xs: { fontSize: { base: 8, sm: 12, md: 14, lg: 16 }},
+    letterSpacing: '0.15em', 
   },
   defaultProps: {
     size: "m",
