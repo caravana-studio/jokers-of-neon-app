@@ -193,7 +193,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                             storePlay?.purchased ? (
                               <Heading
                                 color="blue"
-                                size={isMobile ? "base" : "sm"}
+                                size={isMobile ? "base" : "xs"}
                               >
                                 PURCHASED
                               </Heading>

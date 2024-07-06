@@ -86,6 +86,7 @@ export const ShowCardModal = ({
                 height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
               >
                 <Image
+                  borderRadius={{ base: "8px", sm: "15px" }}
                   width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
                   height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
                   src={`Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : card?.img}`}

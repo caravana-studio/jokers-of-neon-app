@@ -321,4 +321,10 @@ export const TRADITIONAL_CARDS_DATA: CardDataMap = {
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
+  53: {
+    name: "Joker of Neon",
+    description: "Always scores. +500 points and +3 multi",
+    card: Cards.JOKER,
+    suit: Suits.JOKER,
+  },
 };

@@ -48,6 +48,8 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
         <Tilt options={TILT_OPTIONS}>
           <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown>
             <Image
+              borderRadius={{ base: "5px", sm: "8px" }}
+              boxShadow={'0px 0px 5px 0px rgba(0,0,0,0.5)'}
               sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
               src={`Cards/${img}`}
               alt={img}
@@ -117,7 +119,7 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
               >
                 <TimeIcon boxSize={4} color={"black"} />
                 {card.remaining && (
-                  <Text color="black" size='l'>
+                  <Text color="black" size="l">
                     {card.remaining}
                   </Text>
                 )}
