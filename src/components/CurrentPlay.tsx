@@ -10,7 +10,7 @@ export const CurrentPlay = () => {
   const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex gap={4} alignItems={"center"}>
+    <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
       <Tooltip label={"Show plays"} placement={"left"}>
         <InfoIcon
         color='white'
@@ -22,7 +22,7 @@ export const CurrentPlay = () => {
         />
       </Tooltip>
       <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />
-      <Text size="xl">
+      <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
           : `Current Play: ${PLAYS[preSelectedPlay]}`}
