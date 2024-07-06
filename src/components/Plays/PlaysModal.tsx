@@ -23,7 +23,7 @@ interface PlaysModalProps {
 export const PlaysModal = ({isOpen, onClose}: PlaysModalProps) => {
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} >
+    <Modal isOpen={isOpen} onClose={onClose} size='lg' >
       <ModalOverlay />
       <ModalContent>
         <ModalBody p={0}>
