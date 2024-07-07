@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect";
 import "../App.scss";
 
 interface LoadingScreenProps {
@@ -8,7 +9,9 @@ export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
   return (
     <div
       style={{
-        height: "100vh",
+        height: "100vsh",
+        position: isMobile ? "fixed" : "unset",
+        bottom: isMobile ? 0 : "unset",
         width: "100vw",
         display: "flex",
         justifyContent: "center",
@@ -27,8 +30,13 @@ export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
         <div>error loading game</div>
       ) : (
         <>
-          <img style={{marginTop: '80px'}} width="70%" src="logos/logo.png" alt="logo" />
-          <img src="loader.gif" alt="loader" width='100px' />
+          <img
+            style={{ marginTop: "80px" }}
+            width="60%"
+            src="logos/logo.png"
+            alt="logo"
+          />
+          <img src="loader.gif" alt="loader" width="100px" />
         </>
       )}
     </div>
