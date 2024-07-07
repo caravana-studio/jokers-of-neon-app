@@ -1,4 +1,3 @@
-import { isMobile } from "react-device-detect";
 import "../App.scss";
 
 interface LoadingScreenProps {
@@ -9,9 +8,9 @@ export const LoadingScreen = ({ error = false }: LoadingScreenProps) => {
   return (
     <div
       style={{
-        height: "100vsh",
-        position: isMobile ? "fixed" : "unset",
-        bottom: isMobile ? 0 : "unset",
+        height: "100%",
+        position: "fixed",
+        bottom: 0,
         width: "100vw",
         display: "flex",
         justifyContent: "center",
