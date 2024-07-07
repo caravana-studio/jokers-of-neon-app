@@ -22,8 +22,8 @@ export const Background = ({
         backgroundPosition: "center",
         height: "100svh",
         width: "100vw",
-        position: isMobile && !scrollOnMobile ? "absolute" : "unset",
-        bottom: isMobile && !scrollOnMobile ? 0 : "unset",
+        //position: isMobile && !scrollOnMobile ? "absolute" : "unset",
+        //bottom: isMobile && !scrollOnMobile ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
       }}
     >
