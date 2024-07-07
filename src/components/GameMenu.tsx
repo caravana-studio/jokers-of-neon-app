@@ -36,7 +36,11 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
           <MenuItem
             onClick={() => {
               let elem = document.documentElement;
-              elem.requestFullscreen({ navigationUI: "show" });
+              elem.requestFullscreen({ navigationUI: "show" }).catch((err) => {
+                alert(
+                  `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`
+                );
+              });
             }}
           >
             Go fullscreen
