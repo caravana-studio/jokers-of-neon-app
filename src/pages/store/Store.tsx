@@ -197,7 +197,7 @@ export const Store = () => {
                   }, */
                 }}
               >
-                MY COINS: <RollingNumber className="italic" n={cash} /> ȼ
+                COINS: <RollingNumber className="italic" n={cash} /> ȼ
               </Heading>
             </Box>
           </Box>
