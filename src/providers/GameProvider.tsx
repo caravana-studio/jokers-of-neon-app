@@ -149,7 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {specialCards} = useCurrentSpecialCards();
 
-  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail();
+  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
 
   const {
     setup: {
