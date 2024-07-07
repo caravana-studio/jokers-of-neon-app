@@ -25,7 +25,7 @@ export const Redirect = () => {
 
   return (
     <Background type="game">
-      <Loading />;
+      <Loading />
     </Background>
   );
 };
