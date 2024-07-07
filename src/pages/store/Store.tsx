@@ -7,6 +7,7 @@ import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
+import { TutorialModal } from "../../components/TutorialModal";
 import { SKIP_TUTORIAL } from "../../constants/localStorage";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomToast } from "../../hooks/useCustomToast";
@@ -15,7 +16,6 @@ import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
 import { useGetStore } from "../../queries/useGetStore";
 import { StoreCardsRow } from "./StoreCardsRow";
-import { TutorialModal } from "../../components/TutorialModal";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
@@ -127,7 +127,9 @@ export const Store = () => {
 
   return (
     <Background type="store" scrollOnMobile>
-      {showTutorial && <TutorialModal inStore onClose={() => setShowTutorial(false)} />}
+      {showTutorial && (
+        <TutorialModal inStore onClose={() => setShowTutorial(false)} />
+      )}
       {!isMobile ? (
         <Box
           sx={{
@@ -137,7 +139,7 @@ export const Store = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu />
+          <GameMenu inStore/>
         </Box>
       ) : (
         <Box
@@ -149,7 +151,7 @@ export const Store = () => {
             transform: "scale(0.7)",
           }}
         >
-          <GameMenu />
+          <GameMenu inStore />
         </Box>
       )}
       <Flex

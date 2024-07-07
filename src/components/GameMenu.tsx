@@ -11,9 +11,10 @@ import { TutorialModal } from "./TutorialModal.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
+  inStore?: boolean;
 }
 
-export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
+export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) => {
   const username = useUsername();
   const { executeCreateGame } = useGameContext();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
 
   return (
     <>
-      {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
+      {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />}
       <Menu>
         <MenuButton>
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
