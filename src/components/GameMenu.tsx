@@ -1,16 +1,13 @@
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { TutorialModal } from "./TutorialModal.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -26,11 +23,14 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
     toggleSound();
   };
 
+  const [showTutorial, setShowTutorial] = useState(false);
+
   return (
     <>
+      {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
       <Menu>
         <MenuButton>
-          <FontAwesomeIcon icon={faBars} style={{verticalAlign: "middle"}} />
+          <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
         </MenuButton>
         <MenuList>
           {!onlySound && (
@@ -38,6 +38,9 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
               Start new game
             </MenuItem>
           )}
+          <MenuItem onClick={() => setShowTutorial(true)}>
+            See tutorial
+          </MenuItem>
           <MenuItem onClick={togglePlayPause}>
             Turn sound {isPlaying ? "OFF" : "ON"}
           </MenuItem>

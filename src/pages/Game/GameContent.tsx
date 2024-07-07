@@ -1,16 +1,18 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { TutorialModal } from "../../components/TutorialModal.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
 
 export const GameContent = () => {
   const {
@@ -25,6 +27,8 @@ export const GameContent = () => {
     gameId,
     checkOrCreateGame,
   } = useGameContext();
+
+  const [showTutorial, setShowTutorial] = useState(!window.localStorage.getItem(SKIP_TUTORIAL))
 
   const { data: game } = useGetGame(gameId);
   const {
@@ -102,8 +106,8 @@ export const GameContent = () => {
           height: "100%",
           width: "100%",
         }}
-        onClick={clearPreSelection}
       >
+        {showTutorial && <TutorialModal onClose={() => {setShowTutorial(false)}} />}
         <Box sx={{ width: "100%", height: "100%" }} px={8}>
           <Box sx={{ height: "30%", width: "100%" }}>
             <TopSection />
@@ -122,7 +126,7 @@ export const GameContent = () => {
               <PreselectedCardsSection />
             </Box>
             <Box
-              pb={{ base: 2, md: '7vh' }}
+              pb={{ base: 2, md: "7vh" }}
               mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
