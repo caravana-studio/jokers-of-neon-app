@@ -21,14 +21,16 @@ interface PlaysResponse {
   };
 }
 
-const fetchGraphQLData = async (): Promise<PlaysResponse> => {
-  return await graphQLClient.request(GET_PLAYS_LEVEL_QUERY, {});
+const fetchGraphQLData = async (
+  gameId: number
+): Promise<PlaysResponse> => {
+  return await graphQLClient.request(GET_PLAYS_LEVEL_QUERY, { gameId });
 };
 
-export const useGetPlaysLevelDetail = () => {
+export const useGetPlaysLevelDetail = (gameId: number) => {
   const queryResponse = useQuery<PlaysResponse>(
-    [PLAYS_LEVEL_QUERY_KEY],
-    () => fetchGraphQLData(),
+    [PLAYS_LEVEL_QUERY_KEY, gameId],
+    () => fetchGraphQLData(gameId),
     {}
   );
   const { data } = queryResponse;

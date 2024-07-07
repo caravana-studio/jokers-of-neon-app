@@ -97,8 +97,8 @@ export const GET_STATIC_EFFECTS = gql`
 `;
 
 export const GET_PLAYS_LEVEL_QUERY = gql`
-    query GetLevelPokerHand {
-        playerLevelPokerHandModels {
+    query GetLevelPokerHand($gameId: ID!) {
+        playerLevelPokerHandModels(first: 30, where: { game_idEQ: $gameId }) {
             edges {
                 node {
                     poker_hand
