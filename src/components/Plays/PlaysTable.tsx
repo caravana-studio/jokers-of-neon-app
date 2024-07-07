@@ -11,10 +11,10 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import theme from "../../theme/theme";
-import { useGameContext } from "../../providers/GameProvider";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -23,7 +23,7 @@ interface PlaysTableProps {
 const { blue, white, purple } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
-  const { gameId} = useGameContext()
+  const { gameId } = useGameContext();
   const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
 
   const store = useStore();
@@ -31,12 +31,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const cash = store?.cash ?? 0;
   const pokerHandItems = store?.shopItems?.pokerHandItems;
 
-  const plays = inStore && isMobile
+  const plays =
+    inStore && isMobile
       ? apiPlays?.filter(
           (p) =>
-            !!pokerHandItems.find((item) => {
-              item.poker_hand === p.pokerHand.id
-            })
+            !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
         )
       : apiPlays;
 
