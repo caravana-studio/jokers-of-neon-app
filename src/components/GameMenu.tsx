@@ -1,9 +1,4 @@
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +25,7 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
     <>
       <Menu>
         <MenuButton>
-          <FontAwesomeIcon icon={faBars} style={{verticalAlign: "middle"}} />
+          <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
         </MenuButton>
         <MenuList>
           {!onlySound && (
@@ -38,6 +33,14 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
               Start new game
             </MenuItem>
           )}
+          <MenuItem
+            onClick={() => {
+              let elem = document.documentElement;
+              elem.requestFullscreen({ navigationUI: "show" });
+            }}
+          >
+            Go fullscreen
+          </MenuItem>
           <MenuItem onClick={togglePlayPause}>
             Turn sound {isPlaying ? "OFF" : "ON"}
           </MenuItem>
