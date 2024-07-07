@@ -45,7 +45,7 @@ const AudioPlayer = () => {
         zIndex: 1000,
       }}
     >
-      <audio ref={audioRef} src="/music/track1.mp3" loop />
+      <audio ref={audioRef} src="/music/new-track.mp3" loop />
       <Box sx={{ cursor: "pointer" }} onClick={togglePlayPause}>
         {isPlaying ? (
           <FontAwesomeIcon fontSize={25} icon={faVolumeXmark} />

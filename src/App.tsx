@@ -27,7 +27,7 @@ function App() {
             <Route
               path="/gameover"
               element={
-                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <GameOver />
                 </AudioPlayerProvider>
               }
@@ -35,7 +35,7 @@ function App() {
             <Route
               path="/demo"
               element={
-                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <GamePage />
                 </AudioPlayerProvider>
               }
@@ -43,7 +43,7 @@ function App() {
             <Route
               path="/rewards"
               element={
-                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <RewardsPage />
                 </AudioPlayerProvider>
               }
@@ -52,7 +52,7 @@ function App() {
             <Route
               path="/store"
               element={
-                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <StoreProvider>
                     <Store />
                   </StoreProvider>
@@ -62,7 +62,7 @@ function App() {
             <Route
               path="/redirect/:page"
               element={
-                <AudioPlayerProvider songPath={"/music/track1.mp3"}>
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <Redirect />
                 </AudioPlayerProvider>
               }
