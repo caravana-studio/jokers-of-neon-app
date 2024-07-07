@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import screenfull from "screenfull";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
@@ -35,12 +36,7 @@ export const GameMenu = ({ onlySound = false }: GameMenuProps) => {
           )}
           <MenuItem
             onClick={() => {
-              let elem = document.documentElement;
-              elem.requestFullscreen({ navigationUI: "show" }).catch((err) => {
-                alert(
-                  `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`
-                );
-              });
+              screenfull.request();
             }}
           >
             Go fullscreen
