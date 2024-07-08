@@ -32,7 +32,7 @@ export async function setup({ ...config }: DojoConfig) {
     toriiClient,
     contractComponents as any,
     [],
-    3000
+    1000
   );
   console.log("Sync entities fetched");
   // create dojo provider
