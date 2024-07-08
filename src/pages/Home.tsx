@@ -37,8 +37,8 @@ export const Home = () => {
               LEADERBOARD
             </Heading>
             {isMobile ? (
-              <Box sx={{ transform: "scale(0.6)" }}>
-                <Leaderboard lines={5} />
+              <Box sx={{ transform: "scale(0.7)" }}>
+                <Leaderboard lines={6} />
               </Box>
             ) : (
               <Leaderboard />
