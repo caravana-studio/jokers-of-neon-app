@@ -154,7 +154,6 @@ export const MobileGameContent = () => {
           height: "100%",
           width: "100%",
         }}
-        onClick={clearPreSelection}
       >
         <DndContext
           onDragEnd={handleDragEnd}

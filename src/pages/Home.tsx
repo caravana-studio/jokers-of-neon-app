@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
-import { GameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
@@ -36,7 +36,13 @@ export const Home = () => {
             <Heading size="l" variant="italic" textAlign={"center"} mb={12}>
               LEADERBOARD
             </Heading>
-            <Leaderboard />
+            {isMobile ? (
+              <Box sx={{ transform: "scale(0.7)" }}>
+                <Leaderboard lines={6} />
+              </Box>
+            ) : (
+              <Leaderboard />
+            )}
             <Button
               mt={8}
               width="100%"
