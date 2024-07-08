@@ -57,16 +57,15 @@ export const TutorialModal = ({
                 <div key={index}>
                   {isMobile ? (
                     <Image
-                      src={`tutorial/${inStore ? "store" : "game"}-${index}.gif`}
+                      src={`tutorial/${inStore ? "store" : "game"}-${index}-m.gif`}
                       width="80px"
                     />
                   ) : (
-                    <video
-                      autoPlay
-                      loop
-                      src={`tutorial/${inStore ? "store" : "game"}-${index}.mov`}
-                      width="100%"
+                    <Image
+                      src={`tutorial/${inStore ? "store" : "game"}-${index}.gif`}
+                      width="80vw"
                     />
+                    
                   )}
                   <Text mt={2}>{step}</Text>
                 </div>
