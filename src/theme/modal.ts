@@ -13,7 +13,7 @@ const baseStyle = definePartsStyle({
     borderRadius: '0',
     color: 'white',
     bg: `black`,
-    marginTop: isMobile ? 0 : '20vh',
+    marginTop: isMobile ? '5vh' : '20vh',
     width: '70%',
     maxWidth: '1100px',
   },

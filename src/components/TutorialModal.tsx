@@ -1,13 +1,13 @@
 import {
-    Button,
-    Img,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    Text,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { SKIP_TUTORIAL } from "../constants/localStorage";
@@ -46,17 +46,18 @@ export const TutorialModal = ({
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose}>
+    <Modal isOpen={true} onClose={onClose} size="4xl">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent sx={{ marginTop: "5vh" }}>
         <ModalBody>
-          <Carousel onChange={onCarouselChange}>
+          <Carousel onChange={onCarouselChange} swipeable>
             {(inStore ? STORE_STEPS : GAME_STEPS).map((step, index) => {
               return (
                 <div key={index}>
-                  <Img
-                    src={`tutorial/${inStore ? "store" : "game"}-${index}.png`}
-                    alt="tutorial-step"
+                  <video
+                    autoPlay
+                    loop
+                    src={`tutorial/${inStore ? "store" : "game"}-${index}.mov`}
                     width="100%"
                   />
                   <Text>{step}</Text>
@@ -71,14 +72,13 @@ export const TutorialModal = ({
             fontSize={{ base: 10, sm: 12 }}
             py={2}
             mr={3}
-
             variant="outline"
             onClick={() => {
               skipTutorial();
               onClose();
             }}
           >
-            skip tutorial
+            skip {isMobile ? "" : "tutorial"}
           </Button>
           <Button
             size="s"
