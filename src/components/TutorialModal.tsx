@@ -1,5 +1,6 @@
 import {
   Button,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -48,25 +49,32 @@ export const TutorialModal = ({
   return (
     <Modal isOpen={true} onClose={onClose} size="4xl">
       <ModalOverlay />
-      <ModalContent sx={{ marginTop: "5vh" }}>
+      <ModalContent sx={{ marginTop: isMobile ? 0 : "5vh" }}>
         <ModalBody>
           <Carousel onChange={onCarouselChange} swipeable>
             {(inStore ? STORE_STEPS : GAME_STEPS).map((step, index) => {
               return (
                 <div key={index}>
-                  <video
-                    autoPlay
-                    loop
-                    src={`tutorial/${inStore ? "store" : "game"}-${index}.mov`}
-                    width="100%"
-                  />
-                  <Text>{step}</Text>
+                  {isMobile ? (
+                    <Image
+                      src={`tutorial/${inStore ? "store" : "game"}-${index}.gif`}
+                      width="80px"
+                    />
+                  ) : (
+                    <video
+                      autoPlay
+                      loop
+                      src={`tutorial/${inStore ? "store" : "game"}-${index}.mov`}
+                      width="100%"
+                    />
+                  )}
+                  <Text mt={2}>{step}</Text>
                 </div>
               );
             })}
           </Carousel>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter >
           <Button
             size="s"
             fontSize={{ base: 10, sm: 12 }}
