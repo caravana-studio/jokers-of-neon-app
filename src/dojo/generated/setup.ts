@@ -12,7 +12,6 @@ import { world } from "./world";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
 export async function setup({ ...config }: DojoConfig) {
-  console.log("Setting up dojo...");
   // torii client
   const toriiClient = await torii.createClient([], {
     rpcUrl: config.rpcUrl,
@@ -20,27 +19,21 @@ export async function setup({ ...config }: DojoConfig) {
     relayUrl: "",
     worldAddress: config.manifest.world.address || "",
   });
-  console.log("Torii client created");
   // create contract components
   const contractComponents = defineContractComponents(world);
-  console.log("Contract components created");
   // create client components
   const clientComponents = createClientComponents({ contractComponents });
-  console.log("Client components created");
   // fetch all existing entities from torii
   const sync = await getSyncEntities(
     toriiClient,
     contractComponents as any,
     [],
-    1000
+    3000
   );
-  console.log("Sync entities fetched");
   // create dojo provider
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
-  console.log("Dojo provider created");
   // setup world
   const client = await setupWorld(dojoProvider);
-  console.log("Client created");
   // create burner manager
   const burnerManager = new BurnerManager({
     masterAccount: new Account(
@@ -54,7 +47,6 @@ export async function setup({ ...config }: DojoConfig) {
     rpcProvider: dojoProvider.provider,
     feeTokenAddress: config.feeTokenAddress,
   });
-  console.log("Burner manager created");
   try {
     await burnerManager.init();
     if (burnerManager.list().length === 0) {
@@ -63,7 +55,6 @@ export async function setup({ ...config }: DojoConfig) {
   } catch (e) {
     console.error(e);
   }
-  console.log("Burner manager initialized");
   return {
     client,
     clientComponents,
