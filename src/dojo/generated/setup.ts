@@ -31,7 +31,7 @@ export async function setup({ ...config }: DojoConfig) {
   // fetch all existing entities from torii
   const sync = await getSyncEntities(
     toriiClient,
-    {Game: contractComponents.Game} as any,
+    {} as any,
     [],
     1000
   );
