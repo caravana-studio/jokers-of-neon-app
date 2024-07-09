@@ -36,7 +36,7 @@ export const ShowCardModal = ({
   onBuyClick,
 }: IShowCardModalProps) => {
   const { name, description } = getCardData(card);
-  const { cash } = useStore();
+  const { cash, locked } = useStore();
   const { gameId } = useGameContext();
   const { data: game } = useGetGame(gameId);
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
@@ -54,7 +54,7 @@ export const ShowCardModal = ({
       }}
       sx={{ width: "50%" }}
       variant="secondarySolid"
-      isDisabled={notEnoughCash || noSpaceForSpecialCards}
+      isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
     >
       BUY
     </Button>

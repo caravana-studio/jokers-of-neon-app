@@ -45,7 +45,7 @@ export const Store = () => {
     account,
   } = useDojo();
 
-  const { cash, shopItems, reroll } = useStore();
+  const { cash, shopItems, reroll, locked } = useStore();
 
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ export const Store = () => {
       <Button
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled}
+        isDisabled={rerolled || locked}
         onClick={() => {
           reroll().then((response) => {
             if (response) {
@@ -105,6 +105,7 @@ export const Store = () => {
           }
         });
       }}
+      isDisabled={locked}
       lineHeight={1.6}
       variant="secondarySolid"
       fontSize={[10, 10, 10, 14, 14]}
@@ -122,7 +123,11 @@ export const Store = () => {
   }, [state]);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <Background type="game">
+        <Loading />
+      </Background>
+    );
   }
 
   return (
@@ -139,7 +144,7 @@ export const Store = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu inStore/>
+          <GameMenu inStore />
         </Box>
       ) : (
         <Box
