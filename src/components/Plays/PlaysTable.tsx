@@ -24,6 +24,7 @@ const { blue, white, purple } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
+  const { locked } = useStore();
   const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
 
   const store = useStore();
@@ -163,7 +164,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                     onClick={() => {
                       levelUpPlay?.(storePlay?.idx ?? 0, storePlay?.cost ?? 0);
                     }}
-                    isDisabled={notEnoughCash}
+                    isDisabled={notEnoughCash || locked}
                     size="sm"
                     px={isMobile ? 2 : 4}
                   >
