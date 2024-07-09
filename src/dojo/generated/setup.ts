@@ -23,6 +23,7 @@ export async function setup({ ...config }: DojoConfig) {
   console.log("Torii client created");
   // create contract components
   const contractComponents = defineContractComponents(world);
+  console.log(contractComponents)
   console.log("Contract components created");
   // create client components
   const clientComponents = createClientComponents({ contractComponents });
@@ -30,7 +31,7 @@ export async function setup({ ...config }: DojoConfig) {
   // fetch all existing entities from torii
   const sync = await getSyncEntities(
     toriiClient,
-    contractComponents as any,
+    {Game: contractComponents.Game} as any,
     [],
     1000
   );
