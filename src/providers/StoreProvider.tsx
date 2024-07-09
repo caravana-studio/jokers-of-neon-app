@@ -9,8 +9,8 @@ import { useDojo } from "../dojo/useDojo";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { useGetGame } from "../queries/useGetGame";
 import { ShopItems, useGetShopItems } from "../queries/useGetShopItems";
-import { useGameContext } from "./GameProvider";
 import { useGetStore } from "../queries/useGetStore";
+import { useGameContext } from "./GameProvider";
 
 interface IStoreContext {
   cash: number;
@@ -22,6 +22,7 @@ interface IStoreContext {
   levelUpPlay: (item_id: number, price: number) => Promise<boolean>;
   shopItems: ShopItems;
   reroll: () => Promise<boolean>;
+  locked: boolean;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -31,7 +32,8 @@ const StoreContext = createContext<IStoreContext>({
   },
   levelUpPlay: (_, __) => {
     return new Promise((resolve) => resolve(false));
-  },  reroll: () => {
+  },
+  reroll: () => {
     return new Promise((resolve) => resolve(false));
   },
   shopItems: {
@@ -40,6 +42,7 @@ const StoreContext = createContext<IStoreContext>({
     commonCards: [],
     pokerHandItems: [],
   },
+  locked: false,
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -54,10 +57,15 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { data: store } = useGetStore(gameId);
 
   const rerollCost = store?.reroll_cost ?? 0;
+  const [locked, setLocked] = useState(false);
 
   const {
     setup: {
-      systemCalls: { buyCard: dojoBuyCard, levelUpPokerHand: dojoLevelUpHand, storeReroll },
+      systemCalls: {
+        buyCard: dojoBuyCard,
+        levelUpPokerHand: dojoLevelUpHand,
+        storeReroll,
+      },
     },
     account,
   } = useDojo();
@@ -70,38 +78,53 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     card_type: number,
     price: number
   ): Promise<boolean> => {
+    setLocked(true);
     const promise = dojoBuyCard(account.account, gameId, card_idx, card_type);
-    promise.then((response) => {
-      if (response) {
-        setCash((prev) => prev - price);
-      } else {
-        showErrorToast("Error buying card");
-      }
-    });
+    promise
+      .then((response) => {
+        if (response) {
+          setCash((prev) => prev - price);
+        } else {
+          showErrorToast("Error buying card");
+        }
+      })
+      .finally(() => {
+        setLocked(false);
+      });
     return promise;
   };
 
   const reroll = () => {
-    const promise = storeReroll(account.account, gameId)
-    promise.then((response) => {
-      if (response) {
-        setCash((prev) => prev - rerollCost);
-      } else {
-        showErrorToast("Error rerolling");
-      }
-    });
-    return promise
-  }
+    setLocked(true);
+    const promise = storeReroll(account.account, gameId);
+    promise
+      .then((response) => {
+        if (response) {
+          setCash((prev) => prev - rerollCost);
+        } else {
+          showErrorToast("Error rerolling");
+        }
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
 
   const levelUpPlay = (item_id: number, price: number): Promise<boolean> => {
+    setLocked(true);
     const promise = dojoLevelUpHand(account.account, gameId, item_id);
-    promise.then((response) => {
-      if (response) {
-        setCash((prev) => prev - price);
-      } else {
-        showErrorToast("Error leveling hand");
-      }
-    });
+    promise
+      .then((response) => {
+        if (response) {
+          setCash((prev) => prev - price);
+        } else {
+          showErrorToast("Error leveling hand");
+        }
+      })
+      .finally(() => {
+        setLocked(false);
+      });
     return promise;
   };
 
@@ -118,7 +141,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         buyCard,
         levelUpPlay,
         shopItems,
-        reroll
+        reroll,
+        locked,
       }}
     >
       {children}
