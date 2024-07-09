@@ -22,8 +22,8 @@ export const SPECIAL_CARDS_DATA: CardDataMap = {
     description: "Level up PAIR hand by 4 levels",
   },
   6: {
-    name: "Double Pair Booster",
-    description: "Level up DOUBLE PAIR hand by 4 levels",
+    name: "Two Pair Booster",
+    description: "Level up TWO PAIR hand by 4 levels",
   },
   7: {
     name: "Straight Booster",
