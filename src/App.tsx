@@ -14,6 +14,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { DemoClosedHome } from "./pages/DemoClosedHome.tsx";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -22,51 +23,7 @@ function App() {
       <CardAnimationsProvider>
         <GameProvider>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/gameover"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <GameOver />
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/demo"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <GamePage />
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/rewards"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <RewardsPage />
-                </AudioPlayerProvider>
-              }
-            />
-
-            <Route
-              path="/store"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <StoreProvider>
-                    <Store />
-                  </StoreProvider>
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/redirect/:page"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <Redirect />
-                </AudioPlayerProvider>
-              }
-            />
+            <Route path="/" element={<DemoClosedHome />} />
             <Route path="/play" element={<Navigate to="/" />} />
           </Routes>
         </GameProvider>

@@ -1,6 +1,5 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
-import { getSyncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, WeierstrassSignatureType } from "starknet";
 import { createClientComponents } from "../createClientComponents";
@@ -24,12 +23,12 @@ export async function setup({ ...config }: DojoConfig) {
   // create client components
   const clientComponents = createClientComponents({ contractComponents });
   // fetch all existing entities from torii
-  const sync = await getSyncEntities(
+  /* const sync = await getSyncEntities(
     toriiClient,
     contractComponents as any,
     [],
     3000
-  );
+  ); */
   // create dojo provider
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
   // setup world
@@ -74,6 +73,6 @@ export async function setup({ ...config }: DojoConfig) {
     dojoProvider,
     burnerManager,
     toriiClient,
-    sync,
+    // sync,
   };
 }
