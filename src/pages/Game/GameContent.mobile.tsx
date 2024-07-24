@@ -11,8 +11,9 @@ import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCard
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetGame } from "../../queries/useGetGame.ts";
+import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
-import { PlayDiscardSection } from "./PlayDiscardSection.mobile.tsx";
+import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 
@@ -188,7 +189,8 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <PlayDiscardSection itemDragged={isItemDragged} />
+              <DiscardButton itemDragged={isItemDragged} />
+              <PlayButton />
             </Flex>
             <Box
               sx={{

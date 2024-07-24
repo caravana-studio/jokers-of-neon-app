@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useDroppable } from "@dnd-kit/core";
+import { Box, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
@@ -7,26 +6,20 @@ import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
 import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
+import { DiscardButton } from "./DiscardButton.tsx";
+import { PlayButton } from "./PlayButton.tsx";
 
 export const PreselectedCardsSection = () => {
   const {
     preSelectedCards,
-    play,
     hand,
     getModifiers,
     togglePreselected,
     discardAnimation,
     playAnimation,
-    discard,
     roundRewards,
-    handsLeft,
-    discardsLeft,
-    preSelectionLocked,
   } = useGameContext();
 
-  const { setNodeRef } = useDroppable({
-    id: "play-discard",
-  });
   const navigate = useNavigate();
 
   if (roundRewards) {
@@ -35,24 +28,7 @@ export const PreselectedCardsSection = () => {
 
   return (
     <>
-      <Flex flexDirection="column" alignItems="center" gap={4}>
-        <Button
-          width="160px"
-          onClick={(e) => {
-            e.stopPropagation();
-            play();
-          }}
-          isDisabled={
-            preSelectionLocked ||
-            preSelectedCards?.length === 0 ||
-            !handsLeft ||
-            handsLeft === 0
-          }
-        >
-          PLAY HAND
-        </Button>
-        <Text size="l">{handsLeft} left</Text>
-      </Flex>
+      <DiscardButton />
 
       <Box
         gap={{ base: 2, md: 8 }}
@@ -99,26 +75,7 @@ export const PreselectedCardsSection = () => {
         </Flex>
         <CurrentPlay />
       </Box>
-      <Flex flexDirection="column" alignItems="center" gap={4}>
-        <Button
-          ref={setNodeRef}
-          width="160px"
-          onClick={(e) => {
-            e.stopPropagation();
-            discard();
-          }}
-          variant="secondarySolid"
-          isDisabled={
-            preSelectionLocked ||
-            preSelectedCards?.length === 0 ||
-            !discardsLeft ||
-            discardsLeft === 0
-          }
-        >
-          DISCARD
-        </Button>
-        <Text size="l">{discardsLeft} left</Text>
-      </Flex>
+      <PlayButton />
     </>
   );
 };
