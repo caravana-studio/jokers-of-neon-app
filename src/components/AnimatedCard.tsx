@@ -1,9 +1,9 @@
 import { Heading, useTheme } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
+import { isMobile } from "react-device-detect";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
-import { isMobile } from "react-device-detect";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -90,7 +90,7 @@ export const AnimatedCard = ({
   useEffect(() => {
     if (played) {
       cardApi.start({
-        to: { x: -1000, opacity: 0 },
+        to: { x: 1000, opacity: 0 },
         config: { duration: 200 },
       });
     }
@@ -99,7 +99,7 @@ export const AnimatedCard = ({
   useEffect(() => {
     if (discarded) {
       cardApi.start({
-        to: { x: 1000, opacity: 0 },
+        to: { x: -1000, opacity: 0 },
         config: { duration: 200 },
       });
     } else {
