@@ -15,13 +15,27 @@ import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 import PWAPrompt from 'react-ios-pwa-prompt'
+import { useEffect, useState } from 'react';
+import InstallPWA from './utils/InstallPWA'; // Import the new component
 
 function App() {
   const theme = extendTheme(customTheme);
+
+  // State to track device type
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    if (/iPad|iPhone|iPod/.test(userAgent)) {
+      setIsIOS(true);
+    }
+  }, []);
+
   return (
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
-      <PWAPrompt isShown={true} />
+      <InstallPWA />
+      {isIOS && <PWAPrompt isShown={true} />}
         <GameProvider>
           <Routes>
             <Route path="/" element={<Home />} />
