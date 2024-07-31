@@ -30,6 +30,12 @@ const outline = defineStyle({
   },
 });
 
+const defaultOutline = defineStyle({
+  backgroundColor: "transparent",
+  border: `1px solid rgb(255,255,255) !important`,
+  color: "rgb(255,255,255)",
+});
+
 export const buttonTheme = defineStyleConfig({
   baseStyle: {
     fontFamily: "Orbitron",
@@ -40,7 +46,7 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid },
+  variants: { solid, outline, secondarySolid, defaultOutline },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },

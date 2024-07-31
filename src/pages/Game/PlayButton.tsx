@@ -6,6 +6,9 @@ import { ButtonContainer } from "./ButtonContainer";
 export const PlayButton = () => {
   const { preSelectedCards, play, handsLeft, preSelectionLocked } =
     useGameContext();
+
+  const cantPlay = preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0;
+
   return (
     <ButtonContainer>
       <Button
@@ -14,13 +17,8 @@ export const PlayButton = () => {
           e.stopPropagation();
           play();
         }}
-        variant="secondarySolid"
-        isDisabled={
-          preSelectionLocked ||
-          preSelectedCards?.length === 0 ||
-          !handsLeft ||
-          handsLeft === 0
-        }
+        variant={cantPlay ? "defaultOutline" : "secondarySolid"}
+        isDisabled={cantPlay}
       >
         {isMobile ? (
           <Box>
