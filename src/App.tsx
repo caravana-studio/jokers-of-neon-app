@@ -14,12 +14,14 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import PWAPrompt from 'react-ios-pwa-prompt'
 
 function App() {
   const theme = extendTheme(customTheme);
   return (
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
+      <PWAPrompt isShown={true} />
         <GameProvider>
           <Routes>
             <Route path="/" element={<Home />} />
