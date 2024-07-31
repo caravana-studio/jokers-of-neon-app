@@ -15,6 +15,13 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
   const { setNodeRef } = useDroppable({
     id: "play-discard",
   });
+
+  const cantDiscard = !itemDragged &&
+  (preSelectionLocked ||
+    preSelectedCards?.length === 0 ||
+    !discardsLeft ||
+    discardsLeft === 0);
+
   return (
     <ButtonContainer>
       <Button
@@ -24,13 +31,8 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
           e.stopPropagation();
           discard();
         }}
-        isDisabled={
-          !itemDragged &&
-          (preSelectionLocked ||
-            preSelectedCards?.length === 0 ||
-            !discardsLeft ||
-            discardsLeft === 0)
-        }
+        variant={cantDiscard ? "defaultOutline" : "solid"}
+        isDisabled={cantDiscard}
       >
         {isMobile ? (
           <Box>
