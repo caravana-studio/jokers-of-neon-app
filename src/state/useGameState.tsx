@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
@@ -10,6 +11,7 @@ import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
+import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
 
 export const useGameState = () => {
@@ -49,10 +51,93 @@ export const useGameState = () => {
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
+  const { specialCards } = useCurrentSpecialCards();
+
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
 
   const loadingStates = deck.size === 0 || round.levelScore === 0;
+
+  const apiScore = round?.score ?? 0;
+  const apiHandsLeft = round?.hands;
+  const apiDiscardsLeft = round?.discards;
+
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
+
+  //effects
+
+  useEffect(() => {
+    if (apiHand?.length > 0 && hand.length === 0) {
+      setHand(apiHand);
+    }
+  }, [apiHand]);
+
+  useEffect(() => {
+    if (!score && apiScore > 0) {
+      setScore(apiScore);
+    }
+    if (apiHandsLeft > 0) {
+      setHandsLeft(apiHandsLeft);
+    }
+    if (apiDiscardsLeft > 0) {
+      setDiscardsLeft(apiDiscardsLeft);
+    }
+  }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
+
+  const setMultiAndPoints = (play: Plays) => {
+    const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
+    setMulti(playerPokerHand?.multi ?? 0);
+    setPoints(playerPokerHand?.points ?? 0);
+  };
+
+  useEffect(() => {
+    if (preSelectedCards.length > 0) {
+      let play = checkHand(
+        specialCards,
+        hand,
+        preSelectedCards,
+        preSelectedModifiers
+      );
+      setPreSelectedPlay(play);
+      if (plays?.length == 0) {
+        refetchPlays().then(() => {
+          setMultiAndPoints(play);
+        });
+      } else {
+        setMultiAndPoints(play);
+      }
+    } else {
+      setPreSelectedPlay(Plays.NONE);
+      resetMultiPoints();
+    }
+  }, [preSelectedCards, preSelectedModifiers]);
+
+  //make sure data is legit
+
+  useEffect(() => {
+    if (round.levelScore === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchRound().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [round]);
+
+  useEffect(() => {
+    if (deck.size === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchDeckData().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [deck]);
 
   return {
     gameId,

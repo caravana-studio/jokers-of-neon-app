@@ -16,7 +16,6 @@ import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
-import { useGetRound } from "../../queries/useGetRound";
 
 const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
