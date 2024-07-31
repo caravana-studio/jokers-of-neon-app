@@ -1,4 +1,5 @@
 export enum Cards {
+  ACE_LOW = 1,
   TWO = 2,
   THREE = 3,
   FOUR = 4,

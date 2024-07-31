@@ -1,3 +1,4 @@
+import { Cards } from "../enums/cards";
 import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
@@ -90,12 +91,6 @@ export const checkHand = (
   ].some((suit) => (suitsCount.get(suit) || 0) >= countCardFlush);
 
   const countCardStraight = easyStraight ? 4 : 5;
-  const isStraight =
-    cardsSorted.length >= countCardStraight &&
-    cardsSorted.every(
-      (card, idx, arr) =>
-        idx === 0 || (card.card || 0) === (arr[idx - 1].card || 0) + 1
-    );
 
   let isFiveOfAKind = false;
   let isFourOfAKind = false;
@@ -122,7 +117,7 @@ export const checkHand = (
   }
 
   let play: Plays;
-  if (isStraight && isFlush) {
+  if (isStraight(cardsSorted, countCardStraight) && isFlush) {
     play = Plays.STRAIGHT_FLUSH;
   } else if (isFiveOfAKind) {
     play = Plays.FIVE_OF_A_KIND;
@@ -130,7 +125,7 @@ export const checkHand = (
     play = Plays.FOUR_OF_A_KIND;
   } else if (isThreeOfAKind && pairsCount === 1) {
     play = Plays.FULL_HOUSE;
-  } else if (isStraight) {
+  } else if (isStraight(cardsSorted, countCardStraight)) {
     play = Plays.STRAIGHT;
   } else if (isFlush) {
     play = Plays.FLUSH;
@@ -144,4 +139,28 @@ export const checkHand = (
     play = Plays.HIGH_CARD;
   }
   return play;
+};
+
+const isStraight = (cardsSorted: CardData[], countCardStraight: number) => {
+  if (cardsSorted.length < countCardStraight) {
+    return false;
+  }
+
+  // Check for normal straight with adjusted cards
+  const isNormalStraight = (cards: CardData[]) => 
+    cards.every(
+        (card, idx, arr) =>
+          idx === 0 || (card.card || 0) === (arr[idx - 1].card || 0) + 1
+      );
+
+      let adjustedCards = cardsSorted.map(card => ({
+        ...card,
+        card: card.card === Cards.ACE ? Cards.ACE_LOW : card.card
+      }));
+
+      adjustedCards = [...adjustedCards].sort(
+        (a, b) => (a.card || 0) - (b.card || 0)
+      );
+
+return isNormalStraight(cardsSorted) || isNormalStraight(adjustedCards);
 };
