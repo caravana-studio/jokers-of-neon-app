@@ -1,0 +1,190 @@
+import { useEffect, useMemo, useState } from "react";
+import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
+import { Plays } from "../enums/plays";
+import { SortBy } from "../enums/sortBy";
+import { useGetCurrentHand } from "../queries/useGetCurrentHand";
+import { useGetDeck } from "../queries/useGetDeck";
+import { useGetGame } from "../queries/useGetGame";
+import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
+import { useGetRound } from "../queries/useGetRound";
+import { Card } from "../types/Card";
+import { RoundRewards } from "../types/RoundRewards";
+import { checkHand } from "../utils/checkHand";
+import { sortCards } from "../utils/sortCards";
+
+export const useGameState = () => {
+  const [gameId, setGameId] = useState<number>(getLSGameId());
+  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
+  const [points, setPoints] = useState(0);
+  const [multi, setMulti] = useState(0);
+  const [gameLoading, setGameLoading] = useState(true);
+  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
+  const [discardAnimation, setDiscardAnimation] = useState(false);
+  const [playAnimation, setPlayAnimation] = useState(false);
+  const [error, setError] = useState(false);
+  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
+    [key: number]: number[];
+  }>({});
+  const [hand, setHand] = useState<Card[]>([]);
+  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
+    undefined
+  );
+  const [sortBySuit, setSortBySuit] = useState(
+    !!localStorage.getItem(SORT_BY_SUIT)
+  );
+  const [score, setScore] = useState(0);
+  const [handsLeft, setHandsLeft] = useState(4);
+  const [discardsLeft, setDiscardsLeft] = useState(4);
+
+  const sortBy: SortBy = useMemo(
+    () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
+    [sortBySuit]
+  );
+  const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
+
+  const { data: game } = useGetGame(gameId);
+  const { data: round, refetch: refetchRound } = useGetRound(gameId);
+  const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
+  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
+  const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
+
+  const { specialCards } = useCurrentSpecialCards();
+
+  const lsUser = localStorage.getItem(LOGGED_USER);
+  const username = lsUser;
+
+  const loadingStates = deck.size === 0 || round.levelScore === 0;
+
+  const apiScore = round?.score ?? 0;
+  const apiHandsLeft = round?.hands;
+  const apiDiscardsLeft = round?.discards;
+
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
+
+  //effects
+
+  useEffect(() => {
+    if (apiHand?.length > 0 && hand.length === 0) {
+      setHand(apiHand);
+    }
+  }, [apiHand]);
+
+  useEffect(() => {
+    if (!score && apiScore > 0) {
+      setScore(apiScore);
+    }
+    if (apiHandsLeft > 0) {
+      setHandsLeft(apiHandsLeft);
+    }
+    if (apiDiscardsLeft > 0) {
+      setDiscardsLeft(apiDiscardsLeft);
+    }
+  }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
+
+  const setMultiAndPoints = (play: Plays) => {
+    const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
+    setMulti(playerPokerHand?.multi ?? 0);
+    setPoints(playerPokerHand?.points ?? 0);
+  };
+
+  useEffect(() => {
+    if (preSelectedCards.length > 0) {
+      let play = checkHand(
+        specialCards,
+        hand,
+        preSelectedCards,
+        preSelectedModifiers
+      );
+      setPreSelectedPlay(play);
+      if (plays?.length == 0) {
+        refetchPlays().then(() => {
+          setMultiAndPoints(play);
+        });
+      } else {
+        setMultiAndPoints(play);
+      }
+    } else {
+      setPreSelectedPlay(Plays.NONE);
+      resetMultiPoints();
+    }
+  }, [preSelectedCards, preSelectedModifiers]);
+
+  //make sure data is legit
+
+  useEffect(() => {
+    if (round.levelScore === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchRound().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [round]);
+
+  useEffect(() => {
+    if (deck.size === 0) {
+      setGameLoading(true);
+      setTimeout(() => {
+        refetchDeckData().then(() => {
+          setGameLoading(false);
+        });
+      }, 500);
+    }
+  }, [deck]);
+
+  return {
+    gameId,
+    setGameId,
+    preSelectedPlay,
+    setPreSelectedPlay,
+    points,
+    setPoints,
+    multi,
+    setMulti,
+    gameLoading,
+    setGameLoading,
+    preSelectionLocked,
+    setPreSelectionLocked,
+    discardAnimation,
+    setDiscardAnimation,
+    playAnimation,
+    setPlayAnimation,
+    error,
+    setError,
+    preSelectedCards,
+    setPreSelectedCards,
+    preSelectedModifiers,
+    setPreSelectedModifiers,
+    hand,
+    setHand,
+    roundRewards,
+    setRoundRewards,
+    sortBySuit,
+    setSortBySuit,
+    score,
+    setScore,
+    handsLeft,
+    setHandsLeft,
+    discardsLeft,
+    setDiscardsLeft,
+    game,
+    round,
+    refetchRound,
+    apiHand,
+    plays,
+    refetchPlays,
+    deck,
+    refetchDeckData,
+    sortBy,
+    sortedHand,
+    username,
+    loadingStates,
+  };
+};

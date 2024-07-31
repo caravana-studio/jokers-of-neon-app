@@ -1,31 +1,21 @@
 import {
   PropsWithChildren,
   createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+  useContext
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.tsx";
+import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
-import { gameExists } from "../dojo/utils/getGame.tsx";
+import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
-import { useGetCurrentHand } from "../queries/useGetCurrentHand.ts";
-import { useGetDeck } from "../queries/useGetDeck";
-import { useGetGame } from "../queries/useGetGame.ts";
-import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
-import { useGetRound } from "../queries/useGetRound.ts";
+import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { useGameState } from "../state/useGameState.tsx";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
-import { PlayEvents } from "../types/ScoreData.ts";
-import { changeCardSuit } from "../utils/changeCardSuit.ts";
-import { checkHand } from "../utils/checkHand";
-import { sortCards } from "../utils/sortCards.ts";
-import { useCardAnimations } from "./CardAnimationsProvider";
+import { PlayEvents } from "../types/ScoreData";
+import { changeCardSuit } from "../utils/changeCardSuit";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -105,52 +95,9 @@ const GameContext = createContext<IGameContext>({
 export const useGameContext = () => useContext(GameContext);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  //state
-  const [gameId, setGameId] = useState<number>(getLSGameId());
-  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
-  const [points, setPoints] = useState(0);
-  const [multi, setMulti] = useState(0);
-  const [gameLoading, setGameLoading] = useState(true);
-  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
-  const [discardAnimation, setDiscardAnimation] = useState(false);
-  const [playAnimation, setPlayAnimation] = useState(false);
-  const [error, setError] = useState(false);
-  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
-  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
-    [key: number]: number[];
-  }>({});
-  const [hand, setHand] = useState<Card[]>([]);
-  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
-    undefined
-  );
-  const [sortBySuit, setSortBySuit] = useState(
-    !!localStorage.getItem(SORT_BY_SUIT)
-  );
-  const [score, setScore] = useState(0);
-  const [handsLeft, setHandsLeft] = useState(4);
-  const [discardsLeft, setDiscardsLeft] = useState(4);
-  const { data: game } = useGetGame(gameId);
+  const state = useGameState();
 
-  const sortBy: SortBy = useMemo(
-    () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
-    [sortBySuit]
-  );
-
-  const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
-
-  //hooks
-  const { data: round, refetch: refetchRound } = useGetRound(gameId);
-
-  const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
-
-  const apiScore = round?.score ?? 0;
-  const apiHandsLeft = round?.hands;
-  const apiDiscardsLeft = round?.discards;
-
-  const {specialCards} = useCurrentSpecialCards();
-
-  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
-
+  const navigate = useNavigate();
   const {
     setup: {
       masterAccount,
@@ -166,26 +113,52 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
-  const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
-
-  const navigate = useNavigate();
-
   const { setAnimatedCard } = useCardAnimations();
 
-  //variables
-  const lsUser = localStorage.getItem(LOGGED_USER);
-  const username = lsUser;
+  const {
+    gameId,
+    setGameId,
+    setPreSelectedPlay,
+    preSelectedCards,
+    setPreSelectedCards,
+    hand,
+    setHand,
+    points,
+    setPoints,
+    multi,
+    setMulti,
+    roundRewards,
+    setRoundRewards,
+    preSelectedModifiers,
+    setPreSelectedModifiers,
+    preSelectionLocked,
+    setPreSelectionLocked,
+    gameLoading,
+    setGameLoading,
+    discardAnimation,
+    setDiscardAnimation,
+    playAnimation,
+    setPlayAnimation,
+    error,
+    setError,
+    score,
+    setScore,
+    handsLeft,
+    setHandsLeft,
+    discardsLeft,
+    setDiscardsLeft,
+    game,
+    plays,
+    refetchPlays,
+    refetchRound,
+    refetchDeckData,
+    sortBySuit,
+    setSortBySuit,
+    sortBy,
+    sortedHand,
+    username,
+  } = state;
 
-  //functions
-  const toggleSortBy = () => {
-    if (sortBySuit) {
-      localStorage.removeItem(SORT_BY_SUIT);
-      setSortBySuit(false);
-    } else {
-      setSortBySuit(true);
-      localStorage.setItem(SORT_BY_SUIT, "true");
-    }
-  };
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -195,38 +168,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setDiscardsLeft(game?.max_discard ?? 1);
   };
 
-  const onShopSkip = () => {
-    resetLevel();
-  };
-
-  const addModifier = (cardIdx: number, modifierIdx: number) => {
-    const modifiers = preSelectedModifiers[cardIdx] ?? [];
-    if (modifiers.length < 2) {
-      const newModifiers = [...modifiers, modifierIdx];
-      setPreSelectedModifiers((prev) => {
-        return {
-          ...prev,
-          [cardIdx]: newModifiers,
-        };
-      });
+  const toggleSortBy = () => {
+    if (sortBySuit) {
+      localStorage.removeItem(SORT_BY_SUIT);
+      setSortBySuit(false);
+    } else {
+      setSortBySuit(true);
+      localStorage.setItem(SORT_BY_SUIT, "true");
     }
-  };
-
-  const refetch = () => {
-    refetchDeckData();
-  };
-
-  const clearPreSelection = () => {
-    if (!preSelectionLocked && handsLeft > 0) {
-      resetMultiPoints();
-      setPreSelectedCards([]);
-      setPreSelectedModifiers({});
-    }
-  };
-
-  const resetMultiPoints = () => {
-    setPoints(0);
-    setMulti(0);
   };
 
   const executeCreateGame = () => {
@@ -252,6 +201,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
       });
     }
+  };
+
+  const replaceCards = (cards: Card[]) => {
+    const newHand = hand?.map((card) => {
+      const newCard = cards.find((c) => c.idx === card.idx);
+      if (newCard) {
+        return newCard;
+      } else {
+        return card;
+      }
+    });
+    setHand(newHand);
   };
 
   const animatePlay = (playEvents: PlayEvents) => {
@@ -401,7 +362,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
         setPlayAnimation(false);
         clearPreSelection();
-        refetch();
+        refetchDeckData();
         handsLeft > 0 && setPreSelectionLocked(false);
 
         if (playEvents.gameOver) {
@@ -443,17 +404,30 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
   };
 
-  const cardIsPreselected = (cardIndex: number) => {
-    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
+  const clearPreSelection = () => {
+    if (!preSelectionLocked && handsLeft > 0) {
+      resetMultiPoints();
+      setPreSelectedCards([]);
+      setPreSelectedModifiers({});
+    }
   };
 
-  const getModifiers = (preSelectedCardIndex: number): Card[] => {
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
+
+  const getModifiers = (preSelectedCardIndex: number) => {
     const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
     return (
       modifierIndexes?.map((modifierIdx) => {
         return hand.find((c) => c.idx === modifierIdx)!;
       }) ?? []
     );
+  };
+
+  const cardIsPreselected = (cardIndex: number) => {
+    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
   };
 
   const unPreSelectCard = (cardIndex: number) => {
@@ -484,18 +458,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const replaceCards = (cards: Card[]) => {
-    const newHand = hand?.map((card) => {
-      const newCard = cards.find((c) => c.idx === card.idx);
-      if (newCard) {
-        return newCard;
-      } else {
-        return card;
-      }
-    });
-    setHand(newHand);
-  };
-
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
@@ -508,7 +470,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       if (response.success) {
         setDiscardsLeft((prev) => prev - 1);
         replaceCards(response.cards);
-        refetch();
+        refetchDeckData();
       }
       setPreSelectionLocked(false);
       clearPreSelection();
@@ -541,7 +503,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardEffectCard(account.account, gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
-          refetch();
+          refetchDeckData();
           replaceCards(response.cards);
         } else {
           rollback();
@@ -555,15 +517,28 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
   };
 
+  const addModifier = (cardIdx: number, modifierIdx: number) => {
+    const modifiers = preSelectedModifiers[cardIdx] ?? [];
+    if (modifiers.length < 2) {
+      const newModifiers = [...modifiers, modifierIdx];
+      setPreSelectedModifiers((prev) => {
+        return {
+          ...prev,
+          [cardIdx]: newModifiers,
+        };
+      });
+    }
+  };
+
+  const onShopSkip = () => {
+    resetLevel();
+  };
+
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
     return discardSpecialCard(account.account, gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
-  };
-
-  const cleanGameId = () => {
-    setGameId(0);
   };
 
   const checkOrCreateGame = () => {
@@ -576,118 +551,30 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  //effects
+  const cleanGameId = () => {
+    setGameId(0);
+  };
 
-  useEffect(() => {
-    if (apiHand?.length > 0 && hand.length === 0) {
-      setHand(apiHand);
-    }
-  }, [apiHand]);
-
-  useEffect(() => {
-    if (!score && apiScore > 0) {
-      setScore(apiScore);
-    }
-    if (apiHandsLeft > 0) {
-      setHandsLeft(apiHandsLeft);
-    }
-    if (apiDiscardsLeft > 0) {
-      setDiscardsLeft(apiDiscardsLeft);
-    }
-  }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
-
-  const setMultiAndPoints = (play: Plays) => {
-    const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
-        setMulti(playerPokerHand?.multi ?? 0);
-        setPoints(playerPokerHand?.points ?? 0);
+  const actions = {
+    setPreSelectedCards,
+    play: onPlayClick,
+    setHand,
+    getModifiers,
+    togglePreselected,
+    discard: onDiscardClick,
+    discardEffectCard: onDiscardEffectCard,
+    clearPreSelection,
+    addModifier,
+    toggleSortBy,
+    onShopSkip,
+    discardSpecialCard: onDiscardSpecialCard,
+    checkOrCreateGame,
+    restartGame: cleanGameId,
+    executeCreateGame,
   }
 
-  useEffect(() => {
-    if (preSelectedCards.length > 0) {
-      let play = checkHand(
-        specialCards,
-        hand,
-        preSelectedCards,
-        preSelectedModifiers
-      );
-      setPreSelectedPlay(play);
-      if (plays?.length == 0) {
-        refetchPlays().then(() => {
-          setMultiAndPoints(play);
-        })
-      } else {
-        setMultiAndPoints(play);
-      }
-    } else {
-      setPreSelectedPlay(Plays.NONE);
-      resetMultiPoints();
-    }
-  }, [preSelectedCards, preSelectedModifiers]);
-
-  //make sure data is legit
-
-  useEffect(() => {
-    if (round.levelScore === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchRound().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [round]);
-
-  useEffect(() => {
-    if (deck.size === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchDeckData().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [deck]);
-
-  const loadingStates = deck.size === 0 || round.levelScore === 0;
-
   return (
-    <GameContext.Provider
-      value={{
-        gameId,
-        preSelectedPlay,
-        points,
-        multi,
-        executeCreateGame,
-        gameLoading,
-        preSelectedCards,
-        setPreSelectedCards,
-        play: onPlayClick,
-        hand: sortedHand,
-        setHand,
-        getModifiers,
-        togglePreselected,
-        discardAnimation,
-        playAnimation,
-        discard: onDiscardClick,
-        discardEffectCard: onDiscardEffectCard,
-        error,
-        clearPreSelection,
-        loadingStates,
-        preSelectedModifiers,
-        addModifier,
-        roundRewards,
-        sortBy,
-        toggleSortBy,
-        onShopSkip,
-        discardSpecialCard: onDiscardSpecialCard,
-        checkOrCreateGame,
-        restartGame: cleanGameId,
-        preSelectionLocked,
-        score,
-        handsLeft,
-        discardsLeft,
-      }}
-    >
+    <GameContext.Provider value={{ ...state, ...actions }}>
       {children}
     </GameContext.Provider>
   );
