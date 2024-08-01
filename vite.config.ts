@@ -8,29 +8,36 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
     plugins: [react(), wasm(), topLevelAwait(),  VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.svg', 'robots.txt', "apple-touc-icon.png", 'masked-icon.png'],
       manifest: {
         name: 'Jokers of Neon',
         short_name: 'JoN',
-        description: 'The primary mission of Jokers of Neon is to be a strategic deck-building game where players construct their decks based on their strategies to accumulate points and progress through levels.',
+        description: 'BUIDL YOUR DECK, RULE THE GAME',
         theme_color: '#ffffff',
-        icons: [
-          {
-            src: 'icon.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'icon.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'icon.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
+        icons:[{
+          src: '/android-chrome-192x192.png',
+          sizes:'192x192',
+          type:'image/png',
+          purpose:'favicon'
+        },
+        {
+          src:'/android-chrome-512x512.png',
+          sizes:'512x512',
+          type:'image/png',
+          purpose:'favicon'
+        },
+        {
+          src: '/apple-touch-icon.png',
+          sizes:'180x180',
+          type:'image/png',
+          purpose:'apple touch icon',
+        },
+        {
+          src: '/maskable_icon.png',
+          sizes:'512x512',
+          type:'image/png',
+          purpose:'any maskable',
+        }
         ],
         background_color: "#e8eac2",
         display: "standalone",
