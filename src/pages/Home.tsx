@@ -6,6 +6,7 @@ import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
+import InstallPWA from '../utils/installPwa';
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -92,6 +93,7 @@ export const Home = () => {
               >
                 PLAY DEMO
               </Button>
+              <InstallPWA />
             </Flex>
           </Flex>
         )}
