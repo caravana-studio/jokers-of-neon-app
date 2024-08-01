@@ -31,7 +31,6 @@ export const PreselectedCardsSection = () => {
       <DiscardButton />
 
       <Box
-        gap={{ base: 2, md: 8 }}
         sx={{
           width: "100%",
           display: "flex",
