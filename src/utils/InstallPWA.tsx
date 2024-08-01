@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 // Define the BeforeInstallPromptEvent type if it's not available
 declare global {
   interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
-    userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+    userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
   }
 }
 
 const InstallPWA: React.FC = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (event: Event) => {
       // Cast the event as BeforeInstallPromptEvent
+      alert("beforeinstallprompt");
       const evt = event as BeforeInstallPromptEvent;
       evt.preventDefault();
       setDeferredPrompt(evt);
       setIsVisible(true); // Show your install button or banner here
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+    window.addEventListener(
+      "beforeinstallprompt",
+      handleBeforeInstallPrompt as EventListener
+    );
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt as EventListener
+      );
     };
   }, []);
 
   const handleInstallClick = async () => {
+    alert("handleinstallclick");
     if (!deferredPrompt) return;
 
     deferredPrompt.prompt();
@@ -40,11 +49,7 @@ const InstallPWA: React.FC = () => {
 
   return (
     <div>
-      {isVisible && (
-        <button onClick={handleInstallClick}>
-          Install App
-        </button>
-      )}
+      {isVisible && <button onClick={handleInstallClick}>Install App</button>}
     </div>
   );
 };
