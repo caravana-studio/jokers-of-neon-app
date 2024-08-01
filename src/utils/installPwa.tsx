@@ -1,8 +1,24 @@
 import { Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import PWAPrompt from 'react-ios-pwa-prompt';
 
 const InstallPWA: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false); // For PWAPrompt visibility
+
+  
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+    // Detect if it's a mobile device
+    if (/android/i.test(userAgent)) {
+      setIsAndroid(true);
+    } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+      setIsIOS(true);
+    }
+  }, [])
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -15,7 +31,7 @@ const InstallPWA: React.FC = () => {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
-  const handleInstallClick = () => {
+  const handleInstallAndroid = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult: any) => {
@@ -29,12 +45,27 @@ const InstallPWA: React.FC = () => {
     }
   };
 
+  const handleInstallIOS = () => {
+    setShowPrompt(true);
+  };
+
   return (  
-    <Button
-    onClick={handleInstallClick}
-    >
-    INSTALL APP
-    </Button>
+    <>
+    {isAndroid && (
+        <Button onClick={handleInstallAndroid}>
+          INSTALL APP
+        </Button>
+      )}
+      {isIOS && (
+        <>
+          <Button onClick={handleInstallIOS}>
+            INSTALL APP
+          </Button>
+          {showPrompt && <PWAPrompt isShown={true} />}
+        </>
+      )}
+    </>
+    
   );
 };
 
