@@ -9,7 +9,8 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0xf41e582d141adc7bc20d78a8a8b26c6d262114e72361a03881ccf9193fc97c"
+    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0xf41e582d141adc7bc20d78a8a8b26c6d262114e72361a03881ccf9193fc97c",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/icon.png"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.1.1",
@@ -73,6 +74,7 @@
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
+    "@vite-pwa/assets-generator": "^0.2.4",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",

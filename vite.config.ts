@@ -7,6 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 //https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(), wasm(), topLevelAwait(),  VitePWA({
+      injectRegister: 'script',
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', "apple-touc-icon.png", 'masked-icon.png'],
       manifest: {
@@ -14,30 +15,28 @@ export default defineConfig({
         short_name: 'JoN',
         description: 'BUIDL YOUR DECK, RULE THE GAME',
         theme_color: '#ffffff',
-        icons:[{
-          src: '/android-chrome-192x192.png',
-          sizes:'192x192',
-          type:'image/png',
-          purpose:'favicon'
-        },
-        {
-          src:'/android-chrome-512x512.png',
-          sizes:'512x512',
-          type:'image/png',
-          purpose:'favicon'
-        },
-        {
-          src: '/apple-touch-icon.png',
-          sizes:'180x180',
-          type:'image/png',
-          purpose:'apple touch icon',
-        },
-        {
-          src: '/maskable_icon.png',
-          sizes:'512x512',
-          type:'image/png',
-          purpose:'any maskable',
-        }
+        "icons": [
+          {
+            "src": "pwa-64x64.png",
+            "sizes": "64x64",
+            "type": "image/png"
+          },
+          {
+            "src": "pwa-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          },
+          {
+            "src": "pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          },
+          {
+            "src": "maskable-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+          }
         ],
         background_color: "#e8eac2",
         display: "standalone",
