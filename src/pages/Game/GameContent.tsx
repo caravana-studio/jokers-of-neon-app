@@ -149,7 +149,7 @@ export const GameContent = () => {
           sx={{
             position: "fixed",
             bottom: 14,
-            left: 16,
+            left: 20,
             zIndex: 1000,
           }}
         >
@@ -159,7 +159,7 @@ export const GameContent = () => {
           sx={{
             position: "fixed",
             bottom: 14,
-            right: 16,
+            right: 20,
           }}
         >
           <GameDeck />
