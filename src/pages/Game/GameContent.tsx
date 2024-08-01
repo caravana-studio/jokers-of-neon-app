@@ -112,7 +112,7 @@ export const GameContent = () => {
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image src='/borders/top.png' height="8%" width="100%" object-fit/>
-          <Box sx={{ height: "84%", width: "100%"}} py={4} px={20}>
+          <Box sx={{ height: "84%", width: "100%"}} py={8} px={20}>
             <Box sx={{ height: "20%", width: "100%"}}>
               <TopSection />
             </Box>
@@ -130,7 +130,7 @@ export const GameContent = () => {
                 <PreselectedCardsSection />
               </Box>
               <Box
-                pb={{ base: 2, md: "7vh" }}
+                pb={{ base: 2, md: "5vh" }}
                 mr={{ base: 10, md: 20 }}
                 sx={{
                   display: "flex",
