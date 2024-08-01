@@ -51,7 +51,7 @@ const InstallPWA: React.FC = () => {
 
   return (  
     <>
-    {isAndroid && (
+    {!isIOS && (
         <Button onClick={handleInstallAndroid}>
           INSTALL APP
         </Button>

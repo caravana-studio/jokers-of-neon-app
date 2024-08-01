@@ -43,6 +43,23 @@ export default defineConfig({
         scope: "/",
         start_url: "/",
         orientation: "portrait",
+        screenshots: [
+          {
+           "src": "pwa-512x512.png",
+            "sizes": "512x512",
+            "type": "image/gif",
+            "form_factor": "wide",
+            "label": "Icon wide"
+          },
+          {
+            "src": "pwa-512x512.png",
+             "sizes": "512x512",
+             "type": "image/gif",
+             "form_factor": "narrow",
+             "label": "Icon wide"
+           },
+        ],
+          
       },
       workbox: {
         clientsClaim: true,
