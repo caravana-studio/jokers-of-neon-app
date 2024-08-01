@@ -148,8 +148,8 @@ export const GameContent = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 7,
-            left: 10,
+            bottom: 14,
+            left: 16,
             zIndex: 1000,
           }}
         >
@@ -158,8 +158,8 @@ export const GameContent = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 7,
-            right: 10,
+            bottom: 14,
+            right: 16,
           }}
         >
           <GameDeck />
