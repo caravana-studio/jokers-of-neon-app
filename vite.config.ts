@@ -7,12 +7,12 @@ import { VitePWA } from 'vite-plugin-pwa'
 //https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(), wasm(), topLevelAwait(),  VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'My PWA App',
-        short_name: 'PWA',
-        description: 'My Progressive Web App using Vite and React',
+        name: 'Jokers of Neon',
+        short_name: 'JoN',
+        description: 'The primary mission of Jokers of Neon is to be a strategic deck-building game where players construct their decks based on their strategies to accumulate points and progress through levels.',
         theme_color: '#ffffff',
         icons: [
           {
