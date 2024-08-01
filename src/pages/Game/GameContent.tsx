@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -107,15 +107,18 @@ export const GameContent = () => {
           width: "100%",
         }}
       >
+
         {showTutorial && <TutorialModal onClose={() => {setShowTutorial(false)}} />}
-        <Box sx={{ width: "100%", height: "100%" }} px={8}>
-          <Box sx={{ height: "30%", width: "100%" }}>
+
+        <Box sx={{ width: "100%", height: "100%" }} px={8} py={2}>
+          <Image src='/borders/top.png' height="8%" width="100%" object-fit/>
+          <Box sx={{ height: "24.7%", width: "100%"}}>
             <TopSection />
           </Box>
           <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
             <Box
               sx={{
-                height: "40%",
+                height: "34.7%",
                 width: "100%",
                 display: "flex",
                 flexDirection: "row",
@@ -130,7 +133,7 @@ export const GameContent = () => {
               mr={{ base: 10, md: 20 }}
               sx={{
                 display: "flex",
-                height: " 30%",
+                height: "24.7%",
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
@@ -138,6 +141,7 @@ export const GameContent = () => {
               <HandSection />
             </Box>
           </DndContext>
+          <Image src='/borders/bottom.png'  height="8%" width="100%" object-fit/>
         </Box>
         <Box
           sx={{
@@ -157,7 +161,7 @@ export const GameContent = () => {
           }}
         >
           <GameDeck />
-        </Box>
+        </Box> 
       </Box>
     </Box>
   );
