@@ -42,7 +42,7 @@ export const PreselectedCardsSection = () => {
         <Flex
           justifyContent="center"
           alignItems={"center"}
-          height="230px"
+          height="190px"
           background={"url(grid.png)"}
           width="100%"
         >

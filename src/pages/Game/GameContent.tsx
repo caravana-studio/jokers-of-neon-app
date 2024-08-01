@@ -110,37 +110,39 @@ export const GameContent = () => {
 
         {showTutorial && <TutorialModal onClose={() => {setShowTutorial(false)}} />}
 
-        <Box sx={{ width: "100%", height: "100%" }} px={8} py={2}>
+        <Box sx={{ width: "100%", height: "100%" }}>
           <Image src='/borders/top.png' height="8%" width="100%" object-fit/>
-          <Box sx={{ height: "24.7%", width: "100%"}}>
-            <TopSection />
+          <Box sx={{ height: "84%", width: "100%"}} py={8} px={20}>
+            <Box sx={{ height: "20%", width: "100%"}}>
+              <TopSection />
+            </Box>
+            <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
+              <Box
+                sx={{
+                  height: "60%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <PreselectedCardsSection />
+              </Box>
+              <Box
+                pb={{ base: 2, md: "5vh" }}
+                mr={{ base: 10, md: 20 }}
+                sx={{
+                  display: "flex",
+                  height: "30%",
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                }}
+              >
+                <HandSection />
+              </Box>
+            </DndContext>
           </Box>
-          <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
-            <Box
-              sx={{
-                height: "34.7%",
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <PreselectedCardsSection />
-            </Box>
-            <Box
-              pb={{ base: 2, md: "7vh" }}
-              mr={{ base: 10, md: 20 }}
-              sx={{
-                display: "flex",
-                height: "24.7%",
-                alignItems: "flex-end",
-                justifyContent: "center",
-              }}
-            >
-              <HandSection />
-            </Box>
-          </DndContext>
           <Image src='/borders/bottom.png'  height="8%" width="100%" object-fit/>
         </Box>
         <Box
