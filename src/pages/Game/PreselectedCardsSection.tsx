@@ -41,9 +41,9 @@ export const PreselectedCardsSection = () => {
         <Flex
           justifyContent="center"
           alignItems={"center"}
-          height="190px"
+          height="188px"
           background={"url(grid.png)"}
-          width="100%"
+          width="90%"
         >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
