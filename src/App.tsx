@@ -34,8 +34,8 @@ function App() {
   return (
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
-      <InstallPWA />
-      {isIOS && <PWAPrompt isShown={true} />}
+      
+      {/* {isIOS && <PWAPrompt isShown={true} />} */}
         <GameProvider>
           <Routes>
             <Route path="/" element={<Home />} />

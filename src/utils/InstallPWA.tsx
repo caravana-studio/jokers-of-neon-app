@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 // Define the BeforeInstallPromptEvent type if it's not available
@@ -49,7 +50,7 @@ const InstallPWA: React.FC = () => {
 
   return (
     <div>
-      {isVisible && <button onClick={handleInstallClick}>Install App</button>}
+      {isVisible && <Button onClick={handleInstallClick}>Install App</Button>}
     </div>
   );
 };
