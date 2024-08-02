@@ -466,9 +466,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       preSelectedModifiers
     ).then((response) => {
       if (response.success) {
-        setDiscardsLeft((prev) => prev - 1);
-        replaceCards(response.cards);
-        refetchDeckData();
+        if (response.gameOver) {
+          setTimeout(() => {
+            navigate("/gameover");
+          }, 1000);
+        } else {
+          setDiscardsLeft((prev) => prev - 1);
+          replaceCards(response.cards);
+          refetchDeckData();
+        }
       }
       setPreSelectionLocked(false);
       clearPreSelection();
