@@ -1,5 +1,9 @@
 import { AccountInterface } from "starknet";
-import { CHECK_HAND_EVENT, GAME_ID_EVENT } from "../constants/dojoEventKeys";
+import {
+  CHECK_HAND_EVENT,
+  GAME_ID_EVENT,
+  GAME_OVER_EVENT,
+} from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
@@ -134,6 +138,9 @@ export function createSystemCalls(
         return {
           success: true,
           cards: getCardsFromEvents(tx.events),
+          gameOver: !!tx.events.find(
+            (event) => event.keys[0] === GAME_OVER_EVENT
+          ),
         };
       } else {
         return {
