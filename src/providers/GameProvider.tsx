@@ -1,8 +1,4 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useContext
-} from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
@@ -159,7 +155,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     username,
   } = state;
 
-
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
@@ -204,14 +199,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const replaceCards = (cards: Card[]) => {
-    const newHand = hand?.map((card) => {
-      const newCard = cards.find((c) => c.idx === card.idx);
-      if (newCard) {
-        return newCard;
-      } else {
-        return card;
-      }
-    });
+    const newHand = hand
+      ?.map((card) => {
+        const newCard = cards.find((c) => c.idx === card.idx);
+        if (newCard) {
+          return newCard;
+        } else {
+          return card;
+        }
+      })
+      // filter out null cards (represented by card_id 9999)
+      .filter((card) => card.card_id !== 9999);
     setHand(newHand);
   };
 
@@ -571,7 +569,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     checkOrCreateGame,
     restartGame: cleanGameId,
     executeCreateGame,
-  }
+  };
 
   return (
     <GameContext.Provider value={{ ...state, ...actions }}>
