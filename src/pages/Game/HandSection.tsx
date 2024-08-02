@@ -58,7 +58,7 @@ export const HandSection = () => {
           minWidth: `${CARD_WIDTH * 4}px`,
           maxWidth: `${CARD_WIDTH * 6.5}px`,
         }}
-        columns={8}
+        columns={hand.length}
       >
         {hand.map((card, index) => {
           const isPreselected = cardIsPreselected(card.idx);
@@ -68,8 +68,8 @@ export const HandSection = () => {
               w="100%"
               sx={{
                 transform: ` rotate(${
-                  (index - 3.5) * 3
-                }deg) translateY(${Math.abs(index - 3.5) * TRANSLATE_Y_PX}px)`,
+                  (index - hand.length / 2 + 0.5) * 3
+                }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
               }}
               onContextMenu={(e) => {
                 e.stopPropagation();
@@ -80,11 +80,7 @@ export const HandSection = () => {
             >
               {card.isModifier && !isPreselected && (
                 <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
-                  <MenuList
-                    textColor="black"
-                    minWidth="max-content"
-                    zIndex="7"
-                  >
+                  <MenuList textColor="black" minWidth="max-content" zIndex="7">
                     <MenuItem
                       onClick={(e) => {
                         e.stopPropagation();
