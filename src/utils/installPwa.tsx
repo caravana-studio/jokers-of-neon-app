@@ -51,7 +51,7 @@ const InstallPWA: React.FC = () => {
 
   return (  
     <>
-    {!isIOS && (
+    {isAndroid && (
         <Button onClick={handleInstallAndroid}>
           INSTALL APP
         </Button>
@@ -64,7 +64,7 @@ const InstallPWA: React.FC = () => {
           {showPrompt && <PWAPrompt isShown={true} onClose={() => setShowPrompt(false)}
           copyTitle={"Install Jokers of Neon App"}
           copyDescription={"For the best experience with Jokers of Neon, install the app to enjoy a more immersive and user-friendly interface."}
-          appIconPath={"public/icon.png"}
+          appIconPath={"pwa-192x192.png"}
           />}
           
         </>
