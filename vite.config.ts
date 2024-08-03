@@ -38,6 +38,7 @@ export default defineConfig({
             "purpose": "maskable"
           }
         ],
+        prefer_related_applications: false,
         background_color: "#e8eac2",
         display: "standalone",
         scope: "/",
