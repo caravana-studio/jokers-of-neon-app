@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: 'Jokers of Neon',
         short_name: 'JoN',
-        description: 'BUIDL YOUR DECK, RULE THE GAME',
+        description: '🃏 BUIDL your deck, rule the game 🔥',
         theme_color: '#ffffff',
         "icons": [
           {
@@ -32,7 +32,7 @@ export default defineConfig({
             "type": "image/png"
           },
           {
-            "src": "maskable-icon-512x512.png",
+            "src": "pwa-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
@@ -46,18 +46,18 @@ export default defineConfig({
         orientation: "portrait",
         screenshots: [
           {
-           "src": "pwa-512x512.png",
-            "sizes": "512x512",
+           "src": "JoN-PopUp.png",
+            "sizes": "739x338",
             "type": "image/gif",
             "form_factor": "wide",
             "label": "Icon wide"
           },
           {
-            "src": "pwa-512x512.png",
-             "sizes": "512x512",
+            "src": "JoN-Mobile.png",
+             "sizes": "350x634",
              "type": "image/gif",
              "form_factor": "narrow",
-             "label": "Icon wide"
+             "label": "Icon mobile"
            },
         ],
           

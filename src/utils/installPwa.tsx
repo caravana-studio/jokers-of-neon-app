@@ -6,47 +6,16 @@ import { usePWAInstall } from "react-use-pwa-install";
 const InstallPWA: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isIOS, setIsIOS] = useState(false);
-  const [isAndroid, setIsAndroid] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false); // For PWAPrompt visibility
   const install = usePWAInstall();
 
-  
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
 
-    // Detect if it's a mobile device
-    if (/android/i.test(userAgent)) {
-      setIsAndroid(true);
-    } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+    if (/iPad|iPhone|iPod/.test(userAgent)) {
       setIsIOS(true);
     }
   }, [])
-
-  // useEffect(() => {
-  //   const handler = (e: any) => {
-  //     e.preventDefault();
-  //     setDeferredPrompt(e);
-  //   };
-
-  //   window.addEventListener('beforeinstallprompt', handler);
-
-  //   return () => window.removeEventListener('beforeinstallprompt', handler);
-  // }, []);
-
-  const handleInstallAndroid = () => {
-    console.log('Click install android');
-    // if (deferredPrompt) {
-    //   deferredPrompt.prompt();
-    //   deferredPrompt.userChoice.then((choiceResult: any) => {
-    //     if (choiceResult.outcome === 'accepted') {
-    //       console.log('User accepted the install prompt');
-    //     } else {
-    //       console.log('User dismissed the install prompt');
-    //     }
-    //     setDeferredPrompt(null);
-    //   });
-    // }
-  };
 
   const handleInstallIOS = () => {
     setShowPrompt(true);
@@ -69,7 +38,6 @@ const InstallPWA: React.FC = () => {
           copyDescription={"For the best experience with Jokers of Neon, install the app to enjoy a more immersive and user-friendly interface."}
           appIconPath={"pwa-192x192.png"}
           />}
-          
         </>
       )}
     </>
