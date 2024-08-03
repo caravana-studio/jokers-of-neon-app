@@ -130,7 +130,7 @@ export const GameContent = () => {
                 <PreselectedCardsSection />
               </Box>
               <Box
-                pb={{ base: 2, md: "5vh" }}
+                pb={{ base: 2, md: "2vh" }}
                 mr={{ base: 10, md: 20 }}
                 sx={{
                   display: "flex",
