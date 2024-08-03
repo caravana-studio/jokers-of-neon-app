@@ -1,12 +1,14 @@
 import { Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import PWAPrompt from 'react-ios-pwa-prompt';
+import { usePWAInstall } from "react-use-pwa-install";
 
 const InstallPWA: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false); // For PWAPrompt visibility
+  const install = usePWAInstall();
 
   
   useEffect(() => {
@@ -52,8 +54,8 @@ const InstallPWA: React.FC = () => {
 
   return (  
     <>
-    {!isIOS && (
-        <Button onClick={handleInstallAndroid}>
+    {install && (
+        <Button onClick={install}>
           INSTALL APP
         </Button>
       )}
