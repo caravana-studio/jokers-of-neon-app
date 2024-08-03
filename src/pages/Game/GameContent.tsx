@@ -143,7 +143,7 @@ export const GameContent = () => {
               </Box>
             </DndContext>
           </Box>
-          <Image src='/borders/bottom.png'  height="8%" width="100%" object-fit/>
+          <Image src='/borders/bottom.png' maxHeight="70px" height="8%" width="100%" object-fit position='fixed' bottom={0} />
         </Box>
         <Box
           sx={{
