@@ -112,7 +112,7 @@ export const GameContent = () => {
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image src='/borders/top.png' height="8%" width="100%" maxHeight="70px" object-fit position='fixed' top={0} />
-          <Box sx={{ height: "84%", width: "100%"}} py={8} px={20}>
+          <Box sx={{ height: "100%", width: "100%"}} pt={'90px'} pb={'120px'} px={20}>
             <Box sx={{ height: "20%", width: "100%"}}>
               <TopSection />
             </Box>
