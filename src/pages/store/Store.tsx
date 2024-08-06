@@ -9,19 +9,20 @@ import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
 import { TutorialModal } from "../../components/TutorialModal";
 import { SKIP_TUTORIAL } from "../../constants/localStorage";
+import { useGame } from "../../dojo/queries/useGame";
+import { useShop } from "../../dojo/queries/useShop";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { useGetGame } from "../../queries/useGetGame";
-import { useGetStore } from "../../queries/useGetStore";
 import { StoreCardsRow } from "./StoreCardsRow";
+import { useShopItems } from "../../dojo/queries/useShopItems";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
-  const { data: game } = useGetGame(gameId);
-  const { data: store } = useGetStore(gameId);
-  const state = game?.state;
+  const game = useGame();
+  const store = useShop();
+  const state = game.state;
   const { onShopSkip } = useGameContext();
 
   const rerollCost = store?.reroll_cost ?? 0;
@@ -45,7 +46,9 @@ export const Store = () => {
     account,
   } = useDojo();
 
-  const { cash, shopItems, reroll, locked } = useStore();
+  const { cash, reroll, locked } = useStore();
+
+  const shopItems = useShopItems();
 
   const navigate = useNavigate();
 
@@ -98,7 +101,7 @@ export const Store = () => {
         skipShop(account.account, gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
-            navigate("/redirect/demo");
+            navigate("/demo");
           } else {
             setLoading(false);
             showErrorToast("Error skipping shop");
@@ -121,6 +124,12 @@ export const Store = () => {
       navigate("/demo");
     }
   }, [state]);
+
+  useEffect(() => {
+    if (!game) {
+      navigate("/home");
+    }
+  }, []);
 
   if (loading) {
     return (

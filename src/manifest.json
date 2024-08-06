@@ -1000,8 +1000,8 @@
       }
     ],
     "address": "0x2ca1da89bb9f5d7207ea67a2e303335af9a8ad7ac3309b85f45776ba65b40e4",
-    "transaction_hash": null,
-    "block_number": null,
+    "transaction_hash": "0x6382709936c5ebbaa7e9628c67cf46081e13d64c1a6579e0abaa240387bd011",
+    "block_number": 3,
     "seed": "jokers_of_neon",
     "metadata": {
       "profile_name": "dev",
@@ -1020,8 +1020,8 @@
     {
       "kind": "DojoContract",
       "address": "0x578c09068f91ced19f22d8f794015bcd63a17fcb0fef2d4664ab1cf28011fae",
-      "class_hash": "0x26694c9fe9e54198427f9fd1e72c4b114c112afbe1eaeb4d5b17ade55f83359",
-      "original_class_hash": "0x26694c9fe9e54198427f9fd1e72c4b114c112afbe1eaeb4d5b17ade55f83359",
+      "class_hash": "0x2cd12f3cc1a4a319318d89c3a8b39072259483c718f412097fb893b80a3acd9",
+      "original_class_hash": "0x2cd12f3cc1a4a319318d89c3a8b39072259483c718f412097fb893b80a3acd9",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1183,8 +1183,8 @@
     {
       "kind": "DojoContract",
       "address": "0x2f4b1cc559ee571395ca0604fe4dbd00d92bf9837ce0d1ac2ca62a3b82095fa",
-      "class_hash": "0x5cfa106b2d0f80e7240d7dccccb876d0a78ac369c1864bfa8ed4dae1e74fd82",
-      "original_class_hash": "0x5cfa106b2d0f80e7240d7dccccb876d0a78ac369c1864bfa8ed4dae1e74fd82",
+      "class_hash": "0x6f2ee86659e2bcd7e06f2e773126cdd0dc79630921574ae4e0134efc1889721",
+      "original_class_hash": "0x6f2ee86659e2bcd7e06f2e773126cdd0dc79630921574ae4e0134efc1889721",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1517,8 +1517,8 @@
     {
       "kind": "DojoContract",
       "address": "0x14dcdd3fb91bcb403d2afac8ed5a7e918a85fdaa153ba5bf97a7772e58090bd",
-      "class_hash": "0x6169a27b231274fec7c2a07c5dcd6080db0cb846b4459594efe018ca17389d5",
-      "original_class_hash": "0x6169a27b231274fec7c2a07c5dcd6080db0cb846b4459594efe018ca17389d5",
+      "class_hash": "0x236bbdf621d010eaad57f88da38adba5fdd55748adfe11b88dce85455ec287a",
+      "original_class_hash": "0x236bbdf621d010eaad57f88da38adba5fdd55748adfe11b88dce85455ec287a",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1783,8 +1783,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x681cb044d98b7100c5ffe5a4a6ab68ac6c8609a6041ffab6475b74f62d67920",
-      "original_class_hash": "0x681cb044d98b7100c5ffe5a4a6ab68ac6c8609a6041ffab6475b74f62d67920",
+      "class_hash": "0x22fe33d172b0620694c027eaa8b903b29fa2bf7ae18b6500dbaac0bf287a56a",
+      "original_class_hash": "0x22fe33d172b0620694c027eaa8b903b29fa2bf7ae18b6500dbaac0bf287a56a",
       "abi": [
         {
           "type": "impl",
@@ -2201,6 +2201,10 @@
             },
             {
               "name": "Joker",
+              "type": "()"
+            },
+            {
+              "name": "NeonJoker",
               "type": "()"
             }
           ]

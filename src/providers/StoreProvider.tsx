@@ -5,11 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useGame } from "../dojo/queries/useGame";
+import { useShop } from "../dojo/queries/useShop";
 import { useDojo } from "../dojo/useDojo";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { useGetGame } from "../queries/useGetGame";
-import { ShopItems, useGetShopItems } from "../queries/useGetShopItems";
-import { useGetStore } from "../queries/useGetStore";
 import { useGameContext } from "./GameProvider";
 
 interface IStoreContext {
@@ -20,7 +19,6 @@ interface IStoreContext {
     price: number
   ) => Promise<boolean>;
   levelUpPlay: (item_id: number, price: number) => Promise<boolean>;
-  shopItems: ShopItems;
   reroll: () => Promise<boolean>;
   locked: boolean;
 }
@@ -36,12 +34,6 @@ const StoreContext = createContext<IStoreContext>({
   reroll: () => {
     return new Promise((resolve) => resolve(false));
   },
-  shopItems: {
-    specialCards: [],
-    modifierCards: [],
-    commonCards: [],
-    pokerHandItems: [],
-  },
   locked: false,
 });
 export const useStore = () => useContext(StoreContext);
@@ -49,12 +41,8 @@ export const useStore = () => useContext(StoreContext);
 export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { gameId } = useGameContext();
 
-  const { data: game } = useGetGame(gameId);
-  const round = game?.round ?? 0;
-
-  const { data: shopItems } = useGetShopItems(gameId, round);
-
-  const { data: store } = useGetStore(gameId);
+  const game = useGame();
+  const store = useShop();
 
   const rerollCost = store?.reroll_cost ?? 0;
   const [locked, setLocked] = useState(false);
@@ -140,7 +128,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         cash,
         buyCard,
         levelUpPlay,
-        shopItems,
         reroll,
         locked,
       }}

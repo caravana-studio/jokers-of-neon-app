@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useDojo } from "../dojo/useDojo";
@@ -35,7 +41,6 @@ interface IGameContext {
   discardEffectCard: (cardIdx: number) => void;
   error: boolean;
   clearPreSelection: () => void;
-  loadingStates: boolean;
   preSelectedModifiers: { [key: number]: number[] };
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
@@ -73,7 +78,6 @@ const GameContext = createContext<IGameContext>({
   discardEffectCard: () => {},
   error: false,
   clearPreSelection: () => {},
-  loadingStates: false,
   preSelectedModifiers: {},
   addModifier: (_, __) => {},
   roundRewards: undefined,
@@ -92,6 +96,7 @@ export const useGameContext = () => useContext(GameContext);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
+  const [lockRedirection, setLockRedirection] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -146,7 +151,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     game,
     plays,
     refetchPlays,
-    refetchRound,
     refetchDeckData,
     sortBySuit,
     setSortBySuit,
@@ -182,7 +186,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate("/redirect/demo");
+          navigate("/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
@@ -367,6 +371,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           console.log("GAME OVER");
           setTimeout(() => {
             navigate("/gameover");
+            setLockRedirection(false);
           }, 1000);
         } else if (playEvents.levelPassed && playEvents.detailEarned) {
           const { level } = playEvents.levelPassed;
@@ -375,11 +380,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               ...playEvents.detailEarned!,
               level: level,
             });
+            navigate("/rewards");
           }, 1000);
           setPreSelectionLocked(true);
         } else {
           playEvents.cards && replaceCards(playEvents.cards);
           setRoundRewards(undefined);
+          setLockRedirection(false);
         }
       }, ALL_CARDS_DURATION + 500);
     }
@@ -387,6 +394,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onPlayClick = () => {
     setPreSelectionLocked(true);
+    setLockRedirection(true);
     play(account.account, gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
@@ -398,6 +406,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
       })
       .catch(() => {
+        setLockRedirection(false);
         setPreSelectionLocked(false);
       });
   };
@@ -558,6 +567,22 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const cleanGameId = () => {
     setGameId(0);
   };
+
+  useEffect(() => {
+    if (!lockRedirection) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "AT_SHOP") {
+        console.log("redirecting to store");
+        navigate("/store");
+      }
+    }
+  }, [game?.state, lockRedirection]);
+
+  useEffect(() => {
+    // start with redirection unlocked
+    setLockRedirection(false);
+  }, []);
 
   const actions = {
     setPreSelectedCards,

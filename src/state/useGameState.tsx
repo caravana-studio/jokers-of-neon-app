@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
-import { useGetCurrentHand } from "../queries/useGetCurrentHand";
 import { useGetDeck } from "../queries/useGetDeck";
-import { useGetGame } from "../queries/useGetGame";
 import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
-import { useGetRound } from "../queries/useGetRound";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
+import { useGame } from "../dojo/queries/useGame";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -45,9 +45,9 @@ export const useGameState = () => {
   );
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
-  const { data: game } = useGetGame(gameId);
-  const { data: round, refetch: refetchRound } = useGetRound(gameId);
-  const { data: apiHand } = useGetCurrentHand(gameId, sortBy);
+  const game = useGame();
+  const round = useRound();
+  const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
@@ -56,11 +56,9 @@ export const useGameState = () => {
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
 
-  const loadingStates = deck.size === 0 || round.levelScore === 0;
-
-  const apiScore = round?.score ?? 0;
-  const apiHandsLeft = round?.hands;
-  const apiDiscardsLeft = round?.discards;
+  const dojoScore = round?.score ?? 0;
+  const dojoHandsLeft = round?.hands;
+  const dojoDiscardsLeft = round?.discards;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -70,22 +68,22 @@ export const useGameState = () => {
   //effects
 
   useEffect(() => {
-    if (apiHand?.length > 0 && hand.length === 0) {
-      setHand(apiHand);
+    if (dojoHand?.length > 0 && hand.length === 0) {
+      setHand(dojoHand);
     }
-  }, [apiHand]);
+  }, [dojoHand]);
 
   useEffect(() => {
-    if (!score && apiScore > 0) {
-      setScore(apiScore);
+    if (!score && dojoScore > 0) {
+      setScore(dojoScore);
     }
-    if (apiHandsLeft > 0) {
-      setHandsLeft(apiHandsLeft);
+    if (dojoHandsLeft > 0) {
+      setHandsLeft(dojoHandsLeft);
     }
-    if (apiDiscardsLeft > 0) {
-      setDiscardsLeft(apiDiscardsLeft);
+    if (dojoDiscardsLeft > 0) {
+      setDiscardsLeft(dojoDiscardsLeft);
     }
-  }, [apiScore, apiHandsLeft, apiDiscardsLeft]);
+  }, [dojoScore, dojoHandsLeft, dojoDiscardsLeft]);
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
@@ -114,30 +112,6 @@ export const useGameState = () => {
       resetMultiPoints();
     }
   }, [preSelectedCards, preSelectedModifiers]);
-
-  //make sure data is legit
-
-  useEffect(() => {
-    if (round.levelScore === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchRound().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [round]);
-
-  useEffect(() => {
-    if (deck.size === 0) {
-      setGameLoading(true);
-      setTimeout(() => {
-        refetchDeckData().then(() => {
-          setGameLoading(false);
-        });
-      }, 500);
-    }
-  }, [deck]);
 
   return {
     gameId,
@@ -176,8 +150,7 @@ export const useGameState = () => {
     setDiscardsLeft,
     game,
     round,
-    refetchRound,
-    apiHand,
+    apiHand: dojoHand,
     plays,
     refetchPlays,
     deck,
@@ -185,6 +158,5 @@ export const useGameState = () => {
     sortBy,
     sortedHand,
     username,
-    loadingStates,
   };
 };
