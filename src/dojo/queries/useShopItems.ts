@@ -44,6 +44,7 @@ const getCard = (
     BigInt(type),
   ]) as Entity;
   const card = getComponentValue(entity, entityId);
+  console.log("card", card);
   return (
     card && {
       ...card,
