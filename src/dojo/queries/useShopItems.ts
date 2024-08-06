@@ -52,6 +52,7 @@ const getCard = (
       isSpecial: card.item_type === CardTypes.SPECIAL,
       id: card.idx.toString(),
       idx: card.idx,
+      purchased: card.purchased,
       img: `${card.item_type === CardTypes.COMMON ? "" : "effect/"}${card.card_id}.png`,
     }
   );

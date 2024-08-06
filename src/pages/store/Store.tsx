@@ -11,12 +11,12 @@ import { TutorialModal } from "../../components/TutorialModal";
 import { SKIP_TUTORIAL } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useShop } from "../../dojo/queries/useShop";
+import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useDojo } from "../../dojo/useDojo";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreCardsRow } from "./StoreCardsRow";
-import { useShopItems } from "../../dojo/queries/useShopItems";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
@@ -49,6 +49,8 @@ export const Store = () => {
   const { cash, reroll, locked } = useStore();
 
   const shopItems = useShopItems();
+
+  console.log(shopItems);
 
   const navigate = useNavigate();
 
