@@ -6,6 +6,7 @@ import { GAME_ID, LOGGED_USER, SKIP_PWA_INSTALL } from "../constants/localStorag
 import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useEffect, useState } from "react";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -19,6 +20,15 @@ export const GameMenu = ({ onlySound = false, inStore = false, onTutorialButtonC
   const { executeCreateGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+    if (/iPad|iPhone|iPod/.test(userAgent)) {
+      setIsIOS(true);
+    }
+  }, [])
 
   const togglePlayPause = () => {
     toggleSound();
@@ -41,7 +51,7 @@ export const GameMenu = ({ onlySound = false, inStore = false, onTutorialButtonC
           <MenuItem onClick={onTutorialButtonClick}>
             See tutorial
           </MenuItem>
-          {onInstallPWAButtonClick && (
+          {onInstallPWAButtonClick && isIOS && (
               <MenuItem onClick={onInstallPWAButtonClick}>
                 See install Instructions
               </MenuItem>
