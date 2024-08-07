@@ -6,10 +6,11 @@ import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { preloadImages } from "../utils/preloadImages";
-import InstallPWA from '../utils/installPwa';
+import InstallPWAAndroid from '../utils/installPwaAndroid';
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
+  const [showInstallPWA, setShowInstallPWA] = useState(false);
 
   useEffect(() => {
     preloadImages()
@@ -85,15 +86,15 @@ export const Home = () => {
               >
                 SEE LEADERBOARD
               </Button>
+              {showInstallPWA &&(<InstallPWAAndroid onClose={() =>{setShowInstallPWA(false);}}/>)}
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  setShowInstallPWA(true);
                 }}
               >
                 PLAY DEMO
               </Button>
-              <InstallPWA />
             </Flex>
           </Flex>
         )}
