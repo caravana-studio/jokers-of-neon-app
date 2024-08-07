@@ -36,8 +36,6 @@ export const GameMenu = ({ onlySound = false, inStore = false, onTutorialButtonC
 
   return (
     <>
-      {/* {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />} */}
-      {/* {showInstallPWAIOS && <InstallPWAIOS onClose={() => setShowInstallPWAIOS(false)} />} */}
       <Menu>
         <MenuButton>
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
