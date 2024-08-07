@@ -147,7 +147,7 @@ export const GameContent = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu onTutorialButtonClick={()=>{setShowTutorial(true)}} onInstallPWAButtonClick={()=>{}}/>
+          <GameMenu onTutorialButtonClick={()=>{setShowTutorial(true)}} onInstallPWAButtonClick={undefined}/>
         </Box>
         <Box
           sx={{

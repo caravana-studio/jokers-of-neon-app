@@ -39,7 +39,7 @@ const InstallPromptModal: React.FC<InstallPromptModalProps> = ({ isOpen, onClose
               <Button colorScheme="blue" onClick={onInstall}>
                 Install app
               </Button>
-              <Button variant="outline" onClick={onPlayInBrowser}>
+              <Button variant="secondarySolid" onClick={onPlayInBrowser}>
                 Play on the browser
               </Button>
             </Flex>

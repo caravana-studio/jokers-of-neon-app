@@ -1,7 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER, SKIP_PWA_INSTALL } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
@@ -25,8 +24,6 @@ export const GameMenu = ({ onlySound = false, inStore = false, onTutorialButtonC
     toggleSound();
   };
 
-  const [showTutorial, setShowTutorial] = useState(false);
-
   return (
     <>
       {/* {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />} */}
@@ -44,9 +41,11 @@ export const GameMenu = ({ onlySound = false, inStore = false, onTutorialButtonC
           <MenuItem onClick={onTutorialButtonClick}>
             See tutorial
           </MenuItem>
-          <MenuItem onClick={onInstallPWAButtonClick}>
-            See install Instructions
-          </MenuItem>
+          {onInstallPWAButtonClick && (
+              <MenuItem onClick={onInstallPWAButtonClick}>
+                See install Instructions
+              </MenuItem>
+          )}
           <MenuItem onClick={togglePlayPause}>
             Turn sound {isPlaying ? "OFF" : "ON"}
           </MenuItem>
