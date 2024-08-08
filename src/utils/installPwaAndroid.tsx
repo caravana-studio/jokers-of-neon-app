@@ -15,12 +15,13 @@ const InstallPWAAndroid: React.FC<InstallPromptModalProps> = ({onClose}) => {
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isPWAEnabled = import.meta.env.VITE_PWA_ENABLED === 'true';
 
     if (/iPad|iPhone|iPod/.test(userAgent)) {
       setIsIOS(true);
     }
 
-    if (!install || isIOS) {
+    if (!install || isIOS || !isPWAEnabled) {
       navigate("/login");
     }
 
