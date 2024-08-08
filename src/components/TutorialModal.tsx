@@ -48,7 +48,11 @@ export const TutorialModal = ({
 
   return (
     <Modal isOpen={true} onClose={onClose} size="4xl">
-      <ModalOverlay />
+      <ModalOverlay
+        bg='blackAlpha.400'
+        backdropFilter='auto'
+        backdropBlur='5px'
+      />
       <ModalContent sx={{ marginTop: isMobile ? 0 : "5vh" }}>
         <ModalBody>
           <Carousel onChange={onCarouselChange} swipeable>
