@@ -96,9 +96,9 @@ export const useGameState = () => {
   useEffect(() => {
     if (preSelectedCards.length > 0) {
       let play = checkHand(
-        specialCards,
         hand,
         preSelectedCards,
+        specialCards,
         preSelectedModifiers
       );
       setPreSelectedPlay(play);

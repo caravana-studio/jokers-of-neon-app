@@ -5,9 +5,9 @@ import { CardData } from "../types/CardData";
 import { getCardData } from "./getCardData";
 
 export const checkHand = (
-  specialCards: Card[],
   hand: Card[],
   preSelectedCards: number[],
+  specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
 ): Plays => {
   const specialAllCardsToHearts = specialCards.some((s) => s.card_id === 15);
