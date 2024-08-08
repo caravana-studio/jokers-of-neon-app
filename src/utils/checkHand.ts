@@ -141,6 +141,15 @@ export const checkHand = (
   if (isFourOfAKind) {
     return Plays.FOUR_OF_A_KIND;
   }
+  
+  const isThreeOfAKind = counts.some((cardValue) => {
+    const countWithJokers = (valuesCount.get(cardValue) || 0) + jokers;
+    return countWithJokers === 3;
+  });
+  
+  if (isThreeOfAKind) {
+    return Plays.THREE_OF_A_KIND;
+  }
 
   const isFullHouse = (() => {
     let pairsCount = 0;
@@ -163,13 +172,6 @@ export const checkHand = (
 
   if (isFlush) {
     return Plays.FLUSH;
-  }
-
-  const isThreeOfAKind = counts.some((cardValue) => {
-    (valuesCount.get(cardValue) || 0) + jokers === 3
-  });
-  if (isThreeOfAKind) {
-    return Plays.THREE_OF_A_KIND;
   }
 
   const isTwoPair = (() => {
