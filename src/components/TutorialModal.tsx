@@ -51,7 +51,7 @@ export const TutorialModal = ({
       <ModalOverlay
         bg='blackAlpha.400'
         backdropFilter='auto'
-        backdropBlur='4px'
+        backdropBlur='5px'
       />
       <ModalContent sx={{ marginTop: isMobile ? 0 : "5vh" }}>
         <ModalBody>
