@@ -29,7 +29,8 @@ async function init() {
         </BrowserRouter>
       </DojoProvider>
     );
-  } catch {
+  } catch (e) {
+    console.error(e);
     root.render(<LoadingScreen error />);
   }
 }
