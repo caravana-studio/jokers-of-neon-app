@@ -102,7 +102,7 @@ export const checkHand = (
 
   const isFlush = [Suits.CLUBS, Suits.DIAMONDS, Suits.HEARTS, Suits.SPADES].some(
     (suit) => {
-      (suitsCount.get(suit) || 0) + jokers >= lenFlush
+      return (suitsCount.get(suit) || 0) + jokers >= lenFlush;
     }
   );
 
@@ -142,15 +142,6 @@ export const checkHand = (
     return Plays.FOUR_OF_A_KIND;
   }
   
-  const isThreeOfAKind = counts.some((cardValue) => {
-    const countWithJokers = (valuesCount.get(cardValue) || 0) + jokers;
-    return countWithJokers === 3;
-  });
-  
-  if (isThreeOfAKind) {
-    return Plays.THREE_OF_A_KIND;
-  }
-
   const isFullHouse = (() => {
     let pairsCount = 0;
     let isThreeOfAKind = false;
@@ -192,6 +183,15 @@ export const checkHand = (
   const isOnePair = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers == 2);
   if (isOnePair) {
     return Plays.PAIR;
+  }
+
+  const isThreeOfAKind = counts.some((cardValue) => {
+    const countWithJokers = (valuesCount.get(cardValue) || 0) + jokers;
+    return countWithJokers === 3;
+  });
+  
+  if (isThreeOfAKind) {
+    return Plays.THREE_OF_A_KIND;
   }
 
   return Plays.HIGH_CARD;
