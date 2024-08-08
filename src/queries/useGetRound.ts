@@ -16,7 +16,7 @@ interface RoundEdge {
 }
 
 interface RoundResponse {
-  roundModels: {
+  jokersOfNeonRoundModels: {
     edges: RoundEdge[];
   };
 }
@@ -31,7 +31,7 @@ export const useGetRound = (gameId: number) => {
   );
   const { data } = queryResponse;
 
-  const dojoRound = data?.roundModels?.edges[0]?.node;
+  const dojoRound = data?.jokersOfNeonRoundModels?.edges[0]?.node;
 
   const round: Round = {
     score: dojoRound?.player_score ?? 0,

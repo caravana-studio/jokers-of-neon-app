@@ -12,13 +12,13 @@ interface RoundEdge {
 }
 
 interface DeckQueryResponse {
-  roundModels: {
+  jokersOfNeonRoundModels: {
     edges: RoundEdge[];
   };
-  playerCommonCardsModels: {
+  jokersOfNeonPlayerCommonCardsModels: {
     totalCount: number;
   };
-  playerEffectCardsModels: {
+  jokersOfNeonPlayerEffectCardsModels: {
     totalCount: number;
   };
 }
@@ -38,10 +38,10 @@ export const useGetDeck = (gameId: number) => {
   );
   const { data } = queryResponse;
 
-  const deckLength = data?.roundModels?.edges[0]?.node?.current_len_deck ?? 0;
+  const deckLength = data?.jokersOfNeonRoundModels?.edges[0]?.node?.current_len_deck ?? 0;
 
-  const deckSize = (data?.playerCommonCardsModels?.totalCount ?? 0)
-                            + (data?.playerEffectCardsModels?.totalCount ?? 0);
+  const deckSize = (data?.jokersOfNeonPlayerCommonCardsModels?.totalCount ?? 0)
+                            + (data?.jokersOfNeonPlayerEffectCardsModels?.totalCount ?? 0);
 
   const deck: Deck = {
     currentLength: deckLength,

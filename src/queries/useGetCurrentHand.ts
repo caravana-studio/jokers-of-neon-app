@@ -18,7 +18,7 @@ interface CardEdge {
 }
 
 interface CurrentHandResponse {
-  currentHandCardModels: {
+  jokersOfNeonCurrentHandCardModels: {
     edges: CardEdge[];
   };
 }
@@ -47,7 +47,7 @@ export const useGetCurrentHand = (gameId: number, sortBy: SortBy) => {
   const { data } = queryResponse;
 
   const cards: Card[] = filterDuplicates(
-    data?.currentHandCardModels?.edges ?? []
+    data?.jokersOfNeonCurrentHandCardModels?.edges ?? []
   )
     // filter out null cards (represented by card_id 9999)
     .filter((edge) => edge.node.card_id !== 9999)

@@ -16,7 +16,7 @@ interface PlaysEdge {
 }
 
 interface PlaysResponse {
-  playerLevelPokerHandModels: {
+  jokersOfNeonPlayerLevelPokerHandModels: {
     edges: PlaysEdge[];
   };
 }
@@ -35,7 +35,7 @@ export const useGetPlaysLevelDetail = (gameId: number) => {
   );
   const { data } = queryResponse;
 
-  const plays = data?.playerLevelPokerHandModels.edges.map((edge) => {
+  const plays = data?.jokersOfNeonPlayerLevelPokerHandModels.edges.map((edge) => {
     const play: PokerPlay = {
       pokerHand: parseHand(edge.node.poker_hand),
       level: edge.node.level,
