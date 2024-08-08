@@ -53,6 +53,10 @@ test("HighCard should work", () => {
   expect(testCheckHand([H2])).toBe(Plays.HIGH_CARD);
 });
 
+test("HighCard with A should work", () => {
+  expect(testCheckHand([HA])).toBe(Plays.HIGH_CARD);
+});
+
 test("FiveOfAKind should work", () => {
   expect(testCheckHand([H2, C2, D2, S2, H2])).toBe(Plays.FIVE_OF_A_KIND);
 });
