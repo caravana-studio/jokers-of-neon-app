@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -107,43 +107,49 @@ export const GameContent = () => {
           width: "100%",
         }}
       >
+
         {showTutorial && <TutorialModal onClose={() => {setShowTutorial(false)}} />}
-        <Box sx={{ width: "100%", height: "100%" }} px={8}>
-          <Box sx={{ height: "30%", width: "100%" }}>
-            <TopSection />
+
+        <Box sx={{ width: "100%", height: "100%" }}>
+          <Image src='/borders/top.png' height="8%" width="100%" maxHeight="70px" object-fit position='fixed' top={0} />
+          <Box sx={{ height: "100%", width: "100%"}} pt={'90px'} pb={'120px'} px={20}>
+            <Box sx={{ height: "20%", width: "100%"}}>
+              <TopSection />
+            </Box>
+            <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
+              <Box
+                sx={{
+                  height: "60%",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }} pt={12}
+              >
+                <PreselectedCardsSection />
+              </Box>
+              <Box
+                pb={{ base: 2, md: "2vh" }}
+                mr={{ base: 10, md: 20 }}
+                sx={{
+                  display: "flex",
+                  height: "30%",
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                }}
+              >
+                <HandSection />
+              </Box>
+            </DndContext>
           </Box>
-          <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
-            <Box
-              sx={{
-                height: "40%",
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <PreselectedCardsSection />
-            </Box>
-            <Box
-              pb={{ base: 2, md: "7vh" }}
-              mr={{ base: 10, md: 20 }}
-              sx={{
-                display: "flex",
-                height: " 30%",
-                alignItems: "flex-end",
-                justifyContent: "center",
-              }}
-            >
-              <HandSection />
-            </Box>
-          </DndContext>
+          <Image src='/borders/bottom.png' maxHeight="70px" height="8%" width="100%" object-fit position='fixed' bottom={0} />
         </Box>
         <Box
           sx={{
             position: "fixed",
-            bottom: 7,
-            left: 10,
+            bottom: 14,
+            left: 20,
             zIndex: 1000,
           }}
         >
@@ -152,12 +158,12 @@ export const GameContent = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 7,
-            right: 10,
+            bottom: 14,
+            right: 20,
           }}
         >
           <GameDeck />
-        </Box>
+        </Box> 
       </Box>
     </Box>
   );

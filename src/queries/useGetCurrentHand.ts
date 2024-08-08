@@ -42,22 +42,25 @@ const filterDuplicates = (data: CardEdge[]): CardEdge[] => {
 export const useGetCurrentHand = (gameId: number, sortBy: SortBy) => {
   const queryResponse = useQuery<CurrentHandResponse>(
     [CURRENT_HAND_QUERY_KEY, gameId],
-    () => fetchGraphQLData(gameId),
+    () => fetchGraphQLData(gameId)
   );
   const { data } = queryResponse;
 
   const cards: Card[] = filterDuplicates(
     data?.currentHandCardModels?.edges ?? []
-  ).map((edge) => {
-    const dojoCard = edge.node;
-    return {
-      ...dojoCard,
-      img: `${dojoCard.type_player_card === "Effect" ? "effect/" : ""}${dojoCard.card_id}.png`,
-      isModifier: dojoCard.type_player_card === "Effect",
-      idx: dojoCard.idx,
-      id: dojoCard.idx.toString(),
-    };
-  });
+  )
+    // filter out null cards (represented by card_id 9999)
+    .filter((edge) => edge.node.card_id !== 9999)
+    .map((edge) => {
+      const dojoCard = edge.node;
+      return {
+        ...dojoCard,
+        img: `${dojoCard.type_player_card === "Effect" ? "effect/" : ""}${dojoCard.card_id}.png`,
+        isModifier: dojoCard.type_player_card === "Effect",
+        idx: dojoCard.idx,
+        id: dojoCard.idx.toString(),
+      };
+    });
 
   const sortedCards = sortCards(cards, sortBy);
   return {
