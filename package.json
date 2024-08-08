@@ -68,6 +68,8 @@
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-graphql-request": "^5.0.0",
     "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@swc/cli": "^0.4.0",
+    "@swc/core": "^1.7.6",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@types/howler": "^2.2.11",
