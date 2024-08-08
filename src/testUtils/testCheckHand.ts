@@ -1,7 +1,7 @@
 import { Card } from "../types/Card";
 import { checkHand } from "../utils/checkHand";
 
-export const preCheckHand = (
+export const testCheckHand = (
   cards: Card[],
   specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
