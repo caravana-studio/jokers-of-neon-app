@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C2, C3, D2, D3, D4, H10, H2, H3, H5, H9, HA, HJ, HK, HQ, S2, S6 } from "../../mocks/cardMocks";
+import { C10, C2, C3, D2, D3, D4, DJ, H10, H2, H3, H5, H9, HA, HJ, HK, HQ, S2, S6, SA } from "../../mocks/cardMocks";
 
 // This fails -> Is being taken as STRAIGHT_FLUSH instead
 // test("Royal flush should work", () => {
@@ -26,6 +26,10 @@ test("Ace Straight should work", () => {
 
 test("Straight should work", () => {
   expect(testCheckHand([ C2, H3, D4, H5, S6])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight high should work", () => {
+  expect(testCheckHand([ C10, HK, DJ, HQ, SA])).toBe(Plays.STRAIGHT);
 });
 
 test("Straight shouldn't work", () => {

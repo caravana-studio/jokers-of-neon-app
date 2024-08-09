@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C10, C2, C3, C4, C5, D10, D2, D3, D5, D6, D7, D8, DK, DQ, H2, H3, H4, H5, H6, H8, H9, HA, HJ, JOKER1, JOKER2, S2, S3, S4, S5, S6, S7, S8, S9, SK } from "../../mocks/cardMocks";
+import { C10, C2, C3, C4, C5, D10, D2, D3, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H8, H9, HA, HJ, JOKER1, JOKER2, S2, S3, S4, S5, S6, S7, S8, S9, SK } from "../../mocks/cardMocks";
 
 test("One Joker should be high card", () => {
   expect(testCheckHand([JOKER1])).toBe(Plays.HIGH_CARD);
@@ -79,9 +79,9 @@ test("Straight with joker at the end should work", () => {
   expect(testCheckHand([H5, D6, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-// test("Straight ace with a joker at the end should work", () => {
-//   expect(testCheckHand([HA, D2, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
-// });
+test("Straight ace with a joker at the end should work", () => {
+  expect(testCheckHand([HA, D2, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
+});
 
 test("Straight with one gap and joker should work", () => {
   expect(testCheckHand([H5, D7, S8, C4, JOKER2])).toBe(Plays.STRAIGHT);
@@ -99,23 +99,35 @@ test("Straight with two jokers at the end should work", () => {
   expect(testCheckHand([H4, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-// test("Straight ace with two jokers at the end should work", () => {
-//   expect(testCheckHand([HA, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
-// });
+test("Straight high with two jokers at the end should work", () => {
+  expect(testCheckHand([H10, DJ, S9, JOKER1, JOKER1])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight ace with two jokers at the end should work", () => {
+  expect(testCheckHand([HA, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
 
 test("Straight with two gaps and two jokers should work", () => {
   expect(testCheckHand([H4, D7, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-// test("Straight ace with two gaps and two jokers should work", () => {
-//   expect(testCheckHand([HA, D5, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
-// });
+test("Straight with two gaps and two jokers should work", () => {
+  expect(testCheckHand([H4, D7, S8, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
 
-test("Straight with two gaps intercalates and two jokers should work", () => {
+test("Straight ace with two gaps after ace and two jokers should work", () => {
+  expect(testCheckHand([HA, D5, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight ace with two gaps and two jokers should work", () => {
+  expect(testCheckHand([HA, D2, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight with two intercalates gaps and two jokers should work", () => {
   expect(testCheckHand([H4, D8, S6, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-test("Straight with two gaps intercalates and two jokers should work", () => {
+test("Straight with two intercalates gaps and two jokers should work", () => {
   expect(testCheckHand([H5, D7, S9, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 

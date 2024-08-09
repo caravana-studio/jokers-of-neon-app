@@ -133,15 +133,13 @@ export const checkHand = (
     if (cardsSorted.length < lenStraight || tempJokers > 2) return false;
     let consecutive = 1;
 
-    const aceIndex = cardsSorted.findIndex(card => card.card === Cards.ACE);
-
-    if (aceIndex !== -1 && cardsSorted[0].card === Cards.TWO) {
-      consecutive++;
-    }
-
     for (let idx = 1; idx < cardsSorted.length; idx++) {
       const actualValue = cardsSorted[idx].card || 0;
       const prevValue = cardsSorted[idx - 1].card || 0;
+
+      if (cardsSorted[idx].card === Cards.ACE && (cardsSorted[0].card === Cards.TWO || jokers > 0)) {
+        consecutive++;
+      }
       
       if(cardsSorted[idx].card == Cards.JOKER )
         break;
