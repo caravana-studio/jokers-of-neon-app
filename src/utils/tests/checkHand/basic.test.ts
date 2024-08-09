@@ -29,9 +29,9 @@ test("Straight should work", () => {
 });
 
 // This fails -> Is being taken as STRAIGHT
-// test("Straight shouldn't work", () => {
-//   expect(testCheckHand([ HA, H3, D4, H5, HA])).toBe(Plays.PAIR);
-// });
+test("Straight shouldn't work", () => {
+  expect(testCheckHand([ HA, H3, D4, H5, HA])).toBe(Plays.PAIR);
+});
 
 test("Flush should work", () => {
   expect(testCheckHand([H2,H3, HQ, HK, H10])).toBe(Plays.FLUSH);

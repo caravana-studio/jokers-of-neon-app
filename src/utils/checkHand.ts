@@ -3,6 +3,7 @@ import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
 import { CardData } from "../types/CardData";
 import { getCardData } from "./getCardData";
+import { Cards } from "../enums/cards";
 
 export const checkHand = (
   hand: Card[],
@@ -107,28 +108,72 @@ export const checkHand = (
   );
 
   let tempJokers = jokers;
-  const isStraight =
-    cardsSorted.length >= lenStraight &&
-    jokers <= 2 &&
-    cardsSorted.every((card, idx, arr) => {
-      if (idx === 0) return true;
-      const actualValue = card.card || 0;
-      const prevValue = arr[idx - 1].card || 0;
-      if (actualValue === prevValue + 1) {
-        return true;
-      } else if (actualValue === prevValue || actualValue === 14 || prevValue === 14) {
-        return true;
+  // const isStraight =
+  //   cardsSorted.length >= lenStraight &&
+  //   jokers <= 2 &&
+  //   cardsSorted.every((card, idx, arr) => {
+  //     if (idx === 0) return true;
+  //     const actualValue = card.card || 0;
+  //     const prevValue = arr[idx - 1].card || 0;
+  //     if (actualValue === prevValue + 1) {
+  //       return true;
+  //     } else if (actualValue === prevValue || actualValue === 14 || prevValue === 14) {
+  //       return true;
+  //     } else {
+  //       const gap = actualValue - prevValue - 1;
+  //       if (gap <= tempJokers) {
+  //         tempJokers -= gap;
+  //         return true;
+  //       }
+  //       return false;
+  //     }
+  //   });
+
+  const isStraight = () => {
+    if (cardsSorted.length < lenStraight) return false;
+    let consecutive = 1;
+    let tempJokers = jokers;
+
+    const aceIndex = cardsSorted.findIndex(card => card.card === Cards.ACE);
+
+    if (aceIndex !== -1 && cardsSorted[0].card === Cards.TWO) {
+      consecutive++;
+    }
+
+    for (let idx = 1; idx < cardsSorted.length; idx++) {
+      const actualValue = cardsSorted[idx].card || 0;
+      const prevValue = cardsSorted[idx - 1].card || 0;
+
+      if (actualValue === prevValue) {
+        continue;
+      }
+      const gap = actualValue - prevValue - 1;
+
+      if (gap === 0) {
+        consecutive++;
+      } else if (gap <= tempJokers) {
+        // Fill the gap with jokers
+        tempJokers -= gap;
+        consecutive += gap + 1; // Count the gap and the next card
       } else {
-        const gap = actualValue - prevValue - 1;
-        if (gap <= tempJokers) {
-          tempJokers -= gap;
-          return true;
-        }
+        // Gap too large, can't fill with jokers
         return false;
       }
-    });
 
-  if (isFlush && isStraight) {
+      // If we’ve reached the required length for a straight, return true
+      if (consecutive >= lenStraight) {
+        return true;
+      }
+    }
+
+    if (tempJokers > 0 && consecutive + tempJokers >= lenStraight) {
+      return true;
+    }
+
+    return consecutive >= lenStraight;
+  }
+
+  if (isFlush && isStraight()) {
     return Plays.STRAIGHT_FLUSH;
   }
 
@@ -157,7 +202,7 @@ export const checkHand = (
     return Plays.FULL_HOUSE;
   }
 
-  if (isStraight) {
+  if (isStraight()) {
     return Plays.STRAIGHT;
   }
 
