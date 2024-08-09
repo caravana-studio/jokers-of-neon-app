@@ -28,7 +28,6 @@ test("Straight should work", () => {
   expect(testCheckHand([ C2, H3, D4, H5, S6])).toBe(Plays.STRAIGHT);
 });
 
-// This fails -> Is being taken as STRAIGHT
 test("Straight shouldn't work", () => {
   expect(testCheckHand([ HA, H3, D4, H5, HA])).toBe(Plays.PAIR);
 });

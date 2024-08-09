@@ -130,9 +130,8 @@ export const checkHand = (
   //   });
 
   const isStraight = () => {
-    if (cardsSorted.length < lenStraight) return false;
+    if (cardsSorted.length < lenStraight || tempJokers > 2) return false;
     let consecutive = 1;
-    let tempJokers = jokers;
 
     const aceIndex = cardsSorted.findIndex(card => card.card === Cards.ACE);
 
@@ -143,6 +142,9 @@ export const checkHand = (
     for (let idx = 1; idx < cardsSorted.length; idx++) {
       const actualValue = cardsSorted[idx].card || 0;
       const prevValue = cardsSorted[idx - 1].card || 0;
+      
+      if(cardsSorted[idx].card == Cards.JOKER )
+        break;
 
       if (actualValue === prevValue) {
         continue;
@@ -151,14 +153,16 @@ export const checkHand = (
 
       if (gap === 0) {
         consecutive++;
-      } else if (gap <= tempJokers) {
+      } 
+      else if (gap <= tempJokers) {
         // Fill the gap with jokers
         tempJokers -= gap;
         consecutive += gap + 1; // Count the gap and the next card
-      } else {
-        // Gap too large, can't fill with jokers
-        return false;
-      }
+      } 
+      // else {
+      //   // Gap too large, can't fill with jokers
+      //   return false;
+      // }
 
       // If we’ve reached the required length for a straight, return true
       if (consecutive >= lenStraight) {
@@ -166,6 +170,7 @@ export const checkHand = (
       }
     }
 
+    console.log("Totals of j:", tempJokers, "sum:",  consecutive + tempJokers);
     if (tempJokers > 0 && consecutive + tempJokers >= lenStraight) {
       return true;
     }

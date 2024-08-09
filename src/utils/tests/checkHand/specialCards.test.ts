@@ -40,9 +40,9 @@ test("Straight with EasyStraight first cards should work", () => {
   expect(testCheckHand([H3, H4, D5, D6, S10], [EasyStraight])).toBe(Plays.STRAIGHT);
   });
 
-// test("Straight with EasyStraight last cards should work", () => {
-//   expect(testCheckHand([H3, H7, D8, D9, S10], [EasyStraight])).toBe(Plays.STRAIGHT);
-//   });
+test("Straight with EasyStraight last cards should work", () => {
+  expect(testCheckHand([H3, H7, D8, D9, S10], [EasyStraight])).toBe(Plays.STRAIGHT);
+  });
 
 test("Straight with EasyStraight and a gap filled with joker should work", () => {
   expect(testCheckHand([H6, H3, H4, JOKER1], [EasyStraight])).toBe(Plays.STRAIGHT);
@@ -52,9 +52,9 @@ test("Straight with EasyStraight and gaps filled with two jokers should work", (
   expect(testCheckHand([H6, D3, JOKER2, JOKER1], [EasyStraight])).toBe(Plays.STRAIGHT);
   });
 
-// test("Straight with EasyStraight and gap filled with jokers at the end should work", () => {
-//   expect(testCheckHand([H4, C5, JOKER2, JOKER1], [EasyStraight])).toBe(Plays.STRAIGHT);
-//   });
+test("Straight with EasyStraight and gap filled with jokers at the end should work", () => {
+  expect(testCheckHand([H4, C5, JOKER2, JOKER1], [EasyStraight])).toBe(Plays.STRAIGHT);
+  });
 
 test("StraightFlush with EasyStraight and EasyFlush should work", () => {
   expect(testCheckHand([D2, D3, D4, D5], [EasyStraight, EasyFlush])).toBe(Plays.STRAIGHT_FLUSH);

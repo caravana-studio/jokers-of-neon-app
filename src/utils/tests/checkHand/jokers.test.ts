@@ -75,8 +75,12 @@ test("FullHouse with one joker should work", () => {
   expect(testCheckHand([H2, D2, S3, C3, JOKER2])).toBe(Plays.FULL_HOUSE);
 });
 
-// test("Straight with joker at the end should work", () => {
-//   expect(testCheckHand([H5, D6, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
+test("Straight with joker at the end should work", () => {
+  expect(testCheckHand([H5, D6, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
+// test("Straight ace with a joker at the end should work", () => {
+//   expect(testCheckHand([HA, D2, S3, C4, JOKER2])).toBe(Plays.STRAIGHT);
 // });
 
 test("Straight with one gap and joker should work", () => {
@@ -87,12 +91,15 @@ test("Straight ace with one gap and a joker should work", () => {
   expect(testCheckHand([HA, D2, S3, C5, JOKER1])).toBe(Plays.STRAIGHT);
 });
 
-
 test("Straight high with one gap and joker should work", () => {
   expect(testCheckHand([HJ, DQ, SK, C10, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-// test("Straight with two jokers at the end should work", () => {
+test("Straight with two jokers at the end should work", () => {
+  expect(testCheckHand([H4, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
+// test("Straight ace with two jokers at the end should work", () => {
 //   expect(testCheckHand([HA, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 // });
 
@@ -100,7 +107,7 @@ test("Straight with two gaps and two jokers should work", () => {
   expect(testCheckHand([H4, D7, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
-// test("Straight low with two gaps and two jokers should work", () => {
+// test("Straight ace with two gaps and two jokers should work", () => {
 //   expect(testCheckHand([HA, D5, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 // });
 
