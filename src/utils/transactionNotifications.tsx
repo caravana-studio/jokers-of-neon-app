@@ -3,29 +3,48 @@ import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
 import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
+import { Box, Spinner } from "@chakra-ui/react";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 const TX_ERROR_MESSAGE = "Error processing transaction.";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
-  position: isMobile ? "top-left" : "bottom-center",
-  closeButton: true,
+  position: "top-right",
+  closeButton: false,
   dismissible: true,
   actionButtonStyle: {
-    padding: "3px 6px",
+    display: "none",
   },
   cancelButtonStyle: {
-    marginLeft: "15px",
-    marginTop: "15px",
+    display: "none",
+  },
+  style: {
+    padding: 0,
+    backgroundColor: "transparent",
+    boxShadow: "none",
   },
 };
 
-const STYLES = {
-  color: "white",
-  padding: "3px 6px",
-  backgroundColor: LOADING_TOAST,
-  borderRadius: 0,
-};
+const CircularToast = ({ backgroundColor, status }: any) => (
+  <Box
+    width="50px"
+    height="50px"
+    bg={backgroundColor}
+    borderRadius="50%"
+    display="flex"
+    alignItems="center"
+    justifyContent="center"
+  >
+    {status === "loading" ? (
+      <Spinner boxSize={24} thickness="2px" speed="0.65s" color="white" size="xl" />
+    ) : status === "success" ? (
+      <CheckCircleIcon boxSize="24px" color="white" />
+    ) : (
+      <WarningIcon boxSize="24px" color="white" />
+    )}
+  </Box>
+);
 
 const getToastAction = (transaction_hash: string) => {
   return {
@@ -41,55 +60,49 @@ export const showTransactionToast = (
 ): void => {
   const title = message || "Transaction in progress...";
 
-  toast.loading(title, {
-    ...TOAST_COMMON_OPTIONS,
-    description: transaction_hash
-      ? shortenHex(transaction_hash, 15)
-      : "Please wait",
-    style: STYLES,
-    action: transaction_hash ? getToastAction(transaction_hash) : undefined,
-  });
+  toast.loading(
+    <CircularToast backgroundColor={LOADING_TOAST} status="loading" />,
+    {
+      ...TOAST_COMMON_OPTIONS,
+    }
+  );
 };
 
 export const updateTransactionToast = (
   transaction_hash: string,
   succeed: boolean
 ): boolean => {
-  const title = `Transaction ${succeed ? "finished" : "failed"}.`;
-
-  const styles = {
-    ...STYLES,
-    backgroundColor: succeed ? SUCCESS_TOAST : ERROR_TOAST,
-  };
+  const backgroundColor = succeed ? SUCCESS_TOAST : ERROR_TOAST;
 
   if (succeed) {
-    toast.success(title, {
-      ...TOAST_COMMON_OPTIONS,
-      description: shortenHex(transaction_hash, 15),
-      style: styles,
-    });
+
+    toast.success(
+      <CircularToast backgroundColor={backgroundColor} status={"success"} />,
+      {
+        ...TOAST_COMMON_OPTIONS,
+      }
+    );
   } else {
-    toast.error(title, {
-      ...TOAST_COMMON_OPTIONS,
-      description: shortenHex(transaction_hash, 15),
-      style: styles,
-    });
+    const description = shortenHex(transaction_hash, 15);
+
+    toast.error(
+      <CircularToast backgroundColor={backgroundColor} status={"error"} />,
+      {
+        ...TOAST_COMMON_OPTIONS,
+      }
+    );
   }
   return succeed;
 };
 
 export const failedTransactionToast = (): boolean => {
-  const title = "Transaction failed";
 
-  const styles = {
-    ...STYLES,
-    backgroundColor: ERROR_TOAST,
-  };
+  toast.error(
+    <CircularToast backgroundColor={ERROR_TOAST} status="error" />,
+    {
+      ...TOAST_COMMON_OPTIONS,
+    }
+  );
 
-  toast.error(title, {
-    ...TOAST_COMMON_OPTIONS,
-    description: TX_ERROR_MESSAGE,
-    style: styles,
-  });
   return false;
 };
