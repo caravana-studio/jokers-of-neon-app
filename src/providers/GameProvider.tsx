@@ -182,7 +182,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate("/redirect/demo");
+          navigate("/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
