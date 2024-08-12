@@ -3,10 +3,9 @@ import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
 import { C10, C2, C3, D2, D3, D4, DJ, H10, H2, H3, H5, H9, HA, HJ, HK, HQ, S2, S6, SA } from "../../mocks/cardMocks";
 
-// This fails -> Is being taken as STRAIGHT_FLUSH instead
-// test("Royal flush should work", () => {
-//   expect(testCheckHand([HA, HK, HQ, HJ, H10])).toBe(Plays.ROYAL_FLUSH);
-// });
+test("Royal flush should work", () => {
+  expect(testCheckHand([HA, HK, HQ, HJ, H10])).toBe(Plays.ROYAL_FLUSH);
+});
 
 test("StraightFlush should work", () => {
     expect(testCheckHand([H9, HK, HQ, HJ, H10])).toBe(Plays.STRAIGHT_FLUSH);

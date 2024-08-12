@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C5, D10, D2, D3, D4, D5, D6, D8, D9, H2, H3, H4, H6, H7, H9, JOKER1, JOKER2, S10, S3 } from "../../mocks/cardMocks";
+import { C5, D10, D2, D3, D4, D5, D6, D8, D9, DK, H10, H2, H3, H4, H6, H7, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S10, S3 } from "../../mocks/cardMocks";
 import { EasyFlush, AllCardsToHearts, EasyStraight } from "../../mocks/specialCardMocks";
 
 test("Flush with EasyFlush should work", () => {
@@ -60,6 +60,22 @@ test("StraightFlush with EasyStraight and EasyFlush should work", () => {
   expect(testCheckHand([D2, D3, D4, D5], [EasyStraight, EasyFlush])).toBe(Plays.STRAIGHT_FLUSH);
   });
 
+test("RoyalFlush with EasyStraight and EasyFlush should work", () => {
+  expect(testCheckHand([HA, HJ, HQ, HK], [EasyStraight, EasyFlush])).toBe(Plays.ROYAL_FLUSH);
+  });
+
+test("RoyalFlush with EasyStraight and EasyFlush and a gap should work", () => {
+  expect(testCheckHand([HA, HJ, HQ, JOKER1], [EasyStraight, EasyFlush])).toBe(Plays.ROYAL_FLUSH);
+  });
+
+  test("RoyalFlush with EasyStraight and EasyFlush and two gaps should work", () => {
+    expect(testCheckHand([HA, HJ, JOKER2, JOKER1], [EasyStraight, EasyFlush])).toBe(Plays.ROYAL_FLUSH);
+    });
+
 test("StraightFlush with EasyStraight, EasyFlush and AllCardsToHearts should work", () => {
   expect(testCheckHand([H2, H3, H4, D5], [EasyStraight, EasyFlush, AllCardsToHearts])).toBe(Plays.STRAIGHT_FLUSH);
+  });
+
+test("RoyalFlush with EasyStraight, EasyFlush and AllCardsToHearts should work", () => {
+  expect(testCheckHand([HA, HJ, HQ, HK], [EasyStraight, EasyFlush, AllCardsToHearts])).toBe(Plays.ROYAL_FLUSH);
   });

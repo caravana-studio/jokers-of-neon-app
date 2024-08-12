@@ -89,7 +89,7 @@ export const checkHand = (
   if (cardsData.length === jokers) {
     switch (jokers) {
       case 5:
-        return Plays.FIVE_OF_A_KIND;
+        return Plays.ROYAL_FLUSH;
       case 4:
         return Plays.FOUR_OF_A_KIND;
       case 3:
@@ -108,29 +108,11 @@ export const checkHand = (
   );
 
   let tempJokers = jokers;
-  // const isStraight =
-  //   cardsSorted.length >= lenStraight &&
-  //   jokers <= 2 &&
-  //   cardsSorted.every((card, idx, arr) => {
-  //     if (idx === 0) return true;
-  //     const actualValue = card.card || 0;
-  //     const prevValue = arr[idx - 1].card || 0;
-  //     if (actualValue === prevValue + 1) {
-  //       return true;
-  //     } else if (actualValue === prevValue || actualValue === 14 || prevValue === 14) {
-  //       return true;
-  //     } else {
-  //       const gap = actualValue - prevValue - 1;
-  //       if (gap <= tempJokers) {
-  //         tempJokers -= gap;
-  //         return true;
-  //       }
-  //       return false;
-  //     }
-  //   });
-
   const isStraight = () => {
-    if (cardsSorted.length < lenStraight || tempJokers > 2) return false;
+
+    if (cardsSorted.length < lenStraight) return false;
+    if (cardsSorted.length == lenStraight && jokers === 4 ) return true;
+
     let consecutive = 1;
 
     for (let idx = 1; idx < cardsSorted.length; idx++) {
@@ -153,22 +135,14 @@ export const checkHand = (
         consecutive++;
       } 
       else if (gap <= tempJokers) {
-        // Fill the gap with jokers
         tempJokers -= gap;
-        consecutive += gap + 1; // Count the gap and the next card
+        consecutive += gap + 1;
       } 
-      // else {
-      //   // Gap too large, can't fill with jokers
-      //   return false;
-      // }
-
-      // If we’ve reached the required length for a straight, return true
       if (consecutive >= lenStraight) {
         return true;
       }
     }
 
-    console.log("Totals of j:", tempJokers, "sum:",  consecutive + tempJokers);
     if (tempJokers > 0 && consecutive + tempJokers >= lenStraight) {
       return true;
     }
@@ -177,7 +151,20 @@ export const checkHand = (
   }
 
   if (isFlush && isStraight()) {
-    return Plays.STRAIGHT_FLUSH;
+    let royalCards = [Cards.TEN, Cards.JACK, Cards.QUEEN, Cards.KING, Cards.ACE]
+
+    let foundValues = 0;
+    for (let idx = 0; idx < cardsSorted.length; idx++) {
+      const card = cardsSorted[idx];
+      if (card.card !=  undefined && royalCards.includes(card.card)) {
+        foundValues += 1;
+      }
+    }
+
+    if ( foundValues + jokers === lenStraight)
+      return Plays.ROYAL_FLUSH;
+    else
+      return Plays.STRAIGHT_FLUSH;
   }
 
   const isFiveOfAKind = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 5);
