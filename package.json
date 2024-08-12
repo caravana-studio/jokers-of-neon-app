@@ -9,7 +9,8 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0x674a11e7bdcd4c215f7e658fbddf7ff8fdbd43c415a985ed11178f7063545ac"
+    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0x674a11e7bdcd4c215f7e658fbddf7ff8fdbd43c415a985ed11178f7063545ac",
+    "test": "vitest"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.1.1",
@@ -65,6 +66,8 @@
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-graphql-request": "^5.0.0",
     "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
     "@types/howler": "^2.2.11",
     "@types/node": "^20.4.8",
     "@types/react": "^18.2.33",
@@ -75,7 +78,9 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "jsdom": "^24.1.1",
     "typescript": "^5.0.3",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vitest": "^2.0.5"
   }
 }
