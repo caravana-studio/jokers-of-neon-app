@@ -23,6 +23,8 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
     padding: 0,
     backgroundColor: "transparent",
     boxShadow: "none",
+    right: "8px",
+    width: "50px"
   },
 };
 
