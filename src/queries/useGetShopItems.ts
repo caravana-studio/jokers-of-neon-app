@@ -9,7 +9,7 @@ export const SHOP_ITEMS_KEY = "shop-items";
 
 export const GET_SHOP_ITEMS_QUERY = gql`
   query GetShopItems($gameId: ID!) {
-    cardItemModels(first: 30, where: { game_idEQ: $gameId }) {
+    jokersOfNeonCardItemModels(first: 30, where: { game_idEQ: $gameId }) {
       edges {
         node {
           cost
@@ -21,7 +21,7 @@ export const GET_SHOP_ITEMS_QUERY = gql`
         }
       }
     }
-    pokerHandItemModels(first: 30, where: { game_idEQ: $gameId }) {
+    jokersOfNeonPokerHandItemModels(first: 30, where: { game_idEQ: $gameId }) {
       edges {
         node {
           idx
@@ -59,10 +59,10 @@ interface PokerHandItemEdge {
 }
 
 interface ShopItemsResponse {
-  cardItemModels: {
+  jokersOfNeonCardItemModels: {
     edges: ShopItemEdge[];
   };
-  pokerHandItemModels: {
+  jokersOfNeonPokerHandItemModels: {
     edges: PokerHandItemEdge[];
   };
 }
@@ -96,8 +96,8 @@ export const useGetShopItems = (
     }
   );
   const { data } = queryResponse;
-
-  const dojoShopItems = data?.cardItemModels?.edges.map((edge) => {
+  
+  const dojoShopItems = data?.jokersOfNeonCardItemModels?.edges.map((edge) => {
     return {
       price: edge.node.cost,
       isModifier: edge.node.item_type === CardTypes.MODIFIER,
@@ -112,7 +112,7 @@ export const useGetShopItems = (
   });
 
   const pokerHandItems =
-    data?.pokerHandItemModels?.edges
+    data?.jokersOfNeonPokerHandItemModels?.edges
       .map((edge) => {
         return edge.node;
       })

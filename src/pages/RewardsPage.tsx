@@ -22,7 +22,6 @@ export const RewardsPage = () => {
             height="8%" 
             width="100%" 
             maxHeight="70px" 
-            object-fit 
             position='fixed' 
             top={0} />
         )}
@@ -71,7 +70,6 @@ export const RewardsPage = () => {
               height="8%"
               width="100%"
               maxHeight="70px"
-              object-fit
               position='fixed'
               bottom={0} />
               <Box

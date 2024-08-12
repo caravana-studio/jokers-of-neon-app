@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGame } from './useGame.tsx'
-import { getComponentValue } from "@dojoengine/recs";
+import { Entity, getComponentValue } from "@dojoengine/recs";
 import { useDojo } from '../useDojo.tsx'
 import { Card } from '../../types/Card.ts'
 import { getEntityIdFromKeys } from '@dojoengine/utils'
-import { Entity } from '@dojoengine/recs/src/types.ts'
 
 const getSpecialCard = (
   gameId: number,

@@ -6,7 +6,7 @@ export const STORE_QUERY_KEY = "store";
 
 export const STORE_QUERY = gql`
   query GetStore($gameId: ID!) {
-    shopModels(where: { game_idEQ: $gameId }) {
+    jokersOfNeonShopModels(where: { game_idEQ: $gameId }) {
       edges {
         node {
           reroll_cost
@@ -33,7 +33,7 @@ interface StoreEdge {
 }
 
 interface StoreResponse {
-  shopModels: {
+  jokersOfNeonShopModels: {
     edges: StoreEdge[];
   };
 }
@@ -48,7 +48,7 @@ export const useGetStore = (id: number) => {
   );
   const { data } = queryResponse;
 
-  const store = data?.shopModels?.edges[0]?.node;
+  const store = data?.jokersOfNeonShopModels?.edges[0]?.node;
 
   return {
     ...queryResponse,
