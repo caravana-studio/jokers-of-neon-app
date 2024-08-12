@@ -1,5 +1,4 @@
-import { getComponentValue } from "@dojoengine/recs";
-import { Entity, OverridableComponent } from "@dojoengine/recs/src/types";
+import { Entity, getComponentValue, OverridableComponent } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export const getGame = (
