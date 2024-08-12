@@ -7,8 +7,9 @@ import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { TutorialModal } from "../../components/TutorialModal.tsx";
 import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
@@ -29,6 +30,26 @@ export const GameContent = () => {
   const [showTutorial, setShowTutorial] = useState(
     !window.localStorage.getItem(SKIP_TUTORIAL)
   );
+
+  const { data: game } = useGetGame(gameId);
+  const {
+    setup: {
+      clientComponents: { Game },
+    },
+  } = useDojo();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // if roundRewards is true, we don't want to redirect user
+    if (!roundRewards) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "AT_SHOP") {
+        navigate("/store");
+      }
+    }
+  }, [game?.state, roundRewards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const modifiedCard = Number(event.over?.id);
@@ -101,7 +122,6 @@ export const GameContent = () => {
             height="8%"
             width="100%"
             maxHeight="70px"
-            object-fit
             position="fixed"
             top={0}
           />
@@ -147,7 +167,6 @@ export const GameContent = () => {
             maxHeight="70px"
             height="8%"
             width="100%"
-            object-fit
             position="fixed"
             bottom={0}
           />

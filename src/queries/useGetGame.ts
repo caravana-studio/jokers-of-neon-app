@@ -6,7 +6,7 @@ export const GAME_QUERY_KEY = "game";
 
 export const GAME_QUERY = gql`
   query GetGame($gameId: ID!) {
-    gameModels(where: { idEQ: $gameId }) {
+    jokersOfNeonGameModels(where: { idEQ: $gameId }) {
       edges {
         node {
           cash
@@ -39,7 +39,7 @@ interface GameEdge {
 }
 
 interface GameResponse {
-  gameModels: {
+  jokersOfNeonGameModels: {
     edges: GameEdge[];
   };
 }
@@ -57,7 +57,7 @@ export const useGetGame = (id: number, refetching: boolean = false) => {
   );
   const { data } = queryResponse;
 
-  const game = data?.gameModels?.edges[0]?.node;
+  const game = data?.jokersOfNeonGameModels?.edges[0]?.node;
 
   return {
     ...queryResponse,
