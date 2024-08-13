@@ -6,8 +6,6 @@ import { getEnvString } from "./getEnvValue.ts";
 import { Box, Spinner, Tooltip } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
-const TX_ERROR_MESSAGE = "Error processing transaction.";
-
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
   position: "top-right",
@@ -31,18 +29,22 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
 type CircularToastProps = {
   backgroundColor: string;
   status: "loading" | "success" | "error";
-  description: string;
+  description?: string;
+  onClickFn?: Function;
 };
 
-const CircularToast = ({ backgroundColor, status, description }: CircularToastProps) => (
+const CircularToast = ({ backgroundColor, status, description, onClickFn }: CircularToastProps) => (
   <Tooltip 
     hasArrow 
     label={description} 
     closeOnPointerDown 
     color="white" 
     backgroundColor={backgroundColor}
-    padding={2}>
+    padding={2}
+    isDisabled={!description}
+    >
     <Box
+      onClick={() => onClickFn}
       width="50px"
       height="50px"
       bg={backgroundColor}
@@ -77,7 +79,7 @@ export const showTransactionToast = (
   const description = message || "Transaction in progress...";
 
   toast.loading(
-    <CircularToast backgroundColor={LOADING_TOAST} status="loading" description={description}/>,
+    <CircularToast backgroundColor={LOADING_TOAST} status="loading"/>,
     {
       ...TOAST_COMMON_OPTIONS,
     }
@@ -89,20 +91,24 @@ export const updateTransactionToast = (
   succeed: boolean
 ): boolean => {
   const backgroundColor = succeed ? SUCCESS_TOAST : ERROR_TOAST;
+  const description = shortenHex(transaction_hash, 15);
 
   if (succeed) {
-
-    const description = shortenHex(transaction_hash, 15);
+    
     toast.success(
-      <CircularToast backgroundColor={backgroundColor} status={"success"} description={description}/>,
+      <CircularToast backgroundColor={backgroundColor} status={"success"}/>,
       {
         ...TOAST_COMMON_OPTIONS,
       }
     );
   } else {
+    
+    const showErrorFn = function(): void {
+      window.open(getEnvString("VITE_TRANSACTIONS_URL") + transaction_hash);
+    };
 
     toast.error(
-      <CircularToast backgroundColor={backgroundColor} status={"error"} description={TX_ERROR_MESSAGE}/>,
+      <CircularToast backgroundColor={backgroundColor} status={"error"} description={description} onClickFn={showErrorFn}/>,
       {
         ...TOAST_COMMON_OPTIONS,
       }
@@ -112,7 +118,7 @@ export const updateTransactionToast = (
 };
 
 export const failedTransactionToast = (): boolean => {
-
+  const TX_ERROR_MESSAGE = "Error processing transaction.";
   toast.error(
     <CircularToast backgroundColor={ERROR_TOAST} status="error" description={TX_ERROR_MESSAGE}/>,
     {
