@@ -31,14 +31,13 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
 type CircularToastProps = {
   backgroundColor: string;
   status: "loading" | "success" | "error";
-  description?: string;
+  description: string;
 };
 
 const CircularToast = ({ backgroundColor, status, description }: CircularToastProps) => (
   <Tooltip 
     hasArrow 
     label={description} 
-    isDisabled={!description} 
     closeOnPointerDown 
     color="white" 
     backgroundColor={backgroundColor}
@@ -75,10 +74,10 @@ export const showTransactionToast = (
   transaction_hash?: string,
   message?: string
 ): void => {
-  const title = message || "Transaction in progress...";
+  const description = message || "Transaction in progress...";
 
   toast.loading(
-    <CircularToast backgroundColor={LOADING_TOAST} status="loading" />,
+    <CircularToast backgroundColor={LOADING_TOAST} status="loading" description={description}/>,
     {
       ...TOAST_COMMON_OPTIONS,
     }
@@ -90,10 +89,10 @@ export const updateTransactionToast = (
   succeed: boolean
 ): boolean => {
   const backgroundColor = succeed ? SUCCESS_TOAST : ERROR_TOAST;
-  const description = shortenHex(transaction_hash, 15);
 
   if (succeed) {
 
+    const description = shortenHex(transaction_hash, 15);
     toast.success(
       <CircularToast backgroundColor={backgroundColor} status={"success"} description={description}/>,
       {
@@ -103,7 +102,7 @@ export const updateTransactionToast = (
   } else {
 
     toast.error(
-      <CircularToast backgroundColor={backgroundColor} status={"error"} description={description}/>,
+      <CircularToast backgroundColor={backgroundColor} status={"error"} description={TX_ERROR_MESSAGE}/>,
       {
         ...TOAST_COMMON_OPTIONS,
       }
@@ -115,7 +114,7 @@ export const updateTransactionToast = (
 export const failedTransactionToast = (): boolean => {
 
   toast.error(
-    <CircularToast backgroundColor={ERROR_TOAST} status="error" />,
+    <CircularToast backgroundColor={ERROR_TOAST} status="error" description={TX_ERROR_MESSAGE}/>,
     {
       ...TOAST_COMMON_OPTIONS,
     }
