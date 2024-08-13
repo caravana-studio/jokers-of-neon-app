@@ -64,14 +64,6 @@ const CircularToast = ({ backgroundColor, status, description, onClickFn }: Circ
   </Tooltip>
 );
 
-const getToastAction = (transaction_hash: string) => {
-  return {
-    label: "View",
-    onClick: () =>
-      window.open(getEnvString("VITE_TRANSACTIONS_URL") + transaction_hash),
-  };
-};
-
 export const showTransactionToast = (
   transaction_hash?: string,
   message?: string
@@ -79,7 +71,7 @@ export const showTransactionToast = (
   const description = message || "Transaction in progress...";
 
   toast.loading(
-    <CircularToast backgroundColor={LOADING_TOAST} status="loading"/>,
+    <CircularToast backgroundColor={LOADING_TOAST} status="loading" description={description}/>,
     {
       ...TOAST_COMMON_OPTIONS,
     }
