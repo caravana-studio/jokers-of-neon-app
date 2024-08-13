@@ -5,6 +5,7 @@ import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
 import { Box, Spinner, Tooltip } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { MouseEventHandler } from "react";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -30,7 +31,7 @@ type CircularToastProps = {
   backgroundColor: string;
   status: "loading" | "success" | "error";
   description?: string;
-  onClickFn?: Function;
+  onClickFn?: MouseEventHandler<HTMLDivElement>;
 };
 
 const CircularToast = ({ backgroundColor, status, description, onClickFn }: CircularToastProps) => (
@@ -44,7 +45,6 @@ const CircularToast = ({ backgroundColor, status, description, onClickFn }: Circ
     isDisabled={!description}
     >
     <Box
-      onClick={() => onClickFn}
       width="50px"
       height="50px"
       bg={backgroundColor}
@@ -52,6 +52,8 @@ const CircularToast = ({ backgroundColor, status, description, onClickFn }: Circ
       display="flex"
       alignItems="center"
       justifyContent="center"
+      onClick={onClickFn}
+      cursor={onClickFn ? "pointer" : "default"}
     >
       {status === "loading" ? (
         <Spinner boxSize={24} thickness="2px" speed="0.65s" color="white" size="xl" />
@@ -86,7 +88,7 @@ export const updateTransactionToast = (
   const description = shortenHex(transaction_hash, 15);
 
   if (succeed) {
-    
+
     toast.success(
       <CircularToast backgroundColor={backgroundColor} status={"success"}/>,
       {
