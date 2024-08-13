@@ -1,7 +1,9 @@
-import { IGame } from "../../types/Game";
+import { Entity, getComponentValue } from "@dojoengine/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useMemo } from "react";
 import { useDojo } from "../useDojo";
-import { getGame } from "../utils/getGame";
 import { getLSGameId } from "../utils/getLSGameId";
+import { useComponentValue } from "@dojoengine/react";
 
 export const useGame = () => {
   const {
@@ -10,5 +12,13 @@ export const useGame = () => {
     },
   } = useDojo();
   const gameId = getLSGameId();
-  return getGame(gameId, Game) as IGame;
+  console.log("gameId", gameId);
+  const entityId = useMemo(
+    () =>
+      getEntityIdFromKeys([
+        BigInt(gameId),
+      ]) as Entity,
+    [gameId],
+  );
+  return useComponentValue(Game, entityId);
 };

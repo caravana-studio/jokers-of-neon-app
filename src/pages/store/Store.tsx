@@ -22,7 +22,7 @@ export const Store = () => {
   const { gameId, setHand } = useGameContext();
   const game = useGame();
   const store = useShop();
-  const state = game.state;
+  const state = game?.state;
   const { onShopSkip } = useGameContext();
 
   const rerollCost = store?.reroll_cost ?? 0;
@@ -103,7 +103,7 @@ export const Store = () => {
         skipShop(account.account, gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
-            navigate("/demo");
+            navigate("/redirect/demo");
           } else {
             setLoading(false);
             showErrorToast("Error skipping shop");
@@ -129,7 +129,7 @@ export const Store = () => {
 
   useEffect(() => {
     if (!game) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
 

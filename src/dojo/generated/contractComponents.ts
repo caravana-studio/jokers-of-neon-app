@@ -152,7 +152,7 @@ export function defineContractComponents(world: World) {
     Game: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_max_current_special_cards: RecsType.Number, len_current_special_cards: RecsType.Number, state: RecsType.Number, cash: RecsType.Number },
+        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_max_current_special_cards: RecsType.Number, len_current_special_cards: RecsType.Number, state: RecsType.String, cash: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-Game",

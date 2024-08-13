@@ -6,6 +6,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
@@ -55,6 +56,14 @@ function App() {
                   <StoreProvider>
                     <Store />
                   </StoreProvider>
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/redirect/:page"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                  <Redirect />
                 </AudioPlayerProvider>
               }
             />

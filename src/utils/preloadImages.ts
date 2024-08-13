@@ -6,8 +6,12 @@ export const preloadImages = () => {
     imageUrls.push(`Cards/${i}.png`);
   }
 
-  //effect cards
-  for (let i = 1; i < 29; i++) {
+  //special cards
+  for (let i = 1; i < 16; i++) {
+    imageUrls.push(`Cards/effect/${i}.png`);
+  }
+  //special cards
+  for (let i = 600; i < 611; i++) {
     imageUrls.push(`Cards/effect/${i}.png`);
   }
 

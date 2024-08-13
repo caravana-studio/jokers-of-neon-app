@@ -1,7 +1,8 @@
-import { Round } from "../../types/Round";
+import { useComponentValue } from "@dojoengine/react";
+import { Entity } from "@dojoengine/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "../useDojo";
 import { getLSGameId } from "../utils/getLSGameId";
-import { getRound } from "../utils/getRound";
 
 export const useRound = () => {
   const {
@@ -10,5 +11,6 @@ export const useRound = () => {
     },
   } = useDojo();
   const gameId = getLSGameId();
-  return getRound(gameId, Round) as Round;
+  const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
+  return useComponentValue(Round, entityId);
 };

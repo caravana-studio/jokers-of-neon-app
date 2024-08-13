@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -12,7 +13,6 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
-import { useGame } from "../dojo/queries/useGame";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -56,9 +56,9 @@ export const useGameState = () => {
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
 
-  const dojoScore = round?.score ?? 0;
+  const dojoScore = round?.player_score ?? 0;
   const dojoHandsLeft = round?.hands;
-  const dojoDiscardsLeft = round?.discards;
+  const dojoDiscardsLeft = round?.discard;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -77,10 +77,10 @@ export const useGameState = () => {
     if (!score && dojoScore > 0) {
       setScore(dojoScore);
     }
-    if (dojoHandsLeft > 0) {
+    if (dojoHandsLeft && dojoHandsLeft > 0) {
       setHandsLeft(dojoHandsLeft);
     }
-    if (dojoDiscardsLeft > 0) {
+    if (dojoDiscardsLeft && dojoDiscardsLeft > 0) {
       setDiscardsLeft(dojoDiscardsLeft);
     }
   }, [dojoScore, dojoHandsLeft, dojoDiscardsLeft]);
