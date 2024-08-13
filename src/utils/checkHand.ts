@@ -3,6 +3,7 @@ import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
 import { CardData } from "../types/CardData";
 import { getCardData } from "./getCardData";
+import { Cards } from "../enums/cards";
 
 export const checkHand = (
   hand: Card[],
@@ -88,7 +89,7 @@ export const checkHand = (
   if (cardsData.length === jokers) {
     switch (jokers) {
       case 5:
-        return Plays.FIVE_OF_A_KIND;
+        return Plays.ROYAL_FLUSH;
       case 4:
         return Plays.FOUR_OF_A_KIND;
       case 3:
@@ -102,34 +103,68 @@ export const checkHand = (
 
   const isFlush = [Suits.CLUBS, Suits.DIAMONDS, Suits.HEARTS, Suits.SPADES].some(
     (suit) => {
-      (suitsCount.get(suit) || 0) + jokers >= lenFlush
+      return (suitsCount.get(suit) || 0) + jokers >= lenFlush;
     }
   );
 
   let tempJokers = jokers;
-  const isStraight =
-    cardsSorted.length >= lenStraight &&
-    jokers <= 2 &&
-    cardsSorted.every((card, idx, arr) => {
-      if (idx === 0) return true;
-      const actualValue = card.card || 0;
-      const prevValue = arr[idx - 1].card || 0;
-      if (actualValue === prevValue + 1) {
-        return true;
-      } else if (actualValue === prevValue || actualValue === 14 || prevValue === 14) {
-        return true;
-      } else {
-        const gap = actualValue - prevValue - 1;
-        if (gap <= tempJokers) {
-          tempJokers -= gap;
-          return true;
-        }
-        return false;
-      }
-    });
+  const isStraight = () => {
 
-  if (isFlush && isStraight) {
-    return Plays.STRAIGHT_FLUSH;
+    if (cardsSorted.length < lenStraight) return false;
+    if (cardsSorted.length == lenStraight && jokers === 4 ) return true;
+
+    let consecutive = 1;
+
+    for (let idx = 1; idx < cardsSorted.length; idx++) {
+      const actualValue = cardsSorted[idx].card || 0;
+      const prevValue = cardsSorted[idx - 1].card || 0;
+
+      if (cardsSorted[idx].card === Cards.ACE && (cardsSorted[0].card === Cards.TWO || jokers > 0)) {
+        consecutive++;
+      }
+      
+      if(cardsSorted[idx].card == Cards.JOKER )
+        break;
+
+      if (actualValue === prevValue) {
+        continue;
+      }
+      const gap = actualValue - prevValue - 1;
+
+      if (gap === 0) {
+        consecutive++;
+      } 
+      else if (gap <= tempJokers) {
+        tempJokers -= gap;
+        consecutive += gap + 1;
+      } 
+      if (consecutive >= lenStraight) {
+        return true;
+      }
+    }
+
+    if (tempJokers > 0 && consecutive + tempJokers >= lenStraight) {
+      return true;
+    }
+
+    return consecutive >= lenStraight;
+  }
+
+  if (isFlush && isStraight()) {
+    let royalCards = [Cards.TEN, Cards.JACK, Cards.QUEEN, Cards.KING, Cards.ACE]
+
+    let foundValues = 0;
+    for (let idx = 0; idx < cardsSorted.length; idx++) {
+      const card = cardsSorted[idx];
+      if (card.card !=  undefined && royalCards.includes(card.card)) {
+        foundValues += 1;
+      }
+    }
+
+    if ( foundValues + jokers === lenStraight)
+      return Plays.ROYAL_FLUSH;
+    else
+      return Plays.STRAIGHT_FLUSH;
   }
 
   const isFiveOfAKind = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 5);
@@ -141,7 +176,7 @@ export const checkHand = (
   if (isFourOfAKind) {
     return Plays.FOUR_OF_A_KIND;
   }
-
+  
   const isFullHouse = (() => {
     let pairsCount = 0;
     let isThreeOfAKind = false;
@@ -157,19 +192,12 @@ export const checkHand = (
     return Plays.FULL_HOUSE;
   }
 
-  if (isStraight) {
+  if (isStraight()) {
     return Plays.STRAIGHT;
   }
 
   if (isFlush) {
     return Plays.FLUSH;
-  }
-
-  const isThreeOfAKind = counts.some((cardValue) => {
-    (valuesCount.get(cardValue) || 0) + jokers === 3
-  });
-  if (isThreeOfAKind) {
-    return Plays.THREE_OF_A_KIND;
   }
 
   const isTwoPair = (() => {
@@ -190,6 +218,15 @@ export const checkHand = (
   const isOnePair = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers == 2);
   if (isOnePair) {
     return Plays.PAIR;
+  }
+
+  const isThreeOfAKind = counts.some((cardValue) => {
+    const countWithJokers = (valuesCount.get(cardValue) || 0) + jokers;
+    return countWithJokers === 3;
+  });
+  
+  if (isThreeOfAKind) {
+    return Plays.THREE_OF_A_KIND;
   }
 
   return Plays.HIGH_CARD;
