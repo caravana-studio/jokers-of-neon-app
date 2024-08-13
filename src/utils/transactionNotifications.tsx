@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
 import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, Tooltip } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 const TX_ERROR_MESSAGE = "Error processing transaction.";
@@ -23,29 +23,44 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
     padding: 0,
     backgroundColor: "transparent",
     boxShadow: "none",
-    right: "8px",
+    right: "18px",
     width: "50px"
   },
 };
 
-const CircularToast = ({ backgroundColor, status }: any) => (
-  <Box
-    width="50px"
-    height="50px"
-    bg={backgroundColor}
-    borderRadius="50%"
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-  >
-    {status === "loading" ? (
-      <Spinner boxSize={24} thickness="2px" speed="0.65s" color="white" size="xl" />
-    ) : status === "success" ? (
-      <CheckCircleIcon boxSize="24px" color="white" />
-    ) : (
-      <WarningIcon boxSize="24px" color="white" />
-    )}
-  </Box>
+type CircularToastProps = {
+  backgroundColor: string;
+  status: "loading" | "success" | "error";
+  description?: string;
+};
+
+const CircularToast = ({ backgroundColor, status, description }: CircularToastProps) => (
+  <Tooltip 
+    hasArrow 
+    label={description} 
+    isDisabled={!description} 
+    closeOnPointerDown 
+    color="white" 
+    backgroundColor={backgroundColor}
+    padding={2}>
+    <Box
+      width="50px"
+      height="50px"
+      bg={backgroundColor}
+      borderRadius="50%"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      {status === "loading" ? (
+        <Spinner boxSize={24} thickness="2px" speed="0.65s" color="white" size="xl" />
+      ) : status === "success" ? (
+        <CheckCircleIcon boxSize="24px" color="white" />
+      ) : (
+        <WarningIcon boxSize="24px" color="white" />
+      )}
+    </Box>
+  </Tooltip>
 );
 
 const getToastAction = (transaction_hash: string) => {
@@ -75,20 +90,20 @@ export const updateTransactionToast = (
   succeed: boolean
 ): boolean => {
   const backgroundColor = succeed ? SUCCESS_TOAST : ERROR_TOAST;
+  const description = shortenHex(transaction_hash, 15);
 
   if (succeed) {
 
     toast.success(
-      <CircularToast backgroundColor={backgroundColor} status={"success"} />,
+      <CircularToast backgroundColor={backgroundColor} status={"success"} description={description}/>,
       {
         ...TOAST_COMMON_OPTIONS,
       }
     );
   } else {
-    const description = shortenHex(transaction_hash, 15);
 
     toast.error(
-      <CircularToast backgroundColor={backgroundColor} status={"error"} />,
+      <CircularToast backgroundColor={backgroundColor} status={"error"} description={description}/>,
       {
         ...TOAST_COMMON_OPTIONS,
       }
