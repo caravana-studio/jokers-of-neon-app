@@ -1,12 +1,11 @@
 import { useComponentValue } from "@dojoengine/react";
-import {
-  Entity
-} from "@dojoengine/recs";
+import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
+import { useShop } from "./useShop";
 
 export interface ShopItems {
   specialCards: Card[];
@@ -79,34 +78,44 @@ const usePokerHandItem = (gameId: number, index: number) => {
 
 export const useShopItems = () => {
   const game = useGame();
+  const shop = useShop();
   const gameId = game?.id ?? 0;
 
-  const tc1 = useCard(gameId, 0, NumericCardTypes.COMMON);
-  const tc2 = useCard(gameId, 1, NumericCardTypes.COMMON);
-  const tc3 = useCard(gameId, 2, NumericCardTypes.COMMON);
-  const tc4 = useCard(gameId, 3, NumericCardTypes.COMMON);
-  const tc5 = useCard(gameId, 4, NumericCardTypes.COMMON);
+  const commonCardsIds = Array.from(
+    { length: shop?.len_item_common_cards ?? 0 },
+    (_, index) => index
+  );
 
-  const commonCards: Card[] = [tc1, tc2, tc3, tc4, tc5];
+  const modifierCardsIds = Array.from(
+    { length: shop?.len_item_modifier_cards ?? 0 },
+    (_, index) => index
+  );
 
-  const mc1 = useCard(gameId, 0, NumericCardTypes.MODIFIER);
-  const mc2 = useCard(gameId, 1, NumericCardTypes.MODIFIER);
-  const mc3 = useCard(gameId, 2, NumericCardTypes.MODIFIER);
-  const mc4 = useCard(gameId, 3, NumericCardTypes.MODIFIER);
+  const specialCardsIds = Array.from(
+    { length: shop?.len_item_special_cards ?? 0 },
+    (_, index) => index
+  );
 
-  const modifierCards: Card[] = [mc1, mc2, mc3, mc4];
+  const commonCards: Card[] = commonCardsIds.map((index) =>
+    useCard(gameId, index, NumericCardTypes.COMMON)
+  );
 
-  const sc1 = useCard(gameId, 0, NumericCardTypes.SPECIAL);
-  const sc2 = useCard(gameId, 1, NumericCardTypes.SPECIAL);
-  const sc3 = useCard(gameId, 2, NumericCardTypes.SPECIAL);
+  const modifierCards: Card[] = modifierCardsIds.map((index) =>
+    useCard(gameId, index, NumericCardTypes.MODIFIER)
+  );
 
-  const specialCards: Card[] = [sc1, sc2, sc3];
+  const specialCards: Card[] = specialCardsIds.map((index) =>
+    useCard(gameId, index, NumericCardTypes.SPECIAL)
+  );
 
-  const ph1 = usePokerHandItem(gameId, 0);
-  const ph2 = usePokerHandItem(gameId, 1);
-  const ph3 = usePokerHandItem(gameId, 2);
+  const pokerHandIds = Array.from(
+    { length: shop?.len_item_poker_hands ?? 0 },
+    (_, index) => index
+  );
 
-  const pokerHandItems: PokerHandItem[] = [ph1, ph2, ph3];
+  const pokerHandItems: PokerHandItem[] = pokerHandIds.map((index) =>
+    usePokerHandItem(gameId, index)
+  );
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
