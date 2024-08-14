@@ -49,7 +49,7 @@ export const useGameState = () => {
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
   const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
-  const { specialCards } = useCurrentSpecialCards();
+  const specialCards  = useCurrentSpecialCards();
 
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
