@@ -1,8 +1,8 @@
 {
   "world": {
     "kind": "WorldContract",
-    "class_hash": "0x2178527e9556d1aa21d3c2961d28f9114fcfed81b4c3674ed591c50ce46cc9d",
-    "original_class_hash": "0x2178527e9556d1aa21d3c2961d28f9114fcfed81b4c3674ed591c50ce46cc9d",
+    "class_hash": "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a",
+    "original_class_hash": "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a",
     "abi": [
       {
         "type": "impl",
@@ -145,6 +145,32 @@
       },
       {
         "type": "enum",
+        "name": "dojo::world::world_contract::Resource",
+        "variants": [
+          {
+            "name": "Model",
+            "type": "(core::starknet::class_hash::ClassHash, core::starknet::contract_address::ContractAddress)"
+          },
+          {
+            "name": "Contract",
+            "type": "(core::starknet::class_hash::ClassHash, core::starknet::contract_address::ContractAddress)"
+          },
+          {
+            "name": "Namespace",
+            "type": "()"
+          },
+          {
+            "name": "World",
+            "type": "()"
+          },
+          {
+            "name": "Unregistered",
+            "type": "()"
+          }
+        ]
+      },
+      {
+        "type": "enum",
         "name": "core::bool",
         "variants": [
           {
@@ -166,7 +192,7 @@
             "name": "metadata",
             "inputs": [
               {
-                "name": "resource_id",
+                "name": "resource_selector",
                 "type": "core::felt252"
               }
             ],
@@ -191,35 +217,15 @@
           },
           {
             "type": "function",
-            "name": "model",
+            "name": "register_namespace",
             "inputs": [
               {
-                "name": "selector",
-                "type": "core::felt252"
+                "name": "namespace",
+                "type": "core::byte_array::ByteArray"
               }
             ],
-            "outputs": [
-              {
-                "type": "(core::starknet::class_hash::ClassHash, core::starknet::contract_address::ContractAddress)"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "contract",
-            "inputs": [
-              {
-                "name": "selector",
-                "type": "core::felt252"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "(core::starknet::class_hash::ClassHash, core::starknet::contract_address::ContractAddress)"
-              }
-            ],
-            "state_mutability": "view"
+            "outputs": [],
+            "state_mutability": "external"
           },
           {
             "type": "function",
@@ -235,11 +241,11 @@
           },
           {
             "type": "function",
-            "name": "register_namespace",
+            "name": "upgrade_model",
             "inputs": [
               {
-                "name": "namespace",
-                "type": "core::byte_array::ByteArray"
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
               }
             ],
             "outputs": [],
@@ -256,10 +262,6 @@
               {
                 "name": "class_hash",
                 "type": "core::starknet::class_hash::ClassHash"
-              },
-              {
-                "name": "init_calldata",
-                "type": "core::array::Span::<core::felt252>"
               }
             ],
             "outputs": [
@@ -287,6 +289,22 @@
                 "type": "core::starknet::class_hash::ClassHash"
               }
             ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "init_contract",
+            "inputs": [
+              {
+                "name": "selector",
+                "type": "core::felt252"
+              },
+              {
+                "name": "init_calldata",
+                "type": "core::array::Span::<core::felt252>"
+              }
+            ],
+            "outputs": [],
             "state_mutability": "external"
           },
           {
@@ -397,6 +415,22 @@
           },
           {
             "type": "function",
+            "name": "resource",
+            "inputs": [
+              {
+                "name": "selector",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "dojo::world::world_contract::Resource"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "is_owner",
             "inputs": [
               {
@@ -498,86 +532,6 @@
             ],
             "outputs": [],
             "state_mutability": "external"
-          },
-          {
-            "type": "function",
-            "name": "can_write_resource",
-            "inputs": [
-              {
-                "name": "resource_id",
-                "type": "core::felt252"
-              },
-              {
-                "name": "contract",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "can_write_model",
-            "inputs": [
-              {
-                "name": "selector",
-                "type": "core::felt252"
-              },
-              {
-                "name": "contract",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "can_write_contract",
-            "inputs": [
-              {
-                "name": "selector",
-                "type": "core::felt252"
-              },
-              {
-                "name": "contract",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
-          },
-          {
-            "type": "function",
-            "name": "can_write_namespace",
-            "inputs": [
-              {
-                "name": "selector",
-                "type": "core::felt252"
-              },
-              {
-                "name": "contract",
-                "type": "core::starknet::contract_address::ContractAddress"
-              }
-            ],
-            "outputs": [
-              {
-                "type": "core::bool"
-              }
-            ],
-            "state_mutability": "view"
           }
         ]
       },
@@ -855,6 +809,23 @@
       },
       {
         "type": "event",
+        "name": "dojo::world::world_contract::world::ContractInitialized",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "selector",
+            "type": "core::felt252",
+            "kind": "data"
+          },
+          {
+            "name": "init_calldata",
+            "type": "core::array::Span::<core::felt252>",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
         "name": "dojo::world::world_contract::world::WorldUpgraded",
         "kind": "struct",
         "members": [
@@ -902,6 +873,33 @@
       {
         "type": "event",
         "name": "dojo::world::world_contract::world::ModelRegistered",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "data"
+          },
+          {
+            "name": "namespace",
+            "type": "core::byte_array::ByteArray",
+            "kind": "data"
+          },
+          {
+            "name": "class_hash",
+            "type": "core::starknet::class_hash::ClassHash",
+            "kind": "data"
+          },
+          {
+            "name": "address",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "dojo::world::world_contract::world::ModelUpgraded",
         "kind": "struct",
         "members": [
           {
@@ -1159,6 +1157,11 @@
             "kind": "nested"
           },
           {
+            "name": "ContractInitialized",
+            "type": "dojo::world::world_contract::world::ContractInitialized",
+            "kind": "nested"
+          },
+          {
             "name": "WorldUpgraded",
             "type": "dojo::world::world_contract::world::WorldUpgraded",
             "kind": "nested"
@@ -1176,6 +1179,11 @@
           {
             "name": "ModelRegistered",
             "type": "dojo::world::world_contract::world::ModelRegistered",
+            "kind": "nested"
+          },
+          {
+            "name": "ModelUpgraded",
+            "type": "dojo::world::world_contract::world::ModelUpgraded",
             "kind": "nested"
           },
           {
@@ -1221,10 +1229,10 @@
         ]
       }
     ],
-    "address": "0x674a11e7bdcd4c215f7e658fbddf7ff8fdbd43c415a985ed11178f7063545ac",
-    "transaction_hash": "0xd69098254fb948a978568db8249a1f04193e232d72a18a593482f9d98951ae",
+    "address": "0x3861140293abf938125d66e23412ad25be0ee269741e39f9b4fb3d0e208d321",
+    "transaction_hash": "0x67080bead56b1899cc99b1e8beaa1c0e3d2a8e50b0f9b686ecca94153ceb903",
     "block_number": 3,
-    "seed": "dojo_starter",
+    "seed": "jokers_of_neon",
     "metadata": {
       "profile_name": "dev",
       "rpc_url": "http://localhost:5050/"
@@ -1242,9 +1250,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0xddffa15d3cc3ff01d518aa9db5958c2e9b0929f787432e1d3db24c550a56b7",
-      "class_hash": "0x6153574e12a504b6427440d97812b4f04a9e0d494ce71d20188521d344e860",
-      "original_class_hash": "0x6153574e12a504b6427440d97812b4f04a9e0d494ce71d20188521d344e860",
+      "address": "0x648f96adcb4be39562b96f45d9e5e1ae2c3cc2e4057f62504839b9bf1541210",
+      "class_hash": "0x1bbb9341465c06ddf2d4e27f21e9b0fce8b356f756cf5782bff355e04b64641",
+      "original_class_hash": "0x1bbb9341465c06ddf2d4e27f21e9b0fce8b356f756cf5782bff355e04b64641",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1456,16 +1464,15 @@
       "writes": [
         "ns:jokers_of_neon"
       ],
-      "computed": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-config_system",
       "manifest_name": "jokers_of_neon-config_system-3bd09601"
     },
     {
       "kind": "DojoContract",
-      "address": "0x138b97fd38a170b56e1aafd57a1a06258866893518535142d377ccf48d098c1",
-      "class_hash": "0x3db43a95c8459e595292020912dcb60902b7adf2654558598d200feef3e073d",
-      "original_class_hash": "0x3db43a95c8459e595292020912dcb60902b7adf2654558598d200feef3e073d",
+      "address": "0x2aa2420ee7d1f0024e63081455778008025852560c24940b1ee949c51675133",
+      "class_hash": "0x365fcc24ee92055f99da6937c05e0b0d5b445438659991afd2e81203ccdb713",
+      "original_class_hash": "0x365fcc24ee92055f99da6937c05e0b0d5b445438659991afd2e81203ccdb713",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1866,16 +1873,15 @@
       "writes": [
         "ns:jokers_of_neon"
       ],
-      "computed": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-game_system",
       "manifest_name": "jokers_of_neon-game_system-7a205bbc"
     },
     {
       "kind": "DojoContract",
-      "address": "0x7e7e545500088d275b2a622f0cc9bfe13be573d69eda3b84198ab8cf02bc24c",
-      "class_hash": "0x18e019ba87508bd20a6ee83c6ed54fe0ab2fd3b187a683b8493a1b0dc8a0c2c",
-      "original_class_hash": "0x18e019ba87508bd20a6ee83c6ed54fe0ab2fd3b187a683b8493a1b0dc8a0c2c",
+      "address": "0x244f2f5217cdbb1e8277efa257214a2346fc08c7a59638b8fedab6987d2c6a0",
+      "class_hash": "0x59283ed0f64a2e1b7966a9e7186b406ea84e8a7809491fb9c0cec6275b68e9d",
+      "original_class_hash": "0x59283ed0f64a2e1b7966a9e7186b406ea84e8a7809491fb9c0cec6275b68e9d",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2180,7 +2186,6 @@
       "writes": [
         "ns:jokers_of_neon"
       ],
-      "computed": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-shop_system",
       "manifest_name": "jokers_of_neon-shop_system-70224af0"
@@ -2216,8 +2221,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4142cc9fcade9b2e0170b25cbc2241e297be412f3db626f3d62b845cf89abbf",
-      "original_class_hash": "0x4142cc9fcade9b2e0170b25cbc2241e297be412f3db626f3d62b845cf89abbf",
+      "class_hash": "0x4d98525a47b4554108d26631e08d62fe540dfd97a96bc0533c22a87b54e4160",
+      "original_class_hash": "0x4d98525a47b4554108d26631e08d62fe540dfd97a96bc0533c22a87b54e4160",
       "abi": [
         {
           "type": "impl",
@@ -4599,8 +4604,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6f86b0c7543c474a82f615505eaab33ca54dbf8f1c52dd290345fdebd39a67e",
-      "original_class_hash": "0x6f86b0c7543c474a82f615505eaab33ca54dbf8f1c52dd290345fdebd39a67e",
+      "class_hash": "0x4673245820f4646ef703181606e3578fbacb41f9b2559655d107487c43b000b",
+      "original_class_hash": "0x4673245820f4646ef703181606e3578fbacb41f9b2559655d107487c43b000b",
       "abi": [
         {
           "type": "impl",
@@ -5533,8 +5538,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x62a25f996a67c57b8b2a7162b93eeba38f836929554ff39b5802ef91831542c",
-      "original_class_hash": "0x62a25f996a67c57b8b2a7162b93eeba38f836929554ff39b5802ef91831542c",
+      "class_hash": "0x4ca4ea13b90bc74f42dc4019d1204d10b9179249fd8511f0a92c65604a13955",
+      "original_class_hash": "0x4ca4ea13b90bc74f42dc4019d1204d10b9179249fd8511f0a92c65604a13955",
       "abi": [
         {
           "type": "impl",
@@ -6494,8 +6499,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x328bd6ea876a55535449f24dfe00fba7ef057865438308039c82dd6313394c8",
-      "original_class_hash": "0x328bd6ea876a55535449f24dfe00fba7ef057865438308039c82dd6313394c8",
+      "class_hash": "0x21bc0254805a577613428fbb13f19596501dc2b12e8b08ce2cb625b74e59a7d",
+      "original_class_hash": "0x21bc0254805a577613428fbb13f19596501dc2b12e8b08ce2cb625b74e59a7d",
       "abi": [
         {
           "type": "impl",
@@ -7035,8 +7040,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x73c789c968f43a132e1055e87c0cd9d5558c30a86b9886ca8eefa02c21077a3",
-      "original_class_hash": "0x73c789c968f43a132e1055e87c0cd9d5558c30a86b9886ca8eefa02c21077a3",
+      "class_hash": "0x2c30574e0c83064f9cb64c7ca782e82ae5257e9bd63488b41b26b79e5eb3335",
+      "original_class_hash": "0x2c30574e0c83064f9cb64c7ca782e82ae5257e9bd63488b41b26b79e5eb3335",
       "abi": [
         {
           "type": "impl",
@@ -7552,8 +7557,8 @@
           "key": false
         }
       ],
-      "class_hash": "0xb004b56b4bebd33e86ecd9fb04f326a7200ed6bf6feaaa3d647691875ab9ee",
-      "original_class_hash": "0xb004b56b4bebd33e86ecd9fb04f326a7200ed6bf6feaaa3d647691875ab9ee",
+      "class_hash": "0x61906b53bc9f976e2a341e2a0ad5d936c5ff2ffefed096b7995e9ad7c8807ca",
+      "original_class_hash": "0x61906b53bc9f976e2a341e2a0ad5d936c5ff2ffefed096b7995e9ad7c8807ca",
       "abi": [
         {
           "type": "impl",
@@ -8561,8 +8566,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x543ca65a43d395c28f9f622c4114ae9e342468f633111d3706d8e59e38a6544",
-      "original_class_hash": "0x543ca65a43d395c28f9f622c4114ae9e342468f633111d3706d8e59e38a6544",
+      "class_hash": "0x6c3d62ed73e679b777828141590c0c1c3d954747797d7eaca40452e98b8f8fc",
+      "original_class_hash": "0x6c3d62ed73e679b777828141590c0c1c3d954747797d7eaca40452e98b8f8fc",
       "abi": [
         {
           "type": "impl",
@@ -11740,8 +11745,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6f6e68a3617c0e327741d05dbab28dfd5e0a4a35e732ad4fe9a0e7ea94889c9",
-      "original_class_hash": "0x6f6e68a3617c0e327741d05dbab28dfd5e0a4a35e732ad4fe9a0e7ea94889c9",
+      "class_hash": "0x682e2df48fb3b22c51d5ea0dcbb73a57090c828993e36dfe00f28c8782d31fe",
+      "original_class_hash": "0x682e2df48fb3b22c51d5ea0dcbb73a57090c828993e36dfe00f28c8782d31fe",
       "abi": [
         {
           "type": "impl",
@@ -14553,8 +14558,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6b785ce2334ff3805020a7f39cffb8c244bccd095209112f0d2c1b4fe06c757",
-      "original_class_hash": "0x6b785ce2334ff3805020a7f39cffb8c244bccd095209112f0d2c1b4fe06c757",
+      "class_hash": "0x4182ae715cf251f5f3ff16e0e746d7743111f3ce5e2ca29e22e0c627595e3e7",
+      "original_class_hash": "0x4182ae715cf251f5f3ff16e0e746d7743111f3ce5e2ca29e22e0c627595e3e7",
       "abi": [
         {
           "type": "impl",

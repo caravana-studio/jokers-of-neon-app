@@ -22,7 +22,7 @@ export function defineContractComponents(world: World) {
     CardItem: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, item_type: RecsType.Number, card_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean, temporary: RecsType.Boolean },
+        { game_id: RecsType.Number, idx: RecsType.Number, item_type: RecsType.String, card_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean, temporary: RecsType.Boolean },
         {
           metadata: {
             name: "jokers_of_neon-CardItem",
@@ -269,7 +269,7 @@ export function defineContractComponents(world: World) {
     PokerHandItem: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, poker_hand: RecsType.Number, level: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
+        { game_id: RecsType.Number, idx: RecsType.Number, poker_hand: RecsType.String, level: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
         {
           metadata: {
             name: "jokers_of_neon-PokerHandItem",

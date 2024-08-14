@@ -7,9 +7,8 @@ import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { TutorialModal } from "../../components/TutorialModal.tsx";
 import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
-import { useDojo } from "../../dojo/useDojo.tsx";
+import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { useGetGame } from "../../queries/useGetGame.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
@@ -19,30 +18,25 @@ export const GameContent = () => {
     preSelectedCards,
     gameLoading,
     error,
-    clearPreSelection,
     executeCreateGame,
     addModifier,
     roundRewards,
     gameId,
     checkOrCreateGame,
+    lockRedirection,
   } = useGameContext();
 
   const [showTutorial, setShowTutorial] = useState(
     !window.localStorage.getItem(SKIP_TUTORIAL)
   );
 
-  const { data: game } = useGetGame(gameId);
-  const {
-    setup: {
-      clientComponents: { Game },
-    },
-  } = useDojo();
+  const game = useGame();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
-    if (!roundRewards) {
+    if (!roundRewards && !lockRedirection) {
       if (game?.state === "FINISHED") {
         navigate("/gameover");
       } else if (game?.state === "AT_SHOP") {
@@ -92,7 +86,7 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading) {
+  if (gameLoading || !game) {
     return <Loading />;
   }
 

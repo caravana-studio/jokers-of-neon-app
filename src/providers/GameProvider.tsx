@@ -54,6 +54,7 @@ interface IGameContext {
   score: number;
   handsLeft: number;
   discardsLeft: number;
+  lockRedirection: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -91,6 +92,7 @@ const GameContext = createContext<IGameContext>({
   score: 0,
   handsLeft: 4,
   discardsLeft: 4,
+  lockRedirection: false
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -557,6 +559,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
+      setTimeout(() => {
+        if (!gameExists(Game, gameId)) {
+          executeCreateGame();
+        } else {
+          setGameLoading(false);
+          console.log("Game found (2), no need to create a new one");
+        }
+      }, 2000);
       executeCreateGame();
     } else {
       setGameLoading(false);
@@ -603,7 +613,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <GameContext.Provider value={{ ...state, ...actions }}>
+    <GameContext.Provider value={{ ...state, ...actions, lockRedirection }}>
       {children}
     </GameContext.Provider>
   );

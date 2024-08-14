@@ -12,7 +12,6 @@ export const useGame = () => {
     },
   } = useDojo();
   const gameId = getLSGameId();
-  console.log("gameId", gameId);
   const entityId = useMemo(
     () =>
       getEntityIdFromKeys([

@@ -50,8 +50,6 @@ export const Store = () => {
 
   const shopItems = useShopItems();
 
-  console.log("shopItems", shopItems);
-
   const navigate = useNavigate();
 
   const levelUpTable = (

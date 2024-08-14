@@ -6,7 +6,6 @@ import { Score } from "./Score";
 
 export const LevelPoints = () => {
   const game = useGame();
-  console.log("game", game);
   const round = useRound();
   const level = game?.level ?? 0;
   const levelScore = round?.level_score ?? 0;
