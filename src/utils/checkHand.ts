@@ -119,11 +119,12 @@ export const checkHand = (
       const actualValue = cardsSorted[idx].card || 0;
       const prevValue = cardsSorted[idx - 1].card || 0;
 
-      if (cardsSorted[idx].card === Cards.ACE && (cardsSorted[0].card === Cards.TWO || jokers > 0)) {
+      if (cardsSorted[idx].card === Cards.ACE && (cardsSorted[0].card === Cards.TWO || tempJokers > 0)) {
         consecutive++;
+        continue;
       }
       
-      if(cardsSorted[idx].card == Cards.JOKER )
+      if(cardsSorted[idx].card == Cards.JOKER)
         break;
 
       if (actualValue === prevValue) {
@@ -137,9 +138,6 @@ export const checkHand = (
       else if (gap <= tempJokers) {
         tempJokers -= gap;
         consecutive += gap + 1;
-      } 
-      if (consecutive >= lenStraight) {
-        return true;
       }
     }
 

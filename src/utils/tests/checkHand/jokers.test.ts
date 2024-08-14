@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C10, C2, C3, C4, C5, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S2, S3, S4, S5, S6, S7, S8, S9, SK } from "../../mocks/cardMocks";
+import { C10, C2, C3, C4, C5, C9, CA, CJ, CQ, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S2, S3, S4, S5, S6, S7, S8, S9, SA, SK } from "../../mocks/cardMocks";
 
 test("One Joker should be high card", () => {
   expect(testCheckHand([JOKER1])).toBe(Plays.HIGH_CARD);
@@ -131,6 +131,18 @@ test("Straight high with one gap and joker should work", () => {
   expect(testCheckHand([HJ, DQ, SK, C10, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
+test("Straight shouldn't work", () => {
+  expect(testCheckHand([HJ, DQ, SA, C9, JOKER2])).toBe(Plays.PAIR);
+});
+
+test("Straight case 2 shouldn't work", () => {
+  expect(testCheckHand([H10, DK, SA, C9, JOKER2])).toBe(Plays.PAIR);
+});
+
+test("Straight case 3 shouldn't work", () => {
+  expect(testCheckHand([H8, C9, DK, CA, JOKER2])).toBe(Plays.PAIR);
+});
+
 test("Straight with two jokers at the end should work", () => {
   expect(testCheckHand([H4, D2, S3, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
@@ -177,4 +189,8 @@ test("Flush with three cards and jokers should work", () => {
 
 test("Flush with four cards and a joker should work", () => {
   expect(testCheckHand([H2, H3, H8, H9, JOKER2])).toBe(Plays.FLUSH);
+});
+
+test("Flush should with one joker and almost straight should work", () => {
+  expect(testCheckHand([CJ, CQ, CA, C9, JOKER2])).toBe(Plays.FLUSH);
 });
