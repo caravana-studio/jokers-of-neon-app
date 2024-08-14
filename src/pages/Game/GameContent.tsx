@@ -163,6 +163,7 @@ export const GameContent = () => {
             width="100%"
             position="fixed"
             bottom={0}
+            sx={{ pointerEvents: "none" }}
           />
         </Box>
         <Box
