@@ -27,8 +27,16 @@ test("ThreeOfAKind with a pair and a joker should work", () => {
   expect(testCheckHand([H2, S2, JOKER1])).toBe(Plays.THREE_OF_A_KIND);
 });
 
+test("ThreeOfAKind with a pair and a joker should work", () => {
+  expect(testCheckHand([H7, S7, JOKER1, D3])).toBe(Plays.THREE_OF_A_KIND);
+});
+
 test("ThreeOfAKind with two jokers", () => {
   expect(testCheckHand([H2, JOKER1, JOKER1])).toBe(Plays.THREE_OF_A_KIND);
+});
+
+test("ThreeOfAKind with two jokers", () => {
+  expect(testCheckHand([H2, JOKER1, JOKER1, D4])).toBe(Plays.THREE_OF_A_KIND);
 });
 
 test("ThreeOfAKind with three cards and two jokers", () => {
