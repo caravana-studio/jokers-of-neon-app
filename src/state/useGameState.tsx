@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
-import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -45,7 +44,6 @@ export const useGameState = () => {
   );
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
-  const game = useGame();
   const round = useRound();
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
@@ -148,8 +146,6 @@ export const useGameState = () => {
     setHandsLeft,
     discardsLeft,
     setDiscardsLeft,
-    game,
-    round,
     apiHand: dojoHand,
     plays,
     refetchPlays,

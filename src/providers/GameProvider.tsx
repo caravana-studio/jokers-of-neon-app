@@ -18,6 +18,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { useGame } from "../dojo/queries/useGame.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -116,12 +117,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     account,
   } = useDojo();
 
+  const game = useGame();
+
   const { setAnimatedCard } = useCardAnimations();
 
   const {
     gameId,
     setGameId,
-    setPreSelectedPlay,
     preSelectedCards,
     setPreSelectedCards,
     hand,
@@ -130,34 +132,22 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPoints,
     multi,
     setMulti,
-    roundRewards,
     setRoundRewards,
     preSelectedModifiers,
     setPreSelectedModifiers,
     preSelectionLocked,
     setPreSelectionLocked,
-    gameLoading,
     setGameLoading,
-    discardAnimation,
     setDiscardAnimation,
-    playAnimation,
     setPlayAnimation,
-    error,
     setError,
-    score,
     setScore,
     handsLeft,
     setHandsLeft,
-    discardsLeft,
     setDiscardsLeft,
-    game,
-    plays,
-    refetchPlays,
     refetchDeckData,
     sortBySuit,
     setSortBySuit,
-    sortBy,
-    sortedHand,
     username,
   } = state;
 
