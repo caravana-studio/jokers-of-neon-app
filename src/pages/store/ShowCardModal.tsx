@@ -34,9 +34,10 @@ export const ShowCardModal = ({
   close,
   onBuyClick,
 }: IShowCardModalProps) => {
-  const { name, description } = getCardData(card);
-  const { cash, locked } = useStore();
   const game = useGame();
+  const cash = game?.cash ?? 0;
+  const { name, description } = getCardData(card);
+  const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 

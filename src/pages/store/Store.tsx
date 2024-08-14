@@ -26,6 +26,7 @@ export const Store = () => {
   const { onShopSkip } = useGameContext();
 
   const rerollCost = store?.reroll_cost ?? 0;
+  const cash = game?.cash ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
   const { showErrorToast } = useCustomToast();
@@ -46,7 +47,7 @@ export const Store = () => {
     account,
   } = useDojo();
 
-  const { cash, reroll, locked } = useStore();
+  const { reroll, locked } = useStore();
 
   const shopItems = useShopItems();
 
