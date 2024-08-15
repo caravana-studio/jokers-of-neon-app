@@ -40,7 +40,7 @@ export const MobileLevelPoints = () => {
   const { data: round } = useGetRound(gameId);
   const level = game?.level ?? 0;
   return (
-    <Flex gap={2.5} alignItems="center">
+    <Flex gap={2.5} alignItems="center" className="game-tutorial-step-1">
       <Flex
         border="1px solid white"
         borderRadius={10}

@@ -1,4 +1,5 @@
 import { Step } from 'react-joyride';
+import { isMobile } from "react-device-detect";
 
 const COMMON_SETTINGS: Partial<Step> =
 {
@@ -65,7 +66,7 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
     title: 'Game Menu',
     content: 'Toggle to adjust sound settings, start a new game, or log out',
     ...COMMON_SETTINGS,
-    placement: 'top'
+    placement: isMobile ? 'left' : 'top'
   }
 ];
 

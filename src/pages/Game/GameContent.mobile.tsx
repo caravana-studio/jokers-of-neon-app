@@ -14,6 +14,9 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const MobileGameContent = () => {
   const {
@@ -30,6 +33,23 @@ export const MobileGameContent = () => {
     discardEffectCard,
     discardSpecialCard,
   } = useGameContext();
+
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
+    if (showTutorial)
+      setRun(true);
+  }, []);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { type } = data;
+
+    if (type === "tour:end"){
+      window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
+      setRun(false);
+    }
+  };
 
   const { data: game } = useGetGame(gameId);
   const {
@@ -135,6 +155,16 @@ export const MobileGameContent = () => {
           transform: "scale(0.7)",
         }}
       >
+        <Joyride 
+          steps={GAME_TUTORIAL_STEPS}
+          run={run} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
         <GameMenu />
       </Box>
       <Box
