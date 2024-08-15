@@ -10,7 +10,7 @@ export const SpecialCards = () => {
   const { specialCards } = useCurrentSpecialCards();
 
   return (
-    <Box width="100%" p={2} boxShadow={`0px 26px 30px -30px ${colors.neonGreen}`}>
+    <Box width="100%" p={2} boxShadow={`0px 26px 30px -30px ${colors.neonGreen}`} className="game-tutorial-step-2">
       <CardsRow cards={specialCards} />
       <Flex sx={{ mt: 1 }} justifyContent="space-between">
         <Text size="l">Special cards</Text>

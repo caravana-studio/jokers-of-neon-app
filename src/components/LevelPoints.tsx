@@ -12,7 +12,7 @@ export const LevelPoints = () => {
   const level = game?.level ?? 0;
 
   return (
-    <Box>
+    <Box className="game-tutorial-step-1">
       <Flex gap={8}>
         <PointBox type="level">
           <Heading size="s">LEVEL</Heading>
