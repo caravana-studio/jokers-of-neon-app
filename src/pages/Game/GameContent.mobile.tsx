@@ -6,7 +6,7 @@ import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import { TutorialModal } from "../../components/TutorialModal.tsx";
-import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
+import { SKIP_PWA_INSTALL, SKIP_TUTORIAL } from "../../constants/localStorage.ts";
 import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -16,6 +16,7 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import InstallPWAIOS from "../../utils/installPWAIOS.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -45,6 +46,9 @@ export const MobileGameContent = () => {
   const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
   const [showTutorial, setShowTutorial] = useState(
     !window.localStorage.getItem(SKIP_TUTORIAL)
+  );
+  const [showInstallPWA, setShowInstallPWA] = useState(
+    !window.localStorage.getItem(SKIP_PWA_INSTALL)
   );
 
   useEffect(() => {
@@ -139,6 +143,14 @@ export const MobileGameContent = () => {
         />
       )}
 
+      {showInstallPWA && (
+        <InstallPWAIOS
+          onClose={() => {
+            setShowInstallPWA(false);
+          }}
+        />
+      )}
+
       <Box
         sx={{
           position: "fixed",
@@ -148,7 +160,7 @@ export const MobileGameContent = () => {
           transform: "scale(0.7)",
         }}
       >
-        <GameMenu />
+        <GameMenu onTutorialButtonClick={()=>{setShowTutorial(true)}} onInstallPWAButtonClick={()=>{setShowInstallPWA(true)}}/>
       </Box>
       <Box
         sx={{
