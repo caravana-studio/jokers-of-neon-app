@@ -1,16 +1,16 @@
+import { sepolia } from "@starknet-react/chains";
+import { StarknetConfig, jsonRpcProvider } from "@starknet-react/core";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "sonner";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
+import cartridgeConnector from "./cartridgeConnector.tsx";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/generated/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
-import { sepolia } from "@starknet-react/chains";
-import cartridgeConnector from "./cartridgeConnector.tsx";
-import { StarknetConfig, jsonRpcProvider } from "@starknet-react/core";
 
 function rpc() {
   return {
@@ -33,20 +33,20 @@ async function init() {
     const queryClient = new QueryClient();
     root.render(
       <StarknetConfig
-      chains={chains}
-      provider={jsonRpcProvider({ rpc })}
-      connectors={connectors}
-      autoConnect
-  >
-      <DojoProvider value={setupResult}>
-        <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
-            <Toaster />
-            <App />
-          </QueryClientProvider>
-        </BrowserRouter>
-      </DojoProvider>
-    </StarknetConfig>
+        chains={chains}
+        provider={jsonRpcProvider({ rpc })}
+        connectors={connectors}
+        autoConnect
+      >
+        <DojoProvider value={setupResult}>
+          <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+              <Toaster />
+              <App />
+            </QueryClientProvider>
+          </BrowserRouter>
+        </DojoProvider>
+      </StarknetConfig>
     );
   } catch (e) {
     console.error(e);
