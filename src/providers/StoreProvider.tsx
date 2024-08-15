@@ -1,6 +1,5 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 import { useDojo } from "../dojo/useDojo";
-import { useCustomToast } from "../hooks/useCustomToast";
 import { useGameContext } from "./GameProvider";
 
 interface IStoreContext {
@@ -42,7 +41,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     },
     account,
   } = useDojo();
-  const { showErrorToast } = useCustomToast();
 
   const buyCard = (
     card_idx: number,
@@ -51,45 +49,27 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   ): Promise<boolean> => {
     setLocked(true);
     const promise = dojoBuyCard(account.account, gameId, card_idx, card_type);
-    promise
-      .then((response) => {
-        if (!response) {
-          showErrorToast("Error buying card");
-        }
-      })
-      .finally(() => {
-        setLocked(false);
-      });
+    promise.finally(() => {
+      setLocked(false);
+    });
     return promise;
   };
 
   const reroll = () => {
     setLocked(true);
     const promise = storeReroll(account.account, gameId);
-    promise
-      .then((response) => {
-        if (!response) {
-          showErrorToast("Error rerolling");
-        }
-      })
-      .finally(() => {
-        setLocked(false);
-      });
+    promise.finally(() => {
+      setLocked(false);
+    });
     return promise;
   };
 
   const levelUpPlay = (item_id: number, price: number): Promise<boolean> => {
     setLocked(true);
     const promise = dojoLevelUpHand(account.account, gameId, item_id);
-    promise
-      .then((response) => {
-        if (!response) {
-          showErrorToast("Error leveling hand");
-        }
-      })
-      .finally(() => {
-        setLocked(false);
-      });
+    promise.finally(() => {
+      setLocked(false);
+    });
     return promise;
   };
 
