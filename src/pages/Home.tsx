@@ -1,14 +1,20 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
+import { useConnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useDojo } from "../dojo/useDojo";
 import { preloadImages } from "../utils/preloadImages";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
+  const [playButtonClicked, setPlayButtonClicked] = useState(false);
+  const { account } = useDojo();
+  const navigate = useNavigate();
+  const { connect, connectors } = useConnect();
 
   useEffect(() => {
     preloadImages()
@@ -20,7 +26,11 @@ export const Home = () => {
       });
   }, []);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (account && playButtonClicked) {
+      navigate("/demo");
+    }
+  }, [account, playButtonClicked]);
 
   return (
     <Background type="home">
@@ -87,7 +97,8 @@ export const Home = () => {
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/controller-login");
+                  setPlayButtonClicked(true);
+                  connect({ connector: connectors[0] });
                 }}
               >
                 PLAY DEMO

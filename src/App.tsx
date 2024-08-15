@@ -14,7 +14,6 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
-import { ControllerLogin } from "./pages/ControllerLogin.tsx";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -25,7 +24,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/controller-login" element={<ControllerLogin />} />
             <Route
               path="/gameover"
               element={

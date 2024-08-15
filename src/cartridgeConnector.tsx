@@ -60,7 +60,7 @@ const cartridgeConnector = new CartridgeConnector(
       method: "reroll",
     },
   ],
-  { theme: "jokers_of_neon", paymaster },
+  { theme: "jokers-of-neon", paymaster },
 ) as never as Connector;
 
 export default cartridgeConnector;
