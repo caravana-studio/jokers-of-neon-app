@@ -7,14 +7,15 @@ import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
-import { TutorialModal } from "./TutorialModal.tsx";
+import { SKIP_TUTORIAL_GAME } from "../constants/localStorage.ts";
 
 interface GameMenuProps {
   onlySound?: boolean;
   inStore?: boolean;
+  showTutorial?: () => void;
 }
 
-export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) => {
+export const GameMenu = ({ onlySound = false, inStore = false, showTutorial}: GameMenuProps) => {
   const username = useUsername();
   const { executeCreateGame } = useGameContext();
   const navigate = useNavigate();
@@ -24,11 +25,8 @@ export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) 
     toggleSound();
   };
 
-  const [showTutorial, setShowTutorial] = useState(false);
-
   return (
     <>
-      {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />}
       <Menu>
         <MenuButton>
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
@@ -39,7 +37,7 @@ export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) 
               Start new game
             </MenuItem>
           )}
-          <MenuItem onClick={() => setShowTutorial(true)}>
+          <MenuItem onClick={showTutorial}>
             See tutorial
           </MenuItem>
           <MenuItem onClick={togglePlayPause}>
