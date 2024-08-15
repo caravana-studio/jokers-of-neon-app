@@ -19,6 +19,7 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
     right: "18px",
     width: "50px"
   },
+  duration: 1750
 };
 
 type CircularToastProps = {
