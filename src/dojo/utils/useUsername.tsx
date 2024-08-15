@@ -1,7 +1,15 @@
-import { useGame } from "../queries/useGame";
-import { decodeString } from "./decodeString";
+import CartridgeConnector from '@cartridge/connector'
+import { useEffect, useState } from 'react'
+import cartridgeConnector from '../../cartridgeConnector'
 
 export const useUsername = () => {
-  const game = useGame();
-  return decodeString(game?.player_name ?? "");
-};
+  const [username, setUsername] = useState<string | null>(null)
+
+  useEffect(() => {
+    (cartridgeConnector as CartridgeConnector).username()?.then((username) => {
+      setUsername(username)
+    })
+  })
+
+  return username
+}

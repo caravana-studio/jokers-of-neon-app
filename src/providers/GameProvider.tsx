@@ -121,6 +121,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { setAnimatedCard } = useCardAnimations();
 
+  const username = useUsername();
+
   const {
     gameId,
     setGameId,
@@ -147,7 +149,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setDiscardsLeft,
     sortBySuit,
     setSortBySuit,
-    username,
+    sortBy,
+    sortedHand,
   } = state;
 
   const resetLevel = () => {
@@ -171,9 +174,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const executeCreateGame = () => {
     setError(false);
     setGameLoading(true);
+
     if (username) {
       console.log("Creating game...");
-      createGame(account.account, username).then((response) => {
+      createGame(account, username).then((response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
@@ -385,7 +389,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
-    play(account.account, gameId, preSelectedCards, preSelectedModifiers)
+    play(account, gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
           animatePlay(response);
@@ -459,7 +463,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
     discard(
-      account.account,
+      account,
       gameId,
       preSelectedCards,
       preSelectedModifiers
@@ -502,7 +506,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    discardEffectCard(account.account, gameId, cardIdx)
+    discardEffectCard(account, gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
@@ -537,7 +541,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account.account, gameId, cardIdx).finally(() => {
+    return discardSpecialCard(account, gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };

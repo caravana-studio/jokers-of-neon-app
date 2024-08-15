@@ -1,0 +1,66 @@
+import { Connector } from "@starknet-react/core";
+import CartridgeConnector from "@cartridge/connector";
+import { getContractByName } from "@dojoengine/core";
+import manifest from "./manifest.json";
+const paymaster: any = { caller: "0x414e595f43414c4c4552" };
+
+const game_system_contract_address = getContractByName(
+  manifest,
+  "jokers_of_neon",
+  "game_system",
+)?.address;
+
+const shop_system_contract_address = getContractByName(
+  manifest,
+  "jokers_of_neon",
+  "shop_system",
+)?.address;
+
+const cartridgeConnector = new CartridgeConnector(
+  [
+    // actions
+    {
+      target: game_system_contract_address,
+      method: "create_game",
+    },
+    {
+      target: game_system_contract_address,
+      method: "play",
+    },
+    {
+      target: game_system_contract_address,
+      method: "discard",
+    },
+    {
+      target: game_system_contract_address,
+      method: "check_hand",
+    },
+    {
+      target: game_system_contract_address,
+      method: "discard_effect_card",
+    },
+    {
+      target: game_system_contract_address,
+      method: "discard_special_card",
+    },
+    {
+      target: shop_system_contract_address,
+      method: "skip_shop",
+    },
+    {
+      target: shop_system_contract_address,
+      method: "buy_card_item",
+    },
+    {
+      target: shop_system_contract_address,
+      method: "buy_poker_hand_item",
+    },
+    {
+      target: shop_system_contract_address,
+      method: "reroll",
+    },
+  ],
+  { theme: "jokers_of_neon", paymaster },
+) as never as Connector;
+
+export default cartridgeConnector;

@@ -80,7 +80,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     addPurchasedCard(card);
     const promise = dojoBuyCard(
-      account.account,
+      account,
       gameId,
       card.idx,
       getCardType(card)
@@ -102,7 +102,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const reroll = () => {
     setLocked(true);
-    const promise = storeReroll(account.account, gameId);
+    const promise = storeReroll(account, gameId);
     promise
       .then(() => {
         clearPurchasedItems();
@@ -116,7 +116,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     setLocked(true);
     addPokerHandPurchased(item);
-    const promise = dojoLevelUpHand(account.account, gameId, item.idx);
+    const promise = dojoLevelUpHand(account, gameId, item.idx);
     promise
       .then((response) => {
         if (!response) {

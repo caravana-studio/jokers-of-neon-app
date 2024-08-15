@@ -8,11 +8,23 @@ import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/generated/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
+import { sepolia } from "@starknet-react/chains";
+import cartridgeConnector from "./cartridgeConnector.tsx";
+import { StarknetConfig, jsonRpcProvider } from "@starknet-react/core";
+
+function rpc() {
+  return {
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io/rpc/v0_6",
+  };
+}
 
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
+
+  const chains = [sepolia];
+  const connectors = [cartridgeConnector];
 
   root.render(<LoadingScreen />);
 
@@ -20,6 +32,12 @@ async function init() {
     const setupResult = await setup(dojoConfig);
     const queryClient = new QueryClient();
     root.render(
+      <StarknetConfig
+      chains={chains}
+      provider={jsonRpcProvider({ rpc })}
+      connectors={connectors}
+      autoConnect
+  >
       <DojoProvider value={setupResult}>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
@@ -28,6 +46,7 @@ async function init() {
           </QueryClientProvider>
         </BrowserRouter>
       </DojoProvider>
+    </StarknetConfig>
     );
   } catch (e) {
     console.error(e);

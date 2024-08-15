@@ -9,20 +9,6 @@ import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 
 export const GamePage = () => {
-  const {
-    setup: { masterAccount },
-    account,
-  } = useDojo();
-  const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame } = useGameContext();
-
-  useEffect(() => {
-    // if masterAccount === account.account, it means the burner did not get created yet
-    if (account.account !== masterAccount && username) {
-      checkOrCreateGame();
-    }
-  }, [account.account, username]);
-
   return (
     <Background type="game">
       {isMobile ? <MobileGameContent /> : <GameContent />}

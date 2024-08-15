@@ -87,7 +87,7 @@ export const Home = () => {
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  navigate("/controller-login");
                 }}
               >
                 PLAY DEMO
