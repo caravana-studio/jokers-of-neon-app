@@ -1,54 +1,58 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useGame } from './useGame.tsx'
-import { getComponentValue } from "@dojoengine/recs";
-import { useDojo } from '../useDojo.tsx'
-import { Card } from '../../types/Card.ts'
-import { getEntityIdFromKeys } from '@dojoengine/utils'
-import { Entity } from '@dojoengine/recs/src/types.ts'
+import {
+  Entity,
+  getComponentValue,
+  OverridableComponent,
+} from "@dojoengine/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useMemo } from "react";
+import { Card } from "../../types/Card.ts";
+import { useDojo } from "../useDojo.tsx";
+import { useGame } from "./useGame.tsx";
 
 const getSpecialCard = (
   gameId: number,
   index: number,
-  CurrentSpecialCards: any
+  component: OverridableComponent
 ) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),
   ]) as Entity;
-  const specialCard = getComponentValue(CurrentSpecialCards, entityId);
-  const card_id = specialCard?.effect_card_id;
-  if (!card_id || !specialCard) return;
+  const specialCard = getComponentValue(component, entityId);
+  const card_id = specialCard?.effect_card_id ?? 0;
+
   return {
     card_id,
     isSpecial: true,
-    id: card_id.toString(),
-    idx: index,
+    id: card_id?.toString(),
+    idx: index ?? 0,
     img: `effect/${card_id}.png`,
-    temporary: specialCard.is_temporary,
-    remaining: specialCard.remaining,
+    temporary: specialCard?.is_temporary,
+    remaining: specialCard?.remaining,
   };
 };
 
 export const useCurrentSpecialCards = () => {
-  const [specialCards, setSpecialCards] = useState<Card[]>([]);
+  const {
+    setup: {
+      clientComponents: { CurrentSpecialCards },
+    },
+  } = useDojo();
   const game = useGame();
-  const { setup: { clientComponents: { CurrentSpecialCards } } } = useDojo();
 
-  const fetchSpecialCards = useCallback(async () => {
-    if (!game) return;
-    const gameId = game.id ?? 0;
-    const length = game.len_current_special_cards ?? 0;
-    let cards: Card[] = [];
-    for (let i = 0; i < length; i++) {
-      const card = getSpecialCard(gameId, i, CurrentSpecialCards);
-      card && cards.push(card);
-    }
-    setSpecialCards(cards);
-  }, [game, CurrentSpecialCards]);
+  const gameId = game?.id ?? 0;
 
-  useEffect(() => {
-    fetchSpecialCards();
-  }, []);
+  const specialCardsLength = game?.len_current_special_cards ?? 0;
 
-  return { specialCards, refetch: fetchSpecialCards };
+  const specialCards: Card[] = useMemo(() => {
+    const specialCardsIds = Array.from(
+      { length: specialCardsLength },
+      (_, index) => index
+    );
+    return specialCardsIds.map((index) =>
+      getSpecialCard(gameId, index, CurrentSpecialCards)
+    );
+  }, [specialCardsLength]);
+
+  return specialCards;
 };

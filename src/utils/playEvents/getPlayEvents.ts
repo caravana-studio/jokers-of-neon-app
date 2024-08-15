@@ -1,6 +1,4 @@
-import {
-  GAME_OVER_EVENT
-} from "../../constants/dojoEventKeys";
+import { GAME_OVER_EVENT } from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";

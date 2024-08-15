@@ -1,7 +1,7 @@
 export interface Round {
-    score: number,
-    levelScore: number,
-    hands: number,
-    discards: number,
-    deckLength: number
+  score: number;
+  level_score: number;
+  hands: number;
+  discards: number;
+  deck_length: number;
 }

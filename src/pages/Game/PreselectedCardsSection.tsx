@@ -17,14 +17,7 @@ export const PreselectedCardsSection = () => {
     togglePreselected,
     discardAnimation,
     playAnimation,
-    roundRewards,
   } = useGameContext();
-
-  const navigate = useNavigate();
-
-  if (roundRewards) {
-    navigate("/rewards");
-  }
 
   return (
     <>

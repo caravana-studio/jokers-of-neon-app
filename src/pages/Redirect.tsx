@@ -2,12 +2,10 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/Background";
 import { Loading } from "../components/Loading";
-import { useGameContext } from "../providers/GameProvider";
-import { useGetGame } from "../queries/useGetGame";
+import { useGame } from "../dojo/queries/useGame";
 
 export const Redirect = () => {
-  const { gameId } = useGameContext();
-  const { data: game } = useGetGame(gameId, true);
+  const game = useGame();
   const state = game?.state;
   const navigate = useNavigate();
 

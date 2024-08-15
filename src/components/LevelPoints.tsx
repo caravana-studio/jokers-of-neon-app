@@ -1,15 +1,14 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useGame } from "../dojo/queries/useGame";
-import { useGameContext } from "../providers/GameProvider";
-import { useGetRound } from "../queries/useGetRound";
+import { useRound } from "../dojo/queries/useRound";
 import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
   const game = useGame();
-  const { gameId } = useGameContext();
-  const { data: round } = useGetRound(gameId);
+  const round = useRound();
   const level = game?.level ?? 0;
+  const levelScore = round?.level_score ?? 0;
 
   return (
     <Box>
@@ -17,18 +16,18 @@ export const LevelPoints = () => {
         <PointBox type="level">
           <Heading size="s">LEVEL</Heading>
           <Heading size="m" sx={{ color: "white" }}>
-            {level ?? 0}
+            {level}
           </Heading>
         </PointBox>
         <PointBox type="points">
           <Heading size="s">POINTS</Heading>
           <Heading size="m" px={2}>
-            {round.levelScore}
+            {levelScore}
           </Heading>
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 6 }} textAlign="center">
-        score {round.levelScore} points to beat level {level ?? 0}
+        score {levelScore} points to beat level {level}
       </Text>
     </Box>
   );
@@ -36,9 +35,9 @@ export const LevelPoints = () => {
 
 export const MobileLevelPoints = () => {
   const game = useGame();
-  const { gameId } = useGameContext();
-  const { data: round } = useGetRound(gameId);
+  const round = useRound();
   const level = game?.level ?? 0;
+  const levelScore = round?.level_score ?? 0;
   return (
     <Flex gap={2.5} alignItems="center">
       <Flex
@@ -48,13 +47,11 @@ export const MobileLevelPoints = () => {
         height={10}
         alignItems="center"
       >
-        <Heading fontSize={21} >
-          {level ?? 0}
-        </Heading>
+        <Heading fontSize={21}>{level}</Heading>
       </Flex>
-      <Flex flexDirection='column' gap={1} justifyContent={'center'}>
+      <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
-          score {round.levelScore} points  to beat level {level ?? 0}
+          score {levelScore} points to beat level {level}
         </Text>
         <Score />
       </Flex>

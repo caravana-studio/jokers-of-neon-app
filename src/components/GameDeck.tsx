@@ -1,15 +1,13 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { CARD_WIDTH_PX } from "../constants/visualProps.ts";
-import { useGameContext } from "../providers/GameProvider.tsx";
-import { useGetDeck } from "../queries/useGetDeck.ts";
+import { useDeck } from "../dojo/queries/useDeck.tsx";
 
 export const GameDeck = () => {
-  const { gameId } = useGameContext();
-  const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
+  const deck = useDeck();
 
   return (
-    <Flex flexDirection="column" alignItems='flex-end' gap={2}>
-      <Text size='s' mr={2}>
+    <Flex flexDirection="column" alignItems="flex-end" gap={2}>
+      <Text size="s" mr={2}>
         {`${deck.currentLength}/${deck.size}`}
       </Text>
       <Image

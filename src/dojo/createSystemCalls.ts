@@ -28,7 +28,7 @@ const createGameEmptyResponse = {
 export function createSystemCalls(
   { client }: { client: IWorld },
   contractComponents: ContractComponents,
-  { Card, PokerHandEvent, Game }: ClientComponents
+  { Card, Game }: ClientComponents
 ) {
   const createGame = async (account: AccountInterface, username: string) => {
     try {
