@@ -1,14 +1,14 @@
 import {
-    Button,
-    Flex,
-    Heading,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
+  Button,
+  Flex,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { useDojo } from "../dojo/useDojo";
 import { useUsername } from "../dojo/utils/useUsername";
@@ -36,9 +36,6 @@ export const GameInfoModal = ({ close }: GameInfoModalProps) => {
           <Flex gap={4} flexDirection="column">
             <Heading size="s" variant="neonGreen">
               Game id: {gameId}
-            </Heading>
-            <Heading size="s" variant="neonGreen">
-              Burner account: {account?.account?.address} <br />
             </Heading>
             <Heading size="s" variant="neonGreen">
               Username: {username}

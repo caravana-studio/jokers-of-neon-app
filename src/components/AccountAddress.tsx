@@ -4,7 +4,7 @@ import { useUsername } from "../dojo/utils/useUsername.tsx";
 
 export const AccountAddress = () => {
   const { account } = useDojo();
-  const address = account?.account?.address;
+  const address = account?.address;
   const username = useUsername();
   const userText = username ? username : "No user";
   const addressText = address
@@ -12,7 +12,7 @@ export const AccountAddress = () => {
     : "No account";
 
   return (
-    <Heading size='s' sx={{ textAlign: "right" }}>
+    <Heading size="s" sx={{ textAlign: "right" }}>
       {`${addressText} - ${userText}`}
     </Heading>
   );
