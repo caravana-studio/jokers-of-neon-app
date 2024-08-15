@@ -22,18 +22,21 @@ export const GAME_TUTORIAL_STEPS = [
     title: 'Discard Cards',
     content: 'Discard your preselected cards',
     ...COMMON_SETTINGS,
+    placement: 'right',
   },
   {
     target: '.game-tutorial-step-4',
     title: 'Play Cards',
     content: 'Play your preselected cards to form a hand',
     ...COMMON_SETTINGS,
+    placement: 'left',
   },
   {
     target: '.game-tutorial-step-5',
     title: 'Form a Poker Hand',
     content: 'Create a valid poker hand. Click the "i" icon to see available hands',
     ...COMMON_SETTINGS,
+    placement: 'top',
   },
   {
     target: '.game-tutorial-step-6',
@@ -46,12 +49,14 @@ export const GAME_TUTORIAL_STEPS = [
     title: 'Score Calculation',
     content: 'After playing, your card points are added up, multiplied by the multiplier, and added to your total score',
     ...COMMON_SETTINGS,
+    placement: 'left',
   },
   {
     target: '.game-tutorial-step-8',
     title: 'Deck Overview',
     content: 'Check the number of cards left in your deck',
     ...COMMON_SETTINGS,
+    placement: 'left',
   },
   {
     target: '.game-tutorial-step-9',
