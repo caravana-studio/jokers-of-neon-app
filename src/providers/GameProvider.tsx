@@ -145,7 +145,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     handsLeft,
     setHandsLeft,
     setDiscardsLeft,
-    refetchDeckData,
     sortBySuit,
     setSortBySuit,
     username,
@@ -356,7 +355,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
         setPlayAnimation(false);
         clearPreSelection();
-        refetchDeckData();
         handsLeft > 0 && setPreSelectionLocked(false);
 
         if (playEvents.gameOver) {
@@ -474,7 +472,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         } else {
           setDiscardsLeft((prev) => prev - 1);
           replaceCards(response.cards);
-          refetchDeckData();
         }
       }
       setPreSelectionLocked(false);
@@ -508,7 +505,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardEffectCard(account.account, gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
-          refetchDeckData();
           replaceCards(response.cards);
         } else {
           rollback();

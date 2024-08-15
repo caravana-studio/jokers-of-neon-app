@@ -6,7 +6,6 @@ import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
-import { useGetDeck } from "../queries/useGetDeck";
 import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
@@ -47,9 +46,8 @@ export const useGameState = () => {
   const round = useRound();
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
-  const { data: deck, refetch: refetchDeckData } = useGetDeck(gameId);
 
-  const specialCards  = useCurrentSpecialCards();
+  const specialCards = useCurrentSpecialCards();
 
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
@@ -149,8 +147,6 @@ export const useGameState = () => {
     apiHand: dojoHand,
     plays,
     refetchPlays,
-    deck,
-    refetchDeckData,
     sortBy,
     sortedHand,
     username,
