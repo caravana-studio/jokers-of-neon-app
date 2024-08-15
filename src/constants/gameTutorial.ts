@@ -1,9 +1,11 @@
 import { Step } from 'react-joyride';
+import { isMobile } from "react-device-detect";
 
 const COMMON_SETTINGS: Partial<Step> =
 {
   disableBeacon: true,
   placement: 'auto',
+  disableScrollParentFix: isMobile ? true: false,
 }
 
 export const GAME_TUTORIAL_STEPS: Step[] = [
