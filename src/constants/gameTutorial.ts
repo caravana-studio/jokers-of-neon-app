@@ -1,5 +1,4 @@
 import { Step } from 'react-joyride';
-import { isMobile } from "react-device-detect";
 
 const COMMON_SETTINGS: Partial<Step> =
 {
