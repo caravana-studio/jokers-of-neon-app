@@ -10,7 +10,6 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { TutorialModal } from "../../components/TutorialModal";
 import { SKIP_TUTORIAL } from "../../constants/localStorage";
 import { useDojo } from "../../dojo/useDojo";
-import { useCustomToast } from "../../hooks/useCustomToast";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
@@ -27,7 +26,6 @@ export const Store = () => {
   const rerollCost = store?.reroll_cost ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
-  const { showErrorToast } = useCustomToast();
 
   const [loading, setLoading] = useState(false);
   const [showTutorial, setShowTutorial] = useState(
@@ -101,7 +99,6 @@ export const Store = () => {
             navigate("/redirect/demo");
           } else {
             setLoading(false);
-            showErrorToast("Error skipping shop");
           }
         });
       }}

@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { useDojo } from "../dojo/useDojo";
-import { useCustomToast } from "../hooks/useCustomToast";
 import { useGetGame } from "../queries/useGetGame";
 import { ShopItems, useGetShopItems } from "../queries/useGetShopItems";
 import { useGetStore } from "../queries/useGetStore";
@@ -69,7 +68,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     },
     account,
   } = useDojo();
-  const { showErrorToast } = useCustomToast();
 
   const [cash, setCash] = useState(game?.cash ?? 0);
 
@@ -84,9 +82,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           setCash((prev) => prev - price);
-        } else {
-          showErrorToast("Error buying card");
-        }
+        } 
       })
       .finally(() => {
         setLocked(false);
@@ -101,8 +97,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           setCash((prev) => prev - rerollCost);
-        } else {
-          showErrorToast("Error rerolling");
         }
       })
       .finally(() => {
@@ -118,8 +112,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           setCash((prev) => prev - price);
-        } else {
-          showErrorToast("Error leveling hand");
         }
       })
       .finally(() => {
