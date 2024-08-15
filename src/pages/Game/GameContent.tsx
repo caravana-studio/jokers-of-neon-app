@@ -122,7 +122,7 @@ export const GameContent = () => {
         }}
       >
 
-        <Joyride steps={GAME_TUTORIAL_STEPS} run={run} continuous showSkipButton callback={handleJoyrideCallback} />
+        <Joyride steps={GAME_TUTORIAL_STEPS} run={run} continuous showSkipButton showProgress callback={handleJoyrideCallback} />
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image src='/borders/top.png' height="8%" width="100%" maxHeight="70px" object-fit position='fixed' top={0} />

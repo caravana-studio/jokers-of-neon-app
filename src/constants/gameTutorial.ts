@@ -2,14 +2,17 @@ export const GAME_TUTORIAL_STEPS = [
   {
     target: '.game-tutorial-step-1',
     content: 'Level and points to score',
+    disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-2',
     content: 'You can preselect cards by clicking on them',
+    disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-3',
     content: 'Once you preselect them you can discard',
+    disableBeacon: true,
   }
 //   {
 //     target: '.my-other-step',
