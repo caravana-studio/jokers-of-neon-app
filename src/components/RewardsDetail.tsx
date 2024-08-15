@@ -4,7 +4,7 @@ import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { SKIP_TUTORIAL_REWARDS } from "../constants/localStorage.ts";
 import Joyride, { CallBackProps } from 'react-joyride';
-import {REWARDS_TUTORIAL_STEPS, REWARD_TUTORIAL_STYLE} from "../constants/gameTutorial";
+import {REWARDS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../constants/gameTutorial";
 import { useEffect, useState } from "react";
 
 interface RewardItemProps {
@@ -98,7 +98,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       fontFamily="Orbitron"
     >
       <Joyride steps={REWARDS_TUTORIAL_STEPS} run={run} continuous showSkipButton
-        styles={REWARD_TUTORIAL_STYLE} showProgress callback={handleJoyrideCallback} />
+        styles={TUTORIAL_STYLE} showProgress callback={handleJoyrideCallback} />
       <Heading size="lg" variant="italic" color={VIOLET}>
         LEVEL {level} DEFEATED
       </Heading>

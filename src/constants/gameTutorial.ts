@@ -43,47 +43,48 @@ export const GAME_TUTORIAL_STEPS = [
 export const REWARDS_TUTORIAL_STEPS = [
   {
     target: '.game-tutorial-step-1',
-    content: 'Once you beat a level, you will get coins to use in the store',
+    content: 'Congratulations! After defeating a level, you earn coins to spend in the store.',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-2',
-    content: 'The less hands you use, the more coins you get',
+    content: 'Using fewer hands in the level rewards you with more coins. Strategize wisely!',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-3',
-    content: 'The less discards you use, the more coins you get',
+    content: 'Minimizing discards also increases your coin rewards. Plan your moves carefully!',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-4',
-    content: "Let's play",
+    content: "You're all set! Lets dive into the game and start earning those rewards!",
     disableBeacon: true,
   }
 ];
 
-
-export const REWARD_TUTORIAL_STYLE = {
+export const TUTORIAL_STYLE = {
   options: {
-    arrowColor: '#DAA1E8', // Background color of the arrow
-    backgroundColor: '#333', // Background color of the tooltip box
-    overlayColor: 'rgba(0, 0, 0, 0.5)', // Background color of the overlay
-    primaryColor: '#DAA1E8', // Primary color (used for buttons)
-    textColor: '#FFF', // Text color inside the tooltip box
-    width: 300, // Width of the tooltip box
-    zIndex: 1000, // Z-index of the tooltip box
+    arrowColor: '#DAA1E8', 
+    backgroundColor: '#1A1A1A', 
+    overlayColor: 'rgba(0, 0, 0, 0.7)',
+    primaryColor: '#DAA1E8', 
+    textColor: '#FFFFFF',
+    width: 350, 
+    zIndex: 1000,
   },
   buttonClose: {
-    color: '#DAA1E8', // Color of the close button (X)
+    color: '#DAA1E8', 
   },
   buttonNext: {
-    backgroundColor: '#DAA1E8', // Background color of the "Next" button
+    backgroundColor: '#DAA1E8', 
+    color: '#000000',
   },
   buttonBack: {
-    color: '#DAA1E8', // Color of the "Back" button
+    color: '#DAA1E8',
   },
   tooltip: {
-    borderRadius: '10px', // Border radius of the tooltip box
+    borderRadius: '12px',
+    boxShadow: '0 0 15px rgba(218, 161, 232, 0.5)',
   },
 };
