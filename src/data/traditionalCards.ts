@@ -317,13 +317,13 @@ export const TRADITIONAL_CARDS_DATA: CardDataMap = {
   },
   52: {
     name: "Joker",
-    description: "Always scores. +100 points and +1 multi",
+    description: "Wildcard that substitutes any traditional card. +100 points and +1 multi",
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
   53: {
     name: "Joker of Neon",
-    description: "Always scores. +500 points and +3 multi",
+    description: "Wildcard that substitutes any traditional card. +500 points and +3 multi",
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
