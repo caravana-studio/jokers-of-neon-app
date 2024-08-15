@@ -59,6 +59,7 @@ export const HandSection = () => {
           maxWidth: `${CARD_WIDTH * 6.5}px`,
         }}
         columns={hand.length}
+        className="game-tutorial-step-2"
       >
         {hand.map((card, index) => {
           const isPreselected = cardIsPreselected(card.idx);

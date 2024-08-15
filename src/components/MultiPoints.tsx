@@ -9,7 +9,7 @@ export const MultiPoints = () => {
     <Box
       gap={{ base: 1, md: 2 }}
       sx={{ display: "flex", alignItems: "center" }}
-      className="game-tutorial-step-3"
+      className="game-tutorial-step-6"
     >
       <PointBox type="points">
         <Heading size={{ base: "xs", md: "s" }}>POINTS</Heading>

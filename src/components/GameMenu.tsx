@@ -28,7 +28,7 @@ export const GameMenu = ({ onlySound = false, inStore = false, showTutorial}: Ga
   return (
     <>
       <Menu>
-        <MenuButton>
+        <MenuButton className="game-tutorial-step-9">
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
         </MenuButton>
         <MenuList>
