@@ -165,7 +165,7 @@ export const MobileGameContent = () => {
           styles={TUTORIAL_STYLE}
         />
 
-        <GameMenu />
+        <GameMenu showTutorial={() => { setRun(true);}} />
       </Box>
       <Box
         sx={{

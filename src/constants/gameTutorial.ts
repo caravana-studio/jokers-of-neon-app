@@ -66,7 +66,7 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
     title: 'Game Menu',
     content: 'Toggle to adjust sound settings, start a new game, or log out',
     ...COMMON_SETTINGS,
-    placement: isMobile ? 'left' : 'top'
+    placement: 'top'
   }
 ];
 
