@@ -30,7 +30,7 @@ export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) 
     <>
       {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />}
       <Menu>
-        <MenuButton>
+        <MenuButton className="game-tutorial-step-9">
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
         </MenuButton>
         <MenuList>
