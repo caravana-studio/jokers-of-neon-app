@@ -14,6 +14,9 @@ import { useStore } from "../../providers/StoreProvider";
 import { useGetGame } from "../../queries/useGetGame";
 import { useGetStore } from "../../queries/useGetStore";
 import { StoreCardsRow } from "./StoreCardsRow";
+import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps } from 'react-joyride';
+import {STORE_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
@@ -45,7 +48,7 @@ export const Store = () => {
   const navigate = useNavigate();
 
   const levelUpTable = (
-    <Box py={[2, 2, 2, 2, 4]}>
+    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>
       {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
     </Box>
   );
@@ -58,6 +61,7 @@ export const Store = () => {
       }
     >
       <Button
+        className="game-tutorial-step-6"
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
         isDisabled={rerolled || locked}
@@ -85,6 +89,7 @@ export const Store = () => {
 
   const nextLevelButton = (
     <Button
+      className="game-tutorial-step-7"
       my={{ base: 0, md: 6 }}
       w={["unset", "unset", "unset", "100%", "100%"]}
       onClick={() => {
@@ -125,8 +130,27 @@ export const Store = () => {
     );
   }
 
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
+    if (showTutorial)
+      setRun(true);
+  }, []);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { type } = data;
+
+    if (type === "tour:end"){
+      window.localStorage.setItem(SKIP_TUTORIAL_STORE, "true");
+      setRun(false);
+    }
+  };
+
   return (
     <Background type="store" scrollOnMobile>
+      <Joyride steps={STORE_TUTORIAL_STEPS} run={run} continuous showSkipButton
+        styles={TUTORIAL_STYLE} showProgress callback={handleJoyrideCallback} />
       {!isMobile ? (
         <Box
           sx={{
@@ -136,7 +160,7 @@ export const Store = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu inStore />
+          <GameMenu inStore showTutorial={() => {setRun(true);}} />
         </Box>
       ) : (
         <Box
@@ -148,7 +172,7 @@ export const Store = () => {
             transform: "scale(0.7)",
           }}
         >
-          <GameMenu inStore />
+          <GameMenu inStore showTutorial={() => {setRun(true);}} />
         </Box>
       )}
       <Flex
@@ -181,6 +205,7 @@ export const Store = () => {
             {!isMobile && levelUpTable}
             <Box>
               <Heading
+                className="game-tutorial-step-1"
                 variant={"italic"}
                 size={"m"}
                 mb={[2, 2, 2, 6, 6]}
@@ -215,7 +240,7 @@ export const Store = () => {
             pl={4}
             gap={[2, 2, 4, 6, 6]}
           >
-            <Box>
+            <Box className="game-tutorial-step-3">
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
@@ -223,7 +248,7 @@ export const Store = () => {
                 />
               )}
             </Box>
-            <Box>
+            <Box className="game-tutorial-step-4">
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
@@ -231,7 +256,7 @@ export const Store = () => {
                 />
               )}
             </Box>
-            <Box>
+            <Box className="game-tutorial-step-5">
               {shopItems.specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.specialCards}
@@ -242,6 +267,7 @@ export const Store = () => {
           </Box>
           {isMobile && (
             <Box
+            className="game-tutorial-step-2"
               w="100%"
               background="rgba(0,0,0,0.5)"
               px={4}

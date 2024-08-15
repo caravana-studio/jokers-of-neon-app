@@ -96,6 +96,52 @@ export const REWARDS_TUTORIAL_STEPS: Step[] = [
   }
 ];
 
+export const STORE_TUTORIAL_STEPS: Step[] = [
+  {
+    target: '.game-tutorial-step-1',
+    title: 'Coins!',
+    content: 'Congratulations! After defeating a level, you earn coins to spend in the store. You can see your total coins here.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-2',
+    title: 'Level Up Your Hands',
+    content: 'Upgrade your hands by spending coins. The higher the level of your poker hands, the easier it is to win.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-3',
+    title: 'Buy Traditional Cards',
+    content: 'Here you can buy traditional cards to enhance your deck. Choose wisely to create powerful combinations.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-4',
+    title: 'Modifiers',
+    content: 'Modifiers are special cards that apply effects to your traditional cards, like adding more points or changing the suit.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-5',
+    title: 'Special Cards',
+    content: 'Special cards grant unique powers, such as completing a flush with only four cards. These can turn the tide of the game!',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-6',
+    title: 'Reroll the Store',
+    content: 'Not finding what you need? Spend some coins to reroll the store and see a fresh set of cards and modifiers.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.game-tutorial-step-7',
+    title: 'Proceed to the Next Level',
+    content: 'Ready to continue? Click here to advance to the next level and face new challenges!',
+    ...COMMON_SETTINGS
+  }
+];
+
+
 export const TUTORIAL_STYLE = {
   options: {
     arrowColor: '#DAA1E8', 
