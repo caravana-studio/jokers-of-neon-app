@@ -12,12 +12,6 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
   position: "top-right",
   closeButton: false,
   dismissible: true,
-  actionButtonStyle: {
-    display: "none",
-  },
-  cancelButtonStyle: {
-    display: "none",
-  },
   style: {
     padding: 0,
     backgroundColor: "transparent",
