@@ -40,8 +40,10 @@ export const GameContent = () => {
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;
 
-    if (type === "tour:end")
+    if (type === "tour:end"){
       window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
+      setRun(false);
+    }
   };
 
   const { data: game } = useGetGame(gameId);
@@ -167,7 +169,7 @@ export const GameContent = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu />
+          <GameMenu showTutorial={() => { setRun(true);}} />
         </Box>
         <Box
           sx={{
