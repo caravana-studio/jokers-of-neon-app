@@ -13,7 +13,7 @@ import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
 import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
 import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS} from "../../constants/gameTutorial";
+import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -124,7 +124,15 @@ export const GameContent = () => {
         }}
       >
 
-        <Joyride steps={GAME_TUTORIAL_STEPS} run={run} continuous showSkipButton showProgress callback={handleJoyrideCallback} />
+        <Joyride 
+          steps={GAME_TUTORIAL_STEPS}
+          run={run} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image src='/borders/top.png' height="8%" width="100%" maxHeight="70px" object-fit position='fixed' top={0} />
