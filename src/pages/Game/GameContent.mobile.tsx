@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
-import { TutorialModal } from "../../components/TutorialModal.tsx";
-import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
 import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -43,9 +41,6 @@ export const MobileGameContent = () => {
   const navigate = useNavigate();
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
   const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
-  const [showTutorial, setShowTutorial] = useState(
-    !window.localStorage.getItem(SKIP_TUTORIAL)
-  );
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -131,14 +126,6 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
-      {showTutorial && (
-        <TutorialModal
-          onClose={() => {
-            setShowTutorial(false);
-          }}
-        />
-      )}
-
       <Box
         sx={{
           position: "fixed",
