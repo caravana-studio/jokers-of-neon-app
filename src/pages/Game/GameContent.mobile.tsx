@@ -1,16 +1,12 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import { TutorialModal } from "../../components/TutorialModal.tsx";
 import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
-import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
-import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
-import { useGetGame } from "../../queries/useGetGame.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
@@ -21,42 +17,20 @@ export const MobileGameContent = () => {
   const {
     preSelectedCards,
     gameLoading,
-    loadingStates,
     error,
     clearPreSelection,
     executeCreateGame,
     addModifier,
     roundRewards,
-    gameId,
     checkOrCreateGame,
     discardEffectCard,
     discardSpecialCard,
   } = useGameContext();
 
-  const { data: game } = useGetGame(gameId);
-  const {
-    setup: {
-      clientComponents: { Game },
-    },
-  } = useDojo();
-
-  const navigate = useNavigate();
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
-  const { refetch: refetchSpecialCards } = useCurrentSpecialCards();
   const [showTutorial, setShowTutorial] = useState(
     !window.localStorage.getItem(SKIP_TUTORIAL)
   );
-
-  useEffect(() => {
-    // if roundRewards is true, we don't want to redirect user
-    if (!roundRewards) {
-      if (game?.state === "FINISHED") {
-        navigate("/gameover");
-      } else if (game?.state === "AT_SHOP") {
-        navigate("/store");
-      }
-    }
-  }, [game?.state, roundRewards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     setIsItemDragged(false);
@@ -81,11 +55,7 @@ export const MobileGameContent = () => {
       }
     }
     if (isSpecial && event.over?.id === "play-discard") {
-      discardSpecialCard(draggedCardId).then((response) => {
-        if (response) {
-          refetchSpecialCards();
-        }
-      });
+      discardSpecialCard(draggedCardId);
     } else if (event.over?.id === "play-discard") {
       discardEffectCard(draggedCardId);
     }
@@ -121,7 +91,7 @@ export const MobileGameContent = () => {
     );
   }
 
-  if (gameLoading || loadingStates) {
+  if (gameLoading) {
     return <Loading />;
   }
 

@@ -11,6 +11,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useGame } from "../../dojo/queries/useGame";
+import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
@@ -28,9 +30,10 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
 
   const store = useStore();
+  const game = useGame();
+  const cash = game?.cash ?? 0;
   const levelUpPlay = store?.levelUpPlay;
-  const cash = store?.cash ?? 0;
-  const pokerHandItems = store?.shopItems?.pokerHandItems;
+  const { pokerHandItems } = useShopItems();
 
   const plays =
     inStore && isMobile
