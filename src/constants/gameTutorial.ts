@@ -43,21 +43,25 @@ export const GAME_TUTORIAL_STEPS = [
 export const REWARDS_TUTORIAL_STEPS = [
   {
     target: '.game-tutorial-step-1',
+    title: 'Coins!',
     content: 'Congratulations! After defeating a level, you earn coins to spend in the store.',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-2',
+    title: 'Maximize Coins by Using Fewer Hands',
     content: 'Using fewer hands in the level rewards you with more coins. Strategize wisely!',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-3',
+    title: 'Minimize Discards for More Coins',
     content: 'Minimizing discards also increases your coin rewards. Plan your moves carefully!',
     disableBeacon: true,
   },
   {
     target: '.game-tutorial-step-4',
+    title: 'Ready to Play?',
     content: "You're all set! Lets dive into the game and start earning those rewards!",
     disableBeacon: true,
   }
