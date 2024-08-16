@@ -11,8 +11,8 @@ const COMMON_SETTINGS: Partial<Step> =
 export const GAME_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-1',
-    title: 'Level Progress',
-    content: 'View your current level and the points needed to advance',
+    title: 'Points target',
+    content: 'The amount of points you need to score to proceed to the next level',
     ...COMMON_SETTINGS
   },
   {
