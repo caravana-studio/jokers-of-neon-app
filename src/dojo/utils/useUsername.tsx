@@ -1,15 +1,7 @@
-import { useDojo } from "../useDojo";
+import { useGame } from "../queries/useGame";
 import { decodeString } from "./decodeString";
-import { getGame } from "./getGame";
-import { getLSGameId } from "./getLSGameId";
 
 export const useUsername = () => {
-  const {
-    setup: {
-      clientComponents: { Game },
-    },
-  } = useDojo();
-  const gameId = getLSGameId();
-  const game = getGame(gameId, Game);
+  const game = useGame();
   return decodeString(game?.player_name ?? "");
 };

@@ -13,14 +13,13 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
-import { useGameContext } from "../../providers/GameProvider";
+import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider";
-import { useGetGame } from "../../queries/useGetGame";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
-import { isMobile } from "react-device-detect";
 
 interface IShowCardModalProps {
   card: Card;
@@ -35,10 +34,10 @@ export const ShowCardModal = ({
   close,
   onBuyClick,
 }: IShowCardModalProps) => {
+  const game = useGame();
+  const cash = game?.cash ?? 0;
   const { name, description } = getCardData(card);
-  const { cash, locked } = useStore();
-  const { gameId } = useGameContext();
-  const { data: game } = useGetGame(gameId);
+  const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
@@ -75,7 +74,7 @@ export const ShowCardModal = ({
             gap={isMobile ? 2 : 8}
             width="100%"
             flexDirection={{ base: "column", sm: "row" }}
-            alignItems='center'
+            alignItems="center"
           >
             <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
               <Box
@@ -93,8 +92,7 @@ export const ShowCardModal = ({
                 />
               </Box>
             </Box>
-            <Flex flexDirection="column" 
-            gap={isMobile ? 4 : 8} width="100%">
+            <Flex flexDirection="column" gap={isMobile ? 4 : 8} width="100%">
               <Box>
                 <Heading color="white" size={isMobile ? "s" : "m"}>
                   card type:
@@ -109,7 +107,7 @@ export const ShowCardModal = ({
                 </Text>
               </Box>
               <Box>
-                <Heading color="white"  size={isMobile ? "s" : "m"}>
+                <Heading color="white" size={isMobile ? "s" : "m"}>
                   description:
                 </Heading>
                 <Text variant="neonGreen" size="l">
@@ -122,10 +120,10 @@ export const ShowCardModal = ({
                 )}
               </Box>
               <Flex gap={3}>
-                <Heading color="white"  size={isMobile ? "s" : "m"}>
+                <Heading color="white" size={isMobile ? "s" : "m"}>
                   price:
                 </Heading>
-                <Heading variant="neonGreen"  size={isMobile ? "s" : "m"}>
+                <Heading variant="neonGreen" size={isMobile ? "s" : "m"}>
                   {card.price}ȼ
                 </Heading>
               </Flex>

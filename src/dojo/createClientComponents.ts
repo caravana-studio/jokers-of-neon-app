@@ -11,7 +11,6 @@ export function createClientComponents({
     return {
         ...contractComponents,
         Card: overridableComponent(contractComponents.Card),
-        PokerHandEvent: overridableComponent(contractComponents.PokerHandEvent),
         CurrentSpecialCards: overridableComponent(contractComponents.CurrentSpecialCards),
         Game: overridableComponent(contractComponents.Game),
         CurrentHandCard: overridableComponent(contractComponents.CurrentHandCard),
@@ -21,5 +20,6 @@ export function createClientComponents({
         Effect: overridableComponent(contractComponents.Effect),
         EffectCard: overridableComponent(contractComponents.EffectCard),
         PlayerEffectCards: overridableComponent(contractComponents.PlayerEffectCards),
+        CardItem: overridableComponent(contractComponents.CardItem),
     };
 }

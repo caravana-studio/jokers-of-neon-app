@@ -7,7 +7,10 @@ export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
 export const LEADERBOARD_QUERY = gql`
   query {
-    gameModels(first: 1000, order: { field: "LEVEL", direction: "DESC" }) {
+    jokersOfNeonGameModels(
+      first: 1000
+      order: { field: "LEVEL", direction: "DESC" }
+    ) {
       edges {
         node {
           player_score
@@ -30,7 +33,7 @@ interface GameEdge {
 }
 
 interface LeaderboardResponse {
-  gameModels: {
+  jokersOfNeonGameModels: {
     edges: GameEdge[];
   };
 }
@@ -46,7 +49,7 @@ export const useGetLeaderboard = () => {
   );
   const { data } = queryResponse;
 
-  const dojoLeaders = data?.gameModels?.edges
+  const dojoLeaders = data?.jokersOfNeonGameModels?.edges
     ?.filter((edge) => edge.node.player_score > 0)
     .sort((a, b) => {
       if (a.node.level !== b.node.level) {

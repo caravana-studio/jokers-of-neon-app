@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { AnimatedCard } from "../../components/AnimatedCard.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard.tsx";
@@ -16,13 +15,7 @@ export const MobilePreselectedCardsSection = () => {
     togglePreselected,
     discardAnimation,
     playAnimation,
-    roundRewards,
   } = useGameContext();
-  const navigate = useNavigate();
-
-  if (roundRewards) {
-    navigate("/rewards");
-  }
 
   return (
     <>
