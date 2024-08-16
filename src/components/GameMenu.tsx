@@ -1,13 +1,11 @@
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
-import { SKIP_TUTORIAL_GAME } from "../constants/localStorage.ts";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -15,9 +13,14 @@ interface GameMenuProps {
   showTutorial?: () => void;
 }
 
-export const GameMenu = ({ onlySound = false, inStore = false, showTutorial}: GameMenuProps) => {
+export const GameMenu = ({
+  onlySound = false,
+  inStore = false,
+  showTutorial
+}: GameMenuProps) => {
+
   const username = useUsername();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
 
@@ -48,6 +51,7 @@ export const GameMenu = ({ onlySound = false, inStore = false, showTutorial}: Ga
               onClick={() => {
                 localStorage.removeItem(GAME_ID);
                 localStorage.removeItem(LOGGED_USER);
+                restartGame();
                 navigate("/");
               }}
             >
