@@ -14,9 +14,12 @@ interface GameMenuProps {
   inStore?: boolean;
 }
 
-export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) => {
+export const GameMenu = ({
+  onlySound = false,
+  inStore = false,
+}: GameMenuProps) => {
   const username = useUsername();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
 
@@ -28,7 +31,12 @@ export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) 
 
   return (
     <>
-      {showTutorial && <TutorialModal inStore={inStore} onClose={() => setShowTutorial(false)} />}
+      {showTutorial && (
+        <TutorialModal
+          inStore={inStore}
+          onClose={() => setShowTutorial(false)}
+        />
+      )}
       <Menu>
         <MenuButton>
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
@@ -50,6 +58,7 @@ export const GameMenu = ({ onlySound = false, inStore = false }: GameMenuProps) 
               onClick={() => {
                 localStorage.removeItem(GAME_ID);
                 localStorage.removeItem(LOGGED_USER);
+                restartGame();
                 navigate("/");
               }}
             >
