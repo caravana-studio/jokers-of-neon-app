@@ -17,8 +17,8 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
   },
   {
     target: '.game-tutorial-step-2',
-    title: 'Card Preselection',
-    content: 'Click to preselect cards for future actions',
+    title: 'Playable hand',
+    content: 'This is your hand. Click on a card to preselect it',
     ...COMMON_SETTINGS
   },
   {
@@ -31,7 +31,7 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-4',
     title: 'Play Cards',
-    content: 'Play your preselected cards to form a hand',
+    content: 'Whenever you are ready you can play your preselected cards',
     ...COMMON_SETTINGS,
     placement: 'left'
   },
@@ -45,13 +45,13 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-6',
     title: 'Points and Multiplier',
-    content: 'Each hand has a base score and multiplier',
+    content: 'Each hand has a base points and multiplier',
     ...COMMON_SETTINGS
   },
   {
     target: '.game-tutorial-step-7',
     title: 'Score Calculation',
-    content: 'After playing, your card points are added up, multiplied by the multiplier, and added to your total score',
+    content: 'When you play a hand, your card points are added up and multiplied by the multiplier',
     ...COMMON_SETTINGS,
     placement: 'left'
   },
@@ -93,7 +93,7 @@ export const REWARDS_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-4',
     title: 'Ready to Play?',
-    content: "You're all set! Lets dive into the game and start earning those rewards!",
+    content: "You're all set! Let's dive into the store and start BUIDLing your deck!",
     ...COMMON_SETTINGS
   }
 ];
@@ -101,14 +101,14 @@ export const REWARDS_TUTORIAL_STEPS: Step[] = [
 export const STORE_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-1',
-    title: 'Coins!',
+    title: 'Coins',
     content: 'Congratulations! After defeating a level, you earn coins to spend in the store. You can see your total coins here.',
     ...COMMON_SETTINGS
   },
   {
     target: '.game-tutorial-step-2',
     title: 'Level Up Your Hands',
-    content: 'Upgrade your hands by spending coins. The higher the level of your poker hands, the easier it is to win.',
+    content: 'You can upgrade your hands. The higher the level of your poker hands, the more points and multi they score',
     ...COMMON_SETTINGS
   },
   {
@@ -120,19 +120,19 @@ export const STORE_TUTORIAL_STEPS: Step[] = [
   {
     target: '.game-tutorial-step-4',
     title: 'Modifiers',
-    content: 'Modifiers are special cards that apply effects to your traditional cards, like adding more points or changing the suit.',
+    content: 'Modifiers are cards that are added to your deck and apply effects to your traditional cards, like adding more points or changing the suit',
     ...COMMON_SETTINGS
   },
   {
     target: '.game-tutorial-step-5',
     title: 'Special Cards',
-    content: 'Special cards grant unique powers, such as completing a flush with only four cards. These can turn the tide of the game!',
+    content: 'Special cards grant unique global powers and get active immediately. These can turn the tide of the game!',
     ...COMMON_SETTINGS
   },
   {
     target: '.game-tutorial-step-6',
     title: 'Reroll the Store',
-    content: 'Not finding what you need? Spend some coins to reroll the store and see a fresh set of cards and modifiers.',
+    content: 'Not finding what you need? Spend some coins to reroll the store and see a fresh set of cards and hands to upgrade.',
     ...COMMON_SETTINGS
   },
   {
