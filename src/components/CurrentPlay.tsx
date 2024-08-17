@@ -19,6 +19,7 @@ export const CurrentPlay = () => {
             e.stopPropagation();
             onOpen();
           }}
+          className="game-tutorial-step-5"
         />
       </Tooltip>
       <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />

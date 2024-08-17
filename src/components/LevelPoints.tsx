@@ -11,7 +11,7 @@ export const LevelPoints = () => {
   const levelScore = round?.level_score ?? 0;
 
   return (
-    <Box>
+    <Box className="game-tutorial-step-1">
       <Flex gap={8}>
         <PointBox type="level">
           <Heading size="s">LEVEL</Heading>
@@ -39,7 +39,7 @@ export const MobileLevelPoints = () => {
   const level = game?.level ?? 0;
   const levelScore = round?.level_score ?? 0;
   return (
-    <Flex gap={2.5} alignItems="center">
+    <Flex gap={2.5} alignItems="center" className="game-tutorial-step-1">
       <Flex
         border="1px solid white"
         borderRadius={10}

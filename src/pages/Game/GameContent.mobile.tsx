@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
-import { TutorialModal } from "../../components/TutorialModal.tsx";
-import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const MobileGameContent = () => {
   const {
@@ -28,9 +29,22 @@ export const MobileGameContent = () => {
   } = useGameContext();
 
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
-  const [showTutorial, setShowTutorial] = useState(
-    !window.localStorage.getItem(SKIP_TUTORIAL)
-  );
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
+    if (showTutorial)
+      setRun(true);
+  }, []);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { type } = data;
+
+    if (type === "tour:end"){
+      window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
+      setRun(false);
+    }
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     setIsItemDragged(false);
@@ -101,14 +115,6 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
-      {showTutorial && (
-        <TutorialModal
-          onClose={() => {
-            setShowTutorial(false);
-          }}
-        />
-      )}
-
       <Box
         sx={{
           position: "fixed",
@@ -118,7 +124,17 @@ export const MobileGameContent = () => {
           transform: "scale(0.7)",
         }}
       >
-        <GameMenu />
+        <Joyride 
+          steps={GAME_TUTORIAL_STEPS}
+          run={run} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
+        <GameMenu showTutorial={() => { setRun(true);}} />
       </Box>
       <Box
         sx={{

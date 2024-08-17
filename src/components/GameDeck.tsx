@@ -6,8 +6,8 @@ export const GameDeck = () => {
   const deck = useDeck();
 
   return (
-    <Flex flexDirection="column" alignItems="flex-end" gap={2}>
-      <Text size="s" mr={2}>
+    <Flex flexDirection="column" alignItems='flex-end' gap={2} className="game-tutorial-step-8">
+      <Text size='s' mr={2}>
         {`${deck.currentLength}/${deck.size}`}
       </Text>
       <Image

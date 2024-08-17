@@ -19,6 +19,7 @@ export const PlayButton = () => {
         }}
         variant={cantPlay ? "defaultOutline" : "secondarySolid"}
         isDisabled={cantPlay}
+        className="game-tutorial-step-4"
       >
         {isMobile ? (
           <Box>

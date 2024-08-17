@@ -33,6 +33,7 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
         }}
         variant={cantDiscard ? "defaultOutline" : "solid"}
         isDisabled={cantDiscard}
+        className="game-tutorial-step-3"
       >
         {isMobile ? (
           <Box>

@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
-import { TutorialModal } from "../../components/TutorialModal.tsx";
-import { SKIP_TUTORIAL } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -26,9 +27,22 @@ export const GameContent = () => {
     lockRedirection,
   } = useGameContext();
 
-  const [showTutorial, setShowTutorial] = useState(
-    !window.localStorage.getItem(SKIP_TUTORIAL)
-  );
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
+    if (showTutorial)
+      setRun(true);
+  }, []);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { type } = data;
+
+    if (type === "tour:end"){
+      window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
+      setRun(false);
+    }
+  };
 
   const game = useGame();
 
@@ -102,13 +116,15 @@ export const GameContent = () => {
           width: "100%",
         }}
       >
-        {showTutorial && (
-          <TutorialModal
-            onClose={() => {
-              setShowTutorial(false);
-            }}
-          />
-        )}
+        <Joyride 
+          steps={GAME_TUTORIAL_STEPS}
+          run={run} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image
@@ -174,7 +190,7 @@ export const GameContent = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu />
+          <GameMenu showTutorial={() => { setRun(true);}} />
         </Box>
         <Box
           sx={{
@@ -189,3 +205,4 @@ export const GameContent = () => {
     </Box>
   );
 };
+
