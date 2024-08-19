@@ -49,8 +49,9 @@ export const Store = () => {
     },
     account,
   } = useDojo();
-
+  
   const { reroll, locked } = useStore();
+  const [run, setRun] = useState(false);
 
   const shopItems = useShopItems();
 
@@ -139,6 +140,12 @@ export const Store = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
+    if (showTutorial) setRun(true);
+  }, []);
+
+
   if (loading) {
     return (
       <Background type="game">
@@ -146,13 +153,6 @@ export const Store = () => {
       </Background>
     );
   }
-
-  const [run, setRun] = useState(false);
-
-  useEffect(() => {
-    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
-    if (showTutorial) setRun(true);
-  }, []);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;
