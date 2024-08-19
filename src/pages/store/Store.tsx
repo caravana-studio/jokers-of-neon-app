@@ -1,12 +1,19 @@
 import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
+import {
+  STORE_TUTORIAL_STEPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
+import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame";
 import { useShop } from "../../dojo/queries/useShop";
 import { useShopItems } from "../../dojo/queries/useShopItems";
@@ -14,9 +21,6 @@ import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreCardsRow } from "./StoreCardsRow";
-import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps } from 'react-joyride';
-import {STORE_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
@@ -31,6 +35,7 @@ export const Store = () => {
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
   const [loading, setLoading] = useState(false);
+  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
 
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
@@ -84,6 +89,9 @@ export const Store = () => {
     <Button
       fontSize={[10, 10, 10, 14, 14]}
       w={["unset", "unset", "unset", "100%", "100%"]}
+      onClick={() => {
+        setSpecialCardsModalOpen(true);
+      }}
     >
       SEE MY{isMobile && <br />} SPECIAL CARDS
     </Button>
@@ -141,14 +149,13 @@ export const Store = () => {
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
-    if (showTutorial)
-      setRun(true);
+    if (showTutorial) setRun(true);
   }, []);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;
 
-    if (type === "tour:end"){
+    if (type === "tour:end") {
       window.localStorage.setItem(SKIP_TUTORIAL_STORE, "true");
       setRun(false);
     }
@@ -156,8 +163,20 @@ export const Store = () => {
 
   return (
     <Background type="store" scrollOnMobile>
-      <Joyride steps={STORE_TUTORIAL_STEPS} run={run} continuous showSkipButton
-        styles={TUTORIAL_STYLE} showProgress callback={handleJoyrideCallback} />
+      <Joyride
+        steps={STORE_TUTORIAL_STEPS}
+        run={run}
+        continuous
+        showSkipButton
+        styles={TUTORIAL_STYLE}
+        showProgress
+        callback={handleJoyrideCallback}
+      />
+      {specialCardsModalOpen && (
+        <CurrentSpecialCardsModal
+          close={() => setSpecialCardsModalOpen(false)}
+        />
+      )}
       {!isMobile ? (
         <Box
           sx={{
@@ -167,7 +186,12 @@ export const Store = () => {
             zIndex: 1000,
           }}
         >
-          <GameMenu inStore showTutorial={() => {setRun(true);}} />
+          <GameMenu
+            inStore
+            showTutorial={() => {
+              setRun(true);
+            }}
+          />
         </Box>
       ) : (
         <Box
@@ -179,7 +203,12 @@ export const Store = () => {
             transform: "scale(0.7)",
           }}
         >
-          <GameMenu inStore showTutorial={() => {setRun(true);}} />
+          <GameMenu
+            inStore
+            showTutorial={() => {
+              setRun(true);
+            }}
+          />
         </Box>
       )}
       <Flex
@@ -274,7 +303,7 @@ export const Store = () => {
           </Box>
           {isMobile && (
             <Box
-            className="game-tutorial-step-2"
+              className="game-tutorial-step-2"
               w="100%"
               background="rgba(0,0,0,0.5)"
               px={4}
@@ -312,7 +341,7 @@ export const Store = () => {
                 {nextLevelButton}
                 <Flex flexDirection="column" gap={14}>
                   {rerollButton}
-                  {/* {specialsButton} */}
+                  {specialsButton}
                   <Image
                     src="/logos/logo-variant.png"
                     alt="store-bg"
@@ -328,7 +357,7 @@ export const Store = () => {
                 mb={"100px"}
               >
                 {rerollButton}
-                {/* {specialsButton} */}
+                {specialsButton}
                 {nextLevelButton}
               </Flex>
             )}

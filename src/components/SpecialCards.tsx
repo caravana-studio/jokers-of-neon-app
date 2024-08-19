@@ -3,7 +3,11 @@ import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards.t
 import { useGame } from "../dojo/queries/useGame";
 import { CardsRow } from "./CardsRow";
 
-export const SpecialCards = () => {
+interface SpecialCardsProps {
+  inStore?: boolean;
+}
+
+export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const { colors } = useTheme();
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
@@ -13,11 +17,11 @@ export const SpecialCards = () => {
     <Box
       width="100%"
       p={2}
-      boxShadow={`0px 26px 30px -30px ${colors.neonGreen}`}
+      boxShadow={inStore ? "none" : `0px 26px 30px -30px ${colors.neonGreen}`}
     >
       <CardsRow cards={specialCards} />
       <Flex sx={{ mt: 1 }} justifyContent="space-between">
-        <Text size="l">Special cards</Text>
+        <Box>{!inStore && <Text size="l">Special cards</Text>}</Box>
         <Text size="l">
           {"<"}
           {specialCards.length}/{maxLength}
