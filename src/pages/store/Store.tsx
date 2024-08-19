@@ -14,6 +14,7 @@ import {
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
 import { useGame } from "../../dojo/queries/useGame";
 import { useShop } from "../../dojo/queries/useShop";
 import { useShopItems } from "../../dojo/queries/useShopItems";
@@ -36,6 +37,7 @@ export const Store = () => {
 
   const [loading, setLoading] = useState(false);
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
+  const specialCards = useCurrentSpecialCards();
 
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
@@ -85,7 +87,7 @@ export const Store = () => {
     </Tooltip>
   );
 
-  const specialsButton = (
+  const specialsButton = specialCards.length > 0 && (
     <Button
       fontSize={[10, 10, 10, 14, 14]}
       w={["unset", "unset", "unset", "100%", "100%"]}

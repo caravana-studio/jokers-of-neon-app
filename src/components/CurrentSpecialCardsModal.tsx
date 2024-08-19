@@ -18,7 +18,7 @@ export const CurrentSpecialCardsModal = ({
   close,
 }: CurrentSpecialCardsModalProps) => {
   return (
-    <Modal size='2xl' isOpen={true} onClose={close}>
+    <Modal size='3xl' isOpen={true} onClose={close}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
