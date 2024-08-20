@@ -142,7 +142,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         w="100%"
         size="md"
         variant="secondarySolid"
-        onClick={() => navigate("/store")}
+        onClick={() => navigate("/redirect/store")}
       >
         CONTINUE
       </Button>
