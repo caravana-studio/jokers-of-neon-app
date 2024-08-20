@@ -1,12 +1,11 @@
 import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
-import { getCardType } from "../../utils/getCardType";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
-import { isMobile } from "react-device-detect";
 
 interface CardsRowProps {
   title: string;
@@ -19,7 +18,7 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
-  const { buyCard } = useStore();
+  const { buyCard, isPurchased } = useStore();
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
@@ -36,13 +35,13 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
       return 0.81;
     }
     return 1;
-  }
+  };
 
   return (
     <>
       <Box>
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading size={'s'} mb={[1, 1, 1, 2, 2]}>
+          <Heading size={"s"} mb={[1, 1, 1, 2, 2]}>
             {title}
           </Heading>
           {button && (
@@ -58,13 +57,14 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
         <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
           {cards.map((card) => {
+            const purchased = isPurchased(card);
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
-                  card={card}
+                  card={{ ...card, purchased }}
                   onClick={() => {
-                    !card.purchased && setSelectedCard(card);
+                    !isPurchased(card) && setSelectedCard(card);
                   }}
                   scale={getCardScale()}
                 />
@@ -75,13 +75,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
       </Box>
       {selectedCard && (
         <ShowCardModal
-          onBuyClick={() =>
-            buyCard(
-              selectedCard.idx,
-              getCardType(selectedCard),
-              selectedCard.price ?? 0
-            )
-          }
+          onBuyClick={() => {
+            buyCard(selectedCard);
+          }}
           card={selectedCard}
           close={() => setSelectedCard(undefined)}
         />

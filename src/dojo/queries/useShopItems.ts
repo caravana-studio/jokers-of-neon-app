@@ -1,8 +1,9 @@
-import { useComponentValue } from "@dojoengine/react";
-import { Entity } from "@dojoengine/recs";
+import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
+import { PokerHandItem } from "../../types/PokerHandItem";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -14,14 +15,6 @@ export interface ShopItems {
   pokerHandItems: PokerHandItem[];
 }
 
-interface PokerHandItem {
-  idx: number;
-  poker_hand: string;
-  level: number;
-  cost: number;
-  purchased: boolean;
-}
-
 const sortByCardId = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
 };
@@ -29,19 +22,18 @@ const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
 };
 
-const useCard = (gameId: number, index: number, type: NumericCardTypes) => {
-  const {
-    setup: {
-      clientComponents: { CardItem },
-    },
-  } = useDojo();
-
+const getCard = (
+  gameId: number,
+  index: number,
+  type: NumericCardTypes,
+  entity: Component
+) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),
     BigInt(type),
   ]) as Entity;
-  const card = useComponentValue(CardItem, entityId);
+  const card = getComponentValue(entity, entityId);
   return {
     ...card,
     price: card?.cost,
@@ -54,18 +46,12 @@ const useCard = (gameId: number, index: number, type: NumericCardTypes) => {
   };
 };
 
-const usePokerHandItem = (gameId: number, index: number) => {
-  const {
-    setup: {
-      clientComponents: { PokerHandItem },
-    },
-  } = useDojo();
-
+const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),
   ]) as Entity;
-  const item = useComponentValue(PokerHandItem, entityId) as any;
+  const item = getComponentValue(entity, entityId) as any;
   return {
     game_id: item.game_id ?? 0,
     idx: item.idx ?? 0,
@@ -77,45 +63,55 @@ const usePokerHandItem = (gameId: number, index: number) => {
 };
 
 export const useShopItems = () => {
+  const {
+    setup: {
+      clientComponents: { CardItem, PokerHandItem },
+    },
+  } = useDojo();
+
   const game = useGame();
   const shop = useShop();
   const gameId = game?.id ?? 0;
 
-  const commonCardsIds = Array.from(
-    { length: shop?.len_item_common_cards ?? 0 },
-    (_, index) => index
-  );
+  const commonCards: Card[] = useMemo(() => {
+    const commonCardsIds = Array.from(
+      { length: shop?.len_item_common_cards ?? 0 },
+      (_, index) => index
+    );
+    return commonCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.COMMON, CardItem)
+    );
+  }, [shop?.len_item_common_cards, game?.level, shop?.reroll_executed]);
 
-  const modifierCardsIds = Array.from(
-    { length: shop?.len_item_modifier_cards ?? 0 },
-    (_, index) => index
-  );
+  const modifierCards: Card[] = useMemo(() => {
+    const modifierCardsIds = Array.from(
+      { length: shop?.len_item_modifier_cards ?? 0 },
+      (_, index) => index
+    );
+    return modifierCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.MODIFIER, CardItem)
+    );
+  }, [shop?.len_item_modifier_cards, game?.level, shop?.reroll_executed]);
 
-  const specialCardsIds = Array.from(
-    { length: shop?.len_item_special_cards ?? 0 },
-    (_, index) => index
-  );
+  const specialCards: Card[] = useMemo(() => {
+    const specialCardsIds = Array.from(
+      { length: shop?.len_item_special_cards ?? 0 },
+      (_, index) => index
+    );
+    return specialCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.SPECIAL, CardItem)
+    );
+  }, [shop?.len_item_special_cards, game?.level, shop?.reroll_executed]);
 
-  const commonCards: Card[] = commonCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.COMMON)
-  );
-
-  const modifierCards: Card[] = modifierCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.MODIFIER)
-  );
-
-  const specialCards: Card[] = specialCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.SPECIAL)
-  );
-
-  const pokerHandIds = Array.from(
-    { length: shop?.len_item_poker_hands ?? 0 },
-    (_, index) => index
-  );
-
-  const pokerHandItems: PokerHandItem[] = pokerHandIds.map((index) =>
-    usePokerHandItem(gameId, index)
-  );
+  const pokerHandItems: PokerHandItem[] = useMemo(() => {
+    const pokerHandIds = Array.from(
+      { length: shop?.len_item_poker_hands ?? 0 },
+      (_, index) => index
+    );
+    return pokerHandIds.map((index) =>
+      getPokerHandItem(gameId, index, PokerHandItem)
+    );
+  }, [shop?.len_item_poker_hands, game?.level, shop?.reroll_executed]);
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
