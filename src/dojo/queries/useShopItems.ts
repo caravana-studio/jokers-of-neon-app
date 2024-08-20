@@ -3,6 +3,7 @@ import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
+import { Pack } from "../../types/Pack";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -12,6 +13,7 @@ export interface ShopItems {
   modifierCards: Card[];
   commonCards: Card[];
   pokerHandItems: PokerHandItem[];
+  packs: Pack[];
 }
 
 interface PokerHandItem {
@@ -21,6 +23,38 @@ interface PokerHandItem {
   cost: number;
   purchased: boolean;
 }
+
+const packs: Pack[] = [
+  {
+    id: "1",
+    idx: 1,
+    price: 200,
+    img: "packs/basic.png",
+    purchased: false,
+    card_id: 1000,
+    isPack: true,
+  },
+  {
+    id: "2",
+    idx: 2,
+    name: "Advanced",
+    price: 400,
+    img: "packs/advanced.png",
+    purchased: false,
+    card_id: 1001,
+    isPack: true,
+  },
+  {
+    id: "3",
+    idx: 3,
+    name: "Jokers",
+    price: 1500,
+    img: "packs/jokers.png",
+    purchased: false,
+    card_id: 1002,
+    isPack: true,
+  },
+];
 
 const sortByCardId = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
@@ -122,6 +156,7 @@ export const useShopItems = () => {
     modifierCards: modifierCards.sort(sortByCardId),
     commonCards: commonCards.sort(sortByCardId),
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
+    packs,
   };
 
   return shopItems;
