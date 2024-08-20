@@ -19,6 +19,7 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { useGame } from "../dojo/queries/useGame.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 

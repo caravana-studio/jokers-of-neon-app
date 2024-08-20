@@ -14,7 +14,7 @@ import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 
 function rpc() {
   return {
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io/rpc/v0_6",
+    nodeUrl: "https://api.cartridge.gg/x/jkneon/katana",
   };
 }
 

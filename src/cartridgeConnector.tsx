@@ -62,9 +62,8 @@ const cartridgeConnector = new CartridgeConnector(
   ],
   {
     theme: "jokers-of-neon",
-    paymaster,
-    url: "https://x.cartridge.gg",
-    rpc: "https://api.cartridge.gg/x/starknet/sepolia",
+    //paymaster,
+    rpc: "https://api.cartridge.gg/x/jkneon/katana",
   }
 ) as never as Connector;
 
