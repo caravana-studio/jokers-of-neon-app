@@ -9,6 +9,7 @@ import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
 import { RollingNumber } from "../../components/RollingNumber";
+import { TiltCard } from "../../components/TiltCard.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -22,6 +23,8 @@ import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreCardsRow } from "./StoreCardsRow";
+import { Coins } from "./Coins.tsx";
+import { Packs } from "./Packs.tsx";
 
 export const Store = () => {
   const { gameId, setHand } = useGameContext();
@@ -31,7 +34,6 @@ export const Store = () => {
   const { onShopSkip } = useGameContext();
 
   const rerollCost = store?.reroll_cost ?? 0;
-  const cash = game?.cash ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
@@ -49,7 +51,7 @@ export const Store = () => {
     },
     account,
   } = useDojo();
-  
+
   const { reroll, locked } = useStore();
   const [run, setRun] = useState(false);
 
@@ -145,7 +147,6 @@ export const Store = () => {
     if (showTutorial) setRun(true);
   }, []);
 
-
   if (loading) {
     return (
       <Background type="game">
@@ -231,7 +232,7 @@ export const Store = () => {
         >
           <Box
             display="flex"
-            w={["100%", "100%", "35%", "35%", "35%"]}
+            w={["100%", "100%", "40%", "40%", "40%"]}
             h={[null, null, "100%", "100%", "100%"]}
             flexDirection="column"
             justifyContent="space-between"
@@ -240,37 +241,13 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
+            <Coins />
+            <Packs />
             {!isMobile && levelUpTable}
-            <Box>
-              <Heading
-                className="game-tutorial-step-1"
-                variant={"italic"}
-                size={"m"}
-                mb={[2, 2, 2, 6, 6]}
-                mt={[4, 4, 0, 0, 0]}
-                sx={{
-                  ml: 4,
-                  position: "relative",
-                  textShadow: `0 0 10px white`,
-                  /* _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -2,
-                    left: 0,
-                    width: "100%",
-                    height: "1px",
-                    background: "white",
-                    boxShadow:
-                      "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
-                  }, */
-                }}
-              >
-                COINS: <RollingNumber className="italic" n={cash} /> ȼ
-              </Heading>
-            </Box>
+            
           </Box>
           <Box
-            w={["100%", "100%", "50%", "50%", "50%"]}
+            w={["100%", "100%", "45%", "45%", "45%"]}
             display="flex"
             flexDirection="column"
             justifyContent="center"

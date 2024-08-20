@@ -15,7 +15,7 @@ import {
   MODIFIERS_OFFSET,
   TILT_OPTIONS,
 } from "../constants/visualProps";
-import { PASTEL_PINK } from "../theme/colors.tsx";
+import { PASTEL_PINK, VIOLET } from "../theme/colors.tsx";
 import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
@@ -28,9 +28,16 @@ interface ICardProps {
   onClick?: () => void;
   cursor?: string;
   scale?: number;
+  isPack?: boolean;
 }
 
-export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
+export const TiltCard = ({
+  card,
+  onClick,
+  cursor,
+  scale = 1,
+  isPack = false,
+}: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
@@ -43,13 +50,16 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
         sx={{
           zIndex: 6,
           position: "relative",
+          boxShadow: isPack
+            ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
+            : "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
           <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown>
             <Image
-              borderRadius={{ base: "5px", sm: "8px" }}
-              boxShadow={'0px 0px 5px 0px rgba(0,0,0,0.5)'}
+              borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+              boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
               sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
               src={`Cards/${img}`}
               alt={img}

@@ -1,6 +1,6 @@
 import { tableAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
-import { ROYAL_BLUE } from './colors.tsx'
+import { ROYAL_BLUE } from "./colors.tsx";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tableAnatomy.keys);
@@ -64,6 +64,7 @@ const store = definePartsStyle({
     td: {
       borderBottomWidth: 0,
       px: [2, 2, 4],
+      py: 2,
     },
   },
   tbody: {
@@ -75,7 +76,7 @@ const store = definePartsStyle({
     },
     td: {
       py: [0],
-    }
+    },
   },
 });
 
@@ -106,13 +107,13 @@ const storeMobile = definePartsStyle({
     },
     td: {
       p: 0,
-    }
+    },
   },
 });
 
 const baseStyle = definePartsStyle({
   table: {
-    fontFamily: "Orbitron"
+    fontFamily: "Orbitron",
   },
 });
 
