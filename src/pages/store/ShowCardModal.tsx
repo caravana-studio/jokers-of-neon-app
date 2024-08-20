@@ -88,7 +88,7 @@ export const ShowCardModal = ({
                   borderRadius={{ base: "8px", sm: "15px" }}
                   width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
                   height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                  src={`Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : card?.img}`}
+                  src={`Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
                 />
               </Box>
             </Box>
