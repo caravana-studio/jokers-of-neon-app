@@ -12,7 +12,7 @@ import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
 import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
 import Joyride, { CallBackProps } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import { GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -181,6 +181,7 @@ export const GameContent = () => {
                   justifyContent: "space-between",
                 }}
                 pt={12}
+                className="tutorial-modifiers-step-3"
               >
                 <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>
