@@ -9,7 +9,7 @@ export const useUsername = () => {
     (cartridgeConnector as CartridgeConnector).username()?.then((username) => {
       setUsername(username)
     })
-  })
+  }, [cartridgeConnector])
 
   return username
 }
