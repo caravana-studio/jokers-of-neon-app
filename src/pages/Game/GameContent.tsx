@@ -201,8 +201,7 @@ export const GameContent = () => {
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
-                pt={12}
-                className="tutorial-modifiers-step-3"
+                pt={12} 
               >
                 <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>
