@@ -204,8 +204,8 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton itemDragged={isItemDragged} />
-              <PlayButton />
+              <DiscardButton itemDragged={isItemDragged} highlight={run}/>
+              <PlayButton highlight={run}/>
             </Flex>
             <Box
               sx={{

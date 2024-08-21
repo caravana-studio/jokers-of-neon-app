@@ -182,7 +182,7 @@ export const GameContent = () => {
                 }}
                 pt={12}
               >
-                <PreselectedCardsSection />
+                <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>
               <Box
                 pb={{ base: 2, md: "2vh" }}
