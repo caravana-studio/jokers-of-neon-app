@@ -10,9 +10,9 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps } from 'react-joyride';
+import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
