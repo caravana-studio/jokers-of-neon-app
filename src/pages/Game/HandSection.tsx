@@ -52,72 +52,78 @@ export const HandSection = () => {
           <SortBy />
         </Box>
       )}
-      <SimpleGrid
-        sx={{
-          opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
-          minWidth: `${CARD_WIDTH * 4}px`,
-          maxWidth: `${CARD_WIDTH * 6.5}px`,
-        }}
-        columns={hand.length}
-        className="game-tutorial-step-2"
+      <Box
+        pr={12}
+        pl={4}
+        pt={8}
+        className="game-tutorial-step-2" 
       >
-        {hand.map((card, index) => {
-          const isPreselected = cardIsPreselected(card.idx);
-          return (
-            <GridItem
-              key={card.idx}
-              w="100%"
-              sx={{
-                transform: ` rotate(${
-                  (index - hand.length / 2 + 0.5) * 3
-                }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
-              }}
-              onContextMenu={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setMenuIdx(card.idx);
-                onOpen();
-              }}
-            >
-              {card.isModifier && !isPreselected && (
-                <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
-                  <MenuList textColor="black" minWidth="max-content" zIndex="7">
-                    <MenuItem
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        discardEffectCard(card.idx);
-                        onClose();
-                      }}
-                      isDisabled={preSelectionLocked}
-                    >
-                      Discard
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              )}
-              {!isPreselected && (
-                <AnimatedCard idx={card.idx} discarded={card.discarded}>
-                  <TiltCard
-                    card={card}
-                    cursor={
-                      card.isModifier
-                        ? activeNode
-                          ? "grabbing"
-                          : "grab"
-                        : "pointer"
-                    }
-                    onClick={() => {
-                      if (!card.isModifier) {
-                        togglePreselected(card.idx);
+        <SimpleGrid
+          sx={{
+            opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
+            minWidth: `${CARD_WIDTH * 4}px`,
+            maxWidth: `${CARD_WIDTH * 6.5}px`,
+          }}
+          columns={hand.length}
+        >
+          {hand.map((card, index) => {
+            const isPreselected = cardIsPreselected(card.idx);
+            return (
+              <GridItem
+                key={card.idx}
+                w="100%"
+                sx={{
+                  transform: ` rotate(${
+                    (index - hand.length / 2 + 0.5) * 3
+                  }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
+                }}
+                onContextMenu={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setMenuIdx(card.idx);
+                  onOpen();
+                }}
+              >
+                {card.isModifier && !isPreselected && (
+                  <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
+                    <MenuList textColor="black" minWidth="max-content" zIndex="7">
+                      <MenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          discardEffectCard(card.idx);
+                          onClose();
+                        }}
+                        isDisabled={preSelectionLocked}
+                      >
+                        Discard
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                )}
+                {!isPreselected && (
+                  <AnimatedCard idx={card.idx} discarded={card.discarded}>
+                    <TiltCard
+                      card={card}
+                      cursor={
+                        card.isModifier
+                          ? activeNode
+                            ? "grabbing"
+                            : "grab"
+                          : "pointer"
                       }
-                    }}
-                  />
-                </AnimatedCard>
-              )}
-            </GridItem>
-          );
-        })}
-      </SimpleGrid>
+                      onClick={() => {
+                        if (!card.isModifier) {
+                          togglePreselected(card.idx);
+                        }
+                      }}
+                    />
+                  </AnimatedCard>
+                )}
+              </GridItem>
+            );
+          })}
+        </SimpleGrid>
+      </Box>
       {handsLeft === 0 && (
         <Heading
           ml={{ base: "25px", md: "100px" }}
