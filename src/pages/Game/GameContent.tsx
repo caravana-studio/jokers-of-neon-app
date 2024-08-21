@@ -16,6 +16,7 @@ import { GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_S
 
 export const GameContent = () => {
   const {
+    hand,
     preSelectedCards,
     gameLoading,
     error,
@@ -28,7 +29,8 @@ export const GameContent = () => {
   } = useGameContext();
 
   const [run, setRun] = useState(false);
-  const[runSpecial, setRunSpecial] = useState(false);
+  const [runSpecial, setRunSpecial] = useState(false);
+  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -82,11 +84,23 @@ export const GameContent = () => {
 
   useEffect(() => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
+    const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
     if (showSpecialCardTutorial){
       if(game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
         setRunSpecial(true);
       }
+    }
+    
+    else if (showModifiersTutorial) {
+      { hand.forEach((card) => {
+        if (card.isModifier)
+          {
+            setRunTutorialModifiers(true);
+            return;
+          }
+
+      })};
     } 
   }, []);
 
@@ -145,6 +159,16 @@ export const GameContent = () => {
         <Joyride 
           steps={SPECIAL_CARDS_TUTORIAL_STEPS}
           run={runSpecial} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleSpecialJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
+        <Joyride 
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers} 
           continuous 
           showSkipButton 
           showProgress 
