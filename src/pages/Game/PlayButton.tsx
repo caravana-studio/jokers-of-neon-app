@@ -2,12 +2,20 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useEffect } from "react";
 
-export const PlayButton = () => {
+interface PlayButtonProps {
+  changeStyleByTutorial?: boolean;
+}
+
+export const PlayButton = ({ changeStyleByTutorial = false }: PlayButtonProps) => {
   const { preSelectedCards, play, handsLeft, preSelectionLocked } =
     useGameContext();
 
-  const cantPlay = preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0;
+    useEffect(() => {
+    }, [changeStyleByTutorial]);
+
+  const cantPlay = !changeStyleByTutorial && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
 
   return (
     <ButtonContainer>

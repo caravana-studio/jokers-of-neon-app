@@ -3,12 +3,14 @@ import { useDroppable } from "@dnd-kit/core";
 import { isMobile } from "react-device-detect";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useEffect } from "react";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
+  changeStyleByTutorial?: boolean;
 }
 
-export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
+export const DiscardButton = ({ itemDragged = false, changeStyleByTutorial = false }: DiscardButtonProps) => {
   const { preSelectedCards, discard, discardsLeft, preSelectionLocked } =
     useGameContext();
 
@@ -16,7 +18,11 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
     id: "play-discard",
   });
 
-  const cantDiscard = !itemDragged &&
+  useEffect(() => {
+    console.log(`Tutorial is now ${changeStyleByTutorial ? "running" : "stopped"}`);
+  }, [changeStyleByTutorial]);
+
+  const cantDiscard = !changeStyleByTutorial && !itemDragged &&
   (preSelectionLocked ||
     preSelectedCards?.length === 0 ||
     !discardsLeft ||

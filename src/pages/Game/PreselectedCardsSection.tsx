@@ -9,7 +9,11 @@ import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 
-export const PreselectedCardsSection = () => {
+interface PreselectedCardsProps {
+  isTutorialRunning?: boolean;
+}
+
+export const PreselectedCardsSection = ({isTutorialRunning = false}: PreselectedCardsProps ) => {
   const {
     preSelectedCards,
     hand,
@@ -21,7 +25,9 @@ export const PreselectedCardsSection = () => {
 
   return (
     <>
-      <DiscardButton />
+    <Box className="game-tutorial-step-3" >
+      <DiscardButton changeStyleByTutorial={isTutorialRunning} />
+    </Box>
 
       <Box
         sx={{
@@ -67,7 +73,10 @@ export const PreselectedCardsSection = () => {
         </Flex>
         <CurrentPlay />
       </Box>
-      <PlayButton />
+      <Box className="game-tutorial-step-4" >
+        <PlayButton changeStyleByTutorial={isTutorialRunning} />
+      </Box>
+      
     </>
   );
 };
