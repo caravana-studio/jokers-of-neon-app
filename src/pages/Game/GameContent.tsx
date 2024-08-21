@@ -10,9 +10,9 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
 import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -28,6 +28,7 @@ export const GameContent = () => {
   } = useGameContext();
 
   const [run, setRun] = useState(false);
+  const[runSpecial, setRunSpecial] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -35,14 +36,19 @@ export const GameContent = () => {
       setRun(true);
   }, []);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { type } = data;
-
-    if (type === "tour:end"){
-      window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
-      setRun(false);
-    }
+  const handleJoyrideCallbackFactory = (storageKey: string, setRunCallback: React.Dispatch<React.SetStateAction<boolean>>) => {
+    return (data: CallBackProps) => {
+      const { type } = data;
+  
+      if (type === "tour:end") {
+        window.localStorage.setItem(storageKey, "true");
+        setRunCallback(false);
+      }
+    };
   };
+
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
+  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
 
   const game = useGame();
 
@@ -72,6 +78,16 @@ export const GameContent = () => {
 
   useEffect(() => {
     checkOrCreateGame();
+  }, []);
+
+  useEffect(() => {
+    const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
+
+    if (showSpecialCardTutorial){
+      if(game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
+        setRunSpecial(true);
+      }
+    } 
   }, []);
 
   if (error) {
@@ -123,6 +139,16 @@ export const GameContent = () => {
           showSkipButton 
           showProgress 
           callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
+        <Joyride 
+          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
+          run={runSpecial} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 
