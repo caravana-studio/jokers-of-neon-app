@@ -26,7 +26,7 @@ export const PreselectedCardsSection = ({isTutorialRunning = false}: Preselected
   return (
     <>
     <Box className="game-tutorial-step-3" >
-      <DiscardButton changeStyleByTutorial={isTutorialRunning} />
+      <DiscardButton highlight={isTutorialRunning} />
     </Box>
 
       <Box
@@ -74,7 +74,7 @@ export const PreselectedCardsSection = ({isTutorialRunning = false}: Preselected
         <CurrentPlay />
       </Box>
       <Box className="game-tutorial-step-4" >
-        <PlayButton changeStyleByTutorial={isTutorialRunning} />
+        <PlayButton highlight={isTutorialRunning} />
       </Box>
       
     </>

@@ -5,17 +5,17 @@ import { ButtonContainer } from "./ButtonContainer";
 import { useEffect } from "react";
 
 interface PlayButtonProps {
-  changeStyleByTutorial?: boolean;
+  highlight?: boolean;
 }
 
-export const PlayButton = ({ changeStyleByTutorial = false }: PlayButtonProps) => {
+export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
   const { preSelectedCards, play, handsLeft, preSelectionLocked } =
     useGameContext();
 
     useEffect(() => {
-    }, [changeStyleByTutorial]);
+    }, [highlight]);
 
-  const cantPlay = !changeStyleByTutorial && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
+  const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
 
   return (
     <ButtonContainer>

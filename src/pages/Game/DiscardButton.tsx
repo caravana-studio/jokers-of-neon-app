@@ -7,10 +7,10 @@ import { useEffect } from "react";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
-  changeStyleByTutorial?: boolean;
+  highlight?: boolean;
 }
 
-export const DiscardButton = ({ itemDragged = false, changeStyleByTutorial = false }: DiscardButtonProps) => {
+export const DiscardButton = ({ itemDragged = false, highlight = false }: DiscardButtonProps) => {
   const { preSelectedCards, discard, discardsLeft, preSelectionLocked } =
     useGameContext();
 
@@ -19,10 +19,9 @@ export const DiscardButton = ({ itemDragged = false, changeStyleByTutorial = fal
   });
 
   useEffect(() => {
-    console.log(`Tutorial is now ${changeStyleByTutorial ? "running" : "stopped"}`);
-  }, [changeStyleByTutorial]);
+  }, [highlight]);
 
-  const cantDiscard = !changeStyleByTutorial && !itemDragged &&
+  const cantDiscard = !highlight && !itemDragged &&
   (preSelectionLocked ||
     preSelectedCards?.length === 0 ||
     !discardsLeft ||
