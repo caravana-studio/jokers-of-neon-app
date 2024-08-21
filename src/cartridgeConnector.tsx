@@ -62,8 +62,7 @@ const cartridgeConnector = new CartridgeConnector(
   ],
   {
     theme: "jokers-of-neon",
-    //paymaster,
-    rpc: "https://api.cartridge.gg/x/jkneon/katana",
+    rpc: import.meta.env.VITE_RPC_URL,
   }
 ) as never as Connector;
 

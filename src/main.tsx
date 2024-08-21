@@ -1,5 +1,5 @@
-import { sepolia } from "@starknet-react/chains";
-import { StarknetConfig, jsonRpcProvider } from "@starknet-react/core";
+import { sepolia, devnet } from "@starknet-react/chains";
+import { StarknetConfig, voyager, jsonRpcProvider } from "@starknet-react/core";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -14,7 +14,7 @@ import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 
 function rpc() {
   return {
-    nodeUrl: "https://api.cartridge.gg/x/jkneon/katana",
+    nodeUrl: import.meta.env.VITE_RPC_URL,
   };
 }
 
@@ -25,6 +25,7 @@ async function init() {
 
   const chains = [sepolia];
   const connectors = [cartridgeConnector];
+  const provider = jsonRpcProvider({ rpc });
 
   root.render(<LoadingScreen />);
 
@@ -32,21 +33,23 @@ async function init() {
     const setupResult = await setup(dojoConfig);
     const queryClient = new QueryClient();
     root.render(
-      <StarknetConfig
-        chains={chains}
-        provider={jsonRpcProvider({ rpc })}
-        connectors={connectors}
-        autoConnect
-      >
-        <DojoProvider value={setupResult}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <Toaster />
-              <App />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </DojoProvider>
-      </StarknetConfig>
+        <StarknetConfig
+          autoConnect
+          chains={chains}
+          provider={provider}
+          connectors={connectors}
+          explorer={voyager}
+        >
+          <DojoProvider value={setupResult}>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <Toaster />
+                <App />
+              </QueryClientProvider>
+            </BrowserRouter>
+          </DojoProvider>
+        </StarknetConfig>
+
     );
   } catch (e) {
     console.error(e);
