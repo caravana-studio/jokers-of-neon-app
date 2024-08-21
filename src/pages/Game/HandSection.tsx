@@ -54,8 +54,8 @@ export const HandSection = () => {
       )}
       <Box
         pr={12}
-        pl={4}
-        pt={8}
+        pl={!isMobile ? 4 : 2}
+        pt={!isMobile ? 8 : 0}
         className="game-tutorial-step-2" 
       >
         <SimpleGrid
