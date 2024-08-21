@@ -3,8 +3,8 @@ import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 
 // Clubs
-export const C2: Card = { value: Cards.TWO, suit: Suits.CLUBS, img: "", id: "0", idx: 0 , card_id: 0 };
-export const C3: Card = { value: Cards.THREE, suit: Suits.CLUBS, img: "", id: "1", idx: 1 , card_id: 1 };
+export const C2: Card = { value: Cards.TWO, suit: Suits.CLUBS, img: "/Cards/2.png", id: "0", idx: 0 , card_id: 0 };
+export const C3: Card = { value: Cards.THREE, suit: Suits.CLUBS, img: "/Cards/3.png", id: "1", idx: 1 , card_id: 1 };
 export const C4: Card = { value: Cards.FOUR, suit: Suits.CLUBS, img: "", id: "2", idx: 2 , card_id: 2 };
 export const C5: Card = { value: Cards.FIVE, suit: Suits.CLUBS, img: "", id: "3", idx: 3 , card_id: 3 };
 export const C6: Card = { value: Cards.SIX, suit: Suits.CLUBS, img: "", id: "4", idx: 4 , card_id: 4 };
