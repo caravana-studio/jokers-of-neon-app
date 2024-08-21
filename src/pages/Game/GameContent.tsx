@@ -51,6 +51,7 @@ export const GameContent = () => {
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
   const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
+  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_MODIFIERS, setRunTutorialModifiers);
 
   const game = useGame();
 
@@ -86,11 +87,8 @@ export const GameContent = () => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
     const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
-    if (showSpecialCardTutorial){
-      if(game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
-        setRunSpecial(true);
-      }
-    }
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0)
+      setRunSpecial(true);
     
     else if (showModifiersTutorial) {
       { hand.forEach((card) => {
@@ -99,7 +97,6 @@ export const GameContent = () => {
             setRunTutorialModifiers(true);
             return;
           }
-
       })};
     } 
   }, []);
@@ -172,7 +169,7 @@ export const GameContent = () => {
           continuous 
           showSkipButton 
           showProgress 
-          callback={handleSpecialJoyrideCallback}
+          callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 
