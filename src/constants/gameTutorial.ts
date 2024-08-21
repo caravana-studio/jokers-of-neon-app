@@ -143,6 +143,28 @@ export const STORE_TUTORIAL_STEPS: Step[] = [
   }
 ];
 
+export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
+  {
+    target: '.special-cards-step-1', // Assuming there's a class for the special cards section
+    title: 'Special Cards',
+    content: 'Special cards activate immediately after you purchase them in the store. They apply their effects after your hand is played.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.special-cards-step-2', // Assuming there's a class for the card limit indicator
+    title: 'Card Limit',
+    content: 'You can have up to 5 special cards active at any time. Use them wisely to maximize their benefits!',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.special-cards-step-3', // Assuming there's a class for the discard button/icon
+    title: 'Discarding Cards',
+    content: 'If you don’t want to use a special card, you can discard it at any time by right-clicking on it.',
+    ...COMMON_SETTINGS
+  }
+];
+
+
 
 export const TUTORIAL_STYLE = {
   options: {

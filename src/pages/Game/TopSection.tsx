@@ -18,6 +18,7 @@ export const TopSection = () => {
         <LevelPoints />
       </Box>
       <Flex
+        className="special-cards-step-3"
         mx={2}
         flexGrow={1}
         sx={{ p: 2 }}
