@@ -1,5 +1,6 @@
 import { Step } from 'react-joyride';
 import { isMobile } from "react-device-detect";
+import { background, border } from '@chakra-ui/react';
 
 const COMMON_SETTINGS: Partial<Step> =
 {
@@ -216,4 +217,9 @@ export const TUTORIAL_STYLE = {
     borderRadius: '12px',
     boxShadow: '0 0 15px rgba(218, 161, 232, 0.5)',
   },
+  spotlight:
+  {
+    borderRadius: '12px',
+    boxShadow: '0 0 15px rgba(255, 255, 255, 0.9)',
+  }
 };
