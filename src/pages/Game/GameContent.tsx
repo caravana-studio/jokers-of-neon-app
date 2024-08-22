@@ -10,12 +10,13 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps } from 'react-joyride';
+import { GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
+    hand,
     preSelectedCards,
     gameLoading,
     error,
@@ -28,7 +29,8 @@ export const GameContent = () => {
   } = useGameContext();
 
   const [run, setRun] = useState(false);
-  const[runSpecial, setRunSpecial] = useState(false);
+  const [runSpecial, setRunSpecial] = useState(false);
+  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -49,6 +51,7 @@ export const GameContent = () => {
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
   const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
+  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_MODIFIERS, setRunTutorialModifiers);
 
   const game = useGame();
 
@@ -82,13 +85,21 @@ export const GameContent = () => {
 
   useEffect(() => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
+    const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
-    if (showSpecialCardTutorial){
-      if(game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
-        setRunSpecial(true);
-      }
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0)
+      setRunSpecial(true);
+    
+    else if (showModifiersTutorial) {
+      { hand.forEach((card) => {
+        if (card.isModifier)
+          {
+            setRunTutorialModifiers(true);
+            return;
+          }
+      })};
     } 
-  }, []);
+  }, [game, hand, PreselectedCardsSection]);
 
   if (error) {
     return (
@@ -152,6 +163,16 @@ export const GameContent = () => {
           styles={TUTORIAL_STYLE}
         />
 
+        <Joyride 
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleModifiersJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image
             src="/borders/top.png"
@@ -180,7 +201,7 @@ export const GameContent = () => {
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
-                pt={12}
+                pt={12} 
               >
                 <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>

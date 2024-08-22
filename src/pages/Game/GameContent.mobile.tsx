@@ -10,13 +10,14 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
 import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 
 export const MobileGameContent = () => {
   const {
+    hand,
     preSelectedCards,
     gameLoading,
     error,
@@ -32,6 +33,7 @@ export const MobileGameContent = () => {
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
   const [run, setRun] = useState(false);
   const[runSpecial, setRunSpecial] = useState(false);
+  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -52,6 +54,7 @@ export const MobileGameContent = () => {
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
   const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
+  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_MODIFIERS, setRunTutorialModifiers);
 
   const handleDragEnd = (event: DragEndEvent) => {
     setIsItemDragged(false);
@@ -90,13 +93,21 @@ export const MobileGameContent = () => {
 
   useEffect(() => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
+    const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
-    if (showSpecialCardTutorial){
-      if(game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
-        setRunSpecial(true);
-      }
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0)
+      setRunSpecial(true);
+    
+    else if (showModifiersTutorial) {
+      { hand.forEach((card) => {
+        if (card.isModifier)
+          {
+            setRunTutorialModifiers(true);
+            return;
+          }
+      })};
     } 
-  }, []);
+  }, [game, hand]);
 
   if (error) {
     return (
@@ -160,6 +171,16 @@ export const MobileGameContent = () => {
           showSkipButton 
           showProgress 
           callback={handleSpecialJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
+        <Joyride 
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 

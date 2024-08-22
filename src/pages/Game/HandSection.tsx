@@ -54,9 +54,9 @@ export const HandSection = () => {
       )}
       <Box
         pr={12}
-        pl={4}
-        pt={8}
-        className="game-tutorial-step-2" 
+        pl={!isMobile ? 4 : 2}
+        pt={!isMobile ? 8 : 0}
+        className="game-tutorial-step-2 tutorial-modifiers-step-1" 
       >
         <SimpleGrid
           sx={{
@@ -83,6 +83,7 @@ export const HandSection = () => {
                   setMenuIdx(card.idx);
                   onOpen();
                 }}
+                className={card.isModifier ? 'tutorial-modifiers-step-2 tutorial-modifiers-step-4' : undefined}
               >
                 {card.isModifier && !isPreselected && (
                   <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>

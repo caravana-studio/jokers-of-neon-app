@@ -1,5 +1,6 @@
 import { Step } from 'react-joyride';
 import { isMobile } from "react-device-detect";
+import { background, border } from '@chakra-ui/react';
 
 const COMMON_SETTINGS: Partial<Step> =
 {
@@ -145,19 +146,19 @@ export const STORE_TUTORIAL_STEPS: Step[] = [
 
 export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
   {
-    target: '.special-cards-step-1', // Assuming there's a class for the special cards section
+    target: '.special-cards-step-1', 
     title: 'Special Cards',
     content: 'Special cards activate immediately after you purchase them in the store. They apply their effects after your hand is played.',
     ...COMMON_SETTINGS
   },
   {
-    target: '.special-cards-step-2', // Assuming there's a class for the card limit indicator
+    target: '.special-cards-step-2', 
     title: 'Card Limit',
     content: 'You can have up to 5 special cards active at any time. Use them wisely to maximize their benefits!',
     ...COMMON_SETTINGS
   },
   {
-    target: '.special-cards-step-3', // Assuming there's a class for the discard button/icon
+    target: '.special-cards-step-3', 
     title: 'Discarding Cards',
     content: 'If you don’t want to use a special card, you can discard it at any time by right-clicking on it.',
     ...COMMON_SETTINGS
@@ -165,6 +166,32 @@ export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
 ];
 
 
+export const MODIFIERS_TUTORIAL_STEPS: Step[] = [
+  {
+    target: '.tutorial-modifiers-step-1', 
+    title: 'Preselect a Card',
+    content: (!isMobile ? 'Click' : 'Tap') + ' to choose the card you want to modify.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.tutorial-modifiers-step-2', 
+    title: 'Select a Modifier',
+    content: 'Drag the desired modifier from the hand.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.tutorial-modifiers-step-3', 
+    title: 'Apply the Modifier',
+    content: 'Drop the modifier onto the preselected card to apply the effect.',
+    ...COMMON_SETTINGS
+  },
+  {
+    target: '.tutorial-modifiers-step-4', 
+    title: 'Discard the Modified Card',
+    content: (!isMobile ? 'Right click the modifier' : 'Drag the modifier and drop it onto the discard button') + ' to discard the card without losing any discard chances.',
+    ...COMMON_SETTINGS
+  }
+];
 
 export const TUTORIAL_STYLE = {
   options: {
@@ -190,4 +217,9 @@ export const TUTORIAL_STYLE = {
     borderRadius: '12px',
     boxShadow: '0 0 15px rgba(218, 161, 232, 0.5)',
   },
+  spotlight:
+  {
+    borderRadius: '12px',
+    boxShadow: '0 0 15px rgba(255, 255, 255, 0.9)',
+  }
 };
