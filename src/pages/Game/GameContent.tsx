@@ -99,7 +99,7 @@ export const GameContent = () => {
           }
       })};
     } 
-  }, []);
+  }, [game, hand, PreselectedCardsSection]);
 
   if (error) {
     return (

@@ -107,7 +107,7 @@ export const MobileGameContent = () => {
           }
       })};
     } 
-  }, []);
+  }, [game, hand]);
 
   if (error) {
     return (
