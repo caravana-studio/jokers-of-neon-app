@@ -70,9 +70,9 @@ export const useGameState = () => {
   }, [dojoHand]);
 
   useEffect(() => {
-    if (!score && dojoScore > 0) {
-      setScore(dojoScore);
-    }
+    // if (!score && dojoScore > 0) {
+    //   setScore(dojoScore);
+    // }
     if (dojoHandsLeft && dojoHandsLeft > 0) {
       setHandsLeft(dojoHandsLeft);
     }
