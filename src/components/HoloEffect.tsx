@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { HoloEffectStyled } from '../theme/holoEffect.styles';
-import { Tilt } from 'react-tilt';
 
 interface HoloEffectProps {
   children?: React.ReactNode;
@@ -58,8 +57,7 @@ export const HoloEffect = ({ children, url, width, height, borderRadius }: HoloE
   };
 
   return (
-    //<Tilt>
-        <HoloEffectStyled
+    <HoloEffectStyled
         width={width}
         height={height}
         borderRadius={borderRadius}
@@ -72,9 +70,8 @@ export const HoloEffect = ({ children, url, width, height, borderRadius }: HoloE
         onMouseMove={handleOnMouseOver}
         onTouchMove={handleOnMouseOver}
         onMouseOut={handleOnMouseOut}
-        >
-            {children}
-        </HoloEffectStyled>
-    //</Tilt>
+    >
+        {children}
+    </HoloEffectStyled>
   );
 };
