@@ -110,8 +110,8 @@ export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
   }
 
   &:after {
-    background-image: url('https://assets.codepen.io/13471/sparkles.gif'),
-      url(https://assets.codepen.io/13471/holo.png),
+    background-image: url('/vfx/sparkles.gif'),
+      url('/vfx/holo.png'),
       linear-gradient(
         125deg,
         #ff008450 15%,
