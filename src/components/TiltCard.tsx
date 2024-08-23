@@ -83,17 +83,17 @@ export const TiltCard = ({
             {!isHolographic && (
             <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown> 
               <Image
-              borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-              boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
-              sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-              src={`Cards/${img}`}
-              alt={img}
-              w={`${cardWith}px`}
-              height={`${cardHeight}px`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onClick?.();
-              }}
+                borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+                boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
+                sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+                src={`Cards/${img}`}
+                alt={img}
+                w={`${cardWith}px`}
+                height={`${cardHeight}px`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClick?.();
+                }}
               />
             </Tooltip>
             )}
