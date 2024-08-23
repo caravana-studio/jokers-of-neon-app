@@ -45,7 +45,7 @@ const holoGradient = keyframes`
   }
 `;
 
-export const StyledHoloCard = styled.div(
+export const HoloEffectStyled = styled.div(
   ({
     active,
     activeBackgroundPosition,
