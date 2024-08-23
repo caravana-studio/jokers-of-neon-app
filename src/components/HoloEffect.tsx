@@ -1,12 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { HoloEffectStyled } from '../theme/holoEffect.styles';
+import { Tilt } from 'react-tilt';
 
 interface HoloEffectProps {
   children?: React.ReactNode;
   url: string;
+  width: string;
+  height: string;
+  borderRadius: { base?: string; sm?: string } | {}; 
 }
 
-export const HoloEffect = ({ children, url }: HoloEffectProps) => {
+export const HoloEffect = ({ children, url, width, height, borderRadius }: HoloEffectProps) => {
   const [hover, setHover] = useState(false);
   const [animated, setAnimated] = useState(true);
   const [activeBackgroundPosition, setActiveBackgroundPosition] = useState({
@@ -54,18 +58,23 @@ export const HoloEffect = ({ children, url }: HoloEffectProps) => {
   };
 
   return (
-    <HoloEffectStyled
-    url={url}
-    ref={ref}
-    active={hover}
-    animated={animated}
-    activeRotation={activeRotation}
-    activeBackgroundPosition={activeBackgroundPosition}
-    onMouseMove={handleOnMouseOver}
-    onTouchMove={handleOnMouseOver}
-    onMouseOut={handleOnMouseOut}
-    >
-        {children}
-    </HoloEffectStyled>
+    //<Tilt>
+        <HoloEffectStyled
+        width={width}
+        height={height}
+        borderRadius={borderRadius}
+        url={url}
+        ref={ref}
+        active={hover}
+        animated={animated}
+        activeRotation={activeRotation}
+        activeBackgroundPosition={activeBackgroundPosition}
+        onMouseMove={handleOnMouseOver}
+        onTouchMove={handleOnMouseOver}
+        onMouseOut={handleOnMouseOut}
+        >
+            {children}
+        </HoloEffectStyled>
+    //</Tilt>
   );
 };

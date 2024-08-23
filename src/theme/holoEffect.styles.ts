@@ -45,117 +45,119 @@ const holoGradient = keyframes`
   }
 `;
 
-export const HoloEffectStyled = styled.div(
-  ({
-    active,
-    activeBackgroundPosition,
-    activeRotation,
-    animated,
-    url,
-  }: {
-    active: boolean;
-    activeBackgroundPosition: {
-      tp: number;
-      lp: number;
-    };
-    activeRotation: {
-      x: number;
-      y: number;
-    };
-    url: string;
-    animated: boolean;
-  }) => [
-    css`
-      width: 320px;
-      height: 446px;
-      background-color: #211799;
-      background-image: url(${url});
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      border-radius: 5% / 3.5%;
-      box-shadow: -3px -3px 3px 0 rgba(#26e6f7, 0.3),
-        3px 3px 3px 0 rgba(#f759e4, 0.3), 0 0 6px 2px rgba(#ffe759, 03),
-        0 35px 25px -15px rgba(0, 0, 0, 0.3);
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 20px 10px;
-      transform: rotateX(${activeRotation.y}deg) rotateY(${activeRotation.x}deg);
+interface HoloEffectStyledProps {
+  active: boolean;
+  activeBackgroundPosition: {
+    tp: number;
+    lp: number;
+  };
+  activeRotation: {
+    x: number;
+    y: number;
+  };
+  url: string;
+  animated: boolean;
+  width: string;
+  height: string;
+  borderRadius: { base?: string; sm?: string } | {}; 
+}
 
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-position: 0% 0%;
-        background-repeat: no-repeat;
-        background-size: 300% 300%;
-        mix-blend-mode: color-dodge;
-        opacity: 0.2;
-        z-index: 1;
-        background-image: linear-gradient(
-          115deg,
-          transparent 0%,
-          #54a29e 25%,
-          transparent 47%,
-          transparent 53%,
-          #a79d66 75%,
-          transparent 100%
-        );
-      }
+export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
+  width: ${props => props.width};
+  height: ${props => props.height};
+  background-color: #211799;
+  background-image: url(${props => props.url});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: ${props => {
+    if (!props.borderRadius || Object.keys(props.borderRadius).length === 0) {
+      return '0px';
+    }
+    return (props.borderRadius as { base?: string; sm?: string }).base || '0px';
+  }};
+  //box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3), 3px 3px 3px 0 rgba(247, 89, 228, 0.3), 0 0 6px 2px rgba(255, 231, 89, 0.3), 0 35px 25px -15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  //margin: 20px 10px;
+  transform: rotateX(${props => props.activeRotation.y}deg) rotateY(${props => props.activeRotation.x}deg);
 
-      &:after {
-        background-image: url('https://assets.codepen.io/13471/sparkles.gif'),
-          url(https://assets.codepen.io/13471/holo.png),
-          linear-gradient(
-            125deg,
-            #ff008450 15%,
-            #fca40040 30%,
-            #ffff0030 40%,
-            #00ff8a20 60%,
-            #00cfff40 70%,
-            #cc4cfa50 85%
-          );
-        position: center;
-        background-size: 180%;
-        mix-blend-mode: color-dodge;
-        opacity: 1;
-        z-index: 1;
-      }
-    `,
-    active &&
-      `
-  :before {
-    opacity: 1;
-    animation: none;
-    transition: none;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    background-size: 300% 300%;
+    mix-blend-mode: color-dodge;
+    opacity: 0.2;
+    z-index: 1;
     background-image: linear-gradient(
-      110deg,
-      transparent 25%,
-      #54a29e 48%,
-      #a79d66 52%,
-      transparent 75%
+      115deg,
+      transparent 0%,
+      #54a29e 25%,
+      transparent 47%,
+      transparent 53%,
+      #a79d66 75%,
+      transparent 100%
     );
-    background-position: ${activeBackgroundPosition.lp}% ${activeBackgroundPosition.tp}%;
   }
-`,
-    animated &&
-      css`
+
+  &:after {
+    background-image: url('https://assets.codepen.io/13471/sparkles.gif'),
+      url(https://assets.codepen.io/13471/holo.png),
+      linear-gradient(
+        125deg,
+        #ff008450 15%,
+        #fca40040 30%,
+        #ffff0030 40%,
+        #00ff8a20 60%,
+        #00cfff40 70%,
+        #cc4cfa50 85%
+      );
+    position: center;
+    background-size: 180%;
+    mix-blend-mode: color-dodge;
+    opacity: 1;
+    z-index: 1;
+  }
+
+  ${props =>
+    props.active &&
+    css`
+      &:before {
+        opacity: 1;
+        animation: none;
+        transition: none;
+        background-image: linear-gradient(
+          110deg,
+          transparent 25%,
+          #54a29e 48%,
+          #a79d66 52%,
+          transparent 75%
+        );
+        background-position: ${props.activeBackgroundPosition.lp}% ${props.activeBackgroundPosition.tp}%;
+      }
+    `}
+
+  ${props =>
+    props.animated &&
+    css`
+      transition: 1s;
+      transform: rotateX(0deg) rotateY(0deg);
+      &:before {
         transition: 1s;
-        tranform: rotateX(0deg) rotateY(0deg);
-        &:before {
-          transition: 1s;
-          animation: ${holoGradient} 12s ease infinite;
-        }
-        &:after {
-          transition: 1s;
-          animation: ${holoSparkle} 12s ease infinite;
-        }
-      `,
-  ]
-);
+        animation: ${holoGradient} 12s ease infinite;
+      }
+      &:after {
+        transition: 1s;
+        animation: ${holoSparkle} 12s ease infinite;
+      }
+    `}
+`;
