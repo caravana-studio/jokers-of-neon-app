@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
+import { useGame } from "../dojo/queries/useGame.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -18,7 +19,6 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
-import { useGame } from "../dojo/queries/useGame.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -569,31 +569,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         navigate("/gameover");
       } else if (game?.state === "AT_SHOP") {
         console.log("redirecting to store");
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        //TODO: REMOVE THIS
-        // navigate("/store");
+        navigate("/store");
       }
     }
   }, [game?.state, lockRedirection]);
