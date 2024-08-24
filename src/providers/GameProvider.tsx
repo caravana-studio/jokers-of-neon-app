@@ -569,7 +569,31 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         navigate("/gameover");
       } else if (game?.state === "AT_SHOP") {
         console.log("redirecting to store");
-        navigate("/store");
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        //TODO: REMOVE THIS
+        // navigate("/store");
       }
     }
   }, [game?.state, lockRedirection]);
