@@ -1,9 +1,11 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { TiltCard } from "../components/TiltCard";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 import { BLUE } from "../theme/colors";
@@ -34,6 +36,7 @@ export const OpenPack = () => {
 
   const continueButton = (
     <Button
+      mx={{base: 6, md: 0}}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
     >
@@ -44,7 +47,12 @@ export const OpenPack = () => {
   return (
     <Background type="game" dark rewardsDecoration>
       <Flex flexDirection="column" gap={4}>
-        <Flex justifyContent="space-between" mx={2}>
+        <Flex
+          flexDirection={isMobile ? "column" : "row"}
+          justifyContent="space-between"
+          alignItems="center"
+          mx={2}
+        >
           <Text size="lg">Select the cards you want to keep</Text>
           <Checkbox
             color="white"
@@ -56,7 +64,7 @@ export const OpenPack = () => {
             SELECT ALL
           </Checkbox>
         </Flex>
-        <Flex gap={3}>
+        <CardsContainer>
           {cards.map((card, index) => {
             return (
               <Flex flexDirection="column" gap={4}>
@@ -64,13 +72,16 @@ export const OpenPack = () => {
                   key={getCardUniqueId(card)}
                   p={1.5}
                   sx={{
-                    borderRadius: "15px",
+                    borderRadius: { base: "7px", md: "15px" },
                     opacity:
                       cardsToKeep.includes(card) || cardsToKeep.length === 0
                         ? 1
                         : 0.5,
                     boxShadow: cardsToKeep.includes(card)
-                      ? `0px 0px 20px 12px ${BLUE}`
+                      ? {
+                          base: `0px 0px 10px 5px ${BLUE}`,
+                          md: `0px 0px 20px 12px ${BLUE}`,
+                        }
                       : "none",
                   }}
                 >
@@ -90,12 +101,18 @@ export const OpenPack = () => {
               </Flex>
             );
           })}
-        </Flex>
-        <Flex justifyContent="space-between" mt={4}>
+        </CardsContainer>
+        <Flex
+          flexDirection={isMobile ? "column" : "row"}
+          justifyContent="space-between"
+          mt={4}
+          gap={4}
+        >
           {currentSpecialCardsLenght > 0 ? (
             <Button
               variant="outline"
               fontSize={12}
+              mx={{base: 6, md: 0}}
               onClick={() => {
                 setSpecialCardsModalOpen(true);
               }}
@@ -120,5 +137,24 @@ export const OpenPack = () => {
         />
       )}
     </Background>
+  );
+};
+
+const CardsContainer = ({ children }: PropsWithChildren) => {
+  return isMobile ? (
+    <Box
+      sx={{
+        maxWidth: `${CARD_WIDTH * 5}px`,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexWrap: "wrap",
+        minHeight: `${CARD_HEIGHT * 2 + 30}px`,
+      }}
+    >
+      {children}
+    </Box>
+  ) : (
+    <Flex gap={3}>{children}</Flex>
   );
 };
