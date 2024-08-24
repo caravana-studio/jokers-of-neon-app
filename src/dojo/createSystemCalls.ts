@@ -5,6 +5,7 @@ import {
   GAME_OVER_EVENT,
 } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
+import { ContractComponents } from "../typescript/models.gen.ts";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
@@ -14,7 +15,6 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications.tsx";
 import { ClientComponents } from "./createClientComponents";
-import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 

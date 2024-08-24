@@ -2,10 +2,13 @@ import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { getSyncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
-import { Account, WeierstrassSignatureType } from "starknet";
+import {
+  Account,
+  ArraySignatureType
+} from "starknet";
+import { defineContractComponents } from "../../typescript/models.gen";
 import { createClientComponents } from "../createClientComponents";
 import { createSystemCalls } from "../createSystemCalls";
-import { defineContractComponents } from "./contractComponents";
 import { setupWorld } from "./generated";
 import { world } from "./world";
 
@@ -63,11 +66,8 @@ export async function setup({ ...config }: DojoConfig) {
       contractComponents,
       clientComponents
     ),
-    publish: (typedData: string, signature: WeierstrassSignatureType) => {
-      toriiClient.publishMessage(typedData, {
-        r: signature.r.toString(),
-        s: signature.s.toString(),
-      });
+    publish: (typedData: string, signature: ArraySignatureType) => {
+      toriiClient.publishMessage(typedData, signature);
     },
     config,
     dojoProvider,
