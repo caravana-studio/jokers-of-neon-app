@@ -390,7 +390,7 @@ export const BlisterPackDefinition = {
     probability: RecsType.Number,
     size: RecsType.Number,
     guaranteed_cards: RecsType.NumberArray,
-    cards: RecsType.NumberArrayArray,
+    cards: RecsType.NumberArray,
     probs: RecsType.NumberArray,
     
 };
@@ -1047,7 +1047,7 @@ export function defineContractComponents(world: World) {
                     probability: RecsType.Number,
                     size: RecsType.Number,
                     guaranteed_cards: RecsType.NumberArray,
-                    cards: RecsType.NumberArrayArray,
+                    cards: RecsType.NumberArray,
                     probs: RecsType.NumberArray,
                 },
                 {
