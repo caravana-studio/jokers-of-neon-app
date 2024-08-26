@@ -12,9 +12,6 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
   const { preSelectedCards, play, handsLeft, preSelectionLocked } =
     useGameContext();
 
-    // useEffect(() => {
-    // }, [highlight]);
-
   const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
 
   return (

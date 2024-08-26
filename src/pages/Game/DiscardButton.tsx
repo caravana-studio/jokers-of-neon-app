@@ -18,9 +18,6 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
     id: "play-discard",
   });
 
-  // useEffect(() => {
-  // }, [highlight]);
-
   const cantDiscard = !highlight && !itemDragged &&
   (preSelectionLocked ||
     preSelectedCards?.length === 0 ||

@@ -95,9 +95,9 @@ export const MobileGameContent = () => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
     const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
-    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0)
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
       setRunSpecial(true);
-    
+    }
     else if (showModifiersTutorial) {
       { hand.forEach((card) => {
         if (card.isModifier)
