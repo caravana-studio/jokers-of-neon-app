@@ -160,7 +160,8 @@ export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
   {
     target: '.special-cards-step-3', 
     title: 'Discarding Cards',
-    content: 'If you don’t want to use a special card, you can discard it at any time by right-clicking on it.',
+    content: 'If you don’t want to use a special card, you can discard it at any time by'
+    +  (!isMobile ? ' right-clicking on it.': ' dragging it to the discard button.' ),
     ...COMMON_SETTINGS
   }
 ];
@@ -169,25 +170,13 @@ export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
 export const MODIFIERS_TUTORIAL_STEPS: Step[] = [
   {
     target: '.tutorial-modifiers-step-1', 
-    title: 'Preselect a Card',
-    content: (!isMobile ? 'Click' : 'Tap') + ' to choose the card you want to modify.',
+    title: 'Modifier card',
+    content: 'Modifier cards enhance or alter a specific card. Drag and drop a modifier onto a preselected card to activate its effect.',
     ...COMMON_SETTINGS
   },
   {
     target: '.tutorial-modifiers-step-2', 
-    title: 'Select a Modifier',
-    content: 'Drag the desired modifier from the hand.',
-    ...COMMON_SETTINGS
-  },
-  {
-    target: '.tutorial-modifiers-step-3', 
-    title: 'Apply the Modifier',
-    content: 'Drop the modifier onto the preselected card to apply the effect.',
-    ...COMMON_SETTINGS
-  },
-  {
-    target: '.tutorial-modifiers-step-4', 
-    title: 'Discard the Modified Card',
+    title: 'Discard',
     content: (!isMobile ? 'Right click the modifier' : 'Drag the modifier and drop it onto the discard button') + ' to discard the card without losing any discard chances.',
     ...COMMON_SETTINGS
   }

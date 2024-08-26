@@ -83,7 +83,7 @@ export const HandSection = () => {
                   setMenuIdx(card.idx);
                   onOpen();
                 }}
-                className={card.isModifier ? 'tutorial-modifiers-step-2 tutorial-modifiers-step-4' : undefined}
+                className={card.isModifier ? 'tutorial-modifiers-step-2' : undefined}
               >
                 {card.isModifier && !isPreselected && (
                   <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>

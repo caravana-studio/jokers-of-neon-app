@@ -29,7 +29,6 @@ export const MobilePreselectedCardsSection = () => {
           minHeight: `${CARD_HEIGHT * 2 + 70}px`,
           width: "100%",
         }}
-        className="tutorial-modifiers-step-3"
       >
         <Box
           sx={{

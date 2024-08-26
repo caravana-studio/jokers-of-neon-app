@@ -43,7 +43,6 @@ export const PreselectedCardsSection = ({isTutorialRunning = false}: Preselected
           height="188px"
           background={"url(grid.png)"}
           width="90%"
-          className="tutorial-modifiers-step-3"
         >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
