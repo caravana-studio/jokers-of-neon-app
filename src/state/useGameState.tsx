@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
@@ -55,6 +55,7 @@ export const useGameState = () => {
   const dojoScore = round?.player_score ?? 0;
   const dojoHandsLeft = round?.hands;
   const dojoDiscardsLeft = round?.discard;
+  const scoreInitialized = useRef(false);
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -70,9 +71,11 @@ export const useGameState = () => {
   }, [dojoHand]);
 
   useEffect(() => {
-    // if (!score && dojoScore > 0) {
-    //   setScore(dojoScore);
-    // }
+    if (!score && dojoScore > 0 && !scoreInitialized.current) {
+      setScore(dojoScore);
+      scoreInitialized.current = true;
+    }
+
     if (dojoHandsLeft && dojoHandsLeft > 0) {
       setHandsLeft(dojoHandsLeft);
     }
