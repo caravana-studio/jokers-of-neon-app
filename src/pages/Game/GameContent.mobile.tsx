@@ -34,6 +34,7 @@ export const MobileGameContent = () => {
   const [run, setRun] = useState(false);
   const[runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
+  const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -48,6 +49,9 @@ export const MobileGameContent = () => {
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
+        if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
+          setSpecialTutorialCompleted(true);
+        }
       }
     };
   };
@@ -95,19 +99,17 @@ export const MobileGameContent = () => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
     const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
 
-    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0){
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0) {
       setRunSpecial(true);
+    } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
+      if (showModifiersTutorial) {
+        const hasModifier = hand.some((card) => card.isModifier);
+        if (hasModifier) {
+          setRunTutorialModifiers(true);
+        }
+      }
     }
-    else if (showModifiersTutorial) {
-      { hand.forEach((card) => {
-        if (card.isModifier)
-          {
-            setRunTutorialModifiers(true);
-            return;
-          }
-      })};
-    } 
-  }, [game, hand]);
+  }, [game, hand, specialTutorialCompleted]);
 
   if (error) {
     return (
