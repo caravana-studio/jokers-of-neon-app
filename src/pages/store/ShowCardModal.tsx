@@ -18,22 +18,32 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
+import { Pack } from "../../types/Pack.ts";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
 interface IShowCardModalProps {
-  card: Card;
+  card: Card | Pack;
   close: () => void;
   onBuyClick: (idx: number) => void;
 }
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 
+function getImg(card: Card | Pack): string | undefined {
+  if ("isPack" in card && card.isPack) {
+    return `Cards/${card.img}`;
+  } else {
+    return `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`;
+  }
+}
+
 export const ShowCardModal = ({
   card,
   close,
   onBuyClick,
 }: IShowCardModalProps) => {
+  const isPack = "isPack" in card && card.isPack;
   const game = useGame();
   const cash = game?.cash ?? 0;
   const { name, description } = getCardData(card);
@@ -78,34 +88,36 @@ export const ShowCardModal = ({
           >
             <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
               <Box
-                p={"5px"}
-                borderRadius={isMobile ? "10px" : "20px"}
-                boxShadow={"0px 0px 20px 3px white"}
+                p={isPack ? "0px" : "5px"}
+                borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
+                boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
                 width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
                 height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
               >
                 <Image
-                  borderRadius={{ base: "8px", sm: "15px" }}
+                  borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
                   width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
                   height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                  src={`Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
+                  src={getImg(card)}
                 />
               </Box>
             </Box>
             <Flex flexDirection="column" gap={isMobile ? 4 : 8} width="100%">
-              <Box>
-                <Heading color="white" size={isMobile ? "s" : "m"}>
-                  card type:
-                </Heading>
-                <Text variant="neonGreen" size="l">
-                  {card.isSpecial
-                    ? "special"
-                    : card.isModifier
-                      ? "modifier"
-                      : "traditional"}
-                  {card.temporary && " (temporary)"}
-                </Text>
-              </Box>
+              {!isPack && (
+                <Box>
+                  <Heading color="white" size={isMobile ? "s" : "m"}>
+                    card type:
+                  </Heading>
+                  <Text variant="neonGreen" size="l">
+                    {card.isSpecial
+                      ? "special"
+                      : card.isModifier
+                        ? "modifier"
+                        : "traditional"}
+                    {card.temporary && " (temporary)"}
+                  </Text>
+                </Box>
+              )}
               <Box>
                 <Heading color="white" size={isMobile ? "s" : "m"}>
                   description:
