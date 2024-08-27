@@ -60,6 +60,7 @@ interface HoloEffectStyledProps {
   width: string;
   height: string;
   borderRadius: { base?: string; sm?: string } | {}; 
+  useParticles?: boolean;
 }
 
 export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
@@ -76,12 +77,10 @@ export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
     }
     return (props.borderRadius as { base?: string; sm?: string }).base || '0px';
   }};
-  //box-shadow: -3px -3px 3px 0 rgba(38, 230, 247, 0.3), 3px 3px 3px 0 rgba(247, 89, 228, 0.3), 0 0 6px 2px rgba(255, 231, 89, 0.3), 0 35px 25px -15px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
   display: inline-block;
   vertical-align: middle;
-  //margin: 20px 10px;
   transform: rotateX(${props => props.activeRotation.y}deg) rotateY(${props => props.activeRotation.x}deg);
 
   &:before,
@@ -110,8 +109,12 @@ export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
   }
 
   &:after {
-    background-image: url('/vfx/sparkles.gif'),
-      url('/vfx/holo.png'),
+    background-image: ${props => {
+      if (props.useParticles) {
+        return "url('/vfx/sparkles.gif'), url('/vfx/holo.png')";
+      }
+      return "url('/vfx/holo.png')";;
+    }};
       linear-gradient(
         125deg,
         #ff008450 15%,

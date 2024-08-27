@@ -6,10 +6,11 @@ interface HoloEffectProps {
   url: string;
   width: string;
   height: string;
-  borderRadius: { base?: string; sm?: string } | {}; 
+  borderRadius: { base?: string; sm?: string } | {};
+  useParticles?: boolean; 
 }
 
-export const HoloEffect = ({ children, url, width, height, borderRadius }: HoloEffectProps) => {
+export const HoloEffect = ({ children, url, width, height, borderRadius, useParticles }: HoloEffectProps) => {
   const [hover, setHover] = useState(false);
   const [animated, setAnimated] = useState(true);
   const [activeBackgroundPosition, setActiveBackgroundPosition] = useState({
@@ -70,6 +71,7 @@ export const HoloEffect = ({ children, url, width, height, borderRadius }: HoloE
         onMouseMove={handleOnMouseOver}
         onTouchMove={handleOnMouseOver}
         onMouseOut={handleOnMouseOut}
+        useParticles={useParticles}
     >
         {children}
     </HoloEffectStyled>
