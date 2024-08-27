@@ -8,7 +8,9 @@ const Particle = styled(motion.div)`
   height: 100%;
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  z-index: 1000;
+  mix-blend-mode: screen;
+  filter: hue-rotate(60deg) sepia(1) saturate(5) brightness(1.2);
 `;
 
 interface GlowEffectProps {
@@ -18,6 +20,11 @@ interface GlowEffectProps {
 const GlowEffect = styled.div<GlowEffectProps>`
   filter: ${(props) => (props.glow ? 'drop-shadow(0 0 20px yellow)' : 'none')};
   transition: filter 0.5s;
+`;
+
+const Container = styled.div`
+  position: relative; 
+  display: inline-block;
 `;
 
 interface OpenAnimationProps {
@@ -63,8 +70,11 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
       onAnimationComplete={() => controls.stop()}
       style={{ position: 'relative', display: 'inline-block' }}
     >
-      <GlowEffect glow={glow}>{children}</GlowEffect>
-      {particle && <Particle style={{ backgroundImage: particle }} />}
+        <Container>
+            {particle && <Particle style={{ backgroundImage: particle }} />}
+            <GlowEffect glow={glow}>{children}</GlowEffect>
+        </Container>
+      
     </motion.div>
   );
 };

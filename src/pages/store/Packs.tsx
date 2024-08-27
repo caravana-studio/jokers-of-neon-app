@@ -4,6 +4,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { Pack } from "../../types/Pack";
 import { ShowCardModal } from "./ShowCardModal";
+import OpenAnimation from "../../components/OpenAnimation";
 
 export const Packs = () => {
   const shopItems = useShopItems();
@@ -20,15 +21,17 @@ export const Packs = () => {
         {shopItems.packs.map((pack) => {
           return (
             <Flex key={`pack-${pack.card_id}`} justifyContent="center">
-              <TiltCard
-                cursor="pointer"
-                card={pack}
-                isPack
-                scale={1.2}
-                onClick={() => {
-                  !pack.purchased && setSelectedPack(pack);
-                }}
-              />
+              <OpenAnimation>
+                <TiltCard
+                  cursor="pointer"
+                  card={pack}
+                  isPack
+                  scale={1.2}
+                  onClick={() => {
+                    !pack.purchased && setSelectedPack(pack);
+                  }}
+                />
+              </OpenAnimation>
             </Flex>
           );
         })}
