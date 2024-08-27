@@ -8,6 +8,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const boxShadow = `0px 0px 8px 2px ${NEON_GREEN}`;
 const boxShadowThick = `0px 0px 15px 7px ${NEON_GREEN}`;
 const boxShadowMenuItem = `0px 0px 10px 2px ${NEON_GREEN}, inset 0px 0px 10px 2px ${NEON_GREEN}`;
+const borderDisabled = `1px solid rgb(255,255,255)`;
 const border = `3px solid ${NEON_GREEN}`;
 const borderThin = `2px solid ${NEON_GREEN}`;
 
@@ -16,26 +17,28 @@ const baseStyle = definePartsStyle({
   // define the part you're going to style
   button: {
     // this will style the MenuButton component
-    bg: `${NEON_GREEN}`,
+    bg: "rgba(0,0,0,0.5)",
     color: "white",
     borderRadius: 'xl',
-    border: border,
-    boxShadow: boxShadow,
+    border: borderDisabled,
     fontSize: [20, 20, 25],
     height: ["40px", "40px", "40px", "50px"],
     width: ["40px", "40px", "40px", "50px"],
     outline: "none",
     _hover: {
+      bg: `${NEON_GREEN}`,
       border: border,
       boxShadow: boxShadowThick,
       outline: "none",
     },
     _focus: {
+      bg: `${NEON_GREEN}`,
       border: border,
       boxShadow: boxShadowThick,
       outline: "none",
     },
     _active: {
+      bg: `${NEON_GREEN}`,
       border: border,
       boxShadow: boxShadowThick,
     }
