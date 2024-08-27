@@ -109,44 +109,55 @@ export const checkHand = (
 
   let tempJokers = jokers;
   const isStraight = () => {
-
     if (cardsSorted.length < lenStraight) return false;
-    if (cardsSorted.length == lenStraight && jokers === 4 ) return true;
+    if (cardsSorted.length === lenStraight && jokers === 4) return true;
 
+    const straightValuesMap = new Map<number, boolean>();
     let consecutive = 1;
+    let idx = 0;
 
-    for (let idx = 1; idx < cardsSorted.length; idx++) {
+    while (idx < cardsSorted.length - 1) {
       const actualValue = cardsSorted[idx].card || 0;
-      const prevValue = cardsSorted[idx - 1].card || 0;
+      const nextValue = cardsSorted[idx + 1].card || 0;
 
-      if (cardsSorted[idx].card === Cards.ACE && (cardsSorted[0].card === Cards.TWO || tempJokers > 0)) {
+      if (nextValue === Cards.JOKER) {
         consecutive++;
-        continue;
-      }
-      
-      if(cardsSorted[idx].card == Cards.JOKER)
-        break;
-
-      if (actualValue === prevValue) {
-        continue;
-      }
-      const gap = actualValue - prevValue - 1;
-
-      if (gap === 0) {
+        straightValuesMap.set(actualValue, true);
+      } else if (actualValue + 1 === nextValue) {
         consecutive++;
-      } 
-      else if (gap <= tempJokers) {
-        tempJokers -= gap;
-        consecutive += gap + 1;
+        straightValuesMap.set(actualValue, true);
+        straightValuesMap.set(nextValue, true);
+      } else {
+        if (actualValue === nextValue) {
+          idx++;
+          continue;
+        }
+
+        const gap = nextValue - actualValue - 1;
+        if (gap <= tempJokers) {
+          consecutive++;
+          tempJokers -= gap;
+          straightValuesMap.set(actualValue, true);
+          straightValuesMap.set(nextValue, true);
+        }
       }
+      idx++;
     }
 
-    if (tempJokers > 0 && consecutive + tempJokers >= lenStraight) {
-      return true;
+    if (valuesCount.get(Cards.ACE)) {
+      let first_value = cardsSorted[0].card || 0;
+      let gap = first_value - 1 - 1;
+
+      if (gap <= tempJokers) {
+        consecutive++;
+        tempJokers -= gap;
+        straightValuesMap.set(Cards.ACE, true);
+        straightValuesMap.set(first_value, true);
+      }
     }
 
     return consecutive >= lenStraight;
-  }
+  };
 
   if (isFlush && isStraight()) {
     let royalCards = [Cards.TEN, Cards.JACK, Cards.QUEEN, Cards.KING, Cards.ACE]
@@ -229,4 +240,3 @@ export const checkHand = (
 
   return Plays.HIGH_CARD;
 };
-
