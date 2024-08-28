@@ -10,15 +10,21 @@ export const Packs = () => {
   const shopItems = useShopItems();
   const [selectedPack, setSelectedPack] = useState<Pack | undefined>();
   const [animationState, setAnimationState] = useState<{ [key: string]: boolean }>({});
+  const [pendingPack, setPendingPack] = useState<Pack | undefined>();
 
   const handleAnimationEnd = (cardId: string) => {
     console.log(`Animation ended for card: ${cardId}`);
+
     setAnimationState((prev) => ({ ...prev, [cardId]: false }));
+    if (pendingPack && pendingPack.card_id?.toString() === cardId) {
+      setSelectedPack(pendingPack);
+      setPendingPack(undefined);
+    }
   };
 
   const handleCardClick = (pack: Pack) => {
     if (!pack.purchased) {
-      setSelectedPack(pack);
+      setPendingPack(pack);
       setAnimationState((prev) => ({ ...prev, [pack.card_id!.toString()]: true }));
     }
   };
@@ -45,7 +51,11 @@ export const Packs = () => {
                   card={pack}
                   isPack
                   scale={1.2}
-                  onClick={() => handleCardClick(pack)}
+                  onClick={() => {
+                    if (!pendingPack) {
+                      handleCardClick(pack);
+                    }
+                  }}
                 />
               </OpenAnimation>
             </Flex>
