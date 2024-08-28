@@ -10,21 +10,19 @@ export const Packs = () => {
   const shopItems = useShopItems();
   const [selectedPack, setSelectedPack] = useState<Pack | undefined>();
   const [animationState, setAnimationState] = useState<{ [key: string]: boolean }>({});
-  const [pendingPack, setPendingPack] = useState<Pack | undefined>();
+  const [pendingPackOpening, setPendingPackOpening] = useState<Pack | undefined>();
 
   const handleAnimationEnd = (cardId: string) => {
-    setAnimationState((prev) => ({ ...prev, [cardId]: false }));
-    if (pendingPack && pendingPack.card_id?.toString() === cardId) {
-      setSelectedPack(pendingPack);
-      setPendingPack(undefined);
+    if (pendingPackOpening && pendingPackOpening.card_id?.toString() === cardId)
+    {
+      setAnimationState((prev) => ({ ...prev, [cardId]: false }));
+      setPendingPackOpening(undefined);
     }
   };
 
-  const handleCardClick = (pack: Pack) => {
-    if (!pack.purchased) {
-      setPendingPack(pack);
+  const handlePackBuy = (pack: Pack) => {
       setAnimationState((prev) => ({ ...prev, [pack.card_id!.toString()]: true }));
-    }
+      setPendingPackOpening(pack);
   };
 
   return (
@@ -49,8 +47,8 @@ export const Packs = () => {
                   isPack
                   scale={1.2}
                   onClick={() => {
-                    if (!pendingPack) {
-                      handleCardClick(pack);
+                    if (!pack.purchased && !pendingPackOpening) {
+                      setSelectedPack(pack);
                     }
                   }}
                 />
@@ -67,6 +65,7 @@ export const Packs = () => {
               getCardType(selectedCard),
               selectedCard.price ?? 0
             ) */
+              handlePackBuy(selectedPack);
           }}
           card={selectedPack}
           close={() => setSelectedPack(undefined)}
