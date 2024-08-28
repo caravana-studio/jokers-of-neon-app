@@ -91,7 +91,7 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
                 <ChildrenWrapper hide={hideChildren}>
                     <ShakeEffect 
                         animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
-                        transition={{ duration: 0.3, repeat: Infinity, repeatType: 'reverse' }}
+                        transition={{ duration: 0.3, repeat: shake ? Infinity : 0, repeatType: 'reverse' }}
                     >
                         {children}
                     </ShakeEffect>
