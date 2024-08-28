@@ -9,6 +9,20 @@ import OpenAnimation from "../../components/OpenAnimation";
 export const Packs = () => {
   const shopItems = useShopItems();
   const [selectedPack, setSelectedPack] = useState<Pack | undefined>();
+  const [animationState, setAnimationState] = useState<{ [key: string]: boolean }>({});
+
+  const handleAnimationEnd = (cardId: string) => {
+    console.log(`Animation ended for card: ${cardId}`);
+    setAnimationState((prev) => ({ ...prev, [cardId]: false }));
+  };
+
+  const handleCardClick = (pack: Pack) => {
+    if (!pack.purchased) {
+      setSelectedPack(pack);
+      setAnimationState((prev) => ({ ...prev, [pack.card_id!.toString()]: true }));
+    }
+  };
+
 
   return (
     <Box m={4}>
@@ -19,17 +33,19 @@ export const Packs = () => {
       </Flex>
       <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
         {shopItems.packs.map((pack) => {
+          const cardId = pack.card_id!.toString();
+          const isAnimating = animationState[cardId] || false;
           return (
             <Flex key={`pack-${pack.card_id}`} justifyContent="center">
-              <OpenAnimation>
+              <OpenAnimation 
+                startAnimation={isAnimating}
+                onAnimationEnd={() => handleAnimationEnd(cardId)}>
                 <TiltCard
                   cursor="pointer"
                   card={pack}
                   isPack
                   scale={1.2}
-                  onClick={() => {
-                    !pack.purchased && setSelectedPack(pack);
-                  }}
+                  onClick={() => handleCardClick(pack)}
                 />
               </OpenAnimation>
             </Flex>

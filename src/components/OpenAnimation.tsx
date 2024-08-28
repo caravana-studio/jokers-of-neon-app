@@ -38,9 +38,11 @@ const ShakeEffect = motion.div;
 
 interface OpenAnimationProps {
     children: React.ReactNode; 
+    startAnimation: boolean;
+    onAnimationEnd?: () => void;
   }
 
-const OpenAnimation = ({ children }: OpenAnimationProps) => {
+const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimationProps) => {
   const controls = useAnimation();
   const [shake, setShake] = useState(false);
   const [glow, setGlow] = useState(false);
@@ -48,33 +50,37 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
   const [hideChildren, setHideChildren] = useState(false);
 
   useEffect(() => {
-    setParticle('url(/vfx/particle2.gif)');
+    if (startAnimation)
+        {
+            setParticle('url(/vfx/particle2.gif)');
 
-    const glowTimeout = setTimeout(() => {
-        setShake(true);
-      
-      setGlow(true);
-      setParticle('url(/vfx/glow_particle.gif)');
-    }, 500);
+            const glowTimeout = setTimeout(() => {
+                setShake(true);
+                setGlow(true);
+                setParticle('url(/vfx/glow_particle.gif)');
+            }, 500);
 
-    const particle2Timeout = setTimeout(() => {
-        setHideChildren(true);
-        setParticle('url(/vfx/explosion6.gif)');
-    }, 1500);
+            const particle2Timeout = setTimeout(() => {
+                setHideChildren(true);
+                setParticle('url(/vfx/explosion6.gif)');
+            }, 1500);
 
-    const resetTimeout = setTimeout(() => {
-      setParticle(null);
-      setShake(false);
-      setHideChildren(false);
-      setGlow(false);
-    }, 2200);
+            const resetTimeout = setTimeout(() => {
+                setParticle(null);
+                setShake(false);
+                setHideChildren(false);
+                setGlow(false);
+                
+                if (onAnimationEnd) onAnimationEnd();
+            }, 2200);
 
-    return () => {
-      clearTimeout(glowTimeout);
-      clearTimeout(particle2Timeout);
-      clearTimeout(resetTimeout);
-    };
-  }, []);
+            return () => {
+                clearTimeout(glowTimeout);
+                clearTimeout(particle2Timeout);
+                clearTimeout(resetTimeout);
+            };
+        }
+  }, [startAnimation, onAnimationEnd]);
 
   return (
     <motion.div
