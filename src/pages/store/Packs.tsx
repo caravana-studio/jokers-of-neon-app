@@ -27,7 +27,6 @@ export const Packs = () => {
     }
   };
 
-
   return (
     <Box m={4}>
       <Flex justifyContent="space-between" alignItems="center">
