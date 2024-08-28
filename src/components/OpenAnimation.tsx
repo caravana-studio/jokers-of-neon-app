@@ -85,8 +85,7 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
       style={{ position: 'relative', display: 'inline-block' }}
     >
         {particle && <Particle style={{ backgroundImage: particle }} />}
-        <Container>
-            
+        <Container>           
             <GlowEffect glow={glow}>
                 <ChildrenWrapper hide={hideChildren}>
                     <ShakeEffect 
@@ -97,8 +96,7 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
                     </ShakeEffect>
                 </ChildrenWrapper>
             </GlowEffect>
-        </Container>
-      
+        </Container>   
     </motion.div>
   );
 };
