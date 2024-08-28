@@ -5,18 +5,21 @@ import { useShopItems } from "../../dojo/queries/useShopItems";
 import { Pack } from "../../types/Pack";
 import { ShowCardModal } from "./ShowCardModal";
 import OpenAnimation from "../../components/OpenAnimation";
+import { useNavigate } from "react-router-dom";
 
 export const Packs = () => {
   const shopItems = useShopItems();
   const [selectedPack, setSelectedPack] = useState<Pack | undefined>();
   const [animationState, setAnimationState] = useState<{ [key: string]: boolean }>({});
   const [pendingPackOpening, setPendingPackOpening] = useState<Pack | undefined>();
+  const navigate = useNavigate();
 
   const handleAnimationEnd = (cardId: string) => {
     if (pendingPackOpening && pendingPackOpening.card_id?.toString() === cardId)
     {
       setAnimationState((prev) => ({ ...prev, [cardId]: false }));
-      setPendingPackOpening(undefined);
+      setPendingPackOpening(undefined);    
+      navigate("/open-pack");
     }
   };
 
