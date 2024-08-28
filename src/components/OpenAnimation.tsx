@@ -6,7 +6,7 @@ const Particle = styled(motion.div)`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 1000;
@@ -34,6 +34,8 @@ const ChildrenWrapper = styled.div<{ hide: boolean }>`
   position: relative; 
 `;
 
+const ShakeEffect = motion.div; 
+
 interface OpenAnimationProps {
     children: React.ReactNode; 
   }
@@ -46,22 +48,23 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
   const [hideChildren, setHideChildren] = useState(false);
 
   useEffect(() => {
-    setShake(true);
     setParticle('url(/vfx/particle2.gif)');
 
     const glowTimeout = setTimeout(() => {
-      setShake(false);
+        setShake(true);
+      
       setGlow(true);
       setParticle('url(/vfx/glow_particle.gif)');
     }, 500);
 
     const particle2Timeout = setTimeout(() => {
         setHideChildren(true);
-        setParticle('url(/vfx/explosion3.gif)');
+        setParticle('url(/vfx/explosion6.gif)');
     }, 1500);
 
     const resetTimeout = setTimeout(() => {
       setParticle(null);
+      setShake(false);
       setHideChildren(false);
       setGlow(false);
     }, 2200);
@@ -81,11 +84,17 @@ const OpenAnimation = ({ children }: OpenAnimationProps) => {
       onAnimationComplete={() => controls.stop()}
       style={{ position: 'relative', display: 'inline-block' }}
     >
+        {particle && <Particle style={{ backgroundImage: particle }} />}
         <Container>
-            {particle && <Particle style={{ backgroundImage: particle }} />}
+            
             <GlowEffect glow={glow}>
                 <ChildrenWrapper hide={hideChildren}>
-                    {children}
+                    <ShakeEffect 
+                        animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
+                        transition={{ duration: 0.3, repeat: Infinity, repeatType: 'reverse' }}
+                    >
+                        {children}
+                    </ShakeEffect>
                 </ChildrenWrapper>
             </GlowEffect>
         </Container>
