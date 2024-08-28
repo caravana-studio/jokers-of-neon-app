@@ -13,8 +13,6 @@ export const Packs = () => {
   const [pendingPack, setPendingPack] = useState<Pack | undefined>();
 
   const handleAnimationEnd = (cardId: string) => {
-    console.log(`Animation ended for card: ${cardId}`);
-
     setAnimationState((prev) => ({ ...prev, [cardId]: false }));
     if (pendingPack && pendingPack.card_id?.toString() === cardId) {
       setSelectedPack(pendingPack);
