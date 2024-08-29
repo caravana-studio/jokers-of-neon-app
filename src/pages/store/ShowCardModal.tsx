@@ -21,6 +21,8 @@ import { Card } from "../../types/Card";
 import { Pack } from "../../types/Pack.ts";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import OpenAnimation from "../../components/OpenAnimation.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface IShowCardModalProps {
   card: Card | Pack;
@@ -69,6 +71,12 @@ export const ShowCardModal = ({
     </Button>
   );
 
+  const navigate = useNavigate();
+
+  const handleAnimationEnd = () => {
+    navigate("/open-pack");
+};
+
   return (
     <Modal size="xxl" isOpen={true} onClose={close}>
       <ModalOverlay />
@@ -86,22 +94,26 @@ export const ShowCardModal = ({
             flexDirection={{ base: "column", sm: "row" }}
             alignItems="center"
           >
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
-              <Box
-                p={isPack ? "0px" : "5px"}
-                borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
-                boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
-                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
-                height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
-              >
-                <Image
-                  borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
-                  width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
-                  height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                  src={getImg(card)}
-                />
+             <OpenAnimation 
+              startAnimation={true}
+              onAnimationEnd={() => handleAnimationEnd()}>
+              <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+                <Box
+                  p={isPack ? "0px" : "5px"}
+                  borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
+                  boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
+                  width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
+                  height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
+                >
+                  <Image
+                    borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
+                    width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
+                    height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
+                    src={getImg(card)}
+                  />
+                </Box>
               </Box>
-            </Box>
+            </OpenAnimation>
             <Flex flexDirection="column" gap={isMobile ? 4 : 8} width="100%">
               {!isPack && (
                 <Box>
