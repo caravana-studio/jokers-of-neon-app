@@ -1,16 +1,16 @@
 import { menuAnatomy } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/react';
-import { NEON_GREEN} from "../theme/colors";
+import { BLUE} from "../theme/colors";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(menuAnatomy.keys)
 
-const boxShadow = `0px 0px 8px 2px ${NEON_GREEN}`;
-const boxShadowThick = `0px 0px 15px 7px ${NEON_GREEN}`;
-const boxShadowMenuItem = `0px 0px 10px 2px ${NEON_GREEN}, inset 0px 0px 10px 2px ${NEON_GREEN}`;
+const boxShadow = `0px 0px 8px 2px ${BLUE}`;
+const boxShadowThick = `0px 0px 15px 7px ${BLUE}`;
+const boxShadowMenuItem = `0px 0px 10px 2px ${BLUE}, inset 0px 0px 10px 2px ${BLUE}`;
 const borderDisabled = `1px solid rgb(255,255,255)`;
-const border = `3px solid ${NEON_GREEN}`;
-const borderThin = `2px solid ${NEON_GREEN}`;
+const border = `3px solid ${BLUE}`;
+const borderThin = `2px solid ${BLUE}`;
 
 // define the base component styles
 const baseStyle = definePartsStyle({
@@ -26,19 +26,19 @@ const baseStyle = definePartsStyle({
     width: ["40px", "40px", "40px", "50px"],
     outline: "none",
     _hover: {
-      bg: `${NEON_GREEN}`,
+      bg: `${BLUE}`,
       border: border,
       boxShadow: boxShadowThick,
       outline: "none",
     },
     _focus: {
-      bg: `${NEON_GREEN}`,
+      bg: `${BLUE}`,
       border: border,
       boxShadow: boxShadowThick,
       outline: "none",
     },
     _active: {
-      bg: `${NEON_GREEN}`,
+      bg: `${BLUE}`,
       border: border,
       boxShadow: boxShadowThick,
     }
