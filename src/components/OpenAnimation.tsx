@@ -61,14 +61,14 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
             }, 500);
 
             const particle2Timeout = setTimeout(() => {
-                setHideChildren(true);
-                setParticle('url(/vfx/explosion6.gif)');
+                //setHideChildren(true);
+                //setParticle('url(/vfx/explosion.gif)');
             }, 1500);
 
             const resetTimeout = setTimeout(() => {
                 setParticle(null);
                 setShake(false);
-                setHideChildren(false);
+                //setHideChildren(false);
                 setGlow(false);
                 
                 if (onAnimationEnd) onAnimationEnd();
