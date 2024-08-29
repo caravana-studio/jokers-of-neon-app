@@ -23,6 +23,7 @@ import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import OpenAnimation from "../../components/OpenAnimation.tsx";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface IShowCardModalProps {
   card: Card | Pack;
@@ -57,11 +58,13 @@ export const ShowCardModal = ({
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
+  const [isOpenAnimationRunning, setIsOpenAnimationRunning] = useState<boolean>(false); 
+
   const buyButton = (
     <Button
       onClick={() => {
         onBuyClick(card.idx);
-        close();
+        setIsOpenAnimationRunning(true);
       }}
       sx={{ width: "50%" }}
       variant="secondarySolid"
@@ -74,6 +77,8 @@ export const ShowCardModal = ({
   const navigate = useNavigate();
 
   const handleAnimationEnd = () => {
+    setIsOpenAnimationRunning(false);
+    close();
     navigate("/open-pack");
 };
 
@@ -95,7 +100,7 @@ export const ShowCardModal = ({
             alignItems="center"
           >
              <OpenAnimation 
-              startAnimation={true}
+              startAnimation={isOpenAnimationRunning}
               onAnimationEnd={() => handleAnimationEnd()}>
               <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
                 <Box
