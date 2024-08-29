@@ -28,6 +28,7 @@ export const Packs = () => {
                 onClick={() => {
                   !pack.purchased && setSelectedPack(pack);
                 }}
+                isHolographic
               />
             </Flex>
           );
