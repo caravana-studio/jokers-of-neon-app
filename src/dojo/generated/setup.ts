@@ -1,6 +1,6 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
-import { getEntitiesQuery, getSyncEntities, setEntities, syncEntities } from "@dojoengine/state";
+import { setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, WeierstrassSignatureType } from "starknet";
 import { createClientComponents } from "../createClientComponents";
@@ -26,6 +26,7 @@ export async function setup({ ...config }: DojoConfig) {
   // create client components
   const clientComponents = createClientComponents({ contractComponents });
 
+  // TODO: Improve implementation (Handle the cursor size and add stop limit)
   const getEntities = async <S extends Schema>(
     client: torii.ToriiClient,
     components: Component<S, Metadata, undefined>[], query: torii.Query,
@@ -36,7 +37,6 @@ export async function setup({ ...config }: DojoConfig) {
 
         while (continueFetching) {
             const entities = await client.getEntities(query);
-            // console.log(entities);
 
             setEntities(entities, components);
 
@@ -81,43 +81,56 @@ export async function setup({ ...config }: DojoConfig) {
       const component = clientComponents[key];
       const name = component.metadata.name;
       componentNames.push(name);
-      // console.log(name);
   });
-  let sync = undefined;
   
   const startTime = performance.now();
 
   const burner = burnerManager.account?.address;
-  let gameID = localStorage.getItem(GAME_ID) || undefined;
- 
-  const keysClause: torii.KeysClause = {
-    keys: [gameID],
-    pattern_matching: "VariableLen",
-    models: componentNames
-  };
   
-  const query: torii.Query = {
-    limit: 10000,
-    offset: 0,
-    clause: { Keys: keysClause }
-  };  
+  async function syncEntitiesForGameID() {
+    let gameID = localStorage.getItem(GAME_ID) || undefined;
+ 
+    const keysClause: torii.KeysClause = {
+      keys: [gameID],
+      pattern_matching: "VariableLen",
+      models: componentNames
+    };
+  
+    const query: torii.Query = {
+      limit: 10000,
+      offset: 0,
+      clause: { Keys: keysClause }
+    };  
 
-  if(gameID){
-    await getEntities(toriiClient, contractComponents as any, query);
-    sync =  await syncEntities(toriiClient, contractComponents as any, []);
+    if(gameID){
+      await getEntities(toriiClient, contractComponents as any, query);
+      return await syncEntities(toriiClient, contractComponents as any, []);
+    }
+    
   }
-  else{
-    // fetch all existing entities from torii
-    sync = await getSyncEntities(
-      toriiClient,
-      contractComponents as any,
-      []
-    );
-  }
+
+  let sync = await syncEntitiesForGameID();
 
   const endTime = performance.now();
   const timeTaken = endTime - startTime;
+  // Log for load time
   console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
+
+  const updateSyncOnGameIDChange = () => {
+    const currentGameID = localStorage.getItem(GAME_ID);
+    let lastGameID = currentGameID;
+
+    setInterval(async () => {
+      const newGameID = localStorage.getItem(GAME_ID);
+      if (newGameID !== lastGameID) {
+        lastGameID = newGameID;
+        sync = await syncEntitiesForGameID();
+        console.log('Sync updated due to GAME_ID change');
+      }
+    }, 1000); 
+  };
+
+  updateSyncOnGameIDChange();
 
   return {
     client,
@@ -138,6 +151,6 @@ export async function setup({ ...config }: DojoConfig) {
     dojoProvider,
     burnerManager,
     toriiClient,
-    sync,
+    getSyncStatus: () => sync,
   };
 }
