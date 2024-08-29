@@ -27,6 +27,7 @@ export const Store = () => {
   const { gameId, setHand } = useGameContext();
   const game = useGame();
   const store = useShop();
+  console.log("store: ", store);
   const state = game?.state;
   const { onShopSkip } = useGameContext();
 

@@ -71,6 +71,7 @@ export const useShopItems = () => {
 
   const game = useGame();
   const shop = useShop();
+  console.log("shop: ", shop);
   const gameId = game?.id ?? 0;
 
   const commonCards: Card[] = useMemo(() => {
