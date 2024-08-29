@@ -10,12 +10,14 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { SKIP_TUTORIAL_GAME } from "../../constants/localStorage.ts";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
 import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
+import { useGame } from "../../dojo/queries/useGame.tsx";
 
 export const MobileGameContent = () => {
   const {
+    hand,
     preSelectedCards,
     gameLoading,
     error,
@@ -30,6 +32,9 @@ export const MobileGameContent = () => {
 
   const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
   const [run, setRun] = useState(false);
+  const[runSpecial, setRunSpecial] = useState(false);
+  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
+  const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -37,14 +42,23 @@ export const MobileGameContent = () => {
       setRun(true);
   }, []);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { type } = data;
-
-    if (type === "tour:end"){
-      window.localStorage.setItem(SKIP_TUTORIAL_GAME, "true");
-      setRun(false);
-    }
+  const handleJoyrideCallbackFactory = (storageKey: string, setRunCallback: React.Dispatch<React.SetStateAction<boolean>>) => {
+    return (data: CallBackProps) => {
+      const { type } = data;
+  
+      if (type === "tour:end") {
+        window.localStorage.setItem(storageKey, "true");
+        setRunCallback(false);
+        if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
+          setSpecialTutorialCompleted(true);
+        }
+      }
+    };
   };
+
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
+  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
+  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_MODIFIERS, setRunTutorialModifiers);
 
   const handleDragEnd = (event: DragEndEvent) => {
     setIsItemDragged(false);
@@ -78,6 +92,24 @@ export const MobileGameContent = () => {
   useEffect(() => {
     checkOrCreateGame();
   }, []);
+
+  const game = useGame();
+
+  useEffect(() => {
+    const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
+    const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
+
+    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0) {
+      setRunSpecial(true);
+    } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
+      if (showModifiersTutorial) {
+        const hasModifier = hand.some((card) => card.isModifier);
+        if (hasModifier) {
+          setRunTutorialModifiers(true);
+        }
+      }
+    }
+  }, [game, hand, specialTutorialCompleted]);
 
   if (error) {
     return (
@@ -134,6 +166,26 @@ export const MobileGameContent = () => {
           styles={TUTORIAL_STYLE}
         />
 
+        <Joyride 
+          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
+          run={runSpecial} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleSpecialJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
+        <Joyride 
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers} 
+          continuous 
+          showSkipButton 
+          showProgress 
+          callback={handleModifiersJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+        />
+
         <GameMenu showTutorial={() => { setRun(true);}} />
       </Box>
       <Box
@@ -175,8 +227,8 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton itemDragged={isItemDragged} />
-              <PlayButton />
+              <DiscardButton itemDragged={isItemDragged} highlight={run}/>
+              <PlayButton highlight={run}/>
             </Flex>
             <Box
               sx={{
