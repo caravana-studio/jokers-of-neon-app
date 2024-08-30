@@ -116,7 +116,7 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
     >
         {particle && <Particle style={{ backgroundImage: particle }} />}
         <Container>
-        <ExplosionEffect scale={explosionScale} src={explosion ? "/vfx/explosion_blue_loop_hd.gif" : ""}></ExplosionEffect>           
+        <ExplosionEffect scale={explosionScale} src={explosion ? "/vfx/explosion_blue.gif" : ""}></ExplosionEffect>           
             <GlowEffect glow={glow}>
                 <ShakeEffect 
                     animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
