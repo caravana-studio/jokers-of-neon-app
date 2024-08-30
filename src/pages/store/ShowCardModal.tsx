@@ -100,24 +100,25 @@ export const ShowCardModal = ({
             alignItems="center"
           >
              <OpenAnimation 
-              startAnimation={isOpenAnimationRunning}
-              onAnimationEnd={() => handleAnimationEnd()}>
-              <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
-                <Box
-                  p={isPack ? "0px" : "5px"}
-                  borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
-                  boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
-                  width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
-                  height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
-                >
-                  <Image
-                    borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
-                    width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
-                    height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                    src={getImg(card)}
-                  />
+                startAnimation={isOpenAnimationRunning}
+                onAnimationEnd={() => handleAnimationEnd()}
+              >
+                <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+                  <Box
+                    p={isPack ? "0px" : "5px"}
+                    borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
+                    boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
+                    width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
+                    height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
+                  >
+                    <Image
+                      borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
+                      width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
+                      height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
+                      src={getImg(card)}
+                    />
+                  </Box>
                 </Box>
-              </Box>
             </OpenAnimation>
             <Flex flexDirection="column" gap={isMobile ? 4 : 8} width="100%">
               {!isPack && (
