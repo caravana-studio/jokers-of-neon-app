@@ -36,12 +36,13 @@ const ExplosionEffect = styled.div<{ hide: boolean, scale: number }>`
   left: 50%;
   width: 100%;
   height: 100%;
-  background-image: ${(props) => (props.hide ? 'none' : 'url(/vfx/explosion.gif)')};
+  background-image: ${(props) => (props.hide ? 'none' : 'url(/vfx/explosion_blue.gif)')};
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center; 
   z-index: 9999999;
   transform: translate(-50%, -50%) scale(${(props) => props.scale});
+  filter: blur(1px);
 `;
 
 const ShakeEffect = motion.div; 
