@@ -26,7 +26,6 @@ export async function setup({ ...config }: DojoConfig) {
   // create client components
   const clientComponents = createClientComponents({ contractComponents });
 
-  // TODO: Improve implementation (Handle the cursor size and add stop limit)
   const getEntities = async <S extends Schema>(
     client: torii.ToriiClient,
     components: Component<S, Metadata, undefined>[], query: torii.Query,
@@ -36,11 +35,12 @@ export async function setup({ ...config }: DojoConfig) {
         let continueFetching = true;
 
         while (continueFetching) {
-            const entities = await client.getEntities(query);
+            query.offset = cursor;
+            const fetchedEntities = await client.getEntities(query);
 
-            setEntities(entities, components);
+            setEntities(fetchedEntities, components);
 
-            if (Object.keys(entities).length < limit) {
+            if (Object.keys(fetchedEntities).length < limit) {
                 continueFetching = false;
             } else {
                 cursor += limit;
@@ -106,7 +106,6 @@ export async function setup({ ...config }: DojoConfig) {
       await getEntities(toriiClient, contractComponents as any, query);
       return await syncEntities(toriiClient, contractComponents as any, []);
     }
-    
   }
 
   let sync = await syncEntitiesForGameID();
@@ -125,7 +124,6 @@ export async function setup({ ...config }: DojoConfig) {
       if (newGameID !== lastGameID) {
         lastGameID = newGameID;
         sync = await syncEntitiesForGameID();
-        console.log('Sync updated due to GAME_ID change');
       }
     }, 1000); 
   };
