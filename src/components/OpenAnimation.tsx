@@ -29,9 +29,19 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const ChildrenWrapper = styled.div<{ hide: boolean }>`
+const ExplosionEffect = styled.div<{ hide: boolean, scale: number }>`
   visibility: ${(props) => (props.hide ? 'hidden' : 'visible')};
-  position: relative; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-image: ${(props) => (props.hide ? 'none' : 'url(/vfx/explosion.gif)')};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; 
+  z-index: 9999999;
+  transform: translate(-50%, -50%) scale(${(props) => props.scale});
 `;
 
 const ShakeEffect = motion.div; 
@@ -46,8 +56,9 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
   const controls = useAnimation();
   const [shake, setShake] = useState(false);
   const [glow, setGlow] = useState(false);
+  const [explosion, setExplosion] = useState(false);
+  const [explosionScale, setExplosionScale] = useState(0);
   const [particle, setParticle] = useState<string | null>(null);
-  const [hideChildren, setHideChildren] = useState(false);
 
   useEffect(() => {
     if (startAnimation)
@@ -61,15 +72,29 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
             }, 500);
 
             const particle2Timeout = setTimeout(() => {
-                //setHideChildren(true);
-                //setParticle('url(/vfx/explosion.gif)');
+              setExplosion(true);
+              setExplosionScale(0.1); 
+              let currentScale = 0.1;
+      
+              const scaleInterval = setInterval(() => {
+                currentScale += 0.1; 
+                if (currentScale >= 10) { 
+                  clearInterval(scaleInterval);
+                } else {
+                  setExplosionScale(currentScale);
+                }
+              }, 1);
+      
+              return () => {
+                clearInterval(scaleInterval);
+              };
             }, 1500);
 
             const resetTimeout = setTimeout(() => {
                 setParticle(null);
                 setShake(false);
-                //setHideChildren(false);
                 setGlow(false);
+                setExplosion(false);
                 
                 if (onAnimationEnd) onAnimationEnd();
             }, 2200);
@@ -91,16 +116,15 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
       style={{ position: 'relative', display: 'inline-block' }}
     >
         {particle && <Particle style={{ backgroundImage: particle }} />}
-        <Container>           
+        <Container>
+        <ExplosionEffect hide={!explosion} scale={explosionScale}></ExplosionEffect>           
             <GlowEffect glow={glow}>
-                <ChildrenWrapper hide={hideChildren}>
-                    <ShakeEffect 
-                        animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
-                        transition={{ duration: 0.3, repeat: shake ? Infinity : 0, repeatType: 'reverse' }}
-                    >
-                        {children}
-                    </ShakeEffect>
-                </ChildrenWrapper>
+                <ShakeEffect 
+                    animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
+                    transition={{ duration: 0.3, repeat: shake ? Infinity : 0, repeatType: 'reverse' }}
+                >
+                    {children}
+                </ShakeEffect>
             </GlowEffect>
         </Container>   
     </motion.div>
