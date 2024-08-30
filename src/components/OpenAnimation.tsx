@@ -29,20 +29,18 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const ExplosionEffect = styled.div<{ hide: boolean, scale: number }>`
-  visibility: ${(props) => (props.hide ? 'hidden' : 'visible')};
+const ExplosionEffect = styled.img<{ scale: number }>`
   position: absolute;
   top: 50%;
   left: 50%;
   width: 100%;
   height: 100%;
-  background-image: ${(props) => (props.hide ? 'none' : 'url(/vfx/explosion_blue.gif)')};
+  background={}
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center; 
   z-index: 9999999;
   transform: translate(-50%, -50%) scale(${(props) => props.scale});
-  filter: blur(1px);
 `;
 
 const ShakeEffect = motion.div; 
@@ -118,7 +116,7 @@ const OpenAnimation = ({ children, startAnimation, onAnimationEnd }: OpenAnimati
     >
         {particle && <Particle style={{ backgroundImage: particle }} />}
         <Container>
-        <ExplosionEffect hide={!explosion} scale={explosionScale}></ExplosionEffect>           
+        <ExplosionEffect scale={explosionScale} src={explosion ? "/vfx/explosion_blue_loop_hd.gif" : ""}></ExplosionEffect>           
             <GlowEffect glow={glow}>
                 <ShakeEffect 
                     animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }} 
