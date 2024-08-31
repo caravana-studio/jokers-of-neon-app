@@ -20,17 +20,16 @@ export const Packs = () => {
         {shopItems.packs.map((pack) => {
           return (
             <Flex key={`pack-${pack.card_id}`} justifyContent="center">
-                <TiltCard
-                  cursor="pointer"
-                  card={pack}
-                  isPack
-                  scale={1.2}
-                  onClick={() => {
-                    if (!pack.purchased) {
-                      setSelectedPack(pack);
-                    }
-                  }}
-                />
+              <TiltCard
+                cursor="pointer"
+                card={pack}
+                isPack
+                scale={1.2}
+                onClick={() => {
+                  !pack.purchased && setSelectedPack(pack);
+                }}
+                isHolographic
+              />
             </Flex>
           );
         })}
