@@ -22,7 +22,7 @@ export function defineContractComponents(world: World) {
     CardItem: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, item_type: RecsType.String, card_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean, temporary: RecsType.Boolean },
+        { game_id: RecsType.Number, idx: RecsType.Number, item_type: RecsType.Number, card_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean, temporary: RecsType.Boolean },
         {
           metadata: {
             name: "jokers_of_neon-CardItem",
@@ -152,7 +152,7 @@ export function defineContractComponents(world: World) {
     Game: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_max_current_special_cards: RecsType.Number, len_current_special_cards: RecsType.Number, state: RecsType.String, cash: RecsType.Number },
+        { id: RecsType.Number, owner: RecsType.BigInt, player_name: RecsType.BigInt, max_hands: RecsType.Number, max_discard: RecsType.Number, round: RecsType.Number, player_score: RecsType.Number, level: RecsType.Number, len_hand: RecsType.Number, len_common_cards: RecsType.Number, len_effect_cards: RecsType.Number, len_max_current_special_cards: RecsType.Number, len_current_special_cards: RecsType.Number, state: RecsType.Number, cash: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-Game",
@@ -269,7 +269,7 @@ export function defineContractComponents(world: World) {
     PokerHandItem: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, poker_hand: RecsType.String, level: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
+        { game_id: RecsType.Number, idx: RecsType.Number, poker_hand: RecsType.Number, level: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
         {
           metadata: {
             name: "jokers_of_neon-PokerHandItem",
@@ -308,11 +308,11 @@ export function defineContractComponents(world: World) {
     Shop: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, reroll_cost: RecsType.Number, reroll_executed: RecsType.Boolean, len_item_common_cards: RecsType.Number, len_item_modifier_cards: RecsType.Number, len_item_special_cards: RecsType.Number, len_item_poker_hands: RecsType.Number },
+        { game_id: RecsType.Number, reroll_cost: RecsType.Number, reroll_executed: RecsType.Boolean, len_item_common_cards: RecsType.Number, len_item_modifier_cards: RecsType.Number, len_item_special_cards: RecsType.Number, len_item_poker_hands: RecsType.Number, len_item_blister_pack: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-Shop",
-            types: ["u32","u32","bool","u32","u32","u32","u32"],
+            types: ["u32","u32","bool","u32","u32","u32","u32","u32"],
             customTypes: [],
           },
         }
