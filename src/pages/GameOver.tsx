@@ -72,21 +72,7 @@ export const GameOver = () => {
           </Heading>
           <Leaderboard gameId={lastGameId} lines={4} />
         </Box>
-        <Button
-          sx={{ mt: 4 }}
-          onClick={() => {
-            window.open(
-              `https://twitter.com/intent/tweet?text=%20%F0%9F%94%A5%20Just%20scored%20${score}%20points%20in%20Jokers%20of%20Neon!%20%F0%9F%94%A5%0A%0AThink%20you%20can%20beat%20me?%0ADemo%20is%20open%20for%20limited%20time!!%20%E2%8F%B3%E2%8F%B3%0A%0AGive%20it%20a%20shot%20at%20${GAME_URL}%20%F0%9F%83%8F%E2%9C%A8`,
-              "_blank"
-            );
-          }}
-          data-size="large"
-        >
-          SHARE YOUR SCORE ON
-          <Flex sx={{ ml: 2.5 }}>
-            <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
-          </Flex>
-        </Button>
+
         <Button
           variant="secondarySolid"
           sx={{
