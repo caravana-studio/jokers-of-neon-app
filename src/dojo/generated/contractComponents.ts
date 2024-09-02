@@ -6,6 +6,45 @@ export type ContractComponents = Awaited<ReturnType<typeof defineContractCompone
 
 export function defineContractComponents(world: World) {
   return {
+    BlisterPack: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, cost: RecsType.Number, name: RecsType.BigInt, probability: RecsType.Number, size: RecsType.Number, cards: RecsType.StringArray, probs: RecsType.StringArray },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPack",
+            types: ["u32","u32","felt252","u32","u8"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    BlisterPackItem: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, idx: RecsType.Number, blister_pack_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPackItem",
+            types: ["u32","u32","u32","u32","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    BlisterPackResult: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, cards_picked: RecsType.Boolean, cards: RecsType.StringArray },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPackResult",
+            types: ["u32","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     Card: (() => {
       return defineComponent(
         world,

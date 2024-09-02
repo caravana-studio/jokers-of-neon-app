@@ -5,6 +5,7 @@ import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { Pack } from "../../types/Pack";
 import { PokerHandItem } from "../../types/PokerHandItem";
+import { BlisterPackItem } from "../generated/typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -56,6 +57,15 @@ const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
 };
 
+const getBlisterPack = (gameId: number, index: number, entity: Component) => {
+  const entityId = getEntityIdFromKeys([
+    BigInt(gameId),
+    BigInt(index),
+  ]) as Entity;
+  const item = getComponentValue(entity, entityId) as any;
+  return item;
+};
+
 const getCard = (
   gameId: number,
   index: number,
@@ -99,7 +109,7 @@ const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
 export const useShopItems = () => {
   const {
     setup: {
-      clientComponents: { CardItem, PokerHandItem },
+      clientComponents: { CardItem, PokerHandItem, BlisterPackItem },
     },
   } = useDojo();
 
@@ -146,6 +156,18 @@ export const useShopItems = () => {
       getPokerHandItem(gameId, index, PokerHandItem)
     );
   }, [shop?.len_item_poker_hands, game?.level, shop?.reroll_executed]);
+
+  const blisterPackItems: BlisterPackItem[] = useMemo(() => {
+    const blisterPackIds = Array.from(
+      { length: shop?.len_item_blister_pack ?? 0 },
+      (_, index) => index
+    );
+    return blisterPackIds.map((index) =>
+      getBlisterPack(gameId, index, BlisterPackItem)
+    );
+  }, [shop?.len_item_blister_pack, game?.level, shop?.reroll_executed]);
+
+  console.log(blisterPackItems);
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
