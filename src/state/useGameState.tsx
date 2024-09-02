@@ -55,6 +55,7 @@ export const useGameState = () => {
   const dojoScore = round?.player_score ?? 0;
   const dojoHandsLeft = round?.hands;
   const dojoDiscardsLeft = round?.discard;
+  const [scoreInitialized, setScoreInitialized] = useState(false);
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -70,9 +71,11 @@ export const useGameState = () => {
   }, [dojoHand]);
 
   useEffect(() => {
-    if (!score && dojoScore > 0) {
+    if (!score && dojoScore > 0 && !scoreInitialized) {
       setScore(dojoScore);
+      setScoreInitialized(true);
     }
+
     if (dojoHandsLeft && dojoHandsLeft > 0) {
       setHandsLeft(dojoHandsLeft);
     }

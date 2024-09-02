@@ -171,6 +171,14 @@ test("Straight ace with two gaps after ace and two jokers should work", () => {
   expect(testCheckHand([HA, D5, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });
 
+test("Straight ace with two gaps and jokers should work", () => {
+  expect(testCheckHand([HA, S4, S5, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight ace with one gap and a joker should work", () => {
+  expect(testCheckHand([HA, D5, S4, D3, JOKER2])).toBe(Plays.STRAIGHT);
+});
+
 test("Straight ace with two gaps and two jokers should work", () => {
   expect(testCheckHand([HA, D2, S4, JOKER1, JOKER2])).toBe(Plays.STRAIGHT);
 });

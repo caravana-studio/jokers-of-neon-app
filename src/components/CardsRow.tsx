@@ -40,6 +40,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
           <Flex
+            className="special-cards-step-1"
             key={card.idx}
             justifyContent="center"
             width={`${100 / cards.length}%`}
