@@ -183,6 +183,7 @@ export const GameContent = () => {
             maxHeight="70px"
             position="fixed"
             top={0}
+            zIndex={0}
           />
           <Box
             sx={{ height: "100%", width: "100%" }}
