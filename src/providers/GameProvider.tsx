@@ -115,6 +115,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clientComponents: { Game },
     },
     account,
+    syncCall
   } = useDojo();
 
   const game = useGame();
@@ -173,7 +174,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     if (username) {
       console.log("Creating game...");
-      createGame(account.account, username).then((response) => {
+      createGame(account.account, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
@@ -183,6 +184,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
+          await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
           setRoundRewards(undefined);
