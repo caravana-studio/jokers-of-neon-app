@@ -6,15 +6,13 @@ import { Background } from "../components/Background";
 import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { TiltCard } from "../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
+import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { useStore } from "../providers/StoreProvider";
 import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
-import { C2, HQ, JOKER1, JOKER2, S10 } from "../utils/mocks/cardMocks";
-import { EasyFlush } from "../utils/mocks/specialCardMocks";
-
-const mockedCards = [C2, JOKER1, HQ, JOKER2, EasyFlush, S10];
 
 export const OpenPack = () => {
   const navigate = useNavigate();
@@ -22,8 +20,9 @@ export const OpenPack = () => {
   const game = useGame();
   const maxSpecialCards = game?.len_max_current_special_cards ?? 0;
 
+  const blisterPackResult = useBlisterPackResult();
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
-  const [cards, setCards] = useState<Card[]>(mockedCards);
+  const [cards, setCards] = useState<Card[]>(blisterPackResult);
   const currentSpecialCards = useCurrentSpecialCards();
   const currentSpecialCardsLenght = currentSpecialCards?.length ?? 0;
   const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
@@ -34,11 +33,17 @@ export const OpenPack = () => {
 
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
 
+  const { selectCardsFromPack } = useStore();
+
   const continueButton = (
     <Button
-      mx={{base: 6, md: 0}}
+      mx={{ base: 6, md: 0 }}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
+      onClick={async () => {
+        const response = await selectCardsFromPack(cardsToKeep.map((c) => c.idx));
+        console.log("response", response);
+      }}
     >
       Continue
     </Button>
@@ -67,7 +72,7 @@ export const OpenPack = () => {
         <CardsContainer>
           {cards.map((card, index) => {
             return (
-              <Flex flexDirection="column" gap={4}>
+              <Flex key={card.card_id} flexDirection="column" gap={4}>
                 <Box
                   key={getCardUniqueId(card)}
                   p={1.5}
@@ -112,7 +117,7 @@ export const OpenPack = () => {
             <Button
               variant="outline"
               fontSize={12}
-              mx={{base: 6, md: 0}}
+              mx={{ base: 6, md: 0 }}
               onClick={() => {
                 setSpecialCardsModalOpen(true);
               }}

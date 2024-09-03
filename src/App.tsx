@@ -72,7 +72,9 @@ function App() {
               path="/open-pack"
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <OpenPack />
+                  <StoreProvider>
+                    <OpenPack />
+                  </StoreProvider>
                 </AudioPlayerProvider>
               }
             />

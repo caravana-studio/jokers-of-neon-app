@@ -3,7 +3,6 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
-import { Pack } from "../../types/Pack";
 import { PokerHandItem } from "../../types/PokerHandItem";
 import { BlisterPackItem } from "../generated/typescript/models.gen";
 import { useDojo } from "../useDojo";
@@ -15,43 +14,14 @@ export interface ShopItems {
   modifierCards: Card[];
   commonCards: Card[];
   pokerHandItems: PokerHandItem[];
-  packs: Pack[];
+  packs: BlisterPackItem[];
 }
-
-const packs: Pack[] = [
-  {
-    id: "1",
-    idx: 1,
-    price: 200,
-    img: "packs/basic.png",
-    purchased: false,
-    card_id: 1000,
-    isPack: true,
-  },
-  {
-    id: "2",
-    idx: 2,
-    name: "Advanced",
-    price: 400,
-    img: "packs/advanced.png",
-    purchased: false,
-    card_id: 1001,
-    isPack: true,
-  },
-  {
-    id: "3",
-    idx: 3,
-    name: "Jokers",
-    price: 1500,
-    img: "packs/jokers.png",
-    purchased: false,
-    card_id: 1002,
-    isPack: true,
-  },
-];
 
 const sortByCardId = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
+};
+const sortByPackId = (a: BlisterPackItem, b: BlisterPackItem) => {
+  return (Number(a.blister_pack_id) ?? 0) - (Number(b.blister_pack_id) ?? 0);
 };
 const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
@@ -167,14 +137,13 @@ export const useShopItems = () => {
     );
   }, [shop?.len_item_blister_pack, game?.level, shop?.reroll_executed]);
 
-  console.log(blisterPackItems);
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
     modifierCards: modifierCards.sort(sortByCardId),
     commonCards: commonCards.sort(sortByCardId),
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
-    packs,
+    packs: blisterPackItems.sort(sortByPackId),
   };
 
   return shopItems;

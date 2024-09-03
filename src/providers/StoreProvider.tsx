@@ -1,4 +1,5 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { BlisterPackItem } from "../dojo/generated/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
@@ -8,14 +9,22 @@ import { useGameContext } from "./GameProvider";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
+  buyPack: (pack: BlisterPackItem) => Promise<boolean>;
   levelUpPlay: (item: PokerHandItem) => Promise<boolean>;
   reroll: () => Promise<boolean>;
   locked: boolean;
   isPurchased: (card: Card | PokerHandItem) => boolean;
+  selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
   buyCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  buyPack: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  selectCardsFromPack: (_) => {
     return new Promise((resolve) => resolve(false));
   },
   levelUpPlay: (_) => {
@@ -71,6 +80,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         buyCard: dojoBuyCard,
         levelUpPokerHand: dojoLevelUpHand,
         storeReroll,
+        buyPack: dojoBuyPack,
+        selectCardsFromPack: dojoSelectCardsFromPack,
       },
     },
     account,
@@ -98,6 +109,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setLocked(false);
       });
     return promise;
+  };
+
+  const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
+    return dojoBuyPack(account.account, gameId, Number(pack.idx));
+  };
+
+  const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
+    return dojoSelectCardsFromPack(account.account, gameId, cardIndices);
   };
 
   const reroll = () => {
@@ -140,6 +159,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         reroll,
         locked,
         isPurchased,
+        buyPack,
+        selectCardsFromPack,
       }}
     >
       {children}
