@@ -1,5 +1,6 @@
 import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
+import { ModifiersId } from "../enums/modifiersId";
 import { Card } from "../types/Card";
 import { CardData } from "../types/CardData";
 import { getCardData } from "./getCardData";
@@ -17,13 +18,13 @@ export const checkHand = (
 
   const getNewSuit = (modifierCardId?: number) => {
     switch (modifierCardId) {
-      case 25:
+      case ModifiersId.SUIT_CLUB_MODIFIER:
         return Suits.CLUBS;
-      case 26:
+      case ModifiersId.SUIT_DIAMONDS_MODIFIER:
         return Suits.DIAMONDS;
-      case 27:
+      case ModifiersId.SUIT_HEARTS_MODIFIER:
         return Suits.HEARTS;
-      case 28:
+      case ModifiersId.SUIT_SPADES_MODIFIER:
         return Suits.SPADES;
       default:
         return null;
