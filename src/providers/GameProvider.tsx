@@ -117,7 +117,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clientComponents: { Game },
     },
     account,
-    syncCall
+    syncCall,
   } = useDojo();
 
   const game = useGame();
@@ -172,31 +172,31 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const executeCreateGame = () => {
+  const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
 
-    (cartridgeConnector as CartridgeConnector).username()?.then((username) => {
-      console.log("Creating game...");
-      createGame(account, username).then((response) => {
-        const { gameId: newGameId, hand } = response;
-        if (newGameId) {
-          resetLevel();
-          navigate("/demo");
-          setHand(hand);
-          setGameId(newGameId);
-          clearPreSelection();
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          console.log(`game ${newGameId} created`);
-          await syncCall();
-          setGameLoading(false);
-          setPreSelectionLocked(false);
-          setRoundRewards(undefined);
-        } else {
-          setError(true);
-        }
-      });
-    });
+    const username = await (
+      cartridgeConnector as CartridgeConnector
+    ).username();
+    console.log("Creating game...");
+    const response = await createGame(account, username);
+    const { gameId: newGameId, hand } = response;
+    if (newGameId) {
+      resetLevel();
+      navigate("/demo");
+      setHand(hand);
+      setGameId(newGameId);
+      clearPreSelection();
+      localStorage.setItem(GAME_ID, newGameId.toString());
+      console.log(`game ${newGameId} created`);
+      await syncCall();
+      setGameLoading(false);
+      setPreSelectionLocked(false);
+      setRoundRewards(undefined);
+    } else {
+      setError(true);
+    }
   };
 
   const replaceCards = (cards: Card[]) => {
