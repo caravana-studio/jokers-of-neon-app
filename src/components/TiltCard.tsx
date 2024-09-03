@@ -103,23 +103,23 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
               <Box
                 sx={{
                   position: "absolute",
-                  bottom: 2,
-                  left: 2,
+                  top: -2,
+                  right: 0,
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
-                  padding: 0.5,
-                  backgroundColor: "pastelPink",
-                  boxShadow: `0px 0px 5px 0px ${PASTEL_PINK}`,
-                  borderRadius: "25%",
+                  padding: "2px 4px",
+                  backgroundColor: "black",
+                  boxShadow: `0px 0px 10px 2px white`,
+                  borderRadius: "20%",
                   display: "flex",
                   alignItems: "center",
                   direction: "row",
                   gap: 1.5,
                 }}
               >
-                <TimeIcon boxSize={4} color={"black"} />
+                <TimeIcon boxSize={3} color={"white"} />
                 {card.remaining && (
-                  <Text color="black" size="l">
+                  <Text color="white" size="m">
                     {card.remaining}
                   </Text>
                 )}
