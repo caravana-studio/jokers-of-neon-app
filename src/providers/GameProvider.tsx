@@ -179,8 +179,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const username = await (
       cartridgeConnector as CartridgeConnector
     ).username();
+    console.log('username', username)
     console.log("Creating game...");
-    const response = await createGame(account, username ?? "");
+    const response = await createGame(account, username ?? "user");
     const { gameId: newGameId, hand } = response;
     if (newGameId) {
       resetLevel();
