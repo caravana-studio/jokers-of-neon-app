@@ -3,12 +3,14 @@ import { useDroppable } from "@dnd-kit/core";
 import { isMobile } from "react-device-detect";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useEffect } from "react";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
+  highlight?: boolean;
 }
 
-export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
+export const DiscardButton = ({ itemDragged = false, highlight = false }: DiscardButtonProps) => {
   const { preSelectedCards, discard, discardsLeft, preSelectionLocked } =
     useGameContext();
 
@@ -16,7 +18,7 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
     id: "play-discard",
   });
 
-  const cantDiscard = !itemDragged &&
+  const cantDiscard = !highlight && !itemDragged &&
   (preSelectionLocked ||
     preSelectedCards?.length === 0 ||
     !discardsLeft ||
@@ -44,7 +46,7 @@ export const DiscardButton = ({ itemDragged = false }: DiscardButtonProps) => {
             >
               {itemDragged ? "drop here to " : ""}discard
             </Text>
-            <Heading mt={1} fontSize={9} color="black">
+            <Heading mt={1} fontSize={9}>
               {discardsLeft} left
             </Heading>
           </Box>
