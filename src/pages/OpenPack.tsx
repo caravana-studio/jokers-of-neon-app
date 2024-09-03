@@ -20,9 +20,8 @@ export const OpenPack = () => {
   const game = useGame();
   const maxSpecialCards = game?.len_max_current_special_cards ?? 0;
 
-  const blisterPackResult = useBlisterPackResult();
+  const cards = useBlisterPackResult();
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
-  const [cards, setCards] = useState<Card[]>(blisterPackResult);
   const currentSpecialCards = useCurrentSpecialCards();
   const currentSpecialCardsLenght = currentSpecialCards?.length ?? 0;
   const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
@@ -40,9 +39,9 @@ export const OpenPack = () => {
       mx={{ base: 6, md: 0 }}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
-      onClick={async () => {
-        const response = await selectCardsFromPack(cardsToKeep.map((c) => c.idx));
-        console.log("response", response);
+      onClick={() => {
+        selectCardsFromPack(cardsToKeep.map((c) => c.idx));
+        navigate("/redirect/store");
       }}
     >
       Continue
@@ -79,10 +78,13 @@ export const OpenPack = () => {
                   sx={{
                     borderRadius: { base: "7px", md: "15px" },
                     opacity:
-                      cardsToKeep.includes(card) || cardsToKeep.length === 0
+                      cardsToKeep.map((card) => card.idx).includes(card.idx) ||
+                      cardsToKeep.length === 0
                         ? 1
                         : 0.5,
-                    boxShadow: cardsToKeep.includes(card)
+                    boxShadow: cardsToKeep
+                      .map((card) => card.idx)
+                      .includes(card.idx)
                       ? {
                           base: `0px 0px 10px 5px ${BLUE}`,
                           md: `0px 0px 20px 12px ${BLUE}`,
@@ -95,8 +97,12 @@ export const OpenPack = () => {
                     card={card}
                     key={index}
                     onClick={() => {
-                      if (cardsToKeep.includes(card)) {
-                        setCardsToKeep(cardsToKeep.filter((c) => c !== card));
+                      if (
+                        cardsToKeep.map((card) => card.idx).includes(card.idx)
+                      ) {
+                        setCardsToKeep(
+                          cardsToKeep.filter((c) => c.idx !== card.idx)
+                        );
                       } else {
                         setCardsToKeep([...cardsToKeep, card]);
                       }
