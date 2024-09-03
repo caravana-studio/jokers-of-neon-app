@@ -13,6 +13,8 @@ import { GAME_ID } from "../../constants/localStorage.ts";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
+let sync: any;
+
 export async function setup({ ...config }: DojoConfig) {
   // torii client
   const toriiClient = await torii.createClient({
@@ -83,8 +85,6 @@ export async function setup({ ...config }: DojoConfig) {
       componentNames.push(name);
   });
   
-  const startTime = performance.now();
-  
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
  
@@ -101,36 +101,18 @@ export async function setup({ ...config }: DojoConfig) {
     };  
 
     if(gameID){
+      const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
-      const res = await syncEntities(toriiClient, contractComponents as any, []);
+      sync  = await syncEntities(toriiClient, contractComponents as any, []);
       
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
-      
-      return res;
     }
   }
 
-  let sync = await syncEntitiesForGameID();
-
- 
-
-  const updateSyncOnGameIDChange = () => {
-    const currentGameID = localStorage.getItem(GAME_ID);
-    let lastGameID = currentGameID;
-
-    setInterval(async () => {
-      const newGameID = localStorage.getItem(GAME_ID);
-      if (newGameID !== lastGameID) {
-        lastGameID = newGameID;
-        sync = await syncEntitiesForGameID();
-      }
-    }, 1000); 
-  };
-
-  updateSyncOnGameIDChange();
+  await syncEntitiesForGameID();
 
   return {
     client,
@@ -151,6 +133,6 @@ export async function setup({ ...config }: DojoConfig) {
     dojoProvider,
     burnerManager,
     toriiClient,
-    getSyncStatus: () => sync,
+    syncCallback: async () => await syncEntitiesForGameID(),
   };
 }
