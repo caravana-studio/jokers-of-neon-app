@@ -84,8 +84,6 @@ export async function setup({ ...config }: DojoConfig) {
   });
   
   const startTime = performance.now();
-
-  const burner = burnerManager.account?.address;
   
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
@@ -104,16 +102,20 @@ export async function setup({ ...config }: DojoConfig) {
 
     if(gameID){
       await getEntities(toriiClient, contractComponents as any, query);
-      return await syncEntities(toriiClient, contractComponents as any, []);
+      const res = await syncEntities(toriiClient, contractComponents as any, []);
+      
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+      // Log for load time
+      console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
+      
+      return res;
     }
   }
 
   let sync = await syncEntitiesForGameID();
 
-  const endTime = performance.now();
-  const timeTaken = endTime - startTime;
-  // Log for load time
-  console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
+ 
 
   const updateSyncOnGameIDChange = () => {
     const currentGameID = localStorage.getItem(GAME_ID);
