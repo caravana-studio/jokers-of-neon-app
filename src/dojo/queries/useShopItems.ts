@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { PokerHandItem } from "../../types/PokerHandItem";
+import { BlisterPackItem } from "../generated/typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -13,13 +14,26 @@ export interface ShopItems {
   modifierCards: Card[];
   commonCards: Card[];
   pokerHandItems: PokerHandItem[];
+  packs: BlisterPackItem[];
 }
 
 const sortByCardId = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
 };
+const sortByPackId = (a: BlisterPackItem, b: BlisterPackItem) => {
+  return (Number(a.blister_pack_id) ?? 0) - (Number(b.blister_pack_id) ?? 0);
+};
 const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
+};
+
+const getBlisterPack = (gameId: number, index: number, entity: Component) => {
+  const entityId = getEntityIdFromKeys([
+    BigInt(gameId),
+    BigInt(index),
+  ]) as Entity;
+  const item = getComponentValue(entity, entityId) as any;
+  return item;
 };
 
 const getCard = (
@@ -65,7 +79,7 @@ const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
 export const useShopItems = () => {
   const {
     setup: {
-      clientComponents: { CardItem, PokerHandItem },
+      clientComponents: { CardItem, PokerHandItem, BlisterPackItem },
     },
   } = useDojo();
 
@@ -113,11 +127,23 @@ export const useShopItems = () => {
     );
   }, [shop?.len_item_poker_hands, game?.level, shop?.reroll_executed]);
 
+  const blisterPackItems: BlisterPackItem[] = useMemo(() => {
+    const blisterPackIds = Array.from(
+      { length: shop?.len_item_blister_pack ?? 0 },
+      (_, index) => index
+    );
+    return blisterPackIds.map((index) =>
+      getBlisterPack(gameId, index, BlisterPackItem)
+    );
+  }, [shop?.len_item_blister_pack, game?.level, shop?.reroll_executed]);
+
+
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
     modifierCards: modifierCards.sort(sortByCardId),
     commonCards: commonCards.sort(sortByCardId),
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
+    packs: blisterPackItems.sort(sortByPackId),
   };
 
   return shopItems;

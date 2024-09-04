@@ -21,6 +21,18 @@ export const Redirect = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    const redirectTimeout = setTimeout(() => {
+      if (page === "demo") {
+        navigate("/demo");
+      } else if (page === "store") {
+        navigate("/store");
+      }
+    }, 5000);
+
+    return () => clearTimeout(redirectTimeout);
+  }, [page]);
+
   return (
     <Background type="game">
       <Loading />

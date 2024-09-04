@@ -283,6 +283,57 @@ export function createSystemCalls(
     }
   };
 
+  const buyPack = async (
+    account: AccountInterface,
+    gameId: number,
+    pack_id: number
+  ) => {
+    try {
+      showTransactionToast();
+      const { transaction_hash } = await client.actions.buyPack({
+        account,
+        gameId,
+        pack_id,
+      });
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
+  const selectCardsFromPack = async (
+    account: AccountInterface,
+    gameId: number,
+    cardIndexes: number[]
+  ) => {
+    console.log("selectCardsFromPack", cardIndexes);
+    try {
+      showTransactionToast();
+      const { transaction_hash } = await client.actions.selectCardsFromPack({
+        account,
+        gameId,
+        cardIndexes,
+      });
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
   const levelUpPokerHand = async (
     account: AccountInterface,
     gameId: number,
@@ -376,5 +427,7 @@ export function createSystemCalls(
     buyCard,
     levelUpPokerHand,
     storeReroll,
+    buyPack,
+    selectCardsFromPack,
   };
 }

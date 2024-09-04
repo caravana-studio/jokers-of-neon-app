@@ -6,6 +6,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { OpenPack } from "./pages/OpenPack";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { Store } from "./pages/store/Store";
@@ -64,6 +65,16 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <Redirect />
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/open-pack"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                  <StoreProvider>
+                    <OpenPack />
+                  </StoreProvider>
                 </AudioPlayerProvider>
               }
             />

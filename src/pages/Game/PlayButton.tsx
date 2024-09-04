@@ -1,16 +1,19 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
-import { useEffect } from "react";
 
 interface PlayButtonProps {
   highlight?: boolean;
 }
 
 export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
-  const { preSelectedCards, play, handsLeft, preSelectionLocked } =
+  const { preSelectedCards, play, preSelectionLocked } =
     useGameContext();
+
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
 
   const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
 

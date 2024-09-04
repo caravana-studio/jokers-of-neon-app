@@ -6,6 +6,7 @@ export interface CardData {
     description: string;
     card?: Cards;
     suit?: Suits;
+    details?: string;
 }
 
 export type CardDataMap = {
