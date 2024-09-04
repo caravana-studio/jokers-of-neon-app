@@ -21,7 +21,7 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
-import ClockIcon from "./clock.svg?component";
+import ClockIcon from "../assets/clock.svg?component";
 
 interface ICardProps {
   sx?: SystemStyleObject;
