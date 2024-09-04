@@ -13,16 +13,16 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
+import OpenAnimation from "../../components/OpenAnimation.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
-import OpenAnimation from "../../components/OpenAnimation.tsx";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 interface IShowCardModalProps {
   card: Card;
@@ -49,7 +49,7 @@ export const ShowCardModal = ({
 }: IShowCardModalProps) => {
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const { name, description } = getCardData(card, isPack);
+  const { name, description, details } = getCardData(card, isPack);
   const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
@@ -58,7 +58,8 @@ export const ShowCardModal = ({
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
-  const [isOpenAnimationRunning, setIsOpenAnimationRunning] = useState<boolean>(false); 
+  const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
+    useState<boolean>(false);
 
   const buyButton = (
     <Button
@@ -69,18 +70,18 @@ export const ShowCardModal = ({
       sx={{ width: "50%" }}
       variant="secondarySolid"
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
-      >
+    >
       BUY
     </Button>
   );
-  
+
   const navigate = useNavigate();
-  
+
   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
     close();
     navigate("/open-pack");
-};
+  };
 
   return (
     <Modal size="xxl" isOpen={true} onClose={close}>
@@ -99,26 +100,26 @@ export const ShowCardModal = ({
             flexDirection={{ base: "column", sm: "row" }}
             alignItems="center"
           >
-             <OpenAnimation 
-                startAnimation={isOpenAnimationRunning}
-                onAnimationEnd={() => handleAnimationEnd()}
-              >
-                <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
-                  <Box
-                    p={isPack ? "0px" : "5px"}
-                    borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
-                    boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
-                    width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
-                    height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
-                  >
-                    <Image
-                      borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
-                      width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
-                      height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                      src={getImg(card, isPack)}
-                    />
-                  </Box>
+            <OpenAnimation
+              startAnimation={isOpenAnimationRunning}
+              onAnimationEnd={() => handleAnimationEnd()}
+            >
+              <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+                <Box
+                  p={isPack ? "0px" : "5px"}
+                  borderRadius={isPack ? "0" : { base: "10px", sm: "20px" }}
+                  boxShadow={isPack ? "none" : "0px 0px 20px 3px white"}
+                  width={`${CARD_WIDTH * SIZE_MULTIPLIER + 10}px`}
+                  height={`${CARD_HEIGHT * SIZE_MULTIPLIER + 10}px`}
+                >
+                  <Image
+                    borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
+                    width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
+                    height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
+                    src={getImg(card, isPack)}
+                  />
                 </Box>
+              </Box>
             </OpenAnimation>
             <Flex flexDirection="column" gap={isMobile ? 4 : 8} width="100%">
               {!isPack && (
@@ -149,6 +150,21 @@ export const ShowCardModal = ({
                   </Text>
                 )}
               </Box>
+              {isPack && (
+                <Box>
+                  <Heading color="white" size={isMobile ? "s" : "m"}>
+                    details:
+                  </Heading>
+                  <Text variant="neonGreen" size="l">
+                    {details?.split("\n").map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                  </Text>
+                </Box>
+              )}
               <Flex gap={3}>
                 <Heading color="white" size={isMobile ? "s" : "m"}>
                   price:

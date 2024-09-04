@@ -36,7 +36,7 @@ export const OpenPack = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setOverlayVisible(false);
-    }, 700);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
