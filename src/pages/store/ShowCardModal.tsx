@@ -18,21 +18,21 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
-import { Pack } from "../../types/Pack.ts";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
 interface IShowCardModalProps {
-  card: Card | Pack;
+  card: Card;
   close: () => void;
   onBuyClick: (idx: number) => void;
+  isPack?: boolean;
 }
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 
-function getImg(card: Card | Pack): string | undefined {
-  if ("isPack" in card && card.isPack) {
-    return `Cards/${card.img}`;
+function getImg(card: Card, isPack?: boolean): string | undefined {
+  if (isPack) {
+    return `Cards/${card.img}.png`;
   } else {
     return `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`;
   }
@@ -42,11 +42,13 @@ export const ShowCardModal = ({
   card,
   close,
   onBuyClick,
+  isPack = false,
 }: IShowCardModalProps) => {
-  const isPack = "isPack" in card && card.isPack;
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const { name, description } = getCardData(card);
+  console.log("card isPack", card, isPack);
+  const { name, description } = getCardData(card, isPack);
+  console.log(name, description);
   const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
@@ -98,7 +100,7 @@ export const ShowCardModal = ({
                   borderRadius={isPack ? "0" : { base: "8px", sm: "15px" }}
                   width={`${CARD_WIDTH * SIZE_MULTIPLIER}px`}
                   height={`${CARD_HEIGHT * SIZE_MULTIPLIER}px`}
-                  src={getImg(card)}
+                  src={getImg(card, isPack)}
                 />
               </Box>
             </Box>

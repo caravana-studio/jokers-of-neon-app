@@ -57,11 +57,13 @@ export const Packs = () => {
               }
             });
           }}
+          isPack
           card={{
             id: selectedPack.blister_pack_id.toString(),
             img: `packs/${selectedPack.blister_pack_id}`,
             idx: Number(selectedPack.blister_pack_id),
             price: Number(selectedPack.cost),
+            card_id: Number(selectedPack.blister_pack_id),
           }}
           close={() => setSelectedPack(undefined)}
         />
