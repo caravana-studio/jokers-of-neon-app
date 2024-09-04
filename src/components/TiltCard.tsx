@@ -21,6 +21,7 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
+import ClockIcon from "./clock.svg?component";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -117,7 +118,8 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
                   gap: 1.5,
                 }}
               >
-                <TimeIcon boxSize={3} color={"white"} />
+                <ClockIcon color="white" width={14} height={14}/>
+                {/* <TimeIcon boxSize={3} color={"white"} /> */}
                 {card.remaining && (
                   <Text color="white" size="m">
                     {card.remaining}

@@ -15,7 +15,8 @@
         // "noUnusedLocals": true,
         // "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "types": ["@svgx/vite-plugin-react", "node", "vite/client"]
     },
     "include": ["src", "dojoConfig.ts"],
     "references": [
