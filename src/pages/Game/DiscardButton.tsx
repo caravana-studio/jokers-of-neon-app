@@ -46,7 +46,7 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
             >
               {itemDragged ? "drop here to " : ""}discard
             </Text>
-            <Heading mt={1} fontSize={9} color="black">
+            <Heading mt={1} fontSize={9}>
               {discardsLeft} left
             </Heading>
           </Box>
