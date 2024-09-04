@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { isMobile } from "react-device-detect";
+import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
-import { useEffect } from "react";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
@@ -11,9 +11,11 @@ interface DiscardButtonProps {
 }
 
 export const DiscardButton = ({ itemDragged = false, highlight = false }: DiscardButtonProps) => {
-  const { preSelectedCards, discard, discardsLeft, preSelectionLocked } =
+  const { preSelectedCards, discard, preSelectionLocked } =
     useGameContext();
 
+  const round = useRound();
+  const discardsLeft = round?.discard ?? 0;
   const { setNodeRef } = useDroppable({
     id: "play-discard",
   });

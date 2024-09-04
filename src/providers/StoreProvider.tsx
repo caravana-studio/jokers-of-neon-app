@@ -15,6 +15,8 @@ interface IStoreContext {
   locked: boolean;
   isPurchased: (card: Card | PokerHandItem) => boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
+  lockRedirection: boolean;
+  setLockRedirection: (lock: boolean) => void;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -35,6 +37,8 @@ const StoreContext = createContext<IStoreContext>({
   },
   locked: false,
   isPurchased: (_) => false,
+  lockRedirection: false,
+  setLockRedirection: (_) => {},
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -43,6 +47,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [locked, setLocked] = useState(false);
   const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
   const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
+  const [lockRedirection, setLockRedirection] = useState(false);
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
@@ -161,6 +166,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         isPurchased,
         buyPack,
         selectCardsFromPack,
+        lockRedirection,
+        setLockRedirection,
       }}
     >
       {children}

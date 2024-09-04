@@ -32,5 +32,8 @@ export const useBlisterPackResult = () => {
     .map((card) => Number(card))
     .sort(sort);
 
-  return getCards(cardsArray ?? []);
+  return {
+    cards: getCards(cardsArray ?? []),
+    cardsPicked: blisterPackResult?.cards_picked ?? false,
+  };
 };

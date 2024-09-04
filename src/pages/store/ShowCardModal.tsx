@@ -50,7 +50,7 @@ export const ShowCardModal = ({
   const game = useGame();
   const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card, isPack);
-  const { locked } = useStore();
+  const { locked, setLockRedirection } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
@@ -65,7 +65,12 @@ export const ShowCardModal = ({
     <Button
       onClick={() => {
         onBuyClick(card.idx);
-        setIsOpenAnimationRunning(true);
+        if (isPack) {
+          setIsOpenAnimationRunning(true);
+          setLockRedirection(true);
+        } else {
+          close();
+        }
       }}
       sx={{ width: "50%" }}
       variant="secondarySolid"
@@ -79,6 +84,7 @@ export const ShowCardModal = ({
 
   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
+    setLockRedirection(false);
     close();
     navigate("/open-pack");
   };

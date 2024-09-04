@@ -8,8 +8,6 @@ import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsMo
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
-import { RollingNumber } from "../../components/RollingNumber";
-import { TiltCard } from "../../components/TiltCard.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -22,17 +20,16 @@ import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { StoreCardsRow } from "./StoreCardsRow";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
+import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { gameId, setHand } = useGameContext();
+  const { gameId, setHand, onShopSkip } = useGameContext();
   const game = useGame();
   const store = useShop();
   const state = game?.state;
-  const { onShopSkip } = useGameContext();
-
+  const { lockRedirection } = useStore();
   const rerollCost = store?.reroll_cost ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
@@ -44,6 +41,18 @@ export const Store = () => {
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
+
+  useEffect(() => {
+    if (!lockRedirection) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "IN_GAME") {
+        navigate("/demo");
+      } else if (game?.state === "OPEN_BLISTER_PACK") {
+        navigate("/open-pack");
+      }
+    }
+  }, [game?.state, lockRedirection]);
 
   const {
     setup: {
@@ -244,7 +253,6 @@ export const Store = () => {
             <Coins />
             <Packs />
             {!isMobile && levelUpTable}
-            
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}

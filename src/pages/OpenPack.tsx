@@ -27,7 +27,8 @@ const WhiteOverlay = styled.div<{ visible: boolean }>`
   background-color: white;
   z-index: 9999;
   opacity: ${(props) => (props.visible ? 1 : 0)};
-  transition: opacity 0.5s ease-out;
+  transition: opacity 1s ease-out;
+  pointer-events: none;
 `;
 
 export const OpenPack = () => {
@@ -56,7 +57,11 @@ export const OpenPack = () => {
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
 
   useEffect(() => {
-    setCards(blisterPackResult ?? []);
+    if (blisterPackResult?.cardsPicked) {
+      setCards([]);
+    } else {
+      setCards(blisterPackResult?.cards ?? []);
+    }
   }, [blisterPackResult]);
 
   const allSelected = cardsToKeep.length === cards.length;
@@ -90,7 +95,7 @@ export const OpenPack = () => {
 
   return (
     <Background type="game" dark rewardsDecoration>
-      {overlayVisible && <WhiteOverlay visible={overlayVisible} />}
+      <WhiteOverlay visible={overlayVisible} />
       {cards.length > 0 ? (
         <Flex flexDirection="column" gap={4}>
           <Flex
@@ -113,7 +118,11 @@ export const OpenPack = () => {
           <CardsContainer>
             {cards.map((card, index) => {
               return (
-                <Flex key={card.card_id} flexDirection="column" gap={4}>
+                <Flex
+                  key={`${card.card_id ?? ""}-${index}`}
+                  flexDirection="column"
+                  gap={4}
+                >
                   <Box
                     key={getCardUniqueId(card)}
                     p={1.5}

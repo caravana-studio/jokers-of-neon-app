@@ -100,7 +100,7 @@ const OpenAnimation = ({
         setExplosion(false);
 
         if (onAnimationEnd) onAnimationEnd();
-      }, 1500); // Reduced to 1500ms from 2200ms
+      }, 1300); // Reduced to 1500ms from 2200ms
 
       return () => {
         clearTimeout(glowTimeout);
