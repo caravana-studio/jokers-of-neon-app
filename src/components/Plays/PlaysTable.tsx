@@ -16,6 +16,7 @@ import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
+import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
 
 interface PlaysTableProps {
@@ -36,13 +37,12 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  const plays =
-    inStore && isMobile
-      ? apiPlays?.filter(
-          (p) =>
-            !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
-        )
-      : apiPlays;
+  const plays = inStore
+    ? apiPlays?.filter(
+        (p) =>
+          !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
+      )
+    : apiPlays;
 
   return (
     <>
@@ -171,6 +171,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                     isDisabled={notEnoughCash || locked}
                     size="sm"
                     px={isMobile ? 2 : 4}
+                    boxShadow={`0px 0px 10px 2px ${BLUE}`}
+                    fontSize={10}
                   >
                     level up
                   </Button>
