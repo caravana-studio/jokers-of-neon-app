@@ -5,7 +5,7 @@ import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
 import { Card } from "../types/Card";
 import { CardData } from "../types/CardData";
 
-export const getCardData = (card: Card, isPack: boolean = true): CardData => {
+export const getCardData = (card: Card, isPack: boolean = false): CardData => {
   const cardId = Number(card.card_id);
   if (isPack && cardId in PACKS_DATA) {
     return PACKS_DATA[cardId];
