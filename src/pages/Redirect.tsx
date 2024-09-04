@@ -6,12 +6,16 @@ import { useGame } from "../dojo/queries/useGame";
 
 export const Redirect = () => {
   const game = useGame();
+  console.log("game", game);
   const state = game?.state;
+  console.log("state", state);
   const navigate = useNavigate();
 
   const { page } = useParams();
+  console.log("page", page);
 
   useEffect(() => {
+    console.log("useEffect", state);
     if (state === "FINISHED") {
       navigate("/gameover");
     } else if (state === "IN_GAME" && page === "demo") {
