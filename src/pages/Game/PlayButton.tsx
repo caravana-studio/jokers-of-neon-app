@@ -34,7 +34,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
             <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
               play
             </Text>
-            <Heading mt={1} fontSize={9} color="black">
+            <Heading mt={1} fontSize={9}>
               {handsLeft} left
             </Heading>
           </Box>
