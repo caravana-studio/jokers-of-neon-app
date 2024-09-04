@@ -116,10 +116,9 @@ export const TiltCard = ({ card, onClick, cursor, scale = 1 }: ICardProps) => {
                   gap: 1.5,
                 }}
               >
-                <ClockIcon color="white" width={14} height={14}/>
-                {/* <TimeIcon boxSize={3} color={"white"} /> */}
+                <ClockIcon color="white" width={12} height={12}/>
                 {card.remaining && (
-                  <Text color="white" size="m">
+                  <Text color="white" fontSize="xs">
                     {card.remaining}
                   </Text>
                 )}
