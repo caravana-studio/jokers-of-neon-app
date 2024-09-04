@@ -1,68 +1,68 @@
 import { CardDataMap } from "../types/CardData";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {
-  1: {
+  300: {
     name: "Multiplied Hearts",
     description: "Adds +5 multi for every played Heart suited card",
   },
-  2: {
+  301: {
     name: "Multiplied Clubs",
     description: "Adds +5 multi for every played Clubs suited card",
   },
-  3: {
+  302: {
     name: "Multiplied Diamonds",
     description: "Adds +5 multi for every played Diamonds suited card",
   },
-  4: {
+  303: {
     name: "Multiplied Spades",
     description: "Adds +5 multi for every played Spades suited card",
   },
-  5: {
+  304: {
     name: "Pair Booster",
     description: "Level up PAIR hand by 4 levels",
   },
-  6: {
+  305: {
     name: "Two Pair Booster",
     description: "Level up TWO PAIR hand by 4 levels",
   },
-  7: {
+  306: {
     name: "Straight Booster",
     description: "Level up STRAIGHT hand by 4 levels",
   },
-  8: {
+  307: {
     name: "Flush Booster",
     description: "Level up FLUSH hand by 4 levels",
   },
-  9: {
+  308: {
     name: "Easy Straight",
     description: "Straight hand can be done with 4 cards",
   },
-  10: {
+  309: {
     name: "Easy Flush",
     description: "Flush hand can be done with 4 cards",
   },
-  11: {
+  310: {
     name: "Joker Booster",
     description: "All played Jokers score double points and double multi",
   },
-  12: {
+  311: {
     name: "Modifier Booster",
     description:
       "All played MODIFIER cards score double points and double multi",
   },
-  13: {
+  312: {
     name: "Figures Booster",
     description: "All played FIGURES cards score +100 extra points",
   },
-  14: {
+  313: {
     name: "Multiplied Aces",
     description: "Multiplies x3 multi for every played Ace card",
   },
-  15: {
+  314: {
     name: "Love is in the air",
     description: "All played cards are considered Heart suited",
   },
-  16: {
+  315: {
     name: "The hand thief",
     description: "Adds +1 hands and +1 discards to the round",
   },
