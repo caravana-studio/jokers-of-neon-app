@@ -49,9 +49,7 @@ export const ShowCardModal = ({
 }: IShowCardModalProps) => {
   const game = useGame();
   const cash = game?.cash ?? 0;
-  console.log("card isPack", card, isPack);
   const { name, description } = getCardData(card, isPack);
-  console.log(name, description);
   const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
@@ -71,13 +69,13 @@ export const ShowCardModal = ({
       sx={{ width: "50%" }}
       variant="secondarySolid"
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
-    >
+      >
       BUY
     </Button>
   );
-
+  
   const navigate = useNavigate();
-
+  
   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
     close();

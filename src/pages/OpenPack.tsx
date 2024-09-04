@@ -3,6 +3,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
+import { ConfirmationModal } from "../components/ConfirmationModal";
 import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
@@ -14,9 +15,31 @@ import { useStore } from "../providers/StoreProvider";
 import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
-import { ConfirmationModal } from "../components/ConfirmationModal";
+
+import styled from "styled-components";
+
+const WhiteOverlay = styled.div<{ visible: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 9999;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.5s ease-out;
+`;
 
 export const OpenPack = () => {
+  const [overlayVisible, setOverlayVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOverlayVisible(false);
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
   const navigate = useNavigate();
 
   const game = useGame();
@@ -67,6 +90,7 @@ export const OpenPack = () => {
 
   return (
     <Background type="game" dark rewardsDecoration>
+      {overlayVisible && <WhiteOverlay visible={overlayVisible} />}
       {cards.length > 0 ? (
         <Flex flexDirection="column" gap={4}>
           <Flex

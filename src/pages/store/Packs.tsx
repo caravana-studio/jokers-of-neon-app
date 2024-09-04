@@ -51,11 +51,7 @@ export const Packs = () => {
       {selectedPack && (
         <ShowCardModal
           onBuyClick={() => {
-            buyPack(selectedPack).then((response) => {
-              if (response) {
-                navigate("/open-pack");
-              }
-            });
+            buyPack(selectedPack)
           }}
           isPack
           card={{
