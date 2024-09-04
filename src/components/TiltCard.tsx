@@ -1,4 +1,3 @@
-import { TimeIcon } from "@chakra-ui/icons";
 import {
   Box,
   Heading,
@@ -15,7 +14,6 @@ import {
   MODIFIERS_OFFSET,
   TILT_OPTIONS,
 } from "../constants/visualProps";
-import { PASTEL_PINK } from "../theme/colors.tsx";
 import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
