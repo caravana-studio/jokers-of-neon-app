@@ -39,7 +39,7 @@ export const TiltCard = ({
   cursor,
   scale = 1,
   isPack = false,
-  isHolographic = false
+  isHolographic = false,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -59,29 +59,36 @@ export const TiltCard = ({
         }}
       >
         <Tilt options={TILT_OPTIONS}>
-             
-            {isHolographic && (
-              <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown>
-                <Box 
-                  boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"} 
-                  sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClick?.();
-                  }}
-                >
-                  <HoloEffect 
-                    url={`Cards/${img}`} 
-                    width={`${cardWith}px`}
-                    height={`${cardHeight}px`}
-                    borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                  />
-                </Box> 
-              </Tooltip>        
-            )}
+          {isHolographic && (
+            <Tooltip
+              hasArrow
+              label={getTooltip(card, isPack)}
+              closeOnPointerDown
+            >
+              <Box
+                boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
+                sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClick?.();
+                }}
+              >
+                <HoloEffect
+                  url={`Cards/${img}`}
+                  width={`${cardWith}px`}
+                  height={`${cardHeight}px`}
+                  borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+                />
+              </Box>
+            </Tooltip>
+          )}
 
-            {!isHolographic && (
-            <Tooltip hasArrow label={getTooltip(card)} closeOnPointerDown> 
+          {!isHolographic && (
+            <Tooltip
+              hasArrow
+              label={getTooltip(card, isPack)}
+              closeOnPointerDown
+            >
               <Image
                 borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
@@ -96,8 +103,8 @@ export const TiltCard = ({
                 }}
               />
             </Tooltip>
-            )}
-            
+          )}
+
           {card.price && (
             <Box
               sx={{

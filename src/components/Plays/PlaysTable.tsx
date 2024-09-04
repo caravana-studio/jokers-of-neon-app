@@ -31,6 +31,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
 
   const store = useStore();
+  const { isPurchased } = store;
   const game = useGame();
   const cash = game?.cash ?? 0;
   const levelUpPlay = store?.levelUpPlay;
@@ -165,7 +166,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 const buyButton = (
                   <Button
                     onClick={() => {
-                      levelUpPlay?.(storePlay?.idx ?? 0, storePlay?.cost ?? 0);
+                      storePlay && levelUpPlay?.(storePlay);
                     }}
                     isDisabled={notEnoughCash || locked}
                     size="sm"
@@ -198,7 +199,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         </Td>
                         <Td>
                           {!!storePlay ? (
-                            storePlay?.purchased ? (
+                            isPurchased(storePlay) ? (
                               <Heading
                                 color="blue"
                                 size={isMobile ? "base" : "xs"}

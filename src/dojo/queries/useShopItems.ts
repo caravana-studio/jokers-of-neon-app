@@ -1,9 +1,10 @@
-import { useComponentValue } from "@dojoengine/react";
-import { Entity } from "@dojoengine/recs";
+import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
-import { Pack } from "../../types/Pack";
+import { PokerHandItem } from "../../types/PokerHandItem";
+import { BlisterPackItem } from "../generated/typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -13,69 +14,40 @@ export interface ShopItems {
   modifierCards: Card[];
   commonCards: Card[];
   pokerHandItems: PokerHandItem[];
-  packs: Pack[];
+  packs: BlisterPackItem[];
 }
-
-interface PokerHandItem {
-  idx: number;
-  poker_hand: string;
-  level: number;
-  cost: number;
-  purchased: boolean;
-}
-
-const packs: Pack[] = [
-  {
-    id: "1",
-    idx: 1,
-    price: 200,
-    img: "packs/basic.png",
-    purchased: false,
-    card_id: 1000,
-    isPack: true,
-  },
-  {
-    id: "2",
-    idx: 2,
-    name: "Advanced",
-    price: 400,
-    img: "packs/advanced.png",
-    purchased: false,
-    card_id: 1001,
-    isPack: true,
-  },
-  {
-    id: "3",
-    idx: 3,
-    name: "Jokers",
-    price: 1500,
-    img: "packs/jokers.png",
-    purchased: false,
-    card_id: 1002,
-    isPack: true,
-  },
-];
 
 const sortByCardId = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
+};
+const sortByPackId = (a: BlisterPackItem, b: BlisterPackItem) => {
+  return (Number(a.blister_pack_id) ?? 0) - (Number(b.blister_pack_id) ?? 0);
 };
 const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
 };
 
-const useCard = (gameId: number, index: number, type: NumericCardTypes) => {
-  const {
-    setup: {
-      clientComponents: { CardItem },
-    },
-  } = useDojo();
+const getBlisterPack = (gameId: number, index: number, entity: Component) => {
+  const entityId = getEntityIdFromKeys([
+    BigInt(gameId),
+    BigInt(index),
+  ]) as Entity;
+  const item = getComponentValue(entity, entityId) as any;
+  return item;
+};
 
+const getCard = (
+  gameId: number,
+  index: number,
+  type: NumericCardTypes,
+  entity: Component
+) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),
     BigInt(type),
   ]) as Entity;
-  const card = useComponentValue(CardItem, entityId);
+  const card = getComponentValue(entity, entityId);
   return {
     ...card,
     price: card?.cost,
@@ -88,18 +60,12 @@ const useCard = (gameId: number, index: number, type: NumericCardTypes) => {
   };
 };
 
-const usePokerHandItem = (gameId: number, index: number) => {
-  const {
-    setup: {
-      clientComponents: { PokerHandItem },
-    },
-  } = useDojo();
-
+const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),
   ]) as Entity;
-  const item = useComponentValue(PokerHandItem, entityId) as any;
+  const item = getComponentValue(entity, entityId) as any;
   return {
     game_id: item.game_id ?? 0,
     idx: item.idx ?? 0,
@@ -111,52 +77,73 @@ const usePokerHandItem = (gameId: number, index: number) => {
 };
 
 export const useShopItems = () => {
+  const {
+    setup: {
+      clientComponents: { CardItem, PokerHandItem, BlisterPackItem },
+    },
+  } = useDojo();
+
   const game = useGame();
   const shop = useShop();
   const gameId = game?.id ?? 0;
 
-  const commonCardsIds = Array.from(
-    { length: shop?.len_item_common_cards ?? 0 },
-    (_, index) => index
-  );
+  const commonCards: Card[] = useMemo(() => {
+    const commonCardsIds = Array.from(
+      { length: shop?.len_item_common_cards ?? 0 },
+      (_, index) => index
+    );
+    return commonCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.COMMON, CardItem)
+    );
+  }, [shop?.len_item_common_cards, game?.level, shop?.reroll_executed]);
 
-  const modifierCardsIds = Array.from(
-    { length: shop?.len_item_modifier_cards ?? 0 },
-    (_, index) => index
-  );
+  const modifierCards: Card[] = useMemo(() => {
+    const modifierCardsIds = Array.from(
+      { length: shop?.len_item_modifier_cards ?? 0 },
+      (_, index) => index
+    );
+    return modifierCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.MODIFIER, CardItem)
+    );
+  }, [shop?.len_item_modifier_cards, game?.level, shop?.reroll_executed]);
 
-  const specialCardsIds = Array.from(
-    { length: shop?.len_item_special_cards ?? 0 },
-    (_, index) => index
-  );
+  const specialCards: Card[] = useMemo(() => {
+    const specialCardsIds = Array.from(
+      { length: shop?.len_item_special_cards ?? 0 },
+      (_, index) => index
+    );
+    return specialCardsIds.map((index) =>
+      getCard(gameId, index, NumericCardTypes.SPECIAL, CardItem)
+    );
+  }, [shop?.len_item_special_cards, game?.level, shop?.reroll_executed]);
 
-  const commonCards: Card[] = commonCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.COMMON)
-  );
+  const pokerHandItems: PokerHandItem[] = useMemo(() => {
+    const pokerHandIds = Array.from(
+      { length: shop?.len_item_poker_hands ?? 0 },
+      (_, index) => index
+    );
+    return pokerHandIds.map((index) =>
+      getPokerHandItem(gameId, index, PokerHandItem)
+    );
+  }, [shop?.len_item_poker_hands, game?.level, shop?.reroll_executed]);
 
-  const modifierCards: Card[] = modifierCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.MODIFIER)
-  );
+  const blisterPackItems: BlisterPackItem[] = useMemo(() => {
+    const blisterPackIds = Array.from(
+      { length: shop?.len_item_blister_pack ?? 0 },
+      (_, index) => index
+    );
+    return blisterPackIds.map((index) =>
+      getBlisterPack(gameId, index, BlisterPackItem)
+    );
+  }, [shop?.len_item_blister_pack, game?.level, shop?.reroll_executed]);
 
-  const specialCards: Card[] = specialCardsIds.map((index) =>
-    useCard(gameId, index, NumericCardTypes.SPECIAL)
-  );
-
-  const pokerHandIds = Array.from(
-    { length: shop?.len_item_poker_hands ?? 0 },
-    (_, index) => index
-  );
-
-  const pokerHandItems: PokerHandItem[] = pokerHandIds.map((index) =>
-    usePokerHandItem(gameId, index)
-  );
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
     modifierCards: modifierCards.sort(sortByCardId),
     commonCards: commonCards.sort(sortByCardId),
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
-    packs,
+    packs: blisterPackItems.sort(sortByPackId),
   };
 
   return shopItems;
