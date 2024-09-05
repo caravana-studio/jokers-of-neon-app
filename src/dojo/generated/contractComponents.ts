@@ -6,10 +6,49 @@ export type ContractComponents = Awaited<ReturnType<typeof defineContractCompone
 
 export function defineContractComponents(world: World) {
   return {
+    BlisterPack: (() => {
+      return defineComponent(
+        world,
+        { id: RecsType.Number, cost: RecsType.Number, name: RecsType.BigInt, probability: RecsType.Number, size: RecsType.Number, cards: RecsType.StringArray, probs: RecsType.StringArray },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPack",
+            types: ["u32","u32","felt252","u32","u8"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    BlisterPackItem: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, idx: RecsType.Number, blister_pack_id: RecsType.Number, cost: RecsType.Number, purchased: RecsType.Boolean },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPackItem",
+            types: ["u32","u32","u32","u32","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    BlisterPackResult: (() => {
+      return defineComponent(
+        world,
+        { game_id: RecsType.Number, cards_picked: RecsType.Boolean, cards: RecsType.StringArray },
+        {
+          metadata: {
+            name: "jokers_of_neon-BlisterPackResult",
+            types: ["u32","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     Card: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, suit: RecsType.Number, value: RecsType.Number, points: RecsType.Number, multi_add: RecsType.Number },
+        { id: RecsType.Number, suit: RecsType.String, value: RecsType.String, points: RecsType.Number, multi_add: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-Card",
@@ -74,7 +113,7 @@ export function defineContractComponents(world: World) {
     CurrentHandCard: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, type_player_card: RecsType.Number, player_card_id: RecsType.Number, card_id: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, type_player_card: RecsType.String, player_card_id: RecsType.Number, card_id: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-CurrentHandCard",
@@ -100,7 +139,7 @@ export function defineContractComponents(world: World) {
     DeckCard: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, idx: RecsType.Number, type_player_card: RecsType.Number, player_card_id: RecsType.Number, card_id: RecsType.Number },
+        { game_id: RecsType.Number, idx: RecsType.Number, type_player_card: RecsType.String, player_card_id: RecsType.Number, card_id: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-DeckCard",
@@ -126,7 +165,7 @@ export function defineContractComponents(world: World) {
     Effect: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, multi_add: RecsType.Number, multi_multi: RecsType.Number, points: RecsType.Number, poker_hand: RecsType.Number, suit: RecsType.Number },
+        { id: RecsType.Number, multi_add: RecsType.Number, multi_multi: RecsType.Number, points: RecsType.Number, poker_hand: RecsType.String, suit: RecsType.String },
         {
           metadata: {
             name: "jokers_of_neon-Effect",
@@ -139,7 +178,7 @@ export function defineContractComponents(world: World) {
     EffectCard: (() => {
       return defineComponent(
         world,
-        { id: RecsType.Number, effect_id: RecsType.Number, price: RecsType.Number, probability: RecsType.Number, type_effect_card: RecsType.Number },
+        { id: RecsType.Number, effect_id: RecsType.Number, price: RecsType.Number, probability: RecsType.Number, type_effect_card: RecsType.String },
         {
           metadata: {
             name: "jokers_of_neon-EffectCard",
@@ -165,7 +204,7 @@ export function defineContractComponents(world: World) {
     LevelPokerHand: (() => {
       return defineComponent(
         world,
-        { poker_hand: RecsType.Number, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
+        { poker_hand: RecsType.String, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-LevelPokerHand",
@@ -178,7 +217,7 @@ export function defineContractComponents(world: World) {
     ModifierCardSuitEvent: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, game_id: RecsType.Number, modifier_card_idx: RecsType.Number, current_hand_card_idx: RecsType.Number, suit: RecsType.Number },
+        { player: RecsType.BigInt, game_id: RecsType.Number, modifier_card_idx: RecsType.Number, current_hand_card_idx: RecsType.Number, suit: RecsType.String },
         {
           metadata: {
             name: "jokers_of_neon-ModifierCardSuitEvent",
@@ -243,7 +282,7 @@ export function defineContractComponents(world: World) {
     PlayerLevelPokerHand: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, poker_hand: RecsType.Number, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
+        { game_id: RecsType.Number, poker_hand: RecsType.String, level: RecsType.Number, multi: RecsType.Number, points: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-PlayerLevelPokerHand",
@@ -308,11 +347,11 @@ export function defineContractComponents(world: World) {
     Shop: (() => {
       return defineComponent(
         world,
-        { game_id: RecsType.Number, reroll_cost: RecsType.Number, reroll_executed: RecsType.Boolean, len_item_common_cards: RecsType.Number, len_item_modifier_cards: RecsType.Number, len_item_special_cards: RecsType.Number, len_item_poker_hands: RecsType.Number },
+        { game_id: RecsType.Number, reroll_cost: RecsType.Number, reroll_executed: RecsType.Boolean, len_item_common_cards: RecsType.Number, len_item_modifier_cards: RecsType.Number, len_item_special_cards: RecsType.Number, len_item_poker_hands: RecsType.Number, len_item_blister_pack: RecsType.Number },
         {
           metadata: {
             name: "jokers_of_neon-Shop",
-            types: ["u32","u32","bool","u32","u32","u32","u32"],
+            types: ["u32","u32","bool","u32","u32","u32","u32","u32"],
             customTypes: [],
           },
         }
@@ -347,7 +386,7 @@ export function defineContractComponents(world: World) {
     SpecialModifierSuitEvent: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, game_id: RecsType.Number, current_special_card_idx: RecsType.Number, current_hand_card_idx: RecsType.Number, suit: RecsType.Number },
+        { player: RecsType.BigInt, game_id: RecsType.Number, current_special_card_idx: RecsType.Number, current_hand_card_idx: RecsType.Number, suit: RecsType.String },
         {
           metadata: {
             name: "jokers_of_neon-SpecialModifierSuitEvent",

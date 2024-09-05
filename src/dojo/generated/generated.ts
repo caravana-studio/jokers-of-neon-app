@@ -202,6 +202,57 @@ export async function setupWorld(provider: DojoProvider) {
         throw error;
       }
     };
+    const buyPack = async ({
+      account,
+      gameId,
+      pack_id,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      pack_id: number;
+    }) => {
+      console.log("calldata", [gameId, pack_id]);
+      try {
+        return await provider.execute(
+          account,
+          {
+            contractName: shop_contract,
+            entrypoint: "buy_blister_pack_item",
+            calldata: [gameId, pack_id],
+          },
+          DEFAULT_NAMESPACE
+        );
+      } catch (error) {
+        console.error("Error executing buy_pack_item:", error);
+        throw error;
+      }
+    };
+
+    const selectCardsFromPack = async ({
+      account,
+      gameId,
+      cardIndexes,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+      cardIndexes: number[];
+    }) => {
+      try {
+        console.log("calldata", [gameId, cardIndexes.length, ...cardIndexes]);
+        return await provider.execute(
+          account,
+          {
+            contractName: shop_contract,
+            entrypoint: "select_cards_from_blister",
+            calldata: [gameId, cardIndexes.length, ...cardIndexes],
+          },
+          DEFAULT_NAMESPACE
+        );
+      } catch (error) {
+        console.error("Error executing select_cards_from_pack:", error);
+        throw error;
+      }
+    };
 
     const levelUpPokerHand = async ({
       account,
@@ -289,6 +340,8 @@ export async function setupWorld(provider: DojoProvider) {
       buyCard,
       levelUpPokerHand,
       storeReroll,
+      buyPack,
+      selectCardsFromPack,
     };
   }
   return {
