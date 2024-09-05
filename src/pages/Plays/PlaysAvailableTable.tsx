@@ -1,37 +1,27 @@
 import {
     Box,
-    Button,
     Heading,
     Table,
     TableContainer,
     Tbody,
     Td,
     Thead,
-    Tooltip,
     Tr,
   } from "@chakra-ui/react";
   import { isMobile } from "react-device-detect";
-  import { useGame } from "../../dojo/queries/useGame";
   import { useShopItems } from "../../dojo/queries/useShopItems";
   import { useGameContext } from "../../providers/GameProvider";
   import { useStore } from "../../providers/StoreProvider";
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
-  import { BLUE, BLUE_LIGHT } from "../../theme/colors";
   import theme from "../../theme/theme";
   
-  
-  const { blue, white, purple } = theme.colors;
+  const { blueLight, blue } = theme.colors;
   
   export const PlaysAvailableTable = () => {
     const { gameId } = useGameContext();
-    const { locked } = useStore();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
   
     const store = useStore();
-    const { isPurchased } = store;
-    const game = useGame();
-    const cash = game?.cash ?? 0;
-    const levelUpPlay = store?.levelUpPlay;
     const { pokerHandItems } = useShopItems();
   
     const plays = apiPlays;
@@ -40,9 +30,9 @@ import {
       <>
         {plays ? (
           <TableContainer 
-            border={`2px solid ${BLUE_LIGHT}`}
+            border={`2px solid ${blueLight}`}
             borderRadius={"25px"}
-            boxShadow={`0px 0px 20px 15px ${BLUE}`}
+            boxShadow={`0px 0px 20px 15px ${blue}`}
             filter="blur(0.5px)"
             backgroundColor="rgba(0, 0, 0, 1)"
           >
@@ -98,14 +88,8 @@ import {
                 {plays.map((play, index) => {
                   const storePlay = pokerHandItems?.find(
                     (item) => item.poker_hand === play.pokerHand.id
-                  );
-                  const purchased = storePlay?.purchased || false;
-  
-                  const textColor = storePlay
-                    ? purchased
-                      ? blue
-                      : white
-                    : purple;
+                  );  
+                  const textColor = blueLight;
   
                   const opacitySx = {
                     opacity: 1,
@@ -117,7 +101,7 @@ import {
                     </Td>
                   );
                   const nameTd = (
-                    <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
+                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor}>
                       {play.pokerHand.name}
                     </Td>
                   );
@@ -149,24 +133,7 @@ import {
                       </Box>
                     </Td>
                   );
-  
-                  const notEnoughCash = !!storePlay && cash < storePlay.cost;
-  
-                  const buyButton = (
-                    <Button
-                      onClick={() => {
-                        storePlay && levelUpPlay?.(storePlay);
-                      }}
-                      isDisabled={notEnoughCash || locked}
-                      size="sm"
-                      px={isMobile ? 2 : 4}
-                      boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                      fontSize={10}
-                    >
-                      level up
-                    </Button>
-                  );
-  
+    
                   return (
                     <Tr key={index} height={"30px"}>
                       {(
