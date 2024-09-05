@@ -30,17 +30,17 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={2} size="m" variant="italic" color="white" textAlign={"center"} mb={4}>
+          <Heading mt={2} size="s" variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
           <PlaysAvailableTable />
           <Button
             className="game-tutorial-step-4"
-            mt={14}
-            mb={6}
+            mt={10}
+            mb={2}
             w="100%"
-            size="md"
+            size="sm"
             variant="solid"
             onClick={ () => navigate("/demo")}
           >Go back to game</Button>
