@@ -3,11 +3,11 @@ import { Flex, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
-import { PlaysModal } from "./Plays/PlaysModal";
+import { useNavigate } from "react-router-dom";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay } = useGameContext();
-  const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
@@ -17,12 +17,11 @@ export const CurrentPlay = () => {
           sx={{ fontSize: "20px", cursor: 'pointer' }}
           onClick={(e) => {
             e.stopPropagation();
-            onOpen();
+            navigate("/plays");
           }}
           className="game-tutorial-step-5"
         />
       </Tooltip>
-      <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"

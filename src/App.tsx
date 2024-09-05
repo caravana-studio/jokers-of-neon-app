@@ -15,6 +15,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -79,6 +80,16 @@ function App() {
               }
             />
             <Route path="/play" element={<Navigate to="/" />} />
+            <Route 
+              path="/plays"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                  <StoreProvider>
+                    <PlaysLayout/>
+                  </StoreProvider>
+                </AudioPlayerProvider>
+              }
+            />
           </Routes>
         </GameProvider>
       </CardAnimationsProvider>
