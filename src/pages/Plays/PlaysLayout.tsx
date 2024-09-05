@@ -6,7 +6,7 @@ import {
 import { PlaysTable } from "./PlaysTable";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
-import { Image } from "@chakra-ui/react";
+import { Image, Text } from "@chakra-ui/react";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
@@ -37,6 +37,24 @@ export const PlaysLayout = () => {
             bottom={0}
             sx={{ pointerEvents: "none" }}
           />
+        <Box
+            sx={{
+              position: "fixed",
+              bottom: 16,
+              left: 12,
+            }}
+          >
+            <Text size="m">BUIDL YOUR DECK</Text>
+          </Box>
+          <Box
+            sx={{
+              position: "fixed",
+              bottom: 16,
+              right: 12,
+            }}
+          >
+            <Text size="m">RULE THE GAME</Text>
+          </Box>
     </Background>
   );
 };
