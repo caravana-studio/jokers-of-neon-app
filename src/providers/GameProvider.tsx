@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { shortString } from "starknet";
-import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
+import { SORT_BY_SUIT } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useDojo } from "../dojo/useDojo";
 import { gameExists } from "../dojo/utils/getGame";
@@ -117,7 +117,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       client,
     },
     account: { account },
-    syncCall
+    syncCall,
   } = useDojo();
 
   const game = useGame();
@@ -171,12 +171,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const executeCreateGame = () => {
+  const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
     if (username) {
       console.log("Creating game...");
-      createGame(account, username).then(async (response) => {
+      const response = await client.actions.createGame({
+        account,
+        username: shortString.encodeShortString(username),
+      });
+      console.log("response", response);
+      /* createGame(account, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
@@ -193,7 +198,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         } else {
           setError(true);
         }
-      });
+      }); */
     }
   };
 
@@ -462,26 +467,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(
-      account,
-      gameId,
-      preSelectedCards,
-      preSelectedModifiers
-    ).then((response) => {
-      if (response.success) {
-        if (response.gameOver) {
-          setTimeout(() => {
-            navigate("/gameover");
-          }, 1000);
-        } else {
-          setDiscardsLeft((prev) => prev - 1);
-          replaceCards(response.cards);
+    discard(account, gameId, preSelectedCards, preSelectedModifiers).then(
+      (response) => {
+        if (response.success) {
+          if (response.gameOver) {
+            setTimeout(() => {
+              navigate("/gameover");
+            }, 1000);
+          } else {
+            setDiscardsLeft((prev) => prev - 1);
+            replaceCards(response.cards);
+          }
         }
+        setPreSelectionLocked(false);
+        clearPreSelection();
+        setDiscardAnimation(false);
       }
-      setPreSelectionLocked(false);
-      clearPreSelection();
-      setDiscardAnimation(false);
-    });
+    );
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {

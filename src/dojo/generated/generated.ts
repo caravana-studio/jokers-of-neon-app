@@ -27,6 +27,9 @@ const DEFAULT_NAMESPACE = "jokers_of_neon";
 export async function setupWorld(provider: DojoProvider) {
   function actions() {
     const createGame = async ({ account, username }: CreateGameProps) => {
+      console.log("[shortString.encodeShortString(username)]", [
+        shortString.encodeShortString(username),
+      ]);
       try {
         return await provider.execute(
           account,
