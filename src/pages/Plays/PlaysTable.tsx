@@ -47,7 +47,13 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   return (
     <>
       {plays ? (
-        <TableContainer>
+        <TableContainer 
+          border="2px solid #20C6ED"
+          borderRadius={"25px"}
+          boxShadow={`0px 0px 20px 15px ${BLUE}`}
+          filter="blur(0.5px)"
+          backgroundColor="rgba(0, 0, 0, 1)"
+        >
           <Table
             sx={{
               borderCollapse: "separate",
