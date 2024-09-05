@@ -1,7 +1,8 @@
 import {
   Box,
   Flex,
-  Heading
+  Heading,
+  Img
 } from "@chakra-ui/react";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +31,7 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={2} size="s" variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading mt={2} size="md" variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
@@ -54,6 +55,24 @@ export const PlaysLayout = () => {
             bottom={0}
             sx={{ pointerEvents: "none" }}
           />
+        <Box
+            sx={{
+              position: "fixed",
+              top: 6,
+              left: 12,
+            }}
+          >
+            <Img src="logos/logo-variant.png" width={{base: '120px', md: '330px'}} alt="logo" />
+          </Box>
+          <Box
+            sx={{
+              position: "fixed",
+              top: 6,
+              right: 12,
+            }}
+          >
+            <Img src="logos/joker-logo.png" width={{base: '80pxpx', md: '120px'}} alt="logo" />
+          </Box>  
         <Box
             sx={{
               position: "fixed",
