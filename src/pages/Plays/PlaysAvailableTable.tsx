@@ -48,29 +48,15 @@ import {
               <Thead
                 sx={{
                   position: "relative",
-                  _after: {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "1px",
-                    background:
-                      "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                    boxShadow:
-                      "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-                  },
                   _before: {
                     content: '""',
                     position: "absolute",
                     bottom: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "1px",
-                    background:
-                      "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                    boxShadow:
-                      "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
+                    left: "5%",
+                    width: "90%",
+                    height: "2px",               
+                    backgroundColor: "white",
+                    boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
                   },
                 }}
               >
