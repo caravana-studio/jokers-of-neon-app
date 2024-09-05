@@ -3,7 +3,7 @@ import {
   Flex,
   Heading
 } from "@chakra-ui/react";
-import { PlaysTable } from "./PlaysTable";
+import { PlaysAvailableTable } from "./PlaysAvailableTable";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { Image, Text, Button } from "@chakra-ui/react";
@@ -34,7 +34,7 @@ export const PlaysLayout = () => {
             AVAILABLE PLAYS
           </Heading>
 
-          <PlaysTable />
+          <PlaysAvailableTable />
           <Button
             className="game-tutorial-step-4"
             mt={14}
