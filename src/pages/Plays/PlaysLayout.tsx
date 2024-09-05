@@ -6,7 +6,7 @@ import {
 import { PlaysTable } from "./PlaysTable";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
-import { Image, Text } from "@chakra-ui/react";
+import { Image, Text, Button } from "@chakra-ui/react";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
@@ -21,12 +21,20 @@ export const PlaysLayout = () => {
             position="fixed"
             top={0}
           />
-      <Flex py={4} px={8} flexDirection={"column"} justifyContent={"center"} width={"50%"} margin={"0 auto"} height={"100vh"}>
-        <Heading size="l" color="aqua" textAlign={"center"}>
+      <Flex py={2} px={8} flexDirection={"column"} justifyContent={"center"} width={"50%"} margin={"0 auto"} height={"100vh"}>
+        <Heading fontSize='2xl' color="white" textAlign={"center"} mb={4}>
           AVAILABLE PLAYS
         </Heading>
 
         <PlaysTable />
+        <Button
+          className="game-tutorial-step-4"
+          mt={14}
+          w="100%"
+          size="md"
+          variant="solid"
+          onClick={ () => navigate("/demo")}
+        >Go back to game</Button>
       </Flex>
       <Image
             src="/borders/bottom.png"
