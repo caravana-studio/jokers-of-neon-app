@@ -21,5 +21,6 @@ export function createClientComponents({
         EffectCard: overridableComponent(contractComponents.EffectCard),
         PlayerEffectCards: overridableComponent(contractComponents.PlayerEffectCards),
         CardItem: overridableComponent(contractComponents.CardItem),
+        PlayerLevelPokerHand: overridableComponent(contractComponents.PlayerLevelPokerHand),
     };
 }
