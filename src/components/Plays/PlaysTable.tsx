@@ -15,10 +15,9 @@ import { useGame } from "../../dojo/queries/useGame";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
-import { getPlays } from "../../dojo/utils/getPlays";
+import { getPokerPlays } from "../../dojo/utils/getPokerPlays";
 import { useEffect, useState } from "react";
 
 interface PlaysTableProps {
@@ -30,7 +29,6 @@ const { blue, white, purple } = theme.colors;
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
   const { locked } = useStore();
-  const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
   const [isLoading, setIsLoading] = useState(true);
 
   const store = useStore();
@@ -40,28 +38,21 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  let playsSub = getPlays(gameId);
+  let plays = getPokerPlays(gameId);
 
   useEffect(() => {
-    if (playsSub.plays.length > 0) { 
+    if (plays.plays.length > 0) { 
       setIsLoading(false);
     }
-  }, [playsSub.plays, pokerHandItems]);
+  }, [plays.plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading ? playsSub.plays.filter((play) =>
+  const filteredPlays = !isLoading && inStore ? plays.plays.filter((play) =>
         pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
-      ): playsSub.plays;
-
-  const plays = inStore
-    ? apiPlays?.filter(
-        (p) =>
-          !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
-      )
-    : apiPlays;
+      ): plays.plays;
 
   return (
     <>
-      {plays ? (
+      {filteredPlays ? (
         <TableContainer>
           <Table
             sx={{
@@ -122,12 +113,13 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             </Thead>
             <Tbody>
               { !isLoading && filteredPlays.map((play, index) => {
-                const handString = play.poker_hand.toString();
+                const pokerHandString = play.poker_hand.toString();
                 
                 const storePlay = pokerHandItems?.find(
-                  (item) => item.poker_hand == handString
-                );
-                const purchased = storePlay?.purchased || false;
+                  (item) => item.poker_hand == pokerHandString
+                );                
+                
+                const purchased = storePlay != undefined ? isPurchased(storePlay) : false;
 
                 const textColor = storePlay
                   ? purchased
@@ -146,7 +138,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
                 const nameTd = (
                   <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
-                    {handString}
+                    {pokerHandString}
                   </Td>
                 );
                 const pointsMultiTd = (
