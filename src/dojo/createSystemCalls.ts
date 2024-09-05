@@ -14,9 +14,9 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications.tsx";
 import { ClientComponents } from "./createClientComponents";
-import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
+import { ContractComponents } from "./generated/typescript/models.gen.ts";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 

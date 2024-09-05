@@ -1,8 +1,8 @@
 {
   "world": {
     "kind": "WorldContract",
-    "class_hash": "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a",
-    "original_class_hash": "0x76ced5a15cb43c7be7176cff4779cd57c56638a46ddf2c9da709d22298c5e5a",
+    "class_hash": "0xa349b743d361ce4567361475a89b84a386bb383448c6926954e5fe0b525597",
+    "original_class_hash": "0xa349b743d361ce4567361475a89b84a386bb383448c6926954e5fe0b525597",
     "abi": [
       {
         "type": "impl",
@@ -1229,8 +1229,8 @@
         ]
       }
     ],
-    "address": "0x3861140293abf938125d66e23412ad25be0ee269741e39f9b4fb3d0e208d321",
-    "transaction_hash": "0x67080bead56b1899cc99b1e8beaa1c0e3d2a8e50b0f9b686ecca94153ceb903",
+    "address": "0x578dfb8af4989c7b8dba3b0c4d53f7ee38cb9ff55ae352bb62e68ca535e74eb",
+    "transaction_hash": "0x76ed821d7ba76d660fc550bfada2a9ef69e8902f8fb94a48b7af6c6de2c12f1",
     "block_number": 3,
     "seed": "jokers_of_neon",
     "metadata": {
@@ -1250,9 +1250,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x648f96adcb4be39562b96f45d9e5e1ae2c3cc2e4057f62504839b9bf1541210",
-      "class_hash": "0x6f61904e2220e9c0657483ee5cf6d758058ff0e8fb452412936ada7b0dc359f",
-      "original_class_hash": "0x6f61904e2220e9c0657483ee5cf6d758058ff0e8fb452412936ada7b0dc359f",
+      "address": "0x25a0d3578c5989ff7fab704add712f1fe1dbd5b881b4a25e9e9338c44bfb5ba",
+      "class_hash": "0x3787581e130cd39ff4fd309784b57e80e1886e0c1c1dec58f24ef199ab62c3",
+      "original_class_hash": "0x3787581e130cd39ff4fd309784b57e80e1886e0c1c1dec58f24ef199ab62c3",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1466,13 +1466,14 @@
       ],
       "init_calldata": [],
       "tag": "jokers_of_neon-config_system",
+      "systems": [],
       "manifest_name": "jokers_of_neon-config_system-3bd09601"
     },
     {
       "kind": "DojoContract",
-      "address": "0x2aa2420ee7d1f0024e63081455778008025852560c24940b1ee949c51675133",
-      "class_hash": "0x30e4129f14aef698def2f79655a4034d940331148662ee51a0979ab970e4b65",
-      "original_class_hash": "0x30e4129f14aef698def2f79655a4034d940331148662ee51a0979ab970e4b65",
+      "address": "0x4314c4fe7895b094e6329ace17642f4fd9113ebbf007cb39df162207e5ba95",
+      "class_hash": "0x22648fb3c823ed2c1d8acf537e2c882ddb151c40807752fd7022ee3829da7df",
+      "original_class_hash": "0x22648fb3c823ed2c1d8acf537e2c882ddb151c40807752fd7022ee3829da7df",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1875,13 +1876,19 @@
       ],
       "init_calldata": [],
       "tag": "jokers_of_neon-game_system",
+      "systems": [
+        "play",
+        "discard",
+        "discard_effect_card",
+        "discard_special_card"
+      ],
       "manifest_name": "jokers_of_neon-game_system-7a205bbc"
     },
     {
       "kind": "DojoContract",
-      "address": "0x244f2f5217cdbb1e8277efa257214a2346fc08c7a59638b8fedab6987d2c6a0",
-      "class_hash": "0x28ed0882121b5fa8c2c0fe3cc20ea54bb1c9d35eac163ca7fc603f79af193c7",
-      "original_class_hash": "0x28ed0882121b5fa8c2c0fe3cc20ea54bb1c9d35eac163ca7fc603f79af193c7",
+      "address": "0x606cbc28c4db5268a4ad2f82498d71e4d3e48abbaea2b32727b5245b28fbbc0",
+      "class_hash": "0x39032e772ac235dd3a96a16142d483e2cc5f2a2c54bc46cc706ed6c580f06e",
+      "original_class_hash": "0x39032e772ac235dd3a96a16142d483e2cc5f2a2c54bc46cc706ed6c580f06e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2092,7 +2099,7 @@
             },
             {
               "type": "function",
-              "name": "buy_blister_pack",
+              "name": "buy_blister_pack_item",
               "inputs": [
                 {
                   "name": "game_id",
@@ -2220,6 +2227,14 @@
       ],
       "init_calldata": [],
       "tag": "jokers_of_neon-shop_system",
+      "systems": [
+        "skip_shop",
+        "buy_card_item",
+        "buy_poker_hand_item",
+        "buy_blister_pack_item",
+        "select_cards_from_blister",
+        "reroll"
+      ],
       "manifest_name": "jokers_of_neon-shop_system-70224af0"
     }
   ],
@@ -2263,8 +2278,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x58ce8fe0d981d6b12015bca77f58985969f13d798eed5da93b0897a0bd819a7",
-      "original_class_hash": "0x58ce8fe0d981d6b12015bca77f58985969f13d798eed5da93b0897a0bd819a7",
+      "class_hash": "0x359f516250e978469564909a80e84b56b0481044c3f3f23340534934cca45bf",
+      "original_class_hash": "0x359f516250e978469564909a80e84b56b0481044c3f3f23340534934cca45bf",
       "abi": [
         {
           "type": "impl",
@@ -2713,6 +2728,7 @@
         }
       ],
       "tag": "jokers_of_neon-BlisterPack",
+      "qualified_path": "jokers_of_neon::models::data::blister_pack::blister_pack",
       "manifest_name": "jokers_of_neon-BlisterPack-7af27d42"
     },
     {
@@ -2744,8 +2760,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x614dc1e45764358ec0442cb994c2d49017ad0ae8b3b4a2c832f22f8707171ff",
-      "original_class_hash": "0x614dc1e45764358ec0442cb994c2d49017ad0ae8b3b4a2c832f22f8707171ff",
+      "class_hash": "0x25e3c378d03090fe7b2331e7fd8a93df166ac33842046a8382d412413c0efe7",
+      "original_class_hash": "0x25e3c378d03090fe7b2331e7fd8a93df166ac33842046a8382d412413c0efe7",
       "abi": [
         {
           "type": "impl",
@@ -3180,6 +3196,7 @@
         }
       ],
       "tag": "jokers_of_neon-BlisterPackItem",
+      "qualified_path": "jokers_of_neon::models::status::shop::shop::blister_pack_item",
       "manifest_name": "jokers_of_neon-BlisterPackItem-57733b8c"
     },
     {
@@ -3201,8 +3218,8 @@
           "key": false
         }
       ],
-      "class_hash": "0xc7e34bef8287af2c8521a887f42a9b68913c927be0130c47c06cd2ef38d7bb",
-      "original_class_hash": "0xc7e34bef8287af2c8521a887f42a9b68913c927be0130c47c06cd2ef38d7bb",
+      "class_hash": "0x23d3777b1da18fb7a80a94e5960d6a8cfce27155a0f1d96f579c165524d1e70",
+      "original_class_hash": "0x23d3777b1da18fb7a80a94e5960d6a8cfce27155a0f1d96f579c165524d1e70",
       "abi": [
         {
           "type": "impl",
@@ -3639,6 +3656,7 @@
         }
       ],
       "tag": "jokers_of_neon-BlisterPackResult",
+      "qualified_path": "jokers_of_neon::models::status::shop::shop::blister_pack_result",
       "manifest_name": "jokers_of_neon-BlisterPackResult-2fcefd2c"
     },
     {
@@ -3670,8 +3688,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4d98525a47b4554108d26631e08d62fe540dfd97a96bc0533c22a87b54e4160",
-      "original_class_hash": "0x4d98525a47b4554108d26631e08d62fe540dfd97a96bc0533c22a87b54e4160",
+      "class_hash": "0x61c08ada914aa604d0fe6eed64e61ebeed7f50ff1a106ba1e49b49a5da10465",
+      "original_class_hash": "0x61c08ada914aa604d0fe6eed64e61ebeed7f50ff1a106ba1e49b49a5da10465",
       "abi": [
         {
           "type": "impl",
@@ -4192,6 +4210,7 @@
         }
       ],
       "tag": "jokers_of_neon-Card",
+      "qualified_path": "jokers_of_neon::models::data::card::card",
       "manifest_name": "jokers_of_neon-Card-6009d442"
     },
     {
@@ -4233,8 +4252,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x465cdfac041dba6201f3262788496bd2ff453301744195df18ea011eec73014",
-      "original_class_hash": "0x465cdfac041dba6201f3262788496bd2ff453301744195df18ea011eec73014",
+      "class_hash": "0x615d11a4752d460ca88a01277ee00f64dfa16a5033387e90a3d61c03774d92c",
+      "original_class_hash": "0x615d11a4752d460ca88a01277ee00f64dfa16a5033387e90a3d61c03774d92c",
       "abi": [
         {
           "type": "impl",
@@ -4699,6 +4718,7 @@
         }
       ],
       "tag": "jokers_of_neon-CardItem",
+      "qualified_path": "jokers_of_neon::models::status::shop::shop::card_item",
       "manifest_name": "jokers_of_neon-CardItem-1a854299"
     },
     {
@@ -4725,8 +4745,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x16f25328158ba73c31ecdefbfd429c36f6460a083331a44b706736ef39c82bc",
-      "original_class_hash": "0x16f25328158ba73c31ecdefbfd429c36f6460a083331a44b706736ef39c82bc",
+      "class_hash": "0x25edae79ec31b503664c1ad9da2104d3b0dc4b4611bc3cd7bd613a438ce80b3",
+      "original_class_hash": "0x25edae79ec31b503664c1ad9da2104d3b0dc4b4611bc3cd7bd613a438ce80b3",
       "abi": [
         {
           "type": "impl",
@@ -5143,6 +5163,7 @@
         }
       ],
       "tag": "jokers_of_neon-CardScoreEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::card_score_event",
       "manifest_name": "jokers_of_neon-CardScoreEvent-5e073648"
     },
     {
@@ -5174,8 +5195,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x1cd2f712412e49feb567f220b0f6aeb573ff6fb55fe9d22974a8a8836fb1811",
-      "original_class_hash": "0x1cd2f712412e49feb567f220b0f6aeb573ff6fb55fe9d22974a8a8836fb1811",
+      "class_hash": "0x63ae345045d12bae7493a571e11425c73d4980c32a7736a99304dc6bd13c61b",
+      "original_class_hash": "0x63ae345045d12bae7493a571e11425c73d4980c32a7736a99304dc6bd13c61b",
       "abi": [
         {
           "type": "impl",
@@ -5596,6 +5617,7 @@
         }
       ],
       "tag": "jokers_of_neon-ConfigEarningCash",
+      "qualified_path": "jokers_of_neon::models::data::config::config_earning_cash",
       "manifest_name": "jokers_of_neon-ConfigEarningCash-4002d4ba"
     },
     {
@@ -5612,8 +5634,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x44d36655894edaf21f6456ee242b974fcd34334951f793b933d29bac8d76521",
-      "original_class_hash": "0x44d36655894edaf21f6456ee242b974fcd34334951f793b933d29bac8d76521",
+      "class_hash": "0x101deece771f5cbf115831a78e13c3e68fcf8a6220ea0f86b9177799a610dd1",
+      "original_class_hash": "0x101deece771f5cbf115831a78e13c3e68fcf8a6220ea0f86b9177799a610dd1",
       "abi": [
         {
           "type": "impl",
@@ -6022,6 +6044,7 @@
         }
       ],
       "tag": "jokers_of_neon-CreateGameEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::create_game_event",
       "manifest_name": "jokers_of_neon-CreateGameEvent-17f86ee2"
     },
     {
@@ -6053,8 +6076,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4673245820f4646ef703181606e3578fbacb41f9b2559655d107487c43b000b",
-      "original_class_hash": "0x4673245820f4646ef703181606e3578fbacb41f9b2559655d107487c43b000b",
+      "class_hash": "0x22b1e780bd7586f6989b2742fb6e3fddbfc7ea397dda729824cd511f833c2e",
+      "original_class_hash": "0x22b1e780bd7586f6989b2742fb6e3fddbfc7ea397dda729824cd511f833c2e",
       "abi": [
         {
           "type": "impl",
@@ -6489,6 +6512,7 @@
         }
       ],
       "tag": "jokers_of_neon-CurrentHandCard",
+      "qualified_path": "jokers_of_neon::models::status::round::current_hand_card::current_hand_card",
       "manifest_name": "jokers_of_neon-CurrentHandCard-29753f22"
     },
     {
@@ -6520,8 +6544,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x36239b695b05b30e5991268a389003329bf19855c1e72b81dbc39ea8e9439f5",
-      "original_class_hash": "0x36239b695b05b30e5991268a389003329bf19855c1e72b81dbc39ea8e9439f5",
+      "class_hash": "0x134b377f2f90dfc06a2810a67fda26b8a9fac4cb68f39f5032c27cf76fee4d6",
+      "original_class_hash": "0x134b377f2f90dfc06a2810a67fda26b8a9fac4cb68f39f5032c27cf76fee4d6",
       "abi": [
         {
           "type": "impl",
@@ -6956,6 +6980,7 @@
         }
       ],
       "tag": "jokers_of_neon-CurrentSpecialCards",
+      "qualified_path": "jokers_of_neon::models::status::game::game::current_special_cards",
       "manifest_name": "jokers_of_neon-CurrentSpecialCards-11ae0174"
     },
     {
@@ -6987,8 +7012,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4ca4ea13b90bc74f42dc4019d1204d10b9179249fd8511f0a92c65604a13955",
-      "original_class_hash": "0x4ca4ea13b90bc74f42dc4019d1204d10b9179249fd8511f0a92c65604a13955",
+      "class_hash": "0x461571e353daccb7eb034699a52e1012efcb7f91872aa56f03a343da46b278d",
+      "original_class_hash": "0x461571e353daccb7eb034699a52e1012efcb7f91872aa56f03a343da46b278d",
       "abi": [
         {
           "type": "impl",
@@ -7423,6 +7448,7 @@
         }
       ],
       "tag": "jokers_of_neon-DeckCard",
+      "qualified_path": "jokers_of_neon::models::status::round::deck_card::deck_card",
       "manifest_name": "jokers_of_neon-DeckCard-4e65fb96"
     },
     {
@@ -7474,8 +7500,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x18eb0ce865077b2aa06ea7c646d54626020c35880f12fdced58e280cc466a40",
-      "original_class_hash": "0x18eb0ce865077b2aa06ea7c646d54626020c35880f12fdced58e280cc466a40",
+      "class_hash": "0x4150589039cbbc534e8200fbf2494d7082c3b72548115db95457f4a8238b28b",
+      "original_class_hash": "0x4150589039cbbc534e8200fbf2494d7082c3b72548115db95457f4a8238b28b",
       "abi": [
         {
           "type": "impl",
@@ -7912,6 +7938,7 @@
         }
       ],
       "tag": "jokers_of_neon-DetailEarnedEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::detail_earned_event",
       "manifest_name": "jokers_of_neon-DetailEarnedEvent-40f670e5"
     },
     {
@@ -7948,8 +7975,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x21bc0254805a577613428fbb13f19596501dc2b12e8b08ce2cb625b74e59a7d",
-      "original_class_hash": "0x21bc0254805a577613428fbb13f19596501dc2b12e8b08ce2cb625b74e59a7d",
+      "class_hash": "0x7c8eb6ccac73a893676a885ba1a2d9f23d42f528d44b7f974fc4f852c047073",
+      "original_class_hash": "0x7c8eb6ccac73a893676a885ba1a2d9f23d42f528d44b7f974fc4f852c047073",
       "abi": [
         {
           "type": "impl",
@@ -8458,6 +8485,7 @@
         }
       ],
       "tag": "jokers_of_neon-Effect",
+      "qualified_path": "jokers_of_neon::models::data::effect_card::effect",
       "manifest_name": "jokers_of_neon-Effect-70a66e3a"
     },
     {
@@ -8489,8 +8517,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x2c30574e0c83064f9cb64c7ca782e82ae5257e9bd63488b41b26b79e5eb3335",
-      "original_class_hash": "0x2c30574e0c83064f9cb64c7ca782e82ae5257e9bd63488b41b26b79e5eb3335",
+      "class_hash": "0x16f7e1c145ff607ce7b6549e058820ed1e4753742b43501a1ab766df9cc80d2",
+      "original_class_hash": "0x16f7e1c145ff607ce7b6549e058820ed1e4753742b43501a1ab766df9cc80d2",
       "abi": [
         {
           "type": "impl",
@@ -8925,6 +8953,7 @@
         }
       ],
       "tag": "jokers_of_neon-EffectCard",
+      "qualified_path": "jokers_of_neon::models::data::effect_card::effect_card",
       "manifest_name": "jokers_of_neon-EffectCard-352d541e"
     },
     {
@@ -9006,8 +9035,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x47cfab838c03b8236dbfddb930efba0e17251c757ef8e66a74865b841966ee6",
-      "original_class_hash": "0x47cfab838c03b8236dbfddb930efba0e17251c757ef8e66a74865b841966ee6",
+      "class_hash": "0x30967ec0ae2a23404d1bf203e2e6bf6e2ea1fdf308b4e14cfb0569a3a4e33ac",
+      "original_class_hash": "0x30967ec0ae2a23404d1bf203e2e6bf6e2ea1fdf308b4e14cfb0569a3a4e33ac",
       "abi": [
         {
           "type": "impl",
@@ -9490,6 +9519,7 @@
         }
       ],
       "tag": "jokers_of_neon-Game",
+      "qualified_path": "jokers_of_neon::models::status::game::game::game",
       "manifest_name": "jokers_of_neon-Game-162de85b"
     },
     {
@@ -9516,8 +9546,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5ecabdd13bcbcc8dba8c4080a3771c11bf04461c3cb1c9386947570e739261a",
-      "original_class_hash": "0x5ecabdd13bcbcc8dba8c4080a3771c11bf04461c3cb1c9386947570e739261a",
+      "class_hash": "0x32697e453a43e820a54e1a40eaf141f735d63ce032331127468104e8ea07980",
+      "original_class_hash": "0x32697e453a43e820a54e1a40eaf141f735d63ce032331127468104e8ea07980",
       "abi": [
         {
           "type": "impl",
@@ -9988,6 +10018,7 @@
         }
       ],
       "tag": "jokers_of_neon-LevelPokerHand",
+      "qualified_path": "jokers_of_neon::models::data::poker_hand::level_poker_hand",
       "manifest_name": "jokers_of_neon-LevelPokerHand-5f66f44c"
     },
     {
@@ -10019,8 +10050,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6c3d62ed73e679b777828141590c0c1c3d954747797d7eaca40452e98b8f8fc",
-      "original_class_hash": "0x6c3d62ed73e679b777828141590c0c1c3d954747797d7eaca40452e98b8f8fc",
+      "class_hash": "0x7077b495fd6260bd9c672724e7094cacc65dffbae8dc42e3ea0e40fd191c912",
+      "original_class_hash": "0x7077b495fd6260bd9c672724e7094cacc65dffbae8dc42e3ea0e40fd191c912",
       "abi": [
         {
           "type": "impl",
@@ -10471,6 +10502,7 @@
         }
       ],
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::modifier_card_suit_event",
       "manifest_name": "jokers_of_neon-ModifierCardSuitEvent-3733fa1c"
     },
     {
@@ -10487,8 +10519,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6893a9169436515e0a4e8b1648722ca32fdea6074fafd3afe5e29fafd5625bc",
-      "original_class_hash": "0x6893a9169436515e0a4e8b1648722ca32fdea6074fafd3afe5e29fafd5625bc",
+      "class_hash": "0x5e27fb6ecdbdf2838b159f5ead821c0f4e5205a16cc9914cd9faf4e8c049b1d",
+      "original_class_hash": "0x5e27fb6ecdbdf2838b159f5ead821c0f4e5205a16cc9914cd9faf4e8c049b1d",
       "abi": [
         {
           "type": "impl",
@@ -10897,6 +10929,7 @@
         }
       ],
       "tag": "jokers_of_neon-PlayGameOverEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::play_game_over_event",
       "manifest_name": "jokers_of_neon-PlayGameOverEvent-12f13b9f"
     },
     {
@@ -10923,8 +10956,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x7a6707e40d35c94be9bbf68974527fe42b237ea06f90f39c62ad491812b54d7",
-      "original_class_hash": "0x7a6707e40d35c94be9bbf68974527fe42b237ea06f90f39c62ad491812b54d7",
+      "class_hash": "0x4b527a3a0fb4eded9951158550a045ed3d53144d3221d4ed66521b534daeb61",
+      "original_class_hash": "0x4b527a3a0fb4eded9951158550a045ed3d53144d3221d4ed66521b534daeb61",
       "abi": [
         {
           "type": "impl",
@@ -11341,6 +11374,7 @@
         }
       ],
       "tag": "jokers_of_neon-PlayWinGameEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::play_win_game_event",
       "manifest_name": "jokers_of_neon-PlayWinGameEvent-c57c8fde"
     },
     {
@@ -11362,8 +11396,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x6726d8c7f23f38289c52bb9de1600811cedcaffd8307487cf0a76e4ab14200a",
-      "original_class_hash": "0x6726d8c7f23f38289c52bb9de1600811cedcaffd8307487cf0a76e4ab14200a",
+      "class_hash": "0x799b804e238b75d0889a7aef0cac301b35b078f8ce9abc6dadb7cb082cb27a",
+      "original_class_hash": "0x799b804e238b75d0889a7aef0cac301b35b078f8ce9abc6dadb7cb082cb27a",
       "abi": [
         {
           "type": "impl",
@@ -11776,6 +11810,7 @@
         }
       ],
       "tag": "jokers_of_neon-PlayerCommonCards",
+      "qualified_path": "jokers_of_neon::models::status::game::player::player_common_cards",
       "manifest_name": "jokers_of_neon-PlayerCommonCards-5910cba4"
     },
     {
@@ -11797,8 +11832,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x7a7b0bff4035fe5dc6ade775d2279ff01b064f2ee28a445f1a262480772d2b9",
-      "original_class_hash": "0x7a7b0bff4035fe5dc6ade775d2279ff01b064f2ee28a445f1a262480772d2b9",
+      "class_hash": "0x45501c89659978689c6f57fdaec320e844284a94f3e4a9af60be2e2ca8ccb44",
+      "original_class_hash": "0x45501c89659978689c6f57fdaec320e844284a94f3e4a9af60be2e2ca8ccb44",
       "abi": [
         {
           "type": "impl",
@@ -12211,6 +12246,7 @@
         }
       ],
       "tag": "jokers_of_neon-PlayerEffectCards",
+      "qualified_path": "jokers_of_neon::models::status::game::player::player_effect_cards",
       "manifest_name": "jokers_of_neon-PlayerEffectCards-5673a4ee"
     },
     {
@@ -12242,8 +12278,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x68f2d35dafc558ada127074fc828cf3a35680c4b95eea7e0cac6bb3d2d857fe",
-      "original_class_hash": "0x68f2d35dafc558ada127074fc828cf3a35680c4b95eea7e0cac6bb3d2d857fe",
+      "class_hash": "0x778fe48fb51285ea2f9786dc7a6e56a0069de6df7538cbfaaa15b03dcbc5ade",
+      "original_class_hash": "0x778fe48fb51285ea2f9786dc7a6e56a0069de6df7538cbfaaa15b03dcbc5ade",
       "abi": [
         {
           "type": "impl",
@@ -12718,6 +12754,7 @@
         }
       ],
       "tag": "jokers_of_neon-PlayerLevelPokerHand",
+      "qualified_path": "jokers_of_neon::models::status::game::player::player_level_poker_hand",
       "manifest_name": "jokers_of_neon-PlayerLevelPokerHand-5c0c8bac"
     },
     {
@@ -12744,8 +12781,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x15ff831f5439af4df0dcce45698966e467bd85f56069383afb7e42d713d6a03",
-      "original_class_hash": "0x15ff831f5439af4df0dcce45698966e467bd85f56069383afb7e42d713d6a03",
+      "class_hash": "0x34c07816aa25e5daadc2370bd4793af7dbd786de2c1e99d74e7347680ffa281",
+      "original_class_hash": "0x34c07816aa25e5daadc2370bd4793af7dbd786de2c1e99d74e7347680ffa281",
       "abi": [
         {
           "type": "impl",
@@ -13162,6 +13199,7 @@
         }
       ],
       "tag": "jokers_of_neon-PokerHandEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::poker_hand_event",
       "manifest_name": "jokers_of_neon-PokerHandEvent-2ca11749"
     },
     {
@@ -13198,8 +13236,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x682e2df48fb3b22c51d5ea0dcbb73a57090c828993e36dfe00f28c8782d31fe",
-      "original_class_hash": "0x682e2df48fb3b22c51d5ea0dcbb73a57090c828993e36dfe00f28c8782d31fe",
+      "class_hash": "0x45708f855ae36e572510054fec8f1243bd8dd5a8f826d8b73d1cd2c94691993",
+      "original_class_hash": "0x45708f855ae36e572510054fec8f1243bd8dd5a8f826d8b73d1cd2c94691993",
       "abi": [
         {
           "type": "impl",
@@ -13692,6 +13730,7 @@
         }
       ],
       "tag": "jokers_of_neon-PokerHandItem",
+      "qualified_path": "jokers_of_neon::models::status::shop::shop::poker_hand_item",
       "manifest_name": "jokers_of_neon-PokerHandItem-3760bd89"
     },
     {
@@ -13728,8 +13767,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4fcbc29cbb844f33ee9705c058f758e20cce4b0bb423f560c9db17f9496de2f",
-      "original_class_hash": "0x4fcbc29cbb844f33ee9705c058f758e20cce4b0bb423f560c9db17f9496de2f",
+      "class_hash": "0x1ffe9e51334c6f08f4e43a4030babed4e53353c25055ea59f3b9f6c1df93ff9",
+      "original_class_hash": "0x1ffe9e51334c6f08f4e43a4030babed4e53353c25055ea59f3b9f6c1df93ff9",
       "abi": [
         {
           "type": "impl",
@@ -14154,6 +14193,7 @@
         }
       ],
       "tag": "jokers_of_neon-Round",
+      "qualified_path": "jokers_of_neon::models::status::round::round::round",
       "manifest_name": "jokers_of_neon-Round-23a2f4a8"
     },
     {
@@ -14175,8 +14215,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x93a47990e436b6d01611ed7d163becc96c7a55c9c689b0058040f025733fc6",
-      "original_class_hash": "0x93a47990e436b6d01611ed7d163becc96c7a55c9c689b0058040f025733fc6",
+      "class_hash": "0x58fe22073d9dc0c2cf86d7a19fa3d32e90e1eac8b3b057c20a9477c88565134",
+      "original_class_hash": "0x58fe22073d9dc0c2cf86d7a19fa3d32e90e1eac8b3b057c20a9477c88565134",
       "abi": [
         {
           "type": "impl",
@@ -14589,6 +14629,7 @@
         }
       ],
       "tag": "jokers_of_neon-RoundScoreEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::round_score_event",
       "manifest_name": "jokers_of_neon-RoundScoreEvent-58b51501"
     },
     {
@@ -14635,8 +14676,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5becd581e7140be82446ae8ad361dd59a4fbe39e0612458470e0d03817c0500",
-      "original_class_hash": "0x5becd581e7140be82446ae8ad361dd59a4fbe39e0612458470e0d03817c0500",
+      "class_hash": "0x2bac0d4ec83657890c8a0924946802e9acbe184aefcd8a13bfd7bc12d241420",
+      "original_class_hash": "0x2bac0d4ec83657890c8a0924946802e9acbe184aefcd8a13bfd7bc12d241420",
       "abi": [
         {
           "type": "impl",
@@ -15083,6 +15124,7 @@
         }
       ],
       "tag": "jokers_of_neon-Shop",
+      "qualified_path": "jokers_of_neon::models::status::shop::shop::shop",
       "manifest_name": "jokers_of_neon-Shop-283e17f6"
     },
     {
@@ -15114,8 +15156,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x182210c4e66642186cd110acc1dca5df58a81db60fceb898d3100807cbec35b",
-      "original_class_hash": "0x182210c4e66642186cd110acc1dca5df58a81db60fceb898d3100807cbec35b",
+      "class_hash": "0x6e477897593e14f8bab31aa2f68014b3f3b12b64ad5e6503d6d66f60e6ff9d5",
+      "original_class_hash": "0x6e477897593e14f8bab31aa2f68014b3f3b12b64ad5e6503d6d66f60e6ff9d5",
       "abi": [
         {
           "type": "impl",
@@ -15536,6 +15578,7 @@
         }
       ],
       "tag": "jokers_of_neon-SpecialModifierMultiEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::special_modifier_multi_event",
       "manifest_name": "jokers_of_neon-SpecialModifierMultiEvent-a1caec57"
     },
     {
@@ -15567,8 +15610,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x68763ed76d8a85faaf7ccf0740d181df33adbb7d6d2e85486e1c8114b1fcabc",
-      "original_class_hash": "0x68763ed76d8a85faaf7ccf0740d181df33adbb7d6d2e85486e1c8114b1fcabc",
+      "class_hash": "0x69ad270796ea4e1c1794fa280b14fcd2f35d9dc143e299e0ad1706dc6af6e25",
+      "original_class_hash": "0x69ad270796ea4e1c1794fa280b14fcd2f35d9dc143e299e0ad1706dc6af6e25",
       "abi": [
         {
           "type": "impl",
@@ -15989,6 +16032,7 @@
         }
       ],
       "tag": "jokers_of_neon-SpecialModifierPointsEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::special_modifier_points_event",
       "manifest_name": "jokers_of_neon-SpecialModifierPointsEvent-3ab9ac06"
     },
     {
@@ -16020,8 +16064,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x4182ae715cf251f5f3ff16e0e746d7743111f3ce5e2ca29e22e0c627595e3e7",
-      "original_class_hash": "0x4182ae715cf251f5f3ff16e0e746d7743111f3ce5e2ca29e22e0c627595e3e7",
+      "class_hash": "0xdc8f8997c505114ac653ee915c20a73ff5b67e59e49408fc60d72294b2e9d3",
+      "original_class_hash": "0xdc8f8997c505114ac653ee915c20a73ff5b67e59e49408fc60d72294b2e9d3",
       "abi": [
         {
           "type": "impl",
@@ -16472,6 +16516,7 @@
         }
       ],
       "tag": "jokers_of_neon-SpecialModifierSuitEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::special_modifier_suit_event",
       "manifest_name": "jokers_of_neon-SpecialModifierSuitEvent-527fb756"
     },
     {
@@ -16503,8 +16548,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x5c2d8ec5cf9e96ee0e33c4a3f5930a81d3a67eb051f96f91f82f01561d5c110",
-      "original_class_hash": "0x5c2d8ec5cf9e96ee0e33c4a3f5930a81d3a67eb051f96f91f82f01561d5c110",
+      "class_hash": "0x7680d36f6abff3ec9d3935c812dbf8be58c14f20d7b876a4cad07582c53e39e",
+      "original_class_hash": "0x7680d36f6abff3ec9d3935c812dbf8be58c14f20d7b876a4cad07582c53e39e",
       "abi": [
         {
           "type": "impl",
@@ -16925,6 +16970,7 @@
         }
       ],
       "tag": "jokers_of_neon-SpecialPokerHandEvent",
+      "qualified_path": "jokers_of_neon::models::data::events::special_poker_hand_event",
       "manifest_name": "jokers_of_neon-SpecialPokerHandEvent-2b45fe2e"
     }
   ]

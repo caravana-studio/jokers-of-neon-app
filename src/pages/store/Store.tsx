@@ -58,7 +58,7 @@ export const Store = () => {
     setup: {
       systemCalls: { skipShop },
     },
-    account,
+    account: { account },
   } = useDojo();
 
   const { reroll, locked } = useStore();
@@ -119,7 +119,7 @@ export const Store = () => {
       onClick={() => {
         setLoading(true);
         onShopSkip();
-        skipShop(account.account, gameId).then((response): void => {
+        skipShop(account, gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
             navigate("/redirect/demo");
