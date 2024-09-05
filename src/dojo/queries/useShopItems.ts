@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { PokerHandItem } from "../../types/PokerHandItem";
-import { BlisterPackItem } from "../generated/typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
+import { BlisterPackItem } from "../typescript/models.gen";
 
 export interface ShopItems {
   specialCards: Card[];

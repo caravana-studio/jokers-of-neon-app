@@ -6,12 +6,12 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { shortString } from "starknet";
-import { SORT_BY_SUIT } from "../constants/localStorage";
+import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
-import { useDojo } from "../dojo/useDojo";
-import { gameExists } from "../dojo/utils/getGame";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
+import { useDojo } from "../dojo/useDojo.tsx";
+import { useGameActions } from "../dojo/useGameActions.tsx";
+import { gameExists } from "../dojo/utils/getGame.tsx";
+import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
@@ -105,20 +105,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const {
     setup: {
-      masterAccount,
-      systemCalls: {
-        createGame,
-        discard,
-        discardEffectCard,
-        discardSpecialCard,
-        play,
-      },
       clientComponents: { Game },
-      client,
     },
     account: { account },
-    syncCall,
+    // syncCall,
   } = useDojo();
+
+  const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
 
   const game = useGame();
 
@@ -176,12 +169,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameLoading(true);
     if (username) {
       console.log("Creating game...");
-      const response = await client.actions.createGame({
-        account,
-        username: shortString.encodeShortString(username),
-      });
-      console.log("response", response);
-      /* createGame(account, username).then(async (response) => {
+      createGame(username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
@@ -191,14 +179,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
-          await syncCall();
+          // await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
           setRoundRewards(undefined);
         } else {
           setError(true);
         }
-      }); */
+      });
     }
   };
 
@@ -394,7 +382,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
-    play(account, gameId, preSelectedCards, preSelectedModifiers)
+    play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
           animatePlay(response);
@@ -467,7 +455,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(account, gameId, preSelectedCards, preSelectedModifiers).then(
+    discard(gameId, preSelectedCards, preSelectedModifiers).then(
       (response) => {
         if (response.success) {
           if (response.gameOver) {
@@ -508,7 +496,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    discardEffectCard(account, gameId, cardIdx)
+    discardEffectCard(gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);

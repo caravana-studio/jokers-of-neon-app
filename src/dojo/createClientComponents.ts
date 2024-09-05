@@ -1,4 +1,4 @@
-import { ContractComponents } from "./generated/typescript/models.gen";
+import { ContractComponents } from "./typescript/models.gen";
 
 export type ClientComponents = ReturnType<typeof createClientComponents>;
 
