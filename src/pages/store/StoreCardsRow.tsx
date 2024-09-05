@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { ShowCardModal } from "./ShowCardModal";
+import { useNavigate } from "react-router-dom";
 
 interface CardsRowProps {
   title: string;
@@ -17,8 +18,15 @@ interface CardsRowProps {
 }
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
+  const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard, isPurchased } = useStore();
+
+  useEffect(() => {
+    if (selectedCard) {
+      navigate("/preview-card", { state: { card: selectedCard, isPack: false } });
+    }
+  }, [selectedCard]);
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
@@ -73,7 +81,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           })}
         </Flex>
       </Box>
-      {selectedCard && (
+      {/* {selectedCard && (
         <ShowCardModal
           onBuyClick={() => {
             buyCard(selectedCard);
@@ -81,7 +89,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           card={selectedCard}
           close={() => setSelectedCard(undefined)}
         />
-      )}
+      )} */}
     </>
   );
 };
