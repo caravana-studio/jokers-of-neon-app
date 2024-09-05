@@ -15,7 +15,7 @@ import {
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
   
-  const { blueLight, blue } = theme.colors;
+  const { blueLight, blue, violet } = theme.colors;
   
   export const PlaysAvailableTable = () => {
     const { gameId } = useGameContext();
@@ -75,7 +75,7 @@ import {
                   const storePlay = pokerHandItems?.find(
                     (item) => item.poker_hand === play.pokerHand.id
                   );  
-                  const textColor = blueLight;
+                  const textColor = "white";
   
                   const opacitySx = {
                     opacity: 1,
@@ -87,32 +87,34 @@ import {
                     </Td>
                   );
                   const nameTd = (
-                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor}>
+                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={"sm"}>
                       {play.pokerHand.name}
                     </Td>
                   );
                   const pointsMultiTd = (
                     <Td>
                       <Box
-                        color={"black"}
+                        color={"white"}
                         display={"flex"}
                         flexDirection={"row"}
                         justifyContent={"center"}
                       >
                         <Box
-                          backgroundColor={"neonGreen"}
-                          borderRadius={10}
+                          backgroundColor={`${blue}`}
+                          borderRadius={4}
                           width={"50px"}
                           mr={1}
+                          boxShadow={`0px 0px 10px 6px ${blue}`}
                         >
                           {play.points}
                         </Box>
                         <Heading fontSize={"15"}>x</Heading>
                         <Box
                           backgroundColor={"neonPink"}
-                          borderRadius={10}
+                          borderRadius={4}
                           width={"50px"}
                           ml={1}
+                          boxShadow={`0px 0px 10px 6px ${violet}`}
                         >
                           {play.multi}
                         </Box>
