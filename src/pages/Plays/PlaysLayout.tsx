@@ -41,7 +41,7 @@ export const PlaysLayout = () => {
             mt={10}
             mb={2}
             w="100%"
-            size="sm"
+            size="md"
             variant="solid"
             onClick={ () => navigate("/demo")}
           >Go back to game</Button>
