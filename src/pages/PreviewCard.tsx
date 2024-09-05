@@ -3,10 +3,12 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Heading,
   Image,
   Text,
   Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import OpenAnimation from "../components/OpenAnimation.tsx";
@@ -16,9 +18,12 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { isMobile } from "react-device-detect";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
+import { Background } from "../components/Background";
 import { Card } from "../types/Card";
+import theme from "../theme/theme";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
+const { white, blue } = theme.colors;
 
 const PreviewCard = () => {
   const { state } = useLocation();
@@ -57,7 +62,7 @@ const PreviewCard = () => {
           navigate(-1);
         }
       }}
-      sx={{ width: "50%" }}
+    //   sx={{ width: "50%" }}
       variant="secondarySolid"
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
     >
@@ -72,51 +77,112 @@ const PreviewCard = () => {
   };
 
   return (
-    <Flex flexDirection="column" alignItems="center" justifyContent="center">
-      <Heading size="l" variant="italic">
-        {name}
-      </Heading>
+    <Background type="home" dark>
+        <Flex flexDirection={"column"} 
+        justifyContent={"center"} pt={"50px"}>
+            <Flex 
+            py={2} 
+            px={8} 
+            flexDirection={"column"} 
+            justifyContent={"center"} 
+            width="60%"
+            // height="80vh"
+            margin={"0 auto"} 
+            bg="rgba(0, 0, 0, 0.3)"
+            borderRadius="25px"
+            border={`2px solid ${white}`}
+            p={6}
+            >
+                <Flex>
+                    <OpenAnimation
+                        startAnimation={isOpenAnimationRunning}
+                        onAnimationEnd={handleAnimationEnd}
+                    >
+                        <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+                        <Image
+                            src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
+                            borderRadius="10px"
+                        />
+                        </Box>
+                    </OpenAnimation>
+                    <Flex flexDirection={"column"} ml={"30px"}>
+                        <Flex justifyContent="space-between" alignItems="center">
+                            <Heading size="l" variant="italic">
+                                {name}
+                            </Heading>
+                            <Text fontSize="2xl" color="white" fontWeight="bold">
+                                JN
+                            </Text>
+                        </Flex>
 
-      <OpenAnimation
-        startAnimation={isOpenAnimationRunning}
-        onAnimationEnd={handleAnimationEnd}
-      >
-        <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
-          <Image
-            src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
-            borderRadius="10px"
-          />
-        </Box>
-      </OpenAnimation>
+                        <VStack align="stretch" spacing={4} flex={1}>
+                            <Box>
+                                <Text color="white" fontSize="lg" mb={2}>
+                                    CARD TYPE:
+                                </Text>
+                                <Text color="cyan.300" fontSize="xl">
+                                    {card.isSpecial ? "Special" : "Normal"}
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Text color="white" fontSize="lg" mb={2}>
+                                    DESCRIPTION:
+                                </Text>
+                                <Text color="cyan.300" fontSize="xl">
+                                    {description}
+                                </Text>
+                                {card.temporary && (
+                                    <Text variant="neonGreen" size="l" pt={2}>
+                                    {getTemporalCardText(card.remaining)}
+                                    </Text>
+                                )}
+                            </Box>
+                            <Box mt="50px">
+                                <Text color="white" fontSize="lg" mb={2}>
+                                    MY COINS:
+                                </Text>
+                                <Text color="white" fontSize="xl">
+                                    {cash} ¢
+                                </Text>
+                            </Box>
+                        </VStack>
+                    </Flex>
+                </Flex>
+            </Flex>
 
-      <Text variant="neonGreen" size="l">
-        {description}
-      </Text>
-      {card.temporary && (
-        <Text variant="neonGreen" size="l" pt={2}>
-          {getTemporalCardText(card.remaining)}
-        </Text>
-      )}
+            <Flex gap={4} mb={2} mt={6} justifyContent={"space-evenly"}>
+                <Flex 
+                borderRadius="25px"
+                border={`2px solid ${white}`}
+                p={6}
+                >
+                    <Text color="white" fontSize="2xl" fontWeight="bold">
+                        PRICE: {card.price} ¢
+                    </Text>
+                </Flex>
 
-      <Flex gap={4} mb={2}>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          Close
-        </Button>
-        {notEnoughCash || noSpaceForSpecialCards ? (
-          <Tooltip
-            label={
-              noSpaceForSpecialCards
-                ? "You don't have enough space for another special card. Remove one to buy this card"
-                : "You don't have enough coins to buy this card"
-            }
-          >
-            {buyButton}
-          </Tooltip>
-        ) : (
-          buyButton
-        )}
-      </Flex>
-    </Flex>
+                <HStack>
+                {notEnoughCash || noSpaceForSpecialCards ? (
+                        <Tooltip
+                            label={
+                            noSpaceForSpecialCards
+                                ? "You don't have enough space for another special card. Remove one to buy this card"
+                                : "You don't have enough coins to buy this card"
+                            }
+                        >
+                            {buyButton}
+                        </Tooltip>
+                        ) : (
+                        buyButton
+                        )}
+                        
+                        <Button variant="outline" onClick={() => navigate(-1)}>
+                            Close
+                        </Button>
+                </HStack>
+            </Flex>
+        </Flex>
+    </Background>
   );
 };
 
