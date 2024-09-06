@@ -9,7 +9,6 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "create-components": "npx @dojoengine/core src/manifest.json src/dojo/generated/contractComponents.ts http://localhost:5050 0x578dfb8af4989c7b8dba3b0c4d53f7ee38cb9ff55ae352bb62e68ca535e74eb",
     "generate": "sozo build --typescript --manifest-path ../jokers-of-neon-contracts/Scarb.toml --bindings-output ./src/dojo/generated",
     "test": "vitest"
   },

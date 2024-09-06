@@ -73,6 +73,7 @@ export async function setupWorld(provider: DojoProvider) {
       account: Account;
       player_name: bigint;
     }) => {
+        console.log('calling create game')
       try {
         return await provider.execute(
           props.account,
