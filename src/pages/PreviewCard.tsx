@@ -117,7 +117,21 @@ const PreviewCard = () => {
 
                         <VStack align="stretch" spacing={8} flex={1}>
                             <Box mt={"20px"} >
-                                <Text color="white" fontSize="lg" mb={2}>
+                                <Text color="white" fontSize="lg" mb={2}
+                                filter="blur(0.5px)"
+                                  sx={{
+                                    position: "relative",
+                                    _before: {
+                                      content: '""',
+                                      position: "absolute",
+                                      bottom: 0,
+                                      width: "90%",
+                                      height: "2px",               
+                                      backgroundColor: "white",
+                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                    },
+                                  }}
+                                >
                                     CARD TYPE:
                                 </Text>
                                 <Text color="cyan.300" fontSize="xl">
@@ -125,7 +139,21 @@ const PreviewCard = () => {
                                 </Text>
                             </Box>
                             <Box>
-                                <Text color="white" fontSize="lg" mb={2}>
+                                <Text color="white" fontSize="lg" mb={2}
+                                  filter="blur(0.5px)"
+                                  sx={{
+                                    position: "relative",
+                                    _before: {
+                                      content: '""',
+                                      position: "absolute",
+                                      bottom: 0,
+                                      width: "90%",
+                                      height: "2px",               
+                                      backgroundColor: "white",
+                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                    },
+                                  }}
+                                >
                                     DESCRIPTION:
                                 </Text>
                                 <Text color="cyan.300" fontSize="xl">
@@ -137,13 +165,43 @@ const PreviewCard = () => {
                                     </Text>
                                 )}
                             </Box>
-                            <Box flex={1} alignContent={"end"} mb={5}>
-                                <Text color="white" fontSize="lg" mb={2}>
+                            <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"} 
+                              filter="blur(0.5px)"
+                              sx={{
+                                position: "relative",
+                                _before: {
+                                  content: '""',
+                                  position: "absolute",
+                                  bottom: 0,
+                                  width: "90%",
+                                  height: "2px",               
+                                  backgroundColor: "white",
+                                  boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                },
+                              }}
+                            >
+                              <Flex flex={1} alignItems={"end"}
+                                  filter="blur(0.5px)"
+                                  sx={{
+                                  position: "relative",
+                                  _before: {
+                                    content: '""',
+                                    position: "absolute",
+                                    top: 0,
+                                    width: "90%",
+                                    height: "2px",               
+                                    backgroundColor: "white",
+                                    boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                  },
+                                  }}
+                              >
+                                <Text color="white" fontSize="lg">
                                     MY COINS:
                                 </Text>
                                 <Text color="white" fontSize="xl">
                                     {cash} ¢
                                 </Text>
+                              </Flex>
                             </Box>
                         </VStack>
                     </Flex>
