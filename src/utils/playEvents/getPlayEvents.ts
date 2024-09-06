@@ -11,6 +11,7 @@ import { getScoreEvent } from "./getScoreEvent";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
 import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
+import { getNeonPlayEvent } from "./getNeonPlayEvent";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
   const playEvents: PlayEvents = {
@@ -22,6 +23,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     detailEarned: getDetailEarnedEvent(events),
     levelEvent: getSpecialLevelEvent(events),
     specialSuitEvents: getSpecialSuitEvents(events),
+    neonPlayEvent: getNeonPlayEvent(events),
     modifierSuitEvents: getModifierSuitEvents(events),
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),

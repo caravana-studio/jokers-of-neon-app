@@ -387,6 +387,7 @@ export function createSystemCalls(
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
+        console.log('events', events.filter((event) => event.data.length === 4))
         return getPlayEvents(events);
       }
       return;

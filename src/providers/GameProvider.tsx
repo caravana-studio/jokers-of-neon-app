@@ -233,6 +233,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPreSelectionLocked(true);
 
+      if (playEvents.neonPlayEvent) {
+        console.log("neon play event", playEvents.neonPlayEvent);
+        setAnimatedCard({
+          animationIndex: -1,
+          idx: playEvents.neonPlayEvent.neon_cards_idx,
+          points: playEvents.neonPlayEvent.points,
+          multi: playEvents.neonPlayEvent.multi,
+        })
+      }
+
       if (playEvents.modifierSuitEvents) {
         playEvents.modifierSuitEvents.forEach((event, index) => {
           setTimeout(() => {
