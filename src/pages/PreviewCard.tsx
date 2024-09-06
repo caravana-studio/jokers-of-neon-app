@@ -104,19 +104,19 @@ const PreviewCard = () => {
                         />
                         </Box>
                     </OpenAnimation>
-                    <Flex flexDirection={"column"} ml={"30px"}>
+                    <Flex flexDirection={"column"} ml={"30px"} flex="1" >
                         <Flex justifyContent="space-between" alignItems="center">
                             <Heading size="l" variant="italic">
                                 {name}
                             </Heading>
                             <Image src={`/logos/jn-logo.png`}
                                     alt={"JN logo"}
-                                    width="90px"
+                                    width="120px"
                                     />
                         </Flex>
 
-                        <VStack align="stretch" spacing={4} flex={1}>
-                            <Box>
+                        <VStack align="stretch" spacing={8} flex={1}>
+                            <Box mt={"20px"} >
                                 <Text color="white" fontSize="lg" mb={2}>
                                     CARD TYPE:
                                 </Text>
@@ -137,7 +137,7 @@ const PreviewCard = () => {
                                     </Text>
                                 )}
                             </Box>
-                            <Box mt="50px">
+                            <Box flex={1} alignContent={"end"} mb={5}>
                                 <Text color="white" fontSize="lg" mb={2}>
                                     MY COINS:
                                 </Text>
@@ -155,10 +155,11 @@ const PreviewCard = () => {
                 <Flex 
                 borderRadius="18px"
                 boxShadow={`0px 0px 10px 1px ${white}`}
-                pr={80}
-                py={1}
-                justifyContent="center"
-                alignItems="center"            
+                // pr={80}
+                // py={1}
+                // justifyContent="center"
+                alignItems="center"
+                flex={1}            
                 >
                     <Text ml={"30px"} color="white" fontSize="2xl" fontWeight="bold" >
                         PRICE: {card.price} ¢
