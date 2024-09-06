@@ -18,7 +18,7 @@ export const useGameActions = () => {
         setup: {
           client,
         },
-        account: { account },
+        account,
       } = useDojo(); 
 
       const createGame = async (username: string) => {

@@ -119,6 +119,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { setAnimatedCard } = useCardAnimations();
 
+  useEffect(() => {
+    executeCreateGame()
+  }, [])
+
   const {
     gameId,
     setGameId,
