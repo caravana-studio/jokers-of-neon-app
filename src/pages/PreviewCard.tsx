@@ -86,19 +86,18 @@ const PreviewCard = () => {
             flexDirection={"column"} 
             justifyContent={"center"} 
             width="60%"
-            // height="80vh"
             margin={"0 auto"} 
             bg="rgba(0, 0, 0, 0.3)"
             borderRadius="25px"
-            border={`2px solid ${white}`}
             p={6}
+            boxShadow={`0px 0px 10px 3px ${white}`}
             >
                 <Flex>
                     <OpenAnimation
                         startAnimation={isOpenAnimationRunning}
                         onAnimationEnd={handleAnimationEnd}
                     >
-                        <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} mb={4}>
+                        <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
                         <Image
                             src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
                             borderRadius="10px"
@@ -110,9 +109,10 @@ const PreviewCard = () => {
                             <Heading size="l" variant="italic">
                                 {name}
                             </Heading>
-                            <Text fontSize="2xl" color="white" fontWeight="bold">
-                                JN
-                            </Text>
+                            <Image src={`/logos/jn-logo.png`}
+                                    alt={"JN logo"}
+                                    width="90px"
+                                    />
                         </Flex>
 
                         <VStack align="stretch" spacing={4} flex={1}>
