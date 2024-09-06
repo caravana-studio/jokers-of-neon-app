@@ -79,10 +79,10 @@ const PreviewCard = () => {
   return (
     <Background type="home" dark>
         <Flex flexDirection={"column"} 
-        justifyContent={"center"} pt={"50px"}>
+        justifyContent={"center"} height={"100vh"}>
             <Flex 
-            py={2} 
-            px={8} 
+            // py={2} 
+            // px={8} 
             flexDirection={"column"} 
             justifyContent={"center"} 
             width="60%"
@@ -90,7 +90,7 @@ const PreviewCard = () => {
             bg="rgba(0, 0, 0, 0.3)"
             borderRadius="25px"
             p={6}
-            boxShadow={`0px 0px 10px 3px ${white}`}
+            boxShadow={`0px 0px 10px 1px ${white}`}
             >
                 <Flex>
                     <OpenAnimation
@@ -150,18 +150,22 @@ const PreviewCard = () => {
                 </Flex>
             </Flex>
 
-            <Flex gap={4} mb={2} mt={6} justifyContent={"space-evenly"}>
+            <Flex width="60%" gap={4} m={1000} mt={6}
+            justifyContent={"space-between"} margin={"0 auto"} >
                 <Flex 
-                borderRadius="25px"
-                border={`2px solid ${white}`}
-                p={6}
+                borderRadius="18px"
+                boxShadow={`0px 0px 10px 1px ${white}`}
+                pr={80}
+                py={1}
+                justifyContent="center"
+                alignItems="center"            
                 >
-                    <Text color="white" fontSize="2xl" fontWeight="bold">
+                    <Text ml={"30px"} color="white" fontSize="2xl" fontWeight="bold" >
                         PRICE: {card.price} ¢
                     </Text>
                 </Flex>
 
-                <HStack>
+                <HStack gap={4}>
                 {notEnoughCash || noSpaceForSpecialCards ? (
                         <Tooltip
                             label={
