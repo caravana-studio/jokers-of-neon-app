@@ -1,5 +1,8 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
+
+import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
+import { useShopActions } from "../dojo/useShopActions";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { getCardType } from "../utils/getCardType";
@@ -8,14 +11,24 @@ import { useGameContext } from "./GameProvider";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
+  buyPack: (pack: BlisterPackItem) => Promise<boolean>;
   levelUpPlay: (item: PokerHandItem) => Promise<boolean>;
   reroll: () => Promise<boolean>;
   locked: boolean;
   isPurchased: (card: Card | PokerHandItem) => boolean;
+  selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
+  lockRedirection: boolean;
+  setLockRedirection: (lock: boolean) => void;
 }
 
 const StoreContext = createContext<IStoreContext>({
   buyCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  buyPack: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  selectCardsFromPack: (_) => {
     return new Promise((resolve) => resolve(false));
   },
   levelUpPlay: (_) => {
@@ -26,6 +39,8 @@ const StoreContext = createContext<IStoreContext>({
   },
   locked: false,
   isPurchased: (_) => false,
+  lockRedirection: false,
+  setLockRedirection: (_) => {},
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -34,6 +49,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [locked, setLocked] = useState(false);
   const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
   const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
+  const [lockRedirection, setLockRedirection] = useState(false);
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
@@ -66,25 +82,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const {
-    setup: {
-      systemCalls: {
-        buyCard: dojoBuyCard,
-        levelUpPokerHand: dojoLevelUpHand,
-        storeReroll,
-      },
-    },
-    account,
-  } = useDojo();
+    buyCard: dojoBuyCard,
+    buyPack: dojoBuyPack,
+    selectCardsFromPack: dojoSelectCardsFromPack,
+    storeReroll,
+    levelUpPokerHand: dojoLevelUpHand,
+  } = useShopActions();
 
   const buyCard = (card: Card): Promise<boolean> => {
     setLocked(true);
     addPurchasedCard(card);
-    const promise = dojoBuyCard(
-      account,
-      gameId,
-      card.idx,
-      getCardType(card)
-    );
+    const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
     promise
       .then((response) => {
         if (!response) {
@@ -100,9 +108,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
+  const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
+    return dojoBuyPack(gameId, Number(pack.idx));
+  };
+
+  const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
+    return dojoSelectCardsFromPack(gameId, cardIndices);
+  };
+
   const reroll = () => {
     setLocked(true);
-    const promise = storeReroll(account, gameId);
+    const promise = storeReroll(gameId);
     promise
       .then(() => {
         clearPurchasedItems();
@@ -116,7 +132,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     setLocked(true);
     addPokerHandPurchased(item);
-    const promise = dojoLevelUpHand(account, gameId, item.idx);
+    const promise = dojoLevelUpHand(gameId, item.idx);
     promise
       .then((response) => {
         if (!response) {
@@ -140,6 +156,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         reroll,
         locked,
         isPurchased,
+        buyPack,
+        selectCardsFromPack,
+        lockRedirection,
+        setLockRedirection,
       }}
     >
       {children}

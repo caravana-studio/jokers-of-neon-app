@@ -8,30 +8,29 @@ import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsMo
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import { PlaysTable } from "../../components/Plays/PlaysTable";
-import { RollingNumber } from "../../components/RollingNumber";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
-import { useGame } from "../../dojo/queries/useGame";
-import { useShop } from "../../dojo/queries/useShop";
-import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useDojo } from "../../dojo/useDojo";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useShop } from "../../dojo/queries/useShop.tsx";
+import { useShopItems } from "../../dojo/queries/useShopItems.ts";
+import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { Coins } from "./Coins.tsx";
+import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { gameId, setHand } = useGameContext();
+  const { gameId, setHand, onShopSkip } = useGameContext();
   const game = useGame();
   const store = useShop();
   const state = game?.state;
-  const { onShopSkip } = useGameContext();
-
+  const { lockRedirection } = useStore();
   const rerollCost = store?.reroll_cost ?? 0;
-  const cash = game?.cash ?? 0;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
@@ -43,13 +42,20 @@ export const Store = () => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
 
-  const {
-    setup: {
-      systemCalls: { skipShop },
-    },
-    account,
-  } = useDojo();
-  
+  useEffect(() => {
+    if (!lockRedirection) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "IN_GAME") {
+        navigate("/demo");
+      } else if (game?.state === "OPEN_BLISTER_PACK") {
+        navigate("/open-pack");
+      }
+    }
+  }, [game?.state, lockRedirection]);
+
+  const { skipShop } = useShopActions();
+
   const { reroll, locked } = useStore();
   const [run, setRun] = useState(false);
 
@@ -108,7 +114,7 @@ export const Store = () => {
       onClick={() => {
         setLoading(true);
         onShopSkip();
-        skipShop(account, gameId).then((response): void => {
+        skipShop(gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
             navigate("/redirect/demo");
@@ -144,7 +150,6 @@ export const Store = () => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
     if (showTutorial) setRun(true);
   }, []);
-
 
   if (loading) {
     return (
@@ -231,7 +236,7 @@ export const Store = () => {
         >
           <Box
             display="flex"
-            w={["100%", "100%", "35%", "35%", "35%"]}
+            w={["100%", "100%", "40%", "40%", "40%"]}
             h={[null, null, "100%", "100%", "100%"]}
             flexDirection="column"
             justifyContent="space-between"
@@ -240,37 +245,12 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
+            <Coins />
+            <Packs />
             {!isMobile && levelUpTable}
-            <Box>
-              <Heading
-                className="game-tutorial-step-1"
-                variant={"italic"}
-                size={"m"}
-                mb={[2, 2, 2, 6, 6]}
-                mt={[4, 4, 0, 0, 0]}
-                sx={{
-                  ml: 4,
-                  position: "relative",
-                  textShadow: `0 0 10px white`,
-                  /* _after: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -2,
-                    left: 0,
-                    width: "100%",
-                    height: "1px",
-                    background: "white",
-                    boxShadow:
-                      "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
-                  }, */
-                }}
-              >
-                COINS: <RollingNumber className="italic" n={cash} /> ȼ
-              </Heading>
-            </Box>
           </Box>
           <Box
-            w={["100%", "100%", "50%", "50%", "50%"]}
+            w={["100%", "100%", "45%", "45%", "45%"]}
             display="flex"
             flexDirection="column"
             justifyContent="center"

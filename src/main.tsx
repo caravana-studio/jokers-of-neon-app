@@ -1,5 +1,5 @@
-import { sepolia, devnet } from "@starknet-react/chains";
-import { StarknetConfig, voyager, jsonRpcProvider } from "@starknet-react/core";
+import { sepolia } from "@starknet-react/chains";
+import { jsonRpcProvider, StarknetConfig, voyager } from "@starknet-react/core";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -7,8 +7,9 @@ import { Toaster } from "sonner";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
 import cartridgeConnector from "./cartridgeConnector.tsx";
+
 import { DojoProvider } from "./dojo/DojoContext.tsx";
-import { setup } from "./dojo/generated/setup.ts";
+import { setup } from "./dojo/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 
