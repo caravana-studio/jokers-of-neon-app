@@ -84,9 +84,7 @@ function App() {
               path="/plays"
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <StoreProvider>
                     <PlaysLayout/>
-                  </StoreProvider>
                 </AudioPlayerProvider>
               }
             />
