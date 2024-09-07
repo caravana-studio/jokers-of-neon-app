@@ -29,7 +29,7 @@ export const useBlisterPackResult = () => {
 
   const blisterPackResult = useComponentValue(BlisterPackResult, entityId);
   const cardsArray = (blisterPackResult?.cards ?? [])
-    .map((card) => Number(card))
+    .map((card) => card && Number((card as any)?.value))
     .sort(sort);
 
   return {

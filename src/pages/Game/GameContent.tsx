@@ -24,7 +24,6 @@ export const GameContent = () => {
     addModifier,
     roundRewards,
     gameId,
-    checkOrCreateGame,
     lockRedirection,
   } = useGameContext();
 
@@ -83,9 +82,6 @@ export const GameContent = () => {
     }
   };
 
-  useEffect(() => {
-    checkOrCreateGame();
-  }, []);
 
   useEffect(() => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
