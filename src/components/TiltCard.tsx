@@ -161,7 +161,7 @@ export const TiltCard = ({
                   gap: 1.5,
                 }}
               >
-                <ClockIcon color="white" width={12} height={12}/>
+                <ClockIcon color="white" width={14} height={14}/>
                 {card.remaining && (
                   <Text color="white" fontSize="xs">
                     {card.remaining}
