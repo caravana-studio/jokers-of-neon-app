@@ -10,16 +10,6 @@ import { preloadImages } from "../utils/preloadImages";
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
-  useEffect(() => {
-    preloadImages()
-      .then(() => {
-        console.log("All images preloaded");
-      })
-      .catch((err) => {
-        console.error("Error preloading images:", err);
-      });
-  }, []);
-
   const navigate = useNavigate();
 
   return (

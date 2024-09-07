@@ -14,10 +14,10 @@ import {
 } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
-import { useGame } from "../../dojo/queries/useGame";
-import { useShop } from "../../dojo/queries/useShop";
-import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useDojo } from "../../dojo/useDojo";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useShop } from "../../dojo/queries/useShop.tsx";
+import { useShopItems } from "../../dojo/queries/useShopItems.ts";
+import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { Coins } from "./Coins.tsx";
@@ -54,12 +54,7 @@ export const Store = () => {
     }
   }, [game?.state, lockRedirection]);
 
-  const {
-    setup: {
-      systemCalls: { skipShop },
-    },
-    account,
-  } = useDojo();
+  const { skipShop } = useShopActions();
 
   const { reroll, locked } = useStore();
   const [run, setRun] = useState(false);
@@ -119,7 +114,7 @@ export const Store = () => {
       onClick={() => {
         setLoading(true);
         onShopSkip();
-        skipShop(account.account, gameId).then((response): void => {
+        skipShop(gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
             navigate("/redirect/demo");
