@@ -7,13 +7,14 @@ import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getModifierSuitEvents } from "./getModifierSuitEvents";
 import { getMultiPointEvents } from "./getMultiPointEvents";
+import { getNeonPlayEvent } from "./getNeonPlayEvent";
 import { getScoreEvent } from "./getScoreEvent";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
 import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
-import { getNeonPlayEvent } from "./getNeonPlayEvent";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
+  console.log('event', events.filter((event) => event.data.length ===4))
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     cardScore: getTraditionalCardsEvents(events),
