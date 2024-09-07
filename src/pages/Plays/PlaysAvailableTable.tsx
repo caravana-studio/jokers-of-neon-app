@@ -63,9 +63,9 @@ import {
                 <Tr>
                   {(
                     <>
-                      <Td>LEVEL</Td>
-                      <Td>HAND</Td>
-                      <Td>POINTS/MULTI</Td>
+                      <Td fontSize={17}>LEVEL</Td>
+                      <Td fontSize={17}>HAND</Td>
+                      <Td fontSize={17}>POINTS/MULTI</Td>
                     </>
                   )}
                 </Tr>
@@ -87,7 +87,7 @@ import {
                     </Td>
                   );
                   const nameTd = (
-                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={"sm"}>
+                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor}>
                       {play.pokerHand.name}
                     </Td>
                   );
@@ -102,19 +102,21 @@ import {
                         <Box
                           backgroundColor={`${blue}`}
                           borderRadius={4}
-                          width={"50px"}
+                          width={"60px"}
                           mr={1}
                           boxShadow={`0px 0px 10px 6px ${blue}`}
+                          fontWeight={"400"}
                         >
                           {play.points}
                         </Box>
-                        <Heading fontSize={"15"}>x</Heading>
+                        <Heading fontSize={"10"}>x</Heading>
                         <Box
                           backgroundColor={"neonPink"}
                           borderRadius={4}
-                          width={"50px"}
+                          width={"60px"}
                           ml={1}
                           boxShadow={`0px 0px 10px 6px ${violet}`}
+                          fontWeight={"400"}
                         >
                           {play.multi}
                         </Box>
