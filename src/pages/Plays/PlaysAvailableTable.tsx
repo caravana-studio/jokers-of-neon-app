@@ -52,9 +52,9 @@ import {
                     content: '""',
                     position: "absolute",
                     bottom: 0,
-                    left: "5%",
-                    width: "90%",
-                    height: "2px",               
+                    left: {base: "2.5%", sm: "5%"},
+                    width: {base: "95%", sm: "90%"},
+                    height: {base: "1px", sm: "2px"},               
                     backgroundColor: "white",
                     boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
                   },
@@ -63,9 +63,9 @@ import {
                 <Tr>
                   {(
                     <>
-                      <Td fontSize={17}>LEVEL</Td>
-                      <Td fontSize={17}>HAND</Td>
-                      <Td fontSize={17}>POINTS/MULTI</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>LEVEL</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>HAND</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>POINTS/MULTI</Td>
                     </>
                   )}
                 </Tr>
@@ -82,12 +82,12 @@ import {
                   };
   
                   const levelTd = (
-                    <Td sx={opacitySx} textColor={textColor}>
+                    <Td sx={opacitySx} textColor={textColor} fontSize={isMobile ? 9 : 13}>
                       {play.level}
                     </Td>
                   );
                   const nameTd = (
-                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor}>
+                    <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={isMobile ? 9 : 13}>
                       {play.pokerHand.name}
                     </Td>
                   );
@@ -102,18 +102,18 @@ import {
                         <Box
                           backgroundColor={`${blue}`}
                           borderRadius={4}
-                          width={"60px"}
+                          width={isMobile ? "40px" : "60px"} 
                           mr={1}
                           boxShadow={`0px 0px 10px 6px ${blue}`}
                           fontWeight={"400"}
                         >
                           {play.points}
                         </Box>
-                        <Heading fontSize={"10"}>x</Heading>
+                        <Heading fontSize={isMobile ? "8" : "10"}>x</Heading>
                         <Box
                           backgroundColor={"neonPink"}
                           borderRadius={4}
-                          width={"60px"}
+                          width={isMobile ? "40px" : "60px"} 
                           ml={1}
                           boxShadow={`0px 0px 10px 6px ${violet}`}
                           fontWeight={"400"}

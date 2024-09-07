@@ -8,6 +8,7 @@ import { PlaysAvailableTable } from "./PlaysAvailableTable";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { Image, Text, Button } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
@@ -27,18 +28,18 @@ export const PlaysLayout = () => {
         px={8} 
         flexDirection={"column"} 
         justifyContent={"center"} 
-        width={"50%"} 
+        width={isMobile ? "100%" : {sm: "75%", md: "50%"}} 
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={2} size="md" variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading mt={{base: 4, sm: 2}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
           <PlaysAvailableTable />
           <Button
             className="game-tutorial-step-4"
-            mt={10}
+            mt={{base: 8, sm: 10}}
             mb={2}
             w="100%"
             size="md"
@@ -56,6 +57,7 @@ export const PlaysLayout = () => {
             sx={{ pointerEvents: "none" }}
           />
         <Box
+            display={{base: "none", md: "flex"}} 
             sx={{
               position: "fixed",
               top: 6,
@@ -65,6 +67,7 @@ export const PlaysLayout = () => {
             <Img src="logos/logo-variant.png" width={{base: '120px', md: '330px'}} alt="logo" />
           </Box>
           <Box
+            display={{base: "none", md: "flex"}} 
             sx={{
               position: "fixed",
               top: 6,
@@ -74,6 +77,7 @@ export const PlaysLayout = () => {
             <Img src="logos/joker-logo.png" width={{base: '80pxpx', md: '120px'}} alt="logo" />
           </Box>  
         <Box
+            display={{base: "none", md: "flex"}} 
             sx={{
               position: "fixed",
               bottom: 16,
@@ -83,6 +87,7 @@ export const PlaysLayout = () => {
             <Text size="m">BUIDL YOUR DECK</Text>
           </Box>
           <Box
+            display={{base: "none", md: "flex"}} 
             sx={{
               position: "fixed",
               bottom: 16,
