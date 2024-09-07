@@ -9,6 +9,7 @@ import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
+import { preloadImages } from "./utils/preloadImages.ts";
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -18,6 +19,7 @@ async function init() {
   root.render(<LoadingScreen />);
 
   try {
+    preloadImages();
     const setupResult = await setup(dojoConfig);
     const queryClient = new QueryClient();
     root.render(
