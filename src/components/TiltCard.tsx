@@ -151,7 +151,7 @@ export const TiltCard = ({
                   right: 0,
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
-                  padding: "2px 4px",
+                  padding: "2px 6px",
                   backgroundColor: "black",
                   boxShadow: `0px 0px 10px 2px white`,
                   borderRadius: "20%",
