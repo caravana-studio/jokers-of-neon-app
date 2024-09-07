@@ -1,6 +1,8 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
-import { BlisterPackItem } from "../dojo/generated/typescript/models.gen";
+
+import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
+import { useShopActions } from "../dojo/useShopActions";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { getCardType } from "../utils/getCardType";
@@ -80,27 +82,21 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const {
-    setup: {
-      systemCalls: {
-        buyCard: dojoBuyCard,
-        levelUpPokerHand: dojoLevelUpHand,
-        storeReroll,
-        buyPack: dojoBuyPack,
-        selectCardsFromPack: dojoSelectCardsFromPack,
-      },
-    },
-    account,
+    account: { account },
   } = useDojo();
+
+  const {
+    buyCard: dojoBuyCard,
+    buyPack: dojoBuyPack,
+    selectCardsFromPack: dojoSelectCardsFromPack,
+    storeReroll,
+    levelUpPokerHand: dojoLevelUpHand,
+  } = useShopActions();
 
   const buyCard = (card: Card): Promise<boolean> => {
     setLocked(true);
     addPurchasedCard(card);
-    const promise = dojoBuyCard(
-      account.account,
-      gameId,
-      card.idx,
-      getCardType(card)
-    );
+    const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
     promise
       .then((response) => {
         if (!response) {
@@ -117,16 +113,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    return dojoBuyPack(account.account, gameId, Number(pack.idx));
+    return dojoBuyPack(gameId, Number(pack.idx));
   };
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
-    return dojoSelectCardsFromPack(account.account, gameId, cardIndices);
+    return dojoSelectCardsFromPack(gameId, cardIndices);
   };
 
   const reroll = () => {
     setLocked(true);
-    const promise = storeReroll(account.account, gameId);
+    const promise = storeReroll(gameId);
     promise
       .then(() => {
         clearPurchasedItems();
@@ -140,7 +136,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     setLocked(true);
     addPokerHandPurchased(item);
-    const promise = dojoLevelUpHand(account.account, gameId, item.idx);
+    const promise = dojoLevelUpHand(gameId, item.idx);
     promise
       .then((response) => {
         if (!response) {
