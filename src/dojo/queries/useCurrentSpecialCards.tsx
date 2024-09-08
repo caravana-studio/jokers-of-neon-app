@@ -1,7 +1,7 @@
 import {
+  Component,
   Entity,
-  getComponentValue,
-  OverridableComponent,
+  getComponentValue
 } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useMemo } from "react";
@@ -12,7 +12,7 @@ import { useGame } from "./useGame.tsx";
 const getSpecialCard = (
   gameId: number,
   index: number,
-  component: OverridableComponent
+  component: Component
 ) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
