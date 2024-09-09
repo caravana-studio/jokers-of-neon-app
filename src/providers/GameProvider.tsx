@@ -101,6 +101,7 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  const [trigger, setTrigger] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -114,6 +115,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
 
   let game = useGame();
+  console.log(game?.state);
 
   const { setAnimatedCard } = useCardAnimations();
   const [afterRewards, SetAfterRewards] = useState(false);
@@ -125,6 +127,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       SetAfterRewards(false);
       navigate("/rewards");
     }
+    setTrigger((prev) => !prev);
   }, [game?.state, afterRewards]);
 
   const {
@@ -378,7 +381,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               level: level,
             });
             SetAfterRewards(true);
-            game = useGame();
           }, 1000);
           setPreSelectionLocked(true);
         } else {
