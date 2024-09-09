@@ -7,9 +7,17 @@ export const getTooltip = (card: Card, isPack = false) => {
 
   const tooltip = `${name}: ${description}`;
 
-  return (
-    <Text>
-      { card.isModifier || card.isSpecial ? description : tooltip}
-    </Text>
-  );
+  const colorizeText = (inputText: string) => {
+    const parts = inputText.split(/((?:\+\d+\s*(?:points?|multi))+)/g);
+    return parts.map((part, index) => {
+      if (/^\+\d+\s*points?/.test(part)) {
+        return <span key={index} style={{ color: 'red' }}>{part}</span>;
+      } else if (/^\+\d+\s*multi/.test(part)) {
+        return <span key={index} style={{ color: 'blue' }}>{part}</span>;
+      }
+      return part;
+    });
+  };
+
+  return <>{colorizeText(card.isModifier || card.isSpecial ? description : tooltip)}</>;
 };
