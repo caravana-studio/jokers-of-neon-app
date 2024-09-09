@@ -121,7 +121,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     console.log("State change: ", game?.state);
     if (game?.state === "AT_SHOP" && afterRewards) {
-      navigate("/redirect/store");
+      navigate("/rewards");
     }
   }, [game?.state, afterRewards]);
 
@@ -376,7 +376,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               level: level,
             });
             SetAfterRewards(true);
-            // navigate("/rewards");
           }, 1000);
           setPreSelectionLocked(true);
         } else {
