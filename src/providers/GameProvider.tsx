@@ -115,7 +115,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
 
   let game = useGame();
-  console.log(game?.state);
 
   const { setAnimatedCard } = useCardAnimations();
   const [afterRewards, SetAfterRewards] = useState(false);
@@ -129,6 +128,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
     setTrigger((prev) => !prev);
   }, [game?.state, afterRewards]);
+
+
+  if(trigger){
+    game = useGame();
+    console.log(game?.state);
+  }
 
   const {
     gameId,
