@@ -35,7 +35,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   }, [roundRewards]);
 
   return (
-    <Flex width="100%" height={CARD_HEIGHT_PX} >
+    <Flex width="100%" height={CARD_HEIGHT_PX + 8} >
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (

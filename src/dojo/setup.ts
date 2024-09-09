@@ -136,6 +136,7 @@ export async function setup({ ...config }: DojoConfig) {
     dojoProvider,
     burnerManager,
     toriiClient,
+    sync,
     syncCallback: async () => await syncEntitiesForGameID(),
   };
 }
