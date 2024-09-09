@@ -11,10 +11,13 @@ export const getNeonPlayEvent = (
   const neonPlayEvent = events.find(
     (event) => event.keys[0] === NEON_PLAY_EVENT
   );
+
+  const cardIndexes = getArrayValueFromEvent(neonPlayEvent, 1)
+  const arrayLength = (neonPlayEvent ? getNumberValueFromEvent(neonPlayEvent, 1) : 0 ) ?? 0
   
   return neonPlayEvent && {
-    neon_cards_idx: getArrayValueFromEvent(neonPlayEvent, 1) ?? [],
-    points: getNumberValueFromEvent(neonPlayEvent, 2) ?? 0,
-    multi: getNumberValueFromEvent(neonPlayEvent, 3) ?? 0,
+    neon_cards_idx: cardIndexes,
+    points: getNumberValueFromEvent(neonPlayEvent, arrayLength + 2) ?? 0,
+    multi: getNumberValueFromEvent(neonPlayEvent, arrayLength + 3) ?? 0,
   }
 };

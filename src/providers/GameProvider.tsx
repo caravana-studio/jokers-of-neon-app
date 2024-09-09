@@ -144,6 +144,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sortBySuit,
     setSortBySuit,
     username,
+    setPlayIsNeon
   } = state;
 
   const resetLevel = () => {
@@ -207,6 +208,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      const NEON_PLAY_DURATION = playEvents.neonPlayEvent ? PLAY_ANIMATION_DURATION : 0
       const MODIFIER_SUIT_CHANGE_DURATION =
         (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
       const SPECIAL_SUIT_CHANGE_DURATION =
@@ -219,6 +221,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const SPECIAL_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
+      NEON_PLAY_DURATION+
         MODIFIER_SUIT_CHANGE_DURATION +
         SPECIAL_SUIT_CHANGE_DURATION +
         LEVEL_BOOSTER_DURATION +
@@ -229,13 +232,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPreSelectionLocked(true);
 
       if (playEvents.neonPlayEvent) {
+        setPlayIsNeon(true)
         console.log("neon play event", playEvents.neonPlayEvent);
         setAnimatedCard({
           animationIndex: -1,
+          suit: 5,
           idx: playEvents.neonPlayEvent.neon_cards_idx,
-          points: playEvents.neonPlayEvent.points,
-          multi: playEvents.neonPlayEvent.multi,
         })
+        playEvents.neonPlayEvent.points && setPoints(playEvents.neonPlayEvent.points)
+        playEvents.neonPlayEvent.multi && setMulti(playEvents.neonPlayEvent.multi)
       }
 
       if (playEvents.modifierSuitEvents) {
@@ -258,7 +263,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               });
               return newHand;
             });
-          }, PLAY_ANIMATION_DURATION * index);
+          }, PLAY_ANIMATION_DURATION * index + NEON_PLAY_DURATION);
         });
       }
       setTimeout(() => {
@@ -350,7 +355,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             }, COMMON_CARDS_DURATION);
           }, LEVEL_BOOSTER_DURATION);
         }, SPECIAL_SUIT_CHANGE_DURATION);
-      }, MODIFIER_SUIT_CHANGE_DURATION);
+      }, MODIFIER_SUIT_CHANGE_DURATION + NEON_PLAY_DURATION);
 
       setTimeout(() => {
         setPlayAnimation(true);
@@ -363,6 +368,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setPlayAnimation(false);
         clearPreSelection();
         handsLeft > 0 && setPreSelectionLocked(false);
+        setPlayIsNeon(false);
 
         if (playEvents.gameOver) {
           console.log("GAME OVER");
