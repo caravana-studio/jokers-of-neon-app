@@ -11,7 +11,14 @@ export const useGame = () => {
       clientComponents: { Game },
     },
   } = useDojo();
+  
   const gameId = getLSGameId();
-  const entityId = getEntityIdFromKeys([ BigInt(gameId)]) as Entity;
-  return useComponentValue(Game, entityId);
+  const entityId = useMemo(
+    () => getEntityIdFromKeys([BigInt(gameId)]) as Entity,
+    [gameId],
+  );
+  const component = useComponentValue(Game, entityId);
+  console.log('Component Value:', component);
+  
+  return component;
 };

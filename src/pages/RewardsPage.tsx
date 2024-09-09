@@ -9,6 +9,7 @@ export const RewardsPage = () => {
   const { roundRewards } = useGameContext();
   const navigate = useNavigate();
   const game = useGame();
+  console.log(game?.id);
 
   useEffect(() => {
     if (!game) return;
