@@ -101,7 +101,6 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
-  const [trigger, setTrigger] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -120,14 +119,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [afterRewards, SetAfterRewards] = useState(false);
 
   useEffect(() => {
-    console.log("State change: ", game?.state);
+    // console.log("State change: ", game?.state);
     console.log("rewards ", afterRewards);
     if (game?.state === "AT_SHOP" && afterRewards) {
       SetAfterRewards(false);
       navigate("/rewards");
     }
-    setTrigger((prev) => !prev);
-  }, [game, game?.state, afterRewards]);
+  }, [game?.state, afterRewards]);
+
+  useEffect(() => {
+    console.log("listening to game: ", game?.state);    
+  }, [game]);
 
 
   const {
