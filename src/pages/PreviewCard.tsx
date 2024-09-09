@@ -81,16 +81,14 @@ const PreviewCard = () => {
         <Flex flexDirection={"column"} 
         justifyContent={"center"} height={"100vh"}>
             <Flex 
-            // py={2} 
-            // px={8} 
-            flexDirection={"column"} 
-            justifyContent={"center"} 
-            width="60%"
-            margin={"0 auto"} 
-            bg="rgba(0, 0, 0, 0.3)"
-            borderRadius="25px"
-            p={6}
-            boxShadow={`0px 0px 10px 1px ${white}`}
+              flexDirection={"column"} 
+              justifyContent={"center"} 
+              width="60%"
+              margin={"0 auto"} 
+              bg="rgba(0, 0, 0, 0.8)"
+              borderRadius="25px"
+              p={6}
+              boxShadow={`0px 0px 10px 1px ${white}`}
             >
                 <Flex>
                     <OpenAnimation
@@ -169,32 +167,33 @@ const PreviewCard = () => {
                               filter="blur(0.5px)"
                               sx={{
                                 position: "relative",
+                                width: "50%",
                                 _before: {
                                   content: '""',
                                   position: "absolute",
                                   bottom: 0,
-                                  width: "50%",
+                                  width: "100%",
                                   height: "2px",               
                                   backgroundColor: "white",
                                   boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
                                 },
                               }}
                             >
-                              <Flex flex={1} alignItems={"end"}
+                              <Flex flex={1} alignItems={"end"} justifyContent={"space-between"} 
                                   filter="blur(0.5px)"
                                   sx={{
-                                  paddingTop: "8px",
-                                  paddingBottom: "8px",
-                                  position: "relative",
-                                  _before: {
-                                    content: '""',
-                                    position: "absolute",
-                                    top: 0,
-                                    width: "50%",
-                                    height: "2px",               
-                                    backgroundColor: "white",
-                                    boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                  },
+                                    paddingTop: "8px",
+                                    paddingBottom: "8px",
+                                    position: "relative",
+                                    _before: {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      width: "100%",
+                                      height: "2px",               
+                                      backgroundColor: "white",
+                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                    },
                                   }}
                               >
                                 <Text color="white" fontSize="lg">
@@ -210,21 +209,27 @@ const PreviewCard = () => {
                 </Flex>
             </Flex>
 
-            <Flex width="60%" gap={4} m={1000} mt={6}
-            justifyContent={"space-between"} margin={"0 auto"} >
-                <Flex 
-                borderRadius="18px"
+            <Flex 
+              width="60%"
+              gap={4} 
+              m={1000} 
+              mt={6}
+              justifyContent={"space-between"} 
+              margin={"0 auto"} 
+            >
+              <Flex 
+                borderRadius="15px"
                 boxShadow={`0px 0px 10px 1px ${white}`}
-                // pr={80}
-                // py={1}
-                // justifyContent="center"
+                bg={"rgba(0, 0, 0, 0.8)"}
+                pl={8}
+                py={1}
                 alignItems="center"
                 flex={1}            
-                >
-                    <Text ml={"30px"} color="white" fontSize="2xl" fontWeight="bold" >
-                        PRICE: {card.price} ¢
-                    </Text>
-                </Flex>
+              >
+                  <Heading size="m" variant="italic">
+                    PRICE: {card.price} ¢
+                  </Heading>
+              </Flex>
 
                 <HStack gap={4}>
                 {notEnoughCash || noSpaceForSpecialCards ? (
