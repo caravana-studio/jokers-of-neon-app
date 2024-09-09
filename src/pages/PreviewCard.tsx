@@ -227,8 +227,9 @@ const PreviewCard = () => {
                 flex={1}            
               >
                   <Heading size="m" variant="italic">
-                    PRICE: {card.price} ¢
+                    PRICE: {card.price} 
                   </Heading>
+                  <Heading size="xl" pb={1}>¢</Heading>
               </Flex>
 
                 <HStack gap={4}>
