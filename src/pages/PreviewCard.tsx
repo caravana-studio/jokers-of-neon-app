@@ -123,7 +123,7 @@ const PreviewCard = () => {
                                       content: '""',
                                       position: "absolute",
                                       bottom: 0,
-                                      width: "90%",
+                                      width: "95%",
                                       height: "2px",               
                                       backgroundColor: "white",
                                       boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
@@ -145,7 +145,7 @@ const PreviewCard = () => {
                                       content: '""',
                                       position: "absolute",
                                       bottom: 0,
-                                      width: "90%",
+                                      width: "95%",
                                       height: "2px",               
                                       backgroundColor: "white",
                                       boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
@@ -167,7 +167,7 @@ const PreviewCard = () => {
                               filter="blur(0.5px)"
                               sx={{
                                 position: "relative",
-                                width: "50%",
+                                width: "60%",
                                 _before: {
                                   content: '""',
                                   position: "absolute",
