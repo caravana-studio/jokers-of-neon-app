@@ -130,10 +130,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [game?.state, afterRewards]);
 
 
-  if(trigger){
-    game = useGame();
-    console.log(game?.state);
-  }
+  // if(trigger){
+  //   game = useGame();
+  //   console.log(game?.state);
+  // }
 
   const {
     gameId,
