@@ -183,6 +183,8 @@ const PreviewCard = () => {
                               <Flex flex={1} alignItems={"end"}
                                   filter="blur(0.5px)"
                                   sx={{
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
                                   position: "relative",
                                   _before: {
                                     content: '""',
@@ -198,7 +200,7 @@ const PreviewCard = () => {
                                 <Text color="white" fontSize="lg">
                                     MY COINS:
                                 </Text>
-                                <Text color="white" fontSize="xl">
+                                <Text color="white" fontSize="xl" alignSelf={"right"}>
                                     {cash} ¢
                                 </Text>
                               </Flex>
