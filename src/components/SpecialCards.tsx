@@ -25,6 +25,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
       className="special-cards-step-3"
       width="100%"
       p={2}
+      mt={6}
       boxShadow={inStore ? "none" : `0px 26px 30px -30px ${colors.neonGreen}`}
     >
       {inStore ? (
