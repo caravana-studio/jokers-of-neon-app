@@ -19,6 +19,7 @@ import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
 import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
 import { useEffect, useState } from "react";
+import { parseHand } from "../../enums/hands.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -114,6 +115,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             <Tbody>
               { !isLoading && filteredPlays.map((play, index) => {
                 const pokerHandString = play.poker_hand.toString();
+                const pokerHandParsed = parseHand(pokerHandString);
                 
                 const storePlay = pokerHandItems?.find(
                   (item) => item.poker_hand == pokerHandString
@@ -138,7 +140,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
                 const nameTd = (
                   <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
-                    {pokerHandString}
+                    {pokerHandParsed.name}
                   </Td>
                 );
                 const pointsMultiTd = (
