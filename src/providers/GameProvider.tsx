@@ -120,6 +120,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     console.log("State change: ", game?.state);
+    console.log("rewards ", afterRewards);
     if (game?.state === "AT_SHOP" && afterRewards) {
       SetAfterRewards(false);
       navigate("/rewards");

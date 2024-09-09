@@ -48,7 +48,7 @@ export const Store = () => {
       if (game?.state === "FINISHED") {
         navigate("/gameover");
       } else if (game?.state === "IN_GAME") {
-        navigate("/redirect/demo");
+        navigate("/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
         navigate("/open-pack");
       }
