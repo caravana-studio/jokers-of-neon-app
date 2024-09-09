@@ -43,6 +43,7 @@ export const Store = () => {
   }, [store?.reroll_executed]);
 
   useEffect(() => {
+    console.log("state on store:", game?.state);
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
         navigate("/gameover");
@@ -131,14 +132,6 @@ export const Store = () => {
       GO TO {isMobile && <br />} NEXT LEVEL
     </Button>
   );
-
-  useEffect(() => {
-    if (state === "FINISHED") {
-      navigate("/gameover");
-    } else if (state === "IN_GAME") {
-      navigate("/demo");
-    }
-  }, [state]);
 
   useEffect(() => {
     if (!game) {
