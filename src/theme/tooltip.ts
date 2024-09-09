@@ -10,7 +10,7 @@ const baseStyle = {
   color: 'white',
   boxShadow: `0px 0px 10px 2px white`,
   borderRadius: '10px',
-  [$arrowBg.variable]: "colors.black",
+  [$arrowBg.variable]: "colors.transparent",
 };
 
 
