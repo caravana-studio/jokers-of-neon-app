@@ -10,11 +10,12 @@ export const RewardsPage = () => {
   const navigate = useNavigate();
   const game = useGame();
 
-  if (!roundRewards) {
-    //navigate("/redirect/store");
-  }
+  // if (!roundRewards) {
+  //   navigate("/redirect/store");
+  // }
 
   useEffect(() => {
+    console.log("state on rewards: ", game?.state);
     if (!roundRewards) {
      if (game?.state === "AT_SHOP") {
         navigate("/redirect/store");

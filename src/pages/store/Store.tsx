@@ -47,7 +47,7 @@ export const Store = () => {
       if (game?.state === "FINISHED") {
         navigate("/gameover");
       } else if (game?.state === "IN_GAME") {
-        navigate("/demo");
+        navigate("/redirect/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
         navigate("/open-pack");
       }
@@ -117,7 +117,7 @@ export const Store = () => {
         skipShop(gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
-            navigate("/redirect/demo");
+            // navigate("/redirect/demo");
           } else {
             setLoading(false);
           }
