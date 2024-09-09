@@ -2,7 +2,7 @@ import {
     getComponentValue,
     Has,
   } from "@dojoengine/recs";
-import { PlayerLevelPokerHand } from "../generated/typescript/models.gen";
+import { PlayerLevelPokerHand } from "../typescript/models.gen";
 import { useEffect, useState } from "react";
 import { useDojo } from "../useDojo";
 import { useEntityQuery } from "@dojoengine/react";

@@ -1,7 +1,7 @@
 import {
-    Entity,
-    getComponentValue,
-    OverridableComponent,
+  Component,
+  Entity,
+  getComponentValue
 } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { SortBy } from "../../enums/sortBy";
@@ -10,11 +10,7 @@ import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 
-const getCard = (
-  gameId: number,
-  index: number,
-  entity: OverridableComponent
-) => {
+const getCard = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),

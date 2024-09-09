@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C10, C2, C3, C4, C5, C9, CA, CJ, CQ, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S2, S3, S4, S5, S6, S7, S8, S9, SA, SK } from "../../mocks/cardMocks";
+import { C10, C2, C3, C4, C5, C6, C8, C9, CA, CJ, CK, CQ, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S10, S2, S3, S4, S5, S6, S7, S8, S9, SA, SK } from "../../mocks/cardMocks";
 
 test("One Joker should be high card", () => {
   expect(testCheckHand([JOKER1])).toBe(Plays.HIGH_CARD);
@@ -202,3 +202,11 @@ test("Flush with four cards and a joker should work", () => {
 test("Flush should with one joker and almost straight should work", () => {
   expect(testCheckHand([CJ, CQ, CA, C9, JOKER2])).toBe(Plays.FLUSH);
 });
+
+test("Straigt case 4 with Joker", () => {
+  expect(testCheckHand([S7, C8, S10, C6, JOKER1])).toBe(Plays.STRAIGHT);
+})
+
+test("Full house case 1 with Joker", () => {
+  expect(testCheckHand([CJ, DJ, CK, HK, JOKER1])).toBe(Plays.FULL_HOUSE);
+})
