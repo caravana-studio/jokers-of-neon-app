@@ -113,12 +113,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
 
-  const game = useGame();
+  let game = useGame();
 
   const { setAnimatedCard } = useCardAnimations();
   const [afterRewards, SetAfterRewards] = useState(false);
 
   useEffect(() => {
+    game = useGame();
     console.log("State change: ", game?.state);
     console.log("rewards ", afterRewards);
     if (game?.state === "AT_SHOP" && afterRewards) {
