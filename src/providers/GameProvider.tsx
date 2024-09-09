@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
-import { useGame } from "../dojo/queries/useGame.tsx";
+import { useGame, useGamev2 } from "../dojo/queries/useGame.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
@@ -114,7 +114,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
 
-  let game = useGame();
+  let game = useGamev2();
 
   const { setAnimatedCard } = useCardAnimations();
   const [afterRewards, SetAfterRewards] = useState(false);
@@ -127,13 +127,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       navigate("/rewards");
     }
     setTrigger((prev) => !prev);
-  }, [game?.state, afterRewards]);
+  }, [game, game?.state, afterRewards]);
 
-
-  // if(trigger){
-  //   game = useGame();
-  //   console.log(game?.state);
-  // }
 
   const {
     gameId,
