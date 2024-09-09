@@ -20,6 +20,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { useRound } from "../dojo/queries/useRound.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -54,8 +55,6 @@ interface IGameContext {
   restartGame: () => void;
   preSelectionLocked: boolean;
   score: number;
-  handsLeft: number;
-  discardsLeft: number;
   lockRedirection: boolean;
 }
 
@@ -92,8 +91,6 @@ const GameContext = createContext<IGameContext>({
   restartGame: () => {},
   preSelectionLocked: false,
   score: 0,
-  handsLeft: 4,
-  discardsLeft: 4,
   lockRedirection: false,
 });
 export const useGameContext = () => useContext(GameContext);
@@ -101,6 +98,9 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
 
   const navigate = useNavigate();
   const {
@@ -138,9 +138,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayAnimation,
     setError,
     setScore,
-    handsLeft,
-    setHandsLeft,
-    setDiscardsLeft,
     sortBySuit,
     setSortBySuit,
     username,
@@ -150,8 +147,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
     setScore(0);
-    setHandsLeft(game?.max_hands ?? 1);
-    setDiscardsLeft(game?.max_discard ?? 1);
   };
 
   const toggleSortBy = () => {
@@ -386,7 +381,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           animatePlay(response);
-          setHandsLeft((prev) => prev - 1);
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -463,7 +457,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               navigate("/gameover");
             }, 1000);
           } else {
-            setDiscardsLeft((prev) => prev - 1);
             replaceCards(response.cards);
           }
         }
