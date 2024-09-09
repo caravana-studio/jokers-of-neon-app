@@ -173,7 +173,7 @@ const PreviewCard = () => {
                                   content: '""',
                                   position: "absolute",
                                   bottom: 0,
-                                  width: "90%",
+                                  width: "50%",
                                   height: "2px",               
                                   backgroundColor: "white",
                                   boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
@@ -190,7 +190,7 @@ const PreviewCard = () => {
                                     content: '""',
                                     position: "absolute",
                                     top: 0,
-                                    width: "90%",
+                                    width: "50%",
                                     height: "2px",               
                                     backgroundColor: "white",
                                     boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
@@ -200,7 +200,7 @@ const PreviewCard = () => {
                                 <Text color="white" fontSize="lg">
                                     MY COINS:
                                 </Text>
-                                <Text color="white" fontSize="xl" alignSelf={"right"}>
+                                <Text color="white" fontSize="xl">
                                     {cash} ¢
                                 </Text>
                               </Flex>
