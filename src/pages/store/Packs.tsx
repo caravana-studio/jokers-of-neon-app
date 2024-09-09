@@ -2,10 +2,10 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
-import { BlisterPackItem } from "../../dojo/generated/typescript/models.gen";
-import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useStore } from "../../providers/StoreProvider";
 import { ShowCardModal } from "./ShowCardModal";
+import { useShopItems } from "../../dojo/queries/useShopItems";
+import { BlisterPackItem } from "../../dojo/typescript/models.gen";
 
 export const Packs = () => {
   const { packs } = useShopItems();
