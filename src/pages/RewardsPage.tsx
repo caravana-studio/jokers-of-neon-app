@@ -11,16 +11,16 @@ export const RewardsPage = () => {
   const game = useGame();
 
   if (!roundRewards) {
-    navigate("/redirect/store");
+    //navigate("/redirect/store");
   }
 
   useEffect(() => {
     if (!roundRewards) {
      if (game?.state === "AT_SHOP") {
-        navigate("/demo");
+        navigate("/redirect/store");
      }
     }
-  }, [game?.state, roundRewards]);
+  }, [game?.state]);
 
   return (
     <Background type="game" dark rewardsDecoration>
