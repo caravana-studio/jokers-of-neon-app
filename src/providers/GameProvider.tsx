@@ -116,6 +116,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const game = useGame();
 
   const { setAnimatedCard } = useCardAnimations();
+  const [afterRewards, SetAfterRewards] = useState(false);
+
+  useEffect(() => {
+    console.log("State change: ", game?.state);
+    if (game?.state === "AT_SHOP" && afterRewards) {
+      navigate("/redirect/store");
+    }
+  }, [game?.state, afterRewards]);
 
   const {
     gameId,
@@ -367,7 +375,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               ...playEvents.detailEarned!,
               level: level,
             });
-            navigate("/rewards");
+            SetAfterRewards(true);
+            // navigate("/rewards");
           }, 1000);
           setPreSelectionLocked(true);
         } else {

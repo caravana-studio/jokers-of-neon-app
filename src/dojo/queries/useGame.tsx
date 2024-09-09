@@ -18,7 +18,6 @@ export const useGame = () => {
     [gameId],
   );
   const component = useComponentValue(Game, entityId);
-  console.log('Component Value:', component);
   
   return component;
 };
