@@ -21,7 +21,7 @@ export const Redirect = () => {
     } else if (state === "AT_SHOP" && page === "store") {
       navigate("/store");
     }
-  }, []);
+  }, [state]);
 
   return (
     <Background type="game">

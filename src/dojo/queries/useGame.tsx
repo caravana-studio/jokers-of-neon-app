@@ -12,12 +12,6 @@ export const useGame = () => {
     },
   } = useDojo();
   const gameId = getLSGameId();
-  const entityId = useMemo(
-    () =>
-      getEntityIdFromKeys([
-        BigInt(gameId),
-      ]) as Entity,
-    [gameId],
-  );
+  const entityId = getEntityIdFromKeys([ BigInt(gameId)]) as Entity;
   return useComponentValue(Game, entityId);
 };
