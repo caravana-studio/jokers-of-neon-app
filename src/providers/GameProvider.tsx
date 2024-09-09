@@ -119,7 +119,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [afterRewards, SetAfterRewards] = useState(false);
 
   useEffect(() => {
-    game = useGame();
     console.log("State change: ", game?.state);
     console.log("rewards ", afterRewards);
     if (game?.state === "AT_SHOP" && afterRewards) {
@@ -379,6 +378,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               level: level,
             });
             SetAfterRewards(true);
+            game = useGame();
           }, 1000);
           setPreSelectionLocked(true);
         } else {
