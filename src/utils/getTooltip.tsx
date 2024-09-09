@@ -1,6 +1,6 @@
 import { Card } from "../types/Card";
 import { getCardData } from "./getCardData";
-import { VIOLET, NEON_GREEN } from "../theme/colors";
+import { VIOLET_LIGHT, NEON_GREEN } from "../theme/colors";
 
 export const getTooltip = (card: Card, isPack = false) => {
   const { name, description } = getCardData(card, isPack);
@@ -13,7 +13,7 @@ export const getTooltip = (card: Card, isPack = false) => {
       if (/^\+\d+\s*points?/.test(part)) {
         return <span key={index} style={{ fontWeight:'bold', color: `${NEON_GREEN}` }}>{part}</span>;
       } else if (/^\+\d+\s*multi/.test(part)) {
-        return <span key={index} style={{ fontWeight:'bold', color: `${VIOLET}` }}>{part}</span>;
+        return <span key={index} style={{ fontWeight:'bold', color: `${VIOLET_LIGHT}` }}>{part}</span>;
       }
       return part;
     });
