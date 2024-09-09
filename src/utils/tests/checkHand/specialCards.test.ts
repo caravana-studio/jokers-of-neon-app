@@ -107,3 +107,11 @@ test("StraightFlush with EasyStraight, EasyFlush and AllCardsToHearts should wor
 test("RoyalFlush with EasyStraight, EasyFlush and AllCardsToHearts should work", () => {
   expect(testCheckHand([HA, HJ, HQ, HK], [EasyStraight, EasyFlush, AllCardsToHearts])).toBe(Plays.ROYAL_FLUSH);
   });
+
+test("FiveOfAKind with three of a kind, two jokers and AllCardsToHearts should work", () => {
+  expect(testCheckHand([SA, CA, HA, JOKER2, JOKER1], [AllCardsToHearts])).toBe(Plays.FIVE_OF_A_KIND);
+});
+
+test("FiveOfAKind with four of a kind, a jokers and AllCardsToHearts should work", () => {
+  expect(testCheckHand([SA, CA, HA, DA, JOKER1], [AllCardsToHearts])).toBe(Plays.FIVE_OF_A_KIND);
+});
