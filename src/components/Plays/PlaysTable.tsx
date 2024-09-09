@@ -17,7 +17,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
-import { getPokerPlays } from "../../dojo/utils/getPokerPlays";
+import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
 import { useEffect, useState } from "react";
 
 interface PlaysTableProps {
@@ -38,7 +38,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  let plays = getPokerPlays(gameId);
+  let plays = usePokerPlays(gameId);
 
   useEffect(() => {
     if (plays.plays.length > 0) { 

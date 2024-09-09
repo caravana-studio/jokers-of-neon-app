@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDojo } from "../useDojo";
 import { useEntityQuery } from "@dojoengine/react";
 
-export const getPokerPlays = (gameId: number): { plays: PlayerLevelPokerHand[] } => {
+export const usePokerPlays = (gameId: number): { plays: PlayerLevelPokerHand[] } => {
     const [plays, setPlays] = useState<any>({});
     
     const {
