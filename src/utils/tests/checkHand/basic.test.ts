@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C10, C2, C3, D2, D3, D4, DJ, H10, H2, H3, H5, H9, HA, HJ, HK, HQ, S2, S6, SA } from "../../mocks/cardMocks";
+import { C10, C2, C3, C4, C7, C8, C9, CA, CJ, CK, D2, D3, D4, D5, DJ, H10, H2, H3, H5, H6, H7, H9, HA, HJ, HK, HQ, S10, S2, S3, S5, S6, S7, S8, S9, SA } from "../../mocks/cardMocks";
 
 test("Royal flush should work", () => {
   expect(testCheckHand([HA, HK, HQ, HJ, H10])).toBe(Plays.ROYAL_FLUSH);
@@ -61,4 +61,22 @@ test("HighCard with A should work", () => {
 
 test("FiveOfAKind should work", () => {
   expect(testCheckHand([H2, C2, D2, S2, H2])).toBe(Plays.FIVE_OF_A_KIND);
+});
+
+// Straight
+test("Straight case 1", () => {
+  expect(testCheckHand([CA, C2, S3, C4, D5])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight case 2", () => {
+  expect(testCheckHand([S7, S8, C9, S10, DJ])).toBe(Plays.STRAIGHT);
+});
+
+test("Straight case 3", () => {
+  expect(testCheckHand([S5, H6, H7, C8, S9])).toBe(Plays.STRAIGHT);
+});
+
+// Flush
+test("Flush case 1", () => {
+  expect(testCheckHand([C3, C7, C8, CJ, CK])).toBe(Plays.FLUSH);
 });

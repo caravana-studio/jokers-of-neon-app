@@ -7,7 +7,6 @@ import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
-import { preloadImages } from "../utils/preloadImages";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -15,16 +14,6 @@ export const Home = () => {
   const { account } = useDojo();
   const navigate = useNavigate();
   const { connect, connectors } = useConnect();
-
-  useEffect(() => {
-    preloadImages()
-      .then(() => {
-        console.log("All images preloaded");
-      })
-      .catch((err) => {
-        console.error("Error preloading images:", err);
-      });
-  }, []);
 
   useEffect(() => {
     if (account && playButtonClicked) {
