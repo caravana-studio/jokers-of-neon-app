@@ -23,7 +23,7 @@ import { Card } from "../types/Card";
 import theme from "../theme/theme";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
-const { white, blue } = theme.colors;
+const { white, neonGreen } = theme.colors;
 
 const PreviewCard = () => {
   const { state } = useLocation();
@@ -85,7 +85,7 @@ const PreviewCard = () => {
               justifyContent={"center"} 
               width="60%"
               margin={"0 auto"} 
-              bg="rgba(0, 0, 0, 0.8)"
+              bg="rgba(0, 0, 0, 0.6)"
               borderRadius="25px"
               p={6}
               boxShadow={`0px 0px 10px 1px ${white}`}
@@ -132,7 +132,7 @@ const PreviewCard = () => {
                                 >
                                     CARD TYPE:
                                 </Text>
-                                <Text color="cyan.300" fontSize="xl">
+                                <Text color={neonGreen} fontSize="xl">
                                     {card.isSpecial ? "Special" : "Normal"}
                                 </Text>
                             </Box>
@@ -154,7 +154,7 @@ const PreviewCard = () => {
                                 >
                                     DESCRIPTION:
                                 </Text>
-                                <Text color="cyan.300" fontSize="xl">
+                                <Text color={neonGreen} fontSize="xl">
                                     {description}
                                 </Text>
                                 {card.temporary && (
@@ -163,7 +163,7 @@ const PreviewCard = () => {
                                     </Text>
                                 )}
                             </Box>
-                            <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"} 
+                            <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
                               filter="blur(0.5px)"
                               sx={{
                                 position: "relative",
@@ -213,14 +213,14 @@ const PreviewCard = () => {
               width="60%"
               gap={4} 
               m={1000} 
-              mt={6}
+              mt={8}
               justifyContent={"space-between"} 
               margin={"0 auto"} 
             >
               <Flex 
                 borderRadius="15px"
                 boxShadow={`0px 0px 10px 1px ${white}`}
-                bg={"rgba(0, 0, 0, 0.8)"}
+                bg={"rgba(0, 0, 0, 0.3)"}
                 pl={8}
                 py={"2px"}
                 alignItems="center"
