@@ -1,4 +1,4 @@
-import { BLUE, NEON_GREEN, VIOLET } from "./colors";
+import { BLUE, NEON_GREEN, VIOLET, VIOLET_LIGHT } from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
@@ -36,6 +36,64 @@ const defaultOutline = defineStyle({
   color: "rgb(255,255,255)",
 });
 
+const outlinePrimaryGlow = defineStyle({
+  backgroundColor: "transparent",
+  border: "1px solid white",
+  color: "white",
+  boxShadow: `0px 0px 12px 0px white`,
+  _hover: {
+    backgroundColor: "blue",
+    color: "white",
+    borderColor: "transparent",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${NEON_GREEN}`,
+      md: `0px 0px 20px 12px ${NEON_GREEN}`,
+    }, 
+  },
+  _active: {
+    backgroundColor: "blue",
+    border: "1px solid white",
+    color: "white",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${NEON_GREEN}`,
+      md: `0px 0px 20px 12px ${NEON_GREEN}`,
+    },
+  },
+  _disabled: {
+    border: "1px solid white !important",
+    boxShadow: "none !important",
+  }
+});
+
+const outlineSecondaryGlow = defineStyle({
+  backgroundColor: "transparent",
+  border: "1px solid white",
+  color: "white",
+  boxShadow: `0px 0px 12px 0px white`,
+  _hover: {
+    backgroundColor: "violet",
+    color: "white",
+    borderColor: "transparent",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${VIOLET_LIGHT}`,
+      md: `0px 0px 20px 12px ${VIOLET_LIGHT}`,
+    }, 
+  },
+  _active: {
+    backgroundColor: "violet",
+    border: "1px solid white",
+    color: "white",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${VIOLET_LIGHT}`,
+      md: `0px 0px 20px 12px ${VIOLET_LIGHT}`,
+    },
+  _disabled: {
+    border: "1px solid white !important",
+    boxShadow: "none !important",
+  }
+  },
+});
+
 export const buttonTheme = defineStyleConfig({
   baseStyle: {
     fontFamily: "Orbitron",
@@ -46,7 +104,7 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid, defaultOutline },
+  variants: { solid, outline, secondarySolid, defaultOutline, outlineSecondaryGlow, outlinePrimaryGlow },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },

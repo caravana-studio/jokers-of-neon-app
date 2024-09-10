@@ -62,9 +62,8 @@ const PreviewCard = () => {
           navigate(-1);
         }
       }}
-    //   sx={{ width: "50%" }}
-      variant="secondarySolid"
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
+      variant="outlinePrimaryGlow"
     >
       BUY
     </Button>
@@ -247,7 +246,9 @@ const PreviewCard = () => {
                         buyButton
                         )}
                         
-                        <Button variant="outline" onClick={() => navigate(-1)}>
+                        <Button 
+                          variant="outlineSecondaryGlow" onClick={() => navigate(-1)}
+                          >
                             Close
                         </Button>
                 </HStack>
