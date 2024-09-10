@@ -10,17 +10,14 @@ export const SortBy = () => {
 
   return (
     <Flex
-      backgroundColor="rgba(0,0,0,0.7)"
-      p={{ base: 0.5, sm: 2 }}
+      p={{ base: 0.5, sm: 1 }}
       flexDirection={isMobile ? "row" : "column"}
       alignItems="center"
-      gap={2}
-      mb={{ base: 0, md: 2 }}
+      gap={0.5}
     >
       <Text
-        size="l"
+        size="m"
         pl={{ base: 1, sm: 0 }}
-        variant={isMobile ? "none" : "underlined"}
       >
         Sort by
       </Text>

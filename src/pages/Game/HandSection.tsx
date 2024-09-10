@@ -16,6 +16,7 @@ import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
+import { Coins } from "./Coins";
 
 const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
@@ -50,13 +51,14 @@ export const HandSection = () => {
       {!isMobile && (
         <Box sx={{ mr: 4 }}>
           <SortBy />
+          <Coins />
         </Box>
       )}
       <Box
         pr={12}
         pl={!isMobile ? 4 : 2}
         pt={!isMobile ? 8 : 0}
-        className="game-tutorial-step-2 tutorial-modifiers-step-1" 
+        className="game-tutorial-step-2 tutorial-modifiers-step-1"
       >
         <SimpleGrid
           sx={{
@@ -72,22 +74,31 @@ export const HandSection = () => {
               <GridItem
                 key={card.idx}
                 w="100%"
-                sx={{
+                /*                 sx={{
                   transform: ` rotate(${
                     (index - hand.length / 2 + 0.5) * 3
                   }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
-                }}
+                }} */
                 onContextMenu={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
                   setMenuIdx(card.idx);
                   onOpen();
                 }}
-                className={card.isModifier ? 'tutorial-modifiers-step-2' : undefined}
+                className={
+                  card.isModifier ? "tutorial-modifiers-step-2" : undefined
+                }
               >
                 {card.isModifier && !isPreselected && (
-                  <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
-                    <MenuList textColor="black" minWidth="max-content" zIndex="7">
+                  <Menu
+                    isOpen={isOpen && menuIdx === card.idx}
+                    onClose={onClose}
+                  >
+                    <MenuList
+                      textColor="black"
+                      minWidth="max-content"
+                      zIndex="7"
+                    >
                       <MenuItem
                         onClick={(e) => {
                           e.stopPropagation();
