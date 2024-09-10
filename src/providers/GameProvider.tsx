@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
+import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
@@ -20,7 +21,6 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
-import { useRound } from "../dojo/queries/useRound.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -56,6 +56,7 @@ interface IGameContext {
   preSelectionLocked: boolean;
   score: number;
   lockRedirection: boolean;
+  specialCards: Card[];
 }
 
 const GameContext = createContext<IGameContext>({
@@ -92,13 +93,14 @@ const GameContext = createContext<IGameContext>({
   preSelectionLocked: false,
   score: 0,
   lockRedirection: false,
+  specialCards: [],
 });
 export const useGameContext = () => useContext(GameContext);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
-  
+
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
 
@@ -111,7 +113,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
+  const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
+    useGameActions();
 
   const game = useGame();
 
@@ -141,6 +144,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sortBySuit,
     setSortBySuit,
     username,
+    setLockedSpecialCards,
+    specialCards,
   } = state;
 
   const resetLevel = () => {
@@ -348,7 +353,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setPlayAnimation(false);
         clearPreSelection();
         handsLeft > 0 && setPreSelectionLocked(false);
-
+        setLockedSpecialCards([]);
         if (playEvents.gameOver) {
           console.log("GAME OVER");
           setTimeout(() => {
@@ -377,6 +382,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
+    setLockedSpecialCards(specialCards);
     play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
@@ -449,22 +455,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(gameId, preSelectedCards, preSelectedModifiers).then(
-      (response) => {
-        if (response.success) {
-          if (response.gameOver) {
-            setTimeout(() => {
-              navigate("/gameover");
-            }, 1000);
-          } else {
-            replaceCards(response.cards);
-          }
+    discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
+      if (response.success) {
+        if (response.gameOver) {
+          setTimeout(() => {
+            navigate("/gameover");
+          }, 1000);
+        } else {
+          replaceCards(response.cards);
         }
-        setPreSelectionLocked(false);
-        clearPreSelection();
-        setDiscardAnimation(false);
       }
-    );
+      setPreSelectionLocked(false);
+      clearPreSelection();
+      setDiscardAnimation(false);
+    });
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {

@@ -15,8 +15,8 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const { colors } = useTheme();
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
-  const specialCards = useCurrentSpecialCards();
-  const { discardSpecialCard } = useGameContext();
+
+  const { discardSpecialCard, specialCards } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
 

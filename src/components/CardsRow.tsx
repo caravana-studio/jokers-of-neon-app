@@ -7,7 +7,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CARD_HEIGHT_PX, CARD_WIDTH } from "../constants/visualProps";
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH
+} from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
@@ -35,7 +38,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   }, [roundRewards]);
 
   return (
-    <Flex width="100%" height={CARD_HEIGHT_PX + 8} >
+    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`}>
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (

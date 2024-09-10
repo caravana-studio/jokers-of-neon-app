@@ -34,6 +34,7 @@ export const useGameState = () => {
     !!localStorage.getItem(SORT_BY_SUIT)
   );
   const [score, setScore] = useState(0);
+  const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -45,7 +46,10 @@ export const useGameState = () => {
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
 
-  const specialCards = useCurrentSpecialCards();
+  const dojoSpecialCards = useCurrentSpecialCards();
+
+  const specialCards =
+    lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
@@ -71,7 +75,6 @@ export const useGameState = () => {
       setScore(dojoScore);
       setScoreInitialized(true);
     }
-
   }, [dojoScore]);
 
   const setMultiAndPoints = (play: Plays) => {
@@ -139,5 +142,7 @@ export const useGameState = () => {
     sortBy,
     sortedHand,
     username,
+    specialCards,
+    setLockedSpecialCards,
   };
 };
