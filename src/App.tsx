@@ -16,6 +16,8 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { isMobile } from "react-device-detect";
+import MobilePreviewCard from "./pages/PreviewCardMobile";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -74,7 +76,7 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <StoreProvider>
-                    <PreviewCard />
+                    {isMobile? <MobilePreviewCard/>: <PreviewCard />}
                   </StoreProvider>
                 </AudioPlayerProvider>
               }
