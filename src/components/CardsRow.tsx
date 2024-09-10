@@ -8,6 +8,7 @@ import {
   IconButton,
   Tooltip,
   flexbox,
+  Button,
 } from "@chakra-ui/react";
 import { CloseIcon, DeleteIcon } from "@chakra-ui/icons";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../constants/visualProps";
@@ -27,8 +28,6 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-
-  console.log(hoveredCard);
 
   useEffect(() => {
     if (roundRewards) {
@@ -76,68 +75,29 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                 <Box
                   position="relative"
                 >
-                  <Flex position={"absolute"} zIndex={7} bottom={2}
-left={2}>
-                  {hoveredCard === card.idx && (
-                        
-                        <IconButton
-                          aria-label="Card options"
-                          icon={<CloseIcon />}
-                          size="sm"
-                          colorScheme="gray"
-                          opacity={0.7}
-                          onMouseEnter={() => setHoveredButton(card.idx)}
-                        />
-                      
+                  <Flex position={"absolute"}
+                        zIndex={7}
+                        bottom={0}
+                  >
+                    {hoveredCard === card.idx && (  
+                      <Button
+                        variant={ "secondarySolid"}
+                        onMouseEnter={() => setHoveredButton(card.idx)}
+                      >
+                        X
+                      </Button>
                     )}
                     {hoveredButton === card.idx && (
-                      
-                        <IconButton
-                          aria-label="Discard card"
-                          icon={<DeleteIcon />}
-                          size="sm"
-                          colorScheme="red"
-                          opacity={0.7}
-                          onClick={() => handleDiscard(card.idx)}
-                        />
-                      
+                      <Button
+                      right={2}
+                        fontSize="8px"
+                        variant={ "secondarySolid"}
+                        onClick={() => handleDiscard(card.idx)}
+                      >
+                        Discard
+                      </Button>
                     )}
-                    </Flex>
-                  
-                  {/* <Menu
-                    isOpen={hoveredCard === card.idx}
-                  >
-                    <MenuList
-                      minWidth="max-content"
-                      zIndex="7"
-                    >
-                      {hoveredCard === card.idx && (
-                        
-                          <IconButton
-                            aria-label="Card options"
-                            icon={<CloseIcon />}
-                            position="absolute"
-                            size="sm"
-                            colorScheme="gray"
-                            opacity={0.7}
-                            onMouseEnter={() => setHoveredButton(card.idx)}
-                          />
-                        
-                      )}
-                      {hoveredButton === card.idx && (
-                        
-                          <IconButton
-                            aria-label="Discard card"
-                            icon={<DeleteIcon />}
-                            size="sm"
-                            colorScheme="red"
-                            opacity={0.7}
-                            onClick={() => handleDiscard(card.idx)}
-                          />
-                        
-                      )}
-                    </MenuList>
-                  </Menu> */}
+                  </Flex>
                   <TiltCard card={card} />
                 </Box>
               </AnimatedCard>
