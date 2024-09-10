@@ -48,8 +48,6 @@ export const useGameState = () => {
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
-  console.log("locked", lockedSpecialCards);
-
   const specialCards =
     lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
