@@ -1,4 +1,4 @@
-import { BLUE, NEON_GREEN, VIOLET, VIOLET_LIGHT } from "./colors";
+import { BLUE, NEON_GREEN, VIOLET} from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
@@ -42,21 +42,21 @@ const outlinePrimaryGlow = defineStyle({
   color: "white",
   boxShadow: `0px 0px 12px 0px white`,
   _hover: {
-    backgroundColor: "blue",
+    backgroundColor: `${BLUE}`,
     color: "white",
     borderColor: "transparent",
     boxShadow: {
-      base: `0px 0px 10px 6px ${NEON_GREEN}`,
-      md: `0px 0px 20px 12px ${NEON_GREEN}`,
+      base: `0px 0px 10px 6px ${BLUE}`,
+      md: `0px 0px 20px 12px ${BLUE}`,
     }, 
   },
   _active: {
-    backgroundColor: "blue",
+    backgroundColor: `${BLUE}`,
     border: "1px solid white",
     color: "white",
     boxShadow: {
-      base: `0px 0px 10px 6px ${NEON_GREEN}`,
-      md: `0px 0px 20px 12px ${NEON_GREEN}`,
+      base: `0px 0px 10px 6px ${BLUE}`,
+      md: `0px 0px 20px 12px ${BLUE}`,
     },
   },
   _disabled: {
@@ -71,26 +71,26 @@ const outlineSecondaryGlow = defineStyle({
   color: "white",
   boxShadow: `0px 0px 12px 0px white`,
   _hover: {
-    backgroundColor: "violet",
+    backgroundColor: `${VIOLET}`,
     color: "white",
     borderColor: "transparent",
     boxShadow: {
-      base: `0px 0px 10px 6px ${VIOLET_LIGHT}`,
-      md: `0px 0px 20px 12px ${VIOLET_LIGHT}`,
+      base: `0px 0px 10px 6px ${VIOLET}`,
+      md: `0px 0px 20px 12px ${VIOLET}`,
     }, 
   },
   _active: {
-    backgroundColor: "violet",
+    backgroundColor: `${VIOLET}`,
     border: "1px solid white",
     color: "white",
     boxShadow: {
-      base: `0px 0px 10px 6px ${VIOLET_LIGHT}`,
-      md: `0px 0px 20px 12px ${VIOLET_LIGHT}`,
+      base: `0px 0px 10px 6px ${VIOLET}`,
+      md: `0px 0px 20px 12px ${VIOLET}`,
     },
-  _disabled: {
-    border: "1px solid white !important",
-    boxShadow: "none !important",
-  }
+    _disabled: {
+      border: "1px solid white !important",
+      boxShadow: "none !important",
+    }
   },
 });
 

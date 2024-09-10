@@ -64,6 +64,7 @@ const PreviewCard = () => {
       }}
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
       variant="outlinePrimaryGlow"
+      height={"100%"}
     >
       BUY
     </Button>
@@ -221,7 +222,7 @@ const PreviewCard = () => {
                 boxShadow={`0px 0px 10px 1px ${white}`}
                 bg={"rgba(0, 0, 0, 0.8)"}
                 pl={8}
-                py={1}
+                py={"2px"}
                 alignItems="center"
                 flex={1}            
               >
@@ -246,9 +247,7 @@ const PreviewCard = () => {
                         buyButton
                         )}
                         
-                        <Button 
-                          variant="outlineSecondaryGlow" onClick={() => navigate(-1)}
-                          >
+                        <Button variant="outlineSecondaryGlow" onClick={() => navigate(-1)} height={"100%"}>
                             Close
                         </Button>
                 </HStack>
