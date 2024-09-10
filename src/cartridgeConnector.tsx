@@ -17,52 +17,51 @@ const shop_system_contract_address = getContractByName(
 )?.address;
 
 const cartridgeConnector = new CartridgeConnector(
-  [
-    // actions
-    {
-      target: game_system_contract_address,
-      method: "create_game",
-    },
-    {
-      target: game_system_contract_address,
-      method: "play",
-    },
-    {
-      target: game_system_contract_address,
-      method: "discard",
-    },
-    {
-      target: game_system_contract_address,
-      method: "check_hand",
-    },
-    {
-      target: game_system_contract_address,
-      method: "discard_effect_card",
-    },
-    {
-      target: game_system_contract_address,
-      method: "discard_special_card",
-    },
-    {
-      target: shop_system_contract_address,
-      method: "skip_shop",
-    },
-    {
-      target: shop_system_contract_address,
-      method: "buy_card_item",
-    },
-    {
-      target: shop_system_contract_address,
-      method: "buy_poker_hand_item",
-    },
-    {
-      target: shop_system_contract_address,
-      method: "reroll",
-    },
-  ],
   {
     theme: "jokers-of-neon",
     rpc: import.meta.env.VITE_RPC_URL,
+    policies:[
+      {
+        target: game_system_contract_address,
+        method: "create_game",
+      },
+      {
+        target: game_system_contract_address,
+        method: "play",
+      },
+      {
+        target: game_system_contract_address,
+        method: "discard",
+      },
+      {
+        target: game_system_contract_address,
+        method: "check_hand",
+      },
+      {
+        target: game_system_contract_address,
+        method: "discard_effect_card",
+      },
+      {
+        target: game_system_contract_address,
+        method: "discard_special_card",
+      },
+      {
+        target: shop_system_contract_address,
+        method: "skip_shop",
+      },
+      {
+        target: shop_system_contract_address,
+        method: "buy_card_item",
+      },
+      {
+        target: shop_system_contract_address,
+        method: "buy_poker_hand_item",
+      },
+      {
+        target: shop_system_contract_address,
+        method: "reroll",
+      },
+    ],
   }
 ) as never as Connector;
 
