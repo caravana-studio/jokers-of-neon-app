@@ -233,7 +233,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       if (playEvents.neonPlayEvent) {
         setPlayIsNeon(true)
-        console.log("neon play event", playEvents.neonPlayEvent);
         setAnimatedCard({
           animationIndex: -1,
           suit: 5,

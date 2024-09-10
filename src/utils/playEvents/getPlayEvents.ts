@@ -14,7 +14,6 @@ import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
-  console.log('event', events.filter((event) => event.data.length ===4))
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     cardScore: getTraditionalCardsEvents(events),
