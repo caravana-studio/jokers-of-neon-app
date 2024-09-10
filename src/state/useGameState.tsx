@@ -36,6 +36,7 @@ export const useGameState = () => {
   const [score, setScore] = useState(0);
   const [handsLeft, setHandsLeft] = useState(4);
   const [discardsLeft, setDiscardsLeft] = useState(4);
+  const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -47,7 +48,12 @@ export const useGameState = () => {
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
 
-  const specialCards = useCurrentSpecialCards();
+  const dojoSpecialCards = useCurrentSpecialCards();
+
+  console.log("locked", lockedSpecialCards);
+
+  const specialCards =
+    lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
@@ -153,5 +159,7 @@ export const useGameState = () => {
     sortBy,
     sortedHand,
     username,
+    specialCards,
+    setLockedSpecialCards,
   };
 };

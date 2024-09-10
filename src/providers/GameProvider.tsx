@@ -57,6 +57,7 @@ interface IGameContext {
   handsLeft: number;
   discardsLeft: number;
   lockRedirection: boolean;
+  specialCards: Card[];
 }
 
 const GameContext = createContext<IGameContext>({
@@ -95,6 +96,7 @@ const GameContext = createContext<IGameContext>({
   handsLeft: 4,
   discardsLeft: 4,
   lockRedirection: false,
+  specialCards: [],
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -111,7 +113,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, discardEffectCard, discardSpecialCard } = useGameActions();
+  const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
+    useGameActions();
 
   const game = useGame();
 
@@ -144,6 +147,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sortBySuit,
     setSortBySuit,
     username,
+    setLockedSpecialCards,
+    specialCards,
   } = state;
 
   const resetLevel = () => {
@@ -353,7 +358,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setPlayAnimation(false);
         clearPreSelection();
         handsLeft > 0 && setPreSelectionLocked(false);
-
+        setLockedSpecialCards([]);
         if (playEvents.gameOver) {
           console.log("GAME OVER");
           setTimeout(() => {
@@ -382,6 +387,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
+    setLockedSpecialCards(specialCards);
     play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
@@ -455,23 +461,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(gameId, preSelectedCards, preSelectedModifiers).then(
-      (response) => {
-        if (response.success) {
-          if (response.gameOver) {
-            setTimeout(() => {
-              navigate("/gameover");
-            }, 1000);
-          } else {
-            setDiscardsLeft((prev) => prev - 1);
-            replaceCards(response.cards);
-          }
+    discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
+      if (response.success) {
+        if (response.gameOver) {
+          setTimeout(() => {
+            navigate("/gameover");
+          }, 1000);
+        } else {
+          setDiscardsLeft((prev) => prev - 1);
+          replaceCards(response.cards);
         }
-        setPreSelectionLocked(false);
-        clearPreSelection();
-        setDiscardAnimation(false);
       }
-    );
+      setPreSelectionLocked(false);
+      clearPreSelection();
+      setDiscardAnimation(false);
+    });
   };
 
   const onDiscardEffectCard = (cardIdx: number) => {
