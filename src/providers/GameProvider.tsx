@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
+import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
@@ -54,8 +55,6 @@ interface IGameContext {
   restartGame: () => void;
   preSelectionLocked: boolean;
   score: number;
-  handsLeft: number;
-  discardsLeft: number;
   lockRedirection: boolean;
   specialCards: Card[];
 }
@@ -93,8 +92,6 @@ const GameContext = createContext<IGameContext>({
   restartGame: () => {},
   preSelectionLocked: false,
   score: 0,
-  handsLeft: 4,
-  discardsLeft: 4,
   lockRedirection: false,
   specialCards: [],
 });
@@ -103,6 +100,9 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
 
   const navigate = useNavigate();
   const {
@@ -141,9 +141,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayAnimation,
     setError,
     setScore,
-    handsLeft,
-    setHandsLeft,
-    setDiscardsLeft,
     sortBySuit,
     setSortBySuit,
     username,
@@ -155,8 +152,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
     setScore(0);
-    setHandsLeft(game?.max_hands ?? 1);
-    setDiscardsLeft(game?.max_discard ?? 1);
   };
 
   const toggleSortBy = () => {
@@ -392,7 +387,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           animatePlay(response);
-          setHandsLeft((prev) => prev - 1);
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -468,7 +462,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             navigate("/gameover");
           }, 1000);
         } else {
-          setDiscardsLeft((prev) => prev - 1);
           replaceCards(response.cards);
         }
       }
