@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Flex,
   GridItem,
   Heading,
   Menu,
@@ -44,6 +46,8 @@ export const HandSection = () => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   return (
     <>
@@ -84,22 +88,54 @@ export const HandSection = () => {
                   onOpen();
                 }}
                 className={card.isModifier ? 'tutorial-modifiers-step-2' : undefined}
+                onMouseEnter={() => setHoveredCard(card.idx)}
+                    onMouseLeave={() => {
+                      setHoveredCard(null);
+                      setHoveredButton(null);
+                    }}
               >
                 {card.isModifier && !isPreselected && (
-                  <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
-                    <MenuList textColor="black" minWidth="max-content" zIndex="7">
-                      <MenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          discardEffectCard(card.idx);
-                          onClose();
-                        }}
-                        isDisabled={preSelectionLocked}
-                      >
-                        Discard
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
+                  <Flex position={"absolute"}
+                    zIndex={7}
+                    bottom={0}
+                  >
+                    {hoveredCard === card.idx && (  
+                  <Button
+                    variant={ "secondarySolid"}
+                    onMouseEnter={() => setHoveredButton(card.idx)}
+                  >
+                    X
+                  </Button>
+                  )}
+                  {hoveredButton === card.idx && (
+                  <Button
+                  right={2}
+                  fontSize="8px"
+                  variant={ "secondarySolid"}
+                  onClick={(e) => {
+                            e.stopPropagation();
+                            discardEffectCard(card.idx);
+                            onClose();
+                          }}
+                  >
+                  Discard
+                  </Button>
+                  )}
+                  </Flex>
+                  // <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
+                  //   <MenuList textColor="black" minWidth="max-content" zIndex="7">
+                  //     <MenuItem
+                  //       onClick={(e) => {
+                  //         e.stopPropagation();
+                  //         discardEffectCard(card.idx);
+                  //         onClose();
+                  //       }}
+                  //       isDisabled={preSelectionLocked}
+                  //     >
+                  //       Discard here
+                  //     </MenuItem>
+                  //   </MenuList>
+                  // </Menu>
                 )}
                 {!isPreselected && (
                   <AnimatedCard idx={card.idx} discarded={card.discarded}>
