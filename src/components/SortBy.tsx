@@ -10,7 +10,7 @@ export const SortBy = () => {
 
   return (
     <Flex
-      p={{ base: 0.5, sm: 1 }}
+      // p={{ base: 0.5, sm: 1 }}
       flexDirection={isMobile ? "row" : "column"}
       alignItems="center"
       gap={0.5}
@@ -24,8 +24,10 @@ export const SortBy = () => {
       <Flex
         gap={3}
         alignItems="center"
+        justifyContent="center"
         border={isMobile ? "none" : "1px solid white"}
         borderRadius="8px"
+        minWidth={{base: '50px', sm: '100px'}}
         p={{ base: "5px 5px", sm: "15px 10px" }}
       >
         <Tooltip hasArrow label="Suit" placement="bottom">

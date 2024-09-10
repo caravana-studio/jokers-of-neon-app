@@ -1,5 +1,6 @@
 import {
   Box,
+  Flex,
   GridItem,
   Heading,
   Menu,
@@ -14,7 +15,7 @@ import { isMobile } from "react-device-detect";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_WIDTH } from "../../constants/visualProps";
+import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
 
@@ -49,10 +50,10 @@ export const HandSection = () => {
   return (
     <>
       {!isMobile && (
-        <Box sx={{ mr: 4 }}>
+        <Flex flexDirection="column" justifyContent='space-between' height={CARD_HEIGHT_PX} sx={{ mr: 4 }} pb={1}>
           <SortBy />
           <Coins />
-        </Box>
+        </Flex>
       )}
       <Box
         pr={12}
