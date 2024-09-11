@@ -74,14 +74,19 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                 <Box
                   position="relative"
                 >
-                  <Flex 
-                      position={"absolute"}
-                      zIndex={7}
-                      bottom={0}
+                  <Flex position={"absolute"}
+                    zIndex={7}
+                    bottom={0}
+                    borderRadius={"10px"}
+                    background={"violet"}
                   >
                     {hoveredCard === card.idx && (  
                       <Button
-                        variant={ "secondarySolid"}
+                      height={8}
+                        fontSize="8px"
+                        px={"2px"}
+                        borderRadius={"10px"}
+                        variant={ "discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                       >
                         X
@@ -89,9 +94,11 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                     )}
                     {hoveredButton === card.idx && (
                       <Button
-                        right={2}
-                        fontSize="1px"
-                        variant={ "secondarySolid"}
+                        height={8}
+                        px={"10px"}
+                        fontSize="8px"
+                        borderRadius={"10px"}
+                        variant={ "discardSecondarySolid"}
                         onClick={() => handleDiscard(card.idx)}
                       >
                         Discard
