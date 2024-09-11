@@ -15,6 +15,7 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
 import { TiltCard } from "./TiltCard";
+import { isMobile } from "react-device-detect";
 
 interface CardsRowProps {
   cards: Card[];
@@ -82,9 +83,10 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                   >
                     {hoveredCard === card.idx && (  
                       <Button
-                      height={8}
+                        height={8}
                         fontSize="8px"
                         px={"2px"}
+                        size={isMobile? "xs": "md"}
                         borderRadius={"10px"}
                         variant={ "discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
@@ -95,7 +97,7 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                     {hoveredButton === card.idx && (
                       <Button
                         height={8}
-                        px={"10px"}
+                        px={{base:"3px", md: "10px"}}
                         fontSize="8px"
                         borderRadius={"10px"}
                         variant={ "discardSecondarySolid"}

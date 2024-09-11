@@ -107,6 +107,7 @@ export const HandSection = () => {
                         fontSize="8px"
                         px={"2px"}
                         borderRadius={"10px"}
+                        size={isMobile? "xs": "md"}
                         variant={ "discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                       >
@@ -116,7 +117,7 @@ export const HandSection = () => {
                     {hoveredButton === card.idx && (
                       <Button
                         height={8}
-                        px={"10px"}
+                        px={{base:"3px", md: "10px"}}
                         fontSize="8px"
                         borderRadius={"10px"}
                         variant={ "discardSecondarySolid"}
