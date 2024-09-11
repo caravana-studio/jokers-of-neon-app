@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
-  Menu,
-  MenuList,
   useDisclosure,
-  IconButton,
-  Tooltip,
-  flexbox,
   Button,
 } from "@chakra-ui/react";
 import {
@@ -26,9 +21,7 @@ interface CardsRowProps {
 
 export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { discardSpecialCard, roundRewards } = useGameContext();
-  const [menuIdx, setMenuIdx] = useState<number | undefined>();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 

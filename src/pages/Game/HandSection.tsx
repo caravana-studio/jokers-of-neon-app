@@ -4,9 +4,6 @@ import {
   Flex,
   GridItem,
   Heading,
-  Menu,
-  MenuItem,
-  MenuList,
   SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
