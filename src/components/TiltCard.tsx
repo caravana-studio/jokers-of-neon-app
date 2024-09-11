@@ -45,6 +45,12 @@ export const TiltCard = ({
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+
+  const hoverStyle = {
+    boxShadow: "0px 0px 20px 2px white",
+    transition: "box-shadow 0.3s ease-in-out",
+  };
+
   const tiltCardComponent = (
     <Box
       width={cardWith}
@@ -57,6 +63,7 @@ export const TiltCard = ({
           boxShadow: isPack
             ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
             : "none",
+          _hover: !isPack ? hoverStyle: "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
