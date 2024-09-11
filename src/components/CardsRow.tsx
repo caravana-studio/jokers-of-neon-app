@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Flex,
-  useDisclosure,
-  Button,
-} from "@chakra-ui/react";
-import {
-  CARD_HEIGHT,
-  CARD_WIDTH
-} from "../constants/visualProps";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
 import { TiltCard } from "./TiltCard";
-import { isMobile } from "react-device-detect";
 
 interface CardsRowProps {
   cards: Card[];
 }
 
-export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
+export const CardsRow = ({ cards }: CardsRowProps) => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
   const { discardSpecialCard, roundRewards } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -68,23 +60,22 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
           >
             {!isDiscarded && (
               <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
-                <Box
-                  position="relative"
-                >
-                  <Flex position={"absolute"}
+                <Box position="relative">
+                  <Flex
+                    position={"absolute"}
                     zIndex={7}
                     bottom={0}
                     borderRadius={"10px"}
                     background={"violet"}
                   >
-                    {hoveredCard === card.idx && (  
+                    {hoveredCard === card.idx && (
                       <Button
                         height={8}
                         fontSize="8px"
                         px={"2px"}
-                        size={isMobile? "xs": "md"}
+                        size={isMobile ? "xs" : "md"}
                         borderRadius={"10px"}
-                        variant={ "discardSecondarySolid"}
+                        variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                       >
                         X
@@ -93,10 +84,10 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                     {hoveredButton === card.idx && (
                       <Button
                         height={8}
-                        px={{base:"3px", md: "10px"}}
+                        px={{ base: "3px", md: "10px" }}
                         fontSize="8px"
                         borderRadius={"10px"}
-                        variant={ "discardSecondarySolid"}
+                        variant={"discardSecondarySolid"}
                         onClick={() => handleDiscard(card.idx)}
                       >
                         Discard
