@@ -15,9 +15,11 @@ import { useGame } from "../../dojo/queries/useGame";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
+import { useEffect, useState } from "react";
+import { parseHand } from "../../enums/hands.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -28,7 +30,7 @@ const { blue, white, purple } = theme.colors;
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
   const { locked } = useStore();
-  const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
+  const [isLoading, setIsLoading] = useState(true);
 
   const store = useStore();
   const { isPurchased } = store;
@@ -37,16 +39,21 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  const plays = inStore
-    ? apiPlays?.filter(
-        (p) =>
-          !!pokerHandItems.find((item) => item.poker_hand === p.pokerHand.id)
-      )
-    : apiPlays;
+  let plays = usePokerPlays(gameId);
+
+  useEffect(() => {
+    if (plays.plays.length > 0) { 
+      setIsLoading(false);
+    }
+  }, [plays.plays, pokerHandItems]);
+
+  const filteredPlays = !isLoading && inStore ? plays.plays.filter((play) =>
+        pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
+      ): plays.plays;
 
   return (
     <>
-      {plays ? (
+      {filteredPlays ? (
         <TableContainer>
           <Table
             sx={{
@@ -106,11 +113,15 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {plays.map((play, index) => {
+              { !isLoading && filteredPlays.map((play, index) => {
+                const pokerHandString = play.poker_hand.toString();
+                const pokerHandParsed = parseHand(pokerHandString);
+                
                 const storePlay = pokerHandItems?.find(
-                  (item) => item.poker_hand === play.pokerHand.id
-                );
-                const purchased = storePlay?.purchased || false;
+                  (item) => item.poker_hand == pokerHandString
+                );                
+                
+                const purchased = storePlay != undefined ? isPurchased(storePlay) : false;
 
                 const textColor = storePlay
                   ? purchased
@@ -124,12 +135,12 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                 const levelTd = (
                   <Td sx={opacitySx} textColor={textColor}>
-                    {play.level}
+                    {play.level.toString()}
                   </Td>
                 );
                 const nameTd = (
                   <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
-                    {play.pokerHand.name}
+                    {pokerHandParsed.name}
                   </Td>
                 );
                 const pointsMultiTd = (
@@ -146,7 +157,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         mr={1}
                       >
-                        {play.points}
+                        {play.points.toString()}
                       </Box>
                       <Heading fontSize={"15"}>x</Heading>
                       <Box
@@ -155,7 +166,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         ml={1}
                       >
-                        {play.multi}
+                        {play.multi.toString()}
                       </Box>
                     </Box>
                   </Td>

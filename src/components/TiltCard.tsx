@@ -45,6 +45,12 @@ export const TiltCard = ({
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+
+  const hoverStyle = {
+    boxShadow: "0px 0px 20px 2px white",
+    transition: "box-shadow 0.3s ease-in-out",
+  };
+
   const tiltCardComponent = (
     <Box
       width={cardWith}
@@ -57,6 +63,7 @@ export const TiltCard = ({
           boxShadow: isPack
             ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
             : "none",
+          _hover: !isPack ? hoverStyle: "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
@@ -147,13 +154,12 @@ export const TiltCard = ({
               <Box
                 sx={{
                   position: "absolute",
-                  top: -2,
+                  top: 0,
                   right: 0,
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
-                  padding: "2px 4px",
-                  backgroundColor: "black",
-                  boxShadow: `0px 0px 10px 2px white`,
+                  padding: "2px 6px",
+                  background: "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
                   borderRadius: "20%",
                   display: "flex",
                   alignItems: "center",
@@ -161,12 +167,12 @@ export const TiltCard = ({
                   gap: 1.5,
                 }}
               >
-                <ClockIcon color="white" width={12} height={12}/>
-                {card.remaining && (
+                <ClockIcon color="white" width={14} height={14}/>
+                {
                   <Text color="white" fontSize="xs">
-                    {card.remaining}
+                    {card.remaining ? card.remaining : 3}
                   </Text>
-                )}
+                }
               </Box>
             </Tooltip>
           )}

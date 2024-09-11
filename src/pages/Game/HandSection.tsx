@@ -16,6 +16,7 @@ import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
+import { useRound } from "../../dojo/queries/useRound";
 
 const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
@@ -29,8 +30,10 @@ export const HandSection = () => {
     roundRewards,
     gameId,
     preSelectionLocked,
-    handsLeft,
   } = useGameContext();
+
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
 
   const { activeNode } = useDndContext();
 
