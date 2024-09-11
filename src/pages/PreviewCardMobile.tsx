@@ -12,14 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import OpenAnimation from "../components/OpenAnimation.tsx";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { isMobile } from "react-device-detect";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
 import { Background } from "../components/Background";
-import { Card } from "../types/Card";
 import theme from "../theme/theme";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
@@ -29,7 +28,6 @@ const MobilePreviewCard = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // Extract card and isPack from state
   const { card, isPack } = state || {};
   
   if (!card) {
