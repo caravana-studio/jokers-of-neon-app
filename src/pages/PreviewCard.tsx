@@ -18,6 +18,7 @@ import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
 import { Background } from "../components/Background";
 import theme from "../theme/theme";
+import Coins from "../assets/coins.svg?component"
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -174,9 +175,14 @@ const PreviewCard = () => {
                                     },
                                   }}
                               >
-                                <Text color="white" fontSize="lg">
-                                    MY COINS:
-                                </Text>
+                                <Flex>
+                                  <Box mr={2}>
+                                    <Coins width={"18px"} height={"auto"}/>
+                                  </Box>
+                                  <Text color="white" fontSize="lg">
+                                      MY COINS:
+                                  </Text>
+                                </Flex>
                                 <Text color="white" fontSize="xl">
                                     {cash} ¢
                                 </Text>
