@@ -6,7 +6,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { PlaysModal } from "./Plays/PlaysModal";
 
 export const CurrentPlay = () => {
-  const { preSelectedPlay } = useGameContext();
+  const { preSelectedPlay, playIsNeon } = useGameContext();
   const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -26,7 +26,7 @@ export const CurrentPlay = () => {
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
-          : `Current Play: ${PLAYS[preSelectedPlay]}`}
+          : `Current Play: ${playIsNeon ? "NEON " : ""} ${PLAYS[preSelectedPlay]}`}
       </Text>
     </Flex>
   );

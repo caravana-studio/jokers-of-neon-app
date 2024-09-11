@@ -57,6 +57,7 @@ interface IGameContext {
   score: number;
   lockRedirection: boolean;
   specialCards: Card[];
+  playIsNeon: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -94,6 +95,7 @@ const GameContext = createContext<IGameContext>({
   score: 0,
   lockRedirection: false,
   specialCards: [],
+  playIsNeon: false,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -144,6 +146,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sortBySuit,
     setSortBySuit,
     username,
+    setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
   } = state;
@@ -207,6 +210,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      const NEON_PLAY_DURATION = playEvents.neonPlayEvent
+        ? PLAY_ANIMATION_DURATION
+        : 0;
       const MODIFIER_SUIT_CHANGE_DURATION =
         (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
       const SPECIAL_SUIT_CHANGE_DURATION =
@@ -219,6 +225,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const SPECIAL_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
+        NEON_PLAY_DURATION +
         MODIFIER_SUIT_CHANGE_DURATION +
         SPECIAL_SUIT_CHANGE_DURATION +
         LEVEL_BOOSTER_DURATION +
@@ -228,27 +235,43 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPreSelectionLocked(true);
 
+      if (playEvents.neonPlayEvent) {
+        setPlayIsNeon(true);
+        setAnimatedCard({
+          animationIndex: -1,
+          suit: 5,
+          idx: playEvents.neonPlayEvent.neon_cards_idx,
+        });
+        playEvents.neonPlayEvent.points &&
+          setPoints(playEvents.neonPlayEvent.points);
+        playEvents.neonPlayEvent.multi &&
+          setMulti(playEvents.neonPlayEvent.multi);
+      }
+
       if (playEvents.modifierSuitEvents) {
         playEvents.modifierSuitEvents.forEach((event, index) => {
-          setTimeout(() => {
-            setAnimatedCard({
-              suit: event.suit,
-              idx: [event.idx],
-              animationIndex: index,
-            });
-            setHand((prev) => {
-              const newHand = prev?.map((card) => {
-                if (event.idx === card.idx) {
-                  return {
-                    ...card,
-                    img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                  };
-                }
-                return card;
+          setTimeout(
+            () => {
+              setAnimatedCard({
+                suit: event.suit,
+                idx: [event.idx],
+                animationIndex: index,
               });
-              return newHand;
-            });
-          }, PLAY_ANIMATION_DURATION * index);
+              setHand((prev) => {
+                const newHand = prev?.map((card) => {
+                  if (event.idx === card.idx) {
+                    return {
+                      ...card,
+                      img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                    };
+                  }
+                  return card;
+                });
+                return newHand;
+              });
+            },
+            PLAY_ANIMATION_DURATION * index + NEON_PLAY_DURATION
+          );
         });
       }
       setTimeout(() => {
@@ -340,7 +363,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             }, COMMON_CARDS_DURATION);
           }, LEVEL_BOOSTER_DURATION);
         }, SPECIAL_SUIT_CHANGE_DURATION);
-      }, MODIFIER_SUIT_CHANGE_DURATION);
+      }, MODIFIER_SUIT_CHANGE_DURATION + NEON_PLAY_DURATION);
 
       setTimeout(() => {
         setPlayAnimation(true);
@@ -353,6 +376,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setPlayAnimation(false);
         clearPreSelection();
         handsLeft > 0 && setPreSelectionLocked(false);
+        setPlayIsNeon(false);
         setLockedSpecialCards([]);
         if (playEvents.gameOver) {
           console.log("GAME OVER");

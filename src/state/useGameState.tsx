@@ -15,6 +15,7 @@ import { sortCards } from "../utils/sortCards";
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
+  const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
   const [gameLoading, setGameLoading] = useState(true);
@@ -142,6 +143,8 @@ export const useGameState = () => {
     sortBy,
     sortedHand,
     username,
+    playIsNeon,
+    setPlayIsNeon,
     specialCards,
     setLockedSpecialCards,
   };

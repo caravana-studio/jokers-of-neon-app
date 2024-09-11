@@ -233,10 +233,10 @@ export const MobileGameContent = () => {
               }}
             >
               <Box>
-                <Box position={"absolute"} bottom={0} zIndex={6} width="115px">
+                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="130px">
                   <SortBy />
                 </Box>
-                <Box pb="30px" mx={6} mr={14}>
+                <Box pb="25px" >
                   <HandSection />
                 </Box>
               </Box>
