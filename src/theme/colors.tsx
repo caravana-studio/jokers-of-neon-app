@@ -1,5 +1,6 @@
 export const BLUE = "#066b9b";
 export const VIOLET = "#A144B2";
+export const VIOLET_LIGHT = "#DCA2EA";
 export const PASTEL_PINK = "#fdbed6";
 export const PASTEL_PINK_DARK = "#c27c98";
 
