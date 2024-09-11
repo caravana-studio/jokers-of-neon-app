@@ -17,3 +17,5 @@ export const SUCCESS_TOAST = "#278757";
 export const ERROR_TOAST = "#b8202b";
 
 export const ROYAL_BLUE = "#066A9AFF";
+
+export const NEON = "#FFFFFF";
