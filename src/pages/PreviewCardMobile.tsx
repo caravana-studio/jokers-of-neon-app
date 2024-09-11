@@ -62,7 +62,7 @@ const MobilePreviewCard = () => {
       }}
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
       variant="outlinePrimaryGlow"
-      height={"100%"}
+      width={"50%"}
     >
       BUY
     </Button>
@@ -81,148 +81,139 @@ const MobilePreviewCard = () => {
             <Flex 
               flexDirection={"column"} 
               justifyContent={"center"} 
-              width="60%"
+              width="90%"
               margin={"0 auto"} 
               bg="rgba(0, 0, 0, 0.6)"
               borderRadius="25px"
               p={6}
               boxShadow={`0px 0px 10px 1px ${white}`}
             >
-                <Flex>
-                    <OpenAnimation
-                        startAnimation={isOpenAnimationRunning}
-                        onAnimationEnd={handleAnimationEnd}
-                    >
-                        <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-                        <Image
-                            src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
-                            borderRadius="10px"
-                        />
-                        </Box>
-                    </OpenAnimation>
-                    <Flex flexDirection={"column"} ml={"30px"} flex="1" >
-                        <Flex justifyContent="space-between" alignItems="center">
-                            <Heading size="l" variant="italic">
-                                {name}
-                            </Heading>
-                            <Image src={`/logos/jn-logo.png`}
-                                    alt={"JN logo"}
-                                    width="120px"
-                                    />
-                        </Flex>
-
-                        <VStack align="stretch" spacing={8} flex={1}>
-                            <Box mt={"20px"} >
-                                <Text color="white" fontSize="lg" mb={2}
-                                filter="blur(0.5px)"
-                                  sx={{
-                                    position: "relative",
-                                    _before: {
-                                      content: '""',
-                                      position: "absolute",
-                                      bottom: 0,
-                                      width: "95%",
-                                      height: "2px",               
-                                      backgroundColor: "white",
-                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                    },
-                                  }}
-                                >
-                                    CARD TYPE:
-                                </Text>
-                                <Text color={neonGreen} fontSize="xl">
-                                    {card.isSpecial ? "Special" : "Normal"}
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text color="white" fontSize="lg" mb={2}
-                                  filter="blur(0.5px)"
-                                  sx={{
-                                    position: "relative",
-                                    _before: {
-                                      content: '""',
-                                      position: "absolute",
-                                      bottom: 0,
-                                      width: "95%",
-                                      height: "2px",               
-                                      backgroundColor: "white",
-                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                    },
-                                  }}
-                                >
-                                    DESCRIPTION:
-                                </Text>
-                                <Text color={neonGreen} fontSize="xl">
-                                    {description}
-                                </Text>
-                                {card.temporary && (
-                                    <Text variant="neonGreen" size="l" pt={2}>
-                                    {getTemporalCardText(card.remaining)}
-                                    </Text>
-                                )}
-                            </Box>
-                            <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
-                              filter="blur(0.5px)"
-                              sx={{
-                                position: "relative",
-                                width: "60%",
-                                _before: {
-                                  content: '""',
-                                  position: "absolute",
-                                  bottom: 0,
-                                  width: "100%",
-                                  height: "2px",               
-                                  backgroundColor: "white",
-                                  boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                },
-                              }}
-                            >
-                              <Flex flex={1} alignItems={"end"} justifyContent={"space-between"} 
-                                  filter="blur(0.5px)"
-                                  sx={{
-                                    paddingTop: "8px",
-                                    paddingBottom: "8px",
-                                    position: "relative",
-                                    _before: {
-                                      content: '""',
-                                      position: "absolute",
-                                      top: 0,
-                                      width: "100%",
-                                      height: "2px",               
-                                      backgroundColor: "white",
-                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                    },
-                                  }}
-                              >
-                                <Text color="white" fontSize="lg">
-                                    MY COINS:
-                                </Text>
-                                <Text color="white" fontSize="xl">
-                                    {cash} ¢
-                                </Text>
-                              </Flex>
-                            </Box>
-                        </VStack>
-                    </Flex>
+              <Flex flexDirection={"column"} ml={"30px"} flex="1" mb={4}>
+                <Flex justifyContent="space-between" alignItems="center">
+                    <Heading size="l" variant="italic">
+                        {name}
+                    </Heading>
                 </Flex>
+              </Flex>
+
+              <Flex justifyContent={"center"}>
+                <OpenAnimation
+                    startAnimation={isOpenAnimationRunning}
+                    onAnimationEnd={handleAnimationEnd}
+                >
+                  <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+                    <Image
+                        src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
+                        borderRadius="10px"
+                    />
+                  </Box>
+                </OpenAnimation>
+              </Flex>
+
+              <VStack align="stretch" spacing={8} flex={1} mb={4}>
+                  <Box mt={"20px"} >
+                      <Text color="white" fontSize="lg" mb={2}
+                      filter="blur(0.5px)"
+                        sx={{
+                          position: "relative",
+                          _before: {
+                            content: '""',
+                            position: "absolute",
+                            bottom: 0,
+                            width: "95%",
+                            height: "2px",               
+                            backgroundColor: "white",
+                            boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                          },
+                        }}
+                      >
+                          CARD TYPE:
+                      </Text>
+                      <Text color={neonGreen} fontSize="xl">
+                          {card.isSpecial ? "Special" : "Normal"}
+                      </Text>
+                  </Box>                           
+                </VStack>
+                <Box mb={4}>
+                  <Text color="white" fontSize="lg" mb={2}
+                    filter="blur(0.5px)"
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",               
+                        backgroundColor: "white",
+                        boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                      DESCRIPTION:
+                  </Text>
+                  <Text color={neonGreen} fontSize="xl">
+                      {description}
+                  </Text>
+                  {card.temporary && (
+                      <Text variant="neonGreen" size="l" pt={2}>
+                      {getTemporalCardText(card.remaining)}
+                      </Text>
+                  )}
+                </Box>
+                <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
+                  filter="blur(0.5px)"
+                  sx={{
+                    position: "relative",
+                    width: "60%",
+                    _before: {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      width: "100%",
+                      height: "2px",               
+                      backgroundColor: "white",
+                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                    },
+                  }}
+                >
+                  <Flex flex={1} alignItems={"end"} justifyContent={"space-between"} 
+                      filter="blur(0.5px)"
+                      sx={{
+                        paddingTop: "8px",
+                        paddingBottom: "8px",
+                        position: "relative",
+                        _before: {
+                          content: '""',
+                          position: "absolute",
+                          top: 0,
+                          width: "100%",
+                          height: "2px",               
+                          backgroundColor: "white",
+                          boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                        },
+                      }}
+                  >
+                    <Text color="white" fontSize="lg">
+                        MY COINS:
+                    </Text>
+                    <Text color="white" fontSize="xl">
+                        {cash} ¢
+                    </Text>
+                  </Flex>
+              </Box>
             </Flex>
 
             <Flex 
-              width="60%"
-              gap={4} 
-              m={1000} 
-              mt={8}
-              justifyContent={"space-between"} 
-              margin={"0 auto"} 
-            >
-              <Flex 
                 borderRadius="15px"
                 boxShadow={`0px 0px 10px 1px ${white}`}
                 bg={"rgba(0, 0, 0, 0.3)"}
                 pl={8}
-                py={"2px"}
+                pt={"2px"}
+                mt={4}
                 alignItems="center"
-                flex={1}            
+                width={"90%"}
+                alignSelf={"center"}
               >
                   <Heading size="m" variant="italic">
                     PRICE: {card.price} 
@@ -230,7 +221,15 @@ const MobilePreviewCard = () => {
                   <Heading size="xl" pb={1}>¢</Heading>
               </Flex>
 
-                <HStack gap={4}>
+            <Flex 
+              width="100%"
+              gap={4} 
+              m={10} 
+              mt={8}
+              justifyContent={"center"} 
+              margin={"0 auto"} 
+            >
+                <HStack gap={4} width={"70%"}>
                 {notEnoughCash || noSpaceForSpecialCards ? (
                         <Tooltip
                             label={
@@ -245,7 +244,7 @@ const MobilePreviewCard = () => {
                         buyButton
                         )}
                         
-                        <Button variant="outlineSecondaryGlow" onClick={() => navigate(-1)} height={"100%"}>
+                        <Button variant="outlineSecondaryGlow" onClick={() => navigate(-1)} width={"50%"}>
                             Close
                         </Button>
                 </HStack>
