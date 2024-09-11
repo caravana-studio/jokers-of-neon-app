@@ -18,6 +18,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
+import { useRound } from "../../dojo/queries/useRound";
 
 export const HandSection = () => {
   const {
@@ -29,8 +30,10 @@ export const HandSection = () => {
     roundRewards,
     gameId,
     preSelectionLocked,
-    handsLeft,
   } = useGameContext();
+
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
 
   const { activeNode } = useDndContext();
 
