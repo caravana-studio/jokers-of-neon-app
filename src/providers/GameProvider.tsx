@@ -57,6 +57,7 @@ interface IGameContext {
   score: number;
   lockRedirection: boolean;
   specialCards: Card[];
+  playIsNeon: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -94,6 +95,7 @@ const GameContext = createContext<IGameContext>({
   score: 0,
   lockRedirection: false,
   specialCards: [],
+  playIsNeon: false,
 });
 export const useGameContext = () => useContext(GameContext);
 
