@@ -36,7 +36,7 @@ export const preloadImages = () => {
   //logos
   imageUrls.push("logos/jn-logo.png");
   imageUrls.push("logos/joker-logo.png");
-  imageUrls.push("logos/logo-variant.png");
+  imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
   //vfx
