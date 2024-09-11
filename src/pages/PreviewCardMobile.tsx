@@ -175,9 +175,9 @@ const MobilePreviewCard = () => {
                       }}
                   >
                     <Flex>
-                      <Flex>
-                        <Coins width={"4px"} height={"auto"}/>
-                      </Flex>
+                      <Box mr={1}>
+                        <Coins width={"18px"} height={"auto"}/>
+                      </Box>
                       <Text color="white" fontSize="lg">
                         MY COINS:
                       </Text>
