@@ -50,7 +50,13 @@ export const HandSection = () => {
   return (
     <>
       {!isMobile && (
-        <Flex flexDirection="column" justifyContent='space-between' height={CARD_HEIGHT_PX} sx={{ mr: 4 }} pb={1}>
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          height={CARD_HEIGHT_PX}
+          sx={{ mr: 4 }}
+          pb={1}
+        >
           <SortBy />
           <Coins />
         </Flex>
