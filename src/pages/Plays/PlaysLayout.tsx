@@ -14,15 +14,7 @@ export const PlaysLayout = () => {
   const navigate = useNavigate();
 
   return (
-    <Background type="game" dark>
-      <Image
-            src="/borders/top.png"
-            height="8%"
-            width="100%"
-            maxHeight="70px"
-            position="fixed"
-            top={0}
-          />
+    <Background type="game" dark rewardsDecoration>
       <Flex 
         py={2} 
         px={8} 
@@ -32,7 +24,7 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={{base: 4, sm: 2}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading mt={{base: 4, sm: 14}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
@@ -47,55 +39,6 @@ export const PlaysLayout = () => {
             onClick={ () => navigate("/demo")}
           >Go back to game</Button>
       </Flex>
-      <Image
-            src="/borders/bottom.png"
-            maxHeight="70px"
-            height="8%"
-            width="100%"
-            position="fixed"
-            bottom={0}
-            sx={{ pointerEvents: "none" }}
-          />
-        <Box
-            display={{base: "none", md: "flex"}} 
-            sx={{
-              position: "fixed",
-              top: 6,
-              left: 12,
-            }}
-          >
-            <Img src="logos/logo-variant.png" width={{base: '120px', md: '330px'}} alt="logo" />
-          </Box>
-          <Box
-            display={{base: "none", md: "flex"}} 
-            sx={{
-              position: "fixed",
-              top: 6,
-              right: 12,
-            }}
-          >
-            <Img src="logos/joker-logo.png" width={{base: '80pxpx', md: '120px'}} alt="logo" />
-          </Box>  
-        <Box
-            display={{base: "none", md: "flex"}} 
-            sx={{
-              position: "fixed",
-              bottom: 16,
-              left: 12,
-            }}
-          >
-            <Text size="m">BUIDL YOUR DECK</Text>
-          </Box>
-          <Box
-            display={{base: "none", md: "flex"}} 
-            sx={{
-              position: "fixed",
-              bottom: 16,
-              right: 12,
-            }}
-          >
-            <Text size="m">RULE THE GAME</Text>
-          </Box>
     </Background>
   );
 };
