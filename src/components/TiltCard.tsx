@@ -162,11 +162,11 @@ export const TiltCard = ({
                 }}
               >
                 <ClockIcon color="white" width={14} height={14}/>
-                {card.remaining && (
+                {
                   <Text color="white" fontSize="xs">
-                    {card.remaining}
+                    {card.remaining ? card.remaining : 3}
                   </Text>
-                )}
+                }
               </Box>
             </Tooltip>
           )}
