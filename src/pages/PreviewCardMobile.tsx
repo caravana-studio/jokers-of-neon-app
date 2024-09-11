@@ -10,8 +10,6 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import OpenAnimation from "../components/OpenAnimation.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
@@ -46,19 +44,11 @@ const MobilePreviewCard = () => {
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
-  const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
-    useState<boolean>(false);
-
   const buyButton = (
     <Button
       onClick={() => {
         buyCard(card);
-        if (isPack) {
-          setIsOpenAnimationRunning(true);
-          setLockRedirection(true);
-        } else {
-          navigate(-1);
-        }
+        navigate(-1);
       }}
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
       variant="outlinePrimaryGlow"
@@ -67,12 +57,6 @@ const MobilePreviewCard = () => {
       BUY
     </Button>
   );
-
-  const handleAnimationEnd = () => {
-    setIsOpenAnimationRunning(false);
-    setLockRedirection(false);
-    navigate("/open-pack");
-  };
 
   return (
     <Background type="home" dark>
@@ -97,17 +81,12 @@ const MobilePreviewCard = () => {
               </Flex>
 
               <Flex justifyContent={"center"}>
-                <OpenAnimation
-                    startAnimation={isOpenAnimationRunning}
-                    onAnimationEnd={handleAnimationEnd}
-                >
                   <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
                     <Image
                         src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
                         borderRadius="10px"
                     />
                   </Box>
-                </OpenAnimation>
               </Flex>
 
               <VStack align="stretch" spacing={8} flex={1} mb={4}>
