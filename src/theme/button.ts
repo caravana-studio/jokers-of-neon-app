@@ -19,6 +19,17 @@ const secondarySolid = defineStyle({
   },
 });
 
+const discardSecondarySolid = defineStyle({
+  backgroundColor: "violet",
+  boxShadow: {
+    base: `0px 0px 20px 3px ${VIOLET}`,
+    md: `0px 0px 30px 6px ${VIOLET}`,
+  },
+  "&:hover": {
+    borderColor: `white`
+  },
+});
+
 const outline = defineStyle({
   backgroundColor: "rgba(0,0,0,0.5)",
   border: `3px solid ${NEON_GREEN} !important`,
@@ -46,7 +57,7 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid, defaultOutline },
+  variants: { solid, outline, secondarySolid, defaultOutline, discardSecondarySolid },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },

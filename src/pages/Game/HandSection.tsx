@@ -1,11 +1,9 @@
 import {
   Box,
+  Button,
   Flex,
   GridItem,
   Heading,
-  Menu,
-  MenuItem,
-  MenuList,
   SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -47,6 +45,8 @@ export const HandSection = () => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   return (
     <>
@@ -91,29 +91,50 @@ export const HandSection = () => {
                 className={
                   card.isModifier ? "tutorial-modifiers-step-2" : undefined
                 }
+                onMouseEnter={() => setHoveredCard(card.idx)}
+                onMouseLeave={() => {
+                  setHoveredCard(null);
+                  setHoveredButton(null);
+                }}
               >
                 {card.isModifier && !isPreselected && (
-                  <Menu
-                    isOpen={isOpen && menuIdx === card.idx}
-                    onClose={onClose}
+                  <Flex
+                    position={"absolute"}
+                    zIndex={7}
+                    bottom={0}
+                    borderRadius={"10px"}
+                    background={"violet"}
                   >
-                    <MenuList
-                      textColor="black"
-                      minWidth="max-content"
-                      zIndex="7"
-                    >
-                      <MenuItem
+                    {hoveredCard === card.idx && (
+                      <Button
+                        height={8}
+                        fontSize="8px"
+                        px={"2px"}
+                        borderRadius={"10px"}
+                        size={isMobile ? "xs" : "md"}
+                        variant={"discardSecondarySolid"}
+                        onMouseEnter={() => setHoveredButton(card.idx)}
+                      >
+                        X
+                      </Button>
+                    )}
+                    {hoveredButton === card.idx && (
+                      <Button
+                        height={8}
+                        px={{ base: "3px", md: "10px" }}
+                        fontSize="8px"
+                        borderRadius={"10px"}
+                        variant={"discardSecondarySolid"}
                         onClick={(e) => {
                           e.stopPropagation();
                           discardEffectCard(card.idx);
                           onClose();
                         }}
-                        isDisabled={preSelectionLocked}
                       >
                         Discard
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
+                      </Button>
+                    )}
+                  </Flex>
                 )}
                 {!isPreselected && (
                   <AnimatedCard idx={card.idx} discarded={card.discarded}>
