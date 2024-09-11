@@ -98,44 +98,38 @@ export const HandSection = () => {
                   <Flex position={"absolute"}
                     zIndex={7}
                     bottom={0}
+                    borderRadius={"10px"}
+                    background={"violet"}
                   >
                     {hoveredCard === card.idx && (  
-                  <Button
-                    variant={ "secondarySolid"}
-                    onMouseEnter={() => setHoveredButton(card.idx)}
-                  >
-                    X
-                  </Button>
-                  )}
-                  {hoveredButton === card.idx && (
-                  <Button
-                  right={2}
-                  fontSize="8px"
-                  variant={ "secondarySolid"}
-                  onClick={(e) => {
-                            e.stopPropagation();
-                            discardEffectCard(card.idx);
-                            onClose();
-                          }}
-                  >
-                  Discard
-                  </Button>
-                  )}
+                      <Button
+                      height={8}
+                        fontSize="8px"
+                        px={"2px"}
+                        borderRadius={"10px"}
+                        variant={ "discardSecondarySolid"}
+                        onMouseEnter={() => setHoveredButton(card.idx)}
+                      >
+                        X
+                      </Button>
+                    )}
+                    {hoveredButton === card.idx && (
+                      <Button
+                        height={8}
+                        px={"10px"}
+                        fontSize="8px"
+                        borderRadius={"10px"}
+                        variant={ "discardSecondarySolid"}
+                        onClick={(e) => {
+                                  e.stopPropagation();
+                                  discardEffectCard(card.idx);
+                                  onClose();
+                                }}
+                      >
+                        Discard
+                      </Button>
+                    )}
                   </Flex>
-                  // <Menu isOpen={isOpen && menuIdx === card.idx} onClose={onClose}>
-                  //   <MenuList textColor="black" minWidth="max-content" zIndex="7">
-                  //     <MenuItem
-                  //       onClick={(e) => {
-                  //         e.stopPropagation();
-                  //         discardEffectCard(card.idx);
-                  //         onClose();
-                  //       }}
-                  //       isDisabled={preSelectionLocked}
-                  //     >
-                  //       Discard here
-                  //     </MenuItem>
-                  //   </MenuList>
-                  // </Menu>
                 )}
                 {!isPreselected && (
                   <AnimatedCard idx={card.idx} discarded={card.discarded}>

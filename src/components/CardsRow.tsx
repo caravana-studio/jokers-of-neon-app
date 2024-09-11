@@ -10,7 +10,6 @@ import {
   flexbox,
   Button,
 } from "@chakra-ui/react";
-import { CloseIcon, DeleteIcon } from "@chakra-ui/icons";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
@@ -75,9 +74,10 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                 <Box
                   position="relative"
                 >
-                  <Flex position={"absolute"}
-                        zIndex={7}
-                        bottom={0}
+                  <Flex 
+                      position={"absolute"}
+                      zIndex={7}
+                      bottom={0}
                   >
                     {hoveredCard === card.idx && (  
                       <Button
@@ -89,8 +89,8 @@ export const CardsRow: React.FC<CardsRowProps> = ({ cards }) => {
                     )}
                     {hoveredButton === card.idx && (
                       <Button
-                      right={2}
-                        fontSize="8px"
+                        right={2}
+                        fontSize="1px"
                         variant={ "secondarySolid"}
                         onClick={() => handleDiscard(card.idx)}
                       >
