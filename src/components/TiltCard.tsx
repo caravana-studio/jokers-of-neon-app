@@ -147,13 +147,12 @@ export const TiltCard = ({
               <Box
                 sx={{
                   position: "absolute",
-                  top: -2,
+                  top: 0,
                   right: 0,
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
                   padding: "2px 6px",
-                  backgroundColor: "black",
-                  boxShadow: `0px 0px 10px 2px white`,
+                  background: "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
                   borderRadius: "20%",
                   display: "flex",
                   alignItems: "center",
