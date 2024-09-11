@@ -9,9 +9,5 @@ export default defineConfig({
     plugins: [react() , wasm(), topLevelAwait(), svgx()],
     build: {
       outDir: 'dist',
-      target: 'esnext',
-    },
-    esbuild: {
-      jsxInject: `import React from 'react'`,
     },
 });
