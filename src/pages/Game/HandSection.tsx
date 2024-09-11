@@ -19,8 +19,6 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
 
-const TRANSLATE_Y_PX = isMobile ? 3 : 7;
-
 export const HandSection = () => {
   const {
     hand,
@@ -81,11 +79,6 @@ export const HandSection = () => {
               <GridItem
                 key={card.idx}
                 w="100%"
-/*                                 sx={{
-                  transform: ` rotate(${
-                    (index - hand.length / 2 + 0.5) * 2
-                  }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
-                }} */
                 onContextMenu={(e) => {
                   e.stopPropagation();
                   e.preventDefault();

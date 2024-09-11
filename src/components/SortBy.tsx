@@ -8,7 +8,6 @@ export const SortBy = () => {
 
   return (
     <Flex
-      // p={{ base: 0.5, sm: 1 }}
       flexDirection={isMobile ? "row" : "column"}
       alignItems="center"
       gap={0.5}
