@@ -7,7 +7,7 @@ import svgx from "@svgx/vite-plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), wasm(), svgx(), topLevelAwait()],
+    plugins: [react(), svgx(), wasm(), topLevelAwait()],
     build: {
       outDir: 'dist',
     },
