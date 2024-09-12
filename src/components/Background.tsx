@@ -6,14 +6,14 @@ interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home";
   dark?: boolean;
   scrollOnMobile?: boolean;
-  rewardsDecoration?: boolean;
+  bgDecoration?: boolean;
 }
 
 export const Background = ({
   children,
   type = "game",
   dark = false,
-  rewardsDecoration = false,
+  bgDecoration: rewardsDecoration = false,
   scrollOnMobile = false,
 }: BackgroundProps) => {
   return (

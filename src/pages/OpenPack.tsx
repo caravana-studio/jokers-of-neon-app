@@ -94,7 +94,7 @@ export const OpenPack = () => {
   );
 
   return (
-    <Background type="game" dark rewardsDecoration>
+    <Background type="game" dark bgDecoration>
       <WhiteOverlay visible={overlayVisible} />
       {cards.length > 0 ? (
         <Flex flexDirection="column" gap={4}>

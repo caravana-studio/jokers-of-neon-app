@@ -14,7 +14,7 @@ export const PlaysLayout = () => {
   const navigate = useNavigate();
 
   return (
-    <Background type="game" dark rewardsDecoration>
+    <Background type="game" dark bgDecoration>
       <Flex 
         py={2} 
         px={8} 
