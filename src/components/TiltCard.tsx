@@ -118,7 +118,8 @@ export const TiltCard = ({
               sx={{
                 position: "absolute",
                 bottom: "-10%",
-                right: {base:"7%", md:"22%"},
+                left: "50%",
+                transform: "translateX(-50%)",
                 zIndex: 10,
                 backgroundColor: "rgba(0,0,0,0.7)",
                 borderRadius:"10px",
