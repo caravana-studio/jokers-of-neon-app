@@ -96,12 +96,14 @@ export const HandSection = () => {
                   setHoveredCard(null);
                   setHoveredButton(null);
                 }}
+                position='relative'
               >
                 {card.isModifier && !isPreselected && (
                   <Flex
                     position={"absolute"}
                     zIndex={7}
-                    bottom={0}
+                    bottom={'5px'}
+                    left={'5px'}
                     borderRadius={"10px"}
                     background={"violet"}
                   >
