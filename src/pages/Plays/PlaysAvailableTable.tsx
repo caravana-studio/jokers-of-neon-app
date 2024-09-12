@@ -19,7 +19,7 @@ import {
   const { blueLight, blue, violet } = theme.colors;
   
   interface PlaysAvailableTableProps {
-    height?: {
+    maxHeight?: {
       base?: string;
       sm?: string;
       md?: string;
@@ -28,7 +28,7 @@ import {
     };
   }
 
-  export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ height }) => {
+  export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ maxHeight }) => {
     const { gameId } = useGameContext();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
   
@@ -151,16 +151,14 @@ import {
       <>
         {plays ? (
           <TableContainer 
-            height={height}
+            maxHeight={maxHeight}
             border={`2px solid ${blueLight}`}
             borderRadius={"25px"}
             boxShadow={`0px 0px 20px 15px ${blue}`}
             filter="blur(0.5px)"
             backgroundColor="rgba(0, 0, 0, 1)"
           >
-            { isMobile  ? (
-            <CustomScrollbar><TableContent/></CustomScrollbar>) 
-            : <TableContent/>}
+            <CustomScrollbar><TableContent/></CustomScrollbar> 
           </TableContainer>
         ) : (
           "Loading..."

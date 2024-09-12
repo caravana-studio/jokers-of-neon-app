@@ -28,11 +28,11 @@ export const PlaysLayout = () => {
             variant="italic"
             color="white"
             textAlign={"center"}
-            mb={ isMobile ? 10 : 8}
+            mb={ isMobile ? 10 : 8 }
           >
             AVAILABLE PLAYS
           </Heading>
-          <PlaysAvailableTable height={{ base: "52%", md: "auto"}}/>
+          <PlaysAvailableTable maxHeight={{ base: "52%", md: "100%"}}/>
           <Button
             className="game-tutorial-step-4"
             mt={8}
