@@ -10,11 +10,12 @@ export const CurrentPlay = () => {
   const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
+    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}>
       <Tooltip label={"Show plays"} placement={"left"}>
         <InfoIcon
-        color='white'
-          sx={{ fontSize: "20px", cursor: 'pointer' }}
+          color="white"
+          fontSize={{ base: "14px", md: "20px" }}
+          sx={{ cursor: "pointer" }}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
