@@ -63,7 +63,7 @@ export const HandSection = () => {
         </Flex>
       )}
       <Box
-        pr={12}
+        pr={!isMobile ? 12 : 10}
         pl={!isMobile ? 4 : 2}
         pt={!isMobile ? 8 : 0}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"

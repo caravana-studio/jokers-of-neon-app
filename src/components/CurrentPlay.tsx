@@ -10,12 +10,12 @@ export const CurrentPlay = () => {
   const navigate = useNavigate();
   
   return (
-    <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
+    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}>
       <Tooltip label={"Show plays"} placement={"left"}>
         <Button 
-           backgroundColor={"transparent"}
-           border={"none"}
-           boxShadow={"none"}
+          backgroundColor={"transparent"}
+          border={"none"}
+          boxShadow={"none"}
           onClick={(e) => {
             e.stopPropagation();
             navigate("/plays");
@@ -24,11 +24,12 @@ export const CurrentPlay = () => {
             backgroundColor: "transparent",
           }}
           >
-            <InfoIcon
-            color='white'
-              sx={{ fontSize: "20px", cursor: 'pointer' }}
-              className="game-tutorial-step-5"
-            />
+          <InfoIcon
+            color="white"
+            fontSize={{ base: "14px", md: "20px" }}
+            sx={{ cursor: "pointer" }}
+            className="game-tutorial-step-5"
+          />
         </Button>
       </Tooltip>
       <Text size="l">

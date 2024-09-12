@@ -81,7 +81,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
       </Box>
       <Box
         sx={{
-          height: "60%",
+          height: { base: "80%", sm: "60%" },
           width: "100%",
           display: "flex",
           alignItems: "center",
