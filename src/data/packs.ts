@@ -22,7 +22,7 @@ export const PACKS_DATA: CardDataMap = {
     name: "Specials Pack",
     description: "More chances of getting a special card",
     details:
-      "20% chance of getting a special card\n20% change of gettinf a modifier\nPack size 3",
+      "20% chance of getting a special card\n20% chance of getting a modifier\nPack size 3",
   },
   5: {
     name: "Modifiers Pack",
