@@ -1,13 +1,11 @@
 import {
-  Box,
   Flex,
-  Heading,
-  Img
+  Heading
 } from "@chakra-ui/react";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
-import { Image, Text, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 
 export const PlaysLayout = () => {
