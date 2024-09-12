@@ -270,7 +270,7 @@ export const Store = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifiers"
+                  title="modifier cards"
                 />
               )}
             </Box>
