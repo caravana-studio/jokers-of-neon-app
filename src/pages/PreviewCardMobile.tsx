@@ -19,6 +19,8 @@ import { useStore } from "../providers/StoreProvider";
 import { Background } from "../components/Background";
 import theme from "../theme/theme";
 import Coins from "../assets/coins.svg?component"
+import { useState } from "react";
+import OpenAnimation from "../components/OpenAnimation.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -27,17 +29,26 @@ const MobilePreviewCard = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const { card, isPack } = state || {};
+  const { card, isPack, pack } = state || {};
+
+  const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
+    useState<boolean>(false);
+
+  const handleAnimationEnd = () => {
+    setIsOpenAnimationRunning(false);
+    setLockRedirection(false);
+    close();
+    navigate("/open-pack");
+  };
   
   if (!card) {
     return <p>Card not found.</p>;
   }
 
   const game = useGame();
-  const { buyCard } = useStore();
+  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card, isPack);
-  const { locked, setLockRedirection } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
@@ -48,8 +59,15 @@ const MobilePreviewCard = () => {
   const buyButton = (
     <Button
       onClick={() => {
-        buyCard(card);
-        navigate(-1);
+        if (isPack) {
+          buyPack(pack);
+          setIsOpenAnimationRunning(true);
+          setLockRedirection(true);
+        }
+        else{
+          buyCard(card);
+          navigate(-1);
+        } 
       }}
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
       variant="outlinePrimaryGlow"
@@ -83,10 +101,15 @@ const MobilePreviewCard = () => {
 
               <Flex justifyContent={"center"}>
                   <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-                    <Image
-                        src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
-                        borderRadius="10px"
-                    />
+                    <OpenAnimation
+                      startAnimation={isOpenAnimationRunning}
+                      onAnimationEnd={() => handleAnimationEnd()}
+                    >
+                      <Image
+                          src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
+                          borderRadius="10px"
+                      />
+                    </OpenAnimation> 
                   </Box>
               </Flex>
 

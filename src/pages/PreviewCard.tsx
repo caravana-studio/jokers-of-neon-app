@@ -19,6 +19,8 @@ import { useStore } from "../providers/StoreProvider";
 import { Background } from "../components/Background";
 import theme from "../theme/theme";
 import Coins from "../assets/coins.svg?component"
+import OpenAnimation from "../components/OpenAnimation.tsx";
+import { useState } from "react";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -27,18 +29,25 @@ const PreviewCard = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // Extract card and isPack from state
-  const { card, isPack } = state || {};
+  const { card, isPack, pack } = state || {};
+  const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
+    useState<boolean>(false);
+
+  const handleAnimationEnd = () => {
+    setIsOpenAnimationRunning(false);
+    setLockRedirection(false);
+    close();
+    navigate("/open-pack");
+  };
   
   if (!card) {
     return <p>Card not found.</p>;
   }
 
   const game = useGame();
-  const { buyCard } = useStore();
+  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
   const { name, description } = getCardData(card, isPack);
-  const { locked } = useStore();
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
@@ -49,8 +58,15 @@ const PreviewCard = () => {
   const buyButton = (
     <Button
       onClick={() => {
-        buyCard(card);
-        navigate(-1);
+        if (isPack) {
+          buyPack(pack);
+          setIsOpenAnimationRunning(true);
+          setLockRedirection(true);
+        }
+        else{
+          buyCard(card);
+          navigate(-1);
+        } 
       }}
       isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
       variant="outlinePrimaryGlow"
@@ -76,11 +92,16 @@ const PreviewCard = () => {
             >
                 <Flex>
                         <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-                        <Image
-                            src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
-                            borderRadius="10px"
-                        />
+                          <OpenAnimation 
+                            startAnimation={isOpenAnimationRunning}
+                            onAnimationEnd={() => handleAnimationEnd()}>
+                            <Image
+                                src={isPack ? `Cards/${card.img}.png` : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`}
+                                borderRadius="10px"
+                            />
+                          </OpenAnimation>
                         </Box>
+                        
                     <Flex flexDirection={"column"} ml={"30px"} flex="1" >
                         <Flex justifyContent="space-between" alignItems="center">
                             <Heading size="l" variant="italic">
