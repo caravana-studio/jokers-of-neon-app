@@ -39,9 +39,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
   return (
     <>
-      <Box>
+      <Box mb={4}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading size={"xs"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
+          <Heading size={{base: "s", sm: "xs"}} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
             {title}
           </Heading>
           {button && (
