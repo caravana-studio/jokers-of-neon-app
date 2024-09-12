@@ -9,6 +9,7 @@ export interface PlayEvents {
   detailEarned?: DetailEarned;
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
+  globalEvents?: LevelEvent[];
   specialSuitEvents?: SpecialSuitEvent[];
   neonPlayEvent?: NeonPlayEvent;
   modifierSuitEvents?: ModifierSuitEvent[];
