@@ -20,7 +20,7 @@ export const MobilePreselectedCardsSection = () => {
   return (
     <>
       <Box
-        gap={2}
+        gap={1}
         py={2}
         sx={{
           display: "flex",
@@ -32,7 +32,7 @@ export const MobilePreselectedCardsSection = () => {
       >
         <Box
           sx={{
-            maxWidth: `${CARD_WIDTH * 5}px`,
+            maxWidth: `${CARD_WIDTH * 4}px`,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -46,7 +46,7 @@ export const MobilePreselectedCardsSection = () => {
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
-                <Box key={card.id} mx={3} mb={3}>
+                <Box key={card.id} mx={1.5} mb={1.5}>
                   <ModifiableCard id={card.id}>
                     <AnimatedCard
                       idx={card.idx}

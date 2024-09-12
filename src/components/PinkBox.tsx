@@ -31,7 +31,7 @@ export const PinkBox = ({ children, title, button, onClick }: PinkBoxProps) => {
         display="grid"
         justifyItems="center"
       >
-        <Heading size="lg" variant="italic" color={VIOLET}>
+        <Heading size="l" variant="italic" color={VIOLET}>
           {title}
         </Heading>
         {children}
