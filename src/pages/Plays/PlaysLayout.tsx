@@ -25,7 +25,6 @@ export const PlaysLayout = () => {
           <Heading mt={{base: 10, md: 20}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
-
           <PlaysAvailableTable />
           <Button
             className="game-tutorial-step-4"
