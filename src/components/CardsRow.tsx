@@ -1,16 +1,7 @@
-import {
-  Box,
-  Flex,
-  Menu,
-  MenuItem,
-  MenuList,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {
-  CARD_HEIGHT,
-  CARD_WIDTH
-} from "../constants/visualProps";
+import { isMobile } from "react-device-detect";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
@@ -22,9 +13,9 @@ interface CardsRowProps {
 
 export const CardsRow = ({ cards }: CardsRowProps) => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { discardSpecialCard, roundRewards } = useGameContext();
-  const [menuIdx, setMenuIdx] = useState<number | undefined>();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   useEffect(() => {
     if (roundRewards) {
@@ -35,7 +26,18 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
           .map((card) => card.id),
       ]);
     }
-  }, [roundRewards]);
+  }, [roundRewards, cards]);
+
+  const handleDiscard = (cardIdx: number) => {
+    const card = cards.find((c) => c.idx === cardIdx);
+    if (card) {
+      discardSpecialCard(cardIdx).then((response) => {
+        if (response) {
+          setDiscardedCards((prev) => [...prev, card.id]);
+        }
+      });
+    }
+  };
 
   return (
     <Flex width="100%" height={`${CARD_HEIGHT + 8}px`}>
@@ -50,41 +52,48 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
             maxWidth={`${CARD_WIDTH + 7}px`}
             position="relative"
             zIndex={1}
+            onMouseEnter={() => setHoveredCard(card.idx)}
+            onMouseLeave={() => {
+              setHoveredCard(null);
+              setHoveredButton(null);
+            }}
           >
             {!isDiscarded && (
               <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
-                <Box
-                  onContextMenu={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setMenuIdx(card.idx);
-                    onOpen();
-                  }}
-                >
-                  <Menu
-                    isOpen={isOpen && menuIdx === card.idx}
-                    onClose={onClose}
+                <Box position="relative">
+                  <Flex
+                    position={"absolute"}
+                    zIndex={7}
+                    bottom={0}
+                    borderRadius={"10px"}
+                    background={"violet"}
                   >
-                    <MenuList
-                      textColor="black"
-                      minWidth="max-content"
-                      zIndex="7"
-                    >
-                      <MenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          discardSpecialCard(card.idx).then((response) => {
-                            if (response) {
-                              setDiscardedCards((prev) => [...prev, card.id]);
-                            }
-                          });
-                          onClose();
-                        }}
+                    {hoveredCard === card.idx && (
+                      <Button
+                        height={8}
+                        fontSize="8px"
+                        px={"2px"}
+                        size={isMobile ? "xs" : "md"}
+                        borderRadius={"10px"}
+                        variant={"discardSecondarySolid"}
+                        onMouseEnter={() => setHoveredButton(card.idx)}
                       >
-                        Drop card
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
+                        X
+                      </Button>
+                    )}
+                    {hoveredButton === card.idx && (
+                      <Button
+                        height={8}
+                        px={{ base: "3px", md: "10px" }}
+                        fontSize="8px"
+                        borderRadius={"10px"}
+                        variant={"discardSecondarySolid"}
+                        onClick={() => handleDiscard(card.idx)}
+                      >
+                        Discard
+                      </Button>
+                    )}
+                  </Flex>
                   <TiltCard card={card} />
                 </Box>
               </AnimatedCard>

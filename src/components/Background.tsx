@@ -62,10 +62,11 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
         <Image
           alignSelf="center"
           justifySelf="end"
-          src="/logos/logo-variant.png"
-          alt="/logos/logo-variant.png"
+          src="/logos/logo-variant.svg"
+          alt="logo-variant"
           width={"65%"}
-          maxW={"350px"}
+          maxW={"300px"}
+          ml={4}
         />
         {!isMobile && (
           <Image

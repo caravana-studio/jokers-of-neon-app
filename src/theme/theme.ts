@@ -5,6 +5,7 @@ import {
   CLUBS,
   DIAMONDS,
   HEARTS,
+  NEON,
   NEON_GREEN,
   PASTEL_PINK,
   SPADES,
@@ -36,11 +37,13 @@ export default {
     2: DIAMONDS,
     3: HEARTS,
     4: SPADES,
+    5: NEON,
     // suits - accessible through colors['CLUBS'] or 'CLUBS'
     CLUBS,
     DIAMONDS,
     HEARTS,
     SPADES,
+    NEON,
   },
   styles: {
     global: {

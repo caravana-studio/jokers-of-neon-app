@@ -321,13 +321,13 @@ export const Store = () => {
             {!isMobile ? (
               <>
                 {nextLevelButton}
-                <Flex flexDirection="column" gap={14}>
+                <Flex flexDirection="column" gap={14} alignItems="center">
                   {rerollButton}
                   {specialsButton}
                   <Image
-                    src="/logos/logo-variant.png"
+                    src="/logos/logo-variant.svg"
                     alt="store-bg"
-                    width="100%"
+                    width="90%"
                   />
                 </Flex>
               </>

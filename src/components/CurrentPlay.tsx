@@ -1,14 +1,14 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Button, Flex, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
 import { useNavigate } from "react-router-dom";
 
 export const CurrentPlay = () => {
-  const { preSelectedPlay } = useGameContext();
+  const { preSelectedPlay, playIsNeon } = useGameContext();
   const navigate = useNavigate();
-
+  
   return (
     <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
       <Tooltip label={"Show plays"} placement={"left"}>
@@ -34,7 +34,7 @@ export const CurrentPlay = () => {
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
-          : `Current Play: ${PLAYS[preSelectedPlay]}`}
+          : `Current Play: ${playIsNeon ? "NEON " : ""} ${PLAYS[preSelectedPlay]}`}
       </Text>
     </Flex>
   );
