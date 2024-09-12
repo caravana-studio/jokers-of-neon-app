@@ -13,11 +13,10 @@ import { isMobile } from "react-device-detect";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_WIDTH } from "../../constants/visualProps";
+import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
+import { Coins } from "./Coins";
 import { useRound } from "../../dojo/queries/useRound";
-
-const TRANSLATE_Y_PX = isMobile ? 3 : 10;
 
 export const HandSection = () => {
   const {
@@ -52,15 +51,22 @@ export const HandSection = () => {
   return (
     <>
       {!isMobile && (
-        <Box sx={{ mr: 4 }}>
+        <Flex
+          flexDirection="column"
+          justifyContent="space-between"
+          height={CARD_HEIGHT_PX}
+          sx={{ mr: 4 }}
+          pb={1}
+        >
           <SortBy />
-        </Box>
+          <Coins />
+        </Flex>
       )}
       <Box
-        pr={12}
+        pr={!isMobile ? 12 : 10}
         pl={!isMobile ? 4 : 2}
         pt={!isMobile ? 8 : 0}
-        className="game-tutorial-step-2 tutorial-modifiers-step-1" 
+        className="game-tutorial-step-2 tutorial-modifiers-step-1"
       >
         <SimpleGrid
           sx={{
@@ -76,39 +82,37 @@ export const HandSection = () => {
               <GridItem
                 key={card.idx}
                 w="100%"
-                sx={{
-                  transform: ` rotate(${
-                    (index - hand.length / 2 + 0.5) * 3
-                  }deg) translateY(${Math.abs(index - hand.length / 2 + 0.5) * TRANSLATE_Y_PX}px)`,
-                }}
                 onContextMenu={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
                   setMenuIdx(card.idx);
                   onOpen();
                 }}
-                className={card.isModifier ? 'tutorial-modifiers-step-2' : undefined}
+                className={
+                  card.isModifier ? "tutorial-modifiers-step-2" : undefined
+                }
                 onMouseEnter={() => setHoveredCard(card.idx)}
-                    onMouseLeave={() => {
-                      setHoveredCard(null);
-                      setHoveredButton(null);
-                    }}
+                onMouseLeave={() => {
+                  setHoveredCard(null);
+                  setHoveredButton(null);
+                }}
               >
                 {card.isModifier && !isPreselected && (
-                  <Flex position={"absolute"}
+                  <Flex
+                    position={"absolute"}
                     zIndex={7}
                     bottom={0}
                     borderRadius={"10px"}
                     background={"violet"}
                   >
-                    {hoveredCard === card.idx && (  
+                    {hoveredCard === card.idx && (
                       <Button
-                      height={8}
+                        height={8}
                         fontSize="8px"
                         px={"2px"}
                         borderRadius={"10px"}
-                        size={isMobile? "xs": "md"}
-                        variant={ "discardSecondarySolid"}
+                        size={isMobile ? "xs" : "md"}
+                        variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                       >
                         X
@@ -117,15 +121,15 @@ export const HandSection = () => {
                     {hoveredButton === card.idx && (
                       <Button
                         height={8}
-                        px={{base:"3px", md: "10px"}}
+                        px={{ base: "3px", md: "10px" }}
                         fontSize="8px"
                         borderRadius={"10px"}
-                        variant={ "discardSecondarySolid"}
+                        variant={"discardSecondarySolid"}
                         onClick={(e) => {
-                                  e.stopPropagation();
-                                  discardEffectCard(card.idx);
-                                  onClose();
-                                }}
+                          e.stopPropagation();
+                          discardEffectCard(card.idx);
+                          onClose();
+                        }}
                       >
                         Discard
                       </Button>

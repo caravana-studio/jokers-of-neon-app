@@ -6,15 +6,16 @@ import { useGameContext } from "../providers/GameProvider";
 import { PlaysModal } from "./Plays/PlaysModal";
 
 export const CurrentPlay = () => {
-  const { preSelectedPlay } = useGameContext();
+  const { preSelectedPlay, playIsNeon } = useGameContext();
   const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
+    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}>
       <Tooltip label={"Show plays"} placement={"left"}>
         <InfoIcon
-        color='white'
-          sx={{ fontSize: "20px", cursor: 'pointer' }}
+          color="white"
+          fontSize={{ base: "14px", md: "20px" }}
+          sx={{ cursor: "pointer" }}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
@@ -26,7 +27,7 @@ export const CurrentPlay = () => {
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
-          : `Current Play: ${PLAYS[preSelectedPlay]}`}
+          : `Current Play: ${playIsNeon ? "NEON " : ""} ${PLAYS[preSelectedPlay]}`}
       </Text>
     </Flex>
   );
