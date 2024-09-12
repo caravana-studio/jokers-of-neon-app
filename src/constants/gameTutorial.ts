@@ -110,7 +110,7 @@ export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
     content:
       "If you don’t want to use a special card, you can discard it at any time by" +
       (!isMobile
-        ? " right-clicking on it."
+        ? " clicking the discard button that will pop up over the card."
         : " dragging it to the discard button."),
     ...COMMON_SETTINGS,
   },
@@ -129,9 +129,9 @@ export const MODIFIERS_TUTORIAL_STEPS: Step[] = [
     title: "Discard",
     content:
       (!isMobile
-        ? "Right click the modifier"
+        ? "Click the discard button that will pop up over the card"
         : "Drag the modifier and drop it onto the discard button") +
-      " to discard the card without losing any discard chances.",
+      " to discard it without losing any discard chances.",
     ...COMMON_SETTINGS,
   },
 ];
