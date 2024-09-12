@@ -142,19 +142,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setDiscardAnimation,
     setPlayAnimation,
     setError,
-    setScore,
     sortBySuit,
     setSortBySuit,
     username,
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
+    setLockedScore,
+    score,
   } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
-    setScore(0);
   };
 
   const toggleSortBy = () => {
@@ -367,11 +367,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setTimeout(() => {
         setPlayAnimation(true);
-        playEvents.score && setScore(playEvents.score);
       }, ALL_CARDS_DURATION);
 
       setTimeout(() => {
         setAnimatedCard(undefined);
+        setLockedScore(undefined);
 
         setPlayAnimation(false);
         clearPreSelection();
@@ -407,6 +407,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
+    setLockedScore(score);
     play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
