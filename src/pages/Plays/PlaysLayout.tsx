@@ -24,15 +24,15 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={{base: 4, sm: 14}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading mt={{base: 8, sm: 14}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
           <PlaysAvailableTable />
           <Button
             className="game-tutorial-step-4"
-            mt={{base: 8, sm: 10}}
-            mb={2}
+            mt={8}
+            mb={4}
             w="100%"
             size="md"
             variant="solid"
