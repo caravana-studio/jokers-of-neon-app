@@ -79,8 +79,11 @@ const MobilePreviewCard = () => {
 
   return (
     <Background type="home" dark>
-        <Flex flexDirection={"column"} 
-        justifyContent={"center"} height={"100vh"}>
+        <Flex 
+          flexDirection={"column"} 
+          justifyContent={"center"} height={"100vh"}
+          overflow= "scroll"
+        >
             <Flex 
               flexDirection={"column"} 
               justifyContent={"center"} 
