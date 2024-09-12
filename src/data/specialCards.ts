@@ -66,4 +66,25 @@ export const SPECIAL_CARDS_DATA: CardDataMap = {
     name: "The hand thief",
     description: "Adds +1 hands and +1 discards to the round",
   },
+  316: {
+    name: "Extra help",
+    description: "Increase hand size by 2",
+  },
+  317: {
+    name: "Lucky 7",
+    description: "All 7s score +7 multi",
+  },
+  318: {
+    name: "Neon bonus",
+    description: "All Neon cards score +20 extra points",
+  },
+  319: {
+    name: "Deadline",
+    description:
+      "When playing your last hand, increase the play level 10 times",
+  },
+  320: {
+    name: "Initial advantage",
+    description: "The first played hand scores +100 points and +10 multi",
+  },
 };
