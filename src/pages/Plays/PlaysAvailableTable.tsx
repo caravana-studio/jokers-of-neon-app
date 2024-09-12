@@ -14,11 +14,21 @@ import {
   import { useStore } from "../../providers/StoreProvider";
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
-import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
+  import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
   
   const { blueLight, blue, violet } = theme.colors;
   
-  export const PlaysAvailableTable = () => {
+  interface PlaysAvailableTableProps {
+    height?: {
+      base?: string;
+      sm?: string;
+      md?: string;
+      lg?: string;
+      xl?: string;
+    };
+  }
+
+  export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ height }) => {
     const { gameId } = useGameContext();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
   
@@ -141,6 +151,7 @@ import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
       <>
         {plays ? (
           <TableContainer 
+            height={height}
             border={`2px solid ${blueLight}`}
             borderRadius={"25px"}
             boxShadow={`0px 0px 20px 15px ${blue}`}
