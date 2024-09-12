@@ -7,6 +7,7 @@ import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { OpenPack } from "./pages/OpenPack";
+import PreviewCard from "./pages/PreviewCard";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { Store } from "./pages/store/Store";
@@ -16,6 +17,8 @@ import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
+import { isMobile } from "react-device-detect";
+import MobilePreviewCard from "./pages/PreviewCardMobile";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -66,6 +69,16 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <Redirect />
+                </AudioPlayerProvider>
+              }
+            />
+            <Route
+              path="/preview-card"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                  <StoreProvider>
+                    {isMobile? <MobilePreviewCard/>: <PreviewCard />}
+                  </StoreProvider>
                 </AudioPlayerProvider>
               }
             />

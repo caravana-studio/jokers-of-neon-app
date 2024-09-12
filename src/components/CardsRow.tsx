@@ -64,7 +64,8 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                   <Flex
                     position={"absolute"}
                     zIndex={7}
-                    bottom={0}
+                    bottom='5px'
+                    left='5px'
                     borderRadius={"10px"}
                     background={"violet"}
                   >

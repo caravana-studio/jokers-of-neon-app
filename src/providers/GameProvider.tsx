@@ -217,6 +217,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
       const SPECIAL_SUIT_CHANGE_DURATION =
         (playEvents.specialSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+      const GLOBAL_BOOSTER_DURATION =
+        (playEvents.globalEvents?.length ?? 0) * PLAY_ANIMATION_DURATION * 2;
       const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
         ? PLAY_ANIMATION_DURATION * 2
         : 0;
@@ -229,6 +231,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         MODIFIER_SUIT_CHANGE_DURATION +
         SPECIAL_SUIT_CHANGE_DURATION +
         LEVEL_BOOSTER_DURATION +
+        GLOBAL_BOOSTER_DURATION +
         COMMON_CARDS_DURATION +
         SPECIAL_CARDS_DURATION +
         500;
@@ -299,69 +302,99 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
 
         setTimeout(() => {
-          //level boosters
-          if (playEvents.levelEvent) {
-            const {
-              special_idx,
-              multi: eventMulti,
-              points: eventPoints,
-            } = playEvents.levelEvent;
-            //animate points
-            if (eventPoints) {
-              setAnimatedCard({
-                special_idx,
-                points: eventPoints - points,
-                animationIndex: 21,
-              });
-              setPoints(eventPoints);
-            }
-            if (eventMulti) {
+          //global boosters
+          if (playEvents.globalEvents) {
+            playEvents.globalEvents.forEach((event, index) => {
               setTimeout(() => {
-                //animate multi
-                setAnimatedCard({
-                  special_idx,
-                  multi: eventMulti - multi,
-                  animationIndex: 31,
-                });
-                setMulti(eventMulti);
-              }, PLAY_ANIMATION_DURATION);
-            }
+                const { special_idx, multi, points } = event;
+                if (points) {
+                  setAnimatedCard({
+                    special_idx,
+                    points,
+                    animationIndex: 20 + index,
+                  });
+                  setPoints((prev) => prev + points);
+                }
+                if (multi) {
+                  setTimeout(() => {
+                    //animate multi
+                    setAnimatedCard({
+                      special_idx,
+                      multi,
+                      animationIndex: 31 + index,
+                    });
+                    setMulti((prev) => prev + multi);
+                  }, PLAY_ANIMATION_DURATION);
+                }
+              }, PLAY_ANIMATION_DURATION * index);
+            });
           }
 
           setTimeout(() => {
-            //traditional cards and modifiers
-            playEvents.cardScore.forEach((card, index) => {
-              setTimeout(() => {
-                const { idx, points, multi } = card;
+            //level boosters
+            if (playEvents.levelEvent) {
+              const {
+                special_idx,
+                multi: eventMulti,
+                points: eventPoints,
+              } = playEvents.levelEvent;
+              //animate points
+              if (eventPoints) {
                 setAnimatedCard({
-                  idx: [idx],
-                  points,
-                  multi,
-                  animationIndex: 40 + index,
+                  special_idx,
+                  points: eventPoints - points,
+                  animationIndex: 31,
                 });
-                points && setPoints((prev) => prev + points);
-                multi && setMulti((prev) => prev + multi);
-              }, PLAY_ANIMATION_DURATION * index);
-            });
-
-            //special cards
-            setTimeout(() => {
-              playEvents.specialCards?.forEach((event, index) => {
+                setPoints(eventPoints);
+              }
+              if (eventMulti) {
                 setTimeout(() => {
-                  const { idx, points, multi, special_idx } = event;
+                  //animate multi
+                  setAnimatedCard({
+                    special_idx,
+                    multi: eventMulti - multi,
+                    animationIndex: 41,
+                  });
+                  setMulti(eventMulti);
+                }, PLAY_ANIMATION_DURATION);
+              }
+            }
+
+            setTimeout(() => {
+              //traditional cards and modifiers
+              playEvents.cardScore.forEach((card, index) => {
+                setTimeout(() => {
+                  const { idx, points, multi } = card;
                   setAnimatedCard({
                     idx: [idx],
                     points,
                     multi,
-                    special_idx,
                     animationIndex: 50 + index,
                   });
                   points && setPoints((prev) => prev + points);
                   multi && setMulti((prev) => prev + multi);
                 }, PLAY_ANIMATION_DURATION * index);
               });
-            }, COMMON_CARDS_DURATION);
-          }, LEVEL_BOOSTER_DURATION);
+
+              //special cards
+              setTimeout(() => {
+                playEvents.specialCards?.forEach((event, index) => {
+                  setTimeout(() => {
+                    const { idx, points, multi, special_idx } = event;
+                    setAnimatedCard({
+                      idx: [idx],
+                      points,
+                      multi,
+                      special_idx,
+                      animationIndex: 60 + index,
+                    });
+                    points && setPoints((prev) => prev + points);
+                    multi && setMulti((prev) => prev + multi);
+                  }, PLAY_ANIMATION_DURATION * index);
+                });
+              }, COMMON_CARDS_DURATION);
+            }, LEVEL_BOOSTER_DURATION);
+          }, GLOBAL_BOOSTER_DURATION);
         }, SPECIAL_SUIT_CHANGE_DURATION);
       }, MODIFIER_SUIT_CHANGE_DURATION + NEON_PLAY_DURATION);
 
