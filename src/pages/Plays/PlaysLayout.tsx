@@ -24,7 +24,7 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={{base: 8, sm: 14}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading mt={{base: 10, md: 20}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
             AVAILABLE PLAYS
           </Heading>
 
