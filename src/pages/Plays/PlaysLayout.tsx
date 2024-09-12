@@ -23,7 +23,7 @@ export const PlaysLayout = () => {
         height={"100vh"}
         >
           <Heading 
-            mt={{base: 0, sm: 10, md: 20}}
+            mt={{base: 0, sm: 20, md: 20}}
             size={{base: "sm", sm: "md"}}
             variant="italic"
             color="white"
