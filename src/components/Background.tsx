@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { isMobile } from "react-device-detect";
 
 interface BackgroundProps extends PropsWithChildren {
-  type?: "game" | "store" | "home";
+  type?: "game" | "store" | "home" | "white";
   dark?: boolean;
   scrollOnMobile?: boolean;
   rewardsDecoration?: boolean;
@@ -19,7 +19,8 @@ export const Background = ({
   return (
     <Box
       sx={{
-        backgroundImage: `url(bg/${type}-bg.jpg)`,
+        backgroundColor: type === "white" ? "white" : "transparent",
+        backgroundImage: type === "white" ? "none" : `url(bg/${type}-bg.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",

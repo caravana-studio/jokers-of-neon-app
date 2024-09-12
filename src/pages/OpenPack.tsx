@@ -57,6 +57,12 @@ export const OpenPack = () => {
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
 
   useEffect(() => {
+    if (game?.state === "IN_STORE") {
+      navigate("/redirect/store");
+    }
+  }, [game?.state]);
+
+  useEffect(() => {
     if (blisterPackResult?.cardsPicked) {
       setCards([]);
     } else {

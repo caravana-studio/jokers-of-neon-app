@@ -20,6 +20,8 @@ export const Redirect = () => {
         navigate("/demo");
       } else if (page === "store") {
         navigate("/store");
+      } else if (page === "open-pack") {
+        navigate("/open-pack");
       }
     }, 6000);
 
@@ -35,6 +37,8 @@ export const Redirect = () => {
       navigate("/demo");
     } else if (state === "AT_SHOP" && page === "store") {
       navigate("/store");
+    } else if (state === "OPEN_BLISTER_PACK" && page === "open-pack") {
+      navigate("/open-pack");
     }
 
     return () => {
@@ -43,7 +47,7 @@ export const Redirect = () => {
   }, [state, page, navigate]);
 
   return (
-    <Background type="game">
+    <Background type={page === "open-pack" ? "white" : "game"}>
       <Loading />
     </Background>
   );
