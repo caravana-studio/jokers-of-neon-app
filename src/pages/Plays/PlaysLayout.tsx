@@ -22,7 +22,14 @@ export const PlaysLayout = () => {
         margin={"0 auto"} 
         height={"100vh"}
         >
-          <Heading mt={{base: 10, md: 20}} size={{base: "sm", sm: "md"}} variant="italic" color="white" textAlign={"center"} mb={8}>
+          <Heading 
+            mt={{base: 0, sm: 10, md: 20}}
+            size={{base: "sm", sm: "md"}}
+            variant="italic"
+            color="white"
+            textAlign={"center"}
+            mb={ isMobile ? 10 : 8}
+          >
             AVAILABLE PLAYS
           </Heading>
           <PlaysAvailableTable />
