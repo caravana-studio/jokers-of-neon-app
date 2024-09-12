@@ -97,7 +97,7 @@ export const OpenPack = () => {
     <Background type="game" dark rewardsDecoration>
       <WhiteOverlay visible={overlayVisible} />
       {cards.length > 0 ? (
-        <Flex flexDirection="column" gap={4}>
+        <Flex height={'100%'} justifyContent='center' flexDirection="column" gap={4}>
           <Flex
             flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-between"
@@ -125,7 +125,8 @@ export const OpenPack = () => {
                 >
                   <Box
                     key={getCardUniqueId(card)}
-                    p={1.5}
+                    m={1.5}
+                    p={{base: 1, sm: 1.5}}
                     sx={{
                       borderRadius: { base: "7px", md: "15px" },
                       opacity:
@@ -223,7 +224,7 @@ const CardsContainer = ({ children }: PropsWithChildren) => {
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        minHeight: `${CARD_HEIGHT * 2 + 30}px`,
+        minHeight: `${CARD_HEIGHT * 2 + 80}px`,
       }}
     >
       {children}
