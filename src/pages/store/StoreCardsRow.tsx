@@ -18,14 +18,7 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  // const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard, isPurchased } = useStore();
-
-  // useEffect(() => {
-  //   if (selectedCard) {
-  //     navigate("/preview-card", { state: { card: selectedCard, isPack: false } });
-  //   }
-  // }, [selectedCard]);
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
