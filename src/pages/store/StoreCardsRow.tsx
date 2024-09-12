@@ -5,7 +5,6 @@ import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { ShowCardModal } from "./ShowCardModal";
 import { useNavigate } from "react-router-dom";
 
 interface CardsRowProps {
@@ -19,14 +18,14 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const [selectedCard, setSelectedCard] = useState<Card | undefined>();
+  // const [selectedCard, setSelectedCard] = useState<Card | undefined>();
   const { buyCard, isPurchased } = useStore();
 
-  useEffect(() => {
-    if (selectedCard) {
-      navigate("/preview-card", { state: { card: selectedCard, isPack: false } });
-    }
-  }, [selectedCard]);
+  // useEffect(() => {
+  //   if (selectedCard) {
+  //     navigate("/preview-card", { state: { card: selectedCard, isPack: false } });
+  //   }
+  // }, [selectedCard]);
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
@@ -72,7 +71,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
                   cursor="pointer"
                   card={{ ...card, purchased }}
                   onClick={() => {
-                    !isPurchased(card) && setSelectedCard(card);
+                    if(!isPurchased(card)){
+                      navigate("/preview-card", { state: { card: card, isPack: false } });
+                    }
                   }}
                   scale={getCardScale()}
                 />
@@ -81,15 +82,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           })}
         </Flex>
       </Box>
-      {/* {selectedCard && (
-        <ShowCardModal
-          onBuyClick={() => {
-            buyCard(selectedCard);
-          }}
-          card={selectedCard}
-          close={() => setSelectedCard(undefined)}
-        />
-      )} */}
     </>
   );
 };
