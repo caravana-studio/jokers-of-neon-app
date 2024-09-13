@@ -10,7 +10,7 @@ export const Packs = () => {
   return (
     <Box m={4}>
       <Flex justifyContent="space-between" alignItems="center">
-        <Heading size={"s"} mb={[1, 1, 1, 2, 2]}>
+        <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
           Packs
         </Heading>
       </Flex>
