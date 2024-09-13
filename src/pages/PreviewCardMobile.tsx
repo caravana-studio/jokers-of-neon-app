@@ -120,7 +120,6 @@ const MobilePreviewCard = () => {
                 {!isPack && (
                   <Box mt={"20px"} >
                       <Text color="white" fontSize="lg" mb={2}
-                      filter="blur(0.5px)"
                         sx={{
                           position: "relative",
                           _before: {
@@ -148,7 +147,6 @@ const MobilePreviewCard = () => {
                 </VStack>
                 <Box mb={4}>
                   <Text color="white" fontSize="lg" mb={2}
-                    filter="blur(0.5px)"
                     sx={{
                       position: "relative",
                       _before: {
@@ -203,7 +201,6 @@ const MobilePreviewCard = () => {
                   </Box>
                 )}
                 <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
-                  filter="blur(0.5px)"
                   sx={{
                     position: "relative",
                     width: "60%",
@@ -219,7 +216,6 @@ const MobilePreviewCard = () => {
                   }}
                 >
                   <Flex flex={1} alignItems={"end"} justifyContent={"space-between"} 
-                      filter="blur(0.5px)"
                       sx={{
                         paddingTop: "8px",
                         paddingBottom: "8px",

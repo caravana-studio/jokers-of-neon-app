@@ -16,6 +16,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { isMobile } from "react-device-detect";
 import MobilePreviewCard from "./pages/PreviewCardMobile";
 
@@ -92,6 +93,14 @@ function App() {
               }
             />
             <Route path="/play" element={<Navigate to="/" />} />
+            <Route 
+              path="/plays"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                    <PlaysLayout/>
+                </AudioPlayerProvider>
+              }
+            />
           </Routes>
         </GameProvider>
       </CardAnimationsProvider>

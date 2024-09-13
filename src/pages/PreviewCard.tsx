@@ -143,7 +143,6 @@ const PreviewCard = () => {
                             )}
                             <Box>
                                 <Text color="white" fontSize="lg" mb={2}
-                                  filter="blur(0.5px)"
                                   sx={{
                                     position: "relative",
                                     _before: {
@@ -199,7 +198,6 @@ const PreviewCard = () => {
                               </Box>
                             )}
                             <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
-                              filter="blur(0.5px)"
                               sx={{
                                 position: "relative",
                                 width: "60%",
@@ -215,7 +213,6 @@ const PreviewCard = () => {
                               }}
                             >
                               <Flex flex={1} alignItems={"end"} justifyContent={"space-between"} 
-                                  filter="blur(0.5px)"
                                   sx={{
                                     paddingTop: "8px",
                                     paddingBottom: "8px",
