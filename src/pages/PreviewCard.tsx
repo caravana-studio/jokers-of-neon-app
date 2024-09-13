@@ -117,7 +117,6 @@ const PreviewCard = () => {
                             {!isPack && (
                               <Box mt={"20px"} >
                                 <Text color="white" fontSize="lg" mb={2}
-                                  filter="blur(0.5px)"
                                     sx={{
                                       position: "relative",
                                       _before: {
