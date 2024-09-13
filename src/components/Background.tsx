@@ -6,14 +6,14 @@ interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white";
   dark?: boolean;
   scrollOnMobile?: boolean;
-  rewardsDecoration?: boolean;
+  bgDecoration?: boolean;
 }
 
 export const Background = ({
   children,
   type = "game",
   dark = false,
-  rewardsDecoration = false,
+  bgDecoration: bgDecoration = false,
   scrollOnMobile = false,
 }: BackgroundProps) => {
   return (
@@ -30,8 +30,8 @@ export const Background = ({
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
       }}
     >
-      {rewardsDecoration ? (
-        <RewardsDecoration>{children}</RewardsDecoration>
+      {bgDecoration ? (
+        <BackgroundDecoration>{children}</BackgroundDecoration>
       ) : (
         children
       )}
@@ -39,7 +39,7 @@ export const Background = ({
   );
 };
 
-const RewardsDecoration = ({ children }: PropsWithChildren) => {
+const BackgroundDecoration = ({ children }: PropsWithChildren) => {
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       {!isMobile && (

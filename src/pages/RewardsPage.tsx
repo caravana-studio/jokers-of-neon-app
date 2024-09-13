@@ -12,7 +12,7 @@ export const RewardsPage = () => {
   }
 
   return (
-    <Background type="game" dark rewardsDecoration>
+    <Background type="game" dark bgDecoration>
       <RewardsDetail roundRewards={roundRewards} />
     </Background>
   );

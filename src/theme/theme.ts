@@ -1,6 +1,7 @@
 import { buttonTheme } from "./button";
 import {
   BLUE,
+  BLUE_LIGHT,
   CLUBS,
   DIAMONDS,
   HEARTS,
@@ -21,6 +22,7 @@ import { tooltipTheme } from "./tooltip";
 export default {
   colors: {
     blue: BLUE,
+    blueLight: BLUE_LIGHT,
     violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",

@@ -7,7 +7,7 @@ import { Background } from "../../components/Background";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PlaysTable } from "../../components/Plays/PlaysTable";
+import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
