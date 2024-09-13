@@ -117,14 +117,17 @@ export const TiltCard = ({
             <Box
               sx={{
                 position: "absolute",
-                top: 1,
-                right: 1,
+                bottom: "-8%",
+                left: "50%",
+                transform: "translateX(-50%)",
                 zIndex: 10,
-                backgroundColor: "rgba(0,0,0,0.7)",
+                backgroundColor: "black",
+                borderRadius:"5px",
+                boxShadow: "0px 0px 10px 2px white",
                 color: "white",
-                fontSize: isMobile ? 15 * scale : 20 * scale,
+                fontSize: isMobile ? 15 * scale : 18 * scale,
                 px: 2,
-                py: 1,
+                pt: "1px",
                 opacity: purchased ? 0.5 : 1,
               }}
             >

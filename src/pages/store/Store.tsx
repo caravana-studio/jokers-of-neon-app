@@ -245,9 +245,10 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            <Coins />
+            {isMobile && <Flex mt={2}><Coins/></Flex>}
             <Packs />
-            {!isMobile && levelUpTable}
+            {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
+            {!isMobile && <Coins />}
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}
@@ -270,7 +271,7 @@ export const Store = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifiers"
+                  title="modifier cards"
                 />
               )}
             </Box>
@@ -297,6 +298,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
+          
           <Box
             display="flex"
             flexDirection={[
