@@ -12,6 +12,7 @@ export const Coins = () => {
     <Flex
       sx={{
         p: 4,
+        pt: 0,
         mt: 2,
         mx: 4,
       }}

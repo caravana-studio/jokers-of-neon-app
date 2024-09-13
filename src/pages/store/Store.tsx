@@ -247,7 +247,7 @@ export const Store = () => {
             </Heading>
             {isMobile && <Coins />}
             <Packs />
-            {!isMobile && levelUpTable}
+            {!isMobile && <Flex pt={8}>{levelUpTable}</Flex>}
             {!isMobile && <Coins />}
           </Box>
           <Box
