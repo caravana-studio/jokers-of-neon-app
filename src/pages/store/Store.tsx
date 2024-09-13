@@ -245,7 +245,7 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            {isMobile && <Coins />}
+            {isMobile && <Flex mt={2}><Coins/></Flex>}
             <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
             {!isMobile && <Coins />}
