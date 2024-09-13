@@ -34,7 +34,7 @@ export const useGameState = () => {
   const [sortBySuit, setSortBySuit] = useState(
     !!localStorage.getItem(SORT_BY_SUIT)
   );
-  const [score, setScore] = useState(0);
+  const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
@@ -56,7 +56,8 @@ export const useGameState = () => {
   const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
-  const [scoreInitialized, setScoreInitialized] = useState(false);
+
+  const score = lockedScore ?? dojoScore;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -70,13 +71,6 @@ export const useGameState = () => {
       setHand(dojoHand);
     }
   }, [dojoHand]);
-
-  useEffect(() => {
-    if (!score && dojoScore > 0 && !scoreInitialized) {
-      setScore(dojoScore);
-      setScoreInitialized(true);
-    }
-  }, [dojoScore]);
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
@@ -136,7 +130,6 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
-    setScore,
     apiHand: dojoHand,
     plays,
     refetchPlays,
@@ -147,5 +140,6 @@ export const useGameState = () => {
     setPlayIsNeon,
     specialCards,
     setLockedSpecialCards,
+    setLockedScore,
   };
 };
