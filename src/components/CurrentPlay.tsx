@@ -23,6 +23,7 @@ export const CurrentPlay = () => {
           _hover={{
             backgroundColor: "transparent",
           }}
+          width={{ base: "10px", md: "15px" }}
           >
           <InfoIcon
             color="white"

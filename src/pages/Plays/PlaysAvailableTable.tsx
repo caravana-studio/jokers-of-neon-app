@@ -45,7 +45,6 @@ import {
             border={`2px solid ${blueLight}`}
             borderRadius={"25px"}
             boxShadow={`0px 0px 20px 15px ${blue}`}
-            filter="blur(0.5px)"
             backgroundColor="rgba(0, 0, 0, 1)"
           >
             <CustomScrollbar>
