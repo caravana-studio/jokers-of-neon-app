@@ -174,7 +174,6 @@ const MobilePreviewCard = () => {
                 {isPack && (
                   <Box mb={4}>
                     <Text color="white" fontSize="lg" mb={2}
-                      filter="blur(0.5px)"
                       sx={{
                         position: "relative",
                         _before: {
