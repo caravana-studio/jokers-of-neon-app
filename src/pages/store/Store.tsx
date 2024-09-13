@@ -245,9 +245,9 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            <Coins />
             <Packs />
             {!isMobile && levelUpTable}
+            <Coins />
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}
@@ -297,6 +297,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
+          
           <Box
             display="flex"
             flexDirection={[
