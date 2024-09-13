@@ -117,6 +117,7 @@ const MobilePreviewCard = () => {
               </Flex>
 
               <VStack align="stretch" spacing={8} flex={1} mb={4}>
+                {!isPack && (
                   <Box mt={"20px"} >
                       <Text color="white" fontSize="lg" mb={2}
                       filter="blur(0.5px)"
@@ -136,9 +137,14 @@ const MobilePreviewCard = () => {
                           CARD TYPE:
                       </Text>
                       <Text color={neonGreen} fontSize="xl">
-                          {card.isSpecial ? "Special" : "Normal"}
+                        
+                        {card.isSpecial ? "Special" 
+                              : card.isModifier ? "Modifier"
+                              : "Traditional"}
+                        {card.temporary && " (temporary)"}
                       </Text>
-                  </Box>                           
+                  </Box>
+                )}                           
                 </VStack>
                 <Box mb={4}>
                   <Text color="white" fontSize="lg" mb={2}
@@ -167,6 +173,35 @@ const MobilePreviewCard = () => {
                       </Text>
                   )}
                 </Box>
+                {isPack && (
+                  <Box mb={4}>
+                    <Text color="white" fontSize="lg" mb={2}
+                      filter="blur(0.5px)"
+                      sx={{
+                        position: "relative",
+                        _before: {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          width: "95%",
+                          height: "2px",               
+                          backgroundColor: "white",
+                          boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                        },
+                      }}
+                    >
+                        DETAILS:
+                    </Text>
+                    <Text color={neonGreen} fontSize="xl">
+                      {details?.split("\n").map((line, index) => (
+                            <span key={index}>
+                              {line}
+                              <br />
+                            </span>
+                      ))}
+                    </Text>
+                  </Box>
+                )}
                 <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
                   filter="blur(0.5px)"
                   sx={{

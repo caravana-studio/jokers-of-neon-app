@@ -47,7 +47,7 @@ const PreviewCard = () => {
   const game = useGame();
   const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
-  const { name, description } = getCardData(card, isPack);
+  const { name, description, details } = getCardData(card, isPack);
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
@@ -114,28 +114,33 @@ const PreviewCard = () => {
                         </Flex>
 
                         <VStack align="stretch" spacing={8} flex={1}>
-                            <Box mt={"20px"} >
+                            {!isPack && (
+                              <Box mt={"20px"} >
                                 <Text color="white" fontSize="lg" mb={2}
-                                filter="blur(0.5px)"
-                                  sx={{
-                                    position: "relative",
-                                    _before: {
-                                      content: '""',
-                                      position: "absolute",
-                                      bottom: 0,
-                                      width: "95%",
-                                      height: "2px",               
-                                      backgroundColor: "white",
-                                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                                    },
-                                  }}
-                                >
-                                    CARD TYPE:
-                                </Text>
-                                <Text color={neonGreen} fontSize="xl">
-                                    {card.isSpecial ? "Special" : "Normal"}
-                                </Text>
-                            </Box>
+                                  filter="blur(0.5px)"
+                                    sx={{
+                                      position: "relative",
+                                      _before: {
+                                        content: '""',
+                                        position: "absolute",
+                                        bottom: 0,
+                                        width: "95%",
+                                        height: "2px",               
+                                        backgroundColor: "white",
+                                        boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                      },
+                                    }}
+                                  >
+                                      CARD TYPE:
+                                  </Text>
+                                  <Text color={neonGreen} fontSize="xl">
+                                    {card.isSpecial ? "Special" 
+                                    : card.isModifier ? "Modifier"
+                                    : "Traditional"}
+                                    {card.temporary && " (temporary)"}
+                                  </Text>
+                              </Box>
+                            )}
                             <Box>
                                 <Text color="white" fontSize="lg" mb={2}
                                   filter="blur(0.5px)"
@@ -163,6 +168,36 @@ const PreviewCard = () => {
                                     </Text>
                                 )}
                             </Box>
+
+                            {isPack && (
+                              <Box>
+                                <Text color="white" fontSize="lg" mb={2}
+                                  filter="blur(0.5px)"
+                                    sx={{
+                                      position: "relative",
+                                      _before: {
+                                        content: '""',
+                                        position: "absolute",
+                                        bottom: 0,
+                                        width: "95%",
+                                        height: "2px",               
+                                        backgroundColor: "white",
+                                        boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                                      },
+                                    }}
+                                  >
+                                      DETAILS:
+                                  </Text>
+                                  <Text color={neonGreen} fontSize="xl">
+                                  {details?.split("\n").map((line, index) => (
+                                    <span key={index}>
+                                      {line}
+                                      <br />
+                                    </span>
+                                  ))}
+                                  </Text>
+                              </Box>
+                            )}
                             <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}
                               filter="blur(0.5px)"
                               sx={{
