@@ -85,6 +85,9 @@ export async function setup({ ...config }: DojoConfig) {
     }; 
 
     if(gameID){
+      if(sync){
+        sync.cancel()
+      }
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
       sync  = await syncEntities(toriiClient, contractComponents as any, []);
