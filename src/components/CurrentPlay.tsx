@@ -4,35 +4,50 @@ import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay, playIsNeon } = useGameContext();
   const navigate = useNavigate();
+  const [hoveredButton, setHoveredButton] = useState(false);
   
   return (
-    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}>
-      <Tooltip label={"Show plays"} placement={"left"}>
+    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}
+    >
+      <Flex onMouseEnter={() => setHoveredButton(true)}
+            onMouseLeave={() => setHoveredButton(false)}>
+        {hoveredButton && (
+          <Button
+            // height={8}
+            // px={{ base: "3px", md: "10px" }}
+            fontSize="8px"
+            borderRadius={"10px"}
+            variant={"solid"}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate("/plays");
+            }}
+          >
+            Show plays
+          </Button>
+        )}
+        
         <Button 
-          backgroundColor={"transparent"}
-          border={"none"}
-          boxShadow={"none"}
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate("/plays");
-          }}
+          variant={hoveredButton ? "solid" : "defaultOutline"}
+          // backgroundColor={"transparent"}
+          // border={"none"}
+          // boxShadow={"none"}
           _hover={{
             backgroundColor: "transparent",
           }}
           width={{ base: "10px", md: "15px" }}
+          className="game-tutorial-step-5"
           >
-          <InfoIcon
-            color="white"
-            fontSize={{ base: "14px", md: "20px" }}
-            sx={{ cursor: "pointer" }}
-            className="game-tutorial-step-5"
-          />
+            !
         </Button>
-      </Tooltip>
+      </Flex>
+
+      
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
