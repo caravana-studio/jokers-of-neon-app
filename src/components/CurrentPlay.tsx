@@ -5,6 +5,7 @@ import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay, playIsNeon } = useGameContext();
@@ -15,13 +16,17 @@ export const CurrentPlay = () => {
     <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}
     >
       <Flex onMouseEnter={() => setHoveredButton(true)}
-            onMouseLeave={() => setHoveredButton(false)}>
+            onMouseLeave={() => setHoveredButton(false)}
+            gap={2}
+            >
         {hoveredButton && (
           <Button
-            // height={8}
-            // px={{ base: "3px", md: "10px" }}
-            fontSize="8px"
-            borderRadius={"10px"}
+            height={8}
+            px={"12px"}
+            textTransform="initial"
+            size={isMobile ? "xs" :"md"}
+            fontSize="10px"
+            borderRadius={"8px"}
             variant={"solid"}
             onClick={(e) => {
               e.stopPropagation();
@@ -32,15 +37,12 @@ export const CurrentPlay = () => {
           </Button>
         )}
         
-        <Button 
+        <Button
           variant={hoveredButton ? "solid" : "defaultOutline"}
-          // backgroundColor={"transparent"}
-          // border={"none"}
-          // boxShadow={"none"}
-          _hover={{
-            backgroundColor: "transparent",
-          }}
-          width={{ base: "10px", md: "15px" }}
+          borderRadius={"8px"}
+          height={8}
+          px={"2px"}
+          size={isMobile ? "xs" :"md"}
           className="game-tutorial-step-5"
           >
             !
