@@ -21,13 +21,16 @@ export const CurrentPlay = () => {
             >
         {hoveredButton && (
           <Button
-            height={8}
+            height={isMobile ? 6 : 8}
             px={"12px"}
             textTransform="initial"
             size={isMobile ? "xs" :"md"}
             fontSize="10px"
             borderRadius={"8px"}
             variant={"solid"}
+            _hover={{
+              borderColor: "white !important"
+            }}
             onClick={(e) => {
               e.stopPropagation();
               navigate("/plays");
@@ -40,8 +43,11 @@ export const CurrentPlay = () => {
         <Button
           variant={hoveredButton ? "solid" : "defaultOutline"}
           borderRadius={"8px"}
-          height={8}
+          height={isMobile ? 6 : 8}
           px={"2px"}
+          _hover={{
+            borderColor: "white !important"
+          }}
           size={isMobile ? "xs" :"md"}
           className="game-tutorial-step-5"
           >
