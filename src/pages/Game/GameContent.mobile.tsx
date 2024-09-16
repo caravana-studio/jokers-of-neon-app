@@ -1,19 +1,19 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import Joyride, { CallBackProps } from 'react-joyride';
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
+import { GAME_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
+import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_MODIFIERS, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
+import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
-import {GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE} from "../../constants/gameTutorial";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -25,7 +25,6 @@ export const MobileGameContent = () => {
     executeCreateGame,
     addModifier,
     roundRewards,
-    checkOrCreateGame,
     discardEffectCard,
     discardSpecialCard,
   } = useGameContext();
@@ -88,10 +87,6 @@ export const MobileGameContent = () => {
       discardEffectCard(draggedCardId);
     }
   };
-
-  useEffect(() => {
-    checkOrCreateGame();
-  }, []);
 
   const game = useGame();
 
@@ -238,10 +233,10 @@ export const MobileGameContent = () => {
               }}
             >
               <Box>
-                <Box position={"absolute"} bottom={0} zIndex={6} width="115px">
+                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="130px">
                   <SortBy />
                 </Box>
-                <Box pb="30px" mx={6} mr={14}>
+                <Box pb="25px" >
                   <HandSection />
                 </Box>
               </Box>

@@ -5,24 +5,24 @@ export const PACKS_DATA: CardDataMap = {
     name: "Basic Pack",
     description: "Contains mostly traditional cards and modifiers",
     details:
-      "2% chance of getting a special card\n5% chance of getting a joker\n5% chance of getting a modifier\nPack size 5",
+      "2% chance of getting a special card\n5% chance of getting a modifier card\n4% chance of getting a Joker\n1% chance of getting a Neon Joker\nPack size 5",
   },
   2: {
     name: "Advanced Pack",
     description: "Can contain a special card or joker",
     details:
-      "4% chance of getting a special card\n10% chance of getting a joker\n10% chance of getting a modifier\nPack size 5",
+      "4% chance of getting a special card\n10% chance of getting a modifier card\n8% chance of getting a Joker\n2% chance of getting a Neon Joker\nPack size 5",
   },
   3: {
     name: "Jokers Pack",
     description: "More chances of getting a Joker",
-    details: "30% chance of getting a joker\nPack size 5",
+    details: "15% chance of getting a Joker\n1% chance of getting a Neon Joker\nPack size 3",
   },
   4: {
     name: "Specials Pack",
     description: "More chances of getting a special card",
     details:
-      "20% chance of getting a special card\n20% change of gettinf a modifier\nPack size 3",
+      "15% chance of getting a special card\n20% chance of getting a modifier\nPack size 3",
   },
   5: {
     name: "Modifiers Pack",
@@ -35,20 +35,20 @@ export const PACKS_DATA: CardDataMap = {
     details: "70% chance of getting a figure\nPack size 5",
   },
   7: {
-    name: "The deceitful Joker Pack",
-    description: "1 guaranteed joker",
+    name: "The Deceitful Joker Pack",
+    description: "1 guaranteed Joker",
     details:
-      "1 guaranteed joker\n1% chance of getting a Neon Joker\nPack size 4",
+      "1 guaranteed Joker\n6% chance of getting a Joker\n2% chance of getting a Neon Joker\nPack size 3",
   },
   8: {
-    name: "The lovers Pack",
+    name: "The Lovers Pack",
     description:
       "All hearts suited cards, can contain special cards and modifiers.",
     details:
-      "100% heart suited cards \n5% chance of getting a special card\n10% chance of getting heart suit modifier.\nPack size 4",
+      "60% heart card\n30% chance of getting Ace of Hearts\n9% chance of getting heart suit modifier\n1% chance of getting 'All cards to heart' special\nPack size 5",
   },
   9: {
-    name: "Special bet Pack",
+    name: "Special Bet Pack",
     description:
       "Small pack with chances of getting a special card or modifier",
     details:

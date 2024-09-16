@@ -1,32 +1,42 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Flex, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
-import { PlaysModal } from "./Plays/PlaysModal";
+import { useNavigate } from "react-router-dom";
 
 export const CurrentPlay = () => {
-  const { preSelectedPlay } = useGameContext();
-  const { isOpen: isPlaysModalOpen, onOpen, onClose } = useDisclosure();
-
+  const { preSelectedPlay, playIsNeon } = useGameContext();
+  const navigate = useNavigate();
+  
   return (
-    <Flex gap={4} alignItems={"center"} justifyContent={'flex-start'}>
+    <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}>
       <Tooltip label={"Show plays"} placement={"left"}>
-        <InfoIcon
-        color='white'
-          sx={{ fontSize: "20px", cursor: 'pointer' }}
+        <Button 
+          backgroundColor={"transparent"}
+          border={"none"}
+          boxShadow={"none"}
           onClick={(e) => {
             e.stopPropagation();
-            onOpen();
+            navigate("/plays");
           }}
-          className="game-tutorial-step-5"
-        />
+          _hover={{
+            backgroundColor: "transparent",
+          }}
+          width={{ base: "10px", md: "15px" }}
+          >
+          <InfoIcon
+            color="white"
+            fontSize={{ base: "14px", md: "20px" }}
+            sx={{ cursor: "pointer" }}
+            className="game-tutorial-step-5"
+          />
+        </Button>
       </Tooltip>
-      <PlaysModal isOpen={isPlaysModalOpen} onClose={onClose} />
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? "Select some cards to play"
-          : `Current Play: ${PLAYS[preSelectedPlay]}`}
+          : `Current Play: ${playIsNeon ? "NEON " : ""} ${PLAYS[preSelectedPlay]}`}
       </Text>
     </Flex>
   );

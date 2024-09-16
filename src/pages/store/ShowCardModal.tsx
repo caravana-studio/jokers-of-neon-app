@@ -86,7 +86,7 @@ export const ShowCardModal = ({
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
-    navigate("/open-pack");
+    navigate("/redirect/open-pack");
   };
 
   return (

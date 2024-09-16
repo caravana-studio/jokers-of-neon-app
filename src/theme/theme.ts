@@ -1,9 +1,11 @@
 import { buttonTheme } from "./button";
 import {
   BLUE,
+  BLUE_LIGHT,
   CLUBS,
   DIAMONDS,
   HEARTS,
+  NEON,
   NEON_GREEN,
   PASTEL_PINK,
   SPADES,
@@ -20,6 +22,7 @@ import { tooltipTheme } from "./tooltip";
 export default {
   colors: {
     blue: BLUE,
+    blueLight: BLUE_LIGHT,
     violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
@@ -34,11 +37,13 @@ export default {
     2: DIAMONDS,
     3: HEARTS,
     4: SPADES,
+    5: NEON,
     // suits - accessible through colors['CLUBS'] or 'CLUBS'
     CLUBS,
     DIAMONDS,
     HEARTS,
     SPADES,
+    NEON,
   },
   styles: {
     global: {

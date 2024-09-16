@@ -40,7 +40,6 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
         sx={{
           border: `2px solid #20C4EBFF`,
           boxShadow: `0px 0px 10px 20px ${BLUE}`,
-          filter: "blur(0.5px)",
           backgroundColor: "rgba(0, 0, 0, 0.8)",
           borderRadius: "10px",
         }}

@@ -45,7 +45,9 @@ export const checkHand = (
     });
 
     if (specialAllCardsToHearts) {
-      modifiedCardData.suit = Suits.HEARTS;
+      if(modifiedCardData.suit  != Suits.JOKER){
+        modifiedCardData.suit = Suits.HEARTS;
+      }
     }
 
     return modifiedCardData;

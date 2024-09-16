@@ -24,7 +24,6 @@ export const GameContent = () => {
     addModifier,
     roundRewards,
     gameId,
-    checkOrCreateGame,
     lockRedirection,
   } = useGameContext();
 
@@ -83,9 +82,6 @@ export const GameContent = () => {
     }
   };
 
-  useEffect(() => {
-    checkOrCreateGame();
-  }, []);
 
   useEffect(() => {
     const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
@@ -183,36 +179,35 @@ export const GameContent = () => {
             maxHeight="70px"
             position="fixed"
             top={0}
+            zIndex={0}
           />
           <Box
             sx={{ height: "100%", width: "100%" }}
-            pt={"90px"}
-            pb={"120px"}
             px={20}
           >
-            <Box sx={{ height: "20%", width: "100%" }}>
+            <Box sx={{ height: "30%", width: "100%" }} pt={'60px'}>
               <TopSection />
             </Box>
+            <Box height={'70%'} width={'100%'}>
             <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
               <Box
                 sx={{
-                  height: "60%",
+                  height: "55%",
                   width: "100%",
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
-                pt={12} 
               >
                 <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>
               <Box
-                pb={{ base: 2, md: "2vh" }}
+                pb={'60px'}
                 mr={{ base: 10, md: 20 }}
                 sx={{
                   display: "flex",
-                  height: "30%",
+                  height: "45%",
                   alignItems: "flex-end",
                   justifyContent: "center",
                 }}
@@ -220,6 +215,7 @@ export const GameContent = () => {
                 <HandSection />
               </Box>
             </DndContext>
+            </Box>
           </Box>
           <Image
             src="/borders/bottom.png"

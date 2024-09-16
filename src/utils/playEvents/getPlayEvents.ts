@@ -3,10 +3,12 @@ import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
+import { getGlobalEvents } from "./getGlobalEvents";
 import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
 import { getModifierSuitEvents } from "./getModifierSuitEvents";
 import { getMultiPointEvents } from "./getMultiPointEvents";
+import { getNeonPlayEvent } from "./getNeonPlayEvent";
 import { getScoreEvent } from "./getScoreEvent";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
 import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
@@ -22,6 +24,8 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     detailEarned: getDetailEarnedEvent(events),
     levelEvent: getSpecialLevelEvent(events),
     specialSuitEvents: getSpecialSuitEvents(events),
+    neonPlayEvent: getNeonPlayEvent(events),
+    globalEvents: getGlobalEvents(events),
     modifierSuitEvents: getModifierSuitEvents(events),
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),

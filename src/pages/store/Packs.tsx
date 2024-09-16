@@ -1,25 +1,16 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
-import { BlisterPackItem } from "../../dojo/generated/typescript/models.gen";
 import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useStore } from "../../providers/StoreProvider";
-import { ShowCardModal } from "./ShowCardModal";
 
 export const Packs = () => {
   const { packs } = useShopItems();
-  const [selectedPack, setSelectedPack] = useState<
-    BlisterPackItem | undefined
-  >();
-  const { buyPack } = useStore();
-
   const navigate = useNavigate();
 
   return (
     <Box m={4}>
       <Flex justifyContent="space-between" alignItems="center">
-        <Heading size={"s"} mb={[1, 1, 1, 2, 2]}>
+        <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
           Packs
         </Heading>
       </Flex>
@@ -40,7 +31,15 @@ export const Packs = () => {
                 isPack
                 scale={1.2}
                 onClick={() => {
-                  !pack.purchased && setSelectedPack(pack);
+                  if(!pack.purchased){
+                    navigate("/preview-card", { state: { card: {
+                      id: pack.blister_pack_id.toString(),
+                      img: `packs/${pack.blister_pack_id}`,
+                      idx: Number(pack.blister_pack_id),
+                      price: Number(pack.cost),
+                      card_id: Number(pack.blister_pack_id),
+                    }, isPack: true, pack: pack } });
+                  }
                 }}
                 isHolographic
               />
@@ -48,22 +47,6 @@ export const Packs = () => {
           );
         })}
       </Flex>
-      {selectedPack && (
-        <ShowCardModal
-          onBuyClick={() => {
-            buyPack(selectedPack)
-          }}
-          isPack
-          card={{
-            id: selectedPack.blister_pack_id.toString(),
-            img: `packs/${selectedPack.blister_pack_id}`,
-            idx: Number(selectedPack.blister_pack_id),
-            price: Number(selectedPack.cost),
-            card_id: Number(selectedPack.blister_pack_id),
-          }}
-          close={() => setSelectedPack(undefined)}
-        />
-      )}
     </Box>
   );
 };

@@ -11,16 +11,24 @@ export const TopSection = () => {
       height="100%"
       width="100%"
       justifyContent={"space-between"}
-      alignItems={"center"}
+      alignItems={"flex-start"}
     >
       <Box mr={4}>
-        <Img src="logos/logo-variant.png" width={{base: '120px', md: '330px'}} alt="logo" />
+        <Img
+          src="logos/logo-variant.svg"
+          width={{ base: "110px", md: "300px" }}
+          alt="logo"
+          mb="30px"
+        />
         <LevelPoints />
       </Box>
       <Flex
+        px={2}
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
         mx={2}
         flexGrow={1}
-        sx={{ p: 2 }}
         minWidth={{ base: "250px", md: "500px" }}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
       >
@@ -28,9 +36,9 @@ export const TopSection = () => {
       </Flex>
       <Flex
         flexDirection="column"
-        justifyContent="center"
         ml={4}
         height="100%"
+        justifyContent="flex-start"
       >
         <Score />
         <MultiPoints />

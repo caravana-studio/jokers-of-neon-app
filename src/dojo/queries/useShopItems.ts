@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { PokerHandItem } from "../../types/PokerHandItem";
-import { BlisterPackItem } from "../generated/typescript/models.gen";
+import { BlisterPackItem } from "../typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useShop } from "./useShop";
@@ -67,12 +67,12 @@ const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
   ]) as Entity;
   const item = getComponentValue(entity, entityId) as any;
   return {
-    game_id: item.game_id ?? 0,
-    idx: item.idx ?? 0,
-    poker_hand: item.poker_hand ?? "",
-    level: item.level ?? 0,
-    cost: item.cost ?? 200,
-    purchased: item.purchased ?? false,
+    game_id: item?.game_id ?? 0,
+    idx: item?.idx ?? 0,
+    poker_hand: item?.poker_hand ?? "",
+    level: item?.level ?? 0,
+    cost: item?.cost ?? 200,
+    purchased: item?.purchased ?? false,
   };
 };
 

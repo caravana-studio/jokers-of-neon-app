@@ -1,11 +1,11 @@
 import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { ShowCardModal } from "./ShowCardModal";
+import { useNavigate } from "react-router-dom";
 
 interface CardsRowProps {
   title: string;
@@ -17,7 +17,7 @@ interface CardsRowProps {
 }
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
-  const [selectedCard, setSelectedCard] = useState<Card | undefined>();
+  const navigate = useNavigate();
   const { buyCard, isPurchased } = useStore();
 
   const getCardScale = () => {
@@ -39,9 +39,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
   return (
     <>
-      <Box>
+      <Box mb={4}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading size={"s"} mb={[1, 1, 1, 2, 2]}>
+          <Heading size={{base: "s", sm: "xs"}} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
             {title}
           </Heading>
           {button && (
@@ -64,7 +64,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
                   cursor="pointer"
                   card={{ ...card, purchased }}
                   onClick={() => {
-                    !isPurchased(card) && setSelectedCard(card);
+                    if(!isPurchased(card)){
+                      navigate("/preview-card", { state: { card: card, isPack: false } });
+                    }
                   }}
                   scale={getCardScale()}
                 />
@@ -73,15 +75,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           })}
         </Flex>
       </Box>
-      {selectedCard && (
-        <ShowCardModal
-          onBuyClick={() => {
-            buyCard(selectedCard);
-          }}
-          card={selectedCard}
-          close={() => setSelectedCard(undefined)}
-        />
-      )}
     </>
   );
 };

@@ -9,7 +9,9 @@ export interface PlayEvents {
   detailEarned?: DetailEarned;
   specialCards?: CardScore[];
   levelEvent?: LevelEvent;
+  globalEvents?: LevelEvent[];
   specialSuitEvents?: SpecialSuitEvent[];
+  neonPlayEvent?: NeonPlayEvent;
   modifierSuitEvents?: ModifierSuitEvent[];
   cards: Card[];
   score: number;
@@ -34,6 +36,10 @@ export interface MultiPoints {
 export interface CardScore extends MultiPoints {
   idx: number;
   special_idx?: number;
+}
+
+export interface NeonPlayEvent extends MultiPoints {
+  neon_cards_idx: number[];
 }
 
 export interface SpecialSuitEvent {

@@ -3,19 +3,19 @@ import { CardDataMap } from "../types/CardData";
 export const SPECIAL_CARDS_DATA: CardDataMap = {
   300: {
     name: "Multiplied Hearts",
-    description: "Adds +5 multi for every played Heart suited card",
+    description: "Adds +2 multi for every played Heart suited card",
   },
   301: {
     name: "Multiplied Clubs",
-    description: "Adds +5 multi for every played Clubs suited card",
+    description: "Adds +2 multi for every played Clubs suited card",
   },
   302: {
     name: "Multiplied Diamonds",
-    description: "Adds +5 multi for every played Diamonds suited card",
+    description: "Adds +2 multi for every played Diamonds suited card",
   },
   303: {
     name: "Multiplied Spades",
-    description: "Adds +5 multi for every played Spades suited card",
+    description: "Adds +2 multi for every played Spades suited card",
   },
   304: {
     name: "Pair Booster",
@@ -65,5 +65,26 @@ export const SPECIAL_CARDS_DATA: CardDataMap = {
   315: {
     name: "The hand thief",
     description: "Adds +1 hands and +1 discards to the round",
+  },
+  316: {
+    name: "Extra help",
+    description: "Increase hand size by 2",
+  },
+  317: {
+    name: "Lucky 7",
+    description: "All 7s score +7 multi",
+  },
+  318: {
+    name: "Neon bonus",
+    description: "All Neon cards score +20 extra points",
+  },
+  319: {
+    name: "Deadline",
+    description:
+      "When playing your last hand, increase the play level 10 times",
+  },
+  320: {
+    name: "Initial advantage",
+    description: "The first played hand scores +100 points and +10 multi",
   },
 };

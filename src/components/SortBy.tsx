@@ -1,6 +1,4 @@
-import { Flex, Text, Tooltip } from "@chakra-ui/react";
-import { faHashtag, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
@@ -10,46 +8,37 @@ export const SortBy = () => {
 
   return (
     <Flex
-      backgroundColor="rgba(0,0,0,0.7)"
-      p={{ base: 0.5, sm: 2 }}
       flexDirection={isMobile ? "row" : "column"}
       alignItems="center"
-      gap={2}
-      mb={{ base: 0, md: 2 }}
+      gap={0.5}
     >
-      <Text
-        size="l"
-        pl={{ base: 1, sm: 0 }}
-        variant={isMobile ? "none" : "underlined"}
-      >
+      <Text size="m" pl={{ base: 1, sm: 0 }}>
         Sort by
       </Text>
       <Flex
-        gap={3}
+        gap={1}
         alignItems="center"
+        justifyContent="center"
         border={isMobile ? "none" : "1px solid white"}
         borderRadius="8px"
-        p={{ base: "5px 5px", sm: "15px 10px" }}
+        minWidth={{ base: "50px", sm: "100px" }}
+        p={{ base: "5px 5px", sm: "8px 10px" }}
       >
-        <Tooltip hasArrow label="Suit" placement="bottom">
-          <FontAwesomeIcon
-            opacity={sortBy === SortByEnum.SUIT ? 1 : 0.3}
-            cursor={sortBy === SortByEnum.SUIT ? "unset" : "pointer"}
-            fontSize={isMobile ? 18 : 20}
-            icon={faHeart}
-            color="white"
+        <Tooltip label="Suit" placement="bottom" size="sm">
+          <Img
+            cursor="pointer"
+            src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
+            height={{base: 5, sm: 9}}
             onClick={() => {
               toggleSortBy();
             }}
           />
         </Tooltip>
-        <Tooltip hasArrow label="Rank" placement="bottom">
-          <FontAwesomeIcon
-            opacity={sortBy === SortByEnum.SUIT ? 0.3 : 1}
-            cursor={sortBy === SortByEnum.SUIT ? "pointer" : "unset"}
-            fontSize={isMobile ? 18 : 20}
-            icon={faHashtag}
-            color="white"
+        <Tooltip label="Rank" placement="bottom" size="sm">
+          <Img
+            cursor="pointer"
+            src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
+            height={{base: 5, sm: 9}}
             onClick={() => {
               toggleSortBy();
             }}

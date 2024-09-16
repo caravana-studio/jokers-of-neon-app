@@ -7,17 +7,17 @@ import { Background } from "../../components/Background";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PlaysTable } from "../../components/Plays/PlaysTable";
+import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
-import { useGame } from "../../dojo/queries/useGame";
-import { useShop } from "../../dojo/queries/useShop";
-import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useDojo } from "../../dojo/useDojo";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useShop } from "../../dojo/queries/useShop.tsx";
+import { useShopItems } from "../../dojo/queries/useShopItems.ts";
+import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { Coins } from "./Coins.tsx";
@@ -54,12 +54,7 @@ export const Store = () => {
     }
   }, [game?.state, lockRedirection]);
 
-  const {
-    setup: {
-      systemCalls: { skipShop },
-    },
-    account,
-  } = useDojo();
+  const { skipShop } = useShopActions();
 
   const { reroll, locked } = useStore();
   const [run, setRun] = useState(false);
@@ -119,7 +114,7 @@ export const Store = () => {
       onClick={() => {
         setLoading(true);
         onShopSkip();
-        skipShop(account.account, gameId).then((response): void => {
+        skipShop(gameId).then((response): void => {
           if (response.success) {
             setHand(response.cards);
             navigate("/redirect/demo");
@@ -250,9 +245,10 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            <Coins />
+            {isMobile && <Flex mt={2}><Coins/></Flex>}
             <Packs />
-            {!isMobile && levelUpTable}
+            {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
+            {!isMobile && <Coins />}
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}
@@ -275,7 +271,7 @@ export const Store = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifiers"
+                  title="modifier cards"
                 />
               )}
             </Box>
@@ -302,6 +298,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
+          
           <Box
             display="flex"
             flexDirection={[
@@ -326,13 +323,13 @@ export const Store = () => {
             {!isMobile ? (
               <>
                 {nextLevelButton}
-                <Flex flexDirection="column" gap={14}>
+                <Flex flexDirection="column" gap={14} alignItems="center">
                   {rerollButton}
                   {specialsButton}
                   <Image
-                    src="/logos/logo-variant.png"
+                    src="/logos/logo-variant.svg"
                     alt="store-bg"
-                    width="100%"
+                    width="90%"
                   />
                 </Flex>
               </>

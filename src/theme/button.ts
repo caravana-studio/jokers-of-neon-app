@@ -1,4 +1,4 @@
-import { BLUE, NEON_GREEN, VIOLET } from "./colors";
+import { BLUE, NEON_GREEN, VIOLET} from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
@@ -19,6 +19,17 @@ const secondarySolid = defineStyle({
   },
 });
 
+const discardSecondarySolid = defineStyle({
+  backgroundColor: "violet",
+  boxShadow: {
+    base: `0px 0px 20px 3px ${VIOLET}`,
+    md: `0px 0px 30px 6px ${VIOLET}`,
+  },
+  "&:hover": {
+    borderColor: `white`
+  },
+});
+
 const outline = defineStyle({
   backgroundColor: "rgba(0,0,0,0.5)",
   border: `3px solid ${NEON_GREEN} !important`,
@@ -36,6 +47,64 @@ const defaultOutline = defineStyle({
   color: "rgb(255,255,255)",
 });
 
+const outlinePrimaryGlow = defineStyle({
+  backgroundColor: "transparent",
+  border: "1px solid white",
+  color: "white",
+  boxShadow: `0px 0px 12px 0px white`,
+  _hover: {
+    backgroundColor: `${BLUE}`,
+    color: "white",
+    borderColor: "transparent",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${BLUE}`,
+      md: `0px 0px 20px 12px ${BLUE}`,
+    }, 
+  },
+  _active: {
+    backgroundColor: `${BLUE}`,
+    border: "1px solid white",
+    color: "white",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${BLUE}`,
+      md: `0px 0px 20px 12px ${BLUE}`,
+    },
+  },
+  _disabled: {
+    border: "1px solid white !important",
+    boxShadow: "none !important",
+  }
+});
+
+const outlineSecondaryGlow = defineStyle({
+  backgroundColor: "transparent",
+  border: "1px solid white",
+  color: "white",
+  boxShadow: `0px 0px 12px 0px white`,
+  _hover: {
+    backgroundColor: `${VIOLET}`,
+    color: "white",
+    borderColor: "transparent",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${VIOLET}`,
+      md: `0px 0px 20px 12px ${VIOLET}`,
+    }, 
+  },
+  _active: {
+    backgroundColor: `${VIOLET}`,
+    border: "1px solid white",
+    color: "white",
+    boxShadow: {
+      base: `0px 0px 10px 6px ${VIOLET}`,
+      md: `0px 0px 20px 12px ${VIOLET}`,
+    },
+    _disabled: {
+      border: "1px solid white !important",
+      boxShadow: "none !important",
+    }
+  },
+});
+
 export const buttonTheme = defineStyleConfig({
   baseStyle: {
     fontFamily: "Orbitron",
@@ -46,7 +115,7 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid, defaultOutline },
+  variants: { solid, outline, secondarySolid, defaultOutline, discardSecondarySolid, outlineSecondaryGlow, outlinePrimaryGlow },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },

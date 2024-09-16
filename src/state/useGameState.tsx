@@ -15,6 +15,7 @@ import { sortCards } from "../utils/sortCards";
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
+  const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
   const [gameLoading, setGameLoading] = useState(true);
@@ -33,9 +34,8 @@ export const useGameState = () => {
   const [sortBySuit, setSortBySuit] = useState(
     !!localStorage.getItem(SORT_BY_SUIT)
   );
-  const [score, setScore] = useState(0);
-  const [handsLeft, setHandsLeft] = useState(4);
-  const [discardsLeft, setDiscardsLeft] = useState(4);
+  const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
+  const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -47,15 +47,17 @@ export const useGameState = () => {
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
 
-  const specialCards = useCurrentSpecialCards();
+  const dojoSpecialCards = useCurrentSpecialCards();
+
+  const specialCards =
+    lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
   const lsUser = localStorage.getItem(LOGGED_USER);
   const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
-  const dojoHandsLeft = round?.hands;
-  const dojoDiscardsLeft = round?.discard;
-  const [scoreInitialized, setScoreInitialized] = useState(false);
+
+  const score = lockedScore ?? dojoScore;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -69,20 +71,6 @@ export const useGameState = () => {
       setHand(dojoHand);
     }
   }, [dojoHand]);
-
-  useEffect(() => {
-    if (!score && dojoScore > 0 && !scoreInitialized) {
-      setScore(dojoScore);
-      setScoreInitialized(true);
-    }
-
-    if (dojoHandsLeft && dojoHandsLeft > 0) {
-      setHandsLeft(dojoHandsLeft);
-    }
-    if (dojoDiscardsLeft && dojoDiscardsLeft > 0) {
-      setDiscardsLeft(dojoDiscardsLeft);
-    }
-  }, [dojoScore, dojoHandsLeft, dojoDiscardsLeft]);
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
@@ -142,16 +130,16 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
-    setScore,
-    handsLeft,
-    setHandsLeft,
-    discardsLeft,
-    setDiscardsLeft,
     apiHand: dojoHand,
     plays,
     refetchPlays,
     sortBy,
     sortedHand,
     username,
+    playIsNeon,
+    setPlayIsNeon,
+    specialCards,
+    setLockedSpecialCards,
+    setLockedScore,
   };
 };

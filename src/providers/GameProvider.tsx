@@ -8,9 +8,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
-import { useDojo } from "../dojo/useDojo";
-import { gameExists } from "../dojo/utils/getGame";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
+import { useRound } from "../dojo/queries/useRound.tsx";
+import { useDojo } from "../dojo/useDojo.tsx";
+import { useGameActions } from "../dojo/useGameActions.tsx";
+import { gameExists } from "../dojo/utils/getGame.tsx";
+import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
@@ -53,9 +55,9 @@ interface IGameContext {
   restartGame: () => void;
   preSelectionLocked: boolean;
   score: number;
-  handsLeft: number;
-  discardsLeft: number;
   lockRedirection: boolean;
+  specialCards: Card[];
+  playIsNeon: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -91,9 +93,9 @@ const GameContext = createContext<IGameContext>({
   restartGame: () => {},
   preSelectionLocked: false,
   score: 0,
-  handsLeft: 4,
-  discardsLeft: 4,
-  lockRedirection: false
+  lockRedirection: false,
+  specialCards: [],
+  playIsNeon: false,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -101,22 +103,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
 
+  const round = useRound();
+  const handsLeft = round?.hands ?? 0;
+
   const navigate = useNavigate();
   const {
     setup: {
-      masterAccount,
-      systemCalls: {
-        createGame,
-        discard,
-        discardEffectCard,
-        discardSpecialCard,
-        play,
-      },
       clientComponents: { Game },
     },
-    account,
-    syncCall
+    account: { account },
+    syncCall,
   } = useDojo();
+
+  const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
+    useGameActions();
 
   const game = useGame();
 
@@ -142,21 +142,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setDiscardAnimation,
     setPlayAnimation,
     setError,
-    setScore,
-    handsLeft,
-    setHandsLeft,
-    setDiscardsLeft,
     sortBySuit,
     setSortBySuit,
     username,
+    setPlayIsNeon,
+    setLockedSpecialCards,
+    specialCards,
+    setLockedScore,
+    score,
   } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
-    setScore(0);
-    setHandsLeft(game?.max_hands ?? 1);
-    setDiscardsLeft(game?.max_discard ?? 1);
   };
 
   const toggleSortBy = () => {
@@ -169,12 +167,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const executeCreateGame = () => {
+  const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
     if (username) {
       console.log("Creating game...");
-      createGame(account.account, username).then(async (response) => {
+      createGame(username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
@@ -212,10 +210,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      const NEON_PLAY_DURATION = playEvents.neonPlayEvent
+        ? PLAY_ANIMATION_DURATION
+        : 0;
       const MODIFIER_SUIT_CHANGE_DURATION =
         (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
       const SPECIAL_SUIT_CHANGE_DURATION =
         (playEvents.specialSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+      const GLOBAL_BOOSTER_DURATION =
+        (playEvents.globalEvents?.length ?? 0) * PLAY_ANIMATION_DURATION * 2;
       const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
         ? PLAY_ANIMATION_DURATION * 2
         : 0;
@@ -224,36 +227,54 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const SPECIAL_CARDS_DURATION =
         PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
+        NEON_PLAY_DURATION +
         MODIFIER_SUIT_CHANGE_DURATION +
         SPECIAL_SUIT_CHANGE_DURATION +
         LEVEL_BOOSTER_DURATION +
+        GLOBAL_BOOSTER_DURATION +
         COMMON_CARDS_DURATION +
         SPECIAL_CARDS_DURATION +
         500;
 
       setPreSelectionLocked(true);
 
+      if (playEvents.neonPlayEvent) {
+        setPlayIsNeon(true);
+        setAnimatedCard({
+          animationIndex: -1,
+          suit: 5,
+          idx: playEvents.neonPlayEvent.neon_cards_idx,
+        });
+        playEvents.neonPlayEvent.points &&
+          setPoints(playEvents.neonPlayEvent.points);
+        playEvents.neonPlayEvent.multi &&
+          setMulti(playEvents.neonPlayEvent.multi);
+      }
+
       if (playEvents.modifierSuitEvents) {
         playEvents.modifierSuitEvents.forEach((event, index) => {
-          setTimeout(() => {
-            setAnimatedCard({
-              suit: event.suit,
-              idx: [event.idx],
-              animationIndex: index,
-            });
-            setHand((prev) => {
-              const newHand = prev?.map((card) => {
-                if (event.idx === card.idx) {
-                  return {
-                    ...card,
-                    img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                  };
-                }
-                return card;
+          setTimeout(
+            () => {
+              setAnimatedCard({
+                suit: event.suit,
+                idx: [event.idx],
+                animationIndex: index,
               });
-              return newHand;
-            });
-          }, PLAY_ANIMATION_DURATION * index);
+              setHand((prev) => {
+                const newHand = prev?.map((card) => {
+                  if (event.idx === card.idx) {
+                    return {
+                      ...card,
+                      img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                    };
+                  }
+                  return card;
+                });
+                return newHand;
+              });
+            },
+            PLAY_ANIMATION_DURATION * index + NEON_PLAY_DURATION
+          );
         });
       }
       setTimeout(() => {
@@ -281,84 +302,115 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
 
         setTimeout(() => {
-          //level boosters
-          if (playEvents.levelEvent) {
-            const {
-              special_idx,
-              multi: eventMulti,
-              points: eventPoints,
-            } = playEvents.levelEvent;
-            //animate points
-            if (eventPoints) {
-              setAnimatedCard({
-                special_idx,
-                points: eventPoints - points,
-                animationIndex: 21,
-              });
-              setPoints(eventPoints);
-            }
-            if (eventMulti) {
+          //global boosters
+          if (playEvents.globalEvents) {
+            playEvents.globalEvents.forEach((event, index) => {
               setTimeout(() => {
-                //animate multi
-                setAnimatedCard({
-                  special_idx,
-                  multi: eventMulti - multi,
-                  animationIndex: 31,
-                });
-                setMulti(eventMulti);
-              }, PLAY_ANIMATION_DURATION);
-            }
+                const { special_idx, multi, points } = event;
+                if (points) {
+                  setAnimatedCard({
+                    special_idx,
+                    points,
+                    animationIndex: 20 + index,
+                  });
+                  setPoints((prev) => prev + points);
+                }
+                if (multi) {
+                  setTimeout(() => {
+                    //animate multi
+                    setAnimatedCard({
+                      special_idx,
+                      multi,
+                      animationIndex: 31 + index,
+                    });
+                    setMulti((prev) => prev + multi);
+                  }, PLAY_ANIMATION_DURATION);
+                }
+              }, PLAY_ANIMATION_DURATION * index);
+            });
           }
 
           setTimeout(() => {
-            //traditional cards and modifiers
-            playEvents.cardScore.forEach((card, index) => {
-              setTimeout(() => {
-                const { idx, points, multi } = card;
+            //level boosters
+            if (playEvents.levelEvent) {
+              const {
+                special_idx,
+                multi: eventMulti,
+                points: eventPoints,
+              } = playEvents.levelEvent;
+              //animate points
+              if (eventPoints) {
                 setAnimatedCard({
-                  idx: [idx],
-                  points,
-                  multi,
-                  animationIndex: 40 + index,
+                  special_idx,
+                  points: eventPoints - points,
+                  animationIndex: 31,
                 });
-                points && setPoints((prev) => prev + points);
-                multi && setMulti((prev) => prev + multi);
-              }, PLAY_ANIMATION_DURATION * index);
-            });
-
-            //special cards
-            setTimeout(() => {
-              playEvents.specialCards?.forEach((event, index) => {
+                setPoints(eventPoints);
+              }
+              if (eventMulti) {
                 setTimeout(() => {
-                  const { idx, points, multi, special_idx } = event;
+                  //animate multi
+                  setAnimatedCard({
+                    special_idx,
+                    multi: eventMulti - multi,
+                    animationIndex: 41,
+                  });
+                  setMulti(eventMulti);
+                }, PLAY_ANIMATION_DURATION);
+              }
+            }
+
+            setTimeout(() => {
+              //traditional cards and modifiers
+              playEvents.cardScore.forEach((card, index) => {
+                setTimeout(() => {
+                  const { idx, points, multi } = card;
                   setAnimatedCard({
                     idx: [idx],
                     points,
                     multi,
-                    special_idx,
                     animationIndex: 50 + index,
                   });
                   points && setPoints((prev) => prev + points);
                   multi && setMulti((prev) => prev + multi);
                 }, PLAY_ANIMATION_DURATION * index);
               });
-            }, COMMON_CARDS_DURATION);
-          }, LEVEL_BOOSTER_DURATION);
+
+              //special cards
+              setTimeout(() => {
+                playEvents.specialCards?.forEach((event, index) => {
+                  setTimeout(() => {
+                    const { idx, points, multi, special_idx } = event;
+                    setAnimatedCard({
+                      idx: [idx],
+                      points,
+                      multi,
+                      special_idx,
+                      animationIndex: 60 + index,
+                    });
+                    points && setPoints((prev) => prev + points);
+                    multi && setMulti((prev) => prev + multi);
+                  }, PLAY_ANIMATION_DURATION * index);
+                });
+              }, COMMON_CARDS_DURATION);
+            }, LEVEL_BOOSTER_DURATION);
+          }, GLOBAL_BOOSTER_DURATION);
         }, SPECIAL_SUIT_CHANGE_DURATION);
-      }, MODIFIER_SUIT_CHANGE_DURATION);
+      }, MODIFIER_SUIT_CHANGE_DURATION + NEON_PLAY_DURATION);
 
       setTimeout(() => {
         setPlayAnimation(true);
-        playEvents.score && setScore(playEvents.score);
       }, ALL_CARDS_DURATION);
 
       setTimeout(() => {
         setAnimatedCard(undefined);
+        setLockedScore(undefined);
 
         setPlayAnimation(false);
         clearPreSelection();
         handsLeft > 0 && setPreSelectionLocked(false);
-
+        setPlayIsNeon(false);
+        setLockedSpecialCards([]);
         if (playEvents.gameOver) {
           console.log("GAME OVER");
           setTimeout(() => {
@@ -387,11 +439,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
-    play(account.account, gameId, preSelectedCards, preSelectedModifiers)
+    setLockedSpecialCards(specialCards);
+    setLockedScore(score);
+    play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {
           animatePlay(response);
-          setHandsLeft((prev) => prev - 1);
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -460,19 +513,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
-    discard(
-      account.account,
-      gameId,
-      preSelectedCards,
-      preSelectedModifiers
-    ).then((response) => {
+    discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
         if (response.gameOver) {
           setTimeout(() => {
             navigate("/gameover");
           }, 1000);
         } else {
-          setDiscardsLeft((prev) => prev - 1);
           replaceCards(response.cards);
         }
       }
@@ -504,7 +551,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    discardEffectCard(account.account, gameId, cardIdx)
+    discardEffectCard(gameId, cardIdx)
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
@@ -539,7 +586,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account.account, gameId, cardIdx).finally(() => {
+    return discardSpecialCard(account, gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };

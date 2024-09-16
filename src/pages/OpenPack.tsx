@@ -8,15 +8,15 @@ import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
-import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
-import { useGame } from "../dojo/queries/useGame";
 import { useStore } from "../providers/StoreProvider";
 import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 
 import styled from "styled-components";
+import { useGame } from "../dojo/queries/useGame";
+import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
+import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 
 const WhiteOverlay = styled.div<{ visible: boolean }>`
   position: fixed;
@@ -57,6 +57,12 @@ export const OpenPack = () => {
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
 
   useEffect(() => {
+    if (game?.state === "IN_STORE") {
+      navigate("/redirect/store");
+    }
+  }, [game?.state]);
+
+  useEffect(() => {
     if (blisterPackResult?.cardsPicked) {
       setCards([]);
     } else {
@@ -94,10 +100,10 @@ export const OpenPack = () => {
   );
 
   return (
-    <Background type="game" dark rewardsDecoration>
+    <Background type="game" dark bgDecoration>
       <WhiteOverlay visible={overlayVisible} />
       {cards.length > 0 ? (
-        <Flex flexDirection="column" gap={4}>
+        <Flex height={'100%'} justifyContent='center' flexDirection="column" gap={4}>
           <Flex
             flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-between"
@@ -125,7 +131,8 @@ export const OpenPack = () => {
                 >
                   <Box
                     key={getCardUniqueId(card)}
-                    p={1.5}
+                    m={1.5}
+                    p={{base: 1, sm: 1.5}}
                     sx={{
                       borderRadius: { base: "7px", md: "15px" },
                       opacity:
@@ -223,7 +230,7 @@ const CardsContainer = ({ children }: PropsWithChildren) => {
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        minHeight: `${CARD_HEIGHT * 2 + 30}px`,
+        minHeight: `${CARD_HEIGHT * 2 + 80}px`,
       }}
     >
       {children}

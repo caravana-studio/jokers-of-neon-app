@@ -3,23 +3,24 @@ import { PropsWithChildren } from "react";
 import { isMobile } from "react-device-detect";
 
 interface BackgroundProps extends PropsWithChildren {
-  type?: "game" | "store" | "home";
+  type?: "game" | "store" | "home" | "white";
   dark?: boolean;
   scrollOnMobile?: boolean;
-  rewardsDecoration?: boolean;
+  bgDecoration?: boolean;
 }
 
 export const Background = ({
   children,
   type = "game",
   dark = false,
-  rewardsDecoration = false,
+  bgDecoration: bgDecoration = false,
   scrollOnMobile = false,
 }: BackgroundProps) => {
   return (
     <Box
       sx={{
-        backgroundImage: `url(bg/${type}-bg.jpg)`,
+        backgroundColor: type === "white" ? "white" : "transparent",
+        backgroundImage: type === "white" ? "none" : `url(bg/${type}-bg.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",
@@ -29,8 +30,8 @@ export const Background = ({
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
       }}
     >
-      {rewardsDecoration ? (
-        <RewardsDecoration>{children}</RewardsDecoration>
+      {bgDecoration ? (
+        <BackgroundDecoration>{children}</BackgroundDecoration>
       ) : (
         children
       )}
@@ -38,7 +39,7 @@ export const Background = ({
   );
 };
 
-const RewardsDecoration = ({ children }: PropsWithChildren) => {
+const BackgroundDecoration = ({ children }: PropsWithChildren) => {
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       {!isMobile && (
@@ -62,10 +63,11 @@ const RewardsDecoration = ({ children }: PropsWithChildren) => {
         <Image
           alignSelf="center"
           justifySelf="end"
-          src="/logos/logo-variant.png"
-          alt="/logos/logo-variant.png"
+          src="/logos/logo-variant.svg"
+          alt="logo-variant"
           width={"65%"}
-          maxW={"350px"}
+          maxW={"300px"}
+          ml={4}
         />
         {!isMobile && (
           <Image
@@ -80,7 +82,7 @@ const RewardsDecoration = ({ children }: PropsWithChildren) => {
       </Box>
       <Box
         sx={{
-          height: "60%",
+          height: { base: "80%", sm: "60%" },
           width: "100%",
           display: "flex",
           alignItems: "center",
