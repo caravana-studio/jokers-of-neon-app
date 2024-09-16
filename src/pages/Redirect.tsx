@@ -10,25 +10,6 @@ export const Redirect = () => {
   const navigate = useNavigate();
   const { page } = useParams();
 
-  // Ref to store the timeout ID
-  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    timeoutIdRef.current = setTimeout(() => {
-      console.log("default redirect to ", page);
-      if (page === "demo") {
-        navigate("/demo");
-      } else if (page === "store") {
-        navigate("/store");
-      } else if (page === "open-pack") {
-        navigate("/open-pack");
-      }
-    }, 6000);
-
-    return () => {
-      timeoutIdRef.current && clearTimeout(timeoutIdRef.current);
-    };
-  }, [page, navigate]);
 
   useEffect(() => {
     if (state === "FINISHED") {
@@ -40,10 +21,6 @@ export const Redirect = () => {
     } else if (state === "OPEN_BLISTER_PACK" && page === "open-pack") {
       navigate("/open-pack");
     }
-
-    return () => {
-      timeoutIdRef.current && clearTimeout(timeoutIdRef.current);
-    };
   }, [state, page, navigate]);
 
   return (
