@@ -1,6 +1,6 @@
 import { tableAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
-import { ROYAL_BLUE } from "./colors.tsx";
+import { ROYAL_BLUE, VIOLET_LIGHT } from "./colors.tsx";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tableAnatomy.keys);
@@ -29,9 +29,8 @@ const leaderboard = definePartsStyle({
           borderBottomWidth: 0,
         },
         td: {
-          color: ROYAL_BLUE,
+          color: VIOLET_LIGHT,
           fontSize: ["sm", "sm", "lg"],
-          fontWeight: "bold",
           px: [1, 1, 4],
         },
       },
@@ -40,9 +39,8 @@ const leaderboard = definePartsStyle({
           borderBottomWidth: 0,
         },
         td: {
-          color: ROYAL_BLUE,
+          color: VIOLET_LIGHT,
           fontSize: ["sm", "sm", "lg"],
-          fontWeight: "bold",
           px: [1, 1, 4],
         },
       },
