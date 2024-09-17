@@ -19,7 +19,7 @@ export const Coins = () => {
         Cash
       </Text>
       <Flex
-        gap={2}
+        gap={1.5}
         alignItems="center"
         justifyContent="center"
         border={isMobile ? "none" : "1px solid white"}
@@ -30,7 +30,7 @@ export const Coins = () => {
         fontSize='13px'
       >
         <RollingNumber n={cash} />
-        <CoinsIcon height={18} />
+        <CoinsIcon height={20} />
       </Flex>
     </Flex>
   );

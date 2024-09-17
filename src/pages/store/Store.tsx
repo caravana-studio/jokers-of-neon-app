@@ -4,10 +4,10 @@ import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -20,6 +20,7 @@ import { useShopItems } from "../../dojo/queries/useShopItems.ts";
 import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
@@ -91,7 +92,8 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} {rerollCost}ȼ
+        REROLL{isMobile && <br />} {rerollCost}
+        <CashSymbol />
       </Button>
     </Tooltip>
   );
@@ -247,7 +249,11 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            {isMobile && <Flex mt={2}><Coins/></Flex>}
+            {isMobile && (
+              <Flex mt={2}>
+                <Coins />
+              </Flex>
+            )}
             <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
             {!isMobile && <Coins />}
@@ -300,7 +306,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
-          
+
           <Box
             display="flex"
             flexDirection={[
