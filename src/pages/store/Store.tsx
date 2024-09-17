@@ -27,10 +27,12 @@ import { StoreCardsRow } from "./StoreCardsRow";
 export const Store = () => {
   const { gameId, setHand, onShopSkip } = useGameContext();
   const game = useGame();
+  const cash = game?.cash ?? 0;
   const store = useShop();
   const state = game?.state;
   const { lockRedirection } = useStore();
   const rerollCost = store?.reroll_cost ?? 0;
+  const notEnoughCash = cash < rerollCost;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
@@ -80,7 +82,7 @@ export const Store = () => {
         className="game-tutorial-step-6"
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled || locked}
+        isDisabled={rerolled || locked || notEnoughCash}
         onClick={() => {
           reroll().then((response) => {
             if (response) {
