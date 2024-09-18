@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
