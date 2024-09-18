@@ -21,6 +21,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import * as torii from "@dojoengine/torii-client";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -113,6 +114,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     },
     account: { account },
     syncCall,
+    torii
   } = useDojo();
 
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
@@ -151,6 +153,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockedScore,
     score,
   } = state;
+
+  const gameKeyClause: torii.KeysClause = {
+    keys: [gameId.toString()],
+    pattern_matching: "VariableLen",
+    models: ["jokers_of_neon-Game"]
+  };
+
+  const gameClause: torii.EntityKeysClause = 
+  {
+    Keys: gameKeyClause
+  }
+
+  const callBackDebug = (e:any) => {
+    console.log("update");
+    console.log(e);
+  }
+
+  // torii.onEntityUpdated([gameClause], callBackDebug);
 
   const resetLevel = () => {
     setRoundRewards(undefined);
