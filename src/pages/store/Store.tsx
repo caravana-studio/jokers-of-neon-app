@@ -2,7 +2,7 @@ import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
@@ -251,12 +251,12 @@ export const Store = () => {
             </Heading>
             {isMobile && (
               <Flex mt={2}>
-                <Coins />
+                <Coins rolling />
               </Flex>
             )}
             <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
-            {!isMobile && <Coins />}
+            {!isMobile && <Coins rolling />}
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}

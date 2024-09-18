@@ -2,9 +2,14 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import CoinsIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
+import { RollingNumber } from "../../components/RollingNumber";
 import { useGame } from "../../dojo/queries/useGame";
 
-export const Coins = () => {
+interface ICoinsProps {
+  rolling?: boolean;
+}
+
+export const Coins = ({ rolling = false }: ICoinsProps) => {
   const game = useGame();
 
   const cash = game?.cash ?? 0;
@@ -12,7 +17,7 @@ export const Coins = () => {
   return (
     <Flex alignItems={"center"}>
       <CoinsIcon
-        style={{ transform: `translateY(${isMobile ? '4px' : '6px' })` }}
+        style={{ transform: `translateY(${isMobile ? "4px" : "6px"})` }}
         width={isMobile ? "35px" : "50px"}
         height={"auto"}
       />
@@ -36,7 +41,8 @@ export const Coins = () => {
           },
         }}
       >
-        COINS: {cash}
+        MY COINS:{" "}
+        {rolling ? <RollingNumber className="italic" n={cash} /> : cash}
         <CashSymbol />
       </Heading>
     </Flex>

@@ -39,7 +39,7 @@ const MobilePreviewCard = () => {
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
-    navigate("/open-pack");
+    navigate("/redirect/open-pack");
   };
 
   if (!card) {
@@ -224,7 +224,6 @@ const MobilePreviewCard = () => {
           </Heading>
         </Flex>
 
-
         <Flex
           width="100%"
           gap={4}
@@ -250,14 +249,13 @@ const MobilePreviewCard = () => {
 
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/store")}
               width={"50%"}
             >
               Close
             </Button>
           </HStack>
         </Flex>
-
 
         <Flex mt={4} justifyContent={"center"}>
           <Coins />

@@ -1,13 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import CoinsIcon from "../../assets/coins.svg?component";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useGame } from "../../dojo/queries/useGame";
+import { useGameContext } from "../../providers/GameProvider";
 
 export const Coins = () => {
-  const game = useGame();
-
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameContext();
 
   return (
     <Flex
@@ -16,7 +13,7 @@ export const Coins = () => {
       gap={0.5}
     >
       <Text size="m" pl={{ base: 1, sm: 0 }}>
-        Cash
+        My coins
       </Text>
       <Flex
         gap={1.5}
@@ -25,12 +22,11 @@ export const Coins = () => {
         border={isMobile ? "none" : "1px solid white"}
         borderRadius="8px"
         color="white"
-        minWidth={{ base: "50px", sm: "100px" }}
-        p={{ base: "5px 5px", sm: "15px 10px" }}
-        fontSize='13px'
+        minWidth={{ base: "50px", sm: "70px" }}
+        p={{ base: "5px 5px", sm: "15px 6px" }}
+        fontSize="13px"
       >
         <RollingNumber n={cash} />
-        <CoinsIcon height={20} />
       </Flex>
     </Flex>
   );

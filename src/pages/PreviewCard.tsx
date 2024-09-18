@@ -37,7 +37,7 @@ const PreviewCard = () => {
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
-    navigate("/open-pack");
+    navigate("/redirect/open-pack");
   };
 
   if (!card) {
@@ -257,7 +257,7 @@ const PreviewCard = () => {
 
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/store')}
               height={"100%"}
             >
               Close
