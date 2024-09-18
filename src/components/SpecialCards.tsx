@@ -16,7 +16,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
 
-  const { discardSpecialCard, specialCards } = useGameContext();
+  const { discardSpecialCard, specialCards, isRageRound } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
 
@@ -24,7 +24,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
     <Box
       className="special-cards-step-3"
       width="100%"
-      boxShadow={inStore ? "none" : `0px 26px 30px -30px ${colors.neonGreen}`}
+      boxShadow={inStore ? "none" : `0px 26px 30px -30px ${isRageRound ? colors.neonPink : colors.neonGreen}`}
     >
       {inStore ? (
         <Box

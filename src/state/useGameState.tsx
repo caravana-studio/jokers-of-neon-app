@@ -59,6 +59,8 @@ export const useGameState = () => {
 
   const score = lockedScore ?? dojoScore;
 
+  const isRageRound = true
+
   const resetMultiPoints = () => {
     setPoints(0);
     setMulti(0);
@@ -141,5 +143,6 @@ export const useGameState = () => {
     specialCards,
     setLockedSpecialCards,
     setLockedScore,
+    isRageRound
   };
 };

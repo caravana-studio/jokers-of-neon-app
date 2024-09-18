@@ -58,6 +58,7 @@ interface IGameContext {
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
+  isRageRound: boolean;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -96,6 +97,7 @@ const GameContext = createContext<IGameContext>({
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
+  isRageRound: false
 });
 export const useGameContext = () => useContext(GameContext);
 
