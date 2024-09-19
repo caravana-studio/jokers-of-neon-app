@@ -120,9 +120,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     useGameActions();
 
   const game = useGame();
-  const preselectCardSound = useAudio('/music/Card_Selection_1.wav');
-  const playSound = useAudio('/music/Play_Hand_1.wav');
-  const discardSound = useAudio('/music/Discard_Cards_1.wav');
+  const {play:preselectCardSound} = useAudio('/music/Card_Selection_1.wav');
+  const {play:playSound} = useAudio('/music/Play_Hand_1.wav');
+  const {play:discardSound} = useAudio('/music/Discard_Cards_1.wav');
 
   const { setAnimatedCard } = useCardAnimations();
 

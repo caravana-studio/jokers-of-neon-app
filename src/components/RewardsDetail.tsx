@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PinkBox } from "./PinkBox.tsx";
+import { useAudio } from "../hooks/useAudio";
+import { useEffect } from "react";
 
 interface RewardItemProps {
   label: string;
@@ -46,6 +48,14 @@ interface RewardsDetailProps {
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   if (!roundRewards) return null;
+  const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio("music/Next_Level_1.wav");
+
+  useEffect(() => {
+    if (roundRewards) {
+      playNextLevelSound();
+    }
+  }, [roundRewards, playNextLevelSound]);
+
 
   const {
     level,
@@ -71,7 +81,10 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     <PinkBox
       title={`Level ${level} defeated`}
       button="CONTINUE"
-      onClick={() => navigate("/redirect/store")}
+      onClick={() => {
+        stopNextLevelSound();
+        navigate("/redirect/store");
+      }}
     >
 
       <RewardItem

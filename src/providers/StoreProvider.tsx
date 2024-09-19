@@ -51,10 +51,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
   const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
   const [lockRedirection, setLockRedirection] = useState(false);
-  const levelUpHandSound = useAudio('/music/Level_Up_1.wav');
-  const buySound = useAudio('/music/Buy_From_Store_1.wav');
-  const buyPackSound = useAudio('/music/Opening_Packs_Boxes_1.wav');
-  const rerollSound = useAudio('/music/Reroll_Items_1.wav');
+  const {play:levelUpHandSound} = useAudio('/music/Level_Up_1.wav');
+  const {play:buySound} = useAudio('/music/Buy_From_Store_1.wav');
+  const {play:buyPackSound} = useAudio('/music/Opening_Packs_Boxes_1.wav');
+  const {play:rerollSound} = useAudio('/music/Reroll_Items_1.wav');
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);

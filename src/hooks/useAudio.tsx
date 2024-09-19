@@ -27,5 +27,11 @@ export const useAudio = (audioPath: string) => {
     }
   }, []);
 
-  return play;
+  const stop = useCallback(() => {
+    if (soundRef.current) {
+      soundRef.current.stop();
+    }
+  }, []);
+
+  return { play, stop };
 };
