@@ -16,15 +16,17 @@ export const CurrentPlay = () => {
     <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}
     >
         <Button
+          position={"absolute"}
           variant={hoveredButton ? "solid" : "defaultOutline"}
           borderRadius={"8px"}
           height={isMobile ? 6 : 8}
-          px={"2px"}
+          right={isMobile ? "50%" : "340px"}
+          bottom={isMobile ? "4px" : "25px"}
           borderColor = "transparent !important"
           _hover={{
             borderColor: "white !important"
           }}
-          size={isMobile ? "xs" :"md"}
+          size={"xs"}
           className="game-tutorial-step-5"
           onMouseEnter={() => setHoveredButton(true)}
           onMouseLeave={() => setHoveredButton(false)}
@@ -33,14 +35,14 @@ export const CurrentPlay = () => {
             navigate("/plays");
           }}
           >
-            <Flex gap={2} alignItems={"center"}>
+            <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
               <InfoIcon
                 color="white"
                 fontSize={{ base: "14px", md: "20px" }}
                 sx={{ cursor: "pointer" }}
                 className="game-tutorial-step-5"
               />
-              <Text textTransform="initial" pr={2}>
+              <Text textTransform="initial">
                 Show plays
               </Text>
             </Flex>
