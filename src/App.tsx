@@ -19,6 +19,7 @@ import customTheme from "./theme/theme";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { isMobile } from "react-device-detect";
 import MobilePreviewCard from "./pages/PreviewCardMobile";
+import { DeckPage } from "./pages/DeckPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -98,6 +99,14 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                     <PlaysLayout/>
+                </AudioPlayerProvider>
+              }
+            />
+            <Route 
+              path="/deck"
+              element={
+                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                    <DeckPage/>
                 </AudioPlayerProvider>
               }
             />
