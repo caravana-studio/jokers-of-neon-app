@@ -1,0 +1,10 @@
+export const preselectedCardSfx = '/music/Card_Selection_1.wav';
+export const playHandSfx = '/music/Play_Hand_1.wav';
+export const discardSfx = '/music/Discard_Cards_1.wav';
+export const pointsSfx = '/music/Points_Count_1.wav';
+export const levelUpSfx = '/music/Level_Up_1.wav';
+export const buySfx = '/music/Buy_From_Store_1.wav';
+export const buyPackSfx = '/music/Opening_Packs_Boxes_1.wav';
+export const rerollSfx = '/music/Reroll_Items_1.wav';
+export const nextLevelSfx = 'music/Next_Level_1.wav'; 
+export const looseSfx = 'music/Loose_1.wav';

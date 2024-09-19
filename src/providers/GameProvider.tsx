@@ -22,6 +22,7 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { discardSfx, playHandSfx, pointsSfx, preselectedCardSfx } from "../constants/sfx.ts";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -120,10 +121,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     useGameActions();
 
   const game = useGame();
-  const {play:preselectCardSound} = useAudio('/music/Card_Selection_1.wav');
-  const {play:playSound} = useAudio('/music/Play_Hand_1.wav');
-  const {play:discardSound} = useAudio('/music/Discard_Cards_1.wav');
-  const {play:pointsSound} = useAudio('/music/Points_Count_1.wav');
+  const {play:preselectCardSound} = useAudio(preselectedCardSfx);
+  const {play:playSound} = useAudio(playHandSfx);
+  const {play:discardSound} = useAudio(discardSfx);
+  const {play:pointsSound} = useAudio(pointsSfx);
 
   const { setAnimatedCard } = useCardAnimations();
 

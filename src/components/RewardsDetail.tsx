@@ -5,6 +5,7 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PinkBox } from "./PinkBox.tsx";
 import { useAudio } from "../hooks/useAudio";
 import { useEffect } from "react";
+import { nextLevelSfx } from "../constants/sfx.ts";
 
 interface RewardItemProps {
   label: string;
@@ -48,7 +49,7 @@ interface RewardsDetailProps {
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   if (!roundRewards) return null;
-  const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio("music/Next_Level_1.wav");
+  const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio(nextLevelSfx);
 
   useEffect(() => {
     if (roundRewards) {

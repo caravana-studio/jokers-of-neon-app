@@ -11,6 +11,7 @@ import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetGame } from "../queries/useGetGame";
 import { useAudio } from "../hooks/useAudio";
+import { looseSfx } from "../constants/sfx";
 
 const GAME_URL = "https://jokersofneon.com/";
 
@@ -24,7 +25,7 @@ export const GameOver = () => {
   const { restartGame } = useGameContext();
   const { data } = useGetGame(lastGameId);
   const score = data?.player_score ?? 0;
-  const {play: looseSound, stop: stopLooseSound} = useAudio("music/Loose_1.wav");
+  const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
 
   useEffect(() => {
     looseSound();
