@@ -1,5 +1,6 @@
 import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
 import { CARD_HEIGHT } from "../constants/visualProps";
+import { useRageCards, useRageRound } from "../dojo/queries/useRageRound";
 import { Card } from "../types/Card";
 import { TiltCard } from "./TiltCard";
 
@@ -14,6 +15,11 @@ export const RageCards = () => {
     },
   ];
   const { colors } = useTheme();
+
+  const rageRound = useRageRound();
+  const dojorageCards = useRageCards();
+  console.log("dojorageCards", dojorageCards);
+  console.log("rageRound", rageRound);
 
   return (
     <Box boxShadow={`0px 28px 20px -27px ${colors.neonPink}`}>
