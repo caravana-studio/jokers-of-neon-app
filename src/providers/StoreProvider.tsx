@@ -53,6 +53,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [lockRedirection, setLockRedirection] = useState(false);
   const levelUpHandSound = useAudio('/music/Level_Up_1.wav');
   const buySound = useAudio('/music/Buy_From_Store_1.wav');
+  const buyPackSound = useAudio('/music/Opening_Packs_Boxes_1.wav');
   const rerollSound = useAudio('/music/Reroll_Items_1.wav');
 
   const addPurchasedCard = (card: Card) => {
@@ -118,7 +119,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    buySound();
+    buyPackSound();
     return dojoBuyPack(gameId, Number(pack.idx));
   };
 
