@@ -121,6 +121,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const game = useGame();
   const preselectCardSound = useAudio('/music/Card_Selection_1.wav');
+  const playSound = useAudio('/music/Play_Hand_1.wav');
+  const discardSound = useAudio('/music/Discard_Cards_1.wav');
 
   const { setAnimatedCard } = useCardAnimations();
 
@@ -439,6 +441,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
+    playSound();
     setPreSelectionLocked(true);
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
@@ -516,6 +519,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardClick = () => {
+    discardSound();
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
