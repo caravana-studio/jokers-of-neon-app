@@ -1,7 +1,6 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useMemo } from "react";
 import { useDojo } from "../useDojo.tsx";
 import { useGame } from "./useGame.tsx";
 
@@ -16,10 +15,9 @@ export const useRageRound = () => {
   const gameId = game?.id ?? 0;
 
   console.log("gameId", gameId);
-  const entityId = useMemo(
-    () => getEntityIdFromKeys([BigInt(gameId)]) as Entity,
-    [gameId]
-  );
+  const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
+  console.log("entityId", entityId);
+  console.log("rageRound", RageRound);
   return useComponentValue(RageRound, entityId);
 };
 
