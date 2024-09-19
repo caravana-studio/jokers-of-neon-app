@@ -21,6 +21,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { useAudio } from "../hooks/useAudio.tsx";
 
 const PLAY_ANIMATION_DURATION = 700;
 
@@ -119,6 +120,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     useGameActions();
 
   const game = useGame();
+  const preselectCardSound = useAudio('/music/Card_Selection_1.wav');
 
   const { setAnimatedCard } = useCardAnimations();
 
@@ -502,10 +504,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const togglePreselected = (cardIndex: number) => {
     if (!preSelectionLocked && handsLeft > 0) {
+      
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
+        preselectCardSound();
       } else if (preSelectedCards.length < 5) {
         preSelectCard(cardIndex);
+        preselectCardSound();
       }
     }
   };
