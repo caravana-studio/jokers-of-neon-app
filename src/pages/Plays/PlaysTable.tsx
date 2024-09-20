@@ -10,16 +10,17 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { useGame } from "../../dojo/queries/useGame";
+import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
 import { useShopItems } from "../../dojo/queries/useShopItems";
+import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
-import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
-import { useEffect, useState } from "react";
-import { parseHand } from "../../enums/hands.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -206,7 +207,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                     {inStore ? (
                       <>
                         <Td sx={opacitySx} color={textColor}>
-                          {storePlay?.cost ? `${storePlay.cost}ȼ` : ""}
+                          {storePlay?.cost ? `${storePlay.cost}` : ""}<CashSymbol />
                         </Td>
                         <Td>
                           {!!storePlay ? (

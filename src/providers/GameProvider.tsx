@@ -58,6 +58,8 @@ interface IGameContext {
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
+  cash: number;
+  setLockedCash: (cash: number | undefined) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -96,6 +98,8 @@ const GameContext = createContext<IGameContext>({
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
+  cash: 0,
+  setLockedCash: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -150,6 +154,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     specialCards,
     setLockedScore,
     score,
+    cash,
+    setLockedCash,
   } = state;
 
   const resetLevel = () => {
@@ -428,6 +434,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           }, 1000);
           setPreSelectionLocked(true);
         } else {
+          setLockedCash(undefined);
           playEvents.cards && replaceCards(playEvents.cards);
           setRoundRewards(undefined);
           setLockRedirection(false);
@@ -441,6 +448,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
     setLockedScore(score);
+    setLockedCash(cash);
     play(gameId, preSelectedCards, preSelectedModifiers)
       .then((response) => {
         if (response) {

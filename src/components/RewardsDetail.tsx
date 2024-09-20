@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PinkBox } from "./PinkBox.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -99,7 +100,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           Total:
         </Heading>
         <Heading color="neonPink" variant="italic">
-          {total}ȼ
+          {total}<CashSymbol />
         </Heading>
       </Flex>
     </PinkBox>

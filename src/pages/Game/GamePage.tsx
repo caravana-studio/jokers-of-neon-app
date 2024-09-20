@@ -14,7 +14,7 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame } = useGameContext();
+  const { checkOrCreateGame, setLockedCash } = useGameContext();
 
   useEffect(() => {
     // if masterAccount === account, it means the burner did not get created yet
@@ -22,6 +22,10 @@ export const GamePage = () => {
       checkOrCreateGame();
     }
   }, [account, username]);
+
+  useEffect(() => {
+    setLockedCash(undefined)
+  }, [])
 
   return (
     <Background type="game">
