@@ -234,7 +234,7 @@ export const MobileGameContent = () => {
               }}
             >
               <Box>
-                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="200px" display={"flex"} alignItems={"center"}>
+                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="190px" display={"flex"} alignItems={"center"} backgroundColor='rgba(0,0,0,0.5)'>
                   <SortBy />
                   <ShowPlays/>
                 </Box>
