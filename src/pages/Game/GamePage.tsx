@@ -15,7 +15,7 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame } = useGameContext();
+  const { checkOrCreateGame, isRageRound } = useGameContext();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -24,7 +24,7 @@ export const GamePage = () => {
   }, [account, username]);
 
   return (
-    <Background type="rage">
+    <Background type={isRageRound ? "rage" : "game"}>
       <RageRoundAnimation />
       {isMobile ? <MobileGameContent /> : <GameContent />}
       <RemoveScroll>

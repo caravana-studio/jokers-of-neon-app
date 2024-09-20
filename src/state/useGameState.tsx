@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useRageRound } from "../dojo/queries/useRageRound";
 import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -59,7 +60,9 @@ export const useGameState = () => {
 
   const score = lockedScore ?? dojoScore;
 
-  const isRageRound = true
+  const rageRound = useRageRound();
+
+  const isRageRound = rageRound?.is_active ?? false;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -143,6 +146,6 @@ export const useGameState = () => {
     specialCards,
     setLockedSpecialCards,
     setLockedScore,
-    isRageRound
+    isRageRound,
   };
 };

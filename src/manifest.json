@@ -1472,8 +1472,8 @@
     {
       "kind": "DojoContract",
       "address": "0x4314c4fe7895b094e6329ace17642f4fd9113ebbf007cb39df162207e5ba95",
-      "class_hash": "0xda3e0f39efee17cadb137299f39894ef1c86786f5ce26a21fc4b02510de91f",
-      "original_class_hash": "0xda3e0f39efee17cadb137299f39894ef1c86786f5ce26a21fc4b02510de91f",
+      "class_hash": "0x5b8f23e663f00990a4e3bcdd91e86a365014b037a9dc63c105534791633268e",
+      "original_class_hash": "0x5b8f23e663f00990a4e3bcdd91e86a365014b037a9dc63c105534791633268e",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1887,8 +1887,8 @@
     {
       "kind": "DojoContract",
       "address": "0x6f8f6b670d75abb74ee521071474ebccc0b55080c804cb290d3f61733bcbf96",
-      "class_hash": "0x6f5a686167a1f6ff291d07b77703be86143ea629b90c15fe81f0538505e6279",
-      "original_class_hash": "0x6f5a686167a1f6ff291d07b77703be86143ea629b90c15fe81f0538505e6279",
+      "class_hash": "0x2f24f7a358ba8dcd5616e23c565e43abbba2f53aa7b2d9149917f695f734f48",
+      "original_class_hash": "0x2f24f7a358ba8dcd5616e23c565e43abbba2f53aa7b2d9149917f695f734f48",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2133,8 +2133,8 @@
     {
       "kind": "DojoContract",
       "address": "0x606cbc28c4db5268a4ad2f82498d71e4d3e48abbaea2b32727b5245b28fbbc0",
-      "class_hash": "0x55900632da5ebd968559022aa25a0c9db72820226f827adfcad77f2958c53a1",
-      "original_class_hash": "0x55900632da5ebd968559022aa25a0c9db72820226f827adfcad77f2958c53a1",
+      "class_hash": "0x5f5be6d79f4e4632fe10db608923b5742b973a68df7f9829317ce431fde796a",
+      "original_class_hash": "0x5f5be6d79f4e4632fe10db608923b5742b973a68df7f9829317ce431fde796a",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -13999,12 +13999,12 @@
         },
         {
           "name": "active_rage_ids",
-          "type": "Span<u32>",
+          "type": "Array<u32>",
           "key": false
         }
       ],
-      "class_hash": "0x6b797f5f6f9d6f809bdb167bc4daf778eb3c31da6052a7ccc3adaea7752ef17",
-      "original_class_hash": "0x6b797f5f6f9d6f809bdb167bc4daf778eb3c31da6052a7ccc3adaea7752ef17",
+      "class_hash": "0x5498a3c3693545d88b7e114fda70e03fc99d4f3380335a721d77b1541db139b",
+      "original_class_hash": "0x5498a3c3693545d88b7e114fda70e03fc99d4f3380335a721d77b1541db139b",
       "abi": [
         {
           "type": "impl",
@@ -14389,16 +14389,6 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<core::integer::u32>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::integer::u32>"
-            }
-          ]
-        },
-        {
-          "type": "struct",
           "name": "jokers_of_neon::models::status::game::rage::RageRound",
           "members": [
             {
@@ -14415,7 +14405,7 @@
             },
             {
               "name": "active_rage_ids",
-              "type": "core::array::Span::<core::integer::u32>"
+              "type": "core::array::Array::<core::integer::u32>"
             }
           ]
         },

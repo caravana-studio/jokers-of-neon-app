@@ -14,21 +14,19 @@ export const useRageRound = () => {
 
   const gameId = game?.id ?? 0;
 
-  console.log("gameId", gameId);
   const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
-  console.log("entityId", entityId);
-  console.log("rageRound", RageRound);
   const rageRound = useComponentValue(RageRound, entityId);
   console.log("got rage round", rageRound);
   return rageRound;
 };
 
 export const useRageCards = () => {
-  /*   const rageRound = useRageRound();
+  const rageRound = useRageRound();
   if (!rageRound || !rageRound.is_active || !rageRound.active_rage_ids) {
     return [];
   }
-  const dojoRageCards = rageRound.active_rage_ids.map((card_id, index) => {
+  const dojoRageCards = rageRound.active_rage_ids.map((c, index) => {
+    const card_id = c.value;
     return {
       card_id,
       isSpecial: false,
@@ -37,22 +35,7 @@ export const useRageCards = () => {
       img: `rage/${card_id}.png`,
     };
   });
-  console.log("dojoRageCards", dojoRageCards); */
+  console.log("dojoRageCards", dojoRageCards);
 
-  return [
-    {
-      name: "Silent Hearts",
-      card_id: 401,
-      img: "rage/401.png",
-      id: "401",
-      idx: 0,
-    },
-    {
-      name: "Silent Diamonds",
-      card_id: 402,
-      img: "rage/402.png",
-      id: "402",
-      idx: 1,
-    },
-  ];
+  return dojoRageCards;
 };
