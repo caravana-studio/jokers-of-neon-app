@@ -71,19 +71,19 @@ export const DeckPage = () =>
                         >
                             Filter by
                         </Text>
-                        <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={8} mt={8}>
-                            <Button size={"sm"}>CLUBS</Button>
-                            <Button size={"sm"}>SPADE</Button>
-                            <Button size={"sm"}>HEART</Button>
-                            <Button size={"sm"}>DIAMOND</Button>
-                            <Button size={"sm"}>NEON</Button>
-                            <Button size={"sm"}>MODIFIER</Button>
+                        <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8}>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>CLUBS</Button>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>SPADE</Button>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>HEART</Button>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>DIAMOND</Button>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>NEON</Button>
+                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>MODIFIER</Button>
                         </Flex>
                     </Flex>
 
                     <Flex gap={4} mt={20}>
-                        <Button>SEE SPECIAL CARDS</Button>
-                        <Button>BACK TO GAME</Button>
+                        <Button variant={"outlinePrimaryGlow"}>SEE SPECIAL CARDS</Button>
+                        <Button variant={"outlinePrimaryGlow"}>BACK TO GAME</Button>
                     </Flex>
 
                     </Flex>
