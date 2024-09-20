@@ -171,8 +171,8 @@ export const HandSection = () => {
           })}
           {!isMobile && (
             <Flex
+              bottom={"-35px"}
               width="calc(100% + 30px)"
-              height="calc(100% + 35px)"
               justifyContent={"flex-end"}
               alignItems="flex-end"
               position="absolute"
