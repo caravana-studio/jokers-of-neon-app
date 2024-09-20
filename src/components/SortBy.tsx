@@ -16,19 +16,19 @@ export const SortBy = () => {
         Sort by
       </Text>
       <Flex
-        gap={1}
+        gap={0.5}
         alignItems="center"
         justifyContent="center"
         border={isMobile ? "none" : "1px solid white"}
         borderRadius="8px"
-        minWidth={{ base: "50px", sm: "100px" }}
-        p={{ base: "5px 5px", sm: "8px 10px" }}
+        minWidth={{ base: "50px", sm: "70px" }}
+        p={{ base: "5px 5px", sm: "8px 5px" }}
       >
         <Tooltip label="Suit" placement="bottom" size="sm">
           <Img
             cursor="pointer"
             src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
-            height={{base: 5, sm: 9}}
+            height={{base: 5, sm: 8}}
             onClick={() => {
               toggleSortBy();
             }}
@@ -38,7 +38,7 @@ export const SortBy = () => {
           <Img
             cursor="pointer"
             src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
-            height={{base: 5, sm: 9}}
+            height={{base: 5, sm: 8}}
             onClick={() => {
               toggleSortBy();
             }}

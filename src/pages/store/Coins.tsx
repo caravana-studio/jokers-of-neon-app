@@ -1,33 +1,32 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
+import CoinsIcon from "../../assets/coins.svg?component";
+import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGame } from "../../dojo/queries/useGame";
-import CoinsIcon from "../../assets/coins.svg?component";
 
-export const Coins = () => {
+interface ICoinsProps {
+  rolling?: boolean;
+}
+
+export const Coins = ({ rolling = false }: ICoinsProps) => {
   const game = useGame();
 
   const cash = game?.cash ?? 0;
 
   return (
-    <Flex
-      sx={{
-        p: 4,
-        pt: 0,
-        mt: 2,
-        mx: 4,
-      }}
-      alignItems={"center"}
-      filter="blur(0.5px)"
-    >
-      <Box mr={1} border={"1px"} borderColor={"white"} borderRadius={"5px"} py={2} px={4}>
-        <CoinsIcon width={"24px"} height={"auto"}/>
-      </Box>
+    <Flex alignItems={"center"}>
+      <CoinsIcon
+        style={{ transform: `translateY(${isMobile ? "4px" : "6px"})` }}
+        width={isMobile ? "35px" : "50px"}
+        height={"auto"}
+      />
       <Heading
         className="game-tutorial-step-1"
         variant={"italic"}
         size={"m"}
         sx={{
-          ml: 4,
+          ml: 2,
           position: "relative",
           textShadow: `0 0 10px white`,
           _before: {
@@ -35,13 +34,16 @@ export const Coins = () => {
             position: "absolute",
             bottom: "-5px",
             width: "100%",
-            height: "2px",               
+            height: "1px",
             backgroundColor: "white",
-            boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+            boxShadow:
+              "0px 0px 12px 2px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
           },
         }}
       >
-        COINS: <RollingNumber className="italic" n={cash} /> ȼ
+        MY COINS:{" "}
+        {rolling ? <RollingNumber className="italic" n={cash} /> : cash}
+        <CashSymbol />
       </Heading>
     </Flex>
   );
