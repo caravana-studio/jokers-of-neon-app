@@ -11,8 +11,8 @@ export const DeckPage = () =>
 
         return(
             <Background type="store">
-                <Flex py={4} px={20} width={"100vw"} height={"100vh"} alignItems={"center"} justifyContent={"center"} gap={12}>
-                    <Flex alignItems={"center"}  width={"40%"} height={"50%"} flexDirection={"column"}>
+                <Flex py={4} px={{base: 8, md: 20}} width={"100vw"} height={"100vh"} alignItems={"center"} justifyContent={"center"} gap={12}>
+                    <Flex alignItems={"center"}  width={"45%"} height={"50%"} flexDirection={"column"}>
                     
                     <Heading 
                         variant="italic" 
@@ -71,7 +71,7 @@ export const DeckPage = () =>
                         >
                             Filter by
                         </Text>
-                        <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8}>
+                        <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8} width={"95%"}>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>CLUBS</Button>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>SPADE</Button>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>HEART</Button>
@@ -81,13 +81,13 @@ export const DeckPage = () =>
                         </Flex>
                     </Flex>
 
-                    <Flex gap={4} mt={20}>
+                    <Flex gap={4} mt={{base: 4, md: 20}} wrap={{base: "wrap", md: "nowrap"}} justifyContent={"center"}>
                         <Button variant={"outlinePrimaryGlow"}>SEE SPECIAL CARDS</Button>
                         <Button variant={"outlinePrimaryGlow"}>BACK TO GAME</Button>
                     </Flex>
 
                     </Flex>
-                    <Flex alignItems={"center"} width={"60%"} height={"60%"} overflowY="auto">
+                    <Flex alignItems={"center"} width={"55%"} height={"60%"} overflowY="auto">
                     <Box w="100%" h="100%"> 
                         <DeckCardsGrid cards={deck?.cards} />
                     </Box>
