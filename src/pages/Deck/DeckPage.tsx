@@ -1,13 +1,16 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useDeck } from "../../dojo/queries/useDeck";
-import { DeckCardsGrid } from "./DeckCardsGrid";
+import { DeckCardsFilters, DeckCardsGrid } from "./DeckCardsGrid";
 import { Background } from "../../components/Background";
 import { BLUE_LIGHT } from "../../theme/colors";
+import { useState } from "react";
+import { Suits } from "../../enums/suits";
 
 export const DeckPage = () => 
     {
         const deck = useDeck();
         const cards = deck?.cards;
+        const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         return(
             <Background type="store">
@@ -72,7 +75,14 @@ export const DeckPage = () =>
                             Filter by
                         </Text>
                         <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8} width={"95%"}>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>CLUBS</Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({suit: Suits.CLUBS})}
+                            >
+                                CLUBS
+                            </Button>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>SPADE</Button>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>HEART</Button>
                             <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>DIAMOND</Button>
@@ -89,7 +99,7 @@ export const DeckPage = () =>
                     </Flex>
                     <Flex alignItems={"center"} width={"55%"} height={"60%"} overflowY="auto">
                     <Box w="100%" h="100%"> 
-                        <DeckCardsGrid cards={deck?.cards} />
+                        <DeckCardsGrid cards={deck?.cards} filters={filters} />
                     </Box>
                     </Flex>
                 </Flex>
