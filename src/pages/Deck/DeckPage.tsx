@@ -9,7 +9,6 @@ import { Suits } from "../../enums/suits";
 export const DeckPage = () => 
     {
         const deck = useDeck();
-        const cards = deck?.cards;
         const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         return(
@@ -81,13 +80,48 @@ export const DeckPage = () =>
                                 borderRadius={"25px"}
                                 onClick={() => setFilters({suit: Suits.CLUBS})}
                             >
-                                CLUBS
+                                CLUB
                             </Button>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>SPADE</Button>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>HEART</Button>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>DIAMOND</Button>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>NEON</Button>
-                            <Button size={"sm"} variant={"outlineSecondaryGlow"} borderRadius={"25px"}>MODIFIER</Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({suit: Suits.SPADES})}
+                            >
+                                SPADE
+                            </Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({suit: Suits.HEARTS})}
+                            >
+                                HEART
+                            </Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({suit: Suits.DIAMONDS})}
+                            >
+                                DIAMOND
+                            </Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({isNeon: true})}
+                            >
+                                NEON
+                            </Button>
+                            <Button
+                                size={"sm"}
+                                variant={"outlineSecondaryGlow"}
+                                borderRadius={"25px"}
+                                onClick={() => setFilters({isModifier: true})}
+                            >
+                                MODIFIER
+                            </Button>
                         </Flex>
                     </Flex>
 

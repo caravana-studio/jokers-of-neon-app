@@ -35,7 +35,7 @@ export const useDeck = (): Deck | undefined => {
         img: `${deckCard?.type_player_card === "Effect" ? "effect/" : ""}${deckCard?.card_id}.png`,
         idx: deckCard?.idx,
         id: deckCard?.card_id.toString(),
-
+        isNeon: deckCard?.card_id === 53 || (deckCard?.card_id >= 200 && deckCard?.card_id <= 251),
       });
   }
 
