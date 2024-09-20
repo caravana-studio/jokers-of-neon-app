@@ -2,19 +2,39 @@ import { CardDataMap } from "../types/CardData";
 
 export const RAGE_CARDS_DATA: CardDataMap = {
   401: {
-    name: "Siltent Hearts",
+    name: "Broken Hearts",
     description: "Heart suited cards will not score during this level",
   },
   402: {
-    name: "Silent Clubs",
+    name: "Broken Clubs",
     description: "Club suited cards will not score during this level",
   },
   403: {
-    name: "Silent Diamonds",
+    name: "Broken Diamonds",
     description: "Diamond suited cards will not score during this level",
   },
   404: {
-    name: "Silent Spades",
+    name: "Broken Spades",
     description: "Spade suited cards will not score during this level",
+  },  
+  405: {
+    name: "Diminished Hold",
+    description: "Your hand will be reduced by 2 cards during this level",
+  },  
+  406: {
+    name: "Zero Waste",
+    description: "You have no discards during this level",
+  },  
+  407: {
+    name: "Broken Jokers",
+    description: "Jokers will not score during this level",
   },
+  408: {
+    name: "Unexpected Sacrifice",
+    description: "One of your special cards will be sacrificed",
+  },  
+  409: {
+    name: "Strategic Quartet",
+    description: "You can only play up to 4 cards during this level",
+  },  
 };

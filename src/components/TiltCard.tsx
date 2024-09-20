@@ -16,17 +16,14 @@ import {
 } from "../constants/visualProps";
 
 import ClockIcon from "../assets/clock.svg?component";
-import { Suits } from "../enums/suits.ts";
+import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { Card } from "../types/Card";
-import { getCardData } from "../utils/getCardData.ts";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
-
-import "./TiltCard.css";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -54,28 +51,7 @@ export const TiltCard = ({
     transition: "box-shadow 0.3s ease-in-out",
   };
 
-  const { suit } = getCardData(card, isPack);
-
-  const isSilent = suit === Suits.HEARTS;
-
-  const getImage = (className: string = "") => {
-    return (
-      <Image
-        className={className}
-        borderRadius={{ base: "5px", sm: "8px" }}
-        boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
-        sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-        src={`Cards/${img}`}
-        alt={img}
-        w="100%"
-        height="100%"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick?.();
-        }}
-      />
-    );
-  };
+  const isSilent = useIsSilent(card);
 
   const tiltCardComponent = (
     <Box
@@ -128,14 +104,20 @@ export const TiltCard = ({
                 w={`${cardWith}px`}
                 h={`${cardHeight}px`}
               >
-                {isSilent ? (
-                  <>
-                    {getImage("top-half")}
-                    {getImage("bottom-half")}
-                  </>
-                ) : (
-                  <>{getImage()}</>
-                )}
+                <Image
+                  borderRadius={{ base: "5px", sm: "8px" }}
+                  boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
+                  sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+                  src={`Cards/${img}`}
+                  alt={img}
+                  w="100%"
+                  height="100%"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClick?.();
+                  }}
+                />
+
                 {isSilent && (
                   <>
                     <Box
@@ -144,8 +126,8 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
-                      bg="black"
-                      opacity={0.3}
+                      backgroundColor='rgba(0,0,0,0.3)'
+                      backgroundImage={'url("/broken.png")'}
                       borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
                       pointerEvents="none"
                     />

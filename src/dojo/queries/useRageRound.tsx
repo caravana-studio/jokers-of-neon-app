@@ -22,11 +22,11 @@ export const useRageRound = () => {
 };
 
 export const useRageCards = () => {
-  const rageRound = useRageRound();
+/*   const rageRound = useRageRound();
   if (!rageRound || !rageRound.is_active || !rageRound.active_rage_ids) {
     return [];
   }
-  return rageRound.active_rage_ids.map((card_id, index) => {
+  const dojoRageCards = rageRound.active_rage_ids.map((card_id, index) => {
     return {
       card_id,
       isSpecial: false,
@@ -35,4 +35,22 @@ export const useRageCards = () => {
       img: `rage/${card_id}.png`,
     };
   });
+  console.log("dojoRageCards", dojoRageCards); */
+
+  return [
+    {
+      name: "Silent Hearts",
+      card_id: 401,
+      img: "rage/401.png",
+      id: "401",
+      idx: 0,
+    },
+    {
+      name: "Silent Diamonds",
+      card_id: 402,
+      img: "rage/402.png",
+      id: "402",
+      idx: 1,
+    },
+  ];
 };

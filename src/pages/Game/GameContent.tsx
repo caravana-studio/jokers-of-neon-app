@@ -184,7 +184,7 @@ export const GameContent = () => {
           />
           <Box
             sx={{ height: "100%", width: "100%" }}
-            px={20}
+            px={'70px'}
           >
             <Box sx={{ height: "30%", width: "100%" }} pt={'60px'}>
               <TopSection />
@@ -232,7 +232,7 @@ export const GameContent = () => {
           sx={{
             position: "fixed",
             bottom: 14,
-            left: 20,
+            left: '70px',
             zIndex: 1000,
           }}
         >

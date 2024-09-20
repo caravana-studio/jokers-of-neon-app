@@ -7,7 +7,7 @@ export const MultiPoints = () => {
   const { points, multi } = useGameContext();
   return (
     <Box
-      gap={{ base: 1, md: 2 }}
+      gap={{ base: 1, md: 1.5 }}
       sx={{ display: "flex", alignItems: "center" }}
       className="game-tutorial-step-6"
     >
@@ -45,7 +45,7 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   return (
     <Box
       height={{ base: 43, md: 81 }}
-      minWidth={{ base: 70, md: 140 }}
+      minWidth={{ base: 70, md: 120 }}
       p={{ base: 1, md: 2 }}
       sx={{
         border: `2px solid ${color}`,
