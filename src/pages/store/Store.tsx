@@ -2,12 +2,12 @@ import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -20,6 +20,7 @@ import { useShopItems } from "../../dojo/queries/useShopItems.ts";
 import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
@@ -27,10 +28,12 @@ import { StoreCardsRow } from "./StoreCardsRow";
 export const Store = () => {
   const { gameId, setHand, onShopSkip } = useGameContext();
   const game = useGame();
+  const cash = game?.cash ?? 0;
   const store = useShop();
   const state = game?.state;
   const { lockRedirection } = useStore();
   const rerollCost = store?.reroll_cost ?? 0;
+  const notEnoughCash = cash < rerollCost;
 
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
@@ -80,7 +83,7 @@ export const Store = () => {
         className="game-tutorial-step-6"
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled || locked}
+        isDisabled={rerolled || locked || notEnoughCash}
         onClick={() => {
           reroll().then((response) => {
             if (response) {
@@ -89,7 +92,8 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} {rerollCost}ȼ
+        REROLL{isMobile && <br />} {rerollCost}
+        <CashSymbol />
       </Button>
     </Tooltip>
   );
@@ -245,10 +249,14 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            {isMobile && <Flex mt={2}><Coins/></Flex>}
+            {isMobile && (
+              <Flex mt={2}>
+                <Coins rolling />
+              </Flex>
+            )}
             <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
-            {!isMobile && <Coins />}
+            {!isMobile && <Coins rolling />}
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}
@@ -298,7 +306,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
-          
+
           <Box
             display="flex"
             flexDirection={[
