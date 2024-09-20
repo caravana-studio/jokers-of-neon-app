@@ -118,6 +118,12 @@ export const HandSection = () => {
                         size={isMobile ? "xs" : "md"}
                         variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHoveredButton(null);
+                          discardEffectCard(card.idx);
+                          onClose();
+                        }}
                       >
                         X
                       </Button>
@@ -131,11 +137,12 @@ export const HandSection = () => {
                         variant={"discardSecondarySolid"}
                         onClick={(e) => {
                           e.stopPropagation();
+                          setHoveredButton(null);
                           discardEffectCard(card.idx);
                           onClose();
                         }}
                       >
-                        Discard
+                        Change
                       </Button>
                     )}
                   </Flex>
