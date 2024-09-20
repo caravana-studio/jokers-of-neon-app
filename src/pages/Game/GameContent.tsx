@@ -203,7 +203,7 @@ export const GameContent = () => {
                 <PreselectedCardsSection isTutorialRunning={run}/>
               </Box>
               <Box
-                pb={'30px'}
+                pb={'60px'}
                 mr={{ base: 10, md: 20 }}
                 sx={{
                   display: "flex",
