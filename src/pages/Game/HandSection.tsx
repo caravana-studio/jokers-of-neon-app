@@ -17,6 +17,7 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
 import { useRound } from "../../dojo/queries/useRound";
+import { ShowPlays } from "../../components/ShowPlays";
 
 export const HandSection = () => {
   const {
@@ -161,6 +162,7 @@ export const HandSection = () => {
             );
           })}
         </SimpleGrid>
+        {!isMobile && (<Flex justifyContent={"flex-end"}><ShowPlays/></Flex>)}
       </Box>
       {handsLeft === 0 && (
         <Heading
