@@ -1,8 +1,8 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useDojo } from "../useDojo.tsx";
-import { useGame } from "./useGame.tsx";
+import { useDojo } from "../useDojo";
+import { useGame } from "./useGame";
 
 export const useRageRound = () => {
   const {
@@ -18,11 +18,13 @@ export const useRageRound = () => {
   const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
   console.log("entityId", entityId);
   console.log("rageRound", RageRound);
-  return useComponentValue(RageRound, entityId);
+  const rageRound = useComponentValue(RageRound, entityId);
+  console.log("got rage round", rageRound);
+  return rageRound;
 };
 
 export const useRageCards = () => {
-/*   const rageRound = useRageRound();
+  /*   const rageRound = useRageRound();
   if (!rageRound || !rageRound.is_active || !rageRound.active_rage_ids) {
     return [];
   }
