@@ -14,6 +14,7 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { ShowPlays } from "../../components/ShowPlays.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -233,8 +234,9 @@ export const MobileGameContent = () => {
               }}
             >
               <Box>
-                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="130px">
+                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="200px" display={"flex"} alignItems={"center"}>
                   <SortBy />
+                  <ShowPlays/>
                 </Box>
                 <Box pb="25px" >
                   <HandSection />

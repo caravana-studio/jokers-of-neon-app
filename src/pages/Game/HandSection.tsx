@@ -11,12 +11,13 @@ import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { AnimatedCard } from "../../components/AnimatedCard";
+import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
+import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
-import { useRound } from "../../dojo/queries/useRound";
 
 export const HandSection = () => {
   const {
@@ -75,6 +76,7 @@ export const HandSection = () => {
             maxWidth: `${CARD_WIDTH * 6.5}px`,
           }}
           columns={hand.length}
+          position="relative"
         >
           {hand.map((card, index) => {
             const isPreselected = cardIsPreselected(card.idx);
@@ -96,14 +98,14 @@ export const HandSection = () => {
                   setHoveredCard(null);
                   setHoveredButton(null);
                 }}
-                position='relative'
+                position="relative"
               >
                 {card.isModifier && !isPreselected && (
                   <Flex
                     position={"absolute"}
                     zIndex={7}
-                    bottom={'5px'}
-                    left={'5px'}
+                    bottom={"5px"}
+                    left={"5px"}
                     borderRadius={"10px"}
                     background={"violet"}
                   >
@@ -160,6 +162,17 @@ export const HandSection = () => {
               </GridItem>
             );
           })}
+          {!isMobile && (
+            <Flex
+              width="calc(100% + 30px)"
+              height="calc(100% + 35px)"
+              justifyContent={"flex-end"}
+              alignItems="flex-end"
+              position="absolute"
+            >
+              <ShowPlays />
+            </Flex>
+          )}
         </SimpleGrid>
       </Box>
       {handsLeft === 0 && (
