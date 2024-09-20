@@ -31,6 +31,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   const handleDiscard = (cardIdx: number) => {
     const card = cards.find((c) => c.idx === cardIdx);
     if (card) {
+      setHoveredButton(null);
       discardSpecialCard(cardIdx).then((response) => {
         if (response) {
           setDiscardedCards((prev) => [...prev, card.id]);
@@ -78,6 +79,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                         borderRadius={"10px"}
                         variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
+                        onClick={() => handleDiscard(card.idx)}
                       >
                         X
                       </Button>
@@ -91,7 +93,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                         variant={"discardSecondarySolid"}
                         onClick={() => handleDiscard(card.idx)}
                       >
-                        Discard
+                        Remove
                       </Button>
                     )}
                   </Flex>
