@@ -23,6 +23,7 @@ import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 import ClockIcon from "../assets/clock.svg?component";
 import { HoloEffect } from "./HoloEffect.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -131,7 +132,7 @@ export const TiltCard = ({
                 opacity: purchased ? 0.5 : 1,
               }}
             >
-              {card.price}ȼ
+              {card.price}<CashSymbol />
             </Box>
           )}
           {card.purchased && (
