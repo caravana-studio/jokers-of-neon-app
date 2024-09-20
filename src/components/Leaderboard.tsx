@@ -94,6 +94,9 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
                   <>
                     <Tr>
                       <Td>...</Td>
+                      <Td>...</Td>
+                      <Td>...</Td>
+                      <Td>...</Td>
                     </Tr>
                     <Tr sx={CURRENT_LEADER_STYLES}>
                       <Td>{currentLeader.position}</Td>
