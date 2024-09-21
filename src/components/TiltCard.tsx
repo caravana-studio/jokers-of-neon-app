@@ -129,6 +129,7 @@ export const TiltCard = ({
                       h="100%"
                       backgroundColor='rgba(0,0,0,0.3)'
                       backgroundImage={'url("/broken.png")'}
+                      backgroundSize="cover"
                       borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
                       pointerEvents="none"
                     />

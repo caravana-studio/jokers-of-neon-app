@@ -19,7 +19,7 @@ export const TopSection = () => {
       <Box mr={4}>
         <Img
           src="logos/logo-variant.svg"
-          width={{ base: "110px", md: "260px" }}
+          width={{ base: "110px", sm: "150px", md: "260px" }}
           alt="logo"
           mb="30px"
         />

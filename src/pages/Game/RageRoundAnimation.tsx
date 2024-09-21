@@ -1,7 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring";
-import { useRageCards } from "../../dojo/queries/useRageRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { getCardData } from "../../utils/getCardData";
 
@@ -9,9 +8,8 @@ export const RageRoundAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
   const [showAnimationText, setShowAnimationText] = useState(false);
 
-  const { isRageRound } = useGameContext();
+  const { isRageRound, rageCards } = useGameContext();
 
-  const rageCards = useRageCards();
   const descriptions = rageCards?.map((card) => getCardData(card).description);
 
   const headingSpring = useSpring({
@@ -66,7 +64,9 @@ export const RageRoundAnimation = () => {
           flexDirection="column"
         >
           <animated.div style={headingSpring}>
-            <Heading fontSize="4rem">RAGE ROUND</Heading>
+            <Heading fontSize={{ base: "2rem", sm: "4rem" }}>
+              RAGE ROUND
+            </Heading>
           </animated.div>
           <animated.div style={textSpring}>
             {descriptions.map((description) => {

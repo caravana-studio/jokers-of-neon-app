@@ -44,7 +44,7 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   const color = colorMap[type];
   return (
     <Box
-      height={{ base: 43, md: 81 }}
+      height={{ base: 43, sm: 53, md: 81 }}
       minWidth={{ base: 70, md: 120 }}
       p={{ base: 1, md: 2 }}
       sx={{
@@ -56,7 +56,7 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
       }}
 
       boxShadow={{base: `0px 0px 10px 4px ${color} `, sm: `0px 0px 17px 7px ${color}`}}
-      borderRadius={{ base: 15, sm: 20 }}
+      borderRadius={{ base: 15, md: 20 }}
     >
       {children}
     </Box>

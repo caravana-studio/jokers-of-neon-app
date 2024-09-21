@@ -1,5 +1,5 @@
-import { useRageCards } from "../dojo/queries/useRageRound";
 import { Suits } from "../enums/suits";
+import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 
@@ -13,7 +13,7 @@ const getSilentSuit = (cardId: number) => {
       return Suits.DIAMONDS;
     case 404:
       return Suits.SPADES;
-    case 407:
+    case 405:
       return Suits.JOKER;
     default:
       return "None";
@@ -21,10 +21,10 @@ const getSilentSuit = (cardId: number) => {
 };
 
 export const useIsSilent = (card: Card) => {
+  const { isRageRound, rageCards } = useGameContext();
   const { suit } = getCardData(card, false);
-  const rageCards = useRageCards();
   const isSilent = rageCards.some((rageCard) => {
-    return getSilentSuit(rageCard.card_id) === suit;
+    return getSilentSuit(rageCard.card_id!) === suit;
   });
-  return isSilent;
+  return isRageRound && isSilent;
 };

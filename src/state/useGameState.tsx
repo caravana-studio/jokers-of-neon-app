@@ -3,7 +3,6 @@ import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
-import { useRageRound } from "../dojo/queries/useRageRound";
 import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -40,6 +39,7 @@ export const useGameState = () => {
   const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
+  const [rageCards, setRageCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -153,5 +153,7 @@ export const useGameState = () => {
     setIsRageRound,
     cash,
     setLockedCash,
+    rageCards,
+    setRageCards,
   };
 };

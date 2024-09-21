@@ -16,7 +16,6 @@ export const useRageRound = () => {
 
   const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
   const rageRound = useComponentValue(RageRound, entityId);
-  console.log("got rage round", rageRound);
   return rageRound;
 };
 
@@ -25,7 +24,7 @@ export const useRageCards = () => {
   if (!rageRound || !rageRound.is_active || !rageRound.active_rage_ids) {
     return [];
   }
-  const dojoRageCards = rageRound.active_rage_ids.map((c, index) => {
+  const dojoRageCards = rageRound?.active_rage_ids.map((c, index) => {
     const card_id = c && (c as any).value;
     return {
       card_id,
@@ -36,5 +35,5 @@ export const useRageCards = () => {
     };
   });
 
-  return dojoRageCards;
+  return dojoRageCards ?? [];
 };

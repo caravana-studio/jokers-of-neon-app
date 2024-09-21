@@ -62,6 +62,8 @@ interface IGameContext {
   setIsRageRound: (isRageRound: boolean) => void;
   cash: number;
   setLockedCash: (cash: number | undefined) => void;
+  rageCards: Card[];
+  setRageCards: (rageCards: Card[]) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -104,6 +106,8 @@ const GameContext = createContext<IGameContext>({
   setIsRageRound: (_) => {},
   cash: 0,
   setLockedCash: (_) => {},
+  rageCards: [],
+  setRageCards: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 

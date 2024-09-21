@@ -72,8 +72,8 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
         <CardsRow cards={specialCards} />
       )}
       <Flex sx={{ mt: 1, mx: 1 }} justifyContent="space-between">
-        <Box>{!inStore && <Text size="l">Special cards</Text>}</Box>
-        <Text className="special-cards-step-2" size="l">
+        <Box>{!inStore && <Text size={{base: "l", sm: "m"}}>Special cards</Text>}</Box>
+        <Text className="special-cards-step-2"  size={{base: "l", sm: "m"}}>
           {"<"}
           {specialCards.length}/{maxLength}
           {">"}
