@@ -15,13 +15,17 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame, isRageRound } = useGameContext();
+  const { checkOrCreateGame, setLockedCash, isRageRound } = useGameContext();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
       checkOrCreateGame();
     }
   }, [account, username]);
+
+  useEffect(() => {
+    setLockedCash(undefined);
+  }, []);
 
   return (
     <Background type={isRageRound ? "rage" : "game"}>

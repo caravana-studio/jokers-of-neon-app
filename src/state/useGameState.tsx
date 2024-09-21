@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useGame } from "../dojo/queries/useGame";
 import { useRageRound } from "../dojo/queries/useRageRound";
 import { useRound } from "../dojo/queries/useRound";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -36,6 +37,7 @@ export const useGameState = () => {
     !!localStorage.getItem(SORT_BY_SUIT)
   );
   const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
+  const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
@@ -45,6 +47,8 @@ export const useGameState = () => {
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
   const round = useRound();
+  const game = useGame();
+
   const dojoHand = useCurrentHand(sortBy);
   const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
 
@@ -57,8 +61,10 @@ export const useGameState = () => {
   const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
+  const dojoCash = game?.cash ?? 0;
 
   const score = lockedScore ?? dojoScore;
+  const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const rageRound = useRageRound();
 
@@ -147,5 +153,7 @@ export const useGameState = () => {
     setLockedSpecialCards,
     setLockedScore,
     isRageRound,
+    cash,
+    setLockedCash,
   };
 };

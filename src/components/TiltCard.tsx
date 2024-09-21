@@ -24,6 +24,7 @@ import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -155,7 +156,7 @@ export const TiltCard = ({
                 opacity: purchased ? 0.5 : 1,
               }}
             >
-              {card.price}ȼ
+              {card.price}<CashSymbol />
             </Box>
           )}
           {card.purchased && (
