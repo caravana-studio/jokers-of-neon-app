@@ -3,6 +3,7 @@ import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { Background } from "../../components/Background";
 import { LOGGED_USER } from "../../constants/localStorage";
+import { useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
 import { GameContent } from "./GameContent";
@@ -15,7 +16,9 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame, setLockedCash, isRageRound } = useGameContext();
+  const { checkOrCreateGame, setLockedCash, isRageRound, setIsRageRound } =
+    useGameContext();
+  const rageRound = useRageRound();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -25,6 +28,7 @@ export const GamePage = () => {
 
   useEffect(() => {
     setLockedCash(undefined);
+    setIsRageRound(rageRound?.is_active ?? false);
   }, []);
 
   return (

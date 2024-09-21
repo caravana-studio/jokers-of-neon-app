@@ -39,6 +39,7 @@ export const useGameState = () => {
   const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
   const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
+  const [isRageRound, setIsRageRound] = useState(false);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -65,10 +66,6 @@ export const useGameState = () => {
 
   const score = lockedScore ?? dojoScore;
   const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
-
-  const rageRound = useRageRound();
-
-  const isRageRound = rageRound?.is_active ?? false;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -153,6 +150,7 @@ export const useGameState = () => {
     setLockedSpecialCards,
     setLockedScore,
     isRageRound,
+    setIsRageRound,
     cash,
     setLockedCash,
   };

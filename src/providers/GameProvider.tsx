@@ -59,6 +59,7 @@ interface IGameContext {
   specialCards: Card[];
   playIsNeon: boolean;
   isRageRound: boolean;
+  setIsRageRound: (isRageRound: boolean) => void;
   cash: number;
   setLockedCash: (cash: number | undefined) => void;
 }
@@ -100,6 +101,7 @@ const GameContext = createContext<IGameContext>({
   specialCards: [],
   playIsNeon: false,
   isRageRound: false,
+  setIsRageRound: (_) => {},
   cash: 0,
   setLockedCash: (_) => {},
 });
@@ -158,11 +160,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     score,
     cash,
     setLockedCash,
+    setIsRageRound,
   } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
+    setIsRageRound(false);
   };
 
   const toggleSortBy = () => {

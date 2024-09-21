@@ -12,7 +12,6 @@ export const RageRoundAnimation = () => {
   const { isRageRound } = useGameContext();
 
   const rageCards = useRageCards();
-  console.log("asdasd", rageCards);
   const descriptions = rageCards?.map((card) => getCardData(card).description);
 
   const headingSpring = useSpring({

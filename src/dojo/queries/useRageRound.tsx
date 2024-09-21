@@ -26,7 +26,7 @@ export const useRageCards = () => {
     return [];
   }
   const dojoRageCards = rageRound.active_rage_ids.map((c, index) => {
-    const card_id = c.value;
+    const card_id = c && (c as any).value;
     return {
       card_id,
       isSpecial: false,
@@ -35,7 +35,6 @@ export const useRageCards = () => {
       img: `rage/${card_id}.png`,
     };
   });
-  console.log("dojoRageCards", dojoRageCards);
 
   return dojoRageCards;
 };
