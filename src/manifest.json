@@ -1255,9 +1255,9 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x25a0d3578c5989ff7fab704add712f1fe1dbd5b881b4a25e9e9338c44bfb5ba",
-      "class_hash": "0x68c397f8b4fd93dfdef36c888088792714c1f886a1aaa41237ac3235fca1366",
-      "original_class_hash": "0x68c397f8b4fd93dfdef36c888088792714c1f886a1aaa41237ac3235fca1366",
+      "address": "0x1a22760162c82d49dc5be3835782558d1ff7fe7e4283ece588025a1c3f95b64",
+      "class_hash": "0x155c3d31c47a39098c1cc4c5461d81710f916abac8678e143343408b88e0a17",
+      "original_class_hash": "0x155c3d31c47a39098c1cc4c5461d81710f916abac8678e143343408b88e0a17",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1476,9 +1476,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x4314c4fe7895b094e6329ace17642f4fd9113ebbf007cb39df162207e5ba95",
-      "class_hash": "0x5b8f23e663f00990a4e3bcdd91e86a365014b037a9dc63c105534791633268e",
-      "original_class_hash": "0x5b8f23e663f00990a4e3bcdd91e86a365014b037a9dc63c105534791633268e",
+      "address": "0x10732e0209f7786a8feca39b0eebe0faff02479acec581c4aa153a2268c804",
+      "class_hash": "0x766a95dfe6f2cbbcbc265bbe48fe957ead8ea7f05de38e3ca9864e75e1df8b3",
+      "original_class_hash": "0x766a95dfe6f2cbbcbc265bbe48fe957ead8ea7f05de38e3ca9864e75e1df8b3",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1891,9 +1891,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x6f8f6b670d75abb74ee521071474ebccc0b55080c804cb290d3f61733bcbf96",
-      "class_hash": "0x2f24f7a358ba8dcd5616e23c565e43abbba2f53aa7b2d9149917f695f734f48",
-      "original_class_hash": "0x2f24f7a358ba8dcd5616e23c565e43abbba2f53aa7b2d9149917f695f734f48",
+      "address": "0x113077fd9bd9fc24cf0999e04fd690cb149d5b7778d7f29cea02fa7b1eb21b3",
+      "class_hash": "0x47e40f0600395fe4205668b334b8bbc113ce83e9bf2dd1a10d05a5ccf51cea",
+      "original_class_hash": "0x47e40f0600395fe4205668b334b8bbc113ce83e9bf2dd1a10d05a5ccf51cea",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2137,9 +2137,9 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x606cbc28c4db5268a4ad2f82498d71e4d3e48abbaea2b32727b5245b28fbbc0",
-      "class_hash": "0x5f5be6d79f4e4632fe10db608923b5742b973a68df7f9829317ce431fde796a",
-      "original_class_hash": "0x5f5be6d79f4e4632fe10db608923b5742b973a68df7f9829317ce431fde796a",
+      "address": "0x1b138633d46a7682f1ee7b6f7f3ab410140e1ce5892fc5abedcc994330f37fd",
+      "class_hash": "0x47236cb99fc0fb645de8cb7d4ba3085a2a867490416480d2208df363ea85222",
+      "original_class_hash": "0x47236cb99fc0fb645de8cb7d4ba3085a2a867490416480d2208df363ea85222",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -14458,12 +14458,12 @@
         },
         {
           "name": "active_rage_ids",
-          "type": "Array<u32>",
+          "type": "Span<u32>",
           "key": false
         }
       ],
-      "class_hash": "0x5498a3c3693545d88b7e114fda70e03fc99d4f3380335a721d77b1541db139b",
-      "original_class_hash": "0x5498a3c3693545d88b7e114fda70e03fc99d4f3380335a721d77b1541db139b",
+      "class_hash": "0x6b797f5f6f9d6f809bdb167bc4daf778eb3c31da6052a7ccc3adaea7752ef17",
+      "original_class_hash": "0x6b797f5f6f9d6f809bdb167bc4daf778eb3c31da6052a7ccc3adaea7752ef17",
       "abi": [
         {
           "type": "impl",
@@ -14848,6 +14848,16 @@
         },
         {
           "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "jokers_of_neon::models::status::game::rage::RageRound",
           "members": [
             {
@@ -14864,7 +14874,7 @@
             },
             {
               "name": "active_rage_ids",
-              "type": "core::array::Array::<core::integer::u32>"
+              "type": "core::array::Span::<core::integer::u32>"
             }
           ]
         },
