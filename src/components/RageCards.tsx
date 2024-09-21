@@ -15,6 +15,7 @@ export const RageCards = () => {
   return (
     <Box
       boxShadow={`0px 28px 20px -27px ${colors.neonPink}`}
+      ml={1}
       width={`${rageCards.length === 1 ? CARD_WIDTH : CARD_WIDTH * 1.5}px`}
     >
       <Flex height={`${CARD_HEIGHT + 8}px`}>
