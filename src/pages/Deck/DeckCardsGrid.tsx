@@ -26,10 +26,8 @@ interface DeckCardsGridProps {
     
     if (filters)
     {
-      console.log(card.suit + " == " + filters.suit);
-
       if (filters.isNeon !== undefined) {
-        //matchesFilter = matchesFilter && card.isNeon === isNeon;
+        matchesFilter = matchesFilter && card.isNeon === filters.isNeon;
       }
   
       if (filters.isModifier !== undefined) {

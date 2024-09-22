@@ -29,6 +29,7 @@ export const useDeck = (): Deck | undefined => {
     const deckCard = getCard(game.id ?? 0, i, DeckCard);
     const card = getCardFromCardId(deckCard?.card_id, i);
     const cardData = {...getCardData(card)};
+
     cards.push({
         ...card,
         ...cardData,
