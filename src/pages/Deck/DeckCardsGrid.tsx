@@ -11,6 +11,7 @@ const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
 interface DeckCardsGridProps {
     cards: Card[] | undefined;
     filters?: DeckCardsFilters;
+    usedCards?: Card[];
   }
 
   export interface DeckCardsFilters {
@@ -19,8 +20,7 @@ interface DeckCardsGridProps {
     suit?: Suits; 
   }
 
-  export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({ cards, filters }) => {
-  console.log(cards);
+  export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({ cards, filters, usedCards = [] }) => {
   const filteredCards = cards?.filter(card => {
     let matchesFilter = true;
     
@@ -42,21 +42,32 @@ interface DeckCardsGridProps {
     return matchesFilter;
   });
 
+  const countUsedCards = (card: Card): number => {
+    return usedCards.filter(
+      usedCard => usedCard.id === card.id
+    ).length;
+  };
+
   return (
     <Box mb={4}>
       <Flex wrap="wrap" position="relative" w="100%" mb={4}>
-        {filteredCards?.map((card, index) => (
-          <Box
-            key={`${card.id}-${card.isModifier}-${index}`}
-            w={`${CUSTOM_CARD_WIDTH}px`}                                             
-            h={`${CUSTOM_CARD_HEIGHT}px`}                                            
-            position="relative"                                                      
-            mr={`-${CUSTOM_CARD_WIDTH / 5}px`}                                       
-            mb={4}                                                                   
-          >
-            <TiltCard card={card} scale={SCALE} />
-          </Box>
-        ))}
+        {filteredCards?.map((card, index) => {
+          const usedCount = countUsedCards(card);
+          const opacity = usedCount > 0 ? 0.4 : 1;
+          return (
+            <Box
+              key={`${card.id}-${card.isModifier}-${index}`}
+              w={`${CUSTOM_CARD_WIDTH}px`}
+              h={`${CUSTOM_CARD_HEIGHT}px`}
+              position="relative"
+              mr={`-${CUSTOM_CARD_WIDTH / 5}px`}
+              mb={4}
+              opacity={opacity}
+            >
+              <TiltCard card={card} scale={SCALE} />
+            </Box>
+          );
+        })}
       </Flex>
     </Box>
   );

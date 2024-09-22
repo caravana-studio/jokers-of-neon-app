@@ -1,9 +1,9 @@
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { CARD_WIDTH_PX } from "../constants/visualProps.ts";
-import { useCurrentDeck } from "../dojo/queries/useDeck.tsx";
+import { useFullDeck } from "../dojo/queries/useDeck.tsx";
 
 export const GameDeck = () => {
-  const deck = useCurrentDeck();
+  const deck = useFullDeck();
 
   return (
     <Tooltip label="See deck" placement="left-end" size="sm"> 

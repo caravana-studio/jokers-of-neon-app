@@ -5,10 +5,47 @@ import { Background } from "../../components/Background";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { useState } from "react";
 import { Suits } from "../../enums/suits";
+import { Card } from "../../types/Card";
 
 export const DeckPage = () => 
     {
-        const deck = useFullDeck();
+        const preprocessCards = (cards: Card[]): Card[] => {
+            const cardCountMap: { [key: string]: number } = {}; 
+          
+            return cards.map((card) => {
+              if (card.id !== undefined) {
+                const currentCount = cardCountMap[card.id] ?? 0;
+                const newCount = currentCount + 1;
+                cardCountMap[card.id] = newCount;
+          
+                return {
+                  ...card,
+                  id: `${card.id}-${newCount}`,
+                };
+              }
+          
+              return card;
+            });
+          };
+
+        const createUsedCardsList = (fullDeck: Card[], currentDeck: Card[]): Card[] => {
+            const usedCards: Card[] = [];
+          
+            fullDeck.forEach((card) => {
+              const isCardUsed = !currentDeck.some(
+                (currentCard) => currentCard.id === card.id
+              );
+              if (isCardUsed) {
+                usedCards.push(card);
+              }
+            });
+          
+            return usedCards;
+          };
+          
+        const fullDeck = preprocessCards(useFullDeck()?.cards ?? []);
+        const currentDeck = preprocessCards(useCurrentDeck()?.cards ?? []);
+        const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
         const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         return(
@@ -133,7 +170,7 @@ export const DeckPage = () =>
                     </Flex>
                     <Flex alignItems={"center"} width={"55%"} height={"60%"} overflowY="auto">
                     <Box w="100%" h="100%"> 
-                        <DeckCardsGrid cards={deck?.cards} filters={filters} />
+                        <DeckCardsGrid cards={fullDeck} usedCards={usedCards} filters={filters} />
                     </Box>
                     </Flex>
                 </Flex>
