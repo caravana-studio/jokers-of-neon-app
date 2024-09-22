@@ -227,7 +227,6 @@ export interface CurrentHandCard {
     game_id: Number;
     idx: Number;
     type_player_card: TypePlayerCard;
-    player_card_id: Number;
     card_id: Number;
     
 }
@@ -235,7 +234,6 @@ export const CurrentHandCardDefinition = {
     game_id: RecsType.Number,
     idx: RecsType.Number,
     type_player_card: TypePlayerCardDefinition,
-    player_card_id: RecsType.Number,
     card_id: RecsType.Number,
     
 };
@@ -265,7 +263,6 @@ export interface DeckCard {
     game_id: Number;
     idx: Number;
     type_player_card: TypePlayerCard;
-    player_card_id: Number;
     card_id: Number;
     
 }
@@ -273,7 +270,6 @@ export const DeckCardDefinition = {
     game_id: RecsType.Number,
     idx: RecsType.Number,
     type_player_card: TypePlayerCardDefinition,
-    player_card_id: RecsType.Number,
     card_id: RecsType.Number,
     
 };
@@ -922,7 +918,6 @@ export function defineContractComponents(world: World) {
                     game_id: RecsType.Number,
                     idx: RecsType.Number,
                     type_player_card: RecsType.String,
-                    player_card_id: RecsType.Number,
                     card_id: RecsType.Number,
                 },
                 {
@@ -966,7 +961,6 @@ export function defineContractComponents(world: World) {
                     game_id: RecsType.Number,
                     idx: RecsType.Number,
                     type_player_card: RecsType.String,
-                    player_card_id: RecsType.Number,
                     card_id: RecsType.Number,
                 },
                 {

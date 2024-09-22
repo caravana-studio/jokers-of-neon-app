@@ -14,7 +14,7 @@ import { getCardData } from "../../utils/getCardData";
 export const useDeck = (): Deck | undefined => {
   const game = useGame();
   const round = useRound();
-  const deckSize = (game?.len_common_cards ?? 0) + (game?.len_effect_cards ?? 0);
+  const deckSize = round?.current_len_deck ?? 0;
   const cards = [];
 
   const {
