@@ -33,7 +33,7 @@ interface DeckCardsGridProps {
       if (filters.isModifier !== undefined) {
         matchesFilter = matchesFilter && card.isModifier === filters.isModifier;
       }
-  
+
       if (filters.suit !== undefined) {
         matchesFilter = matchesFilter && card.suit === filters.suit;
       }
@@ -45,9 +45,9 @@ interface DeckCardsGridProps {
   return (
     <Box mb={4}>
       <Flex wrap="wrap" position="relative" w="100%" mb={4}>
-        {filteredCards?.map((card) => (
+        {filteredCards?.map((card, index) => (
           <Box
-            key={card.id + String(card.isModifier)}
+            key={`${card.id}-${card.isModifier}-${index}`}
             w={`${CUSTOM_CARD_WIDTH}px`}                                             
             h={`${CUSTOM_CARD_HEIGHT}px`}                                            
             position="relative"                                                      

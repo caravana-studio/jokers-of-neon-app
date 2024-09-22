@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useDeck } from "../../dojo/queries/useDeck";
+import { useCurrentDeck, useFullDeck } from "../../dojo/queries/useDeck";
 import { DeckCardsFilters, DeckCardsGrid } from "./DeckCardsGrid";
 import { Background } from "../../components/Background";
 import { BLUE_LIGHT } from "../../theme/colors";
@@ -8,7 +8,7 @@ import { Suits } from "../../enums/suits";
 
 export const DeckPage = () => 
     {
-        const deck = useDeck();
+        const deck = useFullDeck();
         const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         return(
