@@ -1,9 +1,11 @@
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { CARD_WIDTH_PX } from "../constants/visualProps.ts";
 import { useFullDeck } from "../dojo/queries/useDeck.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const GameDeck = () => {
   const deck = useFullDeck();
+  const navigate = useNavigate();
 
   return (
     <Tooltip label="See deck" placement="left-end" size="sm"> 
@@ -16,6 +18,8 @@ export const GameDeck = () => {
           src={`Cards/Backs/back.png`}
           alt={`Ccard back`}
           width={CARD_WIDTH_PX}
+          onClick={ () => navigate("/deck")}
+          cursor={"pointer"}
         />
       </Flex>
     </Tooltip>
