@@ -186,6 +186,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
+    setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
       createGame(username).then(async (response) => {
@@ -628,6 +629,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const cleanGameId = () => {
     setGameId(0);
+    setIsRageRound(false);
   };
 
   useEffect(() => {

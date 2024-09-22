@@ -20,19 +20,20 @@ export const GameOver = () => {
       ? getLSGameId()
       : Number(localStorage.getItem(LAST_GAME_ID));
   const [lastGameId, setLastGameId] = useState(getLSGameId());
-  const { restartGame } = useGameContext();
+  const { restartGame, setIsRageRound } = useGameContext();
   const { data } = useGetGame(lastGameId);
   const score = data?.player_score ?? 0;
 
   useEffect(() => {
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
+    setIsRageRound(false);
   }, []);
 
   return (
     <Background type="home">
       <Box
-      position='fixed'
+        position="fixed"
         height="15%"
         width="100%"
         display="flex"
