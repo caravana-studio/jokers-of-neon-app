@@ -18,7 +18,8 @@ export const GAME_TUTORIAL_STEPS: Step[] = [
   {
     target: ".game-tutorial-step-2",
     title: "Playable hand",
-    content: "This is your hand. Click on cards to preselect them and form a poker hand",
+    content:
+      "This is your hand. Click on cards to preselect them and form a poker hand",
     ...COMMON_SETTINGS,
   },
   {
@@ -61,9 +62,9 @@ export const STORE_TUTORIAL_STEPS: Step[] = [
   },
   {
     target: ".game-tutorial-step-3",
-    title: "Buy Traditional Cards",
+    title: "Buy Traditional and Neon Cards",
     content:
-      "Here you can buy traditional cards to enhance your deck. Choose wisely to create powerful combinations.",
+      "Here you can buy traditional and neon cards to enhance your deck. Neon cards score double points and +1 multi..",
     ...COMMON_SETTINGS,
   },
   {
