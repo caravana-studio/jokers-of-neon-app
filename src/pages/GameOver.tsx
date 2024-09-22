@@ -24,6 +24,16 @@ export const GameOver = () => {
   const { data } = useGetGame(lastGameId);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
+  let congratulationsMsj = "";
+  
+  if(actualPlayer?.position != undefined)
+  {
+    congratulationsMsj = actualPlayer?.position === 1 
+    ? "🎉 Congratulations! You’re the top player on the leaderboard! 🏆" 
+    : actualPlayer?.position > 1 && actualPlayer?.position <= 5 
+      ? "🎉 Great job! You’re in the top 5! Keep it up! 🔥" 
+      : "";
+  }
 
   useEffect(() => {
     localStorage.removeItem(GAME_ID);
@@ -40,11 +50,14 @@ export const GameOver = () => {
         gap={4}
       >
         <Box>
-          <Heading size="l" variant="italic" textAlign={"center"} mb={16}>
+        <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
             GAME OVER
           </Heading>
+          <Text size={"md"} textAlign={"center"} mb={10}>
+              {congratulationsMsj}
+            </Text>
           <Leaderboard gameId={lastGameId} lines={4} />
-          <Flex mt={8} justifyContent={"space-between"} gap={2}>
+          <Flex mt={16} justifyContent={"space-between"} gap={2}>
           <Button
             width={"50%"}
             variant="secondarySolid"
@@ -61,13 +74,13 @@ export const GameOver = () => {
             variant="solid"
             onClick={() => {
               window.open(
-                `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20Jokers%20of%20Neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level}%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position}%0A%0AThink%20you%20can%20top%20that%3F%20The%20demo%20is%20live%20for%20a%20limited%20time!%20%E2%8F%B3%0A%0AGive%20it%20a%20try%20at%20https%3A%2F%2Fjokersofneon.com%2F%20%F0%9F%83%8F%E2%9C%A8`,
+                `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20Jokers%20of%20Neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level}%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position}%0A%0AThink%20you%20can%20top%20that%3F%20The%20demo%20is%20live%20for%20a%20limited%20time!%20%E2%8F%B3%0A%0AGive%20it%20a%20try%20at%20${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8`,
                 "_blank"
               );
             }}
             data-size="large"
           >
-            SHARE YOUR SCORE ON
+            SHARE ON
           <Flex sx={{ ml: 2.5 }}>
             <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
           </Flex>
