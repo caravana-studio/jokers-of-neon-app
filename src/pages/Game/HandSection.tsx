@@ -184,8 +184,10 @@ export const HandSection = () => {
       </Box>
       {handsLeft === 0 && (
         <Heading
-          ml={{ base: "25px", md: "100px" }}
-          size="m"
+          ml={{ base: "0", md: "100px" }}
+          size={{base: "sm", md: "md"}}
+          variant='italic'
+          textAlign='center'
           bottom={{ base: "70px", md: "100px" }}
           sx={{ position: "fixed" }}
         >
