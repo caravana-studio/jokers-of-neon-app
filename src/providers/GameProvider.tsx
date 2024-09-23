@@ -22,8 +22,6 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 
-const PLAY_ANIMATION_DURATION = 700;
-
 interface IGameContext {
   gameId: number;
   preSelectedPlay: Plays;
@@ -132,6 +130,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const game = useGame();
 
+  const playAnimationDuration = Math.max(
+    700 - ((game?.level ?? 1) - 1) * 50,
+    400
+  );
+
   const { setAnimatedCard } = useCardAnimations();
 
   const {
@@ -228,21 +231,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
-        ? PLAY_ANIMATION_DURATION
+        ? playAnimationDuration
         : 0;
       const MODIFIER_SUIT_CHANGE_DURATION =
-        (playEvents.modifierSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+        (playEvents.modifierSuitEvents?.length ?? 0) * playAnimationDuration;
       const SPECIAL_SUIT_CHANGE_DURATION =
-        (playEvents.specialSuitEvents?.length ?? 0) * PLAY_ANIMATION_DURATION;
+        (playEvents.specialSuitEvents?.length ?? 0) * playAnimationDuration;
       const GLOBAL_BOOSTER_DURATION =
-        (playEvents.globalEvents?.length ?? 0) * PLAY_ANIMATION_DURATION * 2;
+        (playEvents.globalEvents?.length ?? 0) * playAnimationDuration * 2;
       const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
-        ? PLAY_ANIMATION_DURATION * 2
+        ? playAnimationDuration * 2
         : 0;
       const COMMON_CARDS_DURATION =
-        PLAY_ANIMATION_DURATION * playEvents.cardScore.length;
+        playAnimationDuration * playEvents.cardScore.length;
       const SPECIAL_CARDS_DURATION =
-        PLAY_ANIMATION_DURATION * (playEvents.specialCards?.length ?? 0);
+        playAnimationDuration * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
         NEON_PLAY_DURATION +
         MODIFIER_SUIT_CHANGE_DURATION +
@@ -290,7 +293,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 return newHand;
               });
             },
-            PLAY_ANIMATION_DURATION * index + NEON_PLAY_DURATION
+            playAnimationDuration * index + NEON_PLAY_DURATION
           );
         });
       }
@@ -341,9 +344,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       animationIndex: 31 + index,
                     });
                     setMulti((prev) => prev + multi);
-                  }, PLAY_ANIMATION_DURATION);
+                  }, playAnimationDuration);
                 }
-              }, PLAY_ANIMATION_DURATION * index);
+              }, playAnimationDuration * index);
             });
           }
 
@@ -373,7 +376,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                     animationIndex: 41,
                   });
                   setMulti(eventMulti);
-                }, PLAY_ANIMATION_DURATION);
+                }, playAnimationDuration);
               }
             }
 
@@ -390,7 +393,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   });
                   points && setPoints((prev) => prev + points);
                   multi && setMulti((prev) => prev + multi);
-                }, PLAY_ANIMATION_DURATION * index);
+                }, playAnimationDuration * index);
               });
 
               //special cards
@@ -407,7 +410,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                     });
                     points && setPoints((prev) => prev + points);
                     multi && setMulti((prev) => prev + multi);
-                  }, PLAY_ANIMATION_DURATION * index);
+                  }, playAnimationDuration * index);
                 });
               }, COMMON_CARDS_DURATION);
             }, LEVEL_BOOSTER_DURATION);
