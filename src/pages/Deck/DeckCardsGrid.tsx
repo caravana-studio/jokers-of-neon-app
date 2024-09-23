@@ -53,7 +53,7 @@ interface DeckCardsGridProps {
       <Flex wrap="wrap" position="relative" w="100%" mb={4}>
         {filteredCards?.map((card, index) => {
           const usedCount = countUsedCards(card);
-          const opacity = usedCount > 0 ? 0.4 : 1;
+          const opacity = usedCount > 0 ? 0.6 : 1;
           return (
             <Box
               key={`${card.id}-${card.isModifier}-${index}`}
@@ -62,9 +62,17 @@ interface DeckCardsGridProps {
               position="relative"
               mr={`-${CUSTOM_CARD_WIDTH / 5}px`}
               mb={4}
-              opacity={opacity}
+              sx={{
+                '& div': {
+                  background: 'rgba(0,0,0,1)',
+                  borderRadius: '8px',
+                },
+                '& img': {
+                  opacity: `${opacity}`,
+                },
+              }}
             >
-              <TiltCard card={card} scale={SCALE} />
+              <TiltCard card={card} scale={SCALE}/>
             </Box>
           );
         })}
