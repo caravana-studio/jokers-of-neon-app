@@ -51,7 +51,7 @@ export const GameOver = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex flexDirection="column" width='95%'>
+        <Flex flexDirection="column" width='100%'>
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
             GAME OVER
           </Heading>
