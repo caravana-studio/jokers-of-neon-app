@@ -8,15 +8,35 @@ import { useNavigate } from "react-router-dom";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { createUsedCardsList, preprocessCards } from "./Utils/DeckCardsUtils";
 
+interface DeckFiltersMap {
+    isNeon: boolean;
+    isModifier: boolean;
+    suit: Suits | null;
+  }
+
 export const DeckPageContentMobile = () => 
     {
         const fullDeck = preprocessCards(useFullDeck()?.cards ?? []);
         const currentDeck = preprocessCards(useCurrentDeck()?.cards ?? []);
         const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
-        const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         const navigate = useNavigate();
         const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
+        const [filterButtonsState, setFilterButtonsState] = useState<DeckFiltersMap>({
+            isNeon: false,
+            isModifier: false,
+            suit: null,
+          });
+
+        const updateFilters = (newFilters: DeckCardsFilters) =>
+        {
+            setFilterButtonsState((prevState) => ({
+                ...prevState,
+                isNeon: newFilters.isNeon !== undefined ? newFilters.isNeon : false,
+                isModifier: newFilters.isModifier !== undefined ? newFilters.isModifier : false,
+                suit: newFilters.suit !== undefined ? newFilters.suit : null,
+              }));
+        };
 
         return(
             <>
@@ -87,49 +107,49 @@ export const DeckPageContentMobile = () =>
                             <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8} width={"95%"}>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.suit === Suits.CLUBS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({suit: Suits.CLUBS})}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.CLUBS ? Suits.CLUBS : undefined})}
                                 >
                                     CLUB
                                 </Button>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.suit === Suits.SPADES ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({suit: Suits.SPADES})}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.SPADES ? Suits.SPADES : undefined})}
                                 >
                                     SPADE
                                 </Button>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.suit === Suits.HEARTS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({suit: Suits.HEARTS})}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.HEARTS ? Suits.HEARTS : undefined})}
                                 >
                                     HEART
                                 </Button>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.suit === Suits.DIAMONDS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({suit: Suits.DIAMONDS})}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.DIAMONDS ? Suits.DIAMONDS : undefined})}
                                 >
                                     DIAMOND
                                 </Button>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.isNeon ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({isNeon: true})}
+                                    onClick={() => updateFilters({isNeon: !filterButtonsState.isNeon})}
                                 >
                                     NEON
                                 </Button>
                                 <Button
                                     size={"sm"}
-                                    variant={"outlineSecondaryGlow"}
+                                    variant={ filterButtonsState.isModifier ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => setFilters({isModifier: true})}
+                                    onClick={() => updateFilters({isModifier: !filterButtonsState.isModifier})}
                                 >
                                     MODIFIER
                                 </Button>
@@ -139,7 +159,15 @@ export const DeckPageContentMobile = () =>
 
                     <Flex alignItems={"center"} width={"95%"} height={"60%"} overflowY="auto">
                         <Box w="100%" h="100%"> 
-                            <DeckCardsGrid cards={fullDeck} usedCards={usedCards} filters={filters} />
+                            <DeckCardsGrid
+                                cards={fullDeck}
+                                usedCards={usedCards}
+                                filters={{
+                                    isNeon: filterButtonsState.isNeon,
+                                    isModifier: filterButtonsState.isModifier,
+                                    suit: filterButtonsState.suit ?? undefined
+                                 }} 
+                            />
                         </Box>
                     </Flex>
 

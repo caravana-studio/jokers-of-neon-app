@@ -8,15 +8,35 @@ import { useNavigate } from "react-router-dom";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { createUsedCardsList, preprocessCards } from "./Utils/DeckCardsUtils";
 
+interface DeckFiltersMap {
+    isNeon: boolean;
+    isModifier: boolean;
+    suit: Suits | null;
+  }
+
 export const DeckPageContent = () => 
     {
         const fullDeck = preprocessCards(useFullDeck()?.cards ?? []);
         const currentDeck = preprocessCards(useCurrentDeck()?.cards ?? []);
         const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
-        const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         const navigate = useNavigate();
         const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
+        const [filterButtonsState, setFilterButtonsState] = useState<DeckFiltersMap>({
+            isNeon: false,
+            isModifier: false,
+            suit: null,
+          });
+
+        const updateFilters = (newFilters: DeckCardsFilters) =>
+        {
+            setFilterButtonsState((prevState) => ({
+                ...prevState,
+                isNeon: newFilters.isNeon !== undefined ? newFilters.isNeon : false,
+                isModifier: newFilters.isModifier !== undefined ? newFilters.isModifier : false,
+                suit: newFilters.suit !== undefined ? newFilters.suit : null,
+              }));
+        };
 
         return(
             <>
@@ -85,54 +105,54 @@ export const DeckPageContent = () =>
                             Filter by
                         </Text>
                         <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8} width={"95%"}>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({suit: Suits.CLUBS})}
-                            >
-                                CLUB
-                            </Button>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({suit: Suits.SPADES})}
-                            >
-                                SPADE
-                            </Button>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({suit: Suits.HEARTS})}
-                            >
-                                HEART
-                            </Button>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({suit: Suits.DIAMONDS})}
-                            >
-                                DIAMOND
-                            </Button>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({isNeon: true})}
-                            >
-                                NEON
-                            </Button>
-                            <Button
-                                size={"sm"}
-                                variant={"outlineSecondaryGlow"}
-                                borderRadius={"25px"}
-                                onClick={() => setFilters({isModifier: true})}
-                            >
-                                MODIFIER
-                            </Button>
+                        <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.suit === Suits.CLUBS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.CLUBS ? Suits.CLUBS : undefined})}
+                                >
+                                    CLUB
+                                </Button>
+                                <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.suit === Suits.SPADES ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.SPADES ? Suits.SPADES : undefined})}
+                                >
+                                    SPADE
+                                </Button>
+                                <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.suit === Suits.HEARTS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.HEARTS ? Suits.HEARTS : undefined})}
+                                >
+                                    HEART
+                                </Button>
+                                <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.suit === Suits.DIAMONDS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({suit: filterButtonsState.suit !== Suits.DIAMONDS ? Suits.DIAMONDS : undefined})}
+                                >
+                                    DIAMOND
+                                </Button>
+                                <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.isNeon ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({isNeon: !filterButtonsState.isNeon})}
+                                >
+                                    NEON
+                                </Button>
+                                <Button
+                                    size={"sm"}
+                                    variant={ filterButtonsState.isModifier ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+                                    borderRadius={"25px"}
+                                    onClick={() => updateFilters({isModifier: !filterButtonsState.isModifier})}
+                                >
+                                    MODIFIER
+                                </Button>
                         </Flex>
                     </Flex>
 
@@ -156,7 +176,14 @@ export const DeckPageContent = () =>
                     </Flex>
                     <Flex alignItems={"center"} width={"55%"} height={"60%"} overflowY="auto">
                     <Box w="100%" h="100%"> 
-                        <DeckCardsGrid cards={fullDeck} usedCards={usedCards} filters={filters} />
+                        <DeckCardsGrid
+                            cards={fullDeck}
+                            usedCards={usedCards}
+                            filters={{
+                                        isNeon: filterButtonsState.isNeon,
+                                        isModifier: filterButtonsState.isModifier,
+                                        suit: filterButtonsState.suit ?? undefined
+                                     }}  />
                     </Box>
                     </Flex>
                 </Flex>
