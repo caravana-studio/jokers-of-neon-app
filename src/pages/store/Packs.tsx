@@ -8,7 +8,7 @@ export const Packs = () => {
   const navigate = useNavigate();
 
   return (
-    <Box m={4}>
+    <Box m={4} className="game-tutorial-step-packs">
       <Flex justifyContent="space-between" alignItems="center">
         <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
           Packs

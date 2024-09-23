@@ -61,6 +61,14 @@ export const STORE_TUTORIAL_STEPS: Step[] = [
     ...COMMON_SETTINGS,
   },
   {
+    target: ".game-tutorial-step-packs",
+    title: "Buy Packs",
+    content:
+      "Here you can get packs to boost your deck. These packs offer a chance to obtain rare and special cards at a lower cost."
+      ,
+    ...COMMON_SETTINGS,
+  },
+  {
     target: ".game-tutorial-step-3",
     title: "Buy Traditional and Neon Cards",
     content:
