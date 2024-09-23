@@ -1,6 +1,6 @@
 import { tableAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
-import { ROYAL_BLUE } from "./colors.tsx";
+import { ROYAL_BLUE, VIOLET_LIGHT } from "./colors.tsx";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tableAnatomy.keys);
@@ -10,7 +10,7 @@ const leaderboard = definePartsStyle({
     color: "white",
     fontFamily: "Orbitron",
     textAlign: "center",
-    fontSize: ["sm", "sm", "sm", "lg"],
+    fontSize: ["sm", "sm", "sm", "md"],
   },
   thead: {
     tr: {
@@ -20,6 +20,7 @@ const leaderboard = definePartsStyle({
       color: "white",
       borderBottomWidth: 0,
       px: [2, 2, 4],
+      py:2
     },
   },
   tbody: {
@@ -29,10 +30,10 @@ const leaderboard = definePartsStyle({
           borderBottomWidth: 0,
         },
         td: {
-          color: ROYAL_BLUE,
-          fontSize: ["sm", "sm", "lg"],
-          fontWeight: "bold",
+          color: VIOLET_LIGHT,
+          fontSize: ["sm", "sm", "md"],
           px: [1, 1, 4],
+          py: 3
         },
       },
       "&:nth-of-type(even)": {
@@ -40,10 +41,10 @@ const leaderboard = definePartsStyle({
           borderBottomWidth: 0,
         },
         td: {
-          color: ROYAL_BLUE,
-          fontSize: ["sm", "sm", "lg"],
-          fontWeight: "bold",
+          color: VIOLET_LIGHT,
+          fontSize: ["sm", "sm", "md"],
           px: [1, 1, 4],
+          py: 3
         },
       },
     },
