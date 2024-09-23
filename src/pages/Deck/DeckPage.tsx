@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { useNavigate } from "react-router-dom";
+import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 
 export const DeckPage = () => 
     {
@@ -50,12 +51,17 @@ export const DeckPage = () =>
         const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
 
         const navigate = useNavigate();
+        const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
 
         return(
             <Background type="store">
+                {specialCardsModalOpen && (
+                    <CurrentSpecialCardsModal
+                    close={() => setSpecialCardsModalOpen(false)}
+                    />
+                )}
                 <Flex py={4} px={{base: 8, md: 20}} width={"100vw"} height={"100vh"} alignItems={"center"} justifyContent={"center"} gap={12}>
                     <Flex alignItems={"center"}  width={"45%"} height={"50%"} flexDirection={"column"}>
-                    
                     <Heading 
                         variant="italic" 
                         size="l"
@@ -166,8 +172,20 @@ export const DeckPage = () =>
                     </Flex>
 
                     <Flex gap={4} mt={{base: 4, md: 20}} wrap={{base: "wrap", md: "nowrap"}} justifyContent={"center"}>
-                        <Button variant={"outlinePrimaryGlow"}>SEE SPECIAL CARDS</Button>
-                        <Button variant={"outlinePrimaryGlow"} onClick={() => navigate("/demo")}>BACK TO GAME</Button>
+                        <Button
+                            variant={"outlinePrimaryGlow"}
+                            onClick={() => {
+                                setSpecialCardsModalOpen(true);
+                            }}
+                        >
+                            SEE SPECIAL CARDS
+                        </Button>
+                        <Button 
+                            variant={"outlinePrimaryGlow"} 
+                            onClick={() => navigate("/demo")}
+                        >
+                            BACK TO GAME
+                        </Button>
                     </Flex>
 
                     </Flex>
