@@ -67,7 +67,7 @@ const OpenAnimation = ({
           rotate: [0, -5, 5, 0],
           transition: {
             duration: 0.3,
-            repeat: Infinity,
+            repeat: 5, 
             repeatType: "reverse",
           },
         });
@@ -101,18 +101,20 @@ const OpenAnimation = ({
     <motion.div style={{ position: "relative", display: "inline-block" }}>
       {particle && <Particle style={{ backgroundImage: particle }} />}
       <Container>
-        <ExplosionEffect
-          opacity={explosion ? 1 : 0}
-          src={explosion ? "/vfx/explosion_blue.gif" : ""}
-          animate={{ scale: explosion ? [0.3, 15] : 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        />
+        {explosion && (
+          <ExplosionEffect
+            opacity={1}
+            src="/vfx/explosion_blue.gif"
+            animate={{ scale: [0.3, 15] }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
+        )}
         <GlowEffect glow={glow}>
           <ShakeEffect
             animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }}
             transition={{
               duration: 0.3,
-              repeat: shake ? Infinity : 0,
+              repeat: shake ? 5 : 0, 
               repeatType: "reverse",
             }}
           >
@@ -123,5 +125,6 @@ const OpenAnimation = ({
     </motion.div>
   );
 };
+
 
 export default OpenAnimation;
