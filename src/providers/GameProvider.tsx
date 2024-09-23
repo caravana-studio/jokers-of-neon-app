@@ -134,8 +134,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const game = useGame();
   const {play:preselectCardSound} = useAudio(preselectedCardSfx);
-  const {play:playSound} = useAudio(playHandSfx);
-  const {play:discardSound} = useAudio(discardSfx);
+  const {play:discardSound} = useAudio(discardSfx, 4);
   const {play:pointsSound} = useAudio(pointsSfx);
   const {play:multiSound} = useAudio(multiSfx);
 
@@ -480,7 +479,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onPlayClick = () => {
-    playSound();
     setPreSelectionLocked(true);
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);

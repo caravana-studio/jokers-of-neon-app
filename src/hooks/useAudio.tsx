@@ -2,14 +2,14 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Howl } from 'howler';
 import { SOUND_OFF } from '../constants/localStorage';
 
-export const useAudio = (audioPath: string) => {
+export const useAudio = (audioPath: string, volume?: number) => {
   const soundRef = useRef<Howl | null>(null);
 
   useEffect(() => {
     soundRef.current = new Howl({
       src: [audioPath],
       preload: true,
-      volume: 1.0,
+      volume: volume? volume : 1.0,
     });
 
     return () => {

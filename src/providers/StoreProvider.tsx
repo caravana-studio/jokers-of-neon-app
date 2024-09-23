@@ -55,7 +55,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const {play:levelUpHandSound} = useAudio(levelUpSfx);
   const {play:buySound} = useAudio(buySfx);
   const {play:buyPackSound} = useAudio(buyPackSfx);
-  const {play:rerollSound} = useAudio(rerollSfx);
+  const {play:rerollSound} = useAudio(rerollSfx, 0.5);
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
