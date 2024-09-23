@@ -14,9 +14,9 @@ import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 
 import styled from "styled-components";
-import { useGame } from "../dojo/queries/useGame";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { useGame } from "../dojo/queries/useGame";
 
 const WhiteOverlay = styled.div<{ visible: boolean }>`
   position: fixed;

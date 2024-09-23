@@ -11,12 +11,13 @@ import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { AnimatedCard } from "../../components/AnimatedCard";
+import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
+import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
-import { useRound } from "../../dojo/queries/useRound";
 
 export const HandSection = () => {
   const {
@@ -75,6 +76,7 @@ export const HandSection = () => {
             maxWidth: `${CARD_WIDTH * 6.5}px`,
           }}
           columns={hand.length}
+          position="relative"
         >
           {hand.map((card, index) => {
             const isPreselected = cardIsPreselected(card.idx);
@@ -96,14 +98,14 @@ export const HandSection = () => {
                   setHoveredCard(null);
                   setHoveredButton(null);
                 }}
-                position='relative'
+                position="relative"
               >
                 {card.isModifier && !isPreselected && (
                   <Flex
                     position={"absolute"}
                     zIndex={7}
-                    bottom={'5px'}
-                    left={'5px'}
+                    bottom={"5px"}
+                    left={"5px"}
                     borderRadius={"10px"}
                     background={"violet"}
                   >
@@ -116,6 +118,12 @@ export const HandSection = () => {
                         size={isMobile ? "xs" : "md"}
                         variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setHoveredButton(null);
+                          discardEffectCard(card.idx);
+                          onClose();
+                        }}
                       >
                         X
                       </Button>
@@ -129,11 +137,12 @@ export const HandSection = () => {
                         variant={"discardSecondarySolid"}
                         onClick={(e) => {
                           e.stopPropagation();
+                          setHoveredButton(null);
                           discardEffectCard(card.idx);
                           onClose();
                         }}
                       >
-                        Discard
+                        Change
                       </Button>
                     )}
                   </Flex>
@@ -160,12 +169,25 @@ export const HandSection = () => {
               </GridItem>
             );
           })}
+          {!isMobile && (
+            <Flex
+              bottom={"-35px"}
+              width="calc(100% + 30px)"
+              justifyContent={"flex-end"}
+              alignItems="flex-end"
+              position="absolute"
+            >
+              <ShowPlays />
+            </Flex>
+          )}
         </SimpleGrid>
       </Box>
       {handsLeft === 0 && (
         <Heading
-          ml={{ base: "25px", md: "100px" }}
-          size="m"
+          ml={{ base: "0", md: "100px" }}
+          size={{base: "sm", md: "md"}}
+          variant='italic'
+          textAlign='center'
           bottom={{ base: "70px", md: "100px" }}
           sx={{ position: "fixed" }}
         >

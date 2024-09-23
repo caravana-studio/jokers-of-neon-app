@@ -52,11 +52,11 @@ export const SPECIAL_CARDS_DATA: CardDataMap = {
   },
   312: {
     name: "Figures Booster",
-    description: "All played FIGURES cards score +100 extra points",
+    description: "All played FIGURES cards score +100 points",
   },
   313: {
     name: "Multiplied Aces",
-    description: "Multiplies x3 multi for every played Ace card",
+    description: "Adds +3 multi for every played Ace card",
   },
   314: {
     name: "Love is in the air",
@@ -76,7 +76,7 @@ export const SPECIAL_CARDS_DATA: CardDataMap = {
   },
   318: {
     name: "Neon bonus",
-    description: "All Neon cards score +20 extra points",
+    description: "All Neon cards score +20 points",
   },
   319: {
     name: "Deadline",

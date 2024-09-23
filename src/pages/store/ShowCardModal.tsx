@@ -23,6 +23,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
 
 interface IShowCardModalProps {
   card: Card;
@@ -176,7 +177,7 @@ export const ShowCardModal = ({
                   price:
                 </Heading>
                 <Heading variant="neonGreen" size={isMobile ? "s" : "m"}>
-                  {card.price}ȼ
+                  {card.price} <CashSymbol />
                 </Heading>
               </Flex>
               <Flex gap={4} mb={2}>

@@ -6,6 +6,7 @@ import { PinkBox } from "./PinkBox.tsx";
 import { useAudio } from "../hooks/useAudio";
 import { useEffect } from "react";
 import { nextLevelSfx } from "../constants/sfx.ts";
+import { CashSymbol } from "./CashSymbol.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -113,7 +114,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           Total:
         </Heading>
         <Heading color="neonPink" variant="italic">
-          {total}ȼ
+          {total}<CashSymbol />
         </Heading>
       </Flex>
     </PinkBox>

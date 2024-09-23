@@ -31,6 +31,7 @@ export const GameContent = () => {
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
+  const {isRageRound} = useGameContext()
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -173,7 +174,7 @@ export const GameContent = () => {
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image
-            src="/borders/top.png"
+            src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
             width="100%"
             maxHeight="70px"
@@ -183,7 +184,7 @@ export const GameContent = () => {
           />
           <Box
             sx={{ height: "100%", width: "100%" }}
-            px={20}
+            px={'70px'}
           >
             <Box sx={{ height: "30%", width: "100%" }} pt={'60px'}>
               <TopSection />
@@ -218,7 +219,7 @@ export const GameContent = () => {
             </Box>
           </Box>
           <Image
-            src="/borders/bottom.png"
+            src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
             width="100%"
@@ -231,7 +232,7 @@ export const GameContent = () => {
           sx={{
             position: "fixed",
             bottom: 14,
-            left: 20,
+            left: '70px',
             zIndex: 1000,
           }}
         >

@@ -4,10 +4,10 @@ import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
-import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -20,12 +20,13 @@ import { useShopItems } from "../../dojo/queries/useShopItems.ts";
 import { useShopActions } from "../../dojo/useShopActions.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { gameId, setHand, onShopSkip } = useGameContext();
+  const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
   const game = useGame();
   const cash = game?.cash ?? 0;
   const store = useShop();
@@ -43,6 +44,10 @@ export const Store = () => {
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
+
+  useEffect(() => {
+    setIsRageRound(false);
+  }, []);
 
   useEffect(() => {
     if (!lockRedirection) {
@@ -91,7 +96,8 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} {rerollCost}ȼ
+        REROLL{isMobile && <br />} {rerollCost}
+        <CashSymbol />
       </Button>
     </Tooltip>
   );
@@ -247,10 +253,14 @@ export const Store = () => {
             <Heading variant="italic" size="l" ml={4}>
               LEVEL UP YOUR GAME
             </Heading>
-            {isMobile && <Flex mt={2}><Coins/></Flex>}
+            {isMobile && (
+              <Flex mt={2}>
+                <Coins rolling />
+              </Flex>
+            )}
             <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
-            {!isMobile && <Coins />}
+            {!isMobile && <Coins rolling />}
           </Box>
           <Box
             w={["100%", "100%", "45%", "45%", "45%"]}
@@ -265,7 +275,7 @@ export const Store = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title="traditional cards"
+                  title="traditional and neon cards"
                 />
               )}
             </Box>
@@ -300,7 +310,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
-          
+
           <Box
             display="flex"
             flexDirection={[
