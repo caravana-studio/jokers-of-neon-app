@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
+import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { LOGGED_USER } from "../../constants/localStorage";
+import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
@@ -16,10 +18,20 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = localStorage.getItem(LOGGED_USER);
-  const { checkOrCreateGame, setLockedCash, isRageRound, setIsRageRound, setRageCards } =
-    useGameContext();
+  const {
+    checkOrCreateGame,
+    setLockedCash,
+    isRageRound,
+    setIsRageRound,
+    setRageCards,
+    roundRewards,
+    gameId,
+    lockRedirection,
+  } = useGameContext();
   const rageRound = useRageRound();
   const rageCards = useRageCards();
+  const navigate = useNavigate();
+  const game = useGame();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -32,6 +44,19 @@ export const GamePage = () => {
     setIsRageRound(rageRound?.is_active ?? false);
     setRageCards(rageCards);
   }, []);
+
+  useEffect(() => {
+    // if roundRewards is true, we don't want to redirect user
+    if (!roundRewards && !lockRedirection) {
+      if (game?.state === "FINISHED") {
+        navigate("/gameover");
+      } else if (game?.state === "AT_SHOP") {
+        navigate("/store");
+      } else if (game?.state === "OPEN_BLISTER_PACK") {
+        navigate("/open-pack");
+      }
+    }
+  }, [game?.state, roundRewards]);
 
   return (
     <Background type={isRageRound ? "rage" : "game"}>

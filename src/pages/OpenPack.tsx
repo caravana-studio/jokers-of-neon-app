@@ -18,7 +18,7 @@ import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 
-const WhiteOverlay = styled.div<{ visible: boolean }>`
+const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -26,10 +26,11 @@ const WhiteOverlay = styled.div<{ visible: boolean }>`
   height: 100vh;
   background-color: white;
   z-index: 9999;
-  opacity: ${(props) => (props.visible ? 1 : 0)};
+  opacity: ${(props) => (props.$visible ? 1 : 0)};
   transition: opacity 1s ease-out;
   pointer-events: none;
 `;
+
 
 export const OpenPack = () => {
   const [overlayVisible, setOverlayVisible] = useState(true);
@@ -37,7 +38,7 @@ export const OpenPack = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setOverlayVisible(false);
-    }, 1000);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, []);
@@ -101,9 +102,14 @@ export const OpenPack = () => {
 
   return (
     <Background type="game" dark bgDecoration>
-      <WhiteOverlay visible={overlayVisible} />
+      <WhiteOverlay $visible={overlayVisible} />
       {cards.length > 0 ? (
-        <Flex height={'100%'} justifyContent='center' flexDirection="column" gap={4}>
+        <Flex
+          height={"100%"}
+          justifyContent="center"
+          flexDirection="column"
+          gap={4}
+        >
           <Flex
             flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-between"
@@ -132,7 +138,7 @@ export const OpenPack = () => {
                   <Box
                     key={getCardUniqueId(card)}
                     m={1.5}
-                    p={{base: 1, sm: 1.5}}
+                    p={{ base: 1, sm: 1.5 }}
                     sx={{
                       borderRadius: { base: "7px", md: "15px" },
                       opacity:
