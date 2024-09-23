@@ -6,6 +6,7 @@ import { BLUE_LIGHT } from "../../theme/colors";
 import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
+import { useNavigate } from "react-router-dom";
 
 export const DeckPage = () => 
     {
@@ -47,6 +48,8 @@ export const DeckPage = () =>
         const currentDeck = preprocessCards(useCurrentDeck()?.cards ?? []);
         const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
         const [filters, setFilters] = useState<DeckCardsFilters | undefined>(undefined);
+
+        const navigate = useNavigate();
 
         return(
             <Background type="store">
@@ -164,7 +167,7 @@ export const DeckPage = () =>
 
                     <Flex gap={4} mt={{base: 4, md: 20}} wrap={{base: "wrap", md: "nowrap"}} justifyContent={"center"}>
                         <Button variant={"outlinePrimaryGlow"}>SEE SPECIAL CARDS</Button>
-                        <Button variant={"outlinePrimaryGlow"}>BACK TO GAME</Button>
+                        <Button variant={"outlinePrimaryGlow"} onClick={() => navigate("/demo")}>BACK TO GAME</Button>
                     </Flex>
 
                     </Flex>
