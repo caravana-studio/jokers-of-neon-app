@@ -380,8 +380,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 setPoints(eventPoints);
               }
               if (eventMulti) {
+                multiSound();
                 setTimeout(() => {
-                  multiSound();
                   //animate multi
                   setAnimatedCard({
                     special_idx,
@@ -405,9 +405,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                     multi,
                     animationIndex: 50 + index,
                   });
-                  pointsSound();
+                  if(points)
+                    pointsSound();
                   points && setPoints((prev) => prev + points);
-                  multiSound();
+                  if(multi)
+                    multiSound();
                   multi && setMulti((prev) => prev + multi);
                 }, PLAY_ANIMATION_DURATION * index);
               });
@@ -424,9 +426,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       special_idx,
                       animationIndex: 60 + index,
                     });
-                    pointsSound();
+                    if(points)
+                      pointsSound();
                     points && setPoints((prev) => prev + points);
-                    multiSound();
+                    if(multi)
+                      multiSound();
                     multi && setMulti((prev) => prev + multi);
                   }, PLAY_ANIMATION_DURATION * index);
                 });
