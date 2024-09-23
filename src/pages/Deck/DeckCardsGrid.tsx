@@ -56,7 +56,7 @@ interface DeckCardsGridProps {
           const opacity = usedCount > 0 ? 0.6 : 1;
           return (
             <Box
-              key={`${card.id}-${card.isModifier}-${index}`}
+              key={`${card.id}-${index}`}
               w={`${CUSTOM_CARD_WIDTH}px`}
               h={`${CUSTOM_CARD_HEIGHT}px`}
               position="relative"
