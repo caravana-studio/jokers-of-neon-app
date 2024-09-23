@@ -12,7 +12,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useGetGame } from "../queries/useGetGame";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 
-const GAME_URL = "https://jokersofneon.com/";
+const GAME_URL = "https://jokersofneon.com";
 
 export const GameOver = () => {
   const navigate = useNavigate();
@@ -30,9 +30,9 @@ export const GameOver = () => {
   if (actualPlayer?.position != undefined) {
     congratulationsMsj =
       actualPlayer?.position === 1
-        ? "🎉 Congratulations! You’re the top player on the leaderboard! 🏆"
+        ? "Congratulations! You're the top player on the leaderboard!"
         : actualPlayer?.position > 1 && actualPlayer?.position <= 5
-          ? "🎉 Great job! You’re in the top 5! Keep it up! 🔥"
+          ? "Great job! You're in the top 5! Keep it up!"
           : "";
   }
 
