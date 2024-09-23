@@ -275,7 +275,7 @@ export const Store = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title="traditional cards"
+                  title="traditional and neon cards"
                 />
               )}
             </Box>
