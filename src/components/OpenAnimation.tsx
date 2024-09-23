@@ -80,13 +80,13 @@ const OpenAnimation = ({
         let currentScale = 0.1;
 
         const scaleInterval = setInterval(() => {
-          currentScale += 0.2; // Increased to 0.2 from 0.1 to speed up scaling
-          if (currentScale >= 10) {
+          currentScale += 0.3; // Increased to 0.2 from 0.1 to speed up scaling
+          if (currentScale >= 5) {
             clearInterval(scaleInterval);
           } else {
             setExplosionScale(currentScale);
           }
-        }, 0.5); // Reduced interval to 0.5ms from 1ms to speed up the effect
+        }, 1); // Reduced interval to 0.5ms from 1ms to speed up the effect
 
         return () => {
           clearInterval(scaleInterval);
