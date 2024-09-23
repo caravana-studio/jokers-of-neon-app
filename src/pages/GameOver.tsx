@@ -14,7 +14,7 @@ import { useAudio } from "../hooks/useAudio";
 import { looseSfx } from "../constants/sfx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 
-const GAME_URL = "https://jokersofneon.com/";
+const GAME_URL = "https://jokersofneon.com";
 
 export const GameOver = () => {
   const navigate = useNavigate();
@@ -33,9 +33,9 @@ export const GameOver = () => {
   if (actualPlayer?.position != undefined) {
     congratulationsMsj =
       actualPlayer?.position === 1
-        ? "🎉 Congratulations! You’re the top player on the leaderboard! 🏆"
+        ? "Congratulations! You're the top player on the leaderboard!"
         : actualPlayer?.position > 1 && actualPlayer?.position <= 5
-          ? "🎉 Great job! You’re in the top 5! Keep it up! 🔥"
+          ? "Great job! You're in the top 5! Keep it up!"
           : "";
   }
 
@@ -55,7 +55,7 @@ export const GameOver = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex flexDirection="column" width='95%'>
+        <Flex flexDirection="column" width='100%'>
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
             GAME OVER
           </Heading>
