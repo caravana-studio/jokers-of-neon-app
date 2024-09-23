@@ -57,18 +57,7 @@ export const GameOver = () => {
               {congratulationsMsj}
             </Text>
           <Leaderboard gameId={lastGameId} lines={4} />
-          <Flex mt={16} justifyContent={"space-between"} gap={2}>
-          <Button
-            width={"50%"}
-            variant="secondarySolid"
-            onClick={() => {
-              localStorage.removeItem(GAME_ID);
-              restartGame();
-              navigate("/demo");
-            }}
-          >
-            START NEW GAME
-          </Button>
+          <Flex mt={16} justifyContent={"space-between"} gap={4}>
           <Button
             width={"50%"}
             variant="solid"
@@ -84,6 +73,17 @@ export const GameOver = () => {
           <Flex sx={{ ml: 2.5 }}>
             <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
           </Flex>
+          </Button>
+          <Button
+            width={"50%"}
+            variant="secondarySolid"
+            onClick={() => {
+              localStorage.removeItem(GAME_ID);
+              restartGame();
+              navigate("/demo");
+            }}
+          >
+            START NEW GAME
           </Button>
           </Flex>
         </Box>
