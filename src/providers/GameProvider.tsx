@@ -130,9 +130,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const game = useGame();
 
+  const minimumDuration = !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
+  
   const playAnimationDuration = Math.max(
     700 - ((game?.level ?? 1) - 1) * 50,
-    400
+    minimumDuration
   );
 
   const { setAnimatedCard } = useCardAnimations();
