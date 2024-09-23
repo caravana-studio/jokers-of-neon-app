@@ -58,8 +58,12 @@ interface IGameContext {
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
+  isRageRound: boolean;
+  setIsRageRound: (isRageRound: boolean) => void;
   cash: number;
   setLockedCash: (cash: number | undefined) => void;
+  rageCards: Card[];
+  setRageCards: (rageCards: Card[]) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -98,8 +102,12 @@ const GameContext = createContext<IGameContext>({
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
+  isRageRound: false,
+  setIsRageRound: (_) => {},
   cash: 0,
   setLockedCash: (_) => {},
+  rageCards: [],
+  setRageCards: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -156,11 +164,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     score,
     cash,
     setLockedCash,
+    setIsRageRound,
   } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
+    setIsRageRound(false);
   };
 
   const toggleSortBy = () => {
@@ -176,6 +186,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
+    setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
       createGame(username).then(async (response) => {
@@ -618,6 +629,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const cleanGameId = () => {
     setGameId(0);
+    setIsRageRound(false);
   };
 
   useEffect(() => {

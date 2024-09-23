@@ -21,7 +21,7 @@ export const GameOver = () => {
       ? getLSGameId()
       : Number(localStorage.getItem(LAST_GAME_ID));
   const [lastGameId, setLastGameId] = useState(getLSGameId());
-  const { restartGame } = useGameContext();
+  const { restartGame, setIsRageRound } = useGameContext();
   const { data } = useGetGame(lastGameId);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
@@ -39,6 +39,7 @@ export const GameOver = () => {
   useEffect(() => {
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
+    setIsRageRound(false);
   }, []);
 
   return (

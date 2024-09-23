@@ -2,7 +2,7 @@ import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
@@ -26,7 +26,7 @@ import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
 
 export const Store = () => {
-  const { gameId, setHand, onShopSkip } = useGameContext();
+  const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
   const game = useGame();
   const cash = game?.cash ?? 0;
   const store = useShop();
@@ -44,6 +44,10 @@ export const Store = () => {
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
+
+  useEffect(() => {
+    setIsRageRound(false);
+  }, []);
 
   useEffect(() => {
     if (!lockRedirection) {

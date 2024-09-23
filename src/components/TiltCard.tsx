@@ -15,13 +15,14 @@ import {
   TILT_OPTIONS,
 } from "../constants/visualProps";
 
-import { PASTEL_PINK, VIOLET } from "../theme/colors.tsx";
+import ClockIcon from "../assets/clock.svg?component";
+import { useIsSilent } from "../hooks/useIsSilent.tsx";
+import { VIOLET } from "../theme/colors.tsx";
 import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
-import ClockIcon from "../assets/clock.svg?component";
 import { HoloEffect } from "./HoloEffect.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 
@@ -46,11 +47,12 @@ export const TiltCard = ({
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
-
   const hoverStyle = {
     boxShadow: "0px 0px 20px 2px white",
     transition: "box-shadow 0.3s ease-in-out",
   };
+
+  const isSilent = useIsSilent(card);
 
   const tiltCardComponent = (
     <Box
@@ -64,7 +66,7 @@ export const TiltCard = ({
           boxShadow: isPack
             ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
             : "none",
-          _hover: !isPack ? hoverStyle: "none",
+          _hover: !isPack ? hoverStyle : "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
@@ -98,19 +100,42 @@ export const TiltCard = ({
               label={getTooltip(card, isPack)}
               closeOnPointerDown
             >
-              <Image
-                borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
-                sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                src={`Cards/${img}`}
-                alt={img}
+              <Box
+                position="relative"
                 w={`${cardWith}px`}
-                height={`${cardHeight}px`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClick?.();
-                }}
-              />
+                h={`${cardHeight}px`}
+              >
+                <Image
+                  borderRadius={{ base: "5px", sm: "8px" }}
+                  boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
+                  sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+                  src={`Cards/${img}`}
+                  alt={img}
+                  w="100%"
+                  height="100%"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClick?.();
+                  }}
+                />
+
+                {isSilent && (
+                  <>
+                    <Box
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      w="100%"
+                      h="100%"
+                      backgroundColor='rgba(0,0,0,0.3)'
+                      backgroundImage={'url("/broken.png")'}
+                      backgroundSize="cover"
+                      borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+                      pointerEvents="none"
+                    />
+                  </>
+                )}
+              </Box>
             </Tooltip>
           )}
 
@@ -123,7 +148,7 @@ export const TiltCard = ({
                 transform: "translateX(-50%)",
                 zIndex: 10,
                 backgroundColor: "black",
-                borderRadius:"5px",
+                borderRadius: "5px",
                 boxShadow: "0px 0px 10px 2px white",
                 color: "white",
                 fontSize: isMobile ? 15 * scale : 18 * scale,
@@ -163,7 +188,8 @@ export const TiltCard = ({
                   zIndex: 10,
                   opacity: purchased ? 0.5 : 1,
                   padding: "2px 6px",
-                  background: "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
+                  background:
+                    "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
                   borderRadius: "20%",
                   display: "flex",
                   alignItems: "center",
@@ -171,7 +197,7 @@ export const TiltCard = ({
                   gap: 1.5,
                 }}
               >
-                <ClockIcon color="white" width={14} height={14}/>
+                <ClockIcon color="white" width={14} height={14} />
                 {
                   <Text color="white" fontSize="xs">
                     {card.remaining ? card.remaining : 3}

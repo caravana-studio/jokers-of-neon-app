@@ -38,6 +38,8 @@ export const useGameState = () => {
   const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
   const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
+  const [isRageRound, setIsRageRound] = useState(false);
+  const [rageCards, setRageCards] = useState<Card[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -147,7 +149,11 @@ export const useGameState = () => {
     specialCards,
     setLockedSpecialCards,
     setLockedScore,
+    isRageRound,
+    setIsRageRound,
     cash,
     setLockedCash,
+    rageCards,
+    setRageCards,
   };
 };
