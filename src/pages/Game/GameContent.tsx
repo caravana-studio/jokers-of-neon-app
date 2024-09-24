@@ -10,9 +10,18 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_SPECIAL_CARDS, SKIP_TUTORIAL_MODIFIERS } from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps } from 'react-joyride';
-import { GAME_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
+import {
+  SKIP_TUTORIAL_GAME,
+  SKIP_TUTORIAL_SPECIAL_CARDS,
+  SKIP_TUTORIAL_MODIFIERS,
+} from "../../constants/localStorage.ts";
+import Joyride, { CallBackProps } from "react-joyride";
+import {
+  GAME_TUTORIAL_STEPS,
+  SPECIAL_CARDS_TUTORIAL_STEPS,
+  MODIFIERS_TUTORIAL_STEPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -22,26 +31,27 @@ export const GameContent = () => {
     error,
     executeCreateGame,
     addModifier,
-    roundRewards,
-    gameId,
-    lockRedirection,
   } = useGameContext();
 
   const [run, setRun] = useState(false);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
-  const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
+  const [specialTutorialCompleted, setSpecialTutorialCompleted] =
+    useState(false);
+  const { isRageRound } = useGameContext();
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    if (showTutorial)
-      setRun(true);
+    if (showTutorial) setRun(true);
   }, []);
 
-  const handleJoyrideCallbackFactory = (storageKey: string, setRunCallback: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleJoyrideCallbackFactory = (
+    storageKey: string,
+    setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     return (data: CallBackProps) => {
       const { type } = data;
-  
+
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
@@ -52,24 +62,20 @@ export const GameContent = () => {
     };
   };
 
-  const handleJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_GAME, setRun);
-  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_SPECIAL_CARDS, setRunSpecial);
-  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(SKIP_TUTORIAL_MODIFIERS, setRunTutorialModifiers);
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(
+    SKIP_TUTORIAL_GAME,
+    setRun
+  );
+  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
+    SKIP_TUTORIAL_SPECIAL_CARDS,
+    setRunSpecial
+  );
+  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
+    SKIP_TUTORIAL_MODIFIERS,
+    setRunTutorialModifiers
+  );
 
   const game = useGame();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // if roundRewards is true, we don't want to redirect user
-    if (!roundRewards && !lockRedirection) {
-      if (game?.state === "FINISHED") {
-        navigate("/gameover");
-      } else if (game?.state === "AT_SHOP") {
-        navigate("/store");
-      }
-    }
-  }, [game?.state, roundRewards]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const modifiedCard = Number(event.over?.id);
@@ -82,12 +88,19 @@ export const GameContent = () => {
     }
   };
 
-
   useEffect(() => {
-    const showSpecialCardTutorial = !localStorage.getItem(SKIP_TUTORIAL_SPECIAL_CARDS);
-    const showModifiersTutorial = !localStorage.getItem(SKIP_TUTORIAL_MODIFIERS);
+    const showSpecialCardTutorial = !localStorage.getItem(
+      SKIP_TUTORIAL_SPECIAL_CARDS
+    );
+    const showModifiersTutorial = !localStorage.getItem(
+      SKIP_TUTORIAL_MODIFIERS
+    );
 
-    if (showSpecialCardTutorial && game?.len_current_special_cards != undefined && game?.len_current_special_cards > 0) {
+    if (
+      showSpecialCardTutorial &&
+      game?.len_current_special_cards != undefined &&
+      game?.len_current_special_cards > 0
+    ) {
       setRunSpecial(true);
     } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
       if (showModifiersTutorial) {
@@ -141,39 +154,39 @@ export const GameContent = () => {
           width: "100%",
         }}
       >
-        <Joyride 
+        <Joyride
           steps={GAME_TUTORIAL_STEPS}
-          run={run} 
-          continuous 
-          showSkipButton 
-          showProgress 
+          run={run}
+          continuous
+          showSkipButton
+          showProgress
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 
-        <Joyride 
+        <Joyride
           steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-          run={runSpecial} 
-          continuous 
-          showSkipButton 
-          showProgress 
+          run={runSpecial}
+          continuous
+          showSkipButton
+          showProgress
           callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 
-        <Joyride 
+        <Joyride
           steps={MODIFIERS_TUTORIAL_STEPS}
-          run={runTutorialModifiers} 
-          continuous 
-          showSkipButton 
-          showProgress 
+          run={runTutorialModifiers}
+          continuous
+          showSkipButton
+          showProgress
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
         />
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image
-            src="/borders/top.png"
+            src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
             width="100%"
             maxHeight="70px"
@@ -181,44 +194,41 @@ export const GameContent = () => {
             top={0}
             zIndex={0}
           />
-          <Box
-            sx={{ height: "100%", width: "100%" }}
-            px={20}
-          >
-            <Box sx={{ height: "30%", width: "100%" }} pt={'60px'}>
+          <Box sx={{ height: "100%", width: "100%" }} px={"70px"}>
+            <Box sx={{ height: "30%", width: "100%" }} pt={"60px"}>
               <TopSection />
             </Box>
-            <Box height={'70%'} width={'100%'}>
-            <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
-              <Box
-                sx={{
-                  height: "55%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <PreselectedCardsSection isTutorialRunning={run}/>
-              </Box>
-              <Box
-                pb={'60px'}
-                mr={{ base: 10, md: 20 }}
-                sx={{
-                  display: "flex",
-                  height: "45%",
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                }}
-              >
-                <HandSection />
-              </Box>
-            </DndContext>
+            <Box height={"70%"} width={"100%"}>
+              <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
+                <Box
+                  sx={{
+                    height: "55%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <PreselectedCardsSection isTutorialRunning={run} />
+                </Box>
+                <Box
+                  pb={"60px"}
+                  mr={{ base: 10, md: 20 }}
+                  sx={{
+                    display: "flex",
+                    height: "45%",
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                  }}
+                >
+                  <HandSection />
+                </Box>
+              </DndContext>
             </Box>
           </Box>
           <Image
-            src="/borders/bottom.png"
+            src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
             width="100%"
@@ -231,11 +241,15 @@ export const GameContent = () => {
           sx={{
             position: "fixed",
             bottom: 14,
-            left: 20,
+            left: "70px",
             zIndex: 1000,
           }}
         >
-          <GameMenu showTutorial={() => { setRun(true);}} />
+          <GameMenu
+            showTutorial={() => {
+              setRun(true);
+            }}
+          />
         </Box>
         <Box
           sx={{

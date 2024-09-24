@@ -12,21 +12,21 @@ export const LevelPoints = () => {
 
   return (
     <Box className="game-tutorial-step-1">
-      <Flex gap={8}>
+      <Flex gap={6}>
         <PointBox type="level">
-          <Heading size="s">LEVEL</Heading>
-          <Heading size="m" sx={{ color: "white" }}>
+          <Heading  size={{ base: "xs", md: "s" }}>LEVEL</Heading>
+          <Heading  size={{ base: "s", md: "m" }} sx={{ color: "white" }}>
             {level}
           </Heading>
         </PointBox>
         <PointBox type="points">
-          <Heading size="s">POINTS</Heading>
-          <Heading size="m" px={2}>
+          <Heading size={{ base: "xs", md: "s" }}>POINTS</Heading>
+          <Heading size={{ base: "s", md: "m" }} px={2}>
             {levelScore}
           </Heading>
         </PointBox>
       </Flex>
-      <Text size="s" mt={{ base: 3, md: 6 }} textAlign="center">
+      <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
         score {levelScore} points to beat level {level}
       </Text>
     </Box>

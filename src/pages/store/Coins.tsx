@@ -15,14 +15,13 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
   const cash = game?.cash ?? 0;
 
   return (
-    <Flex alignItems={"center"}>
+    <Flex alignItems={"center"} className="game-tutorial-step-1">
       <CoinsIcon
         style={{ transform: `translateY(${isMobile ? "4px" : "6px"})` }}
         width={isMobile ? "35px" : "50px"}
         height={"auto"}
       />
       <Heading
-        className="game-tutorial-step-1"
         variant={"italic"}
         size={"m"}
         sx={{

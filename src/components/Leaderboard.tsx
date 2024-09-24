@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
-import { BLUE } from "../theme/colors.tsx";
+import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
 
 const CURRENT_LEADER_STYLES = {
@@ -38,10 +38,10 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
   return (
       <Box
         sx={{
-          border: `2px solid #20C4EBFF`,
-          boxShadow: `0px 0px 10px 20px ${BLUE}`,
+          border: `2px solid ${VIOLET_LIGHT}`,
+          boxShadow: `0px 0px 15px 25px ${VIOLET}`,
           backgroundColor: "rgba(0, 0, 0, 0.8)",
-          borderRadius: "10px",
+          borderRadius: "25px",
         }}
         m={4}
         py={4}
@@ -93,6 +93,9 @@ export const Leaderboard = ({ gameId, lines = 10 }: LeaderboardProps) => {
                 {currentLeader && !currentLeaderIsInReducedLeaderboard && (
                   <>
                     <Tr>
+                      <Td>...</Td>
+                      <Td>...</Td>
+                      <Td>...</Td>
                       <Td>...</Td>
                     </Tr>
                     <Tr sx={CURRENT_LEADER_STYLES}>

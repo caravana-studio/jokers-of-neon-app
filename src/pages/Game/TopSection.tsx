@@ -1,11 +1,14 @@
 import { Box, Flex, Img } from "@chakra-ui/react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
+import { RageCards } from "../../components/RageCards.tsx";
 import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useGameContext } from "../../providers/GameProvider.tsx";
 
 export const TopSection = () => {
+  const { isRageRound } = useGameContext();
   return (
     <Flex
       height="100%"
@@ -16,7 +19,7 @@ export const TopSection = () => {
       <Box mr={4}>
         <Img
           src="logos/logo-variant.svg"
-          width={{ base: "110px", md: "300px" }}
+          width={{ base: "110px", sm: "150px", md: "260px" }}
           alt="logo"
           mb="30px"
         />
@@ -31,8 +34,10 @@ export const TopSection = () => {
         flexGrow={1}
         minWidth={{ base: "250px", md: "500px" }}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
+        gap={2}
       >
         <SpecialCards />
+        {isRageRound && <RageCards />}
       </Flex>
       <Flex
         flexDirection="column"

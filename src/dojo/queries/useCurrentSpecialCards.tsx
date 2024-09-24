@@ -52,7 +52,7 @@ export const useCurrentSpecialCards = () => {
     return specialCardsIds.map((index) =>
       getSpecialCard(gameId, index, CurrentSpecialCards)
     );
-  }, [specialCardsLength]);
+  }, [specialCardsLength, game?.state]);
 
   return specialCards;
 };

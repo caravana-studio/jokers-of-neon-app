@@ -1,6 +1,7 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useMemo } from "react";
 import { Card } from "../../types/Card";
 import { useDojo } from "../useDojo";
 import { getCardFromCardId } from "../utils/getCardFromCardId";
@@ -29,12 +30,21 @@ export const useBlisterPackResult = () => {
   const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
 
   const blisterPackResult = useComponentValue(BlisterPackResult, entityId);
-  const cardsArray = (blisterPackResult?.cards ?? []).map(
-    (card) => card && Number((card as any)?.value)
+  const cardsArray = useMemo(
+    () =>
+      (blisterPackResult?.cards ?? []).map(
+        (card) => card && Number((card as any)?.value)
+      ),
+    [blisterPackResult?.cards]
   );
 
-  return {
-    cards: getCards(cardsArray ?? []).sort(sort),
-    cardsPicked: blisterPackResult?.cards_picked ?? false,
-  };
+  const response = useMemo(
+    () => ({
+      cards: getCards(cardsArray ?? []).sort(sort),
+      cardsPicked: blisterPackResult?.cards_picked ?? false,
+    }),
+    [cardsArray, blisterPackResult?.cards_picked]
+  );
+
+  return response;
 };
