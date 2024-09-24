@@ -9,8 +9,8 @@ import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsMo
 import { createUsedCardsList, preprocessCards } from "./Utils/DeckCardsUtils";
 
 interface DeckFiltersMap {
-    isNeon: boolean;
-    isModifier: boolean;
+    isNeon: boolean | undefined;
+    isModifier: boolean | undefined;
     suit: Suits | null;
   }
 
@@ -23,17 +23,16 @@ export const DeckPageContentMobile = () =>
         const navigate = useNavigate();
         const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
         const [filterButtonsState, setFilterButtonsState] = useState<DeckFiltersMap>({
-            isNeon: false,
-            isModifier: false,
+            isNeon: undefined,
+            isModifier: undefined,
             suit: null,
           });
 
         const updateFilters = (newFilters: DeckCardsFilters) =>
         {
             setFilterButtonsState((prevState) => ({
-                ...prevState,
-                isNeon: newFilters.isNeon !== undefined ? newFilters.isNeon : false,
-                isModifier: newFilters.isModifier !== undefined ? newFilters.isModifier : false,
+                isNeon: newFilters.isNeon !== undefined ? newFilters.isNeon : undefined,
+                isModifier: newFilters.isModifier !== undefined ? newFilters.isModifier : undefined,
                 suit: newFilters.suit !== undefined ? newFilters.suit : null,
               }));
         };
@@ -105,7 +104,7 @@ export const DeckPageContentMobile = () =>
                                 Filter by
                             </Text>
                             <Flex alignItems={"space-around"} justifyContent={"center"} wrap={"wrap"} gap={4} mt={8} width={"95%"}>
-                                <Button
+                            <Button
                                     size={"sm"}
                                     variant={ filterButtonsState.suit === Suits.CLUBS ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
@@ -141,7 +140,7 @@ export const DeckPageContentMobile = () =>
                                     size={"sm"}
                                     variant={ filterButtonsState.isNeon ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => updateFilters({isNeon: !filterButtonsState.isNeon})}
+                                    onClick={() => updateFilters({isNeon: !filterButtonsState.isNeon ? true : undefined})}
                                 >
                                     NEON
                                 </Button>
@@ -149,7 +148,7 @@ export const DeckPageContentMobile = () =>
                                     size={"sm"}
                                     variant={ filterButtonsState.isModifier ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
                                     borderRadius={"25px"}
-                                    onClick={() => updateFilters({isModifier: !filterButtonsState.isModifier})}
+                                    onClick={() => updateFilters({isModifier: !filterButtonsState.isModifier ? true : undefined})}
                                 >
                                     MODIFIER
                                 </Button>
