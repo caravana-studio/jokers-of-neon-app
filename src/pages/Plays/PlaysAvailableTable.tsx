@@ -1,5 +1,6 @@
 import {
     Box,
+    Flex,
     Heading,
     Table,
     TableContainer,
@@ -15,6 +16,8 @@ import {
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
+import { TiltCard } from "../../components/TiltCard";
+import { PLAYS_DATA } from "../../constants/plays";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -86,6 +89,31 @@ import {
                     )}
                   </Tr>
                 </Thead>
+                <Tr>
+                  <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center", 
+                        padding: 2,
+                      }}
+                    >
+                      <Flex
+                        wrap={"nowrap"}
+                        width={"fit-content"} 
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        gap={4}
+                      >
+                        <TiltCard card={PLAYS_DATA[0].example[0]} scale={0.4} />
+                        <TiltCard card={PLAYS_DATA[0].example[1]} scale={0.4} />
+                        <TiltCard card={PLAYS_DATA[0].example[2]} scale={0.4} />
+                        <TiltCard card={PLAYS_DATA[0].example[3]} scale={0.4} />
+                        <TiltCard card={PLAYS_DATA[0].example[4]} scale={0.4} />
+                      </Flex>
+                    </Box>
+                  </Td>
+                </Tr>
                   <Tbody>
                     { plays && plays.map((play, index) => {
                       const storePlay = pokerHandItems?.find(
