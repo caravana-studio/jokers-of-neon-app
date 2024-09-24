@@ -51,8 +51,8 @@ import {
               <Table
                 sx={{
                   borderCollapse: "separate",
-                  borderSpacing: "0 .3em",
                   marginBottom: 4,
+                  borderSpacing:0
                 }}
                 width={"100%"}
                 variant={isMobile ? "store-mobile" : "store"}
