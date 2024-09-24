@@ -15,6 +15,7 @@ import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
+import { GameDeckMobile } from "../../components/GameDeck.mobile.tsx";
 
 export const MobileGameContent = () => {
   const {
@@ -234,9 +235,10 @@ export const MobileGameContent = () => {
               }}
             >
               <Box>
-                <Box position={"absolute"} left={3} bottom={0} zIndex={6} width="190px" display={"flex"} alignItems={"center"} backgroundColor='rgba(0,0,0,0.5)'>
+                <Box position={"absolute"} left={0} px={4} bottom={0} zIndex={6} width="100%" display={"flex"} alignItems={"center"} backgroundColor='rgba(0,0,0,0.5)'>
                   <SortBy />
                   <ShowPlays/>
+                  <GameDeckMobile/>
                 </Box>
                 <Box pb="25px" >
                   <HandSection />
