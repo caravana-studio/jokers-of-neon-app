@@ -24,7 +24,7 @@ export const Redirect = () => {
   }, [state, page, navigate]);
 
   return (
-    <Background type={page === "open-pack" ? "white" : "game"}>
+    <Background type={"game"}>
       <Loading />
     </Background>
   );
