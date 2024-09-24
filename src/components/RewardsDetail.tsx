@@ -2,8 +2,8 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
-import { PinkBox } from "./PinkBox.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
+import { PinkBox } from "./PinkBox.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -47,6 +47,13 @@ interface RewardsDetailProps {
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   if (!roundRewards) return null;
+  // const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio(nextLevelSfx, 0.4);
+
+  // useEffect(() => {
+  //   if (roundRewards) {
+  //     playNextLevelSound();
+  //   }
+  // }, [roundRewards, playNextLevelSound]);
 
   const {
     level,
@@ -72,22 +79,15 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     <PinkBox
       title={`Level ${level} defeated`}
       button="CONTINUE"
-      onClick={() => navigate("/redirect/store")}
+      onClick={() => {
+        // stopNextLevelSound();
+        navigate("/redirect/store");
+      }}
     >
-
-      <RewardItem
-        label={labels[0]}
-        value={round_defeat}
-      />
+      <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
-      <RewardItem
-        label={labels[2]}
-        value={hands_left_cash}
-      />
-      <RewardItem
-        label={labels[3]}
-        value={discard_left_cash}
-      />
+      <RewardItem label={labels[2]} value={hands_left_cash} />
+      <RewardItem label={labels[3]} value={discard_left_cash} />
 
       <Flex
         color={VIOLET}
@@ -100,7 +100,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
           Total:
         </Heading>
         <Heading color="neonPink" variant="italic">
-          {total}<CashSymbol />
+          {total}
+          <CashSymbol />
         </Heading>
       </Flex>
     </PinkBox>

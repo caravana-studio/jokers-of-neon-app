@@ -8,6 +8,8 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { getCardType } from "../utils/getCardType";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { useGameContext } from "./GameProvider";
+import { useAudio } from "../hooks/useAudio.tsx";
+import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
@@ -50,6 +52,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
   const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
   const [lockRedirection, setLockRedirection] = useState(false);
+  const {play:levelUpHandSound} = useAudio(levelUpSfx);
+  const {play:buySound} = useAudio(buySfx);
+  const {play:buyPackSound} = useAudio(buyPackSfx);
+  const {play:rerollSound} = useAudio(rerollSfx, 0.5);
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
@@ -94,6 +100,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   } = useShopActions();
 
   const buyCard = (card: Card): Promise<boolean> => {
+    buySound();
     setLocked(true);
     addPurchasedCard(card);
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
@@ -113,6 +120,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
+    buyPackSound();
     return dojoBuyPack(gameId, Number(pack.idx));
   };
 
@@ -121,6 +129,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const reroll = () => {
+    rerollSound();
     setLocked(true);
     const promise = storeReroll(gameId);
     promise
@@ -134,6 +143,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
+    levelUpHandSound();
     setLocked(true);
     addPokerHandPurchased(item);
     const promise = dojoLevelUpHand(gameId, item.idx);

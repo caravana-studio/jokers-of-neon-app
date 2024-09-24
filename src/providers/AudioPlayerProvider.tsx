@@ -22,6 +22,7 @@ export const AudioPlayerProvider = ({ children, songPath }: AudioPlayerProviderP
     const howl = new Howl({
       src: [songPath],
       loop: true,
+      volume:0.2,
     });
     setSound(howl);
   }, [songPath]);
