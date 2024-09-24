@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { isMobile } from "react-device-detect";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
@@ -78,7 +79,7 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <StoreProvider>
-                    {isMobile? <MobilePreviewCard/>: <PreviewCard />}
+                    {isMobile ? <MobilePreviewCard /> : <PreviewCard />}
                   </StoreProvider>
                 </AudioPlayerProvider>
               }
@@ -94,11 +95,11 @@ function App() {
               }
             />
             <Route path="/play" element={<Navigate to="/" />} />
-            <Route 
+            <Route
               path="/plays"
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                    <PlaysLayout/>
+                  <PlaysLayout />
                 </AudioPlayerProvider>
               }
             />
@@ -106,6 +107,7 @@ function App() {
         </GameProvider>
       </CardAnimationsProvider>
       <Analytics />
+      <SpeedInsights />
     </ChakraBaseProvider>
   );
 }
