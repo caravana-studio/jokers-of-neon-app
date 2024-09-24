@@ -40,7 +40,7 @@ export const PlaysLayout = () => {
             w="100%"
             size="md"
             variant="solid"
-            onClick={ () => navigate("/demo")}
+            onClick={ () => navigate("/demo", { state: { skipRageAnimation: true } })}
           >Go back to game</Button>
       </Flex>
     </Background>

@@ -22,7 +22,8 @@ const getSilentSuit = (cardId: number) => {
 
 export const useIsSilent = (card: Card) => {
   const { isRageRound, rageCards } = useGameContext();
-  const { suit } = getCardData(card, false);
+  const { suit: idSuit } = getCardData(card, false);
+  const suit = card.suit ?? idSuit;
   const isSilent = rageCards.some((rageCard) => {
     return getSilentSuit(rageCard.card_id!) === suit;
   });
