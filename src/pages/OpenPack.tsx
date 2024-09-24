@@ -18,7 +18,7 @@ import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 
-const WhiteOverlay = styled.div<{ $visible: boolean }>`
+/* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -29,11 +29,11 @@ const WhiteOverlay = styled.div<{ $visible: boolean }>`
   opacity: ${(props) => (props.$visible ? 1 : 0)};
   transition: opacity 1s ease-out;
   pointer-events: none;
-`;
+`; */
 
 
 export const OpenPack = () => {
-  const [overlayVisible, setOverlayVisible] = useState(true);
+/*   const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,7 +41,7 @@ export const OpenPack = () => {
     }, 700);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, []); */
   const navigate = useNavigate();
 
   const game = useGame();
@@ -102,7 +102,7 @@ export const OpenPack = () => {
 
   return (
     <Background type="game" dark bgDecoration>
-      <WhiteOverlay $visible={overlayVisible} />
+      {/* <WhiteOverlay $visible={overlayVisible} /> */}
       {cards.length > 0 ? (
         <Flex
           height={"100%"}

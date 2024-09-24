@@ -37,6 +37,7 @@ const ExplosionEffect = motion(styled.img<{opacity: number }>`
   background-position: center;
   z-index: 9999;
   opacity: ${(props) => props.opacity};
+  will-change: transform;
 `);
 
 const ShakeEffect = motion.div;
@@ -77,18 +78,18 @@ const OpenAnimation = ({
 
         await new Promise((resolve) => setTimeout(resolve, 300));
 
-        setExplosion(true);
+/*         setExplosion(true);
         await controls.start({
-          scale: [0.1, 5],
-          transition: { duration: 1, ease: "easeOut" },
-        });
+          scale: [0.1, 2],
+          transition: { duration: 0.5, ease: "easeOut" },
+        });*/
 
-        await new Promise((resolve) => setTimeout(resolve, 1300));
+        await new Promise((resolve) => setTimeout(resolve, 500)); 
 
         setParticle(null);
         setShake(false);
         setGlow(false);
-        setExplosion(false);
+        // setExplosion(false);
 
         if (onAnimationEnd) onAnimationEnd();
       };
@@ -101,14 +102,14 @@ const OpenAnimation = ({
     <motion.div style={{ position: "relative", display: "inline-block" }}>
       {particle && <Particle style={{ backgroundImage: particle }} />}
       <Container>
-        {explosion && (
+{/*         {explosion && (
           <ExplosionEffect
             opacity={1}
             src="/vfx/explosion_blue.gif"
-            animate={{ scale: [0.3, 15] }}
+            animate={{ scale: [0.5, 10] }}
             transition={{ duration: 1, ease: "easeOut" }}
           />
-        )}
+        )} */}
         <GlowEffect glow={glow}>
           <ShakeEffect
             animate={shake ? { rotate: [0, -5, 5, 0] } : { rotate: 0 }}
