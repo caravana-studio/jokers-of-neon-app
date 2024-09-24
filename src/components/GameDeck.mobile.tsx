@@ -1,6 +1,7 @@
-import { Button, Text, Tooltip } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import DeckIcon from "../assets/deck.svg?component";
 
 export const GameDeckMobile = () => {
   const navigate = useNavigate();
@@ -22,7 +23,15 @@ export const GameDeckMobile = () => {
             navigate("/deck");
         }}
         >
-          <Text textTransform="initial">Show deck</Text>
+          <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
+                <DeckIcon
+                    color="white"
+                    width={14}
+                />
+                <Text textTransform="initial">
+                    Show deck
+                </Text>
+          </Flex>
         </Button>
   );
 };
