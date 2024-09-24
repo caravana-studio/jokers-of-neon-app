@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { isMobile } from "react-device-detect";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
