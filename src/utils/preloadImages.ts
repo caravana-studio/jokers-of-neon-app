@@ -5,7 +5,7 @@ import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
 
 const CACHE_NAME = 'image-cache';
 
-export const preloadImages = async () => {
+const getDefaultImageUrls = (): string[] => {
   const imageUrls: string[] = [];
 
   // Traditional cards
@@ -41,13 +41,19 @@ export const preloadImages = async () => {
   imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
-  // VFX
+  // Vfx
   imageUrls.push("vfx/explosion_blue.gif");
   imageUrls.push("vfx/glow_particle.gif");
   imageUrls.push("vfx/glow2.gif");
   imageUrls.push("vfx/holo.png");
   imageUrls.push("vfx/particle2.gif");
   imageUrls.push("vfx/sparkles.gif");
+
+  return imageUrls;
+};
+
+export const preloadImages = async (urls?: string[]) => {
+  const imageUrls: string[] = urls ?? getDefaultImageUrls();
 
   try {
     const cache = await caches.open(CACHE_NAME);
@@ -66,7 +72,6 @@ export const preloadImages = async () => {
     });
 
     await Promise.all(cachePromises);
-    console.log('All images preloaded and cached!');
   } catch (error) {
     console.error('Error preloading images', error);
   }
