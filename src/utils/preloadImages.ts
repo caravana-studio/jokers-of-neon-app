@@ -3,43 +3,45 @@ import { PACKS_DATA } from "../data/packs";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
 
-export const preloadImages = () => {
+const CACHE_NAME = 'image-cache';
+
+export const preloadImages = async () => {
   const imageUrls: string[] = [];
 
-  //traditional cards
+  // Traditional cards
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
   });
 
-  //modifier cards
+  // Modifier cards
   Object.keys(MODIFIER_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/effect/${key}.png`);
   });
 
-  //special cards
+  // Special cards
   Object.keys(SPECIAL_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/effect/${key}.png`);
   });
 
-  //packs
+  // Packs
   Object.keys(PACKS_DATA).forEach((key) => {
     imageUrls.push(`Cards/packs/${key}.png`);
   });
 
-  //backgrounds
+  // Backgrounds
   imageUrls.push("bg/game-bg.jpg");
   imageUrls.push("bg/home-bg.jpg");
   imageUrls.push("bg/store-bg.jpg");
   imageUrls.push("redirect/bg/store-bg.jpg");
   imageUrls.push("redirect/bg/game-bg.jpg");
 
-  //logos
+  // Logos
   imageUrls.push("logos/jn-logo.png");
   imageUrls.push("logos/joker-logo.png");
   imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
-  //vfx
+  // VFX
   imageUrls.push("vfx/explosion_blue.gif");
   imageUrls.push("vfx/glow_particle.gif");
   imageUrls.push("vfx/glow2.gif");
@@ -47,14 +49,25 @@ export const preloadImages = () => {
   imageUrls.push("vfx/particle2.gif");
   imageUrls.push("vfx/sparkles.gif");
 
-  const promises = imageUrls.map((url) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-  });
+  try {
+    const cache = await caches.open(CACHE_NAME);
 
-  return Promise.all(promises);
+    const cachePromises = imageUrls.map(async (url) => {
+      const cachedResponse = await cache.match(url);
+      if (!cachedResponse) {
+        // If not in cache, fetch and add to cache
+        const response = await fetch(url, { cache: "reload" });
+        if (response.ok) {
+          await cache.put(url, response.clone());
+        } else {
+          console.warn(`Failed to preload ${url}`);
+        }
+      }
+    });
+
+    await Promise.all(cachePromises);
+    console.log('All images preloaded and cached!');
+  } catch (error) {
+    console.error('Error preloading images', error);
+  }
 };
