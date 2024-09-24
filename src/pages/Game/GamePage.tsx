@@ -48,6 +48,9 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
+  if(!username)
+    navigate("/");
+
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
