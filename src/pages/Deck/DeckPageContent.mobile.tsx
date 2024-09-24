@@ -6,13 +6,7 @@ import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { useNavigate } from "react-router-dom";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
-import { createUsedCardsList, preprocessCards } from "./Utils/DeckCardsUtils";
-
-interface DeckFiltersMap {
-    isNeon: boolean | undefined;
-    isModifier: boolean | undefined;
-    suit: Suits | null;
-  }
+import { DeckFiltersMap, createUsedCardsList, preprocessCards } from "./Utils/DeckCardsUtils";
 
 export const DeckPageContentMobile = () => 
     {

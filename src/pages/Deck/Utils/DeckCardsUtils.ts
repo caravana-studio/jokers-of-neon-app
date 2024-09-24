@@ -1,3 +1,4 @@
+import { Suits } from "../../../enums/suits";
 import { Card } from "../../../types/Card";
 
 export const preprocessCards = (cards: Card[]): Card[] => {
@@ -33,3 +34,9 @@ export const createUsedCardsList = (fullDeck: Card[], currentDeck: Card[]): Card
   
     return usedCards;
   };
+
+  export interface DeckFiltersMap {
+    isNeon: boolean | undefined;
+    isModifier: boolean | undefined;
+    suit: Suits | null;
+  }
