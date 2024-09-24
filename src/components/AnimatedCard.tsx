@@ -116,31 +116,34 @@ export const AnimatedCard = ({
         position: "relative",
         padding: "4px",
         width: `${CARD_WIDTH + 8}px`,
-        borderRadius: isMobile ? '5px' : "10px",
+        borderRadius: isMobile ? "5px" : "10px",
         ...cardSprings,
       }}
     >
-      {!!(points || multi) && animatedCardIdxArray?.includes(idx) && (
-        <animated.div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "10px",
-            ...pointsSprings,
-            zIndex: 99,
-          }}
-        >
-          <Heading
-            color={points ? colors.neonGreen : colors.neonPink}
-            mb={{ base: 4, md: 6 }}
-            sx={{
-              textShadow: `0 0 5px  ${points ? colors.neonGreen : colors.neonPink}`,
+      {!!(points || multi) &&
+        // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
+        !(isSpecial && animatedCard?.idx?.length) &&
+        animatedCardIdxArray?.includes(idx) && (
+          <animated.div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "10px",
+              ...pointsSprings,
+              zIndex: 99,
             }}
           >
-            +{points || multi}
-          </Heading>
-        </animated.div>
-      )}
+            <Heading
+              color={points ? colors.neonGreen : colors.neonPink}
+              mb={{ base: 4, md: 6 }}
+              sx={{
+                textShadow: `0 0 5px  ${points ? colors.neonGreen : colors.neonPink}`,
+              }}
+            >
+              +{points || multi}
+            </Heading>
+          </animated.div>
+        )}
       {children}
     </animated.div>
   );
