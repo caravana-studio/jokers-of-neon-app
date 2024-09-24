@@ -3,6 +3,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { Card } from "../../types/Card";
 import { Suits } from "../../enums/suits";
+import { isMobile } from "react-device-detect";
 
 const SCALE = 0.55;
 const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
@@ -54,6 +55,7 @@ interface DeckCardsGridProps {
         {filteredCards?.map((card, index) => {
           const usedCount = countUsedCards(card);
           const opacity = usedCount > 0 ? 0.6 : 1;
+          const borderRadius = isMobile ? '5px' : '8px';
           return (
             <Box
               key={`${card.id}-${index}`}
@@ -65,7 +67,7 @@ interface DeckCardsGridProps {
               sx={{
                 '& div': {
                   background: 'rgba(0,0,0,1)',
-                  borderRadius: '8px',
+                  borderRadius: `${borderRadius}`,
                 },
                 '& img': {
                   opacity: `${opacity}`,
