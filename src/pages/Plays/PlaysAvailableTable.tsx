@@ -19,6 +19,8 @@ import {
 import { TiltCard } from "../../components/TiltCard";
 import { PLAYS_DATA } from "../../constants/plays";
 import { Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { BLUE_LIGHT } from "../../theme/colors";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -40,6 +42,8 @@ import { Text } from "@chakra-ui/react";
     const { pokerHandItems } = useShopItems();
   
     const plays = apiPlays;
+
+    const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
   
     return (
       <>
@@ -92,7 +96,7 @@ import { Text } from "@chakra-ui/react";
                 </Thead>
                 <Tr>
                   <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }} p={4}>
-                    <Text color={"white"}>{PLAYS_DATA[0].description}</Text>
+                    <Text color={"white"}>{PLAYS_DATA[playsExampleIndex].description}</Text>
                   </Td>
                 </Tr>
                 <Tr>
@@ -112,11 +116,11 @@ import { Text } from "@chakra-ui/react";
                         alignItems={"center"}
                         gap={4}
                       >
-                        <TiltCard card={PLAYS_DATA[0].example[0]} scale={0.4} />
-                        <TiltCard card={PLAYS_DATA[0].example[1]} scale={0.4} />
-                        <TiltCard card={PLAYS_DATA[0].example[2]} scale={0.4} />
-                        <TiltCard card={PLAYS_DATA[0].example[3]} scale={0.4} />
-                        <TiltCard card={PLAYS_DATA[0].example[4]} scale={0.4} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[0]} scale={0.5} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[1]} scale={0.5} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[2]} scale={0.5} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[3]} scale={0.5} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[4]} scale={0.5} />
                       </Flex>
                     </Box>
                   </Td>
@@ -126,7 +130,8 @@ import { Text } from "@chakra-ui/react";
                       const storePlay = pokerHandItems?.find(
                         (item) => item.poker_hand === play.pokerHand.id
                       );  
-                      const textColor = "white";
+
+                      const textColor = playsExampleIndex === index ? BLUE_LIGHT : "white";
 
                       const opacitySx = {
                         opacity: 1,
@@ -176,7 +181,7 @@ import { Text } from "@chakra-ui/react";
                       );
 
                       return (
-                        <Tr key={index} height={"30px"}>
+                        <Tr key={index} height={"30px"} onClick={() => setPlaysExampleIndex(index)} sx={{ cursor: "pointer"}}>
                           {(
                             <>
                               {levelTd}
