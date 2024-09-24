@@ -1,11 +1,11 @@
 export const preselectedCardSfx = '/music/Card_Selection_1.wav';
 export const playHandSfx = '/music/Play_Hand_REV_1.wav';
 export const discardSfx = '/music/Discard_Cards_REV_B_1.wav';
-export const pointsSfx = '/music/points_sfx.mp3';
-export const multiSfx = '/music/multi_sfx.mp3';
+export const pointsSfx = '/music/Points.mp3';
+export const multiSfx = '/music/Multi.mp3';
 export const levelUpSfx = '/music/Level_Up_REV_A_1.wav';
-export const buySfx = '/music/Buy_From_Store_REV_3.wav';
-export const buyPackSfx = '/music/Opening_Packs_Boxes_REV_C_1.wav';
-export const rerollSfx = '/music/Reroll_Items_REV_A_1.wav';
+export const buySfx = '/music/Buy.mp3';
+export const buyPackSfx = '/music/Lootbox.mp3';
+export const rerollSfx = '/music/Reroll.mp3';
 export const nextLevelSfx = 'music/Next_Level_REV_1.wav'; 
-export const looseSfx = 'music/Loose_REV_A_1.wav';
+export const looseSfx = 'music/Lose.mp3';
