@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
@@ -32,6 +32,9 @@ export const GamePage = () => {
   const rageCards = useRageCards();
   const navigate = useNavigate();
   const game = useGame();
+  const { state } = useLocation();
+
+  const skipRageAnimation = state?.skipRageAnimation;
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -60,7 +63,7 @@ export const GamePage = () => {
 
   return (
     <Background type={isRageRound ? "rage" : "game"}>
-      <RageRoundAnimation />
+      {!skipRageAnimation && <RageRoundAnimation />}
       {isMobile ? <MobileGameContent /> : <GameContent />}
       <RemoveScroll>
         <></>

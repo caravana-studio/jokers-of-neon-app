@@ -297,6 +297,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   if (event.idx === card.idx) {
                     return {
                       ...card,
+                      suit: event.suit,
                       img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
                     };
                   }
