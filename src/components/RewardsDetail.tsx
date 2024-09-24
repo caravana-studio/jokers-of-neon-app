@@ -50,13 +50,13 @@ interface RewardsDetailProps {
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   if (!roundRewards) return null;
-  const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio(nextLevelSfx, 0.4);
+  // const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio(nextLevelSfx, 0.4);
 
-  useEffect(() => {
-    if (roundRewards) {
-      playNextLevelSound();
-    }
-  }, [roundRewards, playNextLevelSound]);
+  // useEffect(() => {
+  //   if (roundRewards) {
+  //     playNextLevelSound();
+  //   }
+  // }, [roundRewards, playNextLevelSound]);
 
 
   const {
@@ -84,7 +84,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       title={`Level ${level} defeated`}
       button="CONTINUE"
       onClick={() => {
-        stopNextLevelSound();
+        // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
