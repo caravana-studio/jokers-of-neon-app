@@ -18,6 +18,7 @@ import {
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { TiltCard } from "../../components/TiltCard";
 import { PLAYS_DATA } from "../../constants/plays";
+import { Text } from "@chakra-ui/react";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -90,12 +91,18 @@ import { PLAYS_DATA } from "../../constants/plays";
                   </Tr>
                 </Thead>
                 <Tr>
-                  <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }}>
+                  <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }} p={4}>
+                    <Text color={"white"}>{PLAYS_DATA[0].description}</Text>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td colSpan={3} sx={{ position: "sticky", top: 20, backgroundColor: "black" }} p={2}>
                     <Box
                       sx={{
                         display: "flex",
                         justifyContent: "center", 
-                        padding: 2,
+                        padding: "0px 4px 4px 4px",   
+                        flexDirection: "row",
                       }}
                     >
                       <Flex
