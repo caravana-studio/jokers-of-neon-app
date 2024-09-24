@@ -1,5 +1,5 @@
 .scrollable-container {
-    height: 400px;
+    height: 100%;
     scrollbar-width: thin;
     padding: 0 10px 10px 10px;
     overflow: scroll;
