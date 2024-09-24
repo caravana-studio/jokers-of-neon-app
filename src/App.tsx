@@ -2,12 +2,17 @@ import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.scss";
 
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { isMobile } from "react-device-detect";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { OpenPack } from "./pages/OpenPack";
+import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import PreviewCard from "./pages/PreviewCard";
+import MobilePreviewCard from "./pages/PreviewCardMobile";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { Store } from "./pages/store/Store";
@@ -16,9 +21,6 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
-import { PlaysLayout } from "./pages/Plays/PlaysLayout";
-import { isMobile } from "react-device-detect";
-import MobilePreviewCard from "./pages/PreviewCardMobile";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -77,7 +79,7 @@ function App() {
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <StoreProvider>
-                    {isMobile? <MobilePreviewCard/>: <PreviewCard />}
+                    {isMobile ? <MobilePreviewCard /> : <PreviewCard />}
                   </StoreProvider>
                 </AudioPlayerProvider>
               }
@@ -93,17 +95,19 @@ function App() {
               }
             />
             <Route path="/play" element={<Navigate to="/" />} />
-            <Route 
+            <Route
               path="/plays"
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                    <PlaysLayout/>
+                  <PlaysLayout />
                 </AudioPlayerProvider>
               }
             />
           </Routes>
         </GameProvider>
       </CardAnimationsProvider>
+      <Analytics />
+      <SpeedInsights />
     </ChakraBaseProvider>
   );
 }
