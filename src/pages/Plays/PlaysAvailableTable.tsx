@@ -110,12 +110,17 @@ import { Card } from "../../types/Card";
                   </Td>
                 </Tr>
                 <Tr>
-                  <Td colSpan={3} sx={{ position: "sticky", top: "88px", backgroundColor: "black" }} p={2}>
+                  <Td 
+                    colSpan={3}
+                    sx={{ position: "sticky", backgroundColor: "black" }}
+                    p={2}
+                    top={playsExampleIndex === 0 ? "88px" : "70px"}
+                  >
                     <Box
                       sx={{
                         display: "flex",
                         justifyContent: "center", 
-                        padding: "0px 4px 4px 4px",   
+                        padding: {base: "0px 2px 2px 2px", sm: "0px 4px 4px 4px"},   
                         flexDirection: "row",
                       }}
                     >
@@ -124,13 +129,13 @@ import { Card } from "../../types/Card";
                         width={"fit-content"} 
                         justifyContent={"center"}
                         alignItems={"center"}
-                        gap={4}
+                        gap={isMobile ? 0 : 4}
                       >
                         {PLAYS_DATA[playsExampleIndex].example.map((card: Card, index) => {
                           const isImportant = PLAYS_DATA[playsExampleIndex].importantCards.some(ic => ic.card_id === card.card_id);
                           return (
                             <Box key={`${card.card_id}+"-"+${index}`} opacity={isImportant ? 1 : 0.5}>
-                              <TiltCard card={card} scale={0.65} />
+                              <TiltCard card={card} scale={isMobile ? 0.75 : 0.65} />
                             </Box>
                           );
                         })}
