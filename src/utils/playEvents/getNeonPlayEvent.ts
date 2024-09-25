@@ -17,7 +17,7 @@ export const getNeonPlayEvent = (
   
   return neonPlayEvent && {
     neon_cards_idx: cardIndexes,
-    points: getNumberValueFromEvent(neonPlayEvent, arrayLength + 2) ?? 0,
-    multi: getNumberValueFromEvent(neonPlayEvent, arrayLength + 3) ?? 0,
+    points: getNumberValueFromEvent(neonPlayEvent, arrayLength + 3) ?? 0,
+    multi: getNumberValueFromEvent(neonPlayEvent, arrayLength + 2) ?? 0,
   }
 };
