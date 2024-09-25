@@ -27,7 +27,7 @@ export const Home = () => {
             </Heading>
             <Box mb={10} textAlign={"center"}>
               <CountdownTimer
-                targetDate={new Date("2024-10-05T00:00:00.000Z")}
+                targetDate={new Date("2024-10-05T21:00:00.000Z")}
               />
             </Box>
 
