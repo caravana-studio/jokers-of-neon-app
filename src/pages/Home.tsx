@@ -1,10 +1,11 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
-import CountdownTimer from "../components/CountdownTimer";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { preloadImages } from "../utils/preloadImages";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -21,17 +22,17 @@ export const Home = () => {
         gap={4}
       >
         {leaderboardOpen ? (
-          <Box >
-            <Heading size="l" variant="italic" textAlign={"center"} >
+          <Box>
+            <Heading size="l" variant="italic" textAlign={"center"} mb={12}>
               LEADERBOARD
             </Heading>
-            <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-10-05T21:00:00.000Z")}
-              />
-            </Box>
-
-            <Leaderboard />
+            {isMobile ? (
+              <Box sx={{ transform: "scale(0.7)" }}>
+                <Leaderboard lines={6} />
+              </Box>
+            ) : (
+              <Leaderboard />
+            )}
             <Button
               mt={8}
               width="100%"
