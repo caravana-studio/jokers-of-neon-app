@@ -10,6 +10,8 @@ import { GAME_ID, LAST_GAME_ID } from "../constants/localStorage";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetGame } from "../queries/useGetGame";
+import { useAudio } from "../hooks/useAudio";
+import { looseSfx } from "../constants/sfx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 
 const GAME_URL = "https://jokersofneon.com";
@@ -23,6 +25,7 @@ export const GameOver = () => {
   const [lastGameId, setLastGameId] = useState(getLSGameId());
   const { restartGame, setIsRageRound } = useGameContext();
   const { data } = useGetGame(lastGameId);
+  const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
   let congratulationsMsj = "";
@@ -37,6 +40,7 @@ export const GameOver = () => {
   }
 
   useEffect(() => {
+    looseSound();
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
     setIsRageRound(false);
@@ -82,6 +86,7 @@ export const GameOver = () => {
               onClick={() => {
                 localStorage.removeItem(GAME_ID);
                 restartGame();
+                stopLooseSound();
                 navigate("/demo");
               }}
             >

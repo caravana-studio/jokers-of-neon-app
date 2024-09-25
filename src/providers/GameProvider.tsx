@@ -21,6 +21,8 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { useAudio } from "../hooks/useAudio.tsx";
+import { discardSfx, multiSfx, playHandSfx, pointsSfx, preselectedCardSfx } from "../constants/sfx.ts";
 
 interface IGameContext {
   gameId: number;
@@ -129,6 +131,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     useGameActions();
 
   const game = useGame();
+  const {play:preselectCardSound} = useAudio(preselectedCardSfx);
+  const {play:discardSound} = useAudio(discardSfx, 4);
+  const {play:pointsSound} = useAudio(pointsSfx);
+  const {play:multiSound} = useAudio(multiSfx);
 
   const minimumDuration = !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
   
@@ -262,13 +268,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       if (playEvents.neonPlayEvent) {
         setPlayIsNeon(true);
+        
         setAnimatedCard({
           animationIndex: -1,
           suit: 5,
           idx: playEvents.neonPlayEvent.neon_cards_idx,
         });
+        pointsSound();
         playEvents.neonPlayEvent.points &&
           setPoints(playEvents.neonPlayEvent.points);
+        multiSound();
         playEvents.neonPlayEvent.multi &&
           setMulti(playEvents.neonPlayEvent.multi);
       }
@@ -277,6 +286,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         playEvents.modifierSuitEvents.forEach((event, index) => {
           setTimeout(
             () => {
+              pointsSound();
               setAnimatedCard({
                 suit: event.suit,
                 idx: [event.idx],
@@ -287,6 +297,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   if (event.idx === card.idx) {
                     return {
                       ...card,
+                      suit: event.suit,
                       img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
                     };
                   }
@@ -302,6 +313,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setTimeout(() => {
         if (playEvents.specialSuitEvents) {
           playEvents.specialSuitEvents.forEach((event, index) => {
+            pointsSound();
             setAnimatedCard({
               suit: event.suit,
               special_idx: event.special_idx,
@@ -330,6 +342,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setTimeout(() => {
                 const { special_idx, multi, points } = event;
                 if (points) {
+                  pointsSound();
                   setAnimatedCard({
                     special_idx,
                     points,
@@ -339,6 +352,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 }
                 if (multi) {
                   setTimeout(() => {
+                    multiSound();
                     //animate multi
                     setAnimatedCard({
                       special_idx,
@@ -362,6 +376,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               } = playEvents.levelEvent;
               //animate points
               if (eventPoints) {
+                pointsSound();
                 setAnimatedCard({
                   special_idx,
                   points: eventPoints - points,
@@ -370,6 +385,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 setPoints(eventPoints);
               }
               if (eventMulti) {
+                multiSound();
                 setTimeout(() => {
                   //animate multi
                   setAnimatedCard({
@@ -387,13 +403,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               playEvents.cardScore.forEach((card, index) => {
                 setTimeout(() => {
                   const { idx, points, multi } = card;
+                  
                   setAnimatedCard({
                     idx: [idx],
                     points,
                     multi,
                     animationIndex: 50 + index,
                   });
+                  if(points)
+                    pointsSound();
                   points && setPoints((prev) => prev + points);
+                  if(multi)
+                    multiSound();
                   multi && setMulti((prev) => prev + multi);
                 }, playAnimationDuration * index);
               });
@@ -410,7 +431,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       special_idx,
                       animationIndex: 60 + index,
                     });
+                    if(points)
+                      pointsSound();
                     points && setPoints((prev) => prev + points);
+                    if(multi)
+                      multiSound();
                     multi && setMulti((prev) => prev + multi);
                   }, playAnimationDuration * index);
                 });
@@ -526,15 +551,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const togglePreselected = (cardIndex: number) => {
     if (!preSelectionLocked && handsLeft > 0) {
+      
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
+        preselectCardSound();
       } else if (preSelectedCards.length < 5) {
         preSelectCard(cardIndex);
+        preselectCardSound();
       }
     }
   };
 
   const onDiscardClick = () => {
+    discardSound();
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {

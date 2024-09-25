@@ -33,7 +33,7 @@ export const HandSection = () => {
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
-
+  
   const { activeNode } = useDndContext();
 
   const cardIsPreselected = (cardIndex: number) => {

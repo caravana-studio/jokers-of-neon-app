@@ -13,7 +13,6 @@ import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
-import OpenAnimation from "../components/OpenAnimation.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
@@ -30,15 +29,17 @@ const PreviewCard = () => {
   const navigate = useNavigate();
 
   const { card, isPack, pack } = state || {};
-  const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
-    useState<boolean>(false);
 
-  const handleAnimationEnd = () => {
+  const [buyDisabled, setBuyDisabled] = useState(false);
+  /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
+    useState<boolean>(false); */
+
+  /*   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
     navigate("/redirect/open-pack");
-  };
+  }; */
 
   if (!card) {
     return <p>Card not found.</p>;
@@ -59,15 +60,28 @@ const PreviewCard = () => {
     <Button
       onClick={() => {
         if (isPack) {
-          buyPack(pack);
-          setIsOpenAnimationRunning(true);
-          setLockRedirection(true);
+          setBuyDisabled(true);
+          buyPack(pack)
+            .then((response) => {
+              if (response) {
+                navigate("/redirect/open-pack");
+              } else {
+                setBuyDisabled(false);
+              }
+            })
+            .catch(() => {
+              setBuyDisabled(false);
+            });
+          // setIsOpenAnimationRunning(true);
+          // setLockRedirection(true);
         } else {
           buyCard(card);
           navigate(-1);
         }
       }}
-      isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
+      isDisabled={
+        notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
+      }
       variant="outlinePrimaryGlow"
       height={"100%"}
     >
@@ -90,19 +104,19 @@ const PreviewCard = () => {
         >
           <Flex>
             <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-              <OpenAnimation
+              {/*               <OpenAnimation
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
-              >
-                <Image
-                  src={
-                    isPack
-                      ? `Cards/${card.img}.png`
-                      : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
-                  }
-                  borderRadius="10px"
-                />
-              </OpenAnimation>
+              > */}
+              <Image
+                src={
+                  isPack
+                    ? `Cards/${card.img}.png`
+                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                }
+                borderRadius="10px"
+              />
+              {/* </OpenAnimation> */}
             </Box>
 
             <Flex flexDirection={"column"} ml={"30px"} flex="1">
@@ -257,7 +271,7 @@ const PreviewCard = () => {
 
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate('/store')}
+              onClick={() => navigate("/store")}
               height={"100%"}
             >
               Close
