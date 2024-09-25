@@ -32,7 +32,7 @@ export const PlaysLayout = () => {
           >
             AVAILABLE PLAYS
           </Heading>
-          <PlaysAvailableTable maxHeight={{ base: "52%", md: "100%"}}/>
+          <PlaysAvailableTable maxHeight={{ base: "52%", md: "60%"}}/>
           <Button
             className="game-tutorial-step-4"
             mt={8}

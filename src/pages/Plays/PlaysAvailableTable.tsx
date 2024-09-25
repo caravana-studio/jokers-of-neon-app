@@ -1,5 +1,6 @@
 import {
     Box,
+    Flex,
     Heading,
     Table,
     TableContainer,
@@ -9,12 +10,16 @@ import {
     Tr,
   } from "@chakra-ui/react";
   import { isMobile } from "react-device-detect";
-  import { useShopItems } from "../../dojo/queries/useShopItems";
   import { useGameContext } from "../../providers/GameProvider";
-  import { useStore } from "../../providers/StoreProvider";
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
+  import { TiltCard } from "../../components/TiltCard";
+  import { PLAYS_DATA } from "../../constants/plays";
+  import { Text } from "@chakra-ui/react";
+  import { useState } from "react";
+  import { BLUE_LIGHT } from "../../theme/colors";
+  import { Card } from "../../types/Card";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -31,11 +36,8 @@ import {
   export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ maxHeight }) => {
     const { gameId } = useGameContext();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
-  
-    const store = useStore();
-    const { pokerHandItems } = useShopItems();
-  
     const plays = apiPlays;
+    const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
   
     return (
       <>
@@ -86,13 +88,59 @@ import {
                     )}
                   </Tr>
                 </Thead>
+                <Tr>
+                  <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }} p={4}>
+                    <Text 
+                      color={"white"}
+                      sx={{
+                        whiteSpace: "normal", 
+                        wordWrap: "break-word", 
+                        overflowWrap: "break-word",
+                      }}
+                    >
+                      {PLAYS_DATA[playsExampleIndex].description}
+                    </Text>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td 
+                    colSpan={3}
+                    sx={{ position: "sticky", backgroundColor: "black" }}
+                    p={2}
+                    top={isMobile ? "72px" : "88px"}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center", 
+                        padding: {base: "0px 2px 2px 2px", sm: "0px 4px 4px 4px"},   
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Flex
+                        wrap={"nowrap"}
+                        width={"fit-content"} 
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        gap={isMobile ? 0 : 4}
+                      >
+                        {PLAYS_DATA[playsExampleIndex].example.map((card: Card, index) => {
+                          const isImportant = PLAYS_DATA[playsExampleIndex].importantCards.some(ic => ic.card_id === card.card_id);
+                          return (
+                            <Box key={`${card.card_id}+"-"+${index}`} opacity={isImportant ? 1 : 0.5}>
+                              <TiltCard card={card} scale={isMobile ? 0.75 : 0.65} />
+                            </Box>
+                          );
+                        })}
+                      </Flex>
+                    </Box>
+                  </Td>
+                </Tr>
                   <Tbody>
-                    { plays && plays.map((play, index) => {
-                      const storePlay = pokerHandItems?.find(
-                        (item) => item.poker_hand === play.pokerHand.id
-                      );  
-                      const textColor = "white";
+                    { plays && [...plays].reverse().map((play, index) => {
 
+                      
+                      const textColor = playsExampleIndex === index ? BLUE_LIGHT : "white";
                       const opacitySx = {
                         opacity: 1,
                       };
@@ -141,7 +189,12 @@ import {
                       );
 
                       return (
-                        <Tr key={index} height={"30px"}>
+                        <Tr
+                          key={index}
+                          height={"30px"}
+                          onClick={() => setPlaysExampleIndex(index)}
+                          sx={{ cursor: "pointer"}}
+                        >
                           {(
                             <>
                               {levelTd}
