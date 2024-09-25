@@ -118,7 +118,7 @@ export async function setup({ ...config }: DojoConfig) {
   try {
     await burnerManager.init();
     if (burnerManager.list().length === 0) {
-      await burnerManager.create();
+      await burnerManager.create({maxFee: 10000000000000});
     }
   } catch (e) {
     console.error(e);
