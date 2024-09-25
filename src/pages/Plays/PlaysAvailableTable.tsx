@@ -107,7 +107,7 @@ import {
                     colSpan={3}
                     sx={{ position: "sticky", backgroundColor: "black" }}
                     p={2}
-                    top={playsExampleIndex !== 0 && isMobile ? "70px" : "88px"}
+                    top={isMobile ? "72px" : "88px"}
                   >
                     <Box
                       sx={{

@@ -79,7 +79,7 @@ export const PLAYS_DATA: PlaysData[] = [
   },
   {
     name: "High card",
-    description: "It consists of single cards, which are not consecutive and of different suits",
+    description: "Cards that are not consecutive and of different suits",
     example: [HA, CK, DQ, S9, H7],
     importantCards: [HA],
   },
