@@ -10,9 +10,7 @@ import {
     Tr,
   } from "@chakra-ui/react";
   import { isMobile } from "react-device-detect";
-  import { useShopItems } from "../../dojo/queries/useShopItems";
   import { useGameContext } from "../../providers/GameProvider";
-  import { useStore } from "../../providers/StoreProvider";
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
@@ -38,11 +36,7 @@ import {
   export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ maxHeight }) => {
     const { gameId } = useGameContext();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
-  
-    const { pokerHandItems } = useShopItems();
-  
     const plays = apiPlays;
-
     const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
   
     return (
@@ -143,13 +137,10 @@ import {
                   </Td>
                 </Tr>
                   <Tbody>
-                    { plays && plays.map((play, index) => {
-                      const storePlay = pokerHandItems?.find(
-                        (item) => item.poker_hand === play.pokerHand.id
-                      );  
+                    { plays && [...plays].reverse().map((play, index) => {
 
+                      
                       const textColor = playsExampleIndex === index ? BLUE_LIGHT : "white";
-
                       const opacitySx = {
                         opacity: 1,
                       };
@@ -198,7 +189,12 @@ import {
                       );
 
                       return (
-                        <Tr key={index} height={"30px"} onClick={() => setPlaysExampleIndex(index)} sx={{ cursor: "pointer"}}>
+                        <Tr
+                          key={index}
+                          height={"30px"}
+                          onClick={() => setPlaysExampleIndex(index)}
+                          sx={{ cursor: "pointer"}}
+                        >
                           {(
                             <>
                               {levelTd}
