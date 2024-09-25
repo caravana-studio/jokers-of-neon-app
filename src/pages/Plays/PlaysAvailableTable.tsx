@@ -66,16 +66,6 @@ import {
                     border: "10px",
                     borderColor: "transparent",
                     borderRadius: "25px",        
-                    _before: {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      left: {base: "2.5%", sm: "5%"},
-                      width: {base: "95%", sm: "90%"},
-                      height: {base: "1px", sm: "2px"},               
-                      backgroundColor: "white",
-                      boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                    },
                   }}
                 >
                   <Tr>
@@ -87,11 +77,28 @@ import {
                       </>
                     )}
                   </Tr>
-                </Thead>
-                <Tr>
-                  <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }} p={4}>
+                  <Tr>
+                  <Td 
+                    colSpan={3}
+                    sx={{
+                        position: "sticky",
+                        top: "0px",
+                        backgroundColor: "black" ,
+                        _before: {
+                          content: '""',
+                          position: "absolute",
+                          top: 0,
+                          left: {base: "2.5%", sm: "5%"},
+                          width: {base: "95%", sm: "90%"},
+                          height: {base: "1px", sm: "2px"},               
+                          backgroundColor: "white",
+                          boxShadow: "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                        },
+                      }}
+                    p={4}>
                     <Text 
                       color={"white"}
+                      p={2}
                       sx={{
                         whiteSpace: "normal", 
                         wordWrap: "break-word", 
@@ -107,7 +114,6 @@ import {
                     colSpan={3}
                     sx={{ position: "sticky", backgroundColor: "black" }}
                     p={2}
-                    top={isMobile ? "72px" : "88px"}
                   >
                     <Box
                       sx={{
@@ -136,6 +142,8 @@ import {
                     </Box>
                   </Td>
                 </Tr>
+                </Thead>
+
                   <Tbody>
                     { plays && [...plays].reverse().map((play, index) => {
 
