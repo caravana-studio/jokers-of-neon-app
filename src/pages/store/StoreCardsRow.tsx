@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { useNavigate } from "react-router-dom";
+import { preloadImages } from "../../utils/preloadImages";
 
 interface CardsRowProps {
   title: string;
@@ -19,6 +20,20 @@ interface CardsRowProps {
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
   const { buyCard, isPurchased } = useStore();
+  const imageUrls = useMemo(() => {
+    return cards.map((card) => {
+      return card.isSpecial || card.isModifier 
+        ? `Cards/effect/big/${card.card_id}.png` 
+        : `Cards/big/${card.img}`;
+    });
+  }, [cards]) 
+  
+  useEffect(() => {
+    preloadImages(imageUrls).then(() => {
+    }).catch((error) => {
+      console.error("Error preloading card images:", error);
+    });
+  }, [imageUrls])
 
   const getCardScale = () => {
     // TODO: Remove after improve TiltCard styles
