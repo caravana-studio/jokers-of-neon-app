@@ -38,22 +38,6 @@ interface LeaderboardResponse {
   };
 }
 
-const getPrize = (position: number): number => {
-  if (position > 3 && position < 11) {
-    return 100;
-  }
-  switch (position) {
-    case 1:
-      return 1000;
-    case 2:
-      return 500;
-    case 3:
-      return 200;
-    default:
-      return 0;
-  }
-};
-
 const fetchGraphQLData = async (): Promise<LeaderboardResponse> => {
   return await graphQLClient.request(LEADERBOARD_QUERY);
 };
@@ -78,7 +62,6 @@ export const useGetLeaderboard = () => {
         ...leader.node,
         position: index + 1,
         player_name: decodeString(leader.node.player_name ?? ""),
-        prize: getPrize(index + 1),
       };
     });
 
