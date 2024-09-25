@@ -16,12 +16,12 @@ import {
   import { useGetPlaysLevelDetail } from "../../queries/useGetPlaysLevelDetail";
   import theme from "../../theme/theme";
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
-import { TiltCard } from "../../components/TiltCard";
-import { PLAYS_DATA } from "../../constants/plays";
-import { Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { BLUE_LIGHT } from "../../theme/colors";
-import { Card } from "../../types/Card";
+  import { TiltCard } from "../../components/TiltCard";
+  import { PLAYS_DATA } from "../../constants/plays";
+  import { Text } from "@chakra-ui/react";
+  import { useState } from "react";
+  import { BLUE_LIGHT } from "../../theme/colors";
+  import { Card } from "../../types/Card";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -39,7 +39,6 @@ import { Card } from "../../types/Card";
     const { gameId } = useGameContext();
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
   
-    const store = useStore();
     const { pokerHandItems } = useShopItems();
   
     const plays = apiPlays;
@@ -114,7 +113,7 @@ import { Card } from "../../types/Card";
                     colSpan={3}
                     sx={{ position: "sticky", backgroundColor: "black" }}
                     p={2}
-                    top={playsExampleIndex === 0 ? "88px" : "70px"}
+                    top={playsExampleIndex !== 0 && isMobile ? "70px" : "88px"}
                   >
                     <Box
                       sx={{

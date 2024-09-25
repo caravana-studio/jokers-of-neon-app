@@ -88,7 +88,6 @@ export const PLAYS_DATA: PlaysData[] =
 
 interface PlaysData
 {
-  [x: string]: any;
   name: string,
   description: string,
   example: Card[],
