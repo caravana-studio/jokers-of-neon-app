@@ -116,11 +116,11 @@ import { BLUE_LIGHT } from "../../theme/colors";
                         alignItems={"center"}
                         gap={4}
                       >
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[0]} scale={0.5} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[1]} scale={0.5} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[2]} scale={0.5} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[3]} scale={0.5} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[4]} scale={0.5} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[0]} scale={0.65} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[1]} scale={0.65} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[2]} scale={0.65} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[3]} scale={0.65} />
+                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[4]} scale={0.65} />
                       </Flex>
                     </Box>
                   </Td>
