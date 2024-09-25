@@ -21,6 +21,7 @@ import { PLAYS_DATA } from "../../constants/plays";
 import { Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { BLUE_LIGHT } from "../../theme/colors";
+import { Card } from "../../types/Card";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -96,7 +97,16 @@ import { BLUE_LIGHT } from "../../theme/colors";
                 </Thead>
                 <Tr>
                   <Td colSpan={3} sx={{ position: "sticky", top: "36px", backgroundColor: "black" }} p={4}>
-                    <Text color={"white"}>{PLAYS_DATA[playsExampleIndex].description}</Text>
+                    <Text 
+                      color={"white"}
+                      sx={{
+                        whiteSpace: "normal", 
+                        wordWrap: "break-word", 
+                        overflowWrap: "break-word",
+                      }}
+                    >
+                      {PLAYS_DATA[playsExampleIndex].description}
+                    </Text>
                   </Td>
                 </Tr>
                 <Tr>
@@ -116,11 +126,14 @@ import { BLUE_LIGHT } from "../../theme/colors";
                         alignItems={"center"}
                         gap={4}
                       >
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[0]} scale={0.65} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[1]} scale={0.65} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[2]} scale={0.65} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[3]} scale={0.65} />
-                        <TiltCard card={PLAYS_DATA[playsExampleIndex].example[4]} scale={0.65} />
+                        {PLAYS_DATA[playsExampleIndex].example.map((card: Card, index) => {
+                          const isImportant = PLAYS_DATA[playsExampleIndex].importantCards.some(ic => ic.card_id === card.card_id);
+                          return (
+                            <Box key={`${card.card_id}+"-"+${index}`} opacity={isImportant ? 1 : 0.5}>
+                              <TiltCard card={card} scale={0.65} />
+                            </Box>
+                          );
+                        })}
                       </Flex>
                     </Box>
                   </Td>
