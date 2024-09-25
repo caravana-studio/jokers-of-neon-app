@@ -100,7 +100,7 @@ import { BLUE_LIGHT } from "../../theme/colors";
                   </Td>
                 </Tr>
                 <Tr>
-                  <Td colSpan={3} sx={{ position: "sticky", top: 20, backgroundColor: "black" }} p={2}>
+                  <Td colSpan={3} sx={{ position: "sticky", top: "88px", backgroundColor: "black" }} p={2}>
                     <Box
                       sx={{
                         display: "flex",
