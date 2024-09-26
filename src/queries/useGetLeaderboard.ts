@@ -57,16 +57,37 @@ export const useGetLeaderboard = () => {
       }
       return b.node.player_score - a.node.player_score;
     })
-    .map((leader, index) => {
-      return {
-        ...leader.node,
-        position: index + 1,
-        player_name: decodeString(leader.node.player_name ?? ""),
-      };
-    });
+    .reduce((acc, leader) => {
+      const playerName = decodeString(leader.node.player_name ?? "");
+      const playerScore = leader.node.player_score;
+      const playerLevel = leader.node.level;
+
+      if (!acc.has(playerName)) {
+        acc.set(playerName, { ...leader.node, player_name: playerName });
+      } else {
+        const existingLeader = acc.get(playerName)!;
+
+        if (
+          playerLevel > existingLeader.level ||
+          (playerLevel === existingLeader.level &&
+            playerScore > existingLeader.player_score)
+        ) {
+          acc.set(playerName, { ...leader.node, player_name: playerName });
+        }
+      }
+
+      return acc;
+    }, new Map<string, { id: number; player_name: string; player_score: number; level: number }>());
+
+  const leaderboard = Array.from(dojoLeaders?.values() ?? []).map(
+    (leader, index) => ({
+      ...leader,
+      position: index + 1,
+    })
+  );
 
   return {
     ...queryResponse,
-    data: dojoLeaders,
+    data: leaderboard,
   };
 };
