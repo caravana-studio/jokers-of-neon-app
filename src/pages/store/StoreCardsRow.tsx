@@ -6,7 +6,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { useNavigate } from "react-router-dom";
-import { preloadImages, getImageFromCache } from "../../utils/preloadImages";
+import { preloadImages } from "../../utils/preloadImages";
 
 interface CardsRowProps {
   title: string;

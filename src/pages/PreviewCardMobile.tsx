@@ -4,7 +4,6 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   Tooltip,
   VStack,
@@ -22,6 +21,7 @@ import theme from "../theme/theme";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
+import CachedImage from "../components/CachedImage.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -109,7 +109,7 @@ const MobilePreviewCard = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               >
-                <Image
+                <CachedImage
                   src={
                     isPack
                       ? `Cards/${card.img}.png`
