@@ -1,8 +1,7 @@
-import { Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
-import CachedImage from "./CachedImage.tsx";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
@@ -26,7 +25,7 @@ export const SortBy = () => {
         p={{ base: "5px 5px", sm: "8px 5px" }}
       >
         <Tooltip label="Suit" placement="bottom" size="sm">
-          <CachedImage
+          <Img
             cursor="pointer"
             src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
             height={{base: 5, sm: 8}}
@@ -36,7 +35,7 @@ export const SortBy = () => {
           />
         </Tooltip>
         <Tooltip label="Rank" placement="bottom" size="sm">
-          <CachedImage
+          <Img
             cursor="pointer"
             src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
             height={{base: 5, sm: 8}}
