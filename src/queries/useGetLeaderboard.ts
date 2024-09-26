@@ -50,38 +50,41 @@ export const useGetLeaderboard = () => {
   const { data } = queryResponse;
 
   const dojoLeaders = data?.jokersOfNeonGameModels?.edges
-  ?.filter((edge) => edge.node.player_score > 0)
-  .sort((a, b) => {
-    if (a.node.level !== b.node.level) {
-      return b.node.level - a.node.level;
-    }
-    return b.node.player_score - a.node.player_score;
-  })
-  .reduce((acc, leader) => {
-    const playerName = decodeString(leader.node.player_name ?? "");
-    const playerScore = leader.node.player_score;
-    const playerLevel = leader.node.level;
-
-    if (!acc.has(playerName)) {
-      acc.set(playerName, { ...leader.node, player_name: playerName });
-    } else {
-      const existingLeader = acc.get(playerName)!;
-      
-      if (
-        playerLevel > existingLeader.level ||
-        (playerLevel === existingLeader.level && playerScore > existingLeader.player_score)
-      ) {
-        acc.set(playerName, { ...leader.node, player_name: playerName });
+    ?.filter((edge) => edge.node.player_score > 0)
+    .sort((a, b) => {
+      if (a.node.level !== b.node.level) {
+        return b.node.level - a.node.level;
       }
-    }
+      return b.node.player_score - a.node.player_score;
+    })
+    .reduce((acc, leader) => {
+      const playerName = decodeString(leader.node.player_name ?? "");
+      const playerScore = leader.node.player_score;
+      const playerLevel = leader.node.level;
 
-    return acc;
-  }, new Map<string, { player_name: string; player_score: number; level: number }>())
+      if (!acc.has(playerName)) {
+        acc.set(playerName, { ...leader.node, player_name: playerName });
+      } else {
+        const existingLeader = acc.get(playerName)!;
 
-  const leaderboard = Array.from(dojoLeaders?.values() ?? []).map((leader, index) => ({
-    ...leader,
-    position: index + 1,
-  }));
+        if (
+          playerLevel > existingLeader.level ||
+          (playerLevel === existingLeader.level &&
+            playerScore > existingLeader.player_score)
+        ) {
+          acc.set(playerName, { ...leader.node, player_name: playerName });
+        }
+      }
+
+      return acc;
+    }, new Map<string, { id: number; player_name: string; player_score: number; level: number }>());
+
+  const leaderboard = Array.from(dojoLeaders?.values() ?? []).map(
+    (leader, index) => ({
+      ...leader,
+      position: index + 1,
+    })
+  );
 
   return {
     ...queryResponse,
