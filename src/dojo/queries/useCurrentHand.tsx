@@ -25,6 +25,8 @@ export const useCurrentHand = (sortBy: SortBy) => {
     },
   } = useDojo();
 
+  console.log("CurrentHandCard", CurrentHandCard);
+
   const game = useGame();
 
   if (!game) return [];
