@@ -50,23 +50,45 @@ export const useGetLeaderboard = () => {
   const { data } = queryResponse;
 
   const dojoLeaders = data?.jokersOfNeonGameModels?.edges
-    ?.filter((edge) => edge.node.player_score > 0)
-    .sort((a, b) => {
-      if (a.node.level !== b.node.level) {
-        return b.node.level - a.node.level;
+  ?.filter((edge) => edge.node.player_score > 0)
+  .sort((a, b) => {
+    if (a.node.level !== b.node.level) {
+      return b.node.level - a.node.level;
+    }
+    return b.node.player_score - a.node.player_score;
+  })
+  .reduce((acc, leader) => {
+    const playerName = decodeString(leader.node.player_name ?? "");
+    const playerScore = leader.node.player_score;
+    const playerLevel = leader.node.level;
+
+    // Verificar si el jugador ya está en el Map
+    if (!acc.has(playerName)) {
+      // Si no está, agregarlo al Map
+      acc.set(playerName, { ...leader.node, player_name: playerName });
+    } else {
+      // Si está, verificar si este nuevo registro tiene mayor nivel o score
+      const existingLeader = acc.get(playerName)!; // ¡Aserción no nula!
+      
+      if (
+        playerLevel > existingLeader.level ||
+        (playerLevel === existingLeader.level && playerScore > existingLeader.player_score)
+      ) {
+        acc.set(playerName, { ...leader.node, player_name: playerName });
       }
-      return b.node.player_score - a.node.player_score;
-    })
-    .map((leader, index) => {
-      return {
-        ...leader.node,
-        position: index + 1,
-        player_name: decodeString(leader.node.player_name ?? ""),
-      };
-    });
+    }
+
+    return acc;
+  }, new Map<string, { player_name: string; player_score: number; level: number }>())
+
+  // Si dojoLeaders es undefined, lo convertimos en un array vacío
+  const leaderboard = Array.from(dojoLeaders?.values() ?? []).map((leader, index) => ({
+    ...leader,
+    position: index + 1,
+  }));
 
   return {
     ...queryResponse,
-    data: dojoLeaders,
+    data: leaderboard,
   };
 };
