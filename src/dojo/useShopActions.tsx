@@ -1,7 +1,6 @@
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { failedTransactionToast, showTransactionToast, updateTransactionToast } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-
   
 export const useShopActions = () => {
     const {
@@ -11,12 +10,12 @@ export const useShopActions = () => {
         account: { account },
       } = useDojo(); 
 
-      const skipShop = async (gameId: number) => {
+      const skipShop = async (game_id: number) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.skipShop({
+          const { transaction_hash } = await client.shop_system.skip_shop({
             account,
-            gameId,
+            game_id,
           });
           showTransactionToast(transaction_hash);
     
@@ -47,17 +46,17 @@ export const useShopActions = () => {
       };
 
       const buyCard = async (
-        gameId: number,
+        game_id: number,
         card_idx: number,
         card_type: number
       ) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.buyCard({
+          const { transaction_hash } = await client.shop_system.buy_card_item({
             account,
-            gameId,
-            card_idx,
-            card_type,
+            game_id,
+            item_id: card_idx,
+            card_item_type: card_type,
           });
           showTransactionToast(transaction_hash);
     
@@ -73,15 +72,15 @@ export const useShopActions = () => {
       };
 
       const buyPack = async (
-        gameId: number,
+        game_id: number,
         pack_id: number
       ) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.buyPack({
+          const { transaction_hash } = await client.shop_system.buy_blister_pack_item({
             account,
-            gameId,
-            pack_id,
+            game_id,
+            blister_pack_item_id: pack_id,
           });
           showTransactionToast(transaction_hash);
     
@@ -97,16 +96,15 @@ export const useShopActions = () => {
       };
 
       const selectCardsFromPack = async (
-        gameId: number,
-        cardIndexes: number[]
+        game_id: number,
+        cards_index: number[]
       ) => {
-        console.log("selectCardsFromPack", cardIndexes);
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.selectCardsFromPack({
+          const { transaction_hash } = await client.shop_system.select_cards_from_blister({
             account,
-            gameId,
-            cardIndexes,
+            game_id,
+            cards_index,
           });
           showTransactionToast(transaction_hash);
     
@@ -122,14 +120,14 @@ export const useShopActions = () => {
       };
 
       const levelUpPokerHand = async (
-        gameId: number,
+        game_id: number,
         item_id: number
       ) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.levelUpPokerHand({
+          const { transaction_hash } = await client.shop_system.buy_poker_hand_item({
             account,
-            gameId,
+            game_id,
             item_id,
           });
           showTransactionToast(transaction_hash);
@@ -145,12 +143,12 @@ export const useShopActions = () => {
         }
       };
 
-      const storeReroll = async ( gameId: number) => {
+      const storeReroll = async (game_id: number) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.shop_system.storeReroll({
+          const { transaction_hash } = await client.shop_system.reroll({
             account,
-            gameId,
+            game_id,
           });
           showTransactionToast(transaction_hash);
           const tx = await account.waitForTransaction(transaction_hash, {

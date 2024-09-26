@@ -1,4 +1,4 @@
-import { AccountInterface, shortString } from "starknet";
+import { Account, shortString } from "starknet";
 import { CHECK_HAND_EVENT, GAME_ID_EVENT, GAME_OVER_EVENT } from "../constants/dojoEventKeys";
 import { Plays } from "../enums/plays";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
@@ -24,7 +24,7 @@ export const useGameActions = () => {
       const createGame = async (username: string) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.game_system.createGame({
+          const { transaction_hash } = await client.game_system.create_game({
             account,
             player_name: BigInt(shortString.encodeShortString(username)),
           });
@@ -55,21 +55,21 @@ export const useGameActions = () => {
       };
 
       const checkHand = async (
-        gameId: number,
-        cards: number[],
+        game_id: number,
+        cards_index: number[],
         modifiers: { [key: number]: number[] }
       ) => {
         try {
           const { modifiers1, modifiers2 } = getModifiersForContract(
-            cards,
+            cards_index,
             modifiers
           );
-          const { transaction_hash } = await client.game_system.checkHand({
+          const { transaction_hash } = await client.game_system.check_hand({
             account,
-            gameId,
-            cards,
-            modifiers1,
-            modifiers2,
+            game_id,
+            cards_index,
+            modifiers_1_index: modifiers1,
+            modifiers_2_index: modifiers2,
           });
     
           const tx = await account.waitForTransaction(transaction_hash, {
@@ -99,7 +99,7 @@ export const useGameActions = () => {
       };
 
       const discard = async (
-        gameId: number,
+        game_id: number,
         cards: number[],
         modifiers: { [key: number]: number[] }
       ) => {
@@ -111,10 +111,10 @@ export const useGameActions = () => {
           showTransactionToast();
           const { transaction_hash } = await client.game_system.discard({
             account,
-            gameId,
-            cards,
-            modifiers1,
-            modifiers2,
+            game_id,
+            cards_index: cards,
+            modifiers_1_index: modifiers1,
+            modifiers_2_index: modifiers2,
           });
           showTransactionToast(transaction_hash);
     
@@ -148,15 +148,15 @@ export const useGameActions = () => {
       };
 
       const discardEffectCard = async (
-        gameId: number,
+        game_id: number,
         card: number
       ) => {
         try {
           showTransactionToast();
-          const { transaction_hash } = await client.game_system.discardEffectCard({
+          const { transaction_hash } = await client.game_system.discard_effect_card({
             account,
-            gameId,
-            card,
+            game_id,
+            card_index: card,
           });
           showTransactionToast(transaction_hash);
     
@@ -187,15 +187,15 @@ export const useGameActions = () => {
       };
 
       const discardSpecialCard = async (
-        account: AccountInterface,
-        gameId: number,
+        account: Account,
+        game_id: number,
         card: number
       ) => {
         try {
-          const { transaction_hash } = await client.game_system.discardSpecialCard({
+          const { transaction_hash } = await client.game_system.discard_special_card({
             account,
-            gameId,
-            card,
+            game_id,
+            special_card_index: card,
           });
     
           const tx = await account.waitForTransaction(transaction_hash, {
@@ -210,7 +210,7 @@ export const useGameActions = () => {
       };
 
       const play = async (
-        gameId: number,
+        game_id: number,
         cards: number[],
         modifiers: { [key: number]: number[] }
       ) => {
@@ -222,10 +222,10 @@ export const useGameActions = () => {
           showTransactionToast();
           const { transaction_hash } = await client.game_system.play({
             account,
-            gameId,
-            cards,
-            modifiers1,
-            modifiers2,
+            game_id,
+            cards_index: cards,
+            modifiers_1_index: modifiers1,
+            modifiers_2_index: modifiers2,
           });
           showTransactionToast(transaction_hash);
     
