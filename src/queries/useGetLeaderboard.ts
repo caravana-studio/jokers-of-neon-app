@@ -62,12 +62,9 @@ export const useGetLeaderboard = () => {
     const playerScore = leader.node.player_score;
     const playerLevel = leader.node.level;
 
-    // Verificar si el jugador ya está en el Map
     if (!acc.has(playerName)) {
-      // Si no está, agregarlo al Map
       acc.set(playerName, { ...leader.node, player_name: playerName });
     } else {
-      // Si está, verificar si este nuevo registro tiene mayor nivel o score
       const existingLeader = acc.get(playerName)!; // ¡Aserción no nula!
       
       if (
@@ -81,7 +78,6 @@ export const useGetLeaderboard = () => {
     return acc;
   }, new Map<string, { player_name: string; player_score: number; level: number }>())
 
-  // Si dojoLeaders es undefined, lo convertimos en un array vacío
   const leaderboard = Array.from(dojoLeaders?.values() ?? []).map((leader, index) => ({
     ...leader,
     position: index + 1,
