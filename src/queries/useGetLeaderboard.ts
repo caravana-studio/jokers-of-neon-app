@@ -65,7 +65,7 @@ export const useGetLeaderboard = () => {
     if (!acc.has(playerName)) {
       acc.set(playerName, { ...leader.node, player_name: playerName });
     } else {
-      const existingLeader = acc.get(playerName)!; // ¡Aserción no nula!
+      const existingLeader = acc.get(playerName)!;
       
       if (
         playerLevel > existingLeader.level ||
