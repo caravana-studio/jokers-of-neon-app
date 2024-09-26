@@ -112,7 +112,7 @@ const PreviewCard = () => {
                 src={
                   isPack
                     ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
                 }
                 borderRadius="10px"
               />

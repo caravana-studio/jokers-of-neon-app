@@ -9,7 +9,6 @@ import { Card } from "../../types/Card";
 import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
-import { useComponentValue } from "@dojoengine/react";
 
 const getCard = (game_id: number, idx: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
@@ -26,8 +25,6 @@ export const useCurrentHand = (sortBy: SortBy) => {
     },
   } = useDojo();
 
-  console.log("CurrentHandCard", CurrentHandCard);
-
   const game = useGame();
 
   if (!game) return [];
@@ -36,7 +33,6 @@ export const useCurrentHand = (sortBy: SortBy) => {
   const dojoCards = [];
 
   for (let i = 0; i < handSize; i++) {
-    console.log("GAME ID: ", game.id);
     dojoCards.push(getCard(game.id ?? 0, i, CurrentHandCard));
   }
 
@@ -47,7 +43,7 @@ export const useCurrentHand = (sortBy: SortBy) => {
       return {
         ...dojoCard,
         img: `${dojoCard?.card_id}.png`,
-        isModifier: false,
+        isModifier: dojoCard?.card_id >= 600 && dojoCard?.card_id <= 699,
         idx: dojoCard?.idx,
         id: dojoCard?.idx.toString(),
       };

@@ -15,12 +15,12 @@ const getDefaultImageUrls = (): string[] => {
 
   // Modifier cards
   Object.keys(MODIFIER_CARDS_DATA).forEach((key) => {
-    imageUrls.push(`Cards/effect/${key}.png`);
+    imageUrls.push(`Cards/${key}.png`);
   });
 
   // Special cards
   Object.keys(SPECIAL_CARDS_DATA).forEach((key) => {
-    imageUrls.push(`Cards/effect/${key}.png`);
+    imageUrls.push(`Cards/${key}.png`);
   });
 
   // Packs

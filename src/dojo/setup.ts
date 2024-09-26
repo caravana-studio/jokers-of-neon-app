@@ -1,19 +1,16 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
+import { BurnerManager } from "@dojoengine/create-burner";
+import { Component, Metadata, Schema } from "@dojoengine/recs";
+import { getSyncEntities, setEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
+import { Account, ArraySignatureType } from "starknet";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
+import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/models.gen";
 import { world } from "./world";
-import { setupWorld } from "./typescript/contracts.gen";
-import { Account, ArraySignatureType } from "starknet";
-import { BurnerManager } from "@dojoengine/create-burner";
-import { setEntities, syncEntities } from "@dojoengine/state";
-import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { GAME_ID } from "../constants/localStorage";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
-
-let sync: any;
 
 const getEntities = async <S extends Schema>(
   client: torii.ToriiClient,
@@ -70,7 +67,7 @@ export async function setup({ ...config }: DojoConfig) {
 
   async function syncEntitiesForGameID() {
     
-    let gameID = localStorage.getItem(GAME_ID) || undefined;
+/*     let gameID = localStorage.getItem(GAME_ID) || undefined;
 
     const keysClause: torii.KeysClause = {
       keys: [gameID],
@@ -93,10 +90,12 @@ export async function setup({ ...config }: DojoConfig) {
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
-    }
+    } */
   }
 
   await syncEntitiesForGameID();
+
+  const sync = await getSyncEntities(toriiClient, contractComponents as any, [], 1000);
 
   // setup world
   const client = await setupWorld(dojoProvider);
