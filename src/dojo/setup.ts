@@ -1,9 +1,10 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { getSyncEntities, setEntities } from "@dojoengine/state";
+import { setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
+import { GAME_ID } from "../constants/localStorage";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
@@ -12,7 +13,7 @@ import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
-// let sync: any;
+let sync: any;
 
 const getEntities = async <S extends Schema>(
   client: torii.ToriiClient,
@@ -27,6 +28,7 @@ const getEntities = async <S extends Schema>(
     query.offset = cursor;
 
     const fetchedEntities = await client.getEntities(query);
+    console.log(fetchedEntities);
 
     setEntities(fetchedEntities, components);
 
@@ -69,38 +71,52 @@ export async function setup({ ...config }: DojoConfig) {
   console.log(componentNames);
 
   async function syncEntitiesForGameID() {
-    /* let gameID = localStorage.getItem(GAME_ID) || undefined;
+    let gameID = localStorage.getItem(GAME_ID) || undefined;
 
     const keysClause: torii.KeysClause = {
+      keys: [gameID, undefined],
+      pattern_matching: "FixedLen",
+      models: componentNames,
+    };
+
+    const keysGame: torii.KeysClause = {
       keys: [gameID],
-      pattern_matching: "VariableLen",
-      models: componentNames
+      pattern_matching: "FixedLen",
+      models: ["jokers_of_neon-Game"],
+    };
+
+    const keysCard: torii.KeysClause = {
+      keys: [gameID, undefined, undefined],
+      pattern_matching: "FixedLen",
+      models: ["jokers_of_neon-Game"],
     };
 
     const query: torii.Query = {
       limit: 10000,
       offset: 0,
-      clause: { Keys: keysClause }
-    }; 
+      clause: {
+        Composite: {
+          operator: "Or",
+          clauses: [
+            { Keys: keysClause },
+            { Keys: keysGame },
+            { Keys: keysCard },
+          ],
+        },
+      },
+    };
 
-    if(gameID){
+    if (gameID) {
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
-      sync  = await syncEntities(toriiClient, contractComponents as any, []);
+      sync = await syncEntities(toriiClient, contractComponents as any, []);
 
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
-    }*/
+    }
   }
-
-  const sync = await getSyncEntities(
-    toriiClient,
-    contractComponents as any,
-    [],
-    1000
-  );
 
   await syncEntitiesForGameID();
 
