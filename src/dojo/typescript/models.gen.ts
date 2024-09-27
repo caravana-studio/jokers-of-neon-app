@@ -295,17 +295,29 @@ export const CreateGameEventDefinition = {
     
 };
 
+// Type definition for `jokers_of_neon::models::status::round::type_player_card::TypePlayerCard` enum
+export type TypePlayerCard = { type: 'Common'; } | { type: 'Effect'; };
+
+export const TypePlayerCardDefinition = {
+    type: RecsType.String,
+    value: RecsType.String
+};
+
 
 // Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard` struct
 export interface CurrentHandCard {
     game_id: Number;
     idx: Number;
+    type_player_card: TypePlayerCard;
+    player_card_id: Number;
     card_id: Number;
     
 }
 export const CurrentHandCardDefinition = {
     game_id: RecsType.Number,
     idx: RecsType.Number,
+    type_player_card: TypePlayerCardDefinition,
+    player_card_id: RecsType.Number,
     card_id: RecsType.Number,
     
 };
@@ -330,14 +342,6 @@ export const CurrentSpecialCardsDefinition = {
 };
 
 
-// Type definition for `jokers_of_neon::models::status::round::type_player_card::TypePlayerCard` enum
-export type TypePlayerCard = { type: 'Common'; } | { type: 'Effect'; };
-
-export const TypePlayerCardDefinition = {
-    type: RecsType.String,
-    value: RecsType.String
-};
-        
 // Type definition for `jokers_of_neon::models::status::round::deck_card::DeckCard` struct
 export interface DeckCard {
     game_id: Number;
@@ -1137,13 +1141,15 @@ export function defineContractComponents(world: World) {
                 {
                     game_id: RecsType.Number,
                     idx: RecsType.Number,
+                    type_player_card: RecsType.String,
+                    player_card_id: RecsType.Number,
                     card_id: RecsType.Number,
                 },
                 {
                     metadata: {
                         namespace: "jokers_of_neon",
                         name: "CurrentHandCard",
-                        types: ["u32", "u32", "u32"],
+                        types: ["u32", "u32", "TypePlayerCard", "u32", "u32"],
                         customTypes: [],
                     },
                 }
