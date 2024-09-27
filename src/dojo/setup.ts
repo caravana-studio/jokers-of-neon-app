@@ -28,7 +28,6 @@ const getEntities = async <S extends Schema>(
     query.offset = cursor;
 
     const fetchedEntities = await client.getEntities(query);
-    console.log(fetchedEntities);
 
     setEntities(fetchedEntities, components);
 
@@ -67,8 +66,6 @@ export async function setup({ ...config }: DojoConfig) {
     const name = defaultNameSpace + component.metadata.name;
     componentNames.push(name);
   });
-
-  console.log(componentNames);
 
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;

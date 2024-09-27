@@ -24,7 +24,6 @@ export const GameOver = () => {
       : Number(localStorage.getItem(LAST_GAME_ID));
   const [lastGameId, setLastGameId] = useState(getLSGameId());
   const { restartGame, setIsRageRound } = useGameContext();
-  const { data } = useGetGame(lastGameId);
   const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
