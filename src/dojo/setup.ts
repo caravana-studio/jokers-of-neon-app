@@ -1,15 +1,15 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { getSyncEntities, setEntities, syncEntities } from "@dojoengine/state";
+import { setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
+import { GAME_ID } from "../constants/localStorage";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/models.gen";
 import { world } from "./world";
-import { GAME_ID } from "../constants/localStorage";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -76,31 +76,40 @@ export async function setup({ ...config }: DojoConfig) {
     const keysClause: torii.KeysClause = {
       keys: [gameID, undefined],
       pattern_matching: "FixedLen",
-      models: componentNames
+      models: componentNames,
     };
 
     const keysGame: torii.KeysClause = {
       keys: [gameID],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Game"]
+      models: ["jokers_of_neon-Game"],
     };
 
     const keysCard: torii.KeysClause = {
       keys: [gameID, undefined, undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Game"]
+      models: ["jokers_of_neon-Game"],
     };
 
     const query: torii.Query = {
       limit: 10000,
       offset: 0,
-      clause: { Composite:{ operator: "Or", clauses: [{ Keys: keysClause }, {Keys: keysGame}, {Keys: keysCard}]} }
-    }; 
+      clause: {
+        Composite: {
+          operator: "Or",
+          clauses: [
+            { Keys: keysClause },
+            { Keys: keysGame },
+            { Keys: keysCard },
+          ],
+        },
+      },
+    };
 
-    if(gameID){
+    if (gameID) {
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
-      sync  = await syncEntities(toriiClient, contractComponents as any, []);
+      sync = await syncEntities(toriiClient, contractComponents as any, []);
 
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
@@ -108,13 +117,6 @@ export async function setup({ ...config }: DojoConfig) {
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
     }
   }
-
-  // sync = await getSyncEntities(
-  //   toriiClient,
-  //   contractComponents as any,
-  //   [],
-  //   1000
-  // );
 
   await syncEntitiesForGameID();
 
