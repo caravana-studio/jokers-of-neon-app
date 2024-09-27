@@ -1,42 +1,42 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
+import { BurnerManager } from "@dojoengine/create-burner";
+import { Component, Metadata, Schema } from "@dojoengine/recs";
+import { getSyncEntities, setEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
+import { Account, ArraySignatureType } from "starknet";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
+import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/models.gen";
 import { world } from "./world";
-import { setupWorld } from "./typescript/contracts.gen";
-import { Account, ArraySignatureType } from "starknet";
-import { BurnerManager } from "@dojoengine/create-burner";
-import { setEntities, syncEntities } from "@dojoengine/state";
-import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { GAME_ID } from "../constants/localStorage";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
-let sync: any;
+// let sync: any;
 
 const getEntities = async <S extends Schema>(
   client: torii.ToriiClient,
-  components: Component<S, Metadata, undefined>[], query: torii.Query,
-  limit: number = 100, 
-  ) => {
-      let cursor = 0;
-      let continueFetching = true;
+  components: Component<S, Metadata, undefined>[],
+  query: torii.Query,
+  limit: number = 100
+) => {
+  let cursor = 0;
+  let continueFetching = true;
 
-      while (continueFetching) {
-          query.offset = cursor;
-          
-          const fetchedEntities = await client.getEntities(query);
+  while (continueFetching) {
+    query.offset = cursor;
 
-          setEntities(fetchedEntities, components);
+    const fetchedEntities = await client.getEntities(query);
 
-          if (Object.keys(fetchedEntities).length < limit) {
-              continueFetching = false;
-          } else {
-              cursor += limit;
-          }
-      }
-  };
+    setEntities(fetchedEntities, components);
+
+    if (Object.keys(fetchedEntities).length < limit) {
+      continueFetching = false;
+    } else {
+      cursor += limit;
+    }
+  }
+};
 
 export async function setup({ ...config }: DojoConfig) {
   // torii client
@@ -55,22 +55,21 @@ export async function setup({ ...config }: DojoConfig) {
 
   // create dojo provider
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
-  
+
   type ClientComponentsKeys = keyof typeof clientComponents;
   const defaultNameSpace = "jokers_of_neon-";
   const componentNames: string[] = [];
 
   (Object.keys(clientComponents) as ClientComponentsKeys[]).forEach((key) => {
-      const component = clientComponents[key];
-      const name = defaultNameSpace + component.metadata.name;
-      componentNames.push(name);
+    const component = clientComponents[key];
+    const name = defaultNameSpace + component.metadata.name;
+    componentNames.push(name);
   });
 
   console.log(componentNames);
 
   async function syncEntitiesForGameID() {
-    
-    let gameID = localStorage.getItem(GAME_ID) || undefined;
+    /* let gameID = localStorage.getItem(GAME_ID) || undefined;
 
     const keysClause: torii.KeysClause = {
       keys: [gameID],
@@ -93,8 +92,15 @@ export async function setup({ ...config }: DojoConfig) {
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
-    }
+    }*/
   }
+
+  const sync = await getSyncEntities(
+    toriiClient,
+    contractComponents as any,
+    [],
+    1000
+  );
 
   await syncEntitiesForGameID();
 
