@@ -54,6 +54,8 @@ export async function setupWorld(provider: DojoProvider) {
       player_name: bigint;
     }) => {
       try {
+        console.log("player: ", props.player_name, "contract_name: ", contract_name);
+        console.log("provider: ", provider, "acc: ", props.account);
         return await provider.execute(
           props.account,
           {
