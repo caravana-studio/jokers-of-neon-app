@@ -16,9 +16,8 @@ interface GameMenuProps {
 export const GameMenu = ({
   onlySound = false,
   inStore = false,
-  showTutorial
+  showTutorial,
 }: GameMenuProps) => {
-
   const username = useUsername();
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
@@ -35,14 +34,19 @@ export const GameMenu = ({
           <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
         </MenuButton>
         <MenuList>
+          <MenuItem
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Go to home
+          </MenuItem>
           {!onlySound && (
             <MenuItem onClick={() => executeCreateGame()}>
               Start new game
             </MenuItem>
           )}
-          <MenuItem onClick={showTutorial}>
-            See tutorial
-          </MenuItem>
+          {showTutorial && <MenuItem onClick={showTutorial}>See tutorial</MenuItem>}
           <MenuItem onClick={togglePlayPause}>
             Turn sound {isPlaying ? "OFF" : "ON"}
           </MenuItem>

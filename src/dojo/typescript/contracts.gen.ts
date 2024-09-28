@@ -383,7 +383,6 @@ export async function setupWorld(provider: DojoProvider) {
       gameId: number;
       pack_id: number;
     }) => {
-      console.log("calldata", [gameId, pack_id]);
       try {
         return await provider.execute(
           account,
@@ -411,7 +410,6 @@ export async function setupWorld(provider: DojoProvider) {
       cardIndexes: number[];
     }) => {
       try {
-        console.log("calldata", [gameId, cardIndexes.length, ...cardIndexes]);
         return await provider.execute(
           account,
           {
