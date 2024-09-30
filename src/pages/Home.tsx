@@ -5,11 +5,15 @@ import { Background } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useTranslation } from 'react-i18next';
+
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  
 
   return (
     <Background type="home">
@@ -39,7 +43,7 @@ export const Home = () => {
                 setLeaderboardOpen(false);
               }}
             >
-              GO BACK HOME
+              {t('returnLeaderboard-btn')}
             </Button>
           </Box>
         ) : (
@@ -71,7 +75,7 @@ export const Home = () => {
                   setLeaderboardOpen(true);
                 }}
               >
-                SEE LEADERBOARD
+                {t('leaderboard-btn')}
               </Button>
               <Button
                 variant="secondarySolid"
@@ -79,7 +83,7 @@ export const Home = () => {
                   navigate("/login");
                 }}
               >
-                PLAY DEMO
+                {t("playDemo-btn")}
               </Button>
             </Flex>
           </Flex>
