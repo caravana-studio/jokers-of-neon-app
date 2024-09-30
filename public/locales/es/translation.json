@@ -1,5 +1,13 @@
 {
     "leaderboard-btn": "Ver leaderboard",
     "playDemo-btn": "Jugar demo",
-    "returnLeaderboard-btn": "Volver al inicio"
+    "returnLeaderboard-btn": "Volver al inicio",
+    "position-leaderboard-head": "Puesto",
+    "username-leaderboard-head": "Nombre",
+    "score-leaderboard-head": "Puntos",
+    "level-leaderboard-head": "Nivel",
+    "prize-leaderboard-head": "Premio",
+    "tournament-tooltip": "Los premios serán distribuidos a los mejores 10 jugadores al final del torneo",
+    "days-countdown-tournament": "días",
+    "label-countdown-tournament": "para la finalización del torneo"
 }

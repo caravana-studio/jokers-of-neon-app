@@ -14,6 +14,7 @@ import { isMobile } from "react-device-detect";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
+import { useTranslation } from 'react-i18next';
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -32,6 +33,7 @@ interface LeaderboardProps {
   gameId?: number;
 }
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
+  const { t } = useTranslation();
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard();
   const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
@@ -60,14 +62,14 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
           <Table variant="leaderboard">
             <Thead>
               <Tr>
-                <Td>POSITION</Td>
-                <Td>USERNAME</Td>
-                <Td>SCORE</Td>
-                <Td>LEVEL</Td>
+                <Td>{t('position-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('username-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('score-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('level-leaderboard-head').toUpperCase()}</Td>
                 <Td>
-                  PRIZE{" "}
+                {t('prize-leaderboard-head').toUpperCase()}{" "}
                   {!isMobile && (
-                    <Tooltip label="Prizes will be distributed to the top 10 players at the end of the tournament">
+                    <Tooltip label={t('tournament-tooltip')}>
                       <InfoIcon
                         color="white"
                         ml={1}
