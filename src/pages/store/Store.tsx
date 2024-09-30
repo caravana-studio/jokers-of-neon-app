@@ -96,7 +96,7 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} {rerollCost}
+        REROLL {rerollCost}
         <CashSymbol />
       </Button>
     </Tooltip>
@@ -237,6 +237,7 @@ export const Store = () => {
           display="flex"
           flexWrap="wrap"
           alignItems="center"
+          justifyContent="center"
           width="100%"
           overflow={isMobile ? "scroll" : "auto"}
           pt={isMobile ? 4 : 0}
@@ -244,21 +245,25 @@ export const Store = () => {
         >
           <Box
             display="flex"
-            w={["100%", "100%", "40%", "40%", "40%"]}
-            h={[null, null, "100%", "100%", "100%"]}
+            w={["100%", "100%", "100%", "40%", "40%"]}
+            h={[null, null, null, "100%", "100%"]}
             flexDirection="column"
             justifyContent="space-between"
             pb={isMobile ? 4 : 0}
           >
-            <Heading variant="italic" size="l" ml={4}>
-              LEVEL UP YOUR GAME
-            </Heading>
-            {isMobile && (
-              <Flex mt={2}>
-                <Coins rolling />
+            <Flex flexDirection={"column"} gap={4} mb={{base: 4, md: 0}} alignItems={{base: "center", md: "left"}}>
+              <Heading variant="italic" size="l" ml={4}>
+                LEVEL UP YOUR GAME
+              </Heading>
+              {isMobile && (
+                <Flex mt={2}>
+                  <Coins rolling />
+                </Flex>
+              )}
+            </Flex>
+              <Flex justifyContent={{base: "left", sm: "center", md: "left"}}>
+                <Packs />
               </Flex>
-            )}
-            <Packs />
             {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
             {!isMobile && <Coins rolling />}
           </Box>
@@ -299,7 +304,7 @@ export const Store = () => {
           {isMobile && (
             <Box
               className="game-tutorial-step-2"
-              w="100%"
+              w={["100%", "100%", "60%", "60%", "50%"]}
               background="rgba(0,0,0,0.5)"
               px={4}
               borderRadius="10px"
@@ -347,10 +352,12 @@ export const Store = () => {
               </>
             ) : (
               <Flex
-                width="95%"
-                justifyContent="space-between"
-                my={4}
-                mb={"100px"}
+                width="100%"
+                mx={2}
+                justifyContent="center"
+                my={6}
+                mb={12}
+                gap={6}
               >
                 {rerollButton}
                 {specialsButton}
