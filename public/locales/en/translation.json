@@ -10,5 +10,10 @@
     "prize-leaderboard-head": "Prize",
     "tournament-tooltip": "Prizes will be distributed to the top 10 players at the end of the tournament",
     "days-countdown-tournament": "days",
-    "label-countdown-tournament": "for the tournament to finish"
+    "label-countdown-tournament": "for the tournament to finish",
+    "gameOver-msj": "GAME OVER",
+    "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
+    "gameOver-top5-msj": "Great job! You're in the top 5! Keep it up!",
+    "gameOver-share-btn": "SHARE ON",
+    "gameOver-newGame-btn": "START NEW GAME"
 }

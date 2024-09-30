@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ import { useGetGame } from "../queries/useGetGame";
 import { useAudio } from "../hooks/useAudio";
 import { looseSfx } from "../constants/sfx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { useTranslation } from 'react-i18next';
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -27,14 +28,15 @@ export const GameOver = () => {
   const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
+  const { t } = useTranslation();
   let congratulationsMsj = "";
 
   if (actualPlayer?.position != undefined) {
     congratulationsMsj =
       actualPlayer?.position === 1
-        ? "Congratulations! You're the top player on the leaderboard!"
+        ? t('gameOver-leader-msj')
         : actualPlayer?.position > 1 && actualPlayer?.position <= 5
-          ? "Great job! You're in the top 5! Keep it up!"
+          ? t('gameOver-top5-msj')
           : "";
   }
 
@@ -56,7 +58,7 @@ export const GameOver = () => {
       >
         <Flex flexDirection="column" width='100%'>
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
-            GAME OVER
+            {t('gameOver-msj')}
           </Heading>
           <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
             {congratulationsMsj}
@@ -74,7 +76,7 @@ export const GameOver = () => {
               }}
               data-size="large"
             >
-              SHARE ON
+              {t('gameOver-share-btn')}
               <Flex sx={{ ml: 2.5 }}>
                 <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
               </Flex>
@@ -89,7 +91,7 @@ export const GameOver = () => {
                 navigate("/demo");
               }}
             >
-              START NEW GAME
+              {t('gameOver-newGame-btn')}
             </Button>
           </Flex>
         </Flex>
