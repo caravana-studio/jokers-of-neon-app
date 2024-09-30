@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -22,6 +21,7 @@ import {
   MODIFIERS_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
+import { useTranslation } from 'react-i18next';
 
 export const GameContent = () => {
   const {
@@ -39,6 +39,7 @@ export const GameContent = () => {
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
   const { isRageRound } = useGameContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -122,7 +123,7 @@ export const GameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          error creating game
+          {t('error-msj')}
         </Heading>
         <Button
           variant="outline"
@@ -132,7 +133,7 @@ export const GameContent = () => {
             executeCreateGame();
           }}
         >
-          CREATE NEW GAME
+          {t('label-error-btn')}
         </Button>
       </Flex>
     );

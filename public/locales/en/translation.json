@@ -23,5 +23,7 @@
     "label-login": "Introduce username",
     "placeholder-login": "username",
     "goBack-login-btn": "GO BACK",
-    "startGame-login-btn": "START GAME"
+    "startGame-login-btn": "START GAME",
+    "error-msj": "error creating game",
+    "label-error-btn": "CREATE NEW GAME"
 }

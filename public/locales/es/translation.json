@@ -23,5 +23,7 @@
     "label-login": "Nombre de usuario",
     "placeholder-login": "Nombre de usuario",
     "goBack-login-btn": "VOLVER",
-    "startGame-login-btn": "INICIAR JUEGO"
+    "startGame-login-btn": "INICIAR JUEGO",
+    "error-msj": "Error al crear el juego",
+    "label-error-btn": "CREAR NUEVO JUEGO"
 }
