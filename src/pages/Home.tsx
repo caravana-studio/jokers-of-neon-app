@@ -57,7 +57,7 @@ export const Home = () => {
               color="white"
               fontSize={{ base: 10, sm: 20, md: 25, lg: 30 }}
             >
-              BUIDL YOUR DECK, RULE THE GAME
+              {t('slogan')}
             </Heading>
             <Img
               width={{ base: "95%", sm: "85%", md: "80%" }}
