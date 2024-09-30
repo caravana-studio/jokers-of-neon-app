@@ -25,5 +25,17 @@
     "goBack-login-btn": "GO BACK",
     "startGame-login-btn": "START GAME",
     "error-msj": "error creating game",
-    "label-error-btn": "CREATE NEW GAME"
+    "label-error-btn": "CREATE NEW GAME",
+    "rewards-details":
+    {
+        "labels":
+        {
+            "title-1": "Level",
+            "title-2": "clear",
+            "base": "base",
+            "level-bonus": "Level bonus",
+            "discards-left": "Discards left",
+            "hands-left": "Hands left"
+        }
+    }
 }

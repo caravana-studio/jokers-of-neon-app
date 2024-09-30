@@ -4,6 +4,7 @@ import { VIOLET } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { useTranslation } from 'react-i18next';
 
 interface RewardItemProps {
   label: string;
@@ -66,18 +67,20 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
+  const { t } = useTranslation();
+
   const labels = [
-    `base`,
-    "Level bonus",
-    `${hands_left} Hands left`,
-    `${discard_left} Discards left`,
+    t('rewards-details.labels.base'),
+    t('rewards-details.labels.level-bonus'),
+    `${hands_left} ${t('rewards-details.labels.hands-left')}`,
+    `${discard_left} ${t('rewards-details.labels.discards-left')}`,
   ];
 
   const navigate = useNavigate();
 
   return (
     <PinkBox
-      title={`Level ${level} defeated`}
+      title={`${t('rewards-details.labels.title-1')} ${level} ${t('rewards-details.labels.title-2')}`}
       button="CONTINUE"
       onClick={() => {
         // stopNextLevelSound();
