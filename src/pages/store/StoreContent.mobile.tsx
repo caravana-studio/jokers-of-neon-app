@@ -221,27 +221,25 @@ export const StoreContentMobile = () => {
           alignItems="center"
           justifyContent="center"
           width="100%"
-          overflow={"scroll"}
+          overflow="auto"
           pt={4}
           px={{ base: 2, md: 14 }}
         >
           <Box
             display="flex"
             w={["100%", "100%", "100%", "40%", "40%"]}
-            h={[null, null, null, "100%", "100%"]}
             flexDirection="column"
-            
             pb={4}
           >
-            <Flex flexDirection={"column"} gap={4} mb={{base: 4, md: 0}}>
-              <Heading variant="italic" size="l" ml={4}>
+            <Flex flexDirection={"column"} gap={0} mb={{base: 4, md: 0}} mt={{base: 0, sm: 4}} >
+              <Heading variant="italic" size="l" ml={4} textAlign={{base: "left", sm: "center"}}>
                 LEVEL UP YOUR GAME
               </Heading>       
-                <Flex mt={2}>
+                <Flex margin={{base: "0", sm: "0 auto"}} mt={2}>
                   <Coins rolling />
                 </Flex>
             </Flex>
-              <Flex justifyContent={{base: "left", sm: "center", md: "left"}}>
+              <Flex justifyContent={{base: "left", sm: "center"}}>
                 <Packs />
               </Flex>
           </Box>
