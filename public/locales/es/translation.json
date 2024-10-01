@@ -69,5 +69,29 @@
             "discards-left": "Descartes restantes",
             "hands-left": "Manos restantes"
         }
+    },
+    "game":
+    {
+        "level-points":
+        {
+            "level": "Nivel",
+            "target-score": "Puntos",
+            "labels":
+            {
+                "score-label-1": "Suma",
+                "score-label-2": "para superar el nivel"
+            }
+        },
+        "score": "Tu puntaje:",
+        "multi-points":
+        {
+            "points": "Puntos",
+            "multi": "Multi"
+        },
+        "special-cards":
+        {
+            "special-cards-label": "Cartas especiales",
+            "remove-special-cards-label": "Eliminar"    
+        }
     }
 }

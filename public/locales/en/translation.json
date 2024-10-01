@@ -89,5 +89,29 @@
             "discards-left": "Discards left",
             "hands-left": "Hands left"
         }
+    },
+    "game":
+    {
+        "level-points":
+        {
+            "level": "Level",
+            "target-score": "Score",
+            "labels":
+            {
+                "score-label-1": "Score",
+                "score-label-2": "to clear the level"
+            }
+        },
+        "score": "Your score:",
+        "multi-points":
+        {
+            "points": "Points",
+            "multi": "Multi"
+        },
+        "special-cards":
+        {
+            "special-cards-label": "Special cards",
+            "remove-special-cards-label": "Remove"    
+        }
     }
 }

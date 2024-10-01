@@ -2,9 +2,12 @@ import { Box, Heading, useTheme } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
+import { useTranslation } from "react-i18next";
 
 export const MultiPoints = () => {
   const { points, multi } = useGameContext();
+  const { t } = useTranslation();
+  
   return (
     <Box
       gap={{ base: 1, md: 1.5 }}
@@ -12,14 +15,14 @@ export const MultiPoints = () => {
       className="game-tutorial-step-6"
     >
       <PointBox type="points">
-        <Heading size={{ base: "xs", md: "s" }}>POINTS</Heading>
+        <Heading size={{ base: "xs", md: "s" }}>{t('game.multi-points.points')}</Heading>
         <Heading size={{ base: "s", md: "m" }}>
           <RollingNumber n={points} />
         </Heading>
       </PointBox>
       {!isMobile && <Heading size="s">x</Heading>}
       <PointBox type="multi">
-        <Heading size={{ base: "xs", md: "s" }}>MULTI</Heading>
+        <Heading size={{ base: "xs", md: "s" }}>{t('game.multi-points.multi')}</Heading>
         <Heading size={{ base: "s", md: "m" }}>
           <RollingNumber n={multi} />
         </Heading>
