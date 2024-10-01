@@ -18,6 +18,7 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
+import { useTranslation } from "react-i18next";
 
 export const HandSection = () => {
   const {
@@ -48,6 +49,7 @@ export const HandSection = () => {
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -142,7 +144,7 @@ export const HandSection = () => {
                           onClose();
                         }}
                       >
-                        Change
+                        {t('game.hand-section.modifier-change')}
                       </Button>
                     )}
                   </Flex>
@@ -191,7 +193,7 @@ export const HandSection = () => {
           bottom={{ base: "70px", md: "100px" }}
           sx={{ position: "fixed" }}
         >
-          you ran out of hands to play
+          {t('game.hand-section.no-cards-label')}
         </Heading>
       )}
     </>

@@ -3,11 +3,12 @@ import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
+import { useTranslation } from "react-i18next";
 
 export const ShowPlays = () => {
     const [hoveredButton, setHoveredButton] = useState(false);
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
 
     return (
         <Button
@@ -35,7 +36,7 @@ export const ShowPlays = () => {
                     className="game-tutorial-step-5"
                 />
                 <Text textTransform="initial">
-                    Show plays
+                    {t('game.hand-section.show-plays')}
                 </Text>
                 </Flex>
         </Button>

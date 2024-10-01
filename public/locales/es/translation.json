@@ -92,6 +92,21 @@
         {
             "special-cards-label": "Cartas especiales",
             "remove-special-cards-label": "Eliminar"    
+        },
+        "hand-section":
+        {
+            "no-cards-label": "Te quedaste sin manos para jugar",
+            "sort-by":{
+                "sort-by-title":"Ordenar por",
+                "tooltip":
+                {
+                    "suit": "Palo",
+                    "rank": "Valor"
+                }
+            },
+            "my-coins": "Mis monedas",
+            "modifier-change": "Cambiar",
+            "show-plays": "Mostrar jugadas"
         }
     }
 }

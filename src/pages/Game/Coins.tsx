@@ -2,9 +2,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
+import { useTranslation } from "react-i18next";
 
 export const Coins = () => {
   const { cash } = useGameContext();
+  const { t } = useTranslation();
 
   return (
     <Flex
@@ -13,7 +15,7 @@ export const Coins = () => {
       gap={0.5}
     >
       <Text size="m" pl={{ base: 1, sm: 0 }}>
-        My coins
+        {t('game.hand-section.my-coins')}
       </Text>
       <Flex
         gap={1.5}

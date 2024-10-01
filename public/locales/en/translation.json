@@ -112,6 +112,21 @@
         {
             "special-cards-label": "Special cards",
             "remove-special-cards-label": "Remove"    
+        },
+        "hand-section":
+        {
+            "no-cards-label": "you ran out of hands to play",
+            "sort-by":{
+                "sort-by-title":"Sort by",
+                "tooltip":
+                {
+                    "suit": "Suit",
+                    "rank": "Rank"
+                }
+            },
+            "my-coins": "My coins",
+            "modifier-change": "Change",
+            "show-plays": "Show plays"
         }
     }
 }
