@@ -15,6 +15,7 @@ import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
+import { useTranslation } from 'react-i18next';
 
 export const MobileGameContent = () => {
   const {
@@ -35,6 +36,7 @@ export const MobileGameContent = () => {
   const[runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -117,7 +119,7 @@ export const MobileGameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          error creating game
+          {t('error.labels.error-msj')}
         </Heading>
         <Button
           variant="outline"
@@ -127,7 +129,7 @@ export const MobileGameContent = () => {
             executeCreateGame();
           }}
         >
-          CREATE NEW GAME
+          {t('error.labels.label-error-btn')}
         </Button>
       </Flex>
     );
