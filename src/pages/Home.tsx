@@ -43,7 +43,7 @@ export const Home = () => {
                 setLeaderboardOpen(false);
               }}
             >
-              {t('returnLeaderboard-btn')}
+              {t('leaderboard.btn.returnLeaderboard-btn')}
             </Button>
           </Box>
         ) : (
@@ -57,7 +57,7 @@ export const Home = () => {
               color="white"
               fontSize={{ base: 10, sm: 20, md: 25, lg: 30 }}
             >
-              {t('slogan')}
+              {t('home.slogan')}
             </Heading>
             <Img
               width={{ base: "95%", sm: "85%", md: "80%" }}
@@ -75,7 +75,7 @@ export const Home = () => {
                   setLeaderboardOpen(true);
                 }}
               >
-                {t('leaderboard-btn')}
+                {t('home.btn.leaderboard-btn')}
               </Button>
               <Button
                 variant="secondarySolid"
@@ -83,7 +83,7 @@ export const Home = () => {
                   navigate("/login");
                 }}
               >
-                {t("playDemo-btn")}
+                {t('home.btn.playDemo-btn')}
               </Button>
             </Flex>
           </Flex>

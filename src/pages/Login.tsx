@@ -31,22 +31,22 @@ export const Login = () => {
 
   const validateAndCreateUser = () => {
     if (!username) {
-      showErrorToast(t('error-noUsername-login'));
+      showErrorToast(t('login.error-labels.error-noUsername-login'));
       return;
     }
     if (username.length < 3) {
-      showErrorToast(t('error-shortUsername-login'));
+      showErrorToast(t('login.error-labels.error-shortUsername-login'));
       return;
     }
     if (username.length > 15) {
-      showErrorToast(t('error-longUsername-login'));
+      showErrorToast(t('login.error-labels.error-longUsername-login'));
       return;
     }
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
     if (!regExpression.test(username)) {
       showErrorToast(
-        t('error-invalidUsername-login')
+        t('login.error-labels.error-invalidUsername-login')
       );
       return;
     }
@@ -97,7 +97,7 @@ export const Login = () => {
           width={{ base: "90%", sm: "600px" }}
         >
           <Heading variant="italic" color={VIOLET} size={"m"}>
-          {t('label-login')}
+          {t('login.labels.label-login')}
           </Heading>
           <Box
             pt={3}
@@ -122,7 +122,7 @@ export const Login = () => {
               variant="neon-white"
               id="usernameInputField"
               type="text"
-              placeholder={t('placeholder-login')}
+              placeholder={t('login.labels.placeholder-login')}
               ref={inputRef}
               maxLength={15}
               onChange={(e) => {
@@ -142,14 +142,14 @@ export const Login = () => {
               navigate("/");
             }}
           >
-            {t('goBack-login-btn')}
+            {t('login.btn.goBack-login-btn')}
           </Button>
           <Button
             width="46%"
             onClick={validateAndCreateUser}
             variant="secondarySolid"
           >
-            {t('startGame-login-btn')}
+            {t('login.btn.startGame-login-btn')}
           </Button>
         </Flex>
       </Flex>

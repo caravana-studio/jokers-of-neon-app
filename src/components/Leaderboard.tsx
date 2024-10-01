@@ -62,14 +62,14 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
           <Table variant="leaderboard">
             <Thead>
               <Tr>
-                <Td>{t('position-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('username-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('score-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('level-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('leaderboard.table-head.position-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('leaderboard.table-head.username-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('leaderboard.table-head.score-leaderboard-head').toUpperCase()}</Td>
+                <Td>{t('leaderboard.table-head.level-leaderboard-head').toUpperCase()}</Td>
                 <Td>
-                {t('prize-leaderboard-head').toUpperCase()}{" "}
+                {t('tournament.table-head.prize-leaderboard-head').toUpperCase()}{" "}
                   {!isMobile && (
-                    <Tooltip label={t('tournament-tooltip')}>
+                    <Tooltip label={t('tournament.table-head.tournament-tooltip')}>
                       <InfoIcon
                         color="white"
                         ml={1}

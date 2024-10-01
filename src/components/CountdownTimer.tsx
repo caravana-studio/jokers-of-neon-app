@@ -50,11 +50,11 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
 
   return (
     <Text size='l'>
-      <span>{days} {t('days-countdown-tournament')} </span>
+      <span>{days} {t('tournament.labels.days-countdown-tournament')} </span>
       <span>{hours}h </span>
       <span>{minutes}m </span>
       <span>{seconds}s</span>
-      {" " + t('label-countdown-tournament')} 
+      {" " + t('tournament.labels.label-countdown-tournament')} 
     </Text>
   );
 };

@@ -34,9 +34,9 @@ export const GameOver = () => {
   if (actualPlayer?.position != undefined) {
     congratulationsMsj =
       actualPlayer?.position === 1
-        ? t('gameOver-leader-msj')
+        ? t('game-over.table.gameOver-leader-msj')
         : actualPlayer?.position > 1 && actualPlayer?.position <= 5
-          ? t('gameOver-top5-msj')
+          ? t('game-over.table.gameOver-top5-msj')
           : "";
   }
 
@@ -58,7 +58,7 @@ export const GameOver = () => {
       >
         <Flex flexDirection="column" width='100%'>
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
-            {t('gameOver-msj')}
+            {t('game-over.gameOver-msj')}
           </Heading>
           <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
             {congratulationsMsj}
@@ -76,7 +76,7 @@ export const GameOver = () => {
               }}
               data-size="large"
             >
-              {t('gameOver-share-btn')}
+              {t('game-over.btn.gameOver-share-btn')}
               <Flex sx={{ ml: 2.5 }}>
                 <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
               </Flex>
@@ -91,7 +91,7 @@ export const GameOver = () => {
                 navigate("/demo");
               }}
             >
-              {t('gameOver-newGame-btn')}
+              {t('game-over.btn.gameOver-newGame-btn')}
             </Button>
           </Flex>
         </Flex>

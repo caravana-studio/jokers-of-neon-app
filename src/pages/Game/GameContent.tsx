@@ -123,7 +123,7 @@ export const GameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          {t('error-msj')}
+          {t('error.labels.error-msj')}
         </Heading>
         <Button
           variant="outline"
@@ -133,7 +133,7 @@ export const GameContent = () => {
             executeCreateGame();
           }}
         >
-          {t('label-error-btn')}
+          {t('error.labels.label-error-btn')}
         </Button>
       </Flex>
     );
