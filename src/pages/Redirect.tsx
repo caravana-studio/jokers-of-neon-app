@@ -6,6 +6,7 @@ import { GameMenu } from "../components/GameMenu";
 import { Loading } from "../components/Loading";
 import { useGame } from "../dojo/queries/useGame";
 import { useEffect } from "react";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
 
 export const Redirect = () => {
   const game = useGame();
@@ -15,7 +16,7 @@ export const Redirect = () => {
 
   useEffect(() => {
     if (state === "FINISHED") {
-      navigate("/gameover");
+      navigate(`/gameover/${getLSGameId()}`);
     } else if (state === "IN_GAME" && page === "demo") {
       navigate("/demo");
     } else if (state === "AT_SHOP" && page === "store") {
