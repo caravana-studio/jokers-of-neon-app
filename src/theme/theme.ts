@@ -60,7 +60,7 @@ export default {
     base: "0px",
     sm: "600px",
     md: "1384px",
-    lg: "1600px",
+    lg: "1700px",
     xl: "2000px",
   },
   components: {
