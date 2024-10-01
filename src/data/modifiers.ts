@@ -1,52 +1,59 @@
 import { CardDataMap } from "../types/CardData";
+import i18n from 'i18next';
 
-export const MODIFIER_CARDS_DATA: CardDataMap = {
-  600: {
-    name: "+10 Points",
-    description: "The modified card will score +10 additional points",
-  },
-  601: {
-    name: "+20 Points",
-    description: "The modified card will score +20 additional points",
-  },
-  602: {
-    name: "+50 Points",
-    description: "The modified card will score +50 additional points",
-  },
-  603: {
-    name: "+100 Points",
-    description: "The modified card will score +100 additional points",
-  },
-  604: {
-    name: "+1 muli",
-    description: "The modified card will add +1 to the multi",
-  },
-  605: {
-    name: "+2 muli",
-    description: "The modified card will add +2 to the multi",
-  },
-  606: {
-    name: "+5 muli",
-    description: "The modified card will add +5 to the multi",
-  },
-  607: {
-    name: "+10 muli",
-    description: "The modified card will add +10 to the multi",
-  },
-  608: {
-    name: "Change to Clubs",
-    description: "The modified card will be considered as a Clubs card",
-  },
-  609: {
-    name: "Change to Diamonds",
-    description: "The modified card will be considered as a Diamonds card",
-  },
-  610: {
-    name: "Change to Hearts",
-    description: "The modified card will be considered as a Hearts card",
-  },
-  611: {
-    name: "Change to Spades",
-    description: "The modified card will be considered as a Spades card",
-  },
-};
+console.log(i18n.t('modifierCardsData.600.name'));
+
+export const MODIFIER_CARDS_DATA: CardDataMap = {};
+
+i18n.on('initialized', () => {
+  Object.assign(MODIFIER_CARDS_DATA, {
+    600: {
+      name: i18n.t('modifierCardsData.600.name'),
+      description: i18n.t('modifierCardsData.600.description'),
+    },
+    601: {
+      name: i18n.t('modifierCardsData.601.name'),
+      description: i18n.t('modifierCardsData.601.description'),
+    },
+    602: {
+      name: i18n.t('modifierCardsData.602.name'),
+      description: i18n.t('modifierCardsData.602.description'),
+    },
+    603: {
+      name: i18n.t('modifierCardsData.603.name'),
+      description: i18n.t('modifierCardsData.603.description'),
+    },
+    604: {
+      name: i18n.t('modifierCardsData.604.name'),
+      description: i18n.t('modifierCardsData.604.description'),
+    },
+    605: {
+      name: i18n.t('modifierCardsData.605.name'),
+      description: i18n.t('modifierCardsData.605.description'),
+    },
+    606: {
+      name: i18n.t('modifierCardsData.606.name'),
+      description: i18n.t('modifierCardsData.606.description'),
+    },
+    607: {
+      name: i18n.t('modifierCardsData.607.name'),
+      description: i18n.t('modifierCardsData.607.description'),
+    },
+    608: {
+      name: i18n.t('modifierCardsData.608.name'),
+      description: i18n.t('modifierCardsData.608.description'),
+    },
+    609: {
+      name: i18n.t('modifierCardsData.609.name'),
+      description: i18n.t('modifierCardsData.609.description'),
+    },
+    610: {
+      name: i18n.t('modifierCardsData.610.name'),
+      description: i18n.t('modifierCardsData.610.description'),
+    },
+    611: {
+      name: i18n.t('modifierCardsData.611.name'),
+      description: i18n.t('modifierCardsData.611.description'),
+    }
+  });
+});
