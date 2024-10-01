@@ -110,20 +110,6 @@ export const useGetLeaderboard = (gameId?: number) => {
     })
   );
 
-  /*   const currentLeader =
-    gameId &&
-    data?.jokersOfNeonGameModels.edges.find(
-      (leader) => leader.node.id === gameId
-    );
-
-  if (currentLeader && !leaderboard.find((leader) => leader.id === gameId)) {
-    leaderboard.push({
-      ...currentLeader.node,
-      position: leaderboard.length + 1,
-      prize: 0,
-    });
-  } */
-
   return {
     ...queryResponse,
     data: leaderboard,
