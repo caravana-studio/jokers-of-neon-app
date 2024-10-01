@@ -8,7 +8,7 @@ export const LEADERBOARD_QUERY_KEY = "leaderboard";
 export const LEADERBOARD_QUERY = gql`
   query {
     jokersOfNeonGameModels(
-      first: 1000
+      first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
       edges {
@@ -54,11 +54,13 @@ const getPrize = (position: number): number => {
   }
 };
 
+export const CURRENT_LEADER_NAME_KEY = "current_leader_name";
+
 const fetchGraphQLData = async (): Promise<LeaderboardResponse> => {
   return await graphQLClient.request(LEADERBOARD_QUERY);
 };
 
-export const useGetLeaderboard = () => {
+export const useGetLeaderboard = (gameId?: number) => {
   const queryResponse = useQuery<LeaderboardResponse>(
     [LEADERBOARD_QUERY_KEY],
     () => fetchGraphQLData()
@@ -78,7 +80,12 @@ export const useGetLeaderboard = () => {
       const playerScore = leader.node.player_score;
       const playerLevel = leader.node.level;
 
-      if (!acc.has(playerName)) {
+      if (leader.node.id === gameId) {
+        acc.set(CURRENT_LEADER_NAME_KEY, {
+          ...leader.node,
+          player_name: playerName,
+        });
+      } else if (!acc.has(playerName)) {
         acc.set(playerName, { ...leader.node, player_name: playerName });
       } else {
         const existingLeader = acc.get(playerName)!;
@@ -102,6 +109,20 @@ export const useGetLeaderboard = () => {
       prize: getPrize(index + 1),
     })
   );
+
+  /*   const currentLeader =
+    gameId &&
+    data?.jokersOfNeonGameModels.edges.find(
+      (leader) => leader.node.id === gameId
+    );
+
+  if (currentLeader && !leaderboard.find((leader) => leader.id === gameId)) {
+    leaderboard.push({
+      ...currentLeader.node,
+      position: leaderboard.length + 1,
+      prize: 0,
+    });
+  } */
 
   return {
     ...queryResponse,

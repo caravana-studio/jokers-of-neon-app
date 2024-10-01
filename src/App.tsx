@@ -32,7 +32,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/gameover"
+              path="/gameover/:gameId"
               element={
                 <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                   <GameOver />
