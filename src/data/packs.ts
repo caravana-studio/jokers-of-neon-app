@@ -1,57 +1,54 @@
 import { CardDataMap } from "../types/CardData";
+import i18n from 'i18next';
 
-export const PACKS_DATA: CardDataMap = {
-  1: {
-    name: "Basic Pack",
-    description: "Contains mostly traditional cards and modifiers",
-    details:
-      "2% chance of getting a special card\n5% chance of getting a modifier card\n4% chance of getting a Joker\n1% chance of getting a Neon Joker\nPack size 5",
-  },
-  2: {
-    name: "Advanced Pack",
-    description: "Can contain a special card or joker",
-    details:
-      "4% chance of getting a special card\n10% chance of getting a modifier card\n8% chance of getting a Joker\n2% chance of getting a Neon Joker\nPack size 5",
-  },
-  3: {
-    name: "Jokers Pack",
-    description: "More chances of getting a Joker",
-    details: "15% chance of getting a Joker\n1% chance of getting a Neon Joker\nPack size 3",
-  },
-  4: {
-    name: "Specials Pack",
-    description: "More chances of getting a special card",
-    details:
-      "15% chance of getting a special card\n20% chance of getting a modifier\nPack size 3",
-  },
-  5: {
-    name: "Modifiers Pack",
-    description: "Contains mostly modifiers",
-    details: "50% chance of getting a modifier\nPack size 5",
-  },
-  6: {
-    name: "Figures Pack",
-    description: "Contains mostly figure cards",
-    details: "70% chance of getting a figure\nPack size 5",
-  },
-  7: {
-    name: "The Deceitful Joker Pack",
-    description: "1 guaranteed Joker",
-    details:
-      "1 guaranteed Joker\n6% chance of getting a Joker\n2% chance of getting a Neon Joker\nPack size 3",
-  },
-  8: {
-    name: "The Lovers Pack",
-    description:
-      "All hearts suited cards, can contain special cards and modifiers.",
-    details:
-      "60% heart card\n30% chance of getting Ace of Hearts\n9% chance of getting heart suit modifier\n1% chance of getting 'All cards to heart' special\nPack size 5",
-  },
-  9: {
-    name: "Special Bet Pack",
-    description:
-      "Small pack with chances of getting a special card or modifier",
-    details:
-      "5% chance of getting a special card\n10% chance of getting a modifier\nPack size 3",
-  },
-};
+export const PACKS_DATA: CardDataMap = {};
+
+i18n.on('initialized', () => {
+  Object.assign(PACKS_DATA, {
+    1: {
+      name: i18n.t('packsData.1.name'),
+      description: i18n.t('packsData.1.description'),
+      details: i18n.t('packsData.1.details'),
+    },
+    2: {
+      name: i18n.t('packsData.2.name'),
+      description: i18n.t('packsData.2.description'),
+      details: i18n.t('packsData.2.details'),
+    },
+    3: {
+      name: i18n.t('packsData.3.name'),
+      description: i18n.t('packsData.3.description'),
+      details: i18n.t('packsData.3.details'),
+    },
+    4: {
+      name: i18n.t('packsData.4.name'),
+      description: i18n.t('packsData.4.description'),
+      details: i18n.t('packsData.4.details'),
+    },
+    5: {
+      name: i18n.t('packsData.5.name'),
+      description: i18n.t('packsData.5.description'),
+      details: i18n.t('packsData.5.details'),
+    },
+    6: {
+      name: i18n.t('packsData.6.name'),
+      description: i18n.t('packsData.6.description'),
+      details: i18n.t('packsData.6.details'),
+    },
+    7: {
+      name: i18n.t('packsData.7.name'),
+      description: i18n.t('packsData.7.description'),
+      details: i18n.t('packsData.7.details'),
+    },
+    8: {
+      name: i18n.t('packsData.8.name'),
+      description: i18n.t('packsData.8.description'),
+      details: i18n.t('packsData.8.details'),
+    },
+    9: {
+      name: i18n.t('packsData.9.name'),
+      description: i18n.t('packsData.9.description'),
+      details: i18n.t('packsData.9.details'),
+    },
+  });  
+});

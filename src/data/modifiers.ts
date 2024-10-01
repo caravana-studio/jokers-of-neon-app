@@ -1,8 +1,6 @@
 import { CardDataMap } from "../types/CardData";
 import i18n from 'i18next';
 
-console.log(i18n.t('modifierCardsData.600.name'));
-
 export const MODIFIER_CARDS_DATA: CardDataMap = {};
 
 i18n.on('initialized', () => {
