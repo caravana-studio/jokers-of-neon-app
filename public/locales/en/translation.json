@@ -127,6 +127,27 @@
             "my-coins": "My coins",
             "modifier-change": "Change",
             "show-plays": "Show plays"
+        },
+        "preselected-cards-section":
+        {
+          "discard-btn-lbl":
+          {
+            "lbl": "drop here to ",
+            "discard": "discard",
+            "left": "left" 
+          },
+          "play-btn-lbl":
+          {
+            "play": "play hand",
+            "play-mobile": "play",
+            "left": "left" 
+          },
+          "current-play-lbl":
+          {
+            "default": "Select some cards to play",
+            "current-play": "Current Play",
+            "neon-play": "NEON"
+          }
         }
     },
     "modifierCardsData": {
@@ -777,5 +798,51 @@
           "name": "Ace of neon Spades",
           "description": "Scores +22 points and +1 multi"
         }
+    },
+    "playsData": {
+      "royalFlush": {
+        "name": "Royal flush",
+        "description": "Highest straight flush"
+      },
+      "straightFlush": {
+        "name": "Straight flush",
+        "description": "Straight of the same suit"
+      },
+      "fiveOfAKind": {
+        "name": "Five of a kind",
+        "description": "Five cards of the same rank"
+      },
+      "fourOfAKind": {
+        "name": "Four of a kind",
+        "description": "Four cards of the same rank"
+      },
+      "fullHouse": {
+        "name": "Full house",
+        "description": "Three of a kind and a pair"
+      },
+      "straight": {
+        "name": "Straight",
+        "description": "Five consecutive cards"
+      },
+      "flush": {
+        "name": "Flush",
+        "description": "Five cards of the same suit"
+      },
+      "threeOfAKind": {
+        "name": "Three of a kind",
+        "description": "Three cards of the same rank"
+      },
+      "twoPair": {
+        "name": "Two pair",
+        "description": "Two pairs of cards of different rank"
+      },
+      "pair": {
+        "name": "Pair",
+        "description": "Two cards of the same rank"
+      },
+      "highCard": {
+        "name": "High card",
+        "description": "Cards that are not consecutive and of different suits"
+      }
     }
 }

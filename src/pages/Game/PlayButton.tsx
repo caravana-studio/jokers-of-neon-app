@@ -3,6 +3,7 @@ import { isMobile } from "react-device-detect";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useTranslation } from "react-i18next";
 
 interface PlayButtonProps {
   highlight?: boolean;
@@ -16,6 +17,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
   const handsLeft = round?.hands ?? 0;
 
   const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
+  const { t } = useTranslation();
 
   return (
     <ButtonContainer>
@@ -32,17 +34,17 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
         {isMobile ? (
           <Box>
             <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
-              play
+              {t('game.preselected-cards-section.play-btn-lbl.play-mobile')}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {handsLeft} left
+              {handsLeft} {t('game.preselected-cards-section.play-btn-lbl.left')}
             </Heading>
           </Box>
         ) : (
-          "PLAY HAND"
+          t('game.preselected-cards-section.play-btn-lbl.play')
         )}
       </Button>
-      {!isMobile && <Text size="l">{handsLeft} left</Text>}
+      {!isMobile && <Text size="l">{handsLeft} {t('game.preselected-cards-section.play-btn-lbl.left')}</Text>}
     </ButtonContainer>
   );
 };

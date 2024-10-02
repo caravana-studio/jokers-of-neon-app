@@ -4,6 +4,7 @@ import { isMobile } from "react-device-detect";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useTranslation } from "react-i18next";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
@@ -26,6 +27,8 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
     !discardsLeft ||
     discardsLeft === 0);
 
+  const { t } = useTranslation();
+
   return (
     <ButtonContainer>
       <Button
@@ -46,17 +49,17 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
               fontSize={itemDragged ? 12 : 16}
               height={"16px"}
             >
-              {itemDragged ? "drop here to " : ""}discard
+              {itemDragged ?  t('game.preselected-cards-section.discard-btn-lbl.lbl') +" " : ""}{t('game.preselected-cards-section.discard-btn-lbl.discard')}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {discardsLeft} left
+              {discardsLeft} {t('game.preselected-cards-section.discard-btn-lbl.left')}
             </Heading>
           </Box>
         ) : (
-          "DISCARD"
+          t('game.preselected-cards-section.discard-btn-lbl.discard').toUpperCase()
         )}
       </Button>
-      {!isMobile && <Text size="l">{discardsLeft} left</Text>}
+      {!isMobile && <Text size="l">{discardsLeft} {t('game.preselected-cards-section.discard-btn-lbl.left')}</Text>}
     </ButtonContainer>
   );
 };
