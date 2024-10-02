@@ -1,6 +1,6 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
-import { VIOLET } from "../theme/colors";
+import { VIOLET, VIOLET_LIGHT } from "../theme/colors";
 
 interface PinkBoxProps extends PropsWithChildren {
   title: string;
@@ -31,7 +31,7 @@ export const PinkBox = ({ children, title, button, onClick }: PinkBoxProps) => {
         display="grid"
         justifyItems="center"
       >
-        <Heading size="l" variant="italic" color={VIOLET}>
+        <Heading size={{base: 'sm', sm:"l"}} variant="italic" color={VIOLET_LIGHT} mt={4}>
           {title}
         </Heading>
         {children}
