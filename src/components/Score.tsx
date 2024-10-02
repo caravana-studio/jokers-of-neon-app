@@ -10,7 +10,7 @@ export const Score = () => {
   return (
     <Heading
       variant="italic"
-      size="m"
+      fontSize={{ base: "0.85rem", md: "1.2rem" }}
       mb={{ base: 1, md: 4 }}
       textShadow="0 0 10px white"
       whiteSpace="nowrap"
