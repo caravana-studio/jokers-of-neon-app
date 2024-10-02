@@ -4,7 +4,7 @@ import PreviewCardLayout from "./PreviewCardLayout";
 
 export const PreviewCard = () => {
   const isSmallScreen = useBreakpointValue(
-    { base: true, md: false }
+    { base: true, sm: false }
   );
 
   return (

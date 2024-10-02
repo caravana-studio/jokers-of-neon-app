@@ -95,7 +95,7 @@ const PreviewCardLayout = () => {
         <Flex
           flexDirection={"column"}
           justifyContent={"center"}
-          width="60%"
+          width={["95%", "80%", "60%"]}
           margin={"0 auto"}
           bg="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
@@ -128,6 +128,7 @@ const PreviewCardLayout = () => {
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"
+                  visibility={["hidden", "hidden", "visible"]}
                 />
               </Flex>
 
