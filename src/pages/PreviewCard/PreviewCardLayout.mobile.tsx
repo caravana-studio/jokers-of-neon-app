@@ -11,16 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../components/Background.tsx";
-import { CashSymbol } from "../components/CashSymbol.tsx";
-import OpenAnimation from "../components/OpenAnimation.tsx";
-import { CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { useStore } from "../providers/StoreProvider.tsx";
-import theme from "../theme/theme.ts";
-import { getCardData } from "../utils/getCardData.ts";
-import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
-import { Coins } from "./store/Coins.tsx";
+import { Background } from "../../components/Background.tsx";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
+import OpenAnimation from "../../components/OpenAnimation.tsx";
+import { CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import theme from "../../theme/theme.ts";
+import { getCardData } from "../../utils/getCardData.ts";
+import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { Coins } from "../store/Coins.tsx";
 
 const SIZE_MULTIPLIER = 1.3;
 const { white, neonGreen } = theme.colors;

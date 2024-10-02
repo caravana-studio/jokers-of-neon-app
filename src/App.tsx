@@ -18,7 +18,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
-import { PreviewCard } from "./pages/PreviewCard";
+import { PreviewCard } from "./pages/PreviewCard/PreviewCard";
 
 function App() {
   const theme = extendTheme(customTheme);
