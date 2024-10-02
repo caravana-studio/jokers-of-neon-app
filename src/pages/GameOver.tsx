@@ -11,6 +11,7 @@ import { looseSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -23,16 +24,16 @@ export const GameOver = () => {
 
   const { restartGame, setIsRageRound } = useGameContext();
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
-  const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
 
+  const { data: fullLeaderboard } = useGetLeaderboard();
+  const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
   let congratulationsMsj = "";
 
-  if (currentLeader?.position != undefined) {
+  if (actualPlayer?.position != undefined) {
     congratulationsMsj =
-    currentLeader?.position === 1
+      actualPlayer?.position === 1
         ? "Congratulations! You're the top player on the leaderboard!"
-        : currentLeader?.position > 1 && currentLeader?.position <= 5
+        : actualPlayer?.position > 1 && actualPlayer?.position <= 5
           ? "Great job! You're in the top 5! Keep it up!"
           : "";
   }
@@ -41,6 +42,9 @@ export const GameOver = () => {
     looseSound();
     localStorage.removeItem(GAME_ID);
     setIsRageRound(false);
+    if (actualPlayer?.position ?? 100 <= 10) {
+      runConfettiAnimation();
+    }
   }, []);
 
   return (
@@ -90,7 +94,7 @@ export const GameOver = () => {
               START NEW GAME
             </Button>
           </Flex>
-          <Flex mt={{base: 4, sm: 10}} justifyContent="center">
+          <Flex mt={{ base: 4, sm: 10 }} justifyContent="center">
             <DiscordLink />
           </Flex>
         </Flex>
