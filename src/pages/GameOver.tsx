@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID, LAST_GAME_ID } from "../constants/localStorage";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { useGameContext } from "../providers/GameProvider";
-import { useGetGame } from "../queries/useGetGame";
-import { useAudio } from "../hooks/useAudio";
 import { looseSfx } from "../constants/sfx";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
+import { useAudio } from "../hooks/useAudio";
+import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -24,7 +24,7 @@ export const GameOver = () => {
       : Number(localStorage.getItem(LAST_GAME_ID));
   const [lastGameId, setLastGameId] = useState(getLSGameId());
   const { restartGame, setIsRageRound } = useGameContext();
-  const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
+  const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
   let congratulationsMsj = "";
@@ -43,6 +43,9 @@ export const GameOver = () => {
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
     setIsRageRound(false);
+    if (actualPlayer?.position ?? 100 <= 10) {
+      runConfettiAnimation();
+    }
   }, []);
 
   return (
@@ -54,7 +57,7 @@ export const GameOver = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex flexDirection="column" width='100%'>
+        <Flex flexDirection="column" width="100%">
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
             GAME OVER
           </Heading>
