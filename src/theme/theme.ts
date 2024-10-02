@@ -59,7 +59,7 @@ export default {
   breakpoints: {
     base: "0em",    
     sm: "42em",   
-    md: "62em",     
+    md: "78em",     
     lg: "116em",   
     xl: "125em",  
   },

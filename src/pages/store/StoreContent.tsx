@@ -227,7 +227,6 @@ export const StoreContent = () => {
         >
           <Box
             display="flex"
-            w={"32%"}
             h={"100%"}
             flexDirection="column"
             justifyContent="space-between"
@@ -250,7 +249,7 @@ export const StoreContent = () => {
             alignItems={"flex-start"}
             pb={0}
             pl={4}
-            pr={8}
+            pr={4}
             gap={6}
           >
             <Box className="game-tutorial-step-3">
