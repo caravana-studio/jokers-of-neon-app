@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { Button } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <Background type="game" dark bgDecoration>
@@ -30,7 +32,7 @@ export const PlaysLayout = () => {
             textAlign={"center"}
             mb={ isMobile ? 10 : 8 }
           >
-            AVAILABLE PLAYS
+            {t('game.plays.title').toUpperCase()}
           </Heading>
           <PlaysAvailableTable maxHeight={{ base: "52%", md: "60%"}}/>
           <Button
@@ -41,7 +43,7 @@ export const PlaysLayout = () => {
             size="md"
             variant="solid"
             onClick={ () => navigate("/demo", { state: { skipRageAnimation: true } })}
-          >Go back to game</Button>
+          >{t('game.plays.go-back-btn')}</Button>
       </Flex>
     </Background>
   );

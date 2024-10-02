@@ -156,6 +156,18 @@
           "tutorial-btn": "See tutorial",
           "sound-btn": "Turn sound",
           "logout-btn": "Logout"
+        },
+        "plays":
+        {
+          "title": "Available plays",
+          "go-back-btn": "Go back to game",
+          "table":
+          {
+            "level-head": "Level",
+            "hand-head": "Hand",
+            "points-multi-head": "Points/Multi"
+          }
+
         }
     },
     "modifierCardsData": {

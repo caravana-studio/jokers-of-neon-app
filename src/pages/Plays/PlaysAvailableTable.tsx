@@ -15,11 +15,12 @@ import {
   import theme from "../../theme/theme";
   import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
   import { TiltCard } from "../../components/TiltCard";
-  import { PLAYS_DATA } from "../../constants/plays";
+  import { PLAYS_DATA, PLAYS } from "../../constants/plays";
   import { Text } from "@chakra-ui/react";
   import { useState } from "react";
   import { BLUE_LIGHT } from "../../theme/colors";
   import { Card } from "../../types/Card";
+import { useTranslation } from "react-i18next";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -38,6 +39,7 @@ import {
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
     const plays = apiPlays;
     const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
+    const { t } = useTranslation();
   
     return (
       <>
@@ -71,9 +73,9 @@ import {
                   <Tr>
                     {(
                       <>
-                        <Td fontSize={isMobile ? 12 : 17}>LEVEL</Td>
-                        <Td fontSize={isMobile ? 12 : 17}>HAND</Td>
-                        <Td fontSize={isMobile ? 12 : 17}>POINTS/MULTI</Td>
+                        <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.level-head').toUpperCase()}</Td>
+                        <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.hand-head').toUpperCase()}</Td>
+                        <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.points-multi-head').toUpperCase()}</Td>
                       </>
                     )}
                   </Tr>
@@ -160,7 +162,7 @@ import {
                       );
                       const nameTd = (
                         <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={isMobile ? 9 : 13}>
-                          {play.pokerHand.name}
+                          {PLAYS[Number(play.pokerHand.value)]}
                         </Td>
                       );
                       const pointsMultiTd = (

@@ -136,6 +136,17 @@
           "tutorial-btn": "Ver tutorial",
           "sound-btn": "Sonido",
           "logout-btn": "Cerrar sesión"
+        },
+        "plays":
+        {
+          "title": "Jugadas disponibles",
+          "go-back-btn": "Volver al juego",
+          "table":
+          {
+            "level-head": "Nivel",
+            "hand-head": "Mano",
+            "points-multi-head": "Puntos/Multi"
+          }
         }
     },
     "modifierCardsData": {
