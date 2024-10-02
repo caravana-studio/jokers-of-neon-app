@@ -10,7 +10,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
@@ -21,7 +20,7 @@ import { getCardData } from "../utils/getCardData.ts";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
 
-const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
+const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
 
 const PreviewCardLayout = () => {
@@ -55,6 +54,9 @@ const PreviewCardLayout = () => {
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
+
+  const fontTitleSize = ["s", "s", "l"];
+  const fontSize = ["md", "md", "xl"];
 
   const buyButton = (
     <Button
@@ -95,7 +97,7 @@ const PreviewCardLayout = () => {
         <Flex
           flexDirection={"column"}
           justifyContent={"center"}
-          width={["95%", "80%", "60%"]}
+          width={["95%", "90%", "70%", "70%", "40%"]}
           margin={"0 auto"}
           bg="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
@@ -103,7 +105,7 @@ const PreviewCardLayout = () => {
           boxShadow={`0px 0px 10px 1px ${white}`}
         >
           <Flex>
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} display={"flex"} flexDirection={"column"} justifyContent={"center"}>
               {/*               <OpenAnimation
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
@@ -121,14 +123,14 @@ const PreviewCardLayout = () => {
 
             <Flex flexDirection={"column"} ml={"30px"} flex="1">
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="l" variant="italic">
+                <Heading size={["md", "md", "l"]} variant="italic" mb={4}>
                   {name}
                 </Heading>
                 <Image
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"
-                  visibility={["hidden", "hidden", "visible"]}
+                  display={["none", "none", "flex"]}
                 />
               </Flex>
 
@@ -137,7 +139,7 @@ const PreviewCardLayout = () => {
                   <Box mt={"20px"}>
                     <Text
                       color="white"
-                      fontSize="lg"
+                      fontSize={fontTitleSize}
                       mb={2}
                       sx={{
                         position: "relative",
@@ -155,7 +157,7 @@ const PreviewCardLayout = () => {
                     >
                       CARD TYPE:
                     </Text>
-                    <Text color={neonGreen} fontSize="xl">
+                    <Text color={neonGreen} fontSize={fontSize}>
                       {card.isSpecial
                         ? "Special"
                         : card.isModifier
@@ -168,7 +170,7 @@ const PreviewCardLayout = () => {
                 <Box>
                   <Text
                     color="white"
-                    fontSize="lg"
+                    fontSize={fontTitleSize}
                     mb={2}
                     sx={{
                       position: "relative",
@@ -186,7 +188,7 @@ const PreviewCardLayout = () => {
                   >
                     DESCRIPTION:
                   </Text>
-                  <Text color={neonGreen} fontSize="xl">
+                  <Text color={neonGreen} fontSize={fontSize}>
                     {description}
                   </Text>
                   {card.temporary && (
@@ -200,7 +202,7 @@ const PreviewCardLayout = () => {
                   <Box>
                     <Text
                       color="white"
-                      fontSize="lg"
+                      fontSize={fontTitleSize}
                       mb={2}
                       sx={{
                         position: "relative",
@@ -218,7 +220,7 @@ const PreviewCardLayout = () => {
                     >
                       DETAILS:
                     </Text>
-                    <Text color={neonGreen} fontSize="xl">
+                    <Text color={neonGreen} fontSize={fontSize}>
                       {details?.split("\n").map((line, index) => (
                         <span key={index}>
                           {line}

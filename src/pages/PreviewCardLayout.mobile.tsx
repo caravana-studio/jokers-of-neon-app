@@ -10,7 +10,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background.tsx";
 import { CashSymbol } from "../components/CashSymbol.tsx";
@@ -23,7 +22,7 @@ import { getCardData } from "../utils/getCardData.ts";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
 
-const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
+const SIZE_MULTIPLIER = 1.3;
 const { white, neonGreen } = theme.colors;
 
 const MobilePreviewCardLayout = () => {
@@ -96,8 +95,8 @@ const MobilePreviewCardLayout = () => {
           boxShadow={`0px 0px 10px 1px ${white}`}
         >
           <Flex flexDirection={"column"} ml={"30px"} flex="1" mb={4}>
-            <Flex justifyContent="space-between" alignItems="center">
-              <Heading size="sm" variant="italic">
+            <Flex justifyContent="center" alignItems="center">
+              <Heading size="md" variant="italic">
                 {name}
               </Heading>
             </Flex>
