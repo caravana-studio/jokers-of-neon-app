@@ -47,7 +47,7 @@ interface IGameContext {
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
-  discardEffectCard: (cardIdx: number) => void;
+  discardEffectCard: (cardIdx: number) => Promise<boolean>;
   error: boolean;
   clearPreSelection: () => void;
   preSelectedModifiers: { [key: number]: number[] };
@@ -92,7 +92,7 @@ const GameContext = createContext<IGameContext>({
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
-  discardEffectCard: () => {},
+  discardEffectCard: () => new Promise((resolve) => resolve(false)),
   error: false,
   clearPreSelection: () => {},
   preSelectedModifiers: {},
@@ -613,7 +613,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    discardEffectCard(gameId, cardIdx)
+    const discardPromise = discardEffectCard(gameId, cardIdx);
+    discardPromise
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
@@ -627,6 +628,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .finally(() => {
         setPreSelectionLocked(false);
       });
+    return discardPromise;
   };
 
   const addModifier = (cardIdx: number, modifierIdx: number) => {
