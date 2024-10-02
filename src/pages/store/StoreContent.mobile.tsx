@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
@@ -71,7 +70,7 @@ export const StoreContentMobile = () => {
   const navigate = useNavigate();
 
   const levelUpTable = (
-    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>
+    <Box className="game-tutorial-step-2" py={2}>
       {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
     </Box>
   );
@@ -85,8 +84,8 @@ export const StoreContentMobile = () => {
     >
       <Button
         className="game-tutorial-step-6"
-        fontSize={[10, 10, 10, 14, 14]}
-        w={["unset", "unset", "unset", "100%", "100%"]}
+        fontSize={10}
+        w={"unset"}
         isDisabled={rerolled || locked || notEnoughCash}
         onClick={() => {
           reroll().then((response) => {
@@ -104,21 +103,21 @@ export const StoreContentMobile = () => {
 
   const specialsButton = specialCards.length > 0 && (
     <Button
-      fontSize={[10, 10, 10, 14, 14]}
-      w={["unset", "unset", "unset", "100%", "100%"]}
+      fontSize={10}
+      w={"unset"}
       onClick={() => {
         setSpecialCardsModalOpen(true);
       }}
     >
-      SEE MY{isMobile && <br />} SPECIAL CARDS
+      SEE MY <br /> SPECIAL CARDS
     </Button>
   );
 
   const nextLevelButton = (
     <Button
       className="game-tutorial-step-7"
-      my={{ base: 0, md: 6 }}
-      w={["unset", "unset", "unset", "100%", "100%"]}
+      my={0}
+      w={"unset"}
       onClick={() => {
         setLoading(true);
         onShopSkip();
@@ -134,9 +133,9 @@ export const StoreContentMobile = () => {
       isDisabled={locked}
       lineHeight={1.6}
       variant="secondarySolid"
-      fontSize={[10, 10, 10, 14, 14]}
+      fontSize={10}
     >
-      GO TO {isMobile && <br />} NEXT LEVEL
+      GO TO <br /> NEXT LEVEL
     </Button>
   );
 
@@ -223,7 +222,7 @@ export const StoreContentMobile = () => {
           width="100%"
           overflow="auto"
           pt={4}
-          px={{ base: 2, md: 14 }}
+          px={2}
         >
           <Box
             display="flex"
@@ -231,7 +230,7 @@ export const StoreContentMobile = () => {
             flexDirection="column"
             pb={4}
           >
-            <Flex flexDirection={"column"} gap={0} mb={{base: 4, md: 0}} mt={{base: 0, sm: 4}} >
+            <Flex flexDirection={"column"} gap={0} mb={4} mt={0} >
               <Heading variant="italic" size="l" ml={4} textAlign={{base: "left", sm: "center"}}>
                 LEVEL UP YOUR GAME
               </Heading>       
@@ -244,14 +243,13 @@ export const StoreContentMobile = () => {
               </Flex>
           </Box>
           <Box
-            w={["100%", "100%", "100%", "45%", "45%"]}
+            width={{base: "100%", sm: "auto"}}
             display="flex"
             flexDirection="column"
             justifyContent="center"
-            alignItems={{base: "flex-start", sm: "center", md: "flex-start"}}
             pb={4}
             pl={4}
-            gap={[2, 2, 4, 6, 6]}
+            gap={2}
           >
             <Box className="game-tutorial-step-3">
               {shopItems.commonCards.length > 0 && (
@@ -280,7 +278,7 @@ export const StoreContentMobile = () => {
           </Box>
             <Box
               className="game-tutorial-step-2"
-              w={["100%", "100%", "90%", "60%", "50%"]}
+              width={{base: "95%", sm: "75%"}}
               background="rgba(0,0,0,0.5)"
               px={4}
               borderRadius="10px"
@@ -293,22 +291,9 @@ export const StoreContentMobile = () => {
 
           <Box
             display="flex"
-            flexDirection={[
-              "row-reverse",
-              "row-reverse",
-              "row-reverse",
-              "column",
-              "column",
-            ]}
-            w={["100%", "100%", "100%", "15%", "15%"]}
-            h={[null, null, null, "100%", "100%"]}
-            justifyContent={[
-              "center",
-              "center",
-              "center",
-              "space-between",
-              "space-between",
-            ]}
+            flexDirection={"row-reverse"}
+            w={"100%"}
+            justifyContent={"center"}
             gap={10}
             px={2}
           >
