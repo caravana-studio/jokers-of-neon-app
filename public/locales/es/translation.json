@@ -128,6 +128,14 @@
             "current-play": "Jugada Actual:",
             "neon-play": "NEÓN"
           }
+        },
+        "game-menu":
+        {
+          "home-btn": "Ir al inicio",
+          "new-game-btn": "Crear nuevo juego",
+          "tutorial-btn": "Ver tutorial",
+          "sound-btn": "Sonido",
+          "logout-btn": "Cerrar sesión"
         }
     },
     "modifierCardsData": {

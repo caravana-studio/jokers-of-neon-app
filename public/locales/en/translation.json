@@ -148,6 +148,14 @@
             "current-play": "Current Play",
             "neon-play": "NEON"
           }
+        },
+        "game-menu":
+        {
+          "home-btn": "Go to home",
+          "new-game-btn": "Start new game",
+          "tutorial-btn": "See tutorial",
+          "sound-btn": "Turn sound",
+          "logout-btn": "Logout"
         }
     },
     "modifierCardsData": {
