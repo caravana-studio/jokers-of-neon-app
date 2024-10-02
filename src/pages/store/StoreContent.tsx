@@ -41,16 +41,6 @@ export const StoreContent = () => {
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
   const specialCards = useCurrentSpecialCards();
 
-  const isSmallScreen = useBreakpointValue({
-    base: true,  
-    md: false,
-  });
-
-  const alignCards = useBreakpointValue({
-    base: true, 
-    md: false,
-  });
-
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
@@ -120,7 +110,7 @@ export const StoreContent = () => {
         setSpecialCardsModalOpen(true);
       }}
     >
-      SEE MY{isMobile && <br />} SPECIAL CARDS
+      SEE MY SPECIAL CARDS
     </Button>
   );
 
@@ -146,7 +136,7 @@ export const StoreContent = () => {
       variant="secondarySolid"
       fontSize={[10, 10, 10, 14, 14]}
     >
-      GO TO {isMobile && <br />} NEXT LEVEL
+      GO TO NEXT LEVEL
     </Button>
   );
 
@@ -202,7 +192,6 @@ export const StoreContent = () => {
           close={() => setSpecialCardsModalOpen(false)}
         />
       )}
-      {!isSmallScreen ? (
         <Box
           sx={{
             position: "fixed",
@@ -218,24 +207,6 @@ export const StoreContent = () => {
             }}
           />
         </Box>
-      ) : (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: "5px",
-            right: "5px",
-            zIndex: 1000,
-            transform: "scale(0.7)",
-          }}
-        >
-          <GameMenu
-            inStore
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
-      )}
       <Flex
         width="100%"
         height="100%"
@@ -249,49 +220,42 @@ export const StoreContent = () => {
           alignItems="center"
           justifyContent="center"
           width="100%"
-          overflow={isSmallScreen ? "scroll" : "auto"}
-          pt={isSmallScreen ? 4 : 0}
-          px={{ base: 2, md: 14 }}
+          overflow={"auto"}
+          pt={0}
+          px={{md: 0, lg: 14}}
         >
           <Box
             display="flex"
-            w={["100%", "100%", "100%", "40%", "40%"]}
-            h={[null, null, null, "100%", "100%"]}
+            w={"32%"}
+            h={"100%"}
             flexDirection="column"
             justifyContent="space-between"
-            pb={isSmallScreen ? 4 : 0}
+            pb={0}
           >
-            <Flex flexDirection={"column"} gap={4} mb={{base: 4, md: 0}} alignItems={{base: "center", md: "left"}}>
+            <Flex flexDirection={"column"} gap={4} mb={0}>
               <Heading variant="italic" size="l" ml={4}>
                 LEVEL UP YOUR GAME
               </Heading>
-              {isSmallScreen && (
-                <Flex mt={2}>
-                  <Coins rolling />
-                </Flex>
-              )}
             </Flex>
-              <Flex justifyContent={{base: "left", sm: "center", md: "left"}}>
-                <Packs />
-              </Flex>
-            {!isSmallScreen && <Flex mt={8}>{levelUpTable}</Flex>}
-            {!isSmallScreen && <Coins rolling />}
+            <Packs />
+            <Flex mt={8} width={"95%"}>{levelUpTable}</Flex>
+            <Coins rolling />
           </Box>
           <Box
-            w={["100%", "100%", "45%", "45%", "45%"]}
+            w={"45%"}
             display="flex"
             flexDirection="column"
             justifyContent="center"
-            alignItems={alignCards ? "center" : "flex-start"}
-            pb={isSmallScreen ? 4 : 0}
+            alignItems={"flex-start"}
+            pb={0}
             pl={4}
-            gap={[2, 2, 4, 6, 6]}
+            gap={6}
           >
             <Box className="game-tutorial-step-3">
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title={`traditional and neon cards. ${alignCards}`}
+                  title={"traditional and neon cards"}
                 />
               )}
             </Box>
@@ -312,46 +276,20 @@ export const StoreContent = () => {
               )}
             </Box>
           </Box>
-          {isSmallScreen && (
-            <Box
-              className="game-tutorial-step-2"
-              w={["100%", "100%", "90%", "60%", "50%"]}
-              background="rgba(0,0,0,0.5)"
-              px={4}
-              borderRadius="10px"
-            >
-              <Heading variant="italic" size="m" mt={4}>
-                IMPROVE YOUR PLAYS
-              </Heading>
-              {levelUpTable}
-            </Box>
-          )}
 
           <Box
             display="flex"
-            flexDirection={[
-              "row-reverse",
-              "row-reverse",
-              "row-reverse",
-              "column",
-              "column",
-            ]}
-            w={["100%", "100%", "100%", "15%", "15%"]}
-            h={[null, null, null, "100%", "100%"]}
-            justifyContent={[
-              "center",
-              "center",
-              "center",
-              "space-between",
-              "space-between",
-            ]}
+            flexDirection={"column"}
+            w={"15%"}
+            h={"100%"}
+            justifyContent={"space-between"}
             gap={10}
-            px={isSmallScreen ? 2 : 0}
+            px={0}
+            paddingInlineStart={"4px"}
           >
-            {!isSmallScreen ? (
               <>
                 {nextLevelButton}
-                <Flex flexDirection="column" gap={14} alignItems="center">
+                <Flex flexDirection="column" gap={14}>
                   {rerollButton}
                   {specialsButton}
                   <Image
@@ -361,20 +299,6 @@ export const StoreContent = () => {
                   />
                 </Flex>
               </>
-            ) : (
-              <Flex
-                width="100%"
-                mx={2}
-                justifyContent="center"
-                my={6}
-                mb={12}
-                gap={6}
-              >
-                {rerollButton}
-                {specialsButton}
-                {nextLevelButton}
-              </Flex>
-            )}
           </Box>
         </Box>
       </Flex>

@@ -57,11 +57,11 @@ export default {
     },
   },
   breakpoints: {
-    base: "0px",
-    sm: "600px",
-    md: "1384px",
-    lg: "1700px",
-    xl: "2000px",
+    base: "0em",    
+    sm: "37.5em",   
+    md: "90em",     
+    lg: "116em",   
+    xl: "125em",  
   },
   components: {
     Table: tableTheme,
