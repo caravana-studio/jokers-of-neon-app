@@ -864,5 +864,24 @@
         "name": "High card",
         "description": "Cards that are not consecutive and of different suits"
       }
+    },
+    "store":
+    {
+      "labels":
+      {
+        "reroll": "Reroll",
+        "see-my": "See my",
+        "special-cards": "Special cards",
+        "go-to": "Go to",
+        "next-level": "Next level"
+      },
+      "titles":
+      {
+        "level-game": "Level up your game",
+        "traditional": "traditional and neon cards",
+        "modifiers": "modifier cards",
+        "special": "special cards",
+        "improve-plays": "Improve your plays"
+      }
     }
 }

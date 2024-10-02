@@ -843,5 +843,24 @@
         "name": "Carta alta",
         "description": "Cartas no consecutivas y de palos diferentes"
       }
+    },
+    "store":
+    {
+      "labels":
+      {
+        "reroll": "Actualizar",
+        "see-my": "Ver mis",
+        "special-cards": "cartas especiales",
+        "go-to": "Ir al",
+        "next-level": "Siguiente nivel"
+      },
+      "titles":
+      {
+        "level-game": "Sube de nivel tu juego",
+        "traditional": "Cartas tradicionales y de neón",
+        "modifiers": "Cartas modificadoras",
+        "special": "Cartas especiales",
+        "improve-plays": "Mejora tus manos"
+      }  
     }
 }
