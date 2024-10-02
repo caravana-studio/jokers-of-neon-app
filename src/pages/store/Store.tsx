@@ -78,7 +78,7 @@ export const Store = () => {
 
   const rerollButton = (
     <Tooltip
-      placement="right"
+      placement={isMobile ? "top" : "right"}
       label={
         rerolled ? "Available only once per level" : "Update available items"
       }
