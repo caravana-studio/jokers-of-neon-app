@@ -71,7 +71,7 @@ export const StoreContent = () => {
   const navigate = useNavigate();
 
   const levelUpTable = (
-    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>
+    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]} width={"100%"}>
       {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
     </Box>
   );
@@ -177,7 +177,7 @@ export const StoreContent = () => {
   };
 
   return (
-    <Background type="store" scrollOnMobile>
+    <Background type="store">
       <Joyride
         steps={STORE_TUTORIAL_STEPS}
         run={run}
@@ -223,6 +223,7 @@ export const StoreContent = () => {
           overflow={"auto"}
           pt={0}
           px={{md: 0, lg: 14}}
+          overflowY={"hidden"}
         >
           <Box
             display="flex"
@@ -242,13 +243,14 @@ export const StoreContent = () => {
             <Coins rolling />
           </Box>
           <Box
-            w={"45%"}
+            w={"auto"}
             display="flex"
             flexDirection="column"
             justifyContent="center"
             alignItems={"flex-start"}
             pb={0}
             pl={4}
+            pr={8}
             gap={6}
           >
             <Box className="game-tutorial-step-3">
