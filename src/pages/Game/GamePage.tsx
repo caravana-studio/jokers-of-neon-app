@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
-import { LOGGED_USER } from "../../constants/localStorage";
+import { useUsername } from "../../dojo/utils/useUsername.tsx";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
@@ -15,9 +15,9 @@ import { RageRoundAnimation } from "./RageRoundAnimation";
 export const GamePage = () => {
   const {
     setup: { masterAccount },
-    account: { account },
+    account,
   } = useDojo();
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const {
     checkOrCreateGame,
     setLockedCash,
@@ -48,8 +48,8 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if(!username)
-    navigate("/");
+  //if(!username)
+  //  navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user

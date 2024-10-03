@@ -1,15 +1,26 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
-import { useState } from "react";
+import { useConnect } from "@starknet-react/core";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useDojo } from "../dojo/useDojo";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
+  const [playButtonClicked, setPlayButtonClicked] = useState(false);
+  const { connect, connectors } = useConnect();
+  const { account } = useDojo();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (account && playButtonClicked) {
+      navigate("/demo");
+    }
+  }, [account, playButtonClicked]);
 
   return (
     <Background type="home">
@@ -76,7 +87,8 @@ export const Home = () => {
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  setPlayButtonClicked(true);
+                  connect({ connector: connectors[0] });
                 }}
               >
                 PLAY DEMO

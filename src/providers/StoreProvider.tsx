@@ -88,7 +88,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const {
-    account: { account },
+    account,
   } = useDojo();
 
   const {

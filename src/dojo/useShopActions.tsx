@@ -8,7 +8,7 @@ export const useShopActions = () => {
         setup: {
           client,
         },
-        account: { account },
+        account,
       } = useDojo(); 
 
       const skipShop = async (gameId: number) => {

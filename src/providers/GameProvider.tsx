@@ -1,3 +1,4 @@
+import CartridgeConnector from "@cartridge/connector";
 import {
   PropsWithChildren,
   createContext,
@@ -6,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import cartridgeConnector from "../cartridgeConnector.tsx";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import {
   discardSfx,
@@ -131,7 +133,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setup: {
       clientComponents: { Game },
     },
-    account: { account },
+    account,
     syncCall,
   } = useDojo();
 
@@ -209,27 +211,29 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
-    if (username) {
-      console.log("Creating game...");
-      createGame(username).then(async (response) => {
-        const { gameId: newGameId, hand } = response;
-        if (newGameId) {
-          resetLevel();
-          navigate("/demo");
-          setHand(hand);
-          setGameId(newGameId);
-          clearPreSelection();
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          console.log(`game ${newGameId} created`);
-          await syncCall();
-          setGameLoading(false);
-          setPreSelectionLocked(false);
-          setRoundRewards(undefined);
-        } else {
-          setError(true);
-        }
-      });
-    }
+    const username = await (
+      cartridgeConnector as CartridgeConnector
+    ).username();
+    console.log('username', username)
+    console.log("Creating game...");
+    createGame(username ?? "user").then(async (response) => {
+      const { gameId: newGameId, hand } = response;
+      if (newGameId) {
+        resetLevel();
+        navigate("/demo");
+        setHand(hand);
+        setGameId(newGameId);
+        clearPreSelection();
+        localStorage.setItem(GAME_ID, newGameId.toString());
+        console.log(`game ${newGameId} created`);
+        await syncCall();
+        setGameLoading(false);
+        setPreSelectionLocked(false);
+        setRoundRewards(undefined);
+      } else {
+        setError(true);
+      }
+    });
   };
 
   const replaceCards = (cards: Card[]) => {
