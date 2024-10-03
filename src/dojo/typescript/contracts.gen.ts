@@ -3,6 +3,8 @@
 // generate again with `sozo build --typescript`
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
+import * as models from "./models.gen";
+
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 interface HandActionProps extends BaseProps {
   cards: number[];
@@ -251,6 +253,56 @@ export async function setupWorld(provider: DojoProvider) {
     };
   }
 
+    // System definitions for `jokers_of_neon-poker_hand_system` contract
+    function poker_hand_system() {
+      const contract_name = "poker_hand_system";
+
+      
+      // Call the `world` system with the specified Account and calldata
+      const world = async (props: { account: Account }) => {
+          try {
+              return await provider.execute(
+                  props.account,
+                  {
+                      contractName: contract_name,
+                      entrypoint: "world",
+                      calldata: [],
+                  },
+                  "jokers_of_neon"
+              );
+          } catch (error) {
+              console.error("Error executing world:", error);
+              throw error;
+          }
+      };
+  
+      // Call the `get_level_poker_hand` system with the specified Account and calldata
+      const getLevelPokerHand = async (props: { account: Account, poker_hand: models.PokerHand, level: number }) => {
+          try {
+
+            console.log("address: ");
+              return await provider.execute(
+                  props.account,
+                  {
+                      contractName: contract_name,
+                      entrypoint: "get_level_poker_hand",
+                      calldata: [["None", "RoyalFlush", "StraightFlush", "FourOfAKind", "FullHouse", "Straight", "Flush", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard", "FiveOfAKind"].indexOf(props.poker_hand.type),
+              props.level],
+                  },
+                  "jokers_of_neon"
+              );
+          } catch (error) {
+              console.error("Error executing get_level_poker_hand:", error);
+              throw error;
+          }
+      };
+          
+
+      return {
+          world, getLevelPokerHand
+      };
+  }
+  
   // System definitions for `jokers_of_neon-rage_system` contract
   function rage_system() {
     const contract_name = "rage_system";
@@ -477,6 +529,7 @@ export async function setupWorld(provider: DojoProvider) {
     config_system: config_system(),
     game_system: game_system(),
     rage_system: rage_system(),
+    poker_hand_system: poker_hand_system(),
     shop_system: shop_system(),
   };
 }

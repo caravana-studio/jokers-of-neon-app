@@ -158,7 +158,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         mr={1}
                       >
-                        {play.points.toString()}
+                        {/* {play.points.toString()} */}
                       </Box>
                       <Heading fontSize={"15"}>x</Heading>
                       <Box
@@ -167,7 +167,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         ml={1}
                       >
-                        {play.multi.toString()}
+                        {/* {play.multi.toString()} */}
                       </Box>
                     </Box>
                   </Td>
