@@ -38,15 +38,20 @@ export const GameOver = () => {
           : "";
   }
 
+  const position = actualPlayer?.position ?? 100;
+
   useEffect(() => {
     looseSound();
     localStorage.removeItem(GAME_ID);
     gameId && localStorage.setItem(LAST_GAME_ID, gameId.toString());
     setIsRageRound(false);
-    if (actualPlayer?.position ?? 100 <= 10) {
-      runConfettiAnimation();
-    }
   }, []);
+
+  useEffect(() => {
+    if (position <= 10) {
+      runConfettiAnimation(position <= 3 ? 300 : 100);
+    }
+  }, [position]);
 
   return (
     <Background type="game" bgDecoration>
