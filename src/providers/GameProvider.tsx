@@ -468,7 +468,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         if (playEvents.gameOver) {
           console.log("GAME OVER");
           setTimeout(() => {
-            navigate("/gameover");
+            navigate(`/gameover/${gameId}`);
             setLockRedirection(false);
           }, 1000);
         } else if (playEvents.levelPassed && playEvents.detailEarned) {
@@ -577,7 +577,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       if (response.success) {
         if (response.gameOver) {
           setTimeout(() => {
-            navigate("/gameover");
+            navigate(`/gameover/${gameId}`);
           }, 1000);
         } else {
           replaceCards(response.cards);
@@ -678,7 +678,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
-        navigate("/gameover");
+        navigate(`/gameover/${gameId}`);
       } else if (game?.state === "AT_SHOP") {
         console.log("redirecting to store");
         navigate("/store");
