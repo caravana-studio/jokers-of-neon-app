@@ -295,17 +295,23 @@ export const CreateGameEventDefinition = {
     
 };
 
+export const TypePlayerCardDefinition = {
+    type: RecsType.String,
+    value: RecsType.String
+};
 
 // Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard` struct
 export interface CurrentHandCard {
     game_id: Number;
     idx: Number;
+    type_player_card: TypePlayerCard;
     card_id: Number;
     
 }
 export const CurrentHandCardDefinition = {
     game_id: RecsType.Number,
     idx: RecsType.Number,
+    type_player_card: TypePlayerCardDefinition,
     card_id: RecsType.Number,
     
 };
@@ -333,10 +339,6 @@ export const CurrentSpecialCardsDefinition = {
 // Type definition for `jokers_of_neon::models::status::round::type_player_card::TypePlayerCard` enum
 export type TypePlayerCard = { type: 'Common'; } | { type: 'Effect'; };
 
-export const TypePlayerCardDefinition = {
-    type: RecsType.String,
-    value: RecsType.String
-};
         
 // Type definition for `jokers_of_neon::models::status::round::deck_card::DeckCard` struct
 export interface DeckCard {
@@ -1135,6 +1137,7 @@ export function defineContractComponents(world: World) {
                 {
                     game_id: RecsType.Number,
                     idx: RecsType.Number,
+                    type_player_card: RecsType.String,
                     card_id: RecsType.Number,
                 },
                 {
