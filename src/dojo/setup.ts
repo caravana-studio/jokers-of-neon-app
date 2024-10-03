@@ -85,7 +85,7 @@ export async function setup({ ...config }: DojoConfig) {
     const keysCard: torii.KeysClause = {
       keys: [gameID, undefined, undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Game"],
+      models: ["jokers_of_neon-Card"],
     };
 
     const query: torii.Query = {
