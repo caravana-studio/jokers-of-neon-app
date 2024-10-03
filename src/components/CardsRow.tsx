@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
@@ -74,28 +74,19 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                       <Button
                         height={8}
                         fontSize="8px"
-                        px={"2px"}
+                        px={"16px"}
                         size={isMobile ? "xs" : "md"}
                         borderRadius={"10px"}
                         variant={"discardSecondarySolid"}
+                        display="flex"
+                        gap={4}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                         onClick={() => handleDiscard(card.idx)}
                       >
-                        X
+                        <Text fontSize='10px'>X</Text>{hoveredButton === card.idx && <Text fontSize='10px'>Remove</Text>}
                       </Button>
                     )}
-                    {hoveredButton === card.idx && (
-                      <Button
-                        height={8}
-                        px={{ base: "3px", md: "10px" }}
-                        fontSize="8px"
-                        borderRadius={"10px"}
-                        variant={"discardSecondarySolid"}
-                        onClick={() => handleDiscard(card.idx)}
-                      >
-                        Remove
-                      </Button>
-                    )}
+                    
                   </Flex>
                   <TiltCard card={card} />
                 </Box>
