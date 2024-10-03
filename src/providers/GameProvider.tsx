@@ -47,7 +47,7 @@ interface IGameContext {
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
-  discardEffectCard: (cardIdx: number) => Promise<boolean>;
+  discardEffectCard: (cardIdx: number) => Promise<{success: boolean, cards: Card[]}>;
   error: boolean;
   clearPreSelection: () => void;
   preSelectedModifiers: { [key: number]: number[] };
@@ -92,7 +92,7 @@ const GameContext = createContext<IGameContext>({
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
-  discardEffectCard: () => new Promise((resolve) => resolve(false)),
+  discardEffectCard: () => new Promise((resolve) => resolve({success: false, cards: []})),
   error: false,
   clearPreSelection: () => {},
   preSelectedModifiers: {},
