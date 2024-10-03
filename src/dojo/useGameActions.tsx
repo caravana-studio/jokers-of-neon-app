@@ -124,9 +124,10 @@ export const useGameActions = () => {
     
           updateTransactionToast(transaction_hash, tx.isSuccess());
           if (tx.isSuccess()) {
+            const cards = getCardsFromEvents(tx.events);
             return {
               success: true,
-              cards: getCardsFromEvents(tx.events),
+              cards:cards,
               gameOver: !!tx.events.find(
                 (event) => event.keys[0] === GAME_OVER_EVENT
               ),

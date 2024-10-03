@@ -7,6 +7,12 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
+import {
+  discardSfx,
+  multiSfx,
+  pointsSfx,
+  preselectedCardSfx,
+} from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
@@ -15,14 +21,14 @@ import { gameExists } from "../dojo/utils/getGame.tsx";
 import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
+import { useAudio } from "../hooks/useAudio.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
-import { useAudio } from "../hooks/useAudio.tsx";
-import { discardSfx, multiSfx, playHandSfx, pointsSfx, preselectedCardSfx } from "../constants/sfx.ts";
 
 interface IGameContext {
   gameId: number;
@@ -64,6 +70,7 @@ interface IGameContext {
   setLockedCash: (cash: number | undefined) => void;
   rageCards: Card[];
   setRageCards: (rageCards: Card[]) => void;
+  discards: number;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -108,6 +115,7 @@ const GameContext = createContext<IGameContext>({
   setLockedCash: (_) => {},
   rageCards: [],
   setRageCards: (_) => {},
+  discards: 0,
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -130,14 +138,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
     useGameActions();
 
-  const game = useGame();
-  const {play:preselectCardSound} = useAudio(preselectedCardSfx);
-  const {play:discardSound} = useAudio(discardSfx, 4);
-  const {play:pointsSound} = useAudio(pointsSfx);
-  const {play:multiSound} = useAudio(multiSfx);
+  const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
 
-  const minimumDuration = !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
-  
+  const game = useGame();
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx);
+  const { play: discardSound } = useAudio(discardSfx, 4);
+  const { play: pointsSound } = useAudio(pointsSfx);
+  const { play: multiSound } = useAudio(multiSfx);
+
+  const minimumDuration =
+    !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
+
   const playAnimationDuration = Math.max(
     700 - ((game?.level ?? 1) - 1) * 50,
     minimumDuration
@@ -268,7 +279,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       if (playEvents.neonPlayEvent) {
         setPlayIsNeon(true);
-        
+
         setAnimatedCard({
           animationIndex: -1,
           suit: 5,
@@ -403,18 +414,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               playEvents.cardScore.forEach((card, index) => {
                 setTimeout(() => {
                   const { idx, points, multi } = card;
-                  
+
                   setAnimatedCard({
                     idx: [idx],
                     points,
                     multi,
                     animationIndex: 50 + index,
                   });
-                  if(points)
-                    pointsSound();
+                  if (points) pointsSound();
                   points && setPoints((prev) => prev + points);
-                  if(multi)
-                    multiSound();
+                  if (multi) multiSound();
                   multi && setMulti((prev) => prev + multi);
                 }, playAnimationDuration * index);
               });
@@ -431,11 +440,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       special_idx,
                       animationIndex: 60 + index,
                     });
-                    if(points)
-                      pointsSound();
+                    if (points) pointsSound();
                     points && setPoints((prev) => prev + points);
-                    if(multi)
-                      multiSound();
+                    if (multi) multiSound();
                     multi && setMulti((prev) => prev + multi);
                   }, playAnimationDuration * index);
                 });
@@ -551,7 +558,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const togglePreselected = (cardIndex: number) => {
     if (!preSelectionLocked && handsLeft > 0) {
-      
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
         preselectCardSound();
@@ -566,6 +572,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardSound();
     setPreSelectionLocked(true);
     setDiscardAnimation(true);
+    stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
         if (response.gameOver) {
@@ -575,6 +582,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         } else {
           replaceCards(response.cards);
         }
+      } else {
+        rollbackDiscard();
       }
       setPreSelectionLocked(false);
       clearPreSelection();
@@ -701,7 +710,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <GameContext.Provider value={{ ...state, ...actions, lockRedirection }}>
+    <GameContext.Provider
+      value={{ ...state, ...actions, lockRedirection, discards }}
+    >
       {children}
     </GameContext.Provider>
   );

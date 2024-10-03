@@ -82,7 +82,7 @@ export const HandSection = () => {
             const isPreselected = cardIsPreselected(card.idx);
             return (
               <GridItem
-                key={card.idx}
+                key={card.idx+ "-"+ index}
                 w="100%"
                 onContextMenu={(e) => {
                   e.stopPropagation();
