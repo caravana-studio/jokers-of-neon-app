@@ -1144,7 +1144,7 @@ export function defineContractComponents(world: World) {
                     metadata: {
                         namespace: "jokers_of_neon",
                         name: "CurrentHandCard",
-                        types: ["u32", "u32", "u32"],
+                        types: ["u32", "u32", "TypePlayerCard", "u32"],
                         customTypes: [],
                     },
                 }
