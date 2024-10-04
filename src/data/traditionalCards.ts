@@ -1,16 +1,18 @@
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { CardDataMap } from "../types/CardData";
-import i18next from "i18next";
+import i18n from 'i18next';
 
 export const TRADITIONAL_CARDS_DATA: CardDataMap = {};
 export const NEON_CARDS_DATA: CardDataMap = {};
 
-i18next.on('initialized', () => {
+const loadTranslations = async () => {
+  await i18n.loadNamespaces(['traditional-cards', 'neon-cards']);
+
   for (let i = 0; i <= 53; i++) {
     TRADITIONAL_CARDS_DATA[i] = {
-      name: i18next.t(`traditionalCardsData.${i}.name`),
-      description: i18next.t(`traditionalCardsData.${i}.description`),
+      name: i18n.t(`traditionalCardsData.${i}.name`, {ns:'traditional-cards'}),
+      description: i18n.t(`traditionalCardsData.${i}.description`, {ns:'traditional-cards'}),
       card: CARDS_SUIT_DATA[i].card,
       suit: CARDS_SUIT_DATA[i].suit,
     };
@@ -18,13 +20,15 @@ i18next.on('initialized', () => {
   
   for (let i = 200; i <= 251; i++) {
     NEON_CARDS_DATA[i] = {
-      name: i18next.t(`neonCardsData.${i}.name`),
-      description: i18next.t(`neonCardsData.${i}.description`),
+      name: i18n.t(`neonCardsData.${i}.name`, {ns:'neon-cards'}),
+      description: i18n.t(`neonCardsData.${i}.description`, {ns:'neon-cards'}),
       card: CARDS_SUIT_DATA[i].card,
       suit: CARDS_SUIT_DATA[i].suit,
     };
   }
-});
+}
+
+i18n.on('initialized', loadTranslations);
 
 interface CardMultiSuitData {
   card?: Cards;
