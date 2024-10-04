@@ -5,6 +5,7 @@ export const PLAYS: string[] = [
   "None",
   "Royal flush",
   "Straight flush",
+  "Five of a kind",
   "Four of a kind",
   "Full house",
   "Straight",
@@ -13,7 +14,6 @@ export const PLAYS: string[] = [
   "Two pair",
   "Pair",
   "High card",
-  "Five of a kind",
 ];
 
 export const PLAYS_DATA: PlaysData[] = [
