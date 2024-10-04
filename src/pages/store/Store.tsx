@@ -53,7 +53,7 @@ export const Store = () => {
   useEffect(() => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
-        navigate("/gameover");
+        navigate(`/gameover/${gameId}`);
       } else if (game?.state === "IN_GAME") {
         navigate("/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
@@ -79,7 +79,7 @@ export const Store = () => {
 
   const rerollButton = (
     <Tooltip
-      placement="right"
+      placement={isMobile ? "top" : "right"}
       label={
         rerolled ? "Available only once per level" : "Update available items"
       }
@@ -143,7 +143,7 @@ export const Store = () => {
 
   useEffect(() => {
     if (state === "FINISHED") {
-      navigate("/gameover");
+      navigate(`/gameover/${gameId}`);
     } else if (state === "IN_GAME") {
       navigate("/demo");
     }

@@ -11,8 +11,7 @@ export const getCardsFromEvents = (events: DojoEvent[]): Card[] => {
     .map((event) => {
       const idx = parseComponentValue(event.keys[2], Type.Number) as number;
       const card_id = getNumberValueFromEvent(event, 2);
-      const card_type =
-        getNumberValueFromEvent(event, 0) === 0 ? "Common" : "Effect";
+      const card_type = card_id === undefined ? "" : card_id >= 600 && card_id <= 699 ? "Effect": "";
       const img = `${card_type === "Effect" ? "effect/" : ""}${card_id}.png`;
       const isModifier = card_type === "Effect";
       const id = idx.toString();

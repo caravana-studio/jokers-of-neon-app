@@ -32,7 +32,7 @@ interface LeaderboardProps {
   gameId?: number;
 }
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
-  const { data: fullLeaderboard, isLoading } = useGetLeaderboard();
+  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
   const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
   const currentLeaderIsInReducedLeaderboard = !!leaderboard?.find(

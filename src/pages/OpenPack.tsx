@@ -68,6 +68,7 @@ export const OpenPack = () => {
       setCards([]);
     } else {
       setCards(blisterPackResult?.cards ?? []);
+      setCardsToKeep(blisterPackResult?.cards ?? []);
     }
   }, [blisterPackResult]);
 
