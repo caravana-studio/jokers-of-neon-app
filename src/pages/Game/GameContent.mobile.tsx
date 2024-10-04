@@ -146,11 +146,11 @@ export const MobileGameContent = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: "5px",
-          right: "5px",
           zIndex: 1000,
-          transform: "scale(0.7)",
+          transform: ["scale(0.7)", "scale(1.2)"],
         }}
+        right={[1,4]}
+        bottom={[1,4]}
       >
         <Joyride 
           steps={GAME_TUTORIAL_STEPS}
