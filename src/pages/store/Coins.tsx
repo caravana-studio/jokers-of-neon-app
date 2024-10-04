@@ -4,6 +4,7 @@ import CoinsIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGame } from "../../dojo/queries/useGame";
+import { useTranslation } from "react-i18next";
 
 interface ICoinsProps {
   rolling?: boolean;
@@ -11,8 +12,8 @@ interface ICoinsProps {
 
 export const Coins = ({ rolling = false }: ICoinsProps) => {
   const game = useGame();
-
   const cash = game?.cash ?? 0;
+  const { t } = useTranslation();
 
   return (
     <Flex alignItems={"center"} className="game-tutorial-step-1">
@@ -40,7 +41,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
           },
         }}
       >
-        MY COINS:{" "}
+        {t('store.labels.coins').toString() + " "}
         {rolling ? <RollingNumber className="italic" n={cash} /> : cash}
         <CashSymbol />
       </Heading>

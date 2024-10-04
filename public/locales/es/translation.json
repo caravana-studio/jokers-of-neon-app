@@ -849,10 +849,11 @@
       "labels":
       {
         "reroll": "Actualizar",
-        "see-my": "Ver mis",
-        "special-cards": "cartas especiales",
+        "see-my": "Cartas",
+        "special-cards": "especiales",
         "go-to": "Ir al",
-        "next-level": "Siguiente nivel"
+        "next-level": "Siguiente nivel",
+        "coins": "Mis monedas:"
       },
       "titles":
       {
@@ -860,7 +861,42 @@
         "traditional": "Cartas tradicionales y de neón",
         "modifiers": "Cartas modificadoras",
         "special": "Cartas especiales",
-        "improve-plays": "Mejora tus manos"
-      }  
+        "improve-plays": "Mejora tus manos",
+        "my-special-cards": "Mis cartas especiales",
+        "packs": "Paquetes"
+      },
+      "tooltip":
+      {
+        "reroll-default":"Actualizar items",
+        "rerolled":"Disponible una vez por nivel"
+      },
+      "plays-table":
+      {
+        "hand": "Mano",
+        "level": "Nivel",
+        "price": "Precio",
+        "points-multi": "Puntos/multi",
+        "level-up": "Subir de nivel",
+        "purchased": "Comprado"
+      },
+      "preview-card":
+      {
+        "title":
+        {
+          "card-type": "Tipo:",
+          "description": "Descripción:",
+          "details": "Detalles:",
+          "price": "Precio:"
+        },
+        "labels":
+        {
+          "buy": "Comprar",
+          "special": "Special",
+          "modifier": "Modificadora",
+          "traditional": "Tradicional",
+          "temporary": "Temporal",
+          "close": "Cerrar"
+        }
+      }
     }
 }

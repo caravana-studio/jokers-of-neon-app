@@ -9,6 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { SpecialCards } from "./SpecialCards";
+import { useTranslation } from "react-i18next";
 
 interface CurrentSpecialCardsModalProps {
   close: () => void;
@@ -17,13 +18,14 @@ interface CurrentSpecialCardsModalProps {
 export const CurrentSpecialCardsModal = ({
   close,
 }: CurrentSpecialCardsModalProps) => {
+  const { t } = useTranslation();
   return (
     <Modal size='3xl' isOpen={true} onClose={close}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
           <Heading size="s" variant="neonWhite">
-            My special cards
+          {t('store.titles.my-special-cards')}
           </Heading>
         </ModalHeader>
         <ModalCloseButton />

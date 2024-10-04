@@ -82,7 +82,7 @@ export const Store = () => {
     <Tooltip
       placement="right"
       label={
-        rerolled ? "Available only once per level" : "Update available items"
+        rerolled ? t('store.tooltip.rerolled') : t('store.tooltip.reroll-default')  
       }
     >
       <Button
