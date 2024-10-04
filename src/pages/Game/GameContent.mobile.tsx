@@ -198,6 +198,7 @@ export const MobileGameContent = () => {
           autoScroll={false}
         >
           <Box
+            paddingTop={4}
             sx={{
               width: "100%",
               height: "100%",
