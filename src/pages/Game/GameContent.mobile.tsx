@@ -220,6 +220,7 @@ export const MobileGameContent = () => {
                 justifyContent: "space-between",
                 backgroundColor: "rgba(0,0,0,0.7)",
               }}
+              transform={["scale(1)", "scale(1.5)"]}
             >
               <MobilePreselectedCardsSection />
             </Box>
@@ -239,7 +240,7 @@ export const MobileGameContent = () => {
                   <SortBy />
                   <ShowPlays/>
                 </Box>
-                <Box pb={[10, 20]} >
+                <Box pb={[10, 20]} transform={["scale(1)", "scale(1.5)"]}>
                   <HandSection />
                 </Box>
               </Box>
