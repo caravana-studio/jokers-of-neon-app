@@ -238,7 +238,7 @@ export const MobileGameContent = () => {
                   <SortBy />
                   <ShowPlays/>
                 </Box>
-                <Box pb="25px" >
+                <Box pb={[10, 20]} >
                   <HandSection />
                 </Box>
               </Box>
