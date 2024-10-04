@@ -53,8 +53,6 @@ const loadTranslations = async () => {
       details: i18n.t('packsData.9.details', {ns:'packs'}),
     },
   });  
-
-  console.log("Translations loaded", PACKS_DATA);
 };
 
 i18n.on('initialized', loadTranslations);
