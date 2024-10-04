@@ -17,9 +17,13 @@ import {
   import { TiltCard } from "../../components/TiltCard";
   import { PLAYS_DATA } from "../../constants/plays";
   import { Text } from "@chakra-ui/react";
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
   import { BLUE_LIGHT } from "../../theme/colors";
   import { Card } from "../../types/Card";
+import { LevelPokerHand } from "../../dojo/typescript/models.gen";
+import { useDojo } from "../../dojo/useDojo";
+import { getPlayerPokerHands } from "../../dojo/usePokerHandActions";
+import { parseHand } from "../../enums/hands";
   
   const { blueLight, blue, violet } = theme.colors;
   
@@ -34,10 +38,22 @@ import {
   }
 
   export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({ maxHeight }) => {
-    const { gameId } = useGameContext();
-    const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
-    const plays = apiPlays;
-    const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
+    const {gameId} = useGameContext();
+    const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+    const [playsExampleIndex, setPlaysExampleIndex]= useState(0);
+
+    const {
+      setup: {
+        client,
+        account: { account }
+      },
+    } = useDojo();
+
+    if (client && account &&  plays.length == 0) {
+      getPlayerPokerHands(client, account, gameId).then(plays => {
+        setPlays(Object.values(plays));
+      })
+    }
   
     return (
       <>
@@ -145,9 +161,7 @@ import {
                 </Thead>
 
                   <Tbody>
-                    { plays && [...plays].reverse().map((play, index) => {
-
-                      
+                    { plays && [...plays].map((play, index) => {
                       const textColor = playsExampleIndex === index ? BLUE_LIGHT : "white";
                       const opacitySx = {
                         opacity: 1,
@@ -160,7 +174,7 @@ import {
                       );
                       const nameTd = (
                         <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={isMobile ? 9 : 13}>
-                          {play.pokerHand.name}
+                          {parseHand(play.poker_hand).name}
                         </Td>
                       );
                       const pointsMultiTd = (

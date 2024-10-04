@@ -1256,8 +1256,8 @@
     {
       "kind": "DojoContract",
       "address": "0x55dc0f1f59b033c1762ef4f57559793f4adf73297ee17799aa8b3d734a6a487",
-      "class_hash": "0x4296445f53af047fc784fbcc303399e9955fd89db11ff921055c1827150bad4",
-      "original_class_hash": "0x4296445f53af047fc784fbcc303399e9955fd89db11ff921055c1827150bad4",
+      "class_hash": "0xded1bfaa8d7e058e62753ffbef2f6cfe7637da2ce51e842b54589af27e6f89",
+      "original_class_hash": "0xded1bfaa8d7e058e62753ffbef2f6cfe7637da2ce51e842b54589af27e6f89",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1477,8 +1477,8 @@
     {
       "kind": "DojoContract",
       "address": "0x52779dd444f9467ee4eeb64c55678b7e389d6952b1d98c409572c1863b0961",
-      "class_hash": "0x44fa46e9dec127472cc13a4fc61c44ca5e5cf4b6c664389a083c8ed12f0b030",
-      "original_class_hash": "0x44fa46e9dec127472cc13a4fc61c44ca5e5cf4b6c664389a083c8ed12f0b030",
+      "class_hash": "0x5c8fa4fe82596dabe2a019ff6a2f88fccddd1922a81015a32fb740e603b0db1",
+      "original_class_hash": "0x5c8fa4fe82596dabe2a019ff6a2f88fccddd1922a81015a32fb740e603b0db1",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1630,6 +1630,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -1659,10 +1663,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]
@@ -1891,9 +1891,333 @@
     },
     {
       "kind": "DojoContract",
+      "address": "0x6479eba779ca4cf760dfefb21ff9aab649b2a5b05b56c63f2c2bcf7d2c636a4",
+      "class_hash": "0x72cce3266fde4261f317dc80f398c763c72ccb4a099ad1e87641a95ddd4bb6d",
+      "original_class_hash": "0x72cce3266fde4261f317dc80f398c763c72ccb4a099ad1e87641a95ddd4bb6d",
+      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "ContractImpl",
+          "interface_name": "dojo::contract::contract::IContract"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::contract::IContract",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "tag",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::world::world_contract::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::world_contract::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::world::world_contract::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::world_contract::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "PokerHandSystem",
+          "interface_name": "jokers_of_neon::systems::poker_hand_system::IPokerHandSystem"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::poker_hand::PokerHand",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "RoyalFlush",
+              "type": "()"
+            },
+            {
+              "name": "StraightFlush",
+              "type": "()"
+            },
+            {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "FourOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "FullHouse",
+              "type": "()"
+            },
+            {
+              "name": "Straight",
+              "type": "()"
+            },
+            {
+              "name": "Flush",
+              "type": "()"
+            },
+            {
+              "name": "ThreeOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "TwoPair",
+              "type": "()"
+            },
+            {
+              "name": "OnePair",
+              "type": "()"
+            },
+            {
+              "name": "HighCard",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::data::poker_hand::LevelPokerHand",
+          "members": [
+            {
+              "name": "poker_hand",
+              "type": "jokers_of_neon::models::data::poker_hand::PokerHand"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "multi",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "points",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::systems::poker_hand_system::IPokerHandSystem",
+          "items": [
+            {
+              "type": "function",
+              "name": "get_player_poker_hands",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<jokers_of_neon::models::data::poker_hand::LevelPokerHand>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IDojoInitImpl",
+          "interface_name": "jokers_of_neon::systems::poker_hand_system::poker_hand_system::IDojoInit"
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon::systems::poker_hand_system::poker_hand_system::IDojoInit",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_init",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradableImpl",
+          "interface_name": "dojo::contract::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::upgradeable::upgradeable::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::upgradeable::upgradeable::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::upgradeable::upgradeable::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon::systems::poker_hand_system::poker_hand_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::upgradeable::upgradeable::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "reads": [],
+      "writes": [
+        "ns:jokers_of_neon"
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon-poker_hand_system",
+      "systems": [],
+      "manifest_name": "jokers_of_neon-poker_hand_system-25bae3ed"
+    },
+    {
+      "kind": "DojoContract",
       "address": "0x5cee1e2ab40c5bb497e8aa25d4b02a1b0ed27aaad3fc3458fffaba99216dd7e",
-      "class_hash": "0x38a01e144e19e886099ee96abb5891a241b8f2720855c4bdf33cc17fb50c234",
-      "original_class_hash": "0x38a01e144e19e886099ee96abb5891a241b8f2720855c4bdf33cc17fb50c234",
+      "class_hash": "0x3d55b7402c32e5fabb80e6b4e7bc3c1e7f3f32007fdd8e68c6b4c072e55a936",
+      "original_class_hash": "0x3d55b7402c32e5fabb80e6b4e7bc3c1e7f3f32007fdd8e68c6b4c072e55a936",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2138,8 +2462,8 @@
     {
       "kind": "DojoContract",
       "address": "0x49933a56e21425303b25054ca7d5bf966fd3109c9912dc5018795b008f0471e",
-      "class_hash": "0x2665a87523e84829102e92b0c0aa259cda61dc4d58018952250484c8fc47bd8",
-      "original_class_hash": "0x2665a87523e84829102e92b0c0aa259cda61dc4d58018952250484c8fc47bd8",
+      "class_hash": "0x4ec03ae8ef73295396610a73beb003e1f9bfdcd06b090c188714d6eef81e5ca",
+      "original_class_hash": "0x4ec03ae8ef73295396610a73beb003e1f9bfdcd06b090c188714d6eef81e5ca",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -4883,8 +5207,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x598d6dba34c7b07c3ae25d5492e0d449dbe6910a4b185e6703b6a2f8089e6ba",
-      "original_class_hash": "0x598d6dba34c7b07c3ae25d5492e0d449dbe6910a4b185e6703b6a2f8089e6ba",
+      "class_hash": "0x2ef016c9f8776fc5004cf0b7ae709d6ad9c5dbda8903d4fea6cdd6d92d9b1e5",
+      "original_class_hash": "0x2ef016c9f8776fc5004cf0b7ae709d6ad9c5dbda8903d4fea6cdd6d92d9b1e5",
       "abi": [
         {
           "type": "impl",
@@ -5270,6 +5594,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -5299,10 +5627,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]
@@ -8223,13 +8547,23 @@
           "key": true
         },
         {
+          "name": "type_player_card",
+          "type": "TypePlayerCard",
+          "key": false
+        },
+        {
+          "name": "player_card_id",
+          "type": "u32",
+          "key": false
+        },
+        {
           "name": "card_id",
           "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x6214acf8fa0a427d8d2712413c586866a023b5d256e7c5acd3ccfaade2db633",
-      "original_class_hash": "0x6214acf8fa0a427d8d2712413c586866a023b5d256e7c5acd3ccfaade2db633",
+      "class_hash": "0x610b1429e0b464e691373b3b0e2c4767b69c3e978f0d737c8a4c5785b39f745",
+      "original_class_hash": "0x610b1429e0b464e691373b3b0e2c4767b69c3e978f0d737c8a4c5785b39f745",
       "abi": [
         {
           "type": "impl",
@@ -8599,6 +8933,20 @@
           "interface_name": "jokers_of_neon::models::status::round::current_hand_card::Icurrent_hand_card"
         },
         {
+          "type": "enum",
+          "name": "jokers_of_neon::models::status::round::type_player_card::TypePlayerCard",
+          "variants": [
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Effect",
+              "type": "()"
+            }
+          ]
+        },
+        {
           "type": "struct",
           "name": "jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard",
           "members": [
@@ -8608,6 +8956,14 @@
             },
             {
               "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "type_player_card",
+              "type": "jokers_of_neon::models::status::round::type_player_card::TypePlayerCard"
+            },
+            {
+              "name": "player_card_id",
               "type": "core::integer::u32"
             },
             {
@@ -10105,8 +10461,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x54115eaf8159093e037ec1aa40823900c0395acd0d786e2009f32b4c22acf71",
-      "original_class_hash": "0x54115eaf8159093e037ec1aa40823900c0395acd0d786e2009f32b4c22acf71",
+      "class_hash": "0x28a22173c5cc039ed0df2038806d35fb85e40fa8483a5494616e098368b2ed8",
+      "original_class_hash": "0x28a22173c5cc039ed0df2038806d35fb85e40fa8483a5494616e098368b2ed8",
       "abi": [
         {
           "type": "impl",
@@ -10492,6 +10848,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -10521,10 +10881,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]
@@ -11694,8 +12050,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x234c23d27dd19121a7be5877b9520d0843293178bdf6387227487a391222c93",
-      "original_class_hash": "0x234c23d27dd19121a7be5877b9520d0843293178bdf6387227487a391222c93",
+      "class_hash": "0x15e98ccc74d031d3fa800112f35fbe35d52a51feee8e29c75cd5c5463e19afd",
+      "original_class_hash": "0x15e98ccc74d031d3fa800112f35fbe35d52a51feee8e29c75cd5c5463e19afd",
       "abi": [
         {
           "type": "impl",
@@ -12081,6 +12437,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -12110,10 +12470,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]
@@ -13558,8 +13914,8 @@
           "key": false
         }
       ],
-      "class_hash": "0x2126413dc0634404033f8178437c1a8fb08681762df08e863fdcd798d72860e",
-      "original_class_hash": "0x2126413dc0634404033f8178437c1a8fb08681762df08e863fdcd798d72860e",
+      "class_hash": "0x7ec2ab66ac5a8131c5c548884c92ec43a63fd5f87578b60de734ad47df0c2d8",
+      "original_class_hash": "0x7ec2ab66ac5a8131c5c548884c92ec43a63fd5f87578b60de734ad47df0c2d8",
       "abi": [
         {
           "type": "impl",
@@ -13945,6 +14301,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -13974,10 +14334,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]
@@ -15367,20 +15723,10 @@
           "name": "level",
           "type": "u8",
           "key": false
-        },
-        {
-          "name": "multi",
-          "type": "u32",
-          "key": false
-        },
-        {
-          "name": "points",
-          "type": "u32",
-          "key": false
         }
       ],
-      "class_hash": "0x280bc19eadfc3f9118b9d8a742185771cf79caca1c82c2acdf49025a8a3424a",
-      "original_class_hash": "0x280bc19eadfc3f9118b9d8a742185771cf79caca1c82c2acdf49025a8a3424a",
+      "class_hash": "0xf3d13098b3eb80d5c66d135a42c6d41874da8130ff861c5e0b56742d76a401",
+      "original_class_hash": "0xf3d13098b3eb80d5c66d135a42c6d41874da8130ff861c5e0b56742d76a401",
       "abi": [
         {
           "type": "impl",
@@ -15766,6 +16112,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -15796,10 +16146,6 @@
             {
               "name": "HighCard",
               "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
-              "type": "()"
             }
           ]
         },
@@ -15818,14 +16164,6 @@
             {
               "name": "level",
               "type": "core::integer::u8"
-            },
-            {
-              "name": "multi",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "points",
-              "type": "core::integer::u32"
             }
           ]
         },
@@ -16337,8 +16675,8 @@
           "key": false
         }
       ],
-      "class_hash": "0xb142e47db5ac17a2bd8f221021f4adde1b2c2016e3b0f437667604bc85b69",
-      "original_class_hash": "0xb142e47db5ac17a2bd8f221021f4adde1b2c2016e3b0f437667604bc85b69",
+      "class_hash": "0x194ee1d43fdb369bfa54c2d8888b82b2d534d6ebf9642a9db941b3cfd39239",
+      "original_class_hash": "0x194ee1d43fdb369bfa54c2d8888b82b2d534d6ebf9642a9db941b3cfd39239",
       "abi": [
         {
           "type": "impl",
@@ -16724,6 +17062,10 @@
               "type": "()"
             },
             {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
               "name": "FourOfAKind",
               "type": "()"
             },
@@ -16753,10 +17095,6 @@
             },
             {
               "name": "HighCard",
-              "type": "()"
-            },
-            {
-              "name": "FiveOfAKind",
               "type": "()"
             }
           ]

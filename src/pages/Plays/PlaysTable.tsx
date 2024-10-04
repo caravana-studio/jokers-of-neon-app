@@ -21,6 +21,9 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { getPlayerPokerHands } from "../../dojo/usePokerHandActions.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
+import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -32,6 +35,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
   const { locked } = useStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
   const store = useStore();
   const { isPurchased } = store;
@@ -40,17 +44,34 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  let plays = usePokerPlays(gameId);
+  const {
+    setup: {
+      client,
+      account: { account }
+    },
+  } = useDojo();
+
+  console.log("Before")
+  if (client && account &&  plays.length == 0) {
+    getPlayerPokerHands(client, account, gameId).then(plays => {
+      console.log("setting plays: ", plays)
+      setPlays(Object.values(plays));
+    })
+  }
 
   useEffect(() => {
-    if (plays.plays.length > 0) { 
+  console.log("useEffect plays.length ", plays.length)
+  if (plays.length > 0) { 
       setIsLoading(false);
     }
-  }, [plays.plays, pokerHandItems]);
+  }, [plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading && inStore ? plays.plays.filter((play) =>
-        pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
-      ): plays.plays;
+  const filteredPlays = !isLoading && inStore ? plays.filter((play) =>
+    pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
+): plays;
+
+console.log("filteredPlays ", filteredPlays)
+console.log("plays.plays ", plays)
 
   return (
     <>
@@ -158,7 +179,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         mr={1}
                       >
-                        {/* {play.points.toString()} */}
+                        {play.points.toString()}
                       </Box>
                       <Heading fontSize={"15"}>x</Heading>
                       <Box
@@ -167,7 +188,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         width={"50px"}
                         ml={1}
                       >
-                        {/* {play.multi.toString()} */}
+                        {play.multi.toString()}
                       </Box>
                     </Box>
                   </Td>
