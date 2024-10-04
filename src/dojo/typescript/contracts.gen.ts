@@ -258,7 +258,7 @@ export async function setupWorld(provider: DojoProvider) {
       const contract_name = "poker_hand_system";
   
       // Call the `get_player_poker_hands` system with the specified Account and calldata
-      const getPlayerPokerHands = async ({ account, gameId }: { account: AccountInterface, gameId: number }) => {
+      const getPlayerPokerHands = async ({ gameId }: { gameId: number }) => {
           try {
               const calldata = [gameId];
               return await provider.call(

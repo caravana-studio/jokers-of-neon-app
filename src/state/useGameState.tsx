@@ -63,7 +63,7 @@ export const useGameState = () => {
   } = useDojo();
 
   if (client && account &&  plays.length == 0) {
-    getPlayerPokerHands(client, account, gameId).then(plays => {
+    getPlayerPokerHands(client, gameId).then(plays => {
       setPlays(Object.values(plays));
     })
   }

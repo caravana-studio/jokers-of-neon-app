@@ -50,7 +50,7 @@ import { parseHand } from "../../enums/hands";
     } = useDojo();
 
     if (client && account &&  plays.length == 0) {
-      getPlayerPokerHands(client, account, gameId).then(plays => {
+      getPlayerPokerHands(client, gameId).then(plays => {
         setPlays(Object.values(plays));
       })
     }
@@ -174,7 +174,7 @@ import { parseHand } from "../../enums/hands";
                       );
                       const nameTd = (
                         <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={isMobile ? 9 : 13}>
-                          {parseHand(play.poker_hand).name}
+                          {play.poker_hand && parseHand(play.poker_hand).name}
                         </Td>
                       );
                       const pointsMultiTd = (

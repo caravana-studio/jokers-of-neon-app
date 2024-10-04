@@ -1,9 +1,8 @@
 import { Account } from "starknet";
 
-export const getPlayerPokerHands = async (client: any, account: Account, gameId: number) => {
+export const getPlayerPokerHands = async (client: any, gameId: number) => {
     try {
       let tx_result = await client.poker_hand_system.getPlayerPokerHands({
-        account,
         gameId
       });
 
