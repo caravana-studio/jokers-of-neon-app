@@ -13,7 +13,7 @@ interface ICoinsProps {
 export const Coins = ({ rolling = false }: ICoinsProps) => {
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
 
   return (
     <Flex alignItems={"center"} className="game-tutorial-step-1">

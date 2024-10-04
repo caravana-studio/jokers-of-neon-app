@@ -30,7 +30,7 @@ const { white, neonGreen } = theme.colors;
 const MobilePreviewCard = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
 
   const { card, isPack, pack } = state || {};
 

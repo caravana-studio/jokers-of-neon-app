@@ -41,7 +41,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const cash = game?.cash ?? 0;
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
 
   let plays = usePokerPlays(gameId);
 

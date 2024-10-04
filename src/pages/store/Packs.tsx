@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
 
   return (
     <Box m={4} className="game-tutorial-step-packs">

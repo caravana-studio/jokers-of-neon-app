@@ -70,7 +70,7 @@ export const Store = () => {
   const shopItems = useShopItems();
 
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
 
   const levelUpTable = (
     <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>

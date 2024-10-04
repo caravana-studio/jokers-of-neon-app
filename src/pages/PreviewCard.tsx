@@ -32,7 +32,7 @@ const PreviewCard = () => {
   const { card, isPack, pack } = state || {};
 
   const [buyDisabled, setBuyDisabled] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
   /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
     useState<boolean>(false); */
 
