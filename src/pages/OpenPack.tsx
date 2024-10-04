@@ -17,6 +17,7 @@ import styled from "styled-components";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { PositionedDiscordLink } from "../components/DiscordLink";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -224,6 +225,7 @@ export const OpenPack = () => {
           onConfirm={confirmSelectCards}
         />
       )}
+      {!isMobile && <PositionedDiscordLink />}
     </Background>
   );
 };
