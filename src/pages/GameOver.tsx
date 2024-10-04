@@ -75,7 +75,7 @@ export const GameOver = () => {
               variant="solid"
               onClick={() => {
                 window.open(
-                  `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20Jokers%20of%20Neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${currentLeader?.position}%0A%F0%9F%94%A5%20Level%3A%20${currentLeader?.level}%0A%0AThink%20you%20can%20top%20that%3F%20The%20demo%20is%20live%20for%20a%20limited%20time!%20%E2%8F%B3%0A%0AGive%20it%20a%20try%20at%20${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8`,
+                  `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20Jokers%20of%20Neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position}%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level}%0A%0AThink%20you%20can%20top%20that%3F%20The%20demo%20is%20live%20for%20a%20limited%20time!%20%E2%8F%B3%0A%0AGive%20it%20a%20try%20at%20${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8`,
                   "_blank"
                 );
               }}
