@@ -57,6 +57,7 @@ const PreviewCardLayout = () => {
 
   const fontTitleSize = ["s", "s", "l"];
   const fontSize = ["md", "md", "xl"];
+  const layoutWidth = ["95%", "90%", "70%", "70%", "40%"];
 
   const buyButton = (
     <Button
@@ -97,7 +98,7 @@ const PreviewCardLayout = () => {
         <Flex
           flexDirection={"column"}
           justifyContent={"center"}
-          width={["95%", "90%", "70%", "70%", "40%"]}
+          width={layoutWidth}
           margin={"0 auto"}
           bg="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
@@ -249,7 +250,7 @@ const PreviewCardLayout = () => {
         </Flex>
 
         <Flex
-          width="60%"
+          width={layoutWidth}
           gap={4}
           m={1000}
           mt={8}
