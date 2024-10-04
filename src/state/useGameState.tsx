@@ -12,6 +12,9 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
+import { getPlayerPokerHands } from "../dojo/usePokerHandActions";
+import { useDojo } from "../dojo/useDojo";
+import { LevelPokerHand } from "../dojo/typescript/models.gen";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -40,6 +43,7 @@ export const useGameState = () => {
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
   const [rageCards, setRageCards] = useState<Card[]>([]);
+  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -51,7 +55,18 @@ export const useGameState = () => {
   const game = useGame();
 
   const dojoHand = useCurrentHand(sortBy);
-  const { data: plays, refetch: refetchPlays } = useGetPlaysLevelDetail(gameId);
+  const {
+    setup: {
+      client,
+      account: { account }
+    },
+  } = useDojo();
+
+  if (client && account &&  plays.length == 0) {
+    getPlayerPokerHands(client, account, gameId).then(plays => {
+      setPlays(Object.values(plays));
+    })
+  }
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
@@ -81,7 +96,7 @@ export const useGameState = () => {
   }, [dojoHand]);
 
   const setMultiAndPoints = (play: Plays) => {
-    const playerPokerHand = plays?.find((p) => p.pokerHand.value == play);
+    const playerPokerHand = plays[play - 1];
     setMulti(playerPokerHand?.multi ?? 0);
     setPoints(playerPokerHand?.points ?? 0);
   };
@@ -95,13 +110,9 @@ export const useGameState = () => {
         preSelectedModifiers
       );
       setPreSelectedPlay(play);
-      if (plays?.length == 0) {
-        refetchPlays().then(() => {
+      if (plays?.length != 0) {
           setMultiAndPoints(play);
-        });
-      } else {
-        setMultiAndPoints(play);
-      }
+      } 
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
@@ -140,7 +151,7 @@ export const useGameState = () => {
     score,
     apiHand: dojoHand,
     plays,
-    refetchPlays,
+    // refetchPlays,
     sortBy,
     sortedHand,
     username,

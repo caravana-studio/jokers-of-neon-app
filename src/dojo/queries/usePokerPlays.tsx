@@ -31,7 +31,5 @@ export const usePokerPlays = (gameId: number): { plays: PlayerLevelPokerHand[] }
 
       setPlays(components);
     }, [gameKeys]);
-
-    console.log("PLAYS: ", plays)
   return {plays: Object.values(plays)};
 }

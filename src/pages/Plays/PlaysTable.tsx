@@ -51,16 +51,13 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
     },
   } = useDojo();
 
-  console.log("Before")
   if (client && account &&  plays.length == 0) {
     getPlayerPokerHands(client, account, gameId).then(plays => {
-      console.log("setting plays: ", plays)
       setPlays(Object.values(plays));
     })
   }
 
   useEffect(() => {
-  console.log("useEffect plays.length ", plays.length)
   if (plays.length > 0) { 
       setIsLoading(false);
     }
@@ -69,9 +66,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const filteredPlays = !isLoading && inStore ? plays.filter((play) =>
     pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
 ): plays;
-
-console.log("filteredPlays ", filteredPlays)
-console.log("plays.plays ", plays)
 
   return (
     <>
