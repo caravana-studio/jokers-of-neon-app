@@ -1477,8 +1477,8 @@
     {
       "kind": "DojoContract",
       "address": "0x52779dd444f9467ee4eeb64c55678b7e389d6952b1d98c409572c1863b0961",
-      "class_hash": "0x44fa46e9dec127472cc13a4fc61c44ca5e5cf4b6c664389a083c8ed12f0b030",
-      "original_class_hash": "0x44fa46e9dec127472cc13a4fc61c44ca5e5cf4b6c664389a083c8ed12f0b030",
+      "class_hash": "0x178f169af63b5142a49995d36ed76550a221bebbcba41272faf1cc97fc3a202",
+      "original_class_hash": "0x178f169af63b5142a49995d36ed76550a221bebbcba41272faf1cc97fc3a202",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1892,8 +1892,8 @@
     {
       "kind": "DojoContract",
       "address": "0x5cee1e2ab40c5bb497e8aa25d4b02a1b0ed27aaad3fc3458fffaba99216dd7e",
-      "class_hash": "0x38a01e144e19e886099ee96abb5891a241b8f2720855c4bdf33cc17fb50c234",
-      "original_class_hash": "0x38a01e144e19e886099ee96abb5891a241b8f2720855c4bdf33cc17fb50c234",
+      "class_hash": "0x3d55b7402c32e5fabb80e6b4e7bc3c1e7f3f32007fdd8e68c6b4c072e55a936",
+      "original_class_hash": "0x3d55b7402c32e5fabb80e6b4e7bc3c1e7f3f32007fdd8e68c6b4c072e55a936",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2138,8 +2138,8 @@
     {
       "kind": "DojoContract",
       "address": "0x49933a56e21425303b25054ca7d5bf966fd3109c9912dc5018795b008f0471e",
-      "class_hash": "0x2665a87523e84829102e92b0c0aa259cda61dc4d58018952250484c8fc47bd8",
-      "original_class_hash": "0x2665a87523e84829102e92b0c0aa259cda61dc4d58018952250484c8fc47bd8",
+      "class_hash": "0x1e08649c1e31141e1b85e89783d4b7fb488caa77a857f50678b60bc0e58c223",
+      "original_class_hash": "0x1e08649c1e31141e1b85e89783d4b7fb488caa77a857f50678b60bc0e58c223",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -8223,13 +8223,23 @@
           "key": true
         },
         {
+          "name": "type_player_card",
+          "type": "TypePlayerCard",
+          "key": false
+        },
+        {
+          "name": "player_card_id",
+          "type": "u32",
+          "key": false
+        },
+        {
           "name": "card_id",
           "type": "u32",
           "key": false
         }
       ],
-      "class_hash": "0x6214acf8fa0a427d8d2712413c586866a023b5d256e7c5acd3ccfaade2db633",
-      "original_class_hash": "0x6214acf8fa0a427d8d2712413c586866a023b5d256e7c5acd3ccfaade2db633",
+      "class_hash": "0x610b1429e0b464e691373b3b0e2c4767b69c3e978f0d737c8a4c5785b39f745",
+      "original_class_hash": "0x610b1429e0b464e691373b3b0e2c4767b69c3e978f0d737c8a4c5785b39f745",
       "abi": [
         {
           "type": "impl",
@@ -8599,6 +8609,20 @@
           "interface_name": "jokers_of_neon::models::status::round::current_hand_card::Icurrent_hand_card"
         },
         {
+          "type": "enum",
+          "name": "jokers_of_neon::models::status::round::type_player_card::TypePlayerCard",
+          "variants": [
+            {
+              "name": "Common",
+              "type": "()"
+            },
+            {
+              "name": "Effect",
+              "type": "()"
+            }
+          ]
+        },
+        {
           "type": "struct",
           "name": "jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard",
           "members": [
@@ -8608,6 +8632,14 @@
             },
             {
               "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "type_player_card",
+              "type": "jokers_of_neon::models::status::round::type_player_card::TypePlayerCard"
+            },
+            {
+              "name": "player_card_id",
               "type": "core::integer::u32"
             },
             {
