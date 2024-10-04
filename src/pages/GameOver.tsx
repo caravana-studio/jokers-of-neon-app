@@ -28,7 +28,7 @@ export const GameOver = () => {
   const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard();
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
-  const { t } = useTranslation();
+  const { t } = useTranslation(["intermediate-screens"]);
   let congratulationsMsj = "";
 
   if (actualPlayer?.position != undefined) {

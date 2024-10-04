@@ -67,7 +67,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(["intermediate-screens"]);
 
   const labels = [
     t('rewards-details.labels.base'),

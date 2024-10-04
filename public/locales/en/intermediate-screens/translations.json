@@ -1,0 +1,48 @@
+{
+    "game-over":
+    {
+        "gameOver-msj": "GAME OVER",
+        "table":
+        {
+            "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
+            "gameOver-top5-msj": "Great job! You're in the top 5! Keep it up!"
+        },
+        "btn":
+        {
+            "gameOver-share-btn": "SHARE ON",
+            "gameOver-newGame-btn": "START NEW GAME"
+        }
+    },
+    "login":
+    {
+        "error-labels":
+        {
+            "error-noUsername-login": "Please enter username",
+            "error-shortUsername-login": "Username must be at least 3 characters",
+            "error-longUsername-login": "Username must be at most 15 characters",
+            "error-invalidUsername-login": "Username must contain only letters, numbers, points or dashes"
+        },
+        "labels":
+        {
+            "label-login": "Introduce username",
+            "placeholder-login": "username"
+        },
+        "btn":
+        {
+            "goBack-login-btn": "GO BACK",
+            "startGame-login-btn": "START GAME"
+        }
+    },
+    "rewards-details":
+    {
+        "labels":
+        {
+            "title-1": "Level",
+            "title-2": "clear",
+            "base": "base",
+            "level-bonus": "Level bonus",
+            "discards-left": "Discards left",
+            "hands-left": "Hands left"
+        }
+    }
+}
