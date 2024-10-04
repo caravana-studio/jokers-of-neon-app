@@ -1,10 +1,10 @@
-import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/Background";
+import { DiscordLink } from "../components/DiscordLink";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
@@ -90,19 +90,10 @@ export const GameOver = () => {
               START NEW GAME
             </Button>
           </Flex>
+          <Flex mt={{base: 4, sm: 10}} justifyContent="center">
+            <DiscordLink />
+          </Flex>
         </Flex>
-
-        {!isMobile && (
-          <Image
-            position={"fixed"}
-            bottom={10}
-            alignSelf="center"
-            src="/logos/jn-logo.png"
-            alt="logo-variant"
-            width={"65%"}
-            maxW={"150px"}
-          />
-        )}
       </Flex>
     </Background>
   );
