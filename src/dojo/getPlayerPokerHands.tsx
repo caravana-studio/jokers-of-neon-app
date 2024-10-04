@@ -1,5 +1,3 @@
-import { Account } from "starknet";
-
 export const getPlayerPokerHands = async (client: any, gameId: number) => {
     try {
       let tx_result = await client.poker_hand_system.getPlayerPokerHands({
@@ -13,8 +11,8 @@ export const getPlayerPokerHands = async (client: any, gameId: number) => {
         level_poker_hand.poker_hand = Object.entries(level_poker_hand.poker_hand.variant)
                           .find(([key, value]) => value !== undefined && value !== null)?.[0]
       });
-      return tx_result;
+      return Object.values(tx_result);
     } catch (e) {
       console.log(e);
     }
-  };
+};

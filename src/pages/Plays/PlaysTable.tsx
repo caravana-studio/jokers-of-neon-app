@@ -21,7 +21,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
-import { getPlayerPokerHands } from "../../dojo/usePokerHandActions.tsx";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 
@@ -52,8 +52,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   } = useDojo();
 
   if (client && account &&  plays.length == 0) {
-    getPlayerPokerHands(client, gameId).then(plays => {
-      setPlays(Object.values(plays));
+    getPlayerPokerHands(client, gameId).then((plays: any) => {
+      setPlays(plays);
     })
   }
 
@@ -63,7 +63,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
     }
   }, [plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading && inStore ? plays.filter((play) =>
+  const filteredPlays = !isLoading ? plays.filter((play) =>
     pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
 ): plays;
 

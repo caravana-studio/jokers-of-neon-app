@@ -12,7 +12,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
-import { getPlayerPokerHands } from "../dojo/usePokerHandActions";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { useDojo } from "../dojo/useDojo";
 import { LevelPokerHand } from "../dojo/typescript/models.gen";
 
@@ -63,8 +63,8 @@ export const useGameState = () => {
   } = useDojo();
 
   if (client && account &&  plays.length == 0) {
-    getPlayerPokerHands(client, gameId).then(plays => {
-      setPlays(Object.values(plays));
+    getPlayerPokerHands(client, gameId).then((plays: any)=> {
+      setPlays(plays);
     })
   }
 
@@ -153,7 +153,6 @@ export const useGameState = () => {
     score,
     apiHand: dojoHand,
     plays,
-    // refetchPlays,
     sortBy,
     sortedHand,
     username,

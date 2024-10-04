@@ -17,7 +17,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { PLAYS_DATA } from "../../constants/plays";
 import { LevelPokerHand } from "../../dojo/typescript/models.gen";
 import { useDojo } from "../../dojo/useDojo";
-import { getPlayerPokerHands } from "../../dojo/usePokerHandActions";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
 import { parseHand } from "../../enums/hands";
 import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT } from "../../theme/colors";
@@ -51,8 +51,8 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
   } = useDojo();
 
   if (client && account && plays.length == 0) {
-    getPlayerPokerHands(client, gameId).then((plays) => {
-      setPlays(Object.values(plays));
+    getPlayerPokerHands(client, gameId).then((plays: any) => {
+      setPlays(plays);
     });
   }
 
