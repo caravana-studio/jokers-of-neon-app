@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import {
@@ -360,6 +361,7 @@ export const Store = () => {
           </Box>
         </Box>
       </Flex>
+      {!isMobile && <PositionedDiscordLink  />}
     </Background>
   );
 };
