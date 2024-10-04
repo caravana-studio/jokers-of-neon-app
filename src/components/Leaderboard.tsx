@@ -33,7 +33,7 @@ interface LeaderboardProps {
   gameId?: number;
 }
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["home"]);
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard();
   const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);

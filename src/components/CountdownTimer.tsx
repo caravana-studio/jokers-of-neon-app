@@ -31,7 +31,7 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(calculateTimeLeft());
-  const { t } = useTranslation();
+  const { t } = useTranslation(["home"]);
 
   useEffect(() => {
     const timer = setInterval(() => {

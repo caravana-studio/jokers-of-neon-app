@@ -12,7 +12,7 @@ export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["home"]);
   
 
   return (

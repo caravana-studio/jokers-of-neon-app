@@ -15,7 +15,10 @@ i18n
       escapeValue: false, // React already escapes values to prevent XSS, so disable escaping
     },
     backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json', // Path to translation files
+      loadPath: function(lngs: string[], namespaces: string[] ) {
+        // Return an array of paths, allowing the loading of multiple files in folder structure
+        return namespaces.map(ns => `/locales/${lngs}/${ns}/translation.json`);
+      }
     },
     react: {
       useSuspense: false, // Disable React suspense for smoother integration
