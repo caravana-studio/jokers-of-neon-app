@@ -11,6 +11,7 @@ import { looseSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -30,18 +31,26 @@ export const GameOver = () => {
 
   if (currentLeader?.position != undefined) {
     congratulationsMsj =
-    currentLeader?.position === 1
+      currentLeader?.position === 1
         ? "Congratulations! You're the top player on the leaderboard!"
         : currentLeader?.position > 1 && currentLeader?.position <= 5
           ? "Great job! You're in the top 5! Keep it up!"
           : "";
   }
 
+  const position = currentLeader?.position ?? 100;
+
   useEffect(() => {
     looseSound();
     localStorage.removeItem(GAME_ID);
     setIsRageRound(false);
   }, []);
+
+  useEffect(() => {
+    if (position <= 10) {
+      runConfettiAnimation(position <= 3 ? 300 : 100);
+    }
+  }, [position]);
 
   return (
     <Background type="game" bgDecoration>
