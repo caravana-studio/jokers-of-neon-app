@@ -295,7 +295,6 @@ export const CreateGameEventDefinition = {
     
 };
 
-
 // Type definition for `jokers_of_neon::models::status::round::type_player_card::TypePlayerCard` enum
 export type TypePlayerCard = { type: 'Common'; } | { type: 'Effect'; };
 
@@ -340,8 +339,7 @@ export const CurrentSpecialCardsDefinition = {
     remaining: RecsType.Number,
     
 };
-
-
+        
 // Type definition for `jokers_of_neon::models::status::round::deck_card::DeckCard` struct
 export interface DeckCard {
     game_id: Number;
