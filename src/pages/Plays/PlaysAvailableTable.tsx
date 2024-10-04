@@ -169,12 +169,12 @@ import { parseHand } from "../../enums/hands";
 
                       const levelTd = (
                         <Td sx={opacitySx} textColor={textColor} fontSize={isMobile ? 9 : 13}>
-                          {play.level}
+                          {play.level.toString()}
                         </Td>
                       );
                       const nameTd = (
                         <Td sx={opacitySx} textAlign={"center"} textColor={textColor} fontSize={isMobile ? 9 : 13}>
-                          {play.poker_hand && parseHand(play.poker_hand).name}
+                          {play.poker_hand && parseHand(play.poker_hand.toString()).name}
                         </Td>
                       );
                       const pointsMultiTd = (
@@ -193,7 +193,7 @@ import { parseHand } from "../../enums/hands";
                               boxShadow={`0px 0px 10px 6px ${blue}`}
                               fontWeight={"400"}
                             >
-                              {play.points}
+                              {play.points.toString()}
                             </Box>
                             <Heading fontSize={isMobile ? "8" : "10"}>x</Heading>
                             <Box
@@ -204,7 +204,7 @@ import { parseHand } from "../../enums/hands";
                               boxShadow={`0px 0px 10px 6px ${violet}`}
                               fontWeight={"400"}
                             >
-                              {play.multi}
+                              {play.multi.toString()}
                             </Box>
                           </Box>
                         </Td>

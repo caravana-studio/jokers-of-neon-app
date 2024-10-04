@@ -97,8 +97,10 @@ export const useGameState = () => {
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
-    setMulti(playerPokerHand?.multi ?? 0);
-    setPoints(playerPokerHand?.points ?? 0);
+    const multi = typeof playerPokerHand.multi === 'number' ? playerPokerHand.multi : 0;
+    const points = typeof playerPokerHand.points === 'number' ? playerPokerHand.points : 0;
+    setMulti(multi);
+    setPoints(points);
   };
 
   useEffect(() => {
