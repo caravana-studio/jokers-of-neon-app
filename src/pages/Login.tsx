@@ -15,7 +15,7 @@ export const Login = () => {
   const inputRef = useRef(null);
   const [username, setUsername] = useState("");
   const { showErrorToast } = useCustomToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["intermediate-screens"]);
 
   const redirectToGame = () => {
     navigate("/demo");
