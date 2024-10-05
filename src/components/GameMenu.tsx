@@ -3,7 +3,6 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useUsername } from "../dojo/utils/useUsername";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
@@ -19,7 +18,7 @@ export const GameMenu = ({
   inStore = false,
   showTutorial,
 }: GameMenuProps) => {
-  const username = useUsername();
+  const username = localStorage.getItem(LOGGED_USER);
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();

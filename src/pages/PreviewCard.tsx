@@ -13,6 +13,7 @@ import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
+import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
@@ -281,6 +282,7 @@ const PreviewCard = () => {
           </HStack>
         </Flex>
       </Flex>
+      <PositionedDiscordLink />
     </Background>
   );
 };

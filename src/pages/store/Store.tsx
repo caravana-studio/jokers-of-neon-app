@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import {
@@ -53,7 +54,7 @@ export const Store = () => {
   useEffect(() => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
-        navigate("/gameover");
+        navigate(`/gameover/${gameId}`);
       } else if (game?.state === "IN_GAME") {
         navigate("/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
@@ -80,7 +81,7 @@ export const Store = () => {
 
   const rerollButton = (
     <Tooltip
-      placement="right"
+      placement={isMobile ? "top" : "right"}
       label={
         rerolled ? t('store.tooltip.rerolled') : t('store.tooltip.reroll-default')  
       }
@@ -144,7 +145,7 @@ export const Store = () => {
 
   useEffect(() => {
     if (state === "FINISHED") {
-      navigate("/gameover");
+      navigate(`/gameover/${gameId}`);
     } else if (state === "IN_GAME") {
       navigate("/demo");
     }
@@ -362,6 +363,7 @@ export const Store = () => {
           </Box>
         </Box>
       </Flex>
+      {!isMobile && <PositionedDiscordLink  />}
     </Background>
   );
 };
