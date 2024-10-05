@@ -1,4 +1,5 @@
 import { isMobile } from "react-device-detect";
+import i18n from 'i18next';
 import { Step } from "react-joyride";
 
 const COMMON_SETTINGS: Partial<Step> = {
@@ -7,143 +8,13 @@ const COMMON_SETTINGS: Partial<Step> = {
   disableScrollParentFix: isMobile ? true : false,
 };
 
-export const GAME_TUTORIAL_STEPS: Step[] = [
-  {
-    target: ".game-tutorial-step-1",
-    title: "Points target",
-    content:
-      "The amount of points you need to score to proceed to the next level",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-2",
-    title: "Playable hand",
-    content:
-      "This is your hand. Click on cards to preselect them and form a poker hand",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-3",
-    title: "Discard Cards",
-    content: "Discard your preselected cards",
-    ...COMMON_SETTINGS,
-    placement: "right",
-  },
-  {
-    target: ".game-tutorial-step-4",
-    title: "Play Cards",
-    content: "Whenever you are ready you can play your preselected cards",
-    ...COMMON_SETTINGS,
-    placement: "left",
-  },
-  {
-    target: ".game-tutorial-step-6",
-    title: "Points and Multiplier",
-    content:
-      "Each poker hand has a base points and multiplier that will contribute to your final score",
-    ...COMMON_SETTINGS,
-  },
-];
+export const GAME_TUTORIAL_STEPS: Step[] = [];
 
-export const STORE_TUTORIAL_STEPS: Step[] = [
-  {
-    target: ".game-tutorial-step-1",
-    title: "Coins",
-    content:
-      "Congratulations! After defeating a level, you earn coins to spend in the store.",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-2",
-    title: "Level Up Your Hands",
-    content:
-      "You can upgrade your hands. The higher the level of your poker hands, the more points and multi they score",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-packs",
-    title: "Buy Packs",
-    content:
-      "Here you can get packs to boost your deck. These packs offer a chance to obtain rare and special cards at a lower cost."
-      ,
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-3",
-    title: "Buy Traditional and Neon Cards",
-    content:
-      "Here you can buy traditional and neon cards to enhance your deck. Neon cards score double points and +1 multi..",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-4",
-    title: "Modifiers",
-    content:
-      "Modifiers are cards that are added to your deck and apply effects to your traditional cards, like adding more points or changing the suit",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-5",
-    title: "Special Cards",
-    content:
-      "Special cards grant unique global powers and get active immediately. These can turn the tide of the game!",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-6",
-    title: "Reroll the Store",
-    content:
-      "Not finding what you need? Spend some coins to reroll the store and see a fresh set of cards and hands to upgrade.",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".game-tutorial-step-7",
-    title: "Proceed to the Next Level",
-    content:
-      "Ready to continue? Click here to advance to the next level and face new challenges!",
-    ...COMMON_SETTINGS,
-  },
-];
+export const STORE_TUTORIAL_STEPS: Step[] = [];
 
-export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [
-  {
-    target: ".special-cards-step-1",
-    title: "Special Cards",
-    content:
-      "Special cards activate immediately after you purchase them in the store. They apply their effects after your hand is played.",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".special-cards-step-3",
-    title: "Discarding Cards",
-    content:
-      "If you don’t want to use a special card, you can discard it at any time by" +
-      (!isMobile
-        ? " clicking the discard button that will pop up over the card."
-        : " dragging it to the discard button."),
-    ...COMMON_SETTINGS,
-  },
-];
+export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [];
 
-export const MODIFIERS_TUTORIAL_STEPS: Step[] = [
-  {
-    target: ".tutorial-modifiers-step-1",
-    title: "Modifier card",
-    content:
-      "Modifier cards enhance or alter a specific card. Drag and drop a modifier onto a preselected card to activate its effect.",
-    ...COMMON_SETTINGS,
-  },
-  {
-    target: ".tutorial-modifiers-step-2",
-    title: "Discard",
-    content:
-      (!isMobile
-        ? "Click the discard button that will pop up over the card"
-        : "Drag the modifier and drop it onto the discard button") +
-      " to discard it without losing any discard chances.",
-    ...COMMON_SETTINGS,
-  },
-];
+export const MODIFIERS_TUTORIAL_STEPS: Step[] = [];
 
 export const TUTORIAL_STYLE = {
   options: {
@@ -174,3 +45,130 @@ export const TUTORIAL_STYLE = {
     boxShadow: "0 0 15px rgba(255, 255, 255, 0.9)",
   },
 };
+
+const loadTutorialTranslations = async () => {
+  await i18n.loadNamespaces(['tutorials']); 
+
+  Object.assign(GAME_TUTORIAL_STEPS, [
+    {
+      target: ".game-tutorial-step-1",
+      title: i18n.t('gameTutorial.pointsTarget.title', { ns: 'tutorials' }),
+      content: i18n.t('gameTutorial.pointsTarget.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+      disableBeacon: true,
+      placement: "auto",
+      disableScrollParentFix: i18n.t('commonSettings.disableScrollParentFix', { ns: 'tutorials' })
+    },
+    {
+      target: ".game-tutorial-step-2",
+      title: i18n.t('gameTutorial.playableHand.title', { ns: 'tutorials' }),
+      content: i18n.t('gameTutorial.playableHand.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-3",
+      title: i18n.t('gameTutorial.discardCards.title', { ns: 'tutorials' }),
+      content: i18n.t('gameTutorial.discardCards.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+      placement: "right",
+    },
+    {
+      target: ".game-tutorial-step-4",
+      title: i18n.t('gameTutorial.playCards.title', { ns: 'tutorials' }),
+      content: i18n.t('gameTutorial.playCards.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+      placement: "left",
+    },
+    {
+      target: ".game-tutorial-step-6",
+      title: i18n.t('gameTutorial.pointsMultiplier.title', { ns: 'tutorials' }),
+      content: i18n.t('gameTutorial.pointsMultiplier.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+  ]);
+
+  Object.assign(STORE_TUTORIAL_STEPS, [
+    {
+      target: ".game-tutorial-step-1",
+      title: i18n.t('storeTutorial.coins.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.coins.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-2",
+      title: i18n.t('storeTutorial.levelUpHands.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.levelUpHands.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-packs",
+      title: i18n.t('storeTutorial.buyPacks.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.buyPacks.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-3",
+      title: i18n.t('storeTutorial.buyCards.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.buyCards.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-4",
+      title: i18n.t('storeTutorial.modifiers.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.modifiers.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-5",
+      title: i18n.t('storeTutorial.specialCards.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.specialCards.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-6",
+      title: i18n.t('storeTutorial.rerollStore.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.rerollStore.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".game-tutorial-step-7",
+      title: i18n.t('storeTutorial.nextLevel.title', { ns: 'tutorials' }),
+      content: i18n.t('storeTutorial.nextLevel.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+  ]);
+
+  Object.assign(SPECIAL_CARDS_TUTORIAL_STEPS, [
+    {
+      target: ".special-cards-step-1",
+      title: i18n.t('specialCardsTutorial.specialCards.title', { ns: 'tutorials' }),
+      content: i18n.t('specialCardsTutorial.specialCards.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".special-cards-step-3",
+      title: i18n.t('specialCardsTutorial.discardingCards.title', { ns: 'tutorials' }),
+      content: isMobile ? i18n.t('specialCardsTutorial.discardingCards.content-mobile', { ns: 'tutorials' }) :
+                          i18n.t('specialCardsTutorial.discardingCards.content', { ns: 'tutorials' }) ,
+      ...COMMON_SETTINGS,
+    },
+  ]);
+
+  Object.assign(MODIFIERS_TUTORIAL_STEPS, [
+    {
+      target: ".tutorial-modifiers-step-1",
+      title: i18n.t('modifiersTutorial.modifierCard.title', { ns: 'tutorials' }),
+      content: i18n.t('modifiersTutorial.modifierCard.content', { ns: 'tutorials' }),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: ".tutorial-modifiers-step-2",
+      title: i18n.t('modifiersTutorial.discard.title', { ns: 'tutorials' }),
+      content: isMobile? i18n.t('modifiersTutorial.discard.content-mobile', { ns: 'tutorials' }) :
+                         i18n.t('modifiersTutorial.discard.content', { ns: 'tutorials' }) ,
+      ...COMMON_SETTINGS,
+    },
+  ]);
+};
+
+i18n.on('initialized', loadTutorialTranslations);
