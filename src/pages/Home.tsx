@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
+import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 
@@ -86,6 +87,7 @@ export const Home = () => {
         )}
         <PoweredBy />
       </Flex>
+      <PositionedDiscordLink />
     </Background>
   );
 };

@@ -19,6 +19,7 @@ import theme from "../../theme/theme.ts";
 import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -283,6 +284,7 @@ const PreviewCardLayout = () => {
           </HStack>
         </Flex>
       </Flex>
+      <PositionedDiscordLink />
     </Background>
   );
 };

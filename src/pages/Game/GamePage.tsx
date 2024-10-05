@@ -11,6 +11,8 @@ import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
 import { useBreakpointValue } from "@chakra-ui/react";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { isMobile } from "react-device-detect";
 
 export const GamePage = () => {
   const {
@@ -75,6 +77,7 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
+      {!isMobile && <PositionedDiscordLink  />}
     </Background>
   );
 };

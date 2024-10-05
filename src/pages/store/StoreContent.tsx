@@ -8,6 +8,7 @@ import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 
 export const StoreContent = () => {
   const {
@@ -163,6 +164,7 @@ export const StoreContent = () => {
           </Box>
         </Box>
       </Flex>
+      <PositionedDiscordLink  />
     </>
   );
 };

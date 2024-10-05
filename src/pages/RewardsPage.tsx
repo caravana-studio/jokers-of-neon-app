@@ -4,6 +4,7 @@ import { Background } from "../components/Background";
 import { RewardsDetail } from "../components/RewardsDetail";
 import { useGameContext } from "../providers/GameProvider";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
+import { PositionedDiscordLink } from "../components/DiscordLink";
 
 export const RewardsPage = () => {
   const { roundRewards } = useGameContext();
@@ -20,6 +21,7 @@ export const RewardsPage = () => {
   return (
     <Background type="game" dark bgDecoration>
       <RewardsDetail roundRewards={roundRewards} />
+      <PositionedDiscordLink  />
     </Background>
   );
 };
