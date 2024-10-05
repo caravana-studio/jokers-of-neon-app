@@ -1,11 +1,9 @@
-import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Img, Link, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
-import CountdownTimer from "../components/CountdownTimer";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Leaderboard } from "../components/Leaderboard";
-import { PoweredBy } from "../components/PoweredBy";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -27,9 +25,7 @@ export const Home = () => {
               LEADERBOARD
             </Heading>
             <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-10-05T21:00:00.000Z")}
-              />
+              <Text size="l">FINAL RESULTS</Text>
             </Box>
 
             <Leaderboard />
@@ -47,22 +43,37 @@ export const Home = () => {
           <Flex
             flexDirection="column"
             alignItems="center"
-            gap={{ base: 6, sm: 8, md: 12 }}
+            gap={{ base: 3, sm: 3, md: 4 }}
           >
             <Heading
               size="xl"
               color="white"
-              fontSize={{ base: 10, sm: 20, md: 25, lg: 30 }}
+              fontSize={{ base: 8, sm: 17, md: 23, lg: 27 }}
             >
               BUIDL YOUR DECK, RULE THE GAME
             </Heading>
             <Img
-              width={{ base: "95%", sm: "85%", md: "80%" }}
+              width={{ base: "85%", sm: "75%", md: "70%" }}
               src="/logos/logo.png"
               alt="logo"
             />
-
+            <Flex gap={6} flexDirection="column" alignItems="center">
+              <Heading
+                size="xl"
+                fontSize={{ base: 10, sm: 19, md: 25, lg: 30 }}
+              >
+                Tournament is now closed
+              </Heading>
+              <Heading
+                fontSize={{ base: 6, sm: 10, md: 13, lg: 16 }}
+                size="sm"
+                variant="italic"
+              >
+                Follow us to stay updated on future releases
+              </Heading>
+            </Flex>
             <Flex
+              mt={8}
               gap={{ base: 4, sm: 6 }}
               flexWrap={{ base: "wrap", sm: "nowrap" }}
               justifyContent="center"
@@ -71,21 +82,21 @@ export const Home = () => {
                 onClick={() => {
                   setLeaderboardOpen(true);
                 }}
+                size="sm"
               >
                 SEE LEADERBOARD
               </Button>
-              <Button
-                variant="secondarySolid"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                PLAY DEMO
-              </Button>
+              <Link target="_blank" href="https://twitter.com/JokersOfNeon">
+                <Button size="sm" variant="secondarySolid">
+                  FOLLOW @JokersOfNeon
+                </Button>
+              </Link>
+              <Link target="_blank" href="https://discord.gg/4y296W6jaq">
+                <Button size="sm">Join Discord</Button>
+              </Link>
             </Flex>
           </Flex>
         )}
-        <PoweredBy />
       </Flex>
       <PositionedDiscordLink />
     </Background>
