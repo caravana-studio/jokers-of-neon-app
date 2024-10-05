@@ -7,7 +7,7 @@ interface LevelUpTableProps {
     isSmallScreen: boolean;
 }
 
-export const LevelUpTable: React.FC<LevelUpTableProps> = ({ shopItems, isSmallScreen }) => (
+const LevelUpTable: React.FC<LevelUpTableProps> = ({ shopItems, isSmallScreen }) => (
     <Box 
         className="game-tutorial-step-2"
         py={isSmallScreen ? 2 : [2, 2, 2, 2, 4]}
@@ -16,3 +16,5 @@ export const LevelUpTable: React.FC<LevelUpTableProps> = ({ shopItems, isSmallSc
       {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
     </Box>
 );
+
+export default LevelUpTable;

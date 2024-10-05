@@ -16,7 +16,7 @@ import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import useStoreContent from "./UseStoreContent.ts";
-import { LevelUpTable } from "./StoreElements/LevelUpTable.tsx";
+import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 
 export const StoreContentMobile = () => {
   const {
