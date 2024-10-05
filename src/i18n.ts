@@ -8,7 +8,6 @@ i18n
   .use(LanguageDetector) // Detect the user's language
   .use(initReactI18next) // Bind i18next to React
   .init({
-    lng: 'en',
     fallbackLng: 'en',
     debug: false, 
     interpolation: {
@@ -21,11 +20,7 @@ i18n
     },
     react: {
       useSuspense: false, // Disable React suspense for smoother integration
-    },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'], // Cache the language selection in localStorage
-    },
+    }
   })
   .catch((error: Error) => console.error('i18next initialization error:', error));
 

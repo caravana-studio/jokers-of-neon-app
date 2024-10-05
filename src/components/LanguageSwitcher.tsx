@@ -22,7 +22,7 @@ const LanguageSwitcher = () => {
     <Menu>
       <MenuButton as={Button} p={"0 !important"} width={"auto"} >
         <Flex width={"25px"} m={"0 auto"}>
-            <CircleFlagLanguage languageCode={i18n.language} />
+            <CircleFlagLanguage languageCode={i18n.language.substring(0,2)} />
         </Flex>
       </MenuButton>
       <MenuList>
