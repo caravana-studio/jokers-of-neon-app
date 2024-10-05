@@ -17,6 +17,7 @@ import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
+import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 
 export const StoreContentMobile = () => {
   const {
@@ -41,18 +42,6 @@ export const StoreContentMobile = () => {
     setHand,
   } = useStoreContent();
   const navigate = useNavigate();
-
-  const specialsButton = specialCards.length > 0 && (
-    <Button
-      fontSize={10}
-      w={"unset"}
-      onClick={() => {
-        setSpecialCardsModalOpen(true);
-      }}
-    >
-      SEE MY <br /> SPECIAL CARDS
-    </Button>
-  );
 
   const nextLevelButton = (
     <Button
@@ -238,10 +227,14 @@ export const StoreContentMobile = () => {
                   notEnoughCash={notEnoughCash}
                   rerollCost={rerollCost}
                   setRerolled={setRerolled}
-                  isSmallScreen={false}
+                  isSmallScreen={true}
                   reroll={reroll}
                 />
-                {specialsButton}
+                <SpecialsButton
+                  specialCards={specialCards}
+                  setSpecialCardsModalOpen={setSpecialCardsModalOpen}
+                  isSmallScreen={true}
+                />
                 {nextLevelButton}
               </Flex>
           </Box>
