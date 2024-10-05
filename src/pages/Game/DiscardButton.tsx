@@ -1,7 +1,6 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useDroppable } from "@dnd-kit/core";
 import { isMobile } from "react-device-detect";
-import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 
@@ -10,29 +9,31 @@ interface DiscardButtonProps {
   highlight?: boolean;
 }
 
-export const DiscardButton = ({ itemDragged = false, highlight = false }: DiscardButtonProps) => {
-  const { preSelectedCards, discard, preSelectionLocked } =
+export const DiscardButton = ({
+  itemDragged = false,
+  highlight = false,
+}: DiscardButtonProps) => {
+  const { preSelectedCards, discard, preSelectionLocked, discards } =
     useGameContext();
 
-  const round = useRound();
-  const discardsLeft = round?.discard ?? 0;
   const { setNodeRef } = useDroppable({
     id: "play-discard",
   });
 
-  const cantDiscard = !highlight && !itemDragged &&
-  (preSelectionLocked ||
-    preSelectedCards?.length === 0 ||
-    !discardsLeft ||
-    discardsLeft === 0);
+  const cantDiscard =
+    !highlight &&
+    !itemDragged &&
+    (preSelectionLocked ||
+      preSelectedCards?.length === 0 ||
+      !discards ||
+      discards === 0);
 
   return (
     <ButtonContainer>
       <Button
         ref={setNodeRef}
         width={isMobile ? "48%" : "170px"}
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={() => {
           discard();
         }}
         variant={cantDiscard ? "defaultOutline" : "solid"}
@@ -49,14 +50,14 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
               {itemDragged ? "drop here to " : ""}discard
             </Text>
             <Heading mt={1} fontSize={9}>
-              {discardsLeft} left
+              {discards} left
             </Heading>
           </Box>
         ) : (
           "DISCARD"
         )}
       </Button>
-      {!isMobile && <Text size="l">{discardsLeft} left</Text>}
+      {!isMobile && <Text size="l">{discards} left</Text>}
     </ButtonContainer>
   );
 };

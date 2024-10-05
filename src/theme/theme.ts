@@ -10,6 +10,7 @@ import {
   PASTEL_PINK,
   SPADES,
   VIOLET,
+  VIOLET_LIGHT,
 } from "./colors";
 import { headingTheme } from "./heading";
 import { inputTheme } from "./input";
@@ -27,6 +28,7 @@ export default {
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
     neonPink: VIOLET,
+    lightViolet: VIOLET_LIGHT,
     limeGreen: "lime",
     darkGrey: "#04162d",
     purple: "#9940aa",

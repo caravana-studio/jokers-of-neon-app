@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Tooltip, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
@@ -39,26 +39,11 @@ export const StoreContentMobile = () => {
   const [loading, setLoading] = useState(false);
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
   const specialCards = useCurrentSpecialCards();
+  const navigate = useNavigate();
 
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
   }, [store?.reroll_executed]);
-
-  useEffect(() => {
-    setIsRageRound(false);
-  }, []);
-
-  useEffect(() => {
-    if (!lockRedirection) {
-      if (game?.state === "FINISHED") {
-        navigate("/gameover");
-      } else if (game?.state === "IN_GAME") {
-        navigate("/demo");
-      } else if (game?.state === "OPEN_BLISTER_PACK") {
-        navigate("/open-pack");
-      }
-    }
-  }, [game?.state, lockRedirection]);
 
   const { skipShop } = useShopActions();
 
@@ -66,8 +51,6 @@ export const StoreContentMobile = () => {
   const [run, setRun] = useState(false);
 
   const shopItems = useShopItems();
-
-  const navigate = useNavigate();
 
   const levelUpTable = (
     <Box className="game-tutorial-step-2" py={2}>
@@ -138,20 +121,6 @@ export const StoreContentMobile = () => {
       GO TO <br /> NEXT LEVEL
     </Button>
   );
-
-  useEffect(() => {
-    if (state === "FINISHED") {
-      navigate("/gameover");
-    } else if (state === "IN_GAME") {
-      navigate("/demo");
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (!game) {
-      navigate("/");
-    }
-  }, []);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);

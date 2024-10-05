@@ -1,9 +1,10 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { VIOLET } from "../theme/colors";
+import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { useRound } from "../dojo/queries/useRound.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -74,32 +75,35 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   ];
 
   const navigate = useNavigate();
+  const round = useRound()
 
   return (
     <PinkBox
-      title={`Level ${level} defeated`}
+      title={`Level ${level} completed!`}
       button="CONTINUE"
       onClick={() => {
         // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
+      <Heading color='lightViolet' size="s">- Final score: {round?.player_score} -</Heading>
+      
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
 
       <Flex
-        color={VIOLET}
+        color={VIOLET_LIGHT}
         pt={{ base: 4, sm: 8 }}
         pb={4}
         w="90%"
         justifyContent="space-between"
       >
-        <Heading color="neonPink" variant="italic">
+        <Heading color="lightViolet" variant="italic">
           Total:
         </Heading>
-        <Heading color="neonPink" variant="italic">
+        <Heading color="lightViolet" variant="italic">
           {total}
           <CashSymbol />
         </Heading>

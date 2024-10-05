@@ -55,7 +55,7 @@ export const GamePage = () => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
       if (game?.state === "FINISHED") {
-        navigate("/gameover");
+        navigate(`/gameover/${gameId}`);
       } else if (game?.state === "AT_SHOP") {
         navigate("/store");
       } else if (game?.state === "OPEN_BLISTER_PACK") {

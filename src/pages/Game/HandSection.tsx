@@ -5,6 +5,7 @@ import {
   GridItem,
   Heading,
   SimpleGrid,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
@@ -27,13 +28,13 @@ export const HandSection = () => {
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
-    gameId,
-    preSelectionLocked,
   } = useGameContext();
+
+  const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
-  
+
   const { activeNode } = useDndContext();
 
   const cardIsPreselected = (cardIndex: number) => {
@@ -82,7 +83,7 @@ export const HandSection = () => {
             const isPreselected = cardIsPreselected(card.idx);
             return (
               <GridItem
-                key={card.idx}
+                key={card.idx+ "-"+ index}
                 w="100%"
                 onContextMenu={(e) => {
                   e.stopPropagation();
@@ -113,36 +114,28 @@ export const HandSection = () => {
                       <Button
                         height={8}
                         fontSize="8px"
-                        px={"2px"}
+                        px={"16px"}
                         borderRadius={"10px"}
                         size={isMobile ? "xs" : "md"}
                         variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
+                        display="flex"
+                        gap={4}
+                        isDisabled={discarding}
                         onClick={(e) => {
+                          setDiscarding(true);
                           e.stopPropagation();
                           setHoveredButton(null);
-                          discardEffectCard(card.idx);
+                          discardEffectCard(card.idx).then((_) => {
+                            setDiscarding(false);
+                          });
                           onClose();
                         }}
                       >
-                        X
-                      </Button>
-                    )}
-                    {hoveredButton === card.idx && (
-                      <Button
-                        height={8}
-                        px={{ base: "3px", md: "10px" }}
-                        fontSize="8px"
-                        borderRadius={"10px"}
-                        variant={"discardSecondarySolid"}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setHoveredButton(null);
-                          discardEffectCard(card.idx);
-                          onClose();
-                        }}
-                      >
-                        Change
+                        <Text fontSize="10px">X</Text>
+                        {hoveredButton === card.idx && (
+                          <Text fontSize="10px">Change</Text>
+                        )}
                       </Button>
                     )}
                   </Flex>
@@ -185,9 +178,9 @@ export const HandSection = () => {
       {handsLeft === 0 && (
         <Heading
           ml={{ base: "0", md: "100px" }}
-          size={{base: "sm", md: "md"}}
-          variant='italic'
-          textAlign='center'
+          size={{ base: "sm", md: "md" }}
+          variant="italic"
+          textAlign="center"
           bottom={{ base: "70px", md: "100px" }}
           sx={{ position: "fixed" }}
         >
