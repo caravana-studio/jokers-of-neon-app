@@ -18,6 +18,7 @@ import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 
 export const StoreContent = () => {
   const {
@@ -41,33 +42,6 @@ export const StoreContent = () => {
     gameId,
     setHand,
   } = useStoreContent();
-  const navigate = useNavigate();
-
-  const nextLevelButton = (
-    <Button
-      className="game-tutorial-step-7"
-      my={{ base: 0, md: 6 }}
-      w={["unset", "unset", "unset", "100%", "100%"]}
-      onClick={() => {
-        setLoading(true);
-        onShopSkip();
-        skipShop(gameId).then((response): void => {
-          if (response.success) {
-            setHand(response.cards);
-            navigate("/redirect/demo");
-          } else {
-            setLoading(false);
-          }
-        });
-      }}
-      isDisabled={locked}
-      lineHeight={1.6}
-      variant="secondarySolid"
-      fontSize={[10, 10, 10, 14, 14]}
-    >
-      GO TO NEXT LEVEL
-    </Button>
-  );
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
@@ -206,7 +180,15 @@ export const StoreContent = () => {
             paddingInlineStart={"4px"}
           >
               <>
-                {nextLevelButton}
+                <NextLevelButton
+                  setLoading={setLoading}
+                  onShopSkip={onShopSkip}
+                  skipShop={skipShop}
+                  gameId={gameId}
+                  setHand={setHand}
+                  locked={false}
+                  isSmallScreen={false}
+                />
                 <Flex flexDirection="column" gap={14}>
                 <RerollButton
                   rerolled={rerolled}

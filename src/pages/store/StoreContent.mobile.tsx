@@ -1,7 +1,6 @@
-import { Box, Button, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps } from "react-joyride";
-import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
@@ -18,6 +17,7 @@ import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 
 export const StoreContentMobile = () => {
   const {
@@ -41,34 +41,7 @@ export const StoreContentMobile = () => {
     gameId,
     setHand,
   } = useStoreContent();
-  const navigate = useNavigate();
-
-  const nextLevelButton = (
-    <Button
-      className="game-tutorial-step-7"
-      my={0}
-      w={"unset"}
-      onClick={() => {
-        setLoading(true);
-        onShopSkip();
-        skipShop(gameId).then((response): void => {
-          if (response.success) {
-            setHand(response.cards);
-            navigate("/redirect/demo");
-          } else {
-            setLoading(false);
-          }
-        });
-      }}
-      isDisabled={locked}
-      lineHeight={1.6}
-      variant="secondarySolid"
-      fontSize={10}
-    >
-      GO TO <br /> NEXT LEVEL
-    </Button>
-  );
-
+ 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
     if (showTutorial) setRun(true);
@@ -235,7 +208,15 @@ export const StoreContentMobile = () => {
                   setSpecialCardsModalOpen={setSpecialCardsModalOpen}
                   isSmallScreen={true}
                 />
-                {nextLevelButton}
+                <NextLevelButton
+                  setLoading={setLoading}
+                  onShopSkip={onShopSkip}
+                  skipShop={skipShop}
+                  gameId={gameId}
+                  setHand={setHand}
+                  locked={false}
+                  isSmallScreen={true}
+                />
               </Flex>
           </Box>
         </Box>
