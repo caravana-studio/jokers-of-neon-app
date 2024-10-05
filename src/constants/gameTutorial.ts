@@ -172,3 +172,4 @@ const loadTutorialTranslations = async () => {
 };
 
 i18n.on('initialized', loadTutorialTranslations);
+i18n.on('languageChanged', loadTutorialTranslations);

@@ -38,6 +38,12 @@ const LanguageSwitcher = () => {
             </Box>
             Español
         </MenuItem>
+        <MenuItem onClick={() => changeLanguage('pt')} gap={2}>
+            <Box width={"30px"}>
+                <CircleFlagLanguage languageCode="pt" />
+            </Box>
+            Português
+        </MenuItem>
       </MenuList>
     </Menu>
   );

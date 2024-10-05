@@ -102,3 +102,4 @@ const loadTranslations = async () => {
 }
 
 i18n.on('initialized', loadTranslations);
+i18n.on('languageChanged', loadTranslations);

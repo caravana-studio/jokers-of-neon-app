@@ -1,0 +1,50 @@
+{
+    "store": {
+      "labels": {
+        "reroll": "Reembaralhar",
+        "see-my": "Ver meus",
+        "special-cards": "Cartas especiais",
+        "go-to": "Ir para",
+        "next-level": "Próximo nível",
+        "coins": "Meus moedas:"
+      },
+      "titles": {
+        "level-game": "Aprimore seu jogo",
+        "traditional": "cartas tradicionais e neon",
+        "modifiers": "cartas modificadoras",
+        "special": "cartas especiais",
+        "improve-plays": "Melhore suas jogadas",
+        "my-special-cards": "Minhas cartas especiais",
+        "packs": "Pacotes"
+      },
+      "tooltip": {
+        "reroll-default": "Atualizar itens disponíveis",
+        "rerolled": "Disponível apenas uma vez por nível"
+      },
+      "plays-table": {
+        "hand": "Mão",
+        "level": "Nível",
+        "price": "Preço",
+        "points-multi": "Pontos/multi",
+        "level-up": "Subir de nível",
+        "purchased": "Comprado"
+      },
+      "preview-card": {
+        "title": {
+          "card-type": "Tipo de carta:",
+          "description": "Descrição:",
+          "details": "Detalhes:",
+          "price": "Preço:"
+        },
+        "labels": {
+          "buy": "Comprar",
+          "special": "Especial",
+          "modifier": "Modificador",
+          "traditional": "Tradicional",
+          "temporary": "Temporário",
+          "close": "Fechar",
+          "temporal": "Carta temporal. Será destruída após {{remaining}} níveis."
+        }
+      }
+    }
+  }  
