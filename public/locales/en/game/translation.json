@@ -1,5 +1,5 @@
 {
-  "error":
+    "error":
     {
         "labels":
         {
@@ -47,44 +47,44 @@
         },
         "preselected-cards-section":
         {
-          "discard-btn-lbl":
-          {
+        "discard-btn-lbl":
+        {
             "lbl": "drop here to ",
             "discard": "discard",
             "left": "left" 
-          },
-          "play-btn-lbl":
-          {
+        },
+        "play-btn-lbl":
+        {
             "play": "play hand",
             "play-mobile": "play",
             "left": "left" 
-          },
-          "current-play-lbl":
-          {
+        },
+        "current-play-lbl":
+        {
             "default": "Select some cards to play",
             "current-play": "Current Play",
             "neon-play": "NEON"
-          }
+        }
         },
         "game-menu":
         {
-          "home-btn": "Go to home",
-          "new-game-btn": "Start new game",
-          "tutorial-btn": "See tutorial",
-          "sound-btn": "Turn sound",
-          "logout-btn": "Logout"
+        "home-btn": "Go to home",
+        "new-game-btn": "Start new game",
+        "tutorial-btn": "See tutorial",
+        "sound-btn": "Turn sound",
+        "logout-btn": "Logout"
         },
         "plays":
         {
-          "title": "Available plays",
-          "go-back-btn": "Go back to game",
-          "table":
-          {
+        "title": "Available plays",
+        "go-back-btn": "Go back to game",
+        "table":
+        {
             "level-head": "Level",
             "hand-head": "Hand",
             "points-multi-head": "Points/Multi"
-          }
+        }
 
         }
     }
-}
+  }

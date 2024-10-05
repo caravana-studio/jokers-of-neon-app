@@ -23,7 +23,7 @@ export const GameMenu = ({
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   const togglePlayPause = () => {
     toggleSound();

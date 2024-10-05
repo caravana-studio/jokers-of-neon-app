@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Background type="game" dark bgDecoration>

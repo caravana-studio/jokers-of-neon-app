@@ -18,7 +18,7 @@ interface CurrentSpecialCardsModalProps {
 export const CurrentSpecialCardsModal = ({
   close,
 }: CurrentSpecialCardsModalProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["store"]);
   return (
     <Modal size='3xl' isOpen={true} onClose={close}>
       <ModalOverlay />

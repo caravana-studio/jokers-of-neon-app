@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay, playIsNeon } = useGameContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Flex gap={{base: 2, md: 4}} alignItems={"center"} justifyContent={"flex-start"}

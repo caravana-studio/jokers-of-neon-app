@@ -27,7 +27,7 @@ export const DiscardButton = ({ itemDragged = false, highlight = false }: Discar
     !discardsLeft ||
     discardsLeft === 0);
 
-  const { t } = useTranslation();
+    const { t } = useTranslation(["game"]);
 
   return (
     <ButtonContainer>

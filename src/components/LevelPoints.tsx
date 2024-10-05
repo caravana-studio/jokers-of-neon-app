@@ -10,7 +10,7 @@ export const LevelPoints = () => {
   const round = useRound();
   const level = game?.level ?? 0;
   const levelScore = round?.level_score ?? 0;
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Box className="game-tutorial-step-1">
@@ -40,7 +40,7 @@ export const MobileLevelPoints = () => {
   const round = useRound();
   const level = game?.level ?? 0;
   const levelScore = round?.level_score ?? 0;
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
   
   return (
     <Flex gap={2.5} alignItems="center" className="game-tutorial-step-1">

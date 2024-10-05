@@ -15,7 +15,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const { colors } = useTheme();
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   const { discardSpecialCard, specialCards, isRageRound, rageCards } =
     useGameContext();

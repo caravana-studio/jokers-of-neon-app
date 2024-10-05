@@ -1,10 +1,11 @@
 {
-  "error": {
-    "labels": {
-        "error-msj": "Error al crear el juego",
-        "label-error-btn": "CREAR NUEVO JUEGO"
-    }
-},
+    "error": 
+    {
+        "labels": {
+            "error-msj": "Error al crear el juego",
+            "label-error-btn": "CREAR NUEVO JUEGO"
+        }
+    },
     "game":
     {
         "level-points":
@@ -45,43 +46,43 @@
         },
         "preselected-cards-section":
         {
-          "discard-btn-lbl":
-          {
-            "lbl": "Suelte aquí para ",
-            "discard": "descartar",
+        "discard-btn-lbl":
+        {
+            "lbl": "",
+            "discard": "Descartar",
             "left": "restantes"
-          },
-          "play-btn-lbl":
-          {
+        },
+        "play-btn-lbl":
+        {
             "play": "jugar mano",
             "play-mobile": "jugar",
             "left": "restantes" 
-          },
-          "current-play-lbl":
-          {
+        },
+        "current-play-lbl":
+        {
             "default": "Selecciona cartas para jugar",
             "current-play": "Jugada Actual:",
             "neon-play": "NEÓN"
-          }
+        }
         },
         "game-menu":
         {
-          "home-btn": "Ir al inicio",
-          "new-game-btn": "Crear nuevo juego",
-          "tutorial-btn": "Ver tutorial",
-          "sound-btn": "Sonido",
-          "logout-btn": "Cerrar sesión"
+        "home-btn": "Ir al inicio",
+        "new-game-btn": "Crear nuevo juego",
+        "tutorial-btn": "Ver tutorial",
+        "sound-btn": "Sonido",
+        "logout-btn": "Cerrar sesión"
         },
         "plays":
         {
-          "title": "Jugadas disponibles",
-          "go-back-btn": "Volver al juego",
-          "table":
-          {
+        "title": "Jugadas disponibles",
+        "go-back-btn": "Volver al juego",
+        "table":
+        {
             "level-head": "Nivel",
             "hand-head": "Mano",
             "points-multi-head": "Puntos/Multi"
-          }
+        }
         }
     }
-}
+  }

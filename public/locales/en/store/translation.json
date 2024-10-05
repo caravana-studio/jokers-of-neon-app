@@ -50,7 +50,8 @@
           "modifier": "Modifier",
           "traditional": "Traditional",
           "temporary": "Temporary",
-          "close": "Close"
+          "close": "Close",
+          "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
         }
       }
     }

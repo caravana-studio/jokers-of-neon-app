@@ -39,7 +39,7 @@ export const GameContent = () => {
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
   const { isRageRound } = useGameContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);

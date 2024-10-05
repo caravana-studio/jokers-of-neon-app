@@ -17,7 +17,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
   const handsLeft = round?.hands ?? 0;
 
   const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <ButtonContainer>

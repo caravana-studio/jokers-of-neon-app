@@ -17,7 +17,7 @@
         "modifiers": "Cartas modificadoras",
         "special": "Cartas especiales",
         "improve-plays": "Mejora tus manos",
-        "my-special-cards": "Mis cartas especiales",
+        "my-special-cards": "Mis especiales",
         "packs": "Paquetes"
       },
       "tooltip":
@@ -31,7 +31,7 @@
         "level": "Nivel",
         "price": "Precio",
         "points-multi": "Puntos/multi",
-        "level-up": "Subir de nivel",
+        "level-up": "Subir nivel",
         "purchased": "Comprado"
       },
       "preview-card":
@@ -50,7 +50,8 @@
           "modifier": "Modificadora",
           "traditional": "Tradicional",
           "temporary": "Temporal",
-          "close": "Cerrar"
+          "close": "Cerrar",
+          "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
         }
       }
     }

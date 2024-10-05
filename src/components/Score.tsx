@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 export const Score = () => {
   const { score } = useGameContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Heading

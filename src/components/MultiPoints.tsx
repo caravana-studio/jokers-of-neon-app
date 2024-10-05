@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export const MultiPoints = () => {
   const { points, multi } = useGameContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
   
   return (
     <Box

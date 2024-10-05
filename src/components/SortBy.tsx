@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Flex

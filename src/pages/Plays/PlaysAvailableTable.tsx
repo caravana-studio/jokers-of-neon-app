@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
     const { data: apiPlays } = useGetPlaysLevelDetail(gameId);
     const plays = apiPlays;
     const [ playsExampleIndex, setPlaysExampleIndex ]= useState(0);
-    const { t } = useTranslation();
+    const { t } = useTranslation(["game"]);
   
     return (
       <>

@@ -36,7 +36,7 @@ export const MobileGameContent = () => {
   const[runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);

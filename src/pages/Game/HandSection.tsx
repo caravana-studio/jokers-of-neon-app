@@ -49,7 +49,7 @@ export const HandSection = () => {
   const [menuIdx, setMenuIdx] = useState<number | undefined>();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-  const { t } = useTranslation();
+  const { t } = useTranslation(["game"]);
 
   return (
     <>

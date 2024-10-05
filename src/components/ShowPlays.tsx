@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 export const ShowPlays = () => {
     const [hoveredButton, setHoveredButton] = useState(false);
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t } = useTranslation(["game"]);
 
     return (
         <Button
