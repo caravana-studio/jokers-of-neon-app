@@ -4,7 +4,6 @@ import Joyride, { CallBackProps } from "react-joyride";
 import { Background } from "../../components/Background.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
-import { Loading } from "../../components/Loading.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -26,7 +25,6 @@ export const StoreContentMobile = () => {
     notEnoughCash,
     rerolled,
     setRerolled,
-    loading,
     setLoading,
     specialCardsModalOpen,
     setSpecialCardsModalOpen,
@@ -46,14 +44,6 @@ export const StoreContentMobile = () => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
     if (showTutorial) setRun(true);
   }, []);
-
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;

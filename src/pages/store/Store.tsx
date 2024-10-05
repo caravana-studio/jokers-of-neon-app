@@ -7,8 +7,14 @@ import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
 import { useBreakpointValue } from "@chakra-ui/react";
+import useStoreContent from "./UseStoreContent.ts";
+import { Loading } from "../../components/Loading.tsx";
 
 export const Store = () => {
+  const {
+    loading,
+  } = useStoreContent();
+
   const isSmallScreen = useBreakpointValue(
     { base: true, md: false }
   );
@@ -49,6 +55,14 @@ export const Store = () => {
       navigate("/");
     }
   }, []);
+
+  if (loading) {
+    return (
+      <Background type="game">
+        <Loading />
+      </Background>
+    );
+  }
 
   return (
     <Background type="store" scrollOnMobile>

@@ -1,11 +1,9 @@
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps } from "react-joyride";
-import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
-import { Loading } from "../../components/Loading.tsx";
 import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
@@ -27,7 +25,6 @@ export const StoreContent = () => {
     notEnoughCash,
     rerolled,
     setRerolled,
-    loading,
     setLoading,
     specialCardsModalOpen,
     setSpecialCardsModalOpen,
@@ -47,14 +44,6 @@ export const StoreContent = () => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
     if (showTutorial) setRun(true);
   }, []);
-
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;
