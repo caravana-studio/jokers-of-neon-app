@@ -1,9 +1,8 @@
-import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
-import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -17,6 +16,7 @@ import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
+import RerollButton from "./StoreElements/RerollButton.tsx";
 
 export const StoreContent = () => {
   const {
@@ -41,32 +41,6 @@ export const StoreContent = () => {
     setHand,
   } = useStoreContent();
   const navigate = useNavigate();
-
-  const rerollButton = (
-    <Tooltip
-      placement="right"
-      label={
-        rerolled ? "Available only once per level" : "Update available items"
-      }
-    >
-      <Button
-        className="game-tutorial-step-6"
-        fontSize={[10, 10, 10, 14, 14]}
-        w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled || locked || notEnoughCash}
-        onClick={() => {
-          reroll().then((response) => {
-            if (response) {
-              setRerolled(true);
-            }
-          });
-        }}
-      >
-        REROLL {rerollCost}
-        <CashSymbol />
-      </Button>
-    </Tooltip>
-  );
 
   const specialsButton = specialCards.length > 0 && (
     <Button
@@ -245,7 +219,15 @@ export const StoreContent = () => {
               <>
                 {nextLevelButton}
                 <Flex flexDirection="column" gap={14}>
-                  {rerollButton}
+                <RerollButton
+                  rerolled={rerolled}
+                  locked={locked}
+                  notEnoughCash={notEnoughCash}
+                  rerollCost={rerollCost}
+                  setRerolled={setRerolled}
+                  isSmallScreen={false}
+                  reroll={reroll}
+                />
                   {specialsButton}
                   <Image
                     src="/logos/logo-variant.svg"
