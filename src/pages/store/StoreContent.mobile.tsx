@@ -1,14 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import Joyride, { CallBackProps } from "react-joyride";
-import { Background } from "../../components/Background.tsx";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import { GameMenu } from "../../components/GameMenu.tsx";
-import {
-  STORE_TUTORIAL_STEPS,
-  TUTORIAL_STYLE,
-} from "../../constants/gameTutorial.ts";
-import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
@@ -20,17 +11,14 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 
 export const StoreContentMobile = () => {
   const {
-    cash,
     rerollCost,
     notEnoughCash,
     rerolled,
     setRerolled,
     setLoading,
-    specialCardsModalOpen,
     setSpecialCardsModalOpen,
     specialCards,
     skipShop,
-    run,
     setRun,
     reroll,
     locked,
@@ -39,37 +27,9 @@ export const StoreContentMobile = () => {
     gameId,
     setHand,
   } = useStoreContent();
- 
-  useEffect(() => {
-    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
-    if (showTutorial) setRun(true);
-  }, []);
-
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { type } = data;
-
-    if (type === "tour:end") {
-      window.localStorage.setItem(SKIP_TUTORIAL_STORE, "true");
-      setRun(false);
-    }
-  };
 
   return (
-    <Background type="store" scrollOnMobile>
-      <Joyride
-        steps={STORE_TUTORIAL_STEPS}
-        run={run}
-        continuous
-        showSkipButton
-        styles={TUTORIAL_STYLE}
-        showProgress
-        callback={handleJoyrideCallback}
-      />
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
+    <>
         <Box
           sx={{
             position: "fixed",
@@ -211,6 +171,6 @@ export const StoreContentMobile = () => {
           </Box>
         </Box>
       </Flex>
-    </Background>
+    </>
   );
 };

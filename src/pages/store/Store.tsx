@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
@@ -10,9 +10,21 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import useStoreContent from "./UseStoreContent.ts";
 import { Loading } from "../../components/Loading.tsx";
 
+import {
+  STORE_TUTORIAL_STEPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial.ts";
+import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
+import Joyride, { CallBackProps } from "react-joyride";
+import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+
 export const Store = () => {
   const {
     loading,
+    setRun,
+    run,
+    specialCardsModalOpen,
+    setSpecialCardsModalOpen,
   } = useStoreContent();
 
   const isSmallScreen = useBreakpointValue(
@@ -64,9 +76,37 @@ export const Store = () => {
     );
   }
 
+  useEffect(() => {
+    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
+    if (showTutorial) setRun(true);
+  }, []);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { type } = data;
+
+    if (type === "tour:end") {
+      window.localStorage.setItem(SKIP_TUTORIAL_STORE, "true");
+      setRun(false);
+    }
+  };
+
   return (
-    <Background type="store" scrollOnMobile>
-      {isSmallScreen ? <StoreContentMobile/> : <StoreContent/>}
+      <Background type="store" scrollOnMobile>
+        <Joyride
+          steps={STORE_TUTORIAL_STEPS}
+          run={run}
+          continuous
+          showSkipButton
+          styles={TUTORIAL_STYLE}
+          showProgress
+          callback={handleJoyrideCallback}
+        />
+        {specialCardsModalOpen && (
+          <CurrentSpecialCardsModal
+            close={() => setSpecialCardsModalOpen(false)}
+          />
+        )}
+        {isSmallScreen ? <StoreContentMobile/> : <StoreContent/>}
     </Background>
   );
 };
