@@ -61,7 +61,7 @@
         "content": "Special cards activate immediately after you purchase them in the store. They apply their effects after your hand is played."
       },
       "discardingCards": {
-        "title": "Discarding Cards",
+        "title": "Discarding special cards",
         "content": "If you don’t want to use a special card, you can discard it at any time by clicking the discard button that will pop up over the card.",
         "content-mobile": "If you don’t want to use a special card, you can discard it at any time by dragging it to the discard button."
       }
@@ -76,9 +76,6 @@
         "content": "Click the discard button that will pop up over the card to discard it without losing any discard chances.",
         "content-mobile": "Drag the modifier and drop it onto the discard button to discard it without losing any discard chances."
       }
-    },
-    "commonSettings": {
-      "disableScrollParentFix": false
     }
   }
   

@@ -1,8 +1,8 @@
 {
     "gameTutorial": {
       "pointsTarget": {
-        "title": "Meta de puntos",
-        "content": "La cantidad de puntos que necesitas para avanzar al siguiente nivel"
+        "title": "Objetivo de puntos",
+        "content": "Estos son los puntos que necesitas para avanzar al siguiente nivel"
       },
       "playableHand": {
         "title": "Mano jugable",
@@ -47,8 +47,8 @@
         "content": "Las cartas especiales otorgan poderes globales únicos y se activan inmediatamente. ¡Pueden cambiar el rumbo del juego!"
       },
       "rerollStore": {
-        "title": "Rehacer la tienda",
-        "content": "¿No encuentras lo que necesitas? Gasta algunas monedas para rehacer la tienda y ver un nuevo conjunto de cartas y manos para mejorar."
+        "title": "Actualizar la tienda",
+        "content": "¿No encuentras lo que necesitas? Gasta algunas monedas para actualiza la tienda y ver un nuevo conjunto de cartas y manos para mejorar."
       },
       "nextLevel": {
         "title": "Avanzar al siguiente nivel",
@@ -61,7 +61,7 @@
         "content": "Las cartas especiales se activan inmediatamente después de comprarlas en la tienda. Aplican sus efectos después de jugar tu mano."
       },
       "discardingCards": {
-        "title": "Descartar cartas",
+        "title": "Descartar",
         "content": "Si no deseas usar una carta especial, puedes descartarla en cualquier momento haciendo clic en el botón de descarte que aparecerá sobre la carta.",
         "content-mobile": "Si no deseas usar una carta especial, puedes descartarla en cualquier momento arrastrándola hacia el botón de descarte." 
       }
