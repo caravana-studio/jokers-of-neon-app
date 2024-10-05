@@ -6,6 +6,7 @@ import CountdownTimer from "../components/CountdownTimer";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 
 export const Home = () => {
@@ -52,6 +53,9 @@ export const Home = () => {
             alignItems="center"
             gap={{ base: 6, sm: 8, md: 12 }}
           >
+            <Flex justifyContent={"flex-end"} width={"100%"} pr={"10"} position={"fixed"} top={10}>
+              <LanguageSwitcher />
+            </Flex>
             <Heading
               size="xl"
               color="white"
