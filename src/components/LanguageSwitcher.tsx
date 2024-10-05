@@ -12,7 +12,7 @@ import {
   } from '@chakra-ui/react';
 
 const LanguageSwitcher = () => {
-  const { t, i18n } = useTranslation(["home"]);
+  const { i18n } = useTranslation(["home"]);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
