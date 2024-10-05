@@ -12,51 +12,36 @@ import {
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
-import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useShop } from "../../dojo/queries/useShop.tsx";
-import { useShopItems } from "../../dojo/queries/useShopItems.ts";
-import { useShopActions } from "../../dojo/useShopActions.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
 import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
+import useStoreContent from "./UseStoreContent.ts";
+import { LevelUpTable } from "./StoreElements/LevelUpTable.tsx";
 
 export const StoreContent = () => {
-  const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
-  const game = useGame();
-  const cash = game?.cash ?? 0;
-  const store = useShop();
-  const state = game?.state;
-  const { lockRedirection } = useStore();
-  const rerollCost = store?.reroll_cost ?? 0;
-  const notEnoughCash = cash < rerollCost;
-
-  const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
-
-  const [loading, setLoading] = useState(false);
-  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
-  const specialCards = useCurrentSpecialCards();
-
-  useEffect(() => {
-    store && setRerolled(store.reroll_executed);
-  }, [store?.reroll_executed]);
-
-  const { skipShop } = useShopActions();
-
-  const { reroll, locked } = useStore();
-  const [run, setRun] = useState(false);
-
-  const shopItems = useShopItems();
+  const {
+    cash,
+    rerollCost,
+    notEnoughCash,
+    rerolled,
+    setRerolled,
+    loading,
+    setLoading,
+    specialCardsModalOpen,
+    setSpecialCardsModalOpen,
+    specialCards,
+    skipShop,
+    run,
+    setRun,
+    reroll,
+    locked,
+    shopItems,
+    onShopSkip,
+    gameId,
+    setHand,
+  } = useStoreContent();
   const navigate = useNavigate();
-
-  const levelUpTable = (
-    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]} width={"100%"}>
-      {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
-    </Box>
-  );
 
   const rerollButton = (
     <Tooltip
@@ -206,7 +191,9 @@ export const StoreContent = () => {
               </Heading>
             </Flex>
             <Packs />
-            <Flex mt={8} width={"95%"}>{levelUpTable}</Flex>
+            <Flex mt={8} width={"95%"}>
+              <LevelUpTable shopItems={shopItems} isSmallScreen={false}/>
+            </Flex>
             <Coins rolling />
           </Box>
           <Box
