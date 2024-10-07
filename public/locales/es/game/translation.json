@@ -12,11 +12,7 @@
         {
             "level": "Nivel",
             "target-score": "Puntos",
-            "labels":
-            {
-                "score-label-1": "Suma",
-                "score-label-2": "para superar el nivel"
-            }
+            "score":"Suma {{score}} para superar el nivel {{level}}"
         },
         "score": "Tu puntaje:",
         "multi-points":

@@ -13,11 +13,7 @@
         {
             "level": "Level",
             "target-score": "Score",
-            "labels":
-            {
-                "score-label-1": "Score",
-                "score-label-2": "to clear the level"
-            }
+            "score":"Score {{score}} to clear the level {{level}}"
         },
         "score": "Your score:",
         "multi-points":

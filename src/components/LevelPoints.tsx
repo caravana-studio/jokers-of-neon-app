@@ -29,7 +29,7 @@ export const LevelPoints = () => {
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
-        {t('game.level-points.labels.score-label-1')} {levelScore} {t('game.level-points.labels.score-label-2')} {level}
+        {t('game.level-points.score', {score: levelScore, level: level })}
       </Text>
     </Box>
   );
@@ -55,7 +55,7 @@ export const MobileLevelPoints = () => {
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
-          {t('game.level-points.labels.score-label-1')} {levelScore} {t('game.level-points.labels.score-label-2')} {level}
+          {t('game.level-points.score', {score: levelScore, level: level })}
         </Text>
         <Score />
       </Flex>

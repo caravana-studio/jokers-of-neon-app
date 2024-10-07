@@ -9,15 +9,12 @@
       "level-points": {
         "level": "Nível",
         "target-score": "Pontuação",
-        "labels": {
-          "score-label-1": "Pontuação",
-          "score-label-2": "para passar o nível"
-        }
+        "score":"Pontuação {{score}} para passar o nível {{level}}"
       },
       "score": "Sua pontuação:",
       "multi-points": {
         "points": "Pontos",
-        "multi": "Multiplicador"
+        "multi": "Multi"
       },
       "special-cards": {
         "special-cards-label": "Cartas Especiais",
