@@ -1,4 +1,5 @@
 export const getPlayerPokerHands = async (client: any, gameId: number) => {
+  if (gameId != 0) { 
     try {
       let tx_result = await client.poker_hand_system.getPlayerPokerHands({
         gameId
@@ -15,4 +16,5 @@ export const getPlayerPokerHands = async (client: any, gameId: number) => {
     } catch (e) {
       console.log(e);
     }
+  }
 };
