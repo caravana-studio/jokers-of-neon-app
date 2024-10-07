@@ -73,8 +73,8 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const labels = [
     t('rewards-details.labels.base'),
     t('rewards-details.labels.level-bonus'),
-    `${hands_left} ${t('rewards-details.labels.hands-left')}`,
-    `${discard_left} ${t('rewards-details.labels.discards-left')}`,
+    t('rewards-details.labels.hands-left', {hands: hands_left}),
+    t('rewards-details.labels.discards-left' , {discards: discard_left}),
   ];
 
   const navigate = useNavigate();

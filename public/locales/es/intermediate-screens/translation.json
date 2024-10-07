@@ -32,8 +32,8 @@
             "title-2": "superado!",
             "base": "base",
             "level-bonus": "Bonus del nivel",
-            "discards-left": "Descartes restantes",
-            "hands-left": "Manos restantes"
+            "discards-left": "{{discards}} Descartes restantes",
+            "hands-left": "{{hands}} Manos restantes"
         }
     }
 }

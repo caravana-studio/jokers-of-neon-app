@@ -41,8 +41,8 @@
             "title-2": "completed!",
             "base": "base",
             "level-bonus": "Level bonus",
-            "discards-left": "Discards left",
-            "hands-left": "Hands left"
+            "discards-left": "{{discards}} Discards left",
+            "hands-left": "{{hands}} Hands left"
         }
     }
 }
