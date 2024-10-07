@@ -46,13 +46,13 @@
         {
             "lbl": "",
             "discard": "Descartar",
-            "left": "restantes"
+            "left": "{{discards}} restantes"
         },
         "play-btn-lbl":
         {
             "play": "jugar mano",
             "play-mobile": "jugar",
-            "left": "restantes" 
+            "left": "{{handsLeft}} restantes" 
         },
         "current-play-lbl":
         {

@@ -53,14 +53,14 @@ export const DiscardButton = ({
               {itemDragged ?  t('game.preselected-cards-section.discard-btn-lbl.lbl') +" " : ""}{t('game.preselected-cards-section.discard-btn-lbl.discard')}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {discards} {t('game.preselected-cards-section.discard-btn-lbl.left')}
+              {t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}
             </Heading>
           </Box>
         ) : (
           t('game.preselected-cards-section.discard-btn-lbl.discard').toUpperCase()
         )}
       </Button>
-      {!isMobile && <Text size="l">{discards} {t('game.preselected-cards-section.discard-btn-lbl.left')}</Text>}
+      {!isMobile && <Text size="l">{t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}</Text>}
     </ButtonContainer>
   );
 };

@@ -37,14 +37,14 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
               {t('game.preselected-cards-section.play-btn-lbl.play-mobile')}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {handsLeft} {t('game.preselected-cards-section.play-btn-lbl.left')}
+              {t('game.preselected-cards-section.play-btn-lbl.left', {handsLeft: handsLeft})}
             </Heading>
           </Box>
         ) : (
           t('game.preselected-cards-section.play-btn-lbl.play')
         )}
       </Button>
-      {!isMobile && <Text size="l">{handsLeft} {t('game.preselected-cards-section.play-btn-lbl.left')}</Text>}
+      {!isMobile && <Text size="l">{t('game.preselected-cards-section.play-btn-lbl.left', {handsLeft: handsLeft})}</Text>}
     </ButtonContainer>
   );
 };

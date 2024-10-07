@@ -37,12 +37,12 @@
         "discard-btn-lbl": {
           "lbl": "solte aqui para",
           "discard": "descartar",
-          "left": "restantes"
+          "left": "{{discards}} restantes"
         },
         "play-btn-lbl": {
           "play": "jogar mão",
           "play-mobile": "jogar",
-          "left": "restantes"
+          "left": "{{handsLeft}} restantes"
         },
         "current-play-lbl": {
           "default": "Selecione algumas cartas para jogar",

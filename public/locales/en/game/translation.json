@@ -47,13 +47,13 @@
         {
             "lbl": "drop here to ",
             "discard": "discard",
-            "left": "left" 
+            "left": "{{discards}} left" 
         },
         "play-btn-lbl":
         {
             "play": "play hand",
             "play-mobile": "play",
-            "left": "left" 
+            "left": "{{handsLeft}} left" 
         },
         "current-play-lbl":
         {
