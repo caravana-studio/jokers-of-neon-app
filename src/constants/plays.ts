@@ -20,6 +20,7 @@ const loadTranslations = async () => {
     "NONE",
     i18n.t('playsData.royalFlush.name', {ns:'plays'}),
     i18n.t('playsData.straightFlush.name', {ns:'plays'}),
+    i18n.t('playsData.fiveOfAKind.name', {ns:'plays'}),
     i18n.t('playsData.fourOfAKind.name', {ns:'plays'}),
     i18n.t('playsData.fullHouse.name', {ns:'plays'}),
     i18n.t('playsData.straight.name', {ns:'plays'}),
@@ -28,7 +29,6 @@ const loadTranslations = async () => {
     i18n.t('playsData.twoPair.name', {ns:'plays'}),
     i18n.t('playsData.pair.name', {ns:'plays'}),
     i18n.t('playsData.highCard.name', {ns:'plays'}),
-    i18n.t('playsData.fiveOfAKind.name', {ns:'plays'}),
   ]);
 
   Object.assign(PLAYS_DATA, [
