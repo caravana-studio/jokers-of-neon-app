@@ -3,6 +3,8 @@
 // generate again with `sozo build --typescript`
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
+import * as models from "./models.gen";
+
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 interface HandActionProps extends BaseProps {
   cards: number[];
@@ -251,6 +253,53 @@ export async function setupWorld(provider: DojoProvider) {
     };
   }
 
+    // System definitions for `jokers_of_neon-poker_hand_system` contract
+    function poker_hand_system() {
+      const contract_name = "poker_hand_system";
+  
+      // Call the `get_player_poker_hands` system with the specified Account and calldata
+      const getPlayerPokerHands = async ({ gameId }: { gameId: number }) => {
+          try {
+              const calldata = [gameId];
+              return await provider.call(
+                DEFAULT_NAMESPACE,
+                  {
+                      contractName: contract_name,
+                      entrypoint: "get_player_poker_hands",
+                      calldata
+                  },
+              );
+          } catch (error) {
+              console.error("Error executing get_player_poker_hands:", error);
+              throw error;
+          }
+      };
+          
+      // Call the `world` system with the specified Account and calldata
+      const world = async (props: { account: Account }) => {
+        try {
+          return await provider.execute(
+            props.account,
+            {
+              contractName: contract_name,
+              entrypoint: "world",
+              calldata: [],
+            },
+            "jokers_of_neon"
+          );
+        } catch (error) {
+          console.error("Error executing spawn:", error);
+          throw error;
+        }
+      };
+
+      return {
+        getPlayerPokerHands,
+        world,
+      };
+  }
+
+  
   // System definitions for `jokers_of_neon-rage_system` contract
   function rage_system() {
     const contract_name = "rage_system";
@@ -477,6 +526,7 @@ export async function setupWorld(provider: DojoProvider) {
     config_system: config_system(),
     game_system: game_system(),
     rage_system: rage_system(),
+    poker_hand_system: poker_hand_system(),
     shop_system: shop_system(),
   };
 }

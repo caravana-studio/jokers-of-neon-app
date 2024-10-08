@@ -21,6 +21,9 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
+import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -32,6 +35,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
   const { locked } = useStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
   const store = useStore();
   const { isPurchased } = store;
@@ -40,17 +44,28 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
 
-  let plays = usePokerPlays(gameId);
+  const {
+    setup: {
+      client,
+      account: { account }
+    },
+  } = useDojo();
+
+  if (client && account &&  plays.length == 0) {
+    getPlayerPokerHands(client, gameId).then((plays: any) => {
+      setPlays(plays);
+    })
+  }
 
   useEffect(() => {
-    if (plays.plays.length > 0) { 
+  if (plays.length > 0) { 
       setIsLoading(false);
     }
-  }, [plays.plays, pokerHandItems]);
+  }, [plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading && inStore ? plays.plays.filter((play) =>
-        pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
-      ): plays.plays;
+  const filteredPlays = !isLoading ? plays.filter((play) =>
+    pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
+): plays;
 
   return (
     <>
