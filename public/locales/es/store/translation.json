@@ -53,6 +53,19 @@
           "close": "Cerrar",
           "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
         }
+      },
+      "packs": 
+      {
+        "continue-btn": "Continuar",
+        "cards-select-lbl": "Selecciona las cartas que deseas conservar",
+        "select-all-lbl": "Seleccionar todo",
+        "special-cards-btn": "Ver mis cartas especiales actuales",
+        "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
+        "confirmation-modal":
+        {
+          "head": "No hay cartas seleccionadas",
+          "description": "No has seleccionado ninguna carta. ¿Estás seguro de que quieres continuar?"
+        }
       }
     }
 }
