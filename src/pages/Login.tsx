@@ -6,6 +6,7 @@ import { GameMenu } from "../components/GameMenu.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { VIOLET } from "../theme/colors.tsx";
+import { useTranslation } from 'react-i18next';
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -14,6 +15,7 @@ export const Login = () => {
   const inputRef = useRef(null);
   const [username, setUsername] = useState("");
   const { showErrorToast } = useCustomToast();
+  const { t } = useTranslation(["intermediate-screens"]);
 
   const redirectToGame = () => {
     navigate("/demo");
@@ -29,22 +31,22 @@ export const Login = () => {
 
   const validateAndCreateUser = () => {
     if (!username) {
-      showErrorToast("Please enter username");
+      showErrorToast(t('login.error-labels.error-noUsername-login'));
       return;
     }
     if (username.length < 3) {
-      showErrorToast("Username must be at least 3 characters");
+      showErrorToast(t('login.error-labels.error-shortUsername-login'));
       return;
     }
     if (username.length > 15) {
-      showErrorToast("Username must be at most 15 characters");
+      showErrorToast(t('login.error-labels.error-longUsername-login'));
       return;
     }
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
     if (!regExpression.test(username)) {
       showErrorToast(
-        "Username must contain only letters, numbers, points or dashes"
+        t('login.error-labels.error-invalidUsername-login')
       );
       return;
     }
@@ -95,7 +97,7 @@ export const Login = () => {
           width={{ base: "90%", sm: "600px" }}
         >
           <Heading variant="italic" color={VIOLET} size={"m"}>
-            Introduce username
+          {t('login.labels.label-login')}
           </Heading>
           <Box
             pt={3}
@@ -120,7 +122,7 @@ export const Login = () => {
               variant="neon-white"
               id="usernameInputField"
               type="text"
-              placeholder="Username"
+              placeholder={t('login.labels.placeholder-login')}
               ref={inputRef}
               maxLength={15}
               onChange={(e) => {
@@ -140,14 +142,14 @@ export const Login = () => {
               navigate("/");
             }}
           >
-            GO BACK
+            {t('login.btn.goBack-login-btn')}
           </Button>
           <Button
             width="46%"
             onClick={validateAndCreateUser}
             variant="secondarySolid"
           >
-            START GAME
+            {t('login.btn.startGame-login-btn')}
           </Button>
         </Flex>
       </Flex>

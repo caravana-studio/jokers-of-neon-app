@@ -5,6 +5,7 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card.ts";
 import { CardsRow } from "./CardsRow";
 import { TiltCard } from "./TiltCard.tsx";
+import { useTranslation } from "react-i18next";
 
 interface SpecialCardsProps {
   inStore?: boolean;
@@ -14,6 +15,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const { colors } = useTheme();
   const game = useGame();
   const maxLength = game?.len_max_current_special_cards ?? 5;
+  const { t } = useTranslation(["game"]);
 
   const { discardSpecialCard, specialCards, isRageRound, rageCards } =
     useGameContext();
@@ -79,7 +81,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
       )}
       <Flex sx={{ mt: 1, mx: 1 }} justifyContent="space-between">
         <Box>
-          {!inStore && <Text size={{ base: "l", sm: "m" }}>Special cards</Text>}
+          {!inStore && <Text size={{ base: "l", sm: "m" }}>{t('game.special-cards.special-cards-label')}</Text>}
         </Box>
         <Text className="special-cards-step-2" size={{ base: "l", sm: "m" }}>
           {"<"}
@@ -104,7 +106,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
                 });
             }}
           >
-            Drop card
+            {t('game.special-cards.remove-special-cards-label')}
           </Button>
         </Flex>
       )}

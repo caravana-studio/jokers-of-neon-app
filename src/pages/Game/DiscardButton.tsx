@@ -3,6 +3,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { isMobile } from "react-device-detect";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
+import { useTranslation } from "react-i18next";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
@@ -28,6 +29,8 @@ export const DiscardButton = ({
       !discards ||
       discards === 0);
 
+    const { t } = useTranslation(["game"]);
+
   return (
     <ButtonContainer>
       <Button
@@ -47,17 +50,17 @@ export const DiscardButton = ({
               fontSize={itemDragged ? 12 : 16}
               height={"16px"}
             >
-              {itemDragged ? "drop here to " : ""}discard
+              {itemDragged ?  t('game.preselected-cards-section.discard-btn-lbl.lbl') +" " : ""}{t('game.preselected-cards-section.discard-btn-lbl.discard')}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {discards} left
+              {t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}
             </Heading>
           </Box>
         ) : (
-          "DISCARD"
+          t('game.preselected-cards-section.discard-btn-lbl.discard').toUpperCase()
         )}
       </Button>
-      {!isMobile && <Text size="l">{discards} left</Text>}
+      {!isMobile && <Text size="l">{t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}</Text>}
     </ButtonContainer>
   );
 };

@@ -14,7 +14,7 @@ import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { TiltCard } from "../../components/TiltCard";
-import { PLAYS_DATA } from "../../constants/plays";
+import { PLAYS_DATA, PLAYS } from "../../constants/plays";
 import { LevelPokerHand } from "../../dojo/typescript/models.gen";
 import { useDojo } from "../../dojo/useDojo";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
@@ -23,6 +23,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT } from "../../theme/colors";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
+import { useTranslation } from "react-i18next";
 
 const { blueLight, blue, violet } = theme.colors;
 
@@ -42,6 +43,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
   const { gameId } = useGameContext();
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [playsExampleIndex, setPlaysExampleIndex] = useState(0);
+  const { t } = useTranslation(["game"]);
 
   const {
     setup: {
@@ -88,9 +90,9 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                 <Tr>
                   {
                     <>
-                      <Td fontSize={isMobile ? 12 : 17}>LEVEL</Td>
-                      <Td fontSize={isMobile ? 12 : 17}>HAND</Td>
-                      <Td fontSize={isMobile ? 12 : 17}>POINTS/MULTI</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.level-head').toUpperCase()}</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.hand-head').toUpperCase()}</Td>
+                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.points-multi-head').toUpperCase()}</Td>
                     </>
                   }
                 </Tr>
@@ -204,7 +206,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         fontSize={isMobile ? 9 : 13}
                       >
                         {play.poker_hand &&
-                          parseHand(play.poker_hand.toString()).name}
+                          PLAYS[parseHand(play.poker_hand.toString()).value]}
                       </Td>
                     );
                     const pointsMultiTd = (

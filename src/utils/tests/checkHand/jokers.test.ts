@@ -1,7 +1,12 @@
-import { expect, test } from "vitest";
+import { expect, test, beforeAll } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
 import { C10, C2, C3, C4, C5, C6, C8, C9, CA, CJ, CK, CQ, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S10, S2, S3, S4, S5, S6, S7, S8, S9, SA, SK } from "../../mocks/cardMocks";
+import i18n from "../../../i18n";
+
+beforeAll(async () => {
+  await i18n.loadNamespaces(['traditional-cards', 'neon-cards', 'effects']);
+});
 
 test("One Joker should be high card", () => {
   expect(testCheckHand([JOKER1])).toBe(Plays.HIGH_CARD);

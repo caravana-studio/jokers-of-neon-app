@@ -10,6 +10,7 @@ import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import {
+  JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
@@ -25,6 +26,7 @@ import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
+import { useTranslation } from "react-i18next";
 
 export const Store = () => {
   const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
@@ -70,6 +72,7 @@ export const Store = () => {
   const shopItems = useShopItems();
 
   const navigate = useNavigate();
+  const { t } = useTranslation(["store"]);
 
   const levelUpTable = (
     <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>
@@ -81,7 +84,7 @@ export const Store = () => {
     <Tooltip
       placement={isMobile ? "top" : "right"}
       label={
-        rerolled ? "Available only once per level" : "Update available items"
+        rerolled ? t('store.tooltip.rerolled') : t('store.tooltip.reroll-default')  
       }
     >
       <Button
@@ -97,7 +100,7 @@ export const Store = () => {
           });
         }}
       >
-        REROLL{isMobile && <br />} {rerollCost}
+        {t('store.labels.reroll').toUpperCase()}{isMobile && <br />} {rerollCost}
         <CashSymbol />
       </Button>
     </Tooltip>
@@ -111,7 +114,7 @@ export const Store = () => {
         setSpecialCardsModalOpen(true);
       }}
     >
-      SEE MY{isMobile && <br />} SPECIAL CARDS
+      {t('store.labels.see-my').toUpperCase()}{isMobile && <br />} {t('store.labels.special-cards').toUpperCase()}
     </Button>
   );
 
@@ -137,7 +140,7 @@ export const Store = () => {
       variant="secondarySolid"
       fontSize={[10, 10, 10, 14, 14]}
     >
-      GO TO {isMobile && <br />} NEXT LEVEL
+      {t('store.labels.next-level').toUpperCase()}
     </Button>
   );
 
@@ -187,6 +190,7 @@ export const Store = () => {
         styles={TUTORIAL_STYLE}
         showProgress
         callback={handleJoyrideCallback}
+        locale={JOYRIDE_LOCALES}
       />
       {specialCardsModalOpen && (
         <CurrentSpecialCardsModal
@@ -252,7 +256,7 @@ export const Store = () => {
             pb={isMobile ? 4 : 0}
           >
             <Heading variant="italic" size="l" ml={4}>
-              LEVEL UP YOUR GAME
+              {t('store.titles.level-game').toUpperCase()}
             </Heading>
             {isMobile && (
               <Flex mt={2}>
@@ -276,7 +280,7 @@ export const Store = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title="traditional and neon cards"
+                  title={t('store.titles.traditional')}
                 />
               )}
             </Box>
@@ -284,7 +288,7 @@ export const Store = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifier cards"
+                  title={t('store.titles.modifiers')}
                 />
               )}
             </Box>
@@ -292,7 +296,7 @@ export const Store = () => {
               {shopItems.specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.specialCards}
-                  title="special cards"
+                  title={t('store.titles.special')}
                 />
               )}
             </Box>
@@ -306,7 +310,7 @@ export const Store = () => {
               borderRadius="10px"
             >
               <Heading variant="italic" size="m" mt={4}>
-                IMPROVE YOUR PLAYS
+                {t('store.titles.improve-plays').toUpperCase()}
               </Heading>
               {levelUpTable}
             </Box>

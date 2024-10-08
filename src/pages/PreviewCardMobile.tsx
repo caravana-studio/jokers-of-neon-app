@@ -22,6 +22,7 @@ import theme from "../theme/theme";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
+import { useTranslation } from "react-i18next";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -29,6 +30,7 @@ const { white, neonGreen } = theme.colors;
 const MobilePreviewCard = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation(["store"]);
 
   const { card, isPack, pack } = state || {};
 
@@ -73,7 +75,7 @@ const MobilePreviewCard = () => {
       variant="outlinePrimaryGlow"
       width={"50%"}
     >
-      BUY
+      {t('store.preview-card.labels.buy')}
     </Button>
   );
 
@@ -142,15 +144,15 @@ const MobilePreviewCard = () => {
                     },
                   }}
                 >
-                  CARD TYPE:
+                  {t('store.preview-card.title.card-type')}
                 </Text>
                 <Text color={neonGreen} fontSize="md">
                   {card.isSpecial
-                    ? "Special"
+                    ? t('store.preview-card.labels.special')
                     : card.isModifier
-                      ? "Modifier"
-                      : "Traditional"}
-                  {card.temporary && " (temporary)"}
+                      ? t('store.preview-card.labels.modifier')
+                      : t('store.preview-card.labels.traditional')}
+                  {card.temporary && " ("+ t('store.preview-card.labels.temporary') +  ")"}
                 </Text>
               </Box>
             )}
@@ -174,7 +176,7 @@ const MobilePreviewCard = () => {
                 },
               }}
             >
-              DESCRIPTION:
+              {t('store.preview-card.title.description')}
             </Text>
             <Text color={neonGreen} fontSize="md">
               {description}
@@ -205,7 +207,7 @@ const MobilePreviewCard = () => {
                   },
                 }}
               >
-                DETAILS:
+                {t('store.preview-card.title.details')}
               </Text>
               <Text color={neonGreen} fontSize="md">
                 {details?.split("\n").map((line, index) => (
@@ -219,7 +221,7 @@ const MobilePreviewCard = () => {
           )}
 
           <Heading size="sm" variant="italic">
-            PRICE: {card.price}
+          {t('store.preview-card.title.price')} {card.price}
             <CashSymbol />
           </Heading>
         </Flex>
@@ -252,7 +254,7 @@ const MobilePreviewCard = () => {
               onClick={() => navigate("/store")}
               width={"50%"}
             >
-              Close
+              {t('store.preview-card.labels.close')}
             </Button>
           </HStack>
         </Flex>

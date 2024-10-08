@@ -11,6 +11,7 @@ import { looseSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { useTranslation } from 'react-i18next';
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 
 const GAME_URL = "https://jokersofneon.com";
@@ -23,18 +24,21 @@ export const GameOver = () => {
   const gameId = Number(params.gameId);
 
   const { restartGame, setIsRageRound } = useGameContext();
-  const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
+
+  const {play: looseSound, stop: stopLooseSound} = useAudio(looseSfx);
+  const { data: fullLeaderboard } = useGetLeaderboard();
+  const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
+  const { t } = useTranslation(["intermediate-screens"]);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
 
   let congratulationsMsj = "";
 
   if (currentLeader?.position != undefined) {
     congratulationsMsj =
-      currentLeader?.position === 1
-        ? "Congratulations! You're the top player on the leaderboard!"
+      actualPlayer?.position === 1
+        ? t('game-over.table.gameOver-leader-msj')
         : currentLeader?.position > 1 && currentLeader?.position <= 5
-          ? "Great job! You're in the top 5! Keep it up!"
+          ? t('game-over.table.gameOver-top5-msj')
           : "";
   }
 
@@ -63,7 +67,7 @@ export const GameOver = () => {
       >
         <Flex flexDirection="column" width="100%">
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
-            GAME OVER
+            {t('game-over.gameOver-msj')}
           </Heading>
           <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
             {congratulationsMsj}
@@ -81,7 +85,7 @@ export const GameOver = () => {
               }}
               data-size="large"
             >
-              SHARE ON
+              {t('game-over.btn.gameOver-share-btn')}
               <Flex sx={{ ml: 2.5 }}>
                 <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
               </Flex>
@@ -96,7 +100,7 @@ export const GameOver = () => {
                 navigate("/demo");
               }}
             >
-              START NEW GAME
+              {t('game-over.btn.gameOver-newGame-btn')}
             </Button>
           </Flex>
           <Flex mt={{base: 4, sm: 10}} justifyContent="center">

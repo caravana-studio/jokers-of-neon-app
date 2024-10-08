@@ -5,7 +5,7 @@ import Joyride, { CallBackProps } from 'react-joyride';
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
-import { GAME_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
+import { GAME_TUTORIAL_STEPS, JOYRIDE_LOCALES, MODIFIERS_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_MODIFIERS, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -15,6 +15,7 @@ import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
+import { useTranslation } from 'react-i18next';
 
 export const MobileGameContent = () => {
   const {
@@ -35,6 +36,7 @@ export const MobileGameContent = () => {
   const[runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] = useState(false);
+  const { t } = useTranslation(["game"]);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -117,7 +119,7 @@ export const MobileGameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          error creating game
+          {t('error.labels.error-msj')}
         </Heading>
         <Button
           variant="outline"
@@ -127,7 +129,7 @@ export const MobileGameContent = () => {
             executeCreateGame();
           }}
         >
-          CREATE NEW GAME
+          {t('error.labels.label-error-btn')}
         </Button>
       </Flex>
     );
@@ -160,6 +162,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride 
@@ -170,6 +173,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride 
@@ -180,6 +184,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <GameMenu showTutorial={() => { setRun(true);}} />

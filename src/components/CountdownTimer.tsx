@@ -1,5 +1,6 @@
 import { Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CountdownTimerProps {
   targetDate: Date;
@@ -30,6 +31,7 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   };
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(calculateTimeLeft());
+  const { t } = useTranslation(["home"]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -48,11 +50,11 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
 
   return (
     <Text size='l'>
-      <span>{days} days </span>
+      <span>{days} {t('tournament.labels.days-countdown-tournament')} </span>
       <span>{hours}h </span>
       <span>{minutes}m </span>
       <span>{seconds}s</span>
-      {" "} for the tournament to finish
+      {" " + t('tournament.labels.label-countdown-tournament')} 
     </Text>
   );
 };

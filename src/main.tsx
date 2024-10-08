@@ -10,6 +10,8 @@ import { setup } from "./dojo/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { preloadImages } from "./utils/preloadImages.ts";
+import { I18nextProvider } from 'react-i18next';
+import i18n from "./i18n.ts";
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -27,7 +29,9 @@ async function init() {
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <Toaster />
-            <App />
+            <I18nextProvider i18n={i18n} defaultNS={undefined}>
+              <App />
+            </I18nextProvider>
           </QueryClientProvider>
         </BrowserRouter>
       </DojoProvider>

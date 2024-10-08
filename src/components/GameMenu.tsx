@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useTranslation } from "react-i18next";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -21,6 +22,7 @@ export const GameMenu = ({
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
+  const { t } = useTranslation(["game"]);
 
   const togglePlayPause = () => {
     toggleSound();
@@ -38,16 +40,16 @@ export const GameMenu = ({
               navigate("/");
             }}
           >
-            Go to home
+            {t('game.game-menu.home-btn')}
           </MenuItem>
           {!onlySound && (
             <MenuItem onClick={() => executeCreateGame()}>
-              Start new game
+              {t('game.game-menu.new-game-btn')}
             </MenuItem>
           )}
-          {showTutorial && <MenuItem onClick={showTutorial}>See tutorial</MenuItem>}
+          {showTutorial && <MenuItem onClick={showTutorial}>{t('game.game-menu.tutorial-btn')}</MenuItem>}
           <MenuItem onClick={togglePlayPause}>
-            Turn sound {isPlaying ? "OFF" : "ON"}
+          {t('game.game-menu.sound-btn')} {isPlaying ? "OFF" : "ON"}
           </MenuItem>
           {!onlySound && (
             <MenuItem
@@ -58,7 +60,7 @@ export const GameMenu = ({
                 navigate("/");
               }}
             >
-              Logout {username}{" "}
+            {t('game.game-menu.logout-btn')} {username}{" "}
             </MenuItem>
           )}
         </MenuList>
