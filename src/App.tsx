@@ -22,9 +22,116 @@ import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 import { DeckPage } from "./pages/Deck/DeckPage";
+import { SDK, createDojoStore } from "@dojoengine/sdk";
+import { Models, Schema } from "./dojo/typescript/bindings";
+import { useDojo } from "./dojo/useDojo";
+import { useEffect } from "react";
+import { GAME_ID } from "./constants/localStorage";
+import useModel from "./dojo/queries/useModel";
 
-function App() {
+export const useDojoStore = createDojoStore<Schema>();
+
+function App({ sdk }: { sdk: SDK<Schema> }) {
   const theme = extendTheme(customTheme);
+  const {
+    account,
+    setup: { client },
+} = useDojo();
+  const state = useDojoStore((state) => state);
+  const entities = useDojoStore((state) => state.entities);
+  
+  let gameID = localStorage.getItem(GAME_ID) || '';
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    const subscribe = async () => {
+        const subscription = await sdk.subscribeEntityQuery(
+            {
+                jokers_of_neon: {
+                    DeckCard: {
+                        $: {
+                            where: {
+                                game_id: {
+                                    $is: Number(gameID),
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            (response) => {
+                if (response.error) {
+                    console.error(
+                        "Error setting up entity sync:",
+                        response.error
+                    );
+                } else if (
+                    response.data &&
+                    response.data[0].entityId !== "0x0"
+                ) {
+                    state.setEntities(response.data);
+                    console.log(response.data);
+                }
+            },
+            { logging: false }
+        );
+
+        unsubscribe = () => subscription.cancel();
+    };
+
+    subscribe();
+
+    return () => {
+        if (unsubscribe) {
+            unsubscribe();
+        }
+    };
+}, [sdk, gameID]);
+
+useEffect(() => {
+    const fetchEntities = async () => {
+        try {
+            await sdk.getEntities(
+                {
+                    jokers_of_neon: {
+                        DeckCard: {
+                            $: {
+                                where: {
+                                    game_id: {
+                                        $eq: Number(gameID),
+                                    },
+                                    idx: {
+                                      $gte: 0
+                                    }
+                                },
+                            },
+                        },
+                    },
+                },
+                (resp) => {
+                    if (resp.error) {
+                        console.error(
+                            "resp.error.message:",
+                            resp.error.message
+                        );
+                        return;
+                    }
+                    if (resp.data) {
+                      console.log(resp.data);
+                        state.setEntities(resp.data);
+                    }
+                },
+                10000, 0
+            );
+        } catch (error) {
+            console.error("Error querying entities:", error);
+        }
+    };
+
+    fetchEntities();
+}, [sdk, gameID]);
+  
   return (
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>

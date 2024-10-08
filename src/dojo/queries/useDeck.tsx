@@ -5,6 +5,11 @@ import { useRound } from "./useRound";
 import { getCard } from "./useCurrentHand";
 import { getCardFromCardId } from "../utils/getCardFromCardId";
 import { getCardData } from "../../utils/getCardData";
+import useModel from "./useModel";
+import { Models } from "../typescript/bindings";
+import { GAME_ID } from "../../constants/localStorage";
+import { useMemo } from "react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export const useCurrentDeck = (): Deck | undefined => {
   const game = useGame();
@@ -13,12 +18,22 @@ export const useCurrentDeck = (): Deck | undefined => {
   const cards = [];
 
   const {
+    account,
     setup: {
       clientComponents: { DeckCard },
     },
   } = useDojo();
+  let gameID = localStorage.getItem(GAME_ID) || '';
+
+  const entityId = useMemo(
+    () => getEntityIdFromKeys([BigInt(gameID)]),
+    [gameID]
+);
 
   if (!game) return undefined;
+    
+  const skdDeck = useModel(entityId, Models.DeckCard);
+
 
   for (let i = 0; i < deckSize; i++) {
     const deckCard = getCard(game.id ?? 0, i, DeckCard);
