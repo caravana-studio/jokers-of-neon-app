@@ -13,7 +13,7 @@
         "description": "Cinco cartas do mesmo valor"
       },
       "fourOfAKind": {
-        "name": "Four of a Kind",
+        "name": "Quadra",
         "description": "Quatro cartas do mesmo valor"
       },
       "fullHouse": {
@@ -21,7 +21,7 @@
         "description": "Trinca e um par"
       },
       "straight": {
-        "name": "Straight",
+        "name": "Sequência",
         "description": "Cinco cartas consecutivas"
       },
       "flush": {
@@ -29,7 +29,7 @@
         "description": "Cinco cartas do mesmo naipe"
       },
       "threeOfAKind": {
-        "name": "Three of a Kind",
+        "name": "Trinca",
         "description": "Três cartas do mesmo valor"
       },
       "twoPair": {
