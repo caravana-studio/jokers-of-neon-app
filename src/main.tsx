@@ -10,8 +10,6 @@ import { setup } from "./dojo/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { preloadImages } from "./utils/preloadImages.ts";
-import { Schema, schema } from "./dojo/typescript/bindings.ts";
-import { init } from "@dojoengine/sdk";
 
 async function main() {
   const rootElement = document.getElementById("root");
@@ -19,24 +17,6 @@ async function main() {
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
   root.render(<LoadingScreen />);
-
-  const sdk = await init<Schema>(
-    {
-        client: {
-            rpcUrl: dojoConfig.rpcUrl,
-            toriiUrl: dojoConfig.toriiUrl,
-            relayUrl: dojoConfig.relayUrl,
-            worldAddress: dojoConfig.manifest.world.address,
-        },
-        domain: {
-            name: "WORLD_NAME",
-            version: "1.0",
-            chainId: "KATANA",
-            revision: "1",
-        },
-    },
-    schema
-);
 
   try {
     preloadImages();
@@ -47,7 +27,7 @@ async function main() {
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <Toaster />
-            <App sdk={sdk}/>
+            <App/>
           </QueryClientProvider>
         </BrowserRouter>
       </DojoProvider>

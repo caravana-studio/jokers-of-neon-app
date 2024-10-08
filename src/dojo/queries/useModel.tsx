@@ -1,4 +1,4 @@
-import { useDojoStore } from "../../App";
+import { useDojoStore } from "../setupSdk";
 import { Schema } from "../typescript/bindings";
 
 /**

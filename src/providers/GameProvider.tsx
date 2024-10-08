@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +30,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { useEntityService } from "../dojo/setupSdk.ts";
 
 interface IGameContext {
   gameId: number;
@@ -120,6 +122,8 @@ const GameContext = createContext<IGameContext>({
 export const useGameContext = () => useContext(GameContext);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
+
+  const { fetchEntities } = useEntityService();
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
 
@@ -222,6 +226,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
           await syncCall();
+          await fetchEntities();
           setGameLoading(false);
           setPreSelectionLocked(false);
           setRoundRewards(undefined);

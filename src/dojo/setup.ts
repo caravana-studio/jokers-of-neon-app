@@ -10,6 +10,8 @@ import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/models.gen";
 import { world } from "./world";
+import { init } from "@dojoengine/sdk";
+import { Schema as SchemaSdk, schema } from "./typescript/bindings";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -143,6 +145,24 @@ export async function setup({ ...config }: DojoConfig) {
     console.error(e);
   }
 
+  const sdk = await init<SchemaSdk>(
+    {
+        client: {
+            rpcUrl: config.rpcUrl,
+            toriiUrl: config.toriiUrl,
+            relayUrl: config.relayUrl,
+            worldAddress: config.manifest.world.address,
+        },
+        domain: {
+            name: "WORLD_NAME",
+            version: "1.0",
+            chainId: "KATANA",
+            revision: "1",
+        },
+    },
+    schema
+  );
+
   return {
     client,
     clientComponents,
@@ -157,5 +177,6 @@ export async function setup({ ...config }: DojoConfig) {
     toriiClient,
     sync,
     syncCallback: async () => await syncEntitiesForGameID(),
+    sdk,
   };
 }
