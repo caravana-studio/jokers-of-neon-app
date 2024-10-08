@@ -1,13 +1,13 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
 import { PositionedDiscordLink } from "../components/DiscordLink";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
-import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from "../components/LanguageSwitcher";
 
 
 export const Home = () => {
@@ -19,6 +19,7 @@ export const Home = () => {
 
   return (
     <Background type="home">
+      <LanguageSwitcher />
       <Flex
         height="100%"
         justifyContent="center"
@@ -54,9 +55,6 @@ export const Home = () => {
             alignItems="center"
             gap={{ base: 6, sm: 8, md: 12 }}
           >
-            <Flex justifyContent={"flex-end"} width={"100%"} pr={"10"} position={"fixed"} top={10}>
-              <LanguageSwitcher />
-            </Flex>
             <Heading
               size="xl"
               color="white"

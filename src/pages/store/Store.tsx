@@ -139,7 +139,7 @@ export const Store = () => {
       variant="secondarySolid"
       fontSize={[10, 10, 10, 14, 14]}
     >
-      {t('store.labels.go-to').toUpperCase()} {isMobile && <br />} {t('store.labels.next-level').toUpperCase()}
+      {t('store.labels.next-level').toUpperCase()}
     </Button>
   );
 

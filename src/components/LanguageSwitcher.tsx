@@ -1,15 +1,14 @@
-import { useTranslation } from 'react-i18next';
-import { CircleFlagLanguage } from 'react-circle-flags'
 import {
-    Button,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    Box,
-    Center,
-    Flex,
-  } from '@chakra-ui/react';
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList
+} from "@chakra-ui/react";
+import { CircleFlagLanguage } from "react-circle-flags";
+import { useTranslation } from "react-i18next";
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation(["home"]);
@@ -19,36 +18,36 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <Menu>
-      <MenuButton as={Button} p={"0 !important"} width={"auto"} >
-        <Flex width={"25px"} m={"0 auto"}>
-            <CircleFlagLanguage languageCode={i18n.language.substring(0,2)} />
-        </Flex>
-      </MenuButton>
-      <MenuList>
-        <MenuItem onClick={() => changeLanguage('en')} gap={2}>
+    <Box zIndex={999} position="absolute" right="20px" top="20px">
+      <Menu>
+        <MenuButton as={Button} p={"0 !important"} width={"auto"}>
+          <Flex width={"25px"} m={"0 auto"}>
+            <CircleFlagLanguage languageCode={i18n.language.substring(0, 2)} />
+          </Flex>
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => changeLanguage("en")} gap={2}>
             <Box width={"30px"}>
-                <CircleFlagLanguage languageCode="en-us" />
+              <CircleFlagLanguage languageCode="en-us" />
             </Box>
-          English
-        </MenuItem>
-        <MenuItem onClick={() => changeLanguage('es')} gap={2}>
+            English
+          </MenuItem>
+          <MenuItem onClick={() => changeLanguage("es")} gap={2}>
             <Box width={"30px"}>
-                <CircleFlagLanguage languageCode="es" />
+              <CircleFlagLanguage languageCode="es" />
             </Box>
             Español
-        </MenuItem>
-        <MenuItem onClick={() => changeLanguage('pt')} gap={2}>
+          </MenuItem>
+          <MenuItem onClick={() => changeLanguage("pt")} gap={2}>
             <Box width={"30px"}>
-                <CircleFlagLanguage languageCode="pt" />
+              <CircleFlagLanguage languageCode="pt" />
             </Box>
             Português
-        </MenuItem>
-      </MenuList>
-    </Menu>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </Box>
   );
 };
 
 export default LanguageSwitcher;
-
-
