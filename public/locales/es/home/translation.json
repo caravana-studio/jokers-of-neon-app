@@ -4,7 +4,8 @@
         "btn": {
             "leaderboard-btn": "Ver leaderboard",
             "playDemo-btn": "Jugar demo"
-        }
+        },
+        "join-discord": "¡Únete a nuestro Discord!"
     },
     "leaderboard": {
         "btn": {

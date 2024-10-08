@@ -3,6 +3,7 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PropsWithChildren } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from 'react-i18next';
 
 export const PositionedDiscordLink = () => {
   return (
@@ -13,9 +14,11 @@ export const PositionedDiscordLink = () => {
 };
 
 export const DiscordLink = () => {
+  const { t } = useTranslation(["home"]);
+
   return (
     <Link href="https://discord.gg/4y296W6jaq" target="_blank">
-      <Tooltip label="Join our Discord!" placement="left">
+      <Tooltip label={t('home.join-discord')} placement="left">
         <FontAwesomeIcon
           color="white"
           fontSize={isMobile ? "25px" : "35px"}
