@@ -33,7 +33,10 @@
         "base": "base",
         "level-bonus": "Bônus de nível",
         "discards-left": "{{discards}} Descartes restantes",
-        "hands-left": "{{hands}} Mãos restantes"
+        "hands-left": "{{hands}} Mãos restantes",
+        "total": "total",
+        "final-score": "- Pontuação final: {{score}} -",
+        "continue-btn": "continuar"
       }
     }
   }

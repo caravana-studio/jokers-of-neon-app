@@ -83,13 +83,13 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   return (
     <PinkBox
       title={`${t('rewards-details.labels.title-1')} ${level} ${t('rewards-details.labels.title-2')}`}
-      button="CONTINUE"
+      button={t('rewards-details.labels.continue-btn')}
       onClick={() => {
         // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
-      <Heading color='lightViolet' size="s">- Final score: {round?.player_score} -</Heading>
+      <Heading color='lightViolet' size="s"> {t('rewards-details.labels.final-score', {score: round?.player_score })}  </Heading>
       
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
@@ -104,7 +104,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         justifyContent="space-between"
       >
         <Heading color="lightViolet" variant="italic">
-          Total:
+        {t('rewards-details.labels.total')}
         </Heading>
         <Heading color="lightViolet" variant="italic">
           {total}

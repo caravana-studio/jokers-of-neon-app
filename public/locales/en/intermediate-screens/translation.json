@@ -42,7 +42,10 @@
             "base": "base",
             "level-bonus": "Level bonus",
             "discards-left": "{{discards}} Discards left",
-            "hands-left": "{{hands}} Hands left"
+            "hands-left": "{{hands}} Hands left",
+            "total": "total",
+            "final-score": "- Final score: {{score}} -",
+            "continue-btn": "continue"
         }
     }
 }
