@@ -20,6 +20,7 @@ import {
   SPECIAL_CARDS_TUTORIAL_STEPS,
   MODIFIERS_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
+  JOYRIDE_LOCALES,
 } from "../../constants/gameTutorial";
 import { useTranslation } from 'react-i18next';
 
@@ -163,6 +164,7 @@ export const GameContent = () => {
           showProgress
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride
@@ -173,6 +175,7 @@ export const GameContent = () => {
           showProgress
           callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride
@@ -183,6 +186,7 @@ export const GameContent = () => {
           showProgress
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Box sx={{ width: "100%", height: "100%" }}>

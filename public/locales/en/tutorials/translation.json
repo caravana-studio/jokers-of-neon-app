@@ -76,6 +76,14 @@
         "content": "Click the discard button that will pop up over the card to discard it without losing any discard chances.",
         "content-mobile": "Drag the modifier and drop it onto the discard button to discard it without losing any discard chances."
       }
+    },
+    "joyride":
+    {
+      "back": "Back",
+      "next": "Next",
+      "skip": "Skip",
+      "close": "Close",
+      "last": "Finish"
     }
   }
   

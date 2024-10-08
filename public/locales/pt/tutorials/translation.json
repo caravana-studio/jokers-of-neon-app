@@ -76,5 +76,13 @@
             "content": "Clique no botão de descartar que aparecerá sobre a carta para descartá-la sem perder nenhuma chance de descarte.",
             "content-mobile": "Arraste o modificador e solte-o sobre o botão de descartar para descartá-lo sem perder nenhuma chance de descarte."
         }
+    },
+    "joyride":
+    {
+        "back": "Voltar",
+        "next": "Próximo",
+        "skip": "Pular",
+        "close": "Fechar",
+        "last": "Finalizar"
     }
 }

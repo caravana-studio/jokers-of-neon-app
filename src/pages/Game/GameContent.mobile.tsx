@@ -5,7 +5,7 @@ import Joyride, { CallBackProps } from 'react-joyride';
 import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
-import { GAME_TUTORIAL_STEPS, MODIFIERS_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
+import { GAME_TUTORIAL_STEPS, JOYRIDE_LOCALES, MODIFIERS_TUTORIAL_STEPS, SPECIAL_CARDS_TUTORIAL_STEPS, TUTORIAL_STYLE } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_GAME, SKIP_TUTORIAL_MODIFIERS, SKIP_TUTORIAL_SPECIAL_CARDS } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -162,6 +162,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride 
@@ -172,6 +173,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride 
@@ -182,6 +184,7 @@ export const MobileGameContent = () => {
           showProgress 
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <GameMenu showTutorial={() => { setRun(true);}} />

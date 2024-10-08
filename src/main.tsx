@@ -29,7 +29,7 @@ async function init() {
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <Toaster />
-            <I18nextProvider i18n={i18n}>
+            <I18nextProvider i18n={i18n} defaultNS={undefined}>
               <App />
             </I18nextProvider>
           </QueryClientProvider>

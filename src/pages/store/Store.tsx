@@ -10,6 +10,7 @@ import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { GameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import {
+  JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
@@ -189,6 +190,7 @@ export const Store = () => {
         styles={TUTORIAL_STYLE}
         showProgress
         callback={handleJoyrideCallback}
+        locale={JOYRIDE_LOCALES}
       />
       {specialCardsModalOpen && (
         <CurrentSpecialCardsModal

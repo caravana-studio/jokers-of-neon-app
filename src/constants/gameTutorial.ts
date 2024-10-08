@@ -16,6 +16,8 @@ export const SPECIAL_CARDS_TUTORIAL_STEPS: Step[] = [];
 
 export const MODIFIERS_TUTORIAL_STEPS: Step[] = [];
 
+export const JOYRIDE_LOCALES = {};
+
 export const TUTORIAL_STYLE = {
   options: {
     arrowColor: "#DAA1E8",
@@ -169,6 +171,14 @@ const loadTutorialTranslations = async () => {
       ...COMMON_SETTINGS,
     },
   ]);
+
+  Object.assign( JOYRIDE_LOCALES, {
+    back: i18n.t('joyride.back', { ns: 'tutorials' }),
+    next: i18n.t('joyride.next', { ns: 'tutorials' }),
+    skip: i18n.t('joyride.skip', { ns: 'tutorials' }),
+    close: i18n.t('joyride.close', { ns: 'tutorials' }),
+    last: i18n.t('joyride.last', { ns: 'tutorials' }),
+  })
 };
 
 i18n.on('initialized', loadTutorialTranslations);
