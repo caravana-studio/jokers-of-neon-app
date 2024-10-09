@@ -6,38 +6,25 @@ import { getCard } from "./useCurrentHand";
 import { getCardFromCardId } from "../utils/getCardFromCardId";
 import { getCardData } from "../../utils/getCardData";
 import { Models } from "../typescript/bindings";
-import { GAME_ID } from "../../constants/localStorage";
 import { useModels } from "./useModel";
 
 export const useCurrentDeck = (): Deck | undefined => {
-  const game = useGame();
-  const round = useRound();
+  const round = useModels(Models.Round)?.[0];
+  const deck = useModels(Models.DeckCard);
   const deckSize = round?.current_len_deck ?? 0;
   const cards = [];
 
-  const {
-    account,
-    setup: {
-      clientComponents: { DeckCard },
-    },
-  } = useDojo();
-  let gameID = localStorage.getItem(GAME_ID) || '';
-
-  if (!game) return undefined;
-    
-  const sdkDeck = useModels(Models.DeckCard);
-
-  console.log(sdkDeck);
+  if (deck == undefined) return undefined;
 
   for (let i = 0; i < deckSize; i++) {
-    const deckCard = getCard(game.id ?? 0, i, DeckCard);
-    const card = getCardFromCardId(deckCard?.card_id, i);
+    const deckCardId = deck[i]?.card_id;
+    const card = getCardFromCardId(deckCardId, i);
     const cardData = {...getCardData(card)};
 
     cards.push({
         ...card,
         ...cardData,
-        isNeon: deckCard?.card_id === 53 || (deckCard?.card_id >= 200 && deckCard?.card_id <= 251),
+        isNeon: deckCardId === 53 || (deckCardId >= 200 && deckCardId <= 251),
       });
   }
 
@@ -51,7 +38,9 @@ export const useCurrentDeck = (): Deck | undefined => {
 
 export const useFullDeck = (): Deck | undefined => {
   const game = useGame();
-  const round = useRound();
+  const round = useModels(Models.Round)?.[0];
+  console.log("round: " + useModels(Models.Round));
+  
   const commonCards = [];
   const effectCards = [];
 
@@ -65,6 +54,9 @@ export const useFullDeck = (): Deck | undefined => {
 
   for (let i = 0; i < game.len_common_cards; i++) {
     const deckCard = getCard(game.id ?? 0, i, PlayerCommonCards);
+
+    if (deckCard == undefined) return;
+
     const card = getCardFromCardId(deckCard?.common_card_id, i);
     const cardData = {...getCardData(card)};
     

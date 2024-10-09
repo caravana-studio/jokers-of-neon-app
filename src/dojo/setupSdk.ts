@@ -29,6 +29,15 @@ export const useEntityService = () => {
                 },
               },
             },
+            Round: {
+                $: {
+                    where: {
+                        game_id: {
+                            $eq: Number(gameID),
+                          },
+                    },
+                },
+            },
           },
         },
         (resp) => {
@@ -37,11 +46,11 @@ export const useEntityService = () => {
             return;
           }
           if (resp.data) {
-            console.log(resp.data);
             state.setEntities(resp.data);
+            console.log(resp.data);
           }
         },
-        10000, 0
+        10000, 0, {logging: true}, 
       );
     } catch (error) {
       console.error('Error querying entities:', error);
@@ -63,6 +72,15 @@ export const useEntityService = () => {
                 },
               },
             },
+            Round: {
+                $: {
+                  where: {
+                    game_id: {
+                      $is: Number(gameID),
+                    },
+                  },
+                },
+              }
           },
         },
         (response) => {
@@ -70,7 +88,6 @@ export const useEntityService = () => {
             console.error('Error setting up entity sync:', response.error);
           } else if (response.data && response.data[0].entityId !== '0x0') {
             state.setEntities(response.data);
-            console.log(response.data);
           }
         },
         { logging: false }
