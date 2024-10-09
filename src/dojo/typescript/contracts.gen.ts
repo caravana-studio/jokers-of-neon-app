@@ -15,9 +15,9 @@ interface BaseProps {
   gameId: number;
 }
 
-const DEFAULT_NAMESPACE = "jokers_of_neon";
+const DEFAULT_NAMESPACE = "jon_sepolia";
 export async function setupWorld(provider: DojoProvider) {
-  // System definitions for `jokers_of_neon-config_system` contract
+  // System definitions for `jon_sepolia-config_system` contract
   function config_system() {
     const contract_name = "config_system";
 
@@ -31,7 +31,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "world",
             calldata: [],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);
@@ -44,7 +44,7 @@ export async function setupWorld(provider: DojoProvider) {
     };
   }
 
-  // System definitions for `jokers_of_neon-game_system` contract
+  // System definitions for `jon_sepolia-game_system` contract
   function game_system() {
     const contract_name = "game_system";
 
@@ -61,7 +61,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "create_game",
             calldata: [props.player_name],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);
@@ -232,7 +232,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "world",
             calldata: [],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);
@@ -251,7 +251,7 @@ export async function setupWorld(provider: DojoProvider) {
     };
   }
 
-  // System definitions for `jokers_of_neon-rage_system` contract
+  // System definitions for `jon_sepolia-rage_system` contract
   function rage_system() {
     const contract_name = "rage_system";
 
@@ -265,7 +265,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "calculate",
             calldata: [props.game_id],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);
@@ -283,7 +283,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "world",
             calldata: [],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);
@@ -297,7 +297,7 @@ export async function setupWorld(provider: DojoProvider) {
     };
   }
 
-  // System definitions for `jokers_of_neon-shop_system` contract
+  // System definitions for `jon_sepolia-shop_system` contract
   function shop_system() {
     const contract_name = "shop_system";
 
@@ -454,7 +454,7 @@ export async function setupWorld(provider: DojoProvider) {
             entrypoint: "world",
             calldata: [],
           },
-          "jokers_of_neon"
+          "jon_sepolia"
         );
       } catch (error) {
         console.error("Error executing spawn:", error);

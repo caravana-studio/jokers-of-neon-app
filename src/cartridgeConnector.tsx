@@ -6,19 +6,19 @@ const paymaster: any = { caller: "0x414e595f43414c4c4552" };
 
 const game_system_contract_address = getContractByName(
   manifest,
-  "jokers_of_neon",
+  "jon_sepolia",
   "game_system"
 )?.address;
 
 const shop_system_contract_address = getContractByName(
   manifest,
-  "jokers_of_neon",
+  "jon_sepolia",
   "shop_system"
 )?.address;
 
 const rage_system_contract_address = getContractByName(
     manifest,
-    "jokers_of_neon",
+    "jon_sepolia",
     "rage_system"
   )?.address;
 
