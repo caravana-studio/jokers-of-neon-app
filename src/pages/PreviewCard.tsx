@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
@@ -21,7 +22,7 @@ import theme from "../theme/theme";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
-import { useTranslation } from "react-i18next";
+import { PositionedGameMenu } from "../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -88,12 +89,13 @@ const PreviewCard = () => {
       variant="outlinePrimaryGlow"
       height={"100%"}
     >
-      {t('store.preview-card.labels.buy')}
+      {t("store.preview-card.labels.buy")}
     </Button>
   );
 
   return (
     <Background type="home" dark>
+      <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
           flexDirection={"column"}
@@ -155,15 +157,16 @@ const PreviewCard = () => {
                         },
                       }}
                     >
-                      {t('store.preview-card.title.card-type')}
+                      {t("store.preview-card.title.card-type")}
                     </Text>
                     <Text color={neonGreen} fontSize="xl">
                       {card.isSpecial
-                        ? t('store.preview-card.labels.special')
+                        ? t("store.preview-card.labels.special")
                         : card.isModifier
-                          ? t('store.preview-card.labels.modifier')
-                          : t('store.preview-card.labels.traditional')}
-                      {card.temporary && " ("+ t('store.preview-card.labels.temporary') +  ")"}
+                          ? t("store.preview-card.labels.modifier")
+                          : t("store.preview-card.labels.traditional")}
+                      {card.temporary &&
+                        " (" + t("store.preview-card.labels.temporary") + ")"}
                     </Text>
                   </Box>
                 )}
@@ -186,7 +189,7 @@ const PreviewCard = () => {
                       },
                     }}
                   >
-                    {t('store.preview-card.title.description')}
+                    {t("store.preview-card.title.description")}
                   </Text>
                   <Text color={neonGreen} fontSize="xl">
                     {description}
@@ -218,7 +221,7 @@ const PreviewCard = () => {
                         },
                       }}
                     >
-                      {t('store.preview-card.title.details')}
+                      {t("store.preview-card.title.details")}
                     </Text>
                     <Text color={neonGreen} fontSize="xl">
                       {details?.split("\n").map((line, index) => (
@@ -237,7 +240,7 @@ const PreviewCard = () => {
                   flexDir={"row"}
                 >
                   <Heading size="m" variant="italic">
-                  {t('store.preview-card.title.price')} {card.price}
+                    {t("store.preview-card.title.price")} {card.price}
                   </Heading>
                   <Heading size="m" ml={2}>
                     ¢
@@ -277,7 +280,7 @@ const PreviewCard = () => {
               onClick={() => navigate("/store")}
               height={"100%"}
             >
-              {t('store.preview-card.labels.close')}
+              {t("store.preview-card.labels.close")}
             </Button>
           </HStack>
         </Flex>

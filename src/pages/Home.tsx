@@ -1,24 +1,24 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
 import { useState } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import AudioPlayer from "../components/AudioPlayer";
 import { Background } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
-import { PositionedDiscordLink } from "../components/DiscordLink";
+import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
-
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
-  
 
   return (
     <Background type="home">
+      <AudioPlayer />
       <LanguageSwitcher />
       <Flex
         height="100%"
@@ -46,7 +46,7 @@ export const Home = () => {
                 setLeaderboardOpen(false);
               }}
             >
-              {t('leaderboard.btn.returnLeaderboard-btn')}
+              {t("leaderboard.btn.returnLeaderboard-btn")}
             </Button>
           </Box>
         ) : (
@@ -60,7 +60,7 @@ export const Home = () => {
               color="white"
               fontSize={{ base: 10, sm: 20, md: 25, lg: 30 }}
             >
-              {t('home.slogan')}
+              {t("home.slogan")}
             </Heading>
             <Img
               width={{ base: "95%", sm: "85%", md: "80%" }}
@@ -78,7 +78,7 @@ export const Home = () => {
                   setLeaderboardOpen(true);
                 }}
               >
-                {t('home.btn.leaderboard-btn')}
+                {t("home.btn.leaderboard-btn")}
               </Button>
               <Button
                 variant="secondarySolid"
@@ -86,14 +86,22 @@ export const Home = () => {
                   navigate("/login");
                 }}
               >
-                {t('home.btn.playDemo-btn')}
+                {t("home.btn.playDemo-btn")}
               </Button>
             </Flex>
           </Flex>
         )}
         <PoweredBy />
       </Flex>
-      <PositionedDiscordLink />
+      <Box
+        zIndex={999}
+        position="absolute"
+        left="15px"
+        top="15px"
+        cursor="pointer"
+      >
+        <DiscordLink />
+      </Box>
     </Background>
   );
 };

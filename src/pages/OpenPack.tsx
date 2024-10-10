@@ -13,12 +13,12 @@ import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 
-import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { PositionedDiscordLink } from "../components/DiscordLink";
+import { PositionedGameMenu } from "../components/GameMenu";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
-import { PositionedDiscordLink } from "../components/DiscordLink";
-import { useTranslation } from "react-i18next";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -33,9 +33,8 @@ import { useTranslation } from "react-i18next";
   pointer-events: none;
 `; */
 
-
 export const OpenPack = () => {
-/*   const [overlayVisible, setOverlayVisible] = useState(true);
+  /*   const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -100,12 +99,13 @@ export const OpenPack = () => {
         }
       }}
     >
-      {t('store.packs.continue-btn')}
+      {t("store.packs.continue-btn")}
     </Button>
   );
 
   return (
     <Background type="game" dark bgDecoration>
+      <PositionedGameMenu decoratedPage />
       {/* <WhiteOverlay $visible={overlayVisible} /> */}
       {cards.length > 0 ? (
         <Flex
@@ -120,7 +120,7 @@ export const OpenPack = () => {
             alignItems="center"
             mx={2}
           >
-            <Text size="lg">{t('store.packs.cards-select-lbl')}</Text>
+            <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
             <Checkbox
               color="white"
               isChecked={!!allSelected}
@@ -128,7 +128,7 @@ export const OpenPack = () => {
                 !e.target.checked ? setCardsToKeep([]) : setCardsToKeep(cards);
               }}
             >
-              {t('store.packs.select-all-lbl').toUpperCase()}
+              {t("store.packs.select-all-lbl").toUpperCase()}
             </Checkbox>
           </Flex>
           <CardsContainer>
@@ -197,13 +197,13 @@ export const OpenPack = () => {
                   setSpecialCardsModalOpen(true);
                 }}
               >
-               {t('store.packs.special-cards-btn')}
+                {t("store.packs.special-cards-btn")}
               </Button>
             ) : (
               <Box />
             )}
             {continueDisabled ? (
-              <Tooltip label={t('store.packs.error-lbl')}>
+              <Tooltip label={t("store.packs.error-lbl")}>
                 {continueButton}
               </Tooltip>
             ) : (
@@ -222,8 +222,8 @@ export const OpenPack = () => {
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
-          title={t('store.packs.confirmation-modal.head')}
-          description={t('store.packs.confirmation-modal.description')}
+          title={t("store.packs.confirmation-modal.head")}
+          description={t("store.packs.confirmation-modal.description")}
           onConfirm={confirmSelectCards}
         />
       )}

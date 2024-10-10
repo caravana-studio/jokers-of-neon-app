@@ -1,13 +1,14 @@
 import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
-import { GameMenu } from "../../components/GameMenu";
+import { PositionedGameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
 import {
   JOYRIDE_LOCALES,
@@ -26,7 +27,6 @@ import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
-import { useTranslation } from "react-i18next";
 
 export const Store = () => {
   const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
@@ -84,7 +84,9 @@ export const Store = () => {
     <Tooltip
       placement={isMobile ? "top" : "right"}
       label={
-        rerolled ? t('store.tooltip.rerolled') : t('store.tooltip.reroll-default')  
+        rerolled
+          ? t("store.tooltip.rerolled")
+          : t("store.tooltip.reroll-default")
       }
     >
       <Button
@@ -100,7 +102,8 @@ export const Store = () => {
           });
         }}
       >
-        {t('store.labels.reroll').toUpperCase()}{isMobile && <br />} {rerollCost}
+        {t("store.labels.reroll").toUpperCase()}
+        {isMobile && <br />} {rerollCost}
         <CashSymbol />
       </Button>
     </Tooltip>
@@ -114,7 +117,8 @@ export const Store = () => {
         setSpecialCardsModalOpen(true);
       }}
     >
-      {t('store.labels.see-my').toUpperCase()}{isMobile && <br />} {t('store.labels.special-cards').toUpperCase()}
+      {t("store.labels.see-my").toUpperCase()}
+      {isMobile && <br />} {t("store.labels.special-cards").toUpperCase()}
     </Button>
   );
 
@@ -140,7 +144,7 @@ export const Store = () => {
       variant="secondarySolid"
       fontSize={[10, 10, 10, 14, 14]}
     >
-      {t('store.labels.next-level').toUpperCase()}
+      {t("store.labels.next-level").toUpperCase()}
     </Button>
   );
 
@@ -197,40 +201,11 @@ export const Store = () => {
           close={() => setSpecialCardsModalOpen(false)}
         />
       )}
-      {!isMobile ? (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 7,
-            left: 10,
-            zIndex: 1000,
-          }}
-        >
-          <GameMenu
-            inStore
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: "5px",
-            right: "5px",
-            zIndex: 1000,
-            transform: "scale(0.7)",
-          }}
-        >
-          <GameMenu
-            inStore
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
-      )}
+      <PositionedGameMenu
+        showTutorial={() => {
+          setRun(true);
+        }}
+      />
       <Flex
         width="100%"
         height="100%"
@@ -256,7 +231,7 @@ export const Store = () => {
             pb={isMobile ? 4 : 0}
           >
             <Heading variant="italic" size="l" ml={4}>
-              {t('store.titles.level-game').toUpperCase()}
+              {t("store.titles.level-game").toUpperCase()}
             </Heading>
             {isMobile && (
               <Flex mt={2}>
@@ -280,7 +255,7 @@ export const Store = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title={t('store.titles.traditional')}
+                  title={t("store.titles.traditional")}
                 />
               )}
             </Box>
@@ -288,7 +263,7 @@ export const Store = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title={t('store.titles.modifiers')}
+                  title={t("store.titles.modifiers")}
                 />
               )}
             </Box>
@@ -296,7 +271,7 @@ export const Store = () => {
               {shopItems.specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.specialCards}
-                  title={t('store.titles.special')}
+                  title={t("store.titles.special")}
                 />
               )}
             </Box>
@@ -310,7 +285,7 @@ export const Store = () => {
               borderRadius="10px"
             >
               <Heading variant="italic" size="m" mt={4}>
-                {t('store.titles.improve-plays').toUpperCase()}
+                {t("store.titles.improve-plays").toUpperCase()}
               </Heading>
               {levelUpTable}
             </Box>
@@ -365,7 +340,7 @@ export const Store = () => {
           </Box>
         </Box>
       </Flex>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isMobile && <PositionedDiscordLink />}
     </Background>
   );
 };

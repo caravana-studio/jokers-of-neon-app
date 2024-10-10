@@ -1,12 +1,12 @@
 import { Box, Button, Flex, Heading, Input } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import AudioPlayer from "../components/AudioPlayer.tsx";
 import { Background } from "../components/Background.tsx";
-import { GameMenu } from "../components/GameMenu.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { VIOLET } from "../theme/colors.tsx";
-import { useTranslation } from 'react-i18next';
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -31,23 +31,21 @@ export const Login = () => {
 
   const validateAndCreateUser = () => {
     if (!username) {
-      showErrorToast(t('login.error-labels.error-noUsername-login'));
+      showErrorToast(t("login.error-labels.error-noUsername-login"));
       return;
     }
     if (username.length < 3) {
-      showErrorToast(t('login.error-labels.error-shortUsername-login'));
+      showErrorToast(t("login.error-labels.error-shortUsername-login"));
       return;
     }
     if (username.length > 15) {
-      showErrorToast(t('login.error-labels.error-longUsername-login'));
+      showErrorToast(t("login.error-labels.error-longUsername-login"));
       return;
     }
     // check for characters uppercase and lowercase letters, numbers,. ,- ,_
     // any other character is not allowed
     if (!regExpression.test(username)) {
-      showErrorToast(
-        t('login.error-labels.error-invalidUsername-login')
-      );
+      showErrorToast(t("login.error-labels.error-invalidUsername-login"));
       return;
     }
     localStorage.removeItem(GAME_ID);
@@ -77,6 +75,7 @@ export const Login = () => {
 
   return (
     <Background type="home">
+      <AudioPlayer />
       <Flex
         direction="column"
         justifyContent="center"
@@ -97,7 +96,7 @@ export const Login = () => {
           width={{ base: "90%", sm: "600px" }}
         >
           <Heading variant="italic" color={VIOLET} size={"m"}>
-          {t('login.labels.label-login')}
+            {t("login.labels.label-login")}
           </Heading>
           <Box
             pt={3}
@@ -122,7 +121,7 @@ export const Login = () => {
               variant="neon-white"
               id="usernameInputField"
               type="text"
-              placeholder={t('login.labels.placeholder-login')}
+              placeholder={t("login.labels.placeholder-login")}
               ref={inputRef}
               maxLength={15}
               onChange={(e) => {
@@ -142,14 +141,14 @@ export const Login = () => {
               navigate("/");
             }}
           >
-            {t('login.btn.goBack-login-btn')}
+            {t("login.btn.goBack-login-btn")}
           </Button>
           <Button
             width="46%"
             onClick={validateAndCreateUser}
             variant="secondarySolid"
           >
-            {t('login.btn.startGame-login-btn')}
+            {t("login.btn.startGame-login-btn")}
           </Button>
         </Flex>
       </Flex>
