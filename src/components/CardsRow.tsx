@@ -1,10 +1,12 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
+import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { TiltCard } from "./TiltCard";
 
 interface CardsRowProps {
@@ -16,6 +18,8 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   const { discardSpecialCard, roundRewards } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
+  const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
+  const { t } = useTranslation(["game"]);
 
   useEffect(() => {
     if (roundRewards) {
@@ -28,15 +32,16 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
     }
   }, [roundRewards, cards]);
 
-  const handleDiscard = (cardIdx: number) => {
-    const card = cards.find((c) => c.idx === cardIdx);
+  const handleDiscard = () => {
+    const card = cards.find((c) => c.idx === cardToDiscard);
     if (card) {
       setHoveredButton(null);
-      discardSpecialCard(cardIdx).then((response) => {
+      discardSpecialCard(cardToDiscard!).then((response) => {
         if (response) {
           setDiscardedCards((prev) => [...prev, card.id]);
         }
       });
+      setCardToDiscard(null);
     }
   };
 
@@ -65,8 +70,8 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                   <Flex
                     position={"absolute"}
                     zIndex={7}
-                    bottom='5px'
-                    left='5px'
+                    bottom="5px"
+                    left="5px"
                     borderRadius={"10px"}
                     background={"violet"}
                   >
@@ -81,12 +86,19 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                         display="flex"
                         gap={4}
                         onMouseEnter={() => setHoveredButton(card.idx)}
-                        onClick={() => handleDiscard(card.idx)}
+                        onClick={() => {
+                          console.log(card.idx);
+                          setCardToDiscard(card.idx);
+                        }}
                       >
-                        <Text fontSize='10px'>X</Text>{hoveredButton === card.idx && <Text fontSize='10px'>Remove</Text>}
+                        <Text fontSize="10px">X</Text>
+                        {hoveredButton === card.idx && (
+                          <Text fontSize="10px">{
+                            t('game.special-cards.remove-special-cards-label')
+                          }</Text>
+                        )}
                       </Button>
                     )}
-                    
                   </Flex>
                   <TiltCard card={card} />
                 </Box>
@@ -95,6 +107,14 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
           </Flex>
         );
       })}
+      {cardToDiscard !== null && (
+        <ConfirmationModal
+          close={() => setCardToDiscard(null)}
+          title={t("game.special-cards.confirmation-modal.title")}
+          description={t("game.special-cards.confirmation-modal.description")}
+          onConfirm={handleDiscard}
+        />
+      )}
     </Flex>
   );
 };
