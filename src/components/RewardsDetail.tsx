@@ -4,6 +4,7 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { useTranslation } from 'react-i18next';
 import { useRound } from "../dojo/queries/useRound.tsx";
 
 interface RewardItemProps {
@@ -67,11 +68,13 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
+  const { t } = useTranslation(["intermediate-screens"]);
+
   const labels = [
-    `base`,
-    "Level bonus",
-    `${hands_left} Hands left`,
-    `${discard_left} Discards left`,
+    t('rewards-details.labels.base'),
+    t('rewards-details.labels.level-bonus'),
+    t('rewards-details.labels.hands-left', {hands: hands_left}),
+    t('rewards-details.labels.discards-left' , {discards: discard_left}),
   ];
 
   const navigate = useNavigate();
@@ -79,14 +82,14 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   return (
     <PinkBox
-      title={`Level ${level} completed!`}
-      button="CONTINUE"
+      title={`${t('rewards-details.labels.title-1')} ${level} ${t('rewards-details.labels.title-2')}`}
+      button={t('rewards-details.labels.continue-btn')}
       onClick={() => {
         // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
-      <Heading color='lightViolet' size="s">- Final score: {round?.player_score} -</Heading>
+      <Heading color='lightViolet' size="s"> {t('rewards-details.labels.final-score', {score: round?.player_score })}  </Heading>
       
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
@@ -101,7 +104,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         justifyContent="space-between"
       >
         <Heading color="lightViolet" variant="italic">
-          Total:
+        {t('rewards-details.labels.total')}
         </Heading>
         <Heading color="lightViolet" variant="italic">
           {total}

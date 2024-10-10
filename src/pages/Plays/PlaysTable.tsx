@@ -21,6 +21,11 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { useTranslation } from "react-i18next";
+import { PLAYS } from "../../constants/plays.ts";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
+import { useDojo } from "../../dojo/useDojo.tsx";
+import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -32,6 +37,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
   const { locked } = useStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
   const store = useStore();
   const { isPurchased } = store;
@@ -39,18 +45,30 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const cash = game?.cash ?? 0;
   const levelUpPlay = store?.levelUpPlay;
   const { pokerHandItems } = useShopItems();
+  const { t } = useTranslation(["store"]);
 
-  let plays = usePokerPlays(gameId);
+  const {
+    setup: {
+      client,
+      account: { account }
+    },
+  } = useDojo();
+
+  if (client && account &&  plays.length == 0) {
+    getPlayerPokerHands(client, gameId).then((plays: any) => {
+      setPlays(plays);
+    })
+  }
 
   useEffect(() => {
-    if (plays.plays.length > 0) { 
+  if (plays.length > 0) { 
       setIsLoading(false);
     }
-  }, [plays.plays, pokerHandItems]);
+  }, [plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading && inStore ? plays.plays.filter((play) =>
-        pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
-      ): plays.plays;
+  const filteredPlays = !isLoading ? plays.filter((play) =>
+    pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
+): plays;
 
   return (
     <>
@@ -98,17 +116,17 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 {inStore ? (
                   <>
                     <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>
-                      HAND
+                    {t('store.plays-table.hand').toUpperCase()}
                     </Td>
-                    <Td>LEVEL</Td>
-                    <Td>PRICE</Td>
+                    <Td>{t('store.plays-table.level').toUpperCase()}</Td>
+                    <Td>{t('store.plays-table.price').toUpperCase()}</Td>
                     <Td></Td>
                   </>
                 ) : (
                   <>
-                    <Td>LEVEL</Td>
-                    <Td>HAND</Td>
-                    <Td>POINTS/MULTI</Td>
+                    <Td>{t('store.plays-table.level').toUpperCase()}</Td>
+                    <Td>{t('store.plays-table.hand').toUpperCase()}</Td>
+                    <Td>{t('store.plays-table.points-multi').toUpperCase()}</Td>
                   </>
                 )}
               </Tr>
@@ -141,7 +159,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 );
                 const nameTd = (
                   <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
-                    {pokerHandParsed.name}
+                     {PLAYS[Number(pokerHandParsed.value)]}
                   </Td>
                 );
                 const pointsMultiTd = (
@@ -186,7 +204,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                     boxShadow={`0px 0px 10px 2px ${BLUE}`}
                     fontSize={10}
                   >
-                    level up
+                    {t('store.plays-table.level-up')}
                   </Button>
                 );
 
@@ -216,7 +234,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                 color="blue"
                                 size={isMobile ? "base" : "xs"}
                               >
-                                PURCHASED
+                                {t('store.plays-table.purchased').toUpperCase()}
                               </Heading>
                             ) : notEnoughCash ? (
                               <Tooltip label="You don't have enough coins to buy this item">

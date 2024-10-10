@@ -131,7 +131,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
               left: 12,
             }}
           >
-            <Text size="m">BUIDL YOUR DECK</Text>
+            <Text size="m">BUILD YOUR DECK</Text>
           </Box>
           <Box
             sx={{
