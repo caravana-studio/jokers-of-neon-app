@@ -11,6 +11,7 @@ import {
 import { useDndContext } from "@dnd-kit/core";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
@@ -19,7 +20,6 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
-import { useTranslation } from "react-i18next";
 
 export const HandSection = () => {
   const {
@@ -85,7 +85,8 @@ export const HandSection = () => {
             const isPreselected = cardIsPreselected(card.idx);
             return (
               <GridItem
-                key={card.idx+ "-"+ index}
+                key={card.idx + "-" + index}
+                sx={{ pointerEvents: isPreselected ? "none" : "auto" }}
                 w="100%"
                 onContextMenu={(e) => {
                   e.stopPropagation();
@@ -136,7 +137,9 @@ export const HandSection = () => {
                       >
                         <Text fontSize="10px">X</Text>
                         {hoveredButton === card.idx && (
-                          <Text fontSize="10px">{t('game.hand-section.modifier-change')}</Text>
+                          <Text fontSize="10px">
+                            {t("game.hand-section.modifier-change")}
+                          </Text>
                         )}
                       </Button>
                     )}
@@ -186,7 +189,7 @@ export const HandSection = () => {
           bottom={{ base: "70px", md: "100px" }}
           sx={{ position: "fixed" }}
         >
-          {t('game.hand-section.no-cards-label')}
+          {t("game.hand-section.no-cards-label")}
         </Heading>
       )}
     </>
