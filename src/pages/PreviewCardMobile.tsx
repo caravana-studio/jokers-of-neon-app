@@ -23,6 +23,7 @@ import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
 import { useTranslation } from "react-i18next";
+import { PositionedGameMenu } from "../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -81,6 +82,7 @@ const MobilePreviewCard = () => {
 
   return (
     <Background type="home" dark>
+      <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}

@@ -1,28 +1,28 @@
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Joyride, { CallBackProps } from "react-joyride";
 import { GameDeck } from "../../components/GameDeck.tsx";
-import { GameMenu } from "../../components/GameMenu.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import {
+  GAME_TUTORIAL_STEPS,
+  JOYRIDE_LOCALES,
+  MODIFIERS_TUTORIAL_STEPS,
+  SPECIAL_CARDS_TUTORIAL_STEPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
+import {
+  SKIP_TUTORIAL_GAME,
+  SKIP_TUTORIAL_MODIFIERS,
+  SKIP_TUTORIAL_SPECIAL_CARDS,
+} from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import {
-  SKIP_TUTORIAL_GAME,
-  SKIP_TUTORIAL_SPECIAL_CARDS,
-  SKIP_TUTORIAL_MODIFIERS,
-} from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps } from "react-joyride";
-import {
-  GAME_TUTORIAL_STEPS,
-  SPECIAL_CARDS_TUTORIAL_STEPS,
-  MODIFIERS_TUTORIAL_STEPS,
-  TUTORIAL_STYLE,
-  JOYRIDE_LOCALES,
-} from "../../constants/gameTutorial";
-import { useTranslation } from 'react-i18next';
 
 export const GameContent = () => {
   const {
@@ -124,7 +124,7 @@ export const GameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          {t('error.labels.error-msj')}
+          {t("error.labels.error-msj")}
         </Heading>
         <Button
           variant="outline"
@@ -134,7 +134,7 @@ export const GameContent = () => {
             executeCreateGame();
           }}
         >
-          {t('error.labels.label-error-btn')}
+          {t("error.labels.label-error-btn")}
         </Button>
       </Flex>
     );
@@ -242,20 +242,12 @@ export const GameContent = () => {
             sx={{ pointerEvents: "none" }}
           />
         </Box>
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 14,
-            left: "70px",
-            zIndex: 1000,
+
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
           }}
-        >
-          <GameMenu
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
+        />
         <Box
           sx={{
             position: "fixed",

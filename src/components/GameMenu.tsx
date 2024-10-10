@@ -1,21 +1,20 @@
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
-import { useTranslation } from "react-i18next";
 
 interface GameMenuProps {
   onlySound?: boolean;
-  inStore?: boolean;
   showTutorial?: () => void;
 }
 
 export const GameMenu = ({
   onlySound = false,
-  inStore = false,
   showTutorial,
 }: GameMenuProps) => {
   const username = localStorage.getItem(LOGGED_USER);
@@ -40,16 +39,20 @@ export const GameMenu = ({
               navigate("/");
             }}
           >
-            {t('game.game-menu.home-btn')}
+            {t("game.game-menu.home-btn")}
           </MenuItem>
           {!onlySound && (
             <MenuItem onClick={() => executeCreateGame()}>
-              {t('game.game-menu.new-game-btn')}
+              {t("game.game-menu.new-game-btn")}
             </MenuItem>
           )}
-          {showTutorial && <MenuItem onClick={showTutorial}>{t('game.game-menu.tutorial-btn')}</MenuItem>}
+          {showTutorial && (
+            <MenuItem onClick={showTutorial}>
+              {t("game.game-menu.tutorial-btn")}
+            </MenuItem>
+          )}
           <MenuItem onClick={togglePlayPause}>
-          {t('game.game-menu.sound-btn')} {isPlaying ? "OFF" : "ON"}
+            {t("game.game-menu.sound-btn")} {isPlaying ? "OFF" : "ON"}
           </MenuItem>
           {!onlySound && (
             <MenuItem
@@ -60,11 +63,44 @@ export const GameMenu = ({
                 navigate("/");
               }}
             >
-            {t('game.game-menu.logout-btn')} {username}{" "}
+              {t("game.game-menu.logout-btn")} {username}{" "}
             </MenuItem>
           )}
         </MenuList>
       </Menu>
     </>
+  );
+};
+
+interface PositionedGameMenuProps extends GameMenuProps {
+  decoratedPage?: boolean;
+}
+export const PositionedGameMenu = ({
+  decoratedPage = false,
+  ...rest
+}: PositionedGameMenuProps) => {
+  return isMobile ? (
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: "5px",
+        right: "5px",
+        zIndex: 1000,
+        transform: "scale(0.7)",
+      }}
+    >
+      <GameMenu {...rest} />
+    </Box>
+  ) : (
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: decoratedPage ? "96px" : "60px",
+        left: "70px",
+        zIndex: 1000,
+      }}
+    >
+      <GameMenu {...rest} />
+    </Box>
   );
 };

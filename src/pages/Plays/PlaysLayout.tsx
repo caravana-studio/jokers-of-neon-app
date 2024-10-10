@@ -1,9 +1,10 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
-import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { PositionedGameMenu } from "../../components/GameMenu";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
 
 export const PlaysLayout = () => {
@@ -12,6 +13,7 @@ export const PlaysLayout = () => {
 
   return (
     <Background type="game" dark bgDecoration>
+      <PositionedGameMenu decoratedPage />
       <Flex
         py={2}
         px={8}
@@ -29,7 +31,7 @@ export const PlaysLayout = () => {
           textAlign={"center"}
           mb={isMobile ? 10 : 8}
         >
-          {t('game.plays.title').toUpperCase()}
+          {t("game.plays.title").toUpperCase()}
         </Heading>
         <PlaysAvailableTable maxHeight={{ base: "52%", md: "60%" }} />
         <Button
@@ -43,10 +45,10 @@ export const PlaysLayout = () => {
             navigate("/demo", { state: { skipRageAnimation: true } })
           }
         >
-          {t('game.plays.go-back-btn')}
+          {t("game.plays.go-back-btn")}
         </Button>
       </Flex>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isMobile && <PositionedDiscordLink />}
     </Background>
   );
 };
