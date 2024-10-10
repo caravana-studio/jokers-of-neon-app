@@ -41,14 +41,6 @@ const getDefaultImageUrls = (): string[] => {
   imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
-  // Vfx
-  imageUrls.push("vfx/explosion_blue.gif");
-  imageUrls.push("vfx/glow_particle.gif");
-  imageUrls.push("vfx/glow2.gif");
-  imageUrls.push("vfx/holo.png");
-  imageUrls.push("vfx/particle2.gif");
-  imageUrls.push("vfx/sparkles.gif");
-
   return imageUrls;
 };
 
