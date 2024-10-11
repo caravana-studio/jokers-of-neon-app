@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../../../types/Card";
+import { useTranslation } from "react-i18next";
 
 interface NextLevelButtonProps {
   setLoading: (value: boolean) => void;
@@ -23,17 +24,19 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({
   isSmallScreen,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation(["store"]);
 
-  const handleNextLevelClick = async () => {
+  const handleNextLevelClick = () => {
     setLoading(true);
     onShopSkip();
-    const response = await skipShop(gameId);
-    if (response.success) {
-      setHand(response.cards);
-      navigate("/redirect/demo");
-    } else {
-      setLoading(false);
-    }
+    skipShop(gameId).then((response): void => {
+      if (response.success) {
+        setHand(response.cards);
+        navigate("/redirect/demo");
+      } else {
+        setLoading(false);
+      }
+    });
   };
 
   return (
@@ -47,7 +50,7 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({
       variant="secondarySolid"
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
     >
-      GO TO { isSmallScreen && <br />} NEXT LEVEL
+      {t("store.labels.next-level").toUpperCase()}
     </Button>
   );
 };

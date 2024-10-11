@@ -1,27 +1,28 @@
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Joyride, { CallBackProps } from "react-joyride";
 import { GameDeck } from "../../components/GameDeck.tsx";
-import { GameMenu } from "../../components/GameMenu.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import {
+  GAME_TUTORIAL_STEPS,
+  JOYRIDE_LOCALES,
+  MODIFIERS_TUTORIAL_STEPS,
+  SPECIAL_CARDS_TUTORIAL_STEPS,
+  TUTORIAL_STYLE,
+} from "../../constants/gameTutorial";
+import {
+  SKIP_TUTORIAL_GAME,
+  SKIP_TUTORIAL_MODIFIERS,
+  SKIP_TUTORIAL_SPECIAL_CARDS,
+} from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import {
-  SKIP_TUTORIAL_GAME,
-  SKIP_TUTORIAL_SPECIAL_CARDS,
-  SKIP_TUTORIAL_MODIFIERS,
-} from "../../constants/localStorage.ts";
-import Joyride, { CallBackProps } from "react-joyride";
-import {
-  GAME_TUTORIAL_STEPS,
-  SPECIAL_CARDS_TUTORIAL_STEPS,
-  MODIFIERS_TUTORIAL_STEPS,
-  TUTORIAL_STYLE,
-} from "../../constants/gameTutorial";
 
 export const GameContent = () => {
   const {
@@ -39,6 +40,7 @@ export const GameContent = () => {
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
   const { isRageRound } = useGameContext();
+  const { t } = useTranslation(["game"]);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -122,7 +124,7 @@ export const GameContent = () => {
         sx={{ height: "100%" }}
       >
         <Heading size="xl" variant="neonGreen">
-          error creating game
+          {t("error.labels.error-msj")}
         </Heading>
         <Button
           variant="outline"
@@ -132,7 +134,7 @@ export const GameContent = () => {
             executeCreateGame();
           }}
         >
-          CREATE NEW GAME
+          {t("error.labels.label-error-btn")}
         </Button>
       </Flex>
     );
@@ -162,6 +164,7 @@ export const GameContent = () => {
           showProgress
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride
@@ -172,6 +175,7 @@ export const GameContent = () => {
           showProgress
           callback={handleSpecialJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Joyride
@@ -182,6 +186,7 @@ export const GameContent = () => {
           showProgress
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
         />
 
         <Box sx={{ width: "100%", height: "100%" }}>
@@ -237,20 +242,12 @@ export const GameContent = () => {
             sx={{ pointerEvents: "none" }}
           />
         </Box>
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 14,
-            left: "70px",
-            zIndex: 1000,
+
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
           }}
-        >
-          <GameMenu
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
+        />
         <Box
           sx={{
             position: "fixed",

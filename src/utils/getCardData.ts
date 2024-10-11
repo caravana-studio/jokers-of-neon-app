@@ -2,7 +2,7 @@ import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { PACKS_DATA } from "../data/packs";
 import { RAGE_CARDS_DATA } from "../data/rageCards";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
-import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
+import { TRADITIONAL_CARDS_DATA, NEON_CARDS_DATA } from "../data/traditionalCards";
 import { Card } from "../types/Card";
 import { CardData } from "../types/CardData";
 
@@ -20,7 +20,9 @@ export const getCardData = (card: Card, isPack: boolean = false): CardData => {
     return MODIFIER_CARDS_DATA[cardId];
   } else if (cardId in TRADITIONAL_CARDS_DATA) {
     return TRADITIONAL_CARDS_DATA[cardId];
-  } else {
+  } else if (cardId in NEON_CARDS_DATA) {
+    return NEON_CARDS_DATA[cardId];
+  }else {
     return {
       name: "",
       description: "",

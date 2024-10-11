@@ -16,8 +16,6 @@ const GET_PLAYS_LEVEL_QUERY = gql`
         node {
           poker_hand
           level
-          multi
-          points
         }
       }
     }
@@ -28,8 +26,6 @@ interface PlaysEdge {
   node: {
     poker_hand: string;
     level: number;
-    multi: number;
-    points: number;
   };
 }
 
@@ -56,8 +52,6 @@ export const useGetPlaysLevelDetail = (gameId: number) => {
       const play: PokerPlay = {
         pokerHand: parseHand(edge.node.poker_hand),
         level: edge.node.level,
-        multi: edge.node.multi,
-        points: edge.node.points,
       };
       return play;
     })

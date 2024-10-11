@@ -118,6 +118,7 @@ export const checkHand = (
     const straightValuesMap = new Map<number, boolean>();
     let consecutive = 1;
     let idx = 0;
+    let used_ace = 0;
 
     while (idx < cardsSorted.length - 1) {
       const actualValue = cardsSorted[idx].card || 0;
@@ -127,6 +128,7 @@ export const checkHand = (
         consecutive++;
         straightValuesMap.set(actualValue, true);
       } else if (actualValue + 1 === nextValue) {
+        used_ace += nextValue === Cards.ACE ? 1 : 0;
         consecutive++;
         straightValuesMap.set(actualValue, true);
         straightValuesMap.set(nextValue, true);
@@ -138,6 +140,7 @@ export const checkHand = (
 
         const gap = nextValue - actualValue - 1;
         if (gap <= tempJokers) {
+          used_ace += nextValue === Cards.ACE ? 1 : 0;
           consecutive++;
           tempJokers -= gap;
           straightValuesMap.set(actualValue, true);
@@ -147,7 +150,7 @@ export const checkHand = (
       idx++;
     }
 
-    if (valuesCount.get(Cards.ACE)) {
+    if ((valuesCount.get(Cards.ACE) ?? 0) - used_ace > 0) {
       let first_value = cardsSorted[0].card || 0;
       let gap = first_value - 1 - 1;
 

@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { GameMenu } from "../../components/GameMenu.tsx";
+import { GameMenu, PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
@@ -8,6 +8,7 @@ import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import { useTranslation } from "react-i18next";
 
 export const StoreContentMobile = () => {
   const {
@@ -28,24 +29,25 @@ export const StoreContentMobile = () => {
     setHand,
   } = useStoreContent();
 
+  const { t } = useTranslation(["store"]);
+
   return (
     <>
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: "5px",
-            right: "5px",
-            zIndex: 1000,
-            transform: "scale(0.7)",
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "5px",
+          right: "5px",
+          zIndex: 1000,
+          transform: "scale(0.7)",
+        }}
+      >
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
           }}
-        >
-          <GameMenu
-            inStore
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
+        />
+      </Box>
       <Flex
         width="100%"
         height="100%"
@@ -59,7 +61,7 @@ export const StoreContentMobile = () => {
           alignItems="center"
           justifyContent="center"
           width="100%"
-          overflow="auto"
+          overflow="scroll"
           pt={4}
           px={2}
         >
@@ -69,20 +71,25 @@ export const StoreContentMobile = () => {
             flexDirection="column"
             pb={4}
           >
-            <Flex flexDirection={"column"} gap={0} mb={4} mt={0} >
-              <Heading variant="italic" size="l" ml={4} textAlign={{base: "left", sm: "center"}}>
-                LEVEL UP YOUR GAME
-              </Heading>       
-                <Flex margin={{base: "0", sm: "0 auto"}} mt={2}>
-                  <Coins rolling />
-                </Flex>
-            </Flex>
-              <Flex justifyContent={{base: "left", sm: "center"}}>
-                <Packs />
+            <Flex flexDirection={"column"} gap={0} mb={4} mt={0}>
+              <Heading
+                variant="italic"
+                size="l"
+                ml={4}
+                textAlign={{ base: "left", sm: "center" }}
+              >
+                {t("store.titles.level-game").toUpperCase()}
+              </Heading>
+              <Flex margin={{ base: "0", sm: "0 auto" }} mt={2}>
+                <Coins rolling />
               </Flex>
+            </Flex>
+            <Flex justifyContent={{ base: "left", sm: "center" }}>
+              <Packs />
+            </Flex>
           </Box>
           <Box
-            width={{base: "100%", sm: "auto"}}
+            width={{ base: "100%", sm: "auto" }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
@@ -94,7 +101,7 @@ export const StoreContentMobile = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title={"traditional and neon cards."}
+                  title={t("store.titles.traditional")}
                 />
               )}
             </Box>
@@ -102,7 +109,7 @@ export const StoreContentMobile = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifier cards"
+                  title={t("store.titles.modifiers")}
                 />
               )}
             </Box>
@@ -110,23 +117,23 @@ export const StoreContentMobile = () => {
               {shopItems.specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.specialCards}
-                  title="special cards"
+                  title={t("store.titles.special")}
                 />
               )}
             </Box>
           </Box>
-            <Box
-              className="game-tutorial-step-2"
-              width={{base: "95%", sm: "75%"}}
-              background="rgba(0,0,0,0.5)"
-              px={4}
-              borderRadius="10px"
-            >
-              <Heading variant="italic" size="m" mt={4}>
-                IMPROVE YOUR PLAYS
-              </Heading>
-              <LevelUpTable shopItems={shopItems} isSmallScreen={true}/>
-            </Box>
+          <Box
+            className="game-tutorial-step-2"
+            width={{ base: "95%", sm: "75%" }}
+            background="rgba(0,0,0,0.5)"
+            px={4}
+            borderRadius="10px"
+          >
+            <Heading variant="italic" size="m" mt={4}>
+              {t("store.titles.improve-plays").toUpperCase()}
+            </Heading>
+            <LevelUpTable shopItems={shopItems} isSmallScreen={true} />
+          </Box>
 
           <Box
             display="flex"
@@ -136,38 +143,38 @@ export const StoreContentMobile = () => {
             gap={10}
             px={2}
           >
-              <Flex
-                width="100%"
-                mx={2}
-                justifyContent="center"
-                my={6}
-                mb={12}
-                gap={6}
-              >
-                <RerollButton
-                  rerolled={rerolled}
-                  locked={locked}
-                  notEnoughCash={notEnoughCash}
-                  rerollCost={rerollCost}
-                  setRerolled={setRerolled}
-                  isSmallScreen={true}
-                  reroll={reroll}
-                />
-                <SpecialsButton
-                  specialCards={specialCards}
-                  setSpecialCardsModalOpen={setSpecialCardsModalOpen}
-                  isSmallScreen={true}
-                />
-                <NextLevelButton
-                  setLoading={setLoading}
-                  onShopSkip={onShopSkip}
-                  skipShop={skipShop}
-                  gameId={gameId}
-                  setHand={setHand}
-                  locked={false}
-                  isSmallScreen={true}
-                />
-              </Flex>
+            <Flex
+              width="100%"
+              mx={2}
+              justifyContent="center"
+              my={6}
+              mb={12}
+              gap={6}
+            >
+              <RerollButton
+                rerolled={rerolled}
+                locked={locked}
+                notEnoughCash={notEnoughCash}
+                rerollCost={rerollCost}
+                setRerolled={setRerolled}
+                isSmallScreen={true}
+                reroll={reroll}
+              />
+              <SpecialsButton
+                specialCards={specialCards}
+                setSpecialCardsModalOpen={setSpecialCardsModalOpen}
+                isSmallScreen={true}
+              />
+              <NextLevelButton
+                setLoading={setLoading}
+                onShopSkip={onShopSkip}
+                skipShop={skipShop}
+                gameId={gameId}
+                setHand={setHand}
+                locked={false}
+                isSmallScreen={true}
+              />
+            </Flex>
           </Box>
         </Box>
       </Flex>

@@ -2,16 +2,18 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useShopItems } from "../../dojo/queries/useShopItems";
+import { useTranslation } from "react-i18next";
 
 export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
+  const { t } = useTranslation(["store"]);
 
   return (
     <Box m={4} className="game-tutorial-step-packs">
       <Flex justifyContent="space-between" alignItems="center">
         <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
-          Packs
+          {t('store.titles.packs')}
         </Heading>
       </Flex>
       <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>

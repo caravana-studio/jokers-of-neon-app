@@ -13,11 +13,12 @@ import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 
-import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { PositionedDiscordLink } from "../components/DiscordLink";
+import { PositionedGameMenu } from "../components/GameMenu";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
-import { PositionedDiscordLink } from "../components/DiscordLink";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -32,9 +33,8 @@ import { PositionedDiscordLink } from "../components/DiscordLink";
   pointer-events: none;
 `; */
 
-
 export const OpenPack = () => {
-/*   const [overlayVisible, setOverlayVisible] = useState(true);
+  /*   const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,6 +57,7 @@ export const OpenPack = () => {
   const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
   const continueDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
+  const { t } = useTranslation(["store"]);
 
   useEffect(() => {
     if (game?.state === "IN_STORE") {
@@ -98,12 +99,13 @@ export const OpenPack = () => {
         }
       }}
     >
-      Continue
+      {t("store.packs.continue-btn")}
     </Button>
   );
 
   return (
     <Background type="game" dark bgDecoration>
+      <PositionedGameMenu decoratedPage />
       {/* <WhiteOverlay $visible={overlayVisible} /> */}
       {cards.length > 0 ? (
         <Flex
@@ -118,7 +120,7 @@ export const OpenPack = () => {
             alignItems="center"
             mx={2}
           >
-            <Text size="lg">Select the cards you want to keep</Text>
+            <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
             <Checkbox
               color="white"
               isChecked={!!allSelected}
@@ -126,7 +128,7 @@ export const OpenPack = () => {
                 !e.target.checked ? setCardsToKeep([]) : setCardsToKeep(cards);
               }}
             >
-              SELECT ALL
+              {t("store.packs.select-all-lbl").toUpperCase()}
             </Checkbox>
           </Flex>
           <CardsContainer>
@@ -195,13 +197,13 @@ export const OpenPack = () => {
                   setSpecialCardsModalOpen(true);
                 }}
               >
-                See my current special cards
+                {t("store.packs.special-cards-btn")}
               </Button>
             ) : (
               <Box />
             )}
             {continueDisabled ? (
-              <Tooltip label="You can't continue because you have more special cards than the maximum allowed">
+              <Tooltip label={t("store.packs.error-lbl")}>
                 {continueButton}
               </Tooltip>
             ) : (
@@ -220,8 +222,8 @@ export const OpenPack = () => {
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
-          title="No cards selected"
-          description="You have selected no cards. Are you sure you want to continue?"
+          title={t("store.packs.confirmation-modal.head")}
+          description={t("store.packs.confirmation-modal.description")}
           onConfirm={confirmSelectCards}
         />
       )}

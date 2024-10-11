@@ -11,16 +11,19 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../../components/Background.tsx";
+
+import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import OpenAnimation from "../../components/OpenAnimation.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
-import theme from "../../theme/theme.ts";
-import { getCardData } from "../../utils/getCardData.ts";
+import { useStore } from "../../providers/StoreProvider";
+import theme from "../../theme/theme";
+import { getCardData } from "../../utils/getCardData";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
-import { Coins } from "../store/Coins.tsx";
+import { Coins } from "./../store/Coins.tsx";
+import { useTranslation } from "react-i18next";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = 1.3;
 const { white, neonGreen } = theme.colors;
@@ -28,6 +31,7 @@ const { white, neonGreen } = theme.colors;
 const MobilePreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation(["store"]);
 
   const { card, isPack, pack } = state || {};
 
@@ -72,12 +76,13 @@ const MobilePreviewCardLayout = () => {
       variant="outlinePrimaryGlow"
       width={"50%"}
     >
-      BUY
+      {t("store.preview-card.labels.buy")}
     </Button>
   );
 
   return (
     <Background type="home" dark>
+      <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
@@ -141,15 +146,16 @@ const MobilePreviewCardLayout = () => {
                     },
                   }}
                 >
-                  CARD TYPE:
+                  {t("store.preview-card.title.card-type")}
                 </Text>
                 <Text color={neonGreen} fontSize="md">
                   {card.isSpecial
-                    ? "Special"
+                    ? t("store.preview-card.labels.special")
                     : card.isModifier
-                      ? "Modifier"
-                      : "Traditional"}
-                  {card.temporary && " (temporary)"}
+                      ? t("store.preview-card.labels.modifier")
+                      : t("store.preview-card.labels.traditional")}
+                  {card.temporary &&
+                    " (" + t("store.preview-card.labels.temporary") + ")"}
                 </Text>
               </Box>
             )}
@@ -173,7 +179,7 @@ const MobilePreviewCardLayout = () => {
                 },
               }}
             >
-              DESCRIPTION:
+              {t("store.preview-card.title.description")}
             </Text>
             <Text color={neonGreen} fontSize="md">
               {description}
@@ -204,7 +210,7 @@ const MobilePreviewCardLayout = () => {
                   },
                 }}
               >
-                DETAILS:
+                {t("store.preview-card.title.details")}
               </Text>
               <Text color={neonGreen} fontSize="md">
                 {details?.split("\n").map((line, index) => (
@@ -218,7 +224,7 @@ const MobilePreviewCardLayout = () => {
           )}
 
           <Heading size="sm" variant="italic">
-            PRICE: {card.price}
+            {t("store.preview-card.title.price")} {card.price}
             <CashSymbol />
           </Heading>
         </Flex>
@@ -251,7 +257,7 @@ const MobilePreviewCardLayout = () => {
               onClick={() => navigate("/store")}
               width={"50%"}
             >
-              Close
+              {t("store.preview-card.labels.close")}
             </Button>
           </HStack>
         </Flex>

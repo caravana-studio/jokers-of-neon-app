@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Image } from "@chakra-ui/react";
-import { GameMenu } from "../../components/GameMenu.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
@@ -9,6 +9,7 @@ import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
+import { useTranslation } from "react-i18next";
 
 export const StoreContent = () => {
   const {
@@ -29,23 +30,24 @@ export const StoreContent = () => {
     setHand,
   } = useStoreContent();
 
+  const { t } = useTranslation(["store"]);
+
   return (
     <>
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 7,
-            left: 10,
-            zIndex: 1000,
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 7,
+          left: 10,
+          zIndex: 1000,
+        }}
+      >
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
           }}
-        >
-          <GameMenu
-            inStore
-            showTutorial={() => {
-              setRun(true);
-            }}
-          />
-        </Box>
+        />
+      </Box>
       <Flex
         width="100%"
         height="100%"
@@ -61,7 +63,7 @@ export const StoreContent = () => {
           width="100%"
           overflow={"auto"}
           pt={0}
-          px={{md: 0, lg: 14}}
+          px={{ md: 0, lg: 14 }}
           overflowY={"hidden"}
         >
           <Box
@@ -70,15 +72,17 @@ export const StoreContent = () => {
             flexDirection="column"
             justifyContent="space-between"
             pb={0}
+            pt={0}
+            px={14}
           >
             <Flex flexDirection={"column"} gap={4} mb={0}>
               <Heading variant="italic" size="l" ml={4}>
-                LEVEL UP YOUR GAME
+                {t("store.titles.level-game").toUpperCase()}
               </Heading>
             </Flex>
             <Packs />
             <Flex mt={8} width={"95%"}>
-              <LevelUpTable shopItems={shopItems} isSmallScreen={false}/>
+              <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
             </Flex>
             <Coins rolling />
           </Box>
@@ -97,7 +101,7 @@ export const StoreContent = () => {
               {shopItems.commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.commonCards}
-                  title={"traditional and neon cards"}
+                  title={t("store.titles.traditional")}
                 />
               )}
             </Box>
@@ -105,7 +109,7 @@ export const StoreContent = () => {
               {shopItems.modifierCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.modifierCards}
-                  title="modifier cards"
+                  title={t("store.titles.modifiers")}
                 />
               )}
             </Box>
@@ -113,7 +117,7 @@ export const StoreContent = () => {
               {shopItems.specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={shopItems.specialCards}
-                  title="special cards"
+                  title={t("store.titles.special")}
                 />
               )}
             </Box>
@@ -129,17 +133,17 @@ export const StoreContent = () => {
             px={0}
             paddingInlineStart={"4px"}
           >
-              <>
-                <NextLevelButton
-                  setLoading={setLoading}
-                  onShopSkip={onShopSkip}
-                  skipShop={skipShop}
-                  gameId={gameId}
-                  setHand={setHand}
-                  locked={false}
-                  isSmallScreen={false}
-                />
-                <Flex flexDirection="column" gap={14}>
+            <>
+              <NextLevelButton
+                setLoading={setLoading}
+                onShopSkip={onShopSkip}
+                skipShop={skipShop}
+                gameId={gameId}
+                setHand={setHand}
+                locked={false}
+                isSmallScreen={false}
+              />
+              <Flex flexDirection="column" gap={14}>
                 <RerollButton
                   rerolled={rerolled}
                   locked={locked}
@@ -149,22 +153,22 @@ export const StoreContent = () => {
                   isSmallScreen={false}
                   reroll={reroll}
                 />
-                  <SpecialsButton
-                    specialCards={specialCards}
-                    setSpecialCardsModalOpen={setSpecialCardsModalOpen}
-                    isSmallScreen={false}
-                  />
-                  <Image
-                    src="/logos/logo-variant.svg"
-                    alt="store-bg"
-                    width="90%"
-                  />
-                </Flex>
-              </>
+                <SpecialsButton
+                  specialCards={specialCards}
+                  setSpecialCardsModalOpen={setSpecialCardsModalOpen}
+                  isSmallScreen={false}
+                />
+                <Image
+                  src="/logos/logo-variant.svg"
+                  alt="store-bg"
+                  width="90%"
+                />
+              </Flex>
+            </>
           </Box>
         </Box>
       </Flex>
-      <PositionedDiscordLink  />
+      <PositionedDiscordLink />
     </>
   );
 };

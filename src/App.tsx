@@ -26,82 +26,43 @@ function App() {
     <ChakraBaseProvider theme={theme}>
       <CardAnimationsProvider>
         <GameProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/gameover/:gameId"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <GameOver />
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/demo"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <GamePage />
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/rewards"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <RewardsPage />
-                </AudioPlayerProvider>
-              }
-            />
+          <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/gameover/:gameId" element={<GameOver />} />
+              <Route path="/demo" element={<GamePage />} />
+              <Route path="/rewards" element={<RewardsPage />} />
 
-            <Route
-              path="/store"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+              <Route
+                path="/store"
+                element={
                   <StoreProvider>
                     <Store />
                   </StoreProvider>
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/redirect/:page"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <Redirect />
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/preview-card"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                }
+              />
+              <Route path="/redirect/:page" element={<Redirect />} />
+              <Route
+                path="/preview-card"
+                element={
                   <StoreProvider>
                     <PreviewCard/>
                   </StoreProvider>
-                </AudioPlayerProvider>
-              }
-            />
-            <Route
-              path="/open-pack"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                }
+              />
+              <Route
+                path="/open-pack"
+                element={
                   <StoreProvider>
                     <OpenPack />
                   </StoreProvider>
-                </AudioPlayerProvider>
-              }
-            />
-            <Route path="/play" element={<Navigate to="/" />} />
-            <Route
-              path="/plays"
-              element={
-                <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                  <PlaysLayout />
-                </AudioPlayerProvider>
-              }
-            />
-          </Routes>
+                }
+              />
+              <Route path="/play" element={<Navigate to="/" />} />
+              <Route path="/plays" element={<PlaysLayout />} />
+            </Routes>
+          </AudioPlayerProvider>
         </GameProvider>
       </CardAnimationsProvider>
       <Analytics />

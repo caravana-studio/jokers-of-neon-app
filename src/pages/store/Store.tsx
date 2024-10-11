@@ -11,6 +11,7 @@ import useStoreContent from "./UseStoreContent.ts";
 import { Loading } from "../../components/Loading.tsx";
 
 import {
+  JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
@@ -27,15 +28,13 @@ export const Store = () => {
     setSpecialCardsModalOpen,
   } = useStoreContent();
 
-  const isSmallScreen = useBreakpointValue(
-    { base: true, md: false }
-  );
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
   const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
   const state = game?.state;
   const { lockRedirection } = useStore();
- 
+
   useEffect(() => {
     setIsRageRound(false);
   }, []);
@@ -91,22 +90,23 @@ export const Store = () => {
   };
 
   return (
-      <Background type="store" scrollOnMobile>
-        <Joyride
-          steps={STORE_TUTORIAL_STEPS}
-          run={run}
-          continuous
-          showSkipButton
-          styles={TUTORIAL_STYLE}
-          showProgress
-          callback={handleJoyrideCallback}
+    <Background type="store" scrollOnMobile>
+      <Joyride
+        steps={STORE_TUTORIAL_STEPS}
+        run={run}
+        continuous
+        showSkipButton
+        styles={TUTORIAL_STYLE}
+        showProgress
+        callback={handleJoyrideCallback}
+        locale={JOYRIDE_LOCALES}
+      />
+      {specialCardsModalOpen && (
+        <CurrentSpecialCardsModal
+          close={() => setSpecialCardsModalOpen(false)}
         />
-        {specialCardsModalOpen && (
-          <CurrentSpecialCardsModal
-            close={() => setSpecialCardsModalOpen(false)}
-          />
-        )}
-        {isSmallScreen ? <StoreContentMobile/> : <StoreContent/>}
+      )}
+      {isSmallScreen ? <StoreContentMobile /> : <StoreContent />}
     </Background>
   );
 };

@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
@@ -21,6 +22,9 @@ import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 
+import { useTranslation } from "react-i18next";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
 
@@ -31,6 +35,7 @@ const PreviewCardLayout = () => {
   const { card, isPack, pack } = state || {};
 
   const [buyDisabled, setBuyDisabled] = useState(false);
+  const { t } = useTranslation(["store"]);
   /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
     useState<boolean>(false); */
 
@@ -89,12 +94,13 @@ const PreviewCardLayout = () => {
       variant="outlinePrimaryGlow"
       height={"100%"}
     >
-      BUY
+      {t("store.preview-card.labels.buy")}
     </Button>
   );
 
   return (
     <Background type="home" dark>
+      <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
           flexDirection={"column"}
@@ -107,7 +113,12 @@ const PreviewCardLayout = () => {
           boxShadow={`0px 0px 10px 1px ${white}`}
         >
           <Flex>
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`} display={"flex"} flexDirection={"column"} justifyContent={"center"}>
+            <Box
+              width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+            >
               {/*               <OpenAnimation
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
@@ -157,15 +168,16 @@ const PreviewCardLayout = () => {
                         },
                       }}
                     >
-                      CARD TYPE:
+                      {t("store.preview-card.title.card-type")}
                     </Text>
                     <Text color={neonGreen} fontSize={fontSize}>
                       {card.isSpecial
-                        ? "Special"
+                        ? t("store.preview-card.labels.special")
                         : card.isModifier
-                          ? "Modifier"
-                          : "Traditional"}
-                      {card.temporary && " (temporary)"}
+                          ? t("store.preview-card.labels.modifier")
+                          : t("store.preview-card.labels.traditional")}
+                      {card.temporary &&
+                        " (" + t("store.preview-card.labels.temporary") + ")"}
                     </Text>
                   </Box>
                 )}
@@ -188,7 +200,7 @@ const PreviewCardLayout = () => {
                       },
                     }}
                   >
-                    DESCRIPTION:
+                    {t("store.preview-card.title.description")}
                   </Text>
                   <Text color={neonGreen} fontSize={fontSize}>
                     {description}
@@ -220,7 +232,7 @@ const PreviewCardLayout = () => {
                         },
                       }}
                     >
-                      DETAILS:
+                      {t("store.preview-card.title.details")}
                     </Text>
                     <Text color={neonGreen} fontSize={fontSize}>
                       {details?.split("\n").map((line, index) => (
@@ -239,7 +251,7 @@ const PreviewCardLayout = () => {
                   flexDir={"row"}
                 >
                   <Heading size="m" variant="italic">
-                    PRICE: {card.price}
+                    {t("store.preview-card.title.price")} {card.price}
                   </Heading>
                   <Heading size="m" ml={2}>
                     ¢
@@ -279,7 +291,7 @@ const PreviewCardLayout = () => {
               onClick={() => navigate("/store")}
               height={"100%"}
             >
-              Close
+              {t("store.preview-card.labels.close")}
             </Button>
           </HStack>
         </Flex>
