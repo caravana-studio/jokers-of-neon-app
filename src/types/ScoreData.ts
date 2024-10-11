@@ -15,6 +15,7 @@ export interface PlayEvents {
   modifierSuitEvents?: ModifierSuitEvent[];
   cards: Card[];
   score: number;
+  cashEvents?: CashEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -61,4 +62,9 @@ export interface DetailEarned {
   discard_left: number;
   discard_left_cash: number;
   total: number;
+}
+
+export interface CashEvent {
+  cash: number;
+  idx: number;
 }

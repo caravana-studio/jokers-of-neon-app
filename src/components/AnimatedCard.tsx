@@ -27,6 +27,7 @@ export const AnimatedCard = ({
   const points = useMemo(() => animatedCard?.points, [animatedCard?.points]);
   const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
   const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
+  const cash = useMemo(() => animatedCard?.cash, [animatedCard?.cash]);
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
@@ -39,6 +40,8 @@ export const AnimatedCard = ({
       return colors[suit];
     } else if (multi) {
       return colors.neonPink;
+    } else if (cash) {
+      return colors.DIAMONDS;
     } else {
       return colors.neonGreen;
     }
@@ -58,7 +61,10 @@ export const AnimatedCard = ({
   }));
 
   useEffect(() => {
-    if ((points || multi || suit) && animatedCardIdxArray?.includes(idx)) {
+    if (
+      (points || multi || suit || cash) &&
+      animatedCardIdxArray?.includes(idx)
+    ) {
       const animateColor = getColor();
       cardApi.start({
         from: {
@@ -120,7 +126,7 @@ export const AnimatedCard = ({
         ...cardSprings,
       }}
     >
-      {!!(points || multi) &&
+      {!!(points || multi || cash) &&
         // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
         !(isSpecial && animatedCard?.idx?.length) &&
         animatedCardIdxArray?.includes(idx) && (
@@ -134,13 +140,13 @@ export const AnimatedCard = ({
             }}
           >
             <Heading
-              color={points ? colors.neonGreen : colors.neonPink}
+              color={getColor()}
               mb={{ base: 4, md: 6 }}
               sx={{
-                textShadow: `0 0 5px  ${points ? colors.neonGreen : colors.neonPink}`,
+                textShadow: `0 0 5px  ${getColor()}`,
               }}
             >
-              +{points || multi}
+              +{points || multi || cash}
             </Heading>
           </animated.div>
         )}
