@@ -1,4 +1,11 @@
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  useBreakpointValue,
+  useTheme,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -21,6 +28,12 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
 
   const width = !isRageRound ? "100%" : rageCards.length === 1 ? "82%" : "74%";
+
+  const cardScale = useBreakpointValue({
+    base: 1,
+    sm: 1.5,
+    md: 2,
+  });
 
   return (
     <Box
@@ -63,6 +76,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
                 >
                   <TiltCard
                     card={card}
+                    scale={cardScale}
                     onClick={() => {
                       setPreselectedCard((prev) =>
                         prev === card ? undefined : card
