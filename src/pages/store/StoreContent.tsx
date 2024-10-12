@@ -59,7 +59,7 @@ export const StoreContent = () => {
           display="flex"
           flexWrap="wrap"
           alignItems="center"
-          justifyContent="center"
+          justifyContent="space-between"
           width="100%"
           overflow={"auto"}
           pt={0}
