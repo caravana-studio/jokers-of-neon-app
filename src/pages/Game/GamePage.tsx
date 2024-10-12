@@ -50,8 +50,7 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if(!username)
-    navigate("/");
+  if (!username) navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -66,9 +65,7 @@ export const GamePage = () => {
     }
   }, [game?.state, roundRewards]);
 
-  const isSmallScreen = useBreakpointValue(
-    { base: true, md: false }
-  );
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
   return (
     <Background type={isRageRound ? "rage" : "game"}>
@@ -77,7 +74,7 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };
