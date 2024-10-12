@@ -38,7 +38,7 @@ function getImg(card: Card, isPack?: boolean): string | undefined {
   if (isPack) {
     return `Cards/${card.img}.png`;
   } else {
-    return `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`;
+    return `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`;
   }
 }
 
