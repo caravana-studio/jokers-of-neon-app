@@ -179,7 +179,6 @@ export const MobileGameContent = () => {
         sx={{
           position: "fixed",
           zIndex: 1000,
-          transform: ["scale(0.7)", "scale(1.2)"],
         }}
         right={[1, 4]}
         bottom={[1, 4]}
@@ -260,7 +259,6 @@ export const MobileGameContent = () => {
                 justifyContent: "space-between",
                 backgroundColor: "rgba(0,0,0,0.7)",
               }}
-              transform={["scale(1)", "scale(1.5)"]}
             >
               <MobilePreselectedCardsSection />
             </Box>
@@ -274,23 +272,22 @@ export const MobileGameContent = () => {
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
+              width={"100%"}
             >
-              <Box>
+              <Box width={"100%"}>
+                <Box pb={8} display={"flex"} justifyContent={"center"}>
+                  <HandSection />
+                </Box>
                 <Box
-                  position={"absolute"}
-                  left={3}
-                  bottom={0}
-                  zIndex={6}
-                  width="190px"
+                  width="100%"
                   display={"flex"}
                   alignItems={"center"}
                   backgroundColor="rgba(0,0,0,0.5)"
+                  px={24}
+                  gap={4}
                 >
                   <SortBy />
                   <ShowPlays />
-                </Box>
-                <Box pb={[10, 20]} transform={["scale(1)", "scale(1.5)"]}>
-                  <HandSection />
                 </Box>
               </Box>
             </Box>

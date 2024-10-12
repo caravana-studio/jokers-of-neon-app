@@ -15,7 +15,12 @@ export const MobileTopSection = () => {
 
         <MultiPoints />
       </Flex>
-      <Flex backgroundColor="rgba(0,0,0,0.3)" width={["90%", "80%"]} sx={{margin: "0 auto", marginTop: ["4px", "24px"]}} mx={2}>
+      <Flex
+        backgroundColor="rgba(0,0,0,0.3)"
+        width={["90%", "80%"]}
+        sx={{ margin: "0 auto", marginTop: ["4px", "24px"] }}
+        mx={2}
+      >
         <SpecialCards />
         {isRageRound && <RageCards />}
       </Flex>
