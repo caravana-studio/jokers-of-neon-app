@@ -1,5 +1,4 @@
-import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
+import { Flex, Img, Text, Tooltip, useBreakpointValue } from "@chakra-ui/react";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
@@ -8,39 +7,49 @@ export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
   const { t } = useTranslation(["game"]);
 
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
   return (
     <Flex
-      flexDirection={isMobile ? "row" : "column"}
+      flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
       gap={0.5}
     >
       <Text size="m" pl={{ base: 1, sm: 0 }}>
-        {t('game.hand-section.sort-by.sort-by-title')}
+        {t("game.hand-section.sort-by.sort-by-title")}
       </Text>
       <Flex
         gap={0.5}
         alignItems="center"
         justifyContent="center"
-        border={isMobile ? "none" : "1px solid white"}
+        border={isSmallScreen ? "none" : "1px solid white"}
         borderRadius="8px"
         minWidth={{ base: "50px", sm: "70px" }}
         p={{ base: "5px 5px", sm: "8px 5px" }}
       >
-        <Tooltip label={t('game.hand-section.sort-by.tooltip.suit')} placement="bottom" size="sm">
+        <Tooltip
+          label={t("game.hand-section.sort-by.tooltip.suit")}
+          placement="bottom"
+          size="sm"
+        >
           <Img
             cursor="pointer"
             src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
-            height={{base: 5, sm: 8}}
+            height={{ base: 5, sm: 8 }}
             onClick={() => {
               toggleSortBy();
             }}
           />
         </Tooltip>
-        <Tooltip label={t('game.hand-section.sort-by.tooltip.rank')} placement="bottom" size="sm">
+        <Tooltip
+          label={t("game.hand-section.sort-by.tooltip.rank")}
+          placement="bottom"
+          size="sm"
+        >
           <Img
             cursor="pointer"
             src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
-            height={{base: 5, sm: 8}}
+            height={{ base: 5, sm: 8 }}
             onClick={() => {
               toggleSortBy();
             }}

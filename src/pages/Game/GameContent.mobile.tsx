@@ -283,7 +283,7 @@ export const MobileGameContent = () => {
                   display={"flex"}
                   alignItems={"center"}
                   backgroundColor="rgba(0,0,0,0.5)"
-                  px={24}
+                  px={18}
                   gap={4}
                 >
                   <SortBy />
