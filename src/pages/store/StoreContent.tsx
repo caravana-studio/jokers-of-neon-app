@@ -57,13 +57,13 @@ export const StoreContent = () => {
       >
         <Box
           display="flex"
-          flexWrap="wrap"
+          flexWrap="nowrap"
           alignItems="center"
           justifyContent="space-between"
           width="100%"
           overflow={"auto"}
           pt={0}
-          px={{ md: 0, lg: 14 }}
+          px={{ md: 0, lg: 4 }}
           overflowY={"hidden"}
         >
           <Box
@@ -73,7 +73,7 @@ export const StoreContent = () => {
             justifyContent="space-between"
             pb={0}
             pt={0}
-            px={14}
+            pl={"2%"}
           >
             <Flex flexDirection={"column"} gap={4} mb={0}>
               <Heading variant="italic" size="l" ml={4}>
@@ -81,7 +81,7 @@ export const StoreContent = () => {
               </Heading>
             </Flex>
             <Packs />
-            <Flex mt={8} width={"95%"}>
+            <Flex mt={8} width={"100%"}>
               <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
             </Flex>
             <Coins rolling />
@@ -93,8 +93,6 @@ export const StoreContent = () => {
             justifyContent="center"
             alignItems={"flex-start"}
             pb={0}
-            pl={4}
-            pr={4}
             gap={6}
           >
             <Box className="game-tutorial-step-3">
@@ -131,7 +129,7 @@ export const StoreContent = () => {
             justifyContent={"space-between"}
             gap={10}
             px={0}
-            paddingInlineStart={"4px"}
+            pr={"2%"}
           >
             <>
               <NextLevelButton
