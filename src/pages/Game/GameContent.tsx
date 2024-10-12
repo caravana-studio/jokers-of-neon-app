@@ -244,6 +244,7 @@ export const GameContent = () => {
         </Box>
 
         <PositionedGameMenu
+          decoratedPage
           showTutorial={() => {
             setRun(true);
           }}
