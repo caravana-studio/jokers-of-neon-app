@@ -1,13 +1,13 @@
-import { Flex, Img, Text, Tooltip, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
   const { t } = useTranslation(["game"]);
-
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Flex

@@ -4,6 +4,7 @@ import { isMobile } from "react-device-detect";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -32,6 +33,7 @@ export const AnimatedCard = ({
     [animatedCard?.animationIndex]
   );
 
+  const { cardScale } = useResponsiveValues();
   const { colors } = useTheme();
 
   const getColor = () => {
@@ -115,7 +117,7 @@ export const AnimatedCard = ({
       style={{
         position: "relative",
         padding: "4px",
-        width: `${CARD_WIDTH + 8}px`,
+        width: `${cardScale ? CARD_WIDTH * cardScale + 8 : CARD_WIDTH + 8}px`,
         borderRadius: isMobile ? "5px" : "10px",
         ...cardSprings,
       }}

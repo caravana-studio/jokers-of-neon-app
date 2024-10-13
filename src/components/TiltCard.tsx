@@ -52,6 +52,8 @@ export const TiltCard = ({
     transition: "box-shadow 0.3s ease-in-out",
   };
 
+  console.log("scale from tltcard: " + scale);
+  console.log(cardWith);
   const isSilent = useIsSilent(card);
 
   const tiltCardComponent = (

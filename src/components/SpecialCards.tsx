@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  useBreakpointValue,
-  useTheme,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGame } from "../dojo/queries/useGame";
@@ -14,6 +7,7 @@ import { Card } from "../types/Card.ts";
 import { CardsRow } from "./CardsRow";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { TiltCard } from "./TiltCard.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 interface SpecialCardsProps {
   inStore?: boolean;
@@ -32,12 +26,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   const width = !isRageRound ? "100%" : rageCards.length === 1 ? "82%" : "74%";
-
-  const cardScale = useBreakpointValue({
-    base: 1,
-    sm: 1.5,
-    md: 2,
-  });
+  const { cardScale } = useResponsiveValues();
 
   return (
     <Box

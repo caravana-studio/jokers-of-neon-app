@@ -6,7 +6,6 @@ import {
   Heading,
   SimpleGrid,
   Text,
-  useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
@@ -16,10 +15,15 @@ import { AnimatedCard } from "../../components/AnimatedCard";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
+import {
+  CARD_HEIGHT,
+  CARD_HEIGHT_PX,
+  CARD_WIDTH,
+} from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const HandSection = () => {
   const {
@@ -51,8 +55,10 @@ export const HandSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
+  const { cardScale, isSmallScreen } = useResponsiveValues();
 
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const cardWidth = cardScale ? CARD_WIDTH * cardScale : CARD_WIDTH;
+  const cardHeight = cardScale ? CARD_HEIGHT * cardScale : CARD_HEIGHT;
 
   return (
     <>
@@ -60,7 +66,7 @@ export const HandSection = () => {
         <Flex
           flexDirection="column"
           justifyContent="space-between"
-          height={CARD_HEIGHT_PX}
+          height={cardHeight}
           sx={{ mr: 4 }}
           pb={1}
         >
@@ -77,8 +83,8 @@ export const HandSection = () => {
         <SimpleGrid
           sx={{
             opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
-            minWidth: `${CARD_WIDTH * 4}px`,
-            maxWidth: `${CARD_WIDTH * 6.5}px`,
+            minWidth: `${cardWidth * 4}px`,
+            maxWidth: `${cardWidth * 6.5}px`,
           }}
           columns={hand.length}
           position="relative"
@@ -151,6 +157,7 @@ export const HandSection = () => {
                   <AnimatedCard idx={card.idx} discarded={card.discarded}>
                     <TiltCard
                       card={card}
+                      scale={cardScale}
                       cursor={
                         card.isModifier
                           ? activeNode

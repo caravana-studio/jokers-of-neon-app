@@ -65,6 +65,7 @@ export default {
     lg: "116em",   
     xl: "125em",  
   },
+
   components: {
     Table: tableTheme,
     Button: buttonTheme,

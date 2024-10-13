@@ -6,6 +6,7 @@ import { TiltCard } from "../../components/TiltCard.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { Card } from "../../types/Card.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const MobilePreselectedCardsSection = () => {
   const {
@@ -17,6 +18,10 @@ export const MobilePreselectedCardsSection = () => {
     playAnimation,
   } = useGameContext();
 
+  const { cardScale } = useResponsiveValues();
+  const cardWidth = cardScale ? CARD_WIDTH * cardScale : CARD_WIDTH;
+  const cardHeight = cardScale ? CARD_HEIGHT * cardScale : CARD_HEIGHT;
+
   return (
     <>
       <Box
@@ -26,18 +31,18 @@ export const MobilePreselectedCardsSection = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          minHeight: `${CARD_HEIGHT * 2 + 70}px`,
+          minHeight: `${cardHeight * 2 + 70}px`,
           width: "100%",
         }}
       >
         <Box
           sx={{
-            maxWidth: `${CARD_WIDTH * 4}px`,
+            maxWidth: `${cardWidth * 3 + 70}px`,
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: "inherit",
             flexWrap: "wrap",
-            minHeight: `${CARD_HEIGHT * 2 + 30}px`,
+            minHeight: `${cardHeight * 2 + 30}px`,
           }}
         >
           {preSelectedCards.map((idx) => {
@@ -55,6 +60,7 @@ export const MobilePreselectedCardsSection = () => {
                     >
                       <TiltCard
                         cursor="pointer"
+                        scale={cardScale}
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);

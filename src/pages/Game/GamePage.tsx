@@ -10,9 +10,8 @@ import { useGameContext } from "../../providers/GameProvider";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { useBreakpointValue } from "@chakra-ui/react";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { isMobile } from "react-device-detect";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const GamePage = () => {
   const {
@@ -37,6 +36,7 @@ export const GamePage = () => {
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -64,8 +64,6 @@ export const GamePage = () => {
       }
     }
   }, [game?.state, roundRewards]);
-
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
   return (
     <Background type={isRageRound ? "rage" : "game"}>
