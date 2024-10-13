@@ -217,3 +217,21 @@ test("Royal flush shouldnt work with a seven, four jokers and easy straight", ()
     testCheckHand([D7, JOKER2, JOKER2, JOKER1, JOKER1], [EasyStraight])
   ).toBe(Plays.STRAIGHT_FLUSH);
 });
+
+test("Royal flush should work with three cards, two jokers and easy straight", () => {
+  expect(testCheckHand([HJ, HQ, HK, JOKER2, JOKER1], [EasyStraight])).toBe(
+    Plays.ROYAL_FLUSH
+  );
+});
+
+test("Straight flush should work with two cards, two jokers, easy straight and easy flush", () => {
+  expect(
+    testCheckHand([HJ, HQ, JOKER2, JOKER1], [EasyStraight, EasyFlush])
+  ).toBe(Plays.STRAIGHT_FLUSH);
+});
+
+test("Straight should work with two cards, two jokers and easy straight", () => {
+  expect(testCheckHand([HJ, HQ, JOKER2, JOKER1], [EasyStraight])).toBe(
+    Plays.STRAIGHT
+  );
+});
