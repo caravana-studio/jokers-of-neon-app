@@ -9,7 +9,7 @@ export const useResponsiveValues = () => {
 
   const defaultBaseScale = useBreakpointValue({
     base: 0.25,
-    sm: 0.74,
+    sm: 0.65,
     md: 0.65,
   });
 

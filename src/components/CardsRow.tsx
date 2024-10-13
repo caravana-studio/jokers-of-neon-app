@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -8,6 +7,7 @@ import { Card } from "../types/Card";
 import { AnimatedCard } from "./AnimatedCard";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { TiltCard } from "./TiltCard";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 interface CardsRowProps {
   cards: Card[];
@@ -20,6 +20,9 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
+  const { cardScale, isSmallScreen } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   useEffect(() => {
     if (roundRewards) {
@@ -46,7 +49,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
   };
 
   return (
-    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`}>
+    <Flex width="100%" height={`${cardHeight}px`}>
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
@@ -55,7 +58,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
             key={card.idx}
             justifyContent="center"
             width={`${100 / cards.length}%`}
-            maxWidth={`${CARD_WIDTH + 7}px`}
+            maxWidth={`${cardWidth + 7}px`}
             position="relative"
             zIndex={1}
             onMouseEnter={() => setHoveredCard(card.idx)}
@@ -80,7 +83,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                         height={8}
                         fontSize="8px"
                         px={"16px"}
-                        size={isMobile ? "xs" : "md"}
+                        size={isSmallScreen ? "xs" : "md"}
                         borderRadius={"10px"}
                         variant={"discardSecondarySolid"}
                         display="flex"
@@ -93,14 +96,14 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                       >
                         <Text fontSize="10px">X</Text>
                         {hoveredButton === card.idx && (
-                          <Text fontSize="10px">{
-                            t('game.special-cards.remove-special-cards-label')
-                          }</Text>
+                          <Text fontSize="10px">
+                            {t("game.special-cards.remove-special-cards-label")}
+                          </Text>
                         )}
                       </Button>
                     )}
                   </Flex>
-                  <TiltCard card={card} />
+                  <TiltCard card={card} scale={cardScale} />
                 </Box>
               </AnimatedCard>
             )}
