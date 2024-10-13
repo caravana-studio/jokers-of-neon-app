@@ -275,7 +275,7 @@ export const MobileGameContent = () => {
               width={"100%"}
             >
               <Box width={"100%"}>
-                <Box pb={8} display={"flex"} justifyContent={"center"}>
+                <Box pb={2} display={"flex"} justifyContent={"center"}>
                   <HandSection />
                 </Box>
                 <Box
