@@ -45,14 +45,13 @@ export const checkHand = (
     });
 
     if (specialAllCardsToHearts) {
-      if(modifiedCardData.suit  != Suits.JOKER){
+      if (modifiedCardData.suit != Suits.JOKER) {
         modifiedCardData.suit = Suits.HEARTS;
       }
     }
 
     return modifiedCardData;
   };
-
 
   let jokers = 0;
   const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
@@ -68,7 +67,9 @@ export const checkHand = (
   const valuesCount = new Map<number, number>();
   const suitsCount = new Map<Suits, number>();
   const counts: number[] = [];
-  const cardsSorted = [...cardsData].sort((a, b) => (a.card || 0) - (b.card || 0));
+  const cardsSorted = [...cardsData].sort(
+    (a, b) => (a.card || 0) - (b.card || 0)
+  );
 
   for (const card of cardsSorted) {
     if (card.suit != Suits.JOKER) {
@@ -104,11 +105,14 @@ export const checkHand = (
     }
   }
 
-  const isFlush = [Suits.CLUBS, Suits.DIAMONDS, Suits.HEARTS, Suits.SPADES].some(
-    (suit) => {
-      return (suitsCount.get(suit) || 0) + jokers >= lenFlush;
-    }
-  );
+  const isFlush = [
+    Suits.CLUBS,
+    Suits.DIAMONDS,
+    Suits.HEARTS,
+    Suits.SPADES,
+  ].some((suit) => {
+    return (suitsCount.get(suit) || 0) + jokers >= lenFlush;
+  });
 
   let tempJokers = jokers;
   const isStraight = () => {
@@ -166,32 +170,40 @@ export const checkHand = (
   };
 
   if (isFlush && isStraight()) {
-    let royalCards = [Cards.TEN, Cards.JACK, Cards.QUEEN, Cards.KING, Cards.ACE]
+    let royalCards = [
+      Cards.TEN,
+      Cards.JACK,
+      Cards.QUEEN,
+      Cards.KING,
+      Cards.ACE,
+    ];
 
     let foundValues = 0;
     for (let idx = 0; idx < cardsSorted.length; idx++) {
       const card = cardsSorted[idx];
-      if (card.card !=  undefined && royalCards.includes(card.card)) {
+      if (card.card != undefined && royalCards.includes(card.card)) {
         foundValues += 1;
       }
     }
 
-    if ( foundValues + jokers === lenStraight)
-      return Plays.ROYAL_FLUSH;
-    else
-      return Plays.STRAIGHT_FLUSH;
+    if (foundValues + jokers === 5) return Plays.ROYAL_FLUSH;
+    else return Plays.STRAIGHT_FLUSH;
   }
 
-  const isFiveOfAKind = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 5);
+  const isFiveOfAKind = counts.some(
+    (cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 5
+  );
   if (isFiveOfAKind) {
     return Plays.FIVE_OF_A_KIND;
   }
 
-  const isFourOfAKind = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 4);
+  const isFourOfAKind = counts.some(
+    (cardValue) => (valuesCount.get(cardValue) || 0) + jokers === 4
+  );
   if (isFourOfAKind) {
     return Plays.FOUR_OF_A_KIND;
   }
-  
+
   const isFullHouse = (() => {
     let pairsCount = 0;
     let isThreeOfAKind = false;
@@ -200,7 +212,9 @@ export const checkHand = (
       if (count === 2) pairsCount += 1;
       if (count === 3) isThreeOfAKind = true;
     });
-    return (pairsCount === 1 && isThreeOfAKind) || (pairsCount === 2 && jokers === 1);
+    return (
+      (pairsCount === 1 && isThreeOfAKind) || (pairsCount === 2 && jokers === 1)
+    );
   })();
 
   if (isFullHouse) {
@@ -219,7 +233,7 @@ export const checkHand = (
     const countWithJokers = (valuesCount.get(cardValue) || 0) + jokers;
     return countWithJokers === 3;
   });
-  
+
   if (isThreeOfAKind) {
     return Plays.THREE_OF_A_KIND;
   }
@@ -239,7 +253,9 @@ export const checkHand = (
     return Plays.TWO_PAIR;
   }
 
-  const isOnePair = counts.some((cardValue) => (valuesCount.get(cardValue) || 0) + jokers == 2);
+  const isOnePair = counts.some(
+    (cardValue) => (valuesCount.get(cardValue) || 0) + jokers == 2
+  );
   if (isOnePair) {
     return Plays.PAIR;
   }
