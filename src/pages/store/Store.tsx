@@ -80,6 +80,8 @@ export const Store = () => {
     </Box>
   );
 
+  const rerollDisabled = rerolled || locked || notEnoughCash;
+
   const rerollButton = (
     <Tooltip
       placement={isMobile ? "top" : "right"}
@@ -93,7 +95,8 @@ export const Store = () => {
         className="game-tutorial-step-6"
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled || locked || notEnoughCash}
+        variant={rerollDisabled ? "defaultOutline" : "solid"}
+        isDisabled={rerollDisabled}
         onClick={() => {
           reroll().then((response) => {
             if (response) {
