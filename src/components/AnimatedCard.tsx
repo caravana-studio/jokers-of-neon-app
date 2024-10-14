@@ -1,6 +1,5 @@
-import { Heading, useTheme } from "@chakra-ui/react";
+import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
-import { isMobile } from "react-device-detect";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
@@ -34,6 +33,10 @@ export const AnimatedCard = ({
   );
 
   const { cardScale } = useResponsiveValues();
+  const cardBorderRadius = useBreakpointValue({
+    base: "5px",
+    sm: "10px",
+  });
   const { colors } = useTheme();
 
   const getColor = () => {
@@ -118,7 +121,7 @@ export const AnimatedCard = ({
         position: "relative",
         padding: "4px",
         width: `${cardScale ? CARD_WIDTH * cardScale + 8 : CARD_WIDTH + 8}px`,
-        borderRadius: isMobile ? "5px" : "10px",
+        borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
     >

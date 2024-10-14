@@ -146,7 +146,7 @@ export const OpenPack = () => {
                     m={1.5}
                     p={{ base: 1, sm: 1.5 }}
                     sx={{
-                      borderRadius: { base: "7px", md: "15px" },
+                      borderRadius: { base: "7px", sm: "12px", md: "15px" },
                       opacity:
                         cardsToKeep
                           .map((card) => card.idx)
