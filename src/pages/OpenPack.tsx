@@ -1,6 +1,5 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
@@ -19,6 +18,7 @@ import { PositionedGameMenu } from "../components/GameMenu";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -58,6 +58,8 @@ export const OpenPack = () => {
   const continueDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
   const { t } = useTranslation(["store"]);
+  const { isSmallScreen, cardScale } = useResponsiveValues();
+  const adjustedCardScale = cardScale * 1.2;
 
   useEffect(() => {
     if (game?.state === "IN_STORE") {
@@ -115,7 +117,7 @@ export const OpenPack = () => {
           gap={4}
         >
           <Flex
-            flexDirection={isMobile ? "column" : "row"}
+            flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
             alignItems="center"
             mx={2}
@@ -162,7 +164,7 @@ export const OpenPack = () => {
                     }}
                   >
                     <TiltCard
-                      scale={1.2}
+                      scale={adjustedCardScale}
                       card={card}
                       key={index}
                       onClick={() => {
@@ -183,7 +185,7 @@ export const OpenPack = () => {
             })}
           </CardsContainer>
           <Flex
-            flexDirection={isMobile ? "column" : "row"}
+            flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
             mt={4}
             gap={4}
@@ -227,21 +229,25 @@ export const OpenPack = () => {
           onConfirm={confirmSelectCards}
         />
       )}
-      {!isMobile && <PositionedDiscordLink />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };
 
 const CardsContainer = ({ children }: PropsWithChildren) => {
-  return isMobile ? (
+  const { isSmallScreen, cardScale } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
+
+  return isSmallScreen ? (
     <Box
       sx={{
-        maxWidth: `${CARD_WIDTH * 5}px`,
+        maxWidth: `${cardWidth * 5}px`,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        minHeight: `${CARD_HEIGHT * 2 + 80}px`,
+        minHeight: `${cardHeight * 2 + 80}px`,
       }}
     >
       {children}
