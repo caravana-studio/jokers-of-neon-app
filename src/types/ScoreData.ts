@@ -67,4 +67,5 @@ export interface DetailEarned {
 export interface CashEvent {
   cash: number;
   idx: number;
+  special_idx: number;
 }

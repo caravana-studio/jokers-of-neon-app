@@ -439,10 +439,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               setTimeout(() => {
                 playEvents.cashEvents?.forEach((event, index) => {
                   setTimeout(() => {
-                    const { idx, cash } = event;
+                    const { idx, special_idx, cash } = event;
                     setAnimatedCard({
                       idx: [idx],
-                      special_idx: 0,
+                      special_idx,
                       cash,
                       animationIndex: 60 + index,
                     });

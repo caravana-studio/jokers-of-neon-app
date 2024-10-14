@@ -4,6 +4,7 @@ import { isMobile } from "react-device-detect";
 import { animated, useSpring } from "react-spring";
 import { CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { CashSymbol } from "./CashSymbol";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -147,6 +148,7 @@ export const AnimatedCard = ({
               }}
             >
               +{points || multi || cash}
+              {cash && <CashSymbol />}
             </Heading>
           </animated.div>
         )}
