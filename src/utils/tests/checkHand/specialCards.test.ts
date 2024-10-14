@@ -235,3 +235,15 @@ test("Straight should work with two cards, two jokers and easy straight", () => 
     Plays.STRAIGHT
   );
 });
+
+test("Straight ace flush shouldnt work with A,2,3 a joker and easy straight", () => {
+  expect(testCheckHand([H2, H3, HA, HQ, JOKER1], [EasyStraight])).toBe(
+    Plays.FLUSH
+  );
+});
+
+test("Straight ace flush should work with easy straight", () => {
+  expect(testCheckHand([H2, H3, HA, H4, JOKER1], [EasyStraight])).toBe(
+    Plays.STRAIGHT_FLUSH
+  );
+});

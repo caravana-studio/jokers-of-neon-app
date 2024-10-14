@@ -123,6 +123,7 @@ export const checkHand = (
     let consecutive = 1;
     let idx = 0;
     let used_ace = 0;
+    let bigGap = false;
 
     while (idx < cardsSorted.length - 1) {
       const actualValue = cardsSorted[idx].card || 0;
@@ -149,6 +150,8 @@ export const checkHand = (
           tempJokers -= gap;
           straightValuesMap.set(actualValue, true);
           straightValuesMap.set(nextValue, true);
+        } else {
+          bigGap = true;
         }
       }
       idx++;
@@ -166,10 +169,16 @@ export const checkHand = (
       }
     }
 
+    if (bigGap && used_ace > 0) {
+      return false;
+    }
+
     return consecutive >= lenStraight;
   };
+  const isPlayStraight = isStraight();
+  console.log(isPlayStraight);
 
-  if (isFlush && isStraight()) {
+  if (isFlush && isPlayStraight) {
     let royalCards = [
       Cards.TEN,
       Cards.JACK,
@@ -221,7 +230,7 @@ export const checkHand = (
     return Plays.FULL_HOUSE;
   }
 
-  if (isStraight()) {
+  if (isPlayStraight) {
     return Plays.STRAIGHT;
   }
 
