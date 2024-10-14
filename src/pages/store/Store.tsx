@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,7 @@ import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
+import CachedImage from "../../components/CachedImage.tsx";
 
 export const Store = () => {
   const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
@@ -321,7 +322,7 @@ export const Store = () => {
                 <Flex flexDirection="column" gap={14} alignItems="center">
                   {rerollButton}
                   {specialsButton}
-                  <Image
+                  <CachedImage
                     src="/logos/logo-variant.svg"
                     alt="store-bg"
                     width="90%"
