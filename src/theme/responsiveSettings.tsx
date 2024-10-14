@@ -21,7 +21,7 @@ export const useResponsiveValues = () => {
       if (window.innerWidth === 540 && window.innerHeight === 720) {
         setBaseScale(0.4); // Adjust for 540x720 resolution
       } else if (window.innerWidth === 1024 && window.innerHeight === 1366) {
-        setBaseScale(0.9); // Adjust for 1024x1366 resolution
+        setBaseScale(0.85); // Adjust for 1024x1366 resolution
       } else {
         setBaseScale(defaultBaseScale);
       }
