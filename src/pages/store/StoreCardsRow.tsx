@@ -29,6 +29,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   }, [cards]);
 
   const { isSmallScreen, cardScale } = useResponsiveValues();
+  const adjustedScale = isSmallScreen
+    ? cardScale
+    : cardScale - (cardScale * 25) / 100;
 
   useEffect(() => {
     preloadImages(imageUrls)
@@ -81,7 +84,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
                       });
                     }
                   }}
-                  scale={cardScale}
+                  scale={adjustedScale}
                 />
               </Flex>
             );
