@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,7 @@ import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
+import CachedImage from "../../components/CachedImage.tsx";
 
 export const Store = () => {
   const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
@@ -80,6 +81,8 @@ export const Store = () => {
     </Box>
   );
 
+  const rerollDisabled = rerolled || locked || notEnoughCash;
+
   const rerollButton = (
     <Tooltip
       placement={isMobile ? "top" : "right"}
@@ -93,7 +96,8 @@ export const Store = () => {
         className="game-tutorial-step-6"
         fontSize={[10, 10, 10, 14, 14]}
         w={["unset", "unset", "unset", "100%", "100%"]}
-        isDisabled={rerolled || locked || notEnoughCash}
+        variant={rerollDisabled ? "defaultOutline" : "solid"}
+        isDisabled={rerollDisabled}
         onClick={() => {
           reroll().then((response) => {
             if (response) {
@@ -318,7 +322,7 @@ export const Store = () => {
                 <Flex flexDirection="column" gap={14} alignItems="center">
                   {rerollButton}
                   {specialsButton}
-                  <Image
+                  <CachedImage
                     src="/logos/logo-variant.svg"
                     alt="store-bg"
                     width="90%"
