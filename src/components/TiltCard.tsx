@@ -31,7 +31,7 @@ interface ICardProps {
   card: Card;
   onClick?: () => void;
   cursor?: string;
-  scale?: number | number;
+  scale?: number;
   isPack?: boolean;
   isHolographic?: boolean;
 }
