@@ -24,6 +24,7 @@ import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "./../store/Coins.tsx";
 import { useTranslation } from "react-i18next";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 const SIZE_MULTIPLIER = 1.3;
 const { white, neonGreen } = theme.colors;
@@ -32,6 +33,7 @@ const MobilePreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
+  const { cardScale } = useResponsiveValues();
 
   const { card, isPack, pack } = state || {};
 
@@ -108,7 +110,7 @@ const MobilePreviewCardLayout = () => {
           </Flex>
 
           <Flex justifyContent={"center"}>
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+            <Box width={`${CARD_WIDTH * cardScale * SIZE_MULTIPLIER}px`}>
               <OpenAnimation
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
