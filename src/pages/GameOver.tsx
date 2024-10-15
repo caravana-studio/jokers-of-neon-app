@@ -1,10 +1,12 @@
-import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/Background";
+import { DiscordLink } from "../components/DiscordLink";
+import { PositionedGameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
@@ -23,18 +25,21 @@ export const GameOver = () => {
   const gameId = Number(params.gameId);
 
   const { restartGame, setIsRageRound } = useGameContext();
+
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
+  const { data: fullLeaderboard } = useGetLeaderboard();
+  const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
+  const { t } = useTranslation(["intermediate-screens"]);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
 
   let congratulationsMsj = "";
 
   if (currentLeader?.position != undefined) {
     congratulationsMsj =
-      currentLeader?.position === 1
-        ? "Congratulations! You're the top player on the leaderboard!"
+      actualPlayer?.position === 1
+        ? t("game-over.table.gameOver-leader-msj")
         : currentLeader?.position > 1 && currentLeader?.position <= 5
-          ? "Great job! You're in the top 5! Keep it up!"
+          ? t("game-over.table.gameOver-top5-msj")
           : "";
   }
 
@@ -54,6 +59,7 @@ export const GameOver = () => {
 
   return (
     <Background type="game" bgDecoration>
+      <PositionedGameMenu decoratedPage />
       <Flex
         height="100%"
         justifyContent="center"
@@ -63,7 +69,7 @@ export const GameOver = () => {
       >
         <Flex flexDirection="column" width="100%">
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
-            GAME OVER
+            {t("game-over.gameOver-msj")}
           </Heading>
           <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
             {congratulationsMsj}
@@ -81,7 +87,7 @@ export const GameOver = () => {
               }}
               data-size="large"
             >
-              SHARE ON
+              {t("game-over.btn.gameOver-share-btn")}
               <Flex sx={{ ml: 2.5 }}>
                 <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
               </Flex>
@@ -96,22 +102,13 @@ export const GameOver = () => {
                 navigate("/demo");
               }}
             >
-              START NEW GAME
+              {t("game-over.btn.gameOver-newGame-btn")}
             </Button>
           </Flex>
+          <Flex mt={{ base: 4, sm: 10 }} justifyContent="center">
+            <DiscordLink />
+          </Flex>
         </Flex>
-
-        {!isMobile && (
-          <Image
-            position={"fixed"}
-            bottom={10}
-            alignSelf="center"
-            src="/logos/jn-logo.png"
-            alt="logo-variant"
-            width={"65%"}
-            maxW={"150px"}
-          />
-        )}
       </Flex>
     </Background>
   );

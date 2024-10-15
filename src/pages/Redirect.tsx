@@ -1,11 +1,10 @@
-import { Box } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/Background";
-import { GameMenu } from "../components/GameMenu";
+import { PositionedDiscordLink } from "../components/DiscordLink";
+import { PositionedGameMenu } from "../components/GameMenu";
 import { Loading } from "../components/Loading";
 import { useGame } from "../dojo/queries/useGame";
-import { useEffect } from "react";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 
 export const Redirect = () => {
@@ -29,30 +28,8 @@ export const Redirect = () => {
   return (
     <Background type={"game"}>
       <Loading />
-      {isMobile ? (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: "5px",
-            right: "5px",
-            zIndex: 1000,
-            transform: "scale(0.7)",
-          }}
-        >
-          <GameMenu />
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 14,
-            left: "70px",
-            zIndex: 1000,
-          }}
-        >
-          <GameMenu />
-        </Box>
-      )}
+      <PositionedGameMenu />
+      <PositionedDiscordLink />
     </Background>
   );
 };

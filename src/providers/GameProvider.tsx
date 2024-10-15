@@ -637,7 +637,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const addModifier = (cardIdx: number, modifierIdx: number) => {
     const modifiers = preSelectedModifiers[cardIdx] ?? [];
-    if (modifiers.length < 2) {
+    if (modifiers.length < 1) {
       const newModifiers = [...modifiers, modifierIdx];
       setPreSelectedModifiers((prev) => {
         return {

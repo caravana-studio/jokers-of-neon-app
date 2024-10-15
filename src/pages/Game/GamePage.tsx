@@ -11,6 +11,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const GamePage = () => {
   const {
@@ -71,6 +72,7 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
+      {!isMobile && <PositionedDiscordLink  />}
     </Background>
   );
 };
