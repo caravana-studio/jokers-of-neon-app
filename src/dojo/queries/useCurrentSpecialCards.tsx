@@ -26,7 +26,7 @@ const getSpecialCard = (
     isSpecial: true,
     id: card_id?.toString(),
     idx: index ?? 0,
-    img: `effect/${card_id}.png`,
+    img: `${card_id}.png`,
     temporary: specialCard?.is_temporary,
     remaining: specialCard?.remaining,
   };
