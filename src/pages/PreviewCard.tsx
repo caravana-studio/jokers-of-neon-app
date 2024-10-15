@@ -8,7 +8,7 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,12 +23,15 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
 import CachedImage from "../components/CachedImage.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
-import SpineAnimation from "../components/SpineAnimation.tsx";
+import SpineAnimation, {
+  SpineAnimationRef,
+} from "../components/SpineAnimation.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
 
 const PreviewCard = () => {
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -36,15 +39,6 @@ const PreviewCard = () => {
 
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation(["store"]);
-  /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
-    useState<boolean>(false); */
-
-  /*   const handleAnimationEnd = () => {
-    setIsOpenAnimationRunning(false);
-    setLockRedirection(false);
-    close();
-    navigate("/redirect/open-pack");
-  }; */
 
   if (!card) {
     return <p>Card not found.</p>;
@@ -77,8 +71,8 @@ const PreviewCard = () => {
             .catch(() => {
               setBuyDisabled(false);
             });
-          // setIsOpenAnimationRunning(true);
-          // setLockRedirection(true);
+          spineAnimationRef.current?.playOpenBoxAnimation();
+          setLockRedirection(true);
         } else {
           buyCard(card);
           navigate(-1);
@@ -118,9 +112,10 @@ const PreviewCard = () => {
                 <SpineAnimation
                   // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
                   // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
+                  ref={spineAnimationRef}
                   jsonUrl={`/spine-animations/basicPack.json`}
                   atlasUrl={`/spine-animations/basicPack.atlas`}
-                  initialAnimation="0.box"
+                  initialAnimation="2.opened"
                   hoverAnimation="1.opening"
                   loopAnimation="2.opened"
                   openBoxAnimation="3.expand"
