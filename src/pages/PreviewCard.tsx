@@ -126,7 +126,7 @@ const PreviewCard = () => {
                   initialAnimation="2.opened"
                   hoverAnimation="1.opening"
                   loopAnimation="2.opened"
-                  openBoxAnimation="3.expand"
+                  openBoxAnimation="3.expand_noPlane"
                   width={300}
                   height={1400}
                   xOffset={-150}
@@ -320,7 +320,7 @@ const PreviewCard = () => {
           bottom="0"
           backgroundColor="white"
           zIndex="9999"
-          animation={`${fadeIn} 0.5s ease-out`}
+          animation={`${fadeIn} 2s ease-out`}
         />
       )}
     </Background>

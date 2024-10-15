@@ -8,7 +8,6 @@ import React, {
 import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
 import { Flex } from "@chakra-ui/react";
 import { useStore } from "../providers/StoreProvider";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 interface SpineAnimationProps {
   jsonUrl: string;
@@ -24,7 +23,6 @@ interface SpineAnimationProps {
   yOffset?: number;
   scale?: number;
   onOpenAnimationStart?: () => void;
-  overlayTriggerDelay?: number;
 }
 
 export interface SpineAnimationRef {
@@ -47,7 +45,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       yOffset = -100,
       scale = 1,
       onOpenAnimationStart,
-      overlayTriggerDelay = 5500,
     },
     ref
   ) => {
@@ -69,19 +66,9 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           }
 
           if (onOpenAnimationStart) {
-            const animationDuration =
-              player.skeleton?.data.animations.find(
-                (a) => a.name === openBoxAnimation
-              )?.duration || 0;
-            const adjustedDuration = animationDuration / openAnimationSpeed;
-            const triggerTime = Math.max(
-              0,
-              adjustedDuration * 1000 - overlayTriggerDelay
-            );
-
             setTimeout(() => {
               onOpenAnimationStart();
-            }, triggerTime);
+            }, 2);
           }
         }
       },
@@ -120,10 +107,10 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           },
           viewport: {
             //   debugRender: true,
-            x: xOffset, // Set the x position of the viewport
-            y: yOffset, // Set the y position of the viewport
-            width: width, // Set the width of the viewport
-            height: height, // Set the height of the viewport
+            x: xOffset,
+            y: yOffset,
+            width: width,
+            height: height,
           },
         };
 
