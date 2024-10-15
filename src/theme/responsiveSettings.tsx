@@ -8,9 +8,9 @@ export const useResponsiveValues = () => {
   const [baseScale, setBaseScale] = useState<number | undefined>(undefined);
 
   const defaultBaseScale = useBreakpointValue({
-    base: 0.25,
-    sm: 0.65,
-    md: 0.65,
+    base: 0.4,
+    sm: 0.75,
+    md: 1.8,
   });
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const useResponsiveValues = () => {
 
   const cardScale = baseScale
     ? baseScale *
-      (aspectRatio > 1 ? 1 + (aspectRatio - 1) * 0.5 : 1 / aspectRatio)
+      (aspectRatio > 1 ? 1 / aspectRatio : 1 + (1 - aspectRatio) * 0.5)
     : 1;
 
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
