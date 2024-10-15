@@ -10,8 +10,9 @@ import { setup } from "./dojo/setup.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { preloadImages } from "./utils/preloadImages.ts";
-import { I18nextProvider } from 'react-i18next';
-import i18n from "./i18n.ts";
+import { I18nextProvider } from "react-i18next";
+import localI18n from "./i18n.ts";
+import i18n from "i18next";
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -20,8 +21,14 @@ async function init() {
 
   root.render(<LoadingScreen />);
 
-  try {
+  const loadImages = async () => {
+    await i18n.loadNamespaces(["traditional-cards", "neon-cards"]);
     preloadImages();
+  };
+
+  i18n.on("initialized", loadImages);
+
+  try {
     const setupResult = await setup(dojoConfig);
     const queryClient = new QueryClient();
     root.render(
@@ -29,7 +36,7 @@ async function init() {
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <Toaster />
-            <I18nextProvider i18n={i18n} defaultNS={undefined}>
+            <I18nextProvider i18n={localI18n} defaultNS={undefined}>
               <App />
             </I18nextProvider>
           </QueryClientProvider>

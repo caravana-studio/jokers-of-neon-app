@@ -1,15 +1,21 @@
 import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { PACKS_DATA } from "../data/packs";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
-import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
+import {
+  TRADITIONAL_CARDS_DATA,
+  NEON_CARDS_DATA,
+} from "../data/traditionalCards";
 
-const CACHE_NAME = 'image-cache';
+const CACHE_NAME = "image-cache";
 
 const getDefaultImageUrls = (): string[] => {
   const imageUrls: string[] = [];
 
-  // Traditional cards
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
+    imageUrls.push(`Cards/${key}.png`);
+  });
+
+  Object.keys(NEON_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
   });
 
@@ -41,13 +47,17 @@ const getDefaultImageUrls = (): string[] => {
   imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
-  // Vfx
-  imageUrls.push("vfx/explosion_blue.gif");
-  imageUrls.push("vfx/glow_particle.gif");
-  imageUrls.push("vfx/glow2.gif");
-  imageUrls.push("vfx/holo.png");
-  imageUrls.push("vfx/particle2.gif");
-  imageUrls.push("vfx/sparkles.gif");
+  // Borders
+  imageUrls.push("borders/bottom.png");
+  imageUrls.push("borders/bottom-rage.png");
+  imageUrls.push("borders/top.png");
+  imageUrls.push("borders/top-rage.png");
+
+  // Sort
+  imageUrls.push("sort/heart-on.png");
+  imageUrls.push("sort/heart-off.png");
+  imageUrls.push("sort/rank-on.png");
+  imageUrls.push("sort/rank-off.png");
 
   return imageUrls;
 };
@@ -73,6 +83,21 @@ export const preloadImages = async (urls?: string[]) => {
 
     await Promise.all(cachePromises);
   } catch (error) {
-    console.error('Error preloading images', error);
+    console.error("Error preloading images", error);
   }
+};
+
+export const getImageFromCache = async (url: string): Promise<Blob | null> => {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const response = await cache.match(url);
+
+    if (response) {
+      return await response.blob();
+    }
+  } catch (error) {
+    console.error("Error getting image from cache", error);
+  }
+
+  return null;
 };
