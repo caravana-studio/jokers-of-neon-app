@@ -9,6 +9,6 @@ export const getCardFromCardId = (cardId: number, index: number) => {
     card_id: cardId,
     id: cardId.toString() ?? "",
     idx: index,
-    img: `${cardType === CardTypes.COMMON ? "" : "effect/"}${cardId}.png`,
+    img: `${cardId}.png`,
   };
 };
