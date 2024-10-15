@@ -30,8 +30,6 @@ export const Packs = () => {
                 hoverAnimation="1.opening"
                 loopAnimation="2.opened"
                 openBoxAnimation="3.expand"
-                // width={100}
-                // height={300}
                 onClick={() => {
                   if (!pack.purchased) {
                     navigate("/preview-card", {

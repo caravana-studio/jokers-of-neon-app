@@ -12,6 +12,9 @@ interface SpineAnimationProps {
   openBoxAnimation?: string;
   width?: number;
   height?: number;
+  xOffset?: number;
+  yOffset?: number;
+  scale?: number;
 }
 
 const SpineAnimation: React.FC<SpineAnimationProps> = ({
@@ -24,10 +27,14 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
   openBoxAnimation,
   width = 400,
   height = 1700,
+  xOffset = 0,
+  yOffset = -100,
+  scale = 1,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<SpinePlayer | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
     if (containerRef.current && !playerRef.current) {
@@ -40,11 +47,13 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
         preserveDrawingBuffer: true,
         premultipliedAlpha: true,
         animation: initialAnimation,
+        scale: scale,
         success: (player: SpinePlayer) => {
           if (player.skeleton != null) {
             const animationName = player.skeleton.data.animations[4].name;
             // console.log(player.skeleton.data.animations.map((a) => a.name));
             player.startRendering();
+            setPlayerReady(true);
 
             player.animationState?.addListener({
               complete: function (entry) {
@@ -63,8 +72,8 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
         },
         viewport: {
           //   debugRender: true,
-          x: 0, // Set the x position of the viewport
-          y: -100, // Set the y position of the viewport
+          x: xOffset, // Set the x position of the viewport
+          y: yOffset, // Set the y position of the viewport
           width: width, // Set the width of the viewport
           height: height, // Set the height of the viewport
         },
@@ -76,13 +85,14 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
     return () => {
       if (playerRef.current) {
         playerRef.current.dispose();
+        playerRef.current = null; // reset after disposal
       }
     };
   }, [jsonUrl, atlasUrl]);
 
   // Handle hover state
   useEffect(() => {
-    if (playerRef.current) {
+    if (playerReady && playerRef.current) {
       if (isHovered) {
         playerRef.current.setAnimation(hoverAnimation, false);
         playerRef.current.addAnimation(loopAnimation, true);
@@ -95,7 +105,7 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
         }
       }
     }
-  }, [isHovered, hoverAnimation, loopAnimation, initialAnimation]);
+  }, [playerReady, isHovered]);
 
   const onClickOpen = () => {
     if (playerRef.current && openBoxAnimation) {
@@ -106,7 +116,7 @@ const SpineAnimation: React.FC<SpineAnimationProps> = ({
   return (
     <Flex
       ref={containerRef}
-      onClick={onClickOpen}
+      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ width: "100%", height: "100%", cursor: "pointer" }}

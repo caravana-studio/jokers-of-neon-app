@@ -23,6 +23,7 @@ import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
 import CachedImage from "../components/CachedImage.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
+import SpineAnimation from "../components/SpineAnimation.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -113,15 +114,34 @@ const PreviewCard = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               > */}
-              <CachedImage
-                src={
-                  isPack
-                    ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
-                }
-                alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
-                borderRadius="10px"
-              />
+              {isPack && (
+                <SpineAnimation
+                  // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
+                  // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
+                  jsonUrl={`/spine-animations/basicPack.json`}
+                  atlasUrl={`/spine-animations/basicPack.atlas`}
+                  initialAnimation="0.box"
+                  hoverAnimation="1.opening"
+                  loopAnimation="2.opened"
+                  openBoxAnimation="3.expand"
+                  width={300}
+                  height={1400}
+                  xOffset={-150}
+                  scale={0.8}
+                />
+              )}
+              {!isPack && (
+                <CachedImage
+                  src={
+                    isPack
+                      ? `Cards/${card.img}.png`
+                      : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                  }
+                  alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
+                  borderRadius="10px"
+                />
+              )}
+
               {/* </OpenAnimation> */}
             </Box>
 
