@@ -23,6 +23,8 @@ interface SpineAnimationProps {
   xOffset?: number;
   yOffset?: number;
   scale?: number;
+  onOpenAnimationStart?: () => void;
+  overlayTriggerDelay?: number;
 }
 
 export interface SpineAnimationRef {
@@ -44,6 +46,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       xOffset = 0,
       yOffset = -100,
       scale = 1,
+      onOpenAnimationStart,
+      overlayTriggerDelay = 5500,
     },
     ref
   ) => {
@@ -52,12 +56,33 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const [isHovered, setIsHovered] = useState(false);
     const [playerReady, setPlayerReady] = useState(false);
     const { setLockRedirection } = useStore();
+    const openAnimationSpeed = 0.3;
 
     useImperativeHandle(ref, () => ({
       playOpenBoxAnimation: () => {
         if (playerRef.current && openBoxAnimation) {
-          playerRef.current.setAnimation(hoverAnimation, false);
-          playerRef.current.setAnimation(openBoxAnimation, false);
+          const player = playerRef.current;
+          player.setAnimation(hoverAnimation, false);
+          const track = player.setAnimation(openBoxAnimation, false);
+          if (track) {
+            track.timeScale = openAnimationSpeed;
+          }
+
+          if (onOpenAnimationStart) {
+            const animationDuration =
+              player.skeleton?.data.animations.find(
+                (a) => a.name === openBoxAnimation
+              )?.duration || 0;
+            const adjustedDuration = animationDuration / openAnimationSpeed;
+            const triggerTime = Math.max(
+              0,
+              adjustedDuration * 1000 - overlayTriggerDelay
+            );
+
+            setTimeout(() => {
+              onOpenAnimationStart();
+            }, triggerTime);
+          }
         }
       },
     }));
@@ -76,7 +101,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           scale: scale,
           success: (player: SpinePlayer) => {
             if (player.skeleton != null) {
-              const animationName = player.skeleton.data.animations[4].name;
               // console.log(player.skeleton.data.animations.map((a) => a.name));
               player.startRendering();
               setPlayerReady(true);

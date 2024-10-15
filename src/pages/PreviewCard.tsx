@@ -7,6 +7,7 @@ import {
   Text,
   Tooltip,
   VStack,
+  keyframes,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -29,9 +30,14 @@ import SpineAnimation, {
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
 
 const PreviewCard = () => {
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const [showOverlay, setShowOverlay] = useState(false);
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -63,7 +69,8 @@ const PreviewCard = () => {
           buyPack(pack)
             .then((response) => {
               if (response) {
-                navigate("/redirect/open-pack");
+                spineAnimationRef.current?.playOpenBoxAnimation();
+                setLockRedirection(true);
               } else {
                 setBuyDisabled(false);
               }
@@ -71,8 +78,6 @@ const PreviewCard = () => {
             .catch(() => {
               setBuyDisabled(false);
             });
-          spineAnimationRef.current?.playOpenBoxAnimation();
-          setLockRedirection(true);
         } else {
           buyCard(card);
           navigate(-1);
@@ -87,6 +92,13 @@ const PreviewCard = () => {
       {t("store.preview-card.labels.buy")}
     </Button>
   );
+
+  const openAnimationCallBack = () => {
+    setShowOverlay(true);
+    setTimeout(() => {
+      navigate("/redirect/open-pack");
+    }, 1000);
+  };
 
   return (
     <Background type="home" dark>
@@ -104,10 +116,6 @@ const PreviewCard = () => {
         >
           <Flex>
             <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-              {/*               <OpenAnimation
-                startAnimation={isOpenAnimationRunning}
-                onAnimationEnd={() => handleAnimationEnd()}
-              > */}
               {isPack && (
                 <SpineAnimation
                   // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
@@ -123,6 +131,7 @@ const PreviewCard = () => {
                   height={1400}
                   xOffset={-150}
                   scale={0.8}
+                  onOpenAnimationStart={openAnimationCallBack}
                 />
               )}
               {!isPack && (
@@ -302,6 +311,18 @@ const PreviewCard = () => {
         </Flex>
       </Flex>
       <PositionedDiscordLink />
+      {showOverlay && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          backgroundColor="white"
+          zIndex="9999"
+          animation={`${fadeIn} 0.5s ease-out`}
+        />
+      )}
     </Background>
   );
 };
