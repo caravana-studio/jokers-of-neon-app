@@ -62,7 +62,7 @@ export default {
     base: "0em",    
     sm: "42em",   
     md: "78em",     
-    lg: "116em",   
+    lg: "90em",   
     xl: "125em",  
   },
 
