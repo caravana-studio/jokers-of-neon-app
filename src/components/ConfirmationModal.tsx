@@ -11,6 +11,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
 
 interface ConfirmationModalProps {
@@ -26,6 +27,7 @@ export const ConfirmationModal = ({
   description,
   onConfirm,
 }: ConfirmationModalProps) => {
+  const { t } = useTranslation(["game"]);
   return (
     <Modal isOpen={true} onClose={close}>
       <ModalOverlay />
@@ -43,7 +45,7 @@ export const ConfirmationModal = ({
         </ModalBody>
         <ModalFooter>
           <Button variant="defaultOutline" size="sm" onClick={close}>
-            Close
+            {t("confirmation-modal.close")}
           </Button>
           <Button
             variant="secondarySolid"
@@ -52,7 +54,7 @@ export const ConfirmationModal = ({
             onClick={onConfirm}
             ml={3}
           >
-            Confirm
+            {t("confirmation-modal.confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -2,9 +2,12 @@ import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
+import { useTranslation } from "react-i18next";
+import CachedImage from "./CachedImage.tsx";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
+  const { t } = useTranslation(["game"]);
 
   return (
     <Flex
@@ -13,7 +16,7 @@ export const SortBy = () => {
       gap={0.5}
     >
       <Text size="m" pl={{ base: 1, sm: 0 }}>
-        Sort by
+        {t("game.hand-section.sort-by.sort-by-title")}
       </Text>
       <Flex
         gap={0.5}
@@ -24,21 +27,29 @@ export const SortBy = () => {
         minWidth={{ base: "50px", sm: "70px" }}
         p={{ base: "5px 5px", sm: "8px 5px" }}
       >
-        <Tooltip label="Suit" placement="bottom" size="sm">
-          <Img
+        <Tooltip
+          label={t("game.hand-section.sort-by.tooltip.suit")}
+          placement="bottom"
+          size="sm"
+        >
+          <CachedImage
             cursor="pointer"
             src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
-            height={{base: 5, sm: 8}}
+            height={{ base: 5, sm: 8 }}
             onClick={() => {
               toggleSortBy();
             }}
           />
         </Tooltip>
-        <Tooltip label="Rank" placement="bottom" size="sm">
-          <Img
+        <Tooltip
+          label={t("game.hand-section.sort-by.tooltip.rank")}
+          placement="bottom"
+          size="sm"
+        >
+          <CachedImage
             cursor="pointer"
             src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
-            height={{base: 5, sm: 8}}
+            height={{ base: 5, sm: 8 }}
             onClick={() => {
               toggleSortBy();
             }}

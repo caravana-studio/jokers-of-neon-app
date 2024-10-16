@@ -4,15 +4,16 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
+import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
@@ -20,6 +21,8 @@ import theme from "../theme/theme";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
+import CachedImage from "../components/CachedImage.tsx";
+import { PositionedGameMenu } from "../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -31,6 +34,7 @@ const PreviewCard = () => {
   const { card, isPack, pack } = state || {};
 
   const [buyDisabled, setBuyDisabled] = useState(false);
+  const { t } = useTranslation(["store"]);
   /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
     useState<boolean>(false); */
 
@@ -85,12 +89,13 @@ const PreviewCard = () => {
       variant="outlinePrimaryGlow"
       height={"100%"}
     >
-      BUY
+      {t("store.preview-card.labels.buy")}
     </Button>
   );
 
   return (
     <Background type="home" dark>
+      <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
           flexDirection={"column"}
@@ -108,12 +113,13 @@ const PreviewCard = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               > */}
-              <Image
+              <CachedImage
                 src={
                   isPack
                     ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
                 }
+                alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
                 borderRadius="10px"
               />
               {/* </OpenAnimation> */}
@@ -124,7 +130,7 @@ const PreviewCard = () => {
                 <Heading size="l" variant="italic">
                   {name}
                 </Heading>
-                <Image
+                <CachedImage
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"
@@ -152,15 +158,16 @@ const PreviewCard = () => {
                         },
                       }}
                     >
-                      CARD TYPE:
+                      {t("store.preview-card.title.card-type")}
                     </Text>
                     <Text color={neonGreen} fontSize="xl">
                       {card.isSpecial
-                        ? "Special"
+                        ? t("store.preview-card.labels.special")
                         : card.isModifier
-                          ? "Modifier"
-                          : "Traditional"}
-                      {card.temporary && " (temporary)"}
+                          ? t("store.preview-card.labels.modifier")
+                          : t("store.preview-card.labels.traditional")}
+                      {card.temporary &&
+                        " (" + t("store.preview-card.labels.temporary") + ")"}
                     </Text>
                   </Box>
                 )}
@@ -183,7 +190,7 @@ const PreviewCard = () => {
                       },
                     }}
                   >
-                    DESCRIPTION:
+                    {t("store.preview-card.title.description")}
                   </Text>
                   <Text color={neonGreen} fontSize="xl">
                     {description}
@@ -215,7 +222,7 @@ const PreviewCard = () => {
                         },
                       }}
                     >
-                      DETAILS:
+                      {t("store.preview-card.title.details")}
                     </Text>
                     <Text color={neonGreen} fontSize="xl">
                       {details?.split("\n").map((line, index) => (
@@ -234,7 +241,7 @@ const PreviewCard = () => {
                   flexDir={"row"}
                 >
                   <Heading size="m" variant="italic">
-                    PRICE: {card.price}
+                    {t("store.preview-card.title.price")} {card.price}
                   </Heading>
                   <Heading size="m" ml={2}>
                     ¢
@@ -274,11 +281,12 @@ const PreviewCard = () => {
               onClick={() => navigate("/store")}
               height={"100%"}
             >
-              Close
+              {t("store.preview-card.labels.close")}
             </Button>
           </HStack>
         </Flex>
       </Flex>
+      <PositionedDiscordLink />
     </Background>
   );
 };

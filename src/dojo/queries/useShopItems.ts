@@ -56,7 +56,7 @@ const getCard = (
     id: card?.idx.toString() ?? "",
     idx: card?.idx ?? 0,
     purchased: card?.purchased,
-    img: `${card?.item_type === CardTypes.COMMON ? "" : "effect/"}${card?.card_id}.png`,
+    img: `${card?.card_id}.png`,
   };
 };
 

@@ -47,7 +47,9 @@ interface IGameContext {
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
-  discardEffectCard: (cardIdx: number) => void;
+  discardEffectCard: (
+    cardIdx: number
+  ) => Promise<{ success: boolean; cards: Card[] }>;
   error: boolean;
   clearPreSelection: () => void;
   preSelectedModifiers: { [key: number]: number[] };
@@ -92,7 +94,8 @@ const GameContext = createContext<IGameContext>({
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
-  discardEffectCard: () => {},
+  discardEffectCard: () =>
+    new Promise((resolve) => resolve({ success: false, cards: [] })),
   error: false,
   clearPreSelection: () => {},
   preSelectedModifiers: {},
@@ -249,6 +252,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      console.log(playEvents);
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
         : 0;
@@ -263,6 +267,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         : 0;
       const COMMON_CARDS_DURATION =
         playAnimationDuration * playEvents.cardScore.length;
+      const CASH_DURATION =
+        playAnimationDuration * (playEvents.cashEvents?.length ?? 0);
       const SPECIAL_CARDS_DURATION =
         playAnimationDuration * (playEvents.specialCards?.length ?? 0);
       const ALL_CARDS_DURATION =
@@ -273,6 +279,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         GLOBAL_BOOSTER_DURATION +
         COMMON_CARDS_DURATION +
         SPECIAL_CARDS_DURATION +
+        CASH_DURATION +
         500;
 
       setPreSelectionLocked(true);
@@ -428,24 +435,39 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 }, playAnimationDuration * index);
               });
 
-              //special cards
+              // cash events
               setTimeout(() => {
-                playEvents.specialCards?.forEach((event, index) => {
+                playEvents.cashEvents?.forEach((event, index) => {
                   setTimeout(() => {
-                    const { idx, points, multi, special_idx } = event;
+                    const { idx, special_idx, cash } = event;
                     setAnimatedCard({
                       idx: [idx],
-                      points,
-                      multi,
                       special_idx,
+                      cash,
                       animationIndex: 60 + index,
                     });
-                    if (points) pointsSound();
-                    points && setPoints((prev) => prev + points);
-                    if (multi) multiSound();
-                    multi && setMulti((prev) => prev + multi);
                   }, playAnimationDuration * index);
                 });
+
+                //special cards
+                setTimeout(() => {
+                  playEvents.specialCards?.forEach((event, index) => {
+                    setTimeout(() => {
+                      const { idx, points, multi, special_idx } = event;
+                      setAnimatedCard({
+                        idx: [idx],
+                        points,
+                        multi,
+                        special_idx,
+                        animationIndex: 70 + index,
+                      });
+                      if (points) pointsSound();
+                      points && setPoints((prev) => prev + points);
+                      if (multi) multiSound();
+                      multi && setMulti((prev) => prev + multi);
+                    }, playAnimationDuration * index);
+                  });
+                }, CASH_DURATION);
               }, COMMON_CARDS_DURATION);
             }, LEVEL_BOOSTER_DURATION);
           }, GLOBAL_BOOSTER_DURATION);
@@ -468,7 +490,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         if (playEvents.gameOver) {
           console.log("GAME OVER");
           setTimeout(() => {
-            navigate("/gameover");
+            navigate(`/gameover/${gameId}`);
             setLockRedirection(false);
           }, 1000);
         } else if (playEvents.levelPassed && playEvents.detailEarned) {
@@ -577,7 +599,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       if (response.success) {
         if (response.gameOver) {
           setTimeout(() => {
-            navigate("/gameover");
+            navigate(`/gameover/${gameId}`);
           }, 1000);
         } else {
           replaceCards(response.cards);
@@ -613,7 +635,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    discardEffectCard(gameId, cardIdx)
+    const discardPromise = discardEffectCard(gameId, cardIdx);
+    discardPromise
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
@@ -627,11 +650,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .finally(() => {
         setPreSelectionLocked(false);
       });
+    return discardPromise;
   };
 
   const addModifier = (cardIdx: number, modifierIdx: number) => {
     const modifiers = preSelectedModifiers[cardIdx] ?? [];
-    if (modifiers.length < 2) {
+    if (modifiers.length < 1) {
       const newModifiers = [...modifiers, modifierIdx];
       setPreSelectedModifiers((prev) => {
         return {
@@ -678,7 +702,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
-        navigate("/gameover");
+        navigate(`/gameover/${gameId}`);
       } else if (game?.state === "AT_SHOP") {
         console.log("redirecting to store");
         navigate("/store");

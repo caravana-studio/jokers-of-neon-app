@@ -1,9 +1,11 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { VIOLET } from "../theme/colors";
+import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { useTranslation } from 'react-i18next';
+import { useRound } from "../dojo/queries/useRound.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -66,40 +68,45 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
+  const { t } = useTranslation(["intermediate-screens"]);
+
   const labels = [
-    `base`,
-    "Level bonus",
-    `${hands_left} Hands left`,
-    `${discard_left} Discards left`,
+    t('rewards-details.labels.base'),
+    t('rewards-details.labels.level-bonus'),
+    t('rewards-details.labels.hands-left', {hands: hands_left}),
+    t('rewards-details.labels.discards-left' , {discards: discard_left}),
   ];
 
   const navigate = useNavigate();
+  const round = useRound()
 
   return (
     <PinkBox
-      title={`Level ${level} defeated`}
-      button="CONTINUE"
+      title={`${t('rewards-details.labels.title-1')} ${level} ${t('rewards-details.labels.title-2')}`}
+      button={t('rewards-details.labels.continue-btn')}
       onClick={() => {
         // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
+      <Heading color='lightViolet' size="s"> {t('rewards-details.labels.final-score', {score: round?.player_score })}  </Heading>
+      
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
 
       <Flex
-        color={VIOLET}
+        color={VIOLET_LIGHT}
         pt={{ base: 4, sm: 8 }}
         pb={4}
         w="90%"
         justifyContent="space-between"
       >
-        <Heading color="neonPink" variant="italic">
-          Total:
+        <Heading color="lightViolet" variant="italic">
+        {t('rewards-details.labels.total')}
         </Heading>
-        <Heading color="neonPink" variant="italic">
+        <Heading color="lightViolet" variant="italic">
           {total}
           <CashSymbol />
         </Heading>

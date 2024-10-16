@@ -1,8 +1,13 @@
-import { expect, test } from "vitest";
+import { expect, test, beforeAll } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
 import { C10, C2, C3, C5, CA, CJ, CQ, D10, D2, D3, D4, D5, D6, D7, D8, D9, DA, DK, DQ, H10, H2, H3, H4, H6, H7, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S10, S3, SA } from "../../mocks/cardMocks";
 import { EasyFlush, AllCardsToHearts, EasyStraight } from "../../mocks/specialCardMocks";
+import i18n from "../../../i18n";
+
+beforeAll(async () => {
+  await i18n.loadNamespaces(['traditional-cards', 'neon-cards', 'effects']);
+});
 
 test("Flush with EasyFlush should work", () => {
   expect(testCheckHand([H2, H3, H4, H9, S10], [EasyFlush])).toBe(Plays.FLUSH);
