@@ -176,7 +176,6 @@ export const checkHand = (
     return consecutive >= lenStraight;
   };
   const isPlayStraight = isStraight();
-  console.log(isPlayStraight);
 
   if (isFlush && isPlayStraight) {
     let royalCards = [
