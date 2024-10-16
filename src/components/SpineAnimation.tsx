@@ -23,6 +23,7 @@ interface SpineAnimationProps {
   yOffset?: number;
   scale?: number;
   onOpenAnimationStart?: () => void;
+  isPurchased?: boolean;
 }
 
 export interface SpineAnimationRef {
@@ -45,6 +46,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       yOffset = -100,
       scale = 1,
       onOpenAnimationStart,
+      isPurchased,
     },
     ref
   ) => {
@@ -139,8 +141,12 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             playerRef.current.setAnimation(initialAnimation, true);
           }
         }
+
+        if (isPurchased) {
+          playerRef.current.setAnimation(loopAnimation, true);
+        }
       }
-    }, [playerReady, isHovered]);
+    }, [playerReady, isHovered, isPurchased]);
 
     return (
       <Flex
@@ -148,7 +154,12 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
         onClick={onClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{ width: "100%", height: "100%", cursor: "pointer" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          cursor: "pointer",
+          filter: isPurchased ? "grayscale(100%)" : "none",
+        }}
       />
     );
   }

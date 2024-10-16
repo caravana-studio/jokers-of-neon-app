@@ -29,6 +29,7 @@ export const Packs = () => {
                 initialAnimation="0.box"
                 hoverAnimation="1.opening"
                 loopAnimation="2.opened"
+                isPurchased={pack.purchased.valueOf()}
                 onClick={() => {
                   if (!pack.purchased) {
                     navigate("/preview-card", {
