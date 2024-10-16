@@ -2,6 +2,7 @@ import { GAME_OVER_EVENT } from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";
+import { getCashEvents } from "./getCashEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
 import { getGlobalEvents } from "./getGlobalEvents";
 import { getHandEvent } from "./getHandEvent";
@@ -29,6 +30,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     modifierSuitEvents: getModifierSuitEvents(events),
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),
+    cashEvents: getCashEvents(events),
   };
 
   return playEvents;
