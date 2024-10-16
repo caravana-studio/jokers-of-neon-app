@@ -6,7 +6,6 @@ import { useStore } from "../../providers/StoreProvider";
 import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
-import { useBreakpointValue } from "@chakra-ui/react";
 import useStoreContent from "./UseStoreContent.ts";
 import { Loading } from "../../components/Loading.tsx";
 
@@ -29,13 +28,11 @@ export const Store = () => {
     setSpecialCardsModalOpen,
   } = useStoreContent();
 
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
-
   const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
   const state = game?.state;
   const { lockRedirection } = useStore();
-  const { isCardScaleCalculated, cardScale } = useResponsiveValues();
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     setIsRageRound(false);
@@ -83,7 +80,7 @@ export const Store = () => {
     }
   };
 
-  if (loading || !isCardScaleCalculated) {
+  if (loading) {
     return (
       <Background type="game">
         <Loading />
