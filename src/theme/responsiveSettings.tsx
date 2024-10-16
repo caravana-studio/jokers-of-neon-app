@@ -1,44 +1,56 @@
 import { useState, useEffect } from "react";
 import { useBreakpointValue } from "@chakra-ui/react";
+import { throttle } from "lodash";
 
 export const useResponsiveValues = () => {
   const [aspectRatio, setAspectRatio] = useState<number>(
     window.innerWidth / window.innerHeight
   );
-  const [baseScale, setBaseScale] = useState<number | undefined>(undefined);
+  const [cardScale, setCardScale] = useState<number>(1);
+  const [isCardScaleCalculated, setisCardScaleCalculated] = useState(false);
 
-  const defaultBaseScale = useBreakpointValue({
-    base: 0.4,
-    sm: 0.75,
-    md: 1.6,
-    lg: 2,
-  });
+  const defaultBaseScale = useBreakpointValue(
+    {
+      base: 0.4,
+      sm: 0.75,
+      md: 1.6,
+      lg: 2,
+    },
+    { ssr: false }
+  );
 
   useEffect(() => {
-    const handleResize = () => {
+    if (defaultBaseScale === undefined) {
+      return;
+    }
+
+    const handleResize = throttle(() => {
       const newAspectRatio = window.innerWidth / window.innerHeight;
       setAspectRatio(newAspectRatio);
 
+      let baseScale = 1;
       if (window.innerWidth === 540 && window.innerHeight === 720) {
-        setBaseScale(0.4); // Adjust for 540x720 resolution
+        baseScale = 0.4; // Adjust for 540x720 resolution
       } else if (window.innerWidth === 1024 && window.innerHeight === 1366) {
-        setBaseScale(0.85); // Adjust for 1024x1366 resolution
+        baseScale = 0.85; // Adjust for 1024x1366 resolution
       } else {
-        setBaseScale(defaultBaseScale);
+        baseScale = defaultBaseScale;
       }
-    };
+
+      let cardScale = baseScale
+        ? baseScale *
+          (aspectRatio > 1 ? 1 / aspectRatio : 1 + (1 - aspectRatio) * 0.5)
+        : 1;
+
+      setCardScale(cardScale);
+
+      setisCardScaleCalculated(true);
+    }, 200);
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, [defaultBaseScale]);
-
-  const cardScale = baseScale
-    ? baseScale *
-      (aspectRatio > 1 ? 1 / aspectRatio : 1 + (1 - aspectRatio) * 0.5)
-    : 1;
 
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
-  return { cardScale, isSmallScreen };
+  return { cardScale, isSmallScreen, isCardScaleCalculated };
 };

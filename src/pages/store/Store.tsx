@@ -18,6 +18,7 @@ import {
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
   const {
@@ -34,6 +35,7 @@ export const Store = () => {
   const game = useGame();
   const state = game?.state;
   const { lockRedirection } = useStore();
+  const { isCardScaleCalculated, cardScale } = useResponsiveValues();
 
   useEffect(() => {
     setIsRageRound(false);
@@ -67,14 +69,6 @@ export const Store = () => {
     }
   }, []);
 
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
-
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
     if (showTutorial) setRun(true);
@@ -88,6 +82,14 @@ export const Store = () => {
       setRun(false);
     }
   };
+
+  if (loading || !isCardScaleCalculated) {
+    return (
+      <Background type="game">
+        <Loading />
+      </Background>
+    );
+  }
 
   return (
     <Background type="store" scrollOnMobile>

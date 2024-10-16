@@ -28,7 +28,9 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     });
   }, [cards]);
 
-  const { isSmallScreen, cardScale } = useResponsiveValues();
+  const { isSmallScreen, cardScale, isCardScaleCalculated } =
+    useResponsiveValues();
+
   const adjustedScale = isSmallScreen
     ? cardScale
     : cardScale - (cardScale * 25) / 100;
@@ -40,6 +42,10 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
         console.error("Error preloading card images:", error);
       });
   }, [imageUrls]);
+
+  if (!isCardScaleCalculated) {
+    return null;
+  }
 
   return (
     <>

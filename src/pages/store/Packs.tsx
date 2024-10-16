@@ -9,7 +9,11 @@ export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
-  const { cardScale } = useResponsiveValues();
+  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
+
+  if (!isCardScaleCalculated) {
+    return null;
+  }
 
   return (
     <Box m={4} className="game-tutorial-step-packs">
