@@ -69,6 +69,23 @@
         "hand-head": "Mão",
         "points-multi-head": "Pontos/Multiplicador"
       }
+    },
+    "deck": {
+      "tooltip": "Ver meu baralho",
+      "title": "Meu baralho completo",
+      "filter-title": "Filtrar por",
+      "suit": {
+        "club": "Paus",
+        "spade": "Espadas",
+        "heart": "Copas",
+        "diamond": "Ouros",
+        "neon": "Neon",
+        "modifier": "Modificador"
+      },
+      "btns": {
+        "special-cards": "Ver cartas especiais",
+        "back": "Voltar ao jogo"
+      }
     }
   },
   "confirmation-modal": {

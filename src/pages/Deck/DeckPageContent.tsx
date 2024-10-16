@@ -13,11 +13,11 @@ import {
 } from "./Utils/DeckCardsUtils";
 import { useGetDeck } from "../../queries/useGetDeck";
 import { useGame } from "../../dojo/queries/useGame";
-import { useRound } from "../../dojo/queries/useRound";
+import { useTranslation } from "react-i18next";
 
 export const DeckPageContent = () => {
   const game = useGame();
-  const round = useRound();
+  const { t } = useTranslation(["game"]);
 
   const fullDeck = preprocessCards(useFullDeck()?.cards ?? []);
   const currentDeck = preprocessCards(useGetDeck(game?.id ?? 0).cards ?? []);
@@ -94,7 +94,7 @@ export const DeckPageContent = () => {
               },
             }}
           >
-            My full deck
+            {t("game.deck.title")}
           </Heading>
           <Flex flexDirection={"column"} my={12} alignItems={"center"}>
             <Text
@@ -114,7 +114,7 @@ export const DeckPageContent = () => {
                 },
               }}
             >
-              Filter by
+              {t("game.deck.filter-title")}
             </Text>
             <Flex
               alignItems={"space-around"}
@@ -141,7 +141,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                CLUB
+                {t("game.deck.suit.club").toUpperCase()}
               </Button>
               <Button
                 size={"sm"}
@@ -160,7 +160,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                SPADE
+                {t("game.deck.suit.spade").toUpperCase()}
               </Button>
               <Button
                 size={"sm"}
@@ -179,7 +179,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                HEART
+                {t("game.deck.suit.heart").toUpperCase()}
               </Button>
               <Button
                 size={"sm"}
@@ -198,7 +198,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                DIAMOND
+                {t("game.deck.suit.diamond").toUpperCase()}
               </Button>
               <Button
                 size={"sm"}
@@ -214,7 +214,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                NEON
+                {t("game.deck.suit.neon").toUpperCase()}
               </Button>
               <Button
                 size={"sm"}
@@ -232,7 +232,7 @@ export const DeckPageContent = () => {
                   })
                 }
               >
-                MODIFIER
+                {t("game.deck.suit.modifier").toUpperCase()}
               </Button>
             </Flex>
           </Flex>
@@ -249,13 +249,13 @@ export const DeckPageContent = () => {
                 setSpecialCardsModalOpen(true);
               }}
             >
-              SEE SPECIAL CARDS
+              {t("game.deck.btns.special-cards").toUpperCase()}
             </Button>
             <Button
               variant={"outlinePrimaryGlow"}
               onClick={() => navigate("/demo")}
             >
-              BACK TO GAME
+              {t("game.deck.btns.back").toUpperCase()}
             </Button>
           </Flex>
         </Flex>

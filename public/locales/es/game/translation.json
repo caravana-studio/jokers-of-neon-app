@@ -69,6 +69,23 @@
         "hand-head": "Mano",
         "points-multi-head": "Puntos/Multi"
       }
+    },
+    "deck": {
+      "tooltip": "Ver mazo",
+      "title": "Mi mazo",
+      "filter-title": "Filtrar por",
+      "suit": {
+        "club": "Trébol",
+        "spade": "Pica",
+        "heart": "Corazón",
+        "diamond": "Diamante",
+        "neon": "Neón",
+        "modifier": "Modificador"
+      },
+      "btns": {
+        "special-cards": "Ver cartas especiales",
+        "back": "Volver al juego"
+      }
     }
   },
   "confirmation-modal": {
