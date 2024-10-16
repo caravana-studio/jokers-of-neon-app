@@ -1,6 +1,7 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { isMobile } from "react-device-detect";
+import CachedImage from "./CachedImage";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -65,7 +66,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       {!isMobile && (
-        <Image
+        <CachedImage
           src="/borders/top.png"
           height="8%"
           width="100%"
@@ -82,7 +83,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
         alignItems="center"
         padding={isMobile ? "0 50px" : "25px 50px 0px 50px"}
       >
-        <Image
+        <CachedImage
           alignSelf="center"
           justifySelf="end"
           src="/logos/logo-variant.svg"
@@ -92,7 +93,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
           ml={4}
         />
         {!isMobile && (
-          <Image
+          <CachedImage
             alignSelf="center"
             justifySelf="end"
             src="/logos/joker-logo.png"
@@ -115,7 +116,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
       </Box>
       {!isMobile && (
         <>
-          <Image
+          <CachedImage
             src="/borders/bottom.png"
             height="8%"
             width="100%"

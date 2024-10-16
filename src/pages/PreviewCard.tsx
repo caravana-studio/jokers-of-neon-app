@@ -4,7 +4,6 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   Tooltip,
   VStack,
@@ -22,6 +21,7 @@ import theme from "../theme/theme";
 import { getCardData } from "../utils/getCardData";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { Coins } from "./store/Coins.tsx";
+import CachedImage from "../components/CachedImage.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
@@ -113,12 +113,13 @@ const PreviewCard = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               > */}
-              <Image
+              <CachedImage
                 src={
                   isPack
                     ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
                 }
+                alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
                 borderRadius="10px"
               />
               {/* </OpenAnimation> */}
@@ -129,7 +130,7 @@ const PreviewCard = () => {
                 <Heading size="l" variant="italic">
                   {name}
                 </Heading>
-                <Image
+                <CachedImage
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"
