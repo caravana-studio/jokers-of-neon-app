@@ -133,6 +133,10 @@
     "320": {
         "name": "Ventaja Inicial",
         "description": "La primera mano jugada puntúa +100 puntos y +10 multi"
+    },
+    "321": {
+      "name": "Mano de la suerte",
+      "description": "Agrega 50 monedas por cada carta de diamantes que se juega"
     }
     }
 }
