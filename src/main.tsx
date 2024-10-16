@@ -1,4 +1,4 @@
-import { mainnet } from "@starknet-react/chains";
+import { sepolia } from "@starknet-react/chains";
 import { jsonRpcProvider, StarknetConfig, voyager } from "@starknet-react/core";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -28,7 +28,7 @@ async function init() {
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
-  const chains = [mainnet];
+  const chains = [sepolia];
   const connectors = [cartridgeConnector];
   const provider = jsonRpcProvider({ rpc });
 

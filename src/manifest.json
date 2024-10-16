@@ -1235,12 +1235,12 @@
       }
     ],
     "address": "0x6830c6dc2cf6828a34180f468a6a313df0d7039888a89a555a78924938223bf",
-    "transaction_hash": "0x34987a5eaeff1e7f3f7e14adca7b3314a355a88ac851e46f09fb03818e5739e",
+    "transaction_hash": null,
     "block_number": null,
     "seed": "jokers_of_neon",
     "metadata": {
-      "profile_name": "mainnet",
-      "rpc_url": "https://api.cartridge.gg/x/starknet/mainnet"
+      "profile_name": "sepolia",
+      "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
     },
     "manifest_name": "dojo-world"
   },
@@ -1248,7 +1248,7 @@
     "kind": "Class",
     "class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
     "original_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
-    "abi": "manifests/mainnet/deployment/abis/dojo-base.json",
+    "abi": "manifests/sepolia/deployment/abis/dojo-base.json",
     "tag": "dojo-base",
     "manifest_name": "dojo-base"
   },
@@ -1670,10 +1670,10 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x6479eba779ca4cf760dfefb21ff9aab649b2a5b05b56c63f2c2bcf7d2c636a4",
+      "address": null,
       "class_hash": "0x2f48616dc50e68b33eba83440b5422e6c594ec00d27d0ae8efed865f68e0f3f",
       "original_class_hash": "0x2f48616dc50e68b33eba83440b5422e6c594ec00d27d0ae8efed865f68e0f3f",
-      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "base_class_hash": "0x0",
       "abi": [
         {
           "type": "impl",
