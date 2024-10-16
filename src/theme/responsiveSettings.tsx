@@ -50,7 +50,10 @@ export const useResponsiveValues = () => {
     handleResize();
   }, [defaultBaseScale]);
 
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const isSmallScreen = useBreakpointValue(
+    { base: true, md: false },
+    { ssr: false }
+  );
 
   return { cardScale, isSmallScreen, isCardScaleCalculated };
 };
