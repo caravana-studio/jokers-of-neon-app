@@ -27,6 +27,7 @@ import { PositionedGameMenu } from "../components/GameMenu.tsx";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../components/SpineAnimation.tsx";
+import { animationsData } from "../constants/spineAnimations.ts";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -123,10 +124,10 @@ const PreviewCard = () => {
                   ref={spineAnimationRef}
                   jsonUrl={`/spine-animations/basicPack.json`}
                   atlasUrl={`/spine-animations/basicPack.atlas`}
-                  initialAnimation="2.opened"
-                  hoverAnimation="1.opening"
-                  loopAnimation="2.opened"
-                  openBoxAnimation="3.expand_noPlane"
+                  initialAnimation={animationsData.loopAnimation}
+                  hoverAnimation={animationsData.hoverAnimation}
+                  loopAnimation={animationsData.loopAnimation}
+                  openBoxAnimation={animationsData.openBoxAnimation}
                   width={300}
                   height={1400}
                   xOffset={-150}

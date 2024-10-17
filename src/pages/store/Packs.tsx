@@ -4,6 +4,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { useTranslation } from "react-i18next";
 import SpineAnimation from "../../components/SpineAnimation";
+import { animationsData } from "../../constants/spineAnimations";
 
 export const Packs = () => {
   const { packs } = useShopItems();
@@ -26,9 +27,9 @@ export const Packs = () => {
                 // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
                 jsonUrl={`/spine-animations/basicPack.json`}
                 atlasUrl={`/spine-animations/basicPack.atlas`}
-                initialAnimation="0.box"
-                hoverAnimation="1.opening"
-                loopAnimation="2.opened"
+                initialAnimation={animationsData.initialAnimation}
+                hoverAnimation={animationsData.hoverAnimation}
+                loopAnimation={animationsData.loopAnimation}
                 isPurchased={pack.purchased.valueOf()}
                 onClick={() => {
                   if (!pack.purchased) {
