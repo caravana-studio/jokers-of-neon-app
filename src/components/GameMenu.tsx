@@ -1,11 +1,4 @@
-import {
-  Box,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
@@ -13,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -85,7 +79,7 @@ export const PositionedGameMenu = ({
   decoratedPage = false,
   ...rest
 }: PositionedGameMenuProps) => {
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const { isSmallScreen } = useResponsiveValues();
 
   return isSmallScreen ? (
     <Box
