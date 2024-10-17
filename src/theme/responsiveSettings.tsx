@@ -43,12 +43,16 @@ export const useResponsiveValues = () => {
         : 1;
 
       setCardScale(cardScale);
-
       setisCardScaleCalculated(true);
     }, 200);
 
     handleResize();
-  }, [defaultBaseScale]);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [defaultBaseScale, aspectRatio]);
 
   const isSmallScreen = useBreakpointValue(
     { base: true, md: false },
