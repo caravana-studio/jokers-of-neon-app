@@ -69,7 +69,7 @@ export const DiscardButton = ({
         )}
       </Button>
       {!isSmallScreen && (
-        <Text size="l">
+        <Text size="l" textAlign={"center"}>
           {t("game.preselected-cards-section.discard-btn-lbl.left", {
             discards: discards,
           })}

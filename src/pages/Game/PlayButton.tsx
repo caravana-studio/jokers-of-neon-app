@@ -52,7 +52,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
         )}
       </Button>
       {!isSmallScreen && (
-        <Text size="l">
+        <Text size="l" textAlign={"center"}>
           {t("game.preselected-cards-section.play-btn-lbl.left", {
             handsLeft: handsLeft,
           })}
