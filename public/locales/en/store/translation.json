@@ -1,71 +1,62 @@
 {
-    "store":
-    {
-      "labels":
-      {
-        "reroll": "Reroll",
-        "see-my": "See my",
-        "special-cards": "Special cards",
-        "go-to": "Go to",
-        "next-level": "Next level",
-        "coins": "My coins:"
+  "store": {
+    "labels": {
+      "reroll": "Reroll",
+      "see-my": "See my",
+      "special-cards": "Special cards",
+      "go-to": "Go to",
+      "next-level": "Next level",
+      "coins": "My coins:",
+      "purchased": "Purchased"
+    },
+    "titles": {
+      "level-game": "Level up your game",
+      "traditional": "traditional and neon cards",
+      "modifiers": "modifier cards",
+      "special": "special cards",
+      "improve-plays": "Improve your plays",
+      "my-special-cards": "My special cards",
+      "packs": "Packs"
+    },
+    "tooltip": {
+      "reroll-default": "Update available items",
+      "rerolled": "Available only once per level"
+    },
+    "plays-table": {
+      "hand": "Hand",
+      "level": "Level",
+      "price": "Price",
+      "points-multi": "Points/multi",
+      "level-up": "Level up",
+      "purchased": "Purchased"
+    },
+    "preview-card": {
+      "title": {
+        "card-type": "Card type:",
+        "description": "Description:",
+        "details": "Details:",
+        "price": "Price:"
       },
-      "titles":
-      {
-        "level-game": "Level up your game",
-        "traditional": "traditional and neon cards",
-        "modifiers": "modifier cards",
-        "special": "special cards",
-        "improve-plays": "Improve your plays",
-        "my-special-cards": "My special cards",
-        "packs": "Packs"
-      },
-      "tooltip":
-      {
-        "reroll-default":"Update available items",
-        "rerolled":"Available only once per level"
-      },
-      "plays-table":
-      {
-        "hand": "Hand",
-        "level": "Level",
-        "price": "Price",
-        "points-multi": "Points/multi",
-        "level-up": "Level up",
-        "purchased": "Purchased"
-      },
-      "preview-card":
-      {
-        "title":
-        {
-          "card-type": "Card type:",
-          "description": "Description:",
-          "details": "Details:",
-          "price": "Price:"
-        },
-        "labels":
-        {
-          "buy": "Buy",
-          "special": "Special",
-          "modifier": "Modifier",
-          "traditional": "Traditional",
-          "temporary": "Temporary",
-          "close": "Close",
-          "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
-        }
-      },
-      "packs":
-      {
-        "continue-btn": "Continue",
-        "cards-select-lbl": "Select the cards you want to keep",
-        "select-all-lbl": "Select all",
-        "special-cards-btn": "See my current special cards",
-        "error-lbl": "You can't continue because you have more special cards than the maximum allowed",
-        "confirmation-modal":
-        {
-          "head": "No cards selected",
-          "description": "You have selected no cards. Are you sure you want to continue?"
-        }
+      "labels": {
+        "buy": "Buy",
+        "special": "Special",
+        "modifier": "Modifier",
+        "traditional": "Traditional",
+        "temporary": "Temporary",
+        "close": "Close",
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
+      }
+    },
+    "packs": {
+      "continue-btn": "Continue",
+      "cards-select-lbl": "Select the cards you want to keep",
+      "select-all-lbl": "Select all",
+      "special-cards-btn": "See my current special cards",
+      "error-lbl": "You can't continue because you have more special cards than the maximum allowed",
+      "confirmation-modal": {
+        "head": "No cards selected",
+        "description": "You have selected no cards. Are you sure you want to continue?"
       }
     }
+  }
 }

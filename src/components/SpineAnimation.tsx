@@ -6,8 +6,10 @@ import React, {
   forwardRef,
 } from "react";
 import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useStore } from "../providers/StoreProvider";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 
 interface SpineAnimationProps {
   jsonUrl: string;
@@ -56,6 +58,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const [playerReady, setPlayerReady] = useState(false);
     const { setLockRedirection } = useStore();
     const openAnimationSpeed = 0.3;
+    const { t } = useTranslation(["store"]);
 
     useImperativeHandle(ref, () => ({
       playOpenBoxAnimation: () => {
@@ -129,7 +132,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
 
     // Handle hover state
     useEffect(() => {
-      if (playerReady && playerRef.current) {
+      if (playerReady && playerRef.current && !isPurchased) {
         if (isHovered) {
           playerRef.current.setAnimation(hoverAnimation, false);
           playerRef.current.addAnimation(loopAnimation, true);
@@ -143,24 +146,52 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
         }
 
         if (isPurchased) {
-          playerRef.current.setAnimation(loopAnimation, true);
+          playerRef.current.setAnimation(initialAnimation, true);
         }
       }
     }, [playerReady, isHovered, isPurchased]);
 
     return (
-      <Flex
-        ref={containerRef}
-        onClick={onClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{
-          width: "100%",
-          height: "100%",
-          cursor: "pointer",
-          filter: isPurchased ? "grayscale(100%)" : "none",
-        }}
-      />
+      <Box
+        position={"relative"}
+        width={"100%"}
+        height={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        {isPurchased && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: `10%`,
+              left: `50%`,
+              transform: "translate(-65%)",
+              zIndex: 10,
+            }}
+          >
+            <Heading
+              variant="italic"
+              fontSize={isMobile ? 7 : 14 * scale}
+              justifyContent={"center"}
+            >
+              {t("store.labels.purchased").toUpperCase()}
+            </Heading>
+          </Box>
+        )}
+        <Flex
+          ref={containerRef}
+          onClick={onClick}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            width: "100%",
+            height: "100%",
+            cursor: isPurchased ? "default" : "pointer",
+            opacity: isPurchased ? 0.3 : 1,
+          }}
+        ></Flex>
+      </Box>
     );
   }
 );

@@ -25,6 +25,7 @@ import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import CachedImage from "./CachedImage.tsx";
+import { useTranslation } from "react-i18next";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -53,6 +54,7 @@ export const TiltCard = ({
   };
 
   const isSilent = useIsSilent(card);
+  const { t } = useTranslation(["store"]);
 
   const tiltCardComponent = (
     <Box
@@ -127,7 +129,7 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
-                      backgroundColor='rgba(0,0,0,0.3)'
+                      backgroundColor="rgba(0,0,0,0.3)"
                       backgroundImage={'url("/broken.png")'}
                       backgroundSize="cover"
                       borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
@@ -157,7 +159,8 @@ export const TiltCard = ({
                 opacity: purchased ? 0.5 : 1,
               }}
             >
-              {card.price}<CashSymbol />
+              {card.price}
+              <CashSymbol />
             </Box>
           )}
           {card.purchased && (
@@ -170,7 +173,7 @@ export const TiltCard = ({
               }}
             >
               <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                PURCHASED
+                {t("store.labels.purchased").toUpperCase()}
               </Heading>
             </Box>
           )}
