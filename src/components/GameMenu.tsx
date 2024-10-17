@@ -87,6 +87,7 @@ export const PositionedGameMenu = ({
 }: PositionedGameMenuProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
+  console.log("decoratedPage? " + decoratedPage);
   return isSmallScreen ? (
     <Box
       sx={{

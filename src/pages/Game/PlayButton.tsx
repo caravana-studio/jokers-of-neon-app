@@ -27,7 +27,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
   return (
     <ButtonContainer>
       <Button
-        width={isSmallScreen ? "48%" : "170px"}
+        width={["48%", "48%", "150px"]}
         onClick={(e) => {
           e.stopPropagation();
           play();

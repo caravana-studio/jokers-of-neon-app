@@ -36,7 +36,7 @@ export const DiscardButton = ({
     <ButtonContainer>
       <Button
         ref={setNodeRef}
-        width={isSmallScreen ? "48%" : "170px"}
+        width={["48%", "48%", "150px"]}
         onClick={() => {
           discard();
         }}
