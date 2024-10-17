@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { getTooltip } from "../../utils/getTooltip";
+import { isMobile } from "react-device-detect";
 
 export const Packs = () => {
   const { packs } = useShopItems();
@@ -39,7 +40,11 @@ export const Packs = () => {
                   // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
                   jsonUrl={`/spine-animations/basicPack.json`}
                   atlasUrl={`/spine-animations/basicPack.atlas`}
-                  initialAnimation={animationsData.initialAnimation}
+                  initialAnimation={
+                    isMobile
+                      ? animationsData.loopAnimation
+                      : animationsData.initialAnimation
+                  }
                   hoverAnimation={animationsData.hoverAnimation}
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
