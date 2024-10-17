@@ -120,7 +120,7 @@ export const AnimatedCard = ({
       style={{
         position: "relative",
         padding: "4px",
-        width: `${cardScale ? CARD_WIDTH * cardScale + 8 : CARD_WIDTH + 8}px`,
+        width: `${cardScale ? (CARD_WIDTH + 8) * cardScale : CARD_WIDTH + 8}px`,
         borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
