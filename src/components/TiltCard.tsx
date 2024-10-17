@@ -21,32 +21,34 @@ import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
+import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
-import { CashSymbol } from "./CashSymbol.tsx";
-import CachedImage from "./CachedImage.tsx";
+import { PriceBox } from "./PriceBox.tsx";
+import { useCardScale } from "../hooks/useCardScale.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
   card: Card;
   onClick?: () => void;
   cursor?: string;
-  scale?: number;
   isPack?: boolean;
   isHolographic?: boolean;
+  scale?: number
 }
 
 export const TiltCard = ({
   card,
   onClick,
   cursor,
-  scale = 1,
   isPack = false,
   isHolographic = false,
+  scale = 1
 }: ICardProps) => {
+  const deviceScale = useCardScale();
   const { img, purchased = false } = card;
-  const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
-  const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+  const cardWith = deviceScale * scale ? CARD_WIDTH * deviceScale * scale : CARD_WIDTH;
+  const cardHeight = deviceScale * scale ? CARD_HEIGHT * deviceScale * scale : CARD_HEIGHT;
   const hoverStyle = {
     boxShadow: "0px 0px 20px 2px white",
     transition: "box-shadow 0.3s ease-in-out",
@@ -140,25 +142,7 @@ export const TiltCard = ({
           )}
 
           {card.price && (
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: "-8%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 10,
-                backgroundColor: "black",
-                borderRadius: "5px",
-                boxShadow: "0px 0px 10px 2px white",
-                color: "white",
-                fontSize: isMobile ? 15 * scale : 18 * scale,
-                px: 2,
-                pt: "1px",
-                opacity: purchased ? 0.5 : 1,
-              }}
-            >
-              {card.price}<CashSymbol />
-            </Box>
+            <PriceBox price={card.price} purchased={purchased}/>
           )}
           {card.purchased && (
             <Box
@@ -169,7 +153,7 @@ export const TiltCard = ({
                 zIndex: 10,
               }}
             >
-              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
+              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale * deviceScale}>
                 PURCHASED
               </Heading>
             </Box>

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import CachedImage from "../../components/CachedImage.tsx";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
@@ -26,8 +27,8 @@ import { useStore } from "../../providers/StoreProvider";
 import { PlaysTable } from "../Plays/PlaysTable.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { StoreCardsRow } from "./StoreCardsRow";
-import CachedImage from "../../components/CachedImage.tsx";
 
 export const Store = () => {
   const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
@@ -319,6 +320,7 @@ export const Store = () => {
             {!isMobile ? (
               <>
                 {nextLevelButton}
+                <SpecialSlotItem />
                 <Flex flexDirection="column" gap={14} alignItems="center">
                   {rerollButton}
                   {specialsButton}

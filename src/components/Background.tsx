@@ -28,7 +28,7 @@ const getBackgroundImage = (type: string) => {
     case "rage":
       return "none";
     default:
-      return `url(bg/${type}-bg.jpg)`;
+      return `url(/bg/${type}-bg.jpg)`;
   }
 };
 
