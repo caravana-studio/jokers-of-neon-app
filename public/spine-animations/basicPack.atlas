@@ -7,12 +7,14 @@ box_1
 bounds:931,1498,770,519
 box_1_2
 bounds:931,1213,767,283
+box_star
+bounds:1227,856,87,88
 card_4
 bounds:1703,1615,314,402
 card_4_2
 bounds:719,259,314,402
 dust
-bounds:719,970,67,67
+bounds:514,251,67,67
 light_0_1
 bounds:0,1039,929,978
 light_1
@@ -26,4 +28,4 @@ bounds:719,663,506,281
 tx_flare_1
 bounds:0,320,717,717
 white
-bounds:1227,874,70,70
+bounds:719,967,70,70
