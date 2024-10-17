@@ -7,13 +7,13 @@ import {
   Text,
   Tooltip,
   VStack,
+  keyframes,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { CashSymbol } from "../components/CashSymbol.tsx";
-import OpenAnimation from "../components/OpenAnimation.tsx";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useStore } from "../providers/StoreProvider";
@@ -24,11 +24,21 @@ import { Coins } from "./store/Coins.tsx";
 import CachedImage from "../components/CachedImage.tsx";
 import { useTranslation } from "react-i18next";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
+import SpineAnimation, {
+  SpineAnimationRef,
+} from "../components/SpineAnimation.tsx";
+import { animationsData } from "../constants/spineAnimations.ts";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
 
 const MobilePreviewCard = () => {
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
   const { state } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
@@ -49,12 +59,20 @@ const MobilePreviewCard = () => {
     return <p>Card not found.</p>;
   }
 
+  const openAnimationCallBack = () => {
+    setShowOverlay(true);
+    setTimeout(() => {
+      navigate("/redirect/open-pack");
+    }, 1000);
+  };
+
   const game = useGame();
   const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card, isPack);
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
+  const [buyDisabled, setBuyDisabled] = useState(false);
 
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
@@ -64,15 +82,27 @@ const MobilePreviewCard = () => {
     <Button
       onClick={() => {
         if (isPack) {
-          buyPack(pack);
-          setIsOpenAnimationRunning(true);
-          setLockRedirection(true);
+          setBuyDisabled(true);
+          buyPack(pack)
+            .then((response) => {
+              if (response) {
+                spineAnimationRef.current?.playOpenBoxAnimation();
+                setLockRedirection(true);
+              } else {
+                setBuyDisabled(false);
+              }
+            })
+            .catch(() => {
+              setBuyDisabled(false);
+            });
         } else {
           buyCard(card);
           navigate(-1);
         }
       }}
-      isDisabled={notEnoughCash || noSpaceForSpecialCards || locked}
+      isDisabled={
+        notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
+      }
       variant="outlinePrimaryGlow"
       width={"50%"}
     >
@@ -109,10 +139,24 @@ const MobilePreviewCard = () => {
 
           <Flex justifyContent={"center"}>
             <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-              <OpenAnimation
-                startAnimation={isOpenAnimationRunning}
-                onAnimationEnd={() => handleAnimationEnd()}
-              >
+              {isPack && (
+                <SpineAnimation
+                  // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
+                  // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
+                  ref={spineAnimationRef}
+                  jsonUrl={`/spine-animations/basicPack.json`}
+                  atlasUrl={`/spine-animations/basicPack.atlas`}
+                  initialAnimation={animationsData.loopAnimation}
+                  hoverAnimation={animationsData.hoverAnimation}
+                  loopAnimation={animationsData.loopAnimation}
+                  openBoxAnimation={animationsData.openBoxAnimation}
+                  width={300}
+                  height={1400}
+                  scale={1}
+                  onOpenAnimationStart={openAnimationCallBack}
+                />
+              )}
+              {!isPack && (
                 <CachedImage
                   src={
                     isPack
@@ -121,7 +165,7 @@ const MobilePreviewCard = () => {
                   }
                   borderRadius="10px"
                 />
-              </OpenAnimation>
+              )}
             </Box>
           </Flex>
 
@@ -266,6 +310,18 @@ const MobilePreviewCard = () => {
           <Coins />
         </Flex>
       </Flex>
+      {showOverlay && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          backgroundColor="white"
+          zIndex="9999"
+          animation={`${fadeIn} 2s ease-out`}
+        />
+      )}
     </Background>
   );
 };
