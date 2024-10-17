@@ -85,9 +85,8 @@ export const PositionedGameMenu = ({
     <Box
       sx={{
         position: "fixed",
-        bottom: decoratedPage ? 24 : "5px",
-        right: decoratedPage ? "none" : "5px",
-        left: decoratedPage ? 20 : "none",
+        bottom: "5px",
+        right: "5px",
         zIndex: 1000,
         transform: "scale(0.7)",
       }}
