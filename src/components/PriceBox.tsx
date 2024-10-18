@@ -6,11 +6,10 @@ import { CashSymbol } from "./CashSymbol";
 interface IPriceBoxProps {
   price: number;
   purchased: boolean;
+  scale: number;
 }
 
-export const PriceBox = ({ price, purchased }: IPriceBoxProps) => {
-  const scale = useCardScale();
-
+export const PriceBox = ({ price, purchased, scale = 1 }: IPriceBoxProps) => {
   return (
     <Box
       sx={{

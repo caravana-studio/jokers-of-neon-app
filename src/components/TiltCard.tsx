@@ -45,10 +45,10 @@ export const TiltCard = ({
   isHolographic = false,
   scale = 1
 }: ICardProps) => {
-  const deviceScale = useCardScale();
   const { img, purchased = false } = card;
-  const cardWith = deviceScale * scale ? CARD_WIDTH * deviceScale * scale : CARD_WIDTH;
-  const cardHeight = deviceScale * scale ? CARD_HEIGHT * deviceScale * scale : CARD_HEIGHT;
+  const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
+  const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+
   const hoverStyle = {
     boxShadow: "0px 0px 20px 2px white",
     transition: "box-shadow 0.3s ease-in-out",
@@ -142,7 +142,7 @@ export const TiltCard = ({
           )}
 
           {card.price && (
-            <PriceBox price={card.price} purchased={purchased}/>
+            <PriceBox price={card.price} purchased={purchased} scale={scale} />
           )}
           {card.purchased && (
             <Box
@@ -153,7 +153,7 @@ export const TiltCard = ({
                 zIndex: 10,
               }}
             >
-              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale * deviceScale}>
+              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
                 PURCHASED
               </Heading>
             </Box>

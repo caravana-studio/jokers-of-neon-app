@@ -69,7 +69,7 @@ const PreviewCard = () => {
   const image = (
     <CachedImage
       src={`/Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`}
-      alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
+      alt={`Card: ${card.name}`}
       borderRadius="10px"
     />
   );

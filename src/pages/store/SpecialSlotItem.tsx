@@ -1,12 +1,12 @@
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useSpecialCardSlotItem } from "../../dojo/queries/useSpecialCardSlotItem";
 import { useCardScale } from "../../hooks/useCardScale";
-import { useNavigate } from "react-router-dom";
 
 interface ISpecialSlotItem {}
 
@@ -30,17 +30,19 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
         width={`${width}px`}
         cursor={purchased ? "not-allowed" : "pointer"}
         onClick={() => {
-            if (!purchased) {
-              navigate("/preview/slot");
-            }
-          }}
+          if (!purchased) {
+            navigate("/preview/slot");
+          }
+        }}
       >
         <CachedImage
           opacity={purchased ? 0.3 : 1}
           src="/store/slot-icon.png"
           alt="slot-icon"
         />
-        {price && <PriceBox price={price} purchased={purchased} />}
+        {price && (
+          <PriceBox price={price} purchased={purchased} scale={scale} />
+        )}
         {purchased && (
           <Box
             sx={{
