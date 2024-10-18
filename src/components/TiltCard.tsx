@@ -142,7 +142,7 @@ export const TiltCard = ({
           )}
 
           {card.price && (
-            <PriceBox price={card.price} purchased={purchased} scale={scale} />
+            <PriceBox price={card.price} purchased={purchased} />
           )}
           {card.purchased && (
             <Box

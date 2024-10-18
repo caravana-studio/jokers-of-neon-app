@@ -6,10 +6,9 @@ import { CashSymbol } from "./CashSymbol";
 interface IPriceBoxProps {
   price: number;
   purchased: boolean;
-  scale: number;
 }
 
-export const PriceBox = ({ price, purchased, scale = 1 }: IPriceBoxProps) => {
+export const PriceBox = ({ price, purchased }: IPriceBoxProps) => {
   return (
     <Box
       sx={{
@@ -22,7 +21,7 @@ export const PriceBox = ({ price, purchased, scale = 1 }: IPriceBoxProps) => {
         borderRadius: "5px",
         boxShadow: "0px 0px 10px 2px white",
         color: "white",
-        fontSize: isMobile ? 15 * scale : 18 * scale,
+        fontSize: isMobile ? 15 : 18 ,
         px: 2,
         pt: "1px",
         opacity: purchased ? 0.5 : 1,
