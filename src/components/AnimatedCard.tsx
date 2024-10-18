@@ -33,10 +33,13 @@ export const AnimatedCard = ({
   );
 
   const { cardScale } = useResponsiveValues();
-  const cardBorderRadius = useBreakpointValue({
-    base: "5px",
-    sm: "10px",
-  });
+  const cardBorderRadius = useBreakpointValue(
+    {
+      base: "5px",
+      sm: "10px",
+    },
+    { ssr: false }
+  );
   const { colors } = useTheme();
 
   const getColor = () => {
@@ -119,8 +122,11 @@ export const AnimatedCard = ({
     <animated.div
       style={{
         position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         padding: "4px",
-        width: `${cardScale ? (CARD_WIDTH + 8) * cardScale : CARD_WIDTH + 8}px`,
+        width: `${CARD_WIDTH * cardScale + 8}px`,
         borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
@@ -133,7 +139,7 @@ export const AnimatedCard = ({
             style={{
               position: "absolute",
               top: 0,
-              left: "10px",
+              left: 0,
               ...pointsSprings,
               zIndex: 99,
             }}
