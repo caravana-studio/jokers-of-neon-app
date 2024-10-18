@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import CachedImage from "../../components/CachedImage.tsx";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu";
 import { Loading } from "../../components/Loading";
@@ -17,7 +16,6 @@ import {
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
-import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useShop } from "../../dojo/queries/useShop.tsx";
 import { useShopItems } from "../../dojo/queries/useShopItems.ts";
@@ -43,8 +41,6 @@ export const Store = () => {
   const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
 
   const [loading, setLoading] = useState(false);
-  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
-  const specialCards = useCurrentSpecialCards();
 
   useEffect(() => {
     store && setRerolled(store.reroll_executed);
@@ -114,12 +110,12 @@ export const Store = () => {
     </Tooltip>
   );
 
-  const specialsButton = specialCards.length > 0 && (
+  const specialsButton = (
     <Button
       fontSize={[10, 10, 10, 14, 14]}
       w={["unset", "unset", "unset", "100%", "100%"]}
       onClick={() => {
-        setSpecialCardsModalOpen(true);
+        navigate('/special-cards')
       }}
     >
       {t("store.labels.see-my").toUpperCase()}
@@ -201,11 +197,6 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       <PositionedGameMenu
         showTutorial={() => {
           setRun(true);

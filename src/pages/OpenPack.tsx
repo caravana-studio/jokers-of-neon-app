@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
@@ -7,7 +7,6 @@ import { ConfirmationModal } from "../components/ConfirmationModal";
 import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useStore } from "../providers/StoreProvider";
 import { BLUE } from "../theme/colors";
 import { Card } from "../types/Card";
@@ -19,6 +18,7 @@ import { PositionedGameMenu } from "../components/GameMenu";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -104,7 +104,7 @@ export const OpenPack = () => {
   );
 
   return (
-    <Background type="game" dark bgDecoration>
+    <Background type="home" dark bgDecoration>
       <PositionedGameMenu decoratedPage />
       {/* <WhiteOverlay $visible={overlayVisible} /> */}
       {cards.length > 0 ? (
@@ -131,7 +131,7 @@ export const OpenPack = () => {
               {t("store.packs.select-all-lbl").toUpperCase()}
             </Checkbox>
           </Flex>
-          <CardsContainer>
+          <FullScreenCardContainer>
             {cards.map((card, index) => {
               return (
                 <Flex
@@ -181,7 +181,7 @@ export const OpenPack = () => {
                 </Flex>
               );
             })}
-          </CardsContainer>
+          </FullScreenCardContainer>
           <Flex
             flexDirection={isMobile ? "column" : "row"}
             justifyContent="space-between"
@@ -229,24 +229,5 @@ export const OpenPack = () => {
       )}
       {!isMobile && <PositionedDiscordLink />}
     </Background>
-  );
-};
-
-const CardsContainer = ({ children }: PropsWithChildren) => {
-  return isMobile ? (
-    <Box
-      sx={{
-        maxWidth: `${CARD_WIDTH * 5}px`,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        minHeight: `${CARD_HEIGHT * 2 + 80}px`,
-      }}
-    >
-      {children}
-    </Box>
-  ) : (
-    <Flex gap={3}>{children}</Flex>
   );
 };

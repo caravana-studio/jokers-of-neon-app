@@ -17,6 +17,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "This slot is locked. You can unlock it in the store.",
       "special-cards-label": "Special cards",
       "remove-special-cards-label": "Remove",
       "confirmation-modal": {

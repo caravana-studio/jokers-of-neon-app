@@ -2,24 +2,42 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
+import { MAX_SPECIAL_CARDS } from "../constants/config.ts";
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH
+} from "../constants/visualProps.ts";
+import { useGame } from "../dojo/queries/useGame.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
-import { Card } from "../types/Card";
-import { AnimatedCard } from "./AnimatedCard";
+import { Card } from "../types/Card.ts";
+import { AnimatedCard } from "./AnimatedCard.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
-import { TiltCard } from "./TiltCard";
+import { LockedSlot } from "./LockedSlot.tsx";
+import { TiltCard } from "./TiltCard.tsx";
+import { FilledUnlockedSlot } from "./UnlockedSlot.tsx";
 
-interface CardsRowProps {
+interface SpecialCardsRowProps {
   cards: Card[];
 }
 
-export const CardsRow = ({ cards }: CardsRowProps) => {
+export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
   const { discardSpecialCard, roundRewards } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
+
+  const game = useGame();
+  const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
+
+  const freeUnlockedSlots = unlockedSpecialSlots - cards.length;
+  const lockedSlots =
+    unlockedSpecialSlots === MAX_SPECIAL_CARDS
+      ? 0
+      : Math.max(1, 5 - unlockedSpecialSlots);
+
+  const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
 
   useEffect(() => {
     if (roundRewards) {
@@ -45,8 +63,10 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
     }
   };
 
+  const slotWidth = (visibleCards > 6 ? 85 : 90) / visibleCards;
+
   return (
-    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`}>
+    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`} gap={3}>
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
@@ -54,7 +74,7 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
             className="special-cards-step-1"
             key={card.idx}
             justifyContent="center"
-            width={`${100 / cards.length}%`}
+            width={`${slotWidth}%`}
             maxWidth={`${CARD_WIDTH + 7}px`}
             position="relative"
             zIndex={1}
@@ -93,9 +113,9 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
                       >
                         <Text fontSize="10px">X</Text>
                         {hoveredButton === card.idx && (
-                          <Text fontSize="10px">{
-                            t('game.special-cards.remove-special-cards-label')
-                          }</Text>
+                          <Text fontSize="10px">
+                            {t("game.special-cards.remove-special-cards-label")}
+                          </Text>
                         )}
                       </Button>
                     )}
@@ -107,6 +127,16 @@ export const CardsRow = ({ cards }: CardsRowProps) => {
           </Flex>
         );
       })}
+      {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
+        <Flex width={`${slotWidth}%`}>
+          <FilledUnlockedSlot key={`unlocked-${index}`} />
+        </Flex>
+      ))}
+      {Array.from({ length: lockedSlots }).map((_, index) => (
+        <Flex width={`${slotWidth}%`}>
+          <LockedSlot key={`locked-${index}`} />
+        </Flex>
+      ))}
       {cardToDiscard !== null && (
         <ConfirmationModal
           close={() => setCardToDiscard(null)}

@@ -17,6 +17,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
       "remove-special-cards-label": "Eliminar",
       "confirmation-modal": {

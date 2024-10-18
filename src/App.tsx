@@ -13,6 +13,7 @@ import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SpecialCardsPage } from "./pages/SpecialCardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
@@ -56,6 +57,14 @@ function App() {
                 element={
                   <StoreProvider>
                     <OpenPack />
+                  </StoreProvider>
+                }
+              />
+              <Route
+                path="/special-cards"
+                element={
+                  <StoreProvider>
+                    <SpecialCardsPage />
                   </StoreProvider>
                 }
               />
