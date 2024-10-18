@@ -43,6 +43,7 @@
             "level-bonus": "Level bonus",
             "discards-left": "{{discards}} Discards left",
             "hands-left": "{{hands}} Hands left",
+            "rage-cards": "{{cards}} Rage cards defeated",
             "total": "total",
             "final-score": "- Final score: {{score}} -",
             "continue-btn": "continue"
