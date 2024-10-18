@@ -12,20 +12,19 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
+import { PLAYS } from "../../constants/plays.ts";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
-import { usePokerPlays } from "../../dojo/queries/usePokerPlays";
 import { useShopItems } from "../../dojo/queries/useShopItems";
+import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
+import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
-import { useTranslation } from "react-i18next";
-import { PLAYS } from "../../constants/plays.ts";
-import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
-import { useDojo } from "../../dojo/useDojo.tsx";
-import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -198,6 +197,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                     onClick={() => {
                       storePlay && levelUpPlay?.(storePlay);
                     }}
+                    variant={notEnoughCash || locked ? "defaultOutline" : "solid"}
                     isDisabled={notEnoughCash || locked}
                     size="sm"
                     px={isMobile ? 2 : 4}

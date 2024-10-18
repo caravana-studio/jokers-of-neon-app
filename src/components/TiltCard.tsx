@@ -1,7 +1,6 @@
 import {
   Box,
   Heading,
-  Image,
   SystemStyleObject,
   Text,
   Tooltip,
@@ -25,6 +24,7 @@ import { AnimatedCard } from "./AnimatedCard";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
+import CachedImage from "./CachedImage.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -105,7 +105,7 @@ export const TiltCard = ({
                 w={`${cardWith}px`}
                 h={`${cardHeight}px`}
               >
-                <Image
+                <CachedImage
                   borderRadius={{ base: "5px", sm: "8px" }}
                   boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                   sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
@@ -228,7 +228,7 @@ export const TiltCard = ({
                   placement="top"
                   closeOnPointerDown
                 >
-                  <Image
+                  <CachedImage
                     sx={{ maxWidth: "unset" }}
                     src={`Cards/${c.img}`}
                     alt={c.img}

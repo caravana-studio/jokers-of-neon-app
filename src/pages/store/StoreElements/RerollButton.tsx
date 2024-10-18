@@ -22,6 +22,7 @@ const RerollButton: React.FC<RerollButtonProps> = ({
   reroll,
 }) => {
   const { t } = useTranslation(["store"]);
+  const rerollDisabled = rerolled || locked || notEnoughCash;
 
   return (
     <Tooltip
@@ -38,7 +39,8 @@ const RerollButton: React.FC<RerollButtonProps> = ({
         w={
           isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]
         }
-        isDisabled={rerolled || locked || notEnoughCash}
+        variant={rerollDisabled ? "defaultOutline" : "solid"}
+        isDisabled={rerollDisabled}
         onClick={() => {
           reroll().then((response) => {
             if (response) {

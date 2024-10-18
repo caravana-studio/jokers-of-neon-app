@@ -4,12 +4,13 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+
+import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background.tsx";
@@ -123,12 +124,13 @@ const PreviewCardLayout = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               > */}
-              <Image
+              <CachedImage
                 src={
                   isPack
                     ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
                 }
+                alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
                 borderRadius="10px"
               />
               {/* </OpenAnimation> */}
@@ -139,7 +141,7 @@ const PreviewCardLayout = () => {
                 <Heading size={["md", "md", "l"]} variant="italic" mb={4}>
                   {name}
                 </Heading>
-                <Image
+                <CachedImage
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"

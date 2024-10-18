@@ -10,6 +10,7 @@ import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { useTranslation } from "react-i18next";
+import CachedImage from "../../components/CachedImage.tsx";
 
 export const StoreContent = () => {
   const {
@@ -34,20 +35,11 @@ export const StoreContent = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 7,
-          left: 10,
-          zIndex: 1000,
+      <PositionedGameMenu
+        showTutorial={() => {
+          setRun(true);
         }}
-      >
-        <PositionedGameMenu
-          showTutorial={() => {
-            setRun(true);
-          }}
-        />
-      </Box>
+      />
       <Flex
         width="100%"
         height="100%"
@@ -156,7 +148,7 @@ export const StoreContent = () => {
                   setSpecialCardsModalOpen={setSpecialCardsModalOpen}
                   isSmallScreen={false}
                 />
-                <Image
+                <CachedImage
                   src="/logos/logo-variant.svg"
                   alt="store-bg"
                   width="90%"

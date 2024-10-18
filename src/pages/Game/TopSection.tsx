@@ -1,4 +1,4 @@
-import { Box, Flex, Img } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { RageCards } from "../../components/RageCards.tsx";
@@ -6,6 +6,7 @@ import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import CachedImage from "../../components/CachedImage.tsx";
 
 export const TopSection = () => {
   const { isRageRound } = useGameContext();
@@ -17,7 +18,7 @@ export const TopSection = () => {
       alignItems={"flex-start"}
     >
       <Box mr={4}>
-        <Img
+        <CachedImage
           src="logos/logo-variant.svg"
           width={{ base: "110px", sm: "150px", md: "260px" }}
           alt="logo"

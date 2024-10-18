@@ -33,21 +33,11 @@ export const StoreContentMobile = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: "5px",
-          right: "5px",
-          zIndex: 1000,
-          transform: "scale(0.7)",
+      <PositionedGameMenu
+        showTutorial={() => {
+          setRun(true);
         }}
-      >
-        <PositionedGameMenu
-          showTutorial={() => {
-            setRun(true);
-          }}
-        />
-      </Box>
+      />
       <Flex
         width="100%"
         height="100%"

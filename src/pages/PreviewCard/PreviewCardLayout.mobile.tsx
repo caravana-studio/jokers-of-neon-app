@@ -4,7 +4,6 @@ import {
   Flex,
   HStack,
   Heading,
-  Image,
   Text,
   Tooltip,
   VStack,
@@ -12,6 +11,7 @@ import {
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import CachedImage from "../../components/CachedImage.tsx";
 import { Background } from "../../components/Background";
 import { CashSymbol } from "../../components/CashSymbol.tsx";
 import OpenAnimation from "../../components/OpenAnimation.tsx";
@@ -115,11 +115,11 @@ const MobilePreviewCardLayout = () => {
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
               >
-                <Image
+                <CachedImage
                   src={
                     isPack
                       ? `Cards/${card.img}.png`
-                      : `Cards/${card.isSpecial || card.isModifier ? `effect/big/${card?.card_id}.png` : `big/${card?.img}`}`
+                      : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
                   }
                   borderRadius="10px"
                 />

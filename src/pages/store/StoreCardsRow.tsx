@@ -23,7 +23,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const imageUrls = useMemo(() => {
     return cards.map((card) => {
       return card.isSpecial || card.isModifier
-        ? `Cards/effect/big/${card.card_id}.png`
+        ? `Cards/${card.card_id}.png`
         : `Cards/big/${card.img}`;
     });
   }, [cards]);

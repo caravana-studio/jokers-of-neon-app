@@ -3,6 +3,7 @@ import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import CachedImage from "./CachedImage.tsx";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
@@ -32,7 +33,7 @@ export const SortBy = () => {
           placement="bottom"
           size="sm"
         >
-          <Img
+          <CachedImage
             cursor="pointer"
             src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
             height={{ base: 5, sm: 8 }}
@@ -46,7 +47,7 @@ export const SortBy = () => {
           placement="bottom"
           size="sm"
         >
-          <Img
+          <CachedImage
             cursor="pointer"
             src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
             height={{ base: 5, sm: 8 }}
