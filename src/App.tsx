@@ -21,6 +21,8 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import TutorialGameProvider from "./providers/tutorialGameProvider";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -44,6 +46,16 @@ function App() {
                   </StoreProvider>
                 }
               />
+
+              <Route
+                path="/tutorial"
+                element={
+                  <TutorialGameProvider>
+                    <GamePageTutorial />
+                  </TutorialGameProvider>
+                }
+              />
+
               <Route path="/redirect/:page" element={<Redirect />} />
               <Route
                 path="/preview-card"

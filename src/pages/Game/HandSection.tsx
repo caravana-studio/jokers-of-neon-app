@@ -20,8 +20,13 @@ import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
+import { useLocation } from "react-router-dom";
+import { useTutorialGameContext } from "../../providers/tutorialGameProvider";
 
 export const HandSection = () => {
+  const location = useLocation();
+  const isTutorial = location.pathname === "/tutorial";
+
   const {
     hand,
     preSelectedCards,
@@ -29,12 +34,12 @@ export const HandSection = () => {
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
-  } = useGameContext();
+  } = !isTutorial ? useGameContext() : useTutorialGameContext();
 
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = round?.hands ?? 0;
+  const handsLeft = !isTutorial ? round?.hands ?? 0 : 1;
 
   const { activeNode } = useDndContext();
 

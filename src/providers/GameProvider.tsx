@@ -30,7 +30,7 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 
-interface IGameContext {
+export interface IGameContext {
   gameId: number;
   preSelectedPlay: Plays;
   points: number;

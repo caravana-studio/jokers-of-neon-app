@@ -7,6 +7,8 @@ import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
+import { useLocation } from "react-router-dom";
+import { useTutorialGameContext } from "../../providers/tutorialGameProvider.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -15,6 +17,9 @@ interface PreselectedCardsProps {
 export const PreselectedCardsSection = ({
   isTutorialRunning = false,
 }: PreselectedCardsProps) => {
+  const location = useLocation();
+  const isTutorial = location.pathname === "/tutorial";
+
   const {
     preSelectedCards,
     hand,
@@ -22,7 +27,7 @@ export const PreselectedCardsSection = ({
     togglePreselected,
     discardAnimation,
     playAnimation,
-  } = useGameContext();
+  } = !isTutorial ? useGameContext() : useTutorialGameContext();
 
   return (
     <Flex
@@ -32,7 +37,7 @@ export const PreselectedCardsSection = ({
       width={"100%"}
       height={"100%"}
     >
-      <Box height='60px'></Box>
+      <Box height="60px"></Box>
       <Flex
         flexDirection={"row"}
         width={"100%"}

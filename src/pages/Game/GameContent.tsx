@@ -23,23 +23,30 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { useLocation } from "react-router-dom";
+import { useTutorialGameContext } from "../../providers/tutorialGameProvider.tsx";
 
 export const GameContent = () => {
-  const {
+  const location = useLocation();
+  const isTutorial = location.pathname === "/tutorial";
+  let {
     hand,
     preSelectedCards,
     gameLoading,
     error,
     executeCreateGame,
     addModifier,
-  } = useGameContext();
+  } = !isTutorial ? useGameContext() : useTutorialGameContext();
+  const { isRageRound } = !isTutorial
+    ? useGameContext()
+    : useTutorialGameContext();
 
   const [run, setRun] = useState(false);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
-  const { isRageRound } = useGameContext();
+
   const { t } = useTranslation(["game"]);
 
   useEffect(() => {
@@ -140,7 +147,7 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading || !game) {
+  if (gameLoading || (!game && !isTutorial)) {
     return <Loading />;
   }
 
