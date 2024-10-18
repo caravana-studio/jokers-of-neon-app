@@ -1,13 +1,7 @@
-import {
-    DETAIL_EARNED_EVENT
-} from "../../constants/dojoEventKeys";
+import { DETAIL_EARNED_EVENT } from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
-import {
-    DetailEarned
-} from "../../types/ScoreData";
-import {
-    getNumberValueFromEvent
-} from "../getNumberValueFromEvent";
+import { DetailEarned } from "../../types/ScoreData";
+import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
 export const getDetailEarnedEvent = (
   events: DojoEvent[]
@@ -22,7 +16,10 @@ export const getDetailEarnedEvent = (
   const hands_left_cash = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;
   const discard_left = getNumberValueFromEvent(detailEarnedEvent, 5) ?? 0;
   const discard_left_cash = getNumberValueFromEvent(detailEarnedEvent, 6) ?? 0;
-  const total = getNumberValueFromEvent(detailEarnedEvent, 7) ?? 0;
+  const rage_card_defeated = getNumberValueFromEvent(detailEarnedEvent, 7) ?? 0;
+  const rage_card_defeated_cash =
+    getNumberValueFromEvent(detailEarnedEvent, 8) ?? 0;
+  const total = getNumberValueFromEvent(detailEarnedEvent, 9) ?? 0;
 
   return {
     round_defeat,
@@ -31,6 +28,8 @@ export const getDetailEarnedEvent = (
     hands_left_cash,
     discard_left,
     discard_left_cash,
+    rage_card_defeated,
+    rage_card_defeated_cash,
     total,
   };
 };
