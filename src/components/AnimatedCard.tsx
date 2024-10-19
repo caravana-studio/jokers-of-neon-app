@@ -1,7 +1,7 @@
 import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { animated, useSpring } from "react-spring";
-import { CARD_WIDTH } from "../constants/visualProps";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
@@ -132,8 +132,8 @@ export const AnimatedCard = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "4px",
-        width: `${CARD_WIDTH * cardScale + 8}px`,
+        width: `${(CARD_WIDTH + 8) * cardScale}px`,
+        height: `${(CARD_HEIGHT + 8) * cardScale}px`,
         borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
