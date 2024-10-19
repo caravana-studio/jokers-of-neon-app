@@ -34,6 +34,7 @@
             "level-bonus": "Bonus del nivel",
             "discards-left": "{{discards}} Descartes restantes",
             "hands-left": "{{hands}} Manos restantes",
+            "rage-cards": "{{cards}} cartas Rage vencidas",
             "total": "total",
             "final-score": "- Puntuación final: {{score}} -",
             "continue-btn": "continuar"

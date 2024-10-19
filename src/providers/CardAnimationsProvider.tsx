@@ -13,6 +13,7 @@ interface IAnimatedCard {
   suit?: Suits;
   special_idx?: number;
   animationIndex: number;
+  cash?: number;
 }
 
 const CardAnimationsContext = createContext<ICardAnimationsContext>({
