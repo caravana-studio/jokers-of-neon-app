@@ -4,19 +4,30 @@ import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
+import { isTutorial } from "../../utils/isTutorial";
+import {
+  handsLeftTutorial,
+  useTutorialGameContext,
+} from "../../providers/tutorialGameProvider";
 
 interface PlayButtonProps {
   highlight?: boolean;
 }
 
 export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
-  const { preSelectedCards, play, preSelectionLocked } =
-    useGameContext();
+  const { preSelectedCards, play, preSelectionLocked } = !isTutorial()
+    ? useGameContext()
+    : useTutorialGameContext();
 
   const round = useRound();
-  const handsLeft = round?.hands ?? 0;
+  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
 
-  const cantPlay = !highlight && (preSelectionLocked || preSelectedCards?.length === 0 || !handsLeft || handsLeft === 0 );
+  const cantPlay =
+    !highlight &&
+    (preSelectionLocked ||
+      preSelectedCards?.length === 0 ||
+      !handsLeft ||
+      handsLeft === 0);
   const { t } = useTranslation(["game"]);
 
   return (
@@ -34,17 +45,25 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
         {isMobile ? (
           <Box>
             <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
-              {t('game.preselected-cards-section.play-btn-lbl.play-mobile')}
+              {t("game.preselected-cards-section.play-btn-lbl.play-mobile")}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {t('game.preselected-cards-section.play-btn-lbl.left', {handsLeft: handsLeft})}
+              {t("game.preselected-cards-section.play-btn-lbl.left", {
+                handsLeft: handsLeft,
+              })}
             </Heading>
           </Box>
         ) : (
-          t('game.preselected-cards-section.play-btn-lbl.play')
+          t("game.preselected-cards-section.play-btn-lbl.play")
         )}
       </Button>
-      {!isMobile && <Text size="l">{t('game.preselected-cards-section.play-btn-lbl.left', {handsLeft: handsLeft})}</Text>}
+      {!isMobile && (
+        <Text size="l">
+          {t("game.preselected-cards-section.play-btn-lbl.left", {
+            handsLeft: handsLeft,
+          })}
+        </Text>
+      )}
     </ButtonContainer>
   );
 };

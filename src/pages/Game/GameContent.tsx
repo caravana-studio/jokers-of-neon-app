@@ -23,21 +23,19 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { useLocation } from "react-router-dom";
 import { useTutorialGameContext } from "../../providers/tutorialGameProvider.tsx";
+import { isTutorial } from "../../utils/isTutorial.ts";
 
 export const GameContent = () => {
-  const location = useLocation();
-  const isTutorial = location.pathname === "/tutorial";
-  let {
+  const {
     hand,
     preSelectedCards,
     gameLoading,
     error,
     executeCreateGame,
     addModifier,
-  } = !isTutorial ? useGameContext() : useTutorialGameContext();
-  const { isRageRound } = !isTutorial
+  } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+  const { isRageRound } = !isTutorial()
     ? useGameContext()
     : useTutorialGameContext();
 

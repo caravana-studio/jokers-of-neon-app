@@ -4,6 +4,8 @@ import { isMobile } from "react-device-detect";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
+import { isTutorial } from "../../utils/isTutorial";
+import { useTutorialGameContext } from "../../providers/tutorialGameProvider";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;
@@ -15,7 +17,7 @@ export const DiscardButton = ({
   highlight = false,
 }: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
-    useGameContext();
+    !isTutorial() ? useGameContext() : useTutorialGameContext();
 
   const { setNodeRef } = useDroppable({
     id: "play-discard",
@@ -29,7 +31,7 @@ export const DiscardButton = ({
       !discards ||
       discards === 0);
 
-    const { t } = useTranslation(["game"]);
+  const { t } = useTranslation(["game"]);
 
   return (
     <ButtonContainer>
@@ -50,17 +52,30 @@ export const DiscardButton = ({
               fontSize={itemDragged ? 12 : 16}
               height={"16px"}
             >
-              {itemDragged ?  t('game.preselected-cards-section.discard-btn-lbl.lbl') +" " : ""}{t('game.preselected-cards-section.discard-btn-lbl.discard')}
+              {itemDragged
+                ? t("game.preselected-cards-section.discard-btn-lbl.lbl") + " "
+                : ""}
+              {t("game.preselected-cards-section.discard-btn-lbl.discard")}
             </Text>
             <Heading mt={1} fontSize={9}>
-              {t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}
+              {t("game.preselected-cards-section.discard-btn-lbl.left", {
+                discards: discards,
+              })}
             </Heading>
           </Box>
         ) : (
-          t('game.preselected-cards-section.discard-btn-lbl.discard').toUpperCase()
+          t(
+            "game.preselected-cards-section.discard-btn-lbl.discard"
+          ).toUpperCase()
         )}
       </Button>
-      {!isMobile && <Text size="l">{t('game.preselected-cards-section.discard-btn-lbl.left', {discards: discards})}</Text>}
+      {!isMobile && (
+        <Text size="l">
+          {t("game.preselected-cards-section.discard-btn-lbl.left", {
+            discards: discards,
+          })}
+        </Text>
+      )}
     </ButtonContainer>
   );
 };

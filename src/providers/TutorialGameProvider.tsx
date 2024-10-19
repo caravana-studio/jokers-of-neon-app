@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { IGameContext } from "./GameProvider"; // existing imports
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
@@ -13,6 +13,8 @@ import {
   JOKER1,
   JOKER2,
 } from "../utils/mocks/cardMocks";
+import { useAudio } from "../hooks/useAudio";
+import { preselectedCardSfx } from "../constants/sfx";
 
 // Define your mock data specifically for the tutorial
 const mockTutorialGameContext = createContext<IGameContext>({
@@ -28,8 +30,7 @@ const mockTutorialGameContext = createContext<IGameContext>({
   hand: [C10, C2, JOKER1, JOKER2, CJ, CQ, CK, CA],
   setHand: (cards: Card[]) => console.log("Hand set", cards),
   getModifiers: (preSelectedCardIndex: number) => [],
-  togglePreselected: (cardIndex: number) =>
-    console.log("Toggled card", cardIndex),
+  togglePreselected: (_) => {},
   discardAnimation: false,
   playAnimation: false,
   discard: () => console.log("Discarded"),
@@ -61,14 +62,59 @@ const mockTutorialGameContext = createContext<IGameContext>({
   discards: 1,
 });
 
+export let handsLeftTutorial = 1;
+let context;
+// export let discardLeftTutorial = 1;
 export const useTutorialGameContext = () => useContext(mockTutorialGameContext);
 
-// Create a provider for the tutorial mock
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
-  const handsLeft = 1;
-  const discardLetf = 1;
+  handsLeftTutorial = 1;
+  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
+  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx);
+
+  const cardIsPreselected = (cardIndex: number) => {
+    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
+  };
+
+  const preSelectCard = (cardIndex: number) => {
+    setPreSelectedCards((prev) => {
+      console.log(prev);
+      return [...prev, cardIndex];
+    });
+  };
+
+  const unPreSelectCard = (cardIndex: number) => {
+    // setPreSelectedModifiers((prev) => {
+    //   return {
+    //     ...prev,
+    //     [cardIndex]: [],
+    //   };
+    // });
+    setPreSelectedCards((prev) => {
+      return prev.filter((idx) => cardIndex !== idx);
+    });
+  };
+
+  const togglePreselected = (cardIndex: number) => {
+    if (!preSelectionLocked && handsLeftTutorial > 0) {
+      if (cardIsPreselected(cardIndex)) {
+        unPreSelectCard(cardIndex);
+        preselectCardSound();
+      } else if (preSelectedCards.length < 5) {
+        preSelectCard(cardIndex);
+        preselectCardSound();
+      }
+    }
+  };
+
+  const actions = { togglePreselected };
+
+  context = useTutorialGameContext();
+  context.preSelectedCards = preSelectedCards;
+
   return (
-    <mockTutorialGameContext.Provider value={useTutorialGameContext()}>
+    <mockTutorialGameContext.Provider value={{ ...context, ...actions }}>
       {children}
     </mockTutorialGameContext.Provider>
   );
