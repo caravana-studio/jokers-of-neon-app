@@ -35,9 +35,8 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
           : `0px 26px 30px -30px ${isRageRound ? colors.neonPink : colors.neonGreen}`
       }
     >
-
-        <SpecialCardsRow cards={specialCards} />
-      <Flex sx={{ mt: 1, mx: 1 }} justifyContent="space-between">
+      <SpecialCardsRow cards={specialCards} />
+      <Flex mt={{ base: 0, sm: 1 }} mx={1} justifyContent="space-between">
         <Box>
           {!inStore && (
             <Text size={{ base: "l", sm: "m" }}>

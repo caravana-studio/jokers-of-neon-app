@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
@@ -64,6 +65,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
+                  scale={isMobile ? 1 : 0.8}
                   card={{ ...card, purchased }}
                   onClick={() => {
                     if (!isPurchased(card)) {

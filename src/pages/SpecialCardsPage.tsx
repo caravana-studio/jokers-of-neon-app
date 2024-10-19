@@ -41,6 +41,8 @@ export const SpecialCardsPage = () => {
       ? 0
       : Math.max(1, 5 - unlockedSpecialSlots);
 
+  const scale = isMobile ? 1 : 1.4;
+
   return (
     <Background type="home" dark bgDecoration>
       <PositionedGameMenu decoratedPage />
@@ -70,7 +72,7 @@ export const SpecialCardsPage = () => {
               !isDiscarded && (
                 <Box
                   key={card.id}
-                  mx={1}
+                  mx={{base: 0, sm: 1}}
                   mb={3}
                   p={1}
                   sx={{
@@ -87,8 +89,8 @@ export const SpecialCardsPage = () => {
                 >
                   <Box
                     position="relative"
-                    w={`${CARD_WIDTH * 1.4}px`}
-                    h={`${CARD_HEIGHT * 1.4}px`}
+                    w={`${CARD_WIDTH * scale}px`}
+                    h={`${CARD_HEIGHT * scale}px`}
                     cursor={"pointer"}
                   >
                     <CachedImage
@@ -109,13 +111,13 @@ export const SpecialCardsPage = () => {
             );
           })}
           {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-            <Box mx={1} mb={3} p={1}>
-              <UnlockedSlot scale={1.4} key={`unlocked-${index}`} />
+            <Box mx={1.5} mb={3} p={1}>
+              <UnlockedSlot scale={scale} key={`unlocked-${index}`} />
             </Box>
           ))}
           {Array.from({ length: lockedSlots }).map((_, index) => (
-            <Box mx={1} mb={3} p={1}>
-              <LockedSlot scale={1.4} key={`locked-${index}`} />
+            <Box mx={1.5} mb={3} p={1}>
+              <LockedSlot scale={scale} key={`locked-${index}`} />
             </Box>
           ))}
         </FullScreenCardContainer>

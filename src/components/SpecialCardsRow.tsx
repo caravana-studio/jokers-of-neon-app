@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { MAX_SPECIAL_CARDS } from "../constants/config.ts";
-import {
-  CARD_HEIGHT,
-  CARD_WIDTH
-} from "../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card.ts";
@@ -66,7 +63,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const slotWidth = (visibleCards > 6 ? 85 : 90) / visibleCards;
 
   return (
-    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`} gap={3}>
+    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`} gap={{ base: 2, sm: 3 }}>
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (

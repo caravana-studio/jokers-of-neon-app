@@ -115,7 +115,7 @@ export const Store = () => {
       fontSize={[10, 10, 10, 14, 14]}
       w={["unset", "unset", "unset", "100%", "100%"]}
       onClick={() => {
-        navigate('/special-cards')
+        navigate("/special-cards");
       }}
     >
       {t("store.labels.see-my").toUpperCase()}
@@ -272,6 +272,7 @@ export const Store = () => {
               )}
             </Box>
           </Box>
+          {isMobile && <Box mb={3} mx={4}><SpecialSlotItem /></Box>}
           {isMobile && (
             <Box
               className="game-tutorial-step-2"
@@ -286,6 +287,7 @@ export const Store = () => {
               {levelUpTable}
             </Box>
           )}
+
 
           <Box
             display="flex"
