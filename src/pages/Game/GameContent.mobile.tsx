@@ -52,12 +52,10 @@ export const MobileGameContent = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 200,
-        tolerance: 500,
+        distance: 8,
       },
     })
   );
-
   const [run, setRun] = useState(false);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);

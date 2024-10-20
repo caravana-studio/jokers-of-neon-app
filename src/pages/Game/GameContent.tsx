@@ -49,8 +49,7 @@ export const GameContent = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 200,
-        tolerance: 500,
+        distance: 8,
       },
     })
   );
