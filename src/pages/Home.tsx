@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
 import { Background } from "../components/Background";
-import CountdownTimer from "../components/CountdownTimer";
 import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
@@ -29,14 +28,17 @@ export const Home = () => {
       >
         {leaderboardOpen ? (
           <Box>
-            <Heading size="l" variant="italic" textAlign={"center"}>
+            <Heading mb={"40px"} size="l" variant="italic" textAlign={"center"}>
               LEADERBOARD
             </Heading>
+            {/* 
+                    
             <Box mb={10} textAlign={"center"}>
               <CountdownTimer
                 targetDate={new Date("2024-10-05T21:00:00.000Z")}
               />
             </Box>
+                    */}
 
             <Leaderboard />
             <Button

@@ -100,7 +100,7 @@
     },
     "312": {
       "name": "Impulsionador de Figuras",
-      "description": "Todas as cartas de FIGURAS jogadas ganham +100 pontos"
+      "description": "Todas as cartas de FIGURAS jogadas ganham +50 pontos"
     },
     "313": {
       "name": "Ases Multiplicados",
@@ -120,7 +120,7 @@
     },
     "317": {
       "name": "Número da sorte 7",
-      "description": "Todos os 7s ganham +7 no multiplicador"
+      "description": "Todos os 7s ganham +77 pontos"
     },
     "318": {
       "name": "Bônus Neon",
