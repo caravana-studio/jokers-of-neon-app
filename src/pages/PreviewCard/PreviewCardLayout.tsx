@@ -64,7 +64,7 @@ const PreviewCardLayout = () => {
 
   const fontTitleSize = ["s", "s", "l"];
   const fontSize = ["md", "md", "xl"];
-  const layoutWidth = ["95%", "90%", "70%", "70%", "40%"];
+  const layoutWidth = ["95%", "90%", "70%"];
 
   const buyButton = (
     <Button
