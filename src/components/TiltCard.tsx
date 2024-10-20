@@ -21,10 +21,10 @@ import { Card } from "../types/Card";
 import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
+import CachedImage from "./CachedImage.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
-import { CashSymbol } from "./CashSymbol.tsx";
-import CachedImage from "./CachedImage.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -47,10 +47,6 @@ export const TiltCard = ({
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
-  const hoverStyle = {
-    boxShadow: "0px 0px 20px 2px white",
-    transition: "box-shadow 0.3s ease-in-out",
-  };
 
   const isSilent = useIsSilent(card);
 
@@ -66,7 +62,6 @@ export const TiltCard = ({
           boxShadow: isPack
             ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
             : "none",
-          _hover: !isPack ? hoverStyle : "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
@@ -127,7 +122,7 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
-                      backgroundColor='rgba(0,0,0,0.3)'
+                      backgroundColor="rgba(0,0,0,0.3)"
                       backgroundImage={'url("/broken.png")'}
                       backgroundSize="cover"
                       borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
@@ -157,7 +152,8 @@ export const TiltCard = ({
                 opacity: purchased ? 0.5 : 1,
               }}
             >
-              {card.price}<CashSymbol />
+              {card.price}
+              <CashSymbol />
             </Box>
           )}
           {card.purchased && (
@@ -250,9 +246,5 @@ export const TiltCard = ({
   // when is a special card, prefix with s and use idx instead of id
   const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
 
-  return card.isModifier || card.isSpecial ? (
-    <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>
-  ) : (
-    tiltCardComponent
-  );
+  return <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>;
 };

@@ -1,5 +1,11 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
@@ -14,6 +20,10 @@ import {
   SPECIAL_CARDS_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
+import {
+  HAND_SECTION_ID,
+  PRESELECTED_CARD_SECTION_ID,
+} from "../../constants/general.ts";
 import {
   SKIP_TUTORIAL_GAME,
   SKIP_TUTORIAL_MODIFIERS,
@@ -33,15 +43,21 @@ export const MobileGameContent = () => {
     preSelectedCards,
     gameLoading,
     error,
-    clearPreSelection,
     executeCreateGame,
     addModifier,
-    roundRewards,
-    discardEffectCard,
-    discardSpecialCard,
+    preSelectCard,
+    unPreSelectCard,
   } = useGameContext();
 
-  const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 500,
+      },
+    })
+  );
+
   const [run, setRun] = useState(false);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
@@ -85,31 +101,22 @@ export const MobileGameContent = () => {
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setIsItemDragged(false);
+    const draggedCard = Number(event.active?.id);
+    const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
+
     const modifiedCard = Number(event.over?.id);
-
-    // TODO: Improve this
-    let isSpecial = false;
-    let draggedCardId;
-    const activeId = String(event.active?.id);
-
-    if (activeId.startsWith("s")) {
-      draggedCardId = Number(activeId.slice(1));
-      isSpecial = true;
-    } else {
-      draggedCardId = Number(activeId);
-    }
-
-    if (!isNaN(modifiedCard) && !isNaN(draggedCardId)) {
+    if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
-        addModifier(modifiedCard, draggedCardId);
+        addModifier(modifiedCard, draggedCard);
       }
-    }
-    if (isSpecial && event.over?.id === "play-discard") {
-      discardSpecialCard(draggedCardId);
-    } else if (event.over?.id === "play-discard") {
-      discardEffectCard(draggedCardId);
+    } else if (
+      !isModifier &&
+      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
+    ) {
+      preSelectCard(draggedCard);
+    } else if (event.over?.id === HAND_SECTION_ID) {
+      unPreSelectCard(draggedCard);
     }
   };
 
@@ -221,10 +228,8 @@ export const MobileGameContent = () => {
       >
         <DndContext
           onDragEnd={handleDragEnd}
-          onDragStart={() => {
-            setIsItemDragged(true);
-          }}
           autoScroll={false}
+          sensors={sensors}
         >
           <Box
             sx={{
@@ -252,7 +257,7 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton itemDragged={isItemDragged} highlight={run} />
+              <DiscardButton highlight={run} />
               <PlayButton highlight={run} />
             </Flex>
             <Box

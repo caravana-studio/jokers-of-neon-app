@@ -8,7 +8,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useDndContext } from "@dnd-kit/core";
+import { useDndContext, useDroppable } from "@dnd-kit/core";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import { AnimatedCard } from "../../components/AnimatedCard";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
+import { HAND_SECTION_ID } from "../../constants/general";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
@@ -37,6 +38,10 @@ export const HandSection = () => {
   const handsLeft = round?.hands ?? 0;
 
   const { activeNode } = useDndContext();
+
+  const { setNodeRef } = useDroppable({
+    id: HAND_SECTION_ID,
+  });
 
   const cardIsPreselected = (cardIndex: number) => {
     return (
@@ -71,6 +76,7 @@ export const HandSection = () => {
         pl={!isMobile ? 4 : 2}
         pt={!isMobile ? 8 : 0}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
+        ref={setNodeRef}
       >
         <SimpleGrid
           sx={{

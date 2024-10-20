@@ -1,8 +1,10 @@
 import { Box } from "@chakra-ui/react";
+import { useDroppable } from "@dnd-kit/core";
 import { AnimatedCard } from "../../components/AnimatedCard.tsx";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
+import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { Card } from "../../types/Card.ts";
@@ -17,6 +19,10 @@ export const MobilePreselectedCardsSection = () => {
     playAnimation,
   } = useGameContext();
 
+  const { setNodeRef } = useDroppable({
+    id: PRESELECTED_CARD_SECTION_ID,
+  });
+
   return (
     <>
       <Box
@@ -29,6 +35,7 @@ export const MobilePreselectedCardsSection = () => {
           minHeight: `${CARD_HEIGHT * 2 + 70}px`,
           width: "100%",
         }}
+        ref={setNodeRef}
       >
         <Box
           sx={{
