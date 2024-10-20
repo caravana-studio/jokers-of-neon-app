@@ -28,11 +28,12 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const game = useGame();
   const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
 
-  const freeUnlockedSlots = unlockedSpecialSlots - cards.length;
   const lockedSlots =
     unlockedSpecialSlots === MAX_SPECIAL_CARDS
       ? 0
-      : Math.max(1, 5 - unlockedSpecialSlots);
+      : Math.max(0, 5 - unlockedSpecialSlots);
+
+  const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
 
   const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
 

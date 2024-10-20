@@ -72,6 +72,10 @@
   "special-cards": {
     "title": "Special cards",
     "go-back": "Go back",
-    "remove": "Remove card"
+    "remove": "Remove card",
+    "confirmation-modal": {
+      "title": "Remove special card",
+      "description": "Are you sure you want to remove this special card? There is no way to undo this action."
+    }
   }
 }

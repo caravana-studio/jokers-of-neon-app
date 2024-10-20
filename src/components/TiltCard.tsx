@@ -25,7 +25,6 @@ import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
 import { PriceBox } from "./PriceBox.tsx";
-import { useCardScale } from "../hooks/useCardScale.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -34,7 +33,7 @@ interface ICardProps {
   cursor?: string;
   isPack?: boolean;
   isHolographic?: boolean;
-  scale?: number
+  scale?: number;
 }
 
 export const TiltCard = ({
@@ -43,7 +42,7 @@ export const TiltCard = ({
   cursor,
   isPack = false,
   isHolographic = false,
-  scale = 1
+  scale = 1,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -129,7 +128,7 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
-                      backgroundColor='rgba(0,0,0,0.3)'
+                      backgroundColor="rgba(0,0,0,0.3)"
                       backgroundImage={'url("/broken.png")'}
                       backgroundSize="cover"
                       borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
@@ -141,9 +140,7 @@ export const TiltCard = ({
             </Tooltip>
           )}
 
-          {card.price && (
-            <PriceBox price={card.price} purchased={purchased} />
-          )}
+          {card.price && <PriceBox price={card.price} purchased={purchased} />}
           {card.purchased && (
             <Box
               sx={{
@@ -159,36 +156,10 @@ export const TiltCard = ({
             </Box>
           )}
           {card.temporary && (
-            <Tooltip
-              hasArrow
-              label={getTemporalCardText(card.remaining)}
-              closeOnPointerDown
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  zIndex: 10,
-                  opacity: purchased ? 0.5 : 1,
-                  padding: "2px 6px",
-                  background:
-                    "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
-                  borderRadius: "20%",
-                  display: "flex",
-                  alignItems: "center",
-                  direction: "row",
-                  gap: 1.5,
-                }}
-              >
-                <ClockIcon color="white" width={14} height={14} />
-                {
-                  <Text color="white" fontSize="xs">
-                    {card.remaining ? card.remaining : 3}
-                  </Text>
-                }
-              </Box>
-            </Tooltip>
+            <TemporalBadge
+              remaining={card.remaining ?? 1}
+              purchased={purchased}
+            />
           )}
         </Tilt>
       </Box>
@@ -238,5 +209,47 @@ export const TiltCard = ({
     <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>
   ) : (
     tiltCardComponent
+  );
+};
+
+interface TemporalBadgeProps {
+  scale?: number;
+  remaining: number;
+  purchased?: boolean;
+}
+
+export const TemporalBadge = ({
+  remaining,
+  purchased,
+  scale = 1,
+}: TemporalBadgeProps) => {
+  return (
+    <Tooltip hasArrow label={getTemporalCardText(remaining)} closeOnPointerDown>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          zIndex: 10,
+          opacity: purchased ? 0.5 : 1,
+          padding: "2px 6px",
+          background:
+            "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
+          borderRadius: "20%",
+          display: "flex",
+          alignItems: "center",
+          direction: "row",
+          gap: 1.5,
+          transform: scale > 1 ? `scale(${scale}) translateX(-20%) translateY(20%)` : '',
+        }}
+      >
+        <ClockIcon color="white" width={14} height={14} />
+        {
+          <Text color="white" fontSize="xs">
+            {remaining ? remaining : 3}
+          </Text>
+        }
+      </Box>
+    </Tooltip>
   );
 };

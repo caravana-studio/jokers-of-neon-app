@@ -6,12 +6,10 @@ export const FullScreenCardContainer = ({ children }: PropsWithChildren) => {
   return (
     <Flex
       sx={{
-        // maxWidth: `${CARD_WIDTH * 5}px`,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        minHeight: `${CARD_HEIGHT * 2 + 80}px`,
       }}
       gap={3}
     >
