@@ -4,11 +4,10 @@ import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
-import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
 import { useStore } from "../providers/StoreProvider";
-import { BLUE } from "../theme/colors";
+import { BLUE, BLUE_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 
@@ -76,8 +75,6 @@ export const OpenPack = () => {
 
   const allSelected = cardsToKeep.length === cards.length;
 
-  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
-
   const { selectCardsFromPack } = useStore();
 
   const confirmSelectCards = () => {
@@ -89,6 +86,7 @@ export const OpenPack = () => {
   const continueButton = (
     <Button
       mx={{ base: 6, md: 0 }}
+      fontSize={12}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
       onClick={() => {
@@ -142,7 +140,7 @@ export const OpenPack = () => {
                   <Box
                     key={getCardUniqueId(card)}
                     m={1.5}
-                    p={{ base: 1, sm: 1.5 }}
+                    p={1}
                     sx={{
                       borderRadius: { base: "7px", md: "15px" },
                       opacity:
@@ -154,11 +152,13 @@ export const OpenPack = () => {
                       boxShadow: cardsToKeep
                         .map((card) => card.idx)
                         .includes(card.idx)
-                        ? {
-                            base: `0px 0px 10px 5px ${BLUE}`,
-                            md: `0px 0px 20px 12px ${BLUE}`,
-                          }
+                        ? `0px 0px 15px 12px ${BLUE}`
                         : "none",
+                      border: cardsToKeep
+                        .map((card) => card.idx)
+                        .includes(card.idx)
+                        ? `2px solid ${BLUE_LIGHT}`
+                        : "2px solid transparent",
                     }}
                   >
                     <TiltCard
@@ -194,7 +194,7 @@ export const OpenPack = () => {
                 fontSize={12}
                 mx={{ base: 6, md: 0 }}
                 onClick={() => {
-                  setSpecialCardsModalOpen(true);
+                  navigate("/special-cards");
                 }}
               >
                 {t("store.packs.special-cards-btn")}
@@ -213,11 +213,6 @@ export const OpenPack = () => {
         </Flex>
       ) : (
         <Loading />
-      )}
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
       )}
       {confirmationModalOpen && (
         <ConfirmationModal
