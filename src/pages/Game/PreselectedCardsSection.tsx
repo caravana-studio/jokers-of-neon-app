@@ -7,6 +7,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -24,6 +25,8 @@ export const PreselectedCardsSection = ({
     playAnimation,
   } = useGameContext();
 
+  const { cardScale } = useResponsiveValues();
+
   return (
     <Flex
       flexDirection={"column"}
@@ -32,7 +35,7 @@ export const PreselectedCardsSection = ({
       width={"100%"}
       height={"100%"}
     >
-      <Box height='60px'></Box>
+      <Box height="60px"></Box>
       <Flex
         flexDirection={"row"}
         width={"100%"}
@@ -74,6 +77,7 @@ export const PreselectedCardsSection = ({
                         <TiltCard
                           cursor="pointer"
                           card={modifiedCard}
+                          scale={cardScale}
                           onClick={() => {
                             togglePreselected(idx);
                           }}
