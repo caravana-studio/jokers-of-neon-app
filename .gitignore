@@ -423,3 +423,5 @@ yarn-error.log*
 
 .env
 .env.prod
+
+/jokers-of-neon-contracts
