@@ -8,7 +8,6 @@ export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 interface HandActionProps extends BaseProps {
   cards: number[];
   modifiers1: number[];
-  modifiers2: number[];
 }
 
 interface BaseProps {
@@ -75,8 +74,7 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-      modifiers1,
-      modifiers2,
+      modifiers1
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -84,9 +82,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,
@@ -108,8 +104,7 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-      modifiers1,
-      modifiers2,
+      modifiers1
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -117,9 +112,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,
@@ -142,7 +135,6 @@ export async function setupWorld(provider: DojoProvider) {
       gameId,
       cards,
       modifiers1,
-      modifiers2,
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -150,9 +142,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,

@@ -1,5 +1,5 @@
 import { createDojoConfig } from "@dojoengine/core";
-import manifest from "../jokers-of-neon-contracts/manifests/dev/deployment/manifest.json";
+import manifest from "./src/manifest.json";
 
 const rpcUrl = import.meta.env.VITE_RPC_URL || "http://localhost:5050"
 const toriiUrl = import.meta.env.VITE_TORII_URL || "http://localhost:8080"
