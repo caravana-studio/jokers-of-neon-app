@@ -6,7 +6,11 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
+import {
+  GAME_ID,
+  SORT_BY_SUIT,
+  SKIP_IN_GAME_TUTORIAL,
+} from "../constants/localStorage";
 import {
   discardSfx,
   multiSfx,
@@ -125,6 +129,7 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
@@ -218,7 +223,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate("/demo");
+          navigate(showTutorial ? "/tutorial" : "/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();

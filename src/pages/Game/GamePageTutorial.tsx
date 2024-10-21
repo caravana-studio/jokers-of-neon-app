@@ -4,8 +4,10 @@ import { Background } from "../../components/Background";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { SKIP_IN_GAME_TUTORIAL } from "../../constants/localStorage";
 
 export const GamePageTutorial = () => {
+  window.localStorage.setItem(SKIP_IN_GAME_TUTORIAL, "true");
   return (
     <Background type={"game"}>
       {isMobile ? <MobileGameContent /> : <GameContent />}
