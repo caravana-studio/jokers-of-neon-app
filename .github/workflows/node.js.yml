@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Clone private repo for manifest
-        run: git clone https://github.com/caravana-studio/jokers-of-neon-contracts.git ../jokers-of-neon-contracts
+        run: git clone https://${{ secrets.GH_PAT }}@github.com/caravana-studio/jokers-of-neon-contracts.git ../jokers-of-neon-contracts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
