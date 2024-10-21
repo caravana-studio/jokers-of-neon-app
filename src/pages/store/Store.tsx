@@ -14,19 +14,12 @@ import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const {
-    loading,
-    setRun,
-    run,
-    specialCardsModalOpen,
-    setSpecialCardsModalOpen,
-  } = useStoreContent();
+  const { loading, setRun, run } = useStoreContent();
 
   const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
@@ -100,11 +93,6 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       {isSmallScreen ? <StoreContentMobile /> : <StoreContent />}
     </Background>
   );

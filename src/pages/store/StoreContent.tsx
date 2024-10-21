@@ -11,6 +11,7 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage.tsx";
+import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 
 export const StoreContent = () => {
   const {
@@ -19,6 +20,7 @@ export const StoreContent = () => {
     rerolled,
     setRerolled,
     setLoading,
+    specialCardsModalOpen,
     setSpecialCardsModalOpen,
     specialCards,
     skipShop,
@@ -35,6 +37,11 @@ export const StoreContent = () => {
 
   return (
     <>
+      {specialCardsModalOpen && (
+        <CurrentSpecialCardsModal
+          close={() => setSpecialCardsModalOpen(false)}
+        />
+      )}
       <PositionedGameMenu
         showTutorial={() => {
           setRun(true);

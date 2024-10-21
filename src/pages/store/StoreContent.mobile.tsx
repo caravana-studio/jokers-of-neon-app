@@ -9,6 +9,7 @@ import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
+import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
 
 export const StoreContentMobile = () => {
   const {
@@ -17,6 +18,7 @@ export const StoreContentMobile = () => {
     rerolled,
     setRerolled,
     setLoading,
+    specialCardsModalOpen,
     setSpecialCardsModalOpen,
     specialCards,
     skipShop,
@@ -33,6 +35,11 @@ export const StoreContentMobile = () => {
 
   return (
     <>
+      {specialCardsModalOpen && (
+        <CurrentSpecialCardsModal
+          close={() => setSpecialCardsModalOpen(false)}
+        />
+      )}
       <PositionedGameMenu
         showTutorial={() => {
           setRun(true);
