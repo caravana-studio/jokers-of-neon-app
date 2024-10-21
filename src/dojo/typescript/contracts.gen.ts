@@ -3,7 +3,6 @@
 // generate again with `sozo build --typescript`
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
-import * as models from "./models.gen";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 interface HandActionProps extends BaseProps {
@@ -386,6 +385,31 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+
+    // Call the `buy_slot_special_card_item` system with the specified Account and calldata
+    const buySpecialSlot = async ({
+      account,
+      gameId,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+    }) => {
+      try {
+        return await provider.execute(
+          account,
+          {
+            contractName: contract_name,
+            entrypoint: "buy_slot_special_card_item",
+            calldata: [gameId],
+          },
+          DEFAULT_NAMESPACE
+        );
+      } catch (error) {
+        console.error("Error executing buy_slot_special_card_item:", error);
+        throw error;
+      }
+    };
+
     // Call the `buy_poker_hand_item` system with the specified Account and calldata
     const levelUpPokerHand = async ({
       account,
@@ -509,6 +533,7 @@ export async function setupWorld(provider: DojoProvider) {
       buyPack,
       selectCardsFromPack,
       storeReroll,
+      buySpecialSlot
     };
   }
 

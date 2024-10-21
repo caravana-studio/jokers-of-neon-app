@@ -1,8 +1,8 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useTranslation } from "react-i18next";
 
 export const Packs = () => {
   const { packs } = useShopItems();
@@ -34,7 +34,7 @@ export const Packs = () => {
                 scale={1.2}
                 onClick={() => {
                   if(!pack.purchased){
-                    navigate("/preview-card", { state: { card: {
+                    navigate("/preview/pack", { state: { card: {
                       id: pack.blister_pack_id.toString(),
                       img: `packs/${pack.blister_pack_id}`,
                       idx: Number(pack.blister_pack_id),
