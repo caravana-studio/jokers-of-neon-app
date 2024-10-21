@@ -15,7 +15,7 @@ export const MobileTopSection = () => {
 
         <MultiPoints />
       </Flex>
-      <Flex backgroundColor="rgba(0,0,0,0.3)" mx={2}>
+      <Flex backgroundColor="rgba(0,0,0,0.3)" mx={2} mt={1}>
         <SpecialCards />
         {isRageRound && <RageCards />}
       </Flex>

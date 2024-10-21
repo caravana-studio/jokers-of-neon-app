@@ -759,6 +759,36 @@ export const ShopDefinition = {
 };
 
 
+// Type definition for `jokers_of_neon::configs::slot_special_cards::SlotSpecialCardsConfig` struct
+export interface SlotSpecialCardsConfig {
+    id: BigInt;
+    max_special_cards: Number;
+    initial_price: Number;
+    
+}
+export const SlotSpecialCardsConfigDefinition = {
+    id: RecsType.BigInt,
+    max_special_cards: RecsType.Number,
+    initial_price: RecsType.Number,
+    
+};
+
+
+// Type definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem` struct
+export interface SlotSpecialCardsItem {
+    game_id: Number;
+    cost: Number;
+    purchased: Boolean;
+    
+}
+export const SlotSpecialCardsItemDefinition = {
+    game_id: RecsType.Number,
+    cost: RecsType.Number,
+    purchased: RecsType.Boolean,
+    
+};
+
+
 // Type definition for `jokers_of_neon::models::data::events::SpecialCashEvent` struct
 export interface SpecialCashEvent {
     player: BigInt;
@@ -1640,6 +1670,46 @@ export function defineContractComponents(world: World) {
                         namespace: "jokers_of_neon",
                         name: "Shop",
                         types: ["u32", "u32", "bool", "u32", "u32", "u32", "u32", "u32"],
+                        customTypes: [],
+                    },
+                }
+            );
+        })(),
+
+        // Model definition for `jokers_of_neon::configs::slot_special_cards::SlotSpecialCardsConfig` model
+        SlotSpecialCardsConfig: (() => {
+            return defineComponent(
+                world,
+                {
+                    id: RecsType.BigInt,
+                    max_special_cards: RecsType.Number,
+                    initial_price: RecsType.Number,
+                },
+                {
+                    metadata: {
+                        namespace: "jokers_of_neon",
+                        name: "SlotSpecialCardsConfig",
+                        types: ["felt252", "u32", "u32"],
+                        customTypes: [],
+                    },
+                }
+            );
+        })(),
+
+        // Model definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem` model
+        SlotSpecialCardsItem: (() => {
+            return defineComponent(
+                world,
+                {
+                    game_id: RecsType.Number,
+                    cost: RecsType.Number,
+                    purchased: RecsType.Boolean,
+                },
+                {
+                    metadata: {
+                        namespace: "jokers_of_neon",
+                        name: "SlotSpecialCardsItem",
+                        types: ["u32", "u32", "bool"],
                         customTypes: [],
                     },
                 }
