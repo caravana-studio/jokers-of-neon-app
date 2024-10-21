@@ -47,13 +47,12 @@ export const StorePreviewComponent = ({
   const { t } = useTranslation(["store"]);
 
   return (
-    <Background type="home" dark>
+    <Background type="home" dark scrollOnMobile>
       <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
-        height={"100%"}
-        overflow="scroll"
+        minHeight={"100%"}
       >
         <Flex
           flexDirection={"column"}
@@ -62,6 +61,7 @@ export const StorePreviewComponent = ({
           margin={"0 auto"}
           bg="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
+          mt={4}
           p={6}
           boxShadow={`0px 0px 10px 1px ${white}`}
         >

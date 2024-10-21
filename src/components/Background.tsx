@@ -51,6 +51,7 @@ export const Background = ({
         position: isMobile ? "fixed" : "unset",
         bottom: isMobile ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
+        overflow: scrollOnMobile && isMobile ? "scroll" : "unset",
       }}
     >
       {bgDecoration ? (

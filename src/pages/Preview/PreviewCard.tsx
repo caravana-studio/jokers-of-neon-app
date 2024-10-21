@@ -46,7 +46,7 @@ const PreviewCard = () => {
         notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
       }
       variant="outlinePrimaryGlow"
-      height={"100%"}
+      height={{ base: "40px", sm: "100%" }}
       width={{ base: "50%", sm: "unset" }}
     >
       {t("buy")}
