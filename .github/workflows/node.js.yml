@@ -20,6 +20,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Clone private repo for manifest
+        run: git clone https://github.com/caravana-studio/jokers-of-neon-contracts.git ../jokers-of-neon-contracts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
