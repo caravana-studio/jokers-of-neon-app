@@ -21,7 +21,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
-import TutorialGameProvider from "./providers/tutorialGameProvider";
+import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 function App() {

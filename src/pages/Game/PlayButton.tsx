@@ -8,7 +8,7 @@ import { isTutorial } from "../../utils/isTutorial";
 import {
   handsLeftTutorial,
   useTutorialGameContext,
-} from "../../providers/tutorialGameProvider";
+} from "../../providers/TutorialGameProvider";
 
 interface PlayButtonProps {
   highlight?: boolean;

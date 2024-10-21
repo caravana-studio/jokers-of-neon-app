@@ -7,7 +7,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
-import { useTutorialGameContext } from "../../providers/tutorialGameProvider.tsx";
+import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 
 interface PreselectedCardsProps {

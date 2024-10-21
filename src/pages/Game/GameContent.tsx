@@ -23,7 +23,7 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { useTutorialGameContext } from "../../providers/tutorialGameProvider.tsx";
+import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 
 export const GameContent = () => {

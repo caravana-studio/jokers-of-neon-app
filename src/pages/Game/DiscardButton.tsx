@@ -5,7 +5,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../../utils/isTutorial";
-import { useTutorialGameContext } from "../../providers/tutorialGameProvider";
+import { useTutorialGameContext } from "../../providers/TutorialGameProvider";
 
 interface DiscardButtonProps {
   itemDragged?: boolean;

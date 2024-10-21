@@ -23,7 +23,7 @@ import { Coins } from "./Coins";
 import {
   useTutorialGameContext,
   handsLeftTutorial,
-} from "../../providers/tutorialGameProvider";
+} from "../../providers/TutorialGameProvider";
 import { isTutorial } from "../../utils/isTutorial";
 
 export const HandSection = () => {

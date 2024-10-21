@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { IGameContext } from "./GameProvider"; // existing imports
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
@@ -15,13 +15,18 @@ import {
 } from "../utils/mocks/cardMocks";
 import { useAudio } from "../hooks/useAudio";
 import { preselectedCardSfx } from "../constants/sfx";
+import { checkHand } from "../utils/checkHand";
+import { useDojo } from "../dojo/useDojo";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { LevelPokerHand } from "../dojo/typescript/models.gen";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
 
 // Define your mock data specifically for the tutorial
 const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
   preSelectedPlay: Plays.NONE,
-  points: 50,
-  multi: 2,
+  points: 0,
+  multi: 0,
   executeCreateGame: () => console.log("Game created in tutorial"),
   gameLoading: false,
   preSelectedCards: [],
@@ -49,7 +54,7 @@ const mockTutorialGameContext = createContext<IGameContext>({
   checkOrCreateGame: () => console.log("Game checked or created"),
   restartGame: () => console.log("Game restarted"),
   preSelectionLocked: false,
-  score: 150,
+  score: 0,
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
@@ -63,15 +68,64 @@ const mockTutorialGameContext = createContext<IGameContext>({
 });
 
 export let handsLeftTutorial = 1;
-let context;
-// export let discardLeftTutorial = 1;
+let context: IGameContext;
+
 export const useTutorialGameContext = () => useContext(mockTutorialGameContext);
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
+  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+  const gameID = getLSGameId();
+
+  const {
+    setup: {
+      client,
+      account: { account },
+    },
+  } = useDojo();
+
+  if (client && account && plays.length == 0) {
+    getPlayerPokerHands(client, gameID).then((plays: any) => {
+      if (plays != undefined) setPlays(plays);
+    });
+  }
+
   handsLeftTutorial = 1;
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
+  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const { play: preselectCardSound } = useAudio(preselectedCardSfx);
+  const [points, setPoints] = useState(0);
+  const [multi, setMulti] = useState(0);
+
+  context = useTutorialGameContext();
+
+  useEffect(() => {
+    if (preSelectedCards.length > 0) {
+      let play = checkHand(context.hand, preSelectedCards, [], []);
+      setPreSelectedPlay(play);
+      if (plays?.length != 0) {
+        setMultiAndPoints(play);
+      }
+    } else {
+      setPreSelectedPlay(Plays.NONE);
+      resetMultiPoints();
+    }
+  }, [preSelectedCards]);
+
+  const resetMultiPoints = () => {
+    setPoints(0);
+    setMulti(0);
+  };
+
+  const setMultiAndPoints = (play: Plays) => {
+    const playerPokerHand = plays[play - 1];
+    const multi =
+      typeof playerPokerHand.multi === "number" ? playerPokerHand.multi : 0;
+    const points =
+      typeof playerPokerHand.points === "number" ? playerPokerHand.points : 0;
+    setMulti(multi);
+    setPoints(points);
+  };
 
   const cardIsPreselected = (cardIndex: number) => {
     return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
@@ -79,7 +133,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const preSelectCard = (cardIndex: number) => {
     setPreSelectedCards((prev) => {
-      console.log(prev);
       return [...prev, cardIndex];
     });
   };
@@ -108,10 +161,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const actions = { togglePreselected };
-
-  context = useTutorialGameContext();
   context.preSelectedCards = preSelectedCards;
+  context.preSelectedPlay = preSelectedPlay;
+  context.points = points;
+  context.multi = multi;
+
+  const actions = { togglePreselected };
 
   return (
     <mockTutorialGameContext.Provider value={{ ...context, ...actions }}>
