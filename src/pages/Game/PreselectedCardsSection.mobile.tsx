@@ -40,7 +40,7 @@ export const MobilePreselectedCardsSection = () => {
             maxWidth: `${cardWidth * 3 + 70}px`,
             display: "flex",
             justifyContent: "center",
-            alignItems: "inherit",
+            alignItems: "center",
             flexWrap: "wrap",
             height: `${cardHeight * 2 + 30}px`,
           }}

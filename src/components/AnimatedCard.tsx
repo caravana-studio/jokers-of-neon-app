@@ -34,7 +34,7 @@ export const AnimatedCard = ({
     [animatedCard?.animationIndex]
   );
 
-  const { cardScale } = useResponsiveValues();
+  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
   const cardBorderRadius = useBreakpointValue(
     {
       base: "5px",
@@ -124,6 +124,8 @@ export const AnimatedCard = ({
       });
     }
   }, [discarded]);
+
+  if (!isCardScaleCalculated) return null;
 
   return (
     <animated.div
