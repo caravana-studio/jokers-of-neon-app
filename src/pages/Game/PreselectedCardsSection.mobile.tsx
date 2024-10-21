@@ -19,8 +19,8 @@ export const MobilePreselectedCardsSection = () => {
   } = useGameContext();
 
   const { cardScale } = useResponsiveValues();
-  const cardWidth = cardScale ? CARD_WIDTH * cardScale : CARD_WIDTH;
-  const cardHeight = cardScale ? CARD_HEIGHT * cardScale : CARD_HEIGHT;
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   return (
     <>
@@ -31,7 +31,7 @@ export const MobilePreselectedCardsSection = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          minHeight: `${cardHeight * 2 + 70}px`,
+          height: `${cardHeight * 2 + 70}px`,
           width: "100%",
         }}
       >
@@ -42,7 +42,7 @@ export const MobilePreselectedCardsSection = () => {
             justifyContent: "center",
             alignItems: "inherit",
             flexWrap: "wrap",
-            minHeight: `${cardHeight * 2 + 30}px`,
+            height: `${cardHeight * 2 + 30}px`,
           }}
         >
           {preSelectedCards.map((idx) => {

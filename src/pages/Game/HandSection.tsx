@@ -66,9 +66,9 @@ export const HandSection = () => {
         <Flex
           flexDirection="column"
           justifyContent="space-between"
-          height={cardHeight}
           sx={{ mr: 4 }}
           pb={1}
+          height={CARD_HEIGHT * cardScale}
         >
           <SortBy />
           <Coins />
@@ -77,8 +77,8 @@ export const HandSection = () => {
       <Box
         pr={!isSmallScreen ? 12 : 10}
         pl={!isSmallScreen ? 4 : 2}
-        pt={!isSmallScreen ? 8 : 0}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
+        height={isSmallScreen ? CARD_HEIGHT * cardScale : "100%"}
       >
         <SimpleGrid
           sx={{
