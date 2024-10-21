@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Tooltip, useTheme } from "@chakra-ui/react";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import { MAX_SPECIAL_CARDS } from "../constants/config";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider";
+import { getTooltip } from "../utils/getTooltip";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
 export const SpecialCardsPage = () => {
@@ -27,8 +28,7 @@ export const SpecialCardsPage = () => {
     keyPrefix: "special-cards",
   });
 
-  const { discardSpecialCard, specialCards } =
-    useGameContext();
+  const { discardSpecialCard, specialCards } = useGameContext();
 
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -87,31 +87,33 @@ export const SpecialCardsPage = () => {
                           : "none",
                     }}
                   >
-                    <Box
-                      position="relative"
-                      w={`${CARD_WIDTH * scale}px`}
-                      h={`${CARD_HEIGHT * scale}px`}
-                      cursor={"pointer"}
-                    >
-                      <CachedImage
-                        borderRadius={{ base: "5px", sm: "8px" }}
-                        src={`Cards/${card.img}`}
-                        alt={card.img}
-                        w="100%"
-                        height="100%"
-                        onClick={() => {
-                          setPreselectedCard((prev) =>
-                            prev === card ? undefined : card
-                          );
-                        }}
-                      />
-                      {card.temporary && (
-                        <TemporalBadge
-                          remaining={card.remaining ?? 1}
-                          scale={scale}
+                    <Tooltip label={getTooltip(card, false)}>
+                      <Box
+                        position="relative"
+                        w={`${CARD_WIDTH * scale}px`}
+                        h={`${CARD_HEIGHT * scale}px`}
+                        cursor={"pointer"}
+                      >
+                        <CachedImage
+                          borderRadius={{ base: "5px", sm: "8px" }}
+                          src={`Cards/${card.img}`}
+                          alt={card.img}
+                          w="100%"
+                          height="100%"
+                          onClick={() => {
+                            setPreselectedCard((prev) =>
+                              prev === card ? undefined : card
+                            );
+                          }}
                         />
-                      )}
-                    </Box>
+                        {card.temporary && (
+                          <TemporalBadge
+                            remaining={card.remaining ?? 1}
+                            scale={scale}
+                          />
+                        )}
+                      </Box>
+                    </Tooltip>
                   </Box>
                 )
               );
