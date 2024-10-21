@@ -1,9 +1,15 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { LabelCardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
+import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
+import { ConfirmationModal } from "./ConfirmationModal";
+import { TemporalBadge } from "./TiltCard";
+import { useTranslation } from "react-i18next";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -12,6 +18,41 @@ interface MobileCardHighlightProps {
 export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
   const { name, description, type } = getCardData(card, false);
+  const { discardEffectCard, discardSpecialCard } = useGameContext();
+  const [loading, setLoading] = useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const { t } = useTranslation(["game"]);
+
+  const discard =
+    type === LabelCardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (type === LabelCardTypes.MODIFIER) {
+      handleDiscard();
+    } else if (type === LabelCardTypes.SPECIAL) {
+      setConfirmationModalOpen(true);
+    }
+  };
+
+  const handleDiscard = () => {
+    setLoading(true);
+    discard(card.idx).then((response) => {
+      if (response) {
+        onClose();
+      }
+      setLoading(false);
+    });
+  };
+
+  const getLabel = () => {
+    if (type === LabelCardTypes.MODIFIER) {
+      return loading ? "Changing..." : "Change";
+    } else if (type === LabelCardTypes.SPECIAL) {
+      return loading ? "Removing..." : "Remove";
+    }
+  };
+
   return (
     <Flex
       position={"absolute"}
@@ -30,6 +71,17 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         onClose();
       }}
     >
+      {confirmationModalOpen && (
+        <ConfirmationModal
+          close={() => setConfirmationModalOpen(false)}
+          title={t("game.special-cards.confirmation-modal.title")}
+          description={t("game.special-cards.confirmation-modal.description")}
+          onConfirm={() => {
+            setConfirmationModalOpen(false);
+            handleDiscard();
+          }}
+        />
+      )}
       <Flex flexDirection="column" textAlign="center">
         <Heading
           fontWeight={500}
@@ -43,16 +95,32 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
           - {type} -
         </Text>
       </Flex>
-      <CachedImage
-        borderRadius={"20px"}
-        boxShadow={"0px 0px 20px 2px white, inset 0px 0px 20px 5px white"}
-        src={`Cards/big/${card.img}`}
-        alt={`Card: ${name}`}
-        width={"60%"}
-      />
-      <Text size="xl" fontSize={"17px"}>
+      <Box width={"60%"} position={"relative"}>
+        <CachedImage
+          borderRadius={"20px"}
+          boxShadow={"0px 0px 20px 2px white, inset 0px 0px 20px 5px white"}
+          src={`Cards/big/${card.img}`}
+          alt={`Card: ${name}`}
+          width={"100%"}
+        />
+        {card.temporary && card.remaining && (
+          <TemporalBadge remaining={card.remaining} scale={1.6} />
+        )}
+      </Box>
+      <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
+      {(type === LabelCardTypes.MODIFIER ||
+        type === LabelCardTypes.SPECIAL) && (
+        <Button
+          isDisabled={loading}
+          onClick={handleClick}
+          width="40%"
+          variant={loading ? "defaultOutline" : "secondarySolid"}
+        >
+          {getLabel()}
+        </Button>
+      )}
     </Flex>
   );
 };
