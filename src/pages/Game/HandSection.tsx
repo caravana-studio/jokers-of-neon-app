@@ -19,6 +19,7 @@ import { TiltCard } from "../../components/TiltCard";
 import { HAND_SECTION_ID } from "../../constants/general";
 import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
 
@@ -31,6 +32,8 @@ export const HandSection = () => {
     preSelectedModifiers,
     roundRewards,
   } = useGameContext();
+
+  const { highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);
 
@@ -163,7 +166,9 @@ export const HandSection = () => {
                           : "pointer"
                       }
                       onClick={() => {
-                        if (!card.isModifier) {
+                        if (isMobile) {
+                          highlightCard(card);
+                        } else if (!card.isModifier) {
                           togglePreselected(card.idx);
                         }
                       }}

@@ -3,15 +3,16 @@ import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
+import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const GamePage = () => {
   const {
@@ -49,8 +50,7 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if(!username)
-    navigate("/");
+  if (!username) navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -68,11 +68,17 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
-      {isMobile ? <MobileGameContent /> : <GameContent />}
+      {isMobile ? (
+        <CardHighlightProvider>
+          <MobileGameContent />
+        </CardHighlightProvider>
+      ) : (
+        <GameContent />
+      )}
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isMobile && <PositionedDiscordLink />}
     </Background>
   );
 };

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import {
@@ -30,6 +31,7 @@ import {
   SKIP_TUTORIAL_SPECIAL_CARDS,
 } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -48,6 +50,8 @@ export const MobileGameContent = () => {
     preSelectCard,
     unPreSelectCard,
   } = useGameContext();
+
+  const { highlightedCard } = useCardHighlight();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -180,6 +184,7 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
+      {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
       <Joyride
         steps={GAME_TUTORIAL_STEPS}
         run={run}

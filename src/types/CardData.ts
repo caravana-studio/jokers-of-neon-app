@@ -1,4 +1,5 @@
 import { Cards } from "../enums/cards";
+import { LabelCardTypes } from "../enums/cardTypes";
 import { Suits } from "../enums/suits";
 
 export interface CardData {
@@ -7,6 +8,7 @@ export interface CardData {
     card?: Cards;
     suit?: Suits;
     details?: string;
+    type?: LabelCardTypes
 }
 
 export type CardDataMap = {

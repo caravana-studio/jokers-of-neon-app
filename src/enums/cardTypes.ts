@@ -10,3 +10,14 @@ export enum NumericCardTypes {
   MODIFIER = 2,
   SPECIAL = 3,
 }
+
+export enum LabelCardTypes {
+  NONE = "None",
+  TRADITIONAL = "Traditional",
+  NEON = "Neon",
+  JOKER = "Joker",
+  SPECIAL = "Special",
+  MODIFIER = "Modifier",
+  RAGE = "Rage",
+  PACK = "Pack",
+}
