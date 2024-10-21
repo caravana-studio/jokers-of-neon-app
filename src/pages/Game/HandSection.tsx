@@ -57,8 +57,8 @@ export const HandSection = () => {
   const { t } = useTranslation(["game"]);
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
-  const cardWidth = cardScale ? CARD_WIDTH * cardScale : CARD_WIDTH;
-  const cardHeight = cardScale ? CARD_HEIGHT * cardScale : CARD_HEIGHT;
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   return (
     <>
@@ -68,7 +68,7 @@ export const HandSection = () => {
           justifyContent="space-between"
           sx={{ mr: 4 }}
           pb={1}
-          height={CARD_HEIGHT * cardScale}
+          height={cardHeight}
         >
           <SortBy />
           <Coins />
@@ -78,7 +78,7 @@ export const HandSection = () => {
         pr={!isSmallScreen ? 12 : 10}
         pl={!isSmallScreen ? 4 : 2}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
-        height={isSmallScreen ? CARD_HEIGHT * cardScale : "100%"}
+        height={isSmallScreen ? cardHeight : "100%"}
       >
         <SimpleGrid
           sx={{
