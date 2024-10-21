@@ -3,13 +3,11 @@
 // generate again with `sozo build --typescript`
 import { DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface } from "starknet";
-import * as models from "./models.gen";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 interface HandActionProps extends BaseProps {
   cards: number[];
   modifiers1: number[];
-  modifiers2: number[];
 }
 
 interface BaseProps {
@@ -76,8 +74,7 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-      modifiers1,
-      modifiers2,
+      modifiers1
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -85,9 +82,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,
@@ -109,8 +104,7 @@ export async function setupWorld(provider: DojoProvider) {
       account,
       gameId,
       cards,
-      modifiers1,
-      modifiers2,
+      modifiers1
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -118,9 +112,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,
@@ -143,7 +135,6 @@ export async function setupWorld(provider: DojoProvider) {
       gameId,
       cards,
       modifiers1,
-      modifiers2,
     }: HandActionProps) => {
       try {
         const calldata = [
@@ -151,9 +142,7 @@ export async function setupWorld(provider: DojoProvider) {
           cards.length,
           ...cards,
           modifiers1.length,
-          ...modifiers1,
-          modifiers2.length,
-          ...modifiers2,
+          ...modifiers1
         ];
         return await provider.execute(
           account,
@@ -396,6 +385,31 @@ export async function setupWorld(provider: DojoProvider) {
       }
     };
 
+
+    // Call the `buy_slot_special_card_item` system with the specified Account and calldata
+    const buySpecialSlot = async ({
+      account,
+      gameId,
+    }: {
+      account: AccountInterface;
+      gameId: number;
+    }) => {
+      try {
+        return await provider.execute(
+          account,
+          {
+            contractName: contract_name,
+            entrypoint: "buy_slot_special_card_item",
+            calldata: [gameId],
+          },
+          DEFAULT_NAMESPACE
+        );
+      } catch (error) {
+        console.error("Error executing buy_slot_special_card_item:", error);
+        throw error;
+      }
+    };
+
     // Call the `buy_poker_hand_item` system with the specified Account and calldata
     const levelUpPokerHand = async ({
       account,
@@ -519,6 +533,7 @@ export async function setupWorld(provider: DojoProvider) {
       buyPack,
       selectCardsFromPack,
       storeReroll,
+      buySpecialSlot
     };
   }
 

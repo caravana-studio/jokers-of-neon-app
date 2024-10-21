@@ -17,6 +17,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "Este espaço está bloqueado. Você pode desbloqueá-lo na loja.",
       "special-cards-label": "Cartas Especiais",
       "remove-special-cards-label": "Remover",
       "confirmation-modal": {
@@ -33,7 +34,7 @@
           "rank": "Classificação"
         }
       },
-      "my-coins": "Minhas moedas",
+      "my-coins": "Moedas",
       "modifier-change": "Alterar",
       "show-plays": "Mostrar jogadas"
     },
