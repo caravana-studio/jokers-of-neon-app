@@ -100,7 +100,7 @@
     },
     "312": {
         "name": "Potenciador de Figuras",
-        "description": "Todas las cartas de FIGURAS jugadas puntúan +100 puntos"
+        "description": "Todas las cartas de FIGURAS jugadas puntúan +50 puntos"
     },
     "313": {
         "name": "Ases Multiplicados",
@@ -120,7 +120,7 @@
     },
     "317": {
         "name": "Suerte 7",
-        "description": "Todas las cartas 7 puntúan +7 multi"
+        "description": "Todas las cartas 7 puntúan +77 puntos"
     },
     "318": {
         "name": "Bono Neon",

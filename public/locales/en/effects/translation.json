@@ -100,7 +100,7 @@
     },
     "312": {
       "name": "Figures Booster",
-      "description": "All played FIGURES cards score +100 points"
+      "description": "All played FIGURES cards score +50 points"
     },
     "313": {
       "name": "Multiplied Aces",
@@ -120,7 +120,7 @@
     },
     "317": {
       "name": "Lucky 7",
-      "description": "All 7s score +7 multi"
+      "description": "All 7s score +77 points"
     },
     "318": {
       "name": "Neon bonus",
