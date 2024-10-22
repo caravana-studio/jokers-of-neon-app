@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Text, Tooltip, useTheme } from "@chakra-ui/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { Card } from "../types/Card";
@@ -17,6 +16,7 @@ import { MAX_SPECIAL_CARDS } from "../constants/config";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getTooltip } from "../utils/getTooltip";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
@@ -45,7 +45,9 @@ export const SpecialCardsPage = () => {
       ? 0
       : Math.max(1, 5 - unlockedSpecialSlots);
 
-  const scale = isMobile ? 1.2 : 1.4;
+  const { isSmallScreen, cardScale } = useResponsiveValues();
+
+  const scale = isSmallScreen ? cardScale * 1.2 : cardScale * 1.4;
 
   return (
     <Background type="home" dark bgDecoration>
@@ -140,7 +142,7 @@ export const SpecialCardsPage = () => {
               onClick={() => {
                 navigate(-1);
               }}
-              width={isMobile ? "50%" : "unset"}
+              width={isSmallScreen ? "50%" : "unset"}
             >
               {t("go-back")}
             </Button>
@@ -151,7 +153,7 @@ export const SpecialCardsPage = () => {
               onClick={() => {
                 setConfirmationModalOpen(true);
               }}
-              width={isMobile ? "50%" : "unset"}
+              width={isSmallScreen ? "50%" : "unset"}
             >
               {t("remove")}
             </Button>
@@ -175,7 +177,7 @@ export const SpecialCardsPage = () => {
           }}
         />
       )}
-      {!isMobile && <PositionedDiscordLink />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };
