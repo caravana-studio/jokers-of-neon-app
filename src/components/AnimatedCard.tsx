@@ -138,8 +138,8 @@ export const AnimatedCard = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: `${(CARD_WIDTH + 8) * cardScale}px`,
-        height: `${(CARD_HEIGHT + 8) * cardScale}px`,
+        width: `${(CARD_WIDTH + 8) * scale}px`,
+        height: `${(CARD_HEIGHT + 8) * scale}px`,
         borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
