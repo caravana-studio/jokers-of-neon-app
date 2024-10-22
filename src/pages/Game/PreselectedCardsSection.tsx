@@ -9,6 +9,7 @@ import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -25,6 +26,8 @@ export const PreselectedCardsSection = ({
     discardAnimation,
     playAnimation,
   } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+
+  const { cardScale } = useResponsiveValues();
 
   return (
     <Flex
@@ -76,6 +79,7 @@ export const PreselectedCardsSection = ({
                         <TiltCard
                           cursor="pointer"
                           card={modifiedCard}
+                          scale={cardScale}
                           onClick={() => {
                             togglePreselected(idx);
                           }}

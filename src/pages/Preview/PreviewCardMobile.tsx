@@ -9,29 +9,30 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
-import { CashSymbol } from "../components/CashSymbol.tsx";
-import OpenAnimation from "../components/OpenAnimation.tsx";
-import { CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { useStore } from "../providers/StoreProvider";
-import theme from "../theme/theme";
-import { getCardData } from "../utils/getCardData";
-import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
-import { Coins } from "./store/Coins.tsx";
-import CachedImage from "../components/CachedImage.tsx";
+import { Background } from "../../components/Background.tsx";
+import { CashSymbol } from "../../components/CashSymbol.tsx";
+import OpenAnimation from "../../components/OpenAnimation.tsx";
+import { CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import theme from "../../theme/theme.ts";
+import { getCardData } from "../../utils/getCardData.ts";
+import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { Coins } from "../store/Coins.tsx";
+import CachedImage from "../../components/CachedImage.tsx";
 import { useTranslation } from "react-i18next";
-import { PositionedGameMenu } from "../components/GameMenu.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
-const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
+const SIZE_MULTIPLIER = 1.3;
 const { white, neonGreen } = theme.colors;
 
-const MobilePreviewCard = () => {
+const MobilePreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
+  const { cardScale } = useResponsiveValues();
 
   const { card, isPack, pack } = state || {};
 
@@ -100,15 +101,15 @@ const MobilePreviewCard = () => {
           boxShadow={`0px 0px 10px 1px ${white}`}
         >
           <Flex flexDirection={"column"} ml={"30px"} flex="1" mb={4}>
-            <Flex justifyContent="space-between" alignItems="center">
-              <Heading size="sm" variant="italic">
+            <Flex justifyContent="center" alignItems="center">
+              <Heading size="md" variant="italic">
                 {name}
               </Heading>
             </Flex>
           </Flex>
 
           <Flex justifyContent={"center"}>
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+            <Box width={`${CARD_WIDTH * cardScale * SIZE_MULTIPLIER}px`}>
               <OpenAnimation
                 startAnimation={isOpenAnimationRunning}
                 onAnimationEnd={() => handleAnimationEnd()}
@@ -270,4 +271,4 @@ const MobilePreviewCard = () => {
   );
 };
 
-export default MobilePreviewCard;
+export default MobilePreviewCardLayout;
