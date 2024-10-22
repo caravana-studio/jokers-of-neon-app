@@ -245,6 +245,7 @@ export const GameContent = () => {
 
         <PositionedGameMenu
           decoratedPage
+          bottomPositionDesktop={16}
           showTutorial={() => {
             setRun(true);
           }}
