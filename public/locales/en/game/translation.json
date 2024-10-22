@@ -6,6 +6,23 @@
     }
   },
   "game": {
+    "card-types": {
+      "Common": "Traditional",
+      "Modifier": "Modifier",
+      "Special": "Special",
+      "Rage": "Rage",
+      "Neon": "Neon",
+      "Pack": "Pack",
+      "Joker": "Joker"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Change",
+        "remove": "Remove",
+        "changing": "Changing...",
+        "removing": "Removing..."
+      }
+    },
     "level-points": {
       "level": "Level",
       "target-score": "Score",

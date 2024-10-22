@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { LabelCardTypes } from "../enums/cardTypes";
+import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
@@ -24,13 +24,13 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   const { t } = useTranslation(["game"]);
 
   const discard =
-    type === LabelCardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
+    type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (type === LabelCardTypes.MODIFIER) {
+    if (type === CardTypes.MODIFIER) {
       handleDiscard();
-    } else if (type === LabelCardTypes.SPECIAL) {
+    } else if (type === CardTypes.SPECIAL) {
       setConfirmationModalOpen(true);
     }
   };
@@ -46,10 +46,10 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   };
 
   const getLabel = () => {
-    if (type === LabelCardTypes.MODIFIER) {
-      return loading ? "Changing..." : "Change";
-    } else if (type === LabelCardTypes.SPECIAL) {
-      return loading ? "Removing..." : "Remove";
+    if (type === CardTypes.MODIFIER) {
+      return loading ? t('game.card-highlight.buttons.changing') : t('game.card-highlight.buttons.change');
+    } else if (type === CardTypes.SPECIAL) {
+      return loading ? t('game.card-highlight.buttons.removing') : t('game.card-highlight.buttons.remove');
     }
   };
 
@@ -92,7 +92,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
           {name}
         </Heading>
         <Text size="l" textTransform="lowercase" fontWeight={600}>
-          - {type} -
+          - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
       <Box width={"60%"} position={"relative"}>
@@ -110,8 +110,8 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
-      {(type === LabelCardTypes.MODIFIER ||
-        type === LabelCardTypes.SPECIAL) && (
+      {(type === CardTypes.MODIFIER ||
+        type === CardTypes.SPECIAL) && (
         <Button
           isDisabled={loading}
           onClick={handleClick}

@@ -6,6 +6,23 @@
     }
   },
   "game": {
+    "card-types": {
+      "Common": "Tradicional",
+      "Modifier": "Modificadora",
+      "Special": "Especial",
+      "Rage": "Rage",
+      "Neon": "Neón",
+      "Pack": "Paquete",
+      "Joker": "Comodín"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Cambiar",
+        "remove": "Eliminar",
+        "changing": "Cambiando...",
+        "removing": "Eliminando..."
+      }
+    },
     "level-points": {
       "level": "Nivel",
       "target-score": "Puntos",
