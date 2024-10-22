@@ -64,7 +64,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
     }
   };
 
-  const slotWidth = (visibleCards > 6 ? 85 : 90) / visibleCards;
+  const slotWidth = (visibleCards > 6 ? 88 : 92) / visibleCards;
 
   return (
     <Flex width="100%" height={`${cardHeight}px`} gap={{ base: 2, sm: 3 }}>
@@ -130,12 +130,18 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
       })}
       {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
         <Flex width={`${slotWidth}%`}>
-          <FilledUnlockedSlot key={`unlocked-${index}`} scale={cardScale} />
+          <FilledUnlockedSlot
+            key={`unlocked-${index}`}
+            scale={cardScale - cardScale * 0.1}
+          />
         </Flex>
       ))}
       {Array.from({ length: lockedSlots }).map((_, index) => (
         <Flex width={`${slotWidth}%`}>
-          <LockedSlot key={`locked-${index}`} scale={cardScale} />
+          <LockedSlot
+            key={`locked-${index}`}
+            scale={cardScale - cardScale * 0.1}
+          />
         </Flex>
       ))}
       {cardToDiscard !== null && (
