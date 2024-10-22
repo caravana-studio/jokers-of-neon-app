@@ -16,6 +16,7 @@ import {
 } from "../../constants/gameTutorial.ts";
 import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {

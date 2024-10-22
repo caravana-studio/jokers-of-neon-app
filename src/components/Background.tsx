@@ -28,7 +28,7 @@ const getBackgroundImage = (type: string) => {
     case "rage":
       return "none";
     default:
-      return `url(bg/${type}-bg.jpg)`;
+      return `url(/bg/${type}-bg.jpg)`;
   }
 };
 
@@ -52,6 +52,7 @@ export const Background = ({
         position: isSmallScreen ? "fixed" : "unset",
         bottom: isSmallScreen ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
+        overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
       {bgDecoration ? (

@@ -70,6 +70,28 @@ export const useShopActions = () => {
           console.log(e);
           return failedTransactionToast();
         }
+      };      
+      
+      const buySpecialSlot = async (
+        gameId: number,
+      ) => {
+        try {
+          showTransactionToast();
+          const { transaction_hash } = await client.shop_system.buySpecialSlot({
+            account,
+            gameId,
+          });
+          showTransactionToast(transaction_hash);
+    
+          const tx = await account.waitForTransaction(transaction_hash, {
+            retryInterval: 100,
+          });
+    
+          return updateTransactionToast(transaction_hash, tx.isSuccess());
+        } catch (e) {
+          console.log(e);
+          return failedTransactionToast();
+        }
       };
 
       const buyPack = async (
@@ -171,6 +193,7 @@ export const useShopActions = () => {
         selectCardsFromPack,
         levelUpPokerHand,
         storeReroll,
+        buySpecialSlot
       };
     };
       

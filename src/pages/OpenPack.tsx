@@ -1,17 +1,14 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
-import { CurrentSpecialCardsModal } from "../components/CurrentSpecialCardsModal";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useStore } from "../providers/StoreProvider";
-import { BLUE } from "../theme/colors";
+import { BLUE, BLUE_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
-
 import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -19,6 +16,7 @@ import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -78,8 +76,6 @@ export const OpenPack = () => {
 
   const allSelected = cardsToKeep.length === cards.length;
 
-  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
-
   const { selectCardsFromPack } = useStore();
 
   const confirmSelectCards = () => {
@@ -91,6 +87,7 @@ export const OpenPack = () => {
   const continueButton = (
     <Button
       mx={{ base: 6, md: 0 }}
+      fontSize={12}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
       onClick={() => {
@@ -106,7 +103,7 @@ export const OpenPack = () => {
   );
 
   return (
-    <Background type="game" dark bgDecoration>
+    <Background type="home" dark bgDecoration>
       <PositionedGameMenu decoratedPage />
       {/* <WhiteOverlay $visible={overlayVisible} /> */}
       {cards.length > 0 ? (
@@ -133,7 +130,7 @@ export const OpenPack = () => {
               {t("store.packs.select-all-lbl").toUpperCase()}
             </Checkbox>
           </Flex>
-          <CardsContainer>
+          <FullScreenCardContainer>
             {cards.map((card, index) => {
               return (
                 <Flex
@@ -144,7 +141,7 @@ export const OpenPack = () => {
                   <Box
                     key={getCardUniqueId(card)}
                     m={1.5}
-                    p={{ base: 1, sm: 1.5 }}
+                    p={1}
                     sx={{
                       borderRadius: { base: "7px", sm: "12px", md: "15px" },
                       opacity:
@@ -156,11 +153,13 @@ export const OpenPack = () => {
                       boxShadow: cardsToKeep
                         .map((card) => card.idx)
                         .includes(card.idx)
-                        ? {
-                            base: `0px 0px 10px 5px ${BLUE}`,
-                            md: `0px 0px 20px 12px ${BLUE}`,
-                          }
+                        ? `0px 0px 15px 12px ${BLUE}`
                         : "none",
+                      border: cardsToKeep
+                        .map((card) => card.idx)
+                        .includes(card.idx)
+                        ? `2px solid ${BLUE_LIGHT}`
+                        : "2px solid transparent",
                     }}
                   >
                     <TiltCard
@@ -183,7 +182,7 @@ export const OpenPack = () => {
                 </Flex>
               );
             })}
-          </CardsContainer>
+          </FullScreenCardContainer>
           <Flex
             flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
@@ -196,7 +195,7 @@ export const OpenPack = () => {
                 fontSize={12}
                 mx={{ base: 6, md: 0 }}
                 onClick={() => {
-                  setSpecialCardsModalOpen(true);
+                  navigate("/special-cards");
                 }}
               >
                 {t("store.packs.special-cards-btn")}
@@ -216,11 +215,6 @@ export const OpenPack = () => {
       ) : (
         <Loading />
       )}
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
@@ -231,28 +225,5 @@ export const OpenPack = () => {
       )}
       {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
-  );
-};
-
-const CardsContainer = ({ children }: PropsWithChildren) => {
-  const { isSmallScreen, cardScale } = useResponsiveValues();
-  const cardWidth = CARD_WIDTH * cardScale;
-  const cardHeight = CARD_HEIGHT * cardScale;
-
-  return isSmallScreen ? (
-    <Box
-      sx={{
-        maxWidth: `${cardWidth * 5}px`,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        minHeight: `${cardHeight * 2 + 80}px`,
-      }}
-    >
-      {children}
-    </Box>
-  ) : (
-    <Flex gap={3}>{children}</Flex>
   );
 };

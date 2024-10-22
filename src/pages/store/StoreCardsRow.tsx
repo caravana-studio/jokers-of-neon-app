@@ -1,10 +1,10 @@
-import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { useNavigate } from "react-router-dom";
 import { preloadImages } from "../../utils/preloadImages";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
@@ -82,15 +82,15 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
+                  scale={adjustedScale}
                   card={{ ...card, purchased }}
                   onClick={() => {
                     if (!isPurchased(card)) {
-                      navigate("/preview-card", {
-                        state: { card: card, isPack: false },
+                      navigate("/preview/card", {
+                        state: { card: card },
                       });
                     }
                   }}
-                  scale={adjustedScale}
                 />
               </Flex>
             );

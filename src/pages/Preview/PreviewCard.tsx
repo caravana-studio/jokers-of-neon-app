@@ -8,6 +8,7 @@ import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import MobilePreviewCard from "./PreviewCardMobile.tsx";
 
 const PreviewCard = () => {
   const { state } = useLocation();

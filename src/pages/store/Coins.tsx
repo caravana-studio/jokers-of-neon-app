@@ -1,10 +1,10 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import CoinsIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGame } from "../../dojo/queries/useGame";
-import { useTranslation } from "react-i18next";
 
 interface ICoinsProps {
   rolling?: boolean;
@@ -24,7 +24,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
       />
       <Heading
         variant={"italic"}
-        size={"m"}
+        size={{base: 's', sm: "m"}}
         sx={{
           ml: 2,
           position: "relative",

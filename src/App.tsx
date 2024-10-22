@@ -10,15 +10,16 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { OpenPack } from "./pages/OpenPack";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
+import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SpecialCardsPage } from "./pages/SpecialCardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
-import { PreviewCard } from "./pages/PreviewCard/PreviewCard";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -44,10 +45,10 @@ function App() {
               />
               <Route path="/redirect/:page" element={<Redirect />} />
               <Route
-                path="/preview-card"
+                path="/preview/:type"
                 element={
                   <StoreProvider>
-                    <PreviewCard/>
+                    <PreviewPage />
                   </StoreProvider>
                 }
               />
@@ -56,6 +57,14 @@ function App() {
                 element={
                   <StoreProvider>
                     <OpenPack />
+                  </StoreProvider>
+                }
+              />
+              <Route
+                path="/special-cards"
+                element={
+                  <StoreProvider>
+                    <SpecialCardsPage />
                   </StoreProvider>
                 }
               />

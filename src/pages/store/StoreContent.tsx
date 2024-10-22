@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
@@ -11,7 +11,7 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage.tsx";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 
 export const StoreContent = () => {
   const {
@@ -20,8 +20,6 @@ export const StoreContent = () => {
     rerolled,
     setRerolled,
     setLoading,
-    specialCardsModalOpen,
-    setSpecialCardsModalOpen,
     specialCards,
     skipShop,
     setRun,
@@ -37,11 +35,6 @@ export const StoreContent = () => {
 
   return (
     <>
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       <PositionedGameMenu
         showTutorial={() => {
           setRun(true);
@@ -119,7 +112,6 @@ export const StoreContent = () => {
               )}
             </Box>
           </Box>
-
           <Box
             display="flex"
             flexDirection={"column"}
@@ -140,6 +132,7 @@ export const StoreContent = () => {
                 locked={false}
                 isSmallScreen={false}
               />
+              <SpecialSlotItem />
               <Flex flexDirection="column" gap={14}>
                 <RerollButton
                   rerolled={rerolled}
@@ -152,7 +145,6 @@ export const StoreContent = () => {
                 />
                 <SpecialsButton
                   specialCards={specialCards}
-                  setSpecialCardsModalOpen={setSpecialCardsModalOpen}
                   isSmallScreen={false}
                 />
                 <CachedImage

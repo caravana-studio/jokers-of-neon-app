@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { GameMenu, PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
@@ -9,7 +9,7 @@ import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 
 export const StoreContentMobile = () => {
   const {
@@ -18,8 +18,6 @@ export const StoreContentMobile = () => {
     rerolled,
     setRerolled,
     setLoading,
-    specialCardsModalOpen,
-    setSpecialCardsModalOpen,
     specialCards,
     skipShop,
     setRun,
@@ -35,11 +33,6 @@ export const StoreContentMobile = () => {
 
   return (
     <>
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       <PositionedGameMenu
         showTutorial={() => {
           setRun(true);
@@ -119,6 +112,9 @@ export const StoreContentMobile = () => {
               )}
             </Box>
           </Box>
+          <Box mb={3} mx={4}>
+            <SpecialSlotItem />
+          </Box>
           <Box
             className="game-tutorial-step-2"
             width={{ base: "95%", sm: "75%" }}
@@ -159,7 +155,6 @@ export const StoreContentMobile = () => {
               />
               <SpecialsButton
                 specialCards={specialCards}
-                setSpecialCardsModalOpen={setSpecialCardsModalOpen}
                 isSmallScreen={true}
               />
               <NextLevelButton

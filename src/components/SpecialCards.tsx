@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card.ts";
-import { CardsRow } from "./CardsRow";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
-import { TiltCard } from "./TiltCard.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 
 interface SpecialCardsProps {
   inStore?: boolean;
@@ -38,53 +37,8 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
           : `0px 26px 30px -30px ${isRageRound ? colors.neonPink : colors.neonGreen}`
       }
     >
-      {inStore ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {specialCards.map((card) => {
-            const isDiscarded = discardedCards
-              .map((card) => card.card_id)
-              .includes(card.card_id!);
-
-            return (
-              card &&
-              !isDiscarded && (
-                <Box
-                  key={card.id}
-                  mx={3}
-                  mb={3}
-                  sx={{
-                    borderRadius: 5,
-                    boxShadow:
-                      preselectedCard?.card_id === card.card_id
-                        ? `0px 0px 10px 4px ${colors.neonGreen}`
-                        : "none",
-                  }}
-                >
-                  <TiltCard
-                    card={card}
-                    scale={cardScale}
-                    onClick={() => {
-                      setPreselectedCard((prev) =>
-                        prev === card ? undefined : card
-                      );
-                    }}
-                  />
-                </Box>
-              )
-            );
-          })}
-        </Box>
-      ) : (
-        <CardsRow cards={specialCards} />
-      )}
-      <Flex sx={{ mt: 1, mx: 1 }} justifyContent="space-between">
+      <SpecialCardsRow cards={specialCards} />
+      <Flex mt={{ base: 0, sm: 1 }} mx={1} justifyContent="space-between">
         <Box>
           {!inStore && (
             <Text size={{ base: "l", sm: "m" }}>
@@ -92,11 +46,6 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
             </Text>
           )}
         </Box>
-        <Text className="special-cards-step-2" size={{ base: "l", sm: "m" }}>
-          {"<"}
-          {specialCards.length}/{maxLength}
-          {">"}
-        </Text>
       </Flex>
       {confirmationModalOpen && (
         <ConfirmationModal
