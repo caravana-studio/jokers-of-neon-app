@@ -5,6 +5,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card.ts";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 
 interface SpecialCardsProps {
@@ -24,6 +25,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   const width = !isRageRound ? "100%" : rageCards.length === 1 ? "82%" : "74%";
+  const { cardScale } = useResponsiveValues();
 
   return (
     <Box

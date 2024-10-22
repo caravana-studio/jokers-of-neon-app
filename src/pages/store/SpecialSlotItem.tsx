@@ -1,19 +1,18 @@
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useSpecialCardSlotItem } from "../../dojo/queries/useSpecialCardSlotItem";
-import { useCardScale } from "../../hooks/useCardScale";
 import { useGame } from "../../dojo/queries/useGame";
 import { MAX_SPECIAL_CARDS } from "../../constants/config";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ISpecialSlotItem {}
 
 export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
-  const scale = useCardScale();
+  const { cardScale, isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
   const specialSlotItem = useSpecialCardSlotItem();
   const navigate = useNavigate();
@@ -25,8 +24,8 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const price = specialSlotItem?.cost;
   const purchased = specialSlotItem?.purchased ?? false;
 
-  const height = CARD_HEIGHT * scale * 0.8;
-  const width = CARD_WIDTH * scale * 0.8;
+  const height = CARD_HEIGHT * cardScale * 0.8;
+  const width = CARD_WIDTH * cardScale * 0.8;
 
   return (
     visible && (
@@ -57,7 +56,10 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
                 zIndex: 10,
               }}
             >
-              <Heading variant="italic" fontSize={isMobile ? 6 : 11 * scale}>
+              <Heading
+                variant="italic"
+                fontSize={isSmallScreen ? 6 : 11 * cardScale}
+              >
                 PURCHASED
               </Heading>
             </Box>

@@ -1,9 +1,6 @@
 import { Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import {
-    CARD_HEIGHT,
-    CARD_WIDTH
-} from "../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import CachedImage from "./CachedImage.tsx";
 
 interface ILockedSlotProps {

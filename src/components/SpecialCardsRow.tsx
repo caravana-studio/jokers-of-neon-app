@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { MAX_SPECIAL_CARDS } from "../constants/config.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
@@ -9,9 +8,10 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { Card } from "../types/Card.ts";
 import { AnimatedCard } from "./AnimatedCard.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
-import { TiltCard } from "./TiltCard.tsx";
 import { FilledUnlockedSlot } from "./UnlockedSlot.tsx";
+import { TiltCard } from "./TiltCard.tsx";
 
 interface SpecialCardsRowProps {
   cards: Card[];
@@ -24,6 +24,9 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
+  const { cardScale, isSmallScreen } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   const game = useGame();
   const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
@@ -61,10 +64,16 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
     }
   };
 
-  const slotWidth = (visibleCards > 6 ? 85 : 90) / visibleCards;
+  const slotWidth = (visibleCards > 6 ? 88 : 92) / visibleCards;
 
   return (
-    <Flex width="100%" height={`${CARD_HEIGHT + 8}px`} gap={{ base: 2, sm: 3 }}>
+    <Flex
+      width="100%"
+      height={`${cardHeight}px`}
+      gap={{ base: 2, sm: 3 }}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
@@ -73,7 +82,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
             key={card.idx}
             justifyContent="center"
             width={`${slotWidth}%`}
-            maxWidth={`${CARD_WIDTH + 7}px`}
+            maxWidth={`${cardWidth + 7}px`}
             position="relative"
             zIndex={1}
             onMouseEnter={() => setHoveredCard(card.idx)}
@@ -83,7 +92,11 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
             }}
           >
             {!isDiscarded && (
-              <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
+              <AnimatedCard
+                idx={card.idx}
+                isSpecial={!!card.isSpecial}
+                scale={cardScale - cardScale * 0.1}
+              >
                 <Box position="relative">
                   <Flex
                     position={"absolute"}
@@ -98,7 +111,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
                         height={8}
                         fontSize="8px"
                         px={"16px"}
-                        size={isMobile ? "xs" : "md"}
+                        size={isSmallScreen ? "xs" : "md"}
                         borderRadius={"10px"}
                         variant={"discardSecondarySolid"}
                         display="flex"
@@ -118,7 +131,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
                       </Button>
                     )}
                   </Flex>
-                  <TiltCard card={card} />
+                  <TiltCard card={card} scale={cardScale - cardScale * 0.1} />
                 </Box>
               </AnimatedCard>
             )}
@@ -126,13 +139,19 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
         );
       })}
       {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-        <Flex width={`${slotWidth}%`}>
-          <FilledUnlockedSlot key={`unlocked-${index}`} />
+        <Flex maxWidth={`${slotWidth}%`}>
+          <FilledUnlockedSlot
+            key={`unlocked-${index}`}
+            scale={cardScale - cardScale * 0.1}
+          />
         </Flex>
       ))}
       {Array.from({ length: lockedSlots }).map((_, index) => (
-        <Flex width={`${slotWidth}%`}>
-          <LockedSlot key={`locked-${index}`} />
+        <Flex maxWidth={`${slotWidth}%`}>
+          <LockedSlot
+            key={`locked-${index}`}
+            scale={cardScale - cardScale * 0.1}
+          />
         </Flex>
       ))}
       {cardToDiscard !== null && (

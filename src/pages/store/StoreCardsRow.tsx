@@ -1,12 +1,12 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { preloadImages } from "../../utils/preloadImages";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface CardsRowProps {
   title: string;
@@ -28,6 +28,13 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     });
   }, [cards]);
 
+  const { isSmallScreen, cardScale, isCardScaleCalculated } =
+    useResponsiveValues();
+
+  const adjustedScale = isSmallScreen
+    ? cardScale
+    : cardScale - (cardScale * 25) / 100;
+
   useEffect(() => {
     preloadImages(imageUrls)
       .then(() => {})
@@ -36,9 +43,13 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
       });
   }, [imageUrls]);
 
+  if (!isCardScaleCalculated) {
+    return null;
+  }
+
   return (
     <>
-      <Box mb={4}>
+      <Box mb={8}>
         <Flex justifyContent="space-between" alignItems="center">
           <Heading
             size={{ base: "s", sm: "xs" }}
@@ -58,14 +69,20 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           )}
         </Flex>
 
-        <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
+        <Flex
+          flexDirection="row"
+          justifyContent="flex-start"
+          wrap={"wrap"}
+          gap={[2, 4, 6]}
+          rowGap={4}
+        >
           {cards.map((card) => {
             const purchased = isPurchased(card);
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
-                  scale={isMobile ? 1 : 0.8}
+                  scale={adjustedScale}
                   card={{ ...card, purchased }}
                   onClick={() => {
                     if (!isPurchased(card)) {

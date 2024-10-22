@@ -240,7 +240,8 @@ export const TemporalBadge = ({
           alignItems: "center",
           direction: "row",
           gap: 1.5,
-          transform: scale > 1 ? `scale(${scale}) translateX(-20%) translateY(20%)` : '',
+          transform:
+            scale > 1 ? `scale(${scale}) translateX(-20%) translateY(20%)` : "",
         }}
       >
         <ClockIcon color="white" width={14} height={14} />

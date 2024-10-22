@@ -1,50 +1,32 @@
-import { Box, Button, Flex, Heading, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import Joyride, { CallBackProps } from "react-joyride";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useGameContext } from "../../providers/GameProvider";
+import { useStore } from "../../providers/StoreProvider";
 import { Background } from "../../components/Background";
-import CachedImage from "../../components/CachedImage.tsx";
-import { CashSymbol } from "../../components/CashSymbol.tsx";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
-import { PositionedGameMenu } from "../../components/GameMenu";
-import { Loading } from "../../components/Loading";
+import { StoreContent } from "./StoreContent";
+import { StoreContentMobile } from "./StoreContent.mobile";
+import useStoreContent from "./UseStoreContent.ts";
+import { Loading } from "../../components/Loading.tsx";
+
 import {
   JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
-} from "../../constants/gameTutorial";
+} from "../../constants/gameTutorial.ts";
+import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useShop } from "../../dojo/queries/useShop.tsx";
-import { useShopItems } from "../../dojo/queries/useShopItems.ts";
-import { useShopActions } from "../../dojo/useShopActions.tsx";
-import { useGameContext } from "../../providers/GameProvider";
-import { useStore } from "../../providers/StoreProvider";
-import { PlaysTable } from "../Plays/PlaysTable.tsx";
-import { Coins } from "./Coins.tsx";
-import { Packs } from "./Packs.tsx";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
-import { StoreCardsRow } from "./StoreCardsRow";
+
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const { gameId, setHand, onShopSkip, setIsRageRound } = useGameContext();
+  const { loading, setRun, run } = useStoreContent();
+
+  const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
-  const cash = game?.cash ?? 0;
-  const store = useShop();
   const state = game?.state;
   const { lockRedirection } = useStore();
-  const rerollCost = store?.reroll_cost ?? 0;
-  const notEnoughCash = cash < rerollCost;
-
-  const [rerolled, setRerolled] = useState(store?.reroll_executed ?? false);
-
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    store && setRerolled(store.reroll_executed);
-  }, [store?.reroll_executed]);
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     setIsRageRound(false);
@@ -62,92 +44,7 @@ export const Store = () => {
     }
   }, [game?.state, lockRedirection]);
 
-  const { skipShop } = useShopActions();
-
-  const { reroll, locked } = useStore();
-  const [run, setRun] = useState(false);
-
-  const shopItems = useShopItems();
-
   const navigate = useNavigate();
-  const { t } = useTranslation(["store"]);
-
-  const levelUpTable = (
-    <Box className="game-tutorial-step-2" py={[2, 2, 2, 2, 4]}>
-      {shopItems.pokerHandItems.length > 0 && <PlaysTable inStore />}
-    </Box>
-  );
-
-  const rerollDisabled = rerolled || locked || notEnoughCash;
-
-  const rerollButton = (
-    <Tooltip
-      placement={isMobile ? "top" : "right"}
-      label={
-        rerolled
-          ? t("store.tooltip.rerolled")
-          : t("store.tooltip.reroll-default")
-      }
-    >
-      <Button
-        className="game-tutorial-step-6"
-        fontSize={[10, 10, 10, 14, 14]}
-        w={["unset", "unset", "unset", "100%", "100%"]}
-        variant={rerollDisabled ? "defaultOutline" : "solid"}
-        isDisabled={rerollDisabled}
-        onClick={() => {
-          reroll().then((response) => {
-            if (response) {
-              setRerolled(true);
-            }
-          });
-        }}
-      >
-        {t("store.labels.reroll").toUpperCase()}
-        {isMobile && <br />} {rerollCost}
-        <CashSymbol />
-      </Button>
-    </Tooltip>
-  );
-
-  const specialsButton = (
-    <Button
-      fontSize={[10, 10, 10, 14, 14]}
-      w={["unset", "unset", "unset", "100%", "100%"]}
-      onClick={() => {
-        navigate("/special-cards");
-      }}
-    >
-      {t("store.labels.see-my").toUpperCase()}
-      {isMobile && <br />} {t("store.labels.special-cards").toUpperCase()}
-    </Button>
-  );
-
-  const nextLevelButton = (
-    <Button
-      className="game-tutorial-step-7"
-      my={{ base: 0, md: 6 }}
-      w={["unset", "unset", "unset", "100%", "100%"]}
-      onClick={() => {
-        setLoading(true);
-        onShopSkip();
-        skipShop(gameId).then((response): void => {
-          if (response.success) {
-            setHand(response.cards);
-            navigate("/redirect/demo");
-          } else {
-            setLoading(false);
-          }
-        });
-      }}
-      isDisabled={locked}
-      lineHeight={1.6}
-      variant="secondarySolid"
-      fontSize={[10, 10, 10, 14, 14]}
-    >
-      {t("store.labels.next-level").toUpperCase()}
-    </Button>
-  );
 
   useEffect(() => {
     if (state === "FINISHED") {
@@ -168,14 +65,6 @@ export const Store = () => {
     if (showTutorial) setRun(true);
   }, []);
 
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
-
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { type } = data;
 
@@ -184,6 +73,14 @@ export const Store = () => {
       setRun(false);
     }
   };
+
+  if (loading) {
+    return (
+      <Background type="game">
+        <Loading />
+      </Background>
+    );
+  }
 
   return (
     <Background type="store" scrollOnMobile>
@@ -197,149 +94,7 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
-        }}
-      />
-      <Flex
-        width="100%"
-        height="100%"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          alignItems="center"
-          width="100%"
-          overflow={isMobile ? "scroll" : "auto"}
-          pt={isMobile ? 4 : 0}
-          px={{ base: 2, md: 14 }}
-        >
-          <Box
-            display="flex"
-            w={["100%", "100%", "40%", "40%", "40%"]}
-            h={[null, null, "100%", "100%", "100%"]}
-            flexDirection="column"
-            justifyContent="space-between"
-            pb={isMobile ? 4 : 0}
-          >
-            <Heading variant="italic" size="l" ml={4}>
-              {t("store.titles.level-game").toUpperCase()}
-            </Heading>
-            {isMobile && (
-              <Flex mt={2}>
-                <Coins rolling />
-              </Flex>
-            )}
-            <Packs />
-            {!isMobile && <Flex mt={8}>{levelUpTable}</Flex>}
-            {!isMobile && <Coins rolling />}
-          </Box>
-          <Box
-            w={["100%", "100%", "45%", "45%", "45%"]}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            pb={isMobile ? 4 : 0}
-            pl={4}
-            gap={[2, 2, 4, 6, 6]}
-          >
-            <Box className="game-tutorial-step-3">
-              {shopItems.commonCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.commonCards}
-                  title={t("store.titles.traditional")}
-                />
-              )}
-            </Box>
-            <Box className="game-tutorial-step-4">
-              {shopItems.modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
-              )}
-            </Box>
-            <Box className="game-tutorial-step-5">
-              {shopItems.specialCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.specialCards}
-                  title={t("store.titles.special")}
-                />
-              )}
-            </Box>
-          </Box>
-          {isMobile && <Box mb={3} mx={4}><SpecialSlotItem /></Box>}
-          {isMobile && (
-            <Box
-              className="game-tutorial-step-2"
-              w="100%"
-              background="rgba(0,0,0,0.5)"
-              px={4}
-              borderRadius="10px"
-            >
-              <Heading variant="italic" size="m" mt={4}>
-                {t("store.titles.improve-plays").toUpperCase()}
-              </Heading>
-              {levelUpTable}
-            </Box>
-          )}
-
-
-          <Box
-            display="flex"
-            flexDirection={[
-              "row-reverse",
-              "row-reverse",
-              "row-reverse",
-              "column",
-              "column",
-            ]}
-            w={["100%", "100%", "100%", "15%", "15%"]}
-            h={[null, null, null, "100%", "100%"]}
-            justifyContent={[
-              "center",
-              "center",
-              "center",
-              "space-between",
-              "space-between",
-            ]}
-            gap={10}
-            px={isMobile ? 2 : 0}
-          >
-            {!isMobile ? (
-              <>
-                {nextLevelButton}
-                <SpecialSlotItem />
-                <Flex flexDirection="column" gap={14} alignItems="center">
-                  {rerollButton}
-                  {specialsButton}
-                  <CachedImage
-                    src="/logos/logo-variant.svg"
-                    alt="store-bg"
-                    width="90%"
-                  />
-                </Flex>
-              </>
-            ) : (
-              <Flex
-                width="95%"
-                justifyContent="space-between"
-                my={4}
-                mb={"100px"}
-              >
-                {rerollButton}
-                {specialsButton}
-                {nextLevelButton}
-              </Flex>
-            )}
-          </Box>
-        </Box>
-      </Flex>
-      {!isMobile && <PositionedDiscordLink />}
+      {isSmallScreen ? <StoreContentMobile /> : <StoreContent />}
     </Background>
   );
 };

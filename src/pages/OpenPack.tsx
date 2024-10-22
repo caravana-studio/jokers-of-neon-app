@@ -1,6 +1,5 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
@@ -10,13 +9,13 @@ import { useStore } from "../providers/StoreProvider";
 import { BLUE, BLUE_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
-
 import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
 /* const WhiteOverlay = styled.div<{ $visible: boolean }>`
@@ -57,6 +56,8 @@ export const OpenPack = () => {
   const continueDisabled =
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
   const { t } = useTranslation(["store"]);
+  const { isSmallScreen, cardScale } = useResponsiveValues();
+  const adjustedCardScale = cardScale * 1.2;
 
   useEffect(() => {
     if (game?.state === "IN_STORE") {
@@ -113,7 +114,7 @@ export const OpenPack = () => {
           gap={4}
         >
           <Flex
-            flexDirection={isMobile ? "column" : "row"}
+            flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
             alignItems="center"
             mx={2}
@@ -142,7 +143,7 @@ export const OpenPack = () => {
                     m={1.5}
                     p={1}
                     sx={{
-                      borderRadius: { base: "7px", md: "15px" },
+                      borderRadius: { base: "7px", sm: "12px", md: "15px" },
                       opacity:
                         cardsToKeep
                           .map((card) => card.idx)
@@ -162,7 +163,7 @@ export const OpenPack = () => {
                     }}
                   >
                     <TiltCard
-                      scale={1.2}
+                      scale={adjustedCardScale}
                       card={card}
                       key={index}
                       onClick={() => {
@@ -183,7 +184,7 @@ export const OpenPack = () => {
             })}
           </FullScreenCardContainer>
           <Flex
-            flexDirection={isMobile ? "column" : "row"}
+            flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
             mt={4}
             gap={4}
@@ -222,7 +223,7 @@ export const OpenPack = () => {
           onConfirm={confirmSelectCards}
         />
       )}
-      {!isMobile && <PositionedDiscordLink />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };

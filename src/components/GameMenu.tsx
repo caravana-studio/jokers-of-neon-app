@@ -1,12 +1,12 @@
 import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -79,7 +79,9 @@ export const PositionedGameMenu = ({
   decoratedPage = false,
   ...rest
 }: PositionedGameMenuProps) => {
-  return isMobile ? (
+  const { isSmallScreen } = useResponsiveValues();
+
+  return isSmallScreen ? (
     <Box
       sx={{
         position: "fixed",
@@ -95,8 +97,8 @@ export const PositionedGameMenu = ({
     <Box
       sx={{
         position: "fixed",
-        bottom: decoratedPage ? "96px" : "60px",
-        left: "70px",
+        bottom: decoratedPage ? "100px" : "20px",
+        left: decoratedPage ? 20 : "20px",
         zIndex: 1000,
       }}
     >
