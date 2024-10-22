@@ -1,210 +1,210 @@
 {
     "neonCardsData": {
-        "200": {
+        "53": {
           "name": "2 of neon Clubs",
           "description": "Scores +4 points and +1 multi"
         },
-        "201": {
+        "54": {
           "name": "3 of neon Clubs",
           "description": "Scores +6 points and +1 multi"
         },
-        "202": {
+        "55": {
           "name": "4 of neon Clubs",
           "description": "Scores +8 points and +1 multi"
         },
-        "203": {
+        "56": {
           "name": "5 of neon Clubs",
           "description": "Scores +10 points and +1 multi"
         },
-        "204": {
+        "57": {
           "name": "6 of neon Clubs",
           "description": "Scores +12 points and +1 multi"
         },
-        "205": {
+        "58": {
           "name": "7 of neon Clubs",
           "description": "Scores +14 points and +1 multi"
         },
-        "206": {
+        "59": {
           "name": "8 of neon Clubs",
           "description": "Scores +16 points and +1 multi"
         },
-        "207": {
+        "60": {
           "name": "9 of neon Clubs",
           "description": "Scores +18 points and +1 multi"
         },
-        "208": {
+        "61": {
           "name": "10 of neon Clubs",
           "description": "Scores +20 points and +1 multi"
         },
-        "209": {
+        "62": {
           "name": "Jack of neon Clubs",
           "description": "Scores +20 points and +1 multi"
         },
-        "210": {
+        "63": {
           "name": "Queen of neon Clubs",
           "description": "Scores +20 points and +1 multi"
         },
-        "211": {
+        "64": {
           "name": "King of neon Clubs",
           "description": "Scores +20 points and +1 multi"
         },
-        "212": {
+        "65": {
           "name": "Ace of neon Clubs",
           "description": "Scores +22 points and +1 multi"
         },
-        "213": {
+        "66": {
           "name": "2 of neon Diamonds",
           "description": "Scores +4 points and +1 multi"
         },
-        "214": {
+        "67": {
           "name": "3 of neon Diamonds",
           "description": "Scores +6 points and +1 multi"
         },
-        "215": {
+        "68": {
           "name": "4 of neon Diamonds",
           "description": "Scores +8 points and +1 multi"
         },
-        "216": {
+        "69": {
           "name": "5 of neon Diamonds",
           "description": "Scores +10 points and +1 multi"
         },
-        "217": {
+        "70": {
           "name": "6 of neon Diamonds",
           "description": "Scores +12 points and +1 multi"
         },
-        "218": {
+        "71": {
           "name": "7 of neon Diamonds",
           "description": "Scores +14 points and +1 multi"
         },
-        "219": {
+        "72": {
           "name": "8 of neon Diamonds",
           "description": "Scores +16 points and +1 multi"
         },
-        "220": {
+        "73": {
           "name": "9 of neon Diamonds",
           "description": "Scores +18 points and +1 multi"
         },
-        "221": {
+        "74": {
           "name": "10 of neon Diamonds",
           "description": "Scores +20 points and +1 multi"
         },
-        "222": {
+        "75": {
           "name": "Jack of neon Diamonds",
           "description": "Scores +20 points and +1 multi"
         },
-        "223": {
+        "76": {
           "name": "Queen of neon Diamonds",
           "description": "Scores +20 points and +1 multi"
         },
-        "224": {
+        "77": {
           "name": "King of neon Diamonds",
           "description": "Scores +20 points and +1 multi"
         },
-        "225": {
+        "78": {
           "name": "Ace of neon Diamonds",
           "description": "Scores +22 points and +1 multi"
         },
-        "226": {
+        "79": {
           "name": "2 of neon Hearts",
           "description": "Scores +4 points and +1 multi"
         },
-        "227": {
+        "80": {
           "name": "3 of neon Hearts",
           "description": "Scores +6 points and +1 multi"
         },
-        "228": {
+        "81": {
           "name": "4 of neon Hearts",
           "description": "Scores +8 points and +1 multi"
         },
-        "229": {
+        "82": {
           "name": "5 of neon Hearts",
           "description": "Scores +10 points and +1 multi"
         },
-        "230": {
+        "83": {
           "name": "6 of neon Hearts",
           "description": "Scores +12 points and +1 multi"
         },
-        "231": {
+        "84": {
           "name": "7 of neon Hearts",
           "description": "Scores +14 points and +1 multi"
         },
-        "232": {
+        "85": {
           "name": "8 of neon Hearts",
           "description": "Scores +16 points and +1 multi"
         },
-        "233": {
+        "86": {
           "name": "9 of neon Hearts",
           "description": "Scores +18 points and +1 multi"
         },
-        "234": {
+        "87": {
           "name": "10 of neon Hearts",
           "description": "Scores +20 points and +1 multi"
         },
-        "235": {
+        "88": {
           "name": "Jack of neon Hearts",
           "description": "Scores +20 points and +1 multi"
         },
-        "236": {
+        "89": {
           "name": "Queen of neon Hearts",
           "description": "Scores +20 points and +1 multi"
         },
-        "237": {
+        "90": {
           "name": "King of neon Hearts",
           "description": "Scores +20 points and +1 multi"
         },
-        "238": {
+        "91": {
           "name": "Ace of neon Hearts",
           "description": "Scores +22 points and +1 multi"
         },
-        "239": {
+        "92": {
           "name": "2 of neon Spades",
           "description": "Scores +4 points and +1 multi"
         },
-        "240": {
+        "93": {
           "name": "3 of neon Spades",
           "description": "Scores +6 points and +1 multi"
         },
-        "241": {
+        "94": {
           "name": "4 of neon Spades",
           "description": "Scores +8 points and +1 multi"
         },
-        "242": {
+        "95": {
           "name": "5 of neon Spades",
           "description": "Scores +10 points and +1 multi"
         },
-        "243": {
+        "96": {
           "name": "6 of neon Spades",
           "description": "Scores +12 points and +1 multi"
         },
-        "244": {
+        "97": {
           "name": "7 of neon Spades",
           "description": "Scores +14 points and +1 multi"
         },
-        "245": {
+        "98": {
           "name": "8 of neon Spades",
           "description": "Scores +16 points and +1 multi"
         },
-        "246": {
+        "99": {
           "name": "9 of neon Spades",
           "description": "Scores +18 points and +1 multi"
         },
-        "247": {
+        "100": {
           "name": "10 of neon Spades",
           "description": "Scores +20 points and +1 multi"
         },
-        "248": {
+        "101": {
           "name": "Jack of neon Spades",
           "description": "Scores +20 points and +1 multi"
         },
-        "249": {
+        "102": {
           "name": "Queen of neon Spades",
           "description": "Scores +20 points and +1 multi"
         },
-        "250": {
+        "103": {
           "name": "King of neon Spades",
           "description": "Scores +20 points and +1 multi"
         },
-        "251": {
+        "104": {
           "name": "Ace of neon Spades",
           "description": "Scores +22 points and +1 multi"
         }
