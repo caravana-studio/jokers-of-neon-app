@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useUsername } from "../dojo/utils/useUsername";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useDisconnect } from "@starknet-react/core";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -17,7 +19,7 @@ export const GameMenu = ({
   onlySound = false,
   showTutorial,
 }: GameMenuProps) => {
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { isPlaying, toggleSound } = useAudioPlayer();
@@ -26,6 +28,8 @@ export const GameMenu = ({
   const togglePlayPause = () => {
     toggleSound();
   };
+
+  const {disconnect} = useDisconnect();
 
   return (
     <>
@@ -60,6 +64,7 @@ export const GameMenu = ({
                 localStorage.removeItem(GAME_ID);
                 localStorage.removeItem(LOGGED_USER);
                 restartGame();
+                disconnect();
                 navigate("/");
               }}
             >

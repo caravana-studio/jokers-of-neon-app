@@ -1,4 +1,6 @@
+import { useAccount } from "@starknet-react/core";
 import { useContext } from "react";
+import { Account } from "starknet";
 import { DojoContext } from "./DojoContext";
 
 export const useDojo = () => {
@@ -8,9 +10,11 @@ export const useDojo = () => {
             "The `useDojo` hook must be used within a `DojoProvider`"
         );
 
+    const { account } = useAccount();
     return {
         setup: context,
-        account: context.account,
+        account: account as Account,
+        masterAccount: context.masterAccount,
         syncCall: context.syncCallback
     };
 };

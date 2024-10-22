@@ -17,6 +17,17 @@ Run the following commands to run the game:
 You can find a .env file in the root of the project that has the default values to connect to a local instance of katana, torii and graphql.
 Run the contracts before the frontend app.
 
+To integrate the app with Cartridge Controller, you need to run it in HTTPS mode. You can set up HTTPS by generating a self-signed certificate using OpenSSL.
+
+Run the following command to create a certificate:
+```bash
+openssl req -x509 -newkey rsa:2048 -keyout localhost+2-key.pem -out localhost+2-cert.pem -days 365 -nodes
+```
+
+This command will generate two files:
+
+localhost+2-key.pem: Your private key.
+localhost+2-cert.pem: The self-signed certificate.
 
 ## PoC
 
