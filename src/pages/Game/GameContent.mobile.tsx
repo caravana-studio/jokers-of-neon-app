@@ -175,44 +175,54 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
-      <Joyride
-        steps={GAME_TUTORIAL_STEPS}
-        run={run}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
-
-      <Joyride
-        steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-        run={runSpecial}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleSpecialJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
-
-      <Joyride
-        steps={MODIFIERS_TUTORIAL_STEPS}
-        run={runTutorialModifiers}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleModifiersJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
-
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
+      <Box
+        sx={{
+          position: "fixed",
+          zIndex: 1000,
         }}
-      />
+        right={[1, 4]}
+        bottom={[1, 4]}
+      >
+        <Joyride
+          steps={GAME_TUTORIAL_STEPS}
+          run={run}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <Joyride
+          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
+          run={runSpecial}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleSpecialJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <Joyride
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleModifiersJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
+          }}
+        />
+      </Box>
+
       <Box
         sx={{
           height: "100%",
@@ -227,6 +237,7 @@ export const MobileGameContent = () => {
           autoScroll={false}
         >
           <Box
+            paddingTop={4}
             sx={{
               width: "100%",
               height: "100%",
@@ -261,23 +272,22 @@ export const MobileGameContent = () => {
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
+              width={"100%"}
             >
-              <Box>
+              <Box width={"100%"}>
+                <Box pb={2} display={"flex"} justifyContent={"center"}>
+                  <HandSection />
+                </Box>
                 <Box
-                  position={"absolute"}
-                  left={3}
-                  bottom={0}
-                  zIndex={6}
-                  width="190px"
+                  width="100%"
                   display={"flex"}
                   alignItems={"center"}
                   backgroundColor="rgba(0,0,0,0.5)"
+                  px={18}
+                  gap={4}
                 >
                   <SortBy />
                   <ShowPlays />
-                </Box>
-                <Box pb="25px">
-                  <HandSection />
                 </Box>
               </Box>
             </Box>

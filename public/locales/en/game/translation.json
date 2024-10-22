@@ -17,6 +17,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "This slot is locked. You can unlock it in the store.",
       "special-cards-label": "Special cards",
       "remove-special-cards-label": "Remove",
       "confirmation-modal": {
@@ -33,7 +34,7 @@
           "rank": "Rank"
         }
       },
-      "my-coins": "My coins",
+      "my-coins": "Coins",
       "modifier-change": "Change",
       "show-plays": "Show plays"
     },

@@ -59,12 +59,13 @@ export default {
     },
   },
   breakpoints: {
-    base: "0px",
-    sm: "600px",
-    md: "1200px",
-    lg: "1600px",
-    xl: "2000px",
+    base: "0em",    
+    sm: "42em",   
+    md: "78em",     
+    lg: "90em",   
+    xl: "125em",  
   },
+
   components: {
     Table: tableTheme,
     Button: buttonTheme,

@@ -1,15 +1,16 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { PositionedGameMenu } from "../../components/GameMenu";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const PlaysLayout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Background type="game" dark bgDecoration>
@@ -19,7 +20,7 @@ export const PlaysLayout = () => {
         px={8}
         flexDirection={"column"}
         justifyContent={"center"}
-        width={isMobile ? "100%" : { sm: "75%", md: "50%" }}
+        width={{ base: "100%", sm: "75%", md: "50%" }}
         margin={"0 auto"}
         height={"100vh"}
       >
@@ -29,11 +30,11 @@ export const PlaysLayout = () => {
           variant="italic"
           color="white"
           textAlign={"center"}
-          mb={isMobile ? 10 : 8}
+          mb={isSmallScreen ? 10 : 8}
         >
           {t("game.plays.title").toUpperCase()}
         </Heading>
-        <PlaysAvailableTable maxHeight={{ base: "52%", md: "60%" }} />
+        <PlaysAvailableTable maxHeight={{ base: "52%", lg: "60%" }} />
         <Button
           className="game-tutorial-step-4"
           mt={8}
@@ -48,7 +49,7 @@ export const PlaysLayout = () => {
           {t("game.plays.go-back-btn")}
         </Button>
       </Flex>
-      {!isMobile && <PositionedDiscordLink />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };

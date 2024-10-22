@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
@@ -12,6 +11,7 @@ import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const GamePage = () => {
   const {
@@ -36,6 +36,7 @@ export const GamePage = () => {
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -49,8 +50,7 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if(!username)
-    navigate("/");
+  if (!username) navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -68,11 +68,11 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
-      {isMobile ? <MobileGameContent /> : <GameContent />}
+      {isSmallScreen ? <MobileGameContent /> : <GameContent />}
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };
