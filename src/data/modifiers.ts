@@ -7,53 +7,53 @@ const loadTranslations = async () => {
   await i18n.loadNamespaces(['effects']);
 
   Object.assign(MODIFIER_CARDS_DATA, {
-    600: {
-      name: i18n.t('modifierCardsData.600.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.600.description', {ns:'effects'}),
+    106: {
+      name: i18n.t('modifierCardsData.106.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.106.description', {ns:'effects'}),
     },
-    601: {
-      name: i18n.t('modifierCardsData.601.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.601.description', {ns:'effects'}),
+    107: {
+      name: i18n.t('modifierCardsData.107.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.107.description', {ns:'effects'}),
     },
-    602: {
-      name: i18n.t('modifierCardsData.602.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.602.description', {ns:'effects'}),
+    108: {
+      name: i18n.t('modifierCardsData.108.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.108.description', {ns:'effects'}),
     },
-    603: {
-      name: i18n.t('modifierCardsData.603.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.603.description', {ns:'effects'}),
+    109: {
+      name: i18n.t('modifierCardsData.109.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.109.description', {ns:'effects'}),
     },
-    604: {
-      name: i18n.t('modifierCardsData.604.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.604.description', {ns:'effects'}),
+    110: {
+      name: i18n.t('modifierCardsData.110.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.110.description', {ns:'effects'}),
     },
-    605: {
-      name: i18n.t('modifierCardsData.605.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.605.description', {ns:'effects'}),
+    111: {
+      name: i18n.t('modifierCardsData.111.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.111.description', {ns:'effects'}),
     },
-    606: {
-      name: i18n.t('modifierCardsData.606.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.606.description', {ns:'effects'}),
+    112: {
+      name: i18n.t('modifierCardsData.112.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.112.description', {ns:'effects'}),
     },
-    607: {
-      name: i18n.t('modifierCardsData.607.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.607.description', {ns:'effects'}),
+    113: {
+      name: i18n.t('modifierCardsData.113.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.113.description', {ns:'effects'}),
     },
-    608: {
-      name: i18n.t('modifierCardsData.608.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.608.description', {ns:'effects'}),
+    114: {
+      name: i18n.t('modifierCardsData.114.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.114.description', {ns:'effects'}),
     },
-    609: {
-      name: i18n.t('modifierCardsData.609.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.609.description', {ns:'effects'}),
+    115: {
+      name: i18n.t('modifierCardsData.115.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.115.description', {ns:'effects'}),
     },
-    610: {
-      name: i18n.t('modifierCardsData.610.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.610.description', {ns:'effects'}),
+    116: {
+      name: i18n.t('modifierCardsData.116.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.116.description', {ns:'effects'}),
     },
-    611: {
-      name: i18n.t('modifierCardsData.611.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.611.description', {ns:'effects'}),
+    117: {
+      name: i18n.t('modifierCardsData.117.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.117.description', {ns:'effects'}),
     }
   });
 }

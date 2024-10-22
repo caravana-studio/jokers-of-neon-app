@@ -19,33 +19,6 @@ interface BaseProps {
 
 const DEFAULT_NAMESPACE = "jokers_of_neon";
 export async function setupWorld(provider: DojoProvider) {
-  // System definitions for `jokers_of_neon-config_system` contract
-  function config_system() {
-    const contract_name = "config_system";
-
-    // Call the `world` system with the specified Account and calldata
-    const world = async (props: { account: Account }) => {
-      try {
-        return await provider.execute(
-          props.account,
-          {
-            contractName: contract_name,
-            entrypoint: "world",
-            calldata: [],
-          },
-          "jokers_of_neon"
-        );
-      } catch (error) {
-        console.error("Error executing spawn:", error);
-        throw error;
-      }
-    };
-
-    return {
-      world,
-    };
-  }
-
   // System definitions for `jokers_of_neon-game_system` contract
   function game_system() {
     const contract_name = "game_system";
@@ -523,7 +496,6 @@ export async function setupWorld(provider: DojoProvider) {
   }
 
   return {
-    config_system: config_system(),
     game_system: game_system(),
     rage_system: rage_system(),
     poker_hand_system: poker_hand_system(),

@@ -1,50 +1,50 @@
 {
   "modifierCardsData": {
-    "600": {
+    "106": {
       "name": "+10 Pontos",
       "description": "A carta modificada ganhará +10 pontos adicionais"
     },
-    "601": {
+    "107": {
       "name": "+20 Pontos",
       "description": "A carta modificada ganhará +20 pontos adicionais"
     },
-    "602": {
+    "108": {
       "name": "+50 Pontos",
       "description": "A carta modificada ganhará +50 pontos adicionais"
     },
-    "603": {
+    "109": {
       "name": "+100 Pontos",
       "description": "A carta modificada ganhará +100 pontos adicionais"
     },
-    "604": {
+    "110": {
       "name": "+1 multiplicador",
       "description": "A carta modificada adicionará +1 ao multiplicador"
     },
-    "605": {
+    "111": {
       "name": "+2 multiplicador",
       "description": "A carta modificada adicionará +2 ao multiplicador"
     },
-    "606": {
+    "112": {
       "name": "+5 multiplicador",
       "description": "A carta modificada adicionará +5 ao multiplicador"
     },
-    "607": {
+    "113": {
       "name": "+10 multiplicador",
       "description": "A carta modificada adicionará +10 ao multiplicador"
     },
-    "608": {
+    "114": {
       "name": "Mudar para Paus",
       "description": "A carta modificada será considerada como uma carta de Paus"
     },
-    "609": {
+    "115": {
       "name": "Mudar para Ouros",
       "description": "A carta modificada será considerada como uma carta de Ouros"
     },
-    "610": {
+    "116": {
       "name": "Mudar para Copas",
       "description": "A carta modificada será considerada como uma carta de Copas"
     },
-    "611": {
+    "117": {
       "name": "Mudar para Espadas",
       "description": "A carta modificada será considerada como uma carta de Espadas"
     }

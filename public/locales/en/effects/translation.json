@@ -1,50 +1,50 @@
 {
   "modifierCardsData": {
-    "600": {
+    "106": {
       "name": "+10 Points",
       "description": "The modified card will score +10 additional points"
     },
-    "601": {
+    "107": {
       "name": "+20 Points",
       "description": "The modified card will score +20 additional points"
     },
-    "602": {
+    "108": {
       "name": "+50 Points",
       "description": "The modified card will score +50 additional points"
     },
-    "603": {
+    "109": {
       "name": "+100 Points",
       "description": "The modified card will score +100 additional points"
     },
-    "604": {
+    "110": {
       "name": "+1 multi",
       "description": "The modified card will add +1 to the multi"
     },
-    "605": {
+    "111": {
       "name": "+2 multi",
       "description": "The modified card will add +2 to the multi"
     },
-    "606": {
+    "112": {
       "name": "+5 multi",
       "description": "The modified card will add +5 to the multi"
     },
-    "607": {
+    "113": {
       "name": "+10 multi",
       "description": "The modified card will add +10 to the multi"
     },
-    "608": {
+    "114": {
       "name": "Change to Clubs",
       "description": "The modified card will be considered as a Clubs card"
     },
-    "609": {
+    "115": {
       "name": "Change to Diamonds",
       "description": "The modified card will be considered as a Diamonds card"
     },
-    "610": {
+    "116": {
       "name": "Change to Hearts",
       "description": "The modified card will be considered as a Hearts card"
     },
-    "611": {
+    "117": {
       "name": "Change to Spades",
       "description": "The modified card will be considered as a Spades card"
     }
