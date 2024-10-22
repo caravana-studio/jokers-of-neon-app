@@ -33,7 +33,7 @@ export const BlisterPackDefinition = {
     name: RecsType.BigInt,
     probability: RecsType.Number,
     size: RecsType.Number,
-    cards: RecsType.NumberArrayArray,
+    cards: RecsType.EntityArray,
     probs: RecsType.NumberArray,
     
 };
@@ -897,7 +897,7 @@ export function defineContractComponents(world: World) {
                     name: RecsType.BigInt,
                     probability: RecsType.Number,
                     size: RecsType.Number,
-                    cards: RecsType.NumberArrayArray,
+                    cards: RecsType.EntityArray,
                     probs: RecsType.NumberArray,
                 },
                 {
