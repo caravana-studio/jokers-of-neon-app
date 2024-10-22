@@ -1239,8 +1239,8 @@
     "block_number": null,
     "seed": "jokers_of_neon",
     "metadata": {
-      "profile_name": "dev",
-      "rpc_url": "http://localhost:5050/"
+      "profile_name": "sepolia",
+      "rpc_url": "https://api.cartridge.gg/x/starknet/sepolia"
     },
     "manifest_name": "dojo-world"
   },
@@ -1248,7 +1248,7 @@
     "kind": "Class",
     "class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
     "original_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
-    "abi": "manifests/dev/deployment/abis/dojo-base.json",
+    "abi": "manifests/sepolia/deployment/abis/dojo-base.json",
     "tag": "dojo-base",
     "manifest_name": "dojo-base"
   },
@@ -1256,8 +1256,8 @@
     {
       "kind": "DojoContract",
       "address": "0x6a41badee85305fa1aac33488860360c66b60d7f3b204d6e2cd84071dc3c394",
-      "class_hash": "0x3d6bd80b344195cf6d60d8f70902eef46dd0eb93132e430e071b490ce2dbd86",
-      "original_class_hash": "0x3d6bd80b344195cf6d60d8f70902eef46dd0eb93132e430e071b490ce2dbd86",
+      "class_hash": "0x683dc3710c600bf4fcff16d5ad397d621802930256c8aea0dd56a267bc1a8e2",
+      "original_class_hash": "0x683dc3710c600bf4fcff16d5ad397d621802930256c8aea0dd56a267bc1a8e2",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1655,9 +1655,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "ns:jokers_of_neon"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-game_system",
       "systems": [
@@ -1984,9 +1982,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "ns:jokers_of_neon"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "systems": [],
@@ -2228,9 +2224,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "ns:jokers_of_neon"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "systems": [
@@ -2241,8 +2235,8 @@
     {
       "kind": "DojoContract",
       "address": "0x13d1ed5d59a5b9efcf08bfc37463e0607d737a76ed89d6c07b0ea07578c9db2",
-      "class_hash": "0x18e7ef75df22a761adb8365dbc30aef7b074022d162b894b6dbce0f9f6beae3",
-      "original_class_hash": "0x18e7ef75df22a761adb8365dbc30aef7b074022d162b894b6dbce0f9f6beae3",
+      "class_hash": "0x7647bbfcb58f040ead8e50e54e6a08711511dbacf23a235fc8bf2f18b496977",
+      "original_class_hash": "0x7647bbfcb58f040ead8e50e54e6a08711511dbacf23a235fc8bf2f18b496977",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2576,9 +2570,7 @@
         }
       ],
       "reads": [],
-      "writes": [
-        "ns:jokers_of_neon"
-      ],
+      "writes": [],
       "init_calldata": [],
       "tag": "jokers_of_neon-shop_system",
       "systems": [
