@@ -1,11 +1,11 @@
 import { CardTypes } from "../../enums/cardTypes";
 
 export const getCardTypeFromCardId = (cardId: number) => {
-  if (cardId < 300) {
+  if (cardId <= 105) {
     return CardTypes.COMMON;
-  } else if (cardId < 600) {
-    return CardTypes.SPECIAL;
-  } else {
+  } else if (cardId >= 106 && cardId <= 117) {
     return CardTypes.MODIFIER;
+  } else {
+    return CardTypes.SPECIAL;
   }
 };

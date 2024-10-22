@@ -43,7 +43,7 @@ export const useCurrentHand = (sortBy: SortBy) => {
       return {
         ...dojoCard,
         img: `${dojoCard?.card_id}.png`,
-        isModifier: dojoCard?.card_id >= 600 && dojoCard?.card_id <= 700,
+        isModifier: dojoCard?.card_id >= 106 && dojoCard?.card_id <= 117,
         idx: dojoCard?.idx,
         id: dojoCard?.idx.toString(),
       };
