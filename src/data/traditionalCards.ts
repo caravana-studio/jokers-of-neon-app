@@ -9,7 +9,7 @@ export const NEON_CARDS_DATA: CardDataMap = {};
 const loadTranslations = async () => {
   await i18n.loadNamespaces(['traditional-cards', 'neon-cards']);
 
-  for (let i = 0; i <= 53; i++) {
+  for (let i = 0; i <= 52; i++) {
     TRADITIONAL_CARDS_DATA[i] = {
       name: i18n.t(`traditionalCardsData.${i}.name`, {ns:'traditional-cards'}),
       description: i18n.t(`traditionalCardsData.${i}.description`, {ns:'traditional-cards'}),
@@ -18,7 +18,7 @@ const loadTranslations = async () => {
     };
   }
   
-  for (let i = 200; i <= 251; i++) {
+  for (let i = 53; i <= 105; i++) {
     NEON_CARDS_DATA[i] = {
       name: i18n.t(`neonCardsData.${i}.name`, {ns:'neon-cards'}),
       description: i18n.t(`neonCardsData.${i}.description`, {ns:'neon-cards'}),
@@ -254,215 +254,215 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
     suit: Suits.JOKER,
   },
   53: {
+    card: Cards.TWO,
+    suit: Suits.CLUBS,
+  },
+  54: {
+    card: Cards.THREE,
+    suit: Suits.CLUBS,
+  },
+  55: {
+    card: Cards.FOUR,
+    suit: Suits.CLUBS,
+  },
+  56: {
+    card: Cards.FIVE,
+    suit: Suits.CLUBS,
+  },
+  57: {
+    card: Cards.SIX,
+    suit: Suits.CLUBS,
+  },
+  58: {
+    card: Cards.SEVEN,
+    suit: Suits.CLUBS,
+  },
+  59: {
+    card: Cards.EIGHT,
+    suit: Suits.CLUBS,
+  },
+  60: {
+    card: Cards.NINE,
+    suit: Suits.CLUBS,
+  },
+  61: {
+    card: Cards.TEN,
+    suit: Suits.CLUBS,
+  },
+  62: {
+    card: Cards.JACK,
+    suit: Suits.CLUBS,
+  },
+  63: {
+    card: Cards.QUEEN,
+    suit: Suits.CLUBS,
+  },
+  64: {
+    card: Cards.KING,
+    suit: Suits.CLUBS,
+  },
+  65: {
+    card: Cards.ACE,
+    suit: Suits.CLUBS,
+  },
+  66: {
+    card: Cards.TWO,
+    suit: Suits.DIAMONDS,
+  },
+  67: {
+    card: Cards.THREE,
+    suit: Suits.DIAMONDS,
+  },
+  68: {
+    card: Cards.FOUR,
+    suit: Suits.DIAMONDS,
+  },
+  69: {
+    card: Cards.FIVE,
+    suit: Suits.DIAMONDS,
+  },
+  70: {
+    card: Cards.SIX,
+    suit: Suits.DIAMONDS,
+  },
+  71: {
+    card: Cards.SEVEN,
+    suit: Suits.DIAMONDS,
+  },
+  72: {
+    card: Cards.EIGHT,
+    suit: Suits.DIAMONDS,
+  },
+  73: {
+    card: Cards.NINE,
+    suit: Suits.DIAMONDS,
+  },
+  74: {
+    card: Cards.TEN,
+    suit: Suits.DIAMONDS,
+  },
+  75: {
+    card: Cards.JACK,
+    suit: Suits.DIAMONDS,
+  },
+  76: {
+    card: Cards.QUEEN,
+    suit: Suits.DIAMONDS,
+  },
+  77: {
+    card: Cards.KING,
+    suit: Suits.DIAMONDS,
+  },
+  78: {
+    card: Cards.ACE,
+    suit: Suits.DIAMONDS,
+  },
+  79: {
+    card: Cards.TWO,
+    suit: Suits.HEARTS,
+  },
+  80: {
+    card: Cards.THREE,
+    suit: Suits.HEARTS,
+  },
+  81: {
+    card: Cards.FOUR,
+    suit: Suits.HEARTS,
+  },
+  82: {
+    card: Cards.FIVE,
+    suit: Suits.HEARTS,
+  },
+  83: {
+    card: Cards.SIX,
+    suit: Suits.HEARTS,
+  },
+  84: {
+    card: Cards.SEVEN,
+    suit: Suits.HEARTS,
+  },
+  85: {
+    card: Cards.EIGHT,
+    suit: Suits.HEARTS,
+  },
+  86: {
+    card: Cards.NINE,
+    suit: Suits.HEARTS,
+  },
+  87: {
+    card: Cards.TEN,
+    suit: Suits.HEARTS,
+  },
+  88: {
+    card: Cards.JACK,
+    suit: Suits.HEARTS,
+  },
+  89: {
+    card: Cards.QUEEN,
+    suit: Suits.HEARTS,
+  },
+  90: {
+    card: Cards.KING,
+    suit: Suits.HEARTS,
+  },
+  91: {
+    card: Cards.ACE,
+    suit: Suits.HEARTS,
+  },
+  92: {
+    card: Cards.TWO,
+    suit: Suits.SPADES,
+  },
+  93: {
+    card: Cards.THREE,
+    suit: Suits.SPADES,
+  },
+  94: {
+    card: Cards.FOUR,
+    suit: Suits.SPADES,
+  },
+  95: {
+    card: Cards.FIVE,
+    suit: Suits.SPADES,
+  },
+  96: {
+    card: Cards.SIX,
+    suit: Suits.SPADES,
+  },
+  97: {
+    card: Cards.SEVEN,
+    suit: Suits.SPADES,
+  },
+  98: {
+    card: Cards.EIGHT,
+    suit: Suits.SPADES,
+  },
+  99: {
+    card: Cards.NINE,
+    suit: Suits.SPADES,
+  },
+  100: {
+    card: Cards.TEN,
+    suit: Suits.SPADES,
+  },
+  101: {
+    card: Cards.JACK,
+    suit: Suits.SPADES,
+  },
+  102: {
+    card: Cards.QUEEN,
+    suit: Suits.SPADES,
+  },
+  103: {
+    card: Cards.KING,
+    suit: Suits.SPADES,
+  },
+  104: {
+    card: Cards.ACE,
+    suit: Suits.SPADES,
+  },
+  105: {
     card: Cards.JOKER,
     suit: Suits.JOKER,
-  },
-  200: {
-    card: Cards.TWO,
-    suit: Suits.CLUBS,
-  },
-  201: {
-    card: Cards.THREE,
-    suit: Suits.CLUBS,
-  },
-  202: {
-    card: Cards.FOUR,
-    suit: Suits.CLUBS,
-  },
-  203: {
-    card: Cards.FIVE,
-    suit: Suits.CLUBS,
-  },
-  204: {
-    card: Cards.SIX,
-    suit: Suits.CLUBS,
-  },
-  205: {
-    card: Cards.SEVEN,
-    suit: Suits.CLUBS,
-  },
-  206: {
-    card: Cards.EIGHT,
-    suit: Suits.CLUBS,
-  },
-  207: {
-    card: Cards.NINE,
-    suit: Suits.CLUBS,
-  },
-  208: {
-    card: Cards.TEN,
-    suit: Suits.CLUBS,
-  },
-  209: {
-    card: Cards.JACK,
-    suit: Suits.CLUBS,
-  },
-  210: {
-    card: Cards.QUEEN,
-    suit: Suits.CLUBS,
-  },
-  211: {
-    card: Cards.KING,
-    suit: Suits.CLUBS,
-  },
-  212: {
-    card: Cards.ACE,
-    suit: Suits.CLUBS,
-  },
-  213: {
-    card: Cards.TWO,
-    suit: Suits.DIAMONDS,
-  },
-  214: {
-    card: Cards.THREE,
-    suit: Suits.DIAMONDS,
-  },
-  215: {
-    card: Cards.FOUR,
-    suit: Suits.DIAMONDS,
-  },
-  216: {
-    card: Cards.FIVE,
-    suit: Suits.DIAMONDS,
-  },
-  217: {
-    card: Cards.SIX,
-    suit: Suits.DIAMONDS,
-  },
-  218: {
-    card: Cards.SEVEN,
-    suit: Suits.DIAMONDS,
-  },
-  219: {
-    card: Cards.EIGHT,
-    suit: Suits.DIAMONDS,
-  },
-  220: {
-    card: Cards.NINE,
-    suit: Suits.DIAMONDS,
-  },
-  221: {
-    card: Cards.TEN,
-    suit: Suits.DIAMONDS,
-  },
-  222: {
-    card: Cards.JACK,
-    suit: Suits.DIAMONDS,
-  },
-  223: {
-    card: Cards.QUEEN,
-    suit: Suits.DIAMONDS,
-  },
-  224: {
-    card: Cards.KING,
-    suit: Suits.DIAMONDS,
-  },
-  225: {
-    card: Cards.ACE,
-    suit: Suits.DIAMONDS,
-  },
-  226: {
-    card: Cards.TWO,
-    suit: Suits.HEARTS,
-  },
-  227: {
-    card: Cards.THREE,
-    suit: Suits.HEARTS,
-  },
-  228: {
-    card: Cards.FOUR,
-    suit: Suits.HEARTS,
-  },
-  229: {
-    card: Cards.FIVE,
-    suit: Suits.HEARTS,
-  },
-  230: {
-    card: Cards.SIX,
-    suit: Suits.HEARTS,
-  },
-  231: {
-    card: Cards.SEVEN,
-    suit: Suits.HEARTS,
-  },
-  232: {
-    card: Cards.EIGHT,
-    suit: Suits.HEARTS,
-  },
-  233: {
-    card: Cards.NINE,
-    suit: Suits.HEARTS,
-  },
-  234: {
-    card: Cards.TEN,
-    suit: Suits.HEARTS,
-  },
-  235: {
-    card: Cards.JACK,
-    suit: Suits.HEARTS,
-  },
-  236: {
-    card: Cards.QUEEN,
-    suit: Suits.HEARTS,
-  },
-  237: {
-    card: Cards.KING,
-    suit: Suits.HEARTS,
-  },
-  238: {
-    card: Cards.ACE,
-    suit: Suits.HEARTS,
-  },
-  239: {
-    card: Cards.TWO,
-    suit: Suits.SPADES,
-  },
-  240: {
-    card: Cards.THREE,
-    suit: Suits.SPADES,
-  },
-  241: {
-    card: Cards.FOUR,
-    suit: Suits.SPADES,
-  },
-  242: {
-    card: Cards.FIVE,
-    suit: Suits.SPADES,
-  },
-  243: {
-    card: Cards.SIX,
-    suit: Suits.SPADES,
-  },
-  244: {
-    card: Cards.SEVEN,
-    suit: Suits.SPADES,
-  },
-  245: {
-    card: Cards.EIGHT,
-    suit: Suits.SPADES,
-  },
-  246: {
-    card: Cards.NINE,
-    suit: Suits.SPADES,
-  },
-  247: {
-    card: Cards.TEN,
-    suit: Suits.SPADES,
-  },
-  248: {
-    card: Cards.JACK,
-    suit: Suits.SPADES,
-  },
-  249: {
-    card: Cards.QUEEN,
-    suit: Suits.SPADES,
-  },
-  250: {
-    card: Cards.KING,
-    suit: Suits.SPADES,
-  },
-  251: {
-    card: Cards.ACE,
-    suit: Suits.SPADES,
   },
 };
