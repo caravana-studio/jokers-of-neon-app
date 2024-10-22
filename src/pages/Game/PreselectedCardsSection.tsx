@@ -6,7 +6,7 @@ import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { useGameContext } from "../../providers/GameProvider";
-import { BLUE } from "../../theme/colors.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
@@ -30,6 +30,7 @@ export const PreselectedCardsSection = ({
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });
+  const { cardScale } = useResponsiveValues();
 
   return (
     <Flex
@@ -82,6 +83,7 @@ export const PreselectedCardsSection = ({
                         <TiltCard
                           cursor="pointer"
                           card={modifiedCard}
+                          scale={cardScale}
                           onClick={() => {
                             togglePreselected(idx);
                           }}

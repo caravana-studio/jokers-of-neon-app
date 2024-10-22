@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
-import { isMobile } from "react-device-detect";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
 
 interface BackgroundProps extends PropsWithChildren {
@@ -39,6 +39,7 @@ export const Background = ({
   bgDecoration: bgDecoration = false,
   scrollOnMobile = false,
 }: BackgroundProps) => {
+  const { isSmallScreen } = useResponsiveValues();
   return (
     <Box
       sx={{
@@ -48,10 +49,10 @@ export const Background = ({
         backgroundPosition: "center",
         height: "100svh",
         width: "100vw",
-        position: isMobile ? "fixed" : "unset",
-        bottom: isMobile ? 0 : "unset",
+        position: isSmallScreen ? "fixed" : "unset",
+        bottom: isSmallScreen ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
-        overflow: scrollOnMobile && isMobile ? "scroll" : "unset",
+        overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
       {bgDecoration ? (
@@ -64,9 +65,10 @@ export const Background = ({
 };
 
 const BackgroundDecoration = ({ children }: PropsWithChildren) => {
+  const { isSmallScreen } = useResponsiveValues();
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      {!isMobile && (
+      {!isSmallScreen && (
         <CachedImage
           src="/borders/top.png"
           height="8%"
@@ -80,9 +82,9 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
         height="15%"
         width="100%"
         display="flex"
-        justifyContent={isMobile ? "center" : "space-between"}
+        justifyContent={isSmallScreen ? "center" : "space-between"}
         alignItems="center"
-        padding={isMobile ? "0 50px" : "25px 50px 0px 50px"}
+        padding={isSmallScreen ? "0 50px" : "25px 50px 0px 50px"}
       >
         <CachedImage
           alignSelf="center"
@@ -93,7 +95,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
           maxW={"300px"}
           ml={4}
         />
-        {!isMobile && (
+        {!isSmallScreen && (
           <CachedImage
             alignSelf="center"
             justifySelf="end"
@@ -115,7 +117,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
       >
         {children}
       </Box>
-      {!isMobile && (
+      {!isSmallScreen && (
         <>
           <CachedImage
             src="/borders/bottom.png"

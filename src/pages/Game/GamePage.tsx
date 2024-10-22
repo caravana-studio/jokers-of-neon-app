@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
@@ -10,6 +9,7 @@ import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
 import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
@@ -37,6 +37,7 @@ export const GamePage = () => {
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -68,7 +69,7 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
-      {isMobile ? (
+      {isSmallScreen ? (
         <CardHighlightProvider>
           <MobileGameContent />
         </CardHighlightProvider>
@@ -78,7 +79,7 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isMobile && <PositionedDiscordLink />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };

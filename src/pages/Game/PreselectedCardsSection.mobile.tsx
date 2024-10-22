@@ -7,6 +7,7 @@ import { TiltCard } from "../../components/TiltCard.tsx";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
 
 export const MobilePreselectedCardsSection = () => {
@@ -22,6 +23,9 @@ export const MobilePreselectedCardsSection = () => {
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });
+  const { cardScale } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   return (
     <>
@@ -32,19 +36,19 @@ export const MobilePreselectedCardsSection = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          minHeight: `${CARD_HEIGHT * 2 + 70}px`,
+          height: `${cardHeight * 2 + 70}px`,
           width: "100%",
         }}
         ref={setNodeRef}
       >
         <Box
           sx={{
-            maxWidth: `${CARD_WIDTH * 4}px`,
+            maxWidth: `${cardWidth * 3 + 70}px`,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexWrap: "wrap",
-            minHeight: `${CARD_HEIGHT * 2 + 30}px`,
+            height: `${cardHeight * 2 + 30}px`,
           }}
         >
           {preSelectedCards.map((idx) => {
@@ -62,6 +66,7 @@ export const MobilePreselectedCardsSection = () => {
                     >
                       <TiltCard
                         cursor="pointer"
+                        scale={cardScale}
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);

@@ -1,12 +1,4 @@
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    Heading,
-    Text,
-    VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -52,7 +44,8 @@ export const StorePreviewComponent = ({
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
-        minHeight={"100%"}
+        minHeight={isMobile ? "100%" : "unset"}
+        height={isMobile ? "unset" : "100%"}
       >
         <Flex
           flexDirection={"column"}
@@ -69,6 +62,8 @@ export const StorePreviewComponent = ({
             flexDirection={{ base: "column", sm: "row" }}
             alignItems="center"
             gap={4}
+            flex="1"
+            height="100%"
           >
             <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
               {image}
@@ -77,9 +72,10 @@ export const StorePreviewComponent = ({
             <Flex
               flexDirection={"column"}
               width="100%"
-              height="100%"
               ml={{ base: "15px", sm: "30px" }}
               flex="1"
+              height="100%"
+              justifyContent={"space-between"}
             >
               <Flex justifyContent="space-between" alignItems="center">
                 <Heading size={{ base: "sm", sm: "l" }} variant="italic">
@@ -94,34 +90,69 @@ export const StorePreviewComponent = ({
                 )}
               </Flex>
 
-              <VStack align="stretch" spacing={8} flex={1}>
-                {cardType && (
-                  <Box mt={"20px"}>
-                    <Text
-                      color="white"
-                      fontSize={{ base: "md", sm: "lg" }}
-                      mb={2}
-                      sx={{
-                        position: "relative",
-                        _before: {
-                          content: '""',
-                          position: "absolute",
-                          bottom: 0,
-                          width: "95%",
-                          height: "2px",
-                          backgroundColor: "white",
-                          boxShadow:
-                            "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                        },
-                      }}
-                    >
-                      {t("store.preview-card.title.card-type")}
-                    </Text>
-                    <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                      {cardType}
-                    </Text>
-                  </Box>
+              {cardType && (
+                <Box mt={"20px"}>
+                  <Text
+                    color="white"
+                    fontSize={{ base: "md", sm: "lg" }}
+                    mb={2}
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",
+                        backgroundColor: "white",
+                        boxShadow:
+                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                    {t("store.preview-card.title.card-type")}
+                  </Text>
+                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                    {cardType}
+                  </Text>
+                </Box>
+              )}
+              <Box>
+                <Text
+                  color="white"
+                  fontSize={{ base: "md", sm: "lg" }}
+                  mb={2}
+                  sx={{
+                    position: "relative",
+                    _before: {
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      width: "95%",
+                      height: "2px",
+                      backgroundColor: "white",
+                      boxShadow:
+                        "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                    },
+                  }}
+                >
+                  {t("store.preview-card.title.description")}
+                </Text>
+                <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                  {description}
+                </Text>
+                {extraDescription && (
+                  <Text
+                    variant="neonGreen"
+                    fontSize={{ base: "md", sm: "xl" }}
+                    pt={2}
+                  >
+                    {extraDescription}
+                  </Text>
                 )}
+              </Box>
+
+              {details && (
                 <Box>
                   <Text
                     color="white"
@@ -141,66 +172,24 @@ export const StorePreviewComponent = ({
                       },
                     }}
                   >
-                    {t("store.preview-card.title.description")}
+                    {t("store.preview-card.title.details")}
                   </Text>
                   <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                    {description}
+                    {details?.split("\n").map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
                   </Text>
-                  {extraDescription && (
-                    <Text
-                      variant="neonGreen"
-                      fontSize={{ base: "md", sm: "xl" }}
-                      pt={2}
-                    >
-                      {extraDescription}
-                    </Text>
-                  )}
                 </Box>
-
-                {details && (
-                  <Box>
-                    <Text
-                      color="white"
-                      fontSize={{ base: "md", sm: "lg" }}
-                      mb={2}
-                      sx={{
-                        position: "relative",
-                        _before: {
-                          content: '""',
-                          position: "absolute",
-                          bottom: 0,
-                          width: "95%",
-                          height: "2px",
-                          backgroundColor: "white",
-                          boxShadow:
-                            "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                        },
-                      }}
-                    >
-                      {t("store.preview-card.title.details")}
-                    </Text>
-                    <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                      {details?.split("\n").map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
-                    </Text>
-                  </Box>
-                )}
-                <Box
-                  flex={1}
-                  alignItems={"end"}
-                  display={"flex"}
-                  flexDir={"row"}
-                >
-                  <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
-                    {t("store.preview-card.title.price")} {price}
-                    <CashSymbol />
-                  </Heading>
-                </Box>
-              </VStack>
+              )}
+              <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
+                <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
+                  {t("store.preview-card.title.price")} {price}
+                  <CashSymbol />
+                </Heading>
+              </Box>
             </Flex>
           </Flex>
         </Flex>

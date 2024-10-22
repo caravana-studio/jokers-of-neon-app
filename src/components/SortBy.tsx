@@ -1,17 +1,18 @@
 import { Flex, Img, Text, Tooltip } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import CachedImage from "./CachedImage.tsx";
 
 export const SortBy = () => {
   const { sortBy, toggleSortBy } = useGameContext();
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Flex
-      flexDirection={isMobile ? "row" : "column"}
+      flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
       gap={0.5}
     >
@@ -22,7 +23,7 @@ export const SortBy = () => {
         gap={0.5}
         alignItems="center"
         justifyContent="center"
-        border={isMobile ? "none" : "1px solid white"}
+        border={isSmallScreen ? "none" : "1px solid white"}
         borderRadius="8px"
         minWidth={{ base: "50px", sm: "70px" }}
         p={{ base: "5px 5px", sm: "8px 5px" }}

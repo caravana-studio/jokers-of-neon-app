@@ -1,7 +1,7 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { ButtonContainer } from "./ButtonContainer";
 
 interface DiscardButtonProps {
@@ -20,11 +20,12 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
       discards === 0);
 
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <ButtonContainer>
       <Button
-        width={isMobile ? "48%" : "170px"}
+        width={["48%", "48%", "150px"]}
         onClick={() => {
           discard();
         }}
@@ -32,7 +33,7 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
         isDisabled={cantDiscard}
         className="game-tutorial-step-3"
       >
-        {isMobile ? (
+        {isSmallScreen ? (
           <Box>
             <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
               {t("game.preselected-cards-section.discard-btn-lbl.discard")}
@@ -49,8 +50,8 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
           ).toUpperCase()
         )}
       </Button>
-      {!isMobile && (
-        <Text size="l">
+      {!isSmallScreen && (
+        <Text size="l" textAlign={"center"}>
           {t("game.preselected-cards-section.discard-btn-lbl.left", {
             discards: discards,
           })}
