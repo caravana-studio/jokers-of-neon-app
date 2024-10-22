@@ -223,7 +223,7 @@ export const GameContent = () => {
                   sx={{
                     display: "flex",
                     height: "45%",
-                    alignItems: "flex-start",
+                    alignItems: "flex-end",
                     justifyContent: "center",
                   }}
                 >
@@ -245,6 +245,7 @@ export const GameContent = () => {
 
         <PositionedGameMenu
           decoratedPage
+          bottomPositionDesktop={16}
           showTutorial={() => {
             setRun(true);
           }}

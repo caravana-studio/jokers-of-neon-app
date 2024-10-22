@@ -79,6 +79,8 @@ export const HandSection = () => {
         pl={!isSmallScreen ? 4 : 2}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
         height={isSmallScreen ? cardHeight : "100%"}
+        display={"flex"}
+        alignItems={"end"}
       >
         <SimpleGrid
           sx={{
