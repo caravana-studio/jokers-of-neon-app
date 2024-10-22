@@ -12,6 +12,7 @@ export interface IAnimatedCardProps {
   discarded?: boolean;
   played?: boolean;
   isSpecial?: boolean;
+  scale?: number;
 }
 
 export const AnimatedCard = ({
@@ -20,6 +21,7 @@ export const AnimatedCard = ({
   discarded = false,
   played = false,
   isSpecial = false,
+  scale,
 }: IAnimatedCardProps) => {
   const { animatedCard } = useCardAnimations();
   const animatedCardIdxArray = useMemo(() => {
@@ -126,6 +128,8 @@ export const AnimatedCard = ({
   }, [discarded]);
 
   if (!isCardScaleCalculated) return null;
+
+  if (!scale) scale = cardScale;
 
   return (
     <animated.div

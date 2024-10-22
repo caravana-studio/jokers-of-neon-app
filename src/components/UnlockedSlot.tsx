@@ -1,8 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import {
-    CARD_HEIGHT,
-    CARD_WIDTH
-} from "../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import CachedImage from "./CachedImage.tsx";
 
 interface IUnlockedSlotProps {

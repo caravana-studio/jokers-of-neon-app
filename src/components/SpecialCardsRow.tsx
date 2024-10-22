@@ -67,7 +67,13 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const slotWidth = (visibleCards > 6 ? 88 : 92) / visibleCards;
 
   return (
-    <Flex width="100%" height={`${cardHeight}px`} gap={{ base: 2, sm: 3 }}>
+    <Flex
+      width="100%"
+      height={`${cardHeight}px`}
+      gap={{ base: 2, sm: 3 }}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);
         return (
@@ -86,7 +92,11 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
             }}
           >
             {!isDiscarded && (
-              <AnimatedCard idx={card.idx} isSpecial={!!card.isSpecial}>
+              <AnimatedCard
+                idx={card.idx}
+                isSpecial={!!card.isSpecial}
+                scale={cardScale - cardScale * 0.1}
+              >
                 <Box position="relative">
                   <Flex
                     position={"absolute"}
@@ -121,7 +131,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
                       </Button>
                     )}
                   </Flex>
-                  <TiltCard card={card} scale={cardScale} />
+                  <TiltCard card={card} scale={cardScale - cardScale * 0.1} />
                 </Box>
               </AnimatedCard>
             )}
@@ -129,7 +139,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
         );
       })}
       {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-        <Flex width={`${slotWidth}%`}>
+        <Flex maxWidth={`${slotWidth}%`}>
           <FilledUnlockedSlot
             key={`unlocked-${index}`}
             scale={cardScale - cardScale * 0.1}
@@ -137,7 +147,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
         </Flex>
       ))}
       {Array.from({ length: lockedSlots }).map((_, index) => (
-        <Flex width={`${slotWidth}%`}>
+        <Flex maxWidth={`${slotWidth}%`}>
           <LockedSlot
             key={`locked-${index}`}
             scale={cardScale - cardScale * 0.1}
