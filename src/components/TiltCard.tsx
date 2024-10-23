@@ -157,7 +157,7 @@ export const TiltCard = ({
           )}
           {card.temporary && (
             <TemporalBadge
-              remaining={card.remaining ?? 1}
+              remaining={card.remaining ?? 3}
               purchased={purchased}
             />
           )}
