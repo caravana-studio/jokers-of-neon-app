@@ -48,11 +48,6 @@ export const TiltCard = ({
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
 
-  const hoverStyle = {
-    boxShadow: "0px 0px 20px 2px white",
-    transition: "box-shadow 0.3s ease-in-out",
-  };
-
   const isSilent = useIsSilent(card);
 
   const tiltCardComponent = (
@@ -67,7 +62,6 @@ export const TiltCard = ({
           boxShadow: isPack
             ? `inset 0px 0px 17px 2px ${VIOLET}, 0px 0px 17px 2px ${VIOLET}`
             : "none",
-          _hover: !isPack ? hoverStyle : "none",
         }}
       >
         <Tilt options={TILT_OPTIONS}>
@@ -205,11 +199,7 @@ export const TiltCard = ({
   // when is a special card, prefix with s and use idx instead of id
   const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
 
-  return card.isModifier || card.isSpecial ? (
-    <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>
-  ) : (
-    tiltCardComponent
-  );
+  return <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>;
 };
 
 interface TemporalBadgeProps {

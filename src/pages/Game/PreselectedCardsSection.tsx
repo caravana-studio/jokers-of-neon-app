@@ -1,13 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useDroppable } from "@dnd-kit/core";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { CurrentPlay } from "../../components/CurrentPlay.tsx";
 import { ModifiableCard } from "../../components/ModifiableCard";
 import { TiltCard } from "../../components/TiltCard";
+import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
-import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -25,6 +27,9 @@ export const PreselectedCardsSection = ({
     playAnimation,
   } = useGameContext();
 
+  const { setNodeRef } = useDroppable({
+    id: PRESELECTED_CARD_SECTION_ID,
+  });
   const { cardScale } = useResponsiveValues();
 
   return (
@@ -47,6 +52,7 @@ export const PreselectedCardsSection = ({
         </Box>
 
         <Box
+          ref={setNodeRef}
           sx={{
             width: "100%",
             display: "flex",

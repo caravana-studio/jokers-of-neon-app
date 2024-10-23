@@ -8,22 +8,20 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useDndContext } from "@dnd-kit/core";
+import { useDndContext, useDroppable } from "@dnd-kit/core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
-import {
-  CARD_HEIGHT,
-  CARD_HEIGHT_PX,
-  CARD_WIDTH,
-} from "../../constants/visualProps";
+import { HAND_SECTION_ID } from "../../constants/general";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
-import { Coins } from "./Coins";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Coins } from "./Coins";
 
 export const HandSection = () => {
   const {
@@ -35,12 +33,18 @@ export const HandSection = () => {
     roundRewards,
   } = useGameContext();
 
+  const { highlightCard } = useCardHighlight();
+
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
 
   const { activeNode } = useDndContext();
+
+  const { setNodeRef } = useDroppable({
+    id: HAND_SECTION_ID,
+  });
 
   const cardIsPreselected = (cardIndex: number) => {
     return (
@@ -78,6 +82,7 @@ export const HandSection = () => {
         pr={!isSmallScreen ? 12 : 10}
         pl={!isSmallScreen ? 4 : 2}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
+        ref={setNodeRef}
         height={isSmallScreen ? cardHeight : "100%"}
         display={"flex"}
         alignItems={"end"}
@@ -168,7 +173,9 @@ export const HandSection = () => {
                           : "pointer"
                       }
                       onClick={() => {
-                        if (!card.isModifier) {
+                        if (isSmallScreen) {
+                          highlightCard(card);
+                        } else if (!card.isModifier) {
                           togglePreselected(card.idx);
                         }
                       }}

@@ -1,29 +1,19 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { useDroppable } from "@dnd-kit/core";
-import { useGameContext } from "../../providers/GameProvider";
-import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
+import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { ButtonContainer } from "./ButtonContainer";
 
 interface DiscardButtonProps {
-  itemDragged?: boolean;
   highlight?: boolean;
 }
 
-export const DiscardButton = ({
-  itemDragged = false,
-  highlight = false,
-}: DiscardButtonProps) => {
+export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
     useGameContext();
 
-  const { setNodeRef } = useDroppable({
-    id: "play-discard",
-  });
-
   const cantDiscard =
     !highlight &&
-    !itemDragged &&
     (preSelectionLocked ||
       preSelectedCards?.length === 0 ||
       !discards ||
@@ -35,7 +25,6 @@ export const DiscardButton = ({
   return (
     <ButtonContainer>
       <Button
-        ref={setNodeRef}
         width={["48%", "48%", "150px"]}
         onClick={() => {
           discard();
@@ -46,14 +35,7 @@ export const DiscardButton = ({
       >
         {isSmallScreen ? (
           <Box>
-            <Text
-              fontFamily="Orbitron"
-              fontSize={itemDragged ? 12 : 16}
-              height={"16px"}
-            >
-              {itemDragged
-                ? t("game.preselected-cards-section.discard-btn-lbl.lbl") + " "
-                : ""}
+            <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
               {t("game.preselected-cards-section.discard-btn-lbl.discard")}
             </Text>
             <Heading mt={1} fontSize={9}>

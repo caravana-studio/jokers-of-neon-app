@@ -6,6 +6,23 @@
     }
   },
   "game": {
+    "card-types": {
+      "Common": "Tradicional",
+      "Modifier": "Modificador",
+      "Special": "Especial",
+      "Rage": "Rage",
+      "Neon": "Neon",
+      "Pack": "Pacote",
+      "Joker": "Curinga"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Alterar",
+        "remove": "Remover",
+        "changing": "Alterando...",
+        "removing": "Removendo..."
+      }
+    },
     "level-points": {
       "level": "Nível",
       "target-score": "Pontuação",
