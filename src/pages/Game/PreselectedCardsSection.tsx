@@ -13,10 +13,12 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
 export const PreselectedCardsSection = ({
   isTutorialRunning = false,
+  onTutorialCardClick,
 }: PreselectedCardsProps) => {
   const {
     preSelectedCards,
@@ -45,7 +47,10 @@ export const PreselectedCardsSection = ({
         alignItems={"center"}
       >
         <Box className="game-tutorial-step-3">
-          <DiscardButton highlight={isTutorialRunning} />
+          <DiscardButton
+            highlight={isTutorialRunning}
+            onTutorialCardClick={onTutorialCardClick}
+          />
         </Box>
 
         <Box
@@ -93,7 +98,10 @@ export const PreselectedCardsSection = ({
           </Flex>
         </Box>
         <Box className="game-tutorial-step-4">
-          <PlayButton highlight={isTutorialRunning} />
+          <PlayButton
+            highlight={isTutorialRunning}
+            onTutorialCardClick={onTutorialCardClick}
+          />
         </Box>
       </Flex>
       <CurrentPlay />

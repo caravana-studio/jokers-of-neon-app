@@ -12,9 +12,13 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface PlayButtonProps {
   highlight?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
-export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
+export const PlayButton = ({
+  highlight = false,
+  onTutorialCardClick,
+}: PlayButtonProps) => {
   const { preSelectedCards, play, preSelectionLocked } = !isTutorial()
     ? useGameContext()
     : useTutorialGameContext();
@@ -37,6 +41,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
         width={["48%", "48%", "150px"]}
         onClick={(e) => {
           e.stopPropagation();
+          if (onTutorialCardClick) onTutorialCardClick();
           play();
         }}
         variant={cantPlay ? "defaultOutline" : "secondarySolid"}

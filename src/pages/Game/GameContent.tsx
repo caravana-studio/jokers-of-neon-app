@@ -11,6 +11,7 @@ import {
   JOYRIDE_LOCALES,
   MODIFIERS_TUTORIAL_STEPS,
   SPECIAL_CARDS_TUTORIAL_STEPS,
+  TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -27,6 +28,7 @@ import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx
 import { isTutorial } from "../../utils/isTutorial.ts";
 
 export const GameContent = () => {
+  const inTutorial = isTutorial();
   const {
     hand,
     preSelectedCards,
@@ -34,13 +36,16 @@ export const GameContent = () => {
     error,
     executeCreateGame,
     addModifier,
-  } = !isTutorial() ? useGameContext() : useTutorialGameContext();
-  const { isRageRound } = !isTutorial()
+  } = !inTutorial ? useGameContext() : useTutorialGameContext();
+  const { isRageRound } = !inTutorial
     ? useGameContext()
     : useTutorialGameContext();
 
   const [run, setRun] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
   const [runSpecial, setRunSpecial] = useState(false);
+  const [cardClicked, setCardClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
@@ -48,8 +53,9 @@ export const GameContent = () => {
   const { t } = useTranslation(["game"]);
 
   useEffect(() => {
-    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    if (showTutorial) setRun(true);
+    // const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
+    // if (showTutorial) setRun(true);
+    setRun(inTutorial);
   }, []);
 
   const handleJoyrideCallbackFactory = (
@@ -58,6 +64,13 @@ export const GameContent = () => {
   ) => {
     return (data: CallBackProps) => {
       const { type } = data;
+
+      if (type === "step:after" && !cardClicked && !buttonClicked) {
+        setStepIndex(stepIndex + 1);
+      }
+
+      setCardClicked(false);
+      setButtonClicked(false);
 
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
@@ -162,7 +175,7 @@ export const GameContent = () => {
         }}
       >
         <Joyride
-          steps={GAME_TUTORIAL_STEPS}
+          steps={TUTORIAL_STEPS}
           run={run}
           continuous
           showSkipButton
@@ -170,9 +183,10 @@ export const GameContent = () => {
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
+          stepIndex={stepIndex}
         />
 
-        <Joyride
+        {/* <Joyride
           steps={SPECIAL_CARDS_TUTORIAL_STEPS}
           run={runSpecial}
           continuous
@@ -192,7 +206,7 @@ export const GameContent = () => {
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
-        />
+        /> */}
 
         <Box sx={{ width: "100%", height: "100%" }}>
           <Image
@@ -220,7 +234,15 @@ export const GameContent = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <PreselectedCardsSection isTutorialRunning={run} />
+                  <PreselectedCardsSection
+                    isTutorialRunning={run}
+                    onTutorialCardClick={() => {
+                      if (run) {
+                        setButtonClicked(true);
+                        setStepIndex(stepIndex + 1);
+                      }
+                    }}
+                  />
                 </Box>
                 <Box
                   pb={"60px"}
@@ -232,7 +254,14 @@ export const GameContent = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <HandSection />
+                  <HandSection
+                    onTutorialCardClick={() => {
+                      if (run) {
+                        setCardClicked(true);
+                        setStepIndex(stepIndex + 1);
+                      }
+                    }}
+                  />
                 </Box>
               </DndContext>
             </Box>

@@ -30,7 +30,11 @@ import {
 import { isTutorial } from "../../utils/isTutorial";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const HandSection = () => {
+interface HandSectionProps {
+  onTutorialCardClick?: () => void;
+}
+
+export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const {
     hand,
     preSelectedCards,
@@ -108,13 +112,16 @@ export const HandSection = () => {
                   onOpen();
                 }}
                 className={
-                  card.isModifier ? "tutorial-modifiers-step-2" : undefined
+                  card.isModifier
+                    ? "tutorial-modifiers-step-2"
+                    : "hand-element-" + index
                 }
                 onMouseEnter={() => setHoveredCard(card.idx)}
                 onMouseLeave={() => {
                   setHoveredCard(null);
                   setHoveredButton(null);
                 }}
+                onMouseDown={onTutorialCardClick}
                 position="relative"
               >
                 {card.isModifier && !isPreselected && (

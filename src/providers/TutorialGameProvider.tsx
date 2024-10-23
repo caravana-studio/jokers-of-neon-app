@@ -193,7 +193,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
-      console.log(playEvents);
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
         : 0;
@@ -531,7 +530,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   context.preSelectedCards = preSelectedCards;
-  console.log(preSelectedCards);
   context.preSelectedPlay = preSelectedPlay;
   context.points = points;
   context.multi = multi;

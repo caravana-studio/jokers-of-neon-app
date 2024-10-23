@@ -10,11 +10,13 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 interface DiscardButtonProps {
   itemDragged?: boolean;
   highlight?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
 export const DiscardButton = ({
   itemDragged = false,
   highlight = false,
+  onTutorialCardClick,
 }: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
     !isTutorial() ? useGameContext() : useTutorialGameContext();
@@ -41,6 +43,7 @@ export const DiscardButton = ({
         ref={setNodeRef}
         width={["48%", "48%", "150px"]}
         onClick={() => {
+          if (onTutorialCardClick) onTutorialCardClick();
           discard();
         }}
         variant={cantDiscard ? "defaultOutline" : "solid"}
