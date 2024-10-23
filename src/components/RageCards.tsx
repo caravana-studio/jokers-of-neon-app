@@ -1,17 +1,18 @@
 import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
 import {
   CARD_HEIGHT,
-  CARD_WIDTH,
-  CARD_WIDTH_PX,
+  CARD_WIDTH
 } from "../constants/visualProps";
+import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
-import { TiltCard } from "./TiltCard";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { TiltCard } from "./TiltCard";
 
 export const RageCards = () => {
   const { colors } = useTheme();
   const { rageCards } = useGameContext();
   const { isSmallScreen, cardScale } = useResponsiveValues();
+  const { highlightCard } = useCardHighlight();
 
   return (
     <Box
@@ -29,7 +30,15 @@ export const RageCards = () => {
                   : `${65 / rageCards.length}%`
               }
             >
-              <TiltCard card={card} scale={cardScale} key={index} />;
+              <TiltCard
+                onClick={() => {
+                  isSmallScreen && highlightCard(card);
+                }}
+                card={card}
+                scale={cardScale}
+                key={index}
+              />
+              ;
             </Flex>
           );
         })}
