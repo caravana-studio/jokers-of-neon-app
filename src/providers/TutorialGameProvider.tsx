@@ -101,9 +101,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const cq = CQ;
   cq.idx = D2.idx;
+  cq.id = D2.id;
 
   const joker = JOKER1;
   joker.idx = H10.idx;
+  joker.id = H10.id;
 
   const cards: Card[] = [cq, joker];
 
