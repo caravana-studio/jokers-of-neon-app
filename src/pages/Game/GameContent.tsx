@@ -131,6 +131,8 @@ export const GameContent = () => {
       !isModifier &&
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
+      setCardClicked(true);
+      setStepIndex(stepIndex + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);

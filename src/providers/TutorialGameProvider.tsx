@@ -74,8 +74,8 @@ const mockTutorialGameContext = createContext<IGameContext>({
   rageCards: [],
   setRageCards: (cards: Card[]) => console.log("Set rage cards", cards),
   discards: 1,
-  preSelectCard: (cardIndex: number) => {},
-  unPreSelectCard: (cardIndex: number) => {},
+  preSelectCard: () => {},
+  unPreSelectCard: () => {},
 });
 
 export let handsLeftTutorial = 1;
@@ -162,9 +162,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const preSelectCard = (cardIndex: number) => {
-    setPreSelectedCards((prev) => {
-      return [...prev, cardIndex];
-    });
+    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 5) {
+      setPreSelectedCards((prev) => {
+        return [...prev, cardIndex];
+      });
+    }
   };
 
   const unPreSelectCard = (cardIndex: number) => {
@@ -535,7 +537,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.multi = multi;
   if (hand.length > 0) context.hand = hand;
 
-  const actions = { togglePreselected, discard, play };
+  const actions = {
+    togglePreselected,
+    discard,
+    play,
+    preSelectCard,
+    unPreSelectCard,
+  };
 
   return (
     <mockTutorialGameContext.Provider value={{ ...context, ...actions }}>
