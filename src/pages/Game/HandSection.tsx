@@ -184,10 +184,10 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                           : "pointer"
                       }
                       onClick={() => {
+                        if (onTutorialCardClick) onTutorialCardClick();
                         if (isSmallScreen) {
                           highlightCard(card);
                         } else if (!card.isModifier) {
-                          if (onTutorialCardClick) onTutorialCardClick();
                           togglePreselected(card.idx);
                         }
                       }}
