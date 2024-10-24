@@ -74,12 +74,17 @@ export const GameMenu = ({
 
 interface PositionedGameMenuProps extends GameMenuProps {
   decoratedPage?: boolean;
+  bottomPositionDesktop?: number | string;
 }
 export const PositionedGameMenu = ({
   decoratedPage = false,
+  bottomPositionDesktop,
   ...rest
 }: PositionedGameMenuProps) => {
   const { isSmallScreen } = useResponsiveValues();
+
+  if (!bottomPositionDesktop)
+    bottomPositionDesktop = decoratedPage ? "100px" : "20px";
 
   return isSmallScreen ? (
     <Box
@@ -97,7 +102,7 @@ export const PositionedGameMenu = ({
     <Box
       sx={{
         position: "fixed",
-        bottom: decoratedPage ? "100px" : "20px",
+        bottom: bottomPositionDesktop,
         left: decoratedPage ? 20 : "20px",
         zIndex: 1000,
       }}

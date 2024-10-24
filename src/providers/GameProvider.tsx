@@ -77,6 +77,8 @@ export interface IGameContext {
   rageCards: Card[];
   setRageCards: (rageCards: Card[]) => void;
   discards: number;
+  preSelectCard: (cardIndex: number) => void;
+  unPreSelectCard: (cardIndex: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -123,6 +125,8 @@ const GameContext = createContext<IGameContext>({
   rageCards: [],
   setRageCards: (_) => {},
   discards: 0,
+  preSelectCard: (_) => {},
+  unPreSelectCard: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -578,9 +582,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const preSelectCard = (cardIndex: number) => {
-    setPreSelectedCards((prev) => {
-      return [...prev, cardIndex];
-    });
+    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 5) {
+      setPreSelectedCards((prev) => {
+        return [...prev, cardIndex];
+      });
+    }
   };
 
   const togglePreselected = (cardIndex: number) => {
@@ -736,6 +742,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     checkOrCreateGame,
     restartGame: cleanGameId,
     executeCreateGame,
+    preSelectCard,
+    unPreSelectCard,
   };
 
   return (

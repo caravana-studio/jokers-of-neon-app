@@ -1,5 +1,11 @@
 import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
@@ -14,6 +20,10 @@ import {
   TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
+import {
+  HAND_SECTION_ID,
+  PRESELECTED_CARD_SECTION_ID,
+} from "../../constants/general.ts";
 import {
   SKIP_TUTORIAL_GAME,
   SKIP_TUTORIAL_MODIFIERS,
@@ -36,10 +46,20 @@ export const GameContent = () => {
     error,
     executeCreateGame,
     addModifier,
+    preSelectCard,
+    unPreSelectCard,
   } = !inTutorial ? useGameContext() : useTutorialGameContext();
   const { isRageRound } = !inTutorial
     ? useGameContext()
     : useTutorialGameContext();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -98,13 +118,22 @@ export const GameContent = () => {
   const game = useGame();
 
   const handleDragEnd = (event: DragEndEvent) => {
+    const draggedCard = Number(event.active?.id);
+    const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
+
     const modifiedCard = Number(event.over?.id);
-    const modifier = Number(event.active?.id);
-    if (!isNaN(modifiedCard) && !isNaN(modifier)) {
+    if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
-        addModifier(modifiedCard, modifier);
+        addModifier(modifiedCard, draggedCard);
       }
+    } else if (
+      !isModifier &&
+      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
+    ) {
+      preSelectCard(draggedCard);
+    } else if (event.over?.id === HAND_SECTION_ID) {
+      unPreSelectCard(draggedCard);
     }
   };
 
@@ -226,7 +255,11 @@ export const GameContent = () => {
               <TopSection />
             </Box>
             <Box height={"70%"} width={"100%"}>
-              <DndContext onDragEnd={handleDragEnd} autoScroll={false}>
+              <DndContext
+                sensors={sensors}
+                onDragEnd={handleDragEnd}
+                autoScroll={false}
+              >
                 <Box
                   sx={{
                     height: "55%",
@@ -253,7 +286,7 @@ export const GameContent = () => {
                   sx={{
                     display: "flex",
                     height: "45%",
-                    alignItems: "flex-start",
+                    alignItems: "flex-end",
                     justifyContent: "center",
                   }}
                 >
@@ -282,6 +315,7 @@ export const GameContent = () => {
 
         <PositionedGameMenu
           decoratedPage
+          bottomPositionDesktop={16}
           showTutorial={() => {
             setRun(true);
           }}

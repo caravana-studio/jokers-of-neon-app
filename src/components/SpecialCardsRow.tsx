@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 import { MAX_SPECIAL_CARDS } from "../constants/config.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
+import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card.ts";
 import { AnimatedCard } from "./AnimatedCard.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
-import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
-import { FilledUnlockedSlot } from "./UnlockedSlot.tsx";
 import { TiltCard } from "./TiltCard.tsx";
+import { FilledUnlockedSlot } from "./UnlockedSlot.tsx";
 
 interface SpecialCardsRowProps {
   cards: Card[];
@@ -27,6 +28,8 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
+
+  const { highlightCard } = useCardHighlight();
 
   const game = useGame();
   const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
@@ -131,7 +134,13 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
                       </Button>
                     )}
                   </Flex>
-                  <TiltCard card={card} scale={cardScale - cardScale * 0.1} />
+                  <TiltCard
+                    onClick={() => {
+                      isSmallScreen && highlightCard(card);
+                    }}
+                    card={card}
+                    scale={cardScale - cardScale * 0.1}
+                  />
                 </Box>
               </AnimatedCard>
             )}

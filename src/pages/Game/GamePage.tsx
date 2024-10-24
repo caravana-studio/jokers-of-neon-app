@@ -2,16 +2,17 @@ import { useEffect } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
+import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const GamePage = () => {
   const {
@@ -68,7 +69,13 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
-      {isSmallScreen ? <MobileGameContent /> : <GameContent />}
+      {isSmallScreen ? (
+        <CardHighlightProvider>
+          <MobileGameContent />
+        </CardHighlightProvider>
+      ) : (
+        <GameContent />
+      )}
       <RemoveScroll>
         <></>
       </RemoveScroll>
