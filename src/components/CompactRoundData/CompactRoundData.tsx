@@ -1,10 +1,11 @@
-import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { RollingNumber } from "../RollingNumber";
 import { LevelBox } from "./LevelBox";
+import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
@@ -12,7 +13,7 @@ export const CompactRoundData = () => {
   });
   const { score, points, multi } = useGameContext();
 
-  const round = useRound(); 
+  const round = useRound();
   const target = round?.level_score ?? 0;
 
   return (
@@ -41,33 +42,11 @@ export const CompactRoundData = () => {
         </Box>
 
         <Flex align="center">
-          <Center
-            border={`2px solid ${BLUE_LIGHT}`}
-            boxShadow={`0px 0px 3px 1px ${BLUE_LIGHT}`}
-            borderRadius="full"
-            width="70px"
-            mx={1}
-            py={0.5}
-          >
-            <Heading fontSize="sm">
-              <RollingNumber n={points} />
-            </Heading>
-          </Center>
+          <NumberBox number={points} color={BLUE_LIGHT} />
           <Text fontSize="md" fontWeight="bold">
             x
           </Text>
-          <Center
-            border={`2px solid ${VIOLET}`}
-            boxShadow={`0px 0px 3px 1px ${VIOLET}`}
-            borderRadius="full"
-            width="70px"
-            py={0.5}
-            mx={1}
-          >
-            <Heading fontSize="sm">
-              <RollingNumber n={multi} />
-            </Heading>
-          </Center>
+          <NumberBox number={multi} color={VIOLET} spreadIncrease={5} />
         </Flex>
 
         <Box>
