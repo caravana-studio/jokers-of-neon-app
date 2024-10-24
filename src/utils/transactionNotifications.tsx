@@ -67,6 +67,8 @@ export const showTransactionToast = (
 ): void => {
   const description = message || "Transaction in progress...";
 
+  console.log("executing tx: ", transaction_hash);
+
   toast.loading(
     <CircularToast backgroundColor={LOADING_TOAST} status="loading" description={description}/>,
     {
