@@ -1,20 +1,23 @@
+import { useTranslation } from "react-i18next";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardData } from "./getCardData";
 
 export const colorizeText = (inputText: string) => {
-  const parts = inputText.split(/((?:\+\d+\s*(?:points?|multi))+)/g);
+  const { t } = useTranslation(["game"]);
+  const pointsTranslation = t("points");
+  const escapedPointsTranslation = pointsTranslation.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    "\\$&"
+  );
+  const parts = inputText.split(
+    new RegExp(`((?:\\+\\d+\\s*(?:${escapedPointsTranslation}|multi))+)`, "g")
+  );
+
   return parts.map((part, index) => {
-    if (/^\+\d+\s*points?/.test(part)) {
-      return (
-        <span
-          key={index}
-          style={{ fontWeight: "bold", color: `${BLUE_LIGHT}` }}
-        >
-          {part}
-        </span>
-      );
-    } else if (/^\+\d+\s*multi/.test(part)) {
+    const pointsRegex = new RegExp(`^\\+\\d+\\s*(${pointsTranslation})?`);
+
+    if (/^\+\d+\s*multi/.test(part)) {
       return (
         <span
           key={index}
@@ -24,6 +27,18 @@ export const colorizeText = (inputText: string) => {
         </span>
       );
     }
+
+    if (pointsRegex.test(part)) {
+      return (
+        <span
+          key={index}
+          style={{ fontWeight: "bold", color: `${BLUE_LIGHT}` }}
+        >
+          {part}
+        </span>
+      );
+    }
+
     return part;
   });
 };
