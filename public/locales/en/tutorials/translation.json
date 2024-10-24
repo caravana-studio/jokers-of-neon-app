@@ -10,16 +10,18 @@
     },
     "playableHand": {
       "step-1": "You must use the cards in your hand to form a poker play.",
-      "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that."
+      "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
+      "step-3": "Now, we got a poker hand, let’s play it."
     },
     "discardCards": {
       "title": "Discard",
-      "content": "Discard your preselected cards",
-      "select": "Discarding: Select this card."
+      "content": "Now click on the discard button to bring new cards to your hand.",
+      "select": "Select this card."
     },
     "playCards": {
       "title": "Play Cards",
-      "content": "Whenever you are ready you can play your preselected cards"
+      "content": "Now, click on the button to play your preselected cards.",
+      "select": "Select this card."
     },
     "pointsMultiplier": {
       "title": "Points and Multiplier",

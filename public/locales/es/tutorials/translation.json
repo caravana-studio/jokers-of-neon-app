@@ -10,16 +10,18 @@
     },
     "playableHand": {
       "step-1": "Debes utilizar estas cartas para formar una mano de póker.",
-      "step-2": "Si las cartas de tu mano no forman una mano de póker, puedes usar un descarte para obtener nuevas cartas. Vamos a intentarlo."
+      "step-2": "Si las cartas de tu mano no forman una mano de póker, puedes usar un descarte para obtener nuevas cartas. Vamos a intentarlo.",
+      "step-3": "Ahora tenemos una mano de póker, vamos a jugarla."
     },
     "discardCards": {
       "title": "Descartando",
-      "content": "Descarta tus cartas preseleccionadas",
+      "content": "Ahora haz clic en el botón de descarte para obtener nuevas cartas en tu mano.",
       "select": "Selecciona esta carta"
     },
     "playCards": {
       "title": "Jugar cartas",
-      "content": "Cuando estés listo, puedes jugar tus cartas preseleccionadas"
+      "content": "Ahora, haz clic en el botón para jugar tus cartas preseleccionadas.",
+      "select": "Selecciona esta carta"
     },
     "pointsMultiplier": {
       "title": "Puntos y multiplicador",
