@@ -121,7 +121,6 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                   setHoveredCard(null);
                   setHoveredButton(null);
                 }}
-                onMouseDown={onTutorialCardClick}
                 position="relative"
               >
                 {card.isModifier && !isPreselected && (
@@ -179,9 +178,11 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                       }
                       onClick={() => {
                         if (!card.isModifier) {
+                          if (onTutorialCardClick) onTutorialCardClick();
                           togglePreselected(card.idx);
                         }
                       }}
+                      className={"hand-element-" + index}
                     />
                   </AnimatedCard>
                 )}

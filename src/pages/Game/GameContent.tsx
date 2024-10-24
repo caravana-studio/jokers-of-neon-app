@@ -86,14 +86,14 @@ export const GameContent = () => {
     SKIP_TUTORIAL_GAME,
     setRun
   );
-  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_SPECIAL_CARDS,
-    setRunSpecial
-  );
-  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_MODIFIERS,
-    setRunTutorialModifiers
-  );
+  // const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
+  //   SKIP_TUTORIAL_SPECIAL_CARDS,
+  //   setRunSpecial
+  // );
+  // const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
+  //   SKIP_TUTORIAL_MODIFIERS,
+  //   setRunTutorialModifiers
+  // );
 
   const game = useGame();
 
@@ -208,7 +208,10 @@ export const GameContent = () => {
           locale={JOYRIDE_LOCALES}
         /> */}
 
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box
+          sx={{ width: "100%", height: "100%" }}
+          className="game-tutorial-intro"
+        >
           <Image
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
