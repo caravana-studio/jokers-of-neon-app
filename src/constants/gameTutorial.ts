@@ -61,7 +61,7 @@ const loadTutorialTranslations = async () => {
       content: i18n.t("gameTutorial.intro.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "bottom",
-      offset: -100,
+      offset: isMobile ? 0 : -100,
     },
     {
       target: ".game-tutorial-step-1",
@@ -90,7 +90,7 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
-      spotlightPadding: 0,
+      spotlightPadding: isMobile ? 20 : 0,
     },
     {
       target: ".hand-element-1",

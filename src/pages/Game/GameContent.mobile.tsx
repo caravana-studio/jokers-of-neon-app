@@ -19,6 +19,7 @@ import {
   JOYRIDE_LOCALES,
   MODIFIERS_TUTORIAL_STEPS,
   SPECIAL_CARDS_TUTORIAL_STEPS,
+  TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
@@ -38,8 +39,11 @@ import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { isTutorial } from "../../utils/isTutorial.ts";
+import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 
 export const MobileGameContent = () => {
+  const inTutorial = isTutorial();
   const {
     hand,
     preSelectedCards,
@@ -49,7 +53,7 @@ export const MobileGameContent = () => {
     addModifier,
     preSelectCard,
     unPreSelectCard,
-  } = useGameContext();
+  } = !inTutorial ? useGameContext() : useTutorialGameContext();
 
   const { highlightedCard } = useCardHighlight();
 
@@ -61,15 +65,19 @@ export const MobileGameContent = () => {
     })
   );
   const [run, setRun] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
+  const [cardClicked, setCardClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
   const { t } = useTranslation(["game"]);
 
   useEffect(() => {
-    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    if (showTutorial) setRun(true);
+    // const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
+    // if (showTutorial) setRun(true);
+    setRun(inTutorial);
   }, []);
 
   const handleJoyrideCallbackFactory = (
@@ -78,6 +86,13 @@ export const MobileGameContent = () => {
   ) => {
     return (data: CallBackProps) => {
       const { type } = data;
+
+      if (type === "step:after" && !cardClicked && !buttonClicked) {
+        setStepIndex(stepIndex + 1);
+      }
+
+      setCardClicked(false);
+      setButtonClicked(false);
 
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
@@ -93,14 +108,14 @@ export const MobileGameContent = () => {
     SKIP_TUTORIAL_GAME,
     setRun
   );
-  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_SPECIAL_CARDS,
-    setRunSpecial
-  );
-  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_MODIFIERS,
-    setRunTutorialModifiers
-  );
+  // const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
+  //   SKIP_TUTORIAL_SPECIAL_CARDS,
+  //   setRunSpecial
+  // );
+  // const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
+  //   SKIP_TUTORIAL_MODIFIERS,
+  //   setRunTutorialModifiers
+  // );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
@@ -116,6 +131,8 @@ export const MobileGameContent = () => {
       !isModifier &&
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
+      setCardClicked(true);
+      setStepIndex(stepIndex + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -183,6 +200,7 @@ export const MobileGameContent = () => {
       sx={{
         height: "100%",
       }}
+      className="game-tutorial-intro"
     >
       {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
 
@@ -195,17 +213,21 @@ export const MobileGameContent = () => {
         bottom={[1, 4]}
       >
         <Joyride
-          steps={GAME_TUTORIAL_STEPS}
+          steps={TUTORIAL_STEPS}
           run={run}
           continuous
-          showSkipButton
           showProgress
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
+          stepIndex={stepIndex}
+          disableCloseOnEsc
+          disableOverlayClose
+          showSkipButton={false}
+          hideCloseButton
         />
 
-        <Joyride
+        {/* <Joyride
           steps={SPECIAL_CARDS_TUTORIAL_STEPS}
           run={runSpecial}
           continuous
@@ -225,7 +247,7 @@ export const MobileGameContent = () => {
           callback={handleModifiersJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
-        />
+        /> */}
 
         <PositionedGameMenu
           showTutorial={() => {
@@ -272,8 +294,24 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton highlight={run} />
-              <PlayButton highlight={run} />
+              <DiscardButton
+                highlight={run}
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setCardClicked(true);
+                    setStepIndex(stepIndex + 1);
+                  }
+                }}
+              />
+              <PlayButton
+                highlight={run}
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setCardClicked(true);
+                    setStepIndex(stepIndex + 1);
+                  }
+                }}
+              />
             </Flex>
             <Box
               sx={{

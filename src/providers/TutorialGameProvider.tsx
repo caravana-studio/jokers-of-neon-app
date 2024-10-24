@@ -162,11 +162,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const preSelectCard = (cardIndex: number) => {
-    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 5) {
-      setPreSelectedCards((prev) => {
-        return [...prev, cardIndex];
-      });
-    }
+    setPreSelectedCards((prev) => {
+      return [...prev, cardIndex];
+    });
   };
 
   const unPreSelectCard = (cardIndex: number) => {
