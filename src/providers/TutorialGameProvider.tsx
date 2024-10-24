@@ -4,8 +4,6 @@ import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SortBy } from "../enums/sortBy";
 import {
-  C10,
-  C2,
   CA,
   CJ,
   CK,
@@ -76,6 +74,8 @@ const mockTutorialGameContext = createContext<IGameContext>({
   rageCards: [],
   setRageCards: (cards: Card[]) => console.log("Set rage cards", cards),
   discards: 1,
+  preSelectCard: (cardIndex: number) => {},
+  unPreSelectCard: (cardIndex: number) => {},
 });
 
 export let handsLeftTutorial = 1;
