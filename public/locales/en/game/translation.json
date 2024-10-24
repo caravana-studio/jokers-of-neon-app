@@ -97,5 +97,6 @@
   "confirmation-modal": {
     "confirm": "Confirm",
     "close": "Close"
-  }
+  },
+  "points":"points"
 }
