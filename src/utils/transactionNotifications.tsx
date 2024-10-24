@@ -67,7 +67,7 @@ export const showTransactionToast = (
 ): void => {
   const description = message || "Transaction in progress...";
 
-  console.log(`https://sepolia.voyager.online/tx/${transaction_hash}`);
+  console.log(`%chttps://sepolia.voyager.online/tx/${transaction_hash}`, 'color: blue; text-decoration: underline');
 
   toast.loading(
     <CircularToast backgroundColor={LOADING_TOAST} status="loading" description={description}/>,
