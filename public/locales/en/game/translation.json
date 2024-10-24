@@ -6,6 +6,11 @@
     }
   },
   "game": {
+    "compact-round-data": {
+      "my-score": "My score",
+      "target": "Target",
+      "round": "Round {{round}}"
+    },
     "card-types": {
       "Common": "Traditional",
       "Modifier": "Modifier",
