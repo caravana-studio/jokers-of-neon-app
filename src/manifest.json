@@ -1670,7 +1670,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": null,
+      "address": "0x45ed4ad6100e3b485c3e861207aea139910d5cca5518e3dea72ab182746d5bf",
       "class_hash": "0x7f183e1e2e439d03324115ca95b09a7d08660e37d35efeeb4fdfb3765500152",
       "original_class_hash": "0x7f183e1e2e439d03324115ca95b09a7d08660e37d35efeeb4fdfb3765500152",
       "base_class_hash": "0x0",
@@ -1994,7 +1994,7 @@
     },
     {
       "kind": "DojoContract",
-      "address": null,
+      "address": "0x75602558fd679c49be1a6ccb73e3d6d842f0558e1f41c4013ce109d05a5790f",
       "class_hash": "0x4bae7a59058f9fd9d3770a75c3271d8e1dad7046972ca9d3214fecc4f4f0508",
       "original_class_hash": "0x4bae7a59058f9fd9d3770a75c3271d8e1dad7046972ca9d3214fecc4f4f0508",
       "base_class_hash": "0x0",
