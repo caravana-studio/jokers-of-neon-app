@@ -207,12 +207,15 @@ export const GameContent = () => {
           steps={TUTORIAL_STEPS}
           run={run}
           continuous
-          showSkipButton
           showProgress
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
           stepIndex={stepIndex}
+          disableCloseOnEsc
+          disableOverlayClose
+          showSkipButton={false}
+          hideCloseButton
         />
 
         {/* <Joyride
