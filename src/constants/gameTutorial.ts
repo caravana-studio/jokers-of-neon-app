@@ -76,6 +76,12 @@ const loadTutorialTranslations = async () => {
       ...COMMON_SETTINGS,
     },
     {
+      target: ".game-tutorial-step-btn-plays",
+      content: i18n.t("gameTutorial.playableHand.plays", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
+      placement: "auto",
+    },
+    {
       target: ".game-tutorial-step-3",
       content: i18n.t("gameTutorial.playableHand.step-2", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
@@ -175,6 +181,14 @@ const loadTutorialTranslations = async () => {
       spotlightPadding: 0,
     },
     {
+      target: ".game-tutorial-step-6",
+      title: i18n.t("gameTutorial.pointsMultiplier.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.pointsMultiplier.content", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+    },
+    {
       target: ".game-tutorial-step-4",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
@@ -182,6 +196,11 @@ const loadTutorialTranslations = async () => {
       placement: "left",
       spotlightClicks: true,
       hideFooter: true,
+    },
+    {
+      target: ".game-tutorial-step-7",
+      content: i18n.t("gameTutorial.score.content", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
     },
   ]);
 

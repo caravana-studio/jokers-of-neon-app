@@ -36,6 +36,7 @@ import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
 import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { useNavigate } from "react-router-dom";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -69,7 +70,7 @@ export const GameContent = () => {
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
-
+  const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ export const GameContent = () => {
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
+        navigate("/demo");
         if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
           setSpecialTutorialCompleted(true);
         }
@@ -216,7 +218,7 @@ export const GameContent = () => {
           stepIndex={stepIndex}
           disableCloseOnEsc
           disableOverlayClose
-          showSkipButton={false}
+          showSkipButton
           hideCloseButton
         />
 

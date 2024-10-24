@@ -30,7 +30,12 @@ export const ShowPlays = () => {
         navigate("/plays", { state: { isTutorial: inTutorial } });
       }}
     >
-      <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
+      <Flex
+        gap={2}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        className="game-tutorial-step-btn-plays"
+      >
         <InfoIcon
           color="white"
           fontSize={{ base: "14px", md: "20px" }}

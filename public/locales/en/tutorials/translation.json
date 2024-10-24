@@ -11,7 +11,8 @@
     "playableHand": {
       "step-1": "You must use the cards in your hand to form a poker play.",
       "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
-      "step-3": "Now, we got a poker hand, let’s play it."
+      "step-3": "Now, we got a poker hand, let’s play it.",
+      "plays": "Click here to view the possible poker hands you can make."
     },
     "discardCards": {
       "title": "Discard",
@@ -26,6 +27,9 @@
     "pointsMultiplier": {
       "title": "Points and Multiplier",
       "content": "Each poker hand has base points and a multiplier that will contribute to your final score"
+    },
+    "score": {
+      "content": "Great job! Your last play hit the target score. Now, let's play for real. Good luck!"
     }
   },
   "storeTutorial": {

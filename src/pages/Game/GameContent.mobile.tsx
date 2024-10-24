@@ -41,6 +41,7 @@ import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -73,6 +74,7 @@ export const MobileGameContent = () => {
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
   const { t } = useTranslation(["game"]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
@@ -97,6 +99,7 @@ export const MobileGameContent = () => {
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
+        navigate("/demo");
         if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
           setSpecialTutorialCompleted(true);
         }
