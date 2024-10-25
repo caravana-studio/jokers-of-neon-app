@@ -1,10 +1,14 @@
-import { useTranslation } from "react-i18next";
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
 import { getCardData } from "./getCardData";
 
+import i18n from "i18next";
+
+export const t = (key: string) => {
+  return i18n.t(key, { ns: "game" });
+};
+
 export const colorizeText = (inputText: string) => {
-  const { t } = useTranslation(["game"]);
   const pointsTranslation = t("points");
   const escapedPointsTranslation = pointsTranslation.replace(
     /[.*+?^${}()|[\]\\]/g,
