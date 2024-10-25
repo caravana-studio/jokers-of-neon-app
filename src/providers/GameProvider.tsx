@@ -8,6 +8,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
 import {
+  rageCardIds
+} from "../constants/rageCardIds.ts";
+import {
   discardSfx,
   multiSfx,
   pointsSfx,
@@ -194,7 +197,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     cash,
     setLockedCash,
     setIsRageRound,
+    rageCards,
   } = state;
+
+  const maxPreSelectedCards = rageCards?.find(
+    (card) => card.card_id === rageCardIds.STRATEGIC_QUARTET
+  )
+    ? 4
+    : 5;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -577,7 +587,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const preSelectCard = (cardIndex: number) => {
-    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 5) {
+    if (
+      !preSelectedCards.includes(cardIndex) &&
+      preSelectedCards.length < maxPreSelectedCards
+    ) {
       setPreSelectedCards((prev) => {
         return [...prev, cardIndex];
       });
