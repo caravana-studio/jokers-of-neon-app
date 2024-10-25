@@ -13,10 +13,7 @@ import { GameDeck } from "../../components/GameDeck.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import {
-  GAME_TUTORIAL_STEPS,
   JOYRIDE_LOCALES,
-  MODIFIERS_TUTORIAL_STEPS,
-  SPECIAL_CARDS_TUTORIAL_STEPS,
   TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
@@ -24,11 +21,6 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import {
-  SKIP_TUTORIAL_GAME,
-  SKIP_TUTORIAL_MODIFIERS,
-  SKIP_TUTORIAL_SPECIAL_CARDS,
-} from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -64,19 +56,13 @@ export const GameContent = () => {
 
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
-  const [runSpecial, setRunSpecial] = useState(false);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
-  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
-  const [specialTutorialCompleted, setSpecialTutorialCompleted] =
-    useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
 
   useEffect(() => {
-    // const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    // if (showTutorial) setRun(true);
     setRun(inTutorial);
   }, []);
 
@@ -90,7 +76,6 @@ export const GameContent = () => {
   }, [stepIndex]);
 
   const handleJoyrideCallbackFactory = (
-    storageKey: string,
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     return (data: CallBackProps) => {
@@ -110,28 +95,13 @@ export const GameContent = () => {
       setAutoStep(false);
 
       if (type === "tour:end") {
-        window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
         navigate("/demo");
-        if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
-          setSpecialTutorialCompleted(true);
-        }
       }
     };
   };
 
-  const handleJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_GAME,
-    setRun
-  );
-  // const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
-  //   SKIP_TUTORIAL_SPECIAL_CARDS,
-  //   setRunSpecial
-  // );
-  // const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
-  //   SKIP_TUTORIAL_MODIFIERS,
-  //   setRunTutorialModifiers
-  // );
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
 
   const game = useGame();
 
@@ -156,30 +126,6 @@ export const GameContent = () => {
       unPreSelectCard(draggedCard);
     }
   };
-
-  useEffect(() => {
-    const showSpecialCardTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_SPECIAL_CARDS
-    );
-    const showModifiersTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_MODIFIERS
-    );
-
-    if (
-      showSpecialCardTutorial &&
-      game?.len_current_special_cards != undefined &&
-      game?.len_current_special_cards > 0
-    ) {
-      setRunSpecial(true);
-    } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
-      if (showModifiersTutorial) {
-        const hasModifier = hand.some((card) => card.isModifier);
-        if (hasModifier) {
-          setRunTutorialModifiers(true);
-        }
-      }
-    }
-  }, [game, hand, specialTutorialCompleted]);
 
   if (error) {
     return (
@@ -237,28 +183,6 @@ export const GameContent = () => {
           showSkipButton
           hideCloseButton
         />
-
-        {/* <Joyride
-          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-          run={runSpecial}
-          continuous
-          showSkipButton
-          showProgress
-          callback={handleSpecialJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        />
-
-        <Joyride
-          steps={MODIFIERS_TUTORIAL_STEPS}
-          run={runTutorialModifiers}
-          continuous
-          showSkipButton
-          showProgress
-          callback={handleModifiersJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        /> */}
 
         <Box
           sx={{ width: "100%", height: "100%" }}

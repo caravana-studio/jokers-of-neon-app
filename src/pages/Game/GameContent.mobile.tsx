@@ -15,10 +15,7 @@ import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import {
-  GAME_TUTORIAL_STEPS,
   JOYRIDE_LOCALES,
-  MODIFIERS_TUTORIAL_STEPS,
-  SPECIAL_CARDS_TUTORIAL_STEPS,
   TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
@@ -26,11 +23,6 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import {
-  SKIP_TUTORIAL_GAME,
-  SKIP_TUTORIAL_MODIFIERS,
-  SKIP_TUTORIAL_SPECIAL_CARDS,
-} from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -67,19 +59,13 @@ export const MobileGameContent = () => {
   );
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
-  const [runSpecial, setRunSpecial] = useState(false);
-  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
-  const [specialTutorialCompleted, setSpecialTutorialCompleted] =
-    useState(false);
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    // if (showTutorial) setRun(true);
     setRun(inTutorial);
   }, []);
 
@@ -93,7 +79,6 @@ export const MobileGameContent = () => {
   }, [stepIndex]);
 
   const handleJoyrideCallbackFactory = (
-    storageKey: string,
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     return (data: CallBackProps) => {
@@ -113,28 +98,13 @@ export const MobileGameContent = () => {
       setAutoStep(false);
 
       if (type === "tour:end") {
-        window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
         navigate("/demo");
-        if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
-          setSpecialTutorialCompleted(true);
-        }
       }
     };
   };
 
-  const handleJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_GAME,
-    setRun
-  );
-  // const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
-  //   SKIP_TUTORIAL_SPECIAL_CARDS,
-  //   setRunSpecial
-  // );
-  // const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
-  //   SKIP_TUTORIAL_MODIFIERS,
-  //   setRunTutorialModifiers
-  // );
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
@@ -159,30 +129,6 @@ export const MobileGameContent = () => {
   };
 
   const game = useGame();
-
-  useEffect(() => {
-    const showSpecialCardTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_SPECIAL_CARDS
-    );
-    const showModifiersTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_MODIFIERS
-    );
-
-    if (
-      showSpecialCardTutorial &&
-      game?.len_current_special_cards != undefined &&
-      game?.len_current_special_cards > 0
-    ) {
-      setRunSpecial(true);
-    } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
-      if (showModifiersTutorial) {
-        const hasModifier = hand.some((card) => card.isModifier);
-        if (hasModifier) {
-          setRunTutorialModifiers(true);
-        }
-      }
-    }
-  }, [game, hand, specialTutorialCompleted]);
 
   if (error) {
     return (
@@ -245,28 +191,6 @@ export const MobileGameContent = () => {
           showSkipButton={false}
           hideCloseButton
         />
-
-        {/* <Joyride
-          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-          run={runSpecial}
-          continuous
-          showSkipButton
-          showProgress
-          callback={handleSpecialJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        />
-
-        <Joyride
-          steps={MODIFIERS_TUTORIAL_STEPS}
-          run={runTutorialModifiers}
-          continuous
-          showSkipButton
-          showProgress
-          callback={handleModifiersJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        /> */}
 
         <PositionedGameMenu
           showTutorial={() => {
