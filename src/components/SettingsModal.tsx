@@ -19,16 +19,16 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
+import { useGameContext } from "../providers/GameProvider";
 
 export const SettingsModal = () => {
+  const { sfxVolume, setSfxVolume } = useGameContext();
   const { t, i18n } = useTranslation(["game"]);
   const title = "Settings";
   const languageLbl = "Language";
   const sfxLbl = "Sfx";
   const musicLbl = "Music";
   const animSpeedLbl = "Animation speed";
-
-  const saveSettings = () => {};
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -62,7 +62,13 @@ export const SettingsModal = () => {
             </Flex>
             <Flex gap={2}>
               <Text size="md">{sfxLbl}</Text>
-              <Slider defaultValue={50}>
+              <Slider
+                min={0}
+                max={1}
+                step={0.25}
+                value={sfxVolume}
+                onChange={(value) => setSfxVolume(value)}
+              >
                 <SliderTrack>
                   <SliderFilledTrack />
                 </SliderTrack>
@@ -93,7 +99,6 @@ export const SettingsModal = () => {
             variant="secondarySolid"
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             size="sm"
-            onClick={saveSettings}
             ml={3}
           >
             {t("confirmation-modal.confirm")}

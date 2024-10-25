@@ -75,6 +75,8 @@ interface IGameContext {
   discards: number;
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
+  sfxVolume: number;
+  setSfxVolume: (volume: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -123,6 +125,8 @@ const GameContext = createContext<IGameContext>({
   discards: 0,
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
+  sfxVolume: 1,
+  setSfxVolume: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -148,10 +152,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
 
   const game = useGame();
-  const { play: preselectCardSound } = useAudio(preselectedCardSfx);
-  const { play: discardSound } = useAudio(discardSfx, 4);
-  const { play: pointsSound } = useAudio(pointsSfx);
-  const { play: multiSound } = useAudio(multiSfx);
+  const [sfxVolume, setSfxVolume] = useState(1);
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+  const { play: discardSound } = useAudio(discardSfx, sfxVolume);
+  const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
+  const { play: multiSound } = useAudio(multiSfx, sfxVolume);
 
   const minimumDuration =
     !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
@@ -721,6 +726,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(false);
   }, []);
 
+  useEffect(() => {
+    const savedVolume = localStorage.getItem("sfxVolume");
+    if (savedVolume !== null) {
+      setSfxVolume(JSON.parse(savedVolume));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
+  }, [sfxVolume]);
+
   const actions = {
     setPreSelectedCards,
     play: onPlayClick,
@@ -743,7 +759,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <GameContext.Provider
-      value={{ ...state, ...actions, lockRedirection, discards }}
+      value={{
+        ...state,
+        ...actions,
+        lockRedirection,
+        discards,
+        sfxVolume,
+        setSfxVolume,
+      }}
     >
       {children}
     </GameContext.Provider>
