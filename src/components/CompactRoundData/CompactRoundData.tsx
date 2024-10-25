@@ -17,49 +17,57 @@ export const CompactRoundData = () => {
   const target = round?.level_score ?? 0;
 
   return (
-    <Box px={4} mb={4} borderRadius="md" maxW="600px">
-      <LevelBox />
-      <Flex justify="center" gap={1} align="center">
-        <Box>
-          <Text
-            textAlign="right"
-            fontSize="10px"
-            textTransform="uppercase"
-            fontWeight="500"
-          >
-            {t("my-score")}
-          </Text>
-          <Heading
-            textAlign="right"
-            fontSize="md"
-            mr={0.5}
-            mt={-1}
-            variant="italic"
-            width="50px"
-          >
-            <RollingNumber n={score} />
-          </Heading>
-        </Box>
+    <Flex justifyContent="center">
+      <Box px={4} mb={4} borderRadius="md" width="100%" maxW="600px">
+        <LevelBox />
+        <Flex justify="center" gap={1} align="center">
+          <Box>
+            <Text
+              textAlign="right"
+              fontSize="10px"
+              textTransform="uppercase"
+              fontWeight="500"
+            >
+              {t("my-score")}
+            </Text>
+            <Heading
+              textAlign="right"
+              fontSize="md"
+              mr={0.5}
+              mt={-1}
+              variant="italic"
+              width="50px"
+            >
+              <RollingNumber n={score} />
+            </Heading>
+          </Box>
 
-        <Flex align="center">
-          <NumberBox number={points} color={BLUE_LIGHT} />
-          <Text fontSize="md" fontWeight="bold">
-            x
-          </Text>
-          <NumberBox number={multi} color={VIOLET} spreadIncrease={5} />
+          <Flex align="center">
+            <NumberBox number={points} color={BLUE_LIGHT} />
+            <Text fontSize="md" fontWeight="bold">
+              x
+            </Text>
+            <NumberBox number={multi} color={VIOLET} spreadIncrease={5} />
+          </Flex>
+
+          <Box>
+            <Text fontSize="10px" textTransform="uppercase" fontWeight="500">
+              {t("target")}
+            </Text>
+            <Heading
+              width="50px"
+              fontSize="md"
+              ml={0.5}
+              mt={-1}
+              variant="italic"
+            >
+              <RollingNumber n={target} />
+            </Heading>
+          </Box>
         </Flex>
-
-        <Box>
-          <Text fontSize="10px" textTransform="uppercase" fontWeight="500">
-            {t("target")}
-          </Text>
-          <Heading width="50px" fontSize="md" ml={0.5} mt={-1} variant="italic">
-            <RollingNumber n={target} />
-          </Heading>
-        </Box>
-      </Flex>
-      <ProgressBar progress={(score / target) * 100} />
-    </Box>
+        <ProgressBar progress={(score / target) * 100} />
+      </Box>
+    </Flex>
   );
 };
 

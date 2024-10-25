@@ -9,7 +9,11 @@ interface INumberBoxProps {
   spreadIncrease?: number;
 }
 
-export const NumberBox = ({ number, color, spreadIncrease = 100 }: INumberBoxProps) => {
+export const NumberBox = ({
+  number,
+  color,
+  spreadIncrease = 100,
+}: INumberBoxProps) => {
   const [prevNumber, setPrevNumber] = useState(number);
 
   const [{ boxShadow }, set] = useSpring(() => ({
@@ -17,11 +21,8 @@ export const NumberBox = ({ number, color, spreadIncrease = 100 }: INumberBoxPro
   }));
 
   useEffect(() => {
-    console.log("Current:", number, "Previous:", prevNumber);
-
     if (number > prevNumber) {
       const spread = 4 + Math.floor(number / spreadIncrease) * 2;
-      console.log("Spread:", spread);
       set({ boxShadow: `0px 0px ${spread}px ${spread / 2}px ${color}` });
 
       const timeout = setTimeout(() => {
