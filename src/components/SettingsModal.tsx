@@ -19,10 +19,9 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
-import React from "react";
 
 export const SettingsModal = () => {
-  const { t } = useTranslation(["game"]);
+  const { t, i18n } = useTranslation(["game"]);
   const title = "Settings";
   const languageLbl = "Language";
   const sfxLbl = "Sfx";
@@ -31,16 +30,9 @@ export const SettingsModal = () => {
 
   const saveSettings = () => {};
 
-  const languages = [
-    {
-      value: "english",
-      label: "English",
-    },
-    {
-      value: "spanish",
-      label: "Spanish",
-    },
-  ];
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <Modal isOpen={true} onClose={close}>
@@ -56,12 +48,16 @@ export const SettingsModal = () => {
           <Flex gap={4} flexDirection="column">
             <Flex gap={2}>
               <Text size="md">{languageLbl}</Text>
-              <Select placeholder="Select option">
-                {languages.map((language) => (
-                  <option key={language.value} value={language.value}>
-                    {language.label}
-                  </option>
-                ))}
+              <Select
+                size="lg"
+                variant="outline"
+                focusBorderColor="teal.500"
+                onChange={(e) => changeLanguage(e.target.value)}
+                defaultValue={i18n.language}
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="pt">Português</option>
               </Select>
             </Flex>
             <Flex gap={2}>
