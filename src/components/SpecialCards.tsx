@@ -7,6 +7,8 @@ import { Card } from "../types/Card.ts";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
+import { isTutorial } from "../utils/isTutorial.ts";
+import { useTutorialGameContext } from "../providers/TutorialGameProvider.tsx";
 
 interface SpecialCardsProps {
   inStore?: boolean;
@@ -19,7 +21,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
   const { t } = useTranslation(["game"]);
 
   const { discardSpecialCard, specialCards, isRageRound, rageCards } =
-    useGameContext();
+    isTutorial() ? useTutorialGameContext() : useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);

@@ -15,6 +15,7 @@ import {
   H7,
   JOKER1,
 } from "../utils/mocks/cardMocks";
+import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
 import { useAudio } from "../hooks/useAudio";
 import {
   discardSfx,
@@ -87,6 +88,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const gameID = getLSGameId();
   const [hand, setHand] = useState<Card[]>([]);
+  const [score, setScore] = useState<number>(0);
   const state = useGameState();
 
   const { setPlayIsNeon, setPlayAnimation } = state;
@@ -451,6 +453,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         //   setRoundRewards(undefined);
         //   setLockRedirection(false);
         // }
+        setScore(playEvents.score);
       }, ALL_CARDS_DURATION + 500);
     }
   };
@@ -491,13 +494,29 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         multi: 0,
         points: 100,
       },
+    ],
+    specialCards: [
       {
-        idx: 1,
-        multi: 1,
-        points: 0,
+        special_idx: 0,
+        idx: 9,
+        multi: 2,
+      },
+      {
+        special_idx: 0,
+        idx: 13,
+        multi: 2,
+      },
+      {
+        special_idx: 0,
+        idx: 11,
+        multi: 2,
+      },
+      {
+        special_idx: 0,
+        idx: 12,
+        multi: 2,
       },
     ],
-    specialCards: [],
     gameOver: false,
     specialSuitEvents: [],
     globalEvents: [],
@@ -535,6 +554,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.preSelectedPlay = preSelectedPlay;
   context.points = points;
   context.multi = multi;
+  context.score = score;
+  context.specialCards = [MultipliedClubs];
   if (hand.length > 0) context.hand = hand;
 
   const actions = {

@@ -30,6 +30,10 @@
     },
     "score": {
       "content": "¡Buen trabajo! Tu última jugada alcanzó la puntuación objetivo. Ahora, vamos a jugar de verdad. ¡Buena suerte!"
+    },
+    "specialCards": {
+      "title": "Cartas Especiales",
+      "content": "Las cartas especiales son un cambio radical, ya que aplican efectos únicos a las cartas que juegas. Puedes comprarlas en la tienda."
     }
   },
   "storeTutorial": {

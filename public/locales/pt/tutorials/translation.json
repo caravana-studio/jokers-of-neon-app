@@ -30,6 +30,10 @@
     },
     "score": {
       "content": "Ótimo trabalho! Sua última jogada atingiu a pontuação alvo. Agora, vamos jogar de verdade. Boa sorte!"
+    },
+    "specialCards": {
+      "title": "Cartas Especiais",
+      "content": "As cartas especiais mudam o jogo, aplicando efeitos únicos às cartas que você joga. Elas podem ser compradas na loja."
     }
   },
   "storeTutorial": {

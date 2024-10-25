@@ -67,6 +67,7 @@ export const GameContent = () => {
   const [runSpecial, setRunSpecial] = useState(false);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [autoStep, setAutoStep] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
   const [specialTutorialCompleted, setSpecialTutorialCompleted] =
     useState(false);
@@ -79,6 +80,15 @@ export const GameContent = () => {
     setRun(inTutorial);
   }, []);
 
+  useEffect(() => {
+    if (stepIndex === 17) {
+      setTimeout(() => {
+        setAutoStep(true);
+        setStepIndex(stepIndex + 1);
+      }, 7500);
+    }
+  }, [stepIndex]);
+
   const handleJoyrideCallbackFactory = (
     storageKey: string,
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
@@ -86,12 +96,18 @@ export const GameContent = () => {
     return (data: CallBackProps) => {
       const { type } = data;
 
-      if (type === "step:after" && !cardClicked && !buttonClicked) {
+      if (
+        type === "step:after" &&
+        !cardClicked &&
+        !buttonClicked &&
+        !autoStep
+      ) {
         setStepIndex(stepIndex + 1);
       }
 
       setCardClicked(false);
       setButtonClicked(false);
+      setAutoStep(false);
 
       if (type === "tour:end") {
         window.localStorage.setItem(storageKey, "true");

@@ -7,6 +7,7 @@ const COMMON_SETTINGS: Partial<Step> = {
   placement: "auto",
   disableScrollParentFix: isMobile ? true : false,
   hideBackButton: true,
+  data: { timeout: 0 },
 };
 
 export const TUTORIAL_STEPS: Step[] = [];
@@ -189,6 +190,12 @@ const loadTutorialTranslations = async () => {
       ...COMMON_SETTINGS,
     },
     {
+      target: ".special-cards-step-3",
+      title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.specialCards.content", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
+    },
+    {
       target: ".game-tutorial-step-4",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
@@ -196,6 +203,13 @@ const loadTutorialTranslations = async () => {
       placement: "left",
       spotlightClicks: true,
       hideFooter: true,
+    },
+    {
+      target: ".game-tutorial-intro",
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "top" : "auto",
+      hideFooter: true,
+      offset: isMobile ? 1000 : 10,
     },
     {
       target: ".game-tutorial-step-7",

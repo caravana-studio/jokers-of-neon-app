@@ -30,6 +30,10 @@
     },
     "score": {
       "content": "Great job! Your last play hit the target score. Now, let's play for real. Good luck!"
+    },
+    "specialCards": {
+      "title": "Special Cards",
+      "content": "Special cards are game changers, applying unique effects to the cards you play. You can purchase them in the store."
     }
   },
   "storeTutorial": {
