@@ -32,7 +32,6 @@ import { PlayEvents } from "../types/ScoreData";
 import { useGameState } from "../state/useGameState";
 import { useCardAnimations } from "./CardAnimationsProvider";
 
-// Define your mock data specifically for the tutorial
 const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
   preSelectedPlay: Plays.NONE,
@@ -459,6 +458,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const discard = () => {
+    discardSound();
     replaceCards(cards);
     clearPreSelection();
   };

@@ -2,7 +2,7 @@
   "gameTutorial": {
     "intro": {
       "title": "Welcome to Jokers of Neon",
-      "content": "This is a quick tutorial on how to play this game"
+      "content": "This tutorial provides an overview of the game’s core mechanics."
     },
     "pointsTarget": {
       "title": "How to complete a level?",
@@ -12,7 +12,7 @@
       "step-1": "You must use the cards in your hand to form a poker play.",
       "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
       "step-3": "Now, we got a poker hand, let’s play it.",
-      "plays": "Click here to view the possible poker hands you can make."
+      "plays": "You can click here to view the possible poker hands you can form."
     },
     "discardCards": {
       "title": "Discard",
@@ -26,7 +26,7 @@
     },
     "pointsMultiplier": {
       "title": "Points and Multiplier",
-      "content": "Each poker hand has base points and a multiplier that will contribute to your final score"
+      "content": "Each poker hand has base points and a multiplier that will contribute to your final score."
     },
     "score": {
       "content": "Great job! Your last play hit the target score. Now, let's play for real. Good luck!"

@@ -2,7 +2,7 @@
   "gameTutorial": {
     "intro": {
       "title": "Bem-vindo ao Jokers of Neon",
-      "content": "Este é um tutorial rápido sobre como jogar este jogo"
+      "content": "Este tutorial oferece uma visão geral das mecânicas principais do jogo."
     },
     "pointsTarget": {
       "title": "Como completar um nível?",
@@ -12,21 +12,21 @@
       "step-1": "Você deve usar as cartas da sua mão para formar uma mão de pôquer.",
       "step-2": "Se as cartas da sua mão não formarem uma mão de pôquer, você pode usar um descarte para obter novas cartas. Vamos tentar isso.",
       "step-3": "Agora temos uma mão de pôquer, vamos jogá-la.",
-      "plays": "Clique aqui para ver as mãos de pôquer que você pode formar."
+      "plays": "Você pode clicar aqui para ver as possíveis mãos de pôquer que pode formar."
     },
     "discardCards": {
       "title": "Descartando",
       "content": "Agora clique no botão de descarte para trazer novas cartas para sua mão.",
-      "select": "Selecione esta carta"
+      "select": "Selecione esta carta."
     },
     "playCards": {
       "title": "Jogar Cartas",
       "content": "Agora, clique no botão para jogar suas cartas pré-selecionadas.",
-      "select": "Selecione esta carta"
+      "select": "Selecione esta carta."
     },
     "pointsMultiplier": {
       "title": "Pontos e Multiplicador",
-      "content": "Cada mão de poker tem pontos base e um multiplicador que contribuirá para sua pontuação final"
+      "content": "Cada mão de poker tem pontos base e um multiplicador que contribuirá para sua pontuação final."
     },
     "score": {
       "content": "Ótimo trabalho! Sua última jogada atingiu a pontuação alvo. Agora, vamos jogar de verdade. Boa sorte!"
