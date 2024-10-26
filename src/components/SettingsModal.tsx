@@ -48,7 +48,11 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
 
   return (
     <Modal isOpen={true} onClose={close || (() => {})}>
-      <ModalOverlay />
+      <ModalOverlay
+        bg="blackAlpha.400"
+        backdropFilter="auto"
+        backdropBlur="5px"
+      />
       <ModalContent>
         <ModalHeader>
           <Heading size="m" variant="neonWhite">
