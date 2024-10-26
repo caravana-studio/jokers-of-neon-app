@@ -20,6 +20,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
+import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -27,6 +28,7 @@ interface SettingsModalProps {
 
 export const SettingsModal = ({ close }: SettingsModalProps) => {
   const { sfxVolume, setSfxVolume } = useGameContext();
+  const { musicVolume, setMusicVolume } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"]);
   const title = "Settings";
@@ -82,7 +84,13 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             </Flex>
             <Flex gap={2}>
               <Text size="md">{musicLbl}</Text>
-              <Slider defaultValue={50}>
+              <Slider
+                min={0}
+                max={1}
+                step={0.25}
+                value={musicVolume}
+                onChange={(value) => setMusicVolume(value)}
+              >
                 <SliderTrack>
                   <SliderFilledTrack />
                 </SliderTrack>
