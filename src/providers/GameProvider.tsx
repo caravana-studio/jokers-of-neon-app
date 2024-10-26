@@ -727,15 +727,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    setSfxVolume(1);
-  }, []);
-
-  useEffect(() => {
     const savedVolume = localStorage.getItem("sfxVolume");
     if (savedVolume !== null) {
       setSfxVolume(JSON.parse(savedVolume));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
+  }, [sfxVolume]);
 
   const actions = {
     setPreSelectedCards,

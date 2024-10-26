@@ -19,7 +19,6 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
-import { useEffect } from "react";
 import { useGameContext } from "../providers/GameProvider";
 
 interface SettingsModalProps {
@@ -39,17 +38,6 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
-
-  useEffect(() => {
-    const savedVolume = localStorage.getItem("sfxVolume");
-    if (savedVolume !== null) {
-      setSfxVolume(JSON.parse(savedVolume));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
-  }, [sfxVolume]);
 
   return (
     <Modal isOpen={true} onClose={close || (() => {})}>
