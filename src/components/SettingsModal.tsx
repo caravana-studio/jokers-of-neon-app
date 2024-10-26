@@ -47,7 +47,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   };
 
   return (
-    <Modal isOpen={true} onClose={close || (() => {})}>
+    <Modal isOpen={true} onClose={close || (() => {})} size={"xl"}>
       <ModalOverlay
         bg="blackAlpha.400"
         backdropFilter="auto"
@@ -62,8 +62,10 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
         <ModalCloseButton onClick={close} />
         <ModalBody>
           <Flex gap={4} flexDirection="column">
-            <Flex gap={2}>
-              <Text size="md">{languageLbl}</Text>
+            <Flex gap={2} alignItems={"center"}>
+              <Text size="md" width={"50%"}>
+                {languageLbl}
+              </Text>
               <Select
                 size="lg"
                 variant="outline"
@@ -76,8 +78,10 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 <option value="pt">Português</option>
               </Select>
             </Flex>
-            <Flex gap={2}>
-              <Text size="md">{sfxLbl}</Text>
+            <Flex gap={2} alignItems={"center"}>
+              <Text size="md" width={"50%"}>
+                {sfxLbl}
+              </Text>
               <Slider
                 min={0}
                 max={1}
@@ -91,8 +95,10 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 <SliderThumb />
               </Slider>
             </Flex>
-            <Flex gap={2}>
-              <Text size="md">{musicLbl}</Text>
+            <Flex gap={2} alignItems={"center"}>
+              <Text size="md" width={"50%"}>
+                {musicLbl}
+              </Text>
               <Slider
                 min={0}
                 max={1}
@@ -106,8 +112,10 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 <SliderThumb />
               </Slider>
             </Flex>
-            <Flex gap={2}>
-              <Text size="md">{animSpeedLbl}</Text>
+            <Flex gap={2} alignItems={"center"}>
+              <Text size="md" width={"50%"}>
+                {animSpeedLbl}
+              </Text>
               <Select
                 size="lg"
                 variant="outline"
