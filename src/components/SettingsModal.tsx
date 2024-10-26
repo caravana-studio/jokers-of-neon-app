@@ -21,7 +21,11 @@ import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
 
-export const SettingsModal = () => {
+interface SettingsModalProps {
+  close?: () => void;
+}
+
+export const SettingsModal = ({ close }: SettingsModalProps) => {
   const { sfxVolume, setSfxVolume } = useGameContext();
   const { t, i18n } = useTranslation(["game"]);
   const title = "Settings";
@@ -35,7 +39,7 @@ export const SettingsModal = () => {
   };
 
   return (
-    <Modal isOpen={true} onClose={close}>
+    <Modal isOpen={true} onClose={close || (() => {})}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -43,7 +47,7 @@ export const SettingsModal = () => {
             {title}
           </Heading>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={close} />
         <ModalBody>
           <Flex gap={4} flexDirection="column">
             <Flex gap={2}>
@@ -100,6 +104,7 @@ export const SettingsModal = () => {
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             size="sm"
             ml={3}
+            onClick={close}
           >
             {t("confirmation-modal.confirm")}
           </Button>
