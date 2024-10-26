@@ -76,7 +76,7 @@ interface IGameContext {
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
   sfxVolume: number;
-  setSfxVolume: (volume: number) => void;
+  setSfxVolume: (vol: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -126,13 +126,14 @@ const GameContext = createContext<IGameContext>({
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
   sfxVolume: 1,
-  setSfxVolume: (_) => {},
+  setSfxVolume: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  const [sfxVolume, setSfxVolume] = useState(1);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
@@ -152,7 +153,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
 
   const game = useGame();
-  const [sfxVolume, setSfxVolume] = useState(1);
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
@@ -727,15 +727,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
+    setSfxVolume(1);
+  }, []);
+
+  useEffect(() => {
     const savedVolume = localStorage.getItem("sfxVolume");
     if (savedVolume !== null) {
       setSfxVolume(JSON.parse(savedVolume));
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
-  }, [sfxVolume]);
 
   const actions = {
     setPreSelectedCards,
@@ -755,6 +755,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     executeCreateGame,
     preSelectCard,
     unPreSelectCard,
+    setSfxVolume,
   };
 
   return (
@@ -765,7 +766,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         lockRedirection,
         discards,
         sfxVolume,
-        setSfxVolume,
       }}
     >
       {children}

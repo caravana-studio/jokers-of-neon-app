@@ -19,6 +19,7 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
+import { useEffect } from "react";
 import { useGameContext } from "../providers/GameProvider";
 
 interface SettingsModalProps {
@@ -27,6 +28,7 @@ interface SettingsModalProps {
 
 export const SettingsModal = ({ close }: SettingsModalProps) => {
   const { sfxVolume, setSfxVolume } = useGameContext();
+
   const { t, i18n } = useTranslation(["game"]);
   const title = "Settings";
   const languageLbl = "Language";
@@ -37,6 +39,17 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  useEffect(() => {
+    const savedVolume = localStorage.getItem("sfxVolume");
+    if (savedVolume !== null) {
+      setSfxVolume(JSON.parse(savedVolume));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
+  }, [sfxVolume]);
 
   return (
     <Modal isOpen={true} onClose={close || (() => {})}>
@@ -60,7 +73,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 defaultValue={i18n.language}
               >
                 <option value="en">English</option>
-                <option value="es">Spanish</option>
+                <option value="es">Español</option>
                 <option value="pt">Português</option>
               </Select>
             </Flex>
@@ -91,9 +104,9 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             <Flex gap={2}>
               <Text size="md">{animSpeedLbl}</Text>
               <Select size="lg" variant="outline" focusBorderColor="teal.500">
-                <option value="2">Faster</option>
-                <option value="1">Normal</option>
-                <option value="0.5">Slower</option>
+                <option value="2">x2</option>
+                <option value="1">x1</option>
+                <option value="0.5">x0.5</option>
               </Select>
             </Flex>
           </Flex>
