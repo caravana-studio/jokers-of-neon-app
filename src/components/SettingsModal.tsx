@@ -27,7 +27,12 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal = ({ close }: SettingsModalProps) => {
-  const { sfxVolume, setSfxVolume } = useGameContext();
+  const {
+    sfxVolume,
+    setSfxVolume,
+    animationSpeedMultiplier,
+    setAnimationSpeedMultiplier,
+  } = useGameContext();
   const { musicVolume, setMusicVolume } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"]);
@@ -99,10 +104,18 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             </Flex>
             <Flex gap={2}>
               <Text size="md">{animSpeedLbl}</Text>
-              <Select size="lg" variant="outline" focusBorderColor="teal.500">
-                <option value="2">x2</option>
-                <option value="1">x1</option>
-                <option value="0.5">x0.5</option>
+              <Select
+                size="lg"
+                variant="outline"
+                focusBorderColor="teal.500"
+                value={animationSpeedMultiplier}
+                onChange={(evt) =>
+                  setAnimationSpeedMultiplier(Number(evt.target.value))
+                }
+              >
+                <option value={0.35}>x3</option>
+                <option value={0.5}>x2</option>
+                <option value={1}>x1</option>
               </Select>
             </Flex>
           </Flex>

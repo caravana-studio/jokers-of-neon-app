@@ -77,6 +77,8 @@ interface IGameContext {
   unPreSelectCard: (cardIndex: number) => void;
   sfxVolume: number;
   setSfxVolume: (vol: number) => void;
+  animationSpeedMultiplier: number;
+  setAnimationSpeedMultiplier: (speed: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -127,6 +129,8 @@ const GameContext = createContext<IGameContext>({
   unPreSelectCard: (_) => {},
   sfxVolume: 1,
   setSfxVolume: () => {},
+  animationSpeedMultiplier: 1,
+  setAnimationSpeedMultiplier: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -134,6 +138,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
   const [sfxVolume, setSfxVolume] = useState(1);
+  const [animationSpeedMultiplier, setAnimationSpeedMultiplier] = useState(1);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
@@ -161,10 +166,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const minimumDuration =
     !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
 
-  const playAnimationDuration = Math.max(
-    700 - ((game?.level ?? 1) - 1) * 50,
-    minimumDuration
-  );
+  const playAnimationDuration =
+    Math.max(700 - ((game?.level ?? 1) - 1) * 50, minimumDuration) *
+    animationSpeedMultiplier;
 
   const { setAnimatedCard } = useCardAnimations();
 
@@ -731,11 +735,23 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (savedVolume !== null) {
       setSfxVolume(JSON.parse(savedVolume));
     }
+
+    const animationSpeed = localStorage.getItem("animationSpeed");
+    if (animationSpeed !== null) {
+      setAnimationSpeedMultiplier(JSON.parse(animationSpeed));
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
   }, [sfxVolume]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "animationSpeed",
+      JSON.stringify(animationSpeedMultiplier)
+    );
+  }, [animationSpeedMultiplier]);
 
   const actions = {
     setPreSelectedCards,
@@ -766,6 +782,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         lockRedirection,
         discards,
         sfxVolume,
+        animationSpeedMultiplier,
+        setAnimationSpeedMultiplier,
       }}
     >
       {children}
