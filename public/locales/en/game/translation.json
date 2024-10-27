@@ -93,5 +93,12 @@
     "confirm": "Confirm",
     "close": "Close"
   },
-  "points":"points"
+  "points":"points",
+  "settings-modal": {
+    "title": "Settings",
+    "language": "Language",
+    "sfx-volume": "Sound Effect Volume",
+    "music-volume": "Music Volume",
+    "anim-speed": "Animation Speed"
+  }
 }

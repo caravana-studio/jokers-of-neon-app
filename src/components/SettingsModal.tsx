@@ -36,11 +36,11 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const { musicVolume, setMusicVolume } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"]);
-  const title = "Settings";
-  const languageLbl = "Language";
-  const sfxLbl = "Sfx";
-  const musicLbl = "Music";
-  const animSpeedLbl = "Animation speed";
+  const title = t("settings-modal.title");
+  const languageLbl = t("settings-modal.language");
+  const sfxLbl = t("settings-modal.sfx-volume");
+  const musicLbl = t("settings-modal.music-volume");
+  const animSpeedLbl = t("settings-modal.anim-speed");
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
