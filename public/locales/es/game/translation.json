@@ -6,6 +6,23 @@
     }
   },
   "game": {
+    "card-types": {
+      "Common": "Tradicional",
+      "Modifier": "Modificadora",
+      "Special": "Especial",
+      "Rage": "Rage",
+      "Neon": "Neón",
+      "Pack": "Paquete",
+      "Joker": "Comodín"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Cambiar",
+        "remove": "Eliminar",
+        "changing": "Cambiando...",
+        "removing": "Eliminando..."
+      }
+    },
     "level-points": {
       "level": "Nivel",
       "target-score": "Puntos",
@@ -17,6 +34,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
       "remove-special-cards-label": "Eliminar",
       "confirmation-modal": {
@@ -33,7 +51,7 @@
           "rank": "Valor"
         }
       },
-      "my-coins": "Mis monedas",
+      "my-coins": "Monedas",
       "modifier-change": "Cambiar",
       "show-plays": "Mostrar jugadas"
     },
@@ -74,5 +92,6 @@
   "confirmation-modal": {
     "confirm": "Confirmar",
     "close": "Cerrar"
-  }
+  },
+  "points":"puntos"
 }

@@ -11,7 +11,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { TiltCard } from "../../components/TiltCard";
 import { PLAYS_DATA, PLAYS } from "../../constants/plays";
@@ -24,6 +23,7 @@ import { BLUE_LIGHT } from "../../theme/colors";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { useTranslation } from "react-i18next";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 const { blueLight, blue, violet } = theme.colors;
 
@@ -58,6 +58,8 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
     });
   }
 
+  const { isSmallScreen, cardScale } = useResponsiveValues();
+
   return (
     <>
       {plays ? (
@@ -76,7 +78,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                 borderSpacing: 0,
               }}
               width={"100%"}
-              variant={isMobile ? "store-mobile" : "store"}
+              variant={isSmallScreen ? "store-mobile" : "store"}
             >
               <Thead
                 sx={{
@@ -90,9 +92,15 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                 <Tr>
                   {
                     <>
-                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.level-head').toUpperCase()}</Td>
-                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.hand-head').toUpperCase()}</Td>
-                      <Td fontSize={isMobile ? 12 : 17}>{t('game.plays.table.points-multi-head').toUpperCase()}</Td>
+                      <Td fontSize={isSmallScreen ? 12 : 17}>
+                        {t("game.plays.table.level-head").toUpperCase()}
+                      </Td>
+                      <Td fontSize={isSmallScreen ? 12 : 17}>
+                        {t("game.plays.table.hand-head").toUpperCase()}
+                      </Td>
+                      <Td fontSize={isSmallScreen ? 12 : 17}>
+                        {t("game.plays.table.points-multi-head").toUpperCase()}
+                      </Td>
                     </>
                   }
                 </Tr>
@@ -152,7 +160,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         width={"fit-content"}
                         justifyContent={"center"}
                         alignItems={"center"}
-                        gap={isMobile ? 0 : 4}
+                        gap={isSmallScreen ? 0 : 4}
                       >
                         {PLAYS_DATA[playsExampleIndex].example.map(
                           (card: Card, index) => {
@@ -168,7 +176,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                               >
                                 <TiltCard
                                   card={card}
-                                  scale={isMobile ? 0.75 : 0.65}
+                                  scale={cardScale - (cardScale * 33) / 100}
                                 />
                               </Box>
                             );
@@ -193,7 +201,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                       <Td
                         sx={opacitySx}
                         textColor={textColor}
-                        fontSize={isMobile ? 9 : 13}
+                        fontSize={isSmallScreen ? 9 : 13}
                       >
                         {play.level.toString()}
                       </Td>
@@ -203,7 +211,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         sx={opacitySx}
                         textAlign={"center"}
                         textColor={textColor}
-                        fontSize={isMobile ? 9 : 13}
+                        fontSize={isSmallScreen ? 9 : 13}
                       >
                         {play.poker_hand &&
                           PLAYS[parseHand(play.poker_hand.toString()).value]}
@@ -220,18 +228,20 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                           <Box
                             backgroundColor={`${blue}`}
                             borderRadius={4}
-                            width={isMobile ? "40px" : "60px"}
+                            width={isSmallScreen ? "40px" : "60px"}
                             mr={1}
                             boxShadow={`0px 0px 10px 6px ${blue}`}
                             fontWeight={"400"}
                           >
                             {play.points.toString()}
                           </Box>
-                          <Heading fontSize={isMobile ? "8" : "10"}>x</Heading>
+                          <Heading fontSize={isSmallScreen ? "8" : "10"}>
+                            x
+                          </Heading>
                           <Box
                             backgroundColor={"neonPink"}
                             borderRadius={4}
-                            width={isMobile ? "40px" : "60px"}
+                            width={isSmallScreen ? "40px" : "60px"}
                             ml={1}
                             boxShadow={`0px 0px 10px 6px ${violet}`}
                             fontWeight={"400"}

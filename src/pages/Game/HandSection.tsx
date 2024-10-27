@@ -8,17 +8,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useDndContext } from "@dnd-kit/core";
+import { useDndContext, useDroppable } from "@dnd-kit/core";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { AnimatedCard } from "../../components/AnimatedCard";
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
-import { CARD_HEIGHT_PX, CARD_WIDTH } from "../../constants/visualProps";
+import { HAND_SECTION_ID } from "../../constants/general";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Coins } from "./Coins";
 
 export const HandSection = () => {
@@ -31,12 +33,18 @@ export const HandSection = () => {
     roundRewards,
   } = useGameContext();
 
+  const { highlightCard } = useCardHighlight();
+
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
 
   const { activeNode } = useDndContext();
+
+  const { setNodeRef } = useDroppable({
+    id: HAND_SECTION_ID,
+  });
 
   const cardIsPreselected = (cardIndex: number) => {
     return (
@@ -51,32 +59,39 @@ export const HandSection = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
+  const { cardScale, isSmallScreen } = useResponsiveValues();
+
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   return (
     <>
-      {!isMobile && (
+      {!isSmallScreen && (
         <Flex
           flexDirection="column"
           justifyContent="space-between"
-          height={CARD_HEIGHT_PX}
           sx={{ mr: 4 }}
           pb={1}
+          height={cardHeight}
         >
           <SortBy />
           <Coins />
         </Flex>
       )}
       <Box
-        pr={!isMobile ? 12 : 10}
-        pl={!isMobile ? 4 : 2}
-        pt={!isMobile ? 8 : 0}
+        pr={!isSmallScreen ? 12 : 10}
+        pl={!isSmallScreen ? 4 : 2}
         className="game-tutorial-step-2 tutorial-modifiers-step-1"
+        ref={setNodeRef}
+        height={isSmallScreen ? cardHeight : "100%"}
+        display={"flex"}
+        alignItems={"end"}
       >
         <SimpleGrid
           sx={{
             opacity: !roundRewards && handsLeft > 0 ? 1 : 0.3,
-            minWidth: `${CARD_WIDTH * 4}px`,
-            maxWidth: `${CARD_WIDTH * 6.5}px`,
+            minWidth: `${cardWidth * 4}px`,
+            maxWidth: `${cardWidth * 6.5}px`,
           }}
           columns={hand.length}
           position="relative"
@@ -119,7 +134,7 @@ export const HandSection = () => {
                         fontSize="8px"
                         px={"16px"}
                         borderRadius={"10px"}
-                        size={isMobile ? "xs" : "md"}
+                        size={isSmallScreen ? "xs" : "md"}
                         variant={"discardSecondarySolid"}
                         onMouseEnter={() => setHoveredButton(card.idx)}
                         display="flex"
@@ -149,6 +164,7 @@ export const HandSection = () => {
                   <AnimatedCard idx={card.idx} discarded={card.discarded}>
                     <TiltCard
                       card={card}
+                      scale={cardScale}
                       cursor={
                         card.isModifier
                           ? activeNode
@@ -157,7 +173,9 @@ export const HandSection = () => {
                           : "pointer"
                       }
                       onClick={() => {
-                        if (!card.isModifier) {
+                        if (isSmallScreen) {
+                          highlightCard(card);
+                        } else if (!card.isModifier) {
                           togglePreselected(card.idx);
                         }
                       }}
@@ -167,7 +185,7 @@ export const HandSection = () => {
               </GridItem>
             );
           })}
-          {!isMobile && (
+          {!isSmallScreen && (
             <Flex
               bottom={"-35px"}
               width="calc(100% + 30px)"

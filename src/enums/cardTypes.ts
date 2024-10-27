@@ -3,6 +3,10 @@ export enum CardTypes {
   COMMON = "Common",
   MODIFIER = "Modifier",
   SPECIAL = "Special",
+  JOKER = "Joker",
+  RAGE = "Rage",
+  NEON = "Neon",
+  PACK = "Pack",
 }
 
 export enum NumericCardTypes {

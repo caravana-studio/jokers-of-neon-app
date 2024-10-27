@@ -6,6 +6,23 @@
     }
   },
   "game": {
+    "card-types": {
+      "Common": "Tradicional",
+      "Modifier": "Modificador",
+      "Special": "Especial",
+      "Rage": "Rage",
+      "Neon": "Neon",
+      "Pack": "Pacote",
+      "Joker": "Curinga"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Alterar",
+        "remove": "Remover",
+        "changing": "Alterando...",
+        "removing": "Removendo..."
+      }
+    },
     "level-points": {
       "level": "Nível",
       "target-score": "Pontuação",
@@ -17,6 +34,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "Este espaço está bloqueado. Você pode desbloqueá-lo na loja.",
       "special-cards-label": "Cartas Especiais",
       "remove-special-cards-label": "Remover",
       "confirmation-modal": {
@@ -33,7 +51,7 @@
           "rank": "Classificação"
         }
       },
-      "my-coins": "Minhas moedas",
+      "my-coins": "Moedas",
       "modifier-change": "Alterar",
       "show-plays": "Mostrar jogadas"
     },
@@ -74,5 +92,6 @@
   "confirmation-modal": {
     "confirm": "Confirmar",
     "close": "Fechar"
-  }
+  },
+  "points":"pontos"
 }

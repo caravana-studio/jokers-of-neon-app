@@ -82,6 +82,7 @@ export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
   display: inline-block;
   vertical-align: middle;
   transform: rotateX(${props => props.activeRotation.y}deg) rotateY(${props => props.activeRotation.x}deg);
+  transition: none;
 
   &:before,
   &:after {
@@ -152,7 +153,7 @@ export const HoloEffectStyled = styled.div<HoloEffectStyledProps>`
   ${props =>
     props.animated &&
     css`
-      transition: 1s;
+      transition: opacity 1s, background-position 1s
       transform: rotateX(0deg) rotateY(0deg);
       &:before {
         transition: 1s;

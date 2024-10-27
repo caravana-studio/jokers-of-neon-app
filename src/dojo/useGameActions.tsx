@@ -60,7 +60,7 @@ export const useGameActions = () => {
         modifiers: { [key: number]: number[] }
       ) => {
         try {
-          const { modifiers1, modifiers2 } = getModifiersForContract(
+          const { modifiers1 } = getModifiersForContract(
             cards,
             modifiers
           );
@@ -68,8 +68,7 @@ export const useGameActions = () => {
             account,
             gameId,
             cards,
-            modifiers1,
-            modifiers2,
+            modifiers1
           });
     
           const tx = await account.waitForTransaction(transaction_hash, {
@@ -103,7 +102,7 @@ export const useGameActions = () => {
         cards: number[],
         modifiers: { [key: number]: number[] }
       ) => {
-        const { modifiers1, modifiers2 } = getModifiersForContract(
+        const { modifiers1 } = getModifiersForContract(
           cards,
           modifiers
         );
@@ -113,8 +112,7 @@ export const useGameActions = () => {
             account,
             gameId,
             cards,
-            modifiers1,
-            modifiers2,
+            modifiers1
           });
           showTransactionToast(transaction_hash);
     
@@ -215,7 +213,7 @@ export const useGameActions = () => {
         cards: number[],
         modifiers: { [key: number]: number[] }
       ) => {
-        const { modifiers1, modifiers2 } = getModifiersForContract(
+        const { modifiers1 } = getModifiersForContract(
           cards,
           modifiers
         );
@@ -225,8 +223,7 @@ export const useGameActions = () => {
             account,
             gameId,
             cards,
-            modifiers1,
-            modifiers2,
+            modifiers1
           });
           showTransactionToast(transaction_hash);
     

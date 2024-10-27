@@ -1,4 +1,3 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Spinner,
@@ -7,14 +6,12 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
-import { useTranslation } from 'react-i18next';
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -62,10 +59,27 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
           <Table variant="leaderboard">
             <Thead>
               <Tr>
-                <Td>{t('leaderboard.table-head.position-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('leaderboard.table-head.username-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('leaderboard.table-head.score-leaderboard-head').toUpperCase()}</Td>
-                <Td>{t('leaderboard.table-head.level-leaderboard-head').toUpperCase()}</Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.position-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.username-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.score-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.level-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
+                {/*   
                 <Td>
                 {t('tournament.table-head.prize-leaderboard-head').toUpperCase()}{" "}
                   {!isMobile && (
@@ -78,6 +92,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     </Tooltip>
                   )}
                 </Td>
+                    */}
               </Tr>
             </Thead>
             <Tbody>
@@ -109,7 +124,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                         leader.level
                       )}
                     </Td>
-                    <Td>
+                    {/* <Td>
                       <RollingNumber n={leader.prize} />{" "}
                       <span
                         style={{
@@ -119,7 +134,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                       >
                         USDC
                       </span>
-                    </Td>
+                    </Td> */}
                   </Tr>
                 ))}
               {currentLeader && !currentLeaderIsInReducedLeaderboard && (
@@ -139,9 +154,9 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     <Td>
                       <RollingNumber n={currentLeader.level} />
                     </Td>
-                    <Td>
+                    {/* <Td>
                       <RollingNumber n={currentLeader.prize} /> USDC
-                    </Td>
+                    </Td>*/}
                   </Tr>
                 </>
               )}

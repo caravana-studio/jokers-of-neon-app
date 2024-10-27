@@ -1,11 +1,11 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import { useRound } from "../dojo/queries/useRound.tsx";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
-import { useTranslation } from 'react-i18next';
-import { useRound } from "../dojo/queries/useRound.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -65,36 +65,50 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     hands_left_cash,
     discard_left,
     discard_left_cash,
+    rage_card_defeated,
+    rage_card_defeated_cash,
     total,
   } = roundRewards;
 
-  const { t } = useTranslation(["intermediate-screens"]);
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "rewards-details.labels",
+  });
 
   const labels = [
-    t('rewards-details.labels.base'),
-    t('rewards-details.labels.level-bonus'),
-    t('rewards-details.labels.hands-left', {hands: hands_left}),
-    t('rewards-details.labels.discards-left' , {discards: discard_left}),
+    t("base"),
+    t("level-bonus"),
+    t("hands-left", { hands: hands_left }),
+    t("discards-left", { discards: discard_left }),
   ];
 
+  if (rage_card_defeated && rage_card_defeated_cash) {
+    labels.push(t("rage-cards", { cards: rage_card_defeated }));
+  }
+
   const navigate = useNavigate();
-  const round = useRound()
+  const round = useRound();
 
   return (
     <PinkBox
-      title={`${t('rewards-details.labels.title-1')} ${level} ${t('rewards-details.labels.title-2')}`}
-      button={t('rewards-details.labels.continue-btn')}
+      title={`${t("title-1")} ${level} ${t("title-2")}`}
+      button={t("continue-btn")}
       onClick={() => {
         // stopNextLevelSound();
         navigate("/redirect/store");
       }}
     >
-      <Heading color='lightViolet' size="s"> {t('rewards-details.labels.final-score', {score: round?.player_score })}  </Heading>
-      
+      <Heading color="lightViolet" size="s">
+        {" "}
+        {t("final-score", { score: round?.player_score })}{" "}
+      </Heading>
+
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[1]} value={level_bonus} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
+      {rage_card_defeated_cash && (
+        <RewardItem label={labels[4]} value={rage_card_defeated_cash} />
+      )}
 
       <Flex
         color={VIOLET_LIGHT}
@@ -104,7 +118,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
         justifyContent="space-between"
       >
         <Heading color="lightViolet" variant="italic">
-        {t('rewards-details.labels.total')}
+          {t("total")}
         </Heading>
         <Heading color="lightViolet" variant="italic">
           {total}

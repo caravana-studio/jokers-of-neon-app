@@ -1,15 +1,15 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
+import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { useShopActions } from "../dojo/useShopActions";
+import { useAudio } from "../hooks/useAudio.tsx";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { getCardType } from "../utils/getCardType";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { useGameContext } from "./GameProvider";
-import { useAudio } from "../hooks/useAudio.tsx";
-import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
@@ -21,6 +21,7 @@ interface IStoreContext {
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
   lockRedirection: boolean;
   setLockRedirection: (lock: boolean) => void;
+  buySpecialSlot: () => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -43,6 +44,7 @@ const StoreContext = createContext<IStoreContext>({
   isPurchased: (_) => false,
   lockRedirection: false,
   setLockRedirection: (_) => {},
+  buySpecialSlot: () => new Promise((resolve) => resolve(false)),
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -52,10 +54,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
   const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
   const [lockRedirection, setLockRedirection] = useState(false);
-  const {play:levelUpHandSound} = useAudio(levelUpSfx);
-  const {play:buySound} = useAudio(buySfx);
-  const {play:buyPackSound} = useAudio(buyPackSfx);
-  const {play:rerollSound} = useAudio(rerollSfx, 0.5);
+  const { play: levelUpHandSound } = useAudio(levelUpSfx);
+  const { play: buySound } = useAudio(buySfx);
+  const { play: buyPackSound } = useAudio(buyPackSfx);
+  const { play: rerollSound } = useAudio(rerollSfx, 0.5);
 
   const addPurchasedCard = (card: Card) => {
     setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
@@ -97,6 +99,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     selectCardsFromPack: dojoSelectCardsFromPack,
     storeReroll,
     levelUpPokerHand: dojoLevelUpHand,
+    buySpecialSlot: dojoBuySpecialSlot,
   } = useShopActions();
 
   const buyCard = (card: Card): Promise<boolean> => {
@@ -162,6 +165,15 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
+  const buySpecialSlot = () => {
+    setLocked(true);
+    const promise = dojoBuySpecialSlot(gameId);
+    promise.finally(() => {
+      setLocked(false);
+    });
+    return promise;
+  };
+
   return (
     <StoreContext.Provider
       value={{
@@ -174,6 +186,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         selectCardsFromPack,
         lockRedirection,
         setLockRedirection,
+        buySpecialSlot,
       }}
     >
       {children}
