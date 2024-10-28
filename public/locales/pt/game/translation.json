@@ -6,6 +6,11 @@
     }
   },
   "game": {
+    "compact-round-data": {
+      "my-score": "Pontuação",
+      "target": "Objetivo",
+      "round": "Rodada {{round}}"
+    },
     "card-types": {
       "Common": "Tradicional",
       "Modifier": "Modificador",

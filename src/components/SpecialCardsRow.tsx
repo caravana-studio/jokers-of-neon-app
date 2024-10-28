@@ -148,7 +148,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
         );
       })}
       {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-        <Flex maxWidth={`${slotWidth}%`}>
+        <Flex key={`unlocked-slot-${index}`} maxWidth={`${slotWidth}%`}>
           <FilledUnlockedSlot
             key={`unlocked-${index}`}
             scale={cardScale - cardScale * 0.1}
@@ -156,7 +156,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
         </Flex>
       ))}
       {Array.from({ length: lockedSlots }).map((_, index) => (
-        <Flex maxWidth={`${slotWidth}%`}>
+        <Flex key={`locked-slot-${index}`} maxWidth={`${slotWidth}%`}>
           <LockedSlot
             key={`locked-${index}`}
             scale={cardScale - cardScale * 0.1}
