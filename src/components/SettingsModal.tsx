@@ -25,7 +25,6 @@ import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
 import { MdGraphicEq } from "react-icons/md";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { transform } from "framer-motion";
 
 interface SettingsModalProps {
   close?: () => void;
