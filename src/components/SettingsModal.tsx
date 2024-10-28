@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
-import { useResponsiveValues } from "../theme/responsiveSettings";
+import AudioPlayer from "./AudioPlayer";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -34,8 +34,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
     animationSpeedMultiplier,
     setAnimationSpeedMultiplier,
   } = useGameContext();
-  const { isSmallScreen } = useResponsiveValues();
-  const { musicVolume, setMusicVolume } = useAudioPlayer();
+  const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"]);
   const title = t("settings-modal.title");
@@ -92,7 +91,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 onChange={(value) => setSfxVolume(value)}
               >
                 <SliderTrack>
-                  <SliderFilledTrack />
+                  <SliderFilledTrack bg={NEON_PINK} />
                 </SliderTrack>
                 <SliderThumb />
               </Slider>
@@ -101,15 +100,25 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {musicLbl}
               </Text>
+              <AudioPlayer
+                sx={{
+                  position: "relative",
+                  bottom: "auto",
+                  left: "auto",
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                }}
+              />
               <Slider
                 min={0}
                 max={1}
                 step={0.25}
                 value={musicVolume}
+                isDisabled={!isPlaying}
                 onChange={(value) => setMusicVolume(value)}
               >
                 <SliderTrack>
-                  <SliderFilledTrack />
+                  <SliderFilledTrack bg={NEON_PINK} />
                 </SliderTrack>
                 <SliderThumb />
               </Slider>

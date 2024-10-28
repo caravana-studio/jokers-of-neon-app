@@ -1,9 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { faVolumeHigh, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 
-const AudioPlayer = () => {
+interface AudioPlayerProps {
+  sx?: SystemStyleObject;
+}
+
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ sx }) => {
   const { isPlaying, toggleSound } = useAudioPlayer();
   return (
     <Box
@@ -12,13 +16,14 @@ const AudioPlayer = () => {
         bottom: "20px",
         left: "20px",
         zIndex: 1000,
+        ...sx,
       }}
     >
       <Box sx={{ cursor: "pointer" }} onClick={toggleSound}>
         {isPlaying ? (
-          <FontAwesomeIcon color='white' fontSize={20} icon={faVolumeXmark} />
+          <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeXmark} />
         ) : (
-          <FontAwesomeIcon color='white'  fontSize={20} icon={faVolumeHigh} />
+          <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeHigh} />
         )}
       </Box>
     </Box>
