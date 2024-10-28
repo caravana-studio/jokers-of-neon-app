@@ -24,6 +24,8 @@ import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
 import { MdGraphicEq } from "react-icons/md";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import { transform } from "framer-motion";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -37,6 +39,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
     setAnimationSpeedMultiplier,
   } = useGameContext();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
+  const { isSmallScreen } = useResponsiveValues();
 
   const { t, i18n } = useTranslation(["game"]);
   const title = t("settings-modal.title");
@@ -56,7 +59,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
         backdropFilter="auto"
         backdropBlur="5px"
       />
-      <ModalContent>
+      <ModalContent width={isSmallScreen ? "100%" : "70%"}>
         <ModalHeader>
           <Heading size="m" variant="neonWhite">
             {title}
