@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -22,6 +23,7 @@ import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
+import { MdGraphicEq } from "react-icons/md";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -93,7 +95,9 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 <SliderTrack>
                   <SliderFilledTrack bg={NEON_PINK} />
                 </SliderTrack>
-                <SliderThumb />
+                <SliderThumb boxSize={6}>
+                  <Box color={NEON_PINK} as={MdGraphicEq} />
+                </SliderThumb>
               </Slider>
             </Flex>
             <Flex gap={2} alignItems={"center"}>
@@ -120,7 +124,9 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 <SliderTrack>
                   <SliderFilledTrack bg={NEON_PINK} />
                 </SliderTrack>
-                <SliderThumb />
+                <SliderThumb boxSize={6}>
+                  <Box color={NEON_PINK} as={MdGraphicEq} />
+                </SliderThumb>
               </Slider>
             </Flex>
             <Flex gap={2} alignItems={"center"}>
