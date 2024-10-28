@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { useState } from "react";
@@ -24,12 +23,7 @@ export const GameMenu = ({
   const username = localStorage.getItem(LOGGED_USER);
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
-  const { isPlaying, toggleSound } = useAudioPlayer();
   const { t } = useTranslation(["game"]);
-
-  const togglePlayPause = () => {
-    toggleSound();
-  };
 
   return (
     <>
@@ -55,8 +49,14 @@ export const GameMenu = ({
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
-          <MenuItem onClick={togglePlayPause}>
-            {t("game.game-menu.sound-btn")} {isPlaying ? "OFF" : "ON"}
+          <MenuItem
+            onClick={() => {
+              if (setSettingsModalOpened) {
+                setSettingsModalOpened(true);
+              }
+            }}
+          >
+            Settings
           </MenuItem>
           {!onlySound && (
             <MenuItem
@@ -70,15 +70,6 @@ export const GameMenu = ({
               {t("game.game-menu.logout-btn")} {username}{" "}
             </MenuItem>
           )}
-          <MenuItem
-            onClick={() => {
-              if (setSettingsModalOpened) {
-                setSettingsModalOpened(true);
-              }
-            }}
-          >
-            Settings
-          </MenuItem>
         </MenuList>
       </Menu>
     </>

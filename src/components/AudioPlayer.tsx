@@ -21,9 +21,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ sx }) => {
     >
       <Box sx={{ cursor: "pointer" }} onClick={toggleSound}>
         {isPlaying ? (
-          <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeXmark} />
-        ) : (
           <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeHigh} />
+        ) : (
+          <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeXmark} />
         )}
       </Box>
     </Box>
