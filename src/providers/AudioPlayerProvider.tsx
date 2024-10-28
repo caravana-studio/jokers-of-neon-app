@@ -6,7 +6,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { Howl } from "howler";
-import { SOUND_OFF } from "../constants/localStorage.ts";
+import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -81,14 +81,14 @@ export const AudioPlayerProvider = ({
   };
 
   useEffect(() => {
-    const savedVolume = localStorage.getItem("musicVolume");
+    const savedVolume = localStorage.getItem(SETTINGS_MUSIC_VOLUME);
     if (savedVolume !== null) {
       setMusicVolume(JSON.parse(savedVolume));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("musicVolume", JSON.stringify(musicVolume));
+    localStorage.setItem(SETTINGS_MUSIC_VOLUME, JSON.stringify(musicVolume));
   }, [musicVolume]);
 
   return (

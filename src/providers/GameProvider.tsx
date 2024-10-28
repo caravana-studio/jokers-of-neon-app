@@ -6,7 +6,12 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, SORT_BY_SUIT } from "../constants/localStorage";
+import {
+  GAME_ID,
+  SETTINGS_ANIMATION_SPEED,
+  SETTINGS_SFX_VOLUME,
+  SORT_BY_SUIT,
+} from "../constants/localStorage";
 import {
   discardSfx,
   multiSfx,
@@ -731,24 +736,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    const savedVolume = localStorage.getItem("sfxVolume");
+    const savedVolume = localStorage.getItem(SETTINGS_SFX_VOLUME);
     if (savedVolume !== null) {
       setSfxVolume(JSON.parse(savedVolume));
     }
 
-    const animationSpeed = localStorage.getItem("animationSpeed");
+    const animationSpeed = localStorage.getItem(SETTINGS_ANIMATION_SPEED);
     if (animationSpeed !== null) {
       setAnimationSpeedMultiplier(JSON.parse(animationSpeed));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
+    localStorage.setItem(SETTINGS_SFX_VOLUME, JSON.stringify(sfxVolume));
   }, [sfxVolume]);
 
   useEffect(() => {
     localStorage.setItem(
-      "animationSpeed",
+      SETTINGS_ANIMATION_SPEED,
       JSON.stringify(animationSpeedMultiplier)
     );
   }, [animationSpeedMultiplier]);
