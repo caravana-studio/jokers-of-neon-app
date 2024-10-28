@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -33,6 +34,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
     animationSpeedMultiplier,
     setAnimationSpeedMultiplier,
   } = useGameContext();
+  const { isSmallScreen } = useResponsiveValues();
   const { musicVolume, setMusicVolume } = useAudioPlayer();
 
   const { t, i18n } = useTranslation(["game"]);
@@ -47,7 +49,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   };
 
   return (
-    <Modal isOpen={true} onClose={close || (() => {})} size={"xl"}>
+    <Modal isOpen={true} onClose={close || (() => {})} size={"xl"} isCentered>
       <ModalOverlay
         bg="blackAlpha.400"
         backdropFilter="auto"
@@ -63,7 +65,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
         <ModalBody>
           <Flex gap={4} flexDirection="column">
             <Flex gap={2} alignItems={"center"}>
-              <Text size="md" width={"50%"}>
+              <Text size={"md"} width={"50%"}>
                 {languageLbl}
               </Text>
               <Select
