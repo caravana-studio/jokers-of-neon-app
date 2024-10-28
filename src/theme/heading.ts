@@ -1,21 +1,18 @@
-import { NEON_GREEN, NEON_PINK } from "./colors";
+import { LS_GREEN, NEON_GREEN, NEON_PINK } from "./colors";
 
 export const headingTheme = {
   baseStyle: {
-    fontFamily: "Orbitron",
-    color: "white",
+    fontFamily: "Jersey",
+    color: "lsGreen",
     textTransform: "uppercase",
   },
   variants: {
     neonGreen: {
-      color: NEON_GREEN,
-      textShadow: `0 0 3px ${NEON_GREEN}`,
+      color: "lsGreen",
+      textShadow: `0 0 3px ${LS_GREEN}`,
     },
     neonWhite: {
-      textShadow: `0 0 20px ${NEON_PINK}`,
-    },
-    italic: {
-      fontFamily: "Sonara",
+      color: 'white',
     },
     neonPink: {
       color: NEON_PINK,
@@ -26,7 +23,6 @@ export const headingTheme = {
     xxl: { fontSize: { base: 40, sm: 50, md: 65, lg: 80 } },
     xl: {
       fontSize: { base: 20, sm: 25, md: 35, lg: 40 },
-      fontFamily: "Oxanium",
       fontWeight: 400,
       letterSpacing: '0.25em',
     },

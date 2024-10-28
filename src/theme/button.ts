@@ -107,7 +107,7 @@ const outlineSecondaryGlow = defineStyle({
 
 export const buttonTheme = defineStyleConfig({
   baseStyle: {
-    fontFamily: "Orbitron",
+    fontFamily: "Jersey",
     borderRadius: 15,
     px: 7,
     py: 0,

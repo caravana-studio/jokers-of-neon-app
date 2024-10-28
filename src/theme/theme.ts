@@ -5,6 +5,7 @@ import {
   CLUBS,
   DIAMONDS,
   HEARTS,
+  LS_GREEN,
   NEON,
   NEON_GREEN,
   PASTEL_PINK,
@@ -22,6 +23,7 @@ import { tooltipTheme } from "./tooltip";
 
 export default {
   colors: {
+    lsGreen: LS_GREEN,
     blue: BLUE,
     blueLight: BLUE_LIGHT,
     violet: VIOLET,
