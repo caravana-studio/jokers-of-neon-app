@@ -24,7 +24,6 @@ export const TopSection = () => {
           alt="logo"
           mb="30px"
         />
-        <LevelPoints />
       </Box>
       <Flex
         px={2}
@@ -40,7 +39,7 @@ export const TopSection = () => {
         <SpecialCards />
         {isRageRound && <RageCards />}
       </Flex>
-      <Flex
+      {/* <Flex
         flexDirection="column"
         ml={4}
         height="100%"
@@ -48,7 +47,7 @@ export const TopSection = () => {
       >
         <Score />
         <MultiPoints />
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
