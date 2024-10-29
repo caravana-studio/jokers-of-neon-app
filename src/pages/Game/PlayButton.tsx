@@ -53,7 +53,8 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
           </Box>
         ) : (
           <Text fontFamily="Jersey" color={LS_GREEN} fontSize={"1.5rem"}>
-            {t("game.preselected-cards-section.play-btn-lbl.play-mobile")}
+            PLAY
+            {/* {t("game.preselected-cards-section.play-btn-lbl.play-mobile")} */}
           </Text>
         )}
       </Button>

@@ -30,12 +30,13 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
 
   return (
     <Box className="special-cards-step-3" width={width}>
-      <SpecialCardsRow cards={specialCards} />
-      <Flex mt={{ base: 0, sm: 1 }} mx={1} justifyContent="space-between">
-        <Box>
+      <Flex justifyContent="space-around" flexDir={"column"}>
+        <SpecialCardsRow cards={specialCards} />
+        <Box mt={2}>
           {!inStore && (
-            <Text size={{ base: "l", sm: "m" }}>
-              {t("game.special-cards.special-cards-label")} (0/5)
+            <Text fontSize={"1.3rem"}>
+              Special cards (0/5)
+              {/* {t("game.special-cards.special-cards-label")} */}
             </Text>
           )}
         </Box>

@@ -62,11 +62,9 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
 
   return (
     <Flex
-      width="100%"
       height={`${cardHeight}px`}
-      gap={{ base: 2, sm: 3 }}
       alignItems={"center"}
-      justifyContent={"center"}
+      justifyContent={"space-between"}
     >
       {cards.map((card) => {
         const isDiscarded = discardedCards.includes(card.id);

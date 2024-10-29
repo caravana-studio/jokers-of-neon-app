@@ -8,6 +8,7 @@ import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import CachedImage from "../../components/CachedImage.tsx";
 import { Obstacle } from "./Obstacle.tsx";
+import { Collab } from "./collab.tsx";
 
 export const TopSection = () => {
   const { isRageRound } = useGameContext();
@@ -17,15 +18,15 @@ export const TopSection = () => {
       width="100%"
       justifyContent={"space-between"}
       alignItems={"flex-start"}
-      px={70}
+      pl={"70px"}
+      pr={"10px"}
     >
       <Obstacle />
+      <Collab />
       <Flex
-        px={2}
         flexDirection="row"
         justifyContent="flex-start"
         alignItems="flex-start"
-        mx={2}
         flexGrow={1}
         minWidth={{ base: "250px", md: "500px" }}
         maxWidth={`${(CARD_WIDTH + 20) * 5}px`}

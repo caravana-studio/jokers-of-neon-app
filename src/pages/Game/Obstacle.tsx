@@ -6,7 +6,7 @@ export const Obstacle: React.FC = () => {
   const missions = ["Play one straight hand.", "Do not use Jokers."];
 
   return (
-    <Box width="100%" maxWidth="400px">
+    <Box width="30%">
       <Text
         fontFamily="Jersey"
         color={LS_GREEN}
@@ -30,7 +30,7 @@ export const Obstacle: React.FC = () => {
                 },
               }}
             />
-            <Text>{mission}</Text>
+            <Text fontSize={"1.3rem"}>{mission}</Text>
           </Flex>
         ))}
       </Flex>

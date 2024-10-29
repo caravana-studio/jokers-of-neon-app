@@ -48,9 +48,12 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
             </Heading>
           </Box>
         ) : (
-          t(
-            "game.preselected-cards-section.discard-btn-lbl.discard"
-          ).toUpperCase()
+          // t(
+          //   "game.preselected-cards-section.discard-btn-lbl.discard"
+          // ).toUpperCase()
+          <Text fontFamily="Jersey" fontSize={"1.5rem"}>
+            DISCARD
+          </Text>
         )}
       </Button>
       {!isSmallScreen && (
