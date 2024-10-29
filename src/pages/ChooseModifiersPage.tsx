@@ -6,7 +6,7 @@ import { TiltCard } from "../components/TiltCard";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
 import * as Modifiers from "../utils/mocks/modifiersMocks";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
-import { BLUE, BLUE_LIGHT } from "../theme/colors";
+import { BLUE, BLUE_LIGHT, LS_GREEN } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const ChooseModifiersPage = () => {
@@ -15,7 +15,7 @@ export const ChooseModifiersPage = () => {
   );
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
-  const adjustedCardScale = cardScale * 1.2;
+  const adjustedCardScale = cardScale * 0.75;
   const allSelected = cardsToKeep.length === cards.length;
 
   //const { selectCardsFromPack } = useStore();
@@ -28,40 +28,50 @@ export const ChooseModifiersPage = () => {
 
   return (
     <Background bgDecoration type="skulls">
-      <Heading>- Modifier cards -</Heading>
-      <Text>
+      <Heading size={"xxl"} textAlign={"center"} variant="neonGreen">
+        - Modifier cards -
+      </Heading>
+      <Text
+        size={"l"}
+        px={isSmallScreen ? 8 : 64}
+        textAlign={"center"}
+        lineHeight={1}
+      >
         Modifier cards add unique effects to individual cards when played. Once
         added to your deck, they can be used whenever drawn, allowing for
         flexible and strategic play.
       </Text>
-      <Heading>Choose up to 5</Heading>
-      <FullScreenCardContainer>
+      <Heading size={"xl"} textAlign={"center"} variant="neonGreen" mt={2}>
+        Choose up to 5
+      </Heading>
+      <FullScreenCardContainer
+        sx={{ width: isSmallScreen ? "100%" : "50%", margin: "0 auto" }}
+      >
         {cards.map((card, index) => {
           return (
             <Flex
               key={`${card.card_id ?? ""}-${index}`}
               flexDirection="column"
-              gap={4}
+              gap={2}
             >
               <Box
                 key={getCardUniqueId(card)}
-                m={1.5}
-                p={1}
+                m={1}
+                padding={"8px"}
                 sx={{
-                  borderRadius: { base: "7px", sm: "12px", md: "15px" },
                   opacity:
                     cardsToKeep.map((card) => card.idx).includes(card.idx) ||
                     cardsToKeep.length === 0
                       ? 1
-                      : 0.5,
+                      : 0.9,
                   boxShadow: cardsToKeep
                     .map((card) => card.idx)
                     .includes(card.idx)
-                    ? `0px 0px 15px 12px ${BLUE}`
+                    ? `0px 0px 15px 1px ${LS_GREEN}, inset 0px 0px 15px 1px ${LS_GREEN}`
                     : "none",
                   border: cardsToKeep.map((card) => card.idx).includes(card.idx)
-                    ? `2px solid ${BLUE_LIGHT}`
-                    : "2px solid transparent",
+                    ? `1px solid ${LS_GREEN}`
+                    : "1px solid transparent",
                 }}
               >
                 <TiltCard
@@ -85,7 +95,9 @@ export const ChooseModifiersPage = () => {
           );
         })}
       </FullScreenCardContainer>
-      <Button onClick={confirmSelectCards}>Continue</Button>
+      <Flex justifyContent={"center"} my={4}>
+        <Button onClick={confirmSelectCards}>Continue</Button>
+      </Flex>
     </Background>
   );
 };

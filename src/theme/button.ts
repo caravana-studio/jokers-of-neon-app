@@ -1,21 +1,46 @@
-import { BLUE, NEON_GREEN, VIOLET} from "./colors";
+import { BLUE, LS_GREEN, NEON_GREEN, VIOLET} from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
 const solid = defineStyle({
-  backgroundColor: "blue !important",
-  color: "white",
+  backgroundColor: "transparent !important",
+  color: "lsGreen",
+  border: `4px solid ${LS_GREEN}`,
+  borderRadius: 0,
+  fontSize: "40px",
+  px: "60px",
+  py: "25px",
   boxShadow: {
-    base: `0px 0px 10px 6px ${BLUE}`,
-    md: `0px 0px 20px 12px ${BLUE}`,
+    base: `0px 0px 10px 0px ${LS_GREEN}`,
+    md: `0px 0px 15px 1px ${LS_GREEN}`,
+  },
+  _hover: {
+    borderColor: "lsGreen",
+    boxShadow: {
+      base: `0px 0px 20px 2px ${LS_GREEN}`,
+      md: `0px 0px 30px 2px ${LS_GREEN}`,
+    },
   },
 });
 
 const secondarySolid = defineStyle({
-  backgroundColor: "violet",
+  backgroundColor: "transparent !important",
+  borderRadius: 0,
+  fontSize: "40px",
+  px: "60px",
+  py: "25px",
+  border: `4px solid white`,
+  color: "white",
   boxShadow: {
-    base: `0px 0px 10px 6px ${VIOLET}`,
-    md: `0px 0px 20px 12px ${VIOLET}`,
+    base: `0px 0px 10px 0px white`,
+    md: `0px 0px 15px 1px white`,
+  },
+  _hover: {
+    borderColor: "white",
+    boxShadow: {
+      base: `0px 0px 20px 2px white`,
+      md: `0px 0px 30px 2px white`,
+    },
   },
 });
 
