@@ -678,7 +678,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account, gameId, cardIdx).finally(() => {
+    return discardSpecialCard(gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };
