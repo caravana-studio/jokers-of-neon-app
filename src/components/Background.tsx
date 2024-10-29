@@ -53,7 +53,7 @@ export const Background = ({
         bottom: isSmallScreen ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
-        py: '60px'
+        py: '90px'
       }}
     >
       {bgDecoration ? (

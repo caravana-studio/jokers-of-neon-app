@@ -1,13 +1,24 @@
-import { BLUE, NEON_GREEN, VIOLET, LS_GREEN } from "./colors";
-
+import { BLUE, LS_GREEN, NEON_GREEN, VIOLET } from "./colors";
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
 const solid = defineStyle({
-  backgroundColor: "blue !important",
-  color: "white",
+  backgroundColor: "transparent !important",
+  color: "lsGreen",
+  border: `4px solid ${LS_GREEN}`,
+  borderRadius: 0,
+  fontSize: "40px",
+  px: "60px",
+  py: "25px",
   boxShadow: {
-    base: `0px 0px 10px 6px ${BLUE}`,
-    md: `0px 0px 20px 12px ${BLUE}`,
+    base: `0px 0px 10px 0px ${LS_GREEN}`,
+    md: `0px 0px 15px 1px ${LS_GREEN}`,
+  },
+  _hover: {
+    borderColor: "lsGreen",
+    boxShadow: {
+      base: `0px 0px 20px 2px ${LS_GREEN}`,
+      md: `0px 0px 30px 2px ${LS_GREEN}`,
+    },
   },
 });
 
@@ -177,7 +188,7 @@ export const buttonTheme = defineStyleConfig({
       fontWeight: 500,
     },
     lg: {
-      fontSize: 40,
+      fontSize: "50px !important",
       px: 90,
       py: 2,
       borderRadius: 0,
