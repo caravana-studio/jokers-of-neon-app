@@ -14,7 +14,7 @@ export const ChooseSpecialsPage = () => {
   const [cards, setCards] = useState<Card[]>(Object.values(Specials) as Card[]);
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
-  const adjustedCardScale = cardScale * 0.9;
+  const adjustedCardScale = cardScale * 1.5;
   const allSelected = cardsToKeep.length === cards.length;
 
   //const { selectCardsFromPack } = useStore();
@@ -32,7 +32,7 @@ export const ChooseSpecialsPage = () => {
       </Heading>
       <Text
         size={"l"}
-        width={isSmallScreen ? "100%" : "50%"}
+        width={isSmallScreen ? "100%" : "70%"}
         margin={"0 auto"}
         textAlign={"center"}
         lineHeight={1}
@@ -42,7 +42,7 @@ export const ChooseSpecialsPage = () => {
         effects remain active throughout the game, enhancing your strategy as
         you progress.
       </Text>
-      <Heading size={"xl"} textAlign={"center"} variant="neonGreen" mt={2}>
+      <Heading size={"xl"} textAlign={"center"} variant="neonGreen" my={4}>
         Choose up to 2
       </Heading>
       <FullScreenCardContainer
