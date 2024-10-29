@@ -60,6 +60,13 @@ const defaultOutlineGlowLoot = defineStyle({
   borderRadius: 1,
   color: "rgb(255,255,255)",
   boxShadow: `0px 0px 20px 3px white, inset 0px 0px 25px 0px white`,
+  _hover: {
+    borderColor: "white",
+    boxShadow: {
+      base: `0px 0px 20px 2px white`,
+      md: `0px 0px 30px 2px white`,
+    },
+  },
 });
 
 const defaultGreenOutlineGlow = defineStyle({
@@ -68,6 +75,13 @@ const defaultGreenOutlineGlow = defineStyle({
   borderRadius: 1,
   color: "green",
   boxShadow: `0px 0px 20px 3px ${LS_GREEN}, inset 0px 0px 25px 0px ${LS_GREEN}`,
+  _hover: {
+    borderColor: "lsGreen",
+    boxShadow: {
+      base: `0px 0px 20px 2px ${LS_GREEN}`,
+      md: `0px 0px 30px 2px ${LS_GREEN}`,
+    },
+  },
 });
 
 const outlinePrimaryGlow = defineStyle({

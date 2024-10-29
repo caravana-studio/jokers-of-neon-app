@@ -33,7 +33,6 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { LS_GREEN } from "../../theme/colors.tsx";
 
 export const GameContent = () => {
   const {
@@ -286,15 +285,6 @@ export const GameContent = () => {
             setRun(true);
           }}
         />
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 14,
-            right: 20,
-          }}
-        >
-          <GameDeck />
-        </Box>
       </Box>
     </Box>
   );
