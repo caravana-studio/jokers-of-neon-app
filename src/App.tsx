@@ -10,6 +10,7 @@ import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import customTheme from "./theme/theme";
+import { GamePage } from "./pages/Game/GamePage";
 
 function App() {
   const theme = extendTheme(customTheme);
