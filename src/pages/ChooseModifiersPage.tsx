@@ -17,7 +17,7 @@ export const ChooseModifiersPage = () => {
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const adjustedCardScale = cardScale * 0.75;
-  const allSelected = cardsToKeep.length === cards.length;
+  const maxCards = 5;
 
   //const { selectCardsFromPack } = useStore();
 
@@ -88,7 +88,8 @@ export const ChooseModifiersPage = () => {
                         cardsToKeep.filter((c) => c.idx !== card.idx)
                       );
                     } else {
-                      setCardsToKeep([...cardsToKeep, card]);
+                      if (cardsToKeep.length < maxCards)
+                        setCardsToKeep([...cardsToKeep, card]);
                     }
                   }}
                 />

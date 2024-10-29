@@ -15,7 +15,7 @@ export const ChooseSpecialsPage = () => {
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const adjustedCardScale = cardScale * 1.5;
-  const allSelected = cardsToKeep.length === cards.length;
+  const maxCards = 2;
 
   //const { selectCardsFromPack } = useStore();
 
@@ -87,7 +87,8 @@ export const ChooseSpecialsPage = () => {
                         cardsToKeep.filter((c) => c.idx !== card.idx)
                       );
                     } else {
-                      setCardsToKeep([...cardsToKeep, card]);
+                      if (cardsToKeep.length < maxCards)
+                        setCardsToKeep([...cardsToKeep, card]);
                     }
                   }}
                 />
