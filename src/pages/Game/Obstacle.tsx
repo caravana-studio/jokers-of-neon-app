@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { LS_GREEN } from "../../theme/colors";
 
 export const Obstacle: React.FC = () => {
+  const missions = ["Play one straight hand.", "Do not use Jokers."];
+
   return (
     <Box width="100%" maxWidth="400px">
       <Text
@@ -14,18 +16,23 @@ export const Obstacle: React.FC = () => {
         OBSTACLE
       </Text>
       <Flex direction="column" alignItems="start" gap={4}>
-        <Flex alignItems="center">
-          <Box as="span" mr={2}>
-            &#9744;
-          </Box>
-          <Text>Play one straight hand.</Text>
-        </Flex>
-        <Flex alignItems="center">
-          <Box as="span" mr={2}>
-            &#9744;
-          </Box>
-          <Text>Do not use Jokers.</Text>
-        </Flex>
+        {missions.map((mission, index) => (
+          <Flex alignItems="center" key={index}>
+            <Checkbox
+              size="md"
+              mr={2}
+              sx={{
+                ".chakra-checkbox__control": {
+                  _checked: {
+                    backgroundColor: "lsGreen !important",
+                    borderColor: "lsGreen !important",
+                  },
+                },
+              }}
+            />
+            <Text>{mission}</Text>
+          </Flex>
+        ))}
       </Flex>
     </Box>
   );
