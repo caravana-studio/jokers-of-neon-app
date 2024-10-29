@@ -35,7 +35,7 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
         <Box>
           {!inStore && (
             <Text size={{ base: "l", sm: "m" }}>
-              {t("game.special-cards.special-cards-label")}
+              {t("game.special-cards.special-cards-label")} (0/5)
             </Text>
           )}
         </Box>
