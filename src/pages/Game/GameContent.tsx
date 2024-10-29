@@ -169,9 +169,9 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading || !game) {
-    return <Loading />;
-  }
+  //   if (gameLoading || !game) {
+  //     return <Loading />;
+  //   }
 
   return (
     <Box
