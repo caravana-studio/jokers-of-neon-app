@@ -47,7 +47,7 @@ export const ChooseModifiersPage = () => {
         Choose up to 5
       </Heading>
       <FullScreenCardContainer
-        sx={{ width: isSmallScreen ? "100%" : "50%", margin: "0 auto" }}
+        sx={{ width: isSmallScreen ? "100%" : "40%", margin: "0 auto" }}
       >
         {cards.map((card, index) => {
           return (
