@@ -33,6 +33,7 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { LS_GREEN } from "../../theme/colors.tsx";
 
 export const GameContent = () => {
   const {
@@ -228,7 +229,7 @@ export const GameContent = () => {
             top={0}
             zIndex={0}
           />
-          <Box sx={{ height: "100%", width: "100%" }} px={"70px"}>
+          <Box sx={{ height: "100%", width: "100%" }}>
             <Box sx={{ height: "30%", width: "100%" }} pt={"60px"}>
               <TopSection />
             </Box>
@@ -246,6 +247,8 @@ export const GameContent = () => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    px: "70px",
                   }}
                 >
                   <PreselectedCardsSection isTutorialRunning={run} />
