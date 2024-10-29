@@ -21,6 +21,7 @@ import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 import { ChooseClassPage } from "./pages/ChooseClassPage";
+import { ChooseModifiersPage } from "./pages/ChooseModifiersPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -32,6 +33,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/choose-class" element={<ChooseClassPage />} />
+              <Route
+                path="/choose-modifiers"
+                element={<ChooseModifiersPage />}
+              />
             </Routes>
           </AudioPlayerProvider>
         </GameProvider>
