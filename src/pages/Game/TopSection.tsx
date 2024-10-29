@@ -7,6 +7,7 @@ import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import CachedImage from "../../components/CachedImage.tsx";
+import { Obstacle } from "./Obstacle.tsx";
 
 export const TopSection = () => {
   const { isRageRound } = useGameContext();
@@ -16,15 +17,9 @@ export const TopSection = () => {
       width="100%"
       justifyContent={"space-between"}
       alignItems={"flex-start"}
+      px={70}
     >
-      <Box mr={4}>
-        <CachedImage
-          src="logos/logo-variant.svg"
-          width={{ base: "110px", sm: "150px", md: "260px" }}
-          alt="logo"
-          mb="30px"
-        />
-      </Box>
+      <Obstacle />
       <Flex
         px={2}
         flexDirection="row"
