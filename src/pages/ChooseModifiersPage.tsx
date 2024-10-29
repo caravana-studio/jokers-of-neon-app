@@ -8,6 +8,7 @@ import * as Modifiers from "../utils/mocks/modifiersMocks";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { BLUE, BLUE_LIGHT, LS_GREEN } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { Collab } from "./Game/collab";
 
 export const ChooseModifiersPage = () => {
   const [cards, setCards] = useState<Card[]>(
@@ -33,7 +34,8 @@ export const ChooseModifiersPage = () => {
       </Heading>
       <Text
         size={"l"}
-        px={isSmallScreen ? 8 : 64}
+        width={isSmallScreen ? "100%" : "50%"}
+        margin={"0 auto"}
         textAlign={"center"}
         lineHeight={1}
       >
@@ -98,6 +100,11 @@ export const ChooseModifiersPage = () => {
       <Flex justifyContent={"center"} my={4}>
         <Button onClick={confirmSelectCards}>Continue</Button>
       </Flex>
+      {!isSmallScreen && (
+        <Box position={"fixed"} left={8} top={12}>
+          <Collab />
+        </Box>
+      )}
     </Background>
   );
 };
