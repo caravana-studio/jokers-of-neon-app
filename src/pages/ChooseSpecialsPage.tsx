@@ -4,19 +4,17 @@ import { useState } from "react";
 import { Card } from "../types/Card";
 import { TiltCard } from "../components/TiltCard";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
-import * as Modifiers from "../utils/mocks/modifiersMocks";
+import * as Specials from "../utils/mocks/specialCardMocks";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { LS_GREEN } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Collab } from "./Game/collab";
 
-export const ChooseModifiersPage = () => {
-  const [cards, setCards] = useState<Card[]>(
-    Object.values(Modifiers) as Card[]
-  );
+export const ChooseSpecialsPage = () => {
+  const [cards, setCards] = useState<Card[]>(Object.values(Specials) as Card[]);
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
-  const adjustedCardScale = cardScale * 0.75;
+  const adjustedCardScale = cardScale * 0.9;
   const allSelected = cardsToKeep.length === cards.length;
 
   //const { selectCardsFromPack } = useStore();
@@ -30,7 +28,7 @@ export const ChooseModifiersPage = () => {
   return (
     <Background bgDecoration type="skulls">
       <Heading size={"xxl"} textAlign={"center"} variant="neonGreen">
-        - Modifier cards -
+        - Special cards -
       </Heading>
       <Text
         size={"l"}
@@ -39,15 +37,16 @@ export const ChooseModifiersPage = () => {
         textAlign={"center"}
         lineHeight={1}
       >
-        Modifier cards add unique effects to individual cards when played. Once
-        added to your deck, they can be used whenever drawn, allowing for
-        flexible and strategic play.
+        Special cards are the most powerful cards in the game, providing unique
+        special effects that help maximize your score. Once unlocked, these
+        effects remain active throughout the game, enhancing your strategy as
+        you progress.
       </Text>
       <Heading size={"xl"} textAlign={"center"} variant="neonGreen" mt={2}>
-        Choose up to 5
+        Choose up to 2
       </Heading>
       <FullScreenCardContainer
-        sx={{ width: isSmallScreen ? "100%" : "40%", margin: "0 auto" }}
+        sx={{ width: isSmallScreen ? "100%" : "80%", margin: "0 auto" }}
       >
         {cards.map((card, index) => {
           return (
