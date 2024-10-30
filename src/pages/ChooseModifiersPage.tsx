@@ -35,7 +35,6 @@ export const ChooseModifiersPage = () => {
       setCards([]);
     } else {
       setCards(blisterPackResult?.cards ?? []);
-      setCardsToKeep(blisterPackResult?.cards ?? []);
     }
   }, [blisterPackResult]);
 

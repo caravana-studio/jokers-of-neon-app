@@ -34,7 +34,6 @@ export const ChooseSpecialsPage = () => {
       setCards([]);
     } else {
       setCards(blisterPackResult?.cards ?? []);
-      setCardsToKeep(blisterPackResult?.cards ?? []);
     }
   }, [blisterPackResult]);
 
