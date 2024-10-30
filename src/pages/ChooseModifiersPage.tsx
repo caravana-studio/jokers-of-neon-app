@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Background } from "../components/Background";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../types/Card";
 import { TiltCard } from "../components/TiltCard";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
@@ -9,22 +9,42 @@ import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { LS_GREEN } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Collab } from "./Game/collab";
+import { useGameContext } from "../providers/GameProvider";
+import { useGame } from "../dojo/queries/useGame";
+import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 
 export const ChooseModifiersPage = () => {
-  const [cards, setCards] = useState<Card[]>(
-    Object.values(Modifiers) as Card[]
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState<Card[]>();
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const adjustedCardScale = cardScale * 0.75;
   const maxCards = 5;
 
-  //const { selectCardsFromPack } = useStore();
+  const { selectModifierCards, redirectBasedOnGameState, lockRedirection } =
+    useGameContext();
+  const game = useGame();
+  const blisterPackResult = useBlisterPackResult();
+
+  useEffect(() => {
+    redirectBasedOnGameState();
+  }, [game?.state, lockRedirection]);
+
+  useEffect(() => {
+    if (blisterPackResult?.cardsPicked) {
+      setCards([]);
+    } else {
+      setCards(blisterPackResult?.cards ?? []);
+      setCardsToKeep(blisterPackResult?.cards ?? []);
+    }
+  }, [blisterPackResult]);
 
   const confirmSelectCards = () => {
-    //selectCardsFromPack(cardsToKeep.map((c) => c.idx));
+    setIsLoading(true);
+    selectModifierCards(cardsToKeep.map((c) => c.idx)).finally(() => {
+      setIsLoading(false);
+    });
     setCards([]);
-    //navigate("/redirect/store");
   };
 
   return (
@@ -49,7 +69,7 @@ export const ChooseModifiersPage = () => {
       <FullScreenCardContainer
         sx={{ width: isSmallScreen ? "100%" : "40%", margin: "0 auto" }}
       >
-        {cards.map((card, index) => {
+        {cards?.map((card, index) => {
           return (
             <Flex
               key={`${card.card_id ?? ""}-${index}`}
@@ -99,7 +119,9 @@ export const ChooseModifiersPage = () => {
         })}
       </FullScreenCardContainer>
       <Flex justifyContent={"center"} my={4}>
-        <Button onClick={confirmSelectCards}>Continue</Button>
+        <Button onClick={confirmSelectCards} isDisabled={isLoading}>
+          Continue
+        </Button>
       </Flex>
       {!isSmallScreen && (
         <Box position={"fixed"} left={8} top={12}>
