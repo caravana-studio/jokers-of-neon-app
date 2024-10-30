@@ -75,6 +75,7 @@ interface IGameContext {
   discards: number;
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
+  selectDeckType: (deckType: number) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -123,6 +124,7 @@ const GameContext = createContext<IGameContext>({
   discards: 0,
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
+  selectDeckType: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -142,8 +144,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
-    useGameActions();
+  const {
+    createGame,
+    play,
+    discard,
+    discardEffectCard,
+    discardSpecialCard,
+    selectDeck,
+  } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
 
@@ -210,6 +218,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setSortBySuit(true);
       localStorage.setItem(SORT_BY_SUIT, "true");
     }
+  };
+
+  const selectDeckType = async (deckType: number) => {
+    setPreSelectionLocked(true);
+    setLockRedirection(true);
+
+    selectDeck(gameId, deckType).catch(() => {
+      setLockRedirection(false);
+      setPreSelectionLocked(false);
+    });
   };
 
   const executeCreateGame = async () => {
@@ -739,6 +757,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     executeCreateGame,
     preSelectCard,
     unPreSelectCard,
+    selectDeckType,
   };
 
   return (

@@ -1,8 +1,11 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
 import { LS_GREEN } from "../theme/colors";
+import { useDojo } from "../dojo/useDojo";
+import { LOGGED_USER } from "../constants/localStorage";
+import { useGameContext } from "../providers/GameProvider";
 
 const CLASSES = [
   {
@@ -27,6 +30,22 @@ const CLASSES = [
 
 export const ChooseClassPage = () => {
   const [selectedClass, setSelectedClass] = useState<number | undefined>();
+  const {
+    setup: { masterAccount },
+    account: { account },
+  } = useDojo();
+
+  const { checkOrCreateGame, selectDeckType } = useGameContext();
+
+  // TODO: TEMPORAL - REMOVE
+  localStorage.setItem(LOGGED_USER, "hola");
+
+  useEffect(() => {
+    if (account !== masterAccount) {
+      checkOrCreateGame();
+    }
+  }, [account]);
+
   return (
     <Background bgDecoration type="skulls">
       <Flex
@@ -50,13 +69,24 @@ export const ChooseClassPage = () => {
             <ClassBox
               key={classBox.id}
               {...classBox}
-              onClick={() => setSelectedClass(classBox.id)}
+              onClick={() => {
+                setSelectedClass(classBox.id);
+              }}
               selected={selectedClass === classBox.id}
             />
           ))}
         </Flex>
         <Flex>
-          <Button mb={8} size='lg' isDisabled={!selectedClass}>CONTINUE</Button>
+          <Button
+            mb={8}
+            size="lg"
+            isDisabled={!selectedClass}
+            onClick={() => {
+              if (selectedClass) selectDeckType(selectedClass - 1);
+            }}
+          >
+            CONTINUE
+          </Button>
         </Flex>
       </Flex>
     </Background>
