@@ -50,6 +50,35 @@ export const useGameActions = () => {
     }
   };
 
+  const selectSpecials = async (gameId: number, cardsIndex: []) => {
+    try {
+      showTransactionToast();
+      const { transaction_hash } =
+        await client.game_system.select_special_cards({
+          account,
+          game_id: gameId,
+          cards_index: cardsIndex,
+        });
+
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        console.log("Success at select specialCards:", tx);
+      } else {
+        console.error("Error at select specialCards:", tx);
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return 0;
+    }
+  };
+
   const createGame = async (username: string) => {
     try {
       showTransactionToast();
@@ -227,5 +256,6 @@ export const useGameActions = () => {
     discardSpecialCard,
     play,
     selectDeck,
+    selectSpecials,
   };
 };

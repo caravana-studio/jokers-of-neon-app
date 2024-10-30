@@ -76,6 +76,7 @@ interface IGameContext {
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
   selectDeckType: (deckType: number) => void;
+  selectSpecialCards: (cardIndex: []) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -125,6 +126,7 @@ const GameContext = createContext<IGameContext>({
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
   selectDeckType: (_) => {},
+  selectSpecialCards: (_) => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -151,6 +153,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discardEffectCard,
     discardSpecialCard,
     selectDeck,
+    selectSpecials,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -225,6 +228,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(true);
 
     selectDeck(gameId, deckType).catch(() => {
+      setLockRedirection(false);
+      setPreSelectionLocked(false);
+    });
+  };
+
+  const selectSpecialCards = async (cardIndex: []) => {
+    setPreSelectionLocked(true);
+    setLockRedirection(true);
+
+    selectSpecials(gameId, cardIndex).catch(() => {
       setLockRedirection(false);
       setPreSelectionLocked(false);
     });
@@ -758,6 +771,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectCard,
     unPreSelectCard,
     selectDeckType,
+    selectSpecialCards,
   };
 
   return (
