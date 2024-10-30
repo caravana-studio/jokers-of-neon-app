@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
-import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
+import { LS_GREEN, VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
 
 const CURRENT_LEADER_STYLES = {
@@ -40,10 +40,8 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
   return (
     <Box
       sx={{
-        border: `2px solid ${VIOLET_LIGHT}`,
-        boxShadow: `0px 0px 15px 25px ${VIOLET}`,
+        border: `2px solid white`,
         backgroundColor: "rgba(0, 0, 0, 0.8)",
-        borderRadius: "25px",
       }}
       m={4}
       py={4}

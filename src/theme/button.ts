@@ -1,4 +1,4 @@
-import { BLUE, LS_GREEN, NEON_GREEN, VIOLET} from "./colors";
+import { BLUE, LS_GREEN, NEON_GREEN, VIOLET } from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
@@ -51,7 +51,7 @@ const discardSecondarySolid = defineStyle({
     md: `0px 0px 30px 6px ${VIOLET}`,
   },
   "&:hover": {
-    borderColor: `white`
+    borderColor: `white`,
   },
 });
 
@@ -84,7 +84,7 @@ const outlinePrimaryGlow = defineStyle({
     boxShadow: {
       base: `0px 0px 10px 6px ${BLUE}`,
       md: `0px 0px 20px 12px ${BLUE}`,
-    }, 
+    },
   },
   _active: {
     backgroundColor: `${BLUE}`,
@@ -98,7 +98,7 @@ const outlinePrimaryGlow = defineStyle({
   _disabled: {
     border: "1px solid white !important",
     boxShadow: "none !important",
-  }
+  },
 });
 
 const outlineSecondaryGlow = defineStyle({
@@ -113,7 +113,7 @@ const outlineSecondaryGlow = defineStyle({
     boxShadow: {
       base: `0px 0px 10px 6px ${VIOLET}`,
       md: `0px 0px 20px 12px ${VIOLET}`,
-    }, 
+    },
   },
   _active: {
     backgroundColor: `${VIOLET}`,
@@ -126,7 +126,7 @@ const outlineSecondaryGlow = defineStyle({
     _disabled: {
       border: "1px solid white !important",
       boxShadow: "none !important",
-    }
+    },
   },
 });
 
@@ -140,7 +140,15 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid, defaultOutline, discardSecondarySolid, outlineSecondaryGlow, outlinePrimaryGlow },
+  variants: {
+    solid,
+    outline,
+    secondarySolid,
+    defaultOutline,
+    discardSecondarySolid,
+    outlineSecondaryGlow,
+    outlinePrimaryGlow,
+  },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },
@@ -154,7 +162,7 @@ export const buttonTheme = defineStyleConfig({
       fontWeight: 500,
     },
     lg: {
-      fontSize: 40,
+      fontSize: "50px !important",
       px: 90,
       py: 2,
       borderRadius: 0,
