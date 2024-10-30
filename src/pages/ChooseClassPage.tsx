@@ -2,26 +2,28 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
-import { LS_GREEN } from "../theme/colors";
+import { PositionedGameMenu } from "../components/GameMenu";
+import { Loading } from "../components/Loading";
+import { useGame } from "../dojo/queries/useGame";
 import { useDojo } from "../dojo/useDojo";
-import { LOGGED_USER } from "../constants/localStorage";
 import { useGameContext } from "../providers/GameProvider";
+import { LS_GREEN } from "../theme/colors";
 
 const CLASSES = [
   {
-    id: 1,
+    id: 0,
     title: "Scribe",
     element: "book",
     description: "- +4 Jokers",
   },
   {
-    id: 2,
+    id: 1,
     title: "Warrior",
     element: "sword",
     description: "- +1 Joker /n - +2 point modifiers /n - +2 multi modifiers",
   },
   {
-    id: 3,
+    id: 2,
     title: "Wizard",
     element: "wand",
     description: "- +1 special card /n - +2 Jokers",
@@ -29,25 +31,45 @@ const CLASSES = [
 ];
 
 export const ChooseClassPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedClass, setSelectedClass] = useState<number | undefined>();
   const {
     setup: { masterAccount },
     account: { account },
   } = useDojo();
 
-  const { checkOrCreateGame, selectDeckType } = useGameContext();
+  const {
+    checkOrCreateGame,
+    selectDeckType,
+    gameLoading,
+    error,
+    redirectBasedOnGameState,
+    lockRedirection,
+  } = useGameContext();
 
-  // TODO: TEMPORAL - REMOVE
-  localStorage.setItem(LOGGED_USER, "hola");
+  const game = useGame();
 
   useEffect(() => {
     if (account !== masterAccount) {
       checkOrCreateGame();
     }
-  }, [account]);
+  }, [account, masterAccount]);
+
+  useEffect(() => {
+    redirectBasedOnGameState();
+  }, [game?.state, lockRedirection]);
+
+  if (gameLoading || error) {
+    return (
+      <Background bgDecoration type="skulls">
+        {gameLoading ? <Loading /> : <Heading size="xxl">ERROR</Heading>}
+      </Background>
+    );
+  }
 
   return (
     <Background bgDecoration type="skulls">
+      <PositionedGameMenu decoratedPage />
       <Flex
         width="100%"
         height="100%"
@@ -80,12 +102,17 @@ export const ChooseClassPage = () => {
           <Button
             mb={8}
             size="lg"
-            isDisabled={!selectedClass}
+            isDisabled={selectedClass === undefined || isLoading}
             onClick={() => {
-              if (selectedClass) selectDeckType(selectedClass - 1);
+              if (selectedClass !== undefined) {
+                setIsLoading(true);
+                selectDeckType(selectedClass).finally(() => {
+                  setIsLoading(false);
+                });
+              }
             }}
           >
-            CONTINUE
+            {isLoading ? "Loading..." : "CONTINUE"}
           </Button>
         </Flex>
       </Flex>

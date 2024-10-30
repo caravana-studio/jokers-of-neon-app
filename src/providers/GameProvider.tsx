@@ -75,9 +75,10 @@ interface IGameContext {
   discards: number;
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
-  selectDeckType: (deckType: number) => void;
+  selectDeckType: (deckType: number) => Promise<number | undefined>;
   selectSpecialCards: (cardIndex: []) => void;
   selectModifierCards: (cardIndex: []) => void;
+  redirectBasedOnGameState: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -126,9 +127,10 @@ const GameContext = createContext<IGameContext>({
   discards: 0,
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
-  selectDeckType: (_) => {},
+  selectDeckType: (_) => new Promise((resolve) => resolve(undefined)),
   selectSpecialCards: (_) => {},
   selectModifierCards: (_) => {},
+  redirectBasedOnGameState: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -227,33 +229,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const selectDeckType = async (deckType: number) => {
-    setPreSelectionLocked(true);
-    setLockRedirection(true);
-
-    selectDeck(gameId, deckType).catch(() => {
-      setLockRedirection(false);
-      setPreSelectionLocked(false);
+    const selectDeckPromise = selectDeck(gameId, deckType);
+    selectDeckPromise.then(() => {
+      navigate("/choose-specials");
     });
+    return selectDeckPromise;
   };
 
   const selectSpecialCards = async (cardIndex: []) => {
-    setPreSelectionLocked(true);
-    setLockRedirection(true);
-
-    selectSpecials(gameId, cardIndex).catch(() => {
-      setLockRedirection(false);
-      setPreSelectionLocked(false);
-    });
+    selectSpecials(gameId, cardIndex);
   };
 
   const selectModifierCards = async (cardIndex: []) => {
-    setPreSelectionLocked(true);
-    setLockRedirection(true);
-
-    selectModifiers(gameId, cardIndex).catch(() => {
-      setLockRedirection(false);
-      setPreSelectionLocked(false);
-    });
+    selectModifiers(gameId, cardIndex);
   };
 
   const executeCreateGame = async () => {
@@ -266,7 +254,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate("/demo");
+          navigate("/choose-class");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
@@ -749,16 +737,28 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
   };
 
-  useEffect(() => {
+  const redirectBasedOnGameState = () => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP") {
-        console.log("redirecting to store");
-        navigate("/store");
+      } else if (game?.state === "SELECT_DECK") {
+        console.log("redirecting to SELECT_DECK");
+        navigate("/choose-class");
+      } else if (game?.state === "SELECT_SPECIAL_CARDS") {
+        console.log("redirecting to SELECT_SPECIAL_CARDS");
+        navigate("/choose-specials");
+      } else if (game?.state === "SELECT_MODIFIER_CARDS") {
+        console.log("redirecting to SELECT_MODIFIER_CARDS");
+        navigate("/choose-modifiers");
+      } else if (game?.state === "IN_GAME") {
+        console.log("redirecting to IN_GAME");
+        navigate("/game");
+      } else if (game?.state === "OPEN_BLISTER_PACK") {
+        console.log("redirecting to OPEN_BLISTER_PACK");
+        navigate("/open-pack");
       }
     }
-  }, [game?.state, lockRedirection]);
+  }
 
   useEffect(() => {
     // start with redirection unlocked
@@ -790,7 +790,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <GameContext.Provider
-      value={{ ...state, ...actions, lockRedirection, discards }}
+      value={{ ...state, ...actions, lockRedirection, discards, redirectBasedOnGameState }}
     >
       {children}
     </GameContext.Provider>

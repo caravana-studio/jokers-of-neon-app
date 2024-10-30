@@ -21,6 +21,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/choose-class" element={<ChooseClassPage />} />
+              <Route
+                path="/choose-specials"
+                element={<>choose specials not implemented</>}
+              />
             </Routes>
           </AudioPlayerProvider>
         </GameProvider>
