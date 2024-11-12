@@ -84,11 +84,9 @@ export const PreviewPack = () => {
   const spineAnim = (
     <Flex width={"50%"}>
       <SpineAnimation
-        // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
-        // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
         ref={spineAnimationRef}
-        jsonUrl={`/spine-animations/basicPack.json`}
-        atlasUrl={`/spine-animations/basicPack.atlas`}
+        jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
+        atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
         initialAnimation={animationsData.loopAnimation}
         hoverAnimation={animationsData.hoverAnimation}
         loopAnimation={animationsData.loopAnimation}

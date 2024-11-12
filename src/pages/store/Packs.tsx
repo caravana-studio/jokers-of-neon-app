@@ -45,10 +45,8 @@ export const Packs = () => {
                 justifyContent="center"
               >
                 <SpineAnimation
-                  // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
-                  // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
-                  jsonUrl={`/spine-animations/basicPack.json`}
-                  atlasUrl={`/spine-animations/basicPack.atlas`}
+                  jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
+                  atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
                   initialAnimation={
                     isMobile
                       ? animationsData.loopAnimation
