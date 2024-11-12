@@ -56,7 +56,7 @@ export const GameMenu = ({
               }
             }}
           >
-            Settings
+            {t("game.game-menu.settings-btn")}
           </MenuItem>
           {!onlySound && (
             <MenuItem

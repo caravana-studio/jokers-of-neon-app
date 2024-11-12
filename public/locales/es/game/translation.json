@@ -82,7 +82,8 @@
       "new-game-btn": "Crear nuevo juego",
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Sonido",
-      "logout-btn": "Cerrar sesión"
+      "logout-btn": "Cerrar sesión",
+      "settings-btn": "Configuración"
     },
     "plays": {
       "title": "Jugadas disponibles",

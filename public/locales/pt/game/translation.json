@@ -82,7 +82,8 @@
       "new-game-btn": "Iniciar novo jogo",
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Ativar som",
-      "logout-btn": "Sair"
+      "logout-btn": "Sair",
+      "settings-btn": "Configuração"
     },
     "plays": {
       "title": "Jogadas disponíveis",
