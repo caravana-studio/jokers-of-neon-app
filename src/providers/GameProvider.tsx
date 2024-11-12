@@ -161,7 +161,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     minimumDuration
   );
 
-  const { setAnimatedCard } = useCardAnimations();
+  const { setAnimatedCard, setAnimateSecondChanceCard } = useCardAnimations();
 
   const {
     gameId,
@@ -507,6 +507,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             navigate("/rewards");
           }, 1000);
           setPreSelectionLocked(true);
+        } else if (playEvents.secondChanceEvent) {
+          setAnimateSecondChanceCard(true);
         } else {
           setLockedCash(undefined);
           playEvents.cards && replaceCards(playEvents.cards);
