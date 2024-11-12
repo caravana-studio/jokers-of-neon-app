@@ -60,7 +60,7 @@ export const StoreContent = () => {
         >
           <Box
             display="flex"
-            h={"100%"}
+            w={"45%"}
             flexDirection="column"
             justifyContent="space-between"
             pb={0}
@@ -73,7 +73,7 @@ export const StoreContent = () => {
               </Heading>
             </Flex>
             <Packs />
-            <Flex mt={8} width={"100%"}>
+            <Flex mt={8}>
               <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
             </Flex>
             <Coins rolling />

@@ -21,7 +21,7 @@ export const Packs = () => {
   return (
     <Box
       className="game-tutorial-step-packs"
-      width={isMobile ? "100%" : "50%"}
+      // width={isMobile ? "100%" : "80%"}
       m={isMobile ? 4 : 0}
     >
       <Flex justifyContent="space-between" alignItems="center">
@@ -29,7 +29,12 @@ export const Packs = () => {
           {t("store.titles.packs")}
         </Heading>
       </Flex>
-      <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
+      <Flex
+        flexDirection="row"
+        justifyContent="space-between"
+        gap={[2, 4, 6]}
+        // width={"80%"}
+      >
         {packs.map((pack) => {
           const card = {
             id: pack.blister_pack_id.toString(),
