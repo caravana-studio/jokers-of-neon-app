@@ -42,11 +42,11 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       hoverAnimation,
       loopAnimation,
       openBoxAnimation,
-      width = 400,
-      height = 1700,
+      width = 100,
+      height = 1000,
       xOffset = 0,
       yOffset = -100,
-      scale = 1,
+      scale = 0.8,
       onOpenAnimationStart,
       isPurchased,
     },
@@ -111,7 +111,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             }
           },
           viewport: {
-            //   debugRender: true,
+            // debugRender: true,
             x: xOffset,
             y: yOffset,
             width: width,

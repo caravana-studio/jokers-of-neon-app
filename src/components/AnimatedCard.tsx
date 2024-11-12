@@ -1,9 +1,9 @@
-import { Heading, useTheme } from "@chakra-ui/react";
+import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
-import { isMobile } from "react-device-detect";
 import { animated, useSpring } from "react-spring";
-import { CARD_WIDTH } from "../constants/visualProps";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
 
 export interface IAnimatedCardProps {
@@ -12,6 +12,7 @@ export interface IAnimatedCardProps {
   discarded?: boolean;
   played?: boolean;
   isSpecial?: boolean;
+  scale?: number;
 }
 
 export const AnimatedCard = ({
@@ -20,6 +21,7 @@ export const AnimatedCard = ({
   discarded = false,
   played = false,
   isSpecial = false,
+  scale,
 }: IAnimatedCardProps) => {
   const { animatedCard } = useCardAnimations();
   const animatedCardIdxArray = useMemo(() => {
@@ -34,6 +36,14 @@ export const AnimatedCard = ({
     [animatedCard?.animationIndex]
   );
 
+  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
+  const cardBorderRadius = useBreakpointValue(
+    {
+      base: "5px",
+      sm: "10px",
+    },
+    { ssr: false }
+  );
   const { colors } = useTheme();
 
   const getColor = () => {
@@ -117,13 +127,20 @@ export const AnimatedCard = ({
     }
   }, [discarded]);
 
+  if (!isCardScaleCalculated) return null;
+
+  if (!scale) scale = cardScale;
+
   return (
     <animated.div
       style={{
         position: "relative",
-        padding: "4px",
-        width: `${CARD_WIDTH + 8}px`,
-        borderRadius: isMobile ? "5px" : "10px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: `${(CARD_WIDTH + 8) * scale}px`,
+        height: `${(CARD_HEIGHT + 8) * scale}px`,
+        borderRadius: cardBorderRadius,
         ...cardSprings,
       }}
     >
@@ -135,7 +152,7 @@ export const AnimatedCard = ({
             style={{
               position: "absolute",
               top: 0,
-              left: "10px",
+              left: 0,
               ...pointsSprings,
               zIndex: 99,
             }}

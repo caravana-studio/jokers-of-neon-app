@@ -4,17 +4,16 @@ import "./App.scss";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { isMobile } from "react-device-detect";
 import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { OpenPack } from "./pages/OpenPack";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
-import PreviewCard from "./pages/PreviewCard";
-import MobilePreviewCard from "./pages/PreviewCardMobile";
+import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SpecialCardsPage } from "./pages/SpecialCardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
@@ -46,10 +45,10 @@ function App() {
               />
               <Route path="/redirect/:page" element={<Redirect />} />
               <Route
-                path="/preview-card"
+                path="/preview/:type"
                 element={
                   <StoreProvider>
-                    {isMobile ? <MobilePreviewCard /> : <PreviewCard />}
+                    <PreviewPage />
                   </StoreProvider>
                 }
               />
@@ -58,6 +57,14 @@ function App() {
                 element={
                   <StoreProvider>
                     <OpenPack />
+                  </StoreProvider>
+                }
+              />
+              <Route
+                path="/special-cards"
+                element={
+                  <StoreProvider>
+                    <SpecialCardsPage />
                   </StoreProvider>
                 }
               />

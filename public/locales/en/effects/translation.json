@@ -100,7 +100,7 @@
     },
     "312": {
       "name": "Figures Booster",
-      "description": "All played FIGURES cards score +100 points"
+      "description": "All played FIGURES cards score +50 points"
     },
     "313": {
       "name": "Multiplied Aces",
@@ -120,7 +120,7 @@
     },
     "317": {
       "name": "Lucky 7",
-      "description": "All 7s score +7 multi"
+      "description": "All 7s score +77 points"
     },
     "318": {
       "name": "Neon bonus",
@@ -137,6 +137,22 @@
     "321": {
       "name": "Lucky hand",
       "description": "Adds +50 cash for every Diamond suited card played"
+    },
+    "322": {
+      "name": "Discard mastery",
+      "description": "Adds +10 to the multi if you have no discards left"
+    },
+    "323": {
+      "name": "Second chance",
+      "description": "When you lose, this card gets destroyed but you can continue playing"
+    },
+    "324": {
+      "name": "Guardian's shield",
+      "description": "Blocks all rage cards for 1 level. Gets destroyed afterwards"
+    },
+    "325": {
+      "name": "Neon synergy",
+      "description": "If more than 50% of the played cards are neon, all the other cards get converted to neon"
     }
   }
 }

@@ -59,6 +59,12 @@ const getDefaultImageUrls = (): string[] => {
   imageUrls.push("sort/rank-on.png");
   imageUrls.push("sort/rank-off.png");
 
+  // Slots
+  imageUrls.push("store/locked-slot.png");
+  imageUrls.push("store/slot-icon.png");
+  imageUrls.push("store/slot-image.png");
+  imageUrls.push("store/unlocked-slot.png");
+
   return imageUrls;
 };
 

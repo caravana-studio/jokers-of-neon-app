@@ -1,12 +1,12 @@
-import { Box, Button, Flex, Heading, useBreakpoint } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
-import { isMobile } from "react-device-detect";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { useNavigate } from "react-router-dom";
 import { preloadImages } from "../../utils/preloadImages";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface CardsRowProps {
   title: string;
@@ -22,41 +22,40 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const { buyCard, isPurchased } = useStore();
   const imageUrls = useMemo(() => {
     return cards.map((card) => {
-      return card.isSpecial || card.isModifier 
-        ? `Cards/${card.card_id}.png` 
+      return card.isSpecial || card.isModifier
+        ? `Cards/${card.card_id}.png`
         : `Cards/big/${card.img}`;
     });
-  }, [cards]) 
-  
+  }, [cards]);
+
+  const { isSmallScreen, cardScale, isCardScaleCalculated } =
+    useResponsiveValues();
+
+  const adjustedScale = isSmallScreen
+    ? cardScale
+    : cardScale - (cardScale * 25) / 100;
+
   useEffect(() => {
-    preloadImages(imageUrls).then(() => {
-    }).catch((error) => {
-      console.error("Error preloading card images:", error);
-    });
-  }, [imageUrls])
+    preloadImages(imageUrls)
+      .then(() => {})
+      .catch((error) => {
+        console.error("Error preloading card images:", error);
+      });
+  }, [imageUrls]);
 
-  const getCardScale = () => {
-    // TODO: Remove after improve TiltCard styles
-    // This code sets the required scale of the card to keep responsiveness
-    const breakpoint = useBreakpoint();
-
-    if (isMobile) {
-      return 0.85;
-    }
-
-    if (breakpoint == "base") {
-      return 0.75;
-    } else if (breakpoint == "md") {
-      return 0.81;
-    }
-    return 1;
-  };
+  if (!isCardScaleCalculated) {
+    return null;
+  }
 
   return (
     <>
-      <Box mb={4}>
+      <Box mb={8}>
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading size={{base: "s", sm: "xs"}} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
+          <Heading
+            size={{ base: "s", sm: "xs" }}
+            mb={[1, 1, 1, 2, 2]}
+            fontWeight={"400"}
+          >
             {title}
           </Heading>
           {button && (
@@ -70,20 +69,28 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           )}
         </Flex>
 
-        <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
+        <Flex
+          flexDirection="row"
+          justifyContent="flex-start"
+          wrap={"wrap"}
+          gap={[2, 4, 6]}
+          rowGap={4}
+        >
           {cards.map((card) => {
             const purchased = isPurchased(card);
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
+                  scale={adjustedScale}
                   card={{ ...card, purchased }}
                   onClick={() => {
-                    if(!isPurchased(card)){
-                      navigate("/preview-card", { state: { card: card, isPack: false } });
+                    if (!isPurchased(card)) {
+                      navigate("/preview/card", {
+                        state: { card: card },
+                      });
                     }
                   }}
-                  scale={getCardScale()}
                 />
               </Flex>
             );

@@ -7,38 +7,29 @@ import {
   Text,
   Tooltip,
   VStack,
-  keyframes,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
+
+import CachedImage from "../../components/CachedImage.tsx";
+
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
-import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
-import { CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { useStore } from "../providers/StoreProvider";
-import theme from "../theme/theme";
-import { getCardData } from "../utils/getCardData";
-import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
-import { Coins } from "./store/Coins.tsx";
-import CachedImage from "../components/CachedImage.tsx";
-import { PositionedGameMenu } from "../components/GameMenu.tsx";
-import SpineAnimation, {
-  SpineAnimationRef,
-} from "../components/SpineAnimation.tsx";
-import { animationsData } from "../constants/spineAnimations.ts";
+import { Background } from "../../components/Background.tsx";
+import { CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import theme from "../../theme/theme.ts";
+import { getCardData } from "../../utils/getCardData.ts";
+import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { Coins } from "../store/Coins.tsx";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 
-const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
+import { useTranslation } from "react-i18next";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+
+const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
 
-const PreviewCard = () => {
-  const spineAnimationRef = useRef<SpineAnimationRef>(null);
-  const [showOverlay, setShowOverlay] = useState(false);
+const PreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -46,6 +37,15 @@ const PreviewCard = () => {
 
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation(["store"]);
+  /*   const [isOpenAnimationRunning, setIsOpenAnimationRunning] =
+    useState<boolean>(false); */
+
+  /*   const handleAnimationEnd = () => {
+    setIsOpenAnimationRunning(false);
+    setLockRedirection(false);
+    close();
+    navigate("/redirect/open-pack");
+  }; */
 
   if (!card) {
     return <p>Card not found.</p>;
@@ -62,6 +62,10 @@ const PreviewCard = () => {
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
+  const fontTitleSize = ["s", "s", "l"];
+  const fontSize = ["md", "md", "xl"];
+  const layoutWidth = ["95%", "90%", "70%"];
+
   const buyButton = (
     <Button
       onClick={() => {
@@ -70,8 +74,7 @@ const PreviewCard = () => {
           buyPack(pack)
             .then((response) => {
               if (response) {
-                spineAnimationRef.current?.playOpenBoxAnimation();
-                setLockRedirection(true);
+                navigate("/redirect/open-pack");
               } else {
                 setBuyDisabled(false);
               }
@@ -79,6 +82,8 @@ const PreviewCard = () => {
             .catch(() => {
               setBuyDisabled(false);
             });
+          // setIsOpenAnimationRunning(true);
+          // setLockRedirection(true);
         } else {
           buyCard(card);
           navigate(-1);
@@ -94,13 +99,6 @@ const PreviewCard = () => {
     </Button>
   );
 
-  const openAnimationCallBack = () => {
-    setShowOverlay(true);
-    setTimeout(() => {
-      navigate("/redirect/open-pack");
-    }, 1000);
-  };
-
   return (
     <Background type="home" dark>
       <PositionedGameMenu />
@@ -108,7 +106,7 @@ const PreviewCard = () => {
         <Flex
           flexDirection={"column"}
           justifyContent={"center"}
-          width="60%"
+          width={layoutWidth}
           margin={"0 auto"}
           bg="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
@@ -116,49 +114,38 @@ const PreviewCard = () => {
           boxShadow={`0px 0px 10px 1px ${white}`}
         >
           <Flex>
-            <Box width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-              {isPack && (
-                <SpineAnimation
-                  // jsonUrl={`/spine-animations/${pack.blister_pack_id}.json`}
-                  // atlasUrl={`/spine-animations/${pack.blister_pack_id}.atlas`}
-                  ref={spineAnimationRef}
-                  jsonUrl={`/spine-animations/basicPack.json`}
-                  atlasUrl={`/spine-animations/basicPack.atlas`}
-                  initialAnimation={animationsData.loopAnimation}
-                  hoverAnimation={animationsData.hoverAnimation}
-                  loopAnimation={animationsData.loopAnimation}
-                  openBoxAnimation={animationsData.openBoxAnimation}
-                  width={300}
-                  height={1400}
-                  xOffset={-150}
-                  scale={0.8}
-                  onOpenAnimationStart={openAnimationCallBack}
-                />
-              )}
-              {!isPack && (
-                <CachedImage
-                  src={
-                    isPack
-                      ? `Cards/${card.img}.png`
-                      : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
-                  }
-                  alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
-                  borderRadius="10px"
-                />
-              )}
-
+            <Box
+              width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+            >
+              {/*               <OpenAnimation
+                startAnimation={isOpenAnimationRunning}
+                onAnimationEnd={() => handleAnimationEnd()}
+              > */}
+              <CachedImage
+                src={
+                  isPack
+                    ? `Cards/${card.img}.png`
+                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
+                }
+                alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
+                borderRadius="10px"
+              />
               {/* </OpenAnimation> */}
             </Box>
 
             <Flex flexDirection={"column"} ml={"30px"} flex="1">
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="l" variant="italic">
+                <Heading size={["md", "md", "l"]} variant="italic" mb={4}>
                   {name}
                 </Heading>
                 <CachedImage
                   src={`/logos/jn-logo.png`}
                   alt={"JN logo"}
                   width="120px"
+                  display={["none", "none", "flex"]}
                 />
               </Flex>
 
@@ -167,7 +154,7 @@ const PreviewCard = () => {
                   <Box mt={"20px"}>
                     <Text
                       color="white"
-                      fontSize="lg"
+                      fontSize={fontTitleSize}
                       mb={2}
                       sx={{
                         position: "relative",
@@ -185,7 +172,7 @@ const PreviewCard = () => {
                     >
                       {t("store.preview-card.title.card-type")}
                     </Text>
-                    <Text color={neonGreen} fontSize="xl">
+                    <Text color={neonGreen} fontSize={fontSize}>
                       {card.isSpecial
                         ? t("store.preview-card.labels.special")
                         : card.isModifier
@@ -199,7 +186,7 @@ const PreviewCard = () => {
                 <Box>
                   <Text
                     color="white"
-                    fontSize="lg"
+                    fontSize={fontTitleSize}
                     mb={2}
                     sx={{
                       position: "relative",
@@ -217,7 +204,7 @@ const PreviewCard = () => {
                   >
                     {t("store.preview-card.title.description")}
                   </Text>
-                  <Text color={neonGreen} fontSize="xl">
+                  <Text color={neonGreen} fontSize={fontSize}>
                     {description}
                   </Text>
                   {card.temporary && (
@@ -231,7 +218,7 @@ const PreviewCard = () => {
                   <Box>
                     <Text
                       color="white"
-                      fontSize="lg"
+                      fontSize={fontTitleSize}
                       mb={2}
                       sx={{
                         position: "relative",
@@ -249,7 +236,7 @@ const PreviewCard = () => {
                     >
                       {t("store.preview-card.title.details")}
                     </Text>
-                    <Text color={neonGreen} fontSize="xl">
+                    <Text color={neonGreen} fontSize={fontSize}>
                       {details?.split("\n").map((line, index) => (
                         <span key={index}>
                           {line}
@@ -278,7 +265,7 @@ const PreviewCard = () => {
         </Flex>
 
         <Flex
-          width="60%"
+          width={layoutWidth}
           gap={4}
           m={1000}
           mt={8}
@@ -312,20 +299,8 @@ const PreviewCard = () => {
         </Flex>
       </Flex>
       <PositionedDiscordLink />
-      {showOverlay && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
-          backgroundColor="white"
-          zIndex="9999"
-          animation={`${fadeIn} 2s ease-out`}
-        />
-      )}
     </Background>
   );
 };
 
-export default PreviewCard;
+export default PreviewCardLayout;
