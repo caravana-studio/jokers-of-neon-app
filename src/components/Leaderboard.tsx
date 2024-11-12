@@ -8,7 +8,6 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
@@ -125,7 +124,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                         leader.level
                       )}
                     </Td>
-                    <Td>
+                    {/* <Td>
                       <RollingNumber n={leader.prize} />{" "}
                       <span
                         style={{
@@ -135,7 +134,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                       >
                         USDC
                       </span>
-                    </Td>
+                    </Td> */}
                   </Tr>
                 ))}
               {currentLeader && !currentLeaderIsInReducedLeaderboard && (

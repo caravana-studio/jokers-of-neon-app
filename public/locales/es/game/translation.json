@@ -6,6 +6,11 @@
     }
   },
   "game": {
+    "compact-round-data": {
+      "my-score": "Puntaje",
+      "target": "Objetivo",
+      "round": "Ronda {{round}}"
+    },
     "card-types": {
       "Common": "Tradicional",
       "Modifier": "Modificadora",
@@ -92,5 +97,6 @@
   "confirmation-modal": {
     "confirm": "Confirmar",
     "close": "Cerrar"
-  }
+  },
+  "points":"puntos"
 }
