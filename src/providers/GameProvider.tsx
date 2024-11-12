@@ -26,6 +26,7 @@ import { gameExists } from "../dojo/utils/getGame.tsx";
 import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
+import { Speed } from "../enums/speed.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
@@ -34,6 +35,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 
 interface IGameContext {
   gameId: number;
@@ -82,8 +84,8 @@ interface IGameContext {
   unPreSelectCard: (cardIndex: number) => void;
   sfxVolume: number;
   setSfxVolume: (vol: number) => void;
-  animationSpeedMultiplier: number;
-  setAnimationSpeedMultiplier: (speed: number) => void;
+  animationSpeed: Speed;
+  setAnimationSpeed: (speed: Speed) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -134,8 +136,8 @@ const GameContext = createContext<IGameContext>({
   unPreSelectCard: (_) => {},
   sfxVolume: 1,
   setSfxVolume: () => {},
-  animationSpeedMultiplier: 1,
-  setAnimationSpeedMultiplier: () => {},
+  animationSpeed: Speed.NORMAL,
+  setAnimationSpeed: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
@@ -143,7 +145,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
   const [sfxVolume, setSfxVolume] = useState(1);
-  const [animationSpeedMultiplier, setAnimationSpeedMultiplier] = useState(1);
+  const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
@@ -168,13 +170,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
 
-  const minimumDuration =
-    !game?.level || game?.level <= 15 ? 400 : game?.level > 20 ? 300 : 350;
-
-  const playAnimationDuration =
-    Math.max(700 - ((game?.level ?? 1) - 1) * 50, minimumDuration) *
-    animationSpeedMultiplier;
-
+  const playAnimationDuration = getPlayAnimationDuration(game?.level ?? 0, animationSpeed);
+    
   const { setAnimatedCard } = useCardAnimations();
 
   const {
@@ -743,7 +740,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
     const animationSpeed = localStorage.getItem(SETTINGS_ANIMATION_SPEED);
     if (animationSpeed !== null) {
-      setAnimationSpeedMultiplier(JSON.parse(animationSpeed));
+      setAnimationSpeed(JSON.parse(animationSpeed));
     }
   }, []);
 
@@ -754,9 +751,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     localStorage.setItem(
       SETTINGS_ANIMATION_SPEED,
-      JSON.stringify(animationSpeedMultiplier)
+      JSON.stringify(animationSpeed)
     );
-  }, [animationSpeedMultiplier]);
+  }, [animationSpeed]);
 
   const actions = {
     setPreSelectedCards,
@@ -787,8 +784,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         lockRedirection,
         discards,
         sfxVolume,
-        animationSpeedMultiplier,
-        setAnimationSpeedMultiplier,
+        animationSpeed,
+        setAnimationSpeed,
       }}
     >
       {children}

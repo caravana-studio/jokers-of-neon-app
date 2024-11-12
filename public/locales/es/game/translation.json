@@ -104,6 +104,11 @@
     "language": "Idioma",
     "sfx-volume": "Volumen de Efectos de Sonido",
     "music-volume": "Volumen de la Música",
-    "anim-speed": "Velocidad de Animación"
+    "anim-speed": "Velocidad de Animación",
+    "speed": {
+      "normal": "Normal",
+      "fast": "Rápido",
+      "fastest": "Más rápido"
+    }
   }
 }

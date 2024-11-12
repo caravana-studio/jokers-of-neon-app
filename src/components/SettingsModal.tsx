@@ -25,6 +25,7 @@ import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
 import { MdGraphicEq } from "react-icons/md";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { Speed } from "../enums/speed";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -34,8 +35,8 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const {
     sfxVolume,
     setSfxVolume,
-    animationSpeedMultiplier,
-    setAnimationSpeedMultiplier,
+    animationSpeed,
+    setAnimationSpeed,
   } = useGameContext();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
   const { isSmallScreen } = useResponsiveValues();
@@ -139,14 +140,14 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 size="lg"
                 variant="outline"
                 focusBorderColor="teal.500"
-                value={animationSpeedMultiplier}
+                value={animationSpeed}
                 onChange={(evt) =>
-                  setAnimationSpeedMultiplier(Number(evt.target.value))
+                  setAnimationSpeed(evt.target.value as Speed)
                 }
               >
-                <option value={0.35}>x3</option>
-                <option value={0.5}>x2</option>
-                <option value={1}>x1</option>
+                <option value={Speed.NORMAL}>{t("settings-modal.speed.normal")}</option>
+                <option value={Speed.FAST}>{t("settings-modal.speed.fast")}</option>
+                <option value={Speed.FASTEST}>{t("settings-modal.speed.fastest")}</option>
               </Select>
             </Flex>
           </Flex>
