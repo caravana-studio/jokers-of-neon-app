@@ -139,8 +139,8 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-2",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", { ns: "tutorials" }),
+      title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.modifiers.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "auto",
       disableScrollParentFix: true,

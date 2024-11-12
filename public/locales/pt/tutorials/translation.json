@@ -34,6 +34,10 @@
     "specialCards": {
       "title": "Cartas Especiais",
       "content": "As cartas especiais mudam o jogo, aplicando efeitos únicos às cartas que você joga. Elas podem ser compradas na loja."
+    },
+    "modifiers": {
+      "title": "Cartas Modificadoras",
+      "content": "As modificadoras são extremamente úteis! Neste caso, o modificador de naipe muda o naipe de uma carta. Arraste e solte a carta no 10, depois clique em 'Continuar' para prosseguir."
     }
   },
   "storeTutorial": {

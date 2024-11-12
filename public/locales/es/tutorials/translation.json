@@ -34,6 +34,10 @@
     "specialCards": {
       "title": "Cartas Especiales",
       "content": "Las cartas especiales son un cambio radical, ya que aplican efectos únicos a las cartas que juegas. Puedes comprarlas en la tienda."
+    },
+    "modifiers": {
+      "title": "Cartas Modificadoras",
+      "content": "¡Las modificadoras son increíblemente útiles! En este caso, el modificador de palo cambia el palo de una carta. Arrastra y suelta la carta sobre el 10, luego haz clic en 'Continuar' para proceder."
     }
   },
   "storeTutorial": {

@@ -34,6 +34,10 @@
     "specialCards": {
       "title": "Special Cards",
       "content": "Special cards are game changers, applying unique effects to the cards you play. You can purchase them in the store."
+    },
+    "modifiers": {
+      "title": "Modifier Cards",
+      "content": "Modifiers are incredibly useful! In this case, the suit modifier changes the suit of a card. Drag and drop the card onto the 10, then click 'Next' to proceed."
     }
   },
   "storeTutorial": {
