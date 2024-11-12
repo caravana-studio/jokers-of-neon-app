@@ -67,7 +67,7 @@ export const GameContent = () => {
   }, []);
 
   useEffect(() => {
-    if (stepIndex === 17) {
+    if (stepIndex === 18) {
       setTimeout(() => {
         setAutoStep(true);
         setStepIndex(stepIndex + 1);

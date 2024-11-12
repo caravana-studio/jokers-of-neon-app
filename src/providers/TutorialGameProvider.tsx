@@ -14,7 +14,9 @@ import {
   H3,
   H7,
   C10,
+  C7,
 } from "../utils/mocks/cardMocks";
+import { ClubModifier } from "../utils/mocks/modifierMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
 import { useAudio } from "../hooks/useAudio";
 import {
@@ -31,6 +33,7 @@ import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { PlayEvents } from "../types/ScoreData";
 import { useGameState } from "../state/useGameState";
 import { useCardAnimations } from "./CardAnimationsProvider";
+import { changeCardSuit } from "../utils/changeCardSuit";
 
 const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
@@ -88,6 +91,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const gameID = getLSGameId();
   const [hand, setHand] = useState<Card[]>([]);
   const [score, setScore] = useState<number>(0);
+  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
+    [key: number]: number[];
+  }>({});
   const state = useGameState();
 
   const { setPlayIsNeon, setPlayAnimation } = state;
@@ -104,11 +110,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   cq.idx = D2.idx;
   cq.id = D2.id;
 
-  const c10 = C10;
-  c10.idx = H10.idx;
-  c10.id = H10.id;
+  const cm = ClubModifier;
+  cm.idx = H7.idx;
+  cm.id = H7.id;
 
-  const cards: Card[] = [cq, c10];
+  const cards: Card[] = [cq, cm];
 
   const {
     setup: {
@@ -134,7 +140,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      let play = checkHand(context.hand, preSelectedCards, [], []);
+      let play = checkHand(
+        context.hand,
+        preSelectedCards,
+        [],
+        preSelectedModifiers
+      );
       setPreSelectedPlay(play);
       if (plays?.length != 0) {
         setMultiAndPoints(play);
@@ -160,14 +171,41 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     setPoints(points);
   };
 
+  const getModifiers = (preSelectedCardIndex: number) => {
+    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
+
+    return (
+      modifierIndexes?.map((modifierIdx) => {
+        return hand.find((c) => c.idx === modifierIdx)!;
+      }) ?? []
+    );
+  };
+
   const cardIsPreselected = (cardIndex: number) => {
     return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
   };
 
   const preSelectCard = (cardIndex: number) => {
-    setPreSelectedCards((prev) => {
-      return [...prev, cardIndex];
-    });
+    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 7) {
+      setPreSelectedCards((prev) => {
+        return [...prev, cardIndex];
+      });
+    }
+  };
+
+  const addModifier = (cardIdx: number, modifierIdx: number) => {
+    const modifiers = preSelectedModifiers[cardIdx] ?? [];
+
+    if (modifiers.length < 1) {
+      const newModifiers = [...modifiers, modifierIdx];
+
+      setPreSelectedModifiers((prev) => {
+        return {
+          ...prev,
+          [cardIdx]: newModifiers,
+        };
+      });
+    }
   };
 
   const unPreSelectCard = (cardIndex: number) => {
@@ -259,7 +297,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
                     return {
                       ...card,
                       suit: event.suit,
-                      // img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
+                      img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
                     };
                   }
                   return card;
@@ -525,7 +563,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     gameOver: false,
     specialSuitEvents: [],
     globalEvents: [],
-    modifierSuitEvents: [],
+    modifierSuitEvents: [{ idx: 34, suit: 1 }],
     cards: [],
     score: 3624,
     cashEvents: [],
@@ -561,6 +599,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.multi = multi;
   context.score = score;
   context.specialCards = [MultipliedClubs];
+  context.preSelectedModifiers = preSelectedModifiers;
+
   if (hand.length > 0) context.hand = hand;
 
   const actions = {
@@ -569,6 +609,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     play,
     preSelectCard,
     unPreSelectCard,
+    addModifier,
+    getModifiers,
   };
 
   return (
