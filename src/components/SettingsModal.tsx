@@ -35,6 +35,8 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const {
     sfxVolume,
     setSfxVolume,
+    sfxOn,
+    setSfxOn,
     animationSpeed,
     setAnimationSpeed,
   } = useGameContext();
@@ -88,12 +90,24 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {sfxLbl}
               </Text>
+              <AudioPlayer
+                sx={{
+                  position: "relative",
+                  bottom: "auto",
+                  left: "auto",
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                }}
+                isEnabled={sfxOn}
+                onClick={() => setSfxOn(!sfxOn)}
+              />
               <Slider
                 min={0}
                 max={1}
                 step={0.25}
                 value={sfxVolume}
                 onChange={(value) => setSfxVolume(value)}
+                isDisabled={!sfxOn}
               >
                 <SliderTrack>
                   <SliderFilledTrack bg={NEON_PINK} />
@@ -141,13 +155,17 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 variant="outline"
                 focusBorderColor="teal.500"
                 value={animationSpeed}
-                onChange={(evt) =>
-                  setAnimationSpeed(evt.target.value as Speed)
-                }
+                onChange={(evt) => setAnimationSpeed(evt.target.value as Speed)}
               >
-                <option value={Speed.NORMAL}>{t("settings-modal.speed.normal")}</option>
-                <option value={Speed.FAST}>{t("settings-modal.speed.fast")}</option>
-                <option value={Speed.FASTEST}>{t("settings-modal.speed.fastest")}</option>
+                <option value={Speed.NORMAL}>
+                  {t("settings-modal.speed.normal")}
+                </option>
+                <option value={Speed.FAST}>
+                  {t("settings-modal.speed.fast")}
+                </option>
+                <option value={Speed.FASTEST}>
+                  {t("settings-modal.speed.fastest")}
+                </option>
               </Select>
             </Flex>
           </Flex>

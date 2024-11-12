@@ -10,7 +10,9 @@ import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
+  SFX_ON,
   SORT_BY_SUIT,
+  SOUND_OFF,
 } from "../constants/localStorage";
 import {
   discardSfx,
@@ -86,6 +88,8 @@ interface IGameContext {
   setSfxVolume: (vol: number) => void;
   animationSpeed: Speed;
   setAnimationSpeed: (speed: Speed) => void;
+  sfxOn: boolean;
+  setSfxOn: (sfxOn: boolean) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -136,6 +140,8 @@ const GameContext = createContext<IGameContext>({
   unPreSelectCard: (_) => {},
   sfxVolume: 1,
   setSfxVolume: () => {},
+  sfxOn: true,
+  setSfxOn: () => {},
   animationSpeed: Speed.NORMAL,
   setAnimationSpeed: () => {},
 });
@@ -144,6 +150,7 @@ export const useGameContext = () => useContext(GameContext);
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  const [sfxOn, setSfxOn] = useState(!localStorage.getItem(SFX_ON));
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
 
@@ -170,8 +177,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
 
-  const playAnimationDuration = getPlayAnimationDuration(game?.level ?? 0, animationSpeed);
-    
+  const playAnimationDuration = getPlayAnimationDuration(
+    game?.level ?? 0,
+    animationSpeed
+  );
+
   const { setAnimatedCard } = useCardAnimations();
 
   const {
@@ -749,6 +759,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [sfxVolume]);
 
   useEffect(() => {
+    if (!sfxOn) localStorage.removeItem(SFX_ON);
+    else localStorage.setItem(SFX_ON, "true");
+  }, [sfxOn]);
+
+  useEffect(() => {
     localStorage.setItem(
       SETTINGS_ANIMATION_SPEED,
       JSON.stringify(animationSpeed)
@@ -786,6 +801,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sfxVolume,
         animationSpeed,
         setAnimationSpeed,
+        sfxOn,
+        setSfxOn,
       }}
     >
       {children}

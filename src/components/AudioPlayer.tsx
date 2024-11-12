@@ -5,10 +5,19 @@ import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 
 interface AudioPlayerProps {
   sx?: SystemStyleObject;
+  isEnabled?: boolean;
+  onClick?: () => void;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ sx }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({
+  sx,
+  isEnabled,
+  onClick,
+}) => {
   const { isPlaying, toggleSound } = useAudioPlayer();
+  const effectiveIsEnabled = isEnabled ?? isPlaying;
+  const effectiveOnClick = onClick ?? toggleSound;
+
   return (
     <Box
       sx={{
@@ -19,8 +28,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ sx }) => {
         ...sx,
       }}
     >
-      <Box sx={{ cursor: "pointer" }} onClick={toggleSound}>
-        {isPlaying ? (
+      <Box sx={{ cursor: "pointer" }} onClick={effectiveOnClick}>
+        {effectiveIsEnabled ? (
           <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeHigh} />
         ) : (
           <FontAwesomeIcon color="white" fontSize={20} icon={faVolumeXmark} />
