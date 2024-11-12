@@ -11,6 +11,7 @@ import SpineAnimation, {
   SpineAnimationRef,
 } from "../../components/SpineAnimation.tsx";
 import { animationsData } from "../../constants/spineAnimations.ts";
+import { isMobile } from "react-device-detect";
 
 export const PreviewPack = () => {
   const { state } = useLocation();
@@ -82,7 +83,7 @@ export const PreviewPack = () => {
   );
 
   const spineAnim = (
-    <Flex width={"50%"}>
+    <Flex width={isMobile ? "100%" : "50%"}>
       <SpineAnimation
         ref={spineAnimationRef}
         jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}

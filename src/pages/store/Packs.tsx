@@ -44,7 +44,12 @@ export const Packs = () => {
             card_id: Number(pack.blister_pack_id),
           };
           return (
-            <Tooltip hasArrow label={getTooltip(card, true)} closeOnPointerDown>
+            <Tooltip
+              hasArrow
+              label={getTooltip(card, true)}
+              closeOnPointerDown
+              key={`pack-${pack.blister_pack_id}`}
+            >
               <Flex
                 key={`pack-${pack.blister_pack_id}`}
                 justifyContent="center"
