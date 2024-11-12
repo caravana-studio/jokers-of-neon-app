@@ -13,7 +13,7 @@ import {
   H10,
   H3,
   H7,
-  JOKER1,
+  C10,
 } from "../utils/mocks/cardMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
 import { useAudio } from "../hooks/useAudio";
@@ -104,11 +104,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   cq.idx = D2.idx;
   cq.id = D2.id;
 
-  const joker = JOKER1;
-  joker.idx = H10.idx;
-  joker.id = H10.id;
+  const c10 = C10;
+  c10.idx = H10.idx;
+  c10.id = H10.id;
 
-  const cards: Card[] = [cq, joker];
+  const cards: Card[] = [cq, c10];
 
   const {
     setup: {
@@ -470,6 +470,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     },
     cardScore: [
       {
+        idx: 34,
+        multi: 0,
+        points: 10,
+      },
+      {
         idx: 9,
         multi: 0,
         points: 10,
@@ -489,13 +494,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         multi: 0,
         points: 11,
       },
-      {
-        idx: 34,
-        multi: 0,
-        points: 100,
-      },
     ],
     specialCards: [
+      {
+        special_idx: 0,
+        idx: 34,
+        multi: 2,
+      },
       {
         special_idx: 0,
         idx: 9,
@@ -522,7 +527,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     globalEvents: [],
     modifierSuitEvents: [],
     cards: [],
-    score: 3630,
+    score: 3624,
     cashEvents: [],
   };
 
