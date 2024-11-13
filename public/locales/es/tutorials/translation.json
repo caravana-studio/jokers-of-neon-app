@@ -37,7 +37,8 @@
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "¡Las modificadoras son increíblemente útiles! En este caso, el modificador de palo cambia el palo de una carta. Arrastra y suelta la carta sobre el 10, luego haz clic en 'Continuar' para proceder."
+      "content": "¡Las modificadoras son increíblemente útiles! En este caso, el modificador de palo cambia el palo de una carta.",
+      "drag": "Arrastra y suelta la carta sobre el 10, luego haz clic en 'Continuar' para proceder."
     }
   },
   "storeTutorial": {

@@ -70,7 +70,7 @@ export const MobileGameContent = () => {
   }, []);
 
   useEffect(() => {
-    if (stepIndex === 17) {
+    if (stepIndex === 19) {
       setTimeout(() => {
         setAutoStep(true);
         setStepIndex(stepIndex + 1);

@@ -37,7 +37,8 @@
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "As modificadoras são extremamente úteis! Neste caso, o modificador de naipe muda o naipe de uma carta. Arraste e solte a carta no 10, depois clique em 'Continuar' para prosseguir."
+      "content": "As modificadoras são extremamente úteis! Neste caso, o modificador de naipe muda o naipe de uma carta.",
+      "drag": "Arraste e solte a carta no 10, depois clique em 'Continuar' para prosseguir."
     }
   },
   "storeTutorial": {
