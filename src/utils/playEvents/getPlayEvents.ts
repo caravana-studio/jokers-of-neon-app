@@ -1,4 +1,4 @@
-import { GAME_OVER_EVENT } from "../../constants/dojoEventKeys";
+import { GAME_OVER_EVENT, SECOND_CHANCE_EVENT } from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";
@@ -31,6 +31,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),
     cashEvents: getCashEvents(events),
+    secondChanceEvent: !!events.find((event) => event.keys[0] === SECOND_CHANCE_EVENT),
   };
 
   return playEvents;
