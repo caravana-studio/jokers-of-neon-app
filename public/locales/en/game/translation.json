@@ -82,7 +82,8 @@
       "new-game-btn": "Start new game",
       "tutorial-btn": "See tutorial",
       "sound-btn": "Turn sound",
-      "logout-btn": "Logout"
+      "logout-btn": "Logout",
+      "settings-btn": "Settings"
     },
     "plays": {
       "title": "Available plays",
@@ -98,5 +99,17 @@
     "confirm": "Confirm",
     "close": "Close"
   },
-  "points":"points"
+  "points":"points",
+  "settings-modal": {
+    "title": "Settings",
+    "language": "Language",
+    "sfx-volume": "Sound Effect Volume",
+    "music-volume": "Music Volume",
+    "anim-speed": "Animation Speed",
+    "speed": {
+      "normal": "Normal",
+      "fast": "Fast",
+      "fastest": "Fastest"
+    }
+  }
 }

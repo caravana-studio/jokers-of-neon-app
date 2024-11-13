@@ -82,7 +82,8 @@
       "new-game-btn": "Iniciar novo jogo",
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Ativar som",
-      "logout-btn": "Sair"
+      "logout-btn": "Sair",
+      "settings-btn": "Configuração"
     },
     "plays": {
       "title": "Jogadas disponíveis",
@@ -98,5 +99,17 @@
     "confirm": "Confirmar",
     "close": "Fechar"
   },
-  "points":"pontos"
+  "points": "pontos",
+  "settings-modal": {
+    "title": "Configuração",
+    "language": "Idioma",
+    "sfx-volume": "Volume dos Efeitos Sonoros",
+    "music-volume": "Volume da Música",
+    "anim-speed": "Velocidade da Animação",
+    "speed": {
+      "normal": "Normal",
+      "fast": "Rápido",
+      "fastest": "Mais rápido"
+    }
+  }
 }
