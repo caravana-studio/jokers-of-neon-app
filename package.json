@@ -26,6 +26,7 @@
     "@dojoengine/utils": "1.0.0-alpha.15",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@esotericsoftware/spine-player": "^4.2.36",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",

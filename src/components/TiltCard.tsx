@@ -24,6 +24,8 @@ import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
+import { useTranslation } from "react-i18next";
 import { PriceBox } from "./PriceBox.tsx";
 
 interface ICardProps {
@@ -49,6 +51,7 @@ export const TiltCard = ({
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
 
   const isSilent = useIsSilent(card);
+  const { t } = useTranslation(["store"]);
 
   const tiltCardComponent = (
     <Box
@@ -145,7 +148,7 @@ export const TiltCard = ({
               }}
             >
               <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                PURCHASED
+                {t("store.labels.purchased").toUpperCase()}
               </Heading>
             </Box>
           )}
