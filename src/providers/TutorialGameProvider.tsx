@@ -34,6 +34,7 @@ import { PlayEvents } from "../types/ScoreData";
 import { useGameState } from "../state/useGameState";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { Speed } from "../enums/speed.ts";
 
 const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
@@ -79,6 +80,12 @@ const mockTutorialGameContext = createContext<IGameContext>({
   discards: 1,
   preSelectCard: () => {},
   unPreSelectCard: () => {},
+  sfxVolume: 100,
+  setSfxVolume: (vol: number) => {},
+  animationSpeed: Speed.NORMAL,
+  setAnimationSpeed: (speed: Speed) => {},
+  sfxOn: true,
+  setSfxOn: (sfxOn: boolean) => {},
 });
 
 export let handsLeftTutorial = 1;
