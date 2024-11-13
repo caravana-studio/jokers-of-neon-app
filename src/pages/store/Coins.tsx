@@ -24,7 +24,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
       />
       <Heading
         variant={"italic"}
-        size={{base: 's', sm: "m"}}
+        size={{base: 's', sm: "s"}}
         sx={{
           ml: 2,
           position: "relative",

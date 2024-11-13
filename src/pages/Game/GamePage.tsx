@@ -13,6 +13,8 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { useCardAnimations } from "../../providers/CardAnimationsProvider";
+import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 
 export const GamePage = () => {
   const {
@@ -30,6 +32,9 @@ export const GamePage = () => {
     gameId,
     lockRedirection,
   } = useGameContext();
+
+  const { animateSecondChanceCard } = useCardAnimations();
+
   const rageRound = useRageRound();
   const rageCards = useRageCards();
   const navigate = useNavigate();
@@ -69,6 +74,7 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
+      {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {isSmallScreen ? (
         <CardHighlightProvider>
           <MobileGameContent />

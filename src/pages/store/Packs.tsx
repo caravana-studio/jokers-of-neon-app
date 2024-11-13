@@ -1,66 +1,74 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
+import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import { TiltCard } from "../../components/TiltCard";
+import SpineAnimation from "../../components/SpineAnimation";
+import { animationsData } from "../../constants/spineAnimations";
 import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { getTooltip } from "../../utils/getTooltip";
 
 export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
-  const { t } = useTranslation(["store"]);
-  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
-
-  if (!isCardScaleCalculated) {
-    return null;
-  }
 
   return (
-    <Box m={4} className="game-tutorial-step-packs">
-      <Flex justifyContent="space-between" alignItems="center">
-        <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
-          {t("store.titles.packs")}
-        </Heading>
-      </Flex>
-      <Flex flexDirection="row" justifyContent="flex-start" gap={[2, 4, 6]}>
+    <Flex
+      className="game-tutorial-step-packs"
+      m={isMobile ? 4 : 0}
+      h='60%'
+    >
+      <Flex
+        flexDirection="row"
+        justifyContent="space-between"
+        
+      >
         {packs.map((pack) => {
+          const card = {
+            id: pack.blister_pack_id.toString(),
+            img: `packs/${pack.blister_pack_id}`,
+            idx: Number(pack.blister_pack_id),
+            price: Number(pack.cost),
+            card_id: Number(pack.blister_pack_id),
+          };
           return (
-            <Flex key={`pack-${pack.blister_pack_id}`} justifyContent="center">
-              <TiltCard
-                cursor="pointer"
-                card={{
-                  id: pack.blister_pack_id.toString(),
-                  card_id: Number(pack.blister_pack_id),
-                  img: `packs/${pack.blister_pack_id}.png`,
-                  idx: Number(pack.blister_pack_id),
-                  purchased: Boolean(pack.purchased),
-                  price: Number(pack.cost),
-                }}
-                isPack
-                scale={cardScale * 1.2}
-                onClick={() => {
-                  if (!pack.purchased) {
-                    navigate("/preview/pack", {
-                      state: {
-                        card: {
-                          id: pack.blister_pack_id.toString(),
-                          img: `packs/${pack.blister_pack_id}`,
-                          idx: Number(pack.blister_pack_id),
-                          price: Number(pack.cost),
-                          card_id: Number(pack.blister_pack_id),
-                        },
-                        isPack: true,
-                        pack: pack,
-                      },
-                    });
+            <Tooltip
+              hasArrow
+              label={getTooltip(card, true)}
+              closeOnPointerDown
+              key={`pack-${pack.blister_pack_id}`}
+            >
+              <Flex
+                key={`pack-${pack.blister_pack_id}`}
+                justifyContent="center"
+                w='50%'
+              >
+                <SpineAnimation
+                  jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
+                  atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
+                  initialAnimation={
+                    isMobile
+                      ? animationsData.loopAnimation
+                      : animationsData.initialAnimation
                   }
-                }}
-                isHolographic
-              />
-            </Flex>
+                  hoverAnimation={animationsData.hoverAnimation}
+                  loopAnimation={animationsData.loopAnimation}
+                  isPurchased={pack.purchased.valueOf()}
+                  onClick={() => {
+                    if (!pack.purchased) {
+                      navigate("/preview/pack", {
+                        state: {
+                          card: card,
+                          isPack: true,
+                          pack: pack,
+                        },
+                      });
+                    }
+                  }}
+                />
+              </Flex>
+            </Tooltip>
           );
         })}
       </Flex>
-    </Box>
+    </Flex>
   );
 };

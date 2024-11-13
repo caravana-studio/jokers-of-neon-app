@@ -6,6 +6,7 @@
       "special-cards": "Special cards",
       "go-to": "Go to",
       "next-level": "Next level",
+      "purchased": "Purchased",
       "coins": "Coins:"
     },
     "titles": {
@@ -45,11 +46,7 @@
         "traditional": "Traditional",
         "temporary": "Temporary",
         "close": "Close",
-        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels.",
-        "tooltip": {
-          "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card",
-          "no-coins":"You don't have enough coins to buy this item"
-        }
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
       }
     },
     "packs": {
@@ -60,7 +57,12 @@
       "error-lbl": "You can't continue because you have more special cards than the maximum allowed",
       "confirmation-modal": {
         "head": "No cards selected",
-        "description": "You have selected no cards. Are you sure you want to continue?"
+        "description": "You have selected no cards. Are you sure you want to continue?",
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels.",
+        "tooltip": {
+          "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card",
+          "no-coins": "You don't have enough coins to buy this item"
+        }
       }
     },
     "special-slot": {

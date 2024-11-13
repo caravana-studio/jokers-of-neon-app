@@ -6,6 +6,7 @@
       "special-cards": "especiales",
       "go-to": "Ir al",
       "next-level": "Siguiente nivel",
+      "purchased": "Comprado",
       "coins": "Monedas:"
     },
     "titles": {
@@ -45,11 +46,7 @@
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
-        "tooltip": {
-          "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
-          "no-coins": "No tienes suficientes monedas para comprar este item"
-        }
+        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
       }
     },
     "packs": {
@@ -60,7 +57,12 @@
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",
-        "description": "No has seleccionado ninguna carta. ¿Estás seguro de que quieres continuar?"
+        "description": "No has seleccionado ninguna carta. ¿Estás seguro de que quieres continuar?",
+        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
+        "tooltip": {
+          "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
+          "no-coins": "No tienes suficientes monedas para comprar este item"
+        }
       }
     },
     "special-slot": {

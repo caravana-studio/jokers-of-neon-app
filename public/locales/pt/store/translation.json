@@ -6,6 +6,7 @@
       "special-cards": "Cartas especiais",
       "go-to": "Ir para",
       "next-level": "Próximo nível",
+      "purchased": "Comprado",
       "coins": "Moedas:"
     },
     "titles": {
@@ -45,11 +46,7 @@
         "traditional": "Tradicional",
         "temporary": "Temporário",
         "close": "Fechar",
-        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
-        "tooltip": {
-          "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
-          "no-coins": "Você não tem moedas suficientes para comprar este item"
-        }
+        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis."
       }
     },
     "packs": {
@@ -60,7 +57,12 @@
       "error-lbl": "Você não pode continuar porque tem mais cartas especiais do que o máximo permitido",
       "confirmation-modal": {
         "head": "Nenhuma carta selecionada",
-        "description": "Você não selecionou nenhuma carta. Tem certeza de que deseja continuar?"
+        "description": "Você não selecionou nenhuma carta. Tem certeza de que deseja continuar?",
+        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
+        "tooltip": {
+          "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
+          "no-coins": "Você não tem moedas suficientes para comprar este item"
+        }
       }
     },
     "special-slot": {

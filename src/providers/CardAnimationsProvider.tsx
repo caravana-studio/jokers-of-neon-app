@@ -4,6 +4,8 @@ import { Suits } from "../enums/suits";
 interface ICardAnimationsContext {
   animatedCard: IAnimatedCard | undefined;
   setAnimatedCard: (card: IAnimatedCard | undefined) => void;
+  animateSecondChanceCard: boolean;
+  setAnimateSecondChanceCard: (animate: boolean) => void;
 }
 
 interface IAnimatedCard {
@@ -19,16 +21,21 @@ interface IAnimatedCard {
 const CardAnimationsContext = createContext<ICardAnimationsContext>({
   animatedCard: undefined,
   setAnimatedCard: (_) => {},
+  animateSecondChanceCard: false,
+  setAnimateSecondChanceCard: (_) => {},
 });
 export const useCardAnimations = () => useContext(CardAnimationsContext);
 
 export const CardAnimationsProvider = ({ children }: PropsWithChildren) => {
   const [animatedCard, setAnimatedCard] = useState<IAnimatedCard | undefined>();
+  const [animateSecondChanceCard, setAnimateSecondChanceCard] = useState(false);
   return (
     <CardAnimationsContext.Provider
       value={{
         animatedCard,
         setAnimatedCard,
+        animateSecondChanceCard,
+        setAnimateSecondChanceCard,
       }}
     >
       {children}

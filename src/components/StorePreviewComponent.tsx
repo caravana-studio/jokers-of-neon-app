@@ -1,4 +1,12 @@
-import { Box, Button, Flex, HStack, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  Text,
+  keyframes,
+} from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +31,9 @@ interface IStorePreviewComponent {
   extraDescription?: string;
   details?: string;
   price: number;
+  isPack?: boolean;
+  spine?: JSX.Element;
+  showOverlay?: boolean;
 }
 
 export const StorePreviewComponent = ({
@@ -34,9 +45,17 @@ export const StorePreviewComponent = ({
   extraDescription,
   details,
   price,
+  isPack = false,
+  spine,
+  showOverlay,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
+
+  const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
 
   return (
     <Background type="home" dark scrollOnMobile>
@@ -65,8 +84,19 @@ export const StorePreviewComponent = ({
             flex="1"
             height="100%"
           >
-            <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
-              {image}
+            {!isPack && (
+              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+                {image}
+              </Flex>
+            )}
+
+            <Flex
+              w={{ base: "100%", sm: "35%" }}
+              h="100%"
+              justifyContent="center"
+              flexDir="column"
+            >
+              {spine}
             </Flex>
 
             <Flex
@@ -219,6 +249,18 @@ export const StorePreviewComponent = ({
           </HStack>
         </Flex>
       </Flex>
+      {showOverlay && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          backgroundColor="white"
+          zIndex="9999"
+          animation={`${fadeIn} 0.5s ease-out`}
+        />
+      )}
       <PositionedDiscordLink />
     </Background>
   );
