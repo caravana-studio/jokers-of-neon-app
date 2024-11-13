@@ -190,7 +190,7 @@ export const MobileGameContent = () => {
           steps={TUTORIAL_STEPS}
           run={run}
           continuous
-          showProgress
+          showProgress={false}
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
