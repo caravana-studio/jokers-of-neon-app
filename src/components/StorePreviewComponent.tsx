@@ -90,7 +90,14 @@ export const StorePreviewComponent = ({
               </Flex>
             )}
 
-            {spine}
+            <Flex
+              w={{ base: "100%", sm: "35%" }}
+              h="100%"
+              justifyContent="center"
+              flexDir="column"
+            >
+              {spine}
+            </Flex>
 
             <Flex
               flexDirection={"column"}
@@ -251,7 +258,7 @@ export const StorePreviewComponent = ({
           bottom="0"
           backgroundColor="white"
           zIndex="9999"
-          animation={`${fadeIn} 2s ease-out`}
+          animation={`${fadeIn} 0.5s ease-out`}
         />
       )}
       <PositionedDiscordLink />

@@ -1,17 +1,16 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
 import { Packs } from "./Packs.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
-import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
-import { useTranslation } from "react-i18next";
-import CachedImage from "../../components/CachedImage.tsx";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import useStoreContent from "./UseStoreContent.ts";
 
 export const StoreContent = () => {
   const {
@@ -47,7 +46,7 @@ export const StoreContent = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <Box
+        <Flex
           display="flex"
           flexWrap="nowrap"
           alignItems="center"
@@ -59,24 +58,22 @@ export const StoreContent = () => {
           overflowY={"hidden"}
         >
           <Box
+            h='100%'
             display="flex"
-            w={"45%"}
+            w={"40%"}
             flexDirection="column"
             justifyContent="space-between"
             pb={0}
             pt={0}
             pl={"2%"}
           >
-            <Flex flexDirection={"column"} gap={4} mb={0}>
-              <Heading variant="italic" size="l" ml={4}>
-                {t("store.titles.level-game").toUpperCase()}
-              </Heading>
-            </Flex>
+            <Heading variant="italic" ml={4}>
+              {t("store.titles.level-game").toUpperCase()}
+            </Heading>
             <Packs />
             <Flex mt={8}>
               <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
             </Flex>
-            <Coins rolling />
           </Box>
           <Box
             w={"auto"}
@@ -115,7 +112,7 @@ export const StoreContent = () => {
           <Box
             display="flex"
             flexDirection={"column"}
-            w={"15%"}
+            w={"20%"}
             h={"100%"}
             justifyContent={"space-between"}
             gap={10}
@@ -147,15 +144,11 @@ export const StoreContent = () => {
                   specialCards={specialCards}
                   isSmallScreen={false}
                 />
-                <CachedImage
-                  src="/logos/logo-variant.svg"
-                  alt="store-bg"
-                  width="90%"
-                />
+                <Coins rolling />
               </Flex>
             </>
           </Box>
-        </Box>
+        </Flex>
       </Flex>
       <PositionedDiscordLink />
     </>

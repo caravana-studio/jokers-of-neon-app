@@ -16,7 +16,7 @@ interface SpineAnimationProps {
   atlasUrl: string;
   onClick?: () => void;
   initialAnimation: string;
-  hoverAnimation: string;
+  hoverAnimation?: string;
   loopAnimation: string;
   openBoxAnimation?: string;
   width?: number;
@@ -64,7 +64,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       playOpenBoxAnimation: () => {
         if (playerRef.current && openBoxAnimation) {
           const player = playerRef.current;
-          player.setAnimation(hoverAnimation, false);
+          hoverAnimation && player.setAnimation(hoverAnimation, false);
           const track = player.setAnimation(openBoxAnimation, false);
           if (track) {
             track.timeScale = openAnimationSpeed;
@@ -134,7 +134,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     useEffect(() => {
       if (playerReady && playerRef.current && !isPurchased) {
         if (isHovered) {
-          playerRef.current.setAnimation(hoverAnimation, false);
+          hoverAnimation && playerRef.current.setAnimation(hoverAnimation, false);
           playerRef.current.addAnimation(loopAnimation, true);
         } else {
           const animState = playerRef.current.animationState;

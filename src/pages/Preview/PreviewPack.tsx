@@ -1,17 +1,17 @@
-import { Box, Button, Flex, Tooltip, keyframes } from "@chakra-ui/react";
+import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
-import { getCardData } from "../../utils/getCardData.ts";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../../components/SpineAnimation.tsx";
+import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { animationsData } from "../../constants/spineAnimations.ts";
-import { isMobile } from "react-device-detect";
+import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import { getCardData } from "../../utils/getCardData.ts";
 
 export const PreviewPack = () => {
   const { state } = useLocation();
@@ -36,7 +36,9 @@ export const PreviewPack = () => {
   const notEnoughCash = !card.price || cash < card.price;
 
   const openAnimationCallBack = () => {
-    setShowOverlay(true);
+    setTimeout(() => {
+      setShowOverlay(true);
+    }, 500);
     setTimeout(() => {
       navigate("/redirect/open-pack");
     }, 1000);
@@ -83,22 +85,19 @@ export const PreviewPack = () => {
   );
 
   const spineAnim = (
-    <Flex width={isMobile ? "100%" : "50%"}>
       <SpineAnimation
         ref={spineAnimationRef}
         jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
         atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
         initialAnimation={animationsData.loopAnimation}
-        hoverAnimation={animationsData.hoverAnimation}
         loopAnimation={animationsData.loopAnimation}
         openBoxAnimation={animationsData.openBoxAnimation}
-        width={500}
+        width={1200}
         height={1400}
-        xOffset={-150}
+        xOffset={-700}
         scale={1}
         onOpenAnimationStart={openAnimationCallBack}
       />
-    </Flex>
   );
 
   return (

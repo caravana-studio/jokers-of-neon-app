@@ -1,39 +1,25 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import { useShopItems } from "../../dojo/queries/useShopItems";
-import { useTranslation } from "react-i18next";
 import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
+import { useShopItems } from "../../dojo/queries/useShopItems";
 import { getTooltip } from "../../utils/getTooltip";
-import { isMobile } from "react-device-detect";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
-  const { t } = useTranslation(["store"]);
-  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
-
-  if (!isCardScaleCalculated) {
-    return null;
-  }
 
   return (
-    <Box
+    <Flex
       className="game-tutorial-step-packs"
-      // width={isMobile ? "100%" : "80%"}
       m={isMobile ? 4 : 0}
+      h='60%'
     >
-      <Flex justifyContent="space-between" alignItems="center">
-        <Heading size={"s"} mb={[1, 1, 1, 2, 2]} fontWeight={"400"}>
-          {t("store.titles.packs")}
-        </Heading>
-      </Flex>
       <Flex
         flexDirection="row"
         justifyContent="space-between"
-        gap={[2, 4, 6]}
-        // width={"80%"}
+        
       >
         {packs.map((pack) => {
           const card = {
@@ -53,6 +39,7 @@ export const Packs = () => {
               <Flex
                 key={`pack-${pack.blister_pack_id}`}
                 justifyContent="center"
+                w='50%'
               >
                 <SpineAnimation
                   jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
@@ -82,6 +69,6 @@ export const Packs = () => {
           );
         })}
       </Flex>
-    </Box>
+    </Flex>
   );
 };
