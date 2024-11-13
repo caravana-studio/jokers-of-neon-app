@@ -98,6 +98,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const gameID = getLSGameId();
   const [hand, setHand] = useState<Card[]>([]);
   const [score, setScore] = useState<number>(0);
+  const [indexEvent, setIndexEvent] = useState<number>(0);
   const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
     [key: number]: number[];
   }>({});
@@ -121,7 +122,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   cm.idx = H7.idx;
   cm.id = H7.id;
 
-  const cards: Card[] = [cq, cm];
+  const c7 = C7;
+  c7.idx = D2.idx;
+  c7.id = D2.id;
+
+  const cards: Card[] = [c7];
 
   const {
     setup: {
@@ -472,8 +477,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
         setPlayAnimation(false);
         clearPreSelection();
-        // handsLeft > 0 && setPreSelectionLocked(false);
+        setPreSelectionLocked(false);
         setPlayIsNeon(false);
+        playEvents.cards && replaceCards(playEvents.cards);
         // setLockedSpecialCards([]);
         // if (playEvents.gameOver) {
         //   console.log("GAME OVER");
@@ -508,7 +514,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     clearPreSelection();
   };
 
-  const event = {
+  const eventFlush = {
     play: {
       multi: 1,
       points: 0,
@@ -576,8 +582,36 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     cashEvents: [],
   };
 
+  const eventPair = {
+    play: {
+      multi: 1,
+      points: 0,
+    },
+    cardScore: [
+      { idx: 13, multi: 0, points: 7 },
+      { idx: 31, multi: 0, points: 7 },
+    ],
+    specialCards: [
+      {
+        special_idx: 0,
+        idx: 13,
+        multi: 2,
+      },
+    ],
+    gameOver: false,
+    specialSuitEvents: [],
+    globalEvents: [],
+    modifierSuitEvents: [],
+    cards: [cq, cm],
+    score: 96,
+    cashEvents: [],
+  };
+
+  const events = [eventPair, eventFlush];
+
   const play = () => {
-    animatePlay(event);
+    animatePlay(events[indexEvent]);
+    setIndexEvent(indexEvent + 1);
   };
 
   const clearPreSelection = () => {

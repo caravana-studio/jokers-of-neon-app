@@ -12,6 +12,7 @@
       "step-1": "You must use the cards in your hand to form a poker play.",
       "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
       "step-3": "Now, we got a poker hand, let’s play it.",
+      "step-3bis": "Look, we got another poker hand, let’s play it.",
       "plays": "You can click here to view the possible poker hands you can form."
     },
     "discardCards": {

@@ -66,12 +66,21 @@ export const GameContent = () => {
     setRun(inTutorial);
   }, []);
 
+  const stepData = [
+    { step: 13, delay: 2700 },
+    { step: 23, delay: 7500 },
+  ];
+
   useEffect(() => {
-    if (stepIndex === 19) {
-      setTimeout(() => {
+    const stepInfo = stepData.find((data) => data.step === stepIndex);
+
+    if (stepInfo) {
+      const timeout = setTimeout(() => {
         setAutoStep(true);
         setStepIndex(stepIndex + 1);
-      }, 7500);
+      }, stepInfo.delay);
+
+      return () => clearTimeout(timeout);
     }
   }, [stepIndex]);
 
