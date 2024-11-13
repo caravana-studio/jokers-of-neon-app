@@ -139,6 +139,18 @@ const loadTranslations = async () => {
         ns: "effects",
       }),
     },
+    322: {
+      name: i18n.t("specialCardsData.322.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.322.description", {
+        ns: "effects",
+      }),
+    },
+    323: {
+      name: i18n.t("specialCardsData.323.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.323.description", {
+        ns: "effects",
+      }),
+    },
   });
 };
 
