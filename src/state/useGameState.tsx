@@ -44,6 +44,7 @@ export const useGameState = () => {
   const [isRageRound, setIsRageRound] = useState(false);
   const [rageCards, setRageCards] = useState<Card[]>([]);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+  const [destroyedSpecialCardId, setDestroyedSpecialCardId] = useState<number>();
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -168,5 +169,7 @@ export const useGameState = () => {
     setLockedCash,
     rageCards,
     setRageCards,
+    destroyedSpecialCardId,
+    setDestroyedSpecialCardId,
   };
 };

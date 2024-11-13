@@ -1,4 +1,6 @@
+import { DESTROYED_SPECIAL_CARD_EVENT } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
+import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { failedTransactionToast, showTransactionToast, updateTransactionToast } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
 
@@ -26,9 +28,11 @@ export const useShopActions = () => {
     
           updateTransactionToast(transaction_hash, tx.isSuccess());
           if (tx.isSuccess()) {
+            const event = tx.events.find((event) => event.keys[0] === DESTROYED_SPECIAL_CARD_EVENT);
             return {
               success: true,
               cards: getCardsFromEvents(tx.events),
+              destroyedSpecialCard: event && getNumberValueFromEvent(event, 0)
             };
           } else {
             return {

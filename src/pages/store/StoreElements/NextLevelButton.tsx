@@ -1,13 +1,18 @@
-import React from "react";
 import { Button } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { Card } from "../../../types/Card";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useGameContext } from "../../../providers/GameProvider";
+import { Card } from "../../../types/Card";
 
 interface NextLevelButtonProps {
   setLoading: (value: boolean) => void;
   onShopSkip: () => void;
-  skipShop: (gameId: number) => Promise<{ success: boolean; cards: Card[] }>;
+  skipShop: (gameId: number) => Promise<{
+    destroyedSpecialCard: number | undefined;
+    success: boolean;
+    cards: Card[];
+  }>;
   gameId: number;
   setHand: (cards: Card[]) => void;
   locked: boolean;
@@ -26,12 +31,16 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
+  const { setDestroyedSpecialCardId } = useGameContext();
+
   const handleNextLevelClick = () => {
     setLoading(true);
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
         setHand(response.cards);
+        response.destroyedSpecialCard &&
+          setDestroyedSpecialCardId(response.destroyedSpecialCard);
         navigate("/redirect/demo");
       } else {
         setLoading(false);
