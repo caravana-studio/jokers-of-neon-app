@@ -49,7 +49,10 @@
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
+        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
+        "tooltip": {
+          "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales."
+        }
       }
     },
     "packs": {

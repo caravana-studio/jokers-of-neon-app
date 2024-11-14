@@ -49,7 +49,10 @@
         "traditional": "Tradicional",
         "temporary": "Temporário",
         "close": "Fechar",
-        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis."
+        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
+        "tooltip": {
+          "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
+        }
       }
     },
     "packs": {
