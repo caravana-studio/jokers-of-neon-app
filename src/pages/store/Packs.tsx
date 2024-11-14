@@ -52,6 +52,7 @@ export const Packs = () => {
                   hoverAnimation={animationsData.hoverAnimation}
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
+                  price={card.price}
                   onClick={() => {
                     if (!pack.purchased) {
                       navigate("/preview/pack", {
