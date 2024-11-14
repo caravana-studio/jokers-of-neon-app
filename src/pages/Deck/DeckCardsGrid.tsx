@@ -63,7 +63,15 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
 
   return (
     <Box mb={4} overflow="hidden">
-      <Flex wrap="wrap" position="relative" w="100%" mb={4} overflow="hidden">
+      <Flex
+        wrap="wrap"
+        position="relative"
+        w="100%"
+        mb={4}
+        overflow="hidden"
+        justifyContent="center"
+        pr={`${CUSTOM_CARD_WIDTH / 2}px`}
+      >
         {filteredCards?.map((card, index) => {
           const usedCount = countUsedCards(card);
           const opacity = usedCount > 0 ? 0.6 : 1;
