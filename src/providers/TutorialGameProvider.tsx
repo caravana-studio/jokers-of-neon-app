@@ -13,8 +13,8 @@ import {
   H10,
   H3,
   H7,
-  C10,
   C7,
+  C5,
 } from "../utils/mocks/cardMocks";
 import { ClubModifier } from "../utils/mocks/modifierMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
@@ -35,6 +35,7 @@ import { useGameState } from "../state/useGameState";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { Speed } from "../enums/speed.ts";
+import { sortCards } from "../utils/sortCards.ts";
 
 const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
@@ -46,7 +47,7 @@ const mockTutorialGameContext = createContext<IGameContext>({
   preSelectedCards: [],
   setPreSelectedCards: (cards: number[]) => {},
   play: () => {},
-  hand: [H10, D2, H7, D5, CJ, H3, CK, CA],
+  hand: [D2, H3, D5, H7, H10, CJ, CK, CA],
   setHand: (cards: Card[]) => console.log("Hand set", cards),
   getModifiers: (preSelectedCardIndex: number) => [],
   togglePreselected: (_) => {},
@@ -114,19 +115,23 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
 
+  const c7 = C7;
+  c7.idx = D5.idx;
+  c7.id = D5.id;
+
+  const c5 = C5;
+  c5.idx = H3.idx;
+  c5.id = H3.id;
+
   const cq = CQ;
-  cq.idx = D2.idx;
-  cq.id = D2.id;
+  cq.id = c7.id;
+  cq.idx = c7.idx;
 
   const cm = ClubModifier;
-  cm.idx = H7.idx;
   cm.id = H7.id;
+  cm.idx = H7.idx;
 
-  const c7 = C7;
-  c7.idx = D2.idx;
-  c7.id = D2.id;
-
-  const cards: Card[] = [c7];
+  const cards: Card[] = [c7, c5];
 
   const {
     setup: {
@@ -480,29 +485,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         setPreSelectionLocked(false);
         setPlayIsNeon(false);
         playEvents.cards && replaceCards(playEvents.cards);
-        // setLockedSpecialCards([]);
-        // if (playEvents.gameOver) {
-        //   console.log("GAME OVER");
-        //   setTimeout(() => {
-        //     navigate(`/gameover/${gameId}`);
-        //     setLockRedirection(false);
-        //   }, 1000);
-        // } else if (playEvents.levelPassed && playEvents.detailEarned) {
-        //   const { level } = playEvents.levelPassed;
-        //   setTimeout(() => {
-        //     setRoundRewards({
-        //       ...playEvents.detailEarned!,
-        //       level: level,
-        //     });
-        //     navigate("/rewards");
-        //   }, 1000);
-        //   setPreSelectionLocked(true);
-        // } else {
-        //   setLockedCash(undefined);
-        //   playEvents.cards && replaceCards(playEvents.cards);
-        //   setRoundRewards(undefined);
-        //   setLockRedirection(false);
-        // }
         setScore(playEvents.score);
       }, ALL_CARDS_DURATION + 500);
     }
@@ -531,7 +513,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         points: 10,
       },
       {
-        idx: 13,
+        idx: 16,
         multi: 0,
         points: 10,
       },
@@ -548,27 +530,27 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     ],
     specialCards: [
       {
-        special_idx: 0,
+        special_idx: 301,
         idx: 34,
         multi: 2,
       },
       {
-        special_idx: 0,
+        special_idx: 301,
         idx: 9,
         multi: 2,
       },
       {
-        special_idx: 0,
-        idx: 13,
+        special_idx: 301,
+        idx: 16,
         multi: 2,
       },
       {
-        special_idx: 0,
+        special_idx: 301,
         idx: 11,
         multi: 2,
       },
       {
-        special_idx: 0,
+        special_idx: 301,
         idx: 12,
         multi: 2,
       },
@@ -588,13 +570,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       points: 0,
     },
     cardScore: [
-      { idx: 13, multi: 0, points: 7 },
+      { idx: 16, multi: 0, points: 7 },
       { idx: 31, multi: 0, points: 7 },
     ],
     specialCards: [
       {
-        special_idx: 0,
-        idx: 13,
+        special_idx: 301,
+        idx: 16,
         multi: 2,
       },
     ],
@@ -631,7 +613,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .filter((card) => card.card_id !== 9999);
 
-    setHand(newHand);
+    setHand(sortCards(newHand, SortBy.RANK));
   };
 
   context.preSelectedCards = preSelectedCards;

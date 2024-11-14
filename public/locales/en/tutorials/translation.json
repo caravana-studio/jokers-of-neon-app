@@ -12,7 +12,7 @@
       "step-1": "You must use the cards in your hand to form a poker play.",
       "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
       "pair": "Great! we got a PAIR of 7's to play, let's do it.",
-      "straight": "Look, we got a Straight to play now, let's do it",
+      "straight": "Look, we got a STRAIGHT to play now, let's do it",
       "plays": "You can click here to view the possible poker hands you can form."
     },
     "discardCards": {
@@ -38,8 +38,8 @@
     },
     "modifiers": {
       "title": "Modifier Cards",
-      "content": "Modifiers are incredibly useful! In this case, the suit modifier changes the suit of a card.",
-      "drag": "Drag and drop the card onto the 10, then click 'Next' to proceed."
+      "content": "Oh, you got a Suit modifier, if you apply it to the 10, you will get a ROYAL FLUSH, let's try it out.",
+      "drag": "Drag and drop the club suit modifier onto the 10, then click 'Next' to proceed."
     }
   },
   "storeTutorial": {

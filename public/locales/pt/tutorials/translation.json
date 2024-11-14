@@ -12,7 +12,7 @@
       "step-1": "Você deve usar as cartas da sua mão para formar uma mão de pôquer.",
       "step-2": "Se as cartas da sua mão não formarem uma mão de pôquer, você pode usar um descarte para obter novas cartas. Vamos tentar isso.",
       "step-3": "Ótimo! Conseguimos um PAR de 7 para jogar, vamos lá!",
-      "step-3bis": "Olha, agora conseguimos uma Sequência para jogar, vamos lá!",
+      "straight": "Olha, agora conseguimos uma SEQUÊNCIA para jogar, vamos lá!",
       "plays": "Você pode clicar aqui para ver as possíveis mãos de pôquer que pode formar."
     },
     "discardCards": {
@@ -38,8 +38,8 @@
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "As modificadoras são extremamente úteis! Neste caso, o modificador de naipe muda o naipe de uma carta.",
-      "drag": "Arraste e solte a carta no 10, depois clique em 'Continuar' para prosseguir."
+      "content": "Oh, você conseguiu um modificador de naipe. Se você aplicá-lo ao 10, obterá um ROYAL FLUSH. Vamos tentar!",
+      "drag": "Arraste e solte o modificador de naipe de paus sobre o 10, depois clique em 'Próximo' para continuar."
     }
   },
   "storeTutorial": {

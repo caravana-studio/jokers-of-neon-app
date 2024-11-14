@@ -70,8 +70,8 @@ export const MobileGameContent = () => {
   }, []);
 
   const stepData = [
-    { step: 13, delay: 2700 },
-    { step: 23, delay: 7500 },
+    { step: 14, delay: 2700 },
+    { step: 24, delay: 7500 },
   ];
 
   useEffect(() => {
