@@ -4,10 +4,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../../utils/isTutorial";
-import {
-  handsLeftTutorial,
-  useTutorialGameContext,
-} from "../../providers/TutorialGameProvider";
+import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface PlayButtonProps {
@@ -19,9 +16,7 @@ export const PlayButton = ({
   highlight = false,
   onTutorialCardClick,
 }: PlayButtonProps) => {
-  const { preSelectedCards, play, preSelectionLocked } = !isTutorial()
-    ? useGameContext()
-    : useTutorialGameContext();
+  const { preSelectedCards, play, preSelectionLocked } = useGameContext();
 
   const round = useRound();
   const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;

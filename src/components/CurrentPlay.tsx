@@ -4,12 +4,9 @@ import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../utils/isTutorial";
-import { useTutorialGameContext } from "../providers/TutorialGameProvider";
 
 export const CurrentPlay = () => {
-  const { preSelectedPlay, playIsNeon } = !isTutorial()
-    ? useGameContext()
-    : useTutorialGameContext();
+  const { preSelectedPlay, playIsNeon } = useGameContext();
   const { t } = useTranslation(["game"]);
 
   return (

@@ -9,8 +9,6 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
-import { isTutorial } from "../../utils/isTutorial.ts";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 
 export const MobilePreselectedCardsSection = () => {
   const {
@@ -20,7 +18,7 @@ export const MobilePreselectedCardsSection = () => {
     togglePreselected,
     discardAnimation,
     playAnimation,
-  } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+  } = useGameContext();
 
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,

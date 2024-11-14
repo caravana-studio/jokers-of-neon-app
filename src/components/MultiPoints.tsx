@@ -3,13 +3,9 @@ import { isMobile } from "react-device-detect";
 import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
 import { useTranslation } from "react-i18next";
-import { isTutorial } from "../utils/isTutorial";
-import { useTutorialGameContext } from "../providers/TutorialGameProvider";
 
 export const MultiPoints = () => {
-  const { points, multi } = !isTutorial()
-    ? useGameContext()
-    : useTutorialGameContext();
+  const { points, multi } = useGameContext();
   const { t } = useTranslation(["game"]);
 
   return (

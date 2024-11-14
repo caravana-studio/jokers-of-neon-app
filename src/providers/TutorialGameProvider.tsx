@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { IGameContext } from "./GameProvider"; // existing imports
+import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { SortBy } from "../enums/sortBy";
@@ -37,7 +37,7 @@ import { changeCardSuit } from "../utils/changeCardSuit";
 import { Speed } from "../enums/speed.ts";
 import { sortCards } from "../utils/sortCards.ts";
 
-const mockTutorialGameContext = createContext<IGameContext>({
+export const mockTutorialGameContext = createContext<IGameContext>({
   gameId: 1,
   preSelectedPlay: Plays.NONE,
   points: 0,
@@ -93,8 +93,6 @@ const mockTutorialGameContext = createContext<IGameContext>({
 
 export let handsLeftTutorial = 1;
 let context: IGameContext;
-
-export const useTutorialGameContext = () => useContext(mockTutorialGameContext);
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
@@ -155,7 +153,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
 
-  context = useTutorialGameContext();
+  context = useGameContext();
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {

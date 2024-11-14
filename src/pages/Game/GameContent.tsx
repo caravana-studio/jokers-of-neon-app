@@ -26,7 +26,6 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { useNavigate } from "react-router-dom";
 
@@ -41,10 +40,8 @@ export const GameContent = () => {
     addModifier,
     preSelectCard,
     unPreSelectCard,
-  } = !inTutorial ? useGameContext() : useTutorialGameContext();
-  const { isRageRound } = !inTutorial
-    ? useGameContext()
-    : useTutorialGameContext();
+  } = useGameContext();
+  const { isRageRound } = useGameContext();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

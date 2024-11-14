@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
   SKIP_IN_GAME_TUTORIAL,
@@ -40,6 +40,8 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
+import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { isTutorial } from "../utils/isTutorial.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -151,7 +153,13 @@ const GameContext = createContext<IGameContext>({
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
 });
-export const useGameContext = () => useContext(GameContext);
+
+export const useGameContext = () => {
+  const location = useLocation();
+  const inTutorial = location.pathname === "/tutorial";
+  const context = inTutorial ? mockTutorialGameContext : GameContext;
+  return useContext(context);
+};
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();

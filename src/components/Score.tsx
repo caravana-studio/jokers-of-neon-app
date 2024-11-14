@@ -2,11 +2,9 @@ import { Heading } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
 import { useTranslation } from "react-i18next";
-import { isTutorial } from "../utils/isTutorial";
-import { useTutorialGameContext } from "../providers/TutorialGameProvider";
 
 export const Score = () => {
-  const { score } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+  const { score } = useGameContext();
   const { t } = useTranslation(["game"]);
 
   return (

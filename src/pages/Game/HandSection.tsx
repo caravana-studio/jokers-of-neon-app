@@ -21,10 +21,7 @@ import { useRound } from "../../dojo/queries/useRound";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { Coins } from "./Coins";
-import {
-  useTutorialGameContext,
-  handsLeftTutorial,
-} from "../../providers/TutorialGameProvider";
+import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
 import { isTutorial } from "../../utils/isTutorial";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
@@ -40,7 +37,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
-  } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+  } = useGameContext();
 
   const { highlightCard } = useCardHighlight();
 

@@ -1,7 +1,5 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { isTutorial } from "../../utils/isTutorial";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { ButtonContainer } from "./ButtonContainer";
@@ -16,7 +14,7 @@ export const DiscardButton = ({
   onTutorialCardClick,
 }: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
-    !isTutorial() ? useGameContext() : useTutorialGameContext();
+    useGameContext();
 
   const cantDiscard =
     !highlight &&

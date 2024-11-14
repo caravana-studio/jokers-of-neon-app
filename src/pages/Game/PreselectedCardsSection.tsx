@@ -10,8 +10,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
-import { isTutorial } from "../../utils/isTutorial.ts";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -29,7 +27,7 @@ export const PreselectedCardsSection = ({
     togglePreselected,
     discardAnimation,
     playAnimation,
-  } = !isTutorial() ? useGameContext() : useTutorialGameContext();
+  } = useGameContext();
 
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,

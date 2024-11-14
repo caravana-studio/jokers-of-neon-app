@@ -8,7 +8,6 @@ import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
 import { isTutorial } from "../../utils/isTutorial";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider";
 
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
@@ -17,9 +16,7 @@ export const CompactRoundData = () => {
 
   const inTutorial = isTutorial();
 
-  const { score, points, multi } = !inTutorial
-    ? useGameContext()
-    : useTutorialGameContext();
+  const { score, points, multi } = useGameContext();
 
   const round = useRound();
   const target = round?.level_score ?? 0;

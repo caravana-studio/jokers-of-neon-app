@@ -32,7 +32,6 @@ import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
-import { useTutorialGameContext } from "../../providers/TutorialGameProvider.tsx";
 import { useNavigate } from "react-router-dom";
 
 export const MobileGameContent = () => {
@@ -46,7 +45,7 @@ export const MobileGameContent = () => {
     addModifier,
     preSelectCard,
     unPreSelectCard,
-  } = !inTutorial ? useGameContext() : useTutorialGameContext();
+  } = useGameContext();
 
   const { highlightedCard } = useCardHighlight();
 
