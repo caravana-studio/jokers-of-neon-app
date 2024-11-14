@@ -1,18 +1,13 @@
-
-import { isMobile } from "react-device-detect";
 import { DeckPageContentMobile } from "./DeckPageContent.mobile";
 import { DeckPageContent } from "./DeckPageContent";
 import { Background } from "../../components/Background";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const DeckPage = () => 
-    {   
-        return(
-            <Background type="store">
-                {isMobile ? (
-                    <DeckPageContentMobile />
-                ) : (
-                    <DeckPageContent />
-                )}
-            </Background> 
-        );
-    }
+export const DeckPage = () => {
+  const { isSmallScreen } = useResponsiveValues();
+  return (
+    <Background type="store">
+      {isSmallScreen ? <DeckPageContentMobile /> : <DeckPageContent />}
+    </Background>
+  );
+};
