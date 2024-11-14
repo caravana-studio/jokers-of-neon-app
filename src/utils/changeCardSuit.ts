@@ -1,4 +1,7 @@
-import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
+import {
+  TRADITIONAL_CARDS_DATA,
+  NEON_CARDS_DATA,
+} from "../data/traditionalCards";
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { CardDataMap } from "../types/CardData";
@@ -26,9 +29,13 @@ function findKeyByCardAndSuit(
 }
 
 export const changeCardSuit = (card_id: number, newSuit: Suits): number => {
-  const { card } = TRADITIONAL_CARDS_DATA[card_id];
   const isNeon = card_id >= 200;
-  return (
-    findKeyByCardAndSuit(TRADITIONAL_CARDS_DATA, card!, newSuit, isNeon) ?? card_id
-  );
+  const { card } = isNeon
+    ? NEON_CARDS_DATA[card_id]
+    : TRADITIONAL_CARDS_DATA[card_id];
+
+  return isNeon
+    ? findKeyByCardAndSuit(NEON_CARDS_DATA, card!, newSuit, isNeon) ?? card_id
+    : findKeyByCardAndSuit(TRADITIONAL_CARDS_DATA, card!, newSuit, isNeon) ??
+        card_id;
 };

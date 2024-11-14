@@ -1,4 +1,5 @@
 {
+  "activated": "Activado",
   "modifierCardsData": {
     "600": {
       "name": "+10 Pontos",
@@ -100,7 +101,7 @@
     },
     "312": {
       "name": "Impulsionador de Figuras",
-      "description": "Todas as cartas de FIGURAS jogadas ganham +100 pontos"
+      "description": "Todas as cartas de FIGURAS jogadas ganham +50 pontos"
     },
     "313": {
       "name": "Ases Multiplicados",
@@ -120,7 +121,7 @@
     },
     "317": {
       "name": "Número da sorte 7",
-      "description": "Todos os 7s ganham +7 no multiplicador"
+      "description": "Todos os 7s ganham +77 pontos"
     },
     "318": {
       "name": "Bônus Neon",
@@ -137,6 +138,22 @@
     "321": {
       "name": "Mão da sorte",
       "description": "Adiciona 50 moedas para cada carta de ouros que for jogada"
+    },
+    "322": {
+      "name": "Maestria em descarte",
+      "description": "Adiciona +10 ao multiplicador se não houver descartes restantes"
+    },
+    "323": {
+      "name": "Segunda chance",
+      "description": "Quando você perde, esta carta é destruída, mas você pode continuar jogando"
+    },
+    "324": {
+      "name": "Escudo do guardião",
+      "description": "Bloqueia todas as cartas de rage por 1 nível. É destruído depois"
+    },
+    "325": {
+      "name": "Sinergia de neon",
+      "description": "Se mais de 50% das cartas jogadas são neon, todas as outras cartas são convertidas em neon"
     }
   }
 }

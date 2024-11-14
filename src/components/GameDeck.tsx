@@ -1,11 +1,11 @@
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { CARD_WIDTH_PX } from "../constants/visualProps.ts";
-import { useFullDeck } from "../dojo/queries/useDeck.tsx";
+import { useDeck } from "../dojo/queries/useDeck.tsx";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export const GameDeck = () => {
-  const deck = useFullDeck();
+  const deck = useDeck();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
 

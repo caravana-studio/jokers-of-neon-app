@@ -1,10 +1,17 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
 import { SortBy } from "../../components/SortBy.tsx";
 import {
@@ -15,11 +22,16 @@ import {
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
+  HAND_SECTION_ID,
+  PRESELECTED_CARD_SECTION_ID,
+} from "../../constants/general.ts";
+import {
   SKIP_TUTORIAL_GAME,
   SKIP_TUTORIAL_MODIFIERS,
   SKIP_TUTORIAL_SPECIAL_CARDS,
 } from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -34,15 +46,21 @@ export const MobileGameContent = () => {
     preSelectedCards,
     gameLoading,
     error,
-    clearPreSelection,
     executeCreateGame,
     addModifier,
-    roundRewards,
-    discardEffectCard,
-    discardSpecialCard,
+    preSelectCard,
+    unPreSelectCard,
   } = useGameContext();
 
-  const [isItemDragged, setIsItemDragged] = useState<boolean>(false);
+  const { highlightedCard } = useCardHighlight();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
   const [run, setRun] = useState(false);
   const [runSpecial, setRunSpecial] = useState(false);
   const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
@@ -86,31 +104,22 @@ export const MobileGameContent = () => {
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setIsItemDragged(false);
+    const draggedCard = Number(event.active?.id);
+    const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
+
     const modifiedCard = Number(event.over?.id);
-
-    // TODO: Improve this
-    let isSpecial = false;
-    let draggedCardId;
-    const activeId = String(event.active?.id);
-
-    if (activeId.startsWith("s")) {
-      draggedCardId = Number(activeId.slice(1));
-      isSpecial = true;
-    } else {
-      draggedCardId = Number(activeId);
-    }
-
-    if (!isNaN(modifiedCard) && !isNaN(draggedCardId)) {
+    if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
       const index = preSelectedCards.indexOf(modifiedCard);
       if (index !== -1) {
-        addModifier(modifiedCard, draggedCardId);
+        addModifier(modifiedCard, draggedCard);
       }
-    }
-    if (isSpecial && event.over?.id === "play-discard") {
-      discardSpecialCard(draggedCardId);
-    } else if (event.over?.id === "play-discard") {
-      discardEffectCard(draggedCardId);
+    } else if (
+      !isModifier &&
+      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
+    ) {
+      preSelectCard(draggedCard);
+    } else if (event.over?.id === HAND_SECTION_ID) {
+      unPreSelectCard(draggedCard);
     }
   };
 
@@ -176,44 +185,56 @@ export const MobileGameContent = () => {
         height: "100%",
       }}
     >
-      <Joyride
-        steps={GAME_TUTORIAL_STEPS}
-        run={run}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
+      {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
 
-      <Joyride
-        steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-        run={runSpecial}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleSpecialJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
-
-      <Joyride
-        steps={MODIFIERS_TUTORIAL_STEPS}
-        run={runTutorialModifiers}
-        continuous
-        showSkipButton
-        showProgress
-        callback={handleModifiersJoyrideCallback}
-        styles={TUTORIAL_STYLE}
-        locale={JOYRIDE_LOCALES}
-      />
-
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
+      <Box
+        sx={{
+          position: "fixed",
+          zIndex: 1000,
         }}
-      />
+        right={[1, 4]}
+        bottom={[1, 4]}
+      >
+        <Joyride
+          steps={GAME_TUTORIAL_STEPS}
+          run={run}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <Joyride
+          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
+          run={runSpecial}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleSpecialJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <Joyride
+          steps={MODIFIERS_TUTORIAL_STEPS}
+          run={runTutorialModifiers}
+          continuous
+          showSkipButton
+          showProgress
+          callback={handleModifiersJoyrideCallback}
+          styles={TUTORIAL_STYLE}
+          locale={JOYRIDE_LOCALES}
+        />
+
+        <PositionedGameMenu
+          showTutorial={() => {
+            setRun(true);
+          }}
+        />
+      </Box>
+
       <Box
         sx={{
           height: "100%",
@@ -222,12 +243,11 @@ export const MobileGameContent = () => {
       >
         <DndContext
           onDragEnd={handleDragEnd}
-          onDragStart={() => {
-            setIsItemDragged(true);
-          }}
           autoScroll={false}
+          sensors={sensors}
         >
           <Box
+            paddingTop={4}
             sx={{
               width: "100%",
               height: "100%",
@@ -253,7 +273,7 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton itemDragged={isItemDragged} highlight={run} />
+              <DiscardButton highlight={run} />
               <PlayButton highlight={run} />
             </Flex>
             <Box
@@ -262,24 +282,26 @@ export const MobileGameContent = () => {
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
+              width={"100%"}
             >
-              <Box>
+              <Box width={"100%"}>
+                <Box pb={2} display={"flex"} justifyContent={"center"}>
+                  <HandSection />
+                </Box>
                 <Box
                   position={"absolute"}
                   left={0}
-                  px={4}
                   bottom={0}
                   zIndex={6}
                   width="100%"
                   display={"flex"}
                   alignItems={"center"}
                   backgroundColor="rgba(0,0,0,0.5)"
+                  px={18}
+                  gap={4}
                 >
                   <SortBy />
                   <ShowPlays />
-                </Box>
-                <Box pb="25px">
-                  <HandSection />
                 </Box>
               </Box>
             </Box>

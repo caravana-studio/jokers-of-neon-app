@@ -6,6 +6,28 @@
     }
   },
   "game": {
+    "compact-round-data": {
+      "my-score": "My score",
+      "target": "Target",
+      "round": "Round {{round}}"
+    },
+    "card-types": {
+      "Common": "Traditional",
+      "Modifier": "Modifier",
+      "Special": "Special",
+      "Rage": "Rage",
+      "Neon": "Neon",
+      "Pack": "Pack",
+      "Joker": "Joker"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Change",
+        "remove": "Remove",
+        "changing": "Changing...",
+        "removing": "Removing..."
+      }
+    },
     "level-points": {
       "level": "Level",
       "target-score": "Score",
@@ -17,6 +39,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "This slot is locked. You can unlock it in the store.",
       "special-cards-label": "Special cards",
       "remove-special-cards-label": "Remove",
       "confirmation-modal": {
@@ -33,7 +56,7 @@
           "rank": "Rank"
         }
       },
-      "my-coins": "My coins",
+      "my-coins": "Coins",
       "modifier-change": "Change",
       "show-plays": "Show plays"
     },
@@ -59,7 +82,8 @@
       "new-game-btn": "Start new game",
       "tutorial-btn": "See tutorial",
       "sound-btn": "Turn sound",
-      "logout-btn": "Logout"
+      "logout-btn": "Logout",
+      "settings-btn": "Settings"
     },
     "plays": {
       "title": "Available plays",
@@ -91,5 +115,18 @@
   "confirmation-modal": {
     "confirm": "Confirm",
     "close": "Close"
+  },
+  "points":"points",
+  "settings-modal": {
+    "title": "Settings",
+    "language": "Language",
+    "sfx-volume": "Sound Effect Volume",
+    "music-volume": "Music Volume",
+    "anim-speed": "Animation Speed",
+    "speed": {
+      "normal": "Normal",
+      "fast": "Fast",
+      "fastest": "Fastest"
+    }
   }
 }

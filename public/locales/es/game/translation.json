@@ -6,6 +6,28 @@
     }
   },
   "game": {
+    "compact-round-data": {
+      "my-score": "Puntaje",
+      "target": "Objetivo",
+      "round": "Ronda {{round}}"
+    },
+    "card-types": {
+      "Common": "Tradicional",
+      "Modifier": "Modificadora",
+      "Special": "Especial",
+      "Rage": "Rage",
+      "Neon": "Neón",
+      "Pack": "Paquete",
+      "Joker": "Comodín"
+    },
+    "card-highlight": {
+      "buttons": {
+        "change": "Cambiar",
+        "remove": "Eliminar",
+        "changing": "Cambiando...",
+        "removing": "Eliminando..."
+      }
+    },
     "level-points": {
       "level": "Nivel",
       "target-score": "Puntos",
@@ -17,6 +39,7 @@
       "multi": "Multi"
     },
     "special-cards": {
+      "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
       "remove-special-cards-label": "Eliminar",
       "confirmation-modal": {
@@ -33,7 +56,7 @@
           "rank": "Valor"
         }
       },
-      "my-coins": "Mis monedas",
+      "my-coins": "Monedas",
       "modifier-change": "Cambiar",
       "show-plays": "Mostrar jugadas"
     },
@@ -59,7 +82,8 @@
       "new-game-btn": "Crear nuevo juego",
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Sonido",
-      "logout-btn": "Cerrar sesión"
+      "logout-btn": "Cerrar sesión",
+      "settings-btn": "Configuración"
     },
     "plays": {
       "title": "Jugadas disponibles",
@@ -91,5 +115,18 @@
   "confirmation-modal": {
     "confirm": "Confirmar",
     "close": "Cerrar"
+  },
+  "points":"puntos",
+  "settings-modal": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "sfx-volume": "Volumen de Efectos de Sonido",
+    "music-volume": "Volumen de la Música",
+    "anim-speed": "Velocidad de Animación",
+    "speed": {
+      "normal": "Normal",
+      "fast": "Rápido",
+      "fastest": "Más rápido"
+    }
   }
 }

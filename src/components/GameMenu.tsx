@@ -1,31 +1,29 @@
 import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useAudioPlayer } from "../providers/AudioPlayerProvider.tsx";
 import { useGameContext } from "../providers/GameProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { useState } from "react";
+import { SettingsModal } from "./SettingsModal.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
   showTutorial?: () => void;
+  setSettingsModalOpened?: (opened: boolean) => void;
 }
 
 export const GameMenu = ({
   onlySound = false,
   showTutorial,
+  setSettingsModalOpened,
 }: GameMenuProps) => {
   const username = localStorage.getItem(LOGGED_USER);
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
-  const { isPlaying, toggleSound } = useAudioPlayer();
   const { t } = useTranslation(["game"]);
-
-  const togglePlayPause = () => {
-    toggleSound();
-  };
 
   return (
     <>
@@ -51,8 +49,14 @@ export const GameMenu = ({
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
-          <MenuItem onClick={togglePlayPause}>
-            {t("game.game-menu.sound-btn")} {isPlaying ? "OFF" : "ON"}
+          <MenuItem
+            onClick={() => {
+              if (setSettingsModalOpened) {
+                setSettingsModalOpened(true);
+              }
+            }}
+          >
+            {t("game.game-menu.settings-btn")}
           </MenuItem>
           {!onlySound && (
             <MenuItem
@@ -74,33 +78,48 @@ export const GameMenu = ({
 
 interface PositionedGameMenuProps extends GameMenuProps {
   decoratedPage?: boolean;
+  bottomPositionDesktop?: number | string;
 }
 export const PositionedGameMenu = ({
   decoratedPage = false,
+  bottomPositionDesktop,
   ...rest
 }: PositionedGameMenuProps) => {
-  return isMobile ? (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: "5px",
-        right: "5px",
-        zIndex: 1000,
-        transform: "scale(0.7)",
-      }}
-    >
-      <GameMenu {...rest} />
-    </Box>
-  ) : (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: decoratedPage ? "96px" : "60px",
-        left: "70px",
-        zIndex: 1000,
-      }}
-    >
-      <GameMenu {...rest} />
-    </Box>
+  const { isSmallScreen } = useResponsiveValues();
+  const [isSettingsModal, setIsSettingsModal] = useState(false);
+
+  if (!bottomPositionDesktop)
+    bottomPositionDesktop = decoratedPage ? "100px" : "20px";
+
+  return (
+    <>
+      {isSettingsModal && (
+        <SettingsModal close={() => setIsSettingsModal(false)} />
+      )}
+      {isSmallScreen ? (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: "5px",
+            right: "5px",
+            zIndex: 1000,
+            transform: "scale(0.7)",
+          }}
+        >
+          <GameMenu {...rest} setSettingsModalOpened={setIsSettingsModal} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: bottomPositionDesktop,
+            left: decoratedPage ? 20 : "20px",
+            zIndex: 1000,
+          }}
+        >
+          <GameMenu {...rest} setSettingsModalOpened={setIsSettingsModal} />
+        </Box>
+      )}
+    </>
   );
 };

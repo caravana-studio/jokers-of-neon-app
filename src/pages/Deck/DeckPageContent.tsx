@@ -1,27 +1,21 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useFullDeck } from "../../dojo/queries/useDeck";
+import { useDeck } from "../../dojo/queries/useDeck";
 import { DeckCardsFilters, DeckCardsGrid } from "./DeckCardsGrid";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { useNavigate } from "react-router-dom";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
-import {
-  DeckFiltersMap,
-  createUsedCardsList,
-  preprocessCards,
-} from "./Utils/DeckCardsUtils";
-import { useGetDeck } from "../../queries/useGetDeck";
-import { useGame } from "../../dojo/queries/useGame";
+import { DeckFiltersMap, preprocessCards } from "./Utils/DeckCardsUtils";
 import { useTranslation } from "react-i18next";
 
 export const DeckPageContent = () => {
-  const game = useGame();
   const { t } = useTranslation(["game"]);
 
-  const fullDeck = preprocessCards(useFullDeck()?.cards ?? []);
-  const currentDeck = preprocessCards(useGetDeck(game?.id ?? 0).cards ?? []);
-  const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
+  const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
+  const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
+  //const currentDeck = preprocessCards(useDeck(game?.id ?? 0).cards ?? []);
+  //const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
 
   const navigate = useNavigate();
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);

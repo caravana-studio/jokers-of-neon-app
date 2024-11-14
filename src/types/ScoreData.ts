@@ -16,6 +16,7 @@ export interface PlayEvents {
   cards: Card[];
   score: number;
   cashEvents?: CashEvent[];
+  secondChanceEvent?: boolean;
 }
 
 export interface LevelPassedEvent {
@@ -61,6 +62,8 @@ export interface DetailEarned {
   hands_left_cash: number;
   discard_left: number;
   discard_left_cash: number;
+  rage_card_defeated: number;
+  rage_card_defeated_cash: number;
   total: number;
 }
 

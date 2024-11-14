@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { Howl } from 'howler';
-import { SOUND_OFF } from '../constants/localStorage';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Howl } from "howler";
+import { SFX_ON } from "../constants/localStorage";
 
-export const useAudio = (audioPath: string, volume?: number) => {
+export const useAudio = (audioPath: string, volume: number = 1) => {
   const soundRef = useRef<Howl | null>(null);
 
   useEffect(() => {
     soundRef.current = new Howl({
       src: [audioPath],
       preload: true,
-      volume: volume? volume : 1.0,
+      volume: volume,
     });
 
     return () => {
@@ -19,9 +19,15 @@ export const useAudio = (audioPath: string, volume?: number) => {
     };
   }, [audioPath]);
 
+  useEffect(() => {
+    if (soundRef.current) {
+      soundRef.current.volume(volume ?? 0);
+    }
+  }, [volume]);
+
   const play = useCallback(() => {
-    const isSoundOff = localStorage.getItem(SOUND_OFF) === 'true';
-    if (!isSoundOff && soundRef.current) {
+    const isSoundOn = localStorage.getItem(SFX_ON) === "true";
+    if (isSoundOn && soundRef.current) {
       soundRef.current.stop(); // Stop any currently playing instances
       soundRef.current.play();
     }

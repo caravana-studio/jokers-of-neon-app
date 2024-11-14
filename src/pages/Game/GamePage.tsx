@@ -1,17 +1,20 @@
 import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
+import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { useCardAnimations } from "../../providers/CardAnimationsProvider";
+import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 
 export const GamePage = () => {
   const {
@@ -29,6 +32,9 @@ export const GamePage = () => {
     gameId,
     lockRedirection,
   } = useGameContext();
+
+  const { animateSecondChanceCard } = useCardAnimations();
+
   const rageRound = useRageRound();
   const rageCards = useRageCards();
   const navigate = useNavigate();
@@ -36,6 +42,7 @@ export const GamePage = () => {
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -49,8 +56,7 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if(!username)
-    navigate("/");
+  if (!username) navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
@@ -68,11 +74,18 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
-      {isMobile ? <MobileGameContent /> : <GameContent />}
+      {animateSecondChanceCard && <SecondChanceCardAnimation />}
+      {isSmallScreen ? (
+        <CardHighlightProvider>
+          <MobileGameContent />
+        </CardHighlightProvider>
+      ) : (
+        <GameContent />
+      )}
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isMobile && <PositionedDiscordLink  />}
+      {!isSmallScreen && <PositionedDiscordLink />}
     </Background>
   );
 };
