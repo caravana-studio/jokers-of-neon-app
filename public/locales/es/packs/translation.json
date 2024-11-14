@@ -44,6 +44,11 @@
       "name": "Paquete de Apuesta Especial",
       "description": "Paquete pequeño con posibilidades de obtener una carta especial o modificador",
       "details": "5% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n85% de probabilidad de obtener una carta tradicional\nTamaño del paquete 3"
+    },
+    "10": {
+      "name": "Paquete de Neón",
+      "description": "Un paquete exclusivo con posibilidades de obtener cartas de neón",
+      "details": "97% de probabilidad de obtener una carta de neón\n3% de probabilidad de obtener un Joker de Neón\nTamaño del paquete: 5"
     }
   }
 }

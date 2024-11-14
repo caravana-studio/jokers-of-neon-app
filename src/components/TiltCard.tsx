@@ -169,9 +169,9 @@ export const TiltCard = ({
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              marginTop: `-${cardHeight + MODIFIERS_OFFSET}px`,
-              marginLeft: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
-              position: "relative",
+              top: `-${ MODIFIERS_OFFSET}px`,
+              left: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
+              position: "absolute",
             }}
           >
             <Tilt options={TILT_OPTIONS}>

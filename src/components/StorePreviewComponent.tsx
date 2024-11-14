@@ -14,7 +14,7 @@ import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
-import { CARD_WIDTH } from "../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { Coins } from "../pages/store/Coins.tsx";
 import theme from "../theme/theme";
 import { CashSymbol } from "./CashSymbol.tsx";
@@ -84,20 +84,22 @@ export const StorePreviewComponent = ({
             flex="1"
             height="100%"
           >
-            {!isPack && (
-              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+            {isPack ? (
+              <Flex
+                w={{ base: "100%", sm: "35%" }}
+                h={`${CARD_HEIGHT * SIZE_MULTIPLIER + 30}px`}
+                justifyContent="center"
+                flexDir="column"
+              >
+                {spine}
+              </Flex>
+            ) : (
+              <Flex
+                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+              >
                 {image}
               </Flex>
             )}
-
-            <Flex
-              w={{ base: "100%", sm: "35%" }}
-              h="100%"
-              justifyContent="center"
-              flexDir="column"
-            >
-              {spine}
-            </Flex>
 
             <Flex
               flexDirection={"column"}

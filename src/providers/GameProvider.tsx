@@ -92,6 +92,8 @@ export interface IGameContext {
   setAnimationSpeed: (speed: Speed) => void;
   sfxOn: boolean;
   setSfxOn: (sfxOn: boolean) => void;
+  destroyedSpecialCardId: number | undefined;
+  setDestroyedSpecialCardId: (id: number | undefined) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -146,6 +148,8 @@ const GameContext = createContext<IGameContext>({
   setSfxOn: () => {},
   animationSpeed: Speed.NORMAL,
   setAnimationSpeed: () => {},
+  destroyedSpecialCardId: undefined,
+  setDestroyedSpecialCardId: () => {},
 });
 export const useGameContext = () => useContext(GameContext);
 
