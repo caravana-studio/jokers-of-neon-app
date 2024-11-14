@@ -39,6 +39,9 @@
         "details": "Details:",
         "price": "Price:"
       },
+      "tooltip": {
+        "no-coins": "You don't have enough coins to buy this item"
+      },
       "labels": {
         "buy": "Buy",
         "special": "Special",

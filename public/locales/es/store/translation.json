@@ -39,6 +39,9 @@
         "details": "Detalles:",
         "price": "Precio:"
       },
+      "tooltip": {
+        "no-coins": "No tienes suficientes monedas para comprar este artículo"
+      },
       "labels": {
         "buy": "Comprar",
         "special": "Especial",

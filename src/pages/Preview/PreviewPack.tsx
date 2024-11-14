@@ -71,7 +71,7 @@ export const PreviewPack = () => {
   );
 
   const tooltipButton = notEnoughCash ? (
-    <Tooltip label={t("labels.tooltip.no-coins")}>{buyButton}</Tooltip>
+    <Tooltip label={t("tooltip.no-coins")}>{buyButton}</Tooltip>
   ) : (
     buyButton
   );
@@ -93,8 +93,8 @@ export const PreviewPack = () => {
         loopAnimation={animationsData.loopAnimation}
         openBoxAnimation={animationsData.openBoxAnimation}
         width={1200}
-        height={1400}
-        xOffset={-700}
+        height={1500}
+        xOffset={-650}
         scale={1}
         onOpenAnimationStart={openAnimationCallBack}
       />
