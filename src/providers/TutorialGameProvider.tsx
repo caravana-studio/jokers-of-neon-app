@@ -87,6 +87,8 @@ const mockTutorialGameContext = createContext<IGameContext>({
   setAnimationSpeed: (speed: Speed) => {},
   sfxOn: true,
   setSfxOn: (sfxOn: boolean) => {},
+  destroyedSpecialCardId: undefined,
+  setDestroyedSpecialCardId: () => {},
 });
 
 export let handsLeftTutorial = 1;
