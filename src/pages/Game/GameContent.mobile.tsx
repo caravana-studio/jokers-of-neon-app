@@ -302,6 +302,7 @@ export const MobileGameContent = () => {
                 >
                   <SortBy />
                   <ShowPlays />
+                  <GameDeckMobile />
                 </Box>
               </Box>
             </Box>
