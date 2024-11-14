@@ -9,7 +9,7 @@ interface NextLevelButtonProps {
   setLoading: (value: boolean) => void;
   onShopSkip: () => void;
   skipShop: (gameId: number) => Promise<{
-    destroyedSpecialCard: number | undefined;
+    destroyedSpecialCard?: number;
     success: boolean;
     cards: Card[];
   }>;
