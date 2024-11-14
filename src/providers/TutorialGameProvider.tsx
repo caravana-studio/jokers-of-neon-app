@@ -67,7 +67,7 @@ const mockTutorialGameContext = createContext<IGameContext>({
   checkOrCreateGame: () => console.log("Game checked or created"),
   restartGame: () => console.log("Game restarted"),
   preSelectionLocked: false,
-  score: 0,
+  score: 300,
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
