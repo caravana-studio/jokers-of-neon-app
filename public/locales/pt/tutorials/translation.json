@@ -11,8 +11,8 @@
     "playableHand": {
       "step-1": "Você deve usar as cartas da sua mão para formar uma mão de pôquer.",
       "step-2": "Se as cartas da sua mão não formarem uma mão de pôquer, você pode usar um descarte para obter novas cartas. Vamos tentar isso.",
-      "step-3": "Agora temos uma mão de pôquer, vamos jogá-la.",
-      "step-3bis": "Olha, conseguimos outra mão de pôquer, vamos jogá-la.",
+      "step-3": "Ótimo! Conseguimos um PAR de 7 para jogar, vamos lá!",
+      "step-3bis": "Olha, agora conseguimos uma Sequência para jogar, vamos lá!",
       "plays": "Você pode clicar aqui para ver as possíveis mãos de pôquer que pode formar."
     },
     "discardCards": {

@@ -110,7 +110,7 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.step-3", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.playableHand.pair", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
@@ -169,7 +169,7 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.step-3bis", {
+      content: i18n.t("gameTutorial.playableHand.straight", {
         ns: "tutorials",
       }),
       ...COMMON_SETTINGS,
