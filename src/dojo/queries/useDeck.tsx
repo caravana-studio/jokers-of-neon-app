@@ -30,7 +30,7 @@ export const useDeck = (): Deck => {
   if (deck?.len) {
     for (let i = 0; i < deck?.len; i++) {
       const deckCard = getCard(gameId ?? 0, i, DeckCard);
-      const card = getCardFromCardId(deckCard?.effect_card_id, i);
+      const card = getCardFromCardId(deckCard?.card_id, i);
       const cardData = { ...getCardData(card) };
 
       fullDeckCards.push({
@@ -38,25 +38,21 @@ export const useDeck = (): Deck => {
         ...cardData,
         isNeon: false,
       });
-    }
 
-    for (let i = 0; i < deck?.round_len; i++) {
-      const deckCard = getCard(gameId ?? 0, i, DeckCard);
-      const card = getCardFromCardId(deckCard?.effect_card_id, i);
-      const cardData = { ...getCardData(card) };
-
-      usedDeckCards.push({
-        ...card,
-        ...cardData,
-        isNeon: false,
-      });
+      if (i >= deck?.round_len) {
+        usedDeckCards.push({
+          ...card,
+          ...cardData,
+          isNeon: false,
+        });
+      }
     }
   }
 
   return {
     size: deck?.len || 0,
     currentLength: deck?.round_len || 0,
-    fullDeckCards: [],
-    usedCards: [],
+    fullDeckCards: fullDeckCards,
+    usedCards: usedDeckCards,
   };
 };
