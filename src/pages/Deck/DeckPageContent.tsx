@@ -14,8 +14,6 @@ export const DeckPageContent = () => {
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
-  //const currentDeck = preprocessCards(useDeck(game?.id ?? 0).cards ?? []);
-  //const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
 
   const navigate = useNavigate();
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);

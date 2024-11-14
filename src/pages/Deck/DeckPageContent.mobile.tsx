@@ -6,13 +6,7 @@ import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { useNavigate } from "react-router-dom";
 import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
-import {
-  DeckFiltersMap,
-  createUsedCardsList,
-  preprocessCards,
-} from "./Utils/DeckCardsUtils";
-import { useGame } from "../../dojo/queries/useGame";
-import { useGetDeck } from "../../queries/useGetDeck";
+import { DeckFiltersMap, preprocessCards } from "./Utils/DeckCardsUtils";
 import { useTranslation } from "react-i18next";
 
 export const DeckPageContentMobile = () => {
@@ -20,8 +14,6 @@ export const DeckPageContentMobile = () => {
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
-  //const currentDeck = preprocessCards(useDeck(game?.id ?? 0).cards ?? []);
-  //const usedCards = createUsedCardsList(fullDeck ?? [], currentDeck ?? []);
 
   const navigate = useNavigate();
   const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
