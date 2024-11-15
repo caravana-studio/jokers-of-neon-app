@@ -49,7 +49,10 @@
         "traditional": "Traditional",
         "temporary": "Temporary",
         "close": "Close",
-        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels.",
+        "tooltip": {
+          "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card"
+        }
       }
     },
     "packs": {

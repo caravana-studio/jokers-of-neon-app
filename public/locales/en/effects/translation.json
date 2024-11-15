@@ -154,6 +154,70 @@
     "325": {
       "name": "Neon synergy",
       "description": "If more than 50% of the played cards are neon, all the other cards get converted to neon"
+    },
+    "331": {
+      "name": "Shortcut",
+      "description": "Reduces the points needed to beat the level by 20%"
+    },
+    "332": {
+      "name": "Lucky Payday",
+      "description": "Get extra 500 cash for every Joker in hand at the end of the turn"
+    },
+    "333": {
+      "name": "Mirror effect",
+      "description": "Repeats the effect of the special card in the left"
+    },
+    "334": {
+      "name": "Packs on sale",
+      "description": "Packs have 30% discount"
+    },
+    "335": {
+      "name": "Bonus Picks",
+      "description": "2 extra special card options in the store"
+    },
+    "336": {
+      "name": "Joker's drop",
+      "description": "Get 500 cash every time you discard a Joker"
+    },
+    "337": {
+      "name": "Extra drops",
+      "description": "Adds 2 discards"
+    },
+    "338": {
+      "name": "Extra draws",
+      "description": "Adds 2 hands"
+    },
+    "339": {
+      "name": "Scaling factor",
+      "description": "Upgrade all your hands by 2 levels"
+    },
+    "340": {
+      "name": "Wild deuces",
+      "description": "All 2s are considered wildcards"
+    },
+    "341": {
+      "name": "Undying Draw",
+      "description": "First discarded hand gets leveled up"
+    },
+    "342": {
+      "name": "Shielded Start",
+      "description": "Protects your first played hand from all negative effects"
+    },
+    "343": {
+      "name": "Full House Booster",
+      "description": "Level up Full house hand by 4 levels"
+    },
+    "344": {
+      "name": "Three of a Kind Booster",
+      "description": "Level up Three of a Kind hand by 4 levels"
+    },
+    "345": {
+      "name": "Four of a Kind Booster",
+      "description": "Level up Four of a Kind hand by 4 levels"
+    },
+    "346": {
+      "name": "Five of a Kind Booster",
+      "description": "Level up Five of a Kind hand by 4 levels"
     }
   }
 }
