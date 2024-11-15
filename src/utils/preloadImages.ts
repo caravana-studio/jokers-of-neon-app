@@ -1,5 +1,5 @@
 import { MODIFIER_CARDS_DATA } from "../data/modifiers";
-import { PACKS_DATA } from "../data/packs";
+import { LOOT_BOXES_DATA } from "../data/packs";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import {
   TRADITIONAL_CARDS_DATA,
@@ -30,7 +30,7 @@ const getDefaultImageUrls = (): string[] => {
   });
 
   // Packs
-  Object.keys(PACKS_DATA).forEach((key) => {
+  Object.keys(LOOT_BOXES_DATA).forEach((key) => {
     imageUrls.push(`Cards/packs/${key}.png`);
   });
 
