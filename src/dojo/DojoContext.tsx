@@ -68,8 +68,7 @@ const useRpcProvider = () => {
   return useMemo(
     () =>
       new RpcProvider({
-        nodeUrl:
-          import.meta.env.VITE_PUBLIC_NODE_URL || "http://localhost:5050",
+        nodeUrl: import.meta.env.VITE_RPC_URL || "http://localhost:5050",
       }),
     []
   );
@@ -98,7 +97,9 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
   if (currentValue) throw new Error("DojoProvider can only be used once");
 
   const rpcProvider = useRpcProvider();
+  console.log("rpcProvider", rpcProvider);
   const masterAccount = useMasterAccount(rpcProvider);
+  console.log("masterAccount", masterAccount);
   const controllerAccount = useControllerAccount();
 
   return (
@@ -107,7 +108,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
         masterAccount,
         accountClassHash: import.meta.env.VITE_PUBLIC_ACCOUNT_CLASS_HASH,
         rpcProvider,
-        feeTokenAddress: import.meta.env.VITE_NETWORK_FEE_TOKEN,
+        feeTokenAddress: import.meta.env.VITE_NETWORK_FEE_TOKEN || "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
     >
       <DojoContextProvider
