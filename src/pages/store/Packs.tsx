@@ -34,8 +34,8 @@ export const Packs = () => {
                 w="50%"
               >
                 <SpineAnimation
-                  jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
-                  atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
+                  jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+                  atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
                   initialAnimation={
                     isMobile
                       ? animationsData.loopAnimation

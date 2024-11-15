@@ -87,8 +87,8 @@ export const PreviewPack = () => {
   const spineAnim = (
     <SpineAnimation
       ref={spineAnimationRef}
-      jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
-      atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
+      jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+      atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
       initialAnimation={animationsData.loopAnimation}
       loopAnimation={animationsData.loopAnimation}
       openBoxAnimation={animationsData.openBoxAnimation}
