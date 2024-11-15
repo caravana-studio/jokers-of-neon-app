@@ -9,7 +9,7 @@
         "description": "Sequência do mesmo naipe"
       },
       "fiveOfAKind": {
-        "name": "Five of a Kind",
+        "name": "Quinteto",
         "description": "Cinco cartas do mesmo valor"
       },
       "fourOfAKind": {
