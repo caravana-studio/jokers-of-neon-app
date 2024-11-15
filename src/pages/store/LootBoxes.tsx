@@ -6,7 +6,7 @@ import { animationsData } from "../../constants/spineAnimations";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { getTooltip } from "../../utils/getTooltip";
 
-export const Packs = () => {
+export const LootBoxes = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
 

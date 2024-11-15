@@ -1,5 +1,5 @@
 import { MODIFIER_CARDS_DATA } from "../data/modifiers";
-import { LOOT_BOXES_DATA } from "../data/packs";
+import { LOOT_BOXES_DATA } from "../data/lootBoxes";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import {
   TRADITIONAL_CARDS_DATA,

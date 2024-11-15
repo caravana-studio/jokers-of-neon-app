@@ -13,7 +13,7 @@ import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 
-export const PreviewPack = () => {
+export const PreviewLootBox = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
