@@ -4,15 +4,15 @@ import { PreviewPack } from "./PreviewPack";
 import { PreviewSlot } from "./PreviewSlot";
 
 export const PreviewPage = () => {
-    const { type } = useParams();
+  const { type } = useParams();
 
-    if (type === "card") {
-        return <PreviewCard />;
-    } else if (type === "pack") {
-        return <PreviewPack />;
-    } else if (type === "slot") {
-        return <PreviewSlot />;
-    }else {
-        return <p>Page not found.</p>;
-    }
-}
+  if (type === "card") {
+    return <PreviewCard />;
+  } else if (type === "loot-box") {
+    return <PreviewPack />;
+  } else if (type === "slot") {
+    return <PreviewSlot />;
+  } else {
+    return <p>Page not found.</p>;
+  }
+};

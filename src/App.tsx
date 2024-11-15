@@ -53,7 +53,7 @@ function App() {
                 }
               />
               <Route
-                path="/open-pack"
+                path="/open-loot-box"
                 element={
                   <StoreProvider>
                     <OpenPack />
