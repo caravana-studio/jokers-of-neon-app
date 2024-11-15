@@ -1,4 +1,3 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Spinner,
@@ -7,10 +6,8 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
@@ -64,18 +61,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                 <Td>USERNAME</Td>
                 <Td>SCORE</Td>
                 <Td>LEVEL</Td>
-                <Td>
-                  PRIZE{" "}
-                  {!isMobile && (
-                    <Tooltip label="Prizes will be distributed to the top 10 players at the end of the tournament">
-                      <InfoIcon
-                        color="white"
-                        ml={1}
-                        fontSize={{ base: "10px", md: "15px" }}
-                      />
-                    </Tooltip>
-                  )}
-                </Td>
+                
               </Tr>
             </Thead>
             <Tbody>
@@ -107,23 +93,12 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                         leader.level
                       )}
                     </Td>
-                    <Td>
-                      <RollingNumber n={leader.prize} />{" "}
-                      <span
-                        style={{
-                          fontSize: isMobile ? "7px" : "12px",
-                          marginRight: "20px",
-                        }}
-                      >
-                        USDC
-                      </span>
-                    </Td>
+
                   </Tr>
                 ))}
               {currentLeader && !currentLeaderIsInReducedLeaderboard && (
                 <>
                   <Tr>
-                    <Td>...</Td>
                     <Td>...</Td>
                     <Td>...</Td>
                     <Td>...</Td>
@@ -137,9 +112,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     <Td>
                       <RollingNumber n={currentLeader.level} />
                     </Td>
-                    <Td>
-                      <RollingNumber n={currentLeader.prize} /> USDC
-                    </Td>
+
                   </Tr>
                 </>
               )}
