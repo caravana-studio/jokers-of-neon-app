@@ -26,11 +26,6 @@ export const Home = () => {
             <Heading size="l" variant="italic" textAlign={"center"}>
               LEADERBOARD
             </Heading>
-            <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-10-05T21:00:00.000Z")}
-              />
-            </Box>
 
             <Leaderboard />
             <Button
