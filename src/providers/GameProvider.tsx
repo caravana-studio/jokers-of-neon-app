@@ -641,6 +641,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
+        if (response.cashEvent) {
+          // cash event
+          setTimeout(() => {
+            const { idx, special_idx, cash } = response.cashEvent;
+            setAnimatedCard({
+              idx: [idx],
+              special_idx,
+              cash,
+              animationIndex: 60,
+            });
+          }, playAnimationDuration);
+        }
         if (response.gameOver) {
           setTimeout(() => {
             navigate(`/gameover/${gameId}`);
