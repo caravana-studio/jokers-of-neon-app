@@ -14,9 +14,9 @@ export const getSpecialSuitEvents = (
     (event) => event.keys[1] === SPECIAL_MODIFIER_SUIT_EVENT
   );
   specialSuitEvents.forEach((event) => {
-    const special_idx = getNumberValueFromEvent(event, 1) ?? 0;
-    const idx = getNumberValueFromEvent(event, 2) ?? 0;
-    const suit = getNumberValueFromEvent(event, 3) as Suits;
+    const special_idx = getNumberValueFromEvent(event, 4) ?? 0;
+    const idx = getNumberValueFromEvent(event, 5) ?? 0;
+    const suit = getNumberValueFromEvent(event, 6) as Suits;
     if (!grouped[special_idx]) {
       grouped[special_idx] = [];
     }

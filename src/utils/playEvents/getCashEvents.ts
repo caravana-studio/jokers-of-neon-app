@@ -12,9 +12,9 @@ export const getCashEvents = (
   );
 
   return cashEvents.map((event) => {
-    const cash = getNumberValueFromEvent(event, 0) ?? 0;
-    const idx = getNumberValueFromEvent(event, 1) ?? 0;
-    const special_idx = getNumberValueFromEvent(event, 2) ?? 0;
+    const cash = getNumberValueFromEvent(event, 3) ?? 0;
+    const idx = getNumberValueFromEvent(event, 4) ?? 0;
+    const special_idx = getNumberValueFromEvent(event, 5) ?? 0;
     return {
       idx,
       cash,

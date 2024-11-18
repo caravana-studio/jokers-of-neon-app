@@ -14,15 +14,15 @@ export const getMultiPointEvents = (events: DojoEvent[]) => {
         event.keys[1] === SPECIAL_MODIFIER_MULTI_EVENT
     )
     .map((event) => {
-      const special_idx = getNumberValueFromEvent(event, 1) ?? 0;
-      const idx = getNumberValueFromEvent(event, 2) ?? 0;
+      const special_idx = getNumberValueFromEvent(event, 4) ?? 0;
+      const idx = getNumberValueFromEvent(event, 5) ?? 0;
       let points;
       let multi;
       if (event.keys[1] === SPECIAL_MODIFIER_POINTS_EVENT) {
-        points = getNumberValueFromEvent(event, 3) ?? 0;
+        points = getNumberValueFromEvent(event, 6) ?? 0;
       }
       if (event.keys[1] === SPECIAL_MODIFIER_MULTI_EVENT) {
-        multi = getNumberValueFromEvent(event, 3) ?? 0;
+        multi = getNumberValueFromEvent(event, 6) ?? 0;
       }
       return {
         special_idx,

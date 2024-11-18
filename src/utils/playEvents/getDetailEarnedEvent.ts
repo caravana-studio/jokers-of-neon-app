@@ -9,7 +9,6 @@ export const getDetailEarnedEvent = (
   const detailEarnedEvent = events.find(
     (event) => event.keys[1] === DETAIL_EARNED_EVENT
   );
-  console.log("detailEarnedEvent", detailEarnedEvent);
   if (!detailEarnedEvent) return undefined;
   const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;
   const level_bonus = getNumberValueFromEvent(detailEarnedEvent, 5) ?? 0;

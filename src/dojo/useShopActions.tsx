@@ -55,7 +55,7 @@ export const useShopActions = () => {
   const buyCard = async (
     gameId: number,
     card_idx: number,
-    card_type: CardItemType
+    card_type: number
   ) => {
     try {
       showTransactionToast();

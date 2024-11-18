@@ -16,7 +16,7 @@ export const getLevelPassedEvent = (
     (event) => event.keys[1] === PLAY_WIN_GAME_EVENT
   );
   if (!levelPassedEvent) return undefined;
-  const level = getNumberValueFromEvent(levelPassedEvent, 1) ?? 0;
-  const score = getNumberValueFromEvent(levelPassedEvent, 2) ?? 0;
+  const level = getNumberValueFromEvent(levelPassedEvent, 4) ?? 0;
+  const score = getNumberValueFromEvent(levelPassedEvent, 5) ?? 0;
   return { level, score };
 };
