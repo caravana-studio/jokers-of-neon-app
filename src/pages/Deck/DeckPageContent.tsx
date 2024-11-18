@@ -1,16 +1,14 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { DeckCardsGrid } from "./DeckCardsGrid";
-import { BLUE_LIGHT } from "../../theme/colors";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
-import { useTranslation } from "react-i18next";
 import { SeeSpecialCardsBtn } from "./DeckButtons/SeeSpecialCardsBtn";
 import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 import { DeckFilters } from "./DeckFilters";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { DeckHeading } from "./DeckHeading";
 
 export const DeckPageContent = () => {
-  const { t } = useTranslation(["game"]);
   const { filterButtonsState } = useDeckFilters();
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
@@ -33,40 +31,7 @@ export const DeckPageContent = () => {
           height={"50%"}
           flexDirection={"column"}
         >
-          <Heading
-            variant="italic"
-            size="l"
-            width={"100%"}
-            ml={4}
-            textAlign={"center"}
-            sx={{
-              position: "relative",
-              _after: {
-                content: '""',
-                position: "absolute",
-                top: "-12px",
-                left: 0,
-                width: "100%",
-                height: "1px",
-                background: `linear-gradient(to right, rgba(255, 255, 255, 0) 0%, ${BLUE_LIGHT} 50%, rgba(255, 255, 255, 0) 100%)`,
-                boxShadow:
-                  "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-              },
-              _before: {
-                content: '""',
-                position: "absolute",
-                bottom: "-12px",
-                left: 0,
-                width: "100%",
-                height: "1px",
-                background: `linear-gradient(to right, rgba(255, 255, 255, 0) 0%, ${BLUE_LIGHT} 50%, rgba(255, 255, 255, 0) 100%)`,
-                boxShadow:
-                  "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-              },
-            }}
-          >
-            {t("game.deck.title")}
-          </Heading>
+          <DeckHeading />
           <DeckFilters />
 
           <Flex
