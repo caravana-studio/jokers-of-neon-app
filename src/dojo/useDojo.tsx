@@ -11,6 +11,6 @@ export const useDojo = () => {
     return {
         setup: context,
         account: context.account,
-        syncCall: context.syncCallback
+        // syncCall: context.syncCallback
     };
 };

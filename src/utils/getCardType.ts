@@ -1,12 +1,12 @@
-import { NumericCardTypes } from "../enums/cardTypes";
+import { CardItemType } from "../dojo/typescript/models.gen";
 import { Card } from "../types/Card";
 
-export const getCardType = (card: Card) => {
+export const getCardType = (card: Card): CardItemType => {
   if (card.isModifier) {
-    return NumericCardTypes.MODIFIER;
+    return { type: "Modifier" };
   } else if (card.isSpecial) {
-    return NumericCardTypes.SPECIAL;
+    return { type: "Special" };
   } else {
-    return NumericCardTypes.COMMON;
+    return { type: "Common" };
   }
 };

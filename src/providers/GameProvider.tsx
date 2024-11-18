@@ -167,7 +167,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clientComponents: { Game },
     },
     account: { account },
-    syncCall,
+    // syncCall,
   } = useDojo();
 
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
@@ -260,7 +260,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
-          await syncCall();
+          // await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
           setRoundRewards(undefined);
@@ -722,7 +722,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
-    console.log("game", game);
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       setTimeout(() => {
         if (!gameExists(Game, gameId)) {

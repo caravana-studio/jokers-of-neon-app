@@ -97,9 +97,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
   if (currentValue) throw new Error("DojoProvider can only be used once");
 
   const rpcProvider = useRpcProvider();
-  console.log("rpcProvider", rpcProvider);
   const masterAccount = useMasterAccount(rpcProvider);
-  console.log("masterAccount", masterAccount);
   const controllerAccount = useControllerAccount();
 
   return (
