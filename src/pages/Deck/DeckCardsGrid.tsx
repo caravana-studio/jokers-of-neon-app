@@ -2,10 +2,10 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { Card } from "../../types/Card";
-import { Suits } from "../../enums/suits";
 import { isMobile } from "react-device-detect";
 import { sortCards } from "../../utils/sortCards";
 import { SortBy } from "../../enums/sortBy";
+import { DeckFiltersState } from "../../types/DeckFilters";
 
 const SCALE = 0.55;
 const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
@@ -13,14 +13,8 @@ const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
 
 interface DeckCardsGridProps {
   cards: Card[] | undefined;
-  filters?: DeckCardsFilters;
+  filters?: DeckFiltersState;
   usedCards?: Card[];
-}
-
-export interface DeckCardsFilters {
-  isModifier?: boolean;
-  isNeon?: boolean;
-  suit?: Suits;
 }
 
 export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
@@ -28,7 +22,6 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   filters,
   usedCards = [],
 }) => {
-  console.log(filters);
   const hasFilters =
     filters?.isModifier != undefined ||
     filters?.isNeon != undefined ||

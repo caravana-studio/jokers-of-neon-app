@@ -32,18 +32,20 @@ export const useDeck = (): Deck => {
       const deckCard = getCard(gameId ?? 0, i, DeckCard);
       const card = getCardFromCardId(deckCard?.card_id, i);
       const cardData = { ...getCardData(card) };
+      const isNeonCard =
+        card.card_id === 53 || (card.card_id >= 200 && card.card_id <= 251);
 
       fullDeckCards.push({
         ...card,
         ...cardData,
-        isNeon: false,
+        isNeon: isNeonCard,
       });
 
       if (i >= deck?.round_len) {
         usedDeckCards.push({
           ...card,
           ...cardData,
-          isNeon: false,
+          isNeon: isNeonCard,
         });
       }
     }
