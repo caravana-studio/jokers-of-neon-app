@@ -1,15 +1,16 @@
-import React, {
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
+import {
+  forwardRef,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
-  useImperativeHandle,
-  forwardRef,
 } from "react";
-import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useStore } from "../providers/StoreProvider";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { useStore } from "../providers/StoreProvider";
+import { PriceBox } from "./PriceBox";
 
 interface SpineAnimationProps {
   jsonUrl: string;
@@ -26,6 +27,7 @@ interface SpineAnimationProps {
   scale?: number;
   onOpenAnimationStart?: () => void;
   isPurchased?: boolean;
+  price?: number;
 }
 
 export interface SpineAnimationRef {
@@ -49,6 +51,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       scale = 1,
       onOpenAnimationStart,
       isPurchased,
+      price,
     },
     ref
   ) => {
@@ -134,7 +137,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     useEffect(() => {
       if (playerReady && playerRef.current && !isPurchased) {
         if (isHovered) {
-          hoverAnimation && playerRef.current.setAnimation(hoverAnimation, false);
+          hoverAnimation &&
+            playerRef.current.setAnimation(hoverAnimation, false);
           playerRef.current.addAnimation(loopAnimation, true);
         } else {
           const animState = playerRef.current.animationState;
@@ -179,6 +183,16 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             </Heading>
           </Box>
         )}
+        {price && <Box
+          sx={{
+            position: "absolute",
+            bottom: isMobile ? `-20px` : 0,
+            left: `45%`,
+            zIndex: 10,
+          }}
+        >
+          <PriceBox price={price} purchased={isPurchased ?? false} />
+        </Box>}
         <Flex
           ref={containerRef}
           onClick={onClick}

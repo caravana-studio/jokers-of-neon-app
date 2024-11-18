@@ -154,6 +154,70 @@
     "325": {
       "name": "Sinergia de neon",
       "description": "Se mais de 50% das cartas jogadas são neon, todas as outras cartas são convertidas em neon"
+    },
+    "331": {
+      "name": "Atalho",
+      "description": "Reduz os pontos necessários para vencer o nível em 20%"
+    },
+    "332": {
+      "name": "Dia de Sorte",
+      "description": "Receba 500 moedas extras para cada Joker na mão no final do turno"
+    },
+    "333": {
+      "name": "Efeito Espelho",
+      "description": "Repete o efeito da carta especial à esquerda"
+    },
+    "334": {
+      "name": "Pacotes em Promoção",
+      "description": "Pacotes têm 30% de desconto"
+    },
+    "335": {
+      "name": "Escolhas Bônus",
+      "description": "2 opções extras de carta especial na loja"
+    },
+    "336": {
+      "name": "Queda do Joker",
+      "description": "Receba 500 moedas toda vez que descartar um Joker"
+    },
+    "337": {
+      "name": "Descartes Extras",
+      "description": "Adiciona 2 descartes"
+    },
+    "338": {
+      "name": "Cartas Extras",
+      "description": "Adiciona 2 mãos"
+    },
+    "339": {
+      "name": "Fator de Escala",
+      "description": "Aprimora todas as suas mãos em 2 níveis"
+    },
+    "340": {
+      "name": "Duques Selvagens",
+      "description": "Todos os 2s são considerados coringas"
+    },
+    "341": {
+      "name": "Compra Imortal",
+      "description": "A primeira mão descartada é aprimorada"
+    },
+    "342": {
+      "name": "Início Blindado",
+      "description": "Protege sua primeira mão jogada de todos os efeitos negativos"
+    },
+    "343": {
+      "name": "Impulsionador de Full House",
+      "description": "Aprimora a mão Full House em 4 níveis"
+    },
+    "344": {
+      "name": "Impulsionador de Trinca",
+      "description": "Aprimora a mão Trinca em 4 níveis"
+    },
+    "345": {
+      "name": "Impulsionador de Quadra",
+      "description": "Aprimora a mão Quadra em 4 níveis"
+    },
+    "346": {
+      "name": "Impulsionador de Quinteto",
+      "description": "Aprimora a mão Quinteto em 4 níveis"
     }
   }
 }

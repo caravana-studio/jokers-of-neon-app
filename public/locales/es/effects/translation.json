@@ -68,20 +68,20 @@
       "description": "Añade +2 multi por cada carta de picas jugada"
     },
     "304": {
-      "name": "Potenciador de Pareja",
-      "description": "Mejora la mano de PAREJA en 4 niveles"
+      "name": "Potenciador de Par",
+      "description": "Mejora la mano de Par en 4 niveles"
     },
     "305": {
-      "name": "Potenciador de Doble Pareja",
-      "description": "Mejora la mano de DOBLE PAREJA en 4 niveles"
+      "name": "Potenciador de Doble Par",
+      "description": "Mejora la mano de Doble Par en 4 niveles"
     },
     "306": {
       "name": "Potenciador de Escalera",
-      "description": "Mejora la mano de ESCALERA en 4 niveles"
+      "description": "Mejora la mano de Escalera en 4 niveles"
     },
     "307": {
       "name": "Potenciador de Color",
-      "description": "Mejora la mano de COLOR en 4 niveles"
+      "description": "Mejora la mano de Color en 4 niveles"
     },
     "308": {
       "name": "Escalera Fácil",
@@ -154,6 +154,71 @@
     "325": {
       "name": "Sinergia de neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se convierten en neón"
+    },
+    "331": {
+      "name": "Atajo",
+      "description": "Reduce los puntos necesarios para superar el nivel en un 20%"
+    },
+    "332": {
+      "name": "Día de suerte",
+      "description": "Obtén 500 monedas extra por cada Joker en la mano al final del turno"
+    },
+    "333": {
+      "name": "Efecto espejo",
+      "description": "Repite el efecto de la carta especial a la izquierda"
+    },
+    "334": {
+      "name": "Packs en oferta",
+      "description": "Los packs tienen un 30% de descuento"
+    },
+    "335": {
+      "name": "Selecciones extra",
+      "description": "2 opciones de carta especial adicionales en la tienda"
+    },
+    "336": {
+      "name": "Caída del Joker",
+      "description": "Obtén 500 monedas cada vez que descartes un Joker"
+    },
+    "337": {
+      "name": "Descartes extra",
+      "description": "Agrega 2 descartes"
+    },
+    "338": {
+      "name": "Robos extra",
+      "description": "Agrega 2 manos"
+    },
+    "339": {
+      "name": "Factor de escala",
+      "description": "Mejora todas tus manos en 2 niveles"
+    },
+    "340": {
+      "name": "Doses salvajes",
+      "description": "Todos los 2s se consideran comodines"
+    },
+    "341": {
+      "name": "Robo inmortal",
+      "description": "La primera mano descartada sube de nivel"
+    },
+    "342": {
+      "name": "Inicio protegido",
+      "description": "Protege tu primera mano jugada de todos los efectos negativos"
+    },
+    "343": {
+      "name": "Potenciador de Full",
+      "description": "Mejora la mano Full en 4 niveles"
+    },
+    "344": {
+      "name": "Potenciador de Trío",
+      "description": "Mejora la mano de Trío en 4 niveles"
+    },
+    "345": {
+      "name": "Potenciador de Póker",
+      "description": "Mejora la mano de Póker en 4 niveles"
+    },
+    "346": {
+      "name": "Potenciador de Repóker",
+      "description": "Mejora la mano de Repóker en 4 niveles"
     }
+
   }
 }
