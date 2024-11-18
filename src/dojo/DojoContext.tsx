@@ -18,7 +18,7 @@ interface DojoAccount {
   list: () => any[];
   get: (id: string) => any;
   select: (id: string) => void;
-  account: Account | AccountInterface;
+  account: Account; // | AccountInterface;
   isDeploying: boolean;
   clear: () => void;
   accountDisplay: string;
@@ -106,9 +106,13 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
     <BurnerProvider
       initOptions={{
         masterAccount,
-        accountClassHash: import.meta.env.VITE_PUBLIC_ACCOUNT_CLASS_HASH,
+        accountClassHash:
+          import.meta.env.VITE_PUBLIC_ACCOUNT_CLASS_HASH ||
+          "0x079d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
         rpcProvider,
-        feeTokenAddress: import.meta.env.VITE_NETWORK_FEE_TOKEN || "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        feeTokenAddress:
+          import.meta.env.VITE_NETWORK_FEE_TOKEN ||
+          "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
     >
       <DojoContextProvider
@@ -251,7 +255,7 @@ const DojoContextProvider = ({
           get,
           select,
           clear,
-          account: accountToUse as Account | AccountInterface,
+          account: burnerAccount as Account, //accountToUse as Account | AccountInterface,
           isDeploying,
           accountDisplay: displayAddress(
             (accountToUse as Account | AccountInterface)?.address || ""

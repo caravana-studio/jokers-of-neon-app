@@ -4,7 +4,7 @@ import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
 export const getGlobalEvents = (events: DojoEvent[]) => {
   const filteredEvents = events.filter(
-    (event) => event.keys[0] === SPECIAL_GLOBAL_EVENT
+    (event) => event.keys[1] === SPECIAL_GLOBAL_EVENT
   );
   return filteredEvents.map((event) => {
     const special_idx = getNumberValueFromEvent(event, 1) ?? 0;

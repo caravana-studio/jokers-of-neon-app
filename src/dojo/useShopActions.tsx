@@ -28,7 +28,7 @@ export const useShopActions = () => {
     
           updateTransactionToast(transaction_hash, tx.isSuccess());
           if (tx.isSuccess()) {
-            const event = tx.events.find((event) => event.keys[0] === DESTROYED_SPECIAL_CARD_EVENT);
+            const event = tx.events.find((event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT);
             return {
               success: true,
               cards: getCardsFromEvents(tx.events),

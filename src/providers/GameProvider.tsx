@@ -11,8 +11,7 @@ import {
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
-  SORT_BY_SUIT,
-  SOUND_OFF,
+  SORT_BY_SUIT
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -716,13 +715,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account, gameId, cardIdx).finally(() => {
+    return discardSpecialCard(gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };
 
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
+    console.log("game", game);
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       setTimeout(() => {
         if (!gameExists(Game, gameId)) {

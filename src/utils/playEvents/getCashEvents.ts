@@ -8,7 +8,7 @@ export const getCashEvents = (
 ): CashEvent[] => {
   
   const cashEvents = events.filter(
-    (event) => event.keys[0] === SPECIAL_CASH_EVENT
+    (event) => event.keys[1] === SPECIAL_CASH_EVENT
   );
 
   return cashEvents.map((event) => {

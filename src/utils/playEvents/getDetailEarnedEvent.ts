@@ -7,7 +7,7 @@ export const getDetailEarnedEvent = (
   events: DojoEvent[]
 ): DetailEarned | undefined => {
   const detailEarnedEvent = events.find(
-    (event) => event.keys[0] === DETAIL_EARNED_EVENT
+    (event) => event.keys[1] === DETAIL_EARNED_EVENT
   );
   if (!detailEarnedEvent) return undefined;
   const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 1) ?? 0;
