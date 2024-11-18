@@ -1,18 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { useCardScale } from "../hooks/useCardScale";
 import { CashSymbol } from "./CashSymbol";
 
 interface IPriceBoxProps {
   price: number;
   purchased: boolean;
-  discountedPrice?: number;
+  originalPrice?: number;
 }
 
 export const PriceBox = ({
   price,
   purchased,
-  discountedPrice,
+  originalPrice = 0,
 }: IPriceBoxProps) => {
   return (
     <Box
@@ -34,17 +33,17 @@ export const PriceBox = ({
     >
       <Box
         sx={{
-          textDecoration: discountedPrice ? "line-through" : "none",
-          fontSize: isMobile ? 15 : discountedPrice ? 10 : 18,
+          textDecoration: originalPrice > 0 ? "line-through" : "none",
+          fontSize: isMobile ? 15 : originalPrice > 0 ? 10 : 18,
         }}
       >
-        {price}
+        {originalPrice > 0 ? originalPrice : price}
         <CashSymbol />
       </Box>
 
-      {discountedPrice && (
+      {originalPrice > 0 && (
         <Box>
-          {discountedPrice}
+          {price}
           <CashSymbol />
         </Box>
       )}

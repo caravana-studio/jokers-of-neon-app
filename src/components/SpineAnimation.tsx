@@ -28,6 +28,7 @@ interface SpineAnimationProps {
   onOpenAnimationStart?: () => void;
   isPurchased?: boolean;
   price?: number;
+  originalPrice?: number;
 }
 
 export interface SpineAnimationRef {
@@ -52,6 +53,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       onOpenAnimationStart,
       isPurchased,
       price,
+      originalPrice,
     },
     ref
   ) => {
@@ -183,16 +185,22 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             </Heading>
           </Box>
         )}
-        {price && <Box
-          sx={{
-            position: "absolute",
-            bottom: isMobile ? `-20px` : 0,
-            left: `45%`,
-            zIndex: 10,
-          }}
-        >
-          <PriceBox price={price} purchased={isPurchased ?? false} />
-        </Box>}
+        {price && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: isMobile ? `-20px` : 0,
+              left: `45%`,
+              zIndex: 10,
+            }}
+          >
+            <PriceBox
+              price={price}
+              purchased={isPurchased ?? false}
+              originalPrice={originalPrice}
+            />
+          </Box>
+        )}
         <Flex
           ref={containerRef}
           onClick={onClick}

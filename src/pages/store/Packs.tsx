@@ -5,22 +5,21 @@ import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { getTooltip } from "../../utils/getTooltip";
+import { useGameContext } from "../../providers/GameProvider";
 
 export const Packs = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
 
+  const { specialCards } = useGameContext();
+  const discountCardId = "334";
+  const discountPercentage = 0.3;
+
+  const hasDiscount = specialCards.some((card) => card.id === discountCardId);
+
   return (
-    <Flex
-      className="game-tutorial-step-packs"
-      m={isMobile ? 4 : 0}
-      h='60%'
-    >
-      <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        
-      >
+    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%">
+      <Flex flexDirection="row" justifyContent="space-between">
         {packs.map((pack) => {
           const card = {
             id: pack.blister_pack_id.toString(),
@@ -39,7 +38,7 @@ export const Packs = () => {
               <Flex
                 key={`pack-${pack.blister_pack_id}`}
                 justifyContent="center"
-                w='50%'
+                w="50%"
               >
                 <SpineAnimation
                   jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
@@ -53,6 +52,11 @@ export const Packs = () => {
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
                   price={card.price}
+                  originalPrice={
+                    hasDiscount
+                      ? Math.round(card.price / (1 - discountPercentage))
+                      : 0
+                  }
                   onClick={() => {
                     if (!pack.purchased) {
                       navigate("/preview/pack", {
