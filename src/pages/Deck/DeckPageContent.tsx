@@ -4,10 +4,10 @@ import { DeckCardsFilters, DeckCardsGrid } from "./DeckCardsGrid";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { useState } from "react";
 import { Suits } from "../../enums/suits";
-import { useNavigate } from "react-router-dom";
 import { DeckFiltersMap, preprocessCards } from "./Utils/DeckCardsUtils";
 import { useTranslation } from "react-i18next";
 import { SeeSpecialCardsBtn } from "./DeckButtons/SeeSpecialCardsBtn";
+import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 
 export const DeckPageContent = () => {
   const { t } = useTranslation(["game"]);
@@ -15,7 +15,6 @@ export const DeckPageContent = () => {
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
 
-  const navigate = useNavigate();
   const [filterButtonsState, setFilterButtonsState] = useState<DeckFiltersMap>({
     isNeon: undefined,
     isModifier: undefined,
@@ -230,12 +229,7 @@ export const DeckPageContent = () => {
             justifyContent={"center"}
           >
             <SeeSpecialCardsBtn />
-            <Button
-              variant={"outlinePrimaryGlow"}
-              onClick={() => navigate("/demo")}
-            >
-              {t("game.deck.btns.back").toUpperCase()}
-            </Button>
+            <BackToGameBtn />
           </Flex>
         </Flex>
         <Flex

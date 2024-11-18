@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { DeckFiltersMap, preprocessCards } from "./Utils/DeckCardsUtils";
 import { useTranslation } from "react-i18next";
 import { SeeSpecialCardsBtn } from "./DeckButtons/SeeSpecialCardsBtn";
+import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 
 export const DeckPageContentMobile = () => {
   const { t } = useTranslation(["game"]);
@@ -241,12 +242,7 @@ export const DeckPageContentMobile = () => {
 
         <Flex gap={4} mt={4} wrap={"wrap"} justifyContent={"center"}>
           <SeeSpecialCardsBtn />
-          <Button
-            variant={"outlinePrimaryGlow"}
-            onClick={() => navigate("/demo")}
-          >
-            {t("game.deck.btns.back").toUpperCase()}
-          </Button>
+          <BackToGameBtn />
         </Flex>
       </Flex>
     </>
