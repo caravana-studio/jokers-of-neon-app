@@ -11,7 +11,7 @@ import {
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
-  SORT_BY_SUIT
+  SORT_BY_SUIT,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -167,7 +167,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clientComponents: { Game },
     },
     account: { account },
-    // syncCall,
+    syncCall,
   } = useDojo();
 
   const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
@@ -260,7 +260,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
-          // await syncCall();
+          await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
           setRoundRewards(undefined);
