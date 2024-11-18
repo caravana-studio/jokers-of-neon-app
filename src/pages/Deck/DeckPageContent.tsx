@@ -5,9 +5,9 @@ import { BLUE_LIGHT } from "../../theme/colors";
 import { useState } from "react";
 import { Suits } from "../../enums/suits";
 import { useNavigate } from "react-router-dom";
-import { CurrentSpecialCardsModal } from "../../components/CurrentSpecialCardsModal";
 import { DeckFiltersMap, preprocessCards } from "./Utils/DeckCardsUtils";
 import { useTranslation } from "react-i18next";
+import { SeeSpecialCardsBtn } from "./DeckButtons/SeeSpecialCardsBtn";
 
 export const DeckPageContent = () => {
   const { t } = useTranslation(["game"]);
@@ -16,7 +16,6 @@ export const DeckPageContent = () => {
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
 
   const navigate = useNavigate();
-  const [specialCardsModalOpen, setSpecialCardsModalOpen] = useState(false);
   const [filterButtonsState, setFilterButtonsState] = useState<DeckFiltersMap>({
     isNeon: undefined,
     isModifier: undefined,
@@ -34,11 +33,6 @@ export const DeckPageContent = () => {
 
   return (
     <>
-      {specialCardsModalOpen && (
-        <CurrentSpecialCardsModal
-          close={() => setSpecialCardsModalOpen(false)}
-        />
-      )}
       <Flex
         py={4}
         px={{ base: 8, md: 20 }}
@@ -235,14 +229,7 @@ export const DeckPageContent = () => {
             wrap={{ base: "wrap", md: "nowrap" }}
             justifyContent={"center"}
           >
-            <Button
-              variant={"outlinePrimaryGlow"}
-              onClick={() => {
-                setSpecialCardsModalOpen(true);
-              }}
-            >
-              {t("game.deck.btns.special-cards").toUpperCase()}
-            </Button>
+            <SeeSpecialCardsBtn />
             <Button
               variant={"outlinePrimaryGlow"}
               onClick={() => navigate("/demo")}
