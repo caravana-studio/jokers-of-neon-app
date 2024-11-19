@@ -1,20 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
+import { LevelPokerHand } from "../dojo/typescript/models.gen";
+import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
-import { useGetPlaysLevelDetail } from "../queries/useGetPlaysLevelDetail";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
-import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
-import { useDojo } from "../dojo/useDojo";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -63,12 +62,15 @@ export const useGameState = () => {
     },
   } = useDojo();
 
-  if (client && account && plays.length == 0) {
-    getPlayerPokerHands(client, gameId).then((plays: any)=> {
-      if(plays!= undefined)
-        setPlays(plays);
-    })
-  }
+  useEffect(() => {
+    if (client && account && plays.length == 0) {
+      getPlayerPokerHands(client, gameId).then((plays: any)=> {
+        if(plays!= undefined)
+          setPlays(plays);
+      })
+    }
+  }, [client, account, gameId, plays]);
+
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
