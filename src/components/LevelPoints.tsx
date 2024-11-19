@@ -10,8 +10,8 @@ export const LevelPoints = () => {
   const inTutorial = isTutorial();
   const game = useGame();
   const round = useRound();
-  const level = game?.level ?? inTutorial ? 1 : 0;
-  const levelScore = round?.level_score ?? inTutorial ? 300 : 0;
+  const level = inTutorial ? 1 : game?.level ?? 0;
+  const levelScore = inTutorial ? 300 : round?.level_score ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (

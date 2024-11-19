@@ -171,7 +171,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
     }
-  }, [preSelectedCards]);
+  }, [preSelectedCards, [preSelectedModifiers]]);
 
   const resetMultiPoints = () => {
     setPoints(0);
