@@ -13,7 +13,7 @@ import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 
-export const PreviewPack = () => {
+export const PreviewLootBox = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export const PreviewPack = () => {
       setShowOverlay(true);
     }, 500);
     setTimeout(() => {
-      navigate("/redirect/open-pack");
+      navigate("/redirect/open-loot-box");
     }, 1000);
   };
 
@@ -85,19 +85,19 @@ export const PreviewPack = () => {
   );
 
   const spineAnim = (
-      <SpineAnimation
-        ref={spineAnimationRef}
-        jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
-        atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
-        initialAnimation={animationsData.loopAnimation}
-        loopAnimation={animationsData.loopAnimation}
-        openBoxAnimation={animationsData.openBoxAnimation}
-        width={1200}
-        height={1500}
-        xOffset={-650}
-        scale={1}
-        onOpenAnimationStart={openAnimationCallBack}
-      />
+    <SpineAnimation
+      ref={spineAnimationRef}
+      jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+      atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
+      initialAnimation={animationsData.loopAnimation}
+      loopAnimation={animationsData.loopAnimation}
+      openBoxAnimation={animationsData.openBoxAnimation}
+      width={1200}
+      height={1500}
+      xOffset={-650}
+      scale={1}
+      onOpenAnimationStart={openAnimationCallBack}
+    />
   );
 
   return (

@@ -6,21 +6,13 @@ import { animationsData } from "../../constants/spineAnimations";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { getTooltip } from "../../utils/getTooltip";
 
-export const Packs = () => {
+export const LootBoxes = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
 
   return (
-    <Flex
-      className="game-tutorial-step-packs"
-      m={isMobile ? 4 : 0}
-      h='60%'
-    >
-      <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        
-      >
+    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%">
+      <Flex flexDirection="row" justifyContent="space-between">
         {packs.map((pack) => {
           const card = {
             id: pack.blister_pack_id.toString(),
@@ -39,11 +31,11 @@ export const Packs = () => {
               <Flex
                 key={`pack-${pack.blister_pack_id}`}
                 justifyContent="center"
-                w='50%'
+                w="50%"
               >
                 <SpineAnimation
-                  jsonUrl={`/spine-animations/pack_${pack.blister_pack_id}.json`}
-                  atlasUrl={`/spine-animations/pack_${pack.blister_pack_id}.atlas`}
+                  jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+                  atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
                   initialAnimation={
                     isMobile
                       ? animationsData.loopAnimation
@@ -55,7 +47,7 @@ export const Packs = () => {
                   price={card.price}
                   onClick={() => {
                     if (!pack.purchased) {
-                      navigate("/preview/pack", {
+                      navigate("/preview/loot-box", {
                         state: {
                           card: card,
                           isPack: true,
