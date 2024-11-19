@@ -1,16 +1,26 @@
 
 "use client";
-import { mainnet } from "@starknet-react/chains";
-import { StarknetConfig, jsonRpcProvider, voyager } from "@starknet-react/core";
+import ControllerConnector from "@cartridge/connector/controller";
+import { ColorMode } from "@cartridge/controller";
+import { mainnet, sepolia } from "@starknet-react/chains";
+import { Connector, StarknetConfig, jsonRpcProvider, voyager } from "@starknet-react/core";
 import React from "react";
+import { policies } from "./policies";
 
-// import cartridgeConnector from "../cartridgeConnector";
+const theme: string = "jokers-of-neon";
+const slot: string = import.meta.env.VITE_SLOT_INSTANCE || "jon-dojo1";
+const namespace: string = "jokers_of_neon";
+const colorMode: ColorMode = "dark";
 
-/* function rpc(chain: Chain) {
-  return {
-    nodeUrl: `https://starknet-mainnet.public.blastapi.io/rpc/v0_7`
-  }
-} */
+const controller = new ControllerConnector({
+  rpc: import.meta.env.VITE_PUBLIC_NODE_URL,
+  namespace,
+  slot,
+  policies,
+  theme,
+  colorMode,
+});
+
 function rpc() {
   return {
     nodeUrl: import.meta.env.VITE_RPC_URL,
@@ -18,15 +28,15 @@ function rpc() {
 }
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
-//   const connectors = [/* cartridgeConnector */];
   const provider = jsonRpcProvider({ rpc });
 
   return (
     <StarknetConfig
-      chains={[mainnet]}
+      chains={[mainnet, sepolia]}
       provider={provider}
-      connectors={[]}
+      connectors={[controller as unknown as Connector]}
       explorer={voyager}
+      autoConnect
     >
       {children}
     </StarknetConfig>

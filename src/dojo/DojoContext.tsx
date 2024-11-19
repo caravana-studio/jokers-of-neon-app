@@ -83,11 +83,11 @@ const useControllerAccount = () => {
     }
   }, [account, isConnected]);
 
-  /*   useEffect(() => {
+    useEffect(() => {
     if (connector) {
       useAccountStore.getState().setConnector(connector as ControllerConnector);
     }
-  }, [connector, isConnected]); */
+  }, [connector, isConnected]);
 
   return account;
 };
@@ -177,7 +177,7 @@ const DojoContextProvider = ({
   };
 
   // Determine which account to use based on environment
-  const isDev = true; //import.meta.env.VITE_PUBLIC_DEV === "true";
+  const isDev = import.meta.env.VITE_PUBLIC_DEV === "true";
   const accountToUse = isDev ? burnerAccount : controllerAccount;
 
   useEffect(() => {
