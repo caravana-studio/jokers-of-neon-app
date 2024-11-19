@@ -28,7 +28,7 @@ interface SpineAnimationProps {
   onOpenAnimationStart?: () => void;
   isPurchased?: boolean;
   price?: number;
-  originalPrice?: number;
+  discountPrice?: number;
 }
 
 export interface SpineAnimationRef {
@@ -53,7 +53,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       onOpenAnimationStart,
       isPurchased,
       price,
-      originalPrice,
+      discountPrice,
     },
     ref
   ) => {
@@ -197,7 +197,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             <PriceBox
               price={price}
               purchased={isPurchased ?? false}
-              originalPrice={originalPrice}
+              discountPrice={discountPrice}
             />
           </Box>
         )}

@@ -1,21 +1,14 @@
-import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useShopItems } from "../../dojo/queries/useShopItems";
 import { getTooltip } from "../../utils/getTooltip";
-import { useGameContext } from "../../providers/GameProvider";
 
 export const LootBoxes = () => {
   const { packs } = useShopItems();
   const navigate = useNavigate();
-
-  const { specialCards } = useGameContext();
-  const discountCardId = "334";
-  const discountPercentage = 0.3;
-
-  const hasDiscount = specialCards.some((card) => card.id === discountCardId);
 
   return (
     <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%">
@@ -52,11 +45,7 @@ export const LootBoxes = () => {
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
                   price={card.price}
-                  originalPrice={
-                    hasDiscount
-                      ? Math.round(card.price / (1 - discountPercentage))
-                      : 0
-                  }
+                  discountPrice={pack.cost_discount.valueOf()}
                   onClick={() => {
                     if (!pack.purchased) {
                       navigate("/preview/loot-box", {

@@ -5,13 +5,13 @@ import { CashSymbol } from "./CashSymbol";
 interface IPriceBoxProps {
   price: number;
   purchased: boolean;
-  originalPrice?: number;
+  discountPrice?: number;
 }
 
 export const PriceBox = ({
   price,
   purchased,
-  originalPrice = 0,
+  discountPrice = 0,
 }: IPriceBoxProps) => {
   return (
     <Box
@@ -33,17 +33,17 @@ export const PriceBox = ({
     >
       <Box
         sx={{
-          textDecoration: originalPrice > 0 ? "line-through" : "none",
-          fontSize: isMobile ? 15 : originalPrice > 0 ? 10 : 18,
+          textDecoration: discountPrice > 0 ? "line-through" : "none",
+          fontSize: isMobile ? 15 : discountPrice > 0 ? 10 : 18,
         }}
       >
-        {originalPrice > 0 ? originalPrice : price}
+        {price}
         <CashSymbol />
       </Box>
 
-      {originalPrice > 0 && (
+      {discountPrice > 0 && (
         <Box>
-          {price}
+          {discountPrice}
           <CashSymbol />
         </Box>
       )}
