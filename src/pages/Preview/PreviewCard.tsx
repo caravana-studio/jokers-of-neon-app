@@ -18,7 +18,7 @@ const PreviewCard = () => {
 
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", {
-    keyPrefix: "store.preview-card.labels",
+    keyPrefix: "store.preview-card",
   });
 
   if (!card) {
@@ -49,7 +49,7 @@ const PreviewCard = () => {
       height={{ base: "40px", sm: "100%" }}
       width={{ base: "50%", sm: "unset" }}
     >
-      {t("buy")}
+      {t("labels.buy")}
     </Button>
   );
 
@@ -75,12 +75,12 @@ const PreviewCard = () => {
   );
 
   const cardType = card.isSpecial
-    ? t("special")
+    ? t("labels.special")
     : card.isModifier
-      ? t("modifier")
-      : t("traditional");
+      ? t("labels.modifier")
+      : t("labels.traditional");
 
-  const temporary = card.temporary && " (" + t("temporary") + ")";
+  const temporary = card.temporary && " (" + t("labels.temporary") + ")";
 
   return (
     <StorePreviewComponent

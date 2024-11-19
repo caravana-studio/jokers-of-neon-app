@@ -8,7 +8,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
-import { OpenPack } from "./pages/OpenPack";
+import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
@@ -54,10 +54,10 @@ function App() {
                 }
               />
               <Route
-                path="/open-pack"
+                path="/open-loot-box"
                 element={
                   <StoreProvider>
-                    <OpenPack />
+                    <OpenLootBox />
                   </StoreProvider>
                 }
               />
