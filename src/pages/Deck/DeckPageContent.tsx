@@ -32,7 +32,9 @@ export const DeckPageContent = () => {
           flexDirection={"column"}
         >
           <DeckHeading />
-          <DeckFilters />
+          <Flex my={12}>
+            <DeckFilters />
+          </Flex>
 
           <Flex
             gap={4}
@@ -40,7 +42,6 @@ export const DeckPageContent = () => {
             wrap={{ base: "wrap", md: "nowrap" }}
             justifyContent={"center"}
           >
-            <SeeSpecialCardsBtn />
             <BackToGameBtn />
           </Flex>
         </Flex>

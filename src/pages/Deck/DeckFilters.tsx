@@ -8,7 +8,7 @@ export const DeckFilters = () => {
   const { filterButtonsState, updateFilters } = useDeckFilters();
 
   return (
-    <Flex flexDirection={"column"} my={12} alignItems={"center"}>
+    <Flex flexDirection={"column"} alignItems={"center"}>
       <Text
         size={"sm"}
         sx={{

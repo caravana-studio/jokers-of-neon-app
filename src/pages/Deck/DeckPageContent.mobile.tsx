@@ -23,21 +23,20 @@ export const DeckPageContentMobile = () => {
         height={"100vh"}
         alignItems={"center"}
         justifyContent={"center"}
-        gap={12}
+        gap={2}
         flexDirection={"column"}
       >
-        <Flex alignItems={"center"} width={"100%"} flexDirection={"column"}>
-          <DeckHeading />
-          <DeckFilters />
-        </Flex>
-
         <Flex
           alignItems={"center"}
-          width={"95%"}
-          height={"60%"}
-          overflowY="auto"
+          width={"100%"}
+          flexDirection={"column"}
+          my={2}
         >
-          <Box w="100%" h="100%">
+          <DeckHeading />
+        </Flex>
+
+        <Flex alignItems={"center"} width={"100%"} overflowY="auto" gap={4}>
+          <Box w="100%" height={"100%"}>
             <DeckCardsGrid
               cards={fullDeck}
               usedCards={usedCards}
@@ -49,9 +48,9 @@ export const DeckPageContentMobile = () => {
             />
           </Box>
         </Flex>
+        <DeckFilters />
 
         <Flex gap={4} mt={4} wrap={"wrap"} justifyContent={"center"}>
-          <SeeSpecialCardsBtn />
           <BackToGameBtn />
         </Flex>
       </Flex>
