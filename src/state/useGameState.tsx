@@ -78,7 +78,6 @@ export const useGameState = () => {
     lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
   const lsUser = localStorage.getItem(LOGGED_USER);
-  const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
   const dojoCash = game?.cash ?? 0;
@@ -159,7 +158,6 @@ export const useGameState = () => {
     plays,
     sortBy,
     sortedHand,
-    username,
     playIsNeon,
     setPlayIsNeon,
     specialCards,

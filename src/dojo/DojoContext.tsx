@@ -12,6 +12,7 @@ import { Account, AccountInterface, RpcProvider } from "starknet";
 import { LoadingScreen } from "../pages/LoadingScreen";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
+import ControllerConnector from "@cartridge/connector/controller";
 
 interface DojoAccount {
   create: () => void;
@@ -85,7 +86,7 @@ const useControllerAccount = () => {
 
     useEffect(() => {
     if (connector) {
-      useAccountStore.getState().setConnector(connector as ControllerConnector);
+      useAccountStore.getState().setConnector(connector as unknown as ControllerConnector);
     }
   }, [connector, isConnected]);
 
@@ -132,7 +133,6 @@ export const useDojo = (): DojoResult => {
   return {
     setup: contextValue,
     account: contextValue.account,
-    // network: contextValue.network,
     masterAccount: contextValue.masterAccount,
   };
 };
@@ -177,7 +177,7 @@ const DojoContextProvider = ({
   };
 
   // Determine which account to use based on environment
-  const isDev = import.meta.env.VITE_PUBLIC_DEV === "true";
+  const isDev = import.meta.env.VITE_DEV === "true";
   const accountToUse = isDev ? burnerAccount : controllerAccount;
 
   useEffect(() => {
@@ -253,7 +253,7 @@ const DojoContextProvider = ({
           get,
           select,
           clear,
-          account: burnerAccount as Account, //accountToUse as Account | AccountInterface,
+          account: accountToUse as Account, // | AccountInterface,
           isDeploying,
           accountDisplay: displayAddress(
             (accountToUse as Account | AccountInterface)?.address || ""

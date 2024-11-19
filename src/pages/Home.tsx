@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
-import { useState } from "react";
+import { useConnect } from "@starknet-react/core";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
@@ -8,12 +9,24 @@ import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useDojo } from "../dojo/useDojo";
+
+const isDev = import.meta.env.VITE_DEV === "true";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
+  const [playButtonClicked, setPlayButtonClicked] = useState(false);
+  const { connect, connectors } = useConnect();
+  const { account } = useDojo();
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
+
+  useEffect(() => {
+    if (account && playButtonClicked) {
+      navigate("/demo");
+    }
+  }, [account, playButtonClicked]);
 
   return (
     <Background type="home">
@@ -85,7 +98,12 @@ export const Home = () => {
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  if (isDev) {
+                    navigate("/login");
+                  } else {
+                    setPlayButtonClicked(true);
+                    connect({ connector: connectors[0] });
+                  }
                 }}
               >
                 {t("home.btn.playDemo-btn")}

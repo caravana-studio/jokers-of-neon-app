@@ -8,6 +8,8 @@ import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { useState } from "react";
 import { SettingsModal } from "./SettingsModal.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
+import { useDisconnect } from "@starknet-react/core";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -20,10 +22,12 @@ export const GameMenu = ({
   showTutorial,
   setSettingsModalOpened,
 }: GameMenuProps) => {
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+
+  const { disconnect } = useDisconnect();
 
   return (
     <>
@@ -63,6 +67,7 @@ export const GameMenu = ({
               onClick={() => {
                 localStorage.removeItem(GAME_ID);
                 localStorage.removeItem(LOGGED_USER);
+                disconnect();
                 restartGame();
                 navigate("/");
               }}

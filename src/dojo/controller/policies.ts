@@ -1,5 +1,5 @@
 import { getContractByName } from "@dojoengine/core";
-import manifest from "../manifest.json";
+import manifest from "../../manifest.json";
 
 const game_system_contract_address = getContractByName(
   manifest,

@@ -1,11 +1,10 @@
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { Box, Spinner, Tooltip } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
-import { isMobile } from "react-device-detect";
+import { MouseEventHandler } from "react";
 import { ExternalToast, toast } from "sonner";
 import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
-import { Box, Spinner, Tooltip } from "@chakra-ui/react";
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { MouseEventHandler } from "react";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",

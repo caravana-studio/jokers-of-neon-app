@@ -26,6 +26,7 @@ import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
 import { getLSGameId } from "../dojo/utils/getLSGameId.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { Speed } from "../enums/speed.ts";
@@ -210,7 +211,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setError,
     sortBySuit,
     setSortBySuit,
-    username,
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
@@ -244,6 +244,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const username = useUsername();
+
   const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
@@ -268,6 +270,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setError(true);
         }
       });
+    } else {
+      console.error("No username")
     }
   };
 
