@@ -7,19 +7,20 @@ export const getDetailEarnedEvent = (
   events: DojoEvent[]
 ): DetailEarned | undefined => {
   const detailEarnedEvent = events.find(
-    (event) => event.keys[0] === DETAIL_EARNED_EVENT
+    (event) => event.keys[1] === DETAIL_EARNED_EVENT
   );
   if (!detailEarnedEvent) return undefined;
-  const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 1) ?? 0;
-  const level_bonus = getNumberValueFromEvent(detailEarnedEvent, 2) ?? 0;
-  const hands_left = getNumberValueFromEvent(detailEarnedEvent, 3) ?? 0;
-  const hands_left_cash = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;
-  const discard_left = getNumberValueFromEvent(detailEarnedEvent, 5) ?? 0;
-  const discard_left_cash = getNumberValueFromEvent(detailEarnedEvent, 6) ?? 0;
-  const rage_card_defeated = getNumberValueFromEvent(detailEarnedEvent, 7) ?? 0;
+  const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;
+  const level_bonus = getNumberValueFromEvent(detailEarnedEvent, 5) ?? 0;
+  const hands_left = getNumberValueFromEvent(detailEarnedEvent, 6) ?? 0;
+  const hands_left_cash = getNumberValueFromEvent(detailEarnedEvent, 7) ?? 0;
+  const discard_left = getNumberValueFromEvent(detailEarnedEvent, 8) ?? 0;
+  const discard_left_cash = getNumberValueFromEvent(detailEarnedEvent, 9) ?? 0;
+  const rage_card_defeated =
+    getNumberValueFromEvent(detailEarnedEvent, 10) ?? 0;
   const rage_card_defeated_cash =
-    getNumberValueFromEvent(detailEarnedEvent, 8) ?? 0;
-  const total = getNumberValueFromEvent(detailEarnedEvent, 9) ?? 0;
+    getNumberValueFromEvent(detailEarnedEvent, 11) ?? 0;
+  const total = getNumberValueFromEvent(detailEarnedEvent, 12) ?? 0;
 
   return {
     round_defeat,

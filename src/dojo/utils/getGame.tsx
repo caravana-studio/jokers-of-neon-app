@@ -1,8 +1,4 @@
-import {
-  Component,
-  Entity,
-  getComponentValue
-} from "@dojoengine/recs";
+import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export const getGame = (gameId: number, Game: Component) => {
