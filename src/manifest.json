@@ -2076,8 +2076,8 @@
       "systems": ["calculate", "upgrade"]
     },
     {
-      "address": "0x224425ef6b9a1d4bbe7e21799c0d96e158eaf7ae13cd5bcb9251d1f08121556",
-      "class_hash": "0x7acd98fddda8f53b75787438481ffa76be384889f83bacd5c476a1790fa63b2",
+      "address": "0x6eb14afcec5a39e382b6fcf186511ad4f47bb7c926b5bf44096a037d3492b02",
+      "class_hash": "0x6b8e2ed1ea9a0fc2d730d2a94825db2ee3cc7e3fcda60663f3407ad7a53ebba",
       "abi": [
         {
           "type": "impl",
