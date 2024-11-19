@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x3ac53f6b7c7318fd4def4d63e5d385ddeca875a1f4760428d33c0ba246c546e",
-      "class_hash": "0x361b9adf9e56fe2e234208696ad4c170d95064d1c2fd0bda5b75af6391b98eb",
+      "address": "0x4cbd34a8e1d9938c1a4085d8d10b2444bcf3068ea498a154c74573a1e5e9ed9",
+      "class_hash": "0x278bfd023d5726569117e8657ffb1dff6f15d89da1424a4d86d018587e3d246",
       "abi": [
         {
           "type": "impl",
@@ -1876,7 +1876,9 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "selector": "0x25bae3ed99b9282d147b178067335cf2d607ff13acbd09c62fa525c14bb8869",
-      "systems": ["upgrade"]
+      "systems": [
+        "upgrade"
+      ]
     },
     {
       "address": "0x6ed5f7c87c0f058625093ba927dfc1fb6c4f9fad686b19c3a220ca2cb5a775f",
@@ -2073,11 +2075,14 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "selector": "0x601fc835e0c1478502e4787b6200cb5074b02e3545bcfab9ef100c7f4071da3",
-      "systems": ["calculate", "upgrade"]
+      "systems": [
+        "calculate",
+        "upgrade"
+      ]
     },
     {
-      "address": "0x59a64eed6023d8d6833b306497372658308867401309583e2cc52c2a8d48984",
-      "class_hash": "0x1a77bdfc80ca772e5bb93174a182e8afab40a27b4415392d35cf5520fe627bf",
+      "address": "0x49cc4b1f713d79ab511ee1a3f74cebae9127d6b0010796c4ba87fb190c6828b",
+      "class_hash": "0x5e890f08fff66e3527b20a70a10b10404b0c081f8add3f48d2ee0651e4ef4df",
       "abi": [
         {
           "type": "impl",
@@ -2153,6 +2158,216 @@
             {
               "name": "Special",
               "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::CardItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "item_type",
+              "type": "jokers_of_neon::models::status::shop::shop::CardItemType"
+            },
+            {
+              "name": "card_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            },
+            {
+              "name": "temporary",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon::models::status::shop::shop::CardItem>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon::models::data::poker_hand::PokerHand",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "RoyalFlush",
+              "type": "()"
+            },
+            {
+              "name": "StraightFlush",
+              "type": "()"
+            },
+            {
+              "name": "FiveOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "FourOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "FullHouse",
+              "type": "()"
+            },
+            {
+              "name": "Straight",
+              "type": "()"
+            },
+            {
+              "name": "Flush",
+              "type": "()"
+            },
+            {
+              "name": "ThreeOfAKind",
+              "type": "()"
+            },
+            {
+              "name": "TwoPair",
+              "type": "()"
+            },
+            {
+              "name": "OnePair",
+              "type": "()"
+            },
+            {
+              "name": "HighCard",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::PokerHandItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "poker_hand",
+              "type": "jokers_of_neon::models::data::poker_hand::PokerHand"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon::models::status::shop::shop::PokerHandItem>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::BlisterPackItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "blister_pack_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost_discount",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
             }
           ]
         },
@@ -2262,6 +2477,22 @@
                 }
               ],
               "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_shop_items",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>, jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem)"
+                }
+              ],
               "state_mutability": "external"
             }
           ]
@@ -2392,6 +2623,7 @@
         "select_cards_from_blister",
         "buy_slot_special_card_item",
         "reroll",
+        "get_shop_items",
         "upgrade"
       ]
     }
@@ -2399,7 +2631,7 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x7752de47518ddfdf178a96d1667515c367bf99ef577546c2f23ad2567525e6b",
+      "class_hash": "0x59d5be3a9ee8633f99300608fab745a2bfcafa85befa2574895381d24cfa57c",
       "tag": "jokers_of_neon-BlisterPackItem",
       "selector": "0x57733b8c66892889e7b1d19bae91399efb87497c4cece4fd8c2370b1fd510af"
     },
