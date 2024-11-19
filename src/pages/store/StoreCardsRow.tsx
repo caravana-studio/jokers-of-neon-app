@@ -19,7 +19,7 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const { buyCard, isPurchased } = useStore();
+  const { isPurchased } = useStore();
   const imageUrls = useMemo(() => {
     return cards.map((card) => {
       return card.isSpecial || card.isModifier

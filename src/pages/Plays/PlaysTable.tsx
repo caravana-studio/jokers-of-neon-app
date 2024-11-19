@@ -49,25 +49,31 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const {
     setup: {
       client,
-      account: { account }
+      account: { account },
     },
   } = useDojo();
 
-  if (client && account &&  plays.length == 0) {
-    getPlayerPokerHands(client, gameId).then((plays: any) => {
-      setPlays(plays);
-    })
-  }
+  useEffect(() => {
+    if (client && account && plays?.length == 0) {
+      getPlayerPokerHands(client, gameId).then((plays: any) => {
+        plays && setPlays(plays);
+      });
+    }
+  }, [client, account, gameId, plays]);
 
   useEffect(() => {
-  if (plays.length > 0) { 
+    if (plays.length > 0) {
       setIsLoading(false);
     }
   }, [plays, pokerHandItems]);
 
-  const filteredPlays = !isLoading ? plays.filter((play) =>
-    pokerHandItems?.find((item) => item.poker_hand === play.poker_hand.toString())
-): plays;
+  const filteredPlays = !isLoading
+    ? plays.filter((play) =>
+        pokerHandItems?.find(
+          (item) => item.poker_hand === play.poker_hand.toString()
+        )
+      )
+    : plays;
 
   return (
     <>
@@ -115,145 +121,156 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 {inStore ? (
                   <>
                     <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>
-                    {t('store.plays-table.hand').toUpperCase()}
+                      {t("store.plays-table.hand").toUpperCase()}
                     </Td>
-                    <Td>{t('store.plays-table.level').toUpperCase()}</Td>
-                    <Td>{t('store.plays-table.price').toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.level").toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.price").toUpperCase()}</Td>
                     <Td></Td>
                   </>
                 ) : (
                   <>
-                    <Td>{t('store.plays-table.level').toUpperCase()}</Td>
-                    <Td>{t('store.plays-table.hand').toUpperCase()}</Td>
-                    <Td>{t('store.plays-table.points-multi').toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.level").toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.hand").toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.points-multi").toUpperCase()}</Td>
                   </>
                 )}
               </Tr>
             </Thead>
             <Tbody>
-              { !isLoading && filteredPlays.map((play, index) => {
-                const pokerHandString = play.poker_hand.toString();
-                const pokerHandParsed = parseHand(pokerHandString);
-                
-                const storePlay = pokerHandItems?.find(
-                  (item) => item.poker_hand == pokerHandString
-                );                
-                
-                const purchased = storePlay != undefined ? isPurchased(storePlay) : false;
+              {!isLoading &&
+                filteredPlays.map((play, index) => {
+                  const pokerHandString = play.poker_hand.toString();
+                  const pokerHandParsed = parseHand(pokerHandString);
 
-                const textColor = storePlay
-                  ? purchased
-                    ? blue
-                    : white
-                  : purple;
+                  const storePlay = pokerHandItems?.find(
+                    (item) => item.poker_hand == pokerHandString
+                  );
 
-                const opacitySx = {
-                  opacity: inStore && (!storePlay || purchased) ? 0.9 : 1,
-                };
+                  const purchased =
+                    storePlay != undefined ? isPurchased(storePlay) : false;
 
-                const levelTd = (
-                  <Td sx={opacitySx} textColor={textColor}>
-                    {play.level.toString()}
-                  </Td>
-                );
-                const nameTd = (
-                  <Td sx={opacitySx} textAlign={"start"} textColor={textColor}>
-                     {PLAYS[Number(pokerHandParsed.value)]}
-                  </Td>
-                );
-                const pointsMultiTd = (
-                  <Td>
-                    <Box
-                      color={"black"}
-                      display={"flex"}
-                      flexDirection={"row"}
-                      justifyContent={"center"}
+                  const textColor = storePlay
+                    ? purchased
+                      ? blue
+                      : white
+                    : purple;
+
+                  const opacitySx = {
+                    opacity: inStore && (!storePlay || purchased) ? 0.9 : 1,
+                  };
+
+                  const levelTd = (
+                    <Td sx={opacitySx} textColor={textColor}>
+                      {play.level.toString()}
+                    </Td>
+                  );
+                  const nameTd = (
+                    <Td
+                      sx={opacitySx}
+                      textAlign={"start"}
+                      textColor={textColor}
                     >
+                      {PLAYS[Number(pokerHandParsed.value)]}
+                    </Td>
+                  );
+                  const pointsMultiTd = (
+                    <Td>
                       <Box
-                        backgroundColor={"neonGreen"}
-                        borderRadius={10}
-                        width={"50px"}
-                        mr={1}
+                        color={"black"}
+                        display={"flex"}
+                        flexDirection={"row"}
+                        justifyContent={"center"}
                       >
-                        {play.points.toString()}
+                        <Box
+                          backgroundColor={"neonGreen"}
+                          borderRadius={10}
+                          width={"50px"}
+                          mr={1}
+                        >
+                          {play.points.toString()}
+                        </Box>
+                        <Heading fontSize={"15"}>x</Heading>
+                        <Box
+                          backgroundColor={"neonPink"}
+                          borderRadius={10}
+                          width={"50px"}
+                          ml={1}
+                        >
+                          {play.multi.toString()}
+                        </Box>
                       </Box>
-                      <Heading fontSize={"15"}>x</Heading>
-                      <Box
-                        backgroundColor={"neonPink"}
-                        borderRadius={10}
-                        width={"50px"}
-                        ml={1}
-                      >
-                        {play.multi.toString()}
-                      </Box>
-                    </Box>
-                  </Td>
-                );
+                    </Td>
+                  );
 
-                const notEnoughCash = !!storePlay && cash < storePlay.cost;
+                  const notEnoughCash = !!storePlay && cash < storePlay.cost;
 
-                const buyButton = (
-                  <Button
-                    onClick={() => {
-                      storePlay && levelUpPlay?.(storePlay);
-                    }}
-                    variant={notEnoughCash || locked ? "defaultOutline" : "solid"}
-                    isDisabled={notEnoughCash || locked}
-                    size="sm"
-                    px={isMobile ? 2 : 4}
-                    boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                    fontSize={10}
-                  >
-                    {t('store.plays-table.level-up')}
-                  </Button>
-                );
+                  const buyButton = (
+                    <Button
+                      onClick={() => {
+                        storePlay && levelUpPlay?.(storePlay);
+                      }}
+                      variant={
+                        notEnoughCash || locked ? "defaultOutline" : "solid"
+                      }
+                      isDisabled={notEnoughCash || locked}
+                      size="sm"
+                      px={isMobile ? 2 : 4}
+                      boxShadow={`0px 0px 10px 2px ${BLUE}`}
+                      fontSize={10}
+                    >
+                      {t("store.plays-table.level-up")}
+                    </Button>
+                  );
 
-                return (
-                  <Tr key={index} height={"30px"}>
-                    {inStore ? (
-                      <>
-                        {nameTd}
-                        {levelTd}
-                      </>
-                    ) : (
-                      <>
-                        {levelTd}
-                        {nameTd}
-                      </>
-                    )}
+                  return (
+                    <Tr key={index} height={"30px"}>
+                      {inStore ? (
+                        <>
+                          {nameTd}
+                          {levelTd}
+                        </>
+                      ) : (
+                        <>
+                          {levelTd}
+                          {nameTd}
+                        </>
+                      )}
 
-                    {inStore ? (
-                      <>
-                        <Td sx={opacitySx} color={textColor}>
-                          {storePlay?.cost ? `${storePlay.cost}` : ""}<CashSymbol />
-                        </Td>
-                        <Td>
-                          {!!storePlay ? (
-                            isPurchased(storePlay) ? (
-                              <Heading
-                                color="blue"
-                                size={isMobile ? "base" : "xs"}
-                              >
-                                {t('store.plays-table.purchased').toUpperCase()}
-                              </Heading>
-                            ) : notEnoughCash ? (
-                              <Tooltip label="You don't have enough coins to buy this item">
-                                {buyButton}
-                              </Tooltip>
+                      {inStore ? (
+                        <>
+                          <Td sx={opacitySx} color={textColor}>
+                            {storePlay?.cost ? `${storePlay.cost}` : ""}
+                            <CashSymbol />
+                          </Td>
+                          <Td>
+                            {!!storePlay ? (
+                              isPurchased(storePlay) ? (
+                                <Heading
+                                  color="blue"
+                                  size={isMobile ? "base" : "xs"}
+                                >
+                                  {t(
+                                    "store.plays-table.purchased"
+                                  ).toUpperCase()}
+                                </Heading>
+                              ) : notEnoughCash ? (
+                                <Tooltip label="You don't have enough coins to buy this item">
+                                  {buyButton}
+                                </Tooltip>
+                              ) : (
+                                buyButton
+                              )
                             ) : (
-                              buyButton
-                            )
-                          ) : (
-                            ""
-                          )}
-                        </Td>
-                      </>
-                    ) : (
-                      pointsMultiTd
-                    )}
-                  </Tr>
-                );
-              })}
+                              ""
+                            )}
+                          </Td>
+                        </>
+                      ) : (
+                        pointsMultiTd
+                      )}
+                    </Tr>
+                  );
+                })}
             </Tbody>
           </Table>
         </TableContainer>

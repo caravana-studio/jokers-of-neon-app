@@ -1,10 +1,8 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
-import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { setEntities, syncEntities } from "@dojoengine/state";
+import { getSyncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
-import { GAME_ID } from "../constants/localStorage";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
@@ -13,9 +11,9 @@ import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
-let sync: any;
+// let sync: any;
 
-const getEntities = async <S extends Schema>(
+/* const getEntities = async <S extends Schema>(
   client: torii.ToriiClient,
   components: Component<S, Metadata, undefined>[],
   query: torii.Query,
@@ -37,7 +35,7 @@ const getEntities = async <S extends Schema>(
       cursor += limit;
     }
   }
-};
+}; */
 
 export async function setup({ ...config }: DojoConfig) {
   // torii client
@@ -67,7 +65,7 @@ export async function setup({ ...config }: DojoConfig) {
     componentNames.push(name);
   });
 
-  async function syncEntitiesForGameID() {
+  /*   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
 
     const keysClause: torii.KeysClause = {
@@ -101,6 +99,7 @@ export async function setup({ ...config }: DojoConfig) {
           ],
         },
       },
+      dont_include_hashed_keys: true,
     };
 
     if (gameID) {
@@ -113,9 +112,9 @@ export async function setup({ ...config }: DojoConfig) {
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
     }
-  }
+  } */
 
-  await syncEntitiesForGameID();
+  // await syncEntitiesForGameID();
 
   // setup world
   const client = await setupWorld(dojoProvider);
@@ -143,6 +142,14 @@ export async function setup({ ...config }: DojoConfig) {
     console.error(e);
   }
 
+  const sync = await getSyncEntities(
+    toriiClient,
+    contractComponents as any,
+    undefined,
+    [],
+    10_000
+  );
+
   return {
     client,
     clientComponents,
@@ -156,6 +163,6 @@ export async function setup({ ...config }: DojoConfig) {
     burnerManager,
     toriiClient,
     sync,
-    syncCallback: async () => await syncEntitiesForGameID(),
+    // syncCallback: async () => await syncEntitiesForGameID(),
   };
 }
