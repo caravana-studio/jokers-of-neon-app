@@ -137,7 +137,6 @@ export const useShopItems = () => {
     );
   }, [shop?.len_item_blister_pack, game?.level, shop?.reroll_executed]);
 
-
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
     modifierCards: modifierCards.sort(sortByCardId),

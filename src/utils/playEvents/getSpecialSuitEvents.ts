@@ -1,4 +1,4 @@
-import { SPECIAL_SUIT_EVENT } from "../../constants/dojoEventKeys";
+import { SPECIAL_MODIFIER_SUIT_EVENT } from "../../constants/dojoEventKeys";
 import { Suits } from "../../enums/suits";
 import { DojoEvent } from "../../types/DojoEvent";
 import { SpecialSuitEvent } from "../../types/ScoreData";
@@ -11,12 +11,12 @@ export const getSpecialSuitEvents = (
   const specialSuit: { [key: number]: Suits } = {};
 
   const specialSuitEvents = events.filter(
-    (event) => event.keys[0] === SPECIAL_SUIT_EVENT
+    (event) => event.keys[1] === SPECIAL_MODIFIER_SUIT_EVENT
   );
   specialSuitEvents.forEach((event) => {
-    const special_idx = getNumberValueFromEvent(event, 1) ?? 0;
-    const idx = getNumberValueFromEvent(event, 2) ?? 0;
-    const suit = getNumberValueFromEvent(event, 3) as Suits;
+    const special_idx = getNumberValueFromEvent(event, 4) ?? 0;
+    const idx = getNumberValueFromEvent(event, 5) ?? 0;
+    const suit = getNumberValueFromEvent(event, 6) as Suits;
     if (!grouped[special_idx]) {
       grouped[special_idx] = [];
     }
