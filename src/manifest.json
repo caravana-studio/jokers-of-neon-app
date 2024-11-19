@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x3ac53f6b7c7318fd4def4d63e5d385ddeca875a1f4760428d33c0ba246c546e",
-      "class_hash": "0x361b9adf9e56fe2e234208696ad4c170d95064d1c2fd0bda5b75af6391b98eb",
+      "address": "0x6148d3f31b2e3324820dc80b35f0f202a5b5b65f07c5ffe06e1568bf3a671dd",
+      "class_hash": "0x54b1d9d373f636fb44d9b739c0a8347c8c2a4b5a9deb530e4210821d9d9b57a",
       "abi": [
         {
           "type": "impl",

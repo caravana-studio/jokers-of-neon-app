@@ -3,21 +3,28 @@ import { DojoEvent } from "../../types/DojoEvent";
 import { CashEvent } from "../../types/ScoreData";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
+const parseCashEvent = (
+  event: DojoEvent,
+  cashIndex: number,
+  idxIndex: number,
+  specialIdxIndex: number
+): CashEvent => {
+  const cash = getNumberValueFromEvent(event, cashIndex) ?? 0;
+  const idx = getNumberValueFromEvent(event, idxIndex) ?? 0;
+  const special_idx = getNumberValueFromEvent(event, specialIdxIndex) ?? 0;
+  return {
+    idx,
+    cash,
+    special_idx,
+  };
+};
+
 export const getCashEvents = (events: DojoEvent[]): CashEvent[] => {
   const cashEvents = events.filter(
     (event) => event.keys[1] === SPECIAL_CASH_EVENT
   );
 
-  return cashEvents.map((event) => {
-    const cash = getNumberValueFromEvent(event, 3) ?? 0;
-    const idx = getNumberValueFromEvent(event, 4) ?? 0;
-    const special_idx = getNumberValueFromEvent(event, 5) ?? 0;
-    return {
-      idx,
-      cash,
-      special_idx,
-    };
-  });
+  return cashEvents.map((event) => parseCashEvent(event, 3, 4, 5));
 };
 
 export const getCashEvent = (events: DojoEvent[]): CashEvent => {
@@ -25,20 +32,7 @@ export const getCashEvent = (events: DojoEvent[]): CashEvent => {
     (event) => event.keys[0] === SPECIAL_CASH_EVENT
   );
 
-  if (cashEvent) {
-    const cash = getNumberValueFromEvent(cashEvent, 0) ?? 0;
-    const idx = getNumberValueFromEvent(cashEvent, 1) ?? 0;
-    const special_idx = getNumberValueFromEvent(cashEvent, 2) ?? 0;
-    return {
-      idx,
-      cash,
-      special_idx,
-    };
-  } else {
-    return {
-      idx: 999,
-      cash: 0,
-      special_idx: 999,
-    };
-  }
+  return cashEvent
+    ? parseCashEvent(cashEvent, 0, 1, 2)
+    : { idx: 999, cash: 0, special_idx: 999 };
 };
