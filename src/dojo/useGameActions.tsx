@@ -1,10 +1,8 @@
-import { AccountInterface, shortString } from "starknet";
+import { shortString } from "starknet";
 import {
-  CHECK_HAND_EVENT,
-  GAME_ID_EVENT,
-  GAME_OVER_EVENT,
+  CREATE_GAME_EVENT,
+  PLAY_GAME_OVER_EVENT,
 } from "../constants/dojoEventKeys";
-import { Plays } from "../enums/plays";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
@@ -31,10 +29,11 @@ export const useGameActions = () => {
   const createGame = async (username: string) => {
     try {
       showTransactionToast();
-      const { transaction_hash } = await client.game_system.createGame({
+      const response = await client.game_system.createGame(
         account,
-        player_name: BigInt(shortString.encodeShortString(username)),
-      });
+        Number(shortString.encodeShortString(username))
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash, "Creating game...");
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -44,7 +43,11 @@ export const useGameActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        const gameId = getNumberValueFromEvents(events, GAME_ID_EVENT, 0);
+        console.log(
+          "events",
+          events.filter((event) => event.keys[1] === CREATE_GAME_EVENT)
+        );
+        const gameId = getNumberValueFromEvents(events, CREATE_GAME_EVENT, 3);
         console.log("Game " + gameId + " created");
         return {
           gameId,
@@ -61,46 +64,6 @@ export const useGameActions = () => {
     }
   };
 
-  const checkHand = async (
-    gameId: number,
-    cards: number[],
-    modifiers: { [key: number]: number[] }
-  ) => {
-    try {
-      const { modifiers1 } = getModifiersForContract(cards, modifiers);
-      const { transaction_hash } = await client.game_system.checkHand({
-        account,
-        gameId,
-        cards,
-        modifiers1,
-      });
-
-      const tx = await account.waitForTransaction(transaction_hash, {
-        retryInterval: 100,
-      });
-
-      if (tx.isSuccess()) {
-        const events = tx.events;
-        const play = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 0);
-        const multi = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 1);
-        const points = getNumberValueFromEvents(events, CHECK_HAND_EVENT, 2);
-        return {
-          play,
-          multi,
-          points,
-        };
-      }
-
-      return {
-        play: Plays.NONE,
-        multi: 0,
-        points: 0,
-      };
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const discard = async (
     gameId: number,
     cards: number[],
@@ -109,12 +72,14 @@ export const useGameActions = () => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
     try {
       showTransactionToast();
-      const { transaction_hash } = await client.game_system.discard({
+      const response = await client.game_system.discard(
         account,
         gameId,
         cards,
-        modifiers1,
-      });
+        modifiers1
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+
       showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -128,7 +93,7 @@ export const useGameActions = () => {
           success: true,
           cards: cards,
           gameOver: !!tx.events.find(
-            (event) => event.keys[0] === GAME_OVER_EVENT
+            (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
           ),
           cashEvent: getCashEvent(tx.events),
         };
@@ -151,11 +116,13 @@ export const useGameActions = () => {
   const discardEffectCard = async (gameId: number, card: number) => {
     try {
       showTransactionToast();
-      const { transaction_hash } = await client.game_system.discardEffectCard({
+      const response = await client.game_system.discardEffectCard(
         account,
         gameId,
-        card,
-      });
+        card
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+
       showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -184,17 +151,14 @@ export const useGameActions = () => {
     }
   };
 
-  const discardSpecialCard = async (
-    account: AccountInterface,
-    gameId: number,
-    card: number
-  ) => {
+  const discardSpecialCard = async (gameId: number, card: number) => {
     try {
-      const { transaction_hash } = await client.game_system.discardSpecialCard({
+      const response = await client.game_system.discardSpecialCard(
         account,
         gameId,
-        card,
-      });
+        card
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
@@ -215,12 +179,14 @@ export const useGameActions = () => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
     try {
       showTransactionToast();
-      const { transaction_hash } = await client.game_system.play({
+      const response = await client.game_system.play(
         account,
         gameId,
         cards,
-        modifiers1,
-      });
+        modifiers1
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+
       showTransactionToast(transaction_hash);
 
       const tx = await account.waitForTransaction(transaction_hash, {
@@ -242,7 +208,6 @@ export const useGameActions = () => {
 
   return {
     createGame,
-    checkHand,
     discard,
     discardEffectCard,
     discardSpecialCard,

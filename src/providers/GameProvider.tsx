@@ -12,7 +12,6 @@ import {
   SETTINGS_SFX_VOLUME,
   SFX_ON,
   SORT_BY_SUIT,
-  SOUND_OFF,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -728,7 +727,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(account, gameId, cardIdx).finally(() => {
+    return discardSpecialCard(gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };
