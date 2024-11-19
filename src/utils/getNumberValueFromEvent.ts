@@ -16,7 +16,7 @@ export const getNumberValueFromEvents = (
   indexToGet: number
 ): number | undefined => {
   const event = events?.find((e) => {
-    return e.keys[0] === event_address;
+    return e.keys[1] === event_address;
   });
   return event && getNumberValueFromEvent(event, indexToGet);
 };
