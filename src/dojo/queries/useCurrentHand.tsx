@@ -10,7 +10,7 @@ import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 
-const getCard = (gameId: number, index: number, entity: Component) => {
+export const getCard = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
     BigInt(gameId),
     BigInt(index),

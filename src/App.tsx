@@ -8,7 +8,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
-import { OpenPack } from "./pages/OpenPack";
+import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
@@ -22,6 +22,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
+import { DeckPage } from "./pages/Deck/DeckPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -65,10 +66,10 @@ function App() {
                 }
               />
               <Route
-                path="/open-pack"
+                path="/open-loot-box"
                 element={
                   <StoreProvider>
-                    <OpenPack />
+                    <OpenLootBox />
                   </StoreProvider>
                 }
               />
@@ -82,6 +83,7 @@ function App() {
               />
               <Route path="/play" element={<Navigate to="/" />} />
               <Route path="/plays" element={<PlaysLayout />} />
+              <Route path="/deck" element={<DeckPage />} />
             </Routes>
           </AudioPlayerProvider>
         </GameProvider>

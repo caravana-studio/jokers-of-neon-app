@@ -20,8 +20,8 @@ export const Redirect = () => {
       navigate("/demo");
     } else if (state === "AT_SHOP" && page === "store") {
       navigate("/store");
-    } else if (state === "OPEN_BLISTER_PACK" && page === "open-pack") {
-      navigate("/open-pack");
+    } else if (state === "OPEN_BLISTER_PACK" && page === "open-loot-box") {
+      navigate("/open-loot-box");
     }
   }, [state, page, navigate]);
 

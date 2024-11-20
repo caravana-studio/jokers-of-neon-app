@@ -32,7 +32,7 @@ const WhiteOverlay = styled.div<{ $visible: boolean }>`
   pointer-events: none;
 `;
 
-export const OpenPack = () => {
+export const OpenLootBox = () => {
   const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {

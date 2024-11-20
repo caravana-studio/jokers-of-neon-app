@@ -33,6 +33,7 @@ import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { useNavigate } from "react-router-dom";
+import { GameDeckMobile } from "../../components/GameDeck.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -277,6 +278,10 @@ export const MobileGameContent = () => {
                   <HandSection />
                 </Box>
                 <Box
+                  position={"absolute"}
+                  left={0}
+                  bottom={0}
+                  zIndex={6}
                   width="100%"
                   display={"flex"}
                   alignItems={"center"}
@@ -286,6 +291,7 @@ export const MobileGameContent = () => {
                 >
                   <SortBy />
                   <ShowPlays />
+                  <GameDeckMobile />
                 </Box>
               </Box>
             </Box>
