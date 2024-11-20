@@ -1,4 +1,4 @@
-import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation from "../../components/SpineAnimation";
@@ -45,6 +45,7 @@ export const LootBoxes = () => {
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
                   price={card.price}
+                  discountPrice={pack.cost_discount.valueOf()}
                   onClick={() => {
                     if (!pack.purchased) {
                       navigate("/preview/loot-box", {
