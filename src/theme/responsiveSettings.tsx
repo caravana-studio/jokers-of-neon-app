@@ -11,31 +11,23 @@ export const useResponsiveValues = () => {
   const [isCardScaleCalculated, setIsCardScaleCalculated] = useState(false);
 
   const baseScales: { [key: string]: number } = {
-    "16:9": 1.5,
-    "16:10": 2, //si
-    "4:3": 3.6,
-    "3:2": 1.3,
-    "21:9": 1.8,
-    "18.5:9": 1.6,
-    "5:3": 1.35,
-    "2.39:1": 1.7,
-    "3:4": 2.5, //si
-    "9:16": 3.6, //si
-    "8:7": 2, //si
+    "16:10": 2,
+    "4:3": 1.6,
+    "21:9": 1,
+    "3:4": 2.5,
+    "9:16": 3.6,
+    "8:7": 2,
+    "1024:1127": 2,
   };
 
   const specialBaseScales: { [key: string]: number } = {
-    "16:9": 1.2,
     "16:10": 1.1,
     "4:3": 1.0,
-    "3:2": 1.1,
     "21:9": 1.5,
-    "18.5:9": 1.3,
-    "5:3": 1.1,
-    "2.39:1": 1.6,
     "3:4": 1.2,
     "9:16": 2,
-    "8:7": 1.2, //si
+    "8:7": 1.2,
+    "1024:1127": 1.2,
   };
 
   const getBaseScaleForAspectRatio = (
