@@ -36,6 +36,7 @@ interface ICardProps {
   isPack?: boolean;
   isHolographic?: boolean;
   scale?: number;
+  className?: string;
 }
 
 export const TiltCard = ({
@@ -45,6 +46,7 @@ export const TiltCard = ({
   isPack = false,
   isHolographic = false,
   scale = 1,
+  className,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -115,6 +117,7 @@ export const TiltCard = ({
                     e.stopPropagation();
                     onClick?.();
                   }}
+                  className={className}
                 />
 
                 {isSilent && (

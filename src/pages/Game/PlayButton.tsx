@@ -3,17 +3,23 @@ import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { ButtonContainer } from "./ButtonContainer";
 import { useTranslation } from "react-i18next";
+import { isTutorial } from "../../utils/isTutorial";
+import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface PlayButtonProps {
   highlight?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
-export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
+export const PlayButton = ({
+  highlight = false,
+  onTutorialCardClick,
+}: PlayButtonProps) => {
   const { preSelectedCards, play, preSelectionLocked } = useGameContext();
 
   const round = useRound();
-  const handsLeft = round?.hands ?? 0;
+  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
 
   const cantPlay =
     !highlight &&
@@ -30,6 +36,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
         width={["48%", "48%", "150px"]}
         onClick={(e) => {
           e.stopPropagation();
+          if (onTutorialCardClick) onTutorialCardClick();
           play();
         }}
         variant={cantPlay ? "defaultOutline" : "secondarySolid"}
@@ -51,6 +58,7 @@ export const PlayButton = ({ highlight = false }: PlayButtonProps) => {
           t("game.preselected-cards-section.play-btn-lbl.play")
         )}
       </Button>
+
       {!isSmallScreen && (
         <Text size="l" textAlign={"center"}>
           {t("game.preselected-cards-section.play-btn-lbl.left", {

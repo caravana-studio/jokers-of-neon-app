@@ -7,6 +7,7 @@ import { Card } from "../types/Card.ts";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
+import { isTutorial } from "../utils/isTutorial.ts";
 
 interface SpecialCardsProps {
   inStore?: boolean;

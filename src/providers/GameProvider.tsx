@@ -5,9 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
+  SKIP_IN_GAME_TUTORIAL,
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
@@ -38,8 +39,10 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
+import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { isTutorial } from "../utils/isTutorial.ts";
 
-interface IGameContext {
+export interface IGameContext {
   gameId: number;
   preSelectedPlay: Plays;
   points: number;
@@ -149,11 +152,18 @@ const GameContext = createContext<IGameContext>({
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
 });
-export const useGameContext = () => useContext(GameContext);
+
+export const useGameContext = () => {
+  const location = useLocation();
+  const inTutorial = location.pathname === "/tutorial";
+  const context = inTutorial ? mockTutorialGameContext : GameContext;
+  return useContext(context);
+};
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
+  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL);
   const [sfxOn, setSfxOn] = useState(!localStorage.getItem(SFX_ON));
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
@@ -254,7 +264,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate("/demo");
+          navigate(showTutorial ? "/tutorial" : "/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();

@@ -7,17 +7,22 @@ import { RollingNumber } from "../RollingNumber";
 import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
+import { isTutorial } from "../../utils/isTutorial";
+
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
+
+  const inTutorial = isTutorial();
+
   const { score, points, multi } = useGameContext();
 
   const round = useRound();
   const target = round?.level_score ?? 0;
 
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" className="game-tutorial-step-1">
       <Box px={4} mb={4} borderRadius="md" width="100%" maxW="600px">
         <LevelBox />
         <Flex justify="center" gap={1} align="center">
@@ -42,7 +47,7 @@ export const CompactRoundData = () => {
             </Heading>
           </Box>
 
-          <Flex align="center">
+          <Flex align="center" className="game-tutorial-step-6">
             <NumberBox number={points} color={BLUE_LIGHT} />
             <Text fontSize="md" fontWeight="bold">
               x
@@ -50,7 +55,7 @@ export const CompactRoundData = () => {
             <NumberBox number={multi} color={VIOLET} spreadIncrease={5} />
           </Flex>
 
-          <Box>
+          <Box className="game-tutorial-step-7">
             <Text fontSize="10px" textTransform="uppercase" fontWeight="500">
               {t("target")}
             </Text>

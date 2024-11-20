@@ -20,6 +20,8 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { DeckPage } from "./pages/Deck/DeckPage";
 
 function App() {
@@ -44,6 +46,16 @@ function App() {
                   </StoreProvider>
                 }
               />
+
+              <Route
+                path="/tutorial"
+                element={
+                  <TutorialGameProvider>
+                    <GamePageTutorial />
+                  </TutorialGameProvider>
+                }
+              />
+
               <Route path="/redirect/:page" element={<Redirect />} />
               <Route
                 path="/preview/:type"
