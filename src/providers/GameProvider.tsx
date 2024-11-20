@@ -640,6 +640,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
+        if (response.cashEvent) {
+          // cash event
+          response.cashEvent.forEach((event, index) => {
+            setTimeout(() => {
+              const { idx, special_idx, cash } = event;
+              setAnimatedCard({
+                idx: [idx],
+                special_idx,
+                cash,
+                animationIndex: 60,
+              });
+            }, playAnimationDuration * index); // Stagger animations for each event
+          });
+        }
         if (response.gameOver) {
           setTimeout(() => {
             navigate(`/gameover/${gameId}`);
