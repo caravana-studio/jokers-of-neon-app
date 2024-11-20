@@ -20,6 +20,7 @@ import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import customTheme from "./theme/theme";
+import { DeckPage } from "./pages/Deck/DeckPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -70,6 +71,7 @@ function App() {
               />
               <Route path="/play" element={<Navigate to="/" />} />
               <Route path="/plays" element={<PlaysLayout />} />
+              <Route path="/deck" element={<DeckPage />} />
             </Routes>
           </AudioPlayerProvider>
         </GameProvider>

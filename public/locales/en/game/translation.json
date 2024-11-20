@@ -93,6 +93,23 @@
         "hand-head": "Hand",
         "points-multi-head": "Points/Multi"
       }
+    },
+    "deck": {
+      "tooltip": "See my deck",
+      "title": "My full deck",
+      "filter-title": "Filter by",
+      "suit": {
+        "club": "Club",
+        "spade": "Spade",
+        "heart": "Heart",
+        "diamond": "Diamond",
+        "neon": "Neon",
+        "modifier": "Modifier"
+      },
+      "btns": {
+        "special-cards": "See special cards",
+        "back": "Back to game"
+      }
     }
   },
   "confirmation-modal": {
