@@ -38,7 +38,7 @@
     "8": {
       "name": "Baú dos Amantes",
       "description": "Todas as cartas do naipe de copas, pode conter cartas especiais e modificadores.",
-      "details": "45% carta de copas\n30% de chance de obter o Ás de Copas\n10% de chance de obter um modificador de copas\n1% de chance de obter a carta especial 'Todas as cartas para copas'\nTamanho do Baú 5"
+      "detalhes": "45% de probabilidade de obter cartas de Copas\n30% de probabilidade de obter o Ás de Copas\n10% de probabilidade de obter cartas de Copas Neon\n10% de probabilidade de obter um modificador do naipe de Copas\n5% de probabilidade de obter a carta especial 'Todas as cartas para Copas'\nTamanho da caixa: 5"
     },
     "9": {
       "name": "Baú de Aposta Especial",
