@@ -10,7 +10,7 @@ import { useEffect } from "react";
 export const GamePageTutorial = () => {
   useEffect(() => {
     window.localStorage.setItem(SKIP_IN_GAME_TUTORIAL, "true");
-  });
+  }, []);
 
   return (
     <Background type={"game"}>
