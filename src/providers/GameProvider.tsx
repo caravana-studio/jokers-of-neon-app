@@ -641,16 +641,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
         if (response.cashEvent) {
+          console.log("cash eventtt");
+          console.log(response.cashEvent);
           // cash event
-          setTimeout(() => {
-            const { idx, special_idx, cash } = response.cashEvent;
-            setAnimatedCard({
-              idx: [idx],
-              special_idx,
-              cash,
-              animationIndex: 60,
-            });
-          }, playAnimationDuration);
+          response.cashEvent.forEach((event, index) => {
+            setTimeout(() => {
+              const { idx, special_idx, cash } = event;
+              setAnimatedCard({
+                idx: [idx],
+                special_idx,
+                cash,
+                animationIndex: 60,
+              });
+            }, playAnimationDuration * index); // Stagger animations for each event
+          });
         }
         if (response.gameOver) {
           setTimeout(() => {

@@ -13,7 +13,7 @@ import {
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { getCashEvent } from "../utils/playEvents/getCashEvents";
+import { getCashEvents } from "../utils/playEvents/getCashEvents";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -95,7 +95,7 @@ export const useGameActions = () => {
           gameOver: !!tx.events.find(
             (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
           ),
-          cashEvent: getCashEvent(tx.events),
+          cashEvent: getCashEvents(tx.events),
         };
       } else {
         return {
