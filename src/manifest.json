@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x3ac53f6b7c7318fd4def4d63e5d385ddeca875a1f4760428d33c0ba246c546e",
-      "class_hash": "0x361b9adf9e56fe2e234208696ad4c170d95064d1c2fd0bda5b75af6391b98eb",
+      "address": "0x4cbd34a8e1d9938c1a4085d8d10b2444bcf3068ea498a154c74573a1e5e9ed9",
+      "class_hash": "0x278bfd023d5726569117e8657ffb1dff6f15d89da1424a4d86d018587e3d246",
       "abi": [
         {
           "type": "impl",
@@ -2076,8 +2076,8 @@
       "systems": ["calculate", "upgrade"]
     },
     {
-      "address": "0x59a64eed6023d8d6833b306497372658308867401309583e2cc52c2a8d48984",
-      "class_hash": "0x1a77bdfc80ca772e5bb93174a182e8afab40a27b4415392d35cf5520fe627bf",
+      "address": "0x6eb14afcec5a39e382b6fcf186511ad4f47bb7c926b5bf44096a037d3492b02",
+      "class_hash": "0x6b8e2ed1ea9a0fc2d730d2a94825db2ee3cc7e3fcda60663f3407ad7a53ebba",
       "abi": [
         {
           "type": "impl",
@@ -2399,7 +2399,7 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x7752de47518ddfdf178a96d1667515c367bf99ef577546c2f23ad2567525e6b",
+      "class_hash": "0x59d5be3a9ee8633f99300608fab745a2bfcafa85befa2574895381d24cfa57c",
       "tag": "jokers_of_neon-BlisterPackItem",
       "selector": "0x57733b8c66892889e7b1d19bae91399efb87497c4cece4fd8c2370b1fd510af"
     },

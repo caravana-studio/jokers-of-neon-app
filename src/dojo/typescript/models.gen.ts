@@ -34,6 +34,7 @@ export interface BlisterPackItem {
   idx: Number;
   blister_pack_id: Number;
   cost: Number;
+  cost_discount: Number;
   purchased: Boolean;
 }
 export const BlisterPackItemDefinition = {
@@ -41,6 +42,7 @@ export const BlisterPackItemDefinition = {
   idx: RecsType.Number,
   blister_pack_id: RecsType.Number,
   cost: RecsType.Number,
+  cost_discount: RecsType.Number,
   purchased: RecsType.Boolean,
 };
 
@@ -655,13 +657,14 @@ export function defineContractComponents(world: World) {
           idx: RecsType.Number,
           blister_pack_id: RecsType.Number,
           cost: RecsType.Number,
+          cost_discount: RecsType.Number,
           purchased: RecsType.Boolean,
         },
         {
           metadata: {
             namespace: "jokers_of_neon",
             name: "BlisterPackItem",
-            types: ["u32", "u32", "u32", "u32", "bool"],
+            types: ["u32", "u32", "u32", "u32", "u32", "bool"],
             customTypes: [],
           },
         }
