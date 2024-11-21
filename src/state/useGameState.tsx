@@ -14,6 +14,7 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { sortCards } from "../utils/sortCards";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -46,6 +47,7 @@ export const useGameState = () => {
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
   const [levelUpHandId, setLevelUpHandId] = useState<number>();
+  const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -177,5 +179,7 @@ export const useGameState = () => {
     setDestroyedSpecialCardId,
     levelUpHandId,
     setLevelUpHandId,
+    levelUpHand,
+    setLevelUpHand,
   };
 };
