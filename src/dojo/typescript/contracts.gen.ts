@@ -23,7 +23,7 @@ export async function setupWorld(provider: DojoProvider) {
     snAccount: Account,
     gameId: number,
     itemId: number,
-    cardItemType: models.CardItemType
+    cardItemType: number
   ) => {
     try {
       return await provider.execute(

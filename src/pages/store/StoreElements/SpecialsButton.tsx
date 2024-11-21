@@ -1,19 +1,17 @@
 import { Button } from "@chakra-ui/react";
-import { Card } from "../../../types/Card";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "../../../providers/StoreProvider";
 
 interface SpecialsButtonProps {
-  specialCards: Card[];
   isSmallScreen: boolean;
 }
 
-const SpecialsButton: React.FC<SpecialsButtonProps> = ({
-  specialCards,
-  isSmallScreen,
-}) => {
+const SpecialsButton: React.FC<SpecialsButtonProps> = ({ isSmallScreen }) => {
   const { t } = useTranslation(["store"]);
   const navigate = useNavigate();
+
+  const { specialCards } = useStore();
 
   return (
     specialCards.length > 0 && (

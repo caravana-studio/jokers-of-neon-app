@@ -17,7 +17,6 @@ import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
-import { useShopItems } from "../../dojo/queries/useShopItems";
 import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
@@ -34,17 +33,16 @@ const { blue, white, purple } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
-  const { locked } = useStore();
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
   const store = useStore();
-  const { isPurchased } = store;
   const game = useGame();
   const cash = game?.cash ?? 0;
   const levelUpPlay = store?.levelUpPlay;
-  const { pokerHandItems } = useShopItems();
   const { t } = useTranslation(["store"]);
+
+  const { pokerHandItems, locked } = useStore();
 
   const {
     setup: {
@@ -147,7 +145,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                   );
 
                   const purchased =
-                    storePlay != undefined ? isPurchased(storePlay) : false;
+                    storePlay != undefined ? storePlay.purchased : false;
 
                   const textColor = storePlay
                     ? purchased
@@ -244,7 +242,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                           </Td>
                           <Td>
                             {!!storePlay ? (
-                              isPurchased(storePlay) ? (
+                              storePlay.purchased ? (
                                 <Heading
                                   color="blue"
                                   size={isMobile ? "base" : "xs"}
