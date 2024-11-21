@@ -95,6 +95,8 @@ export interface IGameContext {
   setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
+  levelUpHandId: number | undefined;
+  setLevelUpHandId: (id: number | undefined) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -151,6 +153,8 @@ const GameContext = createContext<IGameContext>({
   setAnimationSpeed: () => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
+  levelUpHandId: undefined,
+  setLevelUpHandId: () => {},
 });
 
 export const useGameContext = () => {
@@ -663,6 +667,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               });
             }, playAnimationDuration * index); // Stagger animations for each event
           });
+        }
+        if (response.levelUpHandEvent) {
+          state.setLevelUpHandId(response.levelUpHandEvent.hand);
         }
         if (response.gameOver) {
           setTimeout(() => {

@@ -43,7 +43,9 @@ export const useGameState = () => {
   const [isRageRound, setIsRageRound] = useState(false);
   const [rageCards, setRageCards] = useState<Card[]>([]);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
-  const [destroyedSpecialCardId, setDestroyedSpecialCardId] = useState<number>();
+  const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
+    useState<number>();
+  const [levelUpHandId, setLevelUpHandId] = useState<number>();
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -58,19 +60,17 @@ export const useGameState = () => {
   const {
     setup: {
       client,
-      account: { account }
+      account: { account },
     },
   } = useDojo();
 
   useEffect(() => {
     if (client && account && plays.length == 0) {
-      getPlayerPokerHands(client, gameId).then((plays: any)=> {
-        if(plays!= undefined)
-          setPlays(plays);
-      })
+      getPlayerPokerHands(client, gameId).then((plays: any) => {
+        if (plays != undefined) setPlays(plays);
+      });
     }
   }, [client, account, gameId, plays]);
-
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
@@ -101,8 +101,10 @@ export const useGameState = () => {
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
-    const multi = typeof playerPokerHand.multi === 'number' ? playerPokerHand.multi : 0;
-    const points = typeof playerPokerHand.points === 'number' ? playerPokerHand.points : 0;
+    const multi =
+      typeof playerPokerHand.multi === "number" ? playerPokerHand.multi : 0;
+    const points =
+      typeof playerPokerHand.points === "number" ? playerPokerHand.points : 0;
     setMulti(multi);
     setPoints(points);
   };
@@ -117,8 +119,8 @@ export const useGameState = () => {
       );
       setPreSelectedPlay(play);
       if (plays?.length != 0) {
-          setMultiAndPoints(play);
-      } 
+        setMultiAndPoints(play);
+      }
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
@@ -173,5 +175,7 @@ export const useGameState = () => {
     setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    levelUpHandId,
+    setLevelUpHandId,
   };
 };
