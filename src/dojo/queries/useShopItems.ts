@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { CardTypes, NumericCardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import { PokerHandItem } from "../../types/PokerHandItem";
+import { getShopItems } from "../getShopItems";
 import { BlisterPackItem } from "../typescript/models.gen";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
@@ -79,14 +80,18 @@ const getPokerHandItem = (gameId: number, index: number, entity: Component) => {
 export const useShopItems = () => {
   const {
     setup: {
+      client,
       clientComponents: { CardItem, PokerHandItem, BlisterPackItem },
     },
   } = useDojo();
 
+  
   const game = useGame();
   const shop = useShop();
   const gameId = game?.id ?? 0;
-
+  
+  getShopItems(client, gameId)
+  
   const commonCards: Card[] = useMemo(() => {
     const commonCardsIds = Array.from(
       { length: shop?.len_item_common_cards ?? 0 },
