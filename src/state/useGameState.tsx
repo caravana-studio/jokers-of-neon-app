@@ -46,7 +46,6 @@ export const useGameState = () => {
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
-  const [levelUpHandId, setLevelUpHandId] = useState<number>();
   const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
 
   const sortBy: SortBy = useMemo(
@@ -177,8 +176,6 @@ export const useGameState = () => {
     setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
-    levelUpHandId,
-    setLevelUpHandId,
     levelUpHand,
     setLevelUpHand,
   };

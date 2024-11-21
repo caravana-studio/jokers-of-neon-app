@@ -21,7 +21,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const [phase, setPhase] = useState(1);
   const { levelUpHand, setLevelUpHand } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
-  const { blueLight, blue, violet } = theme.colors;
+  const { blue, violet } = theme.colors;
 
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
