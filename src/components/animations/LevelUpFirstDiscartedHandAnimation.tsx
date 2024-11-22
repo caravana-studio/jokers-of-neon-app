@@ -179,27 +179,28 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                 >
                   <Tbody>
                     <Tr height="30px" sx={{ cursor: "pointer" }}>
+                      <Td
+                        textAlign="center"
+                        fontSize={isSmallScreen ? "1rem" : "2rem"}
+                      >
+                        <Text size="xl">
+                          {phase === 1
+                            ? "PREVIOUS LEVEL: " + levelUpHand.old_level
+                            : "NEW LEVEL: " + levelUpHand.level}
+                        </Text>
+                      </Td>
                       <Td>
                         <Box
                           color="white"
                           display="flex"
                           flexDirection="row"
                           justifyContent="center"
+                          gap={3}
                         >
-                          <Td
-                            textAlign="center"
-                            fontSize={isSmallScreen ? "1rem" : "2rem"}
-                          >
-                            <Text size="xl">
-                              {phase === 1
-                                ? "PREVIOUS LEVEL: " + levelUpHand.old_level
-                                : "NEW LEVEL: " + levelUpHand.level}
-                            </Text>
-                          </Td>
-
                           <Box
                             backgroundColor={blue}
                             borderRadius={4}
+                            width={isSmallScreen ? "40px" : "60px"}
                             fontSize={isSmallScreen ? "1rem" : "2rem"}
                             mr={1}
                             boxShadow={`0px 0px 10px 10px ${blue}`}
@@ -215,6 +216,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                           <Box
                             backgroundColor="neonPink"
                             borderRadius={4}
+                            width={isSmallScreen ? "40px" : "60px"}
                             fontSize={isSmallScreen ? "1rem" : "2rem"}
                             ml={1}
                             boxShadow={`0px 0px 10px 10px ${violet}`}
