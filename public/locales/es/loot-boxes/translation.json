@@ -38,7 +38,7 @@
     "8": {
       "name": "Caja de los Amantes",
       "description": "Todas las cartas con el palo de corazones, puede contener cartas especiales y modificadores.",
-      "details": "60% de cartas de corazones\n30% de probabilidad de obtener el As de Corazones\n9% de probabilidad de obtener un modificador del palo de corazones\n1% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"
+      "details": "45% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener el As de Corazones\n10% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"    
     },
     "9": {
       "name": "Caja de Apuesta Especial",
