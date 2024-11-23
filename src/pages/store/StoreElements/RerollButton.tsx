@@ -1,27 +1,20 @@
 import { Button, Tooltip } from "@chakra-ui/react";
-import { CashSymbol } from "../../../components/CashSymbol";
 import { useTranslation } from "react-i18next";
+import { CashSymbol } from "../../../components/CashSymbol";
+import { useStore } from "../../../providers/StoreProvider";
 
 interface RerollButtonProps {
-  rerolled: boolean;
-  locked: boolean;
-  notEnoughCash: boolean;
-  rerollCost: number;
-  setRerolled: (value: boolean) => void;
   isSmallScreen: boolean;
-  reroll: () => Promise<boolean>;
 }
 
-const RerollButton: React.FC<RerollButtonProps> = ({
-  rerolled,
-  locked,
-  notEnoughCash,
-  rerollCost,
-  setRerolled,
-  isSmallScreen,
-  reroll,
-}) => {
+const RerollButton: React.FC<RerollButtonProps> = ({ isSmallScreen }) => {
   const { t } = useTranslation(["store"]);
+
+  const { cash, locked, reroll, rerollInformation } = useStore();
+
+  const notEnoughCash = cash < rerollInformation.rerollCost;
+
+  const rerolled = rerollInformation.rerollExecuted;
   const rerollDisabled = rerolled || locked || notEnoughCash;
 
   return (
@@ -42,15 +35,11 @@ const RerollButton: React.FC<RerollButtonProps> = ({
         variant={rerollDisabled ? "defaultOutline" : "solid"}
         isDisabled={rerollDisabled}
         onClick={() => {
-          reroll().then((response) => {
-            if (response) {
-              setRerolled(true);
-            }
-          });
+          reroll();
         }}
       >
         {t("store.labels.reroll").toUpperCase()}
-        {isSmallScreen && <br />} {rerollCost}
+        {isSmallScreen && <br />} {rerollInformation.rerollCost}
         <CashSymbol />
       </Button>
     </Tooltip>

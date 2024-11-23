@@ -10,25 +10,10 @@ import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import useStoreContent from "./UseStoreContent.ts";
+import { useStore } from "../../providers/StoreProvider.tsx";
 
 export const StoreContent = () => {
-  const {
-    rerollCost,
-    notEnoughCash,
-    rerolled,
-    setRerolled,
-    setLoading,
-    specialCards,
-    skipShop,
-    setRun,
-    reroll,
-    locked,
-    shopItems,
-    onShopSkip,
-    gameId,
-    setHand,
-  } = useStoreContent();
+  const { setRun, specialCards, commonCards, modifierCards } = useStore();
 
   const { t } = useTranslation(["store"]);
 
@@ -72,7 +57,7 @@ export const StoreContent = () => {
             </Heading>
             <LootBoxes />
             <Flex mt={8}>
-              <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
+              <LevelUpTable isSmallScreen={false} />
             </Flex>
           </Box>
           <Box
@@ -85,25 +70,25 @@ export const StoreContent = () => {
             gap={6}
           >
             <Box className="game-tutorial-step-3">
-              {shopItems.commonCards.length > 0 && (
+              {commonCards.length > 0 && (
                 <StoreCardsRow
-                  cards={shopItems.commonCards}
+                  cards={commonCards}
                   title={t("store.titles.traditional")}
                 />
               )}
             </Box>
             <Box className="game-tutorial-step-4">
-              {shopItems.modifierCards.length > 0 && (
+              {modifierCards.length > 0 && (
                 <StoreCardsRow
-                  cards={shopItems.modifierCards}
+                  cards={modifierCards}
                   title={t("store.titles.modifiers")}
                 />
               )}
             </Box>
             <Box className="game-tutorial-step-5">
-              {shopItems.specialCards.length > 0 && (
+              {specialCards.length > 0 && (
                 <StoreCardsRow
-                  cards={shopItems.specialCards}
+                  cards={specialCards}
                   title={t("store.titles.special")}
                 />
               )}
@@ -121,27 +106,14 @@ export const StoreContent = () => {
           >
             <>
               <NextLevelButton
-                setLoading={setLoading}
-                onShopSkip={onShopSkip}
-                skipShop={skipShop}
-                gameId={gameId}
-                setHand={setHand}
-                locked={false}
                 isSmallScreen={false}
               />
               <SpecialSlotItem />
               <Flex flexDirection="column" gap={14}>
                 <RerollButton
-                  rerolled={rerolled}
-                  locked={locked}
-                  notEnoughCash={notEnoughCash}
-                  rerollCost={rerollCost}
-                  setRerolled={setRerolled}
                   isSmallScreen={false}
-                  reroll={reroll}
                 />
                 <SpecialsButton
-                  specialCards={specialCards}
                   isSmallScreen={false}
                 />
                 <Coins rolling />

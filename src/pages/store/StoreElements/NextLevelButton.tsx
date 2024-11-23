@@ -2,36 +2,23 @@ import { Button } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
-import { Card } from "../../../types/Card";
+import { useStore } from "../../../providers/StoreProvider";
 
 interface NextLevelButtonProps {
-  setLoading: (value: boolean) => void;
-  onShopSkip: () => void;
-  skipShop: (gameId: number) => Promise<{
-    destroyedSpecialCard?: number;
-    success: boolean;
-    cards: Card[];
-  }>;
-  gameId: number;
-  setHand: (cards: Card[]) => void;
-  locked: boolean;
   isSmallScreen: boolean;
 }
 
-const NextLevelButton: React.FC<NextLevelButtonProps> = ({
-  setLoading,
-  onShopSkip,
-  skipShop,
-  gameId,
-  setHand,
-  locked,
-  isSmallScreen,
-}) => {
+const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
-  const { setDestroyedSpecialCardId } = useGameContext();
+  const { setDestroyedSpecialCardId, onShopSkip, setHand, gameId } =
+    useGameContext();
+  const { skipShop } = useShopActions();
+
+  const { locked, setLoading } = useStore();
 
   const handleNextLevelClick = () => {
     setLoading(true);

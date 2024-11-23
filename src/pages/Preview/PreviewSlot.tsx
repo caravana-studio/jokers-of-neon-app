@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useSpecialCardSlotItem } from "../../dojo/queries/useSpecialCardSlotItem.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 
 export const PreviewSlot = () => {
-  const specialSlotItem = useSpecialCardSlotItem();
   const navigate = useNavigate();
+  const { specialSlotItem } = useStore();
 
   const price = specialSlotItem?.cost ?? 0;
   const [buyDisabled, setBuyDisabled] = useState(false);
@@ -20,7 +19,7 @@ export const PreviewSlot = () => {
   const { buySpecialSlot, locked } = useStore();
   const cash = game?.cash ?? 0;
 
-  const notEnoughCash = !price || cash < price;
+  const notEnoughCash = !price || cash < Number(price);
 
   const buyButton = (
     <Button
@@ -57,7 +56,7 @@ export const PreviewSlot = () => {
       image={image}
       title={t("slot-title")}
       description={t("slot-description")}
-      price={price}
+      price={Number(price)}
     />
   );
 };
