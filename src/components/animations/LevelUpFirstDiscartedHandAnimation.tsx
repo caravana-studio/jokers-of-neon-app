@@ -18,7 +18,7 @@ import theme from "../../theme/theme";
 export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
   const [showAnimationText, setShowAnimationText] = useState(false);
-  const [phase, setPhase] = useState(1);
+  const [showNewDataText, setNewDataText] = useState(false);
   const { levelUpHand, setLevelUpHand } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
@@ -35,66 +35,28 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     config: { duration: 200 },
   });
 
-  // const levelSpring = useSpring({
-  //   from: { x: -1000, opacity: 0 },
-  //   to: async (next) => {
-  //     if (showAnimationText) {
-  //       // Show old level
-  //       await next({
-  //         x: 0,
-  //         opacity: 1,
-  //         config: { duration: 200 },
-  //       });
-
-  //       // Wait 2 seconds
-  //       await new Promise((resolve) => setTimeout(resolve, 2000));
-  //       setPhase(2);
-
-  //       // Transition to new level
-  //       await next({
-  //         x: 1000,
-  //         opacity: 0,
-  //         config: { duration: 200 },
-  //       });
-
-  //       // Final timeout before closing
-  //       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  //       // Close animation
-  //       setShowAnimationHeading(false);
-  //       setShowAnimationText(false);
-  //       setLevelUpHand(undefined);
-  //     }
-  //   },
-  // });
-
-  const levelSpring = useSpring({
+  const oldLevelSpring = useSpring({
     from: { x: -1000, opacity: 0 },
     to: async (next) => {
       if (showAnimationText) {
-        // Show old data
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
-
-        // Wait for display duration
         await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // Transition old data out
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
-
-        // Switch to new phase
-        setPhase(2);
-
-        // Wait before showing new data
         await new Promise((resolve) => setTimeout(resolve, 200));
 
-        // Show new data
-        await next({ x: -1000, opacity: 0, immediate: true }); // Reset position for new data
+        setShowAnimationHeading(false);
+        setShowAnimationText(false);
+        setLevelUpHand(undefined);
+      }
+    },
+  });
+
+  const newLevelSpring = useSpring({
+    from: { x: -1000, opacity: 0 },
+    to: async (next) => {
+      if (showNewDataText) {
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
-
-        // Wait for final display
         await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // Transition new data out
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
 
         // Reset animation state
@@ -123,6 +85,9 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       setTimeout(() => {
         setShowAnimationText(true);
       }, 500);
+      setTimeout(() => {
+        setNewDataText(true);
+      }, 2000);
 
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
@@ -132,6 +97,67 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       return () => clearTimeout(timer);
     }
   }, [levelUpHand]);
+
+  const tableData = (
+    <Table
+      sx={{
+        borderCollapse: "separate",
+        marginBottom: 4,
+        borderSpacing: 0,
+      }}
+      width="100%"
+      variant={isSmallScreen ? "store-mobile" : "store"}
+    >
+      <Tbody>
+        <Tr height="30px" sx={{ cursor: "pointer" }}>
+          <Td textAlign="center" fontSize={isSmallScreen ? "1rem" : "2rem"}>
+            <Text size="xl">
+              {!showNewDataText
+                ? "PREVIOUS LEVEL: " + levelUpHand?.old_level
+                : "NEW LEVEL: " + levelUpHand?.level}
+            </Text>
+          </Td>
+          <Td>
+            <Box
+              color="white"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              gap={3}
+            >
+              <Box
+                backgroundColor={blue}
+                borderRadius={4}
+                width={isSmallScreen ? "40px" : "60px"}
+                fontSize={isSmallScreen ? "1rem" : "2rem"}
+                mr={1}
+                boxShadow={`0px 0px 10px 10px ${blue}`}
+                fontWeight="400"
+              >
+                {!showNewDataText
+                  ? levelUpHand?.old_points.toString()
+                  : levelUpHand?.points.toString()}
+              </Box>
+              <Heading fontSize={isSmallScreen ? "0.5rem" : "1rem"}>x</Heading>
+              <Box
+                backgroundColor="neonPink"
+                borderRadius={4}
+                width={isSmallScreen ? "40px" : "60px"}
+                fontSize={isSmallScreen ? "1rem" : "2rem"}
+                ml={1}
+                boxShadow={`0px 0px 10px 10px ${violet}`}
+                fontWeight="400"
+              >
+                {!showNewDataText
+                  ? levelUpHand?.old_multi.toString()
+                  : levelUpHand?.multi.toString()}
+              </Box>
+            </Box>
+          </Td>
+        </Tr>
+      </Tbody>
+    </Table>
+  );
 
   return (
     <>
@@ -164,74 +190,11 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                 </Text>
               </animated.div>
 
-              <animated.div style={levelSpring}>
-                {/* <Heading fontSize={isSmallScreen ? "1rem" : "2rem"}>
-                  {phase === 1 ? "PREVIOUS LEVEL:" : "NEW LEVEL:"}
-                </Heading> */}
-                <Table
-                  sx={{
-                    borderCollapse: "separate",
-                    marginBottom: 4,
-                    borderSpacing: 0,
-                  }}
-                  width="100%"
-                  variant={isSmallScreen ? "store-mobile" : "store"}
-                >
-                  <Tbody>
-                    <Tr height="30px" sx={{ cursor: "pointer" }}>
-                      <Td
-                        textAlign="center"
-                        fontSize={isSmallScreen ? "1rem" : "2rem"}
-                      >
-                        <Text size="xl">
-                          {phase === 1
-                            ? "PREVIOUS LEVEL: " + levelUpHand.old_level
-                            : "NEW LEVEL: " + levelUpHand.level}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Box
-                          color="white"
-                          display="flex"
-                          flexDirection="row"
-                          justifyContent="center"
-                          gap={3}
-                        >
-                          <Box
-                            backgroundColor={blue}
-                            borderRadius={4}
-                            width={isSmallScreen ? "40px" : "60px"}
-                            fontSize={isSmallScreen ? "1rem" : "2rem"}
-                            mr={1}
-                            boxShadow={`0px 0px 10px 10px ${blue}`}
-                            fontWeight="400"
-                          >
-                            {phase === 1
-                              ? levelUpHand.old_points.toString()
-                              : levelUpHand.points.toString()}
-                          </Box>
-                          <Heading fontSize={isSmallScreen ? "0.5rem" : "1rem"}>
-                            x
-                          </Heading>
-                          <Box
-                            backgroundColor="neonPink"
-                            borderRadius={4}
-                            width={isSmallScreen ? "40px" : "60px"}
-                            fontSize={isSmallScreen ? "1rem" : "2rem"}
-                            ml={1}
-                            boxShadow={`0px 0px 10px 10px ${violet}`}
-                            fontWeight="400"
-                          >
-                            {phase === 1
-                              ? levelUpHand.old_multi.toString()
-                              : levelUpHand.multi.toString()}
-                          </Box>
-                        </Box>
-                      </Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-              </animated.div>
+              {!showNewDataText ? (
+                <animated.div style={oldLevelSpring}>{tableData}</animated.div>
+              ) : (
+                <animated.div style={newLevelSpring}>{tableData}</animated.div>
+              )}
             </>
           )}
         </Flex>
