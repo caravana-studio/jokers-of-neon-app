@@ -24,6 +24,20 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
 
+  useEffect(() => {
+    if (levelUpHand == null) {
+      setLevelUpHand({
+        hand: 1,
+        old_level: 1,
+        old_points: 1,
+        old_multi: 1,
+        level: 2,
+        points: 2,
+        multi: 2,
+      });
+    }
+  }, []);
+
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
     to: async (next) => {
@@ -57,20 +71,20 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     to: async (next) => {
       if (showNewDataText) {
         await next({
-          x: isSmallScreen ? -50 : -100,
+          x: 0,
           opacity: 1,
           scale: 1,
           config: config.wobbly,
         });
         await next({
-          x: isSmallScreen ? -20 : -50,
+          x: 0,
           scale: 1,
           config: { tension: 100 },
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 600));
 
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 600));
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
       }
     },
@@ -78,7 +92,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
 
   const newLevelSpring = useSpring({
     from: { x: -1000, opacity: 0 },
-    delay: 1000,
+    delay: 400,
     to: async (next) => {
       if (showNewDataText) {
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
@@ -113,7 +127,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       }, 500);
       setTimeout(() => {
         setNewDataText(true);
-      }, 2000);
+      }, 500);
 
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
@@ -124,7 +138,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     }
   }, [levelUpHand]);
 
-  const tableData = (
+  const tableData = (showNewDataText: boolean) => (
     <Table
       sx={{
         borderCollapse: "separate",
@@ -145,9 +159,8 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               gap={isSmallScreen ? 3 : 5}
             >
               <Text size="xl">
-                {!showNewDataText
-                  ? "PREVIOUS LEVEL: " + levelUpHand?.old_level
-                  : "NEW LEVEL: " + levelUpHand?.level}
+                LEVEL:{" "}
+                {!showNewDataText ? levelUpHand?.old_level : levelUpHand?.level}
               </Text>
 
               <Flex gap={isSmallScreen ? 0 : 3}>
@@ -227,26 +240,33 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
                 </Text>
               </animated.div>
 
-              {!showNewDataText ? (
-                <animated.div style={oldLevelSpring}>{tableData}</animated.div>
-              ) : (
-                <Box
-                  display={"flex"}
-                  alignContent={"baseline"}
-                  justifyContent={"center"}
-                >
-                  <animated.div
-                    style={{
-                      ...arrowSpring,
-                    }}
+              <Flex gap={isSmallScreen ? 3 : 0}>
+                <animated.div style={oldLevelSpring}>
+                  {tableData(false)}
+                </animated.div>
+
+                {showNewDataText && (
+                  <Box
+                    display={"flex"}
+                    alignContent={"baseline"}
+                    justifyContent={"center"}
                   >
-                    <ArrowRight size={isSmallScreen ? 20 : 35} color="white" />
-                  </animated.div>
-                  <animated.div style={newLevelSpring}>
-                    {tableData}
-                  </animated.div>
-                </Box>
-              )}
+                    <animated.div
+                      style={{
+                        ...arrowSpring,
+                      }}
+                    >
+                      <ArrowRight
+                        size={isSmallScreen ? 30 : 35}
+                        color="white"
+                      />
+                    </animated.div>
+                    <animated.div style={newLevelSpring}>
+                      {tableData(true)}
+                    </animated.div>
+                  </Box>
+                )}
+              </Flex>
             </>
           )}
         </Flex>
