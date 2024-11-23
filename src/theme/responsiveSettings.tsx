@@ -24,9 +24,10 @@ export const useResponsiveValues = () => {
     "3:2": 1.5, //surface pro (horizontal)
     "1280:853": 1.4, //asus zenbook fold (horizontal)
     "128:75": 0.7, //nest hub
-    "1280:703": 1.5, //desktop 4k
+    "640:289": 1.5, //desktop 4k
+    "369:289": 1.6, //desktop 1476x1156
     "720:703": 1.5, //laptop L
-    "512:371": 1.1, //laptop
+    "256:289": 2.3, //laptop
     "384:371": 1.4, //tablet
     "126:65": 1.4, //m3 pro chrome
     "756:407": 1.5, //m3 pro safari
@@ -49,9 +50,10 @@ export const useResponsiveValues = () => {
     "3:2": 1.7, //surface pro (horizontal)
     "1280:853": 1.6, //asus zenbook fold (horizontal)
     "128:75": 0.9, //nest hub
-    "1280:703": 0.9, //desktop 4k
+    "640:289": 1, //desktop 4k
+    "369:289": 1.6, //desktop 1476x1156
     "720:703": 1.6, //laptop L
-    "512:371": 1, //laptop
+    "256:289": 1.3, //laptop
     "384:371": 1.4, //tablet
     "126:65": 1.5, //m3 pro chrome
     "756:407": 1.5, //m3 pro safari
