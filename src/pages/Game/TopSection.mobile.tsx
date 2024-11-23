@@ -15,7 +15,7 @@ export const MobileTopSection = () => {
       <Flex
         backgroundColor="rgba(0,0,0,0.3)"
         width={["95%", "80%"]}
-        sx={{ margin: "0 auto", marginTop: ["4px", "24px"] }}
+        sx={{ margin: "0 auto" }}
         mx={2}
       >
         <SpecialCards />

@@ -3,81 +3,69 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import { throttle } from "lodash";
 
 export const useResponsiveValues = () => {
-  const [aspectRatio, setAspectRatio] = useState<number>(
-    window.innerWidth / window.innerHeight
-  );
   const [cardScale, setCardScale] = useState<number>(1);
   const [specialCardScale, setSpecialCardScale] = useState<number>(1);
   const [isCardScaleCalculated, setIsCardScaleCalculated] = useState(false);
 
-  const referenceWidthDesktop = 1920;
-  const referenceHeightDesktop = 1080;
-
   const baseScales: { [key: string]: number } = {
-    "375:667": 3.8,
-    "768:1423": 2.5,
-    "16:10": 1.4,
-    "2:1": 1.4,
-    "1.85:1": 1.4,
-    "1.96:1": 1.4,
-    "17:9": 1.8,
-    "126:65": 1.8,
-    "130:69": 1.4,
-    "151:80": 1.4,
-    "1774:937": 1.4,
-    "1938:937": 1.3,
-    "4:3": 1.6,
-    "21:9": 1,
-    "3:2": 1.4,
-    "5:3": 1.5,
-    "3:4": 2,
-    "9:16": 2.5,
-    "8:7": 1.9,
-    "1024:1127": 2,
-    "2.165:1": 1.35,
-    "19:9": 1.2,
-    "22:9": 1.2,
-    "32:10": 1,
+    "375:667": 2.5, //iphone SE
+    "207:448": 3.2, //iphone XR
+    "195:422": 3.2, //iphone 12 pro
+    "215:466": 3, //iphone 14 pro max
+    "412:915": 3.2, //pixel 7, samsung galaxy s20 ultra
+    "18:37": 3, //samsung galaxy s8+
+    "3:4": 2, //ipad mini, surface duo
+    "4:3": 1, //ipad mini, surface duo (horizontal)
+    "41:59": 2.4, //ipad air
+    "59:41": 1.2, //ipad air (horizontal)
+    "512:683": 2.4, //ipad pro
+    "683:512": 1.6, //ipad pro (horizontal)
+    "2:3": 2.4, //surface pro
+    "3:2": 1.5, //surface pro (horizontal)
+    "1280:853": 1.4, //asus zenbook fold (horizontal)
+    "128:75": 0.7, //nest hub
+    "1280:703": 1.5, //desktop 4k
+    "720:703": 1.5, //laptop L
+    "512:371": 1.1, //laptop
+    "384:371": 1.4, //tablet
+    "126:65": 1.4, //m3 pro chrome
+    "756:407": 1.5, //m3 pro safari
   };
 
   const specialBaseScales: { [key: string]: number } = {
-    "375:667": 3.7,
-    "768:1423": 2.5,
-    "16:10": 1.2,
-    "1.58:1": 0.9,
-    "1.61:1": 0.9,
-    "1.96:1": 0.9,
-    "2:1": 0.9,
-    "17:9": 1,
-    "126:65": 1.8,
-    "4:3": 0.85,
-    "21:9": 0.7,
-    "3:2": 0.9,
-    "5:3": 0.8,
-    "3:4": 1.7,
-    "9:16": 2,
-    "8:7": 0.8,
-    "1024:1127": 1.1,
-    "2.165:1": 0.7,
-    "22:9": 1,
-    "32:10": 1,
+    "375:667": 2.7, //iphone SE
+    "207:448": 3, //iphone XR
+    "195:422": 3, //iphone 12 pro
+    "215:466": 3, //iphone 14 pro max
+    "412:915": 3, //pixel 7, samsung galaxy s20 ultra
+    "18:37": 3, //samsung galaxy s8+
+    "3:4": 1.8, //ipad mini, surface duo
+    "4:3": 0.5, //ipad mini, surface duo (horizontal)
+    "41:59": 1.8, //ipad air
+    "59:41": 0.9, //ipad air (horizontal)
+    "512:683": 1.7, //ipad pro
+    "683:512": 1.7, //ipad pro (horizontal)
+    "2:3": 2.2, //surface pro
+    "3:2": 1.7, //surface pro (horizontal)
+    "1280:853": 1.6, //asus zenbook fold (horizontal)
+    "128:75": 0.9, //nest hub
+    "1280:703": 0.9, //desktop 4k
+    "720:703": 1.6, //laptop L
+    "512:371": 1, //laptop
+    "384:371": 1.4, //tablet
+    "126:65": 1.5, //m3 pro chrome
+    "756:407": 1.5, //m3 pro safari
   };
 
   const getBaseScaleForAspectRatio = (
     ratio: number,
-    isSpecialCard: boolean
+    scales: { [key: string]: number }
   ): number => {
-    const scales = isSpecialCard ? specialBaseScales : baseScales;
-
-    const TOLERANCE = 0.0001;
-
     for (const key in scales) {
       const [width, height] = key.split(":").map(Number);
       const aspectRatio = width / height;
 
-      if (Math.abs(aspectRatio - ratio) < TOLERANCE) {
-        return scales[key];
-      }
+      if (aspectRatio === ratio) return scales[key];
     }
 
     // If no exact match is found, find the closest match by comparing absolute differences
@@ -96,27 +84,28 @@ export const useResponsiveValues = () => {
       }
     });
 
-    // If no closest match, return 1 (or a fallback scale of your choice)
+    // If no closest match, return 1
     return scales[closestKey] || 1;
   };
 
   useEffect(() => {
     const handleResize = throttle(() => {
       const newAspectRatio = window.innerWidth / window.innerHeight;
-      setAspectRatio(newAspectRatio);
+      const baseScale = getBaseScaleForAspectRatio(newAspectRatio, baseScales);
+      const specialBaseScale = getBaseScaleForAspectRatio(
+        newAspectRatio,
+        specialBaseScales
+      );
 
-      const baseScale = getBaseScaleForAspectRatio(newAspectRatio, false);
+      const viewportScale = Math.min(
+        window.innerWidth / 1920,
+        window.innerHeight / 1080
+      );
 
-      const specialBaseScale = getBaseScaleForAspectRatio(newAspectRatio, true);
-
-      const horizontalFactor = window.innerWidth / 1920; // Relative to a reference width
-      const verticalFactor = Math.min(1, window.innerHeight / 1080); // Limited by a reference height
-
-      const calculatedCardScale = baseScale * horizontalFactor * verticalFactor;
+      const calculatedCardScale = baseScale * viewportScale;
       setCardScale(calculatedCardScale);
 
-      const calculatedSpecialCardScale =
-        specialBaseScale * horizontalFactor * verticalFactor;
+      const calculatedSpecialCardScale = specialBaseScale * viewportScale;
       setSpecialCardScale(calculatedSpecialCardScale);
 
       setIsCardScaleCalculated(true);
