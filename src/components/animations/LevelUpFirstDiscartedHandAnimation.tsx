@@ -24,26 +24,12 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
 
-  useEffect(() => {
-    if (levelUpHand == null) {
-      setLevelUpHand({
-        hand: 1,
-        old_level: 1,
-        old_points: 1,
-        old_multi: 1,
-        level: 2,
-        points: 2,
-        multi: 2,
-      });
-    }
-  }, []);
-
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
     to: async (next) => {
       if (showAnimationHeading) {
         await next({ x: 0, opacity: 1 });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         await next({ x: 1000, opacity: 0 });
       }
     },
@@ -55,7 +41,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     to: async (next) => {
       if (showAnimationText) {
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
         await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -84,7 +70,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
 
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        await new Promise((resolve) => setTimeout(resolve, 600));
+        await new Promise((resolve) => setTimeout(resolve, 1800));
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
       }
     },
@@ -96,7 +82,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     to: async (next) => {
       if (showNewDataText) {
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 2700));
         await next({ x: 1000, opacity: 0, config: { duration: 200 } });
 
         // Reset animation state
@@ -112,7 +98,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     to: async (next) => {
       if (showAnimationText) {
         await next({ x: 0, opacity: 1 });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         await next({ x: 1000, opacity: 0 });
       }
     },
@@ -159,7 +145,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               gap={isSmallScreen ? 3 : 5}
             >
               <Text size="xl">
-                LEVEL:{" "}
+                LEVEL{" "}
                 {!showNewDataText ? levelUpHand?.old_level : levelUpHand?.level}
               </Text>
 
