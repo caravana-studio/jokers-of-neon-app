@@ -1,0 +1,54 @@
+{
+  "lootBoxData": {
+    "1": {
+      "name": "Baú Básico",
+      "description": "Contém principalmente cartas tradicionais e modificadores",
+      "details": "2% de chance de obter uma carta especial\n5% de chance de obter uma carta modificadora\n4% de chance de obter um Coringa\n1% de chance de obter um Coringa Neon\n88% de chance de obter uma carta tradicional\nTamanho do Baú 5"
+    },
+    "2": {
+      "name": "Baú Avançado",
+      "description": "Pode conter uma carta especial ou coringa",
+      "details": "4% de chance de obter uma carta especial\n10% de chance de obter uma carta modificadora\n8% de chance de obter um Coringa\n2% de chance de obter um Coringa Neon\n76% de chance de obter uma carta tradicional\nTamanho do Baú 5"
+    },
+    "3": {
+      "name": "Baú de Coringas",
+      "description": "Mais chances de obter um Coringa",
+      "details": "15% de chance de obter um Coringa\n1% de chance de obter um Coringa Neon\n84% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+    },
+    "4": {
+      "name": "Baú de Especiais",
+      "description": "Mais chances de obter uma carta especial",
+      "details": "15% de chance de obter uma carta especial\n20% de chance de obter um modificador\n65% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+    },
+    "5": {
+      "name": "Baú de Modificadores",
+      "description": "Contém principalmente modificadores",
+      "details": "50% de chance de obter um modificador\n50% de chance de obter uma carta tradicional\nTamanho do Baú 5"
+    },
+    "6": {
+      "name": "Baú de Figuras",
+      "description": "Contém principalmente cartas de figuras",
+      "details": "70% de chance de obter uma figura\n30% de chance de obter outras cartas tradicionais\nTamanho do Baú 5"
+    },
+    "7": {
+      "name": "Baú do Coringa Enganador",
+      "description": "1 Coringa garantido",
+      "details": "1 Coringa garantido\n6% de chance de obter um Coringa\n2% de chance de obter um Coringa Neon\n92% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+    },
+    "8": {
+      "name": "Baú dos Amantes",
+      "description": "Todas as cartas do naipe de copas, pode conter cartas especiais e modificadores.",
+      "detalhes": "45% de probabilidade de obter cartas de Copas\n30% de probabilidade de obter o Ás de Copas\n10% de probabilidade de obter cartas de Copas Neon\n10% de probabilidade de obter um modificador do naipe de Copas\n5% de probabilidade de obter a carta especial 'Todas as cartas para Copas'\nTamanho da caixa: 5"
+    },
+    "9": {
+      "name": "Baú de Aposta Especial",
+      "description": "Baú pequeno com chances de obter uma carta especial ou modificador",
+      "details": "5% de chance de obter uma carta especial\n10% de chance de obter um modificador\n85% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+    },
+    "10": {
+      "name": "Baú Neon",
+      "description": "Um Baú exclusivo com chances de obter cartas neon",
+      "details": "97% de chance de obter uma carta neon\n3% de chance de obter um Coringa Neon\nTamanho do Baú 5"
+    }
+  }
+}

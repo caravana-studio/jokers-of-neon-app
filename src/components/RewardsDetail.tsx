@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useRound } from "../dojo/queries/useRound.tsx";
 import { VIOLET_LIGHT } from "../theme/colors";
@@ -82,7 +82,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   ];
 
   if (rage_card_defeated && rage_card_defeated_cash) {
-    labels.push(t("rage-cards", { cards: rage_card_defeated }));
+    labels.push(t("rage", { cards: rage_card_defeated }));
   }
 
   const navigate = useNavigate();

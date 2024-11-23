@@ -21,3 +21,11 @@ export const AllCardsToHearts: Card = {
   card_id: 314,
   isSpecial: true,
 };
+
+export const MultipliedClubs: Card = {
+  img: "301.png",
+  id: "301",
+  idx: 301,
+  card_id: 301,
+  isSpecial: true,
+};

@@ -6,9 +6,13 @@ import { ButtonContainer } from "./ButtonContainer";
 
 interface DiscardButtonProps {
   highlight?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
-export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
+export const DiscardButton = ({
+  highlight = false,
+  onTutorialCardClick,
+}: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
     useGameContext();
 
@@ -20,6 +24,7 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
       discards === 0);
 
   const { t } = useTranslation(["game"]);
+
   const { isSmallScreen } = useResponsiveValues();
 
   return (
@@ -27,6 +32,7 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
       <Button
         width={["48%", "48%", "150px"]}
         onClick={() => {
+          if (onTutorialCardClick) onTutorialCardClick();
           discard();
         }}
         variant={cantDiscard ? "defaultOutline" : "solid"}
@@ -50,6 +56,7 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
           ).toUpperCase()
         )}
       </Button>
+
       {!isSmallScreen && (
         <Text size="l" textAlign={"center"}>
           {t("game.preselected-cards-section.discard-btn-lbl.left", {

@@ -69,6 +69,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
           borderRadius={"25px"}
           boxShadow={`0px 0px 20px 15px ${blue}`}
           backgroundColor="rgba(0, 0, 0, 1)"
+          className="game-tutorial-step-table-plays"
         >
           <CustomScrollbar>
             <Table

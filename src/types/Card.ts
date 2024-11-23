@@ -19,6 +19,7 @@ export interface Card {
   discarded?: boolean;
   temporary?: boolean;
   remaining?: number;
+  isNeon?: boolean;
 }
 
 export interface StaticEffectCard extends Effect {

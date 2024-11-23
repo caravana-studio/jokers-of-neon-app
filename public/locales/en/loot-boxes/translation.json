@@ -1,0 +1,54 @@
+{
+  "lootBoxData": {
+    "1": {
+      "name": "Basic loot box",
+      "description": "Contains mostly traditional cards and modifiers",
+      "details": "2% chance of getting a special card\n5% chance of getting a modifier card\n4% chance of getting a Joker\n1% chance of getting a Neon Joker\n88% chance of getting a traditional card\nLoot box size 5"
+    },
+    "2": {
+      "name": "Advanced loot box",
+      "description": "Can contain a special card or joker",
+      "details": "4% chance of getting a special card\n10% chance of getting a modifier card\n8% chance of getting a Joker\n2% chance of getting a Neon Joker\n76% chance of getting a traditional card\nLoot box size 5"
+    },
+    "3": {
+      "name": "Jokers loot box",
+      "description": "More chances of getting a Joker",
+      "details": "15% chance of getting a Joker\n1% chance of getting a Neon Joker\n84% chance of getting a traditional card\nLoot box size 3"
+    },
+    "4": {
+      "name": "Specials loot box",
+      "description": "More chances of getting a special card",
+      "details": "15% chance of getting a special card\n20% chance of getting a modifier\n65% chance of getting a traditional card\nLoot box size 3"
+    },
+    "5": {
+      "name": "Modifiers loot box",
+      "description": "Contains mostly modifiers",
+      "details": "50% chance of getting a modifier\n50% chance of getting a traditional card\nLoot box size 5"
+    },
+    "6": {
+      "name": "Figures loot box",
+      "description": "Contains mostly figure cards",
+      "details": "70% chance of getting a figure\n30% chance of getting other traditional cards\nLoot box size 5"
+    },
+    "7": {
+      "name": "The Deceitful Joker loot box",
+      "description": "1 guaranteed Joker",
+      "details": "1 guaranteed Joker\n6% chance of getting a Joker\n2% chance of getting a Neon Joker\n92% chance of getting a traditional card\nLoot box size 3"
+    },
+    "8": {
+      "name": "The Lovers loot box",
+      "description": "All hearts suited cards, can contain special cards and modifiers.",
+      "details": "45% chance of getting a traditional Heart card\n30% chance of getting Ace of Hearts\n10% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
+    },
+    "9": {
+      "name": "Special Bet loot box",
+      "description": "Small loot box with chances of getting a special card or modifier",
+      "details": "5% chance of getting a special card\n10% chance of getting a modifier\n85% chance of getting a traditional card\nLoot box size 3"
+    },
+    "10": {
+      "name": "Neon loot box",
+      "description": "An exclusive loot box with chances of getting neon cards",
+      "details": "97% chance of getting a neon card\n3% chance of getting a Neon Joker \nLoot box size 5"
+    }
+  }
+}

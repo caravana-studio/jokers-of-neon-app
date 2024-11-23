@@ -20,10 +20,16 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Coins } from "./Coins";
+import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
+import { isTutorial } from "../../utils/isTutorial";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const HandSection = () => {
+interface HandSectionProps {
+  onTutorialCardClick?: () => void;
+}
+
+export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const {
     hand,
     preSelectedCards,
@@ -38,7 +44,7 @@ export const HandSection = () => {
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = round?.hands ?? 0;
+  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
 
   const { activeNode } = useDndContext();
 
@@ -110,7 +116,9 @@ export const HandSection = () => {
                   onOpen();
                 }}
                 className={
-                  card.isModifier ? "tutorial-modifiers-step-2" : undefined
+                  card.isModifier
+                    ? "tutorial-modifiers-step-2"
+                    : "hand-element-" + index
                 }
                 onMouseEnter={() => setHoveredCard(card.idx)}
                 onMouseLeave={() => {
@@ -173,12 +181,14 @@ export const HandSection = () => {
                           : "pointer"
                       }
                       onClick={() => {
+                        if (onTutorialCardClick) onTutorialCardClick();
                         if (isSmallScreen) {
                           highlightCard(card);
                         } else if (!card.isModifier) {
                           togglePreselected(card.idx);
                         }
                       }}
+                      className={"hand-element-" + index}
                     />
                   </AnimatedCard>
                 )}

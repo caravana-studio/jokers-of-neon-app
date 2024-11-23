@@ -1,7 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Coins } from "./Coins.tsx";
-import { Packs } from "./Packs.tsx";
+import { LootBoxes } from "./LootBoxes.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import useStoreContent from "./UseStoreContent.ts";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
@@ -75,7 +75,7 @@ export const StoreContentMobile = () => {
               </Flex>
             </Flex>
             <Flex justifyContent={{ base: "left", sm: "center" }}>
-              <Packs />
+              <LootBoxes />
             </Flex>
           </Box>
           <Box
