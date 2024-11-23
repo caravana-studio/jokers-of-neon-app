@@ -142,6 +142,8 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
         setNewDataText(true);
       }, 500);
 
+      runConfettiAnimation(100, confettiConfig);
+
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
         setShowAnimationText(false);
@@ -150,10 +152,6 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       return () => clearTimeout(timer);
     }
   }, [levelUpHand]);
-
-  useEffect(() => {
-    runConfettiAnimation(100, confettiConfig);
-  }, []);
 
   const tableData = (showNewDataText: boolean) => (
     <Table
