@@ -1,12 +1,12 @@
 import { confetti } from "tsparticles-confetti";
 import {
-    BLUE,
-    BLUE_LIGHT,
-    NEON_GREEN,
-    NEON_PINK,
-    PASTEL_PINK,
-    VIOLET,
-    VIOLET_LIGHT,
+  BLUE,
+  BLUE_LIGHT,
+  NEON_GREEN,
+  NEON_PINK,
+  PASTEL_PINK,
+  VIOLET,
+  VIOLET_LIGHT,
 } from "../theme/colors";
 
 const duration = 2000,
@@ -31,7 +31,7 @@ function randomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
 
-export const runConfettiAnimation = (count = 50) => {
+export const runConfettiAnimation = (count = 50, animData = defaults) => {
   const animationEnd = Date.now() + duration;
   const interval = setInterval(function () {
     const timeLeft = animationEnd - Date.now();
@@ -43,13 +43,13 @@ export const runConfettiAnimation = (count = 50) => {
     const particleCount = count * (timeLeft / duration);
 
     confetti(
-      Object.assign({}, defaults, {
+      Object.assign({}, animData, {
         particleCount,
         origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
       })
     );
     confetti(
-      Object.assign({}, defaults, {
+      Object.assign({}, animData, {
         particleCount,
         origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
       })

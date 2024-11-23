@@ -15,6 +15,16 @@ import { PLAYS } from "../../constants/plays";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { ArrowRight } from "lucide-react";
+import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
+import {
+  BLUE,
+  BLUE_LIGHT,
+  NEON_GREEN,
+  NEON_PINK,
+  PASTEL_PINK,
+  VIOLET,
+  VIOLET_LIGHT,
+} from "../../theme/colors";
 
 export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
@@ -23,6 +33,23 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { levelUpHand, setLevelUpHand } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
+
+  const confettiConfig = {
+    startVelocity: 30,
+    spread: 360,
+    ticks: 60,
+    zIndex: 11,
+    colors: [
+      BLUE,
+      BLUE_LIGHT,
+      VIOLET,
+      VIOLET_LIGHT,
+      PASTEL_PINK,
+      NEON_GREEN,
+      "#FFF",
+      NEON_PINK,
+    ],
+  };
 
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
@@ -124,6 +151,10 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
     }
   }, [levelUpHand]);
 
+  useEffect(() => {
+    runConfettiAnimation(100, confettiConfig);
+  }, []);
+
   const tableData = (showNewDataText: boolean) => (
     <Table
       sx={{
@@ -204,7 +235,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
           left={0}
           width="100%"
           height="100%"
-          zIndex={1000}
+          zIndex={10}
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
