@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
-import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useSpecialCardSlotItem } from "../../dojo/queries/useSpecialCardSlotItem";
-import { useGame } from "../../dojo/queries/useGame";
 import { MAX_SPECIAL_CARDS } from "../../constants/config";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
+import { useGame } from "../../dojo/queries/useGame";
+import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ISpecialSlotItem {}
@@ -14,8 +14,9 @@ interface ISpecialSlotItem {}
 export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
-  const specialSlotItem = useSpecialCardSlotItem();
   const navigate = useNavigate();
+
+  const { specialSlotItem } = useStore();
 
   const game = useGame();
   const visible =
@@ -46,7 +47,9 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
             src="/store/slot-icon.png"
             alt="slot-icon"
           />
-          {price && <PriceBox price={price} purchased={purchased} />}
+          {price && (
+            <PriceBox price={Number(price)} purchased={Boolean(purchased)} />
+          )}
           {purchased && (
             <Box
               sx={{

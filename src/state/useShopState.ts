@@ -1,0 +1,198 @@
+import { useEffect, useState } from "react";
+import {
+  EMPTY_SPECIAL_SLOT_ITEM,
+  getShopItems,
+} from "../dojo/queries/getShopItems";
+import { useGame } from "../dojo/queries/useGame";
+import {
+  BlisterPackItem,
+  SlotSpecialCardsItem
+} from "../dojo/typescript/models.gen";
+import { useDojo } from "../dojo/useDojo";
+import { Card } from "../types/Card";
+import { PokerHandItem } from "../types/PokerHandItem";
+
+export interface RerollInformation {
+  rerollCost: number;
+  rerollExecuted: boolean;
+}
+
+export interface ShopItems {
+  specialCards: Card[];
+  modifierCards: Card[];
+  commonCards: Card[];
+  pokerHandItems: PokerHandItem[];
+  packs: BlisterPackItem[];
+  specialSlotItem: SlotSpecialCardsItem;
+}
+
+const sortByCardId = (a: Card, b: Card) => {
+  return (a.card_id ?? 0) - (b.card_id ?? 0);
+};
+const sortByPackId = (a: BlisterPackItem, b: BlisterPackItem) => {
+  return (Number(a.blister_pack_id) ?? 0) - (Number(b.blister_pack_id) ?? 0);
+};
+const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
+  return a.poker_hand.localeCompare(b.poker_hand);
+};
+
+export const useShopState = () => {
+  const {
+    setup: { client },
+  } = useDojo();
+
+  const [run, setRun] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [specialCards, setSpecialCards] = useState<Card[]>([]);
+  const [modifierCards, setModifierCards] = useState<Card[]>([]);
+  const [commonCards, setCommonCards] = useState<Card[]>([]);
+  const [pokerHandItems, setPokerHandItems] = useState<PokerHandItem[]>([]);
+  const [blisterPackItems, setBlisterPackItems] = useState<BlisterPackItem[]>(
+    []
+  );
+  const [specialSlotItem, setSpecialSlotItem] = useState<SlotSpecialCardsItem>(
+    EMPTY_SPECIAL_SLOT_ITEM
+  );
+
+  const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
+    {
+      rerollCost: 100,
+      rerollExecuted: true,
+    }
+  );
+  const [cash, setCash] = useState(0);
+
+  const decreaseCash = (amount: number) => {
+    setCash(cash - amount);
+  };
+
+  const increaseCash = (amount: number) => {
+    setCash(cash + amount);
+  };
+
+  const buyItem = (
+    idx: number,
+    setFn: React.Dispatch<React.SetStateAction<any[]>>
+  ) => {
+    setFn((prev) =>
+      prev.map((item) => {
+        if (item.idx === idx) {
+          const cost = item.price ?? item.cost_discount ?? item.cost;
+          cost && decreaseCash(cost);
+        }
+        return item.idx === idx ? { ...item, purchased: true } : item;
+      })
+    );
+  };
+
+  const rollbackBuyItem = (
+    idx: number,
+    setFn: React.Dispatch<React.SetStateAction<any[]>>
+  ) => {
+    setFn((prev) =>
+      prev.map((item) => {
+        if (item.idx === idx && item.purchased) {
+          const cost = item.price ?? item.cost_discount ?? item.cost;
+          cost && increaseCash(cost);
+          return { ...item, purchased: false };
+        }
+        return item;
+      })
+    );
+  };
+
+  const buySpecialCard = (idx: number) => {
+    buyItem(idx, setSpecialCards);
+  };
+  const buyModifierCard = (idx: number) => {
+    buyItem(idx, setModifierCards);
+  };
+  const buyCommonCard = (idx: number) => {
+    buyItem(idx, setCommonCards);
+  };
+  const buyPokerHand = (idx: number) => {
+    buyItem(idx, setPokerHandItems);
+  };
+  const buyBlisterPack = (idx: number) => {
+    buyItem(idx, setBlisterPackItems);
+  };
+  const buySlotSpecialCard = () => {
+    decreaseCash(Number(specialSlotItem?.cost ?? 0));
+    setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
+  };
+
+  const rollbackBuySpecialCard = (idx: number) => {
+    rollbackBuyItem(idx, setSpecialCards);
+  };
+  const rollbackBuyModifierCard = (idx: number) => {
+    rollbackBuyItem(idx, setModifierCards);
+  };
+  const rollbackBuyCommonCard = (idx: number) => {
+    rollbackBuyItem(idx, setCommonCards);
+  };
+  const rollbackBuyPokerHand = (idx: number) => {
+    rollbackBuyItem(idx, setPokerHandItems);
+  };
+  const rollbackBuyBlisterPack = (idx: number) => {
+    rollbackBuyItem(idx, setBlisterPackItems);
+  };
+  const rollbackBuySlotSpecialCard = () => {
+    setSpecialSlotItem((prev) => ({ ...prev, purchased: false }));
+    increaseCash(Number(specialSlotItem?.cost ?? 0));
+  };
+
+  const game = useGame();
+  const gameId = game?.id ?? 0;
+
+  const fetchShopItems = async () => {
+    const shopItems = await getShopItems(client, gameId);
+    setLoading(false);
+    if (shopItems) {
+      setSpecialCards(shopItems.specialCards);
+      setModifierCards(shopItems.modifierCards);
+      setCommonCards(shopItems.commonCards);
+      setPokerHandItems(shopItems.pokerHandItems);
+      setBlisterPackItems(shopItems.packs);
+      setSpecialSlotItem(shopItems.specialSlotItem);
+      setRerollInformation(shopItems.rerollInformation);
+      setCash(shopItems.cash);
+    }
+  };
+
+  useEffect(() => {
+    fetchShopItems();
+  }, []);
+
+  const shopItems: ShopItems = {
+    specialCards: specialCards.sort(sortByCardId),
+    modifierCards: modifierCards.sort(sortByCardId),
+    commonCards: commonCards.sort(sortByCardId),
+    pokerHandItems: pokerHandItems.sort(sortByPokerHand),
+    packs: blisterPackItems.sort(sortByPackId),
+    specialSlotItem,
+  };
+
+  return {
+    shopItems,
+    fetchShopItems,
+    rerollInformation,
+    cash,
+    buySpecialCard,
+    buyModifierCard,
+    buyCommonCard,
+    buyPokerHand,
+    buyBlisterPack,
+    buySlotSpecialCard,
+    rollbackBuySpecialCard,
+    rollbackBuyModifierCard,
+    rollbackBuyCommonCard,
+    rollbackBuyPokerHand,
+    rollbackBuyBlisterPack,
+    rollbackBuySlotSpecialCard,
+    run,
+    setRun,
+    loading,
+    setLoading,
+  };
+};

@@ -1,27 +1,36 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
+import { EMPTY_SPECIAL_SLOT_ITEM } from "../dojo/queries/getShopItems.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
-import { useDojo } from "../dojo/useDojo";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
+import {
+  RerollInformation,
+  ShopItems,
+  useShopState,
+} from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { getCardType } from "../utils/getCardType";
-import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { useGameContext } from "./GameProvider";
 
-interface IStoreContext {
+interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
   buyPack: (pack: BlisterPackItem) => Promise<boolean>;
   levelUpPlay: (item: PokerHandItem) => Promise<boolean>;
   reroll: () => Promise<boolean>;
   locked: boolean;
-  isPurchased: (card: Card | PokerHandItem) => boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
   lockRedirection: boolean;
   setLockRedirection: (lock: boolean) => void;
   buySpecialSlot: () => Promise<boolean>;
+  rerollInformation: RerollInformation;
+  cash: number;
+  run: boolean;
+  setRun: (run: boolean) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -41,57 +50,59 @@ const StoreContext = createContext<IStoreContext>({
     return new Promise((resolve) => resolve(false));
   },
   locked: false,
-  isPurchased: (_) => false,
   lockRedirection: false,
   setLockRedirection: (_) => {},
   buySpecialSlot: () => new Promise((resolve) => resolve(false)),
+  specialCards: [],
+  modifierCards: [],
+  commonCards: [],
+  pokerHandItems: [],
+  packs: [],
+  specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
+
+  rerollInformation: {
+    rerollCost: 100,
+    rerollExecuted: true,
+  },
+  cash: 0,
+  run: false,
+  setRun: (_) => {},
+  loading: true,
+  setLoading: (_) => {},
 });
 export const useStore = () => useContext(StoreContext);
 
 export const StoreProvider = ({ children }: PropsWithChildren) => {
+  const {
+    shopItems,
+    fetchShopItems,
+    rerollInformation,
+    cash,
+    buySpecialCard,
+    buyModifierCard,
+    buyCommonCard,
+    buyPokerHand,
+    buyBlisterPack,
+    buySlotSpecialCard,
+    rollbackBuySpecialCard,
+    rollbackBuyModifierCard,
+    rollbackBuyCommonCard,
+    rollbackBuyPokerHand,
+    rollbackBuyBlisterPack,
+    rollbackBuySlotSpecialCard,
+    run,
+    setRun,
+    loading,
+    setLoading
+  } = useShopState();
+
   const { gameId } = useGameContext();
   const [locked, setLocked] = useState(false);
-  const [purchasedCards, setPurchasedCards] = useState<string[]>([]);
-  const [purchasedPokerHands, setPurchasedPokerHands] = useState<string[]>([]);
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx);
   const { play: buySound } = useAudio(buySfx);
   const { play: buyPackSound } = useAudio(buyPackSfx);
   const { play: rerollSound } = useAudio(rerollSfx, 0.5);
-
-  const addPurchasedCard = (card: Card) => {
-    setPurchasedCards((prev) => [...prev, getCardUniqueId(card)]);
-  };
-  const addPokerHandPurchased = (item: PokerHandItem) => {
-    setPurchasedPokerHands((prev) => [...prev, item.poker_hand]);
-  };
-  const isPurchased = (item: Card | PokerHandItem) => {
-    if (item.purchased) {
-      return true;
-    } else if ("poker_hand" in item) {
-      return purchasedPokerHands.includes(item.poker_hand);
-    } else {
-      return purchasedCards.includes(getCardUniqueId(item));
-    }
-  };
-  const clearPurchasedItems = () => {
-    setPurchasedCards([]);
-    setPurchasedPokerHands([]);
-  };
-  const rollbackPurchasedCard = (card: Card) => {
-    setPurchasedCards((prev) =>
-      prev.filter((id) => id !== getCardUniqueId(card))
-    );
-  };
-  const rollbackPokerHandPurchased = (item: PokerHandItem) => {
-    setPurchasedPokerHands((prev) =>
-      prev.filter((id) => id !== item.poker_hand)
-    );
-  };
-
-  const {
-    account: { account },
-  } = useDojo();
 
   const {
     buyCard: dojoBuyCard,
@@ -102,19 +113,39 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySpecialSlot: dojoBuySpecialSlot,
   } = useShopActions();
 
+  const stateBuyCard = (card: Card) => {
+    if (card.isSpecial) {
+      buySpecialCard(card.idx);
+    } else if (card.isModifier) {
+      buyModifierCard(card.idx);
+    } else {
+      buyCommonCard(card.idx);
+    }
+  };
+
+  const stateRollbackBuyCard = (card: Card) => {
+    if (card.isSpecial) {
+      rollbackBuySpecialCard(card.idx);
+    } else if (card.isModifier) {
+      rollbackBuyModifierCard(card.idx);
+    } else {
+      rollbackBuyCommonCard(card.idx);
+    }
+  };
+
   const buyCard = (card: Card): Promise<boolean> => {
     buySound();
     setLocked(true);
-    addPurchasedCard(card);
+    stateBuyCard(card);
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
     promise
       .then((response) => {
         if (!response) {
-          rollbackPurchasedCard(card);
+          stateRollbackBuyCard(card);
         }
       })
       .catch(() => {
-        rollbackPurchasedCard(card);
+        stateRollbackBuyCard(card);
       })
       .finally(() => {
         setLocked(false);
@@ -124,7 +155,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
     buyPackSound();
-    return dojoBuyPack(gameId, Number(pack.idx));
+    const promise = dojoBuyPack(gameId, Number(pack.idx));
+    buyBlisterPack(Number(pack.idx));
+    promise.catch(() => {
+      rollbackBuyBlisterPack(Number(pack.idx));
+    });
+    return promise;
   };
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
@@ -137,7 +173,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     const promise = storeReroll(gameId);
     promise
       .then(() => {
-        clearPurchasedItems();
+        fetchShopItems();
       })
       .finally(() => {
         setLocked(false);
@@ -148,16 +184,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const levelUpPlay = (item: PokerHandItem): Promise<boolean> => {
     levelUpHandSound();
     setLocked(true);
-    addPokerHandPurchased(item);
+    buyPokerHand(item.idx);
     const promise = dojoLevelUpHand(gameId, item.idx);
     promise
       .then((response) => {
         if (!response) {
-          rollbackPokerHandPurchased(item);
+          rollbackBuyPokerHand(item.idx);
         }
       })
       .catch(() => {
-        rollbackPokerHandPurchased(item);
+        rollbackBuyPokerHand(item.idx);
       })
       .finally(() => {
         setLocked(false);
@@ -167,10 +203,15 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const buySpecialSlot = () => {
     setLocked(true);
+    buySlotSpecialCard();
     const promise = dojoBuySpecialSlot(gameId);
-    promise.finally(() => {
-      setLocked(false);
-    });
+    promise
+      .catch(() => {
+        rollbackBuySlotSpecialCard();
+      })
+      .finally(() => {
+        setLocked(false);
+      });
     return promise;
   };
 
@@ -181,12 +222,23 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         levelUpPlay,
         reroll,
         locked,
-        isPurchased,
         buyPack,
         selectCardsFromPack,
         lockRedirection,
         setLockRedirection,
         buySpecialSlot,
+        specialCards: shopItems.specialCards,
+        modifierCards: shopItems.modifierCards,
+        commonCards: shopItems.commonCards,
+        pokerHandItems: shopItems.pokerHandItems,
+        packs: shopItems.packs,
+        specialSlotItem: shopItems.specialSlotItem,
+        rerollInformation,
+        cash,
+        run,
+        setRun,
+        loading,
+        setLoading,
       }}
     >
       {children}
