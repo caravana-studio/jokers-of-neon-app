@@ -6,7 +6,6 @@ import { useStore } from "../../providers/StoreProvider";
 import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
-import useStoreContent from "./UseStoreContent.ts";
 import { Loading } from "../../components/Loading.tsx";
 
 import {
@@ -20,12 +19,10 @@ import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const { loading, setRun, run } = useStoreContent();
-
   const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
   const state = game?.state;
-  const { lockRedirection } = useStore();
+  const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {

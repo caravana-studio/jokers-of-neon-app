@@ -2,11 +2,10 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../components/TiltCard";
-import { useStore } from "../../providers/StoreProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { preloadImages } from "../../utils/preloadImages";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface CardsRowProps {
   title: string;
@@ -19,7 +18,6 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const { isPurchased } = useStore();
   const imageUrls = useMemo(() => {
     return cards.map((card) => {
       return card.isSpecial || card.isModifier
@@ -77,15 +75,14 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           rowGap={4}
         >
           {cards.map((card) => {
-            const purchased = isPurchased(card);
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
                   scale={adjustedScale}
-                  card={{ ...card, purchased }}
+                  card={card}
                   onClick={() => {
-                    if (!isPurchased(card)) {
+                    if (!card.purchased) {
                       navigate("/preview/card", {
                         state: { card: card },
                       });

@@ -135,6 +135,18 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const shop_system_getShopItems = async (gameId: number) => {
+    try {
+      return await provider.call("jokers_of_neon", {
+        contractName: "shop_system",
+        entrypoint: "get_shop_items",
+        calldata: [gameId],
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const poker_hand_system_getPlayerPokerHands = async (gameId: number) => {
     try {
       return await provider.call("jokers_of_neon", {
@@ -142,6 +154,22 @@ export async function setupWorld(provider: DojoProvider) {
         entrypoint: "get_player_poker_hands",
         calldata: [gameId],
       });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const rage_system_calculate = async (snAccount: Account, gameId: number) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        {
+          contractName: "rage_system",
+          entrypoint: "calculate",
+          calldata: [gameId],
+        },
+        "jokers_of_neon"
+      );
     } catch (error) {
       console.error(error);
     }
@@ -269,22 +297,6 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const rage_system_calculate = async (snAccount: Account, gameId: number) => {
-    try {
-      return await provider.execute(
-        snAccount,
-        {
-          contractName: "rage_system",
-          entrypoint: "calculate",
-          calldata: [gameId],
-        },
-        "jokers_of_neon"
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return {
     shop_system: {
       skipShop: shop_system_skipShop,
@@ -294,9 +306,13 @@ export async function setupWorld(provider: DojoProvider) {
       selectCardsFromBlister: shop_system_selectCardsFromBlister,
       buySlotSpecialCardItem: shop_system_buySlotSpecialCardItem,
       reroll: shop_system_reroll,
+      getShopItems: shop_system_getShopItems,
     },
     poker_hand_system: {
       getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
+    },
+    rage_system: {
+      calculate: rage_system_calculate,
     },
     game_system: {
       createGame: game_system_createGame,
@@ -305,9 +321,6 @@ export async function setupWorld(provider: DojoProvider) {
       checkHand: game_system_checkHand,
       discardEffectCard: game_system_discardEffectCard,
       discardSpecialCard: game_system_discardSpecialCard,
-    },
-    rage_system: {
-      calculate: rage_system_calculate,
     },
   };
 }
