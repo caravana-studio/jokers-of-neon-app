@@ -218,17 +218,19 @@ export const CreateGameEventDefinition = {
   game_id: RecsType.Number,
 };
 
-// Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard` struct
-export interface CurrentHandCard {
-  game_id: Number;
-  idx: Number;
-  card_id: Number;
+// Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandEvent` struct
+export interface CurrentHandEvent {
+  game_id: number;
+  idx: number;
+  card_id: number;
 }
-export const CurrentHandCardDefinition = {
-  game_id: RecsType.Number,
-  idx: RecsType.Number,
-  card_id: RecsType.Number,
-};
+
+// Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` struct
+export interface CurrentHand {
+  fieldOrder: string[];
+  game_id: number;
+  cards: Array<number>;
+}
 
 // Type definition for `jokers_of_neon::models::status::game::game::CurrentSpecialCards` struct
 export interface CurrentSpecialCards {
@@ -842,8 +844,27 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandCard` model
-    CurrentHandCard: (() => {
+    // Model definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` model
+    CurrentHand: (() => {
+      return defineComponent(
+        world,
+        {
+          game_id: RecsType.Number,
+          // fieldOrder: RecsType.StringArray,
+          cards: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            namespace: "jokers_of_neon",
+            name: "CurrentHand",
+            types: ["u32", /* "array", */ "array"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+
+    CurrentHandEvent: (() => {
       return defineComponent(
         world,
         {
@@ -854,7 +875,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             namespace: "jokers_of_neon",
-            name: "CurrentHandCard",
+            name: "CurrentHandEvent",
             types: ["u32", "u32", "u32"],
             customTypes: [],
           },

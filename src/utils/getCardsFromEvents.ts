@@ -4,6 +4,10 @@ import { DojoEvent } from "../types/DojoEvent";
 import { getNumberValueFromEvent } from "./getNumberValueFromEvent";
 
 export const getCardsFromEvents = (events: DojoEvent[]): Card[] => {
+  console.log(
+    "fitlered",
+    events.filter((event) => event.keys[1] === CURRENT_HAND_CARD_EVENT)
+  );
   return events
     .filter((event) => event.keys[1] === CURRENT_HAND_CARD_EVENT)
     .map((event) => {
