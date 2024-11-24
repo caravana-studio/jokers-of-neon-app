@@ -35,9 +35,9 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { blue, violet } = theme.colors;
 
   const confettiConfig = {
-    startVelocity: 30,
-    spread: 360,
-    ticks: 60,
+    startVelocity: 10,
+    spread: 20,
+    ticks: 30,
     zIndex: 11,
     colors: [
       BLUE,
@@ -49,6 +49,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       "#FFF",
       NEON_PINK,
     ],
+    yOffset: 0.5,
   };
 
   const headingSpring = useSpring({
@@ -65,6 +66,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
 
   const oldLevelSpring = useSpring({
     from: { x: -1000, opacity: 0 },
+    delay: 100,
     to: async (next) => {
       if (showAnimationText) {
         await next({ x: 0, opacity: 1, config: { duration: 200 } });
@@ -142,7 +144,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
         setNewDataText(true);
       }, 500);
 
-      runConfettiAnimation(100, confettiConfig);
+      runConfettiAnimation(20, confettiConfig, 1000);
 
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
