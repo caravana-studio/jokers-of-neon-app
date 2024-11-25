@@ -23,15 +23,9 @@ export const useCurrentHand = (sortBy: SortBy) => {
   } = useDojo();
 
   const game = useGame();
-  console.log("game?.id", game?.id);
   const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
   const currentHand = useComponentValue(CurrentHand, entityId);
-  console.log("entityId", entityId);
   if (!game) return [];
-
-  console.log("CurrentHand hand", CurrentHand);
-  console.log("current hand", currentHand);
-
   
   const dojoCards = currentHand?.cards ?? [];
 
