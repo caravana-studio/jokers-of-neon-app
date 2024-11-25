@@ -8,7 +8,6 @@ import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
-import MobilePreviewCard from "./PreviewCardMobile.tsx";
 
 const PreviewCard = () => {
   const { state } = useLocation();
@@ -34,52 +33,87 @@ const PreviewCard = () => {
   const specialLength = game?.len_current_special_cards ?? 0;
 
   const notEnoughCash = !card.price || cash < card.price;
+  const notEnoughCashTemporal =
+    !card.temporary_price || cash < card.temporary_price;
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
+  const BuyButton = ({
+    onClick,
+    isDisabled,
+    notEnoughCash,
+    label,
+  }: {
+    onClick: () => void;
+    isDisabled: boolean;
+    notEnoughCash: boolean;
+    label: string;
+  }) =>
+    notEnoughCash || noSpaceForSpecialCards ? (
+      <Tooltip
+        label={
+          noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
+        }
+      >
+        <Button
+          onClick={onClick}
+          isDisabled={isDisabled}
+          variant="outlinePrimaryGlow"
+          height={{ base: "40px", sm: "100%" }}
+          width={{ base: "50%", sm: "unset" }}
+        >
+          {label}
+        </Button>
+      </Tooltip>
+    ) : (
+      <Button
+        onClick={onClick}
+        isDisabled={isDisabled}
+        variant="outlinePrimaryGlow"
+        height={{ base: "40px", sm: "100%" }}
+        width={{ base: "50%", sm: "unset" }}
+      >
+        {label}
+      </Button>
+    );
+
   const buyButton = (
-    <Button
+    <BuyButton
       onClick={() => {
         if (card.isSpecial) {
           buySpecialCardItem(card, false);
         } else {
           buyCard(card);
         }
-
         navigate(-1);
       }}
       isDisabled={
         notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
       }
-      variant="outlinePrimaryGlow"
-      height={{ base: "40px", sm: "100%" }}
-      width={{ base: "50%", sm: "unset" }}
-    >
-      {t("labels.buy")}
-    </Button>
+      notEnoughCash={notEnoughCash}
+      label={t("labels.buy")}
+    />
   );
 
-  const borrowButton = (
-    <Button
+  const temporalButton = (
+    <BuyButton
       onClick={() => {
         if (card.isSpecial) {
           buySpecialCardItem(card, true);
         } else {
           buyCard(card);
         }
-
         navigate(-1);
       }}
       isDisabled={
-        notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
+        cash < card.temporary_price ||
+        noSpaceForSpecialCards ||
+        locked ||
+        buyDisabled
       }
-      variant="outlinePrimaryGlow"
-      height={{ base: "40px", sm: "100%" }}
-      width={{ base: "50%", sm: "unset" }}
-    >
-      {/* {t("labels.buy")} */}
-      Borrow
-    </Button>
+      notEnoughCash={notEnoughCashTemporal}
+      label={t("labels.buy-temporal")}
+    />
   );
 
   const tooltipButton =
@@ -95,17 +129,17 @@ const PreviewCard = () => {
       buyButton
     );
 
-  const tooltipBorrowButton =
-    notEnoughCash || noSpaceForSpecialCards ? (
+  const tooltipTemporalButton =
+    cash < card.temporary_price || noSpaceForSpecialCards ? (
       <Tooltip
         label={
           noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
         }
       >
-        {borrowButton}
+        {temporalButton}
       </Tooltip>
     ) : (
-      borrowButton
+      temporalButton
     );
 
   const image = (
@@ -127,13 +161,14 @@ const PreviewCard = () => {
   return (
     <StorePreviewComponent
       buyButton={tooltipButton}
-      borrowButton={card.isSpecial ? tooltipBorrowButton : undefined}
+      temporalButton={card.isSpecial ? tooltipTemporalButton : undefined}
       image={image}
       title={name}
       cardType={card.temporary ? cardType + temporary : cardType}
       description={description}
       extraDescription={card.isTemporary && getTemporalCardText(card.remaining)}
       price={card.price}
+      temporalPrice={card.isSpecial ? card.temporary_price : undefined}
     />
   );
 };

@@ -37,22 +37,22 @@
         "card-type": "Tipo de carta:",
         "description": "Descrição:",
         "details": "Detalhes:",
-        "price": "Preço:"
+        "price": "Preço:",
+        "temporal-price": "Preço temporário:"
       },
       "tooltip": {
-        "no-coins": "Você não tem moedas suficientes para comprar este item"
+        "no-coins": "Você não tem moedas suficientes para comprar este item",
+        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
       },
       "labels": {
         "buy": "Comprar",
+        "buy-temporal": "Comprar temporário",
         "special": "Especial",
         "modifier": "Modificador",
         "traditional": "Tradicional",
         "temporary": "Temporário",
         "close": "Fechar",
-        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
-        "tooltip": {
-          "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
-        }
+        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis."
       }
     },
     "packs": {
