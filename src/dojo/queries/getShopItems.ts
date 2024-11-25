@@ -13,11 +13,13 @@ export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
 };
 
 const getCard = (txCard: any, forcedCardType?: CardItemType) => {
-  const cardType = forcedCardType ?? {
-    type: Object.entries(txCard.item_type.variant).find(
-      ([key, value]) => value !== undefined && value !== null
-    )?.[0],
-  } as CardItemType;
+  const cardType =
+    forcedCardType ??
+    ({
+      type: Object.entries(txCard.item_type.variant).find(
+        ([key, value]) => value !== undefined && value !== null
+      )?.[0],
+    } as CardItemType);
   const idx = parseInt(txCard.idx);
   const card_id = parseInt(txCard.card_id);
   return {
@@ -30,6 +32,7 @@ const getCard = (txCard: any, forcedCardType?: CardItemType) => {
     purchased: txCard.purchased,
     img: `${card_id}.png`,
     temporary: txCard.temporary,
+    temporary_price: parseInt(txCard.temporary_cost),
   };
 };
 
@@ -72,7 +75,9 @@ export const getShopItems = async (client: any, gameId: number) => {
         return getCard(txCard);
       });
 
-      const modifierCards = modifiersAndCommonCards.filter((card: Card) => card.isModifier);
+      const modifierCards = modifiersAndCommonCards.filter(
+        (card: Card) => card.isModifier
+      );
       const commonCards = modifiersAndCommonCards.filter(
         (card: Card) => !card.isModifier && !card.isSpecial
       );
