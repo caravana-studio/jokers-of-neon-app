@@ -40,6 +40,27 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const shop_system_buySpecialCardItem = async (
+    snAccount: Account,
+    gameId: number,
+    itemId: number,
+    isTemporary: boolean
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        {
+          contractName: "shop_system",
+          entrypoint: "buy_special_card_item",
+          calldata: [gameId, itemId, isTemporary],
+        },
+        "jokers_of_neon"
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const shop_system_buyPokerHandItem = async (
     snAccount: Account,
     gameId: number,
@@ -301,6 +322,7 @@ export async function setupWorld(provider: DojoProvider) {
     shop_system: {
       skipShop: shop_system_skipShop,
       buyCardItem: shop_system_buyCardItem,
+      buySpecialCardItem: shop_system_buySpecialCardItem,
       buyPokerHandItem: shop_system_buyPokerHandItem,
       buyBlisterPackItem: shop_system_buyBlisterPackItem,
       selectCardsFromBlister: shop_system_selectCardsFromBlister,

@@ -26,7 +26,8 @@ const PreviewCard = () => {
   }
 
   const game = useGame();
-  const { buyCard, locked, setLockRedirection } = useStore();
+  const { buyCard, buySpecialCardItem, locked, setLockRedirection } =
+    useStore();
   const cash = game?.cash ?? 0;
   const { name, description } = getCardData(card, false);
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
@@ -39,7 +40,12 @@ const PreviewCard = () => {
   const buyButton = (
     <Button
       onClick={() => {
-        buyCard(card);
+        if (card.isSpecial) {
+          buySpecialCardItem(card, false);
+        } else {
+          buyCard(card);
+        }
+
         navigate(-1);
       }}
       isDisabled={
@@ -50,6 +56,29 @@ const PreviewCard = () => {
       width={{ base: "50%", sm: "unset" }}
     >
       {t("labels.buy")}
+    </Button>
+  );
+
+  const borrowButton = (
+    <Button
+      onClick={() => {
+        if (card.isSpecial) {
+          buySpecialCardItem(card, true);
+        } else {
+          buyCard(card);
+        }
+
+        navigate(-1);
+      }}
+      isDisabled={
+        notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
+      }
+      variant="outlinePrimaryGlow"
+      height={{ base: "40px", sm: "100%" }}
+      width={{ base: "50%", sm: "unset" }}
+    >
+      {/* {t("labels.buy")} */}
+      Borrow
     </Button>
   );
 
@@ -64,6 +93,19 @@ const PreviewCard = () => {
       </Tooltip>
     ) : (
       buyButton
+    );
+
+  const tooltipBorrowButton =
+    notEnoughCash || noSpaceForSpecialCards ? (
+      <Tooltip
+        label={
+          noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
+        }
+      >
+        {borrowButton}
+      </Tooltip>
+    ) : (
+      borrowButton
     );
 
   const image = (
@@ -85,6 +127,7 @@ const PreviewCard = () => {
   return (
     <StorePreviewComponent
       buyButton={tooltipButton}
+      borrowButton={card.isSpecial ? tooltipBorrowButton : undefined}
       image={image}
       title={name}
       cardType={card.temporary ? cardType + temporary : cardType}

@@ -24,6 +24,7 @@ const { white, neonGreen } = theme.colors;
 
 interface IStorePreviewComponent {
   buyButton: JSX.Element;
+  borrowButton?: JSX.Element;
   image: JSX.Element;
   title: string;
   description: string;
@@ -48,6 +49,7 @@ export const StorePreviewComponent = ({
   isPack = false,
   spine,
   showOverlay,
+  borrowButton,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
@@ -94,9 +96,7 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex
-                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
-              >
+              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
                 {image}
               </Flex>
             )}
@@ -239,6 +239,8 @@ export const StorePreviewComponent = ({
           <Coins />
           <HStack gap={4}>
             {buyButton}
+
+            {borrowButton}
 
             <Button
               variant="outlineSecondaryGlow"
