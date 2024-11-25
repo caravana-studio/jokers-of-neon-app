@@ -221,8 +221,7 @@ export const CreateGameEventDefinition = {
 // Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandEvent` struct
 export interface CurrentHandEvent {
   game_id: number;
-  idx: number;
-  card_id: number;
+  cards: Array<number>;
 }
 
 // Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` struct
@@ -850,14 +849,13 @@ export function defineContractComponents(world: World) {
         world,
         {
           game_id: RecsType.Number,
-          // fieldOrder: RecsType.StringArray,
           cards: RecsType.NumberArray,
         },
         {
           metadata: {
             namespace: "jokers_of_neon",
             name: "CurrentHand",
-            types: ["u32", /* "array", */ "array"],
+            types: ["u32", "array"],
             customTypes: [],
           },
         }
@@ -869,14 +867,13 @@ export function defineContractComponents(world: World) {
         world,
         {
           game_id: RecsType.Number,
-          idx: RecsType.Number,
-          card_id: RecsType.Number,
+          cards: RecsType.NumberArray,
         },
         {
           metadata: {
             namespace: "jokers_of_neon",
             name: "CurrentHandEvent",
-            types: ["u32", "u32", "u32"],
+            types: ["u32", "array"],
             customTypes: [],
           },
         }

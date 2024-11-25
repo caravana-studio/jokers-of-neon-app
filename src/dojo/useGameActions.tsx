@@ -5,6 +5,7 @@ import {
 } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
+import { getCashEvents } from "../utils/playEvents/getCashEvents";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -13,7 +14,6 @@ import {
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { getCashEvents } from "../utils/playEvents/getCashEvents";
 
 const createGameEmptyResponse = {
   gameId: 0,
