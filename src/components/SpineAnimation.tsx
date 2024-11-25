@@ -11,6 +11,7 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../providers/StoreProvider";
 import { PriceBox } from "./PriceBox";
+import { getFromCacheOrFetch, saveToCache } from "../utils/preloadAnimations";
 
 interface SpineAnimationProps {
   jsonUrl: string;
@@ -85,47 +86,55 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     }));
 
     useEffect(() => {
-      if (containerRef.current && !playerRef.current) {
-        const config: SpinePlayerConfig = {
-          jsonUrl: jsonUrl,
-          atlasUrl: atlasUrl,
-          alpha: true,
-          backgroundColor: "#00000000",
-          showControls: false,
-          preserveDrawingBuffer: true,
-          premultipliedAlpha: true,
-          animation: initialAnimation,
-          scale: scale,
-          success: (player: SpinePlayer) => {
-            if (player.skeleton != null) {
-              // console.log(player.skeleton.data.animations.map((a) => a.name));
-              player.startRendering();
-              setPlayerReady(true);
+      const loadAndCacheResources = async () => {
+        await saveToCache(jsonUrl);
+        await saveToCache(atlasUrl);
 
-              player.animationState?.addListener({
-                complete: function (entry) {
-                  if (
-                    openBoxAnimation &&
-                    entry.animation &&
-                    entry.animation.name.includes(openBoxAnimation)
-                  ) {
-                    setLockRedirection(false);
-                  }
-                },
-              });
-            }
-          },
-          viewport: {
-            // debugRender: true,
-            x: xOffset,
-            y: yOffset,
-            width: width,
-            height: height,
-          },
-        };
+        if (containerRef.current && !playerRef.current) {
+          const jsonResponse = await getFromCacheOrFetch(jsonUrl);
+          const atlasResponse = await getFromCacheOrFetch(atlasUrl);
 
-        playerRef.current = new SpinePlayer(containerRef.current, config);
-      }
+          const config: SpinePlayerConfig = {
+            jsonUrl: jsonResponse.url,
+            atlasUrl: atlasResponse.url,
+            alpha: true,
+            backgroundColor: "#00000000",
+            showControls: false,
+            preserveDrawingBuffer: true,
+            premultipliedAlpha: true,
+            animation: initialAnimation,
+            scale: scale,
+            success: (player: SpinePlayer) => {
+              if (player.skeleton != null) {
+                player.startRendering();
+                setPlayerReady(true);
+
+                player.animationState?.addListener({
+                  complete: function (entry) {
+                    if (
+                      openBoxAnimation &&
+                      entry.animation &&
+                      entry.animation.name.includes(openBoxAnimation)
+                    ) {
+                      setLockRedirection(false);
+                    }
+                  },
+                });
+              }
+            },
+            viewport: {
+              x: xOffset,
+              y: yOffset,
+              width: width,
+              height: height,
+            },
+          };
+
+          playerRef.current = new SpinePlayer(containerRef.current, config);
+        }
+      };
+
+      loadAndCacheResources();
 
       return () => {
         if (playerRef.current) {
