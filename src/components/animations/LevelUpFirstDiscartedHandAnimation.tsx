@@ -25,6 +25,7 @@ import {
   VIOLET,
   VIOLET_LIGHT,
 } from "../../theme/colors";
+import { useTranslation } from "react-i18next";
 
 export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
@@ -33,6 +34,10 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { levelUpHand, setLevelUpHand } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
+
+  const { t } = useTranslation("game", {
+    keyPrefix: "animations.labels",
+  });
 
   const confettiConfig = {
     startVelocity: 10,
@@ -176,7 +181,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
               gap={isSmallScreen ? 3 : 5}
             >
               <Text size="xl">
-                LEVEL{" "}
+                {t("level") + " "}
                 {!showNewDataText ? levelUpHand?.old_level : levelUpHand?.level}
               </Text>
 
@@ -247,7 +252,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
             <>
               <animated.div style={headingSpring}>
                 <Heading fontSize={isSmallScreen ? "1rem" : "2rem"}>
-                  HAND LEVELED UP
+                  {t("head") + " "}
                 </Heading>
               </animated.div>
 
