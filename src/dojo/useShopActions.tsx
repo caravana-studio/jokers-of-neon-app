@@ -79,6 +79,33 @@ export const useShopActions = () => {
     }
   };
 
+  const buySpecialCard = async (
+    gameId: number,
+    card_idx: number,
+    isTemporary: boolean
+  ) => {
+    try {
+      showTransactionToast();
+      const response = await client.shop_system.buySpecialCardItem(
+        account,
+        gameId,
+        card_idx,
+        isTemporary
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
   const buySpecialSlot = async (gameId: number) => {
     try {
       showTransactionToast();
@@ -191,6 +218,7 @@ export const useShopActions = () => {
   return {
     skipShop,
     buyCard,
+    buySpecialCard,
     buyPack,
     selectCardsFromPack,
     levelUpPokerHand,

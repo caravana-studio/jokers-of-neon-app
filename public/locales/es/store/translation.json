@@ -37,22 +37,22 @@
         "card-type": "Tipo:",
         "description": "Descripción:",
         "details": "Detalles:",
-        "price": "Precio:"
+        "price": "Precio:",
+        "temporal-price": "Precio temporal:"
       },
       "tooltip": {
-        "no-coins": "No tienes suficientes monedas para comprar este artículo"
+        "no-coins": "No tienes suficientes monedas para comprar este artículo",
+        "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales."
       },
       "labels": {
         "buy": "Comprar",
+        "buy-temporal": "Comprar temporal",
         "special": "Especial",
         "modifier": "Modificadora",
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
-        "tooltip": {
-          "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales."
-        }
+        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
       }
     },
     "packs": {
