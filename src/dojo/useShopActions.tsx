@@ -6,7 +6,6 @@ import {
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
-import { CardItemType } from "./typescript/models.gen";
 import { useDojo } from "./useDojo";
 
 export const useShopActions = () => {
