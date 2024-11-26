@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x230fc6f091a9bb0b78889f76959af9bcd43ff08eedbb8e719130bd75d57b12c",
-      "class_hash": "0x7ac11cd54c7f145b0a935ee8339e07467cc11deed2d053764905e8a7d6e7ab7",
+      "address": "0x54eb169a59f3bb63cbe623c54e7f4fe1ceb42dd1ef47c7435d7bbbe1cc5a9e8",
+      "class_hash": "0x4dae1703b550533879c4fde12006a5b861b1088d9bbce311ebd1f53963115ba",
       "abi": [
         {
           "type": "impl",
@@ -2874,7 +2874,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x3bebaa19df8b7b8566210e6aedc6d351c307915a150733ee6044bca4b524dff",
+      "class_hash": "0x363f5afaf0e84c5a933a3d6f6b19ea12bbabd679b9e625d137aa4d1615b4178",
       "tag": "jokers_of_neon-LevelUpHandEvent",
       "selector": "0x520c37f3fe12e1bb9393c4373cb5c495d30061c2ff15475e11bf129dd73d47d"
     },

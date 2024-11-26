@@ -15,6 +15,7 @@ import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
+import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 
 export const GamePage = () => {
   const {
@@ -74,6 +75,7 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
+      <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {isSmallScreen ? (
         <CardHighlightProvider>

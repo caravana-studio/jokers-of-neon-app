@@ -3,6 +3,7 @@ import {
   CREATE_GAME_EVENT,
   PLAY_GAME_OVER_EVENT,
 } from "../constants/dojoEventKeys";
+import { getLevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getCashEvents } from "../utils/playEvents/getCashEvents";
@@ -96,6 +97,7 @@ export const useGameActions = () => {
             (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
           ),
           cashEvent: getCashEvents(tx.events),
+          levelUpHandEvent: getLevelUpPlayEvent(tx.events),
         };
       } else {
         return {

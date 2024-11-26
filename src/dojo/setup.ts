@@ -107,7 +107,12 @@ export async function setup({ ...config }: DojoConfig) {
     if (gameID) {
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
-      sync = await syncEntities(toriiClient, contractComponents as any, []);
+      sync = await syncEntities(
+        toriiClient,
+        contractComponents as any,
+        [],
+        false
+      );
 
       const endTime = performance.now();
       const timeTaken = endTime - startTime;

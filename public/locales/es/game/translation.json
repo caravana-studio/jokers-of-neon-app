@@ -116,7 +116,7 @@
     "confirm": "Confirmar",
     "close": "Cerrar"
   },
-  "points":"puntos",
+  "points": "puntos",
   "settings-modal": {
     "title": "Configuración",
     "language": "Idioma",
@@ -127,6 +127,12 @@
       "normal": "Normal",
       "fast": "Rápido",
       "fastest": "Más rápido"
+    }
+  },
+  "animations": {
+    "labels": {
+      "level": "NIVEL",
+      "head": "MANO MEJORADA"
     }
   }
 }
