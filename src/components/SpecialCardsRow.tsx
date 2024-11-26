@@ -153,6 +153,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
             <UnlockedSlot
               key={`unlocked-${index}`}
               scale={cardScale - cardScale * 0.1}
+              backgroundColor="black"
             />
           ) : (
             <FilledUnlockedSlot
@@ -167,6 +168,8 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
           <LockedSlot
             key={`locked-${index}`}
             scale={cardScale - cardScale * 0.1}
+            backgroundColor="black"
+            borderRadius={isSmallScreen ? "0px" : "10%"}
           />
         </Flex>
       ))}
