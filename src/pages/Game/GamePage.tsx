@@ -19,7 +19,7 @@ import { RageRoundAnimation } from "./RageRoundAnimation";
 export const GamePage = () => {
   const {
     setup: { masterAccount },
-    account: { account },
+    account,
   } = useDojo();
   const username = useUsername();
   const {

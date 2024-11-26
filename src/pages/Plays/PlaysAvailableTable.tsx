@@ -48,7 +48,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
   const {
     setup: {
       client,
-      account: { account },
+      account,
     },
   } = useDojo();
 

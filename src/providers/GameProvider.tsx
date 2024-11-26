@@ -167,7 +167,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setup: {
       clientComponents: { Game },
     },
-    account: { account },
+    account,//: { account },
     syncCall,
   } = useDojo();
 

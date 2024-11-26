@@ -49,7 +49,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const {
     setup: {
       client,
-      account: { account },
+      account,
     },
   } = useDojo();
 

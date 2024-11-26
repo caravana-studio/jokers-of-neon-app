@@ -120,7 +120,7 @@ export async function setup({ ...config }: DojoConfig) {
   const client = await setupWorld(dojoProvider);
 
   // create burner manager
-  const burnerManager = new BurnerManager({
+/*   const burnerManager = new BurnerManager({
     masterAccount: new Account(
       {
         nodeUrl: config.rpcUrl,
@@ -140,7 +140,7 @@ export async function setup({ ...config }: DojoConfig) {
     }
   } catch (e) {
     console.error(e);
-  }
+  } */
 
   await syncEntitiesForGameID();
 
@@ -154,7 +154,7 @@ export async function setup({ ...config }: DojoConfig) {
     },
     config,
     dojoProvider,
-    burnerManager,
+    // burnerManager,
     toriiClient,
     sync,
     syncCallback: async () => await syncEntitiesForGameID(),

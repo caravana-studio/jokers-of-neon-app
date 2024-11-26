@@ -27,12 +27,12 @@ interface DojoAccount {
 
 interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
-  account: DojoAccount;
+  // account: DojoAccount;
 }
 
 export interface DojoResult {
   setup: DojoContextType;
-  account: DojoAccount;
+  // account: DojoAccount;
   masterAccount: Account | AccountInterface;
 }
 
@@ -102,7 +102,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
   const controllerAccount = useControllerAccount();
 
   return (
-    <BurnerProvider
+/*     <BurnerProvider
       initOptions={{
         masterAccount,
         accountClassHash:
@@ -113,7 +113,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
           import.meta.env.VITE_NETWORK_FEE_TOKEN ||
           "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
-    >
+    > */
       <DojoContextProvider
         value={value}
         masterAccount={masterAccount}
@@ -121,7 +121,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
       >
         {children}
       </DojoContextProvider>
-    </BurnerProvider>
+    // </BurnerProvider>
   );
 };
 
@@ -132,7 +132,7 @@ export const useDojo = (): DojoResult => {
 
   return {
     setup: contextValue,
-    account: contextValue.account,
+    // account: contextValue.account,
     masterAccount: contextValue.masterAccount,
   };
 };
@@ -149,7 +149,7 @@ const DojoContextProvider = ({
   const currentValue = useContext(DojoContext);
   if (currentValue) throw new Error("DojoProvider can only be used once");
 
-  const {
+/*   const {
     create,
     list,
     get,
@@ -160,7 +160,7 @@ const DojoContextProvider = ({
   } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
-
+ */
   const { connect, connectors } = useConnect();
   const { isConnected, isConnecting } = useAccount();
 
@@ -177,11 +177,11 @@ const DojoContextProvider = ({
   };
 
   // Determine which account to use based on environment
-  const isDev = import.meta.env.VITE_DEV === "true";
-  const accountToUse = isDev ? burnerAccount : controllerAccount;
+  // const isDev = import.meta.env.VITE_DEV === "true";
+  // const accountToUse = /* isDev ? burnerAccount : */ controllerAccount;
 
   useEffect(() => {
-    if (isDev) {
+/*     if (isDev) {
       if (burnerAccount) {
         console.log("Setting account from burner hook:", burnerAccount);
         useAccountStore.getState().setAccount(burnerAccount);
@@ -189,7 +189,7 @@ const DojoContextProvider = ({
       } else {
         console.log("Burner account is null in development.");
       }
-    } else {
+    } else { */
       if (controllerAccount) {
         console.log(
           "Setting account from controllerAccount:",
@@ -203,19 +203,19 @@ const DojoContextProvider = ({
         );
         setAccountsInitialized(true);
       }
-    }
-  }, [isDev, controllerAccount, burnerAccount]);
+    // }
+  }, [/* isDev, */ controllerAccount/* , burnerAccount */]);
 
   if (!accountsInitialized) {
     return <LoadingScreen />;
   }
 
   // Handle Loading Screen
-  if (isDev) {
+/*   if (isDev) {
     if (!burnerAccount) {
       return <LoadingScreen />;
     }
-  } else {
+  } else { */
     if (isConnecting) {
       return <LoadingScreen />;
     }
@@ -239,7 +239,7 @@ const DojoContextProvider = ({
       // Connected but controllerAccount is not set yet
       return <LoadingScreen />;
     }
-  }
+  // }
 
   // Once account is set, render the children
   return (
@@ -247,7 +247,7 @@ const DojoContextProvider = ({
       value={{
         ...value,
         masterAccount,
-        account: {
+        /* account: controllerAccount as unknown as DojoAccount */ /* {
           create,
           list,
           get,
@@ -258,7 +258,7 @@ const DojoContextProvider = ({
           accountDisplay: displayAddress(
             (accountToUse as Account | AccountInterface)?.address || ""
           ),
-        },
+        }, */
       }}
     >
       {children}

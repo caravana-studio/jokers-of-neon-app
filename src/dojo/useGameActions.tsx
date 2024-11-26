@@ -22,12 +22,13 @@ const createGameEmptyResponse = {
 export const useGameActions = () => {
   const {
     setup: { client },
-    account: { account },
+    account,
   } = useDojo();
 
   const createGame = async (username: string) => {
     try {
       showTransactionToast();
+      console.log("account", account);
       const response = await client.game_system.createGame(
         account,
         Number(shortString.encodeShortString(username))

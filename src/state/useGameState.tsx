@@ -58,7 +58,7 @@ export const useGameState = () => {
   const {
     setup: {
       client,
-      account: { account }
+      account
     },
   } = useDojo();
 

@@ -12,7 +12,7 @@ import { useDojo } from "./useDojo";
 export const useShopActions = () => {
   const {
     setup: { client },
-    account: { account },
+    account,
   } = useDojo();
 
   const skipShop = async (gameId: number) => {
