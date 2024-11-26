@@ -17,6 +17,7 @@ import { useGameContext } from "./GameProvider";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
+  buySpecialCardItem: (card: Card, isTemporal: boolean) => Promise<boolean>;
   buyPack: (pack: BlisterPackItem) => Promise<boolean>;
   levelUpPlay: (item: PokerHandItem) => Promise<boolean>;
   reroll: () => Promise<boolean>;
@@ -35,6 +36,9 @@ interface IStoreContext extends ShopItems {
 
 const StoreContext = createContext<IStoreContext>({
   buyCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  buySpecialCardItem: (_) => {
     return new Promise((resolve) => resolve(false));
   },
   buyPack: (_) => {
@@ -93,7 +97,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     run,
     setRun,
     loading,
-    setLoading
+    setLoading,
   } = useShopState();
 
   const { gameId } = useGameContext();
@@ -106,6 +110,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const {
     buyCard: dojoBuyCard,
+    buySpecialCard: dojoBuySpecialCard,
     buyPack: dojoBuyPack,
     selectCardsFromPack: dojoSelectCardsFromPack,
     storeReroll,
@@ -138,6 +143,29 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     stateBuyCard(card);
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
+    promise
+      .then((response) => {
+        if (!response) {
+          stateRollbackBuyCard(card);
+        }
+      })
+      .catch(() => {
+        stateRollbackBuyCard(card);
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
+
+  const buySpecialCardItem = (
+    card: Card,
+    isTemporal: boolean
+  ): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    stateBuyCard(card);
+    const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal);
     promise
       .then((response) => {
         if (!response) {
@@ -219,6 +247,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     <StoreContext.Provider
       value={{
         buyCard,
+        buySpecialCardItem,
         levelUpPlay,
         reroll,
         locked,
