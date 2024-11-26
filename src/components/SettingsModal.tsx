@@ -79,7 +79,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 variant="outline"
                 focusBorderColor="teal.500"
                 onChange={(e) => changeLanguage(e.target.value)}
-                defaultValue={i18n.language}
+                defaultValue={i18n.language.toString().substring(0, 2)}
               >
                 <option value="en">English</option>
                 <option value="es">Español</option>
