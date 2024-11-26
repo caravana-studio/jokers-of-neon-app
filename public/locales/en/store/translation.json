@@ -37,22 +37,22 @@
         "card-type": "Card type:",
         "description": "Description:",
         "details": "Details:",
-        "price": "Price:"
+        "price": "Price:",
+        "temporal-price": "Temporal price:"
       },
       "tooltip": {
-        "no-coins": "You don't have enough coins to buy this item"
+        "no-coins": "You don't have enough coins to buy this item",
+        "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card"
       },
       "labels": {
         "buy": "Buy",
+        "buy-temporal": "Buy temporal",
         "special": "Special",
         "modifier": "Modifier",
         "traditional": "Traditional",
         "temporary": "Temporary",
         "close": "Close",
-        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels.",
-        "tooltip": {
-          "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card"
-        }
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
       }
     },
     "packs": {
