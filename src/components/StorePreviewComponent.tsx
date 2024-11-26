@@ -24,6 +24,7 @@ const { white, neonGreen } = theme.colors;
 
 interface IStorePreviewComponent {
   buyButton: JSX.Element;
+  temporalButton?: JSX.Element;
   image: JSX.Element;
   title: string;
   description: string;
@@ -31,6 +32,7 @@ interface IStorePreviewComponent {
   extraDescription?: string;
   details?: string;
   price: number;
+  temporalPrice?: number;
   isPack?: boolean;
   spine?: JSX.Element;
   showOverlay?: boolean;
@@ -45,9 +47,11 @@ export const StorePreviewComponent = ({
   extraDescription,
   details,
   price,
+  temporalPrice,
   isPack = false,
   spine,
   showOverlay,
+  temporalButton,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
@@ -94,9 +98,7 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex
-                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
-              >
+              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
                 {image}
               </Flex>
             )}
@@ -217,10 +219,22 @@ export const StorePreviewComponent = ({
                 </Box>
               )}
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
-                <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
-                  {t("store.preview-card.title.price")} {price}
-                  <CashSymbol />
-                </Heading>
+                <Flex flexDirection={"column"} gap={5}>
+                  <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
+                    {t("store.preview-card.title.price")} {price}
+                    <CashSymbol />
+                  </Heading>
+                  {temporalPrice && (
+                    <Heading
+                      fontSize={{ base: "sm", sm: "lg" }}
+                      variant="italic"
+                    >
+                      {t("store.preview-card.title.temporal-price")}{" "}
+                      {temporalPrice}
+                      <CashSymbol />
+                    </Heading>
+                  )}
+                </Flex>
               </Box>
             </Flex>
           </Flex>
@@ -239,6 +253,8 @@ export const StorePreviewComponent = ({
           <Coins />
           <HStack gap={4}>
             {buyButton}
+
+            {temporalButton}
 
             <Button
               variant="outlineSecondaryGlow"
