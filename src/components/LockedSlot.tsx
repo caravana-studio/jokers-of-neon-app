@@ -5,9 +5,15 @@ import CachedImage from "./CachedImage.tsx";
 
 interface ILockedSlotProps {
   scale?: number;
+  backgroundColor?: string;
+  borderRadius?: string;
 }
 
-export const LockedSlot = ({ scale = 1 }: ILockedSlotProps) => {
+export const LockedSlot = ({
+  scale = 1,
+  backgroundColor,
+  borderRadius,
+}: ILockedSlotProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.special-cards" });
 
   return (
@@ -18,6 +24,8 @@ export const LockedSlot = ({ scale = 1 }: ILockedSlotProps) => {
         width={`${CARD_WIDTH * scale}`}
         height={`${CARD_HEIGHT * scale}`}
         minWidth={`${CARD_WIDTH * scale}`}
+        backgroundColor={backgroundColor ?? "transparent"}
+        borderRadius={borderRadius ?? "0px"}
       />
     </Tooltip>
   );
