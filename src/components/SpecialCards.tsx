@@ -1,52 +1,77 @@
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { GREY_LINE } from "../theme/colors.tsx";
 import { Card } from "../types/Card.ts";
+import CachedImage from "./CachedImage.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
-import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { RageCards } from "./RageCards.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
-import { isTutorial } from "../utils/isTutorial.ts";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { CARD_WIDTH } from "../constants/visualProps.ts";
 
-interface SpecialCardsProps {
-  inStore?: boolean;
-}
-
-export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
-  const { colors } = useTheme();
+export const SpecialCards = () => {
   const game = useGame();
-  const maxLength = game?.len_max_current_special_cards ?? 5;
   const { t } = useTranslation(["game"]);
 
-  const { discardSpecialCard, specialCards, isRageRound, rageCards } =
-    useGameContext();
+  const { discardSpecialCard, specialCards } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-
-  const width = !isRageRound ? "100%" : rageCards.length === 1 ? "82%" : "74%";
-  const { cardScale } = useResponsiveValues();
-
+  const [specialsEnabled, setSpecialsEnabled] = useState(true);
+  const { specialCardScale, isSmallScreen } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * specialCardScale;
+  console.log('cardWidth * 5 + (isSmallScreen ? 32 : 49) ', cardWidth * 5 + (isSmallScreen ? 32 : 49) )
+  
   return (
-    <Box
+    <Flex
       className="special-cards-step-3"
-      width={width}
-      boxShadow={
-        inStore
-          ? "none"
-          : `0px 26px 30px -30px ${isRageRound ? colors.neonPink : colors.neonGreen}`
-      }
+      border={`1px solid ${GREY_LINE}`}
+      pl={2.5}
+      pr={['25px', '35px']}
+      py={[1, 2]}
+      borderRadius={["12px", "20px"]}
+      justifyContent="center"
+      alignItems="center"
+      position="relative"
+      width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49) }px`}
     >
-      <SpecialCardsRow cards={specialCards} />
-      <Flex mt={{ base: 0, sm: 1 }} mx={1} justifyContent="space-between">
-        <Box>
-          {!inStore && (
-            <Text size={{ base: "l", sm: "m" }}>
-              {t("game.special-cards.special-cards-label")}
-            </Text>
-          )}
-        </Box>
+      {specialsEnabled ? (
+        <SpecialCardsRow cards={specialCards} />
+      ) : (
+        <RageCards />
+      )}
+      <Flex
+        border={`1px solid ${GREY_LINE}`}
+        borderRadius={["12px", "20px"]}
+        height={["60px", "110px"]}
+        flexDir="column"
+        justifyContent="center"
+        gap={2}
+        alignItems="center"
+        width={["28px", "50px"]}
+        position="absolute"
+        right={["-15px", "-25px"]}
+        backgroundColor="backgroundBlue"
+      >
+        <Tooltip label={t("specials-box.specials-tooltip")}>
+          <CachedImage
+            cursor="pointer"
+            src={`specials-box/special-icon-${specialsEnabled ? "on" : "off"}.png`}
+            height={{ base: 5, sm: 8, md: 10 }}
+            onClick={() => setSpecialsEnabled(!specialsEnabled)}
+          />
+        </Tooltip>
+        <Tooltip label={t("specials-box.rage-tooltip")}>
+          <CachedImage
+            cursor="pointer"
+            src={`specials-box/rage-icon-${specialsEnabled ? "off" : "on"}.png`}
+            height={{ base: 5, sm: 8, md: 10 }}
+            onClick={() => setSpecialsEnabled(!specialsEnabled)}
+          />
+        </Tooltip>
       </Flex>
       {confirmationModalOpen && (
         <ConfirmationModal
@@ -65,23 +90,6 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
           }}
         />
       )}
-      {inStore && (
-        <Flex mt={4} justifyContent="flex-end">
-          <Button
-            variant={preselectedCard === undefined ? "defaultOutline" : "solid"}
-            isDisabled={preselectedCard === undefined}
-            width={{ base: "100%", md: "30%" }}
-            fontSize={12}
-            onClick={() => {
-              {
-                setConfirmationModalOpen(true);
-              }
-            }}
-          >
-            {t("game.special-cards.remove-special-cards-label")}
-          </Button>
-        </Flex>
-      )}
-    </Box>
+    </Flex>
   );
 };

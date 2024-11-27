@@ -73,7 +73,7 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
     <Flex
       width="100%"
       height={`${cardHeight}px`}
-      gap={{ base: 2, sm: 3 }}
+      gap={{ base: '8px', sm: '14px' }}
       alignItems={"center"}
       justifyContent={"center"}
     >

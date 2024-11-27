@@ -1,9 +1,11 @@
 import { buttonTheme } from "./button";
 import {
+  BACKGROUND_BLUE,
   BLUE,
   BLUE_LIGHT,
   CLUBS,
   DIAMONDS,
+  GREY_LINE,
   HEARTS,
   NEON,
   NEON_GREEN,
@@ -24,6 +26,7 @@ export default {
   colors: {
     blue: BLUE,
     blueLight: BLUE_LIGHT,
+    greyLine: GREY_LINE,
     violet: VIOLET,
     neonGreen: NEON_GREEN,
     opaqueNeonGreen: "#2fcdd7",
@@ -34,6 +37,7 @@ export default {
     purple: "#9940aa",
     white: "white",
     pastelPink: PASTEL_PINK,
+    backgroundBlue: BACKGROUND_BLUE,
     // suits - accessible through colors[Suits.CLUBS]
     1: CLUBS,
     2: DIAMONDS,

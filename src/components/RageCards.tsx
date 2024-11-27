@@ -1,4 +1,5 @@
-import { Box, Flex, Text, useTheme } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import {
   CARD_HEIGHT,
   CARD_WIDTH
@@ -9,18 +10,17 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { TiltCard } from "./TiltCard";
 
 export const RageCards = () => {
-  const { colors } = useTheme();
+  const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
   const { rageCards } = useGameContext();
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const { highlightCard } = useCardHighlight();
 
   return (
     <Box
-      boxShadow={`0px 28px 20px -27px ${colors.neonPink}`}
-      ml={1}
-      width={`${rageCards.length === 1 ? CARD_WIDTH * cardScale : CARD_WIDTH * cardScale * 1.5}px`}
+      width={'100%'}
     >
-      <Flex height={`${(CARD_HEIGHT + 8) * cardScale}px`}>
+      <Flex height={`${(CARD_HEIGHT) * cardScale}px`} justifyContent={"center"} alignItems={"center"}>
+        {!rageCards.length && <Text mx={6} size='l'>{t('no-cards')}</Text>}
         {rageCards.map((card, index) => {
           return (
             <Flex
@@ -42,11 +42,6 @@ export const RageCards = () => {
             </Flex>
           );
         })}
-      </Flex>
-      <Flex justifyContent="center" mt={1}>
-        <Text size={{ base: "l", sm: "m" }}>
-          Rage {!isSmallScreen && "cards"}
-        </Text>
       </Flex>
     </Box>
   );

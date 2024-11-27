@@ -134,5 +134,12 @@
       "level": "NIVEL",
       "head": "MANO MEJORADA"
     }
+  },
+  "rage-cards": {
+    "no-cards": "En los rondas de rage, verás las cartas de rage aquí"
+  },
+  "specials-box": {
+    "specials-tooltip": "Mostrar cartas especiales",
+    "rage-tooltip": "Mostrar cartas rage"
   }
 }
