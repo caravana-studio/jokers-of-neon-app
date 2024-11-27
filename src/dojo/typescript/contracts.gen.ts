@@ -183,20 +183,13 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const shop_system_getShopItems = async (
-    snAccount: Account,
-    gameId: number
-  ) => {
+  const shop_system_getShopItems = async (gameId: number) => {
     try {
-      return await provider.execute(
-        snAccount,
-        {
-          contractName: "shop_system",
-          entrypoint: "get_shop_items",
-          calldata: [gameId],
-        },
-        "jokers_of_neon"
-      );
+      return await provider.call("jokers_of_neon", {
+        contractName: "shop_system",
+        entrypoint: "get_shop_items",
+        calldata: [gameId],
+      });
     } catch (error) {
       console.error(error);
     }
