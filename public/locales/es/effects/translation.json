@@ -48,6 +48,10 @@
     "611": {
       "name": "Cambiar a Picas",
       "description": "La carta modificada será considerada como una carta de Picas"
+    },
+    "612": {
+      "name": "Cambiar a Neón",
+      "description": "La carta modificada será considerada como una carta de Neón"
     }
   },
   "specialCardsData": {

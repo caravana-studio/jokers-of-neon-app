@@ -54,6 +54,10 @@ const loadTranslations = async () => {
     611: {
       name: i18n.t('modifierCardsData.611.name', {ns:'effects'}),
       description: i18n.t('modifierCardsData.611.description', {ns:'effects'}),
+    },
+    612: {
+      name: i18n.t('modifierCardsData.612.name', {ns:'effects'}),
+      description: i18n.t('modifierCardsData.612.description', {ns:'effects'}),
     }
   });
 }
