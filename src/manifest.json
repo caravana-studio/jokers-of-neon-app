@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x54eb169a59f3bb63cbe623c54e7f4fe1ceb42dd1ef47c7435d7bbbe1cc5a9e8",
-      "class_hash": "0x4dae1703b550533879c4fde12006a5b861b1088d9bbce311ebd1f53963115ba",
+      "address": "0x6f1cfd20b5b44ba56e4c6ffcae84bf6165278ced205a0e7030e6787d2badb30",
+      "class_hash": "0x7ba8482014e0eebd24b06e9b6546c236a13845f60d3d7156fe444091a47a46b",
       "abi": [
         {
           "type": "impl",
@@ -1876,7 +1876,9 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "selector": "0x25bae3ed99b9282d147b178067335cf2d607ff13acbd09c62fa525c14bb8869",
-      "systems": ["upgrade"]
+      "systems": [
+        "upgrade"
+      ]
     },
     {
       "address": "0x6ed5f7c87c0f058625093ba927dfc1fb6c4f9fad686b19c3a220ca2cb5a775f",
@@ -2073,11 +2075,14 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "selector": "0x601fc835e0c1478502e4787b6200cb5074b02e3545bcfab9ef100c7f4071da3",
-      "systems": ["calculate", "upgrade"]
+      "systems": [
+        "calculate",
+        "upgrade"
+      ]
     },
     {
-      "address": "0x7ccb25aa257a49cf74828ddaee5a36b605dc4df20d2687e2217efe6f17ab4b7",
-      "class_hash": "0x6c503cb9ad367f8260b518c5c18b3ac8879f8c47b5444a5c06aed9f082dcfe7",
+      "address": "0x11e218c11e41b29ae5009618fc6207fba4fa3658b86ea3c1a95c1ab99979d41",
+      "class_hash": "0x6ed50848cebf295b06d071a76743da03a2ddc886c44ff4c45079904aa8ac5f",
       "abi": [
         {
           "type": "impl",
@@ -2554,6 +2559,22 @@
             },
             {
               "type": "function",
+              "name": "buy_burn_item",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "card_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "reroll",
               "inputs": [
                 {
@@ -2708,6 +2729,7 @@
         "buy_blister_pack_item",
         "select_cards_from_blister",
         "buy_slot_special_card_item",
+        "buy_burn_item",
         "reroll",
         "upgrade"
       ]
@@ -2725,6 +2747,12 @@
       "class_hash": "0x8d122ef3ffee44a21683902a2a5884f9038fc6cc55dceb3873be868664f49d",
       "tag": "jokers_of_neon-BlisterPackResult",
       "selector": "0x2fcefd2cfca755872ec12d9bea5df012804c7a3e6a57efcbc10dc6ea091409b"
+    },
+    {
+      "members": [],
+      "class_hash": "0x3069f3376301b18f07ad9b3b457d4b8e2a97e30414edb1a5860beaae8077c5f",
+      "tag": "jokers_of_neon-BurnItem",
+      "selector": "0x7244bc60b3d23349d354e88967ad5da52093101d2f4e9a989824e65ca40aa45"
     },
     {
       "members": [],
@@ -2791,6 +2819,12 @@
       "class_hash": "0x1d96ee34520a61b15dbd42ef9a57cd89289d70a11d2e1725babd6187c2b832",
       "tag": "jokers_of_neon-Shop",
       "selector": "0x283e17f669eaa763aba87677ee6b3893d6bbf691b580f4ad12a0269eaf6a122"
+    },
+    {
+      "members": [],
+      "class_hash": "0x4e01125d3b2449118d1993b75378bb7cb0c874d9c86124657d8cd754fe528e5",
+      "tag": "jokers_of_neon-ShopTracker",
+      "selector": "0x6e4848f71372eaebee40b883b00d0138fecfcc69a6fcebd2637f1008b638b9c"
     },
     {
       "members": [],
@@ -2880,7 +2914,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x68a116dc6207ed80aca28e104cd95065026035e40f1f039dde190e2b266c40",
+      "class_hash": "0x39d5c225a0bfb478476b5691df2619d6aa88778d40c485deb963ff9f08b2d3a",
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
       "selector": "0x3733fa1c9c63d3af302e7c3a1c91154d2c5af0f8d3739491f4e615911053034"
     },
@@ -2889,6 +2923,12 @@
       "class_hash": "0x54633d64006d79d8582b8b9ecca6e3cfc4ff47289aa541153e7548d54ec859d",
       "tag": "jokers_of_neon-ModifierNeonCardEvent",
       "selector": "0x636e9180ae4a052965fb1eda914ec23faa1ac7034b3ca6839d7ca415ce64a15"
+    },
+    {
+      "members": [],
+      "class_hash": "0x3f9bb6c7398f8791b292c361496e8df0057bf6796d7f21830dfd148fe21d41c",
+      "tag": "jokers_of_neon-ModifierWildCardEvent",
+      "selector": "0x2ca6ea6f0913020e601084e092b7a046f1c13b06d6e983360dc3a358353b80a"
     },
     {
       "members": [],
@@ -2958,9 +2998,15 @@
     },
     {
       "members": [],
-      "class_hash": "0x136c1d36892be4a58bbb9b447f279bcd3ebe3343c0468e3174b1a556d9b124",
+      "class_hash": "0x7c6537328c9aaab016ccd412fdc2936fe5b1f21ce465d32b15dc4ae3cf47d01",
       "tag": "jokers_of_neon-SpecialModifierSuitEvent",
       "selector": "0x527fb75612a6244c5ede2d47f6086f1daf18d2fa21fb4df0936200553aaf645"
+    },
+    {
+      "members": [],
+      "class_hash": "0x24dc1709f221d54428bca8a73fb7e62d3292330c348eaf98b5e2912445a8405",
+      "tag": "jokers_of_neon-SpecialNeonCardEvent",
+      "selector": "0x363d62728ef030532b449f38538eb1206d2ffb85da3b8e0d85687232cac1b08"
     },
     {
       "members": [],
