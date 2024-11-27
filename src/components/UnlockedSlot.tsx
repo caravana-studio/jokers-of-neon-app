@@ -2,11 +2,11 @@ import { Box } from "@chakra-ui/react";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import CachedImage from "./CachedImage.tsx";
 
-interface IUnlockedSlotProps {
+interface IFilledUnlockedSlotProps {
   scale?: number;
 }
 
-export const FilledUnlockedSlot = ({ scale = 1 }: IUnlockedSlotProps) => {
+export const FilledUnlockedSlot = ({ scale = 1 }: IFilledUnlockedSlotProps) => {
   return (
     <CachedImage
       src="/store/unlocked-slot.png"
@@ -18,7 +18,15 @@ export const FilledUnlockedSlot = ({ scale = 1 }: IUnlockedSlotProps) => {
   );
 };
 
-export const UnlockedSlot = ({ scale = 1 }: IUnlockedSlotProps) => {
+interface IUnlockedSlotProps {
+  scale?: number;
+  backgroundColor?: string;
+}
+
+export const UnlockedSlot = ({
+  scale = 1,
+  backgroundColor,
+}: IUnlockedSlotProps) => {
   return (
     <Box
       width={`${CARD_WIDTH * scale}`}
@@ -27,6 +35,7 @@ export const UnlockedSlot = ({ scale = 1 }: IUnlockedSlotProps) => {
       border={"1px solid white"}
       borderRadius={{ base: "10px", sm: "15px" }}
       boxShadow={`0px 0px 2px 1px white, 0px 0px 2px 1px white inset`}
+      backgroundColor={backgroundColor ?? "transparent"}
     ></Box>
   );
 };

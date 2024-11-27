@@ -12,7 +12,7 @@ import { AnimatedCard } from "./AnimatedCard.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
 import { TiltCard } from "./TiltCard.tsx";
-import { FilledUnlockedSlot } from "./UnlockedSlot.tsx";
+import { FilledUnlockedSlot, UnlockedSlot } from "./UnlockedSlot.tsx";
 
 interface SpecialCardsRowProps {
   cards: Card[];
@@ -20,7 +20,7 @@ interface SpecialCardsRowProps {
 
 export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
-  const { discardSpecialCard, roundRewards } = useGameContext();
+  const { discardSpecialCard, roundRewards, isRageRound } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
@@ -149,10 +149,18 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
       })}
       {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
         <Flex key={`unlocked-slot-${index}`} maxWidth={`${slotWidth}%`}>
-          <FilledUnlockedSlot
-            key={`unlocked-${index}`}
-            scale={specialCardScale - specialCardScale * 0.1}
-          />
+          {isRageRound ? (
+            <UnlockedSlot
+              key={`unlocked-${index}`}
+              scale={specialCardScale - specialCardScale * 0.1}
+              backgroundColor="black"
+            />
+          ) : (
+            <FilledUnlockedSlot
+              key={`unlocked-${index}`}
+              scale={specialCardScale - specialCardScale * 0.1}
+            />
+          )}
         </Flex>
       ))}
       {Array.from({ length: lockedSlots }).map((_, index) => (
@@ -160,6 +168,8 @@ export const SpecialCardsRow = ({ cards }: SpecialCardsRowProps) => {
           <LockedSlot
             key={`locked-${index}`}
             scale={specialCardScale - specialCardScale * 0.1}
+            backgroundColor={isRageRound ? "black" : "transparent"}
+            borderRadius={isSmallScreen ? "0px" : "10%"}
           />
         </Flex>
       ))}
