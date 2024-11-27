@@ -167,6 +167,26 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
+  const shop_system_buyBurnItem = async (
+    snAccount: Account,
+    gameId: number,
+    cardId: number
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        {
+          contractName: "shop_system",
+          entrypoint: "buy_burn_item",
+          calldata: [gameId, cardId],
+        },
+        "jokers_of_neon"
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const shop_system_reroll = async (snAccount: Account, gameId: number) => {
     try {
       return await provider.execute(
@@ -332,6 +352,7 @@ export async function setupWorld(provider: DojoProvider) {
       buyBlisterPackItem: shop_system_buyBlisterPackItem,
       selectCardsFromBlister: shop_system_selectCardsFromBlister,
       buySlotSpecialCardItem: shop_system_buySlotSpecialCardItem,
+      buyBurnItem: shop_system_buyBurnItem,
       reroll: shop_system_reroll,
       getShopItems: shop_system_getShopItems,
     },

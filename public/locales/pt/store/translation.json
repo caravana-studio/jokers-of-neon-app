@@ -73,6 +73,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloqueie um novo slot para cartas especiais"
+    },
+    "burn-item": {
+      "tooltip": "Remove uma carta do seu baralho"
     }
   }
 }

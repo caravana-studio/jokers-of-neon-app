@@ -1,7 +1,10 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
-import { EMPTY_SPECIAL_SLOT_ITEM } from "../dojo/queries/getShopItems.ts";
+import {
+  EMPTY_BURN_ITEM,
+  EMPTY_SPECIAL_SLOT_ITEM,
+} from "../dojo/queries/getShopItems.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
@@ -63,7 +66,7 @@ const StoreContext = createContext<IStoreContext>({
   pokerHandItems: [],
   packs: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
-
+  burnItem: EMPTY_BURN_ITEM,
   rerollInformation: {
     rerollCost: 100,
     rerollExecuted: true,
@@ -262,6 +265,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         pokerHandItems: shopItems.pokerHandItems,
         packs: shopItems.packs,
         specialSlotItem: shopItems.specialSlotItem,
+        burnItem: shopItems.burnItem,
         rerollInformation,
         cash,
         run,

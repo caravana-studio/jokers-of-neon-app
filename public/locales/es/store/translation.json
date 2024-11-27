@@ -73,6 +73,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
+    },
+    "burn-item": {
+      "tooltip": "Elimina una carta de tu mazo"
     }
   }
 }

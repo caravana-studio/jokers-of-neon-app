@@ -4,9 +4,16 @@ import {
   CardItemType,
   PokerHand,
   SlotSpecialCardsItem,
+  BurnItem,
 } from "../typescript/models.gen";
 
 export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
+  game_id: 0,
+  cost: 0,
+  purchased: true,
+};
+
+export const EMPTY_BURN_ITEM: BurnItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
@@ -102,6 +109,12 @@ export const getShopItems = async (client: any, gameId: number) => {
         rerollExecuted: tx_result[5].reroll_executed,
       };
 
+      const burnItem = {
+        game_id: parseInt(tx_result[7].game_id),
+        cost: parseInt(tx_result[7].cost),
+        purchased: tx_result[7].purchased,
+      };
+
       return {
         specialCards,
         modifierCards,
@@ -111,6 +124,7 @@ export const getShopItems = async (client: any, gameId: number) => {
         specialSlotItem,
         rerollInformation,
         cash: parseInt(tx_result[6]),
+        burnItem,
       };
     } catch (e) {
       console.log(e);
@@ -127,6 +141,7 @@ export const getShopItems = async (client: any, gameId: number) => {
         rerollExecuted: true,
       },
       cash: 0,
+      burnItem: EMPTY_BURN_ITEM,
     };
   }
 };

@@ -11,6 +11,7 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { BurnItem } from "./burnItem.tsx";
 
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards } = useStore();
@@ -105,17 +106,12 @@ export const StoreContent = () => {
             pr={"2%"}
           >
             <>
-              <NextLevelButton
-                isSmallScreen={false}
-              />
+              <NextLevelButton isSmallScreen={false} />
               <SpecialSlotItem />
+              <BurnItem />
               <Flex flexDirection="column" gap={14}>
-                <RerollButton
-                  isSmallScreen={false}
-                />
-                <SpecialsButton
-                  isSmallScreen={false}
-                />
+                <RerollButton isSmallScreen={false} />
+                <SpecialsButton isSmallScreen={false} />
                 <Coins rolling />
               </Flex>
             </>
