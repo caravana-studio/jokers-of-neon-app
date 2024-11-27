@@ -1,8 +1,5 @@
-import {
-  Component,
-  Entity,
-  getComponentValue
-} from "@dojoengine/recs";
+import { useComponentValue } from "@dojoengine/react";
+import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { SortBy } from "../../enums/sortBy";
 import { Card } from "../../types/Card";
@@ -21,34 +18,30 @@ export const getCard = (gameId: number, index: number, entity: Component) => {
 export const useCurrentHand = (sortBy: SortBy) => {
   const {
     setup: {
-      clientComponents: { CurrentHandCard },
+      clientComponents: { CurrentHand },
     },
   } = useDojo();
 
   const game = useGame();
-
+  const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+  const currentHand = useComponentValue(CurrentHand, entityId);
   if (!game) return [];
+  
+  const dojoCards = currentHand?.cards ?? [];
 
-  const handSize = game.len_hand;
-  const dojoCards = [];
-
-  for (let i = 0; i < handSize; i++) {
-    dojoCards.push(getCard(game.id ?? 0, i, CurrentHandCard));
-  }
-
-  const cards: Card[] = dojoCards
-    // filter out null cards (represented by card_id 9999)
-    .filter((card) => card?.card_id !== 9999)
-    .map((dojoCard) => {
-      return {
-        ...dojoCard,
-        img: `${dojoCard?.card_id}.png`,
-        isModifier: dojoCard?.card_id >= 600 && dojoCard?.card_id <= 700,
-        idx: dojoCard?.idx,
-        id: dojoCard?.idx.toString(),
-      };
-    });
+  const cards: Card[] = dojoCards.map((card: any, index) => {
+    const card_id = card.value;
+    return {
+      card_id,
+      img: `${card_id}.png`,
+      isModifier: card_id >= 600 && card_id <= 700,
+      idx: index,
+      id: index.toString(),
+    };
+  });
 
   const sortedCards = sortCards(cards, sortBy);
   return sortedCards;
 };
+
+
