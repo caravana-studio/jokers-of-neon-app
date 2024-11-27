@@ -10,7 +10,7 @@ import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { RageCards } from "./RageCards.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { CARD_WIDTH } from "../constants/visualProps.ts";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 
 export const SpecialCards = () => {
   const game = useGame();
@@ -23,7 +23,7 @@ export const SpecialCards = () => {
   const [specialsEnabled, setSpecialsEnabled] = useState(true);
   const { specialCardScale, isSmallScreen } = useResponsiveValues();
   const cardWidth = CARD_WIDTH * specialCardScale;
-  console.log('cardWidth * 5 + (isSmallScreen ? 32 : 49) ', cardWidth * 5 + (isSmallScreen ? 32 : 49) )
+  const cardHeight = CARD_HEIGHT * specialCardScale;
   
   return (
     <Flex
@@ -37,6 +37,7 @@ export const SpecialCards = () => {
       alignItems="center"
       position="relative"
       width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49) }px`}
+      height={`${cardHeight + (isSmallScreen ? 10 : 16)}px`}
     >
       {specialsEnabled ? (
         <SpecialCardsRow cards={specialCards} />
