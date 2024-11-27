@@ -104,15 +104,15 @@ export const getShopItems = async (client: any, gameId: number) => {
         purchased: tx_result[4].purchased,
       };
 
-      const rerollInformation = {
-        rerollCost: parseInt(tx_result[5].reroll_cost),
-        rerollExecuted: tx_result[5].reroll_executed,
+      const burnItem = {
+        game_id: parseInt(tx_result[5].game_id),
+        cost: parseInt(tx_result[5].cost),
+        purchased: tx_result[5].purchased,
       };
 
-      const burnItem = {
-        game_id: parseInt(tx_result[7].game_id),
-        cost: parseInt(tx_result[7].cost),
-        purchased: tx_result[7].purchased,
+      const rerollInformation = {
+        rerollCost: parseInt(tx_result[6].reroll_cost),
+        rerollExecuted: tx_result[6].reroll_executed,
       };
 
       return {
@@ -123,7 +123,7 @@ export const getShopItems = async (client: any, gameId: number) => {
         packs,
         specialSlotItem,
         rerollInformation,
-        cash: parseInt(tx_result[6]),
+        cash: parseInt(tx_result[7]),
         burnItem,
       };
     } catch (e) {
