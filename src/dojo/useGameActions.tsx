@@ -14,6 +14,7 @@ import {
 import { useDojo } from "./useDojo";
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 import { getCashEvents } from "../utils/playEvents/getCashEvents";
+import { getLevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -96,6 +97,7 @@ export const useGameActions = () => {
             (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
           ),
           cashEvent: getCashEvents(tx.events),
+          levelUpHandEvent: getLevelUpPlayEvent(tx.events),
         };
       } else {
         return {

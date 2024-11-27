@@ -89,6 +89,8 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   setSfxOn: (sfxOn: boolean) => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
+  levelUpHand: undefined,
+  setLevelUpHand: () => {},
 });
 
 export let handsLeftTutorial = 1;

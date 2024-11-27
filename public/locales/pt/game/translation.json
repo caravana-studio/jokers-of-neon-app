@@ -128,5 +128,11 @@
       "fast": "Rápido",
       "fastest": "Mais rápido"
     }
+  },
+  "animations": {
+    "labels": {
+      "level": "NÍVEL",
+      "head": "MÃO APRIMORADA"
+    }
   }
 }
