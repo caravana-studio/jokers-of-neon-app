@@ -9,11 +9,12 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
+import { useNavigate } from "react-router-dom";
+import { GameDeckMobile } from "../../components/GameDeck.mobile.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import { ShowPlays } from "../../components/ShowPlays.tsx";
-import { SortBy } from "../../components/SortBy.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -26,14 +27,12 @@ import {
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { isTutorial } from "../../utils/isTutorial.ts";
-import { useNavigate } from "react-router-dom";
-import { GameDeckMobile } from "../../components/GameDeck.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -245,7 +244,10 @@ export const MobileGameContent = () => {
             >
               <MobilePreselectedCardsSection />
             </Box>
-            <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
+            <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
+                  <HandSection />
+                </Box>
+            <Flex width="90%" mx={4} justifyContent={"space-between"}>
               <DiscardButton
                 highlight={run}
                 onTutorialCardClick={() => {
@@ -274,9 +276,7 @@ export const MobileGameContent = () => {
               width={"100%"}
             >
               <Box width={"100%"}>
-                <Box pb={2} display={"flex"} justifyContent={"center"}>
-                  <HandSection />
-                </Box>
+
                 <Box
                   position={"absolute"}
                   left={0}
@@ -289,7 +289,6 @@ export const MobileGameContent = () => {
                   px={18}
                   gap={4}
                 >
-                  <SortBy />
                   <ShowPlays />
                   <GameDeckMobile />
                 </Box>

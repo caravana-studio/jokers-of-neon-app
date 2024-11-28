@@ -1,29 +1,15 @@
-import { Flex, Tooltip } from "@chakra-ui/react";
+import { Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../providers/GameProvider";
-import { GREY_LINE } from "../theme/colors";
 import CachedImage from "./CachedImage";
+import { CardContainerSwitcher } from "./CardContainerWithBorder";
 
 export const SpecialRageSwitcher = () => {
   const { t } = useTranslation(["game"]);
 
-  const { isRageRound, specialSwitcherOn, toggleSpecialSwitcher } =
-    useGameContext();
+  const { specialSwitcherOn, toggleSpecialSwitcher } = useGameContext();
   return (
-    <Flex
-      border={`1px solid ${GREY_LINE}`}
-      borderRadius={["12px", "20px"]}
-      height={["60px", "110px"]}
-      flexDir="column"
-      justifyContent="center"
-      gap={2}
-      alignItems="center"
-      width={["28px", "50px"]}
-      position="absolute"
-      right={["-15px", "-25px"]}
-      backgroundColor={isRageRound ? "black" : "backgroundBlue"}
-      zIndex={10}
-    >
+    <CardContainerSwitcher>
       <Tooltip placement="right" label={t("specials-box.specials-tooltip")}>
         <CachedImage
           cursor="pointer"
@@ -40,6 +26,6 @@ export const SpecialRageSwitcher = () => {
           onClick={() => toggleSpecialSwitcher()}
         />
       </Tooltip>
-    </Flex>
+    </CardContainerSwitcher>
   );
 };
