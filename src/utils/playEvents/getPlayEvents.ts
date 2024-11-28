@@ -7,6 +7,7 @@ import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
 import { getGlobalEvents } from "./getGlobalEvents";
 import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
+import { getModifierNeonEvents } from "./getModifierNeonEvents";
 import { getModifierSuitEvents } from "./getModifierSuitEvents";
 import { getMultiPointEvents } from "./getMultiPointEvents";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
@@ -16,6 +17,7 @@ import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
+
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     cardScore: getTraditionalCardsEvents(events),
@@ -32,6 +34,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     score: getScoreEvent(events),
     cashEvents: getCashEvents(events),
     secondChanceEvent: !!events.find((event) => event.keys[1] === SECOND_CHANCE_EVENT),
+    modifierNeonEvents: getModifierNeonEvents(events),
   };
 
   return playEvents;
