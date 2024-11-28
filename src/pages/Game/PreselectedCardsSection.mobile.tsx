@@ -38,7 +38,7 @@ export const MobilePreselectedCardsSection = () => {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  const cardWidth = (boxWidth - 120) / 5;
+  const cardWidth = (boxWidth - 100) / 5;
   const cardScale = cardWidth / CARD_WIDTH;
   const cardHeight = cardScale * CARD_HEIGHT;
 
@@ -76,7 +76,7 @@ export const MobilePreselectedCardsSection = () => {
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
-                <Box key={card.id} mx={3.5} width={`${cardWidth}px`}>
+                <Box key={card.id} mx={3} width={`${cardWidth}px`}>
                   <ModifiableCard id={card.id}>
                     <AnimatedCard
                       idx={card.idx}
