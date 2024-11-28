@@ -101,14 +101,16 @@ export const StoreContent = () => {
             w={"20%"}
             h={"100%"}
             justifyContent={"space-between"}
-            gap={10}
             px={0}
             pr={"2%"}
           >
             <>
               <NextLevelButton isSmallScreen={false} />
-              <SpecialSlotItem />
-              <BurnItem />
+              <Flex flexDirection={"row"} gap={10}>
+                <SpecialSlotItem />
+                <BurnItem />
+              </Flex>
+
               <Flex flexDirection="column" gap={14}>
                 <RerollButton isSmallScreen={false} />
                 <SpecialsButton isSmallScreen={false} />

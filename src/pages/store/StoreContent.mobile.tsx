@@ -98,10 +98,10 @@ export const StoreContentMobile = () => {
               )}
             </Box>
           </Box>
-          <Box mb={3} mx={4}>
+          <Flex mb={3} mx={4} flexDir={"row"} gap={5}>
             <SpecialSlotItem />
             <BurnItem />
-          </Box>
+          </Flex>
           <Box
             className="game-tutorial-step-2"
             width={{ base: "95%", sm: "75%" }}
