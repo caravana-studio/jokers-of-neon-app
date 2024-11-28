@@ -1,9 +1,11 @@
+import { LOOT_BOXES_DATA } from "../data/lootBoxes";
+
 const CACHE_NAME = "spine-assets";
 
 export const preloadSpineAnimations = async (
-  ids: number[] = Array.from({ length: 10 }, (_, i) => i + 1), // Default to 1-10
   basePath: string = "/spine-animations/"
 ): Promise<void> => {
+  const ids = Object.keys(LOOT_BOXES_DATA).map(Number);
   try {
     const cache = await caches.open(CACHE_NAME);
 
@@ -21,17 +23,13 @@ export const preloadSpineAnimations = async (
         const response = await fetch(url, { cache: "reload" });
         if (response.ok) {
           await cache.put(url, response.clone());
-          console.log(`Preloaded ${url}`);
         } else {
           console.warn(`Failed to preload ${url}`);
         }
-      } else {
-        console.log(`Cache hit for ${url}`);
       }
     });
 
     await Promise.all(cachePromises);
-    console.log("All animations preloaded.");
   } catch (error) {
     console.error("Error preloading spine animations", error);
   }

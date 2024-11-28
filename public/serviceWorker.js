@@ -9,12 +9,9 @@ self.addEventListener("fetch", (event) => {
       caches.open(CACHE_NAME).then((cache) =>
         cache.match(event.request).then((cachedResponse) => {
           if (cachedResponse) {
-            console.log(`Serving cached ${url}`);
             return cachedResponse;
           }
 
-          // Fetch from network if not in cache
-          console.log(`Fetching ${url} from network`);
           return fetch(event.request).then((networkResponse) => {
             if (networkResponse.ok) {
               cache.put(event.request, networkResponse.clone());
