@@ -5,7 +5,6 @@ import {
   HStack,
   Heading,
   Text,
-  keyframes,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -51,11 +50,6 @@ export const StorePreviewComponent = ({
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
-
-  const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
 
   return (
     <Background type="home" dark scrollOnMobile>
@@ -260,7 +254,7 @@ export const StorePreviewComponent = ({
           bottom="0"
           backgroundColor="white"
           zIndex="9999"
-          animation={`${fadeIn} 0.5s ease-out`}
+          // animation={`${fadeIn} 0.5s ease-out`}
         />
       )}
       <PositionedDiscordLink />
