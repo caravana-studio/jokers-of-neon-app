@@ -20,10 +20,15 @@ import { checkHand } from "../utils/checkHand";
 import {
   C5,
   C7,
+  CA,
+  CJ,
+  CK,
   CQ,
+  D2,
   D5,
+  H10,
   H3,
-  H7
+  H7,
 } from "../utils/mocks/cardMocks";
 import { ClubModifier } from "../utils/mocks/modifierMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
@@ -32,8 +37,15 @@ import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 
-export const mockTutorialGameContext =
-  createContext<IGameContext>(gameProviderDefaults);
+export const mockTutorialGameContext = createContext<IGameContext>({
+  ...gameProviderDefaults,
+  gameId: 1,
+  hand: [D2, H3, D5, H7, H10, CJ, CK, CA],
+  score: 300,
+  cash: 1000,
+  discards: 1,
+  sfxVolume: 100,
+});
 
 export let handsLeftTutorial = 1;
 let context: IGameContext;
