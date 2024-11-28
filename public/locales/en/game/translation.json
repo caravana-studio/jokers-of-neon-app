@@ -139,7 +139,7 @@
     "no-cards": "On rage rounds, you will see the rage cards here"
   },
   "specials-box": {
-    "specials-tooltip": "Show special cards",
-    "rage-tooltip": "Show rage cards"
+    "specials-tooltip": "Special cards",
+    "rage-tooltip": "Rage cards"
   }
 }

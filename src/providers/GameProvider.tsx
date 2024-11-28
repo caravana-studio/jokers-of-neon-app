@@ -8,10 +8,10 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
-  SKIP_IN_GAME_TUTORIAL,
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
+  SKIP_IN_GAME_TUTORIAL,
   SORT_BY_SUIT,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
@@ -38,10 +38,9 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { isTutorial } from "../utils/isTutorial.ts";
-import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -98,6 +97,10 @@ export interface IGameContext {
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
   setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
+  specialSwitcherOn: boolean;
+  toggleSpecialSwitcher: () => void;
+  showRages: () => void;
+  showSpecials: () => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -156,6 +159,10 @@ const GameContext = createContext<IGameContext>({
   setDestroyedSpecialCardId: () => {},
   levelUpHand: undefined,
   setLevelUpHand: () => {},
+  specialSwitcherOn: true,
+  toggleSpecialSwitcher: () => {},
+  showRages: () => {},
+  showSpecials: () => {},
 });
 
 export const useGameContext = () => {
@@ -233,8 +240,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     score,
     cash,
     setLockedCash,
+    isRageRound,
     setIsRageRound,
     rageCards,
+    showSpecials,
+    showRages,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -247,6 +257,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
     setIsRageRound(false);
+    showSpecials();
   };
 
   const toggleSortBy = () => {
@@ -303,6 +314,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      showSpecials();
       console.log(playEvents);
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
@@ -561,6 +573,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           playEvents.cards && replaceCards(playEvents.cards);
           setRoundRewards(undefined);
           setLockRedirection(false);
+          if (isRageRound) {
+            showRages();
+          }
         }
       }, ALL_CARDS_DURATION + 500);
     }

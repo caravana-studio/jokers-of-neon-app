@@ -139,7 +139,7 @@
     "no-cards": "Em rondas de rage, você verá as cartas de rage aqui"
   },
   "specials-box": {
-    "specials-tooltip": "Mostrar cartas especiais",
-    "rage-tooltip": "Mostrar cartas de rage"
+    "specials-tooltip": "Cartas especiais",
+    "rage-tooltip": "Cartas de rage"
   }
 }

@@ -31,7 +31,7 @@ export const useRageCards = () => {
       isSpecial: false,
       id: card_id?.toString(),
       idx: index ?? 0,
-      img: `rage/${card_id}.png`,
+      img: `${card_id}.png`,
     };
   });
 

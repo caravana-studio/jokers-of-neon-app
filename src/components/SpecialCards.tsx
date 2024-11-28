@@ -1,79 +1,46 @@
 import { Flex, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { GREY_LINE } from "../theme/colors.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card.ts";
 import CachedImage from "./CachedImage.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { RageCards } from "./RageCards.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
-import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
 export const SpecialCards = () => {
-  const game = useGame();
   const { t } = useTranslation(["game"]);
 
-  const { discardSpecialCard, specialCards } = useGameContext();
+  const { discardSpecialCard } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [specialsEnabled, setSpecialsEnabled] = useState(true);
   const { specialCardScale, isSmallScreen } = useResponsiveValues();
   const cardWidth = CARD_WIDTH * specialCardScale;
   const cardHeight = CARD_HEIGHT * specialCardScale;
-  
+  const { specialSwitcherOn } = useGameContext();
+
   return (
     <Flex
       className="special-cards-step-3"
       border={`1px solid ${GREY_LINE}`}
-      pl={2.5}
-      pr={['25px', '35px']}
+      pl={[2.5, 4]}
+      pr={["15px", "35px"]}
       py={[1, 2]}
       borderRadius={["12px", "20px"]}
       justifyContent="center"
       alignItems="center"
       position="relative"
-      width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49) }px`}
+      width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49)}px`}
       height={`${cardHeight + (isSmallScreen ? 10 : 16)}px`}
     >
-      {specialsEnabled ? (
-        <SpecialCardsRow cards={specialCards} />
-      ) : (
-        <RageCards />
-      )}
-      <Flex
-        border={`1px solid ${GREY_LINE}`}
-        borderRadius={["12px", "20px"]}
-        height={["60px", "110px"]}
-        flexDir="column"
-        justifyContent="center"
-        gap={2}
-        alignItems="center"
-        width={["28px", "50px"]}
-        position="absolute"
-        right={["-15px", "-25px"]}
-        backgroundColor="backgroundBlue"
-      >
-        <Tooltip label={t("specials-box.specials-tooltip")}>
-          <CachedImage
-            cursor="pointer"
-            src={`specials-box/special-icon-${specialsEnabled ? "on" : "off"}.png`}
-            height={{ base: 5, sm: 8, md: 10 }}
-            onClick={() => setSpecialsEnabled(!specialsEnabled)}
-          />
-        </Tooltip>
-        <Tooltip label={t("specials-box.rage-tooltip")}>
-          <CachedImage
-            cursor="pointer"
-            src={`specials-box/rage-icon-${specialsEnabled ? "off" : "on"}.png`}
-            height={{ base: 5, sm: 8, md: 10 }}
-            onClick={() => setSpecialsEnabled(!specialsEnabled)}
-          />
-        </Tooltip>
-      </Flex>
+      {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
+      <SpecialRageSwitcher />
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
