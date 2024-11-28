@@ -41,6 +41,7 @@ import { changeCardSuit } from "../utils/changeCardSuit";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { isTutorial } from "../utils/isTutorial.ts";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -95,6 +96,8 @@ export interface IGameContext {
   setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
+  levelUpHand: LevelUpPlayEvent | undefined;
+  setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
 }
 
 const GameContext = createContext<IGameContext>({
@@ -151,6 +154,8 @@ const GameContext = createContext<IGameContext>({
   setAnimationSpeed: () => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
+  levelUpHand: undefined,
+  setLevelUpHand: () => {},
 });
 
 export const useGameContext = () => {
@@ -663,6 +668,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               });
             }, playAnimationDuration * index); // Stagger animations for each event
           });
+        }
+        if (response.levelUpHandEvent) {
+          state.setLevelUpHand(response.levelUpHandEvent);
         }
         if (response.gameOver) {
           setTimeout(() => {

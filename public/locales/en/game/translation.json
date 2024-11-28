@@ -116,7 +116,7 @@
     "confirm": "Confirm",
     "close": "Close"
   },
-  "points":"points",
+  "points": "points",
   "settings-modal": {
     "title": "Settings",
     "language": "Language",
@@ -127,6 +127,12 @@
       "normal": "Normal",
       "fast": "Fast",
       "fastest": "Fastest"
+    }
+  },
+  "animations": {
+    "labels": {
+      "level": "LEVEL",
+      "head": "HAND LEVELED UP"
     }
   }
 }

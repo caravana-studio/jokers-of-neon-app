@@ -3,13 +3,13 @@ import { Account } from "starknet";
 import * as models from "./models.gen";
 
 export async function setupWorld(provider: DojoProvider) {
-  const shop_system_skipShop = async (snAccount: Account, gameId: number) => {
+  const rage_system_calculate = async (snAccount: Account, gameId: number) => {
     try {
       return await provider.execute(
         snAccount,
         {
-          contractName: "shop_system",
-          entrypoint: "skip_shop",
+          contractName: "rage_system",
+          entrypoint: "calculate",
           calldata: [gameId],
         },
         "jokers_of_neon"
@@ -19,27 +19,17 @@ export async function setupWorld(provider: DojoProvider) {
     }
   };
 
-  const shop_system_buyCardItem = async (
-    snAccount: Account,
-    gameId: number,
-    itemId: number,
-    cardItemType: number
-  ) => {
+  const poker_hand_system_getPlayerPokerHands = async (gameId: number) => {
     try {
-      return await provider.execute(
-        snAccount,
-        {
-          contractName: "shop_system",
-          entrypoint: "buy_card_item",
-          calldata: [gameId, itemId, cardItemType],
-        },
-        "jokers_of_neon"
-      );
+      return await provider.call("jokers_of_neon", {
+        contractName: "poker_hand_system",
+        entrypoint: "get_player_poker_hands",
+        calldata: [gameId],
+      });
     } catch (error) {
       console.error(error);
     }
   };
-
   const shop_system_buySpecialCardItem = async (
     snAccount: Account,
     gameId: number,
@@ -73,6 +63,43 @@ export async function setupWorld(provider: DojoProvider) {
           contractName: "shop_system",
           entrypoint: "buy_poker_hand_item",
           calldata: [gameId, itemId],
+        },
+        "jokers_of_neon"
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const shop_system_skipShop = async (snAccount: Account, gameId: number) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        {
+          contractName: "shop_system",
+          entrypoint: "skip_shop",
+          calldata: [gameId],
+        },
+        "jokers_of_neon"
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const shop_system_buyCardItem = async (
+    snAccount: Account,
+    gameId: number,
+    itemId: number,
+    cardItemType: number
+  ) => {
+    try {
+      return await provider.execute(
+        snAccount,
+        {
+          contractName: "shop_system",
+          entrypoint: "buy_card_item",
+          calldata: [gameId, itemId, cardItemType],
         },
         "jokers_of_neon"
       );
@@ -163,34 +190,6 @@ export async function setupWorld(provider: DojoProvider) {
         entrypoint: "get_shop_items",
         calldata: [gameId],
       });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const poker_hand_system_getPlayerPokerHands = async (gameId: number) => {
-    try {
-      return await provider.call("jokers_of_neon", {
-        contractName: "poker_hand_system",
-        entrypoint: "get_player_poker_hands",
-        calldata: [gameId],
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const rage_system_calculate = async (snAccount: Account, gameId: number) => {
-    try {
-      return await provider.execute(
-        snAccount,
-        {
-          contractName: "rage_system",
-          entrypoint: "calculate",
-          calldata: [gameId],
-        },
-        "jokers_of_neon"
-      );
     } catch (error) {
       console.error(error);
     }
@@ -319,6 +318,12 @@ export async function setupWorld(provider: DojoProvider) {
   };
 
   return {
+    rage_system: {
+      calculate: rage_system_calculate,
+    },
+    poker_hand_system: {
+      getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
+    },
     shop_system: {
       skipShop: shop_system_skipShop,
       buyCardItem: shop_system_buyCardItem,
@@ -329,12 +334,6 @@ export async function setupWorld(provider: DojoProvider) {
       buySlotSpecialCardItem: shop_system_buySlotSpecialCardItem,
       reroll: shop_system_reroll,
       getShopItems: shop_system_getShopItems,
-    },
-    poker_hand_system: {
-      getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
-    },
-    rage_system: {
-      calculate: rage_system_calculate,
     },
     game_system: {
       createGame: game_system_createGame,
