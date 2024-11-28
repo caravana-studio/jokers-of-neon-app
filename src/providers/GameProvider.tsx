@@ -41,6 +41,7 @@ import { changeCardSuit } from "../utils/changeCardSuit";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -103,67 +104,7 @@ export interface IGameContext {
   showSpecials: () => void;
 }
 
-const GameContext = createContext<IGameContext>({
-  gameId: getLSGameId(),
-  preSelectedPlay: Plays.NONE,
-  points: 0,
-  multi: 0,
-  executeCreateGame: () => {},
-  gameLoading: false,
-  preSelectedCards: [],
-  setPreSelectedCards: (_) => {},
-  play: () => {},
-  hand: [],
-  setHand: (_) => {},
-  getModifiers: (_) => {
-    return [];
-  },
-  togglePreselected: (_) => {},
-  discardAnimation: false,
-  playAnimation: false,
-  discard: () => {},
-  discardEffectCard: () =>
-    new Promise((resolve) => resolve({ success: false, cards: [] })),
-  error: false,
-  clearPreSelection: () => {},
-  preSelectedModifiers: {},
-  addModifier: (_, __) => {},
-  roundRewards: undefined,
-  sortBy: SortBy.RANK,
-  toggleSortBy: () => {},
-  onShopSkip: () => {},
-  discardSpecialCard: () => new Promise((resolve) => resolve(false)),
-  checkOrCreateGame: () => {},
-  restartGame: () => {},
-  preSelectionLocked: false,
-  score: 0,
-  lockRedirection: false,
-  specialCards: [],
-  playIsNeon: false,
-  isRageRound: false,
-  setIsRageRound: (_) => {},
-  cash: 0,
-  setLockedCash: (_) => {},
-  rageCards: [],
-  setRageCards: (_) => {},
-  discards: 0,
-  preSelectCard: (_) => {},
-  unPreSelectCard: (_) => {},
-  sfxVolume: 1,
-  setSfxVolume: () => {},
-  sfxOn: true,
-  setSfxOn: () => {},
-  animationSpeed: Speed.NORMAL,
-  setAnimationSpeed: () => {},
-  destroyedSpecialCardId: undefined,
-  setDestroyedSpecialCardId: () => {},
-  levelUpHand: undefined,
-  setLevelUpHand: () => {},
-  specialSwitcherOn: true,
-  toggleSpecialSwitcher: () => {},
-  showRages: () => {},
-  showSpecials: () => {},
-});
+const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();

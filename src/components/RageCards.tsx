@@ -14,18 +14,18 @@ export const RageCards = () => {
 
   return (
     <Box width={"100%"}>
-      <Flex height={`${CARD_HEIGHT * cardScale}px`}>
+      <Flex
+        height={`${CARD_HEIGHT * cardScale}px`}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         {!rageCards.length && (
           <Text mx={6} size="l">
             {t("no-cards")}
           </Text>
         )}
-        {rageCards?.length && (
-          <SimpleGrid
-            columns={5}
-            position="relative"
-            width={"100%"}
-          >
+        {rageCards && rageCards.length > 0 && (
+          <SimpleGrid columns={5} position="relative" width={"100%"}>
             {rageCards.map((card, index) => {
               return (
                 <TiltCard
