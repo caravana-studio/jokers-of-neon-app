@@ -39,8 +39,8 @@ export const BurnItem = ({}: IBurnItem) => {
           cursor={purchased ? "not-allowed" : "pointer"}
           onClick={() => {
             if (!purchased) {
-              //   navigate("/preview/slot");
-              console.log("burn card");
+              // navigate("/deck", { state: { inStore: true } });
+              console.log("burn item");
             }
           }}
         >

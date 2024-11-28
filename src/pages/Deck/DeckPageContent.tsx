@@ -8,7 +8,11 @@ import { DeckFilters } from "./DeckFilters";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { DeckHeading } from "./DeckHeading";
 
-export const DeckPageContent = () => {
+interface DeckPageContentProps {
+  inStore?: boolean;
+}
+
+export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
   const { filterButtonsState } = useDeckFilters();
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
@@ -54,7 +58,7 @@ export const DeckPageContent = () => {
           <Box w="100%" h="100%">
             <DeckCardsGrid
               cards={fullDeck}
-              usedCards={usedCards}
+              usedCards={!inStore ? usedCards : []}
               filters={{
                 isNeon: filterButtonsState.isNeon ?? undefined,
                 isModifier: filterButtonsState.isModifier ?? undefined,

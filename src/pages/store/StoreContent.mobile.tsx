@@ -10,7 +10,8 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
-import { BurnItem } from "./burnItem.tsx";
+import { BurnItem } from "./BurnItem.tsx";
+import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 
 export const StoreContentMobile = () => {
   const { setRun, commonCards, modifierCards, specialCards } = useStore();
@@ -134,6 +135,7 @@ export const StoreContentMobile = () => {
               <RerollButton isSmallScreen={true} />
               <SpecialsButton isSmallScreen={true} />
               <NextLevelButton isSmallScreen={true} />
+              <SeeFullDeckButton isSmallScreen={true} />
             </Flex>
           </Box>
         </Box>
