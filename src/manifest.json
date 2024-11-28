@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x6f1cfd20b5b44ba56e4c6ffcae84bf6165278ced205a0e7030e6787d2badb30",
-      "class_hash": "0x7ba8482014e0eebd24b06e9b6546c236a13845f60d3d7156fe444091a47a46b",
+      "address": "0x6fb59359163fccecc4ea7996dee64c8b6731a6f15899728fd1f6339910a27a5",
+      "class_hash": "0x3e53e60fe19f3419e0bc5298397c033667de4a0b287ad44c0cdae50c1d3b178",
       "abi": [
         {
           "type": "impl",
@@ -2081,8 +2081,8 @@
       ]
     },
     {
-      "address": "0x11e218c11e41b29ae5009618fc6207fba4fa3658b86ea3c1a95c1ab99979d41",
-      "class_hash": "0x6ed50848cebf295b06d071a76743da03a2ddc886c44ff4c45079904aa8ac5f",
+      "address": "0x1831333049fbaba18a8d26c7e42e19107a17216c96ac387e6fe70efd874a674",
+      "class_hash": "0x3dd8f2749c161f563ac236bd3033636e5f75898667f31ecd3bb44d8c1be31dc",
       "abi": [
         {
           "type": "impl",
@@ -2405,6 +2405,24 @@
         },
         {
           "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::BurnItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "jokers_of_neon::models::status::shop::shop::Shop",
           "members": [
             {
@@ -2596,7 +2614,7 @@
               ],
               "outputs": [
                 {
-                  "type": "(core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::SpecialCardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>, jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem, jokers_of_neon::models::status::shop::shop::Shop, core::integer::u32)"
+                  "type": "(core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::SpecialCardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>, jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem, jokers_of_neon::models::status::shop::shop::BurnItem, jokers_of_neon::models::status::shop::shop::Shop, core::integer::u32)"
                 }
               ],
               "state_mutability": "view"
