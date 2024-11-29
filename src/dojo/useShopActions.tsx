@@ -78,13 +78,13 @@ export const useShopActions = () => {
     }
   };
 
-  const burnCard = async (gameId: number, card_idx: number) => {
+  const burnCard = async (gameId: number, card_id: number) => {
     try {
       showTransactionToast();
       const response = await client.shop_system.buyBurnItem(
         account,
         gameId,
-        card_idx
+        card_id
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash);

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Card } from "../../types/Card";
+import { useStore } from "../../providers/StoreProvider";
 
 interface DeckPageContentProps {
   inStore?: boolean;
@@ -26,12 +27,20 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
 
+  const { burnCard } = useStore();
+
   const handleCardSelect = (card: Card) => {
     if (cardToBurn?.id === card.id) {
       setCardToBurn(undefined);
     } else {
+      console.log(card.card_id);
+      console.log(card.idx);
       setCardToBurn(card);
     }
+  };
+
+  const handleBurnCard = (card: Card) => {
+    burnCard(card);
   };
 
   return (
@@ -62,7 +71,11 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
             wrap={{ base: "wrap", md: "nowrap" }}
             justifyContent={"center"}
           >
-            <Button onClick={() => navigate(-1)}>
+            <Button
+              onClick={() => {
+                if (cardToBurn) handleBurnCard(cardToBurn);
+              }}
+            >
               {t("game.deck.btns.burn").toUpperCase()}
             </Button>
             <BackToGameBtn />

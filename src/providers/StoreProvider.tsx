@@ -35,6 +35,7 @@ interface IStoreContext extends ShopItems {
   setRun: (run: boolean) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  burnCard: (card: Card) => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -76,6 +77,9 @@ const StoreContext = createContext<IStoreContext>({
   setRun: (_) => {},
   loading: true,
   setLoading: (_) => {},
+  burnCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -119,6 +123,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     storeReroll,
     levelUpPokerHand: dojoLevelUpHand,
     buySpecialSlot: dojoBuySpecialSlot,
+    burnCard: dojoBurnCard,
   } = useShopActions();
 
   const stateBuyCard = (card: Card) => {
@@ -158,6 +163,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       .finally(() => {
         setLocked(false);
       });
+    return promise;
+  };
+
+  const burnCard = (card: Card): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    const promise = dojoBurnCard(gameId, card.card_id ?? 0);
+    promise.finally(() => {
+      setLocked(false);
+    });
     return promise;
   };
 
@@ -272,6 +287,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setRun,
         loading,
         setLoading,
+        burnCard,
       }}
     >
       {children}
