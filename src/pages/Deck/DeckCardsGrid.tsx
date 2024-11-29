@@ -63,13 +63,13 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   };
 
   return (
-    <Box mb={4} overflow="hidden">
+    <Box mb={4} overflow="visible">
       <Flex
         wrap="wrap"
         position="relative"
         w="100%"
         mb={4}
-        overflow="hidden"
+        overflow="visible"
         justifyContent="center"
         pr={`${CUSTOM_CARD_WIDTH / 2}px`}
       >
@@ -95,10 +95,8 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 "& img": {
                   opacity: `${opacity}`,
                 },
-                boxShadow: isSelected ? `0px 0px 15px 12px ${BLUE}` : "none",
-                border: isSelected
-                  ? `2px solid ${BLUE_LIGHT}`
-                  : "2px solid transparent",
+                transform: isSelected ? `translateY(-20px)` : "translateY(0px)",
+                transition: "transform 0.3s ease, box-shadow 0.5s ease",
               }}
             >
               <TiltCard

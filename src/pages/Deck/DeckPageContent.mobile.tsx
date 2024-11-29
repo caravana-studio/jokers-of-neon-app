@@ -67,7 +67,13 @@ export const DeckPageContentMobile = ({
           <DeckHeading />
         </Flex>
 
-        <Flex alignItems={"center"} width={"100%"} overflowY="auto" gap={4}>
+        <Flex
+          alignItems={"center"}
+          width={"100%"}
+          overflowY="auto"
+          gap={4}
+          paddingTop={"25px"}
+        >
           <Box w="100%" height={"100%"}>
             <DeckCardsGrid
               cards={fullDeck}

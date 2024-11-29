@@ -99,6 +99,7 @@ export const DeckPageContent = ({
           width={"55%"}
           height={"60%"}
           overflowY="auto"
+          paddingTop={"25px"}
         >
           <Box w="100%" h="100%">
             <DeckCardsGrid
