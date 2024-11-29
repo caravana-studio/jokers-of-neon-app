@@ -38,8 +38,6 @@ export const DeckPageContent = ({
       if (cardToBurn?.id === card.id) {
         setCardToBurn(undefined);
       } else {
-        console.log(card.card_id);
-        console.log(card.idx);
         setCardToBurn(card);
       }
     }
