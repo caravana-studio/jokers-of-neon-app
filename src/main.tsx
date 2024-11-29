@@ -14,6 +14,8 @@ import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages } from "./utils/preloadImages.ts";
+import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
+import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -25,9 +27,11 @@ async function init() {
   const loadImages = async () => {
     await i18n.loadNamespaces(["traditional-cards", "neon-cards"]);
     preloadImages();
+    preloadSpineAnimations();
   };
 
   i18n.on("initialized", loadImages);
+  registerServiceWorker();
 
   try {
     const setupResult = await setup(dojoConfig);

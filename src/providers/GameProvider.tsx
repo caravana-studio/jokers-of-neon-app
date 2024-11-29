@@ -8,10 +8,10 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
-  SKIP_IN_GAME_TUTORIAL,
   SETTINGS_ANIMATION_SPEED,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
+  SKIP_IN_GAME_TUTORIAL,
   SORT_BY_SUIT,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
@@ -21,6 +21,7 @@ import {
   pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx.ts";
+import React from "react";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
@@ -38,11 +39,11 @@ import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
 import { changeCardSuit } from "../utils/changeCardSuit";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { isTutorial } from "../utils/isTutorial.ts";
-import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getNeonCardId } from "../utils/changeCardNeon.ts";
+import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -99,65 +100,13 @@ export interface IGameContext {
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
   setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
+  specialSwitcherOn: boolean;
+  toggleSpecialSwitcher: () => void;
+  showRages: () => void;
+  showSpecials: () => void;
 }
 
-const GameContext = createContext<IGameContext>({
-  gameId: getLSGameId(),
-  preSelectedPlay: Plays.NONE,
-  points: 0,
-  multi: 0,
-  executeCreateGame: () => {},
-  gameLoading: false,
-  preSelectedCards: [],
-  setPreSelectedCards: (_) => {},
-  play: () => {},
-  hand: [],
-  setHand: (_) => {},
-  getModifiers: (_) => {
-    return [];
-  },
-  togglePreselected: (_) => {},
-  discardAnimation: false,
-  playAnimation: false,
-  discard: () => {},
-  discardEffectCard: () =>
-    new Promise((resolve) => resolve({ success: false, cards: [] })),
-  error: false,
-  clearPreSelection: () => {},
-  preSelectedModifiers: {},
-  addModifier: (_, __) => {},
-  roundRewards: undefined,
-  sortBy: SortBy.RANK,
-  toggleSortBy: () => {},
-  onShopSkip: () => {},
-  discardSpecialCard: () => new Promise((resolve) => resolve(false)),
-  checkOrCreateGame: () => {},
-  restartGame: () => {},
-  preSelectionLocked: false,
-  score: 0,
-  lockRedirection: false,
-  specialCards: [],
-  playIsNeon: false,
-  isRageRound: false,
-  setIsRageRound: (_) => {},
-  cash: 0,
-  setLockedCash: (_) => {},
-  rageCards: [],
-  setRageCards: (_) => {},
-  discards: 0,
-  preSelectCard: (_) => {},
-  unPreSelectCard: (_) => {},
-  sfxVolume: 1,
-  setSfxVolume: () => {},
-  sfxOn: true,
-  setSfxOn: () => {},
-  animationSpeed: Speed.NORMAL,
-  setAnimationSpeed: () => {},
-  destroyedSpecialCardId: undefined,
-  setDestroyedSpecialCardId: () => {},
-  levelUpHand: undefined,
-  setLevelUpHand: () => {},
-});
+const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
 export const useGameContext = () => {
   const location = useLocation();
@@ -234,8 +183,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     score,
     cash,
     setLockedCash,
+    isRageRound,
     setIsRageRound,
     rageCards,
+    showSpecials,
+    showRages,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -248,6 +200,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
     setIsRageRound(false);
+    showSpecials();
   };
 
   const toggleSortBy = () => {
@@ -304,6 +257,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
+      showSpecials();
       console.log(playEvents);
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
@@ -599,6 +553,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           playEvents.cards && replaceCards(playEvents.cards);
           setRoundRewards(undefined);
           setLockRedirection(false);
+          if (isRageRound) {
+            showRages();
+          }
         }
       }, ALL_CARDS_DURATION + 500);
     }

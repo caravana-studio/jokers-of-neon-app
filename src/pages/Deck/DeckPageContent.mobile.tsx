@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
-import { SeeSpecialCardsBtn } from "./DeckButtons/SeeSpecialCardsBtn";
 import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 import { DeckFilters } from "./DeckFilters";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";

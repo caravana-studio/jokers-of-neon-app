@@ -69,8 +69,6 @@ export const getShopItems = async (client: any, gameId: number) => {
     try {
       let tx_result = await client.shop_system.getShopItems(gameId);
 
-      console.log(tx_result);
-
       const modifiersAndCommonCards = tx_result[0].map((txCard: any) => {
         return getCard(txCard);
       });
