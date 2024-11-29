@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Card } from "../../types/Card";
 import { useStore } from "../../providers/StoreProvider";
+import { CashSymbol } from "../../components/CashSymbol";
 
 interface DeckPageContentProps {
   inStore?: boolean;
@@ -30,20 +31,23 @@ export const DeckPageContent = ({
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
 
-  const { burnCard } = useStore();
+  const { cash, burnCard, burnItem } = useStore();
 
   const handleCardSelect = (card: Card) => {
-    if (cardToBurn?.id === card.id) {
-      setCardToBurn(undefined);
-    } else {
-      console.log(card.card_id);
-      console.log(card.idx);
-      setCardToBurn(card);
+    if (!burnItem.purchased) {
+      if (cardToBurn?.id === card.id) {
+        setCardToBurn(undefined);
+      } else {
+        console.log(card.card_id);
+        console.log(card.idx);
+        setCardToBurn(card);
+      }
     }
   };
 
   const handleBurnCard = (card: Card) => {
     burnCard(card);
+    setCardToBurn(undefined);
   };
 
   return (
@@ -76,11 +80,17 @@ export const DeckPageContent = ({
           >
             {burn && (
               <Button
+                isDisabled={
+                  cardToBurn === undefined ||
+                  cash < burnItem.cost ||
+                  burnItem.purchased
+                }
                 onClick={() => {
                   if (cardToBurn) handleBurnCard(cardToBurn);
                 }}
               >
-                {t("game.deck.btns.burn").toUpperCase()}
+                {t("game.deck.btns.burn").toUpperCase()} {" " + burnItem.cost}
+                <CashSymbol />
               </Button>
             )}
             <BackToGameBtn />
@@ -102,6 +112,7 @@ export const DeckPageContent = ({
                 suit: filterButtonsState.suit ?? undefined,
               }}
               onCardSelect={burn ? handleCardSelect : () => {}}
+              inBurn={burn}
             />
           </Box>
         </Flex>

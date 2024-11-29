@@ -18,6 +18,7 @@ interface DeckCardsGridProps {
   filters?: DeckFiltersState;
   usedCards?: Card[];
   onCardSelect?: (card: Card) => void;
+  inBurn?: boolean;
 }
 
 export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
@@ -25,6 +26,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   filters,
   usedCards = [],
   onCardSelect,
+  inBurn = false,
 }) => {
   const hasFilters =
     filters?.isModifier != undefined ||
@@ -103,12 +105,14 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 card={card}
                 scale={SCALE}
                 onClick={() => {
-                  if (selectedCard?.id === card.id) {
-                    setSelectedCard(undefined);
-                  } else {
-                    setSelectedCard(card);
+                  if (inBurn) {
+                    if (selectedCard?.id === card.id) {
+                      setSelectedCard(undefined);
+                    } else {
+                      setSelectedCard(card);
+                    }
+                    onCardSelect?.(card);
                   }
-                  onCardSelect?.(card);
                 }}
               />
             </Box>

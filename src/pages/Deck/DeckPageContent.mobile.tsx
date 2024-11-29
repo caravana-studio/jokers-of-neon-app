@@ -11,6 +11,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { CashSymbol } from "../../components/CashSymbol";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;
@@ -29,15 +30,17 @@ export const DeckPageContentMobile = ({
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
 
-  const { burnCard } = useStore();
+  const { cash, burnCard, burnItem } = useStore();
 
   const handleCardSelect = (card: Card) => {
-    if (cardToBurn?.id === card.id) {
-      setCardToBurn(undefined);
-    } else {
-      console.log(card.card_id);
-      console.log(card.idx);
-      setCardToBurn(card);
+    if (!burnItem.purchased) {
+      if (cardToBurn?.id === card.id) {
+        setCardToBurn(undefined);
+      } else {
+        console.log(card.card_id);
+        console.log(card.idx);
+        setCardToBurn(card);
+      }
     }
   };
 
@@ -77,6 +80,7 @@ export const DeckPageContentMobile = ({
                 suit: filterButtonsState.suit ?? undefined,
               }}
               onCardSelect={burn ? handleCardSelect : () => {}}
+              inBurn={burn}
             />
           </Box>
         </Flex>
@@ -85,11 +89,18 @@ export const DeckPageContentMobile = ({
         <Flex gap={4} mt={4} wrap={"wrap"} justifyContent={"center"}>
           {burn && (
             <Button
+              isDisabled={
+                cardToBurn === undefined ||
+                cash < burnItem.cost ||
+                burnItem.purchased
+              }
               onClick={() => {
                 if (cardToBurn) handleBurnCard(cardToBurn);
               }}
             >
               {t("game.deck.btns.burn").toUpperCase()}
+              {" " + burnItem.cost}
+              <CashSymbol />
             </Button>
           )}
           <BackToGameBtn />

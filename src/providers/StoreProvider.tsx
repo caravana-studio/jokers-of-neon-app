@@ -170,9 +170,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
     const promise = dojoBurnCard(gameId, card.card_id ?? 0);
-    promise.finally(() => {
-      setLocked(false);
-    });
+    promise
+      .then(() => {
+        fetchShopItems();
+      })
+      .finally(() => {
+        setLocked(false);
+      });
     return promise;
   };
 

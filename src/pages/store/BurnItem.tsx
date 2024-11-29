@@ -37,6 +37,7 @@ export const BurnItem = ({}: IBurnItem) => {
           height={`${height}px`}
           width={`${width}px`}
           cursor={purchased ? "not-allowed" : "pointer"}
+          opacity={purchased ? 0.3 : 1}
           onClick={() => {
             if (!purchased) {
               navigate("/deck", { state: { inStore: true, burn: true } });
