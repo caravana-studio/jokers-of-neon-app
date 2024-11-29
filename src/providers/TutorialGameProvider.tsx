@@ -1,9 +1,25 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
-import { Plays } from "../enums/plays";
-import { Card } from "../types/Card";
-import { SortBy } from "../enums/sortBy";
+import React, { createContext, useEffect, useState } from "react";
 import {
+  discardSfx,
+  multiSfx,
+  pointsSfx,
+  preselectedCardSfx,
+} from "../constants/sfx";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { LevelPokerHand } from "../dojo/typescript/models.gen";
+import { useDojo } from "../dojo/useDojo";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
+import { Plays } from "../enums/plays";
+import { SortBy } from "../enums/sortBy";
+import { useAudio } from "../hooks/useAudio";
+import { useGameState } from "../state/useGameState";
+import { Card } from "../types/Card";
+import { PlayEvents } from "../types/ScoreData";
+import { changeCardSuit } from "../utils/changeCardSuit";
+import { checkHand } from "../utils/checkHand";
+import {
+  C5,
+  C7,
   CA,
   CJ,
   CK,
@@ -13,84 +29,22 @@ import {
   H10,
   H3,
   H7,
-  C7,
-  C5,
 } from "../utils/mocks/cardMocks";
 import { ClubModifier } from "../utils/mocks/modifierMocks";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
-import { useAudio } from "../hooks/useAudio";
-import {
-  discardSfx,
-  multiSfx,
-  pointsSfx,
-  preselectedCardSfx,
-} from "../constants/sfx";
-import { checkHand } from "../utils/checkHand";
-import { useDojo } from "../dojo/useDojo";
-import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { PlayEvents } from "../types/ScoreData";
-import { useGameState } from "../state/useGameState";
-import { useCardAnimations } from "./CardAnimationsProvider";
-import { changeCardSuit } from "../utils/changeCardSuit";
-import { Speed } from "../enums/speed.ts";
 import { sortCards } from "../utils/sortCards.ts";
+import { useCardAnimations } from "./CardAnimationsProvider";
+import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
+import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 
 export const mockTutorialGameContext = createContext<IGameContext>({
+  ...gameProviderDefaults,
   gameId: 1,
-  preSelectedPlay: Plays.NONE,
-  points: 0,
-  multi: 0,
-  executeCreateGame: () => {},
-  gameLoading: false,
-  preSelectedCards: [],
-  setPreSelectedCards: (cards: number[]) => {},
-  play: () => {},
   hand: [D2, H3, D5, H7, H10, CJ, CK, CA],
-  setHand: (cards: Card[]) => console.log("Hand set", cards),
-  getModifiers: (preSelectedCardIndex: number) => [],
-  togglePreselected: (_) => {},
-  discardAnimation: false,
-  playAnimation: false,
-  discard: () => {},
-  discardEffectCard: () =>
-    new Promise((resolve) => resolve({ success: false, cards: [] })),
-  error: false,
-  clearPreSelection: () => {},
-  preSelectedModifiers: {},
-  addModifier: (cardIdx: number, modifierIdx: number) => {},
-  roundRewards: undefined,
-  sortBy: SortBy.RANK,
-  toggleSortBy: () => console.log("Toggled sort"),
-  onShopSkip: () => console.log("Skipped shop"),
-  discardSpecialCard: async () => false,
-  checkOrCreateGame: () => console.log("Game checked or created"),
-  restartGame: () => console.log("Game restarted"),
-  preSelectionLocked: false,
   score: 300,
-  lockRedirection: false,
-  specialCards: [],
-  playIsNeon: false,
-  isRageRound: false,
-  setIsRageRound: () => console.log("Set rage round"),
   cash: 1000,
-  setLockedCash: (_) => {},
-  rageCards: [],
-  setRageCards: (cards: Card[]) => console.log("Set rage cards", cards),
   discards: 1,
-  preSelectCard: () => {},
-  unPreSelectCard: () => {},
   sfxVolume: 100,
-  setSfxVolume: (vol: number) => {},
-  animationSpeed: Speed.NORMAL,
-  setAnimationSpeed: (speed: Speed) => {},
-  sfxOn: true,
-  setSfxOn: (sfxOn: boolean) => {},
-  destroyedSpecialCardId: undefined,
-  setDestroyedSpecialCardId: () => {},
-  levelUpHand: undefined,
-  setLevelUpHand: () => {},
 });
 
 export let handsLeftTutorial = 1;

@@ -57,7 +57,7 @@ export const TiltCard = ({
 
   const tiltCardComponent = (
     <Box
-      width={cardWith}
+      width={`${cardWith}px`}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box

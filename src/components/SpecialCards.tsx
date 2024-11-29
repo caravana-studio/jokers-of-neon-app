@@ -1,53 +1,35 @@
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGame } from "../dojo/queries/useGame";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
-import { Card } from "../types/Card.ts";
-import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { Card } from "../types/Card.ts";
+import { CardContainerWithBorder } from "./CardContainerWithBorder.tsx";
+import { ConfirmationModal } from "./ConfirmationModal.tsx";
+import { RageCards } from "./RageCards.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
-import { isTutorial } from "../utils/isTutorial.ts";
+import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
-interface SpecialCardsProps {
-  inStore?: boolean;
-}
-
-export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
-  const { colors } = useTheme();
-  const game = useGame();
-  const maxLength = game?.len_max_current_special_cards ?? 5;
+export const SpecialCards = () => {
   const { t } = useTranslation(["game"]);
 
-  const { discardSpecialCard, specialCards, isRageRound, rageCards } =
-    useGameContext();
+  const { discardSpecialCard } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const { specialCardScale } = useResponsiveValues();
+  const { specialSwitcherOn } = useGameContext();
+  const { isSmallScreen } = useResponsiveValues();
 
-  const width = !isRageRound ? "100%" : rageCards.length === 1 ? "82%" : "74%";
-  const { cardScale } = useResponsiveValues();
-
+  const cardWidth = CARD_WIDTH * specialCardScale;
+  const cardHeight = CARD_HEIGHT * specialCardScale;
   return (
-    <Box
-      className="special-cards-step-3"
-      width={width}
-      boxShadow={
-        inStore
-          ? "none"
-          : `0px 26px 30px -30px ${isRageRound ? colors.neonPink : colors.neonGreen}`
-      }
+    <CardContainerWithBorder
+      width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49)}px`}
+      height={`${cardHeight + (isSmallScreen ? 10 : 16)}px`}
     >
-      <SpecialCardsRow cards={specialCards} />
-      <Flex mt={{ base: 0, sm: 1 }} mx={1} justifyContent="space-between">
-        <Box>
-          {!inStore && (
-            <Text size={{ base: "l", sm: "m" }}>
-              {t("game.special-cards.special-cards-label")}
-            </Text>
-          )}
-        </Box>
-      </Flex>
+      {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
+      <SpecialRageSwitcher />
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
@@ -65,23 +47,6 @@ export const SpecialCards = ({ inStore = false }: SpecialCardsProps) => {
           }}
         />
       )}
-      {inStore && (
-        <Flex mt={4} justifyContent="flex-end">
-          <Button
-            variant={preselectedCard === undefined ? "defaultOutline" : "solid"}
-            isDisabled={preselectedCard === undefined}
-            width={{ base: "100%", md: "30%" }}
-            fontSize={12}
-            onClick={() => {
-              {
-                setConfirmationModalOpen(true);
-              }
-            }}
-          >
-            {t("game.special-cards.remove-special-cards-label")}
-          </Button>
-        </Flex>
-      )}
-    </Box>
+    </CardContainerWithBorder>
   );
 };

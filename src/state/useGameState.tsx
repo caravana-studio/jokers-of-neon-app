@@ -13,8 +13,8 @@ import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
-import { sortCards } from "../utils/sortCards";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
+import { sortCards } from "../utils/sortCards";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -47,6 +47,8 @@ export const useGameState = () => {
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
   const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
+
+  const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -128,6 +130,16 @@ export const useGameState = () => {
     }
   }, [preSelectedCards, preSelectedModifiers]);
 
+  const toggleSpecialSwitcher = () => {
+    setSpecialSwitcherOn(!specialSwitcherOn);
+  };
+  const showRages = () => {
+    setSpecialSwitcherOn(false);
+  };
+  const showSpecials = () => {
+    setSpecialSwitcherOn(true);
+  };
+
   return {
     gameId,
     setGameId,
@@ -178,5 +190,9 @@ export const useGameState = () => {
     setDestroyedSpecialCardId,
     levelUpHand,
     setLevelUpHand,
+    specialSwitcherOn,
+    toggleSpecialSwitcher,
+    showRages,
+    showSpecials,
   };
 };

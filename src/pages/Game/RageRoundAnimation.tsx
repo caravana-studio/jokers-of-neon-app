@@ -15,6 +15,7 @@ export const RageRoundAnimation = () => {
     rageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    showRages,
   } = useGameContext();
 
   const descriptions = rageCards?.map((card) => getCardData(card).description);
@@ -58,6 +59,7 @@ export const RageRoundAnimation = () => {
 
   useEffect(() => {
     if (isRageRound) {
+      showRages();
       setShowAnimationHeading(true);
       setTimeout(() => {
         setShowAnimationText(true);

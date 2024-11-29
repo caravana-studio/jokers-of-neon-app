@@ -135,5 +135,12 @@
       "level": "NÍVEL",
       "head": "MÃO APRIMORADA"
     }
+  },
+  "rage-cards": {
+    "no-cards": "Em rondas de rage, você verá as cartas de rage aqui"
+  },
+  "specials-box": {
+    "specials-tooltip": "Cartas especiais",
+    "rage-tooltip": "Cartas de rage"
   }
 }
