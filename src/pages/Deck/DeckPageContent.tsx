@@ -15,12 +15,15 @@ import { useStore } from "../../providers/StoreProvider";
 
 interface DeckPageContentProps {
   inStore?: boolean;
+  burn?: boolean;
 }
 
-export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
+export const DeckPageContent = ({
+  inStore = false,
+  burn = false,
+}: DeckPageContentProps) => {
   const { filterButtonsState } = useDeckFilters();
   const { t } = useTranslation(["game"]);
-  const navigate = useNavigate();
 
   const [cardToBurn, setCardToBurn] = useState<Card>();
 
@@ -71,13 +74,15 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
             wrap={{ base: "wrap", md: "nowrap" }}
             justifyContent={"center"}
           >
-            <Button
-              onClick={() => {
-                if (cardToBurn) handleBurnCard(cardToBurn);
-              }}
-            >
-              {t("game.deck.btns.burn").toUpperCase()}
-            </Button>
+            {burn && (
+              <Button
+                onClick={() => {
+                  if (cardToBurn) handleBurnCard(cardToBurn);
+                }}
+              >
+                {t("game.deck.btns.burn").toUpperCase()}
+              </Button>
+            )}
             <BackToGameBtn />
           </Flex>
         </Flex>
@@ -96,7 +101,7 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
                 isModifier: filterButtonsState.isModifier ?? undefined,
                 suit: filterButtonsState.suit ?? undefined,
               }}
-              onCardSelect={handleCardSelect}
+              onCardSelect={burn ? handleCardSelect : () => {}}
             />
           </Box>
         </Flex>

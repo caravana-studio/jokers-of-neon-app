@@ -10,14 +10,15 @@ export const DeckPage = () => {
 
   const location = useLocation();
   const inStore = location.state?.inStore ?? false;
+  const burn = location.state?.burn ?? false;
 
   return (
     <DeckFilterProvider>
       <Background type="store">
         {isSmallScreen ? (
-          <DeckPageContentMobile inStore={inStore} />
+          <DeckPageContentMobile inStore={inStore} burn={burn} />
         ) : (
-          <DeckPageContent inStore={inStore} />
+          <DeckPageContent inStore={inStore} burn={burn} />
         )}
       </Background>
     </DeckFilterProvider>
