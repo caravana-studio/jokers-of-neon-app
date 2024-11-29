@@ -24,12 +24,13 @@ export const GameMenu = ({
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <>
       <Menu>
-        <MenuButton className="game-tutorial-step-9">
-          <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
+        <MenuButton height={["30px", "45px"]} width={["30px", "45px"]} borderRadius={["8px", "14px"]} className="game-tutorial-step-9">
+          <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle", fontSize: isSmallScreen ? 14 : 20 }} />
         </MenuButton>
         <MenuList>
           <MenuItem
