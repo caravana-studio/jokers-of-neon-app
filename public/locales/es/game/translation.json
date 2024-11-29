@@ -108,7 +108,8 @@
       },
       "btns": {
         "special-cards": "Ver cartas especiales",
-        "back": "Volver al juego"
+        "back": "Volver al juego",
+        "burn": "Quemar carta"
       }
     }
   },

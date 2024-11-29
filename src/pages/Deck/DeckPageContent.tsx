@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
@@ -7,6 +7,10 @@ import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 import { DeckFilters } from "./DeckFilters";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { DeckHeading } from "./DeckHeading";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Card } from "../../types/Card";
 
 interface DeckPageContentProps {
   inStore?: boolean;
@@ -14,9 +18,21 @@ interface DeckPageContentProps {
 
 export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
   const { filterButtonsState } = useDeckFilters();
+  const { t } = useTranslation(["game"]);
+  const navigate = useNavigate();
+
+  const [cardToBurn, setCardToBurn] = useState<Card>();
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
+
+  const handleCardSelect = (card: Card) => {
+    if (cardToBurn?.id === card.id) {
+      setCardToBurn(undefined);
+    } else {
+      setCardToBurn(card);
+    }
+  };
 
   return (
     <>
@@ -46,6 +62,9 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
             wrap={{ base: "wrap", md: "nowrap" }}
             justifyContent={"center"}
           >
+            <Button onClick={() => navigate(-1)}>
+              {t("game.deck.btns.burn").toUpperCase()}
+            </Button>
             <BackToGameBtn />
           </Flex>
         </Flex>
@@ -64,6 +83,7 @@ export const DeckPageContent = ({ inStore = false }: DeckPageContentProps) => {
                 isModifier: filterButtonsState.isModifier ?? undefined,
                 suit: filterButtonsState.suit ?? undefined,
               }}
+              onCardSelect={handleCardSelect}
             />
           </Box>
         </Flex>

@@ -6,6 +6,8 @@ import { isMobile } from "react-device-detect";
 import { sortCards } from "../../utils/sortCards";
 import { SortBy } from "../../enums/sortBy";
 import { DeckFiltersState } from "../../types/DeckFilters";
+import { useState } from "react";
+import { BLUE, BLUE_LIGHT } from "../../theme/colors";
 
 const SCALE = 0.55;
 const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
@@ -15,12 +17,14 @@ interface DeckCardsGridProps {
   cards: Card[] | undefined;
   filters?: DeckFiltersState;
   usedCards?: Card[];
+  onCardSelect?: (card: Card) => void;
 }
 
 export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   cards,
   filters,
   usedCards = [],
+  onCardSelect,
 }) => {
   const hasFilters =
     filters?.isModifier != undefined ||
@@ -29,6 +33,8 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   const sortedCards = hasFilters
     ? sortCards(cards ?? [], SortBy.RANK)
     : sortCards(cards ?? [], SortBy.SUIT);
+
+  const [selectedCard, setSelectedCard] = useState<Card>();
 
   const filteredCards = sortedCards?.filter((card) => {
     let matchesFilter = true;
@@ -69,6 +75,8 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
           const usedCount = countUsedCards(card);
           const opacity = usedCount > 0 ? 0.6 : 1;
           const borderRadius = isMobile ? "5px" : "8px";
+          const isSelected = selectedCard?.id === card.id;
+
           return (
             <Box
               key={`${card.id}-${index}`}
@@ -85,9 +93,24 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 "& img": {
                   opacity: `${opacity}`,
                 },
+                boxShadow: isSelected ? `0px 0px 15px 12px ${BLUE}` : "none",
+                border: isSelected
+                  ? `2px solid ${BLUE_LIGHT}`
+                  : "2px solid transparent",
               }}
             >
-              <TiltCard card={card} scale={SCALE} />
+              <TiltCard
+                card={card}
+                scale={SCALE}
+                onClick={() => {
+                  if (selectedCard?.id === card.id) {
+                    setSelectedCard(undefined);
+                  } else {
+                    setSelectedCard(card);
+                  }
+                  onCardSelect?.(card);
+                }}
+              />
             </Box>
           );
         })}
