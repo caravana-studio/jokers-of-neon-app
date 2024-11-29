@@ -345,7 +345,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               pointsSound();
               setAnimatedCard({
                 idx: [event.idx],
-                animationIndex: 10 + index,
+                animationIndex: 100 + index,
               });
               setHand((prev) => {
                 const newHand = prev?.map((card) => {
@@ -375,7 +375,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 suit: event.suit,
                 special_idx: event.special_idx,
                 idx: event.idx,
-                animationIndex: 20 + index,
+                animationIndex: 200 + index,
               });
               setHand((prev) => {
                 const newHand = prev?.map((card) => {
@@ -403,7 +403,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                     setAnimatedCard({
                       special_idx,
                       points,
-                      animationIndex: 30 + index,
+                      animationIndex: 300 + index,
                     });
                     setPoints((prev) => prev + points);
                   }
@@ -414,7 +414,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       setAnimatedCard({
                         special_idx,
                         multi,
-                        animationIndex: 41 + index,
+                        animationIndex: 401 + index,
                       });
                       setMulti((prev) => prev + multi);
                     }, playAnimationDuration);
@@ -437,7 +437,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                   setAnimatedCard({
                     special_idx,
                     points: eventPoints - points,
-                    animationIndex: 41,
+                    animationIndex: 401,
                   });
                   setPoints(eventPoints);
                 }
@@ -448,7 +448,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                     setAnimatedCard({
                       special_idx,
                       multi: eventMulti - multi,
-                      animationIndex: 51,
+                      animationIndex: 501,
                     });
                     setMulti(eventMulti);
                   }, playAnimationDuration);
@@ -465,7 +465,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                       idx: [idx],
                       points,
                       multi,
-                      animationIndex: 60 + index,
+                      animationIndex: 600 + index,
                     });
                     if (points) pointsSound();
                     points && setPoints((prev) => prev + points);
@@ -483,7 +483,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                         idx: [idx],
                         special_idx,
                         cash,
-                        animationIndex: 70 + index,
+                        animationIndex: 700 + index,
                       });
                     }, playAnimationDuration * index);
                   });
@@ -498,7 +498,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                           points,
                           multi,
                           special_idx,
-                          animationIndex: 80 + index,
+                          animationIndex: 800 + index,
                         });
                         if (points) pointsSound();
                         points && setPoints((prev) => prev + points);
