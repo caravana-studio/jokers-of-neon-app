@@ -235,7 +235,7 @@ export const MobileGameContent = () => {
             </Box>
             <Box
               sx={{
-                width: "90%",
+                width: "100%",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
