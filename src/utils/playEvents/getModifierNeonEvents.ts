@@ -13,7 +13,6 @@ export const getModifierNeonEvents = (
 
   return modifierNeonEvents.map((event) => {
     const idx = getNumberValueFromEvent(event, 5) ?? 0;
-    console.log(idx);
     return {
       idx,
     }
