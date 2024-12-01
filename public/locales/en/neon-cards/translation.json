@@ -207,6 +207,10 @@
         "251": {
           "name": "Ace of neon Spades",
           "description": "Scores +22 points and +1 multi"
-        }
+        },
+        "252": {
+          "name": "Joker of Neon",
+          "description": "Wildcard that substitutes any traditional card. +500 points and +3 multi"
+      }
     }
 }

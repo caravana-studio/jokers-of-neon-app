@@ -48,6 +48,10 @@
     "611": {
       "name": "Change to Spades",
       "description": "The modified card will be considered as a Spades card"
+    },
+    "612": {
+      "name": "Change to Neon",
+      "description": "The modified card will be considered as a Neon card"
     }
   },
   "specialCardsData": {
