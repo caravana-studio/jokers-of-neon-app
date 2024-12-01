@@ -74,10 +74,24 @@ export interface BlisterPackResult {
   cards_picked: Boolean;
   cards: Number[];
 }
+
 export const BlisterPackResultDefinition = {
   game_id: RecsType.Number,
   cards_picked: RecsType.Boolean,
   cards: RecsType.NumberArray,
+};
+
+// Type definition for `jokers_of_neon::models::status::shop::shop::BurnItem` struct
+export interface BurnItem {
+  game_id: number;
+  cost: number;
+  purchased: boolean;
+}
+
+export const BurnItemDefinition = {
+  game_id: RecsType.Number,
+  cost: RecsType.Number,
+  purchased: RecsType.Boolean,
 };
 
 // Type definition for `jokers_of_neon::models::data::events::BuyBlisterPackEvent` struct
@@ -686,6 +700,26 @@ export function defineContractComponents(world: World) {
             namespace: "jokers_of_neon",
             name: "BlisterPackResult",
             types: ["u32", "bool", "array"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+
+    // Type definition for `jokers_of_neon::models::status::shop::shop::BurnItem` struct
+    BurnItem: (() => {
+      return defineComponent(
+        world,
+        {
+          game_id: RecsType.Number,
+          cost: RecsType.Number,
+          purchased: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            namespace: "jokers_of_neon",
+            name: "BurnItem",
+            types: ["u32", "u32", "bool"],
             customTypes: [],
           },
         }

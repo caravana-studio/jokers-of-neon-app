@@ -10,10 +10,11 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { BurnItem } from "./BurnItem.tsx";
+import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 
 export const StoreContentMobile = () => {
-
-  const {  setRun, commonCards, modifierCards, specialCards} = useStore();
+  const { setRun, commonCards, modifierCards, specialCards } = useStore();
 
   const { t } = useTranslation(["store"]);
 
@@ -98,9 +99,10 @@ export const StoreContentMobile = () => {
               )}
             </Box>
           </Box>
-          <Box mb={3} mx={4}>
+          <Flex mb={3} mx={4} flexDir={"row"} gap={5}>
             <SpecialSlotItem />
-          </Box>
+            <BurnItem />
+          </Flex>
           <Box
             className="game-tutorial-step-2"
             width={{ base: "95%", sm: "75%" }}
@@ -130,15 +132,10 @@ export const StoreContentMobile = () => {
               mb={12}
               gap={6}
             >
-              <RerollButton
-                isSmallScreen={true}
-              />
-              <SpecialsButton
-                isSmallScreen={true}
-              />
-              <NextLevelButton
-                isSmallScreen={true}
-              />
+              <RerollButton isSmallScreen={true} />
+              <SpecialsButton isSmallScreen={true} />
+              <NextLevelButton isSmallScreen={true} />
+              <SeeFullDeckButton isSmallScreen={true} />
             </Flex>
           </Box>
         </Box>

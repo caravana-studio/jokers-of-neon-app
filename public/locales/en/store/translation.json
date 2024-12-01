@@ -4,6 +4,7 @@
       "reroll": "Reroll",
       "see-my": "See my",
       "special-cards": "Special cards",
+      "full-deck": "Full deck",
       "go-to": "Go to",
       "next-level": "Next level",
       "purchased": "Purchased",
@@ -73,6 +74,9 @@
     },
     "special-slot": {
       "tooltip": "Unlock a new slot for special cards"
+    },
+    "burn-item": {
+      "tooltip": "Remove a card from your deck"
     }
   }
 }
