@@ -14,7 +14,7 @@ interface IBurnItem {}
 
 export const BurnItem = ({}: IBurnItem) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
-  const { t } = useTranslation("store", { keyPrefix: "store.burn-item" });
+  const { t } = useTranslation("store");
   const navigate = useNavigate();
 
   const { burnItem } = useStore();
@@ -31,7 +31,7 @@ export const BurnItem = ({}: IBurnItem) => {
 
   return (
     visible && (
-      <Tooltip label={t("tooltip")} placement="top">
+      <Tooltip label={t("store.burn-item.tooltip")} placement="top">
         <Flex
           position="relative"
           height={`${height}px`}
@@ -61,7 +61,7 @@ export const BurnItem = ({}: IBurnItem) => {
                 variant="italic"
                 fontSize={isSmallScreen ? 6 : 11 * cardScale}
               >
-                PURCHASED
+                {t("store.labels.purchased").toLocaleUpperCase()}
               </Heading>
             </Box>
           )}
