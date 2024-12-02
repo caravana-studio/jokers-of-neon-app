@@ -67,8 +67,6 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
       >
         {filteredCards?.map((card, index) => {
           const usedCount = countUsedCards(card);
-          const opacity = usedCount > 0 ? 0.6 : 1;
-          const borderRadius = isMobile ? "5px" : "8px";
           return (
             <Box
               key={`${card.id}-${index}`}
@@ -77,17 +75,8 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
               position="relative"
               mr={`-${CUSTOM_CARD_WIDTH / 5}px`}
               mb={4}
-              sx={{
-                "& div": {
-                  background: "rgba(0,0,0,1)",
-                  borderRadius: `${borderRadius}`,
-                },
-                "& img": {
-                  opacity: `${opacity}`,
-                },
-              }}
             >
-              <TiltCard card={card} scale={SCALE} />
+              <TiltCard card={card} scale={SCALE} used={usedCount > 0} />
             </Box>
           );
         })}
