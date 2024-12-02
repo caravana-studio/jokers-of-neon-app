@@ -64,4 +64,4 @@ export const SA: Card = { value: Cards.ACE, suit: Suits.SPADES, img: "51.png", i
 
 // Jokers
 export const JOKER1: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "52.png", id: "52", idx: 52 , card_id:52 };
-export const JOKER2: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "53.png", id: "53", idx: 53 , card_id:53 };
+export const JOKER2: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "252.png", id: "53", idx: 252 , card_id:252 };

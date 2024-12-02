@@ -10,11 +10,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
-import { GameDeckMobile } from "../../components/GameDeck.mobile.tsx";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import CachedImage from "../../components/CachedImage.tsx";
+import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
-import { ShowPlays } from "../../components/ShowPlays.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -45,6 +44,7 @@ export const MobileGameContent = () => {
     addModifier,
     preSelectCard,
     unPreSelectCard,
+    isRageRound,
   } = useGameContext();
 
   const { highlightedCard } = useCardHighlight();
@@ -199,12 +199,6 @@ export const MobileGameContent = () => {
           showSkipButton={false}
           hideCloseButton
         />
-
-        <PositionedGameMenu
-          showTutorial={() => {
-            setRun(true);
-          }}
-        />
       </Box>
 
       <Box
@@ -213,6 +207,14 @@ export const MobileGameContent = () => {
           width: "100%",
         }}
       >
+        <CachedImage
+            src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
+            width="100%"
+            maxHeight="70px"
+            position="fixed"
+            top={1}
+            zIndex={0}
+          />
         <DndContext
           onDragEnd={handleDragEnd}
           autoScroll={false}
@@ -229,7 +231,7 @@ export const MobileGameContent = () => {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ height: "205px", width: "100%" }}>
+            <Box mt={3} sx={{ height: "205px", width: "100%" }}>
               <MobileTopSection />
             </Box>
             <Box
@@ -245,57 +247,65 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
-                  <HandSection />
-                </Box>
-            <Flex width="90%" mx={4} justifyContent={"space-between"}>
-              <DiscardButton
-                highlight={run}
-                onTutorialCardClick={() => {
-                  if (run) {
-                    setCardClicked(true);
-                    setStepIndex(stepIndex + 1);
-                  }
-                }}
-              />
-              <PlayButton
-                highlight={run}
-                onTutorialCardClick={() => {
-                  if (run) {
-                    setCardClicked(true);
-                    setStepIndex(stepIndex + 1);
-                  }
-                }}
-              />
-            </Flex>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-              }}
-              width={"100%"}
-            >
-              <Box width={"100%"}>
-
-                <Box
-                  position={"absolute"}
-                  left={0}
-                  bottom={0}
-                  zIndex={6}
-                  width="100%"
-                  display={"flex"}
-                  alignItems={"center"}
-                  backgroundColor="rgba(0,0,0,0.5)"
-                  px={18}
-                  gap={4}
-                >
-                  <ShowPlays />
-                  <GameDeckMobile />
-                </Box>
-              </Box>
+              <HandSection />
             </Box>
+            <Flex
+              width="96%"
+              mx={4}
+              mb={8}
+              justifyContent={"space-between"}
+              alignItems={"flex-end"}
+            >
+              <GameMenu />
+              <Box w="30%">
+                <DiscardButton
+                  highlight={run}
+                  onTutorialCardClick={() => {
+                    if (run) {
+                      setCardClicked(true);
+                      setStepIndex(stepIndex + 1);
+                    }
+                  }}
+                />
+              </Box>
+              <Box w="30%">
+                <PlayButton
+                  highlight={run}
+                  onTutorialCardClick={() => {
+                    if (run) {
+                      setCardClicked(true);
+                      setStepIndex(stepIndex + 1);
+                    }
+                  }}
+                />
+              </Box>
+              <Flex
+                height={["30px", "45px"]}
+                justifyContent="center"
+                alignItems="center"
+                width={["30px", "45px"]}
+                border="1px solid white"
+                borderRadius={["8px", "14px"]}
+                className="game-tutorial-step-9"
+                onClick={() => navigate("/deck")}
+              >
+                <CachedImage
+                  height="15px"
+                  src="deck-icon.png"
+                  alt="deck-icon"
+                />
+              </Flex>
+            </Flex>
           </Box>
         </DndContext>
+        <CachedImage
+            src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
+            width="100%"
+            maxHeight="70px"
+            position="fixed"
+            bottom={1}
+            zIndex={0}
+          />
       </Box>
     </Box>
   );

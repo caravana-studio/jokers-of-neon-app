@@ -48,6 +48,10 @@
     "611": {
       "name": "Mudar para Espadas",
       "description": "A carta modificada será considerada como uma carta de Espadas"
+    },
+    "612": {
+      "name": "Mudar para Neon",
+      "description": "A carta modificada será considerada como uma carta de Neon"
     }
   },
   "specialCardsData": {
