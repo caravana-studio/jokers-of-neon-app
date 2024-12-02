@@ -1,17 +1,16 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useDeck } from "../../dojo/queries/useDeck";
-import { DeckCardsGrid } from "./DeckCardsGrid";
-import { preprocessCards } from "./Utils/DeckCardsUtils";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
-import { DeckFilters } from "./DeckFilters";
-import { useDeckFilters } from "../../providers/DeckFilterProvider";
-import { DeckHeading } from "./DeckHeading";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Card } from "../../types/Card";
-import { useStore } from "../../providers/StoreProvider";
+import { useTranslation } from "react-i18next";
 import { CashSymbol } from "../../components/CashSymbol";
+import { useDeck } from "../../dojo/queries/useDeck";
+import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { useStore } from "../../providers/StoreProvider";
+import { Card } from "../../types/Card";
+import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
+import { DeckCardsGrid } from "./DeckCardsGrid";
+import { DeckFilters } from "./DeckFilters";
+import { DeckHeading } from "./DeckHeading";
+import { preprocessCards } from "./Utils/DeckCardsUtils";
 
 interface DeckPageContentProps {
   inStore?: boolean;
@@ -79,7 +78,9 @@ export const DeckPageContent = ({
               <Button
                 isDisabled={
                   cardToBurn === undefined ||
-                  cash < burnItem.cost ||
+                  (burnItem.discount_cost
+                    ? cash < Number(burnItem.discount_cost)
+                    : cash < Number(burnItem.cost)) ||
                   burnItem.purchased
                 }
                 onClick={() => {

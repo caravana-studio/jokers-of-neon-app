@@ -1,14 +1,13 @@
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import CachedImage from "../../components/CachedImage";
+import BurnIcon from "../../assets/burn.svg?component";
 import { PriceBox } from "../../components/PriceBox";
 import { MAX_SPECIAL_CARDS } from "../../constants/config";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useGame } from "../../dojo/queries/useGame";
 import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import BurnIcon from "../../assets/burn.svg?component";
 
 interface IBurnItem {}
 
@@ -46,7 +45,7 @@ export const BurnItem = ({}: IBurnItem) => {
         >
           <BurnIcon />
           {price && (
-            <PriceBox price={Number(price)} purchased={Boolean(purchased)} />
+            <PriceBox price={Number(price)} purchased={Boolean(purchased)} discountPrice={Number(burnItem?.discount_cost ?? 0)} />
           )}
           {purchased && (
             <Box
