@@ -95,8 +95,12 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 "& img": {
                   opacity: `${opacity}`,
                 },
-                transform: isSelected ? `translateY(-20px)` : "translateY(0px)",
+                transform: isSelected
+                  ? `scale(1.1) translateX(-10px)`
+                  : "scale(1)",
                 transition: "transform 0.3s ease, box-shadow 0.5s ease",
+                borderRadius: borderRadius,
+                boxShadow: isSelected ? `0 0 5px 5px ${BLUE_LIGHT}` : "none",
               }}
             >
               <TiltCard
