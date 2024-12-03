@@ -12,28 +12,32 @@ export const sortCards = (cards: Card[], sortBy: SortBy): Card[] => {
       return a.isSpecial ? 1 : -1;
     }
 
-    // Second layer
-    // if sort by rank or card is modifier or special, sort by card_id
-    if (sortBy === SortBy.SUIT || a.isModifier || a.isSpecial) {
-      if (a.card_id !== undefined && b.card_id !== undefined) {
-        if (a.card_id !== b.card_id) {
-          return a.card_id - b.card_id;
-        }
-      }
-    }
-    // sort by rank
-    const cardA =
-      (a.card_id || a.card_id === 0) && TRADITIONAL_CARDS_DATA[a.card_id];
-    const cardB =
-      (b.card_id || b.card_id === 0) && TRADITIONAL_CARDS_DATA[b.card_id];
-    if (cardA && cardB) {
+    // Determine rank and suit for both cards
+    const cardA = TRADITIONAL_CARDS_DATA[(a.card_id ?? 0) % 200];
+    const cardB = TRADITIONAL_CARDS_DATA[(b.card_id ?? 0) % 200];
+
+    // Second layer: Sort by rank if sortBy is RANK
+    if (sortBy === SortBy.RANK && cardA && cardB) {
       if (cardA.card !== cardB.card) {
         return (cardA.card ?? 0) - (cardB.card ?? 0);
-      } else {
-        return (a.card_id ?? 0) - (b.card_id ?? 0);
       }
     }
 
+    // Third layer: Sort by suit if sortBy is SUIT
+    if (sortBy === SortBy.SUIT && cardA && cardB) {
+      if (cardA.suit !== cardB.suit) {
+        return (cardA.suit ?? 0) - (cardB.suit ?? 0);
+      }
+    }
+
+    // Fourth layer: Neon cards (card_id + 200) placed after regular cards
+    const isNeonA = (a.card_id ?? 0) >= 200;
+    const isNeonB = (b.card_id ?? 0) >= 200;
+    if (isNeonA !== isNeonB) {
+      return isNeonA ? 1 : -1;
+    }
+
+    // Fallback: Preserve original order if all else is equal
     return 0;
   });
 };
