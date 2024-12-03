@@ -92,6 +92,11 @@ export const MobileGameContent = () => {
     return (data: CallBackProps) => {
       const { type } = data;
 
+      if (type === "error:target_not_found") {
+        setStepIndex(stepIndex + 1);
+        return;
+      }
+
       if (
         type === "step:after" &&
         !cardClicked &&
@@ -196,7 +201,7 @@ export const MobileGameContent = () => {
           stepIndex={stepIndex}
           disableCloseOnEsc
           disableOverlayClose
-          showSkipButton={false}
+          showSkipButton
           hideCloseButton
         />
       </Box>
@@ -208,13 +213,13 @@ export const MobileGameContent = () => {
         }}
       >
         <CachedImage
-            src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
-            width="100%"
-            maxHeight="70px"
-            position="fixed"
-            top={1}
-            zIndex={0}
-          />
+          src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
+          width="100%"
+          maxHeight="70px"
+          position="fixed"
+          top={1}
+          zIndex={0}
+        />
         <DndContext
           onDragEnd={handleDragEnd}
           autoScroll={false}
@@ -299,13 +304,13 @@ export const MobileGameContent = () => {
           </Box>
         </DndContext>
         <CachedImage
-            src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
-            width="100%"
-            maxHeight="70px"
-            position="fixed"
-            bottom={1}
-            zIndex={0}
-          />
+          src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
+          width="100%"
+          maxHeight="70px"
+          position="fixed"
+          bottom={1}
+          zIndex={0}
+        />
       </Box>
     </Box>
   );
