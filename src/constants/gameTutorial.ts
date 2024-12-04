@@ -8,6 +8,7 @@ const COMMON_SETTINGS: Partial<Step> = {
   disableScrollParentFix: isMobile ? true : false,
   hideBackButton: true,
   data: { timeout: 0 },
+  showSkipButton: true,
 };
 
 export const TUTORIAL_STEPS: Step[] = [];
@@ -55,10 +56,6 @@ export const TUTORIAL_STYLE = {
 const loadTutorialTranslations = async () => {
   await i18n.loadNamespaces(["tutorials"]);
 
-  const actionKey = isMobile
-    ? "gameTutorial.action.drag"
-    : "gameTutorial.action.select";
-
   Object.assign(TUTORIAL_STEPS, [
     {
       target: ".game-tutorial-intro",
@@ -95,10 +92,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-1",
       title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.discardCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -109,10 +110,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-2",
       title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.discardCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -139,10 +144,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-2",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -153,10 +162,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-3",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -206,10 +219,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-2",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -220,10 +237,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-3",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -234,10 +255,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-4",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -248,10 +273,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-5",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
@@ -262,10 +291,14 @@ const loadTutorialTranslations = async () => {
     {
       target: ".hand-element-6",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.select", {
-        ns: "tutorials",
-        action: i18n.t(actionKey, { ns: "tutorials" }),
-      }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
       ...COMMON_SETTINGS,
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,

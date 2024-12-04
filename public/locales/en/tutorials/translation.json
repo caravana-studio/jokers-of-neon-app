@@ -1,8 +1,8 @@
 {
   "gameTutorial": {
     "action": {
-      "select": "Select",
-      "drag": "Drag and drop"
+      "select": "Select this card.",
+      "select-mobile": "Drag and drop this card."
     },
     "intro": {
       "title": "Welcome to Jokers of Neon",
@@ -21,13 +21,11 @@
     },
     "discardCards": {
       "title": "Discard",
-      "content": "Now click on the discard button to bring new cards to your hand.",
-      "select": "{{action}} this card."
+      "content": "Now click on the discard button to bring new cards to your hand."
     },
     "playCards": {
       "title": "Play Cards",
-      "content": "Now, click on the button to play your preselected cards.",
-      "select": "{{action}} this card."
+      "content": "Now, click on the button to play your preselected cards."
     },
     "pointsMultiplier": {
       "title": "Points and Multiplier",

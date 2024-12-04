@@ -1,8 +1,8 @@
 {
   "gameTutorial": {
     "action": {
-      "select": "Seleciona",
-      "drag": "Arrasta e solta"
+      "select": "Selecione esta carta.",
+      "select-mobile": "Arraste e solte esta carta."
     },
     "intro": {
       "title": "Bem-vindo ao Jokers of Neon",
@@ -21,13 +21,11 @@
     },
     "discardCards": {
       "title": "Descartando",
-      "content": "Agora clique no botão de descarte para trazer novas cartas para sua mão.",
-      "select": "{{action}} esta carta."
+      "content": "Agora clique no botão de descarte para trazer novas cartas para sua mão."
     },
     "playCards": {
       "title": "Jogar Cartas",
-      "content": "Agora, clique no botão para jogar suas cartas pré-selecionadas.",
-      "select": "{{action}} esta carta."
+      "content": "Agora, clique no botão para jogar suas cartas pré-selecionadas."
     },
     "pointsMultiplier": {
       "title": "Pontos e Multiplicador",
