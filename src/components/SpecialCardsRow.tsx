@@ -93,7 +93,7 @@ export const SpecialCardsRow = () => {
               maxWidth={`${cardWidth + 7}px`}
               position="relative"
               zIndex={1}
-              onMouseEnter={() => setHoveredCard(card.idx)}
+              onMouseEnter={() => !isSmallScreen && setHoveredCard(card.idx)}
               onMouseLeave={() => {
                 setHoveredCard(null);
                 setHoveredButton(null);

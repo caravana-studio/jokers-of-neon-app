@@ -21,7 +21,7 @@
           "description": "Los Jokers no puntuarán durante este nivel"
         },
         "406": {
-          "name": "Mano Diminuta",
+          "name": "Mano Disminuida",
           "description": "Tu mano se reducirá en 2 cartas durante este nivel"
         },
         "407": {
