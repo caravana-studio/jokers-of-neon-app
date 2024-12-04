@@ -109,7 +109,12 @@
       "btns": {
         "special-cards": "See special cards",
         "back": "Back to game"
-      }
+      },
+      "tabs": {
+        "full-deck": "Full deck",
+        "plays": "Plays"
+      },
+      "no-cards": "No cards matching your selected filters."
     }
   },
   "confirmation-modal": {

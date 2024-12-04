@@ -13,14 +13,16 @@ const baseStyle = definePartsStyle({
       border: "none",
       boxShadow: `0px 0px 12px 4px ${BLUE}`,
     },
-    borderRadius: "10px",
+    borderRadius: "7px",
     mx: 2,
+    height: "25px",
+    textTransform: "uppercase",
   },
   tablist: {
     border: "1px solid white",
     borderRadius: "18px",
-    py: 3,
-    px: 1
+    py: 2,
+    px: 0.5,
   },
 });
 
