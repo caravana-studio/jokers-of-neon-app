@@ -1,9 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useGameContext } from "../providers/GameProvider";
-import { useTranslation } from "react-i18next";
-import { isTutorial } from "../utils/isTutorial";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay, playIsNeon } = useGameContext();
@@ -18,8 +17,7 @@ export const CurrentPlay = () => {
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? t("game.preselected-cards-section.current-play-lbl.default")
-          : t("game.preselected-cards-section.current-play-lbl.current-play") +
-            `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${PLAYS[preSelectedPlay]}`}
+          : `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${PLAYS[preSelectedPlay]}`}
       </Text>
     </Flex>
   );
