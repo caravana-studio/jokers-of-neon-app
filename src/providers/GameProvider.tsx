@@ -257,7 +257,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const animatePlay = (playEvents: PlayEvents) => {
     if (playEvents) {
-      showSpecials();
       console.log(playEvents);
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
@@ -553,9 +552,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           playEvents.cards && replaceCards(playEvents.cards);
           setRoundRewards(undefined);
           setLockRedirection(false);
-          if (isRageRound) {
-            showRages();
-          }
         }
       }, ALL_CARDS_DURATION + 500);
     }

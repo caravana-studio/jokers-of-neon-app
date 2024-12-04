@@ -9,13 +9,13 @@ import { TiltCard } from "./TiltCard";
 export const RageCards = () => {
   const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
   const { rageCards } = useGameContext();
-  const { isSmallScreen, cardScale } = useResponsiveValues();
+  const { isSmallScreen, specialCardScale } = useResponsiveValues();
   const { highlightCard } = useCardHighlight();
 
   return (
     <Box width={"100%"}>
       <Flex
-        height={`${CARD_HEIGHT * cardScale}px`}
+        height={`${CARD_HEIGHT * specialCardScale}px`}
         justifyContent={"center"}
         alignItems={"center"}
       >
@@ -33,7 +33,7 @@ export const RageCards = () => {
                     isSmallScreen && highlightCard(card);
                   }}
                   card={card}
-                  scale={cardScale}
+                  scale={specialCardScale}
                   key={index}
                 />
               );
