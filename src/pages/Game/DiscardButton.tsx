@@ -1,9 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGameContext } from "../../providers/GameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 import { useGame } from "../../dojo/queries/useGame";
+import { useGameContext } from "../../providers/GameProvider";
+import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface DiscardButtonProps {
   highlight?: boolean;
@@ -27,16 +26,8 @@ export const DiscardButton = ({
   const { t } = useTranslation(["game"]);
   const game = useGame();
 
-  const { isSmallScreen } = useResponsiveValues();
-
   return (
     <Flex flexDir="column" w="100%" gap={[3, 4]}>
-      <PlayDiscardIndicators
-        disabled={cantDiscard}
-        type="discard"
-        total={game?.max_discard ?? 5}
-        active={discards}
-      />
       <Button
         width={"100%"}
         onClick={() => {
@@ -54,10 +45,16 @@ export const DiscardButton = ({
         height={["30px", "32px"]}
         borderRadius="12px"
       >
-        <Text fontFamily="Orbitron" fontSize={[14,16]}>
+        <Text fontFamily="Orbitron" fontSize={[14, 16]}>
           {t("game.preselected-cards-section.discard-btn-lbl.discard")}
         </Text>
       </Button>
+      <PlayDiscardIndicators
+        disabled={cantDiscard}
+        type="discard"
+        total={game?.max_discard ?? 5}
+        active={discards}
+      />
     </Flex>
   );
 };
