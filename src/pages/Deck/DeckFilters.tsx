@@ -1,39 +1,44 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { Suits } from "../../enums/suits";
+import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const DeckFilters = () => {
   const { t } = useTranslation(["game"]);
   const { filterButtonsState, updateFilters } = useDeckFilters();
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Flex flexDirection={"column"} alignItems={"center"}>
-      <Text
-        size={"sm"}
-        sx={{
-          position: "relative",
-          _before: {
-            content: '""',
-            position: "absolute",
-            bottom: "0px",
-            left: 0,
-            width: "100%",
-            height: "1px",
-            background: `linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.5) 100%)`,
-            boxShadow:
-              "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-          },
-        }}
-      >
-        {t("game.deck.filter-title")}
-      </Text>
+      {!isSmallScreen && (
+        <Text
+          size={"sm"}
+          mb={6}
+          sx={{
+            position: "relative",
+            _before: {
+              content: '""',
+              position: "absolute",
+              bottom: "0px",
+              left: 0,
+              width: "100%",
+              height: "1px",
+              background: `linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.5) 100%)`,
+              boxShadow:
+                "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
+            },
+          }}
+        >
+          {t("game.deck.filter-title")}
+        </Text>
+      )}
       <Flex
         alignItems={"space-around"}
         justifyContent={"center"}
         wrap={"wrap"}
-        gap={4}
-        mt={8}
+        gap={[1, 4]}
+        mt={2}
         width={"95%"}
       >
         <Button
@@ -43,7 +48,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               suit:
@@ -64,7 +71,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               suit:
@@ -85,7 +94,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               suit:
@@ -106,7 +117,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               suit:
@@ -127,7 +140,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               isNeon: !filterButtonsState.isNeon ? true : undefined,
@@ -145,7 +160,9 @@ export const DeckFilters = () => {
               ? "outlineSecondaryGlowActive"
               : "outlineSecondaryGlow"
           }
-          borderRadius={"25px"}
+          px={[2, 3]}
+          borderRadius={["12px", "25px"]}
+          height={"25px"}
           onClick={() =>
             updateFilters({
               isModifier: !filterButtonsState.isModifier ? true : undefined,

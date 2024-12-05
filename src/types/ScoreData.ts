@@ -17,6 +17,7 @@ export interface PlayEvents {
   score: number;
   cashEvents?: CashEvent[];
   secondChanceEvent?: boolean;
+  modifierNeonEvents?: ModifierNeonEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -52,6 +53,10 @@ export interface SpecialSuitEvent {
 
 export interface ModifierSuitEvent {
   suit: Suits;
+  idx: number;
+}
+
+export interface ModifierNeonEvent {
   idx: number;
 }
 

@@ -9,7 +9,6 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import CachedImage from "../../components/CachedImage.tsx";
 
 export const TopSection = () => {
-  const { isRageRound } = useGameContext();
   return (
     <Flex
       height="100%"
@@ -32,13 +31,9 @@ export const TopSection = () => {
         justifyContent="flex-start"
         alignItems="flex-start"
         mx={2}
-        flexGrow={1}
-        minWidth={{ base: "250px", md: "500px" }}
-        maxWidth={`${(CARD_WIDTH + 20) * 5}px`}
         gap={2}
       >
         <SpecialCards />
-        {isRageRound && <RageCards />}
       </Flex>
       <Flex
         flexDirection="column"

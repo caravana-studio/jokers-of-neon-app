@@ -1,11 +1,11 @@
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import { useGame } from "../../dojo/queries/useGame";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
-import { ButtonContainer } from "./ButtonContainer";
-import { useTranslation } from "react-i18next";
-import { isTutorial } from "../../utils/isTutorial";
 import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { isTutorial } from "../../utils/isTutorial";
+import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface PlayButtonProps {
   highlight?: boolean;
@@ -19,6 +19,7 @@ export const PlayButton = ({
   const { preSelectedCards, play, preSelectionLocked } = useGameContext();
 
   const round = useRound();
+  const game = useGame();
   const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
 
   const cantPlay =
@@ -28,44 +29,37 @@ export const PlayButton = ({
       !handsLeft ||
       handsLeft === 0);
   const { t } = useTranslation(["game"]);
-  const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <ButtonContainer>
+    <Flex flexDir="column" w="100%" gap={[3, 4]}>
       <Button
-        width={["48%", "48%", "150px"]}
+        width={"100%"}
         onClick={(e) => {
           e.stopPropagation();
           if (onTutorialCardClick) onTutorialCardClick();
           play();
         }}
+        sx={{
+          _disabled: {
+            opacity: 1,
+          },
+        }}
         variant={cantPlay ? "defaultOutline" : "secondarySolid"}
         isDisabled={cantPlay}
         className="game-tutorial-step-4"
+        height={["30px", "32px"]}
+        borderRadius="12px"
       >
-        {isSmallScreen ? (
-          <Box>
-            <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
-              {t("game.preselected-cards-section.play-btn-lbl.play-mobile")}
-            </Text>
-            <Heading mt={1} fontSize={9}>
-              {t("game.preselected-cards-section.play-btn-lbl.left", {
-                handsLeft: handsLeft,
-              })}
-            </Heading>
-          </Box>
-        ) : (
-          t("game.preselected-cards-section.play-btn-lbl.play")
-        )}
-      </Button>
-
-      {!isSmallScreen && (
-        <Text size="l" textAlign={"center"}>
-          {t("game.preselected-cards-section.play-btn-lbl.left", {
-            handsLeft: handsLeft,
-          })}
+        <Text fontFamily="Orbitron" fontSize={[14, 16]}>
+          {t("game.preselected-cards-section.play-btn-lbl.play-mobile")}
         </Text>
-      )}
-    </ButtonContainer>
+      </Button>
+      <PlayDiscardIndicators
+        disabled={cantPlay}
+        type="play"
+        total={game?.max_hands ?? 5}
+        active={handsLeft}
+      />
+    </Flex>
   );
 };

@@ -14,6 +14,7 @@ import {
   TILT_OPTIONS,
 } from "../constants/visualProps";
 
+import { useTranslation } from "react-i18next";
 import ClockIcon from "../assets/clock.svg?component";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { VIOLET } from "../theme/colors.tsx";
@@ -24,8 +25,6 @@ import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { HoloEffect } from "./HoloEffect.tsx";
-import { CashSymbol } from "./CashSymbol.tsx";
-import { useTranslation } from "react-i18next";
 import { PriceBox } from "./PriceBox.tsx";
 
 interface ICardProps {
@@ -37,6 +36,7 @@ interface ICardProps {
   isHolographic?: boolean;
   scale?: number;
   className?: string;
+  used?: boolean;
 }
 
 export const TiltCard = ({
@@ -47,6 +47,7 @@ export const TiltCard = ({
   isHolographic = false,
   scale = 1,
   className,
+  used = false,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -57,7 +58,7 @@ export const TiltCard = ({
 
   const tiltCardComponent = (
     <Box
-      width={cardWith}
+      width={`${cardWith}px`}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
@@ -136,6 +137,20 @@ export const TiltCard = ({
                     />
                   </>
                 )}
+                {used && (
+                  <>
+                    <Box
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      w="100%"
+                      h="100%"
+                      backgroundColor="rgba(0,0,0,0.3)"
+                      borderRadius={{ base: "5px", sm: "8px" }}
+                      pointerEvents="none"
+                    />
+                  </>
+                )}
               </Box>
             </Tooltip>
           )}
@@ -169,7 +184,7 @@ export const TiltCard = ({
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              top: `-${ MODIFIERS_OFFSET}px`,
+              top: `-${MODIFIERS_OFFSET}px`,
               left: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
               position: "absolute",
             }}

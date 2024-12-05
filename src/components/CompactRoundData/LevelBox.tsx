@@ -1,6 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGame } from "../../dojo/queries/useGame";
+import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 
 export const LevelBox = () => {
@@ -8,6 +9,7 @@ export const LevelBox = () => {
     keyPrefix: "game.compact-round-data",
   });
   const game = useGame();
+  const { isRageRound } = useGameContext();
   const level = game?.level ?? 0;
   return (
     <Center>
@@ -17,7 +19,7 @@ export const LevelBox = () => {
         borderRadius="11px"
         mb={0.5}
       >
-        <Box bg="black" borderRadius="9px" px={5} py={0.25}>
+        <Box backgroundColor={isRageRound ? "black" : "backgroundBlue"} borderRadius="9px" px={5} py={0.25}>
           <Heading
             fontSize="11px"
             textTransform="uppercase"

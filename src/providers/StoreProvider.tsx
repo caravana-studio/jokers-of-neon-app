@@ -1,7 +1,10 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
-import { EMPTY_SPECIAL_SLOT_ITEM } from "../dojo/queries/getShopItems.ts";
+import {
+  EMPTY_BURN_ITEM,
+  EMPTY_SPECIAL_SLOT_ITEM,
+} from "../dojo/queries/getShopItems.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
@@ -32,6 +35,7 @@ interface IStoreContext extends ShopItems {
   setRun: (run: boolean) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  burnCard: (card: Card) => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -63,7 +67,7 @@ const StoreContext = createContext<IStoreContext>({
   pokerHandItems: [],
   packs: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
-
+  burnItem: EMPTY_BURN_ITEM,
   rerollInformation: {
     rerollCost: 100,
     rerollExecuted: true,
@@ -73,6 +77,9 @@ const StoreContext = createContext<IStoreContext>({
   setRun: (_) => {},
   loading: true,
   setLoading: (_) => {},
+  burnCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -116,6 +123,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     storeReroll,
     levelUpPokerHand: dojoLevelUpHand,
     buySpecialSlot: dojoBuySpecialSlot,
+    burnCard: dojoBurnCard,
   } = useShopActions();
 
   const stateBuyCard = (card: Card) => {
@@ -151,6 +159,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
+
+  const burnCard = (card: Card): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    const promise = dojoBurnCard(gameId, card.card_id ?? 0);
+    promise
+      .then(() => {
+        fetchShopItems();
       })
       .finally(() => {
         setLocked(false);
@@ -262,12 +284,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         pokerHandItems: shopItems.pokerHandItems,
         packs: shopItems.packs,
         specialSlotItem: shopItems.specialSlotItem,
+        burnItem: shopItems.burnItem,
         rerollInformation,
         cash,
         run,
         setRun,
         loading,
         setLoading,
+        burnCard,
       }}
     >
       {children}

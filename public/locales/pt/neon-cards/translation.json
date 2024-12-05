@@ -207,6 +207,10 @@
       "251": {
         "name": "Ás de neon Espadas",
         "description": "Ganha +22 pontos e +1 multi"
+      },
+      "252": {
+        "name": "Coringa Neon",
+        "description": "Coringa que substitui qualquer carta tradicional. +500 pontos e +3 multi"
       }
     }
   }

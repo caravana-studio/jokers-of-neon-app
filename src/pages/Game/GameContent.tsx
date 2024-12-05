@@ -113,17 +113,17 @@ export const GameContent = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
+    const modifiedCardId = Number(event.over?.id);
     const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
 
-    const modifiedCard = Number(event.over?.id);
-    if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
-      const index = preSelectedCards.indexOf(modifiedCard);
+    if (!isNaN(modifiedCardId) && !isNaN(draggedCard) && isModifier) {
+      const index = preSelectedCards.indexOf(modifiedCardId);
       if (index !== -1) {
-        addModifier(modifiedCard, draggedCard);
+        addModifier(modifiedCardId, draggedCard);
       }
     } else if (
       !isModifier &&
-      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
+      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCardId))
     ) {
       setCardClicked(true);
       setStepIndex(stepIndex + 1);
