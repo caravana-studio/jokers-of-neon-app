@@ -4,7 +4,6 @@ import { useGame } from "../../dojo/queries/useGame";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
@@ -30,16 +29,9 @@ export const PlayButton = ({
       !handsLeft ||
       handsLeft === 0);
   const { t } = useTranslation(["game"]);
-  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <Flex flexDir="column" w="100%" gap={[3, 4]}>
-      <PlayDiscardIndicators
-        disabled={cantPlay}
-        type="play"
-        total={game?.max_hands ?? 5}
-        active={handsLeft}
-      />
       <Button
         width={"100%"}
         onClick={(e) => {
@@ -57,11 +49,17 @@ export const PlayButton = ({
         className="game-tutorial-step-4"
         height={["30px", "32px"]}
         borderRadius="12px"
-        >
-        <Text fontFamily="Orbitron" fontSize={[14,16]}>
+      >
+        <Text fontFamily="Orbitron" fontSize={[14, 16]}>
           {t("game.preselected-cards-section.play-btn-lbl.play-mobile")}
         </Text>
       </Button>
+      <PlayDiscardIndicators
+        disabled={cantPlay}
+        type="play"
+        total={game?.max_hands ?? 5}
+        active={handsLeft}
+      />
     </Flex>
   );
 };

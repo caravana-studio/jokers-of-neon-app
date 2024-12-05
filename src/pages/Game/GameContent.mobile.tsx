@@ -254,7 +254,6 @@ export const MobileGameContent = () => {
               mx={4}
               mb={8}
               justifyContent={"space-between"}
-              alignItems={"flex-end"}
             >
               <GameMenu />
               <Box w="30%">

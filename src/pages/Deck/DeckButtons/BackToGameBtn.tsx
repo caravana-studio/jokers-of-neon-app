@@ -7,7 +7,10 @@ export const BackToGameBtn = () => {
   const navigate = useNavigate();
 
   return (
-    <Button variant={"outlinePrimaryGlow"} onClick={() => navigate(-1)}>
+    <Button
+      variant={"outlinePrimaryGlow"}
+      onClick={() => navigate("/demo", { state: { skipRageAnimation: true } })}
+    >
       {t("game.deck.btns.back").toUpperCase()}
     </Button>
   );

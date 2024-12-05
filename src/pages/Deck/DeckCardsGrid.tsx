@@ -1,13 +1,13 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { Card } from "../../types/Card";
-import { isMobile } from "react-device-detect";
-import { sortCards } from "../../utils/sortCards";
 import { SortBy } from "../../enums/sortBy";
+import { BLUE_LIGHT } from "../../theme/colors";
+import { Card } from "../../types/Card";
 import { DeckFiltersState } from "../../types/DeckFilters";
-import { useState } from "react";
-import { BLUE, BLUE_LIGHT } from "../../theme/colors";
+import { sortCards } from "../../utils/sortCards";
 
 const SCALE = 0.55;
 const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
@@ -106,6 +106,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
               <TiltCard
                 card={card}
                 scale={SCALE}
+                used={usedCount > 0}
                 onClick={() => {
                   if (inBurn) {
                     if (selectedCard?.id === card.id) {
