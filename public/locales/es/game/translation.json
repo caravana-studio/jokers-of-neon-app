@@ -108,9 +108,15 @@
       },
       "btns": {
         "special-cards": "Ver cartas especiales",
-        "back": "Volver al juego"
+        "back": "Volver al juego",
+        "burn": "Quemar carta"
       }
-    }
+    },
+    "tabs": {
+      "full-deck": "Mazo",
+      "plays": "Jugadas"
+    },
+    "no-cards": "No hay cartas que coincidan con los filtros seleccionados."
   },
   "confirmation-modal": {
     "confirm": "Confirmar",

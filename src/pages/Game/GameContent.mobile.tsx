@@ -254,13 +254,12 @@ export const MobileGameContent = () => {
             <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
               <HandSection />
             </Box>
-            <Flex
-              width="96%"
-              mx={4}
-              mb={8}
-              justifyContent={"space-between"}
-            >
-              <GameMenu />
+            <Flex width="96%" mx={4} mb={8} justifyContent={"space-between"}>
+              <GameMenu
+                showTutorial={() => {
+                  setRun(true);
+                }}
+              />
               <Box w="30%">
                 <DiscardButton
                   highlight={run}

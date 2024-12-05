@@ -4,6 +4,7 @@
       "reroll": "Actualizar",
       "see-my": "Cartas",
       "special-cards": "especiales",
+      "full-deck": "Mazo completo",
       "go-to": "Ir al",
       "next-level": "Siguiente nivel",
       "purchased": "Comprado",
@@ -73,6 +74,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
+    },
+    "burn-item": {
+      "tooltip": "Elimina una carta de tu mazo"
     }
   }
 }

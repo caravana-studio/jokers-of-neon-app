@@ -11,6 +11,8 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { BurnItem } from "./BurnItem.tsx";
+import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards } = useStore();
@@ -100,22 +102,20 @@ export const StoreContent = () => {
             w={"20%"}
             h={"100%"}
             justifyContent={"space-between"}
-            gap={10}
             px={0}
             pr={"2%"}
           >
             <>
-              <NextLevelButton
-                isSmallScreen={false}
-              />
-              <SpecialSlotItem />
+              <NextLevelButton isSmallScreen={false} />
+              <Flex flexDirection={"row"} gap={10}>
+                <SpecialSlotItem />
+                <BurnItem />
+              </Flex>
+
               <Flex flexDirection="column" gap={14}>
-                <RerollButton
-                  isSmallScreen={false}
-                />
-                <SpecialsButton
-                  isSmallScreen={false}
-                />
+                <RerollButton isSmallScreen={false} />
+                <SpecialsButton isSmallScreen={false} />
+                <SeeFullDeckButton isSmallScreen={false} />
                 <Coins rolling />
               </Flex>
             </>

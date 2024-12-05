@@ -78,6 +78,28 @@ export const useShopActions = () => {
     }
   };
 
+  const burnCard = async (gameId: number, card_id: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.shop_system.buyBurnItem(
+        account,
+        gameId,
+        card_id
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
   const buySpecialCard = async (
     gameId: number,
     card_idx: number,
@@ -217,6 +239,7 @@ export const useShopActions = () => {
   return {
     skipShop,
     buyCard,
+    burnCard,
     buySpecialCard,
     buyPack,
     selectCardsFromPack,

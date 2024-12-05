@@ -4,6 +4,7 @@
       "reroll": "Reembaralhar",
       "see-my": "Ver meus",
       "special-cards": "Cartas especiais",
+      "full-deck": "Baralho completo",
       "go-to": "Ir para",
       "next-level": "Próximo nível",
       "purchased": "Comprado",
@@ -73,6 +74,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloqueie um novo slot para cartas especiais"
+    },
+    "burn-item": {
+      "tooltip": "Remove uma carta do seu baralho"
     }
   }
 }

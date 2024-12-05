@@ -108,8 +108,14 @@
       },
       "btns": {
         "special-cards": "See special cards",
-        "back": "Back to game"
-      }
+        "back": "Back to game",
+        "burn": "Burn card"
+      },
+      "tabs": {
+        "full-deck": "Full deck",
+        "plays": "Plays"
+      },
+      "no-cards": "No cards matching your selected filters."
     }
   },
   "confirmation-modal": {
