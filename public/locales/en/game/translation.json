@@ -108,7 +108,8 @@
       },
       "btns": {
         "special-cards": "See special cards",
-        "back": "Back to game"
+        "back": "Back to game",
+        "burn": "Burn card"
       },
       "tabs": {
         "full-deck": "Full deck",

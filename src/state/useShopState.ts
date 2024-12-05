@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import {
+  EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
   getShopItems,
 } from "../dojo/queries/getShopItems";
 import { useGame } from "../dojo/queries/useGame";
 import {
   BlisterPackItem,
-  SlotSpecialCardsItem
+  SlotSpecialCardsItem,
+  BurnItem,
 } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
@@ -24,6 +26,7 @@ export interface ShopItems {
   pokerHandItems: PokerHandItem[];
   packs: BlisterPackItem[];
   specialSlotItem: SlotSpecialCardsItem;
+  burnItem: BurnItem;
 }
 
 const sortByCardId = (a: Card, b: Card) => {
@@ -54,6 +57,7 @@ export const useShopState = () => {
   const [specialSlotItem, setSpecialSlotItem] = useState<SlotSpecialCardsItem>(
     EMPTY_SPECIAL_SLOT_ITEM
   );
+  const [burnItem, setBurnItem] = useState<BurnItem>(EMPTY_BURN_ITEM);
 
   const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
     {
@@ -157,6 +161,7 @@ export const useShopState = () => {
       setSpecialSlotItem(shopItems.specialSlotItem);
       setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
+      setBurnItem(shopItems.burnItem);
     }
   };
 
@@ -171,6 +176,7 @@ export const useShopState = () => {
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
     packs: blisterPackItems.sort(sortByPackId),
     specialSlotItem,
+    burnItem,
   };
 
   return {

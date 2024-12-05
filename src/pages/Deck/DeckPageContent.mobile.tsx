@@ -1,19 +1,31 @@
-import { Box, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
+import { CashSymbol } from "../../components/CashSymbol";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { useStore } from "../../providers/StoreProvider";
+import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { DeckFilters } from "./DeckFilters";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
-import { useTranslation } from "react-i18next";
 
-export const DeckPageContentMobile = () => {
+interface DeckPageContentMobileProps {
+  inStore?: boolean;
+  burn?: boolean;
+}
+
+export const DeckPageContentMobile = ({
+  inStore = false,
+  burn = false,
+}: DeckPageContentMobileProps) => {
   const { filterButtonsState } = useDeckFilters();
   const { t } = useTranslation("game", { keyPrefix: "game.deck.tabs" });
+  const [cardToBurn, setCardToBurn] = useState<Card>();
 
   const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
   const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
@@ -38,6 +50,22 @@ export const DeckPageContentMobile = () => {
     },
     trackTouch: true,
   });
+
+  const { cash, burnCard, burnItem } = useStore();
+
+  const handleCardSelect = (card: Card) => {
+    if (!burnItem.purchased) {
+      if (cardToBurn?.id === card.id) {
+        setCardToBurn(undefined);
+      } else {
+        setCardToBurn(card);
+      }
+    }
+  };
+
+  const handleBurnCard = (card: Card) => {
+    burnCard(card);
+  };
 
   return (
     <>
@@ -92,6 +120,8 @@ export const DeckPageContentMobile = () => {
                     isModifier: filterButtonsState.isModifier,
                     suit: filterButtonsState.suit ?? undefined,
                   }}
+                  onCardSelect={burn ? handleCardSelect : () => {}}
+                  inBurn={burn}
                 />
               </Box>
             </Flex>
@@ -103,6 +133,22 @@ export const DeckPageContentMobile = () => {
         )}
 
         <Flex gap={4} mt={4} wrap={"wrap"} justifyContent={"center"}>
+          {burn && (
+            <Button
+              isDisabled={
+                cardToBurn === undefined ||
+                cash < burnItem.cost ||
+                burnItem.purchased
+              }
+              onClick={() => {
+                if (cardToBurn) handleBurnCard(cardToBurn);
+              }}
+            >
+              {t("game.deck.btns.burn").toUpperCase()}
+              {" " + burnItem.cost}
+              <CashSymbol />
+            </Button>
+          )}
           <BackToGameBtn />
         </Flex>
       </Flex>
