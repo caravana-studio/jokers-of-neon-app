@@ -41,7 +41,7 @@ export const PreviewSlot = () => {
   );
 
   const tooltipButton = notEnoughCash ? (
-    <Tooltip label={t("labels.tooltip.no-coins")}>{buyButton}</Tooltip>
+    <Tooltip label={t("tooltip.no-coins")}>{buyButton}</Tooltip>
   ) : (
     buyButton
   );

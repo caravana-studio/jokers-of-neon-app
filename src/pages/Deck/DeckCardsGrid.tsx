@@ -1,13 +1,14 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { Card } from "../../types/Card";
-import { isMobile } from "react-device-detect";
-import { sortCards } from "../../utils/sortCards";
 import { SortBy } from "../../enums/sortBy";
+import { BLUE_LIGHT } from "../../theme/colors";
+import { Card } from "../../types/Card";
 import { DeckFiltersState } from "../../types/DeckFilters";
-import { useState } from "react";
-import { BLUE, BLUE_LIGHT } from "../../theme/colors";
+import { sortCards } from "../../utils/sortCards";
 
 const SCALE = 0.55;
 const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
@@ -28,6 +29,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   onCardSelect,
   inBurn = false,
 }) => {
+  const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const hasFilters =
     filters?.isModifier != undefined ||
     filters?.isNeon != undefined ||
@@ -95,13 +97,18 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 "& img": {
                   opacity: `${opacity}`,
                 },
-                transform: isSelected ? `translateY(-20px)` : "translateY(0px)",
+                transform: isSelected
+                  ? `scale(1.1) translateX(-10px)`
+                  : "scale(1)",
                 transition: "transform 0.3s ease, box-shadow 0.5s ease",
+                borderRadius: borderRadius,
+                boxShadow: isSelected ? `0 0 5px 5px ${BLUE_LIGHT}` : "none",
               }}
             >
               <TiltCard
                 card={card}
                 scale={SCALE}
+                used={usedCount > 0}
                 onClick={() => {
                   if (inBurn) {
                     if (selectedCard?.id === card.id) {
@@ -117,6 +124,11 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
           );
         })}
       </Flex>
+      {(!filteredCards || filteredCards.length === 0) && (
+        <Text color="white" size="l" textAlign="center">
+          {t("no-cards")}
+        </Text>
+      )}
     </Box>
   );
 };
