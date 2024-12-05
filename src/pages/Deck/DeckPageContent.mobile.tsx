@@ -67,6 +67,11 @@ export const DeckPageContentMobile = ({
     burnCard(card);
   };
 
+  const effectiveCost: number =
+    burnItem?.discount_cost && burnItem.discount_cost !== 0
+      ? Number(burnItem.discount_cost)
+      : Number(burnItem.cost);
+
   return (
     <>
       <Flex
@@ -137,7 +142,7 @@ export const DeckPageContentMobile = ({
             <Button
               isDisabled={
                 cardToBurn === undefined ||
-                cash < burnItem.cost ||
+                cash < effectiveCost ||
                 burnItem.purchased
               }
               onClick={() => {
@@ -145,7 +150,7 @@ export const DeckPageContentMobile = ({
               }}
             >
               {t("game.deck.btns.burn").toUpperCase()}
-              {" " + burnItem.cost}
+              {" " + effectiveCost}
               <CashSymbol />
             </Button>
           )}
