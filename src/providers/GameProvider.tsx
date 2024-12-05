@@ -603,6 +603,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
         if (response.cashEvent) {
+          console.log(response.cashEvent);
           // cash event
           response.cashEvent.forEach((event, index) => {
             setTimeout(() => {
@@ -611,7 +612,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 idx: [idx],
                 special_idx,
                 cash,
-                animationIndex: 60,
+                animationIndex: 900 + index,
               });
             }, playAnimationDuration * index); // Stagger animations for each event
           });
@@ -692,7 +693,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           if (modifiedCard) {
             setTransformedCards((prev) => {
               const newMap = new Map(prev);
-              newMap.set(cardIdx, modifiedCard.card_id ?? -1);
+              newMap.set(cardIdx, modifiedCard?.card_id ?? -1);
               return newMap;
             });
             modifiedCard.card_id = transformedCard;
