@@ -11,19 +11,19 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { TiltCard } from "../../components/TiltCard";
-import { PLAYS_DATA, PLAYS } from "../../constants/plays";
+import { PLAYS, PLAYS_DATA } from "../../constants/plays";
+import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
 import { LevelPokerHand } from "../../dojo/typescript/models.gen";
 import { useDojo } from "../../dojo/useDojo";
-import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
 import { parseHand } from "../../enums/hands";
 import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
-import { useTranslation } from "react-i18next";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 const { blueLight, blue, violet } = theme.colors;
 
@@ -70,6 +70,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
           boxShadow={`0px 0px 20px 15px ${blue}`}
           backgroundColor="rgba(0, 0, 0, 1)"
           className="game-tutorial-step-table-plays"
+          w={["100%", "unset"]}
         >
           <CustomScrollbar>
             <Table

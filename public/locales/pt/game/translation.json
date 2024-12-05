@@ -111,7 +111,12 @@
         "back": "Voltar ao jogo",
         "burn": "Queimar carta"
       }
-    }
+    },
+    "tabs": {
+      "full-deck": "Baralho",
+      "plays": "Jogadas"
+    },
+    "no-cards": "Não há cartas que correspondam aos filtros selecionados."
   },
   "confirmation-modal": {
     "confirm": "Confirmar",

@@ -19,6 +19,7 @@ import { inputTheme } from "./input";
 import { menuTheme } from "./menu.ts";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
+import { tabsTheme } from "./tabs.ts";
 import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
 
@@ -79,5 +80,6 @@ export default {
     Heading: headingTheme,
     Text: textTheme,
     Menu: menuTheme,
+    Tabs: tabsTheme
   },
 };
