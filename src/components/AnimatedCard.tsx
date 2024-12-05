@@ -187,14 +187,6 @@ export const AnimatedCard = ({
                 textShadow: `0 0 5px  ${getColor()}`,
               }}
             >
-              {/* {isSpecial && cash ? (
-                <>
-                  +{cash}
-                  <CashSymbol />
-                </>
-              ) : (
-                <>{(points || multi) && <> + {points || multi}</>}</>
-              )} */}
               +{points || multi || (isSpecial && cash)}
               {isSpecial && cash && <CashSymbol />}
             </Heading>

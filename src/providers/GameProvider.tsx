@@ -603,7 +603,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
       if (response.success) {
         if (response.cashEvent) {
-          console.log(response.cashEvent);
           // cash event
           response.cashEvent.forEach((event, index) => {
             setTimeout(() => {
