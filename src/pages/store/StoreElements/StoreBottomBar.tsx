@@ -12,8 +12,14 @@ interface StoreBottomProps {
 export const StoreBottomBar = (props: StoreBottomProps) => {
   const { setRun } = useStore();
   return (
-    <Flex width={"100%"} p={4} justifyContent={"space-between"} zIndex={2}>
-      <Flex gap={4}>
+    <Flex
+      width={"100%"}
+      p={4}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      zIndex={2}
+    >
+      <Flex gap={4} alignItems={"center"}>
         <GameMenu
           showTutorial={() => {
             setRun(true);
@@ -21,7 +27,7 @@ export const StoreBottomBar = (props: StoreBottomProps) => {
         />
         <SpecialsButton isSmallScreen={props.isSmallScreen} />
       </Flex>
-      <Flex gap={4}>
+      <Flex gap={4} alignItems={"center"}>
         <NextLevelButton isSmallScreen={props.isSmallScreen} />
         <GameDeckMobile />
       </Flex>
