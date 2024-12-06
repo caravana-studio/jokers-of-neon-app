@@ -28,6 +28,8 @@ export const StoreTopBar = (props: StoreTopProps) => {
         <PriceBox
           price={rerollInformation.rerollCost}
           purchased={rerollInformation.rerollExecuted}
+          absolutePosition={false}
+          fontSize={8}
         ></PriceBox>
         <IoIosInformationCircleOutline color="white" size={"24px"} />
       </Flex>

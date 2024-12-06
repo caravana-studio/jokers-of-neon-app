@@ -6,26 +6,30 @@ interface IPriceBoxProps {
   price: number;
   purchased: boolean;
   discountPrice?: number;
+  absolutePosition?: boolean;
+  fontSize?: number | string;
 }
 
 export const PriceBox = ({
   price,
   purchased,
   discountPrice = 0,
+  absolutePosition = true,
+  fontSize = isMobile ? 15 : 1,
 }: IPriceBoxProps) => {
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: absolutePosition ? "absolute" : "default",
         bottom: "-8%",
         left: "50%",
-        transform: "translateX(-50%)",
+        transform: absolutePosition ? "translateX(-50%)" : "translateX(0)",
         zIndex: 10,
         backgroundColor: "black",
         borderRadius: "5px",
         boxShadow: "0px 0px 10px 2px white",
         color: "white",
-        fontSize: isMobile ? 15 : 18,
+        fontSize: fontSize,
         px: 2,
         pt: "1px",
         opacity: purchased ? 0.5 : 1,
