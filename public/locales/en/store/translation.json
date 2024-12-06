@@ -8,7 +8,10 @@
       "go-to": "Go to",
       "next-level": "Next",
       "purchased": "Purchased",
-      "coins": "Coins:"
+      "coins": "Coins:",
+      "cards": "Cards",
+      "loot-boxes": "Loot Boxes",
+      "utilities": "Utilities"
     },
     "titles": {
       "level-game": "Level up your game",

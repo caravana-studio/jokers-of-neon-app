@@ -8,7 +8,10 @@
       "go-to": "Ir para",
       "next-level": "Próximo",
       "purchased": "Comprado",
-      "coins": "Moedas:"
+      "coins": "Moedas:",
+      "cards": "Cartas",
+      "loot-boxes": "Caixas de Saque",
+      "utilities": "Utilidades"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",

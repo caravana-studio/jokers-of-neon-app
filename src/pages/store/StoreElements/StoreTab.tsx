@@ -1,5 +1,6 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface StoreTabProps {
   onClickCards?: () => void;
@@ -11,6 +12,7 @@ export const StoreTab = (props: StoreTabProps) => {
   const [cardsActive, setCardsActive] = useState(true);
   const [lootBoxesActive, setLootBoxesActive] = useState(false);
   const [utilitiesActive, setUtilitiesActive] = useState(false);
+  const { t } = useTranslation(["store"]);
 
   const deactivateTabs = () => {
     setCardsActive(false);
@@ -43,7 +45,7 @@ export const StoreTab = (props: StoreTabProps) => {
         size={"xs"}
         width={"100%"}
       >
-        Cards
+        {t("store.labels.cards")}
       </Button>
       <Button
         fontSize={9}
@@ -56,7 +58,7 @@ export const StoreTab = (props: StoreTabProps) => {
         size={"xs"}
         width={"100%"}
       >
-        Loot Boxes
+        {t("store.labels.loot-boxes")}
       </Button>
       <Button
         fontSize={9}
@@ -69,7 +71,7 @@ export const StoreTab = (props: StoreTabProps) => {
         size={"xs"}
         width={"100%"}
       >
-        Utilities
+        {t("store.labels.utilities")}
       </Button>
     </Flex>
   );
