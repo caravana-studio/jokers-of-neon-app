@@ -12,6 +12,9 @@ import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
+import { StoreTab } from "./StoreElements/StoreTab.tsx";
+import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
+import { StoreBottomBar } from "./StoreElements/StoreBottomBar.tsx";
 
 export const StoreContentMobile = () => {
   const { setRun, commonCards, modifierCards, specialCards } = useStore();
@@ -20,18 +23,20 @@ export const StoreContentMobile = () => {
 
   return (
     <>
-      <PositionedGameMenu
+      {/* <PositionedGameMenu
         showTutorial={() => {
           setRun(true);
         }}
-      />
+      /> */}
       <Flex
         width="100%"
-        height="100%"
+        height="100vh"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
       >
+        <StoreTab></StoreTab>
+        <StoreTopBar isSmallScreen={true}></StoreTopBar>
         <Box
           display="flex"
           flexWrap="wrap"
@@ -139,6 +144,7 @@ export const StoreContentMobile = () => {
             </Flex>
           </Box>
         </Box>
+        <StoreBottomBar isSmallScreen={true}></StoreBottomBar>
       </Flex>
     </>
   );
