@@ -1,38 +1,41 @@
-import { CardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import {
-  CardItemType,
-  PokerHand,
-  SlotSpecialCardsItem,
   BurnItem,
+  CardItemType,
+  SlotSpecialCardsItem,
 } from "../typescript/models.gen";
 
 export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
+  fieldOrder: [],
 };
 
 export const EMPTY_BURN_ITEM: BurnItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
+  fieldOrder: [],
 };
 
-const getCard = (txCard: any, forcedCardType?: CardItemType) => {
-  const cardType =
-    forcedCardType ??
-    ({
-      type: Object.entries(txCard.item_type.variant).find(
-        ([key, value]) => value !== undefined && value !== null
-      )?.[0],
-    } as CardItemType);
+const CARDS_IDX = 0;
+const SPECIALS_IDX = 1;
+const POKER_HANDS_IDX = 2;
+const BLISTER_PACKS_IDX = 3;
+const POWERUPS_IDX = 4;
+const SLOTS_IDX = 5;
+const BURN_IDX = 6;
+const REROLL_IDX = 7;
+const CASH_IDX = 8;
+
+const getCard = (txCard: any) => {
   const idx = parseInt(txCard.idx);
   const card_id = parseInt(txCard.card_id);
   return {
     price: parseInt(txCard.cost),
-    isModifier: cardType.type === CardTypes.MODIFIER,
-    isSpecial: cardType.type === CardTypes.SPECIAL,
+    isModifier: txCard.card_id >= 600 && txCard.card_id < 700,
+    isSpecial: txCard.card_id >= 300 && txCard.card_id < 400,
     id: idx?.toString() ?? "",
     idx,
     card_id,
@@ -47,13 +50,9 @@ const getPokerHandItem = (txPokerHand: any) => {
   return {
     game_id: parseInt(txPokerHand.game_id),
     idx: parseInt(txPokerHand.idx),
-    poker_hand: (
-      {
-        type: Object.entries(txPokerHand.poker_hand.variant).find(
-          ([key, value]) => value !== undefined && value !== null
-        )?.[0],
-      } as PokerHand
-    ).type,
+    poker_hand: Object.entries(txPokerHand.poker_hand.variant).find(
+      ([key, value]) => value !== undefined && value !== null
+    )?.[0] as unknown as CardItemType,
     level: parseInt(txPokerHand.level),
     cost: parseInt(txPokerHand.cost),
     purchased: txPokerHand.purchased,
@@ -71,14 +70,27 @@ const getBlisterPack = (txBlisterPack: any) => {
   };
 };
 
+const getPowerUp = (txPowerUp: any) => {
+  return {
+    game_id: parseInt(txPowerUp.game_id),
+    idx: parseInt(txPowerUp.idx),
+    power_up_id: parseInt(txPowerUp.power_up_id),
+    cost: parseInt(txPowerUp.cost),
+    purchased: txPowerUp.purchased,
+    img: `/powerups/${txPowerUp.power_up_id}.png`,
+    img_big: `/powerups/big/${txPowerUp.power_up_id}.png`,
+  };
+};
+
 export const getShopItems = async (client: any, gameId: number) => {
   if (gameId != 0) {
     try {
       let tx_result = await client.shop_system.getShopItems(gameId);
-
-      const modifiersAndCommonCards = tx_result[0].map((txCard: any) => {
-        return getCard(txCard);
-      });
+      const modifiersAndCommonCards = tx_result[CARDS_IDX].map(
+        (txCard: any) => {
+          return getCard(txCard);
+        }
+      );
 
       const modifierCards = modifiersAndCommonCards.filter(
         (card: Card) => card.isModifier
@@ -87,31 +99,37 @@ export const getShopItems = async (client: any, gameId: number) => {
         (card: Card) => !card.isModifier && !card.isSpecial
       );
 
-      const specialCards = tx_result[1].map((txCard: any) => {
-        return getCard(txCard, { type: CardTypes.SPECIAL });
+      const specialCards = tx_result[SPECIALS_IDX].map((txCard: any) => {
+        return getCard(txCard);
       });
-      const pokerHandItems = tx_result[2].map((txPokerHand: any) => {
-        return getPokerHandItem(txPokerHand);
-      });
-      const packs = tx_result[3].map((txBlisterPack: any) => {
+      const pokerHandItems = tx_result[POKER_HANDS_IDX].map(
+        (txPokerHand: any) => {
+          return getPokerHandItem(txPokerHand);
+        }
+      );
+      const packs = tx_result[BLISTER_PACKS_IDX].map((txBlisterPack: any) => {
         return getBlisterPack(txBlisterPack);
       });
       const specialSlotItem = {
-        game_id: parseInt(tx_result[4].game_id),
-        cost: parseInt(tx_result[4].cost),
-        purchased: tx_result[4].purchased,
+        game_id: parseInt(tx_result[SLOTS_IDX].game_id),
+        cost: parseInt(tx_result[SLOTS_IDX].cost),
+        purchased: tx_result[SLOTS_IDX].purchased,
       };
 
       const burnItem = {
-        game_id: parseInt(tx_result[5].game_id),
-        cost: parseInt(tx_result[5].cost),
-        purchased: tx_result[5].purchased,
+        game_id: parseInt(tx_result[BURN_IDX].game_id),
+        cost: parseInt(tx_result[BURN_IDX].cost),
+        purchased: tx_result[BURN_IDX].purchased,
       };
 
       const rerollInformation = {
-        rerollCost: parseInt(tx_result[6].reroll_cost),
-        rerollExecuted: tx_result[6].reroll_executed,
+        rerollCost: parseInt(tx_result[REROLL_IDX].reroll_cost),
+        rerollExecuted: tx_result[REROLL_IDX].reroll_executed,
       };
+
+      const powerUpItems = tx_result[POWERUPS_IDX].map((txPowerUp: any) => {
+        return getPowerUp(txPowerUp);
+      });
 
       return {
         specialCards,
@@ -121,8 +139,9 @@ export const getShopItems = async (client: any, gameId: number) => {
         packs,
         specialSlotItem,
         rerollInformation,
-        cash: parseInt(tx_result[7]),
+        cash: parseInt(tx_result[CASH_IDX]),
         burnItem,
+        powerUpItems,
       };
     } catch (e) {
       console.log(e);
@@ -140,6 +159,7 @@ export const getShopItems = async (client: any, gameId: number) => {
       },
       cash: 0,
       burnItem: EMPTY_BURN_ITEM,
+      powerUpItems: [],
     };
   }
 };

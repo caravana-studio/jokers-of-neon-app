@@ -17,7 +17,8 @@
       "special": "Cartas especiales",
       "improve-plays": "Mejora tus manos",
       "my-special-cards": "Mis especiales",
-      "packs": "Paquetes"
+      "packs": "Paquetes",
+      "powerups": "Poderes"
     },
     "tooltip": {
       "reroll-default": "Actualizar items",

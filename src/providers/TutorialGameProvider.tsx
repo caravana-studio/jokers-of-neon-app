@@ -6,7 +6,6 @@ import {
   preselectedCardSfx,
 } from "../constants/sfx";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -36,6 +35,7 @@ import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 
 export const mockTutorialGameContext = createContext<IGameContext>({
   ...gameProviderDefaults,

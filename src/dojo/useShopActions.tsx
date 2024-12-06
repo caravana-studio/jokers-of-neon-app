@@ -78,6 +78,31 @@ export const useShopActions = () => {
     }
   };
 
+  const buyPowerUp = async (
+    gameId: number,
+    power_up_idx: number,
+  ) => {
+    try {
+      showTransactionToast();
+      const response = await client.shop_system.buyPowerUpItem(
+        account,
+        gameId,
+        power_up_idx,
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
   const burnCard = async (gameId: number, card_id: number) => {
     try {
       showTransactionToast();
@@ -246,5 +271,6 @@ export const useShopActions = () => {
     levelUpPokerHand,
     storeReroll,
     buySpecialSlot,
+    buyPowerUp,
   };
 };

@@ -185,7 +185,8 @@ export const useGameActions = () => {
         account,
         gameId,
         cards,
-        modifiers1
+        modifiers1,
+        []
       );
       const transaction_hash = response?.transaction_hash ?? "";
 

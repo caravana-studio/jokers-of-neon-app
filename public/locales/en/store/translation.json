@@ -17,7 +17,8 @@
       "special": "special cards",
       "improve-plays": "Improve your plays",
       "my-special-cards": "My special cards",
-      "packs": "Packs"
+      "packs": "Packs",
+      "powerups": "Power-ups"
     },
     "tooltip": {
       "reroll-default": "Update available items",

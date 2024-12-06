@@ -5,7 +5,6 @@ import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -15,6 +14,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { LevelPokerHand } from "../types/LevelPokerHand";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());

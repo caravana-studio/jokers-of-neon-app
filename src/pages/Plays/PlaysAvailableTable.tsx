@@ -16,7 +16,6 @@ import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { TiltCard } from "../../components/TiltCard";
 import { PLAYS, PLAYS_DATA } from "../../constants/plays";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
-import { LevelPokerHand } from "../../dojo/typescript/models.gen";
 import { useDojo } from "../../dojo/useDojo";
 import { parseHand } from "../../enums/hands";
 import { useGameContext } from "../../providers/GameProvider";
@@ -24,6 +23,7 @@ import { BLUE_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
+import { LevelPokerHand } from "../../types/LevelPokerHand";
 
 const { blueLight, blue, violet } = theme.colors;
 

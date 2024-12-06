@@ -1,38 +1,6 @@
 {
   "activated": "Activado",
   "modifierCardsData": {
-    "600": {
-      "name": "+10 Pontos",
-      "description": "A carta modificada ganhará +10 pontos adicionais"
-    },
-    "601": {
-      "name": "+20 Pontos",
-      "description": "A carta modificada ganhará +20 pontos adicionais"
-    },
-    "602": {
-      "name": "+50 Pontos",
-      "description": "A carta modificada ganhará +50 pontos adicionais"
-    },
-    "603": {
-      "name": "+100 Pontos",
-      "description": "A carta modificada ganhará +100 pontos adicionais"
-    },
-    "604": {
-      "name": "+1 multiplicador",
-      "description": "A carta modificada adicionará +1 ao multiplicador"
-    },
-    "605": {
-      "name": "+2 multiplicador",
-      "description": "A carta modificada adicionará +2 ao multiplicador"
-    },
-    "606": {
-      "name": "+5 multiplicador",
-      "description": "A carta modificada adicionará +5 ao multiplicador"
-    },
-    "607": {
-      "name": "+10 multiplicador",
-      "description": "A carta modificada adicionará +10 ao multiplicador"
-    },
     "608": {
       "name": "Mudar para Paus",
       "description": "A carta modificada será considerada como uma carta de Paus"
@@ -222,6 +190,40 @@
     "346": {
       "name": "Impulsionador de Quinteto",
       "description": "Aprimora a mão Quinteto em 4 níveis"
+    }
+  },
+  "powerUpsData": {
+    "600": {
+      "name": "+10 Pontos",
+      "description": "Pontuação adicional de +10"
+    },
+    "601": {
+      "name": "+20 Pontos",
+      "description": "Pontuação adicional de +20"
+    },
+    "602": {
+      "name": "+50 Pontos",
+      "description": "Pontuação adicional de +50"
+    },
+    "603": {
+      "name": "+100 Pontos",
+      "description": "Pontuação adicional de +100"
+    },
+    "604": {
+      "name": "+1 multi",
+      "description": "Adiciona +1 ao multi"
+    },
+    "605": {
+      "name": "+2 multi",
+      "description": "Adiciona +2 ao multi"
+    },
+    "606": {
+      "name": "+5 multi",
+      "description": "Adiciona +5 ao multi"
+    },
+    "607": {
+      "name": "+10 multi",
+      "description": "Adiciona +10 ao multi"
     }
   }
 }
