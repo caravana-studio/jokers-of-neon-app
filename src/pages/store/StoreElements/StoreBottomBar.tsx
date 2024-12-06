@@ -12,7 +12,7 @@ interface StoreBottomProps {
 export const StoreBottomBar = (props: StoreBottomProps) => {
   const { setRun } = useStore();
   return (
-    <Flex width={"100%"} p={4} justifyContent={"space-between"}>
+    <Flex width={"100%"} p={4} justifyContent={"space-between"} zIndex={2}>
       <Flex gap={4}>
         <GameMenu
           showTutorial={() => {
