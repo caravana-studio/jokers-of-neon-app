@@ -2,6 +2,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DeckIcon from "../assets/deck.svg?component";
+import CachedImage from "./CachedImage";
 
 export const GameDeckMobile = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export const GameDeckMobile = () => {
       borderRadius={"8px"}
       borderColor="transparent !important"
       size={"xs"}
+      paddingInlineStart={0}
+      paddingInlineEnd={0}
       onMouseEnter={() => setHoveredButton(true)}
       onMouseLeave={() => setHoveredButton(false)}
       _hover={{
@@ -31,7 +34,7 @@ export const GameDeckMobile = () => {
         borderColor={"white"}
         borderRadius={"8px"}
       >
-        <DeckIcon color="white" width={14} />
+        <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
       </Flex>
     </Button>
   );
