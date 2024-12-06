@@ -1,40 +1,76 @@
 {
-    "rageCardsData": {
-        "401": {
-          "name": "Broken Hearts",
-          "description": "Heart suited cards will not score during this level"
-        },
-        "402": {
-          "name": "Broken Clubs",
-          "description": "Club suited cards will not score during this level"
-        },
-        "403": {
-          "name": "Broken Diamonds",
-          "description": "Diamond suited cards will not score during this level"
-        },
-        "404": {
-          "name": "Broken Spades",
-          "description": "Spade suited cards will not score during this level"
-        },
-        "405": {
-          "name": "Broken Jokers",
-          "description": "Jokers will not score during this level"
-        },
-        "406": {
-          "name": "Diminished Hold",
-          "description": "Your hand will be reduced by 2 cards during this level"
-        },
-        "407": {
-          "name": "Zero Waste",
-          "description": "You have no discards during this level"
-        },
-        "408": {
-          "name": "Unexpected Sacrifice",
-          "description": "One of your special cards got sacrificed"
-        },
-        "409": {
-          "name": "Strategic Quartet",
-          "description": "You can only play up to 4 cards during this level"
-        }
-      }
+  "rageCardsData": {
+    "401": {
+      "name": "Broken Hearts",
+      "description": "Heart suited cards will not score during this level"
+    },
+    "402": {
+      "name": "Broken Clubs",
+      "description": "Club suited cards will not score during this level"
+    },
+    "403": {
+      "name": "Broken Diamonds",
+      "description": "Diamond suited cards will not score during this level"
+    },
+    "404": {
+      "name": "Broken Spades",
+      "description": "Spade suited cards will not score during this level"
+    },
+    "405": {
+      "name": "Broken Jokers",
+      "description": "Jokers will not score during this level"
+    },
+    "406": {
+      "name": "Diminished Hold",
+      "description": "Your hand will be reduced by 2 cards during this level"
+    },
+    "407": {
+      "name": "Zero Waste",
+      "description": "You have no discards during this level"
+    },
+    "408": {
+      "name": "Unexpected Sacrifice",
+      "description": "One of your special cards got sacrificed"
+    },
+    "409": {
+      "name": "Strategic Quartet",
+      "description": "You can only play up to 4 cards during this level"
+    },
+    "410": {
+      "name": "Dynamic Tactics",
+      "description": "The same hand cannot be played twice"
+    },
+    "411": {
+      "name": "Balanced Trade-off",
+      "description": "A poker play is worth double, another half"
+    },
+    "412": {
+      "name": "Broken Figures",
+      "description": "Figures (Jack, Queen and King) will not score during this level"
+    },
+    "413": {
+      "name": "Broken Modifiers",
+      "description": "Modifiers will not work during this level"
+    },
+    "414": {
+      "name": "Last Words",
+      "description": "Silence the most repeated card in the deck"
+    },
+    "415": {
+      "name": "Greedy Trap",
+      "description": "Deduct 200 for each hand played and 100 for each discard"
+    },
+    "416": {
+      "name": "The Hand Leech",
+      "description": "2 hands less to play"
+    },
+    "417": {
+      "name": "Spider’s Snare",
+      "description": "Special cards have no effect on the first hand played"
+    },
+    "418": {
+      "name": "Perpetual Curse",
+      "description": "Silence a random card in each hand played"
+    }
+  }
 }

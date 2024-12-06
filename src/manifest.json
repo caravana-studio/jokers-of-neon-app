@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x3a7609403d40d80b17b7e5190936fc0872a364314707fa49610904d335568c4",
-      "class_hash": "0x3f14f8c019952f1199ab3a6d5e495c7c8353d75f5595885b0692a6f6c5bd66e",
+      "address": "0x40cb24167f73769401c1e9722dbc2611ee52489357f55c2d6da221ab9a1bbb9",
+      "class_hash": "0x6ee4ee35faf31c2a76df6249de74aa800f897a753db60cee1e6cc9bc352600b",
       "abi": [
         {
           "type": "impl",
@@ -1876,9 +1876,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "selector": "0x25bae3ed99b9282d147b178067335cf2d607ff13acbd09c62fa525c14bb8869",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x6ed5f7c87c0f058625093ba927dfc1fb6c4f9fad686b19c3a220ca2cb5a775f",
@@ -2075,10 +2073,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "selector": "0x601fc835e0c1478502e4787b6200cb5074b02e3545bcfab9ef100c7f4071da3",
-      "systems": [
-        "calculate",
-        "upgrade"
-      ]
+      "systems": ["calculate", "upgrade"]
     },
     {
       "address": "0x759e13b330482878f428dd448aa4b5c7157792cbfcf58928e109981fac7a835",
