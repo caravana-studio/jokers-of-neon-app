@@ -25,7 +25,9 @@ export const StoreContentMobile = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <StoreTab></StoreTab>
+        <Flex p={2} width={"95%"}>
+          <StoreTab />
+        </Flex>
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
         <Box
           display="flex"
