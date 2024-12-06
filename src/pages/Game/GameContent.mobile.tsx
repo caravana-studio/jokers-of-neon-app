@@ -92,6 +92,11 @@ export const MobileGameContent = () => {
     return (data: CallBackProps) => {
       const { type } = data;
 
+      if (type === "error:target_not_found") {
+        setStepIndex(stepIndex + 1);
+        return;
+      }
+
       if (
         type === "step:after" &&
         !cardClicked &&
@@ -196,7 +201,7 @@ export const MobileGameContent = () => {
           stepIndex={stepIndex}
           disableCloseOnEsc
           disableOverlayClose
-          showSkipButton={false}
+          showSkipButton
           hideCloseButton
         />
       </Box>
