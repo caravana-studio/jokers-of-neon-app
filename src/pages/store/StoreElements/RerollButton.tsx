@@ -1,7 +1,8 @@
-import { Button, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { CashSymbol } from "../../../components/CashSymbol";
 import { useStore } from "../../../providers/StoreProvider";
+import { CashSymbol } from "../../../components/CashSymbol";
+import { FiRefreshCw } from "react-icons/fi";
 
 interface RerollButtonProps {
   isSmallScreen: boolean;
@@ -29,18 +30,26 @@ const RerollButton: React.FC<RerollButtonProps> = ({ isSmallScreen }) => {
       <Button
         className="game-tutorial-step-6"
         fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-        w={
-          isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]
-        }
-        variant={rerollDisabled ? "defaultOutline" : "solid"}
+        w={"100%"}
+        minWidth={"100px"}
+        size={isSmallScreen ? "xs" : "md"}
+        variant={rerollDisabled ? "defaultOutline" : "secondarySolid"}
         isDisabled={rerollDisabled}
         onClick={() => {
           reroll();
         }}
       >
+        {isSmallScreen && (
+          <Box mr={2}>
+            <FiRefreshCw />
+          </Box>
+        )}
         {t("store.labels.reroll").toUpperCase()}
-        {isSmallScreen && <br />} {rerollInformation.rerollCost}
-        <CashSymbol />
+        {!isSmallScreen && (
+          <>
+            &nbsp;${rerollInformation.rerollCost} <CashSymbol />
+          </>
+        )}
       </Button>
     </Tooltip>
   );
