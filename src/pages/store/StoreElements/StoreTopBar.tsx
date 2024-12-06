@@ -16,9 +16,7 @@ export const StoreTopBar = (props: StoreTopProps) => {
       gap={4}
       p={2}
       backgroundColor={"black"}
-      border={"1px 1px 2px 2px"}
       borderRadius={"25px"}
-      borderColor={"white"}
       justifyContent={"space-around"}
     >
       <Flex gap={2}>
