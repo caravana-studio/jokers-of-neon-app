@@ -21,7 +21,7 @@ export const StoreTab = (props: StoreTabProps) => {
   return (
     <Flex
       gap={4}
-      py={"22px"}
+      py={"20px"}
       px={2}
       backgroundColor={"black"}
       border={"1px"}
@@ -33,40 +33,40 @@ export const StoreTab = (props: StoreTabProps) => {
       alignItems={"center"}
     >
       <Button
-        fontSize={10}
+        fontSize={9}
         variant={cardsActive ? "solid" : "transparent"}
         onClick={() => {
           deactivateTabs();
           setCardsActive(true);
           props.onClickCards?.();
         }}
-        size={"sm"}
+        size={"xs"}
         width={"100%"}
       >
         Cards
       </Button>
       <Button
-        fontSize={10}
+        fontSize={9}
         variant={lootBoxesActive ? "solid" : "transparent"}
         onClick={() => {
           deactivateTabs();
           setLootBoxesActive(true);
           props.onClickLootBoxes?.();
         }}
-        size={"sm"}
+        size={"xs"}
         width={"100%"}
       >
         Loot Boxes
       </Button>
       <Button
-        fontSize={10}
+        fontSize={9}
         variant={utilitiesActive ? "solid" : "transparent"}
         onClick={() => {
           deactivateTabs();
           setUtilitiesActive(true);
           props.onClickUtilities?.();
         }}
-        size={"sm"}
+        size={"xs"}
         width={"100%"}
       >
         Utilities
