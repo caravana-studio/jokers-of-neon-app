@@ -23,7 +23,7 @@ export const StoreTopBar = (props: StoreTopProps) => {
       alignItems={"center"}
       justifyContent={"space-between"}
     >
-      <Flex gap={2} alignItems={"center"}>
+      <Flex gap={4} alignItems={"center"}>
         <RerollButton isSmallScreen={props.isSmallScreen}></RerollButton>
         <PriceBox
           price={rerollInformation.rerollCost}

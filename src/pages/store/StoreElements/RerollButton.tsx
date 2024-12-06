@@ -29,9 +29,11 @@ const RerollButton: React.FC<RerollButtonProps> = ({ isSmallScreen }) => {
     >
       <Button
         className="game-tutorial-step-6"
-        fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
+        fontSize={isSmallScreen ? 8 : [10, 10, 10, 14, 14]}
         w={"100%"}
-        minWidth={"100px"}
+        minWidth={"90px"}
+        height={"100%"}
+        p={isSmallScreen ? "4px" : 0}
         size={isSmallScreen ? "xs" : "md"}
         variant={rerollDisabled ? "defaultOutline" : "secondarySolid"}
         isDisabled={rerollDisabled}
