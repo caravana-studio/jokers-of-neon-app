@@ -15,8 +15,11 @@ export const PriceBox = ({
   purchased,
   discountPrice = 0,
   absolutePosition = true,
-  fontSize = isMobile ? 15 : 1,
+  fontSize,
 }: IPriceBoxProps) => {
+  const finalFontSize = fontSize ?? (isMobile ? 15 : 1);
+  const finalDiscountFontSize =
+    fontSize ?? (isMobile ? 15 : discountPrice > 0 ? 10 : 18);
   return (
     <Box
       sx={{
@@ -29,7 +32,7 @@ export const PriceBox = ({
         borderRadius: "5px",
         boxShadow: "0px 0px 10px 2px white",
         color: "white",
-        fontSize: fontSize,
+        fontSize: finalFontSize,
         px: 2,
         pt: "1px",
         opacity: purchased ? 0.5 : 1,
@@ -38,7 +41,7 @@ export const PriceBox = ({
       <Box
         sx={{
           textDecoration: discountPrice > 0 ? "line-through" : "none",
-          fontSize: isMobile ? 15 : discountPrice > 0 ? 10 : 18,
+          fontSize: finalDiscountFontSize,
         }}
       >
         {price}

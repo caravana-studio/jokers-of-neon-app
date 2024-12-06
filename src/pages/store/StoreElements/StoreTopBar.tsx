@@ -25,13 +25,15 @@ export const StoreTopBar = (props: StoreTopProps) => {
     >
       <Flex gap={4} alignItems={"center"}>
         <RerollButton isSmallScreen={props.isSmallScreen}></RerollButton>
-        <PriceBox
-          price={rerollInformation.rerollCost}
-          purchased={rerollInformation.rerollExecuted}
-          absolutePosition={false}
-          fontSize={8}
-        ></PriceBox>
-        <IoIosInformationCircleOutline color="white" size={"24px"} />
+        <Flex alignItems={"center"} gap={2}>
+          <PriceBox
+            price={rerollInformation.rerollCost}
+            purchased={rerollInformation.rerollExecuted}
+            absolutePosition={false}
+            fontSize={9}
+          ></PriceBox>
+          <IoIosInformationCircleOutline color="white" size={"14px"} />
+        </Flex>
       </Flex>
       <Flex alignItems={"center"}>
         <Coins />
