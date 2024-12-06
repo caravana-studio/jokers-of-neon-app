@@ -110,7 +110,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { gameId } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
-  const { play: levelUpHandSound } = useAudio(levelUpSfx);
+  const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: buyPackSound } = useAudio(buyPackSfx);
   const { play: rerollSound } = useAudio(rerollSfx, 0.5);
