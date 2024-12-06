@@ -20,6 +20,8 @@ export interface Card {
   temporary?: boolean;
   remaining?: number;
   isNeon?: boolean;
+  discount_cost?: number;
+  temporary_discount_cost?: number;
 }
 
 export interface StaticEffectCard extends Effect {

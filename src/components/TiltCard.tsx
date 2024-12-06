@@ -155,7 +155,7 @@ export const TiltCard = ({
             </Tooltip>
           )}
 
-          {card.price && <PriceBox price={card.price} purchased={purchased} />}
+          {card.price && <PriceBox price={card.price} purchased={purchased} discountPrice={card.discount_cost} />}
           {card.purchased && (
             <Box
               sx={{

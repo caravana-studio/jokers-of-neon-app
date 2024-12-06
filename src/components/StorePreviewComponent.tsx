@@ -36,6 +36,8 @@ interface IStorePreviewComponent {
   isPack?: boolean;
   spine?: JSX.Element;
   showOverlay?: boolean;
+  discountPrice?: number;
+  temporalDiscountPrice?: number;
 }
 
 export const StorePreviewComponent = ({
@@ -52,6 +54,8 @@ export const StorePreviewComponent = ({
   spine,
   showOverlay,
   temporalButton,
+  discountPrice,
+  temporalDiscountPrice,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
@@ -220,19 +224,59 @@ export const StorePreviewComponent = ({
               )}
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
                 <Flex flexDirection={"column"} gap={5}>
-                  <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
-                    {t("store.preview-card.title.price")} {price}
-                    <CashSymbol />
-                  </Heading>
-                  {temporalPrice && (
+                  <Flex gap={3}>
                     <Heading
                       fontSize={{ base: "sm", sm: "lg" }}
                       variant="italic"
                     >
-                      {t("store.preview-card.title.temporal-price")}{" "}
-                      {temporalPrice}
+                      {t("store.preview-card.title.price")}
+                    </Heading>
+                    <Heading
+                      fontSize={{ base: "sm", sm: "lg" }}
+                      variant="italic"
+                      textDecoration={discountPrice ? "line-through" : "none"}
+                    >
+                      {price}
                       <CashSymbol />
                     </Heading>
+                    {discountPrice && (
+                      <Heading
+                        fontSize={{ base: "sm", sm: "lg" }}
+                        variant="italic"
+                      >
+                        {discountPrice}
+                        <CashSymbol />
+                      </Heading>
+                    )}
+                  </Flex>
+                  {temporalPrice && (
+                    <Flex gap={3}>
+                      <Heading
+                        fontSize={{ base: "sm", sm: "lg" }}
+                        variant="italic"
+                      >
+                        {t("store.preview-card.title.temporal-price")}
+                      </Heading>
+                      <Heading
+                        fontSize={{ base: "sm", sm: "lg" }}
+                        variant="italic"
+                        textDecoration={
+                          temporalDiscountPrice ? "line-through" : "none"
+                        }
+                      >
+                        {temporalPrice}
+                        <CashSymbol />
+                      </Heading>
+                      {temporalDiscountPrice && (
+                        <Heading
+                          fontSize={{ base: "sm", sm: "lg" }}
+                          variant="italic"
+                        >
+                          {temporalDiscountPrice}
+                          <CashSymbol />
+                        </Heading>
+                      )}
+                    </Flex>
                   )}
                 </Flex>
               </Box>

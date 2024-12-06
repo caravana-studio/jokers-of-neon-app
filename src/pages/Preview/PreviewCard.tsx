@@ -32,9 +32,14 @@ const PreviewCard = () => {
   const specialMaxLength = game?.len_max_current_special_cards ?? 0;
   const specialLength = game?.len_current_special_cards ?? 0;
 
-  const notEnoughCash = !card.price || cash < card.price;
+  const notEnoughCash =
+    !card.price ||
+    (card.discount_cost ? cash < card.discount_cost : cash < card.price);
   const notEnoughCashTemporal =
-    !card.temporary_price || cash < card.temporary_price;
+    !card.temporary_price ||
+    (card.temporary_discount_cost
+      ? cash < card.temporary_discount_cost
+      : cash < card.temporary_price);
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
@@ -169,6 +174,7 @@ const PreviewCard = () => {
       extraDescription={card.isTemporary && getTemporalCardText(card.remaining)}
       price={card.price}
       temporalPrice={card.isSpecial ? card.temporary_price : undefined}
+      discountPrice={card.discount_cost}
     />
   );
 };
