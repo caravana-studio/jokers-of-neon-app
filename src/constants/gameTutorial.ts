@@ -101,11 +101,17 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "top" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-2",
@@ -124,6 +130,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".game-tutorial-step-3",
@@ -158,6 +170,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-3",
@@ -176,6 +194,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".game-tutorial-step-6",
@@ -233,6 +257,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-3",
@@ -251,6 +281,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-4",
@@ -269,6 +305,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-5",
@@ -287,6 +329,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-6",
@@ -305,6 +353,12 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".hand-element-7",
@@ -314,6 +368,12 @@ const loadTutorialTranslations = async () => {
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
       spotlightPadding: 0,
+      offset: isMobile ? 250 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".game-tutorial-intro",
