@@ -238,6 +238,24 @@ export function defineContractComponents(world: World) {
             },
           }
         );
+      })(),      
+      
+      GamePowerUp: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            power_ups: RecsType.NumberArray,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "GamePowerUp",
+              types: ["u32", "array"],
+              customTypes: [],
+            },
+          }
+        );
       })(),
   
       CurrentHandEvent: (() => {
@@ -360,6 +378,7 @@ export function defineContractComponents(world: World) {
             current_jokers: RecsType.Number,
             state: RecsType.String,
             cash: RecsType.Number,
+            len_max_current_power_ups: RecsType.Number,
           },
           {
             metadata: {

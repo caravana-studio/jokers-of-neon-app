@@ -176,9 +176,12 @@ export const useGameActions = () => {
   const play = async (
     gameId: number,
     cards: number[],
-    modifiers: { [key: number]: number[] }
+    modifiers: { [key: number]: number[] },
+    powerUps: number[]
   ) => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
+
+    console.log("powerUps", powerUps);
     try {
       showTransactionToast();
       const response = await client.game_system.play(
@@ -186,7 +189,7 @@ export const useGameActions = () => {
         gameId,
         cards,
         modifiers1,
-        []
+        powerUps
       );
       const transaction_hash = response?.transaction_hash ?? "";
 

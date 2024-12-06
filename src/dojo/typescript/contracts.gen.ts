@@ -211,6 +211,8 @@ export async function setupWorld(provider: DojoProvider) {
 	};
 
 	const game_system_play = async (snAccount: Account, gameId: number, cardsIndex: Array<number>, modifiersIndex: Array<number>, powerUpsIndex: Array<number>) => {
+
+		console.log('calldata', [gameId, cardsIndex, modifiersIndex, powerUpsIndex])
 		try {
 			return await provider.execute(
 				snAccount,
