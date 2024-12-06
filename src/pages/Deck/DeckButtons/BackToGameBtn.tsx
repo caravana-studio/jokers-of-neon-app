@@ -11,7 +11,7 @@ export const BackToGameBtn = () => {
     <Button
       variant={"outlinePrimaryGlow"}
       onClick={() =>
-        navigate(state.inStore ? "/store" : "/demo", {
+        navigate(state?.inStore ? "/store" : "/demo", {
           state: { skipRageAnimation: true },
         })
       }
