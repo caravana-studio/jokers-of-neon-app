@@ -16,11 +16,13 @@ export const StoreTopBar = (props: StoreTopProps) => {
     <Flex
       gap={4}
       p={2}
+      width={"100%"}
       backgroundColor={"black"}
       borderRadius={"25px"}
+      alignItems={"center"}
       justifyContent={"space-around"}
     >
-      <Flex gap={2}>
+      <Flex gap={2} alignItems={"center"}>
         <RerollButton isSmallScreen={props.isSmallScreen}></RerollButton>
         <PriceBox
           price={rerollInformation.rerollCost}
@@ -28,7 +30,7 @@ export const StoreTopBar = (props: StoreTopProps) => {
         ></PriceBox>
         <FiAlertCircle />
       </Flex>
-      <Flex>
+      <Flex alignItems={"center"}>
         <Coins />
       </Flex>
     </Flex>
