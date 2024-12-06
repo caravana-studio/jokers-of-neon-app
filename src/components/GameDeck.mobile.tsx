@@ -23,7 +23,14 @@ export const GameDeckMobile = () => {
         navigate("/deck");
       }}
     >
-      <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
+      <Flex
+        p={"8px"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        border={"1px"}
+        borderColor={"white"}
+        borderRadius={"8px"}
+      >
         <DeckIcon color="white" width={14} />
       </Flex>
     </Button>
