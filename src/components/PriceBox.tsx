@@ -36,12 +36,16 @@ export const PriceBox = ({
         px: 2,
         pt: "1px",
         opacity: purchased ? 0.5 : 1,
+        pointerEvents: "none",
       }}
     >
       <Box
         sx={{
           textDecoration: discountPrice > 0 ? "line-through" : "none",
           fontSize: finalDiscountFontSize,
+          lineHeight: discountPrice > 0 ? 0.5 : 1,
+          mt: discountPrice > 0 ? 0.5 : 0,
+          opacity: discountPrice > 0 ? 0.7 : 1,
         }}
       >
         {price}

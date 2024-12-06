@@ -45,7 +45,7 @@ export const LootBoxes = () => {
                   loopAnimation={animationsData.loopAnimation}
                   isPurchased={pack.purchased.valueOf()}
                   price={card.price}
-                  discountPrice={pack.cost_discount.valueOf()}
+                  discountPrice={pack.discount_cost.valueOf()}
                   onClick={() => {
                     if (!pack.purchased) {
                       navigate("/preview/loot-box", {

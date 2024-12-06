@@ -1,22 +1,24 @@
 import { CardTypes } from "../../enums/cardTypes";
 import { Card } from "../../types/Card";
 import {
+  BurnItem,
   CardItemType,
   PokerHand,
   SlotSpecialCardsItem,
-  BurnItem,
 } from "../typescript/models.gen";
 
 export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
+  discount_cost: 0,
 };
 
 export const EMPTY_BURN_ITEM: BurnItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
+  discount_cost: 0,
 };
 
 const getCard = (txCard: any, forcedCardType?: CardItemType) => {
@@ -40,6 +42,8 @@ const getCard = (txCard: any, forcedCardType?: CardItemType) => {
     img: `${card_id}.png`,
     temporary: txCard.temporary,
     temporary_price: parseInt(txCard.temporary_cost),
+    discount_cost: parseInt(txCard.discount_cost),
+    temporary_discount_cost: parseInt(txCard.temporary_discount_cost),
   };
 };
 
@@ -57,6 +61,7 @@ const getPokerHandItem = (txPokerHand: any) => {
     level: parseInt(txPokerHand.level),
     cost: parseInt(txPokerHand.cost),
     purchased: txPokerHand.purchased,
+    discount_cost: parseInt(txPokerHand.discount_cost),
   };
 };
 
@@ -64,10 +69,10 @@ const getBlisterPack = (txBlisterPack: any) => {
   return {
     blister_pack_id: parseInt(txBlisterPack.blister_pack_id),
     cost: parseInt(txBlisterPack.cost),
-    cost_discount: parseInt(txBlisterPack.cost_discount),
     purchased: txBlisterPack.purchased,
     game_id: parseInt(txBlisterPack.game_id),
     idx: parseInt(txBlisterPack.idx),
+    discount_cost: parseInt(txBlisterPack.discount_cost),
   };
 };
 
@@ -100,12 +105,14 @@ export const getShopItems = async (client: any, gameId: number) => {
         game_id: parseInt(tx_result[4].game_id),
         cost: parseInt(tx_result[4].cost),
         purchased: tx_result[4].purchased,
+        discount_cost: parseInt(tx_result[4].discount_cost),
       };
 
       const burnItem = {
         game_id: parseInt(tx_result[5].game_id),
         cost: parseInt(tx_result[5].cost),
         purchased: tx_result[5].purchased,
+        discount_cost: parseInt(tx_result[5].discount_cost),
       };
 
       const rerollInformation = {

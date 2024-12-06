@@ -34,7 +34,7 @@ export interface BlisterPackItem {
   idx: Number;
   blister_pack_id: Number;
   cost: Number;
-  cost_discount: Number;
+  discount_cost: Number;
   purchased: Boolean;
 }
 export const BlisterPackItemDefinition = {
@@ -42,7 +42,7 @@ export const BlisterPackItemDefinition = {
   idx: RecsType.Number,
   blister_pack_id: RecsType.Number,
   cost: RecsType.Number,
-  cost_discount: RecsType.Number,
+  discount_cost: RecsType.Number,
   purchased: RecsType.Boolean,
 };
 
@@ -74,7 +74,6 @@ export interface BlisterPackResult {
   cards_picked: Boolean;
   cards: Number[];
 }
-
 export const BlisterPackResultDefinition = {
   game_id: RecsType.Number,
   cards_picked: RecsType.Boolean,
@@ -86,12 +85,14 @@ export interface BurnItem {
   game_id: number;
   cost: number;
   purchased: boolean;
+  discount_cost: Number;
 }
 
 export const BurnItemDefinition = {
   game_id: RecsType.Number,
   cost: RecsType.Number,
   purchased: RecsType.Boolean,
+  discount_cost: RecsType.Number,
 };
 
 // Type definition for `jokers_of_neon::models::data::events::BuyBlisterPackEvent` struct
@@ -197,6 +198,7 @@ export interface CardItem {
   cost: Number;
   purchased: Boolean;
   temporary: Boolean;
+  discount_cost: Number;
 }
 export const CardItemDefinition = {
   game_id: RecsType.Number,
@@ -479,6 +481,7 @@ export interface PokerHandItem {
   level: Number;
   cost: Number;
   purchased: Boolean;
+  discount_cost: Number;
 }
 export const PokerHandItemDefinition = {
   game_id: RecsType.Number,
@@ -560,11 +563,13 @@ export interface SlotSpecialCardsItem {
   game_id: Number;
   cost: Number;
   purchased: Boolean;
+  discount_cost: Number;
 }
 export const SlotSpecialCardsItemDefinition = {
   game_id: RecsType.Number,
   cost: RecsType.Number,
   purchased: RecsType.Boolean,
+  discount_cost: RecsType.Number,
 };
 
 // Type definition for `jokers_of_neon::models::data::events::SpecialCashEvent` struct
@@ -672,7 +677,7 @@ export function defineContractComponents(world: World) {
           idx: RecsType.Number,
           blister_pack_id: RecsType.Number,
           cost: RecsType.Number,
-          cost_discount: RecsType.Number,
+          discount_cost: RecsType.Number,
           purchased: RecsType.Boolean,
         },
         {
@@ -714,12 +719,13 @@ export function defineContractComponents(world: World) {
           game_id: RecsType.Number,
           cost: RecsType.Number,
           purchased: RecsType.Boolean,
+          discount_cost: RecsType.Number,
         },
         {
           metadata: {
             namespace: "jokers_of_neon",
             name: "BurnItem",
-            types: ["u32", "u32", "bool"],
+            types: ["u32", "u32", "bool", "u32"],
             customTypes: [],
           },
         }
@@ -1330,6 +1336,7 @@ export function defineContractComponents(world: World) {
           game_id: RecsType.Number,
           cost: RecsType.Number,
           purchased: RecsType.Boolean,
+          discount_cost: RecsType.Number,
         },
         {
           metadata: {
