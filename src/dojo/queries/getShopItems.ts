@@ -61,7 +61,7 @@ const getPokerHandItem = (txPokerHand: any) => {
     level: parseInt(txPokerHand.level),
     cost: parseInt(txPokerHand.cost),
     purchased: txPokerHand.purchased,
-    discount_cost: parseInt(txPokerHand.discount_cost),
+    discount_cost: txPokerHand.discount_cost ? parseInt(txPokerHand.discount_cost) : 0,
   };
 };
 

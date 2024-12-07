@@ -44,7 +44,8 @@
       },
       "tooltip": {
         "no-coins": "Você não tem moedas suficientes para comprar este item",
-        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
+        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
+        "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro poder. Consuma-os na próxima rodada."
       },
       "labels": {
         "buy": "Comprar",

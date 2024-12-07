@@ -165,6 +165,11 @@ export const useGameState = () => {
     setSpecialSwitcherOn(true);
   };
 
+  const resetPowerUps = () => {
+    setPowerUps([]);
+    setPreselectedPowerUps([]);
+  };
+
   return {
     gameId,
     setGameId,
@@ -223,5 +228,6 @@ export const useGameState = () => {
     removePowerUp,
     preselectedPowerUps,
     setPreselectedPowerUps,
+    resetPowerUps
   };
 };

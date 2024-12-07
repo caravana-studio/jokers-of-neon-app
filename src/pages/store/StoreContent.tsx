@@ -83,8 +83,8 @@ export const StoreContent = () => {
                 />
               )}
             </Box>
-            <Flex gap={4}>
-              <Box w="60%" className="game-tutorial-step-4">
+            <Flex gap={4} w="100%">
+              <Box w="70%" className="game-tutorial-step-4">
                 {modifierCards.length > 0 && (
                   <StoreCardsRow
                     cards={modifierCards}
@@ -92,7 +92,7 @@ export const StoreContent = () => {
                   />
                 )}
               </Box>
-              <Box w="40%" className="game-tutorial-step-4">
+              <Box w="30%" className="game-tutorial-step-4">
                 <StorePowerUpsRow />
               </Box>
             </Flex>

@@ -163,6 +163,7 @@ export const AnimatedCard = ({
         width: `${(CARD_WIDTH + (isSmallScreen ? 12 : 8)) * scale}px`,
         height: `${(CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * scale}px`,
         borderRadius: cardBorderRadius,
+        zIndex: 10,
         ...cardSprings,
       }}
     >
@@ -186,6 +187,7 @@ export const AnimatedCard = ({
               sx={{
                 textShadow: `0 0 5px  ${getColor()}`,
               }}
+              zIndex={99}
             >
               +{points || multi || (isSpecial && cash)}
               {isSpecial && cash && <CashSymbol />}

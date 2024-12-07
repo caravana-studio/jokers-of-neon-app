@@ -202,6 +202,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     powerUps,
     setPreselectedPowerUps,
     removePowerUp,
+    resetPowerUps,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -215,6 +216,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(false);
     setIsRageRound(false);
     showSpecials();
+    resetPowerUps();
   };
 
   const toggleSortBy = () => {

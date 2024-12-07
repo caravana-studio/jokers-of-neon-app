@@ -7,37 +7,37 @@ const loadTranslations = async () => {
   await i18n.loadNamespaces(['effects']);
 
   Object.assign(POWER_UPS_CARDS_DATA, {
-    600: {
-      name: i18n.t('powerUpsData.600.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.600.description', {ns:'effects'}),
+    800: {
+      name: i18n.t('powerUpsData.800.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.800.description', {ns:'effects'}),
     },
-    601: {
-      name: i18n.t('powerUpsData.601.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.601.description', {ns:'effects'}),
+    801: {
+      name: i18n.t('powerUpsData.801.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.801.description', {ns:'effects'}),
     },
-    602: {
-      name: i18n.t('powerUpsData.602.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.602.description', {ns:'effects'}),
+    802: {
+      name: i18n.t('powerUpsData.802.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.802.description', {ns:'effects'}),
     },
-    603: {
-      name: i18n.t('powerUpsData.603.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.603.description', {ns:'effects'}),
+    803: {
+      name: i18n.t('powerUpsData.803.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.803.description', {ns:'effects'}),
     },
-    604: {
-      name: i18n.t('powerUpsData.604.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.604.description', {ns:'effects'}),
+    804: {
+      name: i18n.t('powerUpsData.804.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.804.description', {ns:'effects'}),
     },
-    605: {
-      name: i18n.t('powerUpsData.605.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.605.description', {ns:'effects'}),
+    805: {
+      name: i18n.t('powerUpsData.805.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.805.description', {ns:'effects'}),
     },
-    606: {
-      name: i18n.t('powerUpsData.606.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.606.description', {ns:'effects'}),
+    806: {
+      name: i18n.t('powerUpsData.806.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.806.description', {ns:'effects'}),
     },
-    607: {
-      name: i18n.t('powerUpsData.607.name', {ns:'effects'}),
-      description: i18n.t('powerUpsData.607.description', {ns:'effects'}),
+    807: {
+      name: i18n.t('powerUpsData.807.name', {ns:'effects'}),
+      description: i18n.t('powerUpsData.807.description', {ns:'effects'}),
     },
   });
 }

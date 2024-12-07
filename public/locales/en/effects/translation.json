@@ -3,23 +3,23 @@
   "modifierCardsData": {
     "608": {
       "name": "Change to Clubs",
-      "description": "be considered as a Clubs card"
+      "description": "The modified card will be considered  as a Clubs card"
     },
     "609": {
       "name": "Change to Diamonds",
-      "description": "be considered as a Diamonds card"
+      "description": "The modified card will be considered  as a Diamonds card"
     },
     "610": {
       "name": "Change to Hearts",
-      "description": "be considered as a Hearts card"
+      "description": "The modified card will be considered  as a Hearts card"
     },
     "611": {
       "name": "Change to Spades",
-      "description": "be considered as a Spades card"
+      "description": "The modified card will be considered  as a Spades card"
     },
     "612": {
       "name": "Change to Neon",
-      "description": "be considered as a Neon card"
+      "description": "The modified card will be considered  as a Neon card"
     }
   },
   "specialCardsData": {
@@ -193,35 +193,35 @@
     }
   },
   "powerUpsData": {
-    "600": {
-      "name": "+10 Points",
-      "description": "Scores +10 additional points"
+    "800": {
+      "name": "+25 Points",
+      "description": "Scores +25 additional points"
     },
-    "601": {
-      "name": "+20 Points",
-      "description": "Scores +20 additional points"
-    },
-    "602": {
+    "801": {
       "name": "+50 Points",
       "description": "Scores +50 additional points"
     },
-    "603": {
+    "802": {
+      "name": "+75 Points",
+      "description": "Scores +75 additional points"
+    },
+    "803": {
       "name": "+100 Points",
       "description": "Scores +100 additional points"
     },
-    "604": {
-      "name": "+1 multi",
-      "description": "Adds +1 to the multi"
+    "804": {
+      "name": "+3 multi",
+      "description": "Adds +3 to the multi"
     },
-    "605": {
-      "name": "+2 multi",
-      "description": "Adds +2 to the multi"
-    },
-    "606": {
+    "805": {
       "name": "+5 multi",
       "description": "Adds +5 to the multi"
     },
-    "607": {
+    "806": {
+      "name": "+7 multi",
+      "description": "Adds +7 to the multi"
+    },
+    "807": {
       "name": "+10 multi",
       "description": "Adds +10 to the multi"
     }

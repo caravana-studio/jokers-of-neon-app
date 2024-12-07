@@ -6,6 +6,7 @@ import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { POWER_UPS_CARDS_DATA } from "../../data/powerups.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 
 export const PreviewPowerUp = () => {
@@ -19,12 +20,16 @@ export const PreviewPowerUp = () => {
 
   const game = useGame();
   const { buyPowerUp, locked } = useStore();
+  const { powerUps } = useGameContext();
   const cash = game?.cash ?? 0;
 
-  const name = POWER_UPS_CARDS_DATA[powerUp.power_up_id].name;
+  const name = `${POWER_UPS_CARDS_DATA[powerUp.power_up_id].name}`;
   const description = POWER_UPS_CARDS_DATA[powerUp.power_up_id].description;
 
   const notEnoughCash = !powerUp.cost || cash < powerUp.cost;
+  const noSpace =
+    powerUps.filter((p) => !!p).length >=
+    (game?.len_max_current_power_ups ?? 4);
 
   const buyButton = (
     <Button
@@ -33,7 +38,7 @@ export const PreviewPowerUp = () => {
         buyPowerUp(powerUp);
         navigate(-1);
       }}
-      isDisabled={notEnoughCash || locked || buyDisabled}
+      isDisabled={notEnoughCash || locked || buyDisabled || noSpace}
       variant="outlinePrimaryGlow"
       height={{ base: "40px", sm: "100%" }}
       width={{ base: "50%", sm: "unset" }}
@@ -42,8 +47,8 @@ export const PreviewPowerUp = () => {
     </Button>
   );
 
-  const tooltipButton = notEnoughCash ? (
-    <Tooltip label={t("tooltip.no-coins")}>{buyButton}</Tooltip>
+  const tooltipButton = (notEnoughCash || noSpace) ? (
+    <Tooltip label={t(notEnoughCash ? "tooltip.no-coins" : "tooltip.no-space-power-ups")}>{buyButton}</Tooltip>
   ) : (
     buyButton
   );

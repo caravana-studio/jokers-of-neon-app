@@ -193,35 +193,35 @@
     }
   },
   "powerUpsData": {
-    "600": {
-      "name": "+10 Pontos",
-      "description": "Pontuação adicional de +10"
+    "800": {
+      "name": "+25 Pontos",
+      "description": "Pontuação adicional de +25"
     },
-    "601": {
-      "name": "+20 Pontos",
-      "description": "Pontuação adicional de +20"
-    },
-    "602": {
+    "801": {
       "name": "+50 Pontos",
       "description": "Pontuação adicional de +50"
     },
-    "603": {
+    "802": {
+      "name": "+75 Pontos",
+      "description": "Pontuação adicional de +75"
+    },
+    "803": {
       "name": "+100 Pontos",
       "description": "Pontuação adicional de +100"
     },
-    "604": {
-      "name": "+1 multi",
-      "description": "Adiciona +1 ao multi"
+    "804": {
+      "name": "+3 multi",
+      "description": "Adiciona +3 ao multi"
     },
-    "605": {
-      "name": "+2 multi",
-      "description": "Adiciona +2 ao multi"
-    },
-    "606": {
+    "805": {
       "name": "+5 multi",
       "description": "Adiciona +5 ao multi"
     },
-    "607": {
+    "806": {
+      "name": "+7 multi",
+      "description": "Adiciona +7 ao multi"
+    },
+    "807": {
       "name": "+10 multi",
       "description": "Adiciona +10 ao multi"
     }

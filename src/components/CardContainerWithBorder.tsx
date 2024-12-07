@@ -30,6 +30,7 @@ export const CardContainerWithBorder = ({
       position="relative"
       width={width}
       height={height}
+      zIndex={0}
     >
       {children}
     </Flex>

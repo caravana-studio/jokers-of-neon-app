@@ -26,7 +26,6 @@ import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
-import { PowerUps } from "./PowerUps.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
 

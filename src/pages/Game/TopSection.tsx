@@ -44,7 +44,7 @@ export const TopSection = () => {
           <MultiPoints />
         </Flex>
       </Flex>
-      <Flex mt={-8} w="100%" justifyContent="center">
+      <Flex mt={-9} w="100%" justifyContent="center">
         <PowerUps />
       </Flex>
     </Flex>

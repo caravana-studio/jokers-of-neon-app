@@ -6,18 +6,20 @@ interface IPriceBoxProps {
   price: number;
   purchased: boolean;
   discountPrice?: number;
+  isPowerUp?: boolean;
 }
 
 export const PriceBox = ({
   price,
   purchased,
   discountPrice = 0,
+  isPowerUp = false,
 }: IPriceBoxProps) => {
   return (
     <Box
       sx={{
         position: "absolute",
-        bottom: "-8%",
+        bottom: `-${isPowerUp ? 20 : 8}%`,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 10,

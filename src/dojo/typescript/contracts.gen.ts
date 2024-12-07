@@ -5,7 +5,7 @@ import * as models from "./models.gen";
 export async function setupWorld(provider: DojoProvider) {
 
 	const shop_system_skipShop = async (snAccount: Account, gameId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -15,13 +15,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buyCardItem = async (snAccount: Account, gameId: number, itemId: number, cardItemType: models.CardItemType) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -31,13 +29,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buySpecialCardItem = async (snAccount: Account, gameId: number, itemId: number, isTemporary: boolean) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -47,13 +43,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buyPokerHandItem = async (snAccount: Account, gameId: number, itemId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -63,13 +57,10 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buyPowerUpItem = async (snAccount: Account, gameId: number, itemId: number) => {
-		try {
 			return await provider.execute(
 				snAccount,
 				{
@@ -79,13 +70,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+
 	};
 
 	const shop_system_buyBlisterPackItem = async (snAccount: Account, gameId: number, blisterPackItemId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -95,13 +84,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_selectCardsFromBlister = async (snAccount: Account, gameId: number, cardsIndex: Array<number>) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -111,13 +98,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buySlotSpecialCardItem = async (snAccount: Account, gameId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -127,13 +112,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_buyBurnItem = async (snAccount: Account, gameId: number, cardId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -143,13 +126,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_reroll = async (snAccount: Account, gameId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -159,13 +140,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const shop_system_getShopItems = async (gameId: number) => {
-		try {
+		
 			return await provider.call(
 				"jokers_of_neon",
 				{
@@ -174,13 +153,11 @@ export async function setupWorld(provider: DojoProvider) {
 					calldata: [gameId],
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const poker_hand_system_getPlayerPokerHands = async (gameId: number) => {
-		try {
+		
 			return await provider.call(
 				"jokers_of_neon",
 				{
@@ -189,13 +166,11 @@ export async function setupWorld(provider: DojoProvider) {
 					calldata: [gameId],
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_createGame = async (snAccount: Account, playerName: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -205,15 +180,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_play = async (snAccount: Account, gameId: number, cardsIndex: Array<number>, modifiersIndex: Array<number>, powerUpsIndex: Array<number>) => {
-
-		console.log('calldata', [gameId, cardsIndex, modifiersIndex, powerUpsIndex])
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -223,13 +194,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_discard = async (snAccount: Account, gameId: number, cardsIndex: Array<number>, modifiersIndex: Array<number>) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -239,13 +208,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_checkHand = async (snAccount: Account, gameId: number, cardsIndex: Array<number>, modifiersIndex: Array<number>) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -255,13 +222,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_discardEffectCard = async (snAccount: Account, gameId: number, cardIndex: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -271,13 +236,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const game_system_discardSpecialCard = async (snAccount: Account, gameId: number, specialCardIndex: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -287,13 +250,11 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	const rage_system_calculate = async (snAccount: Account, gameId: number) => {
-		try {
+		
 			return await provider.execute(
 				snAccount,
 				{
@@ -303,9 +264,7 @@ export async function setupWorld(provider: DojoProvider) {
 				},
 				"jokers_of_neon",
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		
 	};
 
 	return {

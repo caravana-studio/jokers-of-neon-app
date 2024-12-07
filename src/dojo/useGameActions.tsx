@@ -181,7 +181,6 @@ export const useGameActions = () => {
   ) => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
 
-    console.log("powerUps", powerUps);
     try {
       showTransactionToast();
       const response = await client.game_system.play(
