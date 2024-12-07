@@ -1,6 +1,7 @@
 import { DESTROYED_SPECIAL_CARD_EVENT } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
+import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
 import {
   failedTransactionToast,
   showTransactionToast,
@@ -34,11 +35,13 @@ export const useShopActions = () => {
           success: true,
           cards: getCardsFromEvents(tx.events),
           destroyedSpecialCard: event && getNumberValueFromEvent(event, 3),
+          powerUps: getPowerUpsFromEvents(tx.events),
         };
       } else {
         return {
           success: false,
           cards: [],
+          powerUps: []
         };
       }
     } catch (e) {
@@ -47,6 +50,7 @@ export const useShopActions = () => {
       return {
         success: false,
         cards: [],
+        powerUps: []
       };
     }
   };

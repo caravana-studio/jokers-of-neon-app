@@ -110,6 +110,7 @@ export interface IGameContext {
   setPreselectedPowerUps: (powerUps: number[]) => void;
   togglePreselectedPowerUp: (powerUpId: number) => void;
   powerUpIsPreselected: (powerUpId: number) => boolean;
+  setPowerUps: (powerUps: (PowerUp | null)[]) => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);

@@ -166,7 +166,7 @@ export const useGameState = () => {
   };
 
   const resetPowerUps = () => {
-    setPowerUps([]);
+    setPowerUps([null, null, null, null]);
     setPreselectedPowerUps([]);
   };
 
@@ -228,6 +228,7 @@ export const useGameState = () => {
     removePowerUp,
     preselectedPowerUps,
     setPreselectedPowerUps,
-    resetPowerUps
+    resetPowerUps,
+    setPowerUps,
   };
 };
