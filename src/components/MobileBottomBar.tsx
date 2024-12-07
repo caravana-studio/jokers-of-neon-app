@@ -8,12 +8,14 @@ interface MobileBottomBarProps {
   firstButton: ReactNode;
   secondButton: ReactNode;
   setRun?: (run: boolean) => void;
+  hideDeckButton?: boolean;
 }
 
 export const MobileBottomBar = ({
   firstButton,
   secondButton,
   setRun,
+  hideDeckButton,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
   return (
@@ -41,12 +43,16 @@ export const MobileBottomBar = ({
         justifyContent="center"
         alignItems="center"
         width={["30px", "45px"]}
-        border="1px solid white"
+        border={hideDeckButton ? "none" : "1px solid white"}
         borderRadius={["8px", "14px"]}
         className="game-tutorial-step-9"
-        onClick={() => navigate("/deck")}
+        onClick={() => !hideDeckButton && navigate("/deck")}
       >
-        <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
+        {hideDeckButton ? (
+          <></>
+        ) : (
+          <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
+        )}
       </Flex>
     </Flex>
   );
