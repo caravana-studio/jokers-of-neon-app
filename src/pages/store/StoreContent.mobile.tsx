@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
@@ -7,14 +7,18 @@ import { useTranslation } from "react-i18next";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
-import { StoreTab } from "./StoreElements/StoreTab.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StoreBottomBar } from "./StoreElements/StoreBottomBar.tsx";
+import { useState } from "react";
 
 export const StoreContentMobile = () => {
   const { commonCards, modifierCards, specialCards } = useStore();
-
   const { t } = useTranslation(["store"]);
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+  };
 
   return (
     <>
@@ -26,7 +30,19 @@ export const StoreContentMobile = () => {
         justifyContent="center"
       >
         <Flex p={2} width={"95%"}>
-          <StoreTab />
+          <Tabs
+            index={tabIndex}
+            onChange={handleTabChange}
+            w="100%"
+            isFitted
+            color="white"
+          >
+            <TabList>
+              <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.loot-boxes")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.utilities")}</Tab>
+            </TabList>
+          </Tabs>
         </Flex>
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
         <Box
