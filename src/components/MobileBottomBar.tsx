@@ -17,7 +17,14 @@ export const MobileBottomBar = ({
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
   return (
-    <Flex width="96%" mx={4} mb={8} mt={3} justifyContent={"space-between"}>
+    <Flex
+      width="96%"
+      mx={4}
+      mb={8}
+      mt={3}
+      justifyContent={"space-between"}
+      zIndex={1000}
+    >
       <GameMenu
         showTutorial={
           setRun
