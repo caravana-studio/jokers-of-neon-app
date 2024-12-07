@@ -23,6 +23,7 @@ const baseStyle = definePartsStyle({
     borderRadius: "18px",
     py: 2,
     px: 0.5,
+    backgroundColor: "black",
   },
 });
 

@@ -4,15 +4,19 @@ import { LootBoxes } from "./LootBoxes.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import { useTranslation } from "react-i18next";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
-import { StoreBottomBar } from "./StoreElements/StoreBottomBar.tsx";
 import { useState } from "react";
 
 export const StoreContentMobile = () => {
-  const { commonCards, modifierCards, specialCards } = useStore();
+  const { commonCards, modifierCards, specialCards, setRun } = useStore();
+
   const { t } = useTranslation(["store"]);
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -22,14 +26,16 @@ export const StoreContentMobile = () => {
 
   return (
     <>
+      <MobileDecoration />
+
       <Flex
         width="100%"
-        height="100vh"
+        height="100%"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
       >
-        <Flex p={2} width={"95%"}>
+        <Flex p={2} mt={6} width={"95%"}>
           <Tabs
             index={tabIndex}
             onChange={handleTabChange}
@@ -147,7 +153,11 @@ export const StoreContentMobile = () => {
             ></Flex>
           </Box>
         </Box>
-        <StoreBottomBar isSmallScreen={true}></StoreBottomBar>
+        <MobileBottomBar
+          setRun={setRun}
+          firstButton={<SpecialsButton isSmallScreen={true} />}
+          secondButton={<NextLevelButton isSmallScreen={true} />}
+        />
       </Flex>
     </>
   );
