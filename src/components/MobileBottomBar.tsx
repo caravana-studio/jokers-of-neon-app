@@ -9,6 +9,7 @@ interface MobileBottomBarProps {
   secondButton: ReactNode;
   setRun?: (run: boolean) => void;
   hideDeckButton?: boolean;
+  navigateState?: {};
 }
 
 export const MobileBottomBar = ({
@@ -16,8 +17,11 @@ export const MobileBottomBar = ({
   secondButton,
   setRun,
   hideDeckButton,
+  navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
+
+  console.log(navigateState);
   return (
     <Flex
       width="96%"
@@ -46,7 +50,7 @@ export const MobileBottomBar = ({
         border={hideDeckButton ? "none" : "1px solid white"}
         borderRadius={["8px", "14px"]}
         className="game-tutorial-step-9"
-        onClick={() => !hideDeckButton && navigate("/deck")}
+        onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
       >
         {hideDeckButton ? (
           <></>

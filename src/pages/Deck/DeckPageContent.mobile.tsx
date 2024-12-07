@@ -122,11 +122,12 @@ export const DeckPageContentMobile = ({
               gap={4}
               mt={1}
               px={6}
+              paddingTop={"10px"}
             >
               <Box w="100%" height={"100%"}>
                 <DeckCardsGrid
                   cards={fullDeck}
-                  usedCards={usedCards}
+                  usedCards={!inStore ? usedCards : []}
                   filters={{
                     isNeon: filterButtonsState.isNeon,
                     isModifier: filterButtonsState.isModifier,
