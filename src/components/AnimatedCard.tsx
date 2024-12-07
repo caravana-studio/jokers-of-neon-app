@@ -168,7 +168,7 @@ export const AnimatedCard = ({
     >
       {!!(points || multi || cash) &&
         // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
-        !(isSpecial && animatedCard?.idx?.length) &&
+        (!(isSpecial && animatedCard?.idx?.length) || cash) &&
         animatedCardIdxArray?.includes(idx) && (
           <animated.div
             style={{
@@ -187,8 +187,8 @@ export const AnimatedCard = ({
                 textShadow: `0 0 5px  ${getColor()}`,
               }}
             >
-              +{points || multi || cash}
-              {cash && <CashSymbol />}
+              +{points || multi || (isSpecial && cash)}
+              {isSpecial && cash && <CashSymbol />}
             </Heading>
           </animated.div>
         )}

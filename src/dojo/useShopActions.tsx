@@ -33,7 +33,7 @@ export const useShopActions = () => {
         return {
           success: true,
           cards: getCardsFromEvents(tx.events),
-          destroyedSpecialCard: event && getNumberValueFromEvent(event, 0),
+          destroyedSpecialCard: event && getNumberValueFromEvent(event, 3),
         };
       } else {
         return {

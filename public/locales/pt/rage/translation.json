@@ -1,23 +1,23 @@
 {
   "rageCardsData": {
     "401": {
-      "name": "Corações Partidos",
+      "name": "Corações Quebradas",
       "description": "Cartas de naipe de coração não pontuarão durante este nível"
     },
     "402": {
-      "name": "Paus Partidos",
+      "name": "Paus Quebradas",
       "description": "Cartas de naipe de paus não pontuarão durante este nível"
     },
     "403": {
-      "name": "Ouros Partidos",
+      "name": "Ouros Quebradas",
       "description": "Cartas de naipe de ouros não pontuarão durante este nível"
     },
     "404": {
-      "name": "Espadas Partidas",
+      "name": "Espadas Quebradas",
       "description": "Cartas de naipe de espadas não pontuarão durante este nível"
     },
     "405": {
-      "name": "Coringas Quebrados",
+      "name": "Coringas Quebradas",
       "description": "Coringas não pontuarão durante este nível"
     },
     "406": {
@@ -35,6 +35,42 @@
     "409": {
       "name": "Quarteto Estratégico",
       "description": "Você só pode jogar até 4 cartas durante este nível"
+    },
+    "410": {
+      "name": "Táticas Dinâmicas",
+      "description": "A mesma mão não pode ser jogada duas vezes"
+    },
+    "411": {
+      "name": "Troca Balanceada",
+      "description": "Uma jogada de pôquer vale o dobro, outra a metade"
+    },
+    "412": {
+      "name": "Figuras Quebradas",
+      "description": "As figuras (Valete, Dama e Rei) não pontuarão durante este nível"
+    },
+    "413": {
+      "name": "Modificadores Quebrados",
+      "description": "Os modificadores não funcionarão durante este nível"
+    },
+    "414": {
+      "name": "Últimas Palavras",
+      "description": "Silencie a carta mais repetida no baralho"
+    },
+    "415": {
+      "name": "Armadilha Gananciosa",
+      "description": "Desconte 200 por cada mão jogada e 100 por cada descarte"
+    },
+    "416": {
+      "name": "O Suga-Mãos",
+      "description": "2 mãos a menos para jogar"
+    },
+    "417": {
+      "name": "Armadilha da Aranha",
+      "description": "As cartas especiais não têm efeito na primeira mão jogada"
+    },
+    "418": {
+      "name": "Maldição Perpétua",
+      "description": "Silencie uma carta aleatória em cada mão jogada"
     }
   }
 }
