@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { CashSymbol } from "../../components/CashSymbol";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { MobileDecoration } from "../../components/MobileDecoration";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -75,8 +77,9 @@ export const DeckPageContentMobile = ({
   return (
     <>
       <Flex
-        py={4}
-        px={{ base: 8, md: 20 }}
+        px={{ base: 0, md: 20 }}
+        mt={4}
+        pb={3}
         width={"100%"}
         height={"100%"}
         alignItems={"center"}
@@ -85,11 +88,13 @@ export const DeckPageContentMobile = ({
         flexDirection={"column"}
         {...handlers}
       >
+        <MobileDecoration />
         <Flex
           alignItems={"center"}
           width={"100%"}
           flexDirection={"column"}
           my={2}
+          px={4}
         >
           <Tabs
             index={tabIndex}
@@ -97,10 +102,11 @@ export const DeckPageContentMobile = ({
             w="100%"
             isFitted
             color="white"
+            mt={2}
           >
             <TabList>
-              <Tab>{t("full-deck")}</Tab>
-              <Tab>{t("plays")}</Tab>
+              <Tab fontSize={12}>{t("full-deck")}</Tab>
+              <Tab fontSize={12}>{t("plays")}</Tab>
             </TabList>
           </Tabs>
         </Flex>
@@ -115,6 +121,7 @@ export const DeckPageContentMobile = ({
               overflowY="auto"
               gap={4}
               mt={1}
+              px={6}
             >
               <Box w="100%" height={"100%"}>
                 <DeckCardsGrid
@@ -136,26 +143,30 @@ export const DeckPageContentMobile = ({
         {tabIndex === 1 && (
           <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
         )}
-
-        <Flex gap={4} mt={4} wrap={"wrap"} justifyContent={"center"}>
-          {burn && (
-            <Button
-              isDisabled={
-                cardToBurn === undefined ||
-                cash < effectiveCost ||
-                burnItem.purchased
-              }
-              onClick={() => {
-                if (cardToBurn) handleBurnCard(cardToBurn);
-              }}
-            >
-              {t("game.deck.btns.burn").toUpperCase()}
-              {" " + effectiveCost}
-              <CashSymbol />
-            </Button>
-          )}
-          <BackToGameBtn />
-        </Flex>
+        <MobileBottomBar
+          firstButton={
+            burn ? (
+              <Button
+                isDisabled={
+                  cardToBurn === undefined ||
+                  cash < effectiveCost ||
+                  burnItem.purchased
+                }
+                onClick={() => {
+                  if (cardToBurn) handleBurnCard(cardToBurn);
+                }}
+              >
+                {t("game.deck.btns.burn").toUpperCase()}
+                {" " + effectiveCost}
+                <CashSymbol />
+              </Button>
+            ) : (
+              <></>
+            )
+          }
+          secondButton={<BackToGameBtn />}
+          hideDeckButton
+        />
       </Flex>
     </>
   );

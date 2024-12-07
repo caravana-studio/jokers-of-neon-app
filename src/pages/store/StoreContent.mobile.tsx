@@ -1,30 +1,33 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { Box, Flex, Heading, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
-import RerollButton from "./StoreElements/RerollButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
-import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
+import { useState } from "react";
 
 export const StoreContentMobile = () => {
-  const { setRun, commonCards, modifierCards, specialCards } = useStore();
+  const { commonCards, modifierCards, specialCards, setRun } = useStore();
 
   const { t } = useTranslation(["store"]);
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+  };
 
   return (
     <>
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
-        }}
-      />
+      <MobileDecoration />
+
       <Flex
         width="100%"
         height="100%"
@@ -32,6 +35,22 @@ export const StoreContentMobile = () => {
         alignItems="center"
         justifyContent="center"
       >
+        <Flex p={2} mt={6} width={"95%"}>
+          <Tabs
+            index={tabIndex}
+            onChange={handleTabChange}
+            w="100%"
+            isFitted
+            color="white"
+          >
+            <TabList>
+              <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.loot-boxes")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.utilities")}</Tab>
+            </TabList>
+          </Tabs>
+        </Flex>
+        <StoreTopBar isSmallScreen={true}></StoreTopBar>
         <Box
           display="flex"
           flexWrap="wrap"
@@ -131,14 +150,14 @@ export const StoreContentMobile = () => {
               my={6}
               mb={12}
               gap={6}
-            >
-              <RerollButton isSmallScreen={true} />
-              <SpecialsButton isSmallScreen={true} />
-              <NextLevelButton isSmallScreen={true} />
-              <SeeFullDeckButton isSmallScreen={true} />
-            </Flex>
+            ></Flex>
           </Box>
         </Box>
+        <MobileBottomBar
+          setRun={setRun}
+          firstButton={<SpecialsButton isSmallScreen={true} />}
+          secondButton={<NextLevelButton isSmallScreen={true} />}
+        />
       </Flex>
     </>
   );

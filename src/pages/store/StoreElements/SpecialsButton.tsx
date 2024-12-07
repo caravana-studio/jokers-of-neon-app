@@ -20,12 +20,11 @@ const SpecialsButton: React.FC<SpecialsButtonProps> = ({ isSmallScreen }) => {
         w={
           isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]
         }
+        size={isSmallScreen ? "xs" : "md"}
         onClick={() => {
           navigate("/special-cards");
         }}
       >
-        {t("store.labels.see-my").toUpperCase()}
-        {isSmallScreen && <br />}{" "}
         {t("store.labels.special-cards").toUpperCase()}
       </Button>
     )
