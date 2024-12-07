@@ -48,6 +48,7 @@ export interface BurnItem {
 	game_id: number;
 	cost: number;
 	purchased: boolean;
+  discount_cost: number;
 }
 
 // Type definition for `jokers_of_neon::models::status::shop::shop::CardItem` struct
@@ -328,6 +329,7 @@ export interface SlotSpecialCardsItem {
 	game_id: number;
 	cost: number;
 	purchased: boolean;
+  discount_cost: number;
 }
 
 // Type definition for `jokers_of_neon::models::status::shop::shop::SpecialCardItemValue` struct
