@@ -32,7 +32,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     useResponsiveValues();
 
   const adjustedScale = isSmallScreen
-    ? cardScale
+    ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
 
   useEffect(() => {

@@ -35,7 +35,7 @@ export const StoreContentMobile = () => {
         height="100%"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="space-between"
       >
         <Flex p={2} mt={6} width={"95%"}>
           <Tabs
