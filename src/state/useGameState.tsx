@@ -79,6 +79,13 @@ export const useGameState = () => {
     });
   };
 
+  const addPowerUp = (powerUp: PowerUp) => {
+    setPowerUps((prev) => {
+      const newPowerUps = [...prev, powerUp];
+      return newPowerUps;
+    });
+  }
+
   const {
     setup: {
       client,
@@ -230,5 +237,6 @@ export const useGameState = () => {
     setPreselectedPowerUps,
     resetPowerUps,
     setPowerUps,
+    addPowerUp,
   };
 };

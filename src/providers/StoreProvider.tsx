@@ -115,7 +115,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLoading,
   } = useShopState();
 
-  const { gameId } = useGameContext();
+  const { gameId, addPowerUp } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx);
@@ -182,7 +182,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     const promise = dojoBuyPowerUp(gameId, powerUp.idx);
     promise
       .then((response) => {
-        if (!response) {
+        if (response) {
+          addPowerUp(powerUp);
+        } else {
           rollbackBuyPowerUp(powerUp.idx);
         }
       })
