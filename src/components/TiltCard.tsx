@@ -56,6 +56,12 @@ export const TiltCard = ({
   const isSilent = useIsSilent(card);
   const { t } = useTranslation(["store"]);
 
+  const fontSize = isMobile
+    ? 15
+    : card.discount_cost != undefined && card.discount_cost > 0
+      ? 15
+      : 18;
+
   const tiltCardComponent = (
     <Box
       width={`${cardWith}px`}
@@ -155,7 +161,14 @@ export const TiltCard = ({
             </Tooltip>
           )}
 
-          {card.price && <PriceBox price={card.price} purchased={purchased} discountPrice={card.discount_cost} />}
+          {card.price && (
+            <PriceBox
+              price={card.price}
+              purchased={purchased}
+              discountPrice={card.discount_cost}
+              fontSize={fontSize}
+            />
+          )}
           {card.purchased && (
             <Box
               sx={{
