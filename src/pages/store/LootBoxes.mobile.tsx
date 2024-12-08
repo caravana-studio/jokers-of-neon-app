@@ -1,16 +1,20 @@
-import { Flex, Heading, Tooltip, theme } from "@chakra-ui/react";
+import { Box, Flex, Heading, Tooltip, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useStore } from "../../providers/StoreProvider";
 import { getTooltip } from "../../utils/getTooltip";
+import { getCardData } from "../../utils/getCardData";
+import theme from "../../theme/theme";
+import { useTranslation } from "react-i18next";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
 
   const { packs } = useStore();
-  const { white, whiteAlpha } = theme.colors;
+  const { neonGreen, white } = theme.colors;
+  const { t } = useTranslation(["store"]);
 
   return (
     <Flex
@@ -32,6 +36,8 @@ export const LootBoxesMobile = () => {
           price: Number(pack.cost),
           card_id: Number(pack.blister_pack_id),
         };
+
+        const { name, description, details } = getCardData(card, true);
 
         const spineAnim = (
           <Flex key={`pack-${pack.blister_pack_id}`} w="50%">
@@ -79,7 +85,7 @@ export const LootBoxesMobile = () => {
             borderRadius="10px"
             pt={3}
             pb={5}
-            boxShadow={`0px 0px 10px 1px ${whiteAlpha[500]}`}
+            boxShadow={`0px 0px 10px 1px ${white}`}
           >
             <Flex
               flexDirection="row"
@@ -90,10 +96,44 @@ export const LootBoxesMobile = () => {
             >
               {spineAnim}
 
-              <Flex justifyContent="space-between" alignItems="center">
-                <Heading size="sm" variant="italic">
-                  {"title"}
-                </Heading>
+              <Flex
+                flexDirection={"column"}
+                width="100%"
+                ml={{ base: "15px", sm: "30px" }}
+                flex="1"
+                height="100%"
+                justifyContent={"space-between"}
+              >
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Heading size="sm" variant="italic">
+                    {name}
+                  </Heading>
+                </Flex>
+                <Box mb={4}>
+                  <Text
+                    color="white"
+                    fontSize={{ base: "md", sm: "lg" }}
+                    mb={2}
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",
+                        backgroundColor: "white",
+                        boxShadow:
+                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                    {t("store.preview-card.title.description")}
+                  </Text>
+                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                    {description}
+                  </Text>
+                </Box>
               </Flex>
             </Flex>
           </Flex>
