@@ -40,7 +40,7 @@ export const LootBoxesMobile = () => {
         const { name, description, details } = getCardData(card, true);
 
         const spineAnim = (
-          <Flex key={`pack-${pack.blister_pack_id}`} w="50%">
+          <Flex key={`pack-${pack.blister_pack_id}`} w="30%" h={"100%"}>
             <SpineAnimation
               jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
               atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
@@ -63,7 +63,9 @@ export const LootBoxesMobile = () => {
                   });
                 }
               }}
-              xOffset={500}
+              //   xOffset={500}
+              //   scale={2}
+              //   height={2500}
             />
           </Flex>
         );
