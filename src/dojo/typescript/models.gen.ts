@@ -5,7 +5,7 @@ export interface BlisterPackItemValue {
 	fieldOrder: string[];
 	blister_pack_id: number;
 	cost: number;
-	cost_discount: number;
+	discount_cost: number;
 	purchased: boolean;
 }
 
@@ -16,7 +16,7 @@ export interface BlisterPackItem {
 	idx: number;
 	blister_pack_id: number;
 	cost: number;
-	cost_discount: number;
+	discount_cost: number;
 	purchased: boolean;
 }
 
@@ -434,7 +434,7 @@ export const schema: JokersOfNeonSchemaType = {
 			fieldOrder: ['blister_pack_id', 'cost', 'cost_discount', 'purchased'],
 			blister_pack_id: 0,
 			cost: 0,
-			cost_discount: 0,
+			discount_cost: 0,
 			purchased: false,
 		},
 		BlisterPackItem: {
@@ -443,7 +443,7 @@ export const schema: JokersOfNeonSchemaType = {
 			idx: 0,
 			blister_pack_id: 0,
 			cost: 0,
-			cost_discount: 0,
+			discount_cost: 0,
 			purchased: false,
 		},
 		BlisterPackResult: {
@@ -467,6 +467,7 @@ export const schema: JokersOfNeonSchemaType = {
 			game_id: 0,
 			cost: 0,
 			purchased: false,
+			discount_cost: 0,
 		},
 		CardItem: {
 			fieldOrder: ['game_id', 'idx', 'item_type', 'card_id', 'cost', 'purchased'],
@@ -687,6 +688,7 @@ export const schema: JokersOfNeonSchemaType = {
 			game_id: 0,
 			cost: 0,
 			purchased: false,
+			discount_cost: 0,
 		},
 		SpecialCardItemValue: {
 			fieldOrder: ['card_id', 'cost', 'temporary_cost', 'purchased'],
