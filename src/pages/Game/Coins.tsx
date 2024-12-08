@@ -3,6 +3,8 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { CashSymbol } from "../../components/CashSymbol";
+import CoinIcon from "../../assets/coins.svg?component";
 
 export const Coins = () => {
   const { cash } = useGameContext();
@@ -13,11 +15,9 @@ export const Coins = () => {
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
-      gap={0.5}
+      gap={2}
     >
-      <Text size="m" pl={{ base: 1, sm: 0 }}>
-        {t("game.hand-section.my-coins")}
-      </Text>
+      <CoinIcon></CoinIcon>
       <Flex
         gap={1.5}
         alignItems="center"
@@ -30,6 +30,7 @@ export const Coins = () => {
         fontSize="13px"
       >
         <RollingNumber n={cash} />
+        <CashSymbol />
       </Flex>
     </Flex>
   );

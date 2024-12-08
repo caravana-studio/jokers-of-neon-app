@@ -56,7 +56,8 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
     <Button
       className="game-tutorial-step-7"
       my={isSmallScreen ? 0 : { base: 0, md: 6 }}
-      w={isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]}
+      minWidth={"100px"}
+      size={isSmallScreen ? "xs" : "md"}
       onClick={handleNextLevelClick}
       isDisabled={locked}
       lineHeight={1.6}

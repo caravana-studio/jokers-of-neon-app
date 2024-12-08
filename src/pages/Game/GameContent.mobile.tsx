@@ -11,8 +11,8 @@ import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { GameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
 import {
   JOYRIDE_LOCALES,
@@ -33,6 +33,7 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -182,7 +183,7 @@ export const MobileGameContent = () => {
       className="game-tutorial-intro"
     >
       {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
-
+      <MobileDecoration />
       <Box
         sx={{
           position: "fixed",
@@ -213,14 +214,7 @@ export const MobileGameContent = () => {
           width: "100%",
         }}
       >
-        <CachedImage
-          src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
-          width="100%"
-          maxHeight="70px"
-          position="fixed"
-          top={1}
-          zIndex={0}
-        />
+
         <DndContext
           onDragEnd={handleDragEnd}
           autoScroll={false}
@@ -264,13 +258,9 @@ export const MobileGameContent = () => {
             <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
               <HandSection />
             </Box>
-            <Flex width="96%" mx={4} mb={8} justifyContent={"space-between"}>
-              <GameMenu
-                showTutorial={() => {
-                  setRun(true);
-                }}
-              />
-              <Box w="30%">
+            <MobileBottomBar
+              setRun={setRun}
+              firstButton={
                 <DiscardButton
                   highlight={run}
                   onTutorialCardClick={() => {
@@ -280,8 +270,8 @@ export const MobileGameContent = () => {
                     }
                   }}
                 />
-              </Box>
-              <Box w="30%">
+              }
+              secondButton={
                 <PlayButton
                   highlight={run}
                   onTutorialCardClick={() => {
@@ -291,34 +281,11 @@ export const MobileGameContent = () => {
                     }
                   }}
                 />
-              </Box>
-              <Flex
-                height={["30px", "45px"]}
-                justifyContent="center"
-                alignItems="center"
-                width={["30px", "45px"]}
-                border="1px solid white"
-                borderRadius={["8px", "14px"]}
-                className="game-tutorial-step-9"
-                onClick={() => navigate("/deck")}
-              >
-                <CachedImage
-                  height="15px"
-                  src="deck-icon.png"
-                  alt="deck-icon"
-                />
-              </Flex>
-            </Flex>
+              }
+            />
           </Box>
         </DndContext>
-        <CachedImage
-          src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
-          width="100%"
-          maxHeight="70px"
-          position="fixed"
-          bottom={1}
-          zIndex={0}
-        />
+
       </Box>
     </Box>
   );
