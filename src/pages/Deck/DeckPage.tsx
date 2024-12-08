@@ -12,9 +12,6 @@ export const DeckPage = () => {
   const inStore = location.state?.inStore ?? false;
   const burn = location.state?.burn ?? false;
 
-  console.log("burn: " + burn);
-  console.log("store: " + inStore);
-
   return (
     <DeckFilterProvider>
       <Background type="store">
