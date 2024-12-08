@@ -32,7 +32,7 @@ export const AudioPlayerProvider = ({
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
-  const [musicVolume, setMusicVolume] = useState(1);
+  const [musicVolume, setMusicVolume] = useState(0.2);
 
   useEffect(() => {
     const howl = new Howl({
