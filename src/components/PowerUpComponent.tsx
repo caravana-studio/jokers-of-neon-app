@@ -73,7 +73,7 @@ export const PowerUpComponent = ({
           )}
           <CachedImage
             opacity={inStore || isActive ? 1 : 0.6}
-            borderRadius="17px"
+            borderRadius={["12px", "17px"]}
             cursor="pointer"
             height={`${100}%`}
             width={`${100}%`}
@@ -89,13 +89,15 @@ export const PowerUpComponent = ({
 };
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
+  const { isSmallScreen } = useResponsiveValues();
+  const componentWidth = isSmallScreen ? width - 4 : width - 10; 
   return (
     <Box
-      height={`${width / 1.9}px`}
+      height={`${isSmallScreen ? width / 1.8 :width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
-      borderRadius="17px"
-      width={`${width-10}px`}
-      mt={2.5}
+      borderRadius={["12px", "17px"]}
+      width={`${componentWidth}px`}
+      mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={BACKGROUND_BLUE}
     />

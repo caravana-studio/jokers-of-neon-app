@@ -1,17 +1,19 @@
 import { Flex } from "@chakra-ui/react";
 import { PowerUpComponent } from "../../components/PowerUpComponent";
 import { useGameContext } from "../../providers/GameProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const PowerUps = () => {
   const { powerUps, togglePreselectedPowerUp } = useGameContext();
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <Flex gap={4} zIndex={1}>
+    <Flex gap={[1,4]} zIndex={1}>
       {powerUps.map((powerUp, index) => {
         return (
           <PowerUpComponent
             key={index}
-            width={93}
+            width={isSmallScreen ? 60 : 93}
             powerUp={powerUp}
             onClick={() => powerUp && togglePreselectedPowerUp(powerUp.idx)}
           />

@@ -8,7 +8,6 @@ export const getPowerUpEvents = (events: DojoEvent[]) => {
     .map((event) => {
       const idx = getNumberValueFromEvent(event, 3) ?? 0;
       const multi = getNumberValueFromEvent(event, 4) ?? 0;
-
       const points = getNumberValueFromEvent(event, 5) ?? 0;
 
       return {
@@ -16,5 +15,6 @@ export const getPowerUpEvents = (events: DojoEvent[]) => {
         points,
         multi,
       };
-    });
+    })
+    .sort((a, b) => a.idx - b.idx);
 };

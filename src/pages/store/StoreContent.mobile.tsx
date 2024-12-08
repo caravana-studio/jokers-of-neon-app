@@ -1,17 +1,18 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
-import { Coins } from "./Coins.tsx";
-import { LootBoxes } from "./LootBoxes.tsx";
-import { StoreCardsRow } from "./StoreCardsRow.tsx";
-import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
-import RerollButton from "./StoreElements/RerollButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { useTranslation } from "react-i18next";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
+import { Coins } from "./Coins.tsx";
+import { LootBoxes } from "./LootBoxes.tsx";
+import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { StoreCardsRow } from "./StoreCardsRow.tsx";
+import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import RerollButton from "./StoreElements/RerollButton.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
+import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContentMobile = () => {
   const { setRun, commonCards, modifierCards, specialCards } = useStore();
@@ -82,14 +83,19 @@ export const StoreContentMobile = () => {
                 />
               )}
             </Box>
-            <Box className="game-tutorial-step-4">
-              {modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
-              )}
-            </Box>
+            <Flex>
+              <Box w="60%" className="game-tutorial-step-4">
+                {modifierCards.length > 0 && (
+                  <StoreCardsRow
+                    cards={modifierCards}
+                    title={t("store.titles.modifiers")}
+                  />
+                )}
+              </Box>
+              <Box w="40%">
+                <StorePowerUpsRow />
+              </Box>
+            </Flex>
             <Box className="game-tutorial-step-5">
               {specialCards.length > 0 && (
                 <StoreCardsRow

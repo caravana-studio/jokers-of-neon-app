@@ -73,8 +73,8 @@ export const AnimatedPowerUp = ({ children, idx }: IAnimatedCardProps) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "6px 8px",
-        borderRadius: "25px",
+        padding: isSmallScreen ? "4px 6px" : "6px 8px",
+        borderRadius: isSmallScreen ? "17px" : "25px",
         ...powerUpSprings,
       }}
     >

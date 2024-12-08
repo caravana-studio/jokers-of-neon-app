@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
 
 interface IPriceBoxProps {
@@ -15,11 +16,15 @@ export const PriceBox = ({
   discountPrice = 0,
   isPowerUp = false,
 }: IPriceBoxProps) => {
+  const { isSmallScreen } = useResponsiveValues();
+
+  const powerUpBottom = isSmallScreen ? 40 : 20;
+
   return (
     <Box
       sx={{
         position: "absolute",
-        bottom: `-${isPowerUp ? 20 : 8}%`,
+        bottom: `-${isPowerUp ? powerUpBottom : 8}%`,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 10,
