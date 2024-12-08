@@ -16,25 +16,23 @@ export const sortCards = (cards: Card[], sortBy: SortBy): Card[] => {
     const cardA = TRADITIONAL_CARDS_DATA[(a.card_id ?? 0) % 200];
     const cardB = TRADITIONAL_CARDS_DATA[(b.card_id ?? 0) % 200];
 
-    // Second layer: Sort by rank if sortBy is RANK
-    if (sortBy === SortBy.RANK && cardA && cardB) {
-      if (cardA.card !== cardB.card) {
-        return (cardA.card ?? 0) - (cardB.card ?? 0);
+    if (cardA && cardB) {
+      // Second layer: Sort by rank if sortBy is RANK
+      if (sortBy === SortBy.RANK) {
+        if (cardA.card !== cardB.card) {
+          return (cardA.card ?? 0) - (cardB.card ?? 0);
+        }
       }
-    }
 
-    // Third layer: Sort by suit if sortBy is SUIT
-    if (sortBy === SortBy.SUIT && cardA && cardB) {
-      if (cardA.suit !== cardB.suit) {
-        return (cardA.suit ?? 0) - (cardB.suit ?? 0);
+      // Third layer: Sort by suit, then rank if sortBy is SUIT
+      if (sortBy === SortBy.SUIT) {
+        if (cardA.suit !== cardB.suit) {
+          return (cardA.suit ?? 0) - (cardB.suit ?? 0);
+        }
+        if (cardA.card !== cardB.card) {
+          return (cardA.card ?? 0) - (cardB.card ?? 0);
+        }
       }
-    }
-
-    // Fourth layer: Neon cards (card_id + 200) placed after regular cards
-    const isNeonA = (a.card_id ?? 0) >= 200;
-    const isNeonB = (b.card_id ?? 0) >= 200;
-    if (isNeonA !== isNeonB) {
-      return isNeonA ? 1 : -1;
     }
 
     // Fallback: Preserve original order if all else is equal
