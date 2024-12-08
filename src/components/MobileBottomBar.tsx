@@ -20,8 +20,6 @@ export const MobileBottomBar = ({
   navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
-
-  console.log(navigateState);
   return (
     <Flex
       width="96%"
