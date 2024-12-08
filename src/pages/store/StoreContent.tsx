@@ -1,7 +1,11 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import CachedImage from "../../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import { BurnItem } from "./BurnItem.tsx";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
@@ -9,11 +13,13 @@ import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
+import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
+import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
-  const { setRun, specialCards, commonCards, modifierCards } = useStore();
+  const { setRun, specialCards, commonCards, modifierCards } =
+    useStore();
 
   const { t } = useTranslation(["store"]);
 
@@ -77,14 +83,19 @@ export const StoreContent = () => {
                 />
               )}
             </Box>
-            <Box className="game-tutorial-step-4">
-              {modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
-              )}
-            </Box>
+            <Flex gap={4} w="100%">
+              <Box w="70%" className="game-tutorial-step-4">
+                {modifierCards.length > 0 && (
+                  <StoreCardsRow
+                    cards={modifierCards}
+                    title={t("store.titles.modifiers")}
+                  />
+                )}
+              </Box>
+              <Box w="30%" className="game-tutorial-step-4">
+                <StorePowerUpsRow />
+              </Box>
+            </Flex>
             <Box className="game-tutorial-step-5">
               {specialCards.length > 0 && (
                 <StoreCardsRow
@@ -100,22 +111,20 @@ export const StoreContent = () => {
             w={"20%"}
             h={"100%"}
             justifyContent={"space-between"}
-            gap={10}
             px={0}
             pr={"2%"}
           >
             <>
-              <NextLevelButton
-                isSmallScreen={false}
-              />
-              <SpecialSlotItem />
+              <NextLevelButton isSmallScreen={false} />
+              <Flex flexDirection={"row"} gap={10}>
+                <SpecialSlotItem />
+                <BurnItem />
+              </Flex>
+
               <Flex flexDirection="column" gap={14}>
-                <RerollButton
-                  isSmallScreen={false}
-                />
-                <SpecialsButton
-                  isSmallScreen={false}
-                />
+                <RerollButton isSmallScreen={false} />
+                <SpecialsButton isSmallScreen={false} />
+                <SeeFullDeckButton isSmallScreen={false} />
                 <Coins rolling />
               </Flex>
             </>

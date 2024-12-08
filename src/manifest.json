@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x60d6e20f8e11080cc1d04c9592063eb77e7ff41a1af1bc0c9390a0a51db3cbe",
-      "class_hash": "0x614c4df2306e69011255537b97c4a7bf70038eac78fd71c6d321041d27717af",
+      "address": "0x1a9419ddf5b145801e7787c2748408808e61f13a68dc0b78a811863d6eeebcc",
+      "class_hash": "0x48444270c12854e734c7433c13d65251225910fea195ab087ead9ede5690924",
       "abi": [
         {
           "type": "impl",
@@ -1389,6 +1389,10 @@
                 },
                 {
                   "name": "modifiers_index",
+                  "type": "core::array::Array::<core::integer::u32>"
+                },
+                {
+                  "name": "power_ups_index",
                   "type": "core::array::Array::<core::integer::u32>"
                 }
               ],
@@ -1881,8 +1885,8 @@
       ]
     },
     {
-      "address": "0x6ed5f7c87c0f058625093ba927dfc1fb6c4f9fad686b19c3a220ca2cb5a775f",
-      "class_hash": "0x22477a2d018941191d5ec3e524a86b094fb125dd3b32b0b3b41c1152d058398",
+      "address": "0x1eb68b912fd4c622b9e05ecff8699cbfd766b81f5e8c379233647e13230e97f",
+      "class_hash": "0x135ce12b8d2e571211070ee31de638d57e5cd73dd0913a835abe46605b7f57c",
       "abi": [
         {
           "type": "impl",
@@ -2081,8 +2085,8 @@
       ]
     },
     {
-      "address": "0xadd5a748859b5694e16ecdfe677a64a83dbea8477c8994260327507f816835",
-      "class_hash": "0x1b47c309c9299101b6f6967b9b00758ae5ec8e374982e2cfdcdad1846763ca0",
+      "address": "0x6a649e72062f46cd7e403f62c3be7f42ea072e99b7bd3a53115e508dd7cc0b9",
+      "class_hash": "0x4d7a1256525a58b040164cf5613877b77f443a26ffb8b751c232158cb436c40",
       "abi": [
         {
           "type": "impl",
@@ -2403,6 +2407,42 @@
         },
         {
           "type": "struct",
+          "name": "jokers_of_neon::models::status::shop::shop::PowerUpItem",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "power_up_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "purchased",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon::models::status::shop::shop::PowerUpItem>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon::models::status::shop::shop::PowerUpItem>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem",
           "members": [
             {
@@ -2480,6 +2520,10 @@
             {
               "name": "len_item_blister_pack",
               "type": "core::integer::u32"
+            },
+            {
+              "name": "len_item_power_ups",
+              "type": "core::integer::u32"
             }
           ]
         },
@@ -2542,6 +2586,22 @@
             {
               "type": "function",
               "name": "buy_poker_hand_item",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "item_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "buy_power_up_item",
               "inputs": [
                 {
                   "name": "game_id",
@@ -2638,7 +2698,7 @@
               ],
               "outputs": [
                 {
-                  "type": "(core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::SpecialCardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>, jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem, jokers_of_neon::models::status::shop::shop::BurnItem, jokers_of_neon::models::status::shop::shop::Shop, core::integer::u32)"
+                  "type": "(core::array::Span::<jokers_of_neon::models::status::shop::shop::CardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::SpecialCardItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PokerHandItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::BlisterPackItem>, core::array::Span::<jokers_of_neon::models::status::shop::shop::PowerUpItem>, jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem, jokers_of_neon::models::status::shop::shop::BurnItem, jokers_of_neon::models::status::shop::shop::Shop, core::integer::u32)"
                 }
               ],
               "state_mutability": "view"
@@ -2768,6 +2828,7 @@
         "buy_card_item",
         "buy_special_card_item",
         "buy_poker_hand_item",
+        "buy_power_up_item",
         "buy_blister_pack_item",
         "select_cards_from_blister",
         "buy_slot_special_card_item",
@@ -2822,7 +2883,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x55493dd0b794ef97c304cb8350e2f74aaff106cb5bf545ea8866dd0dc75ad67",
+      "class_hash": "0x664dbe5839beb824ad0d33f339e68670eb070e22ce869d66131739e1eb93c72",
       "tag": "jokers_of_neon-Game",
       "selector": "0x162de85bf81c46cbd7965e88731f90adf3b7c1103aa4bba47ea03b86c72af4c"
     },
@@ -2831,6 +2892,12 @@
       "class_hash": "0x1bcaf9541c5f01ec05f2b30e6a53629221f1adc186de5814e13d11ceffa48b1",
       "tag": "jokers_of_neon-GameDeck",
       "selector": "0x481bbebe82cf855e7d9b001e4dabe8bb4d78432bfc32e6666f731aa99092a3c"
+    },
+    {
+      "members": [],
+      "class_hash": "0x49c499613af6d08a6df6d0c459b926157418b345e377c5bd2530b145c3ec549",
+      "tag": "jokers_of_neon-GamePowerUp",
+      "selector": "0x427a1eb60caf6f30826d3d1259348bc929183598e94b546b77a0186ae6556c1"
     },
     {
       "members": [],
@@ -2846,6 +2913,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x3ac4a1fb2a30a8cd8868f3c98597ad2d64ae0bbfb229e9c7d36fa7e6266be7a",
+      "tag": "jokers_of_neon-PowerUpItem",
+      "selector": "0x2b4fc887298c7047a5ae0e9e17e7bd4b0d59ce78bccedaf0d1f6f4ad3cfcd1b"
+    },
+    {
+      "members": [],
       "class_hash": "0x6b584298d4f34931066adf274ef80a4421e1196ebc2ecd68d295498821837dc",
       "tag": "jokers_of_neon-RageRound",
       "selector": "0x625525caf9378fc14502449acbe1d8c8a0eaa056c1eafc3497f4b982d5dbd9f"
@@ -2858,7 +2931,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1d96ee34520a61b15dbd42ef9a57cd89289d70a11d2e1725babd6187c2b832",
+      "class_hash": "0x68d9d33ee6b4dfdde74e0c6fbeac185d336fcf88643319f119a6ee008721c25",
       "tag": "jokers_of_neon-Shop",
       "selector": "0x283e17f669eaa763aba87677ee6b3893d6bbf691b580f4ad12a0269eaf6a122"
     },
@@ -2950,6 +3023,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x5b905dbde7c96c584ec5e800da8bf10137861ef9bdad53559d7e421cc197437",
+      "tag": "jokers_of_neon-GamePowerUpEvent",
+      "selector": "0x31f4147e8bbd5b1fbb6a3b7c90a51ff81cfbbbc3919a2182ad6dae108eb2377"
+    },
+    {
+      "members": [],
       "class_hash": "0x363f5afaf0e84c5a933a3d6f6b19ea12bbabd679b9e625d137aa4d1615b4178",
       "tag": "jokers_of_neon-LevelUpHandEvent",
       "selector": "0x520c37f3fe12e1bb9393c4373cb5c495d30061c2ff15475e11bf129dd73d47d"
@@ -3001,6 +3080,12 @@
       "class_hash": "0x51cc66982b8de50be5becef19a17844380074dbae48b57594d9fb22c027d8b9",
       "tag": "jokers_of_neon-PokerHandEvent",
       "selector": "0x2ca117496a8e6faa5b31978829563ff7faa9adba6a0535ee8714bd058df66d9"
+    },
+    {
+      "members": [],
+      "class_hash": "0x57d2c30b2eb85fb02527974299e372d8768822dd36bbea0f4a34ec8a37d9d35",
+      "tag": "jokers_of_neon-PowerUpEvent",
+      "selector": "0x6d160681f8ea9068982978e94823ae0ca66c5428330bfb8e023d52464fdca58"
     },
     {
       "members": [],

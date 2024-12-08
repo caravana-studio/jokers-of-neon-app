@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
+import { useNavigate } from "react-router-dom";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -23,11 +24,10 @@ import {
 } from "../../constants/general.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { isTutorial } from "../../utils/isTutorial.ts";
-import { useNavigate } from "react-router-dom";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -113,17 +113,17 @@ export const GameContent = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
+    const modifiedCardId = Number(event.over?.id);
     const isModifier = hand.find((c) => c.idx === draggedCard)?.isModifier;
 
-    const modifiedCard = Number(event.over?.id);
-    if (!isNaN(modifiedCard) && !isNaN(draggedCard) && isModifier) {
-      const index = preSelectedCards.indexOf(modifiedCard);
+    if (!isNaN(modifiedCardId) && !isNaN(draggedCard) && isModifier) {
+      const index = preSelectedCards.indexOf(modifiedCardId);
       if (index !== -1) {
-        addModifier(modifiedCard, draggedCard);
+        addModifier(modifiedCardId, draggedCard);
       }
     } else if (
       !isModifier &&
-      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
+      (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCardId))
     ) {
       setCardClicked(true);
       setStepIndex(stepIndex + 1);

@@ -18,6 +18,7 @@ export interface PlayEvents {
   cashEvents?: CashEvent[];
   secondChanceEvent?: boolean;
   modifierNeonEvents?: ModifierNeonEvent[];
+  powerUpEvents?: PowerUpScore[];
 }
 
 export interface LevelPassedEvent {
@@ -39,6 +40,10 @@ export interface MultiPoints {
 export interface CardScore extends MultiPoints {
   idx: number;
   special_idx?: number;
+}
+
+export interface PowerUpScore extends MultiPoints {
+  idx: number;
 }
 
 export interface NeonPlayEvent extends MultiPoints {

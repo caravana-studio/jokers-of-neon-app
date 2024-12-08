@@ -4,13 +4,15 @@ import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import { useRound } from "../dojo/queries/useRound";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
+import { LevelPokerHand } from "../types/LevelPokerHand";
+import { PowerUp } from "../types/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
@@ -50,6 +52,9 @@ export const useGameState = () => {
 
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
 
+  const [powerUps, setPowerUps] = useState<(PowerUp | null)[]>([]);
+  const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
+
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
     [sortBySuit]
@@ -60,6 +65,27 @@ export const useGameState = () => {
   const game = useGame();
 
   const dojoHand = useCurrentHand(sortBy);
+
+  const dojoPowerUps = useGamePowerUps();
+
+  const removePowerUp = (idx: number) => {
+    setPowerUps((prev) => {
+      const newPowerUps = [
+        ...prev.filter((powerUp: PowerUp | null) => powerUp?.idx !== idx),
+        null,
+      ];
+
+      return newPowerUps;
+    });
+  };
+
+  const addPowerUp = (powerUp: PowerUp) => {
+    setPowerUps((prev) => {
+      const newPowerUps = [...prev, powerUp];
+      return newPowerUps;
+    });
+  }
+
   const {
     setup: {
       client,
@@ -102,6 +128,12 @@ export const useGameState = () => {
     }
   }, [dojoHand]);
 
+  useEffect(() => {
+    if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
+      setPowerUps(dojoPowerUps);
+    }
+  }, [dojoPowerUps]);
+
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
     const multi =
@@ -138,6 +170,11 @@ export const useGameState = () => {
   };
   const showSpecials = () => {
     setSpecialSwitcherOn(true);
+  };
+
+  const resetPowerUps = () => {
+    setPowerUps([null, null, null, null]);
+    setPreselectedPowerUps([]);
   };
 
   return {
@@ -194,5 +231,12 @@ export const useGameState = () => {
     toggleSpecialSwitcher,
     showRages,
     showSpecials,
+    powerUps,
+    removePowerUp,
+    preselectedPowerUps,
+    setPreselectedPowerUps,
+    resetPowerUps,
+    setPowerUps,
+    addPowerUp,
   };
 };

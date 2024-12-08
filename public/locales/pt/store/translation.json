@@ -4,10 +4,14 @@
       "reroll": "Reembaralhar",
       "see-my": "Ver meus",
       "special-cards": "Cartas especiais",
+      "full-deck": "Baralho completo",
       "go-to": "Ir para",
-      "next-level": "Próximo nível",
+      "next-level": "Próximo",
       "purchased": "Comprado",
-      "coins": "Moedas:"
+      "coins": "Moedas:",
+      "cards": "Cartas",
+      "loot-boxes": "Caixas",
+      "utilities": "Utilidades"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",
@@ -16,7 +20,8 @@
       "special": "cartas especiais",
       "improve-plays": "Melhore suas jogadas",
       "my-special-cards": "Minhas cartas especiais",
-      "packs": "Pacotes"
+      "packs": "Pacotes",
+      "powerups": "Poderes"
     },
     "tooltip": {
       "reroll-default": "Atualizar itens disponíveis",
@@ -42,7 +47,8 @@
       },
       "tooltip": {
         "no-coins": "Você não tem moedas suficientes para comprar este item",
-        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
+        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
+        "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro poder. Consuma-os na próxima rodada."
       },
       "labels": {
         "buy": "Comprar",
@@ -73,6 +79,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloqueie um novo slot para cartas especiais"
+    },
+    "burn-item": {
+      "tooltip": "Remove uma carta do seu baralho"
     }
   }
 }

@@ -1,7 +1,10 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
-import { EMPTY_SPECIAL_SLOT_ITEM } from "../dojo/queries/getShopItems.ts";
+import {
+  EMPTY_BURN_ITEM,
+  EMPTY_SPECIAL_SLOT_ITEM,
+} from "../dojo/queries/getShopItems.ts";
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
@@ -12,6 +15,7 @@ import {
 } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
+import { PowerUp } from "../types/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
 
@@ -32,6 +36,8 @@ interface IStoreContext extends ShopItems {
   setRun: (run: boolean) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  burnCard: (card: Card) => Promise<boolean>;
+  buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -62,8 +68,9 @@ const StoreContext = createContext<IStoreContext>({
   commonCards: [],
   pokerHandItems: [],
   packs: [],
+  powerUps: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
-
+  burnItem: EMPTY_BURN_ITEM,
   rerollInformation: {
     rerollCost: 100,
     rerollExecuted: true,
@@ -73,6 +80,12 @@ const StoreContext = createContext<IStoreContext>({
   setRun: (_) => {},
   loading: true,
   setLoading: (_) => {},
+  burnCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  buyPowerUp: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -88,19 +101,21 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buyPokerHand,
     buyBlisterPack,
     buySlotSpecialCard,
+    buyPowerUp: stateBuyPowerUp,
     rollbackBuySpecialCard,
     rollbackBuyModifierCard,
     rollbackBuyCommonCard,
     rollbackBuyPokerHand,
     rollbackBuyBlisterPack,
     rollbackBuySlotSpecialCard,
+    rollbackBuyPowerUp,
     run,
     setRun,
     loading,
     setLoading,
   } = useShopState();
 
-  const { gameId } = useGameContext();
+  const { gameId, addPowerUp } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx);
@@ -116,6 +131,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     storeReroll,
     levelUpPokerHand: dojoLevelUpHand,
     buySpecialSlot: dojoBuySpecialSlot,
+    burnCard: dojoBurnCard,
+    buyPowerUp: dojoBuyPowerUp,
   } = useShopActions();
 
   const stateBuyCard = (card: Card) => {
@@ -151,6 +168,42 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
+
+  const buyPowerUp = (powerUp: PowerUp): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    stateBuyPowerUp(powerUp.idx);
+    const promise = dojoBuyPowerUp(gameId, powerUp.idx);
+    promise
+      .then((response) => {
+        if (response) {
+          addPowerUp(powerUp);
+        } else {
+          rollbackBuyPowerUp(powerUp.idx);
+        }
+      })
+      .catch(() => {
+        rollbackBuyPowerUp(powerUp.idx);
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
+
+  const burnCard = (card: Card): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    const promise = dojoBurnCard(gameId, card.card_id ?? 0);
+    promise
+      .then(() => {
+        fetchShopItems();
       })
       .finally(() => {
         setLocked(false);
@@ -262,12 +315,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         pokerHandItems: shopItems.pokerHandItems,
         packs: shopItems.packs,
         specialSlotItem: shopItems.specialSlotItem,
+        burnItem: shopItems.burnItem,
+        powerUps: shopItems.powerUps,
         rerollInformation,
         cash,
         run,
         setRun,
         loading,
         setLoading,
+        burnCard,
+        buyPowerUp,
       }}
     >
       {children}

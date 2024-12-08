@@ -4,4 +4,5 @@ export interface PokerHandItem {
     level: number;
     cost: number;
     purchased: boolean;
+    discount_cost: number;
   }

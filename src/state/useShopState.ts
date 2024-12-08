@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import {
+  EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
   getShopItems,
 } from "../dojo/queries/getShopItems";
 import { useGame } from "../dojo/queries/useGame";
 import {
   BlisterPackItem,
-  SlotSpecialCardsItem
+  BurnItem,
+  SlotSpecialCardsItem,
 } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
+import { PowerUp } from "../types/PowerUp";
 
 export interface RerollInformation {
   rerollCost: number;
@@ -24,6 +27,8 @@ export interface ShopItems {
   pokerHandItems: PokerHandItem[];
   packs: BlisterPackItem[];
   specialSlotItem: SlotSpecialCardsItem;
+  burnItem: BurnItem;
+  powerUps: PowerUp[]
 }
 
 const sortByCardId = (a: Card, b: Card) => {
@@ -34,6 +39,10 @@ const sortByPackId = (a: BlisterPackItem, b: BlisterPackItem) => {
 };
 const sortByPokerHand = (a: PokerHandItem, b: PokerHandItem) => {
   return a.poker_hand.localeCompare(b.poker_hand);
+};
+
+const sortByPowerUpId = (a: PowerUp, b: PowerUp) => {
+  return (Number(a.power_up_id) ?? 0) - (Number(b.power_up_id) ?? 0);
 };
 
 export const useShopState = () => {
@@ -54,6 +63,7 @@ export const useShopState = () => {
   const [specialSlotItem, setSpecialSlotItem] = useState<SlotSpecialCardsItem>(
     EMPTY_SPECIAL_SLOT_ITEM
   );
+  const [burnItem, setBurnItem] = useState<BurnItem>(EMPTY_BURN_ITEM);
 
   const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
     {
@@ -61,6 +71,9 @@ export const useShopState = () => {
       rerollExecuted: true,
     }
   );
+
+  const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
+
   const [cash, setCash] = useState(0);
 
   const decreaseCash = (amount: number) => {
@@ -122,6 +135,14 @@ export const useShopState = () => {
     setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
   };
 
+  const buyPowerUp = (idx: number) => {
+    buyItem(idx, setPowerUps);
+  };
+
+  const rollbackBuyPowerUp = (idx: number) => {
+    rollbackBuyItem(idx, setPowerUps);
+  };
+
   const rollbackBuySpecialCard = (idx: number) => {
     rollbackBuyItem(idx, setSpecialCards);
   };
@@ -154,9 +175,11 @@ export const useShopState = () => {
       setCommonCards(shopItems.commonCards);
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
-      setSpecialSlotItem(shopItems.specialSlotItem);
+      setSpecialSlotItem({...shopItems.specialSlotItem, fieldOrder: []});
       setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
+      setBurnItem({...shopItems.burnItem, fieldOrder: []});
+      setPowerUps(shopItems.powerUpItems);
     }
   };
 
@@ -171,6 +194,8 @@ export const useShopState = () => {
     pokerHandItems: pokerHandItems.sort(sortByPokerHand),
     packs: blisterPackItems.sort(sortByPackId),
     specialSlotItem,
+    burnItem,
+    powerUps: powerUps.sort(sortByPowerUpId),
   };
 
   return {
@@ -184,12 +209,14 @@ export const useShopState = () => {
     buyPokerHand,
     buyBlisterPack,
     buySlotSpecialCard,
+    buyPowerUp,
     rollbackBuySpecialCard,
     rollbackBuyModifierCard,
     rollbackBuyCommonCard,
     rollbackBuyPokerHand,
     rollbackBuyBlisterPack,
     rollbackBuySlotSpecialCard,
+    rollbackBuyPowerUp,
     run,
     setRun,
     loading,

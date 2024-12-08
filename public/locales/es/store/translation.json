@@ -4,10 +4,14 @@
       "reroll": "Actualizar",
       "see-my": "Cartas",
       "special-cards": "especiales",
+      "full-deck": "Mazo completo",
       "go-to": "Ir al",
-      "next-level": "Siguiente nivel",
+      "next-level": "Siguiente",
       "purchased": "Comprado",
-      "coins": "Monedas:"
+      "coins": "Monedas:",
+      "cards": "Cartas",
+      "loot-boxes": "Cajas",
+      "utilities": "Utilidades"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
@@ -16,7 +20,8 @@
       "special": "Cartas especiales",
       "improve-plays": "Mejora tus manos",
       "my-special-cards": "Mis especiales",
-      "packs": "Paquetes"
+      "packs": "Paquetes",
+      "powerups": "Poderes"
     },
     "tooltip": {
       "reroll-default": "Actualizar items",
@@ -42,7 +47,8 @@
       },
       "tooltip": {
         "no-coins": "No tienes suficientes monedas para comprar este artículo",
-        "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales."
+        "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
+        "no-space-power-ups": "No tienes espacios disponibles para comprar este poder. Consumelos en la siguiente ronda."
       },
       "labels": {
         "buy": "Comprar",
@@ -73,6 +79,9 @@
     },
     "special-slot": {
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
+    },
+    "burn-item": {
+      "tooltip": "Elimina una carta de tu mazo"
     }
   }
 }

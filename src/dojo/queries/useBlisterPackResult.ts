@@ -33,7 +33,7 @@ export const useBlisterPackResult = () => {
   const cardsArray = useMemo(
     () =>
       (blisterPackResult?.cards ?? []).map(
-        (card) => card && Number((card as any)?.value)
+        (card: any) => card && Number((card as any)?.value)
       ),
     [blisterPackResult?.cards]
   );

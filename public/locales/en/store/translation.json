@@ -4,10 +4,14 @@
       "reroll": "Reroll",
       "see-my": "See my",
       "special-cards": "Special cards",
+      "full-deck": "Full deck",
       "go-to": "Go to",
-      "next-level": "Next level",
+      "next-level": "Next",
       "purchased": "Purchased",
-      "coins": "Coins:"
+      "coins": "Coins:",
+      "cards": "Cards",
+      "loot-boxes": "Loot Boxes",
+      "utilities": "Utilities"
     },
     "titles": {
       "level-game": "Level up your game",
@@ -16,7 +20,8 @@
       "special": "special cards",
       "improve-plays": "Improve your plays",
       "my-special-cards": "My special cards",
-      "packs": "Packs"
+      "packs": "Packs",
+      "powerups": "Power-ups"
     },
     "tooltip": {
       "reroll-default": "Update available items",
@@ -42,7 +47,8 @@
       },
       "tooltip": {
         "no-coins": "You don't have enough coins to buy this item",
-        "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card"
+        "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card",
+        "no-space-power-ups": "You don't have enough available slots for another power-up. Consume them in the next round."
       },
       "labels": {
         "buy": "Buy",
@@ -73,6 +79,9 @@
     },
     "special-slot": {
       "tooltip": "Unlock a new slot for special cards"
+    },
+    "burn-item": {
+      "tooltip": "Remove a card from your deck"
     }
   }
 }

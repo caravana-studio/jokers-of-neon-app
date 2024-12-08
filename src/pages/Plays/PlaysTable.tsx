@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Table,
   TableContainer,
@@ -17,13 +18,13 @@ import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
-import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -199,8 +200,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       </Box>
                     </Td>
                   );
-
-                  const notEnoughCash = !!storePlay && cash < storePlay.cost;
+                  const notEnoughCash =
+                    !!storePlay &&
+                    (storePlay.discount_cost
+                      ? cash < storePlay.discount_cost
+                      : cash < storePlay.cost);
 
                   const buyButton = (
                     <Button
@@ -237,8 +241,38 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       {inStore ? (
                         <>
                           <Td sx={opacitySx} color={textColor}>
-                            {storePlay?.cost ? `${storePlay.cost}` : ""}
-                            <CashSymbol />
+                            <Flex flexDir="column">
+                              <Box
+                                fontFamily="Orbitron"
+                                textDecoration={
+                                  storePlay?.discount_cost !== 0
+                                    ? "line-through"
+                                    : "none"
+                                }
+                                fontSize={
+                                  storePlay?.discount_cost !== 0
+                                    ? isMobile
+                                      ? 6
+                                      : 9
+                                    : "unset"
+                                }
+                                opacity={
+                                  storePlay?.discount_cost !== 0 ? 0.6 : 1
+                                }
+                                lineHeight={
+                                  storePlay?.discount_cost !== 0 ? 0.5 : 1
+                                }
+                              >
+                                {storePlay?.cost ? `${storePlay.cost}` : ""}
+                                <CashSymbol />
+                              </Box>
+                              {storePlay?.discount_cost !== 0 && (
+                                <Box fontFamily="Orbitron">
+                                  {storePlay?.discount_cost}
+                                  <CashSymbol />
+                                </Box>
+                              )}
+                            </Flex>
                           </Td>
                           <Td>
                             {!!storePlay ? (

@@ -26,7 +26,7 @@ export const SpecialCards = () => {
   return (
     <CardContainerWithBorder
       width={`${cardWidth * 5 + (isSmallScreen ? 32 : 49)}px`}
-      height={`${cardHeight + (isSmallScreen ? 10 : 16)}px`}
+      height={`${cardHeight + (isSmallScreen ? 10 : 30)}px`}
     >
       {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
       <SpecialRageSwitcher />

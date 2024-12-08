@@ -19,7 +19,11 @@ export const PreviewSlot = () => {
   const { buySpecialSlot, locked } = useStore();
   const cash = game?.cash ?? 0;
 
-  const notEnoughCash = !price || cash < Number(price);
+  const notEnoughCash =
+    !price ||
+    (specialSlotItem?.discount_cost
+      ? cash < Number(specialSlotItem?.discount_cost ?? 0)
+      : cash < Number(price));
 
   const buyButton = (
     <Button
@@ -37,7 +41,7 @@ export const PreviewSlot = () => {
   );
 
   const tooltipButton = notEnoughCash ? (
-    <Tooltip label={t("labels.tooltip.no-coins")}>{buyButton}</Tooltip>
+    <Tooltip label={t("tooltip.no-coins")}>{buyButton}</Tooltip>
   ) : (
     buyButton
   );
@@ -57,6 +61,7 @@ export const PreviewSlot = () => {
       title={t("slot-title")}
       description={t("slot-description")}
       price={Number(price)}
+      discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
     />
   );
 };

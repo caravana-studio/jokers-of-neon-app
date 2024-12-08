@@ -1,6 +1,5 @@
-import { Button, Flex, Tooltip } from "@chakra-ui/react";
+import { Button, Tooltip } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
@@ -33,7 +32,9 @@ export const PreviewLootBox = () => {
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const notEnoughCash = !card.price || cash < card.price;
+  const notEnoughCash =
+    !card.price ||
+    (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
@@ -111,6 +112,7 @@ export const PreviewLootBox = () => {
       isPack
       spine={spineAnim}
       showOverlay={showOverlay}
+      discountPrice={pack.discount_cost}
     />
   );
 };

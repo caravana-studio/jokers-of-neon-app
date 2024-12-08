@@ -83,7 +83,14 @@ function App() {
               />
               <Route path="/play" element={<Navigate to="/" />} />
               <Route path="/plays" element={<PlaysLayout />} />
-              <Route path="/deck" element={<DeckPage />} />
+              <Route
+                path="/deck"
+                element={
+                  <StoreProvider>
+                    <DeckPage />
+                  </StoreProvider>
+                }
+              />
             </Routes>
           </AudioPlayerProvider>
         </GameProvider>

@@ -2,6 +2,11 @@ import { BLUE, NEON_GREEN, VIOLET} from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
+const transparent = defineStyle({
+  backgroundColor: "transparent !important",
+  color: "white",
+});
+
 const solid = defineStyle({
   backgroundColor: "blue !important",
   color: "white",
@@ -125,7 +130,7 @@ export const buttonTheme = defineStyleConfig({
     textTransform: "uppercase",
   },
   variants: { solid, outline, secondarySolid, defaultOutline, discardSecondarySolid, outlineSecondaryGlow,
-     outlinePrimaryGlow, outlineSecondaryGlowActive },
+     outlinePrimaryGlow, outlineSecondaryGlowActive, transparent },
   sizes: {
     sm: {
       fontSize: { base: 8, md: 11 },
