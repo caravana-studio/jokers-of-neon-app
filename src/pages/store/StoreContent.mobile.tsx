@@ -6,7 +6,6 @@ import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
 import { Coins } from "./Coins.tsx";
-import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
@@ -14,6 +13,8 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
+import { LootBoxesMobile } from "./LootBoxes.mobile.tsx";
+import { LootBoxes } from "./LootBoxes.tsx";
 
 export const StoreContentMobile = () => {
   const { commonCards, modifierCards, specialCards, setRun } = useStore();
@@ -52,6 +53,13 @@ export const StoreContentMobile = () => {
           </Tabs>
         </Flex>
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
+
+        {tabIndex === 1 && (
+          <Flex width="100%">
+            <LootBoxesMobile />
+          </Flex>
+        )}
+
         <Box
           display="flex"
           flexWrap="wrap"
@@ -81,9 +89,9 @@ export const StoreContentMobile = () => {
                 <Coins rolling />
               </Flex>
             </Flex>
-            <Flex justifyContent={{ base: "left", sm: "center" }}>
+            {/* <Flex justifyContent={{ base: "left", sm: "center" }}>
               <LootBoxes />
-            </Flex>
+            </Flex> */}
           </Box>
           <Box
             width={{ base: "100%", sm: "auto" }}
