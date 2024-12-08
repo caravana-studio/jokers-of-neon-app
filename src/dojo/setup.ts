@@ -1,15 +1,15 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
+import { Component, Metadata, Schema } from "@dojoengine/recs";
 import { setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
+import { GAME_ID } from "../constants/localStorage";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
-import { defineContractComponents } from "./typescript/models.gen";
+import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
-import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { GAME_ID } from "../constants/localStorage";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -155,7 +155,7 @@ export async function setup({ ...config }: DojoConfig) {
     contractComponents,
     systemCalls: createSystemCalls({ client }, clientComponents, world),
     publish: (typedData: string, signature: ArraySignatureType) => {
-      toriiClient.publishMessage(typedData, signature);
+      toriiClient.publishMessage(typedData, signature, false);
     },
     config,
     dojoProvider,

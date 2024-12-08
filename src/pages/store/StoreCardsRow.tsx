@@ -70,7 +70,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
         <Flex
           flexDirection="row"
           justifyContent="flex-start"
-          wrap={"wrap"}
+          wrap={"nowrap"}
           gap={[2, 4, 6]}
           rowGap={4}
         >

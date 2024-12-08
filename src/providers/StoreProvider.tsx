@@ -15,6 +15,7 @@ import {
 } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
+import { PowerUp } from "../types/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
 
@@ -36,6 +37,7 @@ interface IStoreContext extends ShopItems {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   burnCard: (card: Card) => Promise<boolean>;
+  buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -66,6 +68,7 @@ const StoreContext = createContext<IStoreContext>({
   commonCards: [],
   pokerHandItems: [],
   packs: [],
+  powerUps: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
   burnItem: EMPTY_BURN_ITEM,
   rerollInformation: {
@@ -78,6 +81,9 @@ const StoreContext = createContext<IStoreContext>({
   loading: true,
   setLoading: (_) => {},
   burnCard: (_) => {
+    return new Promise((resolve) => resolve(false));
+  },
+  buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
 });
@@ -95,19 +101,21 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buyPokerHand,
     buyBlisterPack,
     buySlotSpecialCard,
+    buyPowerUp: stateBuyPowerUp,
     rollbackBuySpecialCard,
     rollbackBuyModifierCard,
     rollbackBuyCommonCard,
     rollbackBuyPokerHand,
     rollbackBuyBlisterPack,
     rollbackBuySlotSpecialCard,
+    rollbackBuyPowerUp,
     run,
     setRun,
     loading,
     setLoading,
   } = useShopState();
 
-  const { gameId } = useGameContext();
+  const { gameId, addPowerUp } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx);
@@ -124,6 +132,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     levelUpPokerHand: dojoLevelUpHand,
     buySpecialSlot: dojoBuySpecialSlot,
     burnCard: dojoBurnCard,
+    buyPowerUp: dojoBuyPowerUp,
   } = useShopActions();
 
   const stateBuyCard = (card: Card) => {
@@ -159,6 +168,28 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+      })
+      .finally(() => {
+        setLocked(false);
+      });
+    return promise;
+  };
+
+  const buyPowerUp = (powerUp: PowerUp): Promise<boolean> => {
+    buySound();
+    setLocked(true);
+    stateBuyPowerUp(powerUp.idx);
+    const promise = dojoBuyPowerUp(gameId, powerUp.idx);
+    promise
+      .then((response) => {
+        if (response) {
+          addPowerUp(powerUp);
+        } else {
+          rollbackBuyPowerUp(powerUp.idx);
+        }
+      })
+      .catch(() => {
+        rollbackBuyPowerUp(powerUp.idx);
       })
       .finally(() => {
         setLocked(false);
@@ -285,6 +316,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         packs: shopItems.packs,
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,
+        powerUps: shopItems.powerUps,
         rerollInformation,
         cash,
         run,
@@ -292,6 +324,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         loading,
         setLoading,
         burnCard,
+        buyPowerUp,
       }}
     >
       {children}

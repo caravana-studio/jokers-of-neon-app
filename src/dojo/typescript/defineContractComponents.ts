@@ -1,0 +1,840 @@
+import { defineComponent, Type as RecsType, World } from "@dojoengine/recs";
+
+export type ContractComponents = Awaited<
+  ReturnType<typeof defineContractComponents>
+>;
+
+
+export function defineContractComponents(world: World) {
+    return {
+      // Model definition for `jokers_of_neon::models::status::shop::shop::BlisterPackItem` model
+      BlisterPackItem: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            idx: RecsType.Number,
+            blister_pack_id: RecsType.Number,
+            cost: RecsType.Number,
+            cost_discount: RecsType.Number,
+            purchased: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BlisterPackItem",
+              types: ["u32", "u32", "u32", "u32", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::shop::shop::BlisterPackResult` model
+      BlisterPackResult: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            cards_picked: RecsType.Boolean,
+            cards: RecsType.NumberArray,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BlisterPackResult",
+              types: ["u32", "bool", "array"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Type definition for `jokers_of_neon::models::status::shop::shop::BurnItem` struct
+      BurnItem: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            cost: RecsType.Number,
+            purchased: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BurnItem",
+              types: ["u32", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::BuyBlisterPackEvent` model
+      BuyBlisterPackEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            idx: RecsType.Number,
+            blister_pack_id: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BuyBlisterPackEvent",
+              types: ["u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::BuyCardEvent` model
+      BuyCardEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            idx: RecsType.Number,
+            item_type: RecsType.String,
+            card_id: RecsType.Number,
+            temporary: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BuyCardEvent",
+              types: ["u32", "u32", "u32", "CardItemType", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::BuyPokerHandEvent` model
+      BuyPokerHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            idx: RecsType.Number,
+            poker_hand: RecsType.String,
+            level_hand: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BuyPokerHandEvent",
+              types: ["u32", "u32", "u32", "PokerHand", "u8"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::BuyRerollEvent` model
+      BuyRerollEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            reroll_cost: RecsType.Number,
+            reroll_executed: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "BuyRerollEvent",
+              types: ["u32", "u32", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::shop::shop::CardItem` model
+      CardItem: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            idx: RecsType.Number,
+            item_type: RecsType.String,
+            card_id: RecsType.Number,
+            cost: RecsType.Number,
+            purchased: RecsType.Boolean,
+            temporary: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CardItem",
+              types: ["u32", "u32", "CardItemType", "u32", "u32", "bool", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::CardScoreEvent` model
+      CardScoreEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            index: RecsType.Number,
+            multi: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CardScoreEvent",
+              types: ["ContractAddress", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::CreateGameEvent` model
+      CreateGameEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CreateGameEvent",
+              types: ["ContractAddress", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` model
+      CurrentHand: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            cards: RecsType.NumberArray,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CurrentHand",
+              types: ["u32", "array"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),      
+      
+      GamePowerUp: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            power_ups: RecsType.NumberArray,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "GamePowerUp",
+              types: ["u32", "array"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      CurrentHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            cards: RecsType.NumberArray,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CurrentHandEvent",
+              types: ["u32", "array"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::game::game::CurrentSpecialCards` model
+      CurrentSpecialCards: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            idx: RecsType.Number,
+            effect_card_id: RecsType.Number,
+            is_temporary: RecsType.Boolean,
+            remaining: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "CurrentSpecialCards",
+              types: ["u32", "u32", "u32", "bool", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::game_deck::DeckCard` model
+      DeckCard: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            index: RecsType.Number,
+            card_id: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "DeckCard",
+              types: ["u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::DetailEarnedEvent` model
+      DetailEarnedEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            round_defeat: RecsType.Number,
+            level_bonus: RecsType.Number,
+            hands_left: RecsType.Number,
+            hands_left_cash: RecsType.Number,
+            discard_left: RecsType.Number,
+            discard_left_cash: RecsType.Number,
+            rage_card_defeated: RecsType.Number,
+            rage_card_defeated_cash: RecsType.Number,
+            total: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "DetailEarnedEvent",
+              types: [
+                "ContractAddress",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+              ],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::game::game::Game` model
+      Game: (() => {
+        return defineComponent(
+          world,
+          {
+            id: RecsType.Number,
+            owner: RecsType.BigInt,
+            player_name: RecsType.BigInt,
+            max_hands: RecsType.Number,
+            max_discard: RecsType.Number,
+            max_jokers: RecsType.Number,
+            round: RecsType.Number,
+            player_score: RecsType.Number,
+            level: RecsType.Number,
+            len_hand: RecsType.Number,
+            len_max_current_special_cards: RecsType.Number,
+            len_current_special_cards: RecsType.Number,
+            current_jokers: RecsType.Number,
+            state: RecsType.String,
+            cash: RecsType.Number,
+            len_max_current_power_ups: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "Game",
+              types: [
+                "u32",
+                "ContractAddress",
+                "felt252",
+                "u8",
+                "u8",
+                "u8",
+                "u8",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u32",
+                "u8",
+                "GameState",
+                "u32",
+              ],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::game_deck::GameDeck` model
+      GameDeck: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            len: RecsType.Number,
+            round_len: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "GameDeck",
+              types: ["u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::ModifierCardSuitEvent` model
+      ModifierCardSuitEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            modifier_card_idx: RecsType.Number,
+            current_hand_card_idx: RecsType.Number,
+            suit: RecsType.String,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "ModifierCardSuitEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::NeonPokerHandEvent` model
+      NeonPokerHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            neon_cards_idx: RecsType.NumberArray,
+            multi: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "NeonPokerHandEvent",
+              types: ["ContractAddress", "u32", "array", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::PlayGameOverEvent` model
+      PlayGameOverEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PlayGameOverEvent",
+              types: ["ContractAddress", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::PlayPokerHandEvent` model
+      PlayPokerHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            count_hand: RecsType.Number,
+            poker_hand: RecsType.String,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PlayPokerHandEvent",
+              types: ["u32", "u32", "u8", "PokerHand"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::PlayWinGameEvent` model
+      PlayWinGameEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            level: RecsType.Number,
+            player_score: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PlayWinGameEvent",
+              types: ["ContractAddress", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::game::player::PlayerLevelPokerHand` model
+      PlayerLevelPokerHand: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            poker_hand: RecsType.String,
+            level: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PlayerLevelPokerHand",
+              types: ["u32", "PokerHand", "u8"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::PokerHandEvent` model
+      PokerHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            poker_hand: RecsType.Number,
+            multi: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PokerHandEvent",
+              types: ["ContractAddress", "u8", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::shop::shop::PokerHandItem` model
+      PokerHandItem: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            idx: RecsType.Number,
+            poker_hand: RecsType.String,
+            level: RecsType.Number,
+            cost: RecsType.Number,
+            purchased: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "PokerHandItem",
+              types: ["u32", "u32", "PokerHand", "u8", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::game::rage::RageRound` model
+      RageRound: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            is_active: RecsType.Boolean,
+            current_probability: RecsType.Number,
+            active_rage_ids: RecsType.NumberArray,
+            last_active_level: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "RageRound",
+              types: ["u32", "bool", "u16", "array", "u8"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::round::round::Round` model
+      Round: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            player_score: RecsType.Number,
+            level_score: RecsType.Number,
+            hands: RecsType.Number,
+            discard: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "Round",
+              types: ["u32", "u32", "u32", "u8", "u8"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::RoundScoreEvent` model
+      RoundScoreEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            player_score: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "RoundScoreEvent",
+              types: ["ContractAddress", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::shop::shop::Shop` model
+      Shop: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            reroll_cost: RecsType.Number,
+            reroll_executed: RecsType.Boolean,
+            len_item_common_cards: RecsType.Number,
+            len_item_modifier_cards: RecsType.Number,
+            len_item_special_cards: RecsType.Number,
+            len_item_poker_hands: RecsType.Number,
+            len_item_blister_pack: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "Shop",
+              types: ["u32", "u32", "bool", "u32", "u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem` model
+      SlotSpecialCardsItem: (() => {
+        return defineComponent(
+          world,
+          {
+            game_id: RecsType.Number,
+            cost: RecsType.Number,
+            purchased: RecsType.Boolean,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SlotSpecialCardsItem",
+              types: ["u32", "u32", "bool"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialCashEvent` model
+      SpecialCashEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            cash: RecsType.Number,
+            card_idx: RecsType.Number,
+            special_idx: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialCashEvent",
+              types: ["ContractAddress", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialGlobalEvent` model
+      SpecialGlobalEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            current_special_card_idx: RecsType.Number,
+            multi: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialGlobalEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialModifierMultiEvent` model
+      SpecialModifierMultiEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            current_special_card_idx: RecsType.Number,
+            current_hand_card_idx: RecsType.Number,
+            multi: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialModifierMultiEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialModifierPointsEvent` model
+      SpecialModifierPointsEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            current_special_card_idx: RecsType.Number,
+            current_hand_card_idx: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialModifierPointsEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialModifierSuitEvent` model
+      SpecialModifierSuitEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            current_special_card_idx: RecsType.Number,
+            current_hand_card_idx: RecsType.Number,
+            suit: RecsType.String,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialModifierSuitEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+  
+      // Model definition for `jokers_of_neon::models::data::events::SpecialPokerHandEvent` model
+      SpecialPokerHandEvent: (() => {
+        return defineComponent(
+          world,
+          {
+            player: RecsType.BigInt,
+            game_id: RecsType.Number,
+            current_special_card_idx: RecsType.Number,
+            multi: RecsType.Number,
+            points: RecsType.Number,
+          },
+          {
+            metadata: {
+              namespace: "jokers_of_neon",
+              name: "SpecialPokerHandEvent",
+              types: ["ContractAddress", "u32", "u32", "u32", "u32"],
+              customTypes: [],
+            },
+          }
+        );
+      })(),
+    };
+  }
+  

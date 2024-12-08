@@ -1,18 +1,19 @@
 import { Box, Flex, Heading, Tab, TabList, Tabs } from "@chakra-ui/react";
-import { Coins } from "./Coins.tsx";
-import { LootBoxes } from "./LootBoxes.tsx";
-import { StoreCardsRow } from "./StoreCardsRow.tsx";
-import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
+import { Coins } from "./Coins.tsx";
+import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { StoreCardsRow } from "./StoreCardsRow.tsx";
+import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
-import { useState } from "react";
+import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContentMobile = () => {
   const { commonCards, modifierCards, specialCards, setRun } = useStore();
@@ -101,14 +102,19 @@ export const StoreContentMobile = () => {
                 />
               )}
             </Box>
-            <Box className="game-tutorial-step-4">
-              {modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
-              )}
-            </Box>
+            <Flex>
+              <Box w="60%" className="game-tutorial-step-4">
+                {modifierCards.length > 0 && (
+                  <StoreCardsRow
+                    cards={modifierCards}
+                    title={t("store.titles.modifiers")}
+                  />
+                )}
+              </Box>
+              <Box w="40%">
+                <StorePowerUpsRow />
+              </Box>
+            </Flex>
             <Box className="game-tutorial-step-5">
               {specialCards.length > 0 && (
                 <StoreCardsRow
