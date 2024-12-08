@@ -8,11 +8,14 @@ import { getTooltip } from "../../utils/getTooltip";
 import { getCardData } from "../../utils/getCardData";
 import theme from "../../theme/theme";
 import { useTranslation } from "react-i18next";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import SpecialsButton from "./StoreElements/SpecialsButton";
+import NextLevelButton from "./StoreElements/NextLevelButton";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
 
-  const { packs } = useStore();
+  const { packs, setRun } = useStore();
   const { neonGreen, white } = theme.colors;
   const { t } = useTranslation(["store"]);
 
@@ -25,6 +28,7 @@ export const LootBoxesMobile = () => {
       flexDirection={"column"}
       grow={1}
       pt={5}
+      overflow="scroll"
     >
       {/* <Flex flexDirection="row" justifyContent="space-between"> */}
       {/* <Flex flexDirection={"column"} w={"100%"} justifyContent="space-between"> */}
@@ -40,7 +44,13 @@ export const LootBoxesMobile = () => {
         const { name, description, details } = getCardData(card, true);
 
         const spineAnim = (
-          <Flex key={`pack-${pack.blister_pack_id}`} w="30%" h={"100%"}>
+          <Flex
+            key={`pack-${pack.blister_pack_id}`}
+            w="40%"
+            h={"60%"}
+            justifyContent={"center"}
+            pl={2}
+          >
             <SpineAnimation
               jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
               atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
@@ -63,7 +73,7 @@ export const LootBoxesMobile = () => {
                   });
                 }
               }}
-              //   xOffset={500}
+              xOffset={-250}
               //   scale={2}
               //   height={2500}
             />
@@ -111,6 +121,7 @@ export const LootBoxesMobile = () => {
                     {name}
                   </Heading>
                 </Flex>
+
                 <Box mb={4}>
                   <Text
                     color="white"
@@ -134,6 +145,37 @@ export const LootBoxesMobile = () => {
                   </Text>
                   <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
                     {description}
+                  </Text>
+                </Box>
+
+                <Box mb={4}>
+                  <Text
+                    color="white"
+                    fontSize={{ base: "md", sm: "lg" }}
+                    mb={2}
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",
+                        backgroundColor: "white",
+                        boxShadow:
+                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                    {t("store.preview-card.title.details")}
+                  </Text>
+                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                    {details?.split("\n").map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
                   </Text>
                 </Box>
               </Flex>
