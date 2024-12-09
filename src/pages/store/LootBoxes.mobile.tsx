@@ -7,21 +7,15 @@ import {
   Button,
   keyframes,
 } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useStore } from "../../providers/StoreProvider";
-import { getTooltip } from "../../utils/getTooltip";
 import { getCardData } from "../../utils/getCardData";
 import theme from "../../theme/theme";
 import { useTranslation } from "react-i18next";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
-import SpecialsButton from "./StoreElements/SpecialsButton";
-import NextLevelButton from "./StoreElements/NextLevelButton";
-import { CashSymbol } from "../../components/CashSymbol";
 import { useRef, useState } from "react";
 import { useGame } from "../../dojo/queries/useGame";
 import { PriceBox } from "../../components/PriceBox";
@@ -62,8 +56,6 @@ export const LootBoxesMobile = () => {
       pt={5}
       overflow="scroll"
     >
-      {/* <Flex flexDirection="row" justifyContent="space-between"> */}
-      {/* <Flex flexDirection={"column"} w={"100%"} justifyContent="space-between"> */}
       {packs.map((pack) => {
         const card = {
           id: pack.blister_pack_id.toString(),
@@ -97,8 +89,6 @@ export const LootBoxesMobile = () => {
               isPurchased={pack.purchased.valueOf()}
               xOffset={-270}
               onOpenAnimationStart={openAnimationCallBack}
-              //   scale={2}
-              //   height={2500}
             />
           </Flex>
         );
@@ -112,7 +102,6 @@ export const LootBoxesMobile = () => {
                 .then((response) => {
                   if (response) {
                     spineAnimationRef.current?.playOpenBoxAnimation();
-                    // setLockRedirection(true);
                   } else {
                     setBuyDisabled(false);
                   }
@@ -141,14 +130,6 @@ export const LootBoxesMobile = () => {
         );
 
         return (
-          //   <Flex
-          //     flexDirection={"column"}
-          //     width="100%"
-          //     // ml={{ base: "15px", sm: "30px" }}
-          //     flex="1"
-          //     height="100%"
-          //     justifyContent={"space-between"}
-          //   >
           <Flex
             flexDirection={"column"}
             justifyContent={"space-between"}
@@ -265,11 +246,8 @@ export const LootBoxesMobile = () => {
               />
             )}
           </Flex>
-
-          //   </Flex>
         );
       })}
-      {/* </Flex> */}
     </Flex>
   );
 };
