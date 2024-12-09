@@ -1,11 +1,10 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import { Flex } from "@chakra-ui/react";
 import { StoreCardsRow } from "../StoreCardsRow";
 import { useStore } from "../../../providers/StoreProvider";
 import { useTranslation } from "react-i18next";
 
 export const StoreCards = () => {
-  const { commonCards, modifierCards, specialCards, setRun } = useStore();
+  const { commonCards, modifierCards, specialCards } = useStore();
   const { t } = useTranslation(["store"]);
   return (
     <Flex
