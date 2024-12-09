@@ -49,7 +49,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
   return (
     <>
-      <Box width={"100%"}>
+      <Flex flexDir="column" gap={1.5} width={"100%"}>
         <Flex
           justifyContent={isSmallScreen ? "space-between" : "flex-start"}
           alignItems="center"
@@ -104,7 +104,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             );
           })}
         </Flex>
-      </Box>
+      </Flex>
     </>
   );
 };

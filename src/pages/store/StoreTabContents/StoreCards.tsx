@@ -10,7 +10,7 @@ export const StoreCards = () => {
     <Flex
       width={"100%"}
       flexDirection={"column"}
-      gap={4}
+      gap={3}
       p={2}
       justifyContent={"center"}
     >
