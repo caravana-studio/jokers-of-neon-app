@@ -1,5 +1,8 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import Tilt from "react-parallax-tilt";
+import { TILT_OPTIONS } from "../constants/visualProps";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
@@ -9,7 +12,6 @@ import { colorizeText } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { TemporalBadge } from "./TiltCard";
-import { useTranslation } from "react-i18next";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -17,7 +19,7 @@ interface MobileCardHighlightProps {
 
 export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type } = getCardData(card, false);
+  const { name, description, type } = getCardData({...card, card_id: 310, isSpecial: true}, false);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -47,9 +49,13 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
 
   const getLabel = () => {
     if (type === CardTypes.MODIFIER) {
-      return loading ? t('game.card-highlight.buttons.changing') : t('game.card-highlight.buttons.change');
+      return loading
+        ? t("game.card-highlight.buttons.changing")
+        : t("game.card-highlight.buttons.change");
     } else if (type === CardTypes.SPECIAL) {
-      return loading ? t('game.card-highlight.buttons.removing') : t('game.card-highlight.buttons.remove');
+      return loading
+        ? t("game.card-highlight.buttons.removing")
+        : t("game.card-highlight.buttons.remove");
     }
   };
 
@@ -60,7 +66,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       left={0}
       width={"100%"}
       height={"100%"}
-      zIndex={1000}
+      zIndex={1100}
       justifyContent={"center"}
       alignItems={"center"}
       flexDirection={"column"}
@@ -96,13 +102,41 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         </Text>
       </Flex>
       <Box width={"60%"} position={"relative"}>
-        <CachedImage
-          borderRadius={"20px"}
-          boxShadow={"0px 0px 20px 2px white, inset 0px 0px 20px 5px white"}
-          src={`Cards/big/${card.img}`}
-          alt={`Card: ${name}`}
-          width={"100%"}
-        />
+        <Tilt
+          {...TILT_OPTIONS}
+          style={{ transformStyle: "preserve-3d" }}
+          glareMaxOpacity={0.2}
+        >
+          <CachedImage
+            position={"absolute"}
+            borderRadius={"20px"}
+            src={`Cards/big/${310}-back.png`}
+            alt={`Card: ${name}`}
+            width={"100%"}
+            zIndex={-1}
+          />
+          <CachedImage
+            position={"absolute"}
+            borderRadius={"20px"}
+            src={`Cards/big/${310}-mid.png`}
+            alt={`Card: ${name}`}
+            width={"100%"}
+            transform="translateZ(60px)"
+          />          
+          <CachedImage
+            position={"absolute"}
+            borderRadius={"20px"}
+            src={`Cards/big/${310}-front.png`}
+            alt={`Card: ${name}`}
+            width={"100%"}
+            transform="translateZ(80px)"
+          />
+          <CachedImage
+            src={`Cards/big/empty.png`}
+            alt={`empty`}
+            width={"100%"}
+          />
+        </Tilt>
         {card.temporary && card.remaining && (
           <TemporalBadge remaining={card.remaining} scale={1.6} />
         )}
@@ -110,8 +144,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
-      {(type === CardTypes.MODIFIER ||
-        type === CardTypes.SPECIAL) && (
+      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) && (
         <Button
           isDisabled={loading}
           onClick={handleClick}

@@ -6,7 +6,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { Tilt } from "react-tilt";
+import Tilt from "react-parallax-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
@@ -70,7 +70,7 @@ export const TiltCard = ({
             : "none",
         }}
       >
-        <Tilt options={TILT_OPTIONS}>
+        <Tilt {...TILT_OPTIONS}>
           {isHolographic && (
             <Tooltip
               hasArrow
@@ -196,7 +196,7 @@ export const TiltCard = ({
               position: "absolute",
             }}
           >
-            <Tilt options={TILT_OPTIONS}>
+            <Tilt {...TILT_OPTIONS}>
               <AnimatedCard idx={c.idx}>
                 <Tooltip
                   hasArrow
