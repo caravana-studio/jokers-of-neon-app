@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { useRef, useState } from "react";
 import { useGame } from "../../dojo/queries/useGame";
 import { PriceBox } from "../../components/PriceBox";
+import { GREY_LINE } from "../../theme/colors";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
@@ -138,8 +139,10 @@ export const LootBoxesMobile = () => {
             borderRadius="10px"
             pt={3}
             pb={5}
-            boxShadow={`0px 0px 10px 1px ${white}`}
+            // boxShadow={`0px 0px 10px 1px ${white}`}
+            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
             width={"95%"}
+            key={`pack-${pack.blister_pack_id}`}
           >
             <Flex
               flexDirection="row"
@@ -158,7 +161,7 @@ export const LootBoxesMobile = () => {
                 justifyContent={"space-between"}
               >
                 <Flex justifyContent="space-between" alignItems="center">
-                  <Heading size="sm" variant="italic">
+                  <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
                     {name}
                   </Heading>
                 </Flex>
