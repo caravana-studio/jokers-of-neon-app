@@ -36,7 +36,7 @@ export const Store = () => {
       } else if (game?.state === "IN_GAME") {
         navigate("/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
-        navigate("/open-pack");
+        navigate("/open-loot-box");
       }
     }
   }, [game?.state, lockRedirection]);

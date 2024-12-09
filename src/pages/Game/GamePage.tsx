@@ -67,7 +67,7 @@ export const GamePage = () => {
       } else if (game?.state === "AT_SHOP") {
         navigate("/store");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
-        navigate("/open-pack");
+        navigate("/open-loot-box");
       }
     }
   }, [game?.state, roundRewards]);

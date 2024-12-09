@@ -1,7 +1,17 @@
-import { Box, Flex, Heading, Tooltip, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Tooltip,
+  Text,
+  Button,
+  keyframes,
+} from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import SpineAnimation from "../../components/SpineAnimation";
+import SpineAnimation, {
+  SpineAnimationRef,
+} from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useStore } from "../../providers/StoreProvider";
 import { getTooltip } from "../../utils/getTooltip";
@@ -11,13 +21,35 @@ import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import SpecialsButton from "./StoreElements/SpecialsButton";
 import NextLevelButton from "./StoreElements/NextLevelButton";
+import { CashSymbol } from "../../components/CashSymbol";
+import { useRef, useState } from "react";
+import { useGame } from "../../dojo/queries/useGame";
+import { PriceBox } from "../../components/PriceBox";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
 
-  const { packs, setRun } = useStore();
+  const { packs, setRun, buyPack, locked } = useStore();
+  const [buyDisabled, setBuyDisabled] = useState(false);
+  const game = useGame();
+  const cash = game?.cash ?? 0;
   const { neonGreen, white } = theme.colors;
   const { t } = useTranslation(["store"]);
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const openAnimationCallBack = () => {
+    setTimeout(() => {
+      setShowOverlay(true);
+    }, 500);
+    // setTimeout(() => {
+    //   navigate("/redirect/open-loot-box");
+    // }, 1000);
+  };
+
+  const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }`;
 
   return (
     <Flex
@@ -41,6 +73,10 @@ export const LootBoxesMobile = () => {
           card_id: Number(pack.blister_pack_id),
         };
 
+        const notEnoughCash =
+          !card.price ||
+          (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
+
         const { name, description, details } = getCardData(card, true);
 
         const spineAnim = (
@@ -52,32 +88,56 @@ export const LootBoxesMobile = () => {
             pl={2}
           >
             <SpineAnimation
+              ref={spineAnimationRef}
               jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
               atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
-              initialAnimation={
-                isMobile
-                  ? animationsData.loopAnimation
-                  : animationsData.initialAnimation
-              }
-              hoverAnimation={animationsData.hoverAnimation}
+              initialAnimation={animationsData.loopAnimation}
               loopAnimation={animationsData.loopAnimation}
+              openBoxAnimation={animationsData.openBoxAnimation}
               isPurchased={pack.purchased.valueOf()}
-              onClick={() => {
-                if (!pack.purchased) {
-                  navigate("/preview/loot-box", {
-                    state: {
-                      card: card,
-                      isPack: true,
-                      pack: pack,
-                    },
-                  });
-                }
-              }}
               xOffset={-270}
+              onOpenAnimationStart={openAnimationCallBack}
               //   scale={2}
               //   height={2500}
             />
           </Flex>
+        );
+
+        const buyButton = (
+          <Button
+            mr={3}
+            onClick={() => {
+              setBuyDisabled(true);
+              buyPack(pack)
+                .then((response) => {
+                  if (response) {
+                    spineAnimationRef.current?.playOpenBoxAnimation();
+                    // setLockRedirection(true);
+                  } else {
+                    setBuyDisabled(false);
+                  }
+                })
+                .catch(() => {
+                  setBuyDisabled(false);
+                });
+            }}
+            isDisabled={
+              notEnoughCash || locked || buyDisabled || pack.purchased
+            }
+            height={{ base: "35px", sm: "100%" }}
+            width={{ base: "45%", sm: "unset" }}
+            size={"xs"}
+          >
+            {t("store.preview-card.labels.buy")}
+          </Button>
+        );
+
+        const tooltipButton = notEnoughCash ? (
+          <Tooltip label={t("store.preview-card.tooltip.no-coins")}>
+            {buyButton}
+          </Tooltip>
+        ) : (
+          buyButton
         );
 
         return (
@@ -178,9 +238,34 @@ export const LootBoxesMobile = () => {
                     ))}
                   </Text>
                 </Box>
+
+                <Flex alignItems={"baseline"} justifyContent={"space-between"}>
+                  {card.price && (
+                    <PriceBox
+                      price={card.price}
+                      purchased={pack.purchased}
+                      discountPrice={pack.discount_cost}
+                      absolutePosition={false}
+                    />
+                  )}
+                  {tooltipButton}
+                </Flex>
               </Flex>
             </Flex>
+            {showOverlay && (
+              <Box
+                position="fixed"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                backgroundColor="white"
+                zIndex="9999"
+                animation={`${fadeIn} 0.5s ease-out`}
+              />
+            )}
           </Flex>
+
           //   </Flex>
         );
       })}
