@@ -1,25 +1,27 @@
 import {
   Box,
+  Button,
   Flex,
   Heading,
-  Tooltip,
-  Text,
-  Button,
   keyframes,
+  Text,
+  Tooltip,
 } from "@chakra-ui/react";
+import { ReactNode, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { MobileInformationModal } from "../../components/MobileInformationModal";
+import { PriceBox } from "../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
-import { useStore } from "../../providers/StoreProvider";
-import { getCardData } from "../../utils/getCardData";
-import theme from "../../theme/theme";
-import { useTranslation } from "react-i18next";
-import { useRef, useState } from "react";
 import { useGame } from "../../dojo/queries/useGame";
-import { PriceBox } from "../../components/PriceBox";
+import { useStore } from "../../providers/StoreProvider";
 import { GREY_LINE } from "../../theme/colors";
+import theme from "../../theme/theme";
+import { getCardData } from "../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
@@ -33,13 +35,14 @@ export const LootBoxesMobile = () => {
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
+  const [informationModalContent, setInformationModalContent] = useState<
+    ReactNode | undefined
+  >(undefined);
+
   const openAnimationCallBack = () => {
     setTimeout(() => {
       setShowOverlay(true);
     }, 500);
-    // setTimeout(() => {
-    //   navigate("/redirect/open-loot-box");
-    // }, 1000);
   };
 
   const fadeIn = keyframes`
@@ -55,6 +58,7 @@ export const LootBoxesMobile = () => {
       flexDirection={"column"}
       grow={1}
       pt={5}
+      pb={4}
       overflow="scroll"
     >
       {packs.map((pack) => {
@@ -70,13 +74,13 @@ export const LootBoxesMobile = () => {
           !card.price ||
           (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
-        const { name, description, details } = getCardData(card, true);
+        const { name, description, details, size } = getCardData(card, true);
 
         const spineAnim = (
           <Flex
             key={`pack-${pack.blister_pack_id}`}
-            w="40%"
-            h={"60%"}
+            w="100%"
+            h={"100%"}
             justifyContent={"center"}
             pl={2}
           >
@@ -96,7 +100,6 @@ export const LootBoxesMobile = () => {
 
         const buyButton = (
           <Button
-            mr={3}
             onClick={() => {
               setBuyDisabled(true);
               buyPack(pack)
@@ -114,8 +117,7 @@ export const LootBoxesMobile = () => {
             isDisabled={
               notEnoughCash || locked || buyDisabled || pack.purchased
             }
-            height={{ base: "35px", sm: "100%" }}
-            width={{ base: "45%", sm: "unset" }}
+            width={{ base: "35%", sm: "unset" }}
             size={"xs"}
           >
             {t("store.preview-card.labels.buy")}
@@ -139,89 +141,65 @@ export const LootBoxesMobile = () => {
             borderRadius="10px"
             pt={3}
             pb={5}
-            // boxShadow={`0px 0px 10px 1px ${white}`}
+            pr={2}
             boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
             width={"95%"}
+            h={"50%"}
             key={`pack-${pack.blister_pack_id}`}
+            overflow="hidden"
           >
-            <Flex
-              flexDirection="row"
-              alignItems="center"
-              gap={4}
-              flex="1"
-              height="100%"
-            >
-              {spineAnim}
+            <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
+              <Flex h="100%" w="40%">
+                {spineAnim}
+              </Flex>
 
               <Flex
                 flexDirection={"column"}
-                width="100%"
+                width="60%"
                 flex="1"
                 height="100%"
                 justifyContent={"space-between"}
               >
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
+                <Flex justifyContent="space-between" mb={2} alignItems="center">
+                  <Heading fontWeight={"400"} fontSize={"xs"}>
                     {name}
                   </Heading>
                 </Flex>
 
-                <Box mb={4}>
-                  <Text
-                    color="white"
-                    fontSize={{ base: "md", sm: "lg" }}
-                    mb={2}
-                    sx={{
-                      position: "relative",
-                      _before: {
-                        content: '""',
-                        position: "absolute",
-                        bottom: 0,
-                        width: "95%",
-                        height: "2px",
-                        backgroundColor: "white",
-                        boxShadow:
-                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                      },
-                    }}
-                  >
-                    {t("store.preview-card.title.description")}
-                  </Text>
-                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
+                  <Text color={neonGreen} fontSize={"xs"}>
                     {description}
                   </Text>
-                </Box>
+                  <Text color={neonGreen} fontSize={"xs"}>
+                    {t("store.packs.size", { size })}
+                  </Text>
+                </Flex>
 
-                <Box mb={4}>
-                  <Text
-                    color="white"
-                    fontSize={{ base: "md", sm: "lg" }}
-                    mb={2}
-                    sx={{
-                      position: "relative",
-                      _before: {
-                        content: '""',
-                        position: "absolute",
-                        bottom: 0,
-                        width: "95%",
-                        height: "2px",
-                        backgroundColor: "white",
-                        boxShadow:
-                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                      },
-                    }}
-                  >
-                    {t("store.preview-card.title.details")}
-                  </Text>
-                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                    {details?.split("\n").map((line, index) => (
-                      <span key={index}>
-                        {line}
-                        <br />
-                      </span>
-                    ))}
-                  </Text>
-                </Box>
+                <Flex
+                  mb={4}
+                  gap={2}
+                  onClick={() => {
+                    setInformationModalContent(
+                      <Box>
+                        <Heading mb={4} fontWeight={"400"} fontSize={"sm"}>
+                          {name}
+                        </Heading>
+                        <Text color={neonGreen} fontSize={"sm"}>
+                          {t("store.packs.offering-rates")}: <br />
+                          {details?.split("\n").map((line, index) => (
+                            <span key={index}>
+                              {line}
+                              <br />
+                            </span>
+                          ))}
+                        </Text>
+                      </Box>
+                    );
+                  }}
+                >
+                  <Text>{t("store.packs.offering-rates")}</Text>
+                  <IoIosInformationCircleOutline color="white" size={"14px"} />
+                </Flex>
 
                 <Flex alignItems={"baseline"} justifyContent={"space-between"}>
                   {card.price && (
@@ -251,6 +229,12 @@ export const LootBoxesMobile = () => {
           </Flex>
         );
       })}
+      {informationModalContent && (
+        <MobileInformationModal
+          content={informationModalContent}
+          onClose={() => setInformationModalContent(undefined)}
+        />
+      )}
     </Flex>
   );
 };
