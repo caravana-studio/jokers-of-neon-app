@@ -26,13 +26,12 @@ import { getCardData } from "../../utils/getCardData";
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
 
-  const { packs, setRun, buyPack, locked } = useStore();
+  const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const game = useGame();
   const cash = game?.cash ?? 0;
   const { neonGreen, white } = theme.colors;
   const { t } = useTranslation(["store"]);
-  const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const [informationModalContent, setInformationModalContent] = useState<
@@ -75,6 +74,7 @@ export const LootBoxesMobile = () => {
           (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
         const { name, description, details, size } = getCardData(card, true);
+        const spineAnimationRef = useRef<SpineAnimationRef>(null);
 
         const spineAnim = (
           <Flex
@@ -106,6 +106,7 @@ export const LootBoxesMobile = () => {
                 .then((response) => {
                   if (response) {
                     spineAnimationRef.current?.playOpenBoxAnimation();
+                    setLockRedirection(true);
                   } else {
                     setBuyDisabled(false);
                   }
