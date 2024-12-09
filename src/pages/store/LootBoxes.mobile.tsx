@@ -73,7 +73,7 @@ export const LootBoxesMobile = () => {
                   });
                 }
               }}
-              xOffset={-250}
+              xOffset={-270}
               //   scale={2}
               //   height={2500}
             />
@@ -98,6 +98,7 @@ export const LootBoxesMobile = () => {
             pt={3}
             pb={5}
             boxShadow={`0px 0px 10px 1px ${white}`}
+            width={"95%"}
           >
             <Flex
               flexDirection="row"
@@ -111,7 +112,6 @@ export const LootBoxesMobile = () => {
               <Flex
                 flexDirection={"column"}
                 width="100%"
-                ml={{ base: "15px", sm: "30px" }}
                 flex="1"
                 height="100%"
                 justifyContent={"space-between"}

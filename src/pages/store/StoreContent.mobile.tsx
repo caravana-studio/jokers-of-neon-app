@@ -55,7 +55,7 @@ export const StoreContentMobile = () => {
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
 
         {tabIndex === 1 && (
-          <Flex width="100%" h={"50%"}>
+          <Flex width="100%" h={"70%"}>
             <LootBoxesMobile />
           </Flex>
         )}
