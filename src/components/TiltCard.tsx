@@ -145,6 +145,7 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
+                      zIndex={-1}
                       backgroundColor="rgba(0,0,0,0.3)"
                       borderRadius={{ base: "5px", sm: "8px" }}
                       pointerEvents="none"
@@ -155,7 +156,13 @@ export const TiltCard = ({
             </Tooltip>
           )}
 
-          {card.price && <PriceBox price={card.price} purchased={purchased} discountPrice={card.discount_cost} />}
+          {card.price && (
+            <PriceBox
+              price={card.price}
+              purchased={purchased}
+              discountPrice={card.discount_cost}
+            />
+          )}
           {card.purchased && (
             <Box
               sx={{
