@@ -62,6 +62,8 @@
       }
     },
     "packs": {
+      "offering-rates": "Probabilidades de aparição",
+      "size": "Tamanho: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecione as cartas que deseja manter",
       "select-all-lbl": "Selecionar tudo",
