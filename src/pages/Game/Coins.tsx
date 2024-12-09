@@ -1,10 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import CoinIcon from "../../assets/coins.svg?component";
+import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
-import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { CashSymbol } from "../../components/CashSymbol";
-import CoinIcon from "../../assets/coins.svg?component";
 
 export const Coins = () => {
   const { cash } = useGameContext();
@@ -17,7 +17,7 @@ export const Coins = () => {
       alignItems="center"
       gap={2}
     >
-      <CoinIcon></CoinIcon>
+      <CoinIcon height={isSmallScreen ? 25 : 30} />
       <Flex
         gap={1.5}
         alignItems="center"
