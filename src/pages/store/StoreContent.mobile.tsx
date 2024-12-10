@@ -15,6 +15,7 @@ import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 import { LootBoxesMobile } from "./LootBoxes.mobile.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
+import { UtilsTab } from "./UtilsTab.tsx";
 
 export const StoreContentMobile = () => {
   const { commonCards, modifierCards, specialCards, setRun } = useStore();
@@ -59,6 +60,8 @@ export const StoreContentMobile = () => {
             <LootBoxesMobile />
           </Flex>
         )}
+
+        {tabIndex === 2 && <UtilsTab />}
 
         {tabIndex === 0 && (
           <Box
@@ -133,11 +136,11 @@ export const StoreContentMobile = () => {
                 )}
               </Box>
             </Box>
-            <Flex mb={3} mx={4} flexDir={"row"} gap={5}>
+            {/* <Flex mb={3} mx={4} flexDir={"row"} gap={5}>
               <SpecialSlotItem />
               <BurnItem />
-            </Flex>
-            <Box
+            </Flex> */}
+            {/* <Box
               className="game-tutorial-step-2"
               width={{ base: "95%", sm: "75%" }}
               background="rgba(0,0,0,0.5)"
@@ -148,7 +151,7 @@ export const StoreContentMobile = () => {
                 {t("store.titles.improve-plays").toUpperCase()}
               </Heading>
               <LevelUpTable isSmallScreen={true} />
-            </Box>
+            </Box> */}
 
             <Box
               display="flex"
