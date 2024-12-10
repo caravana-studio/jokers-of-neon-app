@@ -87,18 +87,23 @@ export const UtilsTab = () => {
 
   return (
     <Flex flexDir={"column"} width={"100%"} overflow={"scroll"}>
-      <Flex
-        className="game-tutorial-step-2"
-        width={{ base: "95%", sm: "75%" }}
-        background="rgba(0,0,0,0.5)"
-        px={4}
-        borderRadius="10px"
-        flexDir={"column"}
-      >
-        <Heading variant="italic" size="m" mt={4}>
-          {t("store.titles.improve-plays").toUpperCase()}
-        </Heading>
-        <LevelUpTable isSmallScreen={true} />
+      <Flex my={3} mx={4} flexDir={"column"}>
+        <Flex justifyContent="space-between" mb={2} alignItems="center">
+          <Heading fontWeight={"400"} fontSize={"xs"}>
+            {t("store.titles.improve-plays").toUpperCase()}
+          </Heading>
+        </Flex>
+        <Flex
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          margin={"0 auto"}
+          bg="rgba(0, 0, 0, 0.6)"
+          borderRadius="10px"
+          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+          width={"100%"}
+        >
+          <LevelUpTable isSmallScreen={true} />
+        </Flex>
       </Flex>
 
       <Flex className="PowerUps"></Flex>

@@ -23,14 +23,17 @@ import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
+import { GREY_LINE } from "../../theme/colors";
 import theme from "../../theme/theme";
 import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
+import { PriceBox } from "../../components/PriceBox.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PlaysTableProps {
   inStore?: boolean;
 }
 
-const { blue, white, purple } = theme.colors;
+const { blue, white, purple, violet } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
@@ -44,6 +47,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { t } = useTranslation(["store"]);
 
   const { pokerHandItems, locked } = useStore();
+  const { isSmallScreen } = useResponsiveValues();
 
   const {
     setup: {
@@ -82,7 +86,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             sx={{
               borderCollapse: "separate",
               borderSpacing: "0 .3em",
-              marginBottom: 4,
+              marginBottom: isMobile ? 0 : 4,
             }}
             width={"100%"}
             variant={isMobile ? "store-mobile" : "store"}
@@ -90,23 +94,10 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             <Thead
               sx={{
                 position: "relative",
-                _after: {
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "1px",
-                  background:
-                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                  boxShadow:
-                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-                },
                 _before: {
                   content: '""',
                   position: "absolute",
                   bottom: 0,
-                  left: 0,
                   width: "100%",
                   height: "1px",
                   background:
@@ -119,10 +110,13 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
               <Tr>
                 {inStore ? (
                   <>
-                    <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>
-                      {t("store.plays-table.hand").toUpperCase()}
-                    </Td>
                     <Td>{t("store.plays-table.level").toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.hand").toUpperCase()}</Td>
+                    {isMobile && (
+                      <Td>
+                        {t("store.plays-table.points-multi").toUpperCase()}
+                      </Td>
+                    )}
                     <Td>{t("store.plays-table.price").toUpperCase()}</Td>
                     <Td></Td>
                   </>
@@ -150,7 +144,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                   const textColor = storePlay
                     ? purchased
-                      ? blue
+                      ? GREY_LINE
                       : white
                     : purple;
 
@@ -168,6 +162,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       sx={opacitySx}
                       textAlign={"start"}
                       textColor={textColor}
+                      width={"15%"}
                     >
                       {PLAYS[Number(pokerHandParsed.value)]}
                     </Td>
@@ -215,10 +210,10 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         notEnoughCash || locked ? "defaultOutline" : "solid"
                       }
                       isDisabled={notEnoughCash || locked}
-                      size="sm"
+                      size={isMobile ? "xs" : "sm"}
                       px={isMobile ? 2 : 4}
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                      fontSize={10}
+                      fontSize={isMobile ? 6 : 10}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -226,59 +221,74 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                   return (
                     <Tr key={index} height={"30px"}>
-                      {inStore ? (
-                        <>
-                          {nameTd}
-                          {levelTd}
-                        </>
-                      ) : (
-                        <>
-                          {levelTd}
-                          {nameTd}
-                        </>
-                      )}
+                      {levelTd}
+                      {nameTd}
 
                       {inStore ? (
                         <>
-                          <Td sx={opacitySx} color={textColor}>
-                            <Flex flexDir="column">
+                          {isMobile && (
+                            <Td>
                               <Box
-                                fontFamily="Orbitron"
-                                textDecoration={
-                                  storePlay?.discount_cost !== 0
-                                    ? "line-through"
-                                    : "none"
-                                }
-                                fontSize={
-                                  storePlay?.discount_cost !== 0
-                                    ? isMobile
-                                      ? 6
-                                      : 9
-                                    : "unset"
-                                }
-                                opacity={
-                                  storePlay?.discount_cost !== 0 ? 0.6 : 1
-                                }
-                                lineHeight={
-                                  storePlay?.discount_cost !== 0 ? 0.5 : 1
-                                }
+                                color={"white"}
+                                display={"flex"}
+                                flexDirection={"row"}
+                                justifyContent={"center"}
+                                sx={{
+                                  opacity:
+                                    inStore && (!storePlay || purchased)
+                                      ? 0.5
+                                      : 1,
+                                }}
                               >
-                                {storePlay?.cost ? `${storePlay.cost}` : ""}
-                                <CashSymbol />
-                              </Box>
-                              {storePlay?.discount_cost !== 0 && (
-                                <Box fontFamily="Orbitron">
-                                  {storePlay?.discount_cost}
-                                  <CashSymbol />
+                                <Box
+                                  backgroundColor={`${blue}`}
+                                  borderRadius={4}
+                                  width={isSmallScreen ? "40px" : "60px"}
+                                  mr={1}
+                                  boxShadow={`0px 0px 10px 6px ${blue}`}
+                                  fontWeight={"400"}
+                                >
+                                  {play.points.toString()}
                                 </Box>
-                              )}
+                                <Heading fontSize={isSmallScreen ? "8" : "10"}>
+                                  x
+                                </Heading>
+                                <Box
+                                  backgroundColor={"neonPink"}
+                                  borderRadius={4}
+                                  width={isSmallScreen ? "40px" : "60px"}
+                                  ml={1}
+                                  boxShadow={`0px 0px 10px 6px ${violet}`}
+                                  fontWeight={"400"}
+                                >
+                                  {play.multi.toString()}
+                                </Box>
+                              </Box>
+                            </Td>
+                          )}
+
+                          <Td sx={opacitySx} color={textColor}>
+                            <Flex
+                              flexDir="column"
+                              width={"80%"}
+                              margin={"0 auto"}
+                            >
+                              <PriceBox
+                                price={Number(storePlay?.cost)}
+                                purchased={Boolean(storePlay?.purchased)}
+                                discountPrice={Number(
+                                  storePlay?.discount_cost ?? 0
+                                )}
+                                absolutePosition={false}
+                                fontSize={10}
+                              />
                             </Flex>
                           </Td>
                           <Td>
                             {!!storePlay ? (
                               storePlay.purchased ? (
                                 <Heading
-                                  color="blue"
+                                  color={GREY_LINE}
                                   size={isMobile ? "base" : "xs"}
                                 >
                                   {t(
