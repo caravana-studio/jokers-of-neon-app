@@ -161,6 +161,8 @@ export const TiltCard = ({
               price={card.price}
               purchased={purchased}
               discountPrice={card.discount_cost}
+              fontSize={["9px", "16px"]}
+              discountFontSize={["7px", "12px"]}
             />
           )}
           {card.purchased && (
