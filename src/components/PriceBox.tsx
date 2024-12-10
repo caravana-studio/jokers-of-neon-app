@@ -36,7 +36,7 @@ export const PriceBox = ({
         transform: absolutePosition ? "translateX(-50%)" : "translateX(0)",
         zIndex: 10,
         backgroundColor: "black",
-        borderRadius: "5px",
+        borderRadius: ["3px", "3px", "4px"],
         boxShadow: "0px 0px 10px 2px white",
         color: "white",
         px: 2,
