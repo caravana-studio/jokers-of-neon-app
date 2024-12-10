@@ -93,9 +93,6 @@ export const StoreContentMobile = () => {
                   <Coins rolling />
                 </Flex>
               </Flex>
-              {/* <Flex justifyContent={{ base: "left", sm: "center" }}>
-              <LootBoxes />
-            </Flex> */}
             </Box>
             <Box
               width={{ base: "100%", sm: "auto" }}
@@ -123,9 +120,6 @@ export const StoreContentMobile = () => {
                     />
                   )}
                 </Box>
-                <Box w="40%">
-                  <StorePowerUpsRow />
-                </Box>
               </Flex>
               <Box className="game-tutorial-step-5">
                 {specialCards.length > 0 && (
@@ -136,22 +130,6 @@ export const StoreContentMobile = () => {
                 )}
               </Box>
             </Box>
-            {/* <Flex mb={3} mx={4} flexDir={"row"} gap={5}>
-              <SpecialSlotItem />
-              <BurnItem />
-            </Flex> */}
-            {/* <Box
-              className="game-tutorial-step-2"
-              width={{ base: "95%", sm: "75%" }}
-              background="rgba(0,0,0,0.5)"
-              px={4}
-              borderRadius="10px"
-            >
-              <Heading variant="italic" size="m" mt={4}>
-                {t("store.titles.improve-plays").toUpperCase()}
-              </Heading>
-              <LevelUpTable isSmallScreen={true} />
-            </Box> */}
 
             <Box
               display="flex"

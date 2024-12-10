@@ -9,18 +9,20 @@ import { PriceBox } from "../../components/PriceBox";
 import BurnIcon from "../../assets/burn.svg?component";
 import { useGame } from "../../dojo/queries/useGame";
 import { useNavigate } from "react-router-dom";
+import { PowerUpComponent } from "../../components/PowerUpComponent";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { CARD_WIDTH } from "../../constants/visualProps";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
   const { neonGreen } = theme.colors;
   const navigate = useNavigate();
 
-  const { specialSlotItem, burnItem } = useStore();
+  const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
 
   const purchasedSlot = specialSlotItem?.purchased ?? false;
   const purchasedBurnItem = burnItem?.purchased ?? false;
 
-  const { buySpecialSlot, locked } = useStore();
   const game = useGame();
   const cash = game?.cash ?? 0;
 
@@ -37,6 +39,14 @@ export const UtilsTab = () => {
       : Number(burnItem.cost);
 
   const notEnoughCashBurn = cash < effectiveCost || burnItem.purchased;
+
+  const { cardScale, isSmallScreen } = useResponsiveValues();
+
+  const adjustedScale = isSmallScreen
+    ? cardScale
+    : cardScale - (cardScale * 25) / 100;
+
+  const width = CARD_WIDTH * adjustedScale;
 
   const slotImage = (
     <CachedImage
@@ -106,7 +116,47 @@ export const UtilsTab = () => {
         </Flex>
       </Flex>
 
-      <Flex className="PowerUps"></Flex>
+      <Flex className="PowerUps" my={3} mx={4} flexDir={"column"}>
+        <Flex justifyContent="space-between" mb={2} alignItems="center">
+          <Heading fontWeight={"400"} fontSize={"xs"}>
+            {t("store.titles.powerups").toUpperCase()}
+          </Heading>
+        </Flex>
+        <Flex
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          margin={"0 auto"}
+          bg="rgba(0, 0, 0, 0.6)"
+          borderRadius="10px"
+          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+          width={"100%"}
+          p={5}
+        >
+          <Flex
+            flexDirection="row"
+            gap={[2, 4, 6]}
+            justifyContent={"space-around"}
+          >
+            {powerUps.map((powerUp, index) => {
+              return (
+                <PowerUpComponent
+                  powerUp={powerUp}
+                  width={width}
+                  key={index}
+                  inStore
+                  onClick={() => {
+                    if (!powerUp.purchased) {
+                      navigate("/preview/power-up", {
+                        state: { powerUp },
+                      });
+                    }
+                  }}
+                />
+              );
+            })}
+          </Flex>
+        </Flex>
+      </Flex>
 
       <Flex className="Utils" my={3} mx={4} flexDir={"column"} gap={5}>
         <Flex
