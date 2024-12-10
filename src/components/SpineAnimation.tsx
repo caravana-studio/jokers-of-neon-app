@@ -171,7 +171,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             sx={{
               position: "absolute",
               bottom: `10%`,
-              left: `50%`,
+              left: isMobile ? `55%` : `50%`,
               transform: "translate(-65%)",
               zIndex: 10,
             }}
