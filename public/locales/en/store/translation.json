@@ -83,6 +83,7 @@
       "tooltip": "Unlock a new slot for special cards"
     },
     "burn-item": {
+      "title": "Burn card",
       "tooltip": "Remove a card from your deck"
     }
   }

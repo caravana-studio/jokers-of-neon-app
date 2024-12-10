@@ -226,7 +226,7 @@ export const UtilsTab = () => {
           >
             <Flex justifyContent="space-between" mb={2} alignItems="center">
               <Heading fontWeight={"400"} fontSize={"xs"}>
-                {t("store.preview-card.slot-title")}
+                {t("store.burn-item.title")}
               </Heading>
             </Flex>
 
@@ -252,7 +252,7 @@ export const UtilsTab = () => {
                 {t("store.preview-card.title.description")}
               </Text>
               <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                {t("store.preview-card.slot-description")}
+                {t("store.burn-item.tooltip")}
               </Text>
 
               <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
