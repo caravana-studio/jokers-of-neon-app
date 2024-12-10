@@ -46,7 +46,7 @@ export const StoreContentMobile = () => {
           </Tabs>
         </Flex>
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
-        <StoreCards></StoreCards>
+        {tabIndex === 0 && <StoreCards></StoreCards>}
 
         <MobileBottomBar
           setRun={setRun}
