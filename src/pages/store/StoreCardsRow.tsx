@@ -6,6 +6,8 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { preloadImages } from "../../utils/preloadImages";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { GREY_LINE } from "../../theme/colors";
 
 interface CardsRowProps {
   title: string;
@@ -30,7 +32,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     useResponsiveValues();
 
   const adjustedScale = isSmallScreen
-    ? cardScale
+    ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
 
   useEffect(() => {
@@ -47,15 +49,18 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
   return (
     <>
-      <Box mb={8}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading
-            size={{ base: "s", sm: "xs" }}
-            mb={[1, 1, 1, 2, 2]}
-            fontWeight={"400"}
-          >
-            {title}
-          </Heading>
+      <Flex flexDir="column" gap={1.5} width={"100%"}>
+        <Flex
+          justifyContent={isSmallScreen ? "space-between" : "flex-start"}
+          alignItems="center"
+        >
+          <Flex alignItems={"center"} gap={2}>
+            <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
+              {title}
+            </Heading>
+            <IoIosInformationCircleOutline color="white" size={"18px"} />
+          </Flex>
+
           {button && (
             <Button
               variant="outline"
@@ -69,10 +74,16 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
         <Flex
           flexDirection="row"
-          justifyContent="flex-start"
+          justifyContent={isSmallScreen ? "space-around" : "initial"}
           wrap={"nowrap"}
+          width={"100%"}
           gap={[2, 4, 6]}
           rowGap={4}
+          backgroundColor={isSmallScreen ? "rgba(0,0,0,0.45)" : "transparent"}
+          p={isSmallScreen ? 4 : 0}
+          py={isSmallScreen ? 4 : 2}
+          borderRadius={"10px"}
+          boxShadow={isSmallScreen ? `0px 0px 6px 0px ${GREY_LINE}` : "0px"}
         >
           {cards.map((card) => {
             return (
@@ -93,7 +104,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             );
           })}
         </Flex>
-      </Box>
+      </Flex>
     </>
   );
 };
