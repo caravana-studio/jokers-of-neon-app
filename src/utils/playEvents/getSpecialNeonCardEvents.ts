@@ -13,8 +13,10 @@ export const getSpecialNeonCardEvents = (
 
   return specialNeonEvents.map((event) => {
     const idx = getNumberValueFromEvent(event, 5) ?? 0;
+    const special_idx = getNumberValueFromEvent(event, 4) ?? 0;
     return {
       idx,
+      special_idx
     }
   })
   

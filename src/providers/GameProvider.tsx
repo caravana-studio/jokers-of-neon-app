@@ -44,6 +44,7 @@ import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { PowerUp } from "../types/PowerUp.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { changeCardNeon } from "../utils/changeCardNeon.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -300,6 +301,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       cash: calculateDuration(playEvents.cashEvents),
       specialCards: calculateDuration(playEvents.specialCards),
       powerUps: calculateDuration(playEvents.powerUpEvents),
+      specialNeon: calculateDuration(playEvents.specialNeonCardEvents),
     };
 
     const ALL_CARDS_DURATION = Object.values(durations).reduce(
@@ -501,6 +503,31 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
     };
 
+    const handleSpecialNeon = () => {
+      if (!playEvents.specialNeonCardEvents) return;
+
+      playEvents.specialNeonCardEvents?.forEach((event, index) => {
+        pointsSound();
+        setAnimatedCard({
+          special_idx: event.special_idx,
+          idx: [event.idx],
+          animationIndex: 900 + index,
+        });
+
+        setPlayIsNeon(true);
+        setHand((prev) =>
+          prev?.map((card) =>
+            event.idx === card.idx
+              ? {
+                  ...card,
+                  img: `${changeCardNeon(card.card_id!)}.png`,
+                }
+              : card
+          )
+        );
+      });
+    };
+
     const handleGameEnd = () => {
       if (playEvents.gameOver) {
         setTimeout(() => {
@@ -593,6 +620,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setTimeout(() => {
       handleSpecialCards();
     }, ALL_CARDS_DURATION - durations.specialCards);
+
+    setTimeout(() => {
+      handleSpecialNeon();
+    }, ALL_CARDS_DURATION - durations.specialNeon);
 
     setTimeout(() => {
       setPlayAnimation(true);

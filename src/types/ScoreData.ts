@@ -59,6 +59,7 @@ export interface SpecialSuitEvent {
 
 export interface SpecialNeonCardEvent {
   idx: number;
+  special_idx: number;
 }
 
 export interface ModifierSuitEvent {
