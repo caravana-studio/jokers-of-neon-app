@@ -31,7 +31,8 @@ export const PowerUpComponent = ({
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
   const description =
-    powerUp?.power_up_id && POWER_UPS_CARDS_DATA[powerUp.power_up_id]?.description;
+    powerUp?.power_up_id &&
+    POWER_UPS_CARDS_DATA[powerUp.power_up_id]?.description;
 
   return powerUp ? (
     <AnimatedPowerUp idx={powerUp.idx}>
@@ -90,10 +91,10 @@ export const PowerUpComponent = ({
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const componentWidth = isSmallScreen ? width - 4 : width - 10; 
+  const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
-      height={`${isSmallScreen ? width / 1.8 :width / 1.9}px`}
+      height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
       borderRadius={["12px", "17px"]}
       width={`${componentWidth}px`}
