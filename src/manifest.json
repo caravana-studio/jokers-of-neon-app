@@ -1245,6 +1245,7 @@
     {
       "address": "0x33850d3331807c4446a0ba79e8a29ec9d66102333e8edf0b4c399f2028f158b",
       "class_hash": "0x41a2cef6e9712c4191b067d3e958b8f1f447c0094edd06d7222ab0743155d2",
+
       "abi": [
         {
           "type": "impl",
