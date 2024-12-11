@@ -40,13 +40,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
-  const store = useStore();
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const levelUpPlay = store?.levelUpPlay;
   const { t } = useTranslation(["store"]);
 
-  const { pokerHandItems, locked } = useStore();
+  const { pokerHandItems, locked, levelUpPlay } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const {
@@ -154,7 +152,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                   const levelTd = (
                     <Td sx={opacitySx} textColor={textColor}>
-                      {play.level.toString()}
+                      {storePlay?.level.toString()}
                     </Td>
                   );
                   const nameTd = (
@@ -213,8 +211,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       size={isMobile ? "xs" : "sm"}
                       px={isMobile ? 2 : 4}
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                      fontSize={isMobile ? 6 : 10}
-                      borderRadius={isMobile ? 6 : 12} 
+                      fontSize={isMobile ? 8 : 10}
+                      borderRadius={isMobile ? 6 : 12}
                       height={isMobile ? 5 : 8}
                     >
                       {t("store.plays-table.level-up")}
@@ -249,7 +247,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   mr={1}
                                   boxShadow={`0px 0px 5px 3px ${blue}`}
                                   lineHeight={1.8}
-                                  height='15px'
+                                  height="15px"
                                 >
                                   {play.points.toString()}
                                 </Box>
@@ -263,7 +261,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   ml={1}
                                   boxShadow={`0px 0px 5px 3px ${violet}`}
                                   lineHeight={1.8}
-                                  height='15px'
+                                  height="15px"
                                 >
                                   {play.multi.toString()}
                                 </Box>
@@ -272,10 +270,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                           )}
 
                           <Td sx={opacitySx} color={textColor}>
-                            <Flex
-                              width={["80%", '80px']}
-                              margin={"0 auto"}
-                            >
+                            <Flex width={["80%", "80px"]} margin={"0 auto"}>
                               <PriceBox
                                 price={Number(storePlay?.cost)}
                                 purchased={Boolean(storePlay?.purchased)}
