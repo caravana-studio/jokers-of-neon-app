@@ -11,7 +11,8 @@
       "coins": "Coins:",
       "cards": "Cards",
       "loot-boxes": "Loot Boxes",
-      "utilities": "Utilities"
+      "utilities": "Utilities",
+      "no-coins": "Not enough coins"
     },
     "titles": {
       "level-game": "Level up your game",

@@ -98,33 +98,38 @@ export const LootBoxesMobile = () => {
           </Flex>
         );
 
-        const buyButton = (
-          <Button
-            onClick={() => {
-              setBuyDisabled(true);
-              spineAnimationRef.current?.updateAnimationState();
-              buyPack(pack)
-                .then((response) => {
-                  if (response) {
-                    spineAnimationRef.current?.playOpenBoxAnimation();
-                    setLockRedirection(true);
-                  } else {
+        const buyButton =
+          notEnoughCash && !pack.purchased ? (
+            <Text color={neonGreen} fontSize={"xs"}>
+              {t("store.labels.no-coins")}
+            </Text>
+          ) : (
+            <Button
+              onClick={() => {
+                setBuyDisabled(true);
+                spineAnimationRef.current?.updateAnimationState();
+                buyPack(pack)
+                  .then((response) => {
+                    if (response) {
+                      spineAnimationRef.current?.playOpenBoxAnimation();
+                      setLockRedirection(true);
+                    } else {
+                      setBuyDisabled(false);
+                    }
+                  })
+                  .catch(() => {
                     setBuyDisabled(false);
-                  }
-                })
-                .catch(() => {
-                  setBuyDisabled(false);
-                });
-            }}
-            isDisabled={
-              notEnoughCash || locked || buyDisabled || pack.purchased
-            }
-            width={{ base: "35%", sm: "unset" }}
-            size={"xs"}
-          >
-            {t("store.preview-card.labels.buy")}
-          </Button>
-        );
+                  });
+              }}
+              isDisabled={
+                notEnoughCash || locked || buyDisabled || pack.purchased
+              }
+              width={{ base: "35%", sm: "unset" }}
+              size={"xs"}
+            >
+              {t("store.preview-card.labels.buy")}
+            </Button>
+          );
 
         const tooltipButton = notEnoughCash ? (
           <Tooltip label={t("store.preview-card.tooltip.no-coins")}>
