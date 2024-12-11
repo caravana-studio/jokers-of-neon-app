@@ -1,4 +1,7 @@
-import { PLAY_GAME_OVER_EVENT, SECOND_CHANCE_EVENT } from "../../constants/dojoEventKeys";
+import {
+  PLAY_GAME_OVER_EVENT,
+  SECOND_CHANCE_EVENT,
+} from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";
@@ -11,13 +14,13 @@ import { getModifierNeonEvents } from "./getModifierNeonEvents";
 import { getModifierSuitEvents } from "./getModifierSuitEvents";
 import { getMultiPointEvents } from "./getMultiPointEvents";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
+import { getPowerUpEvents } from "./getPowerUpEvents";
 import { getScoreEvent } from "./getScoreEvent";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
 import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
-
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     cardScore: getTraditionalCardsEvents(events),
@@ -33,9 +36,14 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),
     cashEvents: getCashEvents(events),
-    secondChanceEvent: !!events.find((event) => event.keys[1] === SECOND_CHANCE_EVENT),
+    secondChanceEvent: !!events.find(
+      (event) => event.keys[1] === SECOND_CHANCE_EVENT
+    ),
     modifierNeonEvents: getModifierNeonEvents(events),
+    powerUpEvents: getPowerUpEvents(events),
   };
+
+  console.log(playEvents);
 
   return playEvents;
 };

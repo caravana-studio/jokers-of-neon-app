@@ -49,7 +49,7 @@ export const PreselectedCardsSection = ({
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Box className="game-tutorial-step-3" width='200px'>
+        <Box className="game-tutorial-step-3" width="200px">
           <DiscardButton
             highlight={isTutorialRunning}
             onTutorialCardClick={onTutorialCardClick}
@@ -101,7 +101,7 @@ export const PreselectedCardsSection = ({
             })}
           </Flex>
         </Box>
-        <Box className="game-tutorial-step-4" width='200px'>
+        <Box className="game-tutorial-step-4" width="200px">
           <PlayButton
             highlight={isTutorialRunning}
             onTutorialCardClick={onTutorialCardClick}

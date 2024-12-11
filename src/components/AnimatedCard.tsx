@@ -102,7 +102,7 @@ export const AnimatedCard = ({
           cardApi.start({
             transform: "scale(1)",
             boxShadow: `0px 0px 0px 0px ${animateColor}`,
-            border: `2px solid ${animateColor}`,
+            border: `2px solid transparent`,
           }),
       });
 
@@ -163,6 +163,7 @@ export const AnimatedCard = ({
         width: `${(CARD_WIDTH + (isSmallScreen ? 12 : 8)) * scale}px`,
         height: `${(CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * scale}px`,
         borderRadius: cardBorderRadius,
+        zIndex: 10,
         ...cardSprings,
       }}
     >
@@ -186,6 +187,7 @@ export const AnimatedCard = ({
               sx={{
                 textShadow: `0 0 5px  ${getColor()}`,
               }}
+              zIndex={99}
             >
               +{points || multi || (isSpecial && cash)}
               {isSpecial && cash && <CashSymbol />}

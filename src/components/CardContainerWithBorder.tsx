@@ -23,12 +23,14 @@ export const CardContainerWithBorder = ({
       pl={[2.5, 5]}
       pr={["12px", "25px"]}
       py={[1, 2]}
+      pb={[0, "25px"]}
       borderRadius={["12px", "20px"]}
       justifyContent="flex-start"
       alignItems="center"
       position="relative"
       width={width}
       height={height}
+      zIndex={0}
     >
       {children}
     </Flex>

@@ -30,6 +30,7 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
+import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
@@ -230,9 +231,18 @@ export const MobileGameContent = () => {
               justifyContent: "space-between",
             }}
           >
-            <Box mt={3} sx={{ height: "205px", width: "100%" }}>
+            <Flex
+              flexDir="column"
+              alignItems="center"
+              mt={3}
+              sx={{ height: "245px", width: "100%" }}
+            >
               <MobileTopSection />
-            </Box>
+              <Flex mt={2} w="100%" justifyContent="center">
+                <PowerUps />
+              </Flex>
+            </Flex>
+
             <Box
               sx={{
                 width: "100%",

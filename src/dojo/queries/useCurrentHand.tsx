@@ -29,7 +29,7 @@ export const useCurrentHand = (sortBy: SortBy) => {
   
   const dojoCards = currentHand?.cards ?? [];
 
-  const cards: Card[] = dojoCards.map((card: any, index) => {
+  const cards: Card[] = dojoCards.map((card: any, index: number) => {
     const card_id = card.value;
     return {
       card_id,

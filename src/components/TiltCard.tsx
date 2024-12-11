@@ -151,6 +151,7 @@ export const TiltCard = ({
                       left={0}
                       w="100%"
                       h="100%"
+                      zIndex={-1}
                       backgroundColor="rgba(0,0,0,0.3)"
                       borderRadius={{ base: "5px", sm: "8px" }}
                       pointerEvents="none"

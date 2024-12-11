@@ -155,7 +155,7 @@ export const StorePreviewComponent = ({
                   </Text>
                 </Box>
               )}
-              <Box>
+              <Box mb={4}>
                 <Text
                   color="white"
                   fontSize={{ base: "md", sm: "lg" }}
@@ -191,7 +191,7 @@ export const StorePreviewComponent = ({
               </Box>
 
               {details && (
-                <Box>
+                <Box mb={4}>
                   <Text
                     color="white"
                     fontSize={{ base: "md", sm: "lg" }}

@@ -18,13 +18,13 @@ import { CashSymbol } from "../../components/CashSymbol.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
-import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import theme from "../../theme/theme";
+import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
