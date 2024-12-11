@@ -102,6 +102,7 @@ export const LootBoxesMobile = () => {
           <Button
             onClick={() => {
               setBuyDisabled(true);
+              spineAnimationRef.current?.updateAnimationState();
               buyPack(pack)
                 .then((response) => {
                   if (response) {
