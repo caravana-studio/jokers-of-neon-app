@@ -2080,8 +2080,9 @@
       "systems": ["calculate", "upgrade"]
     },
     {
-      "address": "0x6dc029ef87f100421966c5f196c0553e56c5a1f81faa82a7c4f2755f9ea50d3",
-      "class_hash": "0x774b7f8f62646da2a8752c00972b238ea651fa549f4263534af24dd19dc4286",
+      "address": "0x43279f7b44b035c5a18909b492ce6e54c181073c5f84b1a5afa057b367febe2",
+      "class_hash": "0x19e2f4f72c012a30ad7e383f979322ac9ee7e56134d9f00ccf42a430f4c852d",
+
       "abi": [
         {
           "type": "impl",
