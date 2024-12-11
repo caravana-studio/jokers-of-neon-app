@@ -13,6 +13,6 @@ export const TILT_OPTIONS = {
   glareMaxOpacity: 0.5,
   glareColor: "#ffffff",
   glarePosition: "all" as GlarePosition,
-  glareBorderRadius: "20px",
+  glareBorderRadius: "10px",
   glareReverse: true
 };

@@ -8,9 +8,9 @@ import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { AnimatedCard } from "./AnimatedCard.tsx";
+import { CardImage3D } from "./CardImage3D.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
-import { TiltCard } from "./TiltCard.tsx";
 import { FilledUnlockedSlot, UnlockedSlot } from "./UnlockedSlot.tsx";
 
 export const SpecialCardsRow = () => {
@@ -141,13 +141,20 @@ export const SpecialCardsRow = () => {
                         </Button>
                       )}
                     </Flex>
-                    <TiltCard
+                    <Box
+                      height={
+                        CARD_HEIGHT *
+                        (specialCardScale - specialCardScale * 0.1)
+                      }
+                      width={
+                        CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
+                      }
                       onClick={() => {
                         isSmallScreen && highlightCard(card);
                       }}
-                      card={card}
-                      scale={specialCardScale - specialCardScale * 0.1}
-                    />
+                    >
+                      <CardImage3D card={card} small />
+                    </Box>
                   </Box>
                 </AnimatedCard>
               )}

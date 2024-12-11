@@ -1,17 +1,15 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Tilt from "react-parallax-tilt";
-import { TILT_OPTIONS } from "../constants/visualProps";
+
 import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
-import CachedImage from "./CachedImage";
+import { CardImage3D } from "./CardImage3D";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { TemporalBadge } from "./TiltCard";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -19,7 +17,7 @@ interface MobileCardHighlightProps {
 
 export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type } = getCardData({...card, card_id: 310, isSpecial: true}, false);
+  const { name, description, type } = getCardData(card, false);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -102,44 +100,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         </Text>
       </Flex>
       <Box width={"60%"} position={"relative"}>
-        <Tilt
-          {...TILT_OPTIONS}
-          style={{ transformStyle: "preserve-3d" }}
-          glareMaxOpacity={0.2}
-        >
-          <CachedImage
-            position={"absolute"}
-            borderRadius={"20px"}
-            src={`Cards/big/${310}-back.png`}
-            alt={`Card: ${name}`}
-            width={"100%"}
-            zIndex={-1}
-          />
-          <CachedImage
-            position={"absolute"}
-            borderRadius={"20px"}
-            src={`Cards/big/${310}-mid.png`}
-            alt={`Card: ${name}`}
-            width={"100%"}
-            transform="translateZ(60px)"
-          />          
-          <CachedImage
-            position={"absolute"}
-            borderRadius={"20px"}
-            src={`Cards/big/${310}-front.png`}
-            alt={`Card: ${name}`}
-            width={"100%"}
-            transform="translateZ(80px)"
-          />
-          <CachedImage
-            src={`Cards/big/empty.png`}
-            alt={`empty`}
-            width={"100%"}
-          />
-        </Tilt>
-        {card.temporary && card.remaining && (
-          <TemporalBadge remaining={card.remaining} scale={1.6} />
-        )}
+        <CardImage3D card={card} />
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
