@@ -102,7 +102,7 @@ export const AnimatedCard = ({
           cardApi.start({
             transform: "scale(1)",
             boxShadow: `0px 0px 0px 0px ${animateColor}`,
-            border: `2px solid ${animateColor}`,
+            border: `2px solid transparent`,
           }),
       });
 

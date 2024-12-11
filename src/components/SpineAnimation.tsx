@@ -65,6 +65,12 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
 
+    const fontSize = isMobile
+      ? 15
+      : discountPrice != undefined && discountPrice > 0
+        ? 15
+        : 18;
+
     useImperativeHandle(ref, () => ({
       playOpenBoxAnimation: () => {
         if (playerRef.current && openBoxAnimation) {
@@ -198,6 +204,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
               price={price}
               purchased={isPurchased ?? false}
               discountPrice={discountPrice}
+              fontSize={fontSize}
             />
           </Box>
         )}
