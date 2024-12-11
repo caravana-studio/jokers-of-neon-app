@@ -38,14 +38,20 @@ export const BurnItem = ({}: IBurnItem) => {
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
           onClick={() => {
-            if (!purchased) {
+            if (!purchased && !isSmallScreen) {
               navigate("/deck", { state: { inStore: true, burn: true } });
             }
           }}
         >
           <BurnIcon />
           {price && (
-            <PriceBox price={Number(price)} purchased={Boolean(purchased)} discountPrice={Number(burnItem?.discount_cost ?? 0)} />
+            <PriceBox
+              price={Number(price)}
+              purchased={Boolean(purchased)}
+              discountPrice={Number(burnItem?.discount_cost ?? 0)}
+              fontSize={isSmallScreen ? 12 : 16}
+              discountFontSize={isSmallScreen ? 10 : 12}
+            />
           )}
           {purchased && (
             <Box

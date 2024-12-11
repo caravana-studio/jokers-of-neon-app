@@ -1,6 +1,7 @@
 import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSwipeable } from "react-swipeable";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -21,6 +22,18 @@ export const StoreContentMobile = () => {
     setTabIndex(index);
   };
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (tabIndex < 2) setTabIndex(tabIndex + 1);
+    },
+    onSwipedRight: () => {
+      if (tabIndex > 0) {
+        setTabIndex(tabIndex - 1);
+      }
+    },
+    trackTouch: true,
+  });
+
   return (
     <>
       <MobileDecoration />
@@ -31,6 +44,7 @@ export const StoreContentMobile = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="space-between"
+        {...handlers}
       >
         <Flex p={2} mt={6} width={"95%"}>
           <Tabs
@@ -48,15 +62,13 @@ export const StoreContentMobile = () => {
           </Tabs>
         </Flex>
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
-        {tabIndex === 0 && <StoreCards></StoreCards>}
+        <Flex w="100%" flexGrow={1}>
+          {tabIndex === 0 && <StoreCards />}
 
-        {tabIndex === 1 && (
-          <Flex width="100%" h={"70%"}>
-            <LootBoxesMobile />
-          </Flex>
-        )}
+          {tabIndex === 1 && <LootBoxesMobile />}
 
-        {tabIndex === 2 && <UtilsTab />}
+          {tabIndex === 2 && <UtilsTab />}
+        </Flex>
 
         <MobileBottomBar
           setRun={setRun}

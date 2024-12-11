@@ -214,6 +214,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       px={isMobile ? 2 : 4}
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
                       fontSize={isMobile ? 6 : 10}
+                      borderRadius={isMobile ? 6 : 12} 
+                      height={isMobile ? 5 : 8}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -243,10 +245,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                 <Box
                                   backgroundColor={`${blue}`}
                                   borderRadius={4}
-                                  width={isSmallScreen ? "40px" : "60px"}
+                                  width={isSmallScreen ? "30px" : "40px"}
                                   mr={1}
-                                  boxShadow={`0px 0px 10px 6px ${blue}`}
-                                  fontWeight={"400"}
+                                  boxShadow={`0px 0px 5px 3px ${blue}`}
+                                  lineHeight={1.8}
+                                  height='15px'
                                 >
                                   {play.points.toString()}
                                 </Box>
@@ -256,10 +259,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                 <Box
                                   backgroundColor={"neonPink"}
                                   borderRadius={4}
-                                  width={isSmallScreen ? "40px" : "60px"}
+                                  width={isSmallScreen ? "30px" : "40px"}
                                   ml={1}
-                                  boxShadow={`0px 0px 10px 6px ${violet}`}
-                                  fontWeight={"400"}
+                                  boxShadow={`0px 0px 5px 3px ${violet}`}
+                                  lineHeight={1.8}
+                                  height='15px'
                                 >
                                   {play.multi.toString()}
                                 </Box>
@@ -269,8 +273,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                           <Td sx={opacitySx} color={textColor}>
                             <Flex
-                              flexDir="column"
-                              width={"80%"}
+                              width={["80%", '80px']}
                               margin={"0 auto"}
                             >
                               <PriceBox
@@ -280,7 +283,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   storePlay?.discount_cost ?? 0
                                 )}
                                 absolutePosition={false}
-                                fontSize={10}
+                                fontSize={isSmallScreen ? 10 : 16}
+                                discountFontSize={isSmallScreen ? 8 : 12}
                               />
                             </Flex>
                           </Td>

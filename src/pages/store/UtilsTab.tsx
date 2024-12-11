@@ -1,17 +1,16 @@
-import { Box, Button, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
-import LevelUpTable from "./StoreElements/LevelUpTable";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { GREY_LINE } from "../../theme/colors";
-import theme from "../../theme/theme";
-import CachedImage from "../../components/CachedImage";
-import { useStore } from "../../providers/StoreProvider";
-import { PriceBox } from "../../components/PriceBox";
-import BurnIcon from "../../assets/burn.svg?component";
-import { useGame } from "../../dojo/queries/useGame";
 import { useNavigate } from "react-router-dom";
 import { PowerUpComponent } from "../../components/PowerUpComponent";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { CARD_WIDTH } from "../../constants/visualProps";
+import { useGame } from "../../dojo/queries/useGame";
+import { useStore } from "../../providers/StoreProvider";
+import { GREY_LINE } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import theme from "../../theme/theme";
+import { BurnItem } from "./BurnItem";
+import { SpecialSlotItem } from "./SpecialSlotItem";
+import LevelUpTable from "./StoreElements/LevelUpTable";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -20,9 +19,6 @@ export const UtilsTab = () => {
 
   const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
 
-  const purchasedSlot = specialSlotItem?.purchased ?? false;
-  const purchasedBurnItem = burnItem?.purchased ?? false;
-
   const game = useGame();
   const cash = game?.cash ?? 0;
 
@@ -30,15 +26,14 @@ export const UtilsTab = () => {
     !specialSlotItem.cost ||
     (specialSlotItem?.discount_cost
       ? cash < Number(specialSlotItem?.discount_cost ?? 0)
-      : cash < Number(specialSlotItem.cost)) ||
-    specialSlotItem.purchased;
+      : cash < Number(specialSlotItem.cost));
 
   const effectiveCost: number =
     burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
       : Number(burnItem.cost);
 
-  const notEnoughCashBurn = cash < effectiveCost || burnItem.purchased;
+  const notEnoughCashBurn = cash < effectiveCost;
 
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
@@ -48,14 +43,6 @@ export const UtilsTab = () => {
 
   const width = CARD_WIDTH * adjustedScale;
 
-  const slotImage = (
-    <CachedImage
-      opacity={purchasedSlot ? 0.3 : 1}
-      src="/store/slot-icon.png"
-      alt="slot-icon"
-    />
-  );
-
   const createBuyButton = (onClick: () => void, isDisable: boolean) => {
     return (
       <Button
@@ -63,6 +50,9 @@ export const UtilsTab = () => {
         isDisabled={isDisable}
         width={{ base: "35%", sm: "unset" }}
         size={"xs"}
+        fontSize={10}
+        borderRadius={6}
+        height={5}
       >
         {t("store.preview-card.labels.buy")}
       </Button>
@@ -71,32 +61,28 @@ export const UtilsTab = () => {
 
   const buySlotButton = createBuyButton(() => {
     buySpecialSlot();
-  }, notEnoughCashSlot);
+  }, notEnoughCashSlot || specialSlotItem.purchased);
 
   const buyBurnButton = createBuyButton(() => {
     if (!burnItem.purchased) {
       navigate("/deck", { state: { inStore: true, burn: true } });
     }
-  }, notEnoughCashBurn);
+  }, notEnoughCashBurn || burnItem.purchased);
 
   const tooltipSlotButton = notEnoughCashSlot ? (
-    <Tooltip label={t("store.preview-card.tooltip.no-coins")}>
-      {buySlotButton}
-    </Tooltip>
+    <Text>{t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buySlotButton
   );
 
-  const tooltipBurnButton = notEnoughCashSlot ? (
-    <Tooltip label={t("store.preview-card.tooltip.no-coins")}>
-      {buyBurnButton}
-    </Tooltip>
+  const tooltipBurnButton = notEnoughCashBurn ? (
+    <Text> {t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buyBurnButton
   );
 
   return (
-    <Flex flexDir={"column"} width={"100%"} overflow={"scroll"}>
+    <Flex flexDir={"column"} width={"100%"}>
       <Flex my={3} mx={4} flexDir={"column"}>
         <Flex justifyContent="space-between" mb={2} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
@@ -112,11 +98,11 @@ export const UtilsTab = () => {
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
         >
-          <LevelUpTable isSmallScreen={true} />
+          <LevelUpTable />
         </Flex>
       </Flex>
 
-      <Flex className="PowerUps" my={3} mx={4} flexDir={"column"}>
+      <Flex className="PowerUps" mx={4} flexDir={"column"}>
         <Flex justifyContent="space-between" mb={2} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.titles.powerups").toUpperCase()}
@@ -130,13 +116,10 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
-          p={5}
+          pb={5}
+          pt={2}
         >
-          <Flex
-            flexDirection="row"
-            gap={[2, 4, 6]}
-            justifyContent={"space-around"}
-          >
+          <Flex flexDirection="row" justifyContent={"space-around"}>
             {powerUps.map((powerUp, index) => {
               return (
                 <PowerUpComponent
@@ -158,160 +141,66 @@ export const UtilsTab = () => {
         </Flex>
       </Flex>
 
-      <Flex className="Utils" my={3} mx={4} flexDir={"column"} gap={5}>
-        <Flex
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          margin={"0 auto"}
-          bg="rgba(0, 0, 0, 0.6)"
-          borderRadius="10px"
-          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-          p={5}
-          width={"100%"}
-        >
-          <Flex position="relative" width={"30%"} mr={5}>
-            {slotImage}
-
-            <PriceBox
-              price={Number(specialSlotItem.cost)}
-              purchased={Boolean(purchasedSlot)}
-              discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
-            />
-
-            {purchasedSlot && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: `50%`,
-                  left: `65%`,
-                  transform: "translate(-65%)",
-                  zIndex: 10,
-                }}
-              >
-                <Heading variant="italic" fontSize={10}>
-                  {t("store.labels.purchased").toLocaleUpperCase()}
-                </Heading>
-              </Box>
-            )}
-          </Flex>
-
+      <Flex className="Utils" my={3} mx={4} gap={2}>
+        <Flex flexDir="column" w="50%" gap={2}>
+          <Heading fontWeight={"400"} fontSize="xs">
+            {t("store.preview-card.slot-title")}
+          </Heading>
           <Flex
             flexDirection={"column"}
-            flex="1"
             justifyContent={"space-between"}
-            width={"10%"}
+            bg="rgba(0, 0, 0, 0.6)"
+            borderRadius="10px"
+            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+            p={3}
           >
-            <Flex justifyContent="space-between" mb={2} alignItems="center">
-              <Heading fontWeight={"400"} fontSize={"xs"}>
-                {t("store.preview-card.slot-title")}
-              </Heading>
-            </Flex>
+            <Flex gap={4}>
+              <SpecialSlotItem />
 
-            <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
-              <Text
-                color="white"
-                fontSize={{ base: "md", sm: "lg" }}
-                mb={2}
-                sx={{
-                  position: "relative",
-                  _before: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    width: "95%",
-                    height: "2px",
-                    backgroundColor: "white",
-                    boxShadow:
-                      "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                  },
-                }}
+              <Flex
+                flexDirection={"column"}
+                flex="1"
+                justifyContent={"space-between"}
               >
-                {t("store.preview-card.title.description")}
-              </Text>
-              <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                {t("store.preview-card.slot-description")}
-              </Text>
+                <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
+                  <Text color={neonGreen} fontSize={"xs"} lineHeight={1.3}>
+                    {t("store.preview-card.slot-description")}
+                  </Text>
+                </Flex>
+              </Flex>
             </Flex>
-
             <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
           </Flex>
         </Flex>
 
-        <Flex
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          margin={"0 auto"}
-          bg="rgba(0, 0, 0, 0.6)"
-          borderRadius="10px"
-          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-          p={5}
-          width={"100%"}
-        >
-          <Flex position="relative" width={"30%"} mr={5}>
-            <BurnIcon opacity={purchasedBurnItem ? 0.3 : 1} />
-
-            <PriceBox
-              price={Number(burnItem.cost)}
-              purchased={Boolean(purchasedBurnItem)}
-              discountPrice={Number(burnItem?.discount_cost ?? 0)}
-            />
-
-            {purchasedBurnItem && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: `50%`,
-                  left: `65%`,
-                  transform: "translate(-65%)",
-                  zIndex: 10,
-                }}
-              >
-                <Heading variant="italic" fontSize={10}>
-                  {t("store.labels.purchased").toLocaleUpperCase()}
-                </Heading>
-              </Box>
-            )}
-          </Flex>
-
+        <Flex flexDir="column" w="50%" gap={2}>
+          <Heading fontWeight={"400"} fontSize={"xs"}>
+            {t("store.burn-item.title")}
+          </Heading>
           <Flex
             flexDirection={"column"}
-            flex="1"
             justifyContent={"space-between"}
-            width={"10%"}
+            bg="rgba(0, 0, 0, 0.6)"
+            borderRadius="10px"
+            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+            p={3}
           >
-            <Flex justifyContent="space-between" mb={2} alignItems="center">
-              <Heading fontWeight={"400"} fontSize={"xs"}>
-                {t("store.burn-item.title")}
-              </Heading>
-            </Flex>
+            <Flex gap={4}>
+              <BurnItem />
 
-            <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
-              <Text
-                color="white"
-                fontSize={{ base: "md", sm: "lg" }}
-                mb={2}
-                sx={{
-                  position: "relative",
-                  _before: {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    width: "95%",
-                    height: "2px",
-                    backgroundColor: "white",
-                    boxShadow:
-                      "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                  },
-                }}
+              <Flex
+                flexDirection={"column"}
+                flex="1"
+                justifyContent={"space-between"}
               >
-                {t("store.preview-card.title.description")}
-              </Text>
-              <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                {t("store.burn-item.tooltip")}
-              </Text>
-
-              <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
+                <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
+                  <Text color={neonGreen} fontSize={"xs"} lineHeight={1.3}>
+                    {t("store.burn-item.tooltip")}
+                  </Text>
+                </Flex>
+              </Flex>
             </Flex>
+            <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
           </Flex>
         </Flex>
       </Flex>
