@@ -11,7 +11,8 @@
       "coins": "Moedas:",
       "cards": "Cartas",
       "loot-boxes": "Caixas",
-      "utilities": "Utilidades"
+      "utilities": "Utilidades",
+      "no-coins": "Você não tem moedas suficientes"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",
