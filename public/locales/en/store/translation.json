@@ -11,7 +11,8 @@
       "coins": "Coins:",
       "cards": "Cards",
       "loot-boxes": "Loot Boxes",
-      "utilities": "Utilities"
+      "utilities": "Utilities",
+      "no-coins": "Not enough coins"
     },
     "titles": {
       "level-game": "Level up your game",
@@ -62,6 +63,8 @@
       }
     },
     "packs": {
+      "offering-rates": "Offering rates",
+      "size": "Size: {{size}}",
       "continue-btn": "Continue",
       "cards-select-lbl": "Select the cards you want to keep",
       "select-all-lbl": "Select all",

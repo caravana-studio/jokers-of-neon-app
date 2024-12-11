@@ -9,6 +9,7 @@ export interface CardData {
     suit?: Suits;
     details?: string;
     type?: CardTypes
+    size?: number;
 }
 
 export type CardDataMap = {

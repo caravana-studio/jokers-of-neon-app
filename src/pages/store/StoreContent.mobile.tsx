@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { LootBoxesMobile } from "./LootBoxes.mobile.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
@@ -48,6 +49,11 @@ export const StoreContentMobile = () => {
         <StoreTopBar isSmallScreen={true}></StoreTopBar>
         {tabIndex === 0 && <StoreCards></StoreCards>}
 
+        {tabIndex === 1 && (
+          <Flex width="100%" h={"70%"}>
+            <LootBoxesMobile />
+          </Flex>
+        )}
         <MobileBottomBar
           setRun={setRun}
           firstButton={<SpecialsButton isSmallScreen={true} />}

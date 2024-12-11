@@ -33,6 +33,7 @@ interface SpineAnimationProps {
 
 export interface SpineAnimationRef {
   playOpenBoxAnimation: () => void;
+  updateAnimationState: () => void;
 }
 
 const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
@@ -64,6 +65,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const { setLockRedirection } = useStore();
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
+    const [isAnimationRunning, setIsAnimationRunning] = useState(false);
 
     const fontSize = isMobile
       ? 15
@@ -87,6 +89,9 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             }, 2);
           }
         }
+      },
+      updateAnimationState: () => {
+        setIsAnimationRunning(true);
       },
     }));
 
@@ -116,6 +121,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
                     entry.animation.name.includes(openBoxAnimation)
                   ) {
                     setLockRedirection(false);
+                    setIsAnimationRunning(false);
                   }
                 },
               });
@@ -177,7 +183,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             sx={{
               position: "absolute",
               bottom: `10%`,
-              left: `50%`,
+              left: isMobile ? `55%` : `50%`,
               transform: "translate(-65%)",
               zIndex: 10,
             }}
@@ -217,7 +223,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             width: "100%",
             height: "100%",
             cursor: isPurchased ? "default" : "pointer",
-            opacity: isPurchased ? 0.3 : 1,
+            opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
           }}
         ></Flex>
       </Box>

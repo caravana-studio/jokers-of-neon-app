@@ -1880,9 +1880,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "selector": "0x25bae3ed99b9282d147b178067335cf2d607ff13acbd09c62fa525c14bb8869",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x1eb68b912fd4c622b9e05ecff8699cbfd766b81f5e8c379233647e13230e97f",
@@ -2079,10 +2077,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "selector": "0x601fc835e0c1478502e4787b6200cb5074b02e3545bcfab9ef100c7f4071da3",
-      "systems": [
-        "calculate",
-        "upgrade"
-      ]
+      "systems": ["calculate", "upgrade"]
     },
     {
       "address": "0x2b7532a0b5d2b552f24e037b9c38ca65eddfb78b0e74631f94b89ad986988fa",

@@ -11,7 +11,8 @@
       "coins": "Monedas:",
       "cards": "Cartas",
       "loot-boxes": "Cajas",
-      "utilities": "Utilidades"
+      "utilities": "Utilidades",
+      "no-coins": "No tienes suficientes monedas"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
@@ -62,6 +63,8 @@
       }
     },
     "packs": {
+      "offering-rates": "Tasas de aparición",
+      "size": "Tamaño: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",

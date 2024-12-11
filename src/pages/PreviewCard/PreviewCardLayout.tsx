@@ -74,7 +74,7 @@ const PreviewCardLayout = () => {
           buyPack(pack)
             .then((response) => {
               if (response) {
-                navigate("/redirect/open-pack");
+                navigate("/open-loot-box");
               } else {
                 setBuyDisabled(false);
               }
