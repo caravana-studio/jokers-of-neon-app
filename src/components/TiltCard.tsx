@@ -116,7 +116,7 @@ export const TiltCard = ({
                   borderRadius={{ base: "5px", sm: "8px" }}
                   boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                   sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                  src={`Cards/${(card.card_id ?? 0) <= 51 && isMobile ? "mobile/" : ""}${img}`}
+                  src={`Cards/${(card.card_id ?? 0) < 300 && isMobile ? "mobile/" : ""}${img}`}
                   alt={img}
                   w="100%"
                   height="100%"
