@@ -18,6 +18,7 @@ interface IAnimatedCard {
   special_idx?: number;
   animationIndex: number;
   cash?: number;
+  isNeon?: boolean;
 }
 
 interface IAnimatedPowerUp {
@@ -40,7 +41,7 @@ export const useCardAnimations = () => useContext(CardAnimationsContext);
 export const CardAnimationsProvider = ({ children }: PropsWithChildren) => {
   const [animatedCard, setAnimatedCard] = useState<IAnimatedCard | undefined>();
   const [animatedPowerUp, setAnimatedPowerUp] = useState<
-  IAnimatedPowerUp | undefined
+    IAnimatedPowerUp | undefined
   >();
   const [animateSecondChanceCard, setAnimateSecondChanceCard] = useState(false);
   return (

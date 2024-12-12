@@ -507,6 +507,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       if (!playEvents.specialNeonCardEvents) return;
 
       playEvents.specialNeonCardEvents?.forEach((event, index) => {
+        pointsSound();
+        setAnimatedCard({
+          special_idx: event.special_idx,
+          idx: [event.idx],
+          animationIndex: 900 + index,
+          isNeon: true,
+        });
+
         setHand((prev) =>
           prev?.map((card) =>
             event.idx === card.idx
@@ -517,13 +525,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
               : card
           )
         );
-
-        pointsSound();
-        setAnimatedCard({
-          special_idx: event.special_idx,
-          idx: [event.idx],
-          animationIndex: 900 + index,
-        });
 
         setPlayIsNeon(true);
       });
@@ -559,23 +560,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
 
     // Chained timeouts with clear, sequential execution
-
+    setTimeout(() => {
+      handleSpecialSuitEvents();
+    }, 0);
     setTimeout(() => {
       handleSpecialNeon();
-    }, 0);
-
-    setTimeout(() => {
-      handleNeonPlay();
-    }, durations.specialNeon + durations.neonPlay);
+    }, durations.modifierSuit + durations.specialSuit);
 
     setTimeout(
       () => {
-        handleSpecialSuitEvents();
+        handleNeonPlay();
       },
-      durations.specialNeon +
-        durations.neonPlay +
-        durations.modifierNeon +
-        durations.modifierSuit
+      durations.specialNeon + durations.neonPlay + durations.specialSuit
     );
 
     setTimeout(
