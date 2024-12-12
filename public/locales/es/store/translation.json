@@ -19,7 +19,7 @@
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "improve-plays": "Mejora tus manos",
+      "improve-plays": "Mejora tus manos de póker",
       "my-special-cards": "Mis especiales",
       "packs": "Paquetes",
       "powerups": "Poderes"
@@ -37,7 +37,7 @@
       "purchased": "Comprado"
     },
     "preview-card": {
-      "slot-title": "Espacio para cartas especiales",
+      "slot-title": "Espacio carta especial",
       "slot-description": "Desbloquear un nuevo espacio para cartas especiales",
       "title": {
         "card-type": "Tipo:",
@@ -84,6 +84,7 @@
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
     },
     "burn-item": {
+      "title": "Quemar carta",
       "tooltip": "Elimina una carta de tu mazo"
     }
   }
