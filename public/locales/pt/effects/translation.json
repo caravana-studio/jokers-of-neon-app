@@ -20,7 +20,12 @@
     "612": {
       "name": "Mudar para Neon",
       "description": "A carta modificada será considerada como uma carta de Neon"
+    },
+    "613": {
+      "name": "Substituto",
+      "description": "Substitui qualquer carta tradicional"
     }
+    
   },
   "specialCardsData": {
     "300": {

@@ -20,6 +20,10 @@
     "612": {
       "name": "Cambiar a Neón",
       "description": "La carta modificada será considerada como una carta de Neón"
+    },
+    "613": {
+      "name": "Modificador de comodín",
+      "description": "Sustituye cualquier carta tradicional"
     }
   },
   "specialCardsData": {

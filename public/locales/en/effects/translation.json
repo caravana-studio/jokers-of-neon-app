@@ -20,6 +20,10 @@
     "612": {
       "name": "Change to Neon",
       "description": "The modified card will be considered  as a Neon card"
+    },
+    "613": {
+      "name": "Wildcard",
+      "description": "Substitutes any traditional card"
     }
   },
   "specialCardsData": {
