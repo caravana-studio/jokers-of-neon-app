@@ -42,6 +42,11 @@
       "title": "Cartas Modificadoras",
       "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una ESCALERA REAL DE COLOR. ¡Vamos a intentarlo!",
       "drag": "Arrastra y suelta el modificador de palo de trébol sobre el 10, luego haz clic en 'Siguiente' para continuar."
+    },
+    "power-ups": {
+      "title": "Potenciadores",
+      "content": "Los power-ups otorgan puntos extra y aumentan tu multipli. Úsalos una vez y luego compra más en la tienda.",
+      "select": "Selecciona este potenciador"
     }
   },
   "storeTutorial": {

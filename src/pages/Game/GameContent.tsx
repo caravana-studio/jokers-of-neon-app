@@ -65,7 +65,7 @@ export const GameContent = () => {
 
   const stepData = [
     { step: 14, delay: 2700 },
-    { step: 24, delay: 7500 },
+    { step: 27, delay: 7500 },
   ];
 
   useEffect(() => {
@@ -205,7 +205,14 @@ export const GameContent = () => {
           />
           <Box sx={{ height: "100%", width: "100%" }} px={"70px"}>
             <Box sx={{ height: "30%", width: "100%" }} pt={"60px"}>
-              <TopSection />
+              <TopSection
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setButtonClicked(true);
+                    setStepIndex(stepIndex + 1);
+                  }
+                }}
+              />
             </Box>
             <Box height={"70%"} width={"100%"}>
               <DndContext

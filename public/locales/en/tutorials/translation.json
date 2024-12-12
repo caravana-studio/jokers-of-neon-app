@@ -42,6 +42,11 @@
       "title": "Modifier Cards",
       "content": "Oh, you got a Suit modifier, if you apply it to the 10, you will get a ROYAL FLUSH, let's try it out.",
       "drag": "Drag and drop the club suit modifier onto the 10, then click 'Next' to proceed."
+    },
+    "power-ups": {
+      "title": "Power ups",
+      "content": "Power-ups grant extra points and boost your multi. Use them once, then buy more in the store.",
+      "select": "Select this power up"
     }
   },
   "storeTutorial": {

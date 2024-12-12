@@ -6,7 +6,11 @@ import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 
-export const TopSection = () => {
+interface TopSectionProps {
+  onTutorialCardClick?: () => void;
+}
+
+export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
   return (
     <Flex flexDir="column">
       <Flex
@@ -45,7 +49,7 @@ export const TopSection = () => {
         </Flex>
       </Flex>
       <Flex mt={-8} w="100%" justifyContent="center">
-        <PowerUps />
+        <PowerUps onTutorialCardClick={onTutorialCardClick} />
       </Flex>
     </Flex>
   );

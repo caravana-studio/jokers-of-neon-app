@@ -42,6 +42,11 @@
       "title": "Cartas Modificadoras",
       "content": "Oh, você conseguiu um modificador de naipe. Se você aplicá-lo ao 10, obterá um ROYAL FLUSH. Vamos tentar!",
       "drag": "Arraste e solte o modificador de naipe de paus sobre o 10, depois clique em 'Próximo' para continuar."
+    },
+    "power-ups": {
+      "title": "Potencializadores",
+      "content": "Os power-ups concedem pontos extras e aumentam seu multiplicador. Use-os uma vez e depois compre mais na loja.",
+      "select": "Selecione esse potencializador"
     }
   },
   "storeTutorial": {

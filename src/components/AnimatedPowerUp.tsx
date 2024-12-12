@@ -68,6 +68,7 @@ export const AnimatedPowerUp = ({ children, idx }: IAnimatedCardProps) => {
 
   return (
     <animated.div
+      className={"game-tutorial-power-up-" + idx}
       style={{
         position: "relative",
         display: "flex",

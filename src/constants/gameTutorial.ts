@@ -386,6 +386,47 @@ const loadTutorialTranslations = async () => {
       spotlightPadding: 0,
     },
     {
+      target: ".game-tutorial-power-up",
+      title: i18n.t("gameTutorial.power-ups.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.power-ups.content", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
+      placement: "auto",
+    },
+    {
+      target: ".game-tutorial-power-up-0",
+      content: i18n.t("gameTutorial.power-ups.select", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    {
+      target: ".game-tutorial-power-up-1",
+      content: i18n.t("gameTutorial.power-ups.select", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    {
       target: ".game-tutorial-step-4",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
