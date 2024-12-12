@@ -1,5 +1,6 @@
 import {
   Box,
+  Flex,
   Heading,
   SystemStyleObject,
   Text,
@@ -27,6 +28,7 @@ import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
+import { TemporalBadge } from "./TemporalBadge.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -218,48 +220,5 @@ const ConditionalTilt = ({
     >
       {children}
     </Tilt>
-  );
-};
-
-interface TemporalBadgeProps {
-  scale?: number;
-  remaining: number;
-  purchased?: boolean;
-}
-
-export const TemporalBadge = ({
-  remaining,
-  purchased,
-  scale = 1,
-}: TemporalBadgeProps) => {
-  return (
-    <Tooltip hasArrow label={getTemporalCardText(remaining)} closeOnPointerDown>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          zIndex: 10,
-          opacity: purchased ? 0.5 : 1,
-          padding: "2px 6px",
-          background:
-            "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
-          borderRadius: "20%",
-          display: "flex",
-          alignItems: "center",
-          direction: "row",
-          gap: 1.5,
-          transform:
-            scale > 1 ? `scale(${scale}) translateX(-20%) translateY(20%)` : "",
-        }}
-      >
-        <ClockIcon color="white" width={14} height={14} />
-        {
-          <Text color="white" fontSize="xs">
-            {remaining ? remaining : 3}
-          </Text>
-        }
-      </Box>
-    </Tooltip>
   );
 };

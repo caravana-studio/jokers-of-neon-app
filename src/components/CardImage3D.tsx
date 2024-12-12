@@ -4,7 +4,7 @@ import { TILT_OPTIONS } from "../constants/visualProps";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import CachedImage from "./CachedImage";
-import { TemporalBadge } from "./TiltCard";
+import { TemporalBadge } from "./TemporalBadge";
 
 const checkImageExists = (src: string): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -69,7 +69,10 @@ export const CardImage3D = ({
       )}
       <CachedImage src={`/Cards/big/empty.png`} alt={`empty`} width={"100%"} />
       {card.temporary && card.remaining && (
-        <TemporalBadge remaining={card.remaining} scale={1.6} />
+        <TemporalBadge
+          remaining={card.remaining}
+          size={isSmallScreen ? (small ? "sm" : "lg") : "md"}
+        />
       )}
     </ConditionalTilt>
   );
