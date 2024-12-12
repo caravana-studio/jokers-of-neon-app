@@ -2,6 +2,7 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useEffect } from "react";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
@@ -57,6 +58,14 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
     }
   };
 
+  const [opacity, setOpacity] = useState(0);
+  const [scale, setScale] = useState(0.8);
+
+  useEffect(() => {
+    setOpacity(1);
+    setScale(1);
+  }, []);
+
   return (
     <Flex
       position={"absolute"}
@@ -65,6 +74,8 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       width={"100%"}
       height={"100%"}
       zIndex={1100}
+      opacity={opacity}
+      transition="opacity 0.5s ease"
       justifyContent={"center"}
       alignItems={"center"}
       flexDirection={"column"}
@@ -99,7 +110,12 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
           - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
-      <Box width={"60%"} position={"relative"}>
+      <Box
+        width={"60%"}
+        position={"relative"}
+        transform={`scale(${scale})`}
+        transition="all 0.5s ease"
+      >
         <CardImage3D card={card} />
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>

@@ -63,7 +63,7 @@ export const StoreContent = () => {
             </Heading>
             <LootBoxes />
             <Flex mt={8}>
-              <LevelUpTable isSmallScreen={false} />
+              <LevelUpTable />
             </Flex>
           </Box>
           <Box
@@ -96,7 +96,7 @@ export const StoreContent = () => {
                 <StorePowerUpsRow />
               </Box>
             </Flex>
-            <Box className="game-tutorial-step-5">
+            <Box className="game-tutorial-step-5" mb={4}>
               {specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={specialCards}

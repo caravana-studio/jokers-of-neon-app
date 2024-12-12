@@ -11,14 +11,15 @@
       "coins": "Monedas:",
       "cards": "Cartas",
       "loot-boxes": "Cajas",
-      "utilities": "Utilidades"
+      "utilities": "Utilidades",
+      "no-coins": "No tienes suficientes monedas"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "improve-plays": "Mejora tus manos",
+      "improve-plays": "Mejora tus manos de póker",
       "my-special-cards": "Mis especiales",
       "packs": "Paquetes",
       "powerups": "Poderes"
@@ -36,7 +37,7 @@
       "purchased": "Comprado"
     },
     "preview-card": {
-      "slot-title": "Espacio para cartas especiales",
+      "slot-title": "Espacio carta especial",
       "slot-description": "Desbloquear un nuevo espacio para cartas especiales",
       "title": {
         "card-type": "Tipo:",
@@ -62,6 +63,8 @@
       }
     },
     "packs": {
+      "offering-rates": "Tasas de aparición",
+      "size": "Tamaño: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
@@ -81,6 +84,7 @@
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
     },
     "burn-item": {
+      "title": "Quemar carta",
       "tooltip": "Elimina una carta de tu mazo"
     }
   }
