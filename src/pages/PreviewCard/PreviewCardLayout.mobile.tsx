@@ -43,7 +43,7 @@ const MobilePreviewCardLayout = () => {
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
-    navigate("/redirect/open-pack");
+    navigate("/open-loot-box");
   };
 
   if (!card) {

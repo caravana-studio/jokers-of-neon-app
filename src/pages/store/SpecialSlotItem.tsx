@@ -37,7 +37,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
           width={`${width}px`}
           cursor={purchased ? "not-allowed" : "pointer"}
           onClick={() => {
-            if (!purchased) {
+            if (!purchased && !isSmallScreen) {
               navigate("/preview/slot");
             }
           }}
@@ -48,7 +48,13 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
             alt="slot-icon"
           />
           {price && (
-            <PriceBox price={Number(price)} purchased={Boolean(purchased)} discountPrice={Number(specialSlotItem?.discount_cost ?? 0)} />
+            <PriceBox
+              price={Number(price)}
+              purchased={Boolean(purchased)}
+              discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
+              fontSize={isSmallScreen ? 12 : 16}
+              discountFontSize={isSmallScreen ? 10 : 12}
+            />
           )}
           {purchased && (
             <Box

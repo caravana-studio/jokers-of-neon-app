@@ -11,14 +11,15 @@
       "coins": "Coins:",
       "cards": "Cards",
       "loot-boxes": "Loot Boxes",
-      "utilities": "Utilities"
+      "utilities": "Utilities",
+      "no-coins": "Not enough coins"
     },
     "titles": {
       "level-game": "Level up your game",
       "traditional": "traditional and neon cards",
       "modifiers": "modifier cards",
       "special": "special cards",
-      "improve-plays": "Improve your plays",
+      "improve-plays": "Level up your poker hands",
       "my-special-cards": "My special cards",
       "packs": "Packs",
       "powerups": "Power-ups"
@@ -36,7 +37,7 @@
       "purchased": "Purchased"
     },
     "preview-card": {
-      "slot-title": "Slot for special cards",
+      "slot-title": "Special card slot",
       "slot-description": "Unlock a new slot for special cards",
       "title": {
         "card-type": "Card type:",
@@ -62,6 +63,8 @@
       }
     },
     "packs": {
+      "offering-rates": "Offering rates",
+      "size": "Size: {{size}}",
       "continue-btn": "Continue",
       "cards-select-lbl": "Select the cards you want to keep",
       "select-all-lbl": "Select all",
@@ -81,6 +84,7 @@
       "tooltip": "Unlock a new slot for special cards"
     },
     "burn-item": {
+      "title": "Burn card",
       "tooltip": "Remove a card from your deck"
     }
   }
