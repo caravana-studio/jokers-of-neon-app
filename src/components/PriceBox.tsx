@@ -43,6 +43,7 @@ export const PriceBox = ({
         pt: "1px",
         opacity: purchased ? 0.5 : 1,
         pointerEvents: "none",
+        fontWeight: 400,
       }}
     >
       <Box
@@ -59,7 +60,7 @@ export const PriceBox = ({
       </Box>
 
       {discountPrice > 0 && (
-        <Box sx={{ fontSize: finalFontSize }}>
+        <Box mt={[0.5,1]} sx={{ fontSize: finalFontSize, lineHeight: 0.8 }}>
           {discountPrice}
           <CashSymbol />
         </Box>

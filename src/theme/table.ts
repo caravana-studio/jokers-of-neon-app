@@ -20,7 +20,7 @@ const leaderboard = definePartsStyle({
       color: "white",
       borderBottomWidth: 0,
       px: [1, 2, 2, 4],
-      py: [0,2,2,2]
+      py: [0, 2, 2, 2],
     },
   },
   tbody: {
@@ -42,7 +42,7 @@ const leaderboard = definePartsStyle({
         },
         td: {
           color: VIOLET_LIGHT,
-          fontSize: ["10px","sm", "sm", "md"],
+          fontSize: ["10px", "sm", "sm", "md"],
           px: [1, 1, 4],
           py: [1, 2, 2, 2],
         },
@@ -86,7 +86,7 @@ const storeMobile = definePartsStyle({
     color: "white",
     fontFamily: "Orbitron",
     textAlign: "center",
-    fontSize: 11,
+    fontSize: 9,
   },
   thead: {
     tr: {
@@ -96,12 +96,12 @@ const storeMobile = definePartsStyle({
     td: {
       borderBottomWidth: 0,
       py: 0,
-      px: 1,
+      px: 0,
     },
   },
   tbody: {
     tr: {
-      fontSize: "sm",
+      fontSize: "xs",
       fontWeight: "bold",
       p: 0,
       borderBottomWidth: 0,

@@ -124,20 +124,16 @@ export const LootBoxesMobile = () => {
               isDisabled={
                 notEnoughCash || locked || buyDisabled || pack.purchased
               }
-              width={{ base: "35%", sm: "unset" }}
+              width={{ base: "30%", sm: "unset" }}
               size={"xs"}
+              fontSize={10}
+              borderRadius={6}
+              height={5}
+              mr={2}
             >
               {t("store.preview-card.labels.buy")}
             </Button>
           );
-
-        const tooltipButton = notEnoughCash ? (
-          <Tooltip label={t("store.preview-card.tooltip.no-coins")}>
-            {buyButton}
-          </Tooltip>
-        ) : (
-          buyButton
-        );
 
         return (
           <Flex
@@ -217,7 +213,7 @@ export const LootBoxesMobile = () => {
                       absolutePosition={false}
                     />
                   )}
-                  {tooltipButton}
+                  {buyButton}
                 </Flex>
               </Flex>
             </Flex>

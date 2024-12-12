@@ -2,7 +2,7 @@ import { Button, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import CachedImage from "../../components/CachedImage.tsx";
+import { CardImage3D } from "../../components/CardImage3D.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -147,13 +147,8 @@ const PreviewCard = () => {
       temporalButton
     );
 
-  const image = (
-    <CachedImage
-      src={`/Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`}
-      alt={`Card: ${card.name}`}
-      borderRadius="10px"
-    />
-  );
+
+  const image = <CardImage3D card={card} />;
 
   const cardType = card.isSpecial
     ? t("labels.special")

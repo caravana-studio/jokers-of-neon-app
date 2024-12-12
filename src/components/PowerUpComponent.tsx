@@ -53,6 +53,8 @@ export const PowerUpComponent = ({
               price={Number(price)}
               purchased={Boolean(purchased)}
               isPowerUp
+              fontSize={isSmallScreen ? 12 : 16}
+              discountFontSize={isSmallScreen ? 10 : 12}
             />
           )}
           {purchased && (

@@ -19,7 +19,7 @@
       "traditional": "cartas tradicionais e neon",
       "modifiers": "cartas modificadoras",
       "special": "cartas especiais",
-      "improve-plays": "Melhore suas jogadas",
+      "improve-plays": "Melhore suas mãos de pôquer",
       "my-special-cards": "Minhas cartas especiais",
       "packs": "Pacotes",
       "powerups": "Poderes"
@@ -37,7 +37,7 @@
       "purchased": "Comprado"
     },
     "preview-card": {
-      "slot-title": "Slot para cartas especiais",
+      "slot-title": "Slot carta especial",
       "slot-description": "Desbloqueie um novo slot para cartas especiais",
       "title": {
         "card-type": "Tipo de carta:",
@@ -84,6 +84,7 @@
       "tooltip": "Desbloqueie um novo slot para cartas especiais"
     },
     "burn-item": {
+      "title": "Queimar carta",
       "tooltip": "Remove uma carta do seu baralho"
     }
   }
