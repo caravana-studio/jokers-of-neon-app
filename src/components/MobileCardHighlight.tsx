@@ -1,15 +1,16 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { useEffect } from "react";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
-import CachedImage from "./CachedImage";
+import { CardImage3D } from "./CardImage3D";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { TemporalBadge } from "./TiltCard";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -115,16 +116,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
       >
-        <CachedImage
-          borderRadius={"20px"}
-          boxShadow={"0px 0px 20px 2px white, inset 0px 0px 20px 5px white"}
-          src={`Cards/big/${card.img}`}
-          alt={`Card: ${name}`}
-          width={"100%"}
-        />
-        {card.temporary && card.remaining && (
-          <TemporalBadge remaining={card.remaining} scale={1.6} />
-        )}
+        <CardImage3D card={card} />
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
