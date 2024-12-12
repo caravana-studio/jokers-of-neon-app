@@ -77,8 +77,8 @@ export const TiltCard = ({
             : "none",
         }}
       >
-        <Tooltip hasArrow label={getTooltip(card, isPack)} closeOnPointerDown>
-          <ConditionalTilt cardId={card.card_id ?? 0}>
+        <ConditionalTilt cardId={card.card_id ?? 0}>
+          <Tooltip hasArrow label={getTooltip(card, isPack)} closeOnPointerDown>
             <Box position="relative" w={`${cardWith}px`} h={`${cardHeight}px`}>
               <CachedImage
                 borderRadius={{ base: "5px", sm: "8px" }}
@@ -127,36 +127,36 @@ export const TiltCard = ({
                 </>
               )}
             </Box>
+          </Tooltip>
 
-            {card.price && (
-              <PriceBox
-                price={card.price}
-                purchased={purchased}
-                discountPrice={card.discount_cost}
-              />
-            )}
-            {card.purchased && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: `${cardHeight / 2 - 10}px`,
-                  left: 0,
-                  zIndex: 10,
-                }}
-              >
-                <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                  {t("store.labels.purchased").toUpperCase()}
-                </Heading>
-              </Box>
-            )}
-            {card.temporary && (
-              <TemporalBadge
-                remaining={card.remaining ?? 3}
-                purchased={purchased}
-              />
-            )}
-          </ConditionalTilt>
-        </Tooltip>
+          {card.price && (
+            <PriceBox
+              price={card.price}
+              purchased={purchased}
+              discountPrice={card.discount_cost}
+            />
+          )}
+          {card.purchased && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: `${cardHeight / 2 - 10}px`,
+                left: 0,
+                zIndex: 10,
+              }}
+            >
+              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
+                {t("store.labels.purchased").toUpperCase()}
+              </Heading>
+            </Box>
+          )}
+          {card.temporary && (
+            <TemporalBadge
+              remaining={card.remaining ?? 3}
+              purchased={purchased}
+            />
+          )}
+        </ConditionalTilt>
       </Box>
       {card.modifiers?.map((c, index) => {
         return (
