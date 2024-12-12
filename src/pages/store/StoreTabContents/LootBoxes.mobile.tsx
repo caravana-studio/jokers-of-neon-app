@@ -11,17 +11,17 @@ import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { MobileInformationModal } from "../../components/MobileInformationModal";
-import { PriceBox } from "../../components/PriceBox";
+import { MobileInformationModal } from "../../../components/MobileInformationModal";
+import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
-} from "../../components/SpineAnimation";
-import { animationsData } from "../../constants/spineAnimations";
-import { useGame } from "../../dojo/queries/useGame";
-import { useStore } from "../../providers/StoreProvider";
-import { GREY_LINE } from "../../theme/colors";
-import theme from "../../theme/theme";
-import { getCardData } from "../../utils/getCardData";
+} from "../../../components/SpineAnimation";
+import { animationsData } from "../../../constants/spineAnimations";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useStore } from "../../../providers/StoreProvider";
+import { GREY_LINE } from "../../../theme/colors";
+import theme from "../../../theme/theme";
+import { getCardData } from "../../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
   const navigate = useNavigate();
