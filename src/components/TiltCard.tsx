@@ -39,6 +39,7 @@ interface ICardProps {
   scale?: number;
   className?: string;
   used?: boolean;
+  onDeck?: boolean;
 }
 
 export const TiltCard = ({
@@ -49,6 +50,7 @@ export const TiltCard = ({
   scale = 1,
   className,
   used = false,
+  onDeck = false,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -95,7 +97,7 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && (
+              {isSilent && !onDeck && (
                 <>
                   <Box
                     position="absolute"
@@ -120,7 +122,7 @@ export const TiltCard = ({
                     w="100%"
                     h="100%"
                     zIndex={-1}
-                    backgroundColor="rgba(0,0,0,0.3)"
+                    backgroundColor="rgba(0,0,0,1)"
                     borderRadius={{ base: "5px", sm: "8px" }}
                     pointerEvents="none"
                   />
