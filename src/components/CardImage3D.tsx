@@ -5,6 +5,8 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import CachedImage from "./CachedImage";
 import { TemporalBadge } from "./TemporalBadge";
+import { Tooltip } from "@chakra-ui/react";
+import { getTooltip } from "../utils/getTooltip";
 
 const checkImageExists = (src: string): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -49,6 +51,7 @@ export const CardImage3D = ({
         width={"100%"}
         zIndex={-1}
       />
+
       {!showPlain && image1Available && (
         <CachedImage
           position={"absolute"}
@@ -67,7 +70,13 @@ export const CardImage3D = ({
           transform={`translateZ(${small ? 40 : 80}px)`}
         />
       )}
-      <CachedImage src={`/Cards/big/empty.png`} alt={`empty`} width={"100%"} />
+      <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
+        <CachedImage
+          src={`/Cards/big/empty.png`}
+          alt={`empty`}
+          width={"100%"}
+        />
+      </Tooltip>
       {card.temporary && card.remaining && (
         <TemporalBadge
           remaining={card.remaining}
