@@ -33,6 +33,7 @@ export const AnimatedCard = ({
   const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
   const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
   const cash = useMemo(() => animatedCard?.cash, [animatedCard?.cash]);
+  const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
@@ -57,6 +58,8 @@ export const AnimatedCard = ({
       return colors.neonPink;
     } else if (cash) {
       return colors.DIAMONDS;
+    } else if (isNeon) {
+      return colors.NEON;
     } else {
       return colors.neonGreen;
     }
@@ -83,7 +86,7 @@ export const AnimatedCard = ({
 
   useEffect(() => {
     if (
-      (points || multi || suit || cash) &&
+      (points || multi || suit || cash || isNeon) &&
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
@@ -124,7 +127,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, suit, animatedCardIdxArray, animationIndex]);
+  }, [points, multi, suit, animatedCardIdxArray, animationIndex, isNeon]);
 
   useEffect(() => {
     if (played) {
