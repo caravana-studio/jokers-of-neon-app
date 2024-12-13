@@ -23,7 +23,7 @@
     },
     "613": {
       "name": "Wildcard",
-      "description": "Substitutes any traditional card"
+      "description": "The modified card will be considered  as a Wildcard"
     }
   },
   "specialCardsData": {
