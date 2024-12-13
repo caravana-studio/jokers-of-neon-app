@@ -61,7 +61,7 @@ export const StoreContentMobile = () => {
             </TabList>
           </Tabs>
         </Flex>
-        <StoreTopBar isSmallScreen={true}></StoreTopBar>
+        <StoreTopBar />
         <Flex w="100%" flexGrow={1}>
           {tabIndex === 0 && <StoreCards />}
 

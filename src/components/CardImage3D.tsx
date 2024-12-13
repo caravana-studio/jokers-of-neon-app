@@ -27,8 +27,8 @@ export const CardImage3D = ({
   const [image2Available, setImage2Available] = useState(false);
 
   useEffect(() => {
-    const src1 = `Cards/big/${cid}-l1.png`;
-    const src2 = `Cards/big/${cid}-l2.png`;
+    const src1 = `/Cards/big/${cid}-l1.png`;
+    const src2 = `/Cards/big/${cid}-l2.png`;
 
     checkImageExists(src1).then(setImage1Available);
     checkImageExists(src2).then(setImage2Available);
@@ -55,7 +55,7 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l1.png`}
           width={"100%"}
-          transform={`translateZ(${small ? 20 : 60}px)`}
+          transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
       )}
       {!showPlain && image2Available && (
@@ -64,7 +64,7 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l2.png`}
           width={"100%"}
-          transform={`translateZ(${small ? 40 : 80}px)`}
+          transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
       )}
       <CachedImage src={`/Cards/big/empty.png`} alt={`empty`} width={"100%"} />
@@ -94,7 +94,7 @@ const ConditionalTilt = ({
     <Tilt
       {...TILT_OPTIONS}
       style={{ transformStyle: "preserve-3d" }}
-      glareMaxOpacity={cardId < 53 ? 0.8 : 0.2}
+      glareMaxOpacity={cardId < 100 ? TILT_OPTIONS.glareMaxOpacity : 0.2}
       glareBorderRadius={small ? "7px" : "18px"}
     >
       {children}

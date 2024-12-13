@@ -22,7 +22,7 @@ import { CashSymbol } from "./CashSymbol.tsx";
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
 
-interface IStorePreviewComponent {
+export interface IStorePreviewComponent {
   buyButton: JSX.Element;
   temporalButton?: JSX.Element;
   image: JSX.Element;

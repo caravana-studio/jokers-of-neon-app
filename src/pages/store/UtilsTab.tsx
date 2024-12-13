@@ -70,13 +70,13 @@ export const UtilsTab = () => {
   }, notEnoughCashBurn || burnItem.purchased);
 
   const tooltipSlotButton = notEnoughCashSlot ? (
-    <Text>{t("store.preview-card.tooltip.no-coins")}</Text>
+    <Text mt={1}>{t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buySlotButton
   );
 
   const tooltipBurnButton = notEnoughCashBurn ? (
-    <Text> {t("store.preview-card.tooltip.no-coins")}</Text>
+    <Text mt={1}> {t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buyBurnButton
   );

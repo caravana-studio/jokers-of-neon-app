@@ -1,11 +1,13 @@
-import { Button, Tooltip } from "@chakra-ui/react";
+import { Button, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CardImage3D } from "../../components/CardImage3D.tsx";
+import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCardComponent.mobile.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
@@ -20,11 +22,13 @@ const PreviewCard = () => {
     keyPrefix: "store.preview-card",
   });
 
+  const { isSmallScreen } = useResponsiveValues();
+  const game = useGame();
+
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const game = useGame();
   const { buyCard, buySpecialCardItem, locked, setLockRedirection } =
     useStore();
   const cash = game?.cash ?? 0;
@@ -43,110 +47,87 @@ const PreviewCard = () => {
   const noSpaceForSpecialCards =
     card.isSpecial && specialLength >= specialMaxLength;
 
+  const onBuyClick = () => {
+    if (card.isSpecial) {
+      buySpecialCardItem(card, false);
+    } else {
+      buyCard(card);
+    }
+    navigate(-1);
+  };
+
   const BuyButton = ({
-    onClick,
     isDisabled,
-    notEnoughCash,
     label,
   }: {
-    onClick: () => void;
     isDisabled: boolean;
-    notEnoughCash: boolean;
     label: string;
-  }) =>
-    notEnoughCash || noSpaceForSpecialCards ? (
-      <Tooltip
-        label={
-          noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
-        }
-      >
-        <Button
-          onClick={onClick}
-          isDisabled={isDisabled}
-          variant="outlinePrimaryGlow"
-          height={{ base: "40px", sm: "100%" }}
-          width={{ base: "50%", sm: "unset" }}
-        >
-          {label}
-        </Button>
-      </Tooltip>
-    ) : (
-      <Button
-        onClick={onClick}
-        isDisabled={isDisabled}
-        variant="outlinePrimaryGlow"
-        height={{ base: "40px", sm: "100%" }}
-        width={{ base: "50%", sm: "unset" }}
-      >
-        {label}
-      </Button>
-    );
+  }) => (
+    <Button
+      onClick={onBuyClick}
+      isDisabled={isDisabled}
+      variant="outlinePrimaryGlow"
+      height={{ base: "40px", sm: "100%" }}
+      width={{ base: "50%", sm: "unset" }}
+    >
+      {label}
+    </Button>
+  );
 
-  const buyButton = (
+  const buyButton = isSmallScreen ? (
+    <Button
+      size={"xs"}
+      onClick={onBuyClick}
+      lineHeight={1.6}
+      variant="solid"
+      fontSize={10}
+      minWidth={"100px"}
+      height={["30px", "32px"]}
+    >
+      {t("labels.buy").toUpperCase()}
+    </Button>
+  ) : (
     <BuyButton
-      onClick={() => {
-        if (card.isSpecial) {
-          buySpecialCardItem(card, false);
-        } else {
-          buyCard(card);
-        }
-        navigate(-1);
-      }}
       isDisabled={
         notEnoughCash || noSpaceForSpecialCards || locked || buyDisabled
       }
-      notEnoughCash={notEnoughCash}
       label={t("labels.buy")}
     />
   );
 
   const temporalButton = (
     <BuyButton
-      onClick={() => {
-        if (card.isSpecial) {
-          buySpecialCardItem(card, true);
-        } else {
-          buyCard(card);
-        }
-        navigate(-1);
-      }}
       isDisabled={
         cash < card.temporary_price ||
         noSpaceForSpecialCards ||
         locked ||
         buyDisabled
       }
-      notEnoughCash={notEnoughCashTemporal}
       label={t("labels.buy-temporal")}
     />
   );
 
+  const label = noSpaceForSpecialCards
+    ? t("tooltip.no-space")
+    : t("tooltip.no-coins");
+
   const tooltipButton =
     notEnoughCash || noSpaceForSpecialCards ? (
-      <Tooltip
-        label={
-          noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
-        }
-      >
-        {buyButton}
-      </Tooltip>
+      isSmallScreen ? (
+        <Text fontSize={10}>{label}</Text>
+      ) : (
+        <Tooltip label={label}>{buyButton}</Tooltip>
+      )
     ) : (
       buyButton
     );
 
   const tooltipTemporalButton =
     cash < card.temporary_price || noSpaceForSpecialCards ? (
-      <Tooltip
-        label={
-          noSpaceForSpecialCards ? t("tooltip.no-space") : t("tooltip.no-coins")
-        }
-      >
-        {temporalButton}
-      </Tooltip>
+      <Tooltip label={label}>{temporalButton}</Tooltip>
     ) : (
       temporalButton
     );
-
 
   const image = <CardImage3D card={card} />;
 
@@ -158,19 +139,29 @@ const PreviewCard = () => {
 
   const temporary = card.temporary && " (" + t("labels.temporary") + ")";
 
-  return (
-    <StorePreviewComponent
-      buyButton={tooltipButton}
-      temporalButton={card.isSpecial ? tooltipTemporalButton : undefined}
-      image={image}
+  const props = {
+    buyButton: tooltipButton,
+    temporalButton: card.isSpecial ? tooltipTemporalButton : undefined,
+    image,
+    title: name,
+    cardType: card.temporary ? cardType + temporary : cardType,
+    description: description,
+    extraDescription: card.isTemporary && getTemporalCardText(card.remaining),
+    price: card.price,
+    temporalPrice: card.isSpecial ? card.temporary_price : undefined,
+    discountPrice: card.discount_cost,
+  };
+
+  return isSmallScreen ? (
+    <StorePreviewCardComponentMobile
+      card={card}
       title={name}
-      cardType={card.temporary ? cardType + temporary : cardType}
       description={description}
-      extraDescription={card.isTemporary && getTemporalCardText(card.remaining)}
-      price={card.price}
-      temporalPrice={card.isSpecial ? card.temporary_price : undefined}
-      discountPrice={card.discount_cost}
+      cardType={cardType}
+      buyButton={tooltipButton}
     />
+  ) : (
+    <StorePreviewComponent {...props} />
   );
 };
 
