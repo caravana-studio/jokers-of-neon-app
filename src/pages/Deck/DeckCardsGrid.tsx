@@ -91,7 +91,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
               mb={4}
               sx={{
                 "& div": {
-                  background: "rgba(0,0,0,1)",
+                  // background: "rgba(0,0,0,1)",
                   borderRadius: `${borderRadius}`,
                 },
                 "& img": {
@@ -119,6 +119,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                     onCardSelect?.(card);
                   }
                 }}
+                onDeck
               />
             </Box>
           );

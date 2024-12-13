@@ -19,6 +19,7 @@ export interface PlayEvents {
   secondChanceEvent?: boolean;
   modifierNeonEvents?: ModifierNeonEvent[];
   powerUpEvents?: PowerUpScore[];
+  specialNeonCardEvents?: SpecialNeonCardEvent[];
 }
 
 export interface LevelPassedEvent {
@@ -54,6 +55,11 @@ export interface SpecialSuitEvent {
   suit: Suits;
   special_idx?: number;
   idx: number[];
+}
+
+export interface SpecialNeonCardEvent {
+  idx: number;
+  special_idx: number;
 }
 
 export interface ModifierSuitEvent {

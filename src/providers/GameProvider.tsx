@@ -44,6 +44,7 @@ import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { PowerUp } from "../types/PowerUp.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { changeCardNeon } from "../utils/changeCardNeon.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -300,6 +301,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       cash: calculateDuration(playEvents.cashEvents),
       specialCards: calculateDuration(playEvents.specialCards),
       powerUps: calculateDuration(playEvents.powerUpEvents),
+      specialNeon: calculateDuration(playEvents.specialNeonCardEvents),
     };
 
     const ALL_CARDS_DURATION = Object.values(durations).reduce(
@@ -501,6 +503,33 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
     };
 
+    const handleSpecialNeon = () => {
+      if (!playEvents.specialNeonCardEvents) return;
+
+      playEvents.specialNeonCardEvents?.forEach((event, index) => {
+        pointsSound();
+        setAnimatedCard({
+          special_idx: event.special_idx,
+          idx: [event.idx],
+          animationIndex: 900 + index,
+          isNeon: true,
+        });
+
+        setHand((prev) =>
+          prev?.map((card) =>
+            event.idx === card.idx
+              ? {
+                  ...card,
+                  img: `${changeCardNeon(card.card_id!)}.png`,
+                }
+              : card
+          )
+        );
+
+        setPlayIsNeon(true);
+      });
+    };
+
     const handleGameEnd = () => {
       if (playEvents.gameOver) {
         setTimeout(() => {
@@ -532,21 +561,25 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
     // Chained timeouts with clear, sequential execution
     setTimeout(() => {
-      handleNeonPlay();
+      handleSpecialSuitEvents();
     }, 0);
+    setTimeout(() => {
+      handleSpecialNeon();
+    }, durations.modifierSuit + durations.specialSuit);
 
     setTimeout(
       () => {
-        handleSpecialSuitEvents();
+        handleNeonPlay();
       },
-      durations.neonPlay + durations.modifierNeon + durations.modifierSuit
+      durations.specialNeon + durations.neonPlay + durations.specialSuit
     );
 
     setTimeout(
       () => {
         handlePowerUps();
       },
-      durations.neonPlay +
+      durations.specialNeon +
+        durations.neonPlay +
         durations.modifierNeon +
         durations.modifierSuit +
         durations.specialSuit
@@ -556,7 +589,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       () => {
         handleGlobalEvents();
       },
-      durations.neonPlay +
+      durations.specialNeon +
+        durations.neonPlay +
         durations.modifierNeon +
         durations.modifierSuit +
         durations.specialSuit +
@@ -567,7 +601,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       () => {
         handleLevelBooster();
       },
-      durations.neonPlay +
+      durations.specialNeon +
+        durations.neonPlay +
         durations.modifierNeon +
         durations.modifierSuit +
         durations.specialSuit +
@@ -580,14 +615,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         handleCardScores();
       },
       ALL_CARDS_DURATION -
-        (durations.commonCards + durations.cash + durations.specialCards)
+        (durations.commonCards +
+          durations.cash +
+          durations.specialCards +
+          durations.specialNeon)
     );
 
     setTimeout(
       () => {
         handleCashEvents();
       },
-      ALL_CARDS_DURATION - (durations.cash + durations.specialCards)
+      ALL_CARDS_DURATION -
+        (durations.cash + durations.specialCards + durations.specialNeon)
     );
 
     setTimeout(() => {
