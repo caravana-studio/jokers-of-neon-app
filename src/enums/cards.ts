@@ -12,5 +12,6 @@ export enum Cards {
   QUEEN = 12,
   KING = 13,
   ACE = 14,
-  JOKER = 15
+  JOKER = 15,
+  WILDCARD = 16,
 }

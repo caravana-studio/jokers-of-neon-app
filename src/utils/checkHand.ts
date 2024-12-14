@@ -45,7 +45,7 @@ export const checkHand = (
     });
 
     if (specialAllCardsToHearts) {
-      if (modifiedCardData.suit != Suits.JOKER) {
+      if (modifiedCardData.suit != Suits.JOKER && modifiedCardData.suit != Suits.WILDCARD) {
         modifiedCardData.suit = Suits.HEARTS;
       }
     }
@@ -72,7 +72,7 @@ export const checkHand = (
   );
 
   for (const card of cardsSorted) {
-    if (card.suit != Suits.JOKER) {
+    if (card.suit != Suits.JOKER && card.suit != Suits.WILDCARD) {
       const valueCount = valuesCount.get(card.card || 0) || 0;
       const suitCount = suitsCount.get(card.suit as Suits) || 0;
 
@@ -129,7 +129,7 @@ export const checkHand = (
       const actualValue = cardsSorted[idx].card || 0;
       const nextValue = cardsSorted[idx + 1].card || 0;
 
-      if (nextValue === Cards.JOKER) {
+      if (nextValue === Cards.JOKER || nextValue === Cards.WILDCARD) {
         consecutive++;
         straightValuesMap.set(actualValue, true);
       } else if (actualValue + 1 === nextValue) {

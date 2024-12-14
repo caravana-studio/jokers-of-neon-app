@@ -253,6 +253,10 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
+  53: {
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
+  },
   
   200: {
     card: Cards.TWO,
@@ -465,5 +469,9 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
   252: {
     card: Cards.JOKER,
     suit: Suits.JOKER,
+  },
+  253: {
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
   },
 };
