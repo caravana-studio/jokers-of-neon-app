@@ -26,6 +26,8 @@ export const checkHand = (
         return Suits.HEARTS;
       case ModifiersId.SUIT_SPADES_MODIFIER:
         return Suits.SPADES;
+      case ModifiersId.WILDCARD_MODIFIER:
+        return Suits.WILDCARD;
       default:
         return null;
     }
