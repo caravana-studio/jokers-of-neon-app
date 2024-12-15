@@ -40,7 +40,7 @@ export const RageCards = () => {
                   }}
                   key={index}
                 >
-                  <CardImage3D card={card} small />
+                  <CardImage3D card={card} small rage />
                 </Box>
               );
             })}
