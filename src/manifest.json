@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x31e9cd110f14c21bdd1241adc1ccbb46aaa3089549682888f17a24cead160a",
-      "class_hash": "0x6b9b97cf4a724b08e35b156a2010fd2d08fe6050d9b2a3da2c52081160306c4",
+      "address": "0x33850d3331807c4446a0ba79e8a29ec9d66102333e8edf0b4c399f2028f158b",
+      "class_hash": "0x41a2cef6e9712c4191b067d3e958b8f1f447c0094edd06d7222ab0743155d2",
       "abi": [
         {
           "type": "impl",
@@ -2085,8 +2085,8 @@
       ]
     },
     {
-      "address": "0x2d1fdb712f56f5b72c6a591d86b3f58d105587bb101580f8a2d4385d0e35d5c",
-      "class_hash": "0x22f9b5babb7d96976041dff167a647d53c4ff0dade352c77b6e2beafc63738c",
+      "address": "0x30f883fbcfaf6840d4cdebe75189c03b8586353cdb57fa6c98560bf61d6725d",
+      "class_hash": "0x31c53e89328eda10d18c1324e7829bad084245a1b00af9ef54afe8a04535b2e",
       "abi": [
         {
           "type": "impl",
@@ -2340,14 +2340,6 @@
             {
               "name": "level",
               "type": "core::integer::u8"
-            },
-            {
-              "name": "multi",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "points",
-              "type": "core::integer::u32"
             },
             {
               "name": "cost",
@@ -2915,7 +2907,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x4fefd5ebf0a65ced70a0abb0776419d93338ad6408b0fe5d0016bd32e31bbf7",
+      "class_hash": "0x671799e6c2c98979a4026e3834200e8dddeab6428163b2a5835d494243911b0",
       "tag": "jokers_of_neon-PokerHandItem",
       "selector": "0x3760bd89d9a74b76230e31ede2f06c3b2ed00d4428f7a6d5a9ec78e1dc2303"
     },
