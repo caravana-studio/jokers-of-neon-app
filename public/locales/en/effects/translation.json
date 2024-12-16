@@ -68,8 +68,8 @@
       "description": "All played Jokers scores double points and double multi"
     },
     "311": {
-      "name": "Modifier Booster",
-      "description": "All played MODIFIER cards scores double points and double multi"
+      "name": "Power-up Booster",
+      "description": "All played power ups scores double points and double multi"
     },
     "312": {
       "name": "Figures Booster",

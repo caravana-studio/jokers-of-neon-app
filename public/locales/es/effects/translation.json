@@ -68,8 +68,8 @@
       "description": "Todos los Jokers jugados puntúan el doble y tienen doble multi"
     },
     "311": {
-      "name": "Potenciador de Modificadores",
-      "description": "Todas las cartas de MODIFICADOR jugadas puntúan el doble y tienen doble multi"
+      "name": "Potenciador de Poderes",
+      "description": "Todas los PODERES jugados puntúan el doble y tienen doble multi"
     },
     "312": {
       "name": "Potenciador de Figuras",
