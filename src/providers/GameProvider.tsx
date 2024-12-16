@@ -680,6 +680,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPreSelectedCards([]);
       setPreSelectedModifiers({});
       setPreselectedPowerUps([]);
+      setTransformedCards(new Map());
     }
   };
 
@@ -900,6 +901,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const checkOrCreateGame = () => {
     console.log("checking game exists", gameId);
+    clearPreSelection();
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       setTimeout(() => {
         if (!gameExists(Game, gameId)) {

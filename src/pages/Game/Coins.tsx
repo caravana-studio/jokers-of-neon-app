@@ -6,7 +6,11 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const Coins = () => {
+interface CoinsProps {
+  rolling?: boolean;
+}
+
+export const Coins = ({ rolling = true }: CoinsProps) => {
   const { cash } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
@@ -29,7 +33,7 @@ export const Coins = () => {
         p={{ base: "5px 5px", sm: "15px 6px" }}
         fontSize="13px"
       >
-        <RollingNumber n={cash} />
+        {rolling ? <RollingNumber n={cash} /> : <span>{cash}</span>}
         <CashSymbol />
       </Flex>
     </Flex>
