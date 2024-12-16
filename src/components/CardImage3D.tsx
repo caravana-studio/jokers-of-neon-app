@@ -17,11 +17,9 @@ const checkImageExists = (src: string): Promise<boolean> => {
 export const CardImage3D = ({
   card,
   small = false,
-  rage = false,
 }: {
   card: Card;
   small?: boolean;
-  rage?: boolean;
 }) => {
   const cid = card.card_id ?? 0;
 
@@ -45,7 +43,7 @@ export const CardImage3D = ({
   return (
     <ConditionalTilt cardId={cid} small={small}>
       <CachedImage
-        position={!rage ? "absolute" : "initial"}
+        position={"absolute"}
         borderRadius={borderRadius}
         src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
         width={"100%"}
@@ -69,13 +67,7 @@ export const CardImage3D = ({
           transform={`translateZ(${small ? 40 : 80}px)`}
         />
       )}
-      {!rage && (
-        <CachedImage
-          src={`/Cards/big/empty.png`}
-          alt={`empty`}
-          width={"100%"}
-        />
-      )}
+      <CachedImage src={`/Cards/big/empty.png`} alt={`empty`} width={"100%"} />
 
       {card.temporary && card.remaining && (
         <TemporalBadge
