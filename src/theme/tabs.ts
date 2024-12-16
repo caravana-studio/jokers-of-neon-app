@@ -14,7 +14,7 @@ const baseStyle = definePartsStyle({
     },
     borderRadius: "7px",
     mx: 2,
-    height: "25px",
+    height: ["25px", "40px"],
     textTransform: "uppercase",
   },
   tablist: {

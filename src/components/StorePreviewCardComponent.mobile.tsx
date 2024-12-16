@@ -20,13 +20,17 @@ import { CashSymbol } from "./CashSymbol";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
+import { Duration } from "../enums/duration";
+import { DurationSwitcher } from "./DurationSwitcher";
 
 interface StorePreviewCardComponentMobileProps {
   card: Card;
   title: string;
   description: string;
   cardType: string;
-  buyButton: ReactNode
+  buyButton: ReactNode;
+  duration?: Duration;
+  onDurationChange?: (duration: Duration) => void;
 }
 
 export const StorePreviewCardComponentMobile = ({
@@ -35,9 +39,10 @@ export const StorePreviewCardComponentMobile = ({
   cardType,
   card,
   buyButton,
+  duration,
+  onDurationChange
 }: StorePreviewCardComponentMobileProps) => {
   const navigate = useNavigate();
-  const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const { t } = useTranslation(["store"]);
   return (
@@ -90,20 +95,14 @@ export const StorePreviewCardComponentMobile = ({
             }}
           />
         </Box>
-        {card?.isSpecial ? (
+        {card?.isSpecial && duration !== undefined && onDurationChange ? (
           <DurationSwitcher
             price={card.price}
             discountPrice={card.discount_cost}
             temporalDiscountPrice={card.temporary_discount_cost}
             temporalPrice={card.temporary_price}
             duration={duration}
-            onDurationChange={() =>
-              setDuration(
-                duration === Duration.TEMPORAL
-                  ? Duration.PERMANENT
-                  : Duration.TEMPORAL
-              )
-            }
+            onDurationChange={onDurationChange}
           />
         ) : (
           <PriceBox
@@ -138,96 +137,5 @@ export const StorePreviewCardComponentMobile = ({
         />
       </Flex>
     </Background>
-  );
-};
-
-enum Duration {
-  PERMANENT = 0,
-  TEMPORAL = 1,
-}
-
-interface DurationSwitcherProps {
-  price?: number;
-  temporalPrice?: number;
-  discountPrice?: number;
-  temporalDiscountPrice?: number;
-  duration: Duration;
-  onDurationChange: (duration: Duration) => void;
-}
-
-const DurationSwitcher = ({
-  price,
-  temporalPrice,
-  discountPrice,
-  temporalDiscountPrice,
-  duration,
-  onDurationChange,
-}: DurationSwitcherProps) => {
-  const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
-
-  return (
-    <Flex gap={0} alignItems="center" mt={3} flexDir="column">
-      <Text size="md">
-        {duration === Duration.TEMPORAL ? t("temporal") : t("permanent")}
-      </Text>
-      <Tabs
-        index={duration}
-        onChange={onDurationChange}
-        w="100%"
-        isFitted
-        color="white"
-        mt={2}
-        variant="secondary"
-      >
-        <TabList>
-          <Tab fontSize={12}>
-            <Flex flexDir="column">
-              <Text
-                sx={{
-                  textDecoration: discountPrice ? "line-through" : "none",
-                  fontSize: discountPrice ? 8 : 12,
-                  lineHeight: discountPrice ? 0.5 : 1,
-                }}
-              >
-                {price}
-                <CashSymbol />
-              </Text>
-              {discountPrice && discountPrice > 0 ? (
-                <Text size="sm" lineHeight={1}>
-                  {discountPrice}
-                  <CashSymbol />
-                </Text>
-              ) : (
-                <></>
-              )}
-            </Flex>
-          </Tab>
-          <Tab fontSize={12}>
-            <Flex flexDir="column">
-              <Text
-                sx={{
-                  textDecoration: temporalDiscountPrice
-                    ? "line-through"
-                    : "none",
-                  fontSize: temporalDiscountPrice ? 8 : 12,
-                  lineHeight: temporalDiscountPrice ? 0.5 : 1,
-                }}
-              >
-                {temporalPrice}
-                <CashSymbol />
-              </Text>
-              {temporalDiscountPrice && temporalDiscountPrice > 0 ? (
-                <Text size="sm" lineHeight={1}>
-                  {temporalDiscountPrice}
-                  <CashSymbol />
-                </Text>
-              ) : (
-                <></>
-              )}
-            </Flex>
-          </Tab>
-        </TabList>
-      </Tabs>
-    </Flex>
   );
 };
