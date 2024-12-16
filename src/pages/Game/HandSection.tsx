@@ -82,7 +82,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           gap={1}
         >
           <SortBy />
-          <Coins />
+          <Coins rolling />
         </Flex>
       )}
       <Box

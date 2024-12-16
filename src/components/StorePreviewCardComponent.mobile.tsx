@@ -58,7 +58,7 @@ export const StorePreviewCardComponentMobile = ({
         textAlign="center"
       >
         <Flex justifyContent="flex-end" mr={3} w="100%">
-          <Coins rolling={false} />
+          <Coins />
         </Flex>
         <Flex
           gap={1}
