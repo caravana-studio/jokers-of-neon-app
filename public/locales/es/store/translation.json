@@ -37,6 +37,8 @@
       "purchased": "Comprado"
     },
     "preview-card": {
+      "temporal": "TEMPORAL",
+      "permanent": "PERMANENTE",
       "slot-title": "Espacio carta especial",
       "slot-description": "Desbloquear un nuevo espacio para cartas especiales",
       "title": {
@@ -48,8 +50,8 @@
       },
       "tooltip": {
         "no-coins": "No tienes suficientes monedas para comprar este artículo",
-        "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
-        "no-space-power-ups": "No tienes espacios disponibles para comprar este poder. Consumelos en la siguiente ronda."
+        "no-space": "No tienes espacios disponibles para comprar esta carta especial.",
+        "no-space-power-ups": "No tienes espacios disponibles para comprar este poder."
       },
       "labels": {
         "buy": "Comprar",
@@ -59,7 +61,8 @@
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles."
+        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
+        "power-up": "Poder"
       }
     },
     "packs": {
