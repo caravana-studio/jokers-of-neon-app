@@ -10,7 +10,7 @@ interface CoinsProps {
   rolling?: boolean;
 }
 
-export const Coins = ({ rolling = true }: CoinsProps) => {
+export const Coins = ({ rolling = false }: CoinsProps) => {
   const { cash } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
