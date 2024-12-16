@@ -79,6 +79,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           justifyContent="space-between"
           pb={1}
           height={cardHeight}
+          gap={1}
         >
           <SortBy />
           <Coins />

@@ -19,9 +19,9 @@ export const Coins = ({ rolling = true }: CoinsProps) => {
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
-      gap={2}
+      gap={1}
     >
-      <CoinIcon height={isSmallScreen ? 25 : 30} />
+      <CoinIcon height={isSmallScreen ? 25 : 27} />
       <Flex
         gap={1.5}
         alignItems="center"
