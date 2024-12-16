@@ -5,12 +5,12 @@ import { useSwipeable } from "react-swipeable";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
-import { LootBoxesMobile } from "./LootBoxes.mobile.tsx";
+import { LootBoxesMobile } from "./StoreTabContents/LootBoxes.mobile.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
-import { UtilsTab } from "./UtilsTab.tsx";
+import { UtilsTab } from "./StoreTabContents/UtilsTab.tsx";
 
 export const StoreContentMobile = () => {
   const { setRun } = useStore();
@@ -61,7 +61,7 @@ export const StoreContentMobile = () => {
             </TabList>
           </Tabs>
         </Flex>
-        <StoreTopBar isSmallScreen={true}></StoreTopBar>
+        <StoreTopBar />
         <Flex w="100%" flexGrow={1}>
           {tabIndex === 0 && <StoreCards />}
 

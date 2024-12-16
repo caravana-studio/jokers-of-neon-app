@@ -1,17 +1,21 @@
-import { Button, Tooltip } from "@chakra-ui/react";
+import { Button, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
+import { StorePreviewPowerUpComponentMobile } from "../../components/StorePreviewPowerUpComponent.mobile.tsx";
 import { POWER_UPS_CARDS_DATA } from "../../data/powerups.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewPowerUp = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { powerUp } = state || {};
 
@@ -31,13 +35,26 @@ export const PreviewPowerUp = () => {
     powerUps.filter((p) => !!p).length >=
     (game?.len_max_current_power_ups ?? 4);
 
-  const buyButton = (
+  const onBuyButtonClick = () => {
+    setBuyDisabled(true);
+    buyPowerUp(powerUp);
+    navigate(-1);
+  };
+  const buyButton = isSmallScreen ? (
     <Button
-      onClick={() => {
-        setBuyDisabled(true);
-        buyPowerUp(powerUp);
-        navigate(-1);
-      }}
+      size={"xs"}
+      onClick={onBuyButtonClick}
+      lineHeight={1.6}
+      variant="solid"
+      fontSize={10}
+      minWidth={"100px"}
+      height={["30px", "32px"]}
+    >
+      {t("labels.buy").toUpperCase()}
+    </Button>
+  ) : (
+    <Button
+      onClick={onBuyButtonClick}
       isDisabled={notEnoughCash || locked || buyDisabled || noSpace}
       variant="outlinePrimaryGlow"
       height={{ base: "40px", sm: "100%" }}
@@ -47,23 +64,39 @@ export const PreviewPowerUp = () => {
     </Button>
   );
 
-  const tooltipButton = (notEnoughCash || noSpace) ? (
-    <Tooltip label={t(notEnoughCash ? "tooltip.no-coins" : "tooltip.no-space-power-ups")}>{buyButton}</Tooltip>
-  ) : (
-    buyButton
+  const buttonMessage = t(
+    notEnoughCash ? "tooltip.no-coins" : "tooltip.no-space-power-ups"
   );
+
+  const tooltipButton =
+    notEnoughCash || noSpace ? (
+      isSmallScreen ? (
+        <Text fontSize={10}>{buttonMessage}</Text>
+      ) : (
+        <Tooltip label={buttonMessage}>{buyButton}</Tooltip>
+      )
+    ) : (
+      buyButton
+    );
 
   const image = (
     <CachedImage src={powerUp.img_big} alt={`PowerUp`} borderRadius="10px" />
   );
 
-  return (
-    <StorePreviewComponent
-      buyButton={tooltipButton}
-      image={image}
-      title={name}
-      description={description}
-      price={powerUp.cost}
+  const props = {
+    buyButton: tooltipButton,
+    image: image,
+    title: name,
+    description: description,
+    price: powerUp.cost,
+  };
+
+  return isSmallScreen ? (
+    <StorePreviewPowerUpComponentMobile
+      {...props}
+      cardType={t("labels.power-up")}
     />
+  ) : (
+    <StorePreviewComponent {...props} />
   );
 };

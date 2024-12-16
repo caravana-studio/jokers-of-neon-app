@@ -120,7 +120,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                       ? "tutorial-modifiers-step-2"
                       : "hand-element-" + index
                   }
-                  onMouseEnter={() => !isSmallScreen && setHoveredCard(card.idx)}
+                  onMouseEnter={() =>
+                    !isSmallScreen && setHoveredCard(card.idx)
+                  }
                   onMouseLeave={() => {
                     setHoveredCard(null);
                     setHoveredButton(null);
@@ -135,6 +137,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                       left={"5px"}
                       borderRadius={"10px"}
                       background={"violet"}
+                      sx={{
+                        zIndex: 20,
+                      }}
                     >
                       {hoveredCard === card.idx && (
                         <Button
