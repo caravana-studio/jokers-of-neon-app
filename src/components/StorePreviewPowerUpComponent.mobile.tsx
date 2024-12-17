@@ -17,6 +17,7 @@ export const StorePreviewPowerUpComponentMobile = ({
   price,
   discountPrice,
   buyButton,
+  tab,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
 
@@ -79,7 +80,7 @@ export const StorePreviewPowerUpComponentMobile = ({
             <Button
               size={"xs"}
               onClick={() => {
-                navigate(-1);
+                navigate("/redirect/store", { state: { lastTabIndex: tab } });
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"
@@ -90,9 +91,7 @@ export const StorePreviewPowerUpComponentMobile = ({
               {t("store.preview-card.labels.close").toUpperCase()}
             </Button>
           }
-          secondButton={
-            buyButton
-          }
+          secondButton={buyButton}
         />
       </Flex>
     </Background>
