@@ -2,7 +2,6 @@ import { Card } from "../../types/Card";
 import {
   BurnItem,
   CardItemType,
-  PokerHand,
   SlotSpecialCardsItem,
 } from "../typescript/models.gen";
 
@@ -61,7 +60,11 @@ const getPokerHandItem = (txPokerHand: any) => {
     level: parseInt(txPokerHand.level),
     cost: parseInt(txPokerHand.cost),
     purchased: txPokerHand.purchased,
-    discount_cost: txPokerHand.discount_cost ? parseInt(txPokerHand.discount_cost) : 0,
+    discount_cost: txPokerHand.discount_cost
+      ? parseInt(txPokerHand.discount_cost)
+      : 0,
+    multi: parseInt(txPokerHand.multi),
+    points: parseInt(txPokerHand.points),
   };
 };
 

@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { CashSymbol } from "../../components/CashSymbol.tsx";
+import { PriceBox } from "../../components/PriceBox.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
@@ -22,12 +22,10 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { BLUE } from "../../theme/colors";
-import { GREY_LINE } from "../../theme/colors";
+import { BLUE, GREY_LINE } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import theme from "../../theme/theme";
 import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
-import { PriceBox } from "../../components/PriceBox.tsx";
-import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 interface PlaysTableProps {
   inStore?: boolean;
@@ -249,7 +247,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   lineHeight={1.8}
                                   height="15px"
                                 >
-                                  {play.points.toString()}
+                                  {storePlay?.points}
                                 </Box>
                                 <Heading fontSize={isSmallScreen ? "8" : "10"}>
                                   x
@@ -263,7 +261,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   lineHeight={1.8}
                                   height="15px"
                                 >
-                                  {play.multi.toString()}
+                                  {storePlay?.multi}
                                 </Box>
                               </Box>
                             </Td>

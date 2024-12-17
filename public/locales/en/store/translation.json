@@ -37,6 +37,8 @@
       "purchased": "Purchased"
     },
     "preview-card": {
+      "temporal": "TEMPORAL", 
+      "permanent": "PERMANENT",
       "slot-title": "Special card slot",
       "slot-description": "Unlock a new slot for special cards",
       "title": {
@@ -48,8 +50,8 @@
       },
       "tooltip": {
         "no-coins": "You don't have enough coins to buy this item",
-        "no-space": "You don't have enough available slots for another special card. Buy a new slot in the store or remove one to buy this card",
-        "no-space-power-ups": "You don't have enough available slots for another power-up. Consume them in the next round."
+        "no-space": "You don't have enough available slots for another special card.",
+        "no-space-power-ups": "You don't have enough available slots for another power-up."
       },
       "labels": {
         "buy": "Buy",
@@ -59,7 +61,8 @@
         "traditional": "Traditional",
         "temporary": "Temporary",
         "close": "Close",
-        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels."
+        "temporal": "Temporal card. It will be destroyed after {{remaining}} levels.",
+        "power-up": "Power-up"
       }
     },
     "packs": {

@@ -1,7 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import CachedImage from "../../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -18,8 +16,7 @@ import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
-  const { setRun, specialCards, commonCards, modifierCards } =
-    useStore();
+  const { setRun, specialCards, commonCards, modifierCards } = useStore();
 
   const { t } = useTranslation(["store"]);
 
@@ -122,7 +119,7 @@ export const StoreContent = () => {
               </Flex>
 
               <Flex flexDirection="column" gap={14}>
-                <RerollButton isSmallScreen={false} />
+                <RerollButton />
                 <SpecialsButton isSmallScreen={false} />
                 <SeeFullDeckButton isSmallScreen={false} />
                 <Coins rolling />

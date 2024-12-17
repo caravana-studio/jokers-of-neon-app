@@ -6,7 +6,11 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const Coins = () => {
+interface CoinsProps {
+  rolling?: boolean;
+}
+
+export const Coins = ({ rolling = false }: CoinsProps) => {
   const { cash } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
@@ -15,9 +19,9 @@ export const Coins = () => {
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
-      gap={2}
+      gap={1}
     >
-      <CoinIcon height={isSmallScreen ? 25 : 30} />
+      <CoinIcon height={isSmallScreen ? 25 : 27} />
       <Flex
         gap={1.5}
         alignItems="center"
@@ -29,7 +33,7 @@ export const Coins = () => {
         p={{ base: "5px 5px", sm: "15px 6px" }}
         fontSize="13px"
       >
-        <RollingNumber n={cash} />
+        {rolling ? <RollingNumber n={cash} /> : <span>{cash}</span>}
         <CashSymbol />
       </Flex>
     </Flex>
