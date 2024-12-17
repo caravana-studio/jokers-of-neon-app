@@ -55,11 +55,14 @@ const PreviewCard = () => {
 
   const onBuyClick = () => {
     if (card.isSpecial) {
-      buySpecialCardItem(card, duration === Duration.TEMPORAL);
+      buySpecialCardItem(card, duration === Duration.TEMPORAL).then(() =>
+        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
+      );
     } else {
-      buyCard(card);
+      buyCard(card).then(() =>
+        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
+      );
     }
-    navigate("/redirect/store", { state: { lastTabIndex: 0 } });
   };
 
   const buyButton = isSmallScreen ? (
