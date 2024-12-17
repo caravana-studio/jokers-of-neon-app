@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
-import RerollButton from "./RerollButton";
-import { PriceBox } from "../../../components/PriceBox";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { Coins } from "../../Game/Coins";
+import { PriceBox } from "../../../components/PriceBox";
 import { useStore } from "../../../providers/StoreProvider";
+import { Coins } from "../../Game/Coins";
+import RerollButton from "./RerollButton";
 
-interface StoreTopProps {
-  isSmallScreen: boolean;
+interface StoreTopBarProps {
+  hideReroll?: boolean;
 }
 
-export const StoreTopBar = (props: StoreTopProps) => {
+export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
   const { rerollInformation } = useStore();
 
   return (
@@ -24,16 +24,20 @@ export const StoreTopBar = (props: StoreTopProps) => {
       justifyContent={"space-between"}
     >
       <Flex gap={4} alignItems={"center"}>
-        <RerollButton isSmallScreen={props.isSmallScreen}></RerollButton>
-        <Flex alignItems={"center"} gap={2}>
-          <PriceBox
-            price={rerollInformation.rerollCost}
-            purchased={rerollInformation.rerollExecuted}
-            absolutePosition={false}
-            fontSize={10}
-          ></PriceBox>
-          <IoIosInformationCircleOutline color="white" size={"14px"} />
-        </Flex>
+        {!hideReroll && (
+          <>
+            <RerollButton />
+            <Flex alignItems={"center"} gap={2}>
+              <PriceBox
+                price={rerollInformation.rerollCost}
+                purchased={rerollInformation.rerollExecuted}
+                absolutePosition={false}
+                fontSize={10}
+              ></PriceBox>
+              <IoIosInformationCircleOutline color="white" size={"14px"} />
+            </Flex>
+          </>
+        )}
       </Flex>
       <Flex alignItems={"center"}>
         <Coins />

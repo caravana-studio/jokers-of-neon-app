@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "../../../providers/StoreProvider";
 import { CashSymbol } from "../../../components/CashSymbol";
 import { FiRefreshCw } from "react-icons/fi";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
-interface RerollButtonProps {
-  isSmallScreen: boolean;
-}
 
-const RerollButton: React.FC<RerollButtonProps> = ({ isSmallScreen }) => {
+
+const RerollButton  = () => {
   const { t } = useTranslation(["store"]);
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { cash, locked, reroll, rerollInformation } = useStore();
 
