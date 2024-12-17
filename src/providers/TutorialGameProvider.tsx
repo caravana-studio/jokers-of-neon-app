@@ -23,7 +23,9 @@ import {
   CJ,
   CK,
   CQ,
+  D10,
   D2,
+  D4,
   D5,
   H10,
   H3,
@@ -89,6 +91,14 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const cm = ClubModifier;
   cm.id = H7.id;
   cm.idx = H7.idx;
+
+  const d4 = D4;
+  d4.id = c5.id;
+  d4.idx = c5.idx;
+
+  const d10 = D10;
+  d10.id = D5.id;
+  d10.idx = D5.idx;
 
   const cards: Card[] = [c7, c5];
 
@@ -592,18 +602,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     cards: [],
     score: 5200,
     cashEvents: [],
-    powerUpEvents: [
-      {
-        idx: 0,
-        points: 0,
-        multi: 5,
-      },
-      {
-        idx: 1,
-        points: 25,
-        multi: 0,
-      },
-    ],
+    powerUpEvents: [],
   };
 
   const eventPair = {
@@ -631,7 +630,44 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     cashEvents: [],
   };
 
-  const events = [eventPair, eventFlush];
+  const eventPairPowerUps = {
+    play: {
+      multi: 1,
+      points: 0,
+    },
+    cardScore: [
+      { idx: c5.idx, multi: 0, points: 5 },
+      { idx: D5.idx, multi: 0, points: 5 },
+    ],
+    specialCards: [
+      {
+        special_idx: 301,
+        idx: c5.idx,
+        multi: 2,
+      },
+    ],
+    gameOver: false,
+    specialSuitEvents: [],
+    globalEvents: [],
+    modifierSuitEvents: [],
+    cards: [d4, d10],
+    score: 96,
+    cashEvents: [],
+    powerUpEvents: [
+      {
+        idx: 0,
+        points: 0,
+        multi: 5,
+      },
+      {
+        idx: 1,
+        points: 25,
+        multi: 0,
+      },
+    ],
+  };
+
+  const events = [eventPair, eventPairPowerUps, eventFlush];
 
   const play = () => {
     animatePlay(events[indexEvent]);

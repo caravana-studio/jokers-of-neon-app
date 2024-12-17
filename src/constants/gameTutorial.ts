@@ -106,7 +106,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -130,7 +130,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -170,7 +170,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -194,7 +194,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -215,6 +215,122 @@ const loadTutorialTranslations = async () => {
       content: i18n.t("gameTutorial.specialCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
     },
+    {
+      target: ".game-tutorial-step-4",
+      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
+      placement: "left",
+      spotlightClicks: true,
+      hideFooter: true,
+    },
+    {
+      target: ".game-tutorial-intro",
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "top" : "auto",
+      hideFooter: true,
+      offset: isMobile ? 1000 : 10,
+    },
+    {
+      target: ".game-tutorial-step-2",
+      content: i18n.t("gameTutorial.playableHand.secondPair", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      placement: "right",
+      hideCloseButton: true,
+    },
+    {
+      target: ".hand-element-0",
+      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      offset: isMobile ? 150 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    {
+      target: ".hand-element-1",
+      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
+      content: i18n.t(
+        isMobile
+          ? "gameTutorial.action.select-mobile"
+          : "gameTutorial.action.select",
+        {
+          ns: "tutorials",
+        }
+      ),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      offset: isMobile ? 150 : 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    // power ups
+    {
+      target: ".game-tutorial-power-up",
+      title: i18n.t("gameTutorial.power-ups.title", { ns: "tutorials" }),
+      content: i18n.t("gameTutorial.power-ups.content", { ns: "tutorials" }),
+      ...COMMON_SETTINGS,
+      placement: "auto",
+    },
+    {
+      target: ".game-tutorial-power-up-0",
+      content: i18n.t("gameTutorial.power-ups.select", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    {
+      target: ".game-tutorial-power-up-1",
+      content: i18n.t("gameTutorial.power-ups.select", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      placement: isMobile ? "bottom" : "auto",
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
+    },
+    // play
     {
       target: ".game-tutorial-step-4",
       title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
@@ -257,7 +373,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -281,7 +397,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -305,7 +421,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -329,7 +445,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -353,7 +469,7 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -368,7 +484,7 @@ const loadTutorialTranslations = async () => {
       placement: isMobile ? "bottom" : "auto",
       disableScrollParentFix: true,
       spotlightPadding: 0,
-      offset: isMobile ? 250 : 0,
+      offset: isMobile ? 150 : 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -384,47 +500,6 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-    },
-    {
-      target: ".game-tutorial-power-up",
-      title: i18n.t("gameTutorial.power-ups.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.power-ups.content", { ns: "tutorials" }),
-      ...COMMON_SETTINGS,
-      placement: "auto",
-    },
-    {
-      target: ".game-tutorial-power-up-0",
-      content: i18n.t("gameTutorial.power-ups.select", {
-        ns: "tutorials",
-      }),
-      ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
-      disableScrollParentFix: true,
-      hideFooter: true,
-      spotlightClicks: true,
-      spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
-    },
-    {
-      target: ".game-tutorial-power-up-1",
-      content: i18n.t("gameTutorial.power-ups.select", {
-        ns: "tutorials",
-      }),
-      ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
-      disableScrollParentFix: true,
-      hideFooter: true,
-      spotlightClicks: true,
-      spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
     },
     {
       target: ".game-tutorial-step-4",
