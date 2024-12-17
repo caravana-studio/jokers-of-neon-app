@@ -90,7 +90,7 @@ const loadTutorialTranslations = async () => {
       placement: "right",
     },
     {
-      target: ".hand-element-1",
+      target: ".hand-element-0",
       title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
@@ -114,7 +114,7 @@ const loadTutorialTranslations = async () => {
       },
     },
     {
-      target: ".hand-element-2",
+      target: ".hand-element-1",
       title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile

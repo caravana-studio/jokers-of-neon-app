@@ -75,8 +75,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: multiSound } = useAudio(multiSfx);
 
   const c7 = C7;
-  c7.idx = D5.idx;
-  c7.id = D5.id;
+  c7.idx = D2.idx;
+  c7.id = D2.id;
 
   const c5 = C5;
   c5.idx = H3.idx;
@@ -543,7 +543,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         points: 10,
       },
       {
-        idx: 16,
+        idx: c7.idx,
         multi: 0,
         points: 10,
       },
@@ -571,7 +571,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       },
       {
         special_idx: 301,
-        idx: 16,
+        idx: c7.idx,
         multi: 2,
       },
       {
@@ -612,13 +612,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       points: 0,
     },
     cardScore: [
-      { idx: 16, multi: 0, points: 7 },
+      { idx: c7.idx, multi: 0, points: 7 },
       { idx: 31, multi: 0, points: 7 },
     ],
     specialCards: [
       {
         special_idx: 301,
-        idx: 16,
+        idx: c7.idx,
         multi: 2,
       },
     ],
