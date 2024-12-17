@@ -679,6 +679,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const clearPreSelection = () => {
     resetMultiPoints();
     setPreSelectedCards([]);
+    let powerUpLeft = context.powerUps;
+    powerUpLeft = powerUpLeft.filter(
+      (powerUp) => !preselectedPowerUps.includes(powerUp?.idx ?? 0)
+    );
+    context.powerUps = powerUpLeft;
   };
 
   const replaceCards = (cards: Card[]) => {
