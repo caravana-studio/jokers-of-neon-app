@@ -8,6 +8,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { Entity } from "@dojoengine/recs";
 import { useComponentValue } from "@dojoengine/react";
 import { useMemo } from "react";
+import { CardTypes } from "../../enums/cardTypes";
 
 export const useDeck = (): Deck => {
   const {
@@ -32,7 +33,7 @@ export const useDeck = (): Deck => {
       const deckCard = getCard(gameId ?? 0, i, DeckCard);
       const card = getCardFromCardId(deckCard?.card_id, i);
       const cardData = { ...getCardData(card) };
-      const isNeonCard = card.card_id >= 200 && card.card_id <= 252;
+      const isNeonCard = cardData.type === CardTypes.NEON;
 
       fullDeckCards.push({
         ...card,
