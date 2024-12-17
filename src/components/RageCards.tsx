@@ -5,7 +5,6 @@ import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CardImage3D } from "./CardImage3D";
-import { AnimatedCard } from "./AnimatedCard";
 
 export const RageCards = () => {
   const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
@@ -29,29 +28,21 @@ export const RageCards = () => {
           <SimpleGrid columns={5} position="relative" width={"100%"}>
             {rageCards.map((card, index) => {
               return (
-                <AnimatedCard
-                  idx={card.idx}
-                  isSpecial={!!card.isSpecial}
-                  scale={specialCardScale - specialCardScale * 0.1}
+                <Box
+                  position="relative"
+                  height={
+                    CARD_HEIGHT * (specialCardScale - specialCardScale * 0.1)
+                  }
+                  width={
+                    CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
+                  }
+                  onClick={() => {
+                    isSmallScreen && highlightCard(card);
+                  }}
+                  key={index}
                 >
-                  <Box position="relative">
-                    <Box
-                      height={
-                        CARD_HEIGHT *
-                        (specialCardScale - specialCardScale * 0.1)
-                      }
-                      width={
-                        CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
-                      }
-                      onClick={() => {
-                        isSmallScreen && highlightCard(card);
-                      }}
-                      key={index}
-                    >
-                      <CardImage3D card={card} small />
-                    </Box>
-                  </Box>
-                </AnimatedCard>
+                  <CardImage3D card={card} small />
+                </Box>
               );
             })}
           </SimpleGrid>
