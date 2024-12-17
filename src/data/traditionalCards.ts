@@ -9,7 +9,7 @@ export const NEON_CARDS_DATA: CardDataMap = {};
 const loadTranslations = async () => {
   await i18n.loadNamespaces(['traditional-cards', 'neon-cards']);
 
-  for (let i = 0; i < 53; i++) {
+  for (let i = 0; i <= 53; i++) {
     TRADITIONAL_CARDS_DATA[i] = {
       name: i18n.t(`traditionalCardsData.${i}.name`, {ns:'traditional-cards'}),
       description: i18n.t(`traditionalCardsData.${i}.description`, {ns:'traditional-cards'}),
@@ -18,7 +18,7 @@ const loadTranslations = async () => {
     };
   }
   
-  for (let i = 200; i < 253; i++) {
+  for (let i = 200; i <= 253; i++) {
     NEON_CARDS_DATA[i] = {
       name: i18n.t(`neonCardsData.${i}.name`, {ns:'neon-cards'}),
       description: i18n.t(`neonCardsData.${i}.description`, {ns:'neon-cards'}),
@@ -253,6 +253,10 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
     card: Cards.JOKER,
     suit: Suits.JOKER,
   },
+  53: {
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
+  },
   
   200: {
     card: Cards.TWO,
@@ -465,5 +469,9 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
   252: {
     card: Cards.JOKER,
     suit: Suits.JOKER,
+  },
+  253: {
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
   },
 };

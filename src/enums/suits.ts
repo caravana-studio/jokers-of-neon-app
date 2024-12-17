@@ -4,4 +4,5 @@ export enum Suits {
   HEARTS = 3,
   SPADES = 4,
   JOKER = 5,
+  WILDCARD = 6,
 }
