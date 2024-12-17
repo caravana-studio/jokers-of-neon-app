@@ -209,8 +209,12 @@
         "description": "Pontua +11 pontos"
       },
       "52": {
+        "name": "Joker",
+        "description": "Substitui qualquer carta tradicional. +100 pontos e +1 multi"
+      },
+      "53": {
         "name": "Coringa",
-        "description": "Coringa que substitui qualquer carta tradicional. +100 pontos e +1 multi"
+        "description": "Substitui qualquer carta tradicional"
       }
       
     }

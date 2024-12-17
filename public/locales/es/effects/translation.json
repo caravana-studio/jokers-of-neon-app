@@ -20,6 +20,10 @@
     "612": {
       "name": "Cambiar a Neón",
       "description": "La carta modificada será considerada como una carta de Neón"
+    },
+    "613": {
+      "name": "Modificador de Comodín",
+      "description": "La carta modificada será considerada como Comodín"
     }
   },
   "specialCardsData": {
@@ -165,7 +169,7 @@
     },
     "340": {
       "name": "Doses salvajes",
-      "description": "Todos los 2s se consideran comodines"
+      "description": "Todos los 2s se consideran jokers"
     },
     "341": {
       "name": "Robo inmortal",

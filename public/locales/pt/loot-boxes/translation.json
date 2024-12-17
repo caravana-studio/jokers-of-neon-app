@@ -3,17 +3,17 @@
     "1": {
       "name": "Baú Básico",
       "description": "Contém principalmente cartas tradicionais e modificadores",
-      "details": "2% de chance de obter uma carta especial\n5% de chance de obter uma carta modificadora\n4% de chance de obter um Coringa\n1% de chance de obter um Coringa Neon\n88% de chance de obter uma carta tradicional\nTamanho do Baú 5"
+      "details": "2% de chance de obter uma carta especial\n5% de chance de obter uma carta modificadora\n4% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n88% de chance de obter uma carta tradicional\nTamanho do Baú 5"
     },
     "2": {
       "name": "Baú Avançado",
-      "description": "Pode conter uma carta especial ou coringa",
-      "details": "4% de chance de obter uma carta especial\n10% de chance de obter uma carta modificadora\n8% de chance de obter um Coringa\n2% de chance de obter um Coringa Neon\n76% de chance de obter uma carta tradicional\nTamanho do Baú 5"
+      "description": "Pode conter uma carta especial ou joker",
+      "details": "4% de chance de obter uma carta especial\n10% de chance de obter uma carta modificadora\n8% de chance de obter um Joker\n2% de chance de obter um Joker Neon\n76% de chance de obter uma carta tradicional\nTamanho do Baú 5"
     },
     "3": {
-      "name": "Baú de Coringas",
-      "description": "Mais chances de obter um Coringa",
-      "details": "15% de chance de obter um Coringa\n1% de chance de obter um Coringa Neon\n84% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+      "name": "Baú de Jokers",
+      "description": "Mais chances de obter um Joker",
+      "details": "15% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n84% de chance de obter uma carta tradicional\nTamanho do Baú 3"
     },
     "4": {
       "name": "Baú de Especiais",
@@ -31,9 +31,9 @@
       "details": "70% de chance de obter uma figura\n30% de chance de obter outras cartas tradicionais\nTamanho do Baú 5"
     },
     "7": {
-      "name": "Baú do Coringa Enganador",
-      "description": "1 Coringa garantido",
-      "details": "1 Coringa garantido\n6% de chance de obter um Coringa\n2% de chance de obter um Coringa Neon\n92% de chance de obter uma carta tradicional\nTamanho do Baú 4"
+      "name": "Baú do Joker Enganador",
+      "description": "1 Joker garantido",
+      "details": "1 Joker garantido\n6% de chance de obter um Joker\n2% de chance de obter um Joker Neon\n92% de chance de obter uma carta tradicional\nTamanho do Baú 4"
     },
     "8": {
       "name": "Baú dos Amantes",
@@ -48,7 +48,7 @@
     "10": {
       "name": "Baú Neon",
       "description": "Um Baú exclusivo com chances de obter cartas neon",
-      "details": "97% de chance de obter uma carta neon\n3% de chance de obter um Coringa Neon\nTamanho do Baú 5"
+      "details": "97% de chance de obter uma carta neon\n3% de chance de obter um Joker Neon\nTamanho do Baú 5"
     }
   }
 }

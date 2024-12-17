@@ -1,6 +1,7 @@
 import { Suits } from "../enums/suits";
 import { changeCardNeon } from "./changeCardNeon";
 import { changeCardSuit } from "./changeCardSuit";
+import { changeWildcard } from "./changeWildcard";
 
 const modifierTransformations: Record<number, {
   transform: (...args: any[]) => any;
@@ -26,6 +27,10 @@ const modifierTransformations: Record<number, {
     transform: changeCardNeon,
     args: [],
   },
+  613: {
+    transform: changeWildcard,
+    args: [],
+  }
 };
 
 export const transformCardByModifierId = (modifierId: number, modifiedCardId: number) => {

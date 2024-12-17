@@ -3,17 +3,17 @@
     "1": {
       "name": "Caja Básica",
       "description": "Contiene principalmente cartas tradicionales y modificadores",
-      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener un modificador\n4% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener un modificador\n4% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "2": {
       "name": "Caja Avanzada",
-      "description": "Puede contener una carta especial o un comodín",
-      "details": "4% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n8% de probabilidad de obtener un comodín\n2% de probabilidad de obtener un comodín de neón\n76% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "description": "Puede contener una carta especial o un joker",
+      "details": "4% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n8% de probabilidad de obtener un joker\n2% de probabilidad de obtener un joker de neón\n76% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "3": {
-      "name": "Caja de Comodines",
-      "description": "Más posibilidades de obtener un comodín",
-      "details": "15% de probabilidad de obtener un comodín\n1% de probabilidad de obtener un comodín de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
+      "name": "Caja de Jokers",
+      "description": "Más posibilidades de obtener un joker",
+      "details": "15% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
     },
     "4": {
       "name": "Caja de Cartas Especiales",
@@ -31,9 +31,9 @@
       "details": "70% de probabilidad de obtener una figura\n30% de probabilidad de obtener otras cartas tradicionales\nTamaño de la caja 5"
     },
     "7": {
-      "name": "Caja del Comodín Engañoso",
-      "description": "1 comodín garantizado",
-      "details": "1 comodín garantizado\n6% de probabilidad de obtener un comodín\n2% de probabilidad de obtener un comodín de neón\n92% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
+      "name": "Caja del Joker Engañoso",
+      "description": "1 joker garantizado",
+      "details": "1 joker garantizado\n6% de probabilidad de obtener un joker\n2% de probabilidad de obtener un joker de neón\n92% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
     },
     "8": {
       "name": "Caja de los Amantes",

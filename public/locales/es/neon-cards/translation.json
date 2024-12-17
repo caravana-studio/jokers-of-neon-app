@@ -209,8 +209,12 @@
             "description": "Suma +22 puntos y +1 multi"
           },
           "252": {
-            "name": "Comodín de Neón",
-            "description": "Comodín que sustituye cualquier carta tradicional. +500 puntos y +3 multi"
-        }
+            "name": "Joker de Neón",
+            "description": "Sustituye cualquier carta tradicional. +500 puntos y +3 multi"
+        },
+        "253": {
+          "name": "Comodín de Neón",
+          "description": "Sustituye cualquier carta de neón"
+      }
     }
 }
