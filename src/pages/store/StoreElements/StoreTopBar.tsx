@@ -1,9 +1,12 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PriceBox } from "../../../components/PriceBox";
+import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { Coins } from "../../Game/Coins";
 import RerollButton from "./RerollButton";
+import { InformationIcon } from "../../../components/InformationIcon";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
@@ -11,6 +14,7 @@ interface StoreTopBarProps {
 
 export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
   const { rerollInformation } = useStore();
+  const { t } = useTranslation("store", { keyPrefix: "information" });
 
   return (
     <Flex
@@ -34,7 +38,7 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
                 absolutePosition={false}
                 fontSize={10}
               ></PriceBox>
-              <IoIosInformationCircleOutline color="white" size={"14px"} />
+              <InformationIcon title="reroll" />
             </Flex>
           </>
         )}

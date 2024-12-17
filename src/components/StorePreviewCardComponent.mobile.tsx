@@ -3,25 +3,21 @@ import {
   Button,
   Flex,
   Heading,
-  Tab,
-  TabList,
-  Tabs,
-  Text,
+  Text
 } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { Duration } from "../enums/duration";
 import { Coins } from "../pages/Game/Coins";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import { Background } from "./Background";
 import { CardImage3D } from "./CardImage3D";
-import { CashSymbol } from "./CashSymbol";
+import { DurationSwitcher } from "./DurationSwitcher";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
-import { Duration } from "../enums/duration";
-import { DurationSwitcher } from "./DurationSwitcher";
 
 interface StorePreviewCardComponentMobileProps {
   card: Card;
@@ -82,7 +78,7 @@ export const StorePreviewCardComponentMobile = ({
               </Text>
             )}
           </Box>
-          <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
+          <Text textAlign="center" size="xl" fontSize={"15px"} width={"90%"}>
             {colorizeText(description)}
           </Text>
         </Flex>

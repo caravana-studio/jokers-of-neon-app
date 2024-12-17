@@ -1,7 +1,9 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { InformationIcon } from "../../../components/InformationIcon";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
+import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 import { CARD_WIDTH } from "../../../constants/visualProps";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
@@ -11,7 +13,6 @@ import theme from "../../../theme/theme";
 import { BurnItem } from "../BurnItem";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
-import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -107,10 +108,11 @@ export const UtilsTab = () => {
       </Flex>
 
       <Flex className="PowerUps" mx={4} flexDir={"column"}>
-        <Flex justifyContent="space-between" mb={2} alignItems="center">
+        <Flex gap={2} mb={2} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.titles.powerups").toUpperCase()}
           </Heading>
+            <InformationIcon title={"power-ups"} />
         </Flex>
         <Flex
           flexDirection={"column"}
