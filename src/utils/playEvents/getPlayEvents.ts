@@ -17,6 +17,7 @@ import { getNeonPlayEvent } from "./getNeonPlayEvent";
 import { getPowerUpEvents } from "./getPowerUpEvents";
 import { getScoreEvent } from "./getScoreEvent";
 import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
+import { getSpecialNeonCardEvents } from "./getSpecialNeonCardEvents";
 import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
 import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
@@ -41,6 +42,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     ),
     modifierNeonEvents: getModifierNeonEvents(events),
     powerUpEvents: getPowerUpEvents(events),
+    specialNeonCardEvents: getSpecialNeonCardEvents(events),
   };
 
   console.log(playEvents);

@@ -18,10 +18,6 @@ export const BurnItem = ({}: IBurnItem) => {
 
   const { burnItem } = useStore();
 
-  const game = useGame();
-  const visible =
-    (game?.len_max_current_special_cards ?? 1) < MAX_SPECIAL_CARDS;
-
   const price = burnItem?.cost;
   const purchased = burnItem?.purchased ?? false;
 
@@ -29,49 +25,47 @@ export const BurnItem = ({}: IBurnItem) => {
   const width = CARD_WIDTH * cardScale * 0.8;
 
   return (
-    visible && (
-      <Tooltip label={t("store.burn-item.tooltip")} placement="top">
-        <Flex
-          position="relative"
-          height={`${height}px`}
-          width={`${width}px`}
-          cursor={purchased ? "not-allowed" : "pointer"}
-          opacity={purchased ? 0.3 : 1}
-          onClick={() => {
-            if (!purchased && !isSmallScreen) {
-              navigate("/deck", { state: { inStore: true, burn: true } });
-            }
-          }}
-        >
-          <BurnIcon />
-          {price && (
-            <PriceBox
-              price={Number(price)}
-              purchased={Boolean(purchased)}
-              discountPrice={Number(burnItem?.discount_cost ?? 0)}
-              fontSize={isSmallScreen ? 12 : 16}
-              discountFontSize={isSmallScreen ? 10 : 12}
-            />
-          )}
-          {purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: `${height / 2 - 10}px`,
-                left: 0,
-                zIndex: 10,
-              }}
+    <Tooltip label={t("store.burn-item.tooltip")} placement="top">
+      <Flex
+        position="relative"
+        height={`${height}px`}
+        width={`${width}px`}
+        cursor={purchased ? "not-allowed" : "pointer"}
+        opacity={purchased ? 0.3 : 1}
+        onClick={() => {
+          if (!purchased && !isSmallScreen) {
+            navigate("/deck", { state: { inStore: true, burn: true } });
+          }
+        }}
+      >
+        <BurnIcon />
+        {price && (
+          <PriceBox
+            price={Number(price)}
+            purchased={Boolean(purchased)}
+            discountPrice={Number(burnItem?.discount_cost ?? 0)}
+            fontSize={isSmallScreen ? 12 : 16}
+            discountFontSize={isSmallScreen ? 10 : 12}
+          />
+        )}
+        {purchased && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: `${height / 2 - 10}px`,
+              left: 0,
+              zIndex: 10,
+            }}
+          >
+            <Heading
+              variant="italic"
+              fontSize={isSmallScreen ? 6 : 11 * cardScale}
             >
-              <Heading
-                variant="italic"
-                fontSize={isSmallScreen ? 6 : 11 * cardScale}
-              >
-                {t("store.labels.purchased").toLocaleUpperCase()}
-              </Heading>
-            </Box>
-          )}
-        </Flex>
-      </Tooltip>
-    )
+              {t("store.labels.purchased").toLocaleUpperCase()}
+            </Heading>
+          </Box>
+        )}
+      </Flex>
+    </Tooltip>
   );
 };

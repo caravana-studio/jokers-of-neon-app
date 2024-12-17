@@ -1,16 +1,17 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { PowerUpComponent } from "../../components/PowerUpComponent";
-import { CARD_WIDTH } from "../../constants/visualProps";
-import { useGame } from "../../dojo/queries/useGame";
-import { useStore } from "../../providers/StoreProvider";
-import { GREY_LINE } from "../../theme/colors";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import theme from "../../theme/theme";
-import { BurnItem } from "./BurnItem";
-import { SpecialSlotItem } from "./SpecialSlotItem";
-import LevelUpTable from "./StoreElements/LevelUpTable";
+import { PowerUpComponent } from "../../../components/PowerUpComponent";
+import { CARD_WIDTH } from "../../../constants/visualProps";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useStore } from "../../../providers/StoreProvider";
+import { GREY_LINE } from "../../../theme/colors";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import theme from "../../../theme/theme";
+import { BurnItem } from "../BurnItem";
+import { SpecialSlotItem } from "../SpecialSlotItem";
+import LevelUpTable from "../StoreElements/LevelUpTable";
+import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -21,6 +22,9 @@ export const UtilsTab = () => {
 
   const game = useGame();
   const cash = game?.cash ?? 0;
+
+  const visible =
+    (game?.len_max_current_special_cards ?? 1) < MAX_SPECIAL_CARDS;
 
   const notEnoughCashSlot =
     !specialSlotItem.cost ||
@@ -70,13 +74,13 @@ export const UtilsTab = () => {
   }, notEnoughCashBurn || burnItem.purchased);
 
   const tooltipSlotButton = notEnoughCashSlot ? (
-    <Text>{t("store.preview-card.tooltip.no-coins")}</Text>
+    <Text mt={1}>{t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buySlotButton
   );
 
   const tooltipBurnButton = notEnoughCashBurn ? (
-    <Text> {t("store.preview-card.tooltip.no-coins")}</Text>
+    <Text mt={1}> {t("store.preview-card.tooltip.no-coins")}</Text>
   ) : (
     buyBurnButton
   );
@@ -146,31 +150,33 @@ export const UtilsTab = () => {
           <Heading fontWeight={"400"} fontSize="xs">
             {t("store.preview-card.slot-title")}
           </Heading>
-          <Flex
-            flexDirection={"column"}
-            justifyContent={"space-between"}
-            bg="rgba(0, 0, 0, 0.6)"
-            borderRadius="10px"
-            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-            p={3}
-          >
-            <Flex gap={4}>
-              <SpecialSlotItem />
+          {visible && (
+            <Flex
+              flexDirection={"column"}
+              justifyContent={"space-between"}
+              bg="rgba(0, 0, 0, 0.6)"
+              borderRadius="10px"
+              boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+              p={3}
+            >
+              <Flex gap={4}>
+                <SpecialSlotItem />
 
-              <Flex
-                flexDirection={"column"}
-                flex="1"
-                justifyContent={"space-between"}
-              >
-                <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
-                  <Text color={neonGreen} fontSize={"xs"} lineHeight={1.3}>
-                    {t("store.preview-card.slot-description")}
-                  </Text>
+                <Flex
+                  flexDirection={"column"}
+                  flex="1"
+                  justifyContent={"space-between"}
+                >
+                  <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
+                    <Text color={neonGreen} fontSize={"xs"} lineHeight={1.3}>
+                      {t("store.preview-card.slot-description")}
+                    </Text>
+                  </Flex>
                 </Flex>
               </Flex>
+              <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
             </Flex>
-            <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
-          </Flex>
+          )}
         </Flex>
 
         <Flex flexDir="column" w="50%" gap={2}>

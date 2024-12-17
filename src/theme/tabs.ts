@@ -1,12 +1,11 @@
 import { tabsAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
-import { BLUE } from "./colors";
+import { BLUE, VIOLET } from "./colors";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tabsAnatomy.keys);
 
 const baseStyle = definePartsStyle({
-  // define the part you're going to style
   tab: {
     _selected: {
       bg: "blue",
@@ -15,7 +14,7 @@ const baseStyle = definePartsStyle({
     },
     borderRadius: "7px",
     mx: 2,
-    height: "25px",
+    height: ["25px", "40px"],
     textTransform: "uppercase",
   },
   tablist: {
@@ -27,5 +26,18 @@ const baseStyle = definePartsStyle({
   },
 });
 
-// export the component theme
-export const tabsTheme = defineMultiStyleConfig({ baseStyle });
+const secondaryStyle = definePartsStyle({
+  tab: {
+    _selected: {
+      bg: "violet",
+      border: "none",
+      boxShadow: `0px 0px 12px 4px ${VIOLET}`,
+    },
+  },
+});
+
+const variants = {
+  secondary: secondaryStyle,
+};
+
+export const tabsTheme = defineMultiStyleConfig({ baseStyle, variants });
