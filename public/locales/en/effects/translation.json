@@ -20,6 +20,10 @@
     "612": {
       "name": "Change to Neon",
       "description": "The modified card will be considered  as a Neon card"
+    },
+    "613": {
+      "name": "Wildcard",
+      "description": "The modified card will be considered  as a Wildcard"
     }
   },
   "specialCardsData": {
@@ -68,8 +72,8 @@
       "description": "All played Jokers scores double points and double multi"
     },
     "311": {
-      "name": "Modifier Booster",
-      "description": "All played MODIFIER cards scores double points and double multi"
+      "name": "Power-up Booster",
+      "description": "All played power ups scores double points and double multi"
     },
     "312": {
       "name": "Figures Booster",

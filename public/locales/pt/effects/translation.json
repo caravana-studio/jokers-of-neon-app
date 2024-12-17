@@ -20,7 +20,12 @@
     "612": {
       "name": "Mudar para Neon",
       "description": "A carta modificada será considerada como uma carta de Neon"
+    },
+    "613": {
+      "name": "Mudar para Coringa",
+      "description": "A carta modificada será considerada como uma carta de Coringa"
     }
+    
   },
   "specialCardsData": {
     "300": {
@@ -64,12 +69,12 @@
       "description": "A mão de Flush pode ser feita com 4 cartas"
     },
     "310": {
-      "name": "Impulsionador de Coringa",
-      "description": "Todos os Coringas jogados marcam pontos e multiplicador em dobro"
+      "name": "Impulsionador de Joker",
+      "description": "Todos os Jokers jogados marcam pontos e multiplicador em dobro"
     },
     "311": {
-      "name": "Impulsionador de Modificadores",
-      "description": "Todas as cartas de MODIFICADOR jogadas marcam pontos e multiplicador em dobro"
+      "name": "Impulsionador de Poderes",
+      "description": "Todos os Poderes jogados marcam pontos e multiplicador em dobro"
     },
     "312": {
       "name": "Impulsionador de Figuras",
@@ -165,7 +170,7 @@
     },
     "340": {
       "name": "Duques Selvagens",
-      "description": "Todos os 2s são considerados coringas"
+      "description": "Todos os 2s são considerados jokers"
     },
     "341": {
       "name": "Compra Imortal",

@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x33850d3331807c4446a0ba79e8a29ec9d66102333e8edf0b4c399f2028f158b",
-      "class_hash": "0x41a2cef6e9712c4191b067d3e958b8f1f447c0094edd06d7222ab0743155d2",
+      "address": "0x5efc376d361a8b3d637781e25307ec49f5786becb070aa1ac194710e0a08d66",
+      "class_hash": "0x739ace9cd2f3ee72f2439d70c3c3afaeb115a6a7b0f36c19a0875285d467a5e",
       "abi": [
         {
           "type": "impl",
@@ -2080,8 +2080,8 @@
       "systems": ["calculate", "upgrade"]
     },
     {
-      "address": "0x30f883fbcfaf6840d4cdebe75189c03b8586353cdb57fa6c98560bf61d6725d",
-      "class_hash": "0x31c53e89328eda10d18c1324e7829bad084245a1b00af9ef54afe8a04535b2e",
+      "address": "0x1c9d093bfb04f25b47558f1d6cbc5ac1c2c1d1aff0d856b21fe4dca31936db",
+      "class_hash": "0x5f212fe7c89a5f8fe74730d0e1856188209a7998734fc5be04352983dddd4cf",
       "abi": [
         {
           "type": "impl",
@@ -3078,7 +3078,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x57d2c30b2eb85fb02527974299e372d8768822dd36bbea0f4a34ec8a37d9d35",
+      "class_hash": "0x1a868d06c08821dabad260f4f200c2dd029a3cfa018a20ec7bc11a14be18e13",
       "tag": "jokers_of_neon-PowerUpEvent",
       "selector": "0x6d160681f8ea9068982978e94823ae0ca66c5428330bfb8e023d52464fdca58"
     },

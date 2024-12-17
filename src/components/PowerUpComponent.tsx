@@ -93,6 +93,8 @@ export const PowerUpComponent = ({
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
   const { isSmallScreen } = useResponsiveValues();
+  const { isRageRound } = useGameContext();
+
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
@@ -102,7 +104,7 @@ const EmptyPowerUp = ({ width }: { width: number }) => {
       width={`${componentWidth}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
-      backgroundColor={BACKGROUND_BLUE}
+      backgroundColor={isRageRound ? "black" : BACKGROUND_BLUE}
     />
   );
 };

@@ -20,6 +20,10 @@
     "612": {
       "name": "Cambiar a Neón",
       "description": "La carta modificada será considerada como una carta de Neón"
+    },
+    "613": {
+      "name": "Modificador de Comodín",
+      "description": "La carta modificada será considerada como Comodín"
     }
   },
   "specialCardsData": {
@@ -68,8 +72,8 @@
       "description": "Todos los Jokers jugados puntúan el doble y tienen doble multi"
     },
     "311": {
-      "name": "Potenciador de Modificadores",
-      "description": "Todas las cartas de MODIFICADOR jugadas puntúan el doble y tienen doble multi"
+      "name": "Potenciador de Poderes",
+      "description": "Todas los PODERES jugados puntúan el doble y tienen doble multi"
     },
     "312": {
       "name": "Potenciador de Figuras",
@@ -165,7 +169,7 @@
     },
     "340": {
       "name": "Doses salvajes",
-      "description": "Todos los 2s se consideran comodines"
+      "description": "Todos los 2s se consideran jokers"
     },
     "341": {
       "name": "Robo inmortal",
