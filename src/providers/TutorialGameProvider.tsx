@@ -51,7 +51,7 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   powerUps: [m5, p25],
 });
 
-export let handsLeftTutorial = 1;
+export let handsLeftTutorial = 3;
 let context: IGameContext;
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -115,12 +115,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
-  handsLeftTutorial = 1;
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
+  const [discards, setDiscards] = useState(1);
 
   context = useGameContext();
 
@@ -534,6 +534,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     discardSound();
     replaceCards(cards);
     clearPreSelection();
+    setDiscards(discards - 1);
   };
 
   const eventFlush = {
@@ -672,6 +673,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const play = () => {
     animatePlay(events[indexEvent]);
     setIndexEvent(indexEvent + 1);
+    handsLeftTutorial -= 1;
   };
 
   const clearPreSelection = () => {
@@ -701,6 +703,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.score = score;
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
+  context.discards = discards;
 
   if (hand.length > 0) context.hand = hand;
 
