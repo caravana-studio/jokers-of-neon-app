@@ -59,7 +59,7 @@ const PreviewCard = () => {
     } else {
       buyCard(card);
     }
-    navigate(-1);
+    navigate("/redirect/store", { state: { lastTabIndex: 0 } });
   };
 
   const buyButton = isSmallScreen ? (
@@ -151,6 +151,7 @@ const PreviewCard = () => {
       buyButton={tooltipButton}
       duration={duration}
       onDurationChange={onDurationChange}
+      tab={0}
     />
   ) : (
     <StorePreviewComponent {...props} />

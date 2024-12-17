@@ -31,6 +31,7 @@ interface StorePreviewCardComponentMobileProps {
   buyButton: ReactNode;
   duration?: Duration;
   onDurationChange?: (duration: Duration) => void;
+  tab?: number;
 }
 
 export const StorePreviewCardComponentMobile = ({
@@ -40,7 +41,8 @@ export const StorePreviewCardComponentMobile = ({
   card,
   buyButton,
   duration,
-  onDurationChange
+  onDurationChange,
+  tab,
 }: StorePreviewCardComponentMobileProps) => {
   const navigate = useNavigate();
 
@@ -120,7 +122,7 @@ export const StorePreviewCardComponentMobile = ({
             <Button
               size={"xs"}
               onClick={() => {
-                navigate(-1);
+                navigate("/redirect/store", { state: { lastTabIndex: tab } });
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"
@@ -131,9 +133,7 @@ export const StorePreviewCardComponentMobile = ({
               {t("store.preview-card.labels.close").toUpperCase()}
             </Button>
           }
-          secondButton={
-            buyButton
-          }
+          secondButton={buyButton}
         />
       </Flex>
     </Background>

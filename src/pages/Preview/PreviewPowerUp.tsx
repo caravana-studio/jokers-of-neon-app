@@ -38,7 +38,7 @@ export const PreviewPowerUp = () => {
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
     buyPowerUp(powerUp);
-    navigate(-1);
+    navigate("/redirect/store", { state: { lastTabIndex: 2 } });
   };
   const buyButton = isSmallScreen ? (
     <Button
@@ -89,6 +89,7 @@ export const PreviewPowerUp = () => {
     title: name,
     description: description,
     price: powerUp.cost,
+    tab: 2,
   };
 
   return isSmallScreen ? (

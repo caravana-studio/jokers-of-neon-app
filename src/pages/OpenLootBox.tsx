@@ -62,7 +62,7 @@ export const OpenLootBox = () => {
 
   useEffect(() => {
     if (game?.state === "IN_STORE") {
-      navigate("/redirect/store");
+      navigate("/redirect/store", { state: { lastTabIndex: 1 } });
     }
   }, [game?.state]);
 
@@ -82,7 +82,7 @@ export const OpenLootBox = () => {
   const confirmSelectCards = () => {
     selectCardsFromPack(cardsToKeep.map((c) => c.idx));
     setCards([]);
-    navigate("/redirect/store");
+    navigate("/redirect/store", { state: { lastTabIndex: 1 } });
   };
 
   const continueButton = (
