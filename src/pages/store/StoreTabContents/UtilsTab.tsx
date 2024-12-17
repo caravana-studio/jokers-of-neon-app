@@ -53,7 +53,7 @@ export const UtilsTab = () => {
       <Button
         onClick={onClick}
         isDisabled={isDisable}
-        width={{ base: "35%", sm: "unset" }}
+        width={{ base: "50px", sm: "unset" }}
         size={"xs"}
         fontSize={10}
         borderRadius={6}
@@ -112,7 +112,7 @@ export const UtilsTab = () => {
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.titles.powerups").toUpperCase()}
           </Heading>
-            <InformationIcon title={"power-ups"} />
+          <InformationIcon title={"power-ups"} />
         </Flex>
         <Flex
           flexDirection={"column"}
@@ -160,6 +160,7 @@ export const UtilsTab = () => {
               borderRadius="10px"
               boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
               p={3}
+              flexGrow={1}
             >
               <Flex gap={4}>
                 <SpecialSlotItem />
@@ -167,6 +168,7 @@ export const UtilsTab = () => {
                 <Flex
                   flexDirection={"column"}
                   flex="1"
+                  flexGrow={1}
                   justifyContent={"space-between"}
                 >
                   <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
@@ -174,9 +176,9 @@ export const UtilsTab = () => {
                       {t("store.preview-card.slot-description")}
                     </Text>
                   </Flex>
+                  <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
                 </Flex>
               </Flex>
-              <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
             </Flex>
           )}
         </Flex>
@@ -192,13 +194,15 @@ export const UtilsTab = () => {
             borderRadius="10px"
             boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
             p={3}
+            flexGrow={1}
           >
-            <Flex gap={4}>
+            <Flex gap={4} h="100%">
               <BurnItem />
 
               <Flex
                 flexDirection={"column"}
                 flex="1"
+                flexGrow={1}
                 justifyContent={"space-between"}
               >
                 <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
@@ -206,9 +210,9 @@ export const UtilsTab = () => {
                     {t("store.burn-item.tooltip")}
                   </Text>
                 </Flex>
+                <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
               </Flex>
             </Flex>
-            <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
           </Flex>
         </Flex>
       </Flex>

@@ -16,8 +16,6 @@ import theme from "../../../theme/theme";
 import { getCardData } from "../../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
-  const navigate = useNavigate();
-
   const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const game = useGame();
@@ -46,8 +44,8 @@ export const LootBoxesMobile = () => {
       gap={2}
       flexDirection={"column"}
       grow={1}
-      pt={5}
-      pb={4}
+      pt={1}
+      pb={1}
       overflow="scroll"
     >
       {packs.map((pack) => {

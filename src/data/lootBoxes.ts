@@ -53,6 +53,7 @@ const loadTranslations = async () => {
       name: i18n.t("lootBoxData.8.name", { ns: "loot-boxes" }),
       description: i18n.t("lootBoxData.8.description", { ns: "loot-boxes" }),
       details: i18n.t("lootBoxData.8.details", { ns: "loot-boxes" }),
+      size: 5
     },
     9: {
       name: i18n.t("lootBoxData.9.name", { ns: "loot-boxes" }),
