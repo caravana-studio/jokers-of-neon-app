@@ -70,6 +70,7 @@ export const CardImage3D = ({
           transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
       )}
+
       <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
         <CachedImage
           src={`/Cards/big/empty.png`}
@@ -77,6 +78,7 @@ export const CardImage3D = ({
           width={"100%"}
         />
       </Tooltip>
+
       {card.temporary && card.remaining && (
         <TemporalBadge
           remaining={card.remaining}

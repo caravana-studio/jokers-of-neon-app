@@ -29,6 +29,7 @@ export const RageCards = () => {
             {rageCards.map((card, index) => {
               return (
                 <Box
+                  position="relative"
                   height={
                     CARD_HEIGHT * (specialCardScale - specialCardScale * 0.1)
                   }
