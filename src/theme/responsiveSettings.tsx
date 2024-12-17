@@ -29,6 +29,7 @@ export const useResponsiveValues = () => {
     "720:703": 1.5, //laptop L
     "256:289": 2.3, //laptop
     "16:9": 1.5, //laptop dami
+    "16:10": 1.4, //steam deck
     "384:371": 1.4, //tablet
     "126:65": 1.4, //m3 pro chrome
     "756:407": 1.5, //m3 pro safari
@@ -56,6 +57,7 @@ export const useResponsiveValues = () => {
     "720:703": 1.6, //laptop L
     "256:289": 1.3, //laptop
     "16:9": 1.3, //laptop dami
+    "16:10": 1.2, //steam deck
     "384:371": 1.4, //tablet
     "126:65": 1.5, //m3 pro chrome
     "756:407": 1.5, //m3 pro safari

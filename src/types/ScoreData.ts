@@ -45,6 +45,7 @@ export interface CardScore extends MultiPoints {
 
 export interface PowerUpScore extends MultiPoints {
   idx: number;
+  special_idx?: number;
 }
 
 export interface NeonPlayEvent extends MultiPoints {

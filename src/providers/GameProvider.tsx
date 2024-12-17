@@ -42,9 +42,9 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 //import { getNeonCardId } from "../utils/changeCardNeon.ts";
 import { PowerUp } from "../types/PowerUp.ts";
+import { changeCardNeon } from "../utils/changeCardNeon.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { changeCardNeon } from "../utils/changeCardNeon.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -354,13 +354,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const handlePowerUps = () => {
       playEvents.powerUpEvents?.forEach((event, index) => {
         setTimeout(() => {
-          const { idx, points, multi } = event;
+          const { idx, points, multi, special_idx } = event;
 
           setAnimatedPowerUp({
             idx,
             points,
             multi,
             animationIndex: 250 + index,
+          });
+
+          setAnimatedCard({
+            special_idx,
+            points,
+            multi,
+            animationIndex: 275 + index,
           });
 
           if (points) {
