@@ -137,7 +137,7 @@
     },
     "332": {
       "name": "Lucky Payday",
-      "description": "Get extra 500 cash for every Joker in hand at the end of the round"
+      "description": "Get extra 300 cash for every Joker in hand at the end of the round"
     },
     "333": {
       "name": "Mirror effect",
@@ -153,7 +153,7 @@
     },
     "336": {
       "name": "Joker's drop",
-      "description": "Get 500 cash every time you discard a Joker"
+      "description": "Get 300 cash every time you discard a Joker"
     },
     "337": {
       "name": "Extra drops",

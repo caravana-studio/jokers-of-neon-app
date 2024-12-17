@@ -137,7 +137,7 @@
     },
     "332": {
       "name": "Día de suerte",
-      "description": "Obtén 500 monedas extra por cada Joker en la mano al final de la ronda"
+      "description": "Obtén 300 monedas extra por cada Joker en la mano al final de la ronda"
     },
     "333": {
       "name": "Efecto espejo",
@@ -153,7 +153,7 @@
     },
     "336": {
       "name": "Caída del Joker",
-      "description": "Obtén 500 monedas cada vez que descartes un Joker"
+      "description": "Obtén 300 monedas cada vez que descartes un Joker"
     },
     "337": {
       "name": "Descartes extra",
