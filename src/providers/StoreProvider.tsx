@@ -165,6 +165,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         if (!response) {
           stateRollbackBuyCard(card);
         }
+        fetchShopItems();
       })
       .catch(() => {
         stateRollbackBuyCard(card);
@@ -184,6 +185,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       .then((response) => {
         if (response) {
           addPowerUp(powerUp);
+          fetchShopItems();
         } else {
           rollbackBuyPowerUp(powerUp.idx);
         }
@@ -224,6 +226,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         if (!response) {
           stateRollbackBuyCard(card);
         }
+        fetchShopItems();
       })
       .catch(() => {
         stateRollbackBuyCard(card);

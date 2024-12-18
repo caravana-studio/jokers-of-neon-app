@@ -936,7 +936,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP") {
+      } else if (game?.state === "AT_SHOP" && location.pathname === "/demo") {
         console.log("redirecting to store");
         navigate("/store");
       }

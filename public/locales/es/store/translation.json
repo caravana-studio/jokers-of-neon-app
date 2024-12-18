@@ -1,4 +1,13 @@
 {
+  "information": {
+    "reroll": "Actualiza todos los objetos disponibles en la tienda actual. Solo se puede usar una vez por tienda.",
+    "special": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
+    "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
+    "traditional": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
+    "power-ups": "Los potenciadores son objetos consumibles que mejoran tus jugadas al aumentar puntos o multiplicadores.",
+    "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
+    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles."
+  },
   "store": {
     "labels": {
       "reroll": "Actualizar",

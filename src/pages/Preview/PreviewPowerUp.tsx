@@ -30,15 +30,21 @@ export const PreviewPowerUp = () => {
   const name = `${POWER_UPS_CARDS_DATA[powerUp.power_up_id].name}`;
   const description = POWER_UPS_CARDS_DATA[powerUp.power_up_id].description;
 
-  const notEnoughCash = !powerUp.cost || cash < powerUp.cost;
+  const notEnoughCash =
+    !powerUp.cost ||
+    (powerUp?.discount_cost
+      ? cash < Number(powerUp?.discount_cost ?? 0)
+      : cash < Number(powerUp.cost));
+
   const noSpace =
     powerUps.filter((p) => !!p).length >=
     (game?.len_max_current_power_ups ?? 4);
 
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
-    buyPowerUp(powerUp);
-    navigate(-1);
+    buyPowerUp(powerUp).then(() =>
+      navigate("/redirect/store", { state: { lastTabIndex: 2 } })
+    );
   };
   const buyButton = isSmallScreen ? (
     <Button
@@ -89,6 +95,8 @@ export const PreviewPowerUp = () => {
     title: name,
     description: description,
     price: powerUp.cost,
+    discountPrice: powerUp.discount_cost,
+    tab: 2,
   };
 
   return isSmallScreen ? (

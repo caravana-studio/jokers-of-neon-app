@@ -12,11 +12,15 @@ import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
 import { UtilsTab } from "./StoreTabContents/UtilsTab.tsx";
 
-export const StoreContentMobile = () => {
+export const StoreContentMobile = ({
+  lastIndexTab = 0,
+}: {
+  lastIndexTab: number;
+}) => {
   const { setRun } = useStore();
 
   const { t } = useTranslation(["store"]);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(lastIndexTab);
 
   const handleTabChange = (index: number) => {
     setTabIndex(index);

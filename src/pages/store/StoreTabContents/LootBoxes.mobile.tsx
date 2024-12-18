@@ -1,31 +1,21 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  keyframes,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
-import { ReactNode, useRef, useState } from "react";
+import { Box, Button, Flex, Heading, keyframes, Text } from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { MobileInformationModal } from "../../../components/MobileInformationModal";
 import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../../../components/SpineAnimation";
 import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
+import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 import { getCardData } from "../../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
-  const navigate = useNavigate();
-
   const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const game = useGame();
@@ -34,9 +24,7 @@ export const LootBoxesMobile = () => {
   const { t } = useTranslation(["store"]);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const [informationModalContent, setInformationModalContent] = useState<
-    ReactNode | undefined
-  >(undefined);
+  const { setInformation } = useInformationPopUp();
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
@@ -56,8 +44,8 @@ export const LootBoxesMobile = () => {
       gap={2}
       flexDirection={"column"}
       grow={1}
-      pt={5}
-      pb={4}
+      pt={1}
+      pb={1}
       overflow="scroll"
     >
       {packs.map((pack) => {
@@ -182,7 +170,7 @@ export const LootBoxesMobile = () => {
                   mb={4}
                   gap={2}
                   onClick={() => {
-                    setInformationModalContent(
+                    setInformation(
                       <Box>
                         <Heading mb={4} fontWeight={"400"} fontSize={"sm"}>
                           {name}
@@ -232,12 +220,6 @@ export const LootBoxesMobile = () => {
           </Flex>
         );
       })}
-      {informationModalContent && (
-        <MobileInformationModal
-          content={informationModalContent}
-          onClose={() => setInformationModalContent(undefined)}
-        />
-      )}
     </Flex>
   );
 };

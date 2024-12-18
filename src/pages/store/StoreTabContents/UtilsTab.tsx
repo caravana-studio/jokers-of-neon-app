@@ -1,17 +1,16 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { InformationIcon } from "../../../components/InformationIcon";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
-import { CARD_WIDTH } from "../../../constants/visualProps";
+import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import theme from "../../../theme/theme";
 import { BurnItem } from "../BurnItem";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
-import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -39,20 +38,12 @@ export const UtilsTab = () => {
 
   const notEnoughCashBurn = cash < effectiveCost;
 
-  const { cardScale, isSmallScreen } = useResponsiveValues();
-
-  const adjustedScale = isSmallScreen
-    ? cardScale
-    : cardScale - (cardScale * 25) / 100;
-
-  const width = CARD_WIDTH * adjustedScale;
-
   const createBuyButton = (onClick: () => void, isDisable: boolean) => {
     return (
       <Button
         onClick={onClick}
         isDisabled={isDisable}
-        width={{ base: "35%", sm: "unset" }}
+        width={{ base: "50px", sm: "unset" }}
         size={"xs"}
         fontSize={10}
         borderRadius={6}
@@ -101,16 +92,18 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
+          h="140px"
         >
           <LevelUpTable />
         </Flex>
       </Flex>
 
       <Flex className="PowerUps" mx={4} flexDir={"column"}>
-        <Flex justifyContent="space-between" mb={2} alignItems="center">
+        <Flex gap={2} mb={2} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.titles.powerups").toUpperCase()}
           </Heading>
+          <InformationIcon title={"power-ups"} />
         </Flex>
         <Flex
           flexDirection={"column"}
@@ -122,13 +115,14 @@ export const UtilsTab = () => {
           width={"100%"}
           pb={5}
           pt={2}
+          h="75px"
         >
           <Flex flexDirection="row" justifyContent={"space-around"}>
             {powerUps.map((powerUp, index) => {
               return (
                 <PowerUpComponent
                   powerUp={powerUp}
-                  width={width}
+                  width={60}
                   key={index}
                   inStore
                   onClick={() => {
@@ -158,6 +152,7 @@ export const UtilsTab = () => {
               borderRadius="10px"
               boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
               p={3}
+              flexGrow={1}
             >
               <Flex gap={4}>
                 <SpecialSlotItem />
@@ -165,6 +160,7 @@ export const UtilsTab = () => {
                 <Flex
                   flexDirection={"column"}
                   flex="1"
+                  flexGrow={1}
                   justifyContent={"space-between"}
                 >
                   <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
@@ -172,9 +168,9 @@ export const UtilsTab = () => {
                       {t("store.preview-card.slot-description")}
                     </Text>
                   </Flex>
+                  <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
                 </Flex>
               </Flex>
-              <Flex justifyContent={"flex-end"}>{tooltipSlotButton}</Flex>
             </Flex>
           )}
         </Flex>
@@ -190,13 +186,15 @@ export const UtilsTab = () => {
             borderRadius="10px"
             boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
             p={3}
+            flexGrow={1}
           >
-            <Flex gap={4}>
+            <Flex gap={4} h="100%">
               <BurnItem />
 
               <Flex
                 flexDirection={"column"}
                 flex="1"
+                flexGrow={1}
                 justifyContent={"space-between"}
               >
                 <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
@@ -204,9 +202,9 @@ export const UtilsTab = () => {
                     {t("store.burn-item.tooltip")}
                   </Text>
                 </Flex>
+                <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
               </Flex>
             </Flex>
-            <Flex justifyContent={"flex-end"}>{tooltipBurnButton}</Flex>
           </Flex>
         </Flex>
       </Flex>
