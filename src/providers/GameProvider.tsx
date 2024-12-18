@@ -18,6 +18,7 @@ import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
   discardSfx,
   multiSfx,
+  negativeMultiSfx,
   pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx.ts";
@@ -157,6 +158,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
@@ -487,13 +489,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const handleSpecialCards = () => {
       playEvents.specialCards?.forEach((event, index) => {
         setTimeout(() => {
-          const { idx, points, multi, special_idx } = event;
+          const { idx, points, multi, special_idx, negative } = event;
 
           setAnimatedCard({
             idx: [idx],
             points,
             multi,
             special_idx,
+            negative,
             animationIndex: 800 + index,
           });
 
@@ -503,8 +506,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           }
 
           if (multi) {
-            multiSound();
-            setMulti((prev) => prev + multi);
+            if (negative) {
+              setMulti((prev) => prev - multi);
+              negativeMultiSound();
+            } else {
+              setMulti((prev) => prev + multi);
+              multiSound();
+            }
           }
         }, playAnimationDuration * index);
       });

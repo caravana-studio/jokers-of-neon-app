@@ -33,6 +33,7 @@ export const AnimatedCard = ({
   const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
   const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
   const cash = useMemo(() => animatedCard?.cash, [animatedCard?.cash]);
+  const negative = useMemo(() => animatedCard?.negative ?? false, [animatedCard?.negative]);
   const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
@@ -192,7 +193,7 @@ export const AnimatedCard = ({
               }}
               zIndex={99}
             >
-              +{points || multi || (isSpecial && cash)}
+              {negative ? '-' : '+'}{points || multi || (isSpecial && cash)}
               {isSpecial && cash && <CashSymbol />}
             </Heading>
           </animated.div>
