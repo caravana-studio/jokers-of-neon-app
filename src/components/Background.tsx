@@ -1,7 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
+import SpineAnimation from "./SpineAnimation";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -55,6 +56,19 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
+      {type === "home" && (
+        <Flex width={"100%"} height={"100%"} position={"absolute"}>
+          <SpineAnimation
+            jsonUrl={`/spine-animations/bg/HomeBg.json`}
+            atlasUrl={`/spine-animations/bg/HomeBg.atlas`}
+            initialAnimation={"animation"}
+            loopAnimation={"animation"}
+            scale={2}
+            yOffset={-800}
+          />
+        </Flex>
+      )}
+
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
       ) : (

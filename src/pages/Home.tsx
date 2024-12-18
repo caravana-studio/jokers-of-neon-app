@@ -28,7 +28,7 @@ export const Home = () => {
         gap={4}
       >
         {leaderboardOpen ? (
-          <Box>
+          <Box zIndex={1}>
             <Heading mb={"40px"} size="l" variant="italic" textAlign={"center"}>
               LEADERBOARD
             </Heading>
@@ -58,6 +58,7 @@ export const Home = () => {
             alignItems="center"
             gap={{ base: 6, sm: 8, md: 6 }}
             w={"100%"}
+            zIndex={1}
           >
             <Heading
               size="xl"
