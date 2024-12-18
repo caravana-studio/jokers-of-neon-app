@@ -9,6 +9,7 @@ export const p25: PowerUp = {
   power_up_id: 800,
   cost: 100,
   purchased: false,
+  discount_cost: 0,
 };
 
 export const m5: PowerUp = {
@@ -20,4 +21,5 @@ export const m5: PowerUp = {
   power_up_id: 805,
   cost: 200,
   purchased: false,
+  discount_cost: 0,
 };
