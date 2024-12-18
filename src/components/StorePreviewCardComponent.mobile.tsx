@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +38,7 @@ export const StorePreviewCardComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <MobileDecoration />
       <Flex
         flexDirection="column"

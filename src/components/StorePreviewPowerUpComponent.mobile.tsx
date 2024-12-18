@@ -23,7 +23,7 @@ export const StorePreviewPowerUpComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <MobileDecoration />
       <Flex
         flexDirection="column"

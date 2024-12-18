@@ -29,6 +29,7 @@ interface SpineAnimationProps {
   isPurchased?: boolean;
   price?: number;
   discountPrice?: number;
+  home?: boolean;
 }
 
 export interface SpineAnimationRef {
@@ -55,6 +56,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       isPurchased,
       price,
       discountPrice,
+      home = false,
     },
     ref
   ) => {
@@ -221,8 +223,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           style={{
-            width: "100%",
-            height: "100%",
+            width: !home ? "100%" : "auto",
+            height: !home ? "100%" : "auto",
             cursor: isPurchased ? "default" : "pointer",
             opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
           }}

@@ -65,6 +65,7 @@ export const Background = ({
             loopAnimation={"animation"}
             scale={2}
             yOffset={-800}
+            home
           />
         </Flex>
       )}
