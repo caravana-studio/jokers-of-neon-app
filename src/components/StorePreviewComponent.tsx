@@ -41,6 +41,7 @@ export interface IStorePreviewComponent {
   temporalDiscountPrice?: number;
   duration?: Duration;
   onDurationChange?: (duration: Duration) => void;
+  tab?: number;
 }
 
 export const StorePreviewComponent = ({

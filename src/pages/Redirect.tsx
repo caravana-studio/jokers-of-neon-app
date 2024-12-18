@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Background } from "../components/Background";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -12,6 +12,8 @@ export const Redirect = () => {
   const state = game?.state;
   const navigate = useNavigate();
   const { page } = useParams();
+  const location = useLocation();
+  const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
   useEffect(() => {
     if (state === "FINISHED") {
@@ -19,7 +21,7 @@ export const Redirect = () => {
     } else if (state === "IN_GAME" && page === "demo") {
       navigate("/demo");
     } else if (state === "AT_SHOP" && page === "store") {
-      navigate("/store");
+      navigate("/store", { state: { lastTabIndex: lastTabIndex } });
     } else if (state === "OPEN_BLISTER_PACK" && page === "open-loot-box") {
       navigate("/open-loot-box");
     }

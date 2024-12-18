@@ -1,12 +1,12 @@
+import { Tooltip } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
+import { getTooltip } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
 import { TemporalBadge } from "./TemporalBadge";
-import { Tooltip } from "@chakra-ui/react";
-import { getTooltip } from "../utils/getTooltip";
 
 const checkImageExists = (src: string): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -44,13 +44,15 @@ export const CardImage3D = ({
 
   return (
     <ConditionalTilt cardId={cid} small={small}>
-      <CachedImage
-        position={"absolute"}
-        borderRadius={borderRadius}
-        src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
-        width={"100%"}
-        zIndex={-1}
-      />
+      <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
+        <CachedImage
+          position={"absolute"}
+          borderRadius={borderRadius}
+          src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
+          width={"100%"}
+          zIndex={-1}
+        />
+      </Tooltip>
 
       {!showPlain && image1Available && (
         <CachedImage
@@ -58,6 +60,7 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l1.png`}
           width={"100%"}
+          pointerEvents="none"
           transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
       )}
@@ -67,16 +70,18 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l2.png`}
           width={"100%"}
+          pointerEvents="none"
           transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
       )}
-      <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
-        <CachedImage
-          src={`/Cards/big/empty.png`}
-          alt={`empty`}
-          width={"100%"}
-        />
-      </Tooltip>
+
+      <CachedImage
+        src={`/Cards/big/empty.png`}
+        pointerEvents="none"
+        alt={`empty`}
+        width={"100%"}
+      />
+
       {card.temporary && card.remaining && (
         <TemporalBadge
           remaining={card.remaining}

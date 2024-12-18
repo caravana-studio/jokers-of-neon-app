@@ -27,6 +27,7 @@ export const PowerUpComponent = ({
   const { powerUpIsPreselected } = useGameContext();
   const isActive = powerUp && powerUpIsPreselected(powerUp.idx);
   const price = inStore && powerUp?.cost;
+  const discount_cost = inStore && powerUp?.discount_cost;
   const purchased = inStore && powerUp?.purchased;
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
@@ -55,6 +56,7 @@ export const PowerUpComponent = ({
               isPowerUp
               fontSize={isSmallScreen ? 12 : 16}
               discountFontSize={isSmallScreen ? 10 : 12}
+              discountPrice={Number(discount_cost)}
             />
           )}
           {purchased && (

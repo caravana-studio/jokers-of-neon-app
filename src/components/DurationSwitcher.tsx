@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Duration } from "../enums/duration";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
+import { InformationIcon } from "./InformationIcon";
 
 interface DurationSwitcherProps {
   price?: number;
@@ -37,9 +38,14 @@ export const DurationSwitcher = ({
       mt={3}
       flexDir={isSmallScreen ? "column" : "row-reverse"}
     >
+      <Flex justifyContent="center" alignItems="center" gap={2}>
       <Text size="md">
         {duration === Duration.TEMPORAL ? t("temporal") : t("permanent")}
       </Text>
+        <InformationIcon
+          title={duration === Duration.TEMPORAL ? "temporal" : "permanent"}
+        />
+      </Flex>
       <Tabs
         index={duration}
         onChange={onDurationChange}
@@ -50,13 +56,17 @@ export const DurationSwitcher = ({
         variant="secondary"
       >
         <TabList>
-          <Tab >
+          <Tab>
             <Flex flexDir="column">
               <Text
                 sx={{
                   textDecoration: discountPrice ? "line-through" : "none",
-                  fontSize: discountPrice ? discountPriceFontSize : priceFontSize,
-                  lineHeight: discountPrice ? discountPriceLineHeight :priceLineHeight,
+                  fontSize: discountPrice
+                    ? discountPriceFontSize
+                    : priceFontSize,
+                  lineHeight: discountPrice
+                    ? discountPriceLineHeight
+                    : priceLineHeight,
                 }}
               >
                 {price}
@@ -72,15 +82,19 @@ export const DurationSwitcher = ({
               )}
             </Flex>
           </Tab>
-          <Tab >
+          <Tab>
             <Flex flexDir="column">
               <Text
                 sx={{
                   textDecoration: temporalDiscountPrice
                     ? "line-through"
                     : "none",
-                  fontSize: temporalDiscountPrice ? discountPriceFontSize : priceFontSize,
-                  lineHeight: temporalDiscountPrice ? discountPriceLineHeight :priceLineHeight,
+                  fontSize: temporalDiscountPrice
+                    ? discountPriceFontSize
+                    : priceFontSize,
+                  lineHeight: temporalDiscountPrice
+                    ? discountPriceLineHeight
+                    : priceLineHeight,
                 }}
               >
                 {temporalPrice}
