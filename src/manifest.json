@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x70b0cb32eeb21f00f34e5c0b1b92529a6e1dcb93b55b6c326e14339bcc35e18",
-      "class_hash": "0x1d5bfa2833efe104310c61eeba404924b049800a9b846855e32f057afbe7be1",
+      "address": "0x7925e589e2866f66142de564800feabd15bdf63f275bb171031c92574e9e003",
+      "class_hash": "0x2503d153db82989de465154e6daa4475ce2cf58ea32678b3259b0e8d1dd11d4",
       "abi": [
         {
           "type": "impl",
@@ -2085,8 +2085,8 @@
       ]
     },
     {
-      "address": "0x725a15db16c9165297cef71f1513e7cf1bfb023c54c922e8f463ef3e00a4407",
-      "class_hash": "0x79b152de8bc4006bbd55702cc88344b4f26662ef53a6563784d65604748f4b1",
+      "address": "0x26da465d80a683b59d64db549b5fbbc296c45fdea98b5b01a5106bc414df26f",
+      "class_hash": "0x10e3f717c78f285e1f5c4368b6e1ce705936201aaab64f835f985d29ad6c91",
       "abi": [
         {
           "type": "impl",
@@ -2431,6 +2431,10 @@
             },
             {
               "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discount_cost",
               "type": "core::integer::u32"
             },
             {
@@ -2921,7 +2925,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x3ac4a1fb2a30a8cd8868f3c98597ad2d64ae0bbfb229e9c7d36fa7e6266be7a",
+      "class_hash": "0x4f8238ea29951ce4d387771a8db08f8890a3b5d31a48af7f86832c323e1d36f",
       "tag": "jokers_of_neon-PowerUpItem",
       "selector": "0x2b4fc887298c7047a5ae0e9e17e7bd4b0d59ce78bccedaf0d1f6f4ad3cfcd1b"
     },
