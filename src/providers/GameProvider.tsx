@@ -17,6 +17,7 @@ import {
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
   discardSfx,
+  cashSfx,
   multiSfx,
   negativeMultiSfx,
   pointsSfx,
@@ -156,6 +157,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const game = useGame();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
+  const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
@@ -483,6 +485,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             animationIndex: 700 + index,
           });
         }, playAnimationDuration * index);
+        cashSound();
       });
     };
 
