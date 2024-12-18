@@ -1,10 +1,10 @@
 import {
-    SPECIAL_MODIFIER_MULTI_EVENT,
-    SPECIAL_MODIFIER_POINTS_EVENT,
+  SPECIAL_MODIFIER_MULTI_EVENT,
+  SPECIAL_MODIFIER_POINTS_EVENT,
 } from "../../constants/dojoEventKeys";
 import { DojoEvent } from "../../types/DojoEvent";
+import { getBooleanValueFromEvent } from "../getBooleanValueFromEvent";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
-
 
 export const getMultiPointEvents = (events: DojoEvent[]) => {
   return events
@@ -18,17 +18,25 @@ export const getMultiPointEvents = (events: DojoEvent[]) => {
       const idx = getNumberValueFromEvent(event, 5) ?? 0;
       let points;
       let multi;
+      let negative = false;
       if (event.keys[1] === SPECIAL_MODIFIER_POINTS_EVENT) {
         points = getNumberValueFromEvent(event, 6) ?? 0;
       }
       if (event.keys[1] === SPECIAL_MODIFIER_MULTI_EVENT) {
         multi = getNumberValueFromEvent(event, 6) ?? 0;
+        negative = getBooleanValueFromEvent(event, 7) ?? false;
       }
       return {
         special_idx,
         idx,
         points,
         multi,
+        negative,
       };
-    });
+    })
+    .filter(
+      (event) =>
+        (event.multi !== 0 && event.multi !== undefined) ||
+        (event.points !== 0 && event.points !== undefined)
+    );
 };

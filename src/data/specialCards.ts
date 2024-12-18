@@ -289,6 +289,30 @@ const loadTranslations = async () => {
         ns: "effects",
       }),
     },
+    347: {
+      name: i18n.t("specialCardsData.347.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.347.description", {
+        ns: "effects",
+      }),
+    },
+    348: {
+      name: i18n.t("specialCardsData.348.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.348.description", {
+        ns: "effects",
+      }),
+    },
+    349: {
+      name: i18n.t("specialCardsData.349.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.349.description", {
+        ns: "effects",
+      }),
+    },
+    350: {
+      name: i18n.t("specialCardsData.350.name", { ns: "effects" }),
+      description: i18n.t("specialCardsData.350.description", {
+        ns: "effects",
+      }),
+    },
   });
 };
 

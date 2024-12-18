@@ -1,9 +1,11 @@
+import { rageCardIds } from "../constants/rageCardIds";
+import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 
-const getSilentSuit = (cardId: number) => {
+const getSilentTarget = (cardId: number) => {
   switch (cardId) {
     case 401:
       return Suits.HEARTS;
@@ -20,12 +22,20 @@ const getSilentSuit = (cardId: number) => {
   }
 };
 
+const isFigure = (card: Card) => {
+  const { card: rank } = getCardData(card, false);
+  return rank === Cards.JACK || rank === Cards.QUEEN || rank === Cards.KING;
+};
+
 export const useIsSilent = (card: Card) => {
   const { isRageRound, rageCards } = useGameContext();
   const { suit: idSuit } = getCardData(card, false);
   const suit = card.suit ?? idSuit;
   const isSilent = rageCards.some((rageCard) => {
-    return getSilentSuit(rageCard.card_id!) === suit;
+    return (
+      getSilentTarget(rageCard.card_id!) === suit ||
+      (rageCard.card_id === rageCardIds.BROKEN_FIGURES && isFigure(card))
+    );
   });
   return isRageRound && isSilent;
 };
