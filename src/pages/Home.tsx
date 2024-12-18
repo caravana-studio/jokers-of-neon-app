@@ -8,6 +8,7 @@ import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import SpineAnimation from "../components/SpineAnimation";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -55,7 +56,8 @@ export const Home = () => {
           <Flex
             flexDirection="column"
             alignItems="center"
-            gap={{ base: 6, sm: 8, md: 12 }}
+            gap={{ base: 6, sm: 8, md: 6 }}
+            w={"100%"}
           >
             <Heading
               size="xl"
@@ -64,16 +66,23 @@ export const Home = () => {
             >
               {t("home.slogan")}
             </Heading>
-            <Img
-              width={{ base: "95%", sm: "85%", md: "80%" }}
-              src="/logos/logo.png"
-              alt="logo"
-            />
+
+            <Flex w={"70%"} justifyContent="center">
+              <Flex h={"100%"} justifyContent={"center"} pl={2}>
+                <SpineAnimation
+                  jsonUrl={`/spine-animations/logo/JokerLogo.json`}
+                  atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
+                  initialAnimation={"animation"}
+                  loopAnimation={"animation"}
+                  scale={3}
+                  yOffset={-800}
+                />
+              </Flex>
+            </Flex>
 
             <Flex
               gap={{ base: 4, sm: 6 }}
               flexWrap={{ base: "wrap", sm: "nowrap" }}
-              justifyContent="center"
             >
               <Button
                 onClick={() => {
