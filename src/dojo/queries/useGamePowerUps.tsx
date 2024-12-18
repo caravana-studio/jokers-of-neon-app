@@ -12,6 +12,7 @@ export const getPowerUp = (power_up_id: number, idx: number, game_id: number = 0
     img_big: `/powerups/big/${power_up_id}.png`,
     idx,
     cost: 0,
+    discount_cost: 0,
     purchased: false,
     fieldOrder: [],
     game_id,
