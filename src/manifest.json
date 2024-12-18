@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0xc8a5e895f9b0c37af652dba42fd1ba493d19e4ff1d84da7fe1d061049d5f2d",
-      "class_hash": "0x3c1c2f43ea5204abccb312df07db9b5521e53792539eda835222a0e929a356b",
+      "address": "0x77394d15fa832e79edeaeb55e372527ea7e6903f5f81a8e949a8074c059ae8c",
+      "class_hash": "0x19d199edae1f419102f5c53d6a288bbddf1957d8637b377ea8c7fdd2d488ef0",
       "abi": [
         {
           "type": "impl",
@@ -1885,8 +1885,8 @@
       ]
     },
     {
-      "address": "0x467e1d57536330556064b62b932970563caf84024a172304b551efadfef58d6",
-      "class_hash": "0x33e82413ffe070116da3d542eeb692c0be35414dd29c8cd50fa1afb1f98399f",
+      "address": "0x5110020cb6e4bc294555ae3cb7abd78f25444682f94f6d30c5983f97c6a0530",
+      "class_hash": "0x7ce876a5facd0cd88f60d271435f45a089012059cdc66f07e97242333498479",
       "abi": [
         {
           "type": "impl",
@@ -2085,8 +2085,8 @@
       ]
     },
     {
-      "address": "0x26da465d80a683b59d64db549b5fbbc296c45fdea98b5b01a5106bc414df26f",
-      "class_hash": "0x10e3f717c78f285e1f5c4368b6e1ce705936201aaab64f835f985d29ad6c91",
+      "address": "0x2c425c7a6c678cc7d94454d4b82eccafdff32bfa79c8d140eda4b57e1ea6267",
+      "class_hash": "0x58143a500b776e37ce90b0fd505032ca420983395d1f44735e9c9399a912c84",
       "abi": [
         {
           "type": "impl",
@@ -3047,6 +3047,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x573223ebf2c12d90b619a15d67e659169d864a220f9f7c0cfd69d73469a90ba",
+      "tag": "jokers_of_neon-LifeSaverSpecialCardEvent",
+      "selector": "0x40018c23d9dc38c6cc98254392179a44d3acff2b93747c1ec04128e5c11cf3b"
+    },
+    {
+      "members": [],
       "class_hash": "0x39d5c225a0bfb478476b5691df2619d6aa88778d40c485deb963ff9f08b2d3a",
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
       "selector": "0x3733fa1c9c63d3af302e7c3a1c91154d2c5af0f8d3739491f4e615911053034"
@@ -3125,7 +3131,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x19b2d1cfb0aad03c05c40d90f65554177b5a2e8a346e3a53e718acec58e7470",
+      "class_hash": "0x2654cfedc3294844d07b65149cfc07ba388d75091a7d56e4e7253a08d5a1e08",
       "tag": "jokers_of_neon-SpecialModifierMultiEvent",
       "selector": "0xa1caec57685f48c147fcb3f28f3769def1d2dbdb549f27a1438aa9f020bb41"
     },
