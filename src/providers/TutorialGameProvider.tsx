@@ -317,10 +317,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
       setPreSelectionLocked(true);
 
-      if (playEvents.powerUpEvents) {
-        handlePowerUps();
-      }
-
       if (playEvents.neonPlayEvent) {
         setPlayIsNeon(true);
 
@@ -389,6 +385,19 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
               return newHand;
             });
           });
+        }
+
+        if (playEvents.powerUpEvents) {
+          setTimeout(
+            () => {
+              handlePowerUps();
+            },
+            NEON_PLAY_DURATION +
+              MODIFIER_SUIT_CHANGE_DURATION +
+              SPECIAL_SUIT_CHANGE_DURATION +
+              SPECIAL_CARDS_DURATION +
+              POWER_UP_DURATION
+          );
         }
 
         setTimeout(() => {
