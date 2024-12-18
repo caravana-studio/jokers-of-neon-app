@@ -194,6 +194,22 @@
     "346": {
       "name": "Potenciador de Repóker",
       "description": "Mejora la mano de Repóker en 4 niveles"
+    },
+    "347": {
+      "name": "Dado de Corazones",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de corazones"
+    },
+    "348": {
+      "name": "Dado de Tréboles",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de tréboles"
+    },
+    "349": {
+      "name": "Dado de Diamantes",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de diamantes"
+    },
+    "350": {
+      "name": "Dado de Picas",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de picas"
     }
   },
   "powerUpsData": {
