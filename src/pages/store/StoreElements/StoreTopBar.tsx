@@ -4,9 +4,9 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { PriceBox } from "../../../components/PriceBox";
 import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
 import { useStore } from "../../../providers/StoreProvider";
-import { Coins } from "../../Game/Coins";
 import RerollButton from "./RerollButton";
 import { InformationIcon } from "../../../components/InformationIcon";
+import { Coins } from "../Coins";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
