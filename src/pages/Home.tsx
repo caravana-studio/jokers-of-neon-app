@@ -9,6 +9,7 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import SpineAnimation from "../components/SpineAnimation";
+import { isMobile } from "react-device-detect";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -68,14 +69,18 @@ export const Home = () => {
               {t("home.slogan")}
             </Heading>
 
-            <Flex w={"70%"} justifyContent="center">
+            <Flex
+              w={"70%"}
+              justifyContent="center"
+              maxWidth={isMobile ? "70%" : "50%"}
+            >
               <Flex h={"100%"} justifyContent={"center"} pl={2}>
                 <SpineAnimation
                   jsonUrl={`/spine-animations/logo/JokerLogo.json`}
                   atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
                   initialAnimation={"animation"}
                   loopAnimation={"animation"}
-                  scale={3}
+                  scale={2.8}
                   yOffset={-800}
                 />
               </Flex>
