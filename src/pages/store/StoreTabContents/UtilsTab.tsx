@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { InformationIcon } from "../../../components/InformationIcon";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { MAX_SPECIAL_CARDS } from "../../../constants/config";
-import { CARD_WIDTH } from "../../../constants/visualProps";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import theme from "../../../theme/theme";
 import { BurnItem } from "../BurnItem";
 import { SpecialSlotItem } from "../SpecialSlotItem";
@@ -39,14 +37,6 @@ export const UtilsTab = () => {
       : Number(burnItem.cost);
 
   const notEnoughCashBurn = cash < effectiveCost;
-
-  const { cardScale, isSmallScreen } = useResponsiveValues();
-
-  const adjustedScale = isSmallScreen
-    ? cardScale
-    : cardScale - (cardScale * 25) / 100;
-
-  const width = CARD_WIDTH * adjustedScale;
 
   const createBuyButton = (onClick: () => void, isDisable: boolean) => {
     return (
@@ -102,6 +92,7 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
+          h="140px"
         >
           <LevelUpTable />
         </Flex>
@@ -124,13 +115,14 @@ export const UtilsTab = () => {
           width={"100%"}
           pb={5}
           pt={2}
+          h="75px"
         >
           <Flex flexDirection="row" justifyContent={"space-around"}>
             {powerUps.map((powerUp, index) => {
               return (
                 <PowerUpComponent
                   powerUp={powerUp}
-                  width={width}
+                  width={60}
                   key={index}
                   inStore
                   onClick={() => {
