@@ -3047,6 +3047,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x573223ebf2c12d90b619a15d67e659169d864a220f9f7c0cfd69d73469a90ba",
+      "tag": "jokers_of_neon-LifeSaverSpecialCardEvent",
+      "selector": "0x40018c23d9dc38c6cc98254392179a44d3acff2b93747c1ec04128e5c11cf3b"
+    },
+    {
+      "members": [],
       "class_hash": "0x39d5c225a0bfb478476b5691df2619d6aa88778d40c485deb963ff9f08b2d3a",
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
       "selector": "0x3733fa1c9c63d3af302e7c3a1c91154d2c5af0f8d3739491f4e615911053034"
