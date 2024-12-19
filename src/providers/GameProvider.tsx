@@ -47,6 +47,8 @@ import { PowerUp } from "../types/PowerUp.ts";
 import { changeCardNeon } from "../utils/changeCardNeon.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { Suits } from "../enums/suits.ts";
+import { getCardData } from "../utils/getCardData.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -345,7 +347,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
           setHand((prev) => {
             const updatedHand = prev?.map((card) =>
-              event.idx.includes(card.idx)
+              event.idx.includes(card.idx) && card.suit !== Suits.WILDCARD
                 ? {
                     ...card,
                     card_id: changeCardSuit(card.card_id!, event.suit),
@@ -907,6 +909,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             });
             modifiedCard.card_id = transformedCard;
             modifiedCard.img = `${transformedCard}.png`;
+            modifiedCard.suit = getCardData(modifiedCard).suit;
           }
         }
 
