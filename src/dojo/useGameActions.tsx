@@ -32,7 +32,7 @@ export const useGameActions = () => {
       showTransactionToast();
       const response = await client.game_system.createGame(
         account,
-        Number(shortString.encodeShortString(username))
+        BigInt(shortString.encodeShortString(username))
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash, "Creating game...");
