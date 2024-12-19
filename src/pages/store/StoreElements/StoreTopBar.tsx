@@ -6,6 +6,7 @@ import { PriceBox } from "../../../components/PriceBox";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
 import RerollButton from "./RerollButton";
+import { MobileCoins } from "../Coins";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
@@ -44,22 +45,7 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
         )}
       </Flex>
       <Flex alignItems={"center"}>
-        <Flex flexDirection="row" alignItems="center" gap={1}>
-          <CoinIcon height={25} />
-          <Flex
-            gap={1.5}
-            alignItems="center"
-            justifyContent="center"
-            borderRadius="8px"
-            color="white"
-            minWidth={{ base: "50px", sm: "70px" }}
-            p={{ base: "5px 5px", sm: "15px 6px" }}
-            fontSize="13px"
-          >
-            {cash}
-            <CashSymbol />
-          </Flex>
-        </Flex>
+        <MobileCoins />
       </Flex>
     </Flex>
   );
