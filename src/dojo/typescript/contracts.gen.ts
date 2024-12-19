@@ -169,7 +169,7 @@ export async function setupWorld(provider: DojoProvider) {
 		
 	};
 
-	const game_system_createGame = async (snAccount: Account, playerName: number) => {
+	const game_system_createGame = async (snAccount: Account, playerName: BigInt) => {
 		
 			return await provider.execute(
 				snAccount,

@@ -87,22 +87,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
             width={"100%"}
             variant={isMobile ? "store-mobile" : "store"}
           >
-            <Thead
-              sx={{
-                position: "relative",
-                _before: {
-                  content: '""',
-                  position: "absolute",
-                  bottom: 0,
-                  width: "100%",
-                  height: "1px",
-                  background:
-                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                  boxShadow:
-                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-                },
-              }}
-            >
+            <Thead>
               <Tr>
                 {inStore ? (
                   <>
