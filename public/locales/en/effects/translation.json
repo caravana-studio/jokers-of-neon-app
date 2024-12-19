@@ -117,7 +117,7 @@
     },
     "322": {
       "name": "Discard mastery",
-      "description": "Adds +10 to the multi if you have no discards left"
+      "description": "Adds +10 multi if you have no discards left"
     },
     "323": {
       "name": "Second chance",
