@@ -197,19 +197,19 @@
     },
     "347": {
       "name": "Dice of Hearts",
-      "description": "Rolls a number between -2 and 8 to add to the multi for each played Hearts suited card."
+      "description": "Rolls a number between -2 and 6 to add to the multi for each played Hearts suited card."
     },
     "348": {
       "name": "Dice of Clubs",
-      "description": "Rolls a number between -2 and 8 to add to the multi for each played Clubs suited card."
+      "description": "Rolls a number between -2 and 6 to add to the multi for each played Clubs suited card."
     },
     "349": {
       "name": "Dice of Diamonds",
-      "description": "Rolls a number between -2 and 8 to add to the multi for each played Diamonds suited card."
+      "description": "Rolls a number between -2 and 6 to add to the multi for each played Diamonds suited card."
     },
     "350": {
       "name": "Dice of Spades",
-      "description": "Rolls a number between -2 and 8 to add to the multi for each played Spades suited card."
+      "description": "Rolls a number between -2 and 6 to add to the multi for each played Spades suited card."
     }
   },
   "powerUpsData": {
