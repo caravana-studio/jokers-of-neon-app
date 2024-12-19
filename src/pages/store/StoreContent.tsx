@@ -122,7 +122,7 @@ export const StoreContent = () => {
                 <RerollButton />
                 <SpecialsButton isSmallScreen={false} />
                 <SeeFullDeckButton isSmallScreen={false} />
-                <Coins rolling />
+                <Coins />
               </Flex>
             </>
           </Box>

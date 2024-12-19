@@ -40,6 +40,7 @@ export const useCurrentSpecialCards = () => {
   const gameId = game?.id ?? 0;
 
   const specialCardsMaxLength = 7;
+  const len_current_special_cards = game?.len_current_special_cards ?? 0;
 
   const specialCardsIds = Array.from(
     { length: specialCardsMaxLength },
@@ -47,5 +48,6 @@ export const useCurrentSpecialCards = () => {
   );
   return specialCardsIds
     .map((index) => useSpecialCard(gameId, index, CurrentSpecialCards))
-    .filter((card) => !!card);
+    .filter((card) => !!card)
+    .slice(0, len_current_special_cards);
 };
