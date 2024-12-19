@@ -101,15 +101,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "top" : "auto",
+      placement: isMobile ? "right" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -125,15 +126,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -165,15 +167,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -189,15 +192,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -252,15 +256,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -276,15 +281,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -368,15 +374,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "right-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -392,15 +399,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "left-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -416,15 +424,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "left-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -440,15 +449,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "left-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -464,15 +474,16 @@ const loadTutorialTranslations = async () => {
         }
       ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: isMobile ? "left-end" : "auto",
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
+          width: "100%",
         },
       },
     },
@@ -481,10 +492,10 @@ const loadTutorialTranslations = async () => {
       title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.modifiers.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "bottom" : "auto",
+      placement: "auto",
       disableScrollParentFix: true,
       spotlightPadding: 0,
-      offset: isMobile ? 150 : 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",

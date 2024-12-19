@@ -2,7 +2,7 @@
   "gameTutorial": {
     "action": {
       "select": "Select this card.",
-      "select-mobile": "Drag and drop this card."
+      "select-mobile": "Drag and drop."
     },
     "intro": {
       "title": "Welcome to Jokers of Neon",
