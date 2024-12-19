@@ -1,6 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { InformationIcon } from "../../components/InformationIcon";
 import { PowerUpComponent } from "../../components/PowerUpComponent";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useStore } from "../../providers/StoreProvider";
@@ -22,14 +23,14 @@ export const StorePowerUpsRow = () => {
 
   return (
     <Box mb={8}>
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex gap={2} mb={1} justifyContent="center" alignItems="center">
         <Heading
           size={{ base: "s", sm: "xs" }}
-          mb={[1, 1, 1, 2, 2]}
           fontWeight={"400"}
         >
           {t("store.titles.powerups")}
         </Heading>
+        <InformationIcon title={"power-ups"} />
       </Flex>
 
       <Flex
