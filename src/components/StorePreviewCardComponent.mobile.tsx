@@ -1,15 +1,9 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Duration } from "../enums/duration";
-import { Coins } from "../pages/Game/Coins";
+import { MobileCoins } from "../pages/store/Coins";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import { Background } from "./Background";
@@ -56,7 +50,7 @@ export const StorePreviewCardComponentMobile = ({
         textAlign="center"
       >
         <Flex justifyContent="flex-end" mr={3} w="100%">
-          <Coins />
+          <MobileCoins />
         </Flex>
         <Flex
           gap={1}
