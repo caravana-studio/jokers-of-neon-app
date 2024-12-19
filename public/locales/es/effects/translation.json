@@ -197,19 +197,19 @@
     },
     "347": {
       "name": "Dado de Corazones",
-      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de corazones"
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de corazones"
     },
     "348": {
       "name": "Dado de Tréboles",
-      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de tréboles"
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de tréboles"
     },
     "349": {
       "name": "Dado de Diamantes",
-      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de diamantes"
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de diamantes"
     },
     "350": {
       "name": "Dado de Picas",
-      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de picas"
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
     }
   },
   "powerUpsData": {
