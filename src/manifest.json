@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x43ba337833e6f153e19867d21fa29d3c0aadbeb075f2508aa232148b10de24b",
-      "class_hash": "0xe9c34ede400fb86df54313650f003e4a2aefaa11e50345f94591498d4726f1",
+      "address": "0x37da713b04b950799c728f6db36a0d8ec573cf3aa1a7e34969f15eb042df2f8",
+      "class_hash": "0x1dec58f2528756904e05b3b0aba95b4a739a0c54a62e3e7d2dcc052711a71be",
       "abi": [
         {
           "type": "impl",
@@ -1880,9 +1880,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-poker_hand_system",
       "selector": "0x25bae3ed99b9282d147b178067335cf2d607ff13acbd09c62fa525c14bb8869",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x1eb68b912fd4c622b9e05ecff8699cbfd766b81f5e8c379233647e13230e97f",
@@ -2079,14 +2077,11 @@
       "init_calldata": [],
       "tag": "jokers_of_neon-rage_system",
       "selector": "0x601fc835e0c1478502e4787b6200cb5074b02e3545bcfab9ef100c7f4071da3",
-      "systems": [
-        "calculate",
-        "upgrade"
-      ]
+      "systems": ["calculate", "upgrade"]
     },
     {
-      "address": "0x1ec97183a54bf31e24f1f05d8a76b20e498dc20fc7d211ec703dfc1677f33fc",
-      "class_hash": "0x7ef755d09c02c350b5b06122f388f10899317eded58a75d94c156b4069c589",
+      "address": "0x8c9989c1b1d95b9abfd9874d1eba9a9c19002b96835f401c9e49147114c8ba",
+      "class_hash": "0x72fa0d251d1febee1a2442108fd4dabc1786c634406c72c8cd64f42967255e7",
       "abi": [
         {
           "type": "impl",
@@ -3131,7 +3126,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2654cfedc3294844d07b65149cfc07ba388d75091a7d56e4e7253a08d5a1e08",
+      "class_hash": "0x19b2d1cfb0aad03c05c40d90f65554177b5a2e8a346e3a53e718acec58e7470",
       "tag": "jokers_of_neon-SpecialModifierMultiEvent",
       "selector": "0xa1caec57685f48c147fcb3f28f3769def1d2dbdb549f27a1438aa9f020bb41"
     },
