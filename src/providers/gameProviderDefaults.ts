@@ -72,4 +72,5 @@ export const gameProviderDefaults: IGameContext = {
   powerUpIsPreselected: (_) => false,
   setPowerUps: (_) => {},
   addPowerUp: (_) => {},
+  togglePreselectedAll: () => {},
 };

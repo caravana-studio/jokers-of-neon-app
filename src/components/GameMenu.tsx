@@ -19,7 +19,8 @@ export const GameMenu = ({
   showTutorial,
 }: GameMenuProps) => {
   const username = localStorage.getItem(LOGGED_USER);
-  const { executeCreateGame, restartGame } = useGameContext();
+  const { executeCreateGame, restartGame, togglePreselectedAll } =
+    useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
@@ -48,6 +49,7 @@ export const GameMenu = ({
         <MenuList>
           <MenuItem
             onClick={() => {
+              togglePreselectedAll();
               navigate("/");
             }}
           >
@@ -61,6 +63,7 @@ export const GameMenu = ({
           {showTutorial && (
             <MenuItem
               onClick={() => {
+                togglePreselectedAll();
                 navigate("/tutorial");
               }}
             >

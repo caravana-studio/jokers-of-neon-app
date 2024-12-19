@@ -117,6 +117,7 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
+  togglePreselectedAll: () => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -226,6 +227,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     showSpecials();
     resetPowerUps();
+  };
+
+  const togglePreselectedAll = () => {
+    preSelectedCards.map((idx) => {
+      togglePreselected(idx);
+    });
   };
 
   const toggleSortBy = () => {
@@ -1034,6 +1041,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sfxOn,
         setSfxOn,
         powerUpIsPreselected,
+        togglePreselectedAll,
       }}
     >
       {children}

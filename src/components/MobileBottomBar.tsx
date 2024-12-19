@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenu } from "./GameMenu";
+import { useGameContext } from "../providers/GameProvider";
 
 interface MobileBottomBarProps {
   firstButton: ReactNode;
@@ -20,6 +21,8 @@ export const MobileBottomBar = ({
   navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
+  const { togglePreselectedAll } = useGameContext();
+
   return (
     <Flex
       width="96%"
@@ -48,7 +51,10 @@ export const MobileBottomBar = ({
         border={hideDeckButton ? "none" : "1px solid white"}
         borderRadius={["8px", "14px"]}
         className="game-tutorial-step-9"
-        onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
+        onClick={() => {
+          togglePreselectedAll();
+          !hideDeckButton && navigate("/deck", navigateState);
+        }}
       >
         {hideDeckButton ? (
           <></>
