@@ -72,7 +72,8 @@ export const MobileGameContent = () => {
 
   const stepData = [
     { step: 14, delay: 2700 },
-    { step: 24, delay: 7500 },
+    { step: 22, delay: 4200 },
+    { step: 32, delay: 7500 },
   ];
 
   useEffect(() => {
@@ -214,7 +215,6 @@ export const MobileGameContent = () => {
           width: "100%",
         }}
       >
-
         <DndContext
           onDragEnd={handleDragEnd}
           autoScroll={false}
@@ -239,7 +239,14 @@ export const MobileGameContent = () => {
             >
               <MobileTopSection />
               <Flex mt={2} w="100%" justifyContent="center">
-                <PowerUps />
+                <PowerUps
+                  onTutorialCardClick={() => {
+                    if (run) {
+                      setButtonClicked(true);
+                      setStepIndex(stepIndex + 1);
+                    }
+                  }}
+                />
               </Flex>
             </Flex>
 
@@ -285,7 +292,6 @@ export const MobileGameContent = () => {
             />
           </Box>
         </DndContext>
-
       </Box>
     </Box>
   );
