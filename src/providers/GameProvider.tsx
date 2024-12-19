@@ -47,6 +47,7 @@ import { PowerUp } from "../types/PowerUp.ts";
 import { changeCardNeon } from "../utils/changeCardNeon.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { LifeSaverSpecialCardEvent } from "../utils/playEvents/getSpecialLifeSaverEvent.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -101,6 +102,10 @@ export interface IGameContext {
   setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
+  lifeSaverSpecialCardEvent: LifeSaverSpecialCardEvent;
+  setLifeSaverSpecialCardEvent: (
+    specialLifeSaverEvent: LifeSaverSpecialCardEvent
+  ) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
   setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
   specialSwitcherOn: boolean;

@@ -18,6 +18,7 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
 
   const {
     setDestroyedSpecialCardId,
+    setLifeSaverSpecialCardEvent,
     onShopSkip,
     setHand,
     gameId,
@@ -45,6 +46,8 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
+        response.lifeSaverSpecialCardEvents &&
+          setLifeSaverSpecialCardEvent(response.lifeSaverSpecialCardEvents);
         navigate("/redirect/demo");
       } else {
         setLoading(false);

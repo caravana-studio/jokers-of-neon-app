@@ -17,6 +17,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { LifeSaverSpecialCardEvent } from "../utils/playEvents/getSpecialLifeSaverEvent";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -48,6 +49,8 @@ export const useGameState = () => {
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
+  const [lifeSaverSpecialCardEvent, setLifeSaverSpecialCardEvent] =
+    useState<LifeSaverSpecialCardEvent>({});
   const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
 
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
@@ -84,7 +87,7 @@ export const useGameState = () => {
       const newPowerUps = [...prev, powerUp];
       return newPowerUps;
     });
-  }
+  };
 
   const {
     setup: {
@@ -225,6 +228,8 @@ export const useGameState = () => {
     setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    lifeSaverSpecialCardEvent,
+    setLifeSaverSpecialCardEvent,
     levelUpHand,
     setLevelUpHand,
     specialSwitcherOn,

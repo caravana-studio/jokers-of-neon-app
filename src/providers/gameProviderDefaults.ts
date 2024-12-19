@@ -58,6 +58,8 @@ export const gameProviderDefaults: IGameContext = {
   setAnimationSpeed: () => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
+  lifeSaverSpecialCardEvent: { },
+  setLifeSaverSpecialCardEvent: () => {},
   levelUpHand: undefined,
   setLevelUpHand: () => {},
   specialSwitcherOn: true,
