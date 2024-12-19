@@ -17,9 +17,11 @@ export const BackToGameBtn = () => {
       variant="secondarySolid"
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       onClick={() =>
-        navigate(state?.inStore ? "/store" : "/demo", {
-          state: { skipRageAnimation: true },
-        })
+        state?.inStore
+          ? navigate("/store", { state: { lastTabIndex: 2 } })
+          : navigate("/demo", {
+              state: { skipRageAnimation: true },
+            })
       }
     >
       {t("game.deck.btns.back").toUpperCase()}

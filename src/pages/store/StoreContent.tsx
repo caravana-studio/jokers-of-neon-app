@@ -76,7 +76,7 @@ export const StoreContent = () => {
               {commonCards.length > 0 && (
                 <StoreCardsRow
                   cards={commonCards}
-                  title={t("store.titles.traditional")}
+                  title={"traditional"}
                 />
               )}
             </Box>
@@ -85,7 +85,7 @@ export const StoreContent = () => {
                 {modifierCards.length > 0 && (
                   <StoreCardsRow
                     cards={modifierCards}
-                    title={t("store.titles.modifiers")}
+                    title={"modifiers"}
                   />
                 )}
               </Box>
@@ -97,7 +97,7 @@ export const StoreContent = () => {
               {specialCards.length > 0 && (
                 <StoreCardsRow
                   cards={specialCards}
-                  title={t("store.titles.special")}
+                  title={"special"}
                 />
               )}
             </Box>

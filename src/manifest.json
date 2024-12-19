@@ -1243,8 +1243,8 @@
   },
   "contracts": [
     {
-      "address": "0x22de8a5ce6d89e6961fa86326819fe791d095228c7b76f77e6857ce7d4828c7",
-      "class_hash": "0x3c26b82bc45b2c03786a7f13e3a3bea71f5ea7973d271f9981e6e3d00999749",
+      "address": "0x43ba337833e6f153e19867d21fa29d3c0aadbeb075f2508aa232148b10de24b",
+      "class_hash": "0xe9c34ede400fb86df54313650f003e4a2aefaa11e50345f94591498d4726f1",
       "abi": [
         {
           "type": "impl",
@@ -1885,8 +1885,8 @@
       ]
     },
     {
-      "address": "0x25f3752b7d47ac4daa8a0db111f8d6990ff1c4ef34f9d3345cd277a8e697aa5",
-      "class_hash": "0xfd8842c6b24f19a3bcfd419acc1e75df7bfc0263d6321e7d6097e424eb9cb4",
+      "address": "0x1eb68b912fd4c622b9e05ecff8699cbfd766b81f5e8c379233647e13230e97f",
+      "class_hash": "0x135ce12b8d2e571211070ee31de638d57e5cd73dd0913a835abe46605b7f57c",
       "abi": [
         {
           "type": "impl",
@@ -2085,8 +2085,8 @@
       ]
     },
     {
-      "address": "0x4fe4d176d519414b7abe11749fdb9d5a8178e726db746810feeaf0ba7510e93",
-      "class_hash": "0x3fcdaa2bf7e4c4b6884f003f1591c4ce997e5f6d29ae6581d60b9900badcd1a",
+      "address": "0x1ec97183a54bf31e24f1f05d8a76b20e498dc20fc7d211ec703dfc1677f33fc",
+      "class_hash": "0x7ef755d09c02c350b5b06122f388f10899317eded58a75d94c156b4069c589",
       "abi": [
         {
           "type": "impl",
@@ -2342,6 +2342,14 @@
               "type": "core::integer::u8"
             },
             {
+              "name": "multi",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "points",
+              "type": "core::integer::u32"
+            },
+            {
               "name": "cost",
               "type": "core::integer::u32"
             },
@@ -2423,6 +2431,10 @@
             },
             {
               "name": "cost",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discount_cost",
               "type": "core::integer::u32"
             },
             {
@@ -2907,13 +2919,13 @@
     },
     {
       "members": [],
-      "class_hash": "0x671799e6c2c98979a4026e3834200e8dddeab6428163b2a5835d494243911b0",
+      "class_hash": "0x4fefd5ebf0a65ced70a0abb0776419d93338ad6408b0fe5d0016bd32e31bbf7",
       "tag": "jokers_of_neon-PokerHandItem",
       "selector": "0x3760bd89d9a74b76230e31ede2f06c3b2ed00d4428f7a6d5a9ec78e1dc2303"
     },
     {
       "members": [],
-      "class_hash": "0x3ac4a1fb2a30a8cd8868f3c98597ad2d64ae0bbfb229e9c7d36fa7e6266be7a",
+      "class_hash": "0x4f8238ea29951ce4d387771a8db08f8890a3b5d31a48af7f86832c323e1d36f",
       "tag": "jokers_of_neon-PowerUpItem",
       "selector": "0x2b4fc887298c7047a5ae0e9e17e7bd4b0d59ce78bccedaf0d1f6f4ad3cfcd1b"
     },
@@ -3035,6 +3047,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x573223ebf2c12d90b619a15d67e659169d864a220f9f7c0cfd69d73469a90ba",
+      "tag": "jokers_of_neon-LifeSaverSpecialCardEvent",
+      "selector": "0x40018c23d9dc38c6cc98254392179a44d3acff2b93747c1ec04128e5c11cf3b"
+    },
+    {
+      "members": [],
       "class_hash": "0x39d5c225a0bfb478476b5691df2619d6aa88778d40c485deb963ff9f08b2d3a",
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
       "selector": "0x3733fa1c9c63d3af302e7c3a1c91154d2c5af0f8d3739491f4e615911053034"
@@ -3113,7 +3131,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x19b2d1cfb0aad03c05c40d90f65554177b5a2e8a346e3a53e718acec58e7470",
+      "class_hash": "0x2654cfedc3294844d07b65149cfc07ba388d75091a7d56e4e7253a08d5a1e08",
       "tag": "jokers_of_neon-SpecialModifierMultiEvent",
       "selector": "0xa1caec57685f48c147fcb3f28f3769def1d2dbdb549f27a1438aa9f020bb41"
     },

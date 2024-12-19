@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-interface MobileInformationModalProps {
+interface InformationPopUpProps {
   content: ReactNode;
   onClose: () => void;
 }
 
-export const MobileInformationModal = ({
+export const InformationPopUp = ({
   content,
   onClose,
-}: MobileInformationModalProps) => {
+}: InformationPopUpProps) => {
   return (
     <Flex
       position={"absolute"}

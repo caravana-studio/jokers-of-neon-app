@@ -3,9 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BurnIcon from "../../assets/burn.svg?component";
 import { PriceBox } from "../../components/PriceBox";
-import { MAX_SPECIAL_CARDS } from "../../constants/config";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useGame } from "../../dojo/queries/useGame";
 import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 

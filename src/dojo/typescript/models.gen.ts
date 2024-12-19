@@ -234,6 +234,7 @@ export interface PowerUpItem {
 	power_up_id: number;
 	cost: number;
 	purchased: boolean;
+	discount_cost: number;
 }
 
 // Type definition for `jokers_of_neon::models::status::game::rage::RageRound` struct
@@ -607,12 +608,13 @@ export const schema: JokersOfNeonSchemaType = {
 			purchased: false,
 		},
 		PowerUpItem: {
-			fieldOrder: ['game_id', 'idx', 'power_up_id', 'cost', 'purchased'],
+			fieldOrder: ['game_id', 'idx', 'power_up_id', 'cost', 'purchased', 'discount_cost'],
 			game_id: 0,
 			idx: 0,
 			power_up_id: 0,
 			cost: 0,
 			purchased: false,
+			discount_cost: 0,
 		},
 		RageRound: {
 			fieldOrder: ['game_id', 'is_active', 'current_probability', 'active_rage_ids', 'last_active_level'],
