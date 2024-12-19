@@ -211,6 +211,10 @@
         "52": {
             "name": "Joker",
             "description": "Wildcard that substitutes any traditional card. +100 points and +1 multi"
+        },
+        "53": {
+            "name": "Wilcard",
+            "description": "Substitutes any traditional card"
         }
         }
 }

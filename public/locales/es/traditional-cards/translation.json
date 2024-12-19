@@ -209,8 +209,12 @@
             "description": "Suma +11 puntos"
         },
         "52": {
+            "name": "Joker",
+            "description": "Joker que sustituye cualquier carta tradicional. +100 puntos y +1 multi"
+        },
+        "53": {
             "name": "Comodín",
-            "description": "Comodín que sustituye cualquier carta tradicional. +100 puntos y +1 multi"
+            "description": "Sustituye cualquier carta tradicional"
         }
         
         }

@@ -17,7 +17,9 @@ import {
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
   discardSfx,
+  cashSfx,
   multiSfx,
+  negativeMultiSfx,
   pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx.ts";
@@ -42,9 +44,9 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 //import { getNeonCardId } from "../utils/changeCardNeon.ts";
 import { PowerUp } from "../types/PowerUp.ts";
+import { changeCardNeon } from "../utils/changeCardNeon.ts";
 import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { changeCardNeon } from "../utils/changeCardNeon.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -155,8 +157,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const game = useGame();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
+  const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
@@ -354,13 +358,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const handlePowerUps = () => {
       playEvents.powerUpEvents?.forEach((event, index) => {
         setTimeout(() => {
-          const { idx, points, multi } = event;
+          const { idx, points, multi, special_idx } = event;
 
           setAnimatedPowerUp({
             idx,
             points,
             multi,
             animationIndex: 250 + index,
+          });
+
+          setAnimatedCard({
+            special_idx,
+            points,
+            multi,
+            animationIndex: 275 + index,
           });
 
           if (points) {
@@ -474,19 +485,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             animationIndex: 700 + index,
           });
         }, playAnimationDuration * index);
+        cashSound();
       });
     };
 
     const handleSpecialCards = () => {
       playEvents.specialCards?.forEach((event, index) => {
         setTimeout(() => {
-          const { idx, points, multi, special_idx } = event;
+          const { idx, points, multi, special_idx, negative } = event;
 
           setAnimatedCard({
             idx: [idx],
             points,
             multi,
             special_idx,
+            negative,
             animationIndex: 800 + index,
           });
 
@@ -496,8 +509,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           }
 
           if (multi) {
-            multiSound();
-            setMulti((prev) => prev + multi);
+            if (negative) {
+              setMulti((prev) => prev - multi);
+              negativeMultiSound();
+            } else {
+              setMulti((prev) => prev + multi);
+              multiSound();
+            }
           }
         }, playAnimationDuration * index);
       });
@@ -926,7 +944,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!lockRedirection) {
       if (game?.state === "FINISHED") {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP") {
+      } else if (game?.state === "AT_SHOP" && location.pathname === "/demo") {
         console.log("redirecting to store");
         navigate("/store");
       }

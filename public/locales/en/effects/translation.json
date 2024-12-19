@@ -20,6 +20,10 @@
     "612": {
       "name": "Change to Neon",
       "description": "The modified card will be considered  as a Neon card"
+    },
+    "613": {
+      "name": "Wildcard",
+      "description": "The modified card will be considered  as a Wildcard"
     }
   },
   "specialCardsData": {
@@ -68,8 +72,8 @@
       "description": "All played Jokers scores double points and double multi"
     },
     "311": {
-      "name": "Modifier Booster",
-      "description": "All played MODIFIER cards scores double points and double multi"
+      "name": "Power-up Booster",
+      "description": "All played power ups scores double points and double multi"
     },
     "312": {
       "name": "Figures Booster",
@@ -190,6 +194,22 @@
     "346": {
       "name": "Five of a Kind Booster",
       "description": "Level up Five of a Kind hand by 4 levels"
+    },
+    "347": {
+      "name": "Dice of Hearts",
+      "description": "Rolls a number between -2 and 8 to add to the multi for each played Hearts suited card."
+    },
+    "348": {
+      "name": "Dice of Clubs",
+      "description": "Rolls a number between -2 and 8 to add to the multi for each played Clubs suited card."
+    },
+    "349": {
+      "name": "Dice of Diamonds",
+      "description": "Rolls a number between -2 and 8 to add to the multi for each played Diamonds suited card."
+    },
+    "350": {
+      "name": "Dice of Spades",
+      "description": "Rolls a number between -2 and 8 to add to the multi for each played Spades suited card."
     }
   },
   "powerUpsData": {

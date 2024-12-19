@@ -27,11 +27,13 @@ export const PowerUpComponent = ({
   const { powerUpIsPreselected } = useGameContext();
   const isActive = powerUp && powerUpIsPreselected(powerUp.idx);
   const price = inStore && powerUp?.cost;
+  const discount_cost = inStore && powerUp?.discount_cost;
   const purchased = inStore && powerUp?.purchased;
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
   const description =
-    powerUp?.power_up_id && POWER_UPS_CARDS_DATA[powerUp.power_up_id]?.description;
+    powerUp?.power_up_id &&
+    POWER_UPS_CARDS_DATA[powerUp.power_up_id]?.description;
 
   return powerUp ? (
     <AnimatedPowerUp idx={powerUp.idx}>
@@ -54,6 +56,7 @@ export const PowerUpComponent = ({
               isPowerUp
               fontSize={isSmallScreen ? 12 : 16}
               discountFontSize={isSmallScreen ? 10 : 12}
+              discountPrice={Number(discount_cost)}
             />
           )}
           {purchased && (
@@ -92,16 +95,18 @@ export const PowerUpComponent = ({
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const componentWidth = isSmallScreen ? width - 4 : width - 10; 
+  const { isRageRound } = useGameContext();
+
+  const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
-      height={`${isSmallScreen ? width / 1.8 :width / 1.9}px`}
+      height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
       borderRadius={["12px", "17px"]}
       width={`${componentWidth}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
-      backgroundColor={BACKGROUND_BLUE}
+      backgroundColor={isRageRound ? "black" : BACKGROUND_BLUE}
     />
   );
 };

@@ -36,6 +36,7 @@ export interface LevelEvent {
 export interface MultiPoints {
   multi?: number;
   points?: number;
+  negative?: boolean;
 }
 
 export interface CardScore extends MultiPoints {
@@ -45,6 +46,7 @@ export interface CardScore extends MultiPoints {
 
 export interface PowerUpScore extends MultiPoints {
   idx: number;
+  special_idx?: number;
 }
 
 export interface NeonPlayEvent extends MultiPoints {

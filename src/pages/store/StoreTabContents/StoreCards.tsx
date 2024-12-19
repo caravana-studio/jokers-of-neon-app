@@ -18,7 +18,7 @@ export const StoreCards = () => {
         {commonCards.length > 0 && (
           <StoreCardsRow
             cards={commonCards}
-            title={t("store.titles.traditional")}
+            title={"traditional"}
           />
         )}
       </Flex>
@@ -26,7 +26,7 @@ export const StoreCards = () => {
         {modifierCards.length > 0 && (
           <StoreCardsRow
             cards={modifierCards}
-            title={t("store.titles.modifiers")}
+            title={"modifiers"}
           />
         )}
       </Flex>
@@ -34,7 +34,7 @@ export const StoreCards = () => {
         {specialCards.length > 0 && (
           <StoreCardsRow
             cards={specialCards}
-            title={t("store.titles.special")}
+            title={"special"}
           />
         )}
       </Flex>

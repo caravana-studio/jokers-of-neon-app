@@ -20,6 +20,10 @@
     "612": {
       "name": "Cambiar a Neón",
       "description": "La carta modificada será considerada como una carta de Neón"
+    },
+    "613": {
+      "name": "Modificador de Comodín",
+      "description": "La carta modificada será considerada como Comodín"
     }
   },
   "specialCardsData": {
@@ -68,8 +72,8 @@
       "description": "Todos los Jokers jugados puntúan el doble y tienen doble multi"
     },
     "311": {
-      "name": "Potenciador de Modificadores",
-      "description": "Todas las cartas de MODIFICADOR jugadas puntúan el doble y tienen doble multi"
+      "name": "Potenciador de Poderes",
+      "description": "Todas los PODERES jugados puntúan el doble y tienen doble multi"
     },
     "312": {
       "name": "Potenciador de Figuras",
@@ -165,7 +169,7 @@
     },
     "340": {
       "name": "Doses salvajes",
-      "description": "Todos los 2s se consideran comodines"
+      "description": "Todos los 2s se consideran jokers"
     },
     "341": {
       "name": "Robo inmortal",
@@ -190,6 +194,22 @@
     "346": {
       "name": "Potenciador de Repóker",
       "description": "Mejora la mano de Repóker en 4 niveles"
+    },
+    "347": {
+      "name": "Dado de Corazones",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de corazones"
+    },
+    "348": {
+      "name": "Dado de Tréboles",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de tréboles"
+    },
+    "349": {
+      "name": "Dado de Diamantes",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de diamantes"
+    },
+    "350": {
+      "name": "Dado de Picas",
+      "description": "Lanza un número entre -2 y 8 para el multi por cada carta de picas"
     }
   },
   "powerUpsData": {

@@ -221,7 +221,8 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           size={{ base: "sm", md: "md" }}
           variant="italic"
           textAlign="center"
-          bottom={{ base: "70px", md: "100px" }}
+          bottom={{ base: "140px", md: "100px" }}
+          w="70%"
           sx={{ position: "fixed" }}
         >
           {t("game.hand-section.no-cards-label")}

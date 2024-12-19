@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -24,6 +24,9 @@ export const Store = () => {
   const state = game?.state;
   const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
+
+  const location = useLocation();
+  const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
   useEffect(() => {
     setIsRageRound(false);
@@ -91,7 +94,11 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {isSmallScreen ? <StoreContentMobile /> : <StoreContent />}
+      {isSmallScreen ? (
+        <StoreContentMobile lastIndexTab={lastTabIndex} />
+      ) : (
+        <StoreContent />
+      )}
     </Background>
   );
 };
