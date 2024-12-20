@@ -39,15 +39,15 @@ interface LeaderboardResponse {
 }
 
 const getPrize = (position: number): number => {
-  if (position > 3 && position < 11) {
+  if (position >= 3 && position <= 6) {
     return 100;
+  } else if (position >= 7 && position <= 10) {
+    return 50;
   }
   switch (position) {
     case 1:
-      return 1000;
+      return 300;
     case 2:
-      return 500;
-    case 3:
       return 200;
     default:
       return 0;
