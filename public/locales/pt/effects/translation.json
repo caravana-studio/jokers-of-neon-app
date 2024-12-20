@@ -198,19 +198,19 @@
     },
     "347": {
       "name": "Dado de Copas",
-      "description": "Lança um número entre -2 e 8 para adicionar ao multiplicador para cada carta jogada do naipe de Copas."
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Copas."
     },
     "348": {
       "name": "Dado de Paus",
-      "description": "Lança um número entre -2 e 8 para adicionar ao multiplicador para cada carta jogada do naipe de Paus."
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Paus."
     },
     "349": {
       "name": "Dado de Ouros",
-      "description": "Lança um número entre -2 e 8 para adicionar ao multiplicador para cada carta jogada do naipe de Ouros."
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Ouros."
     },
     "350": {
       "name": "Dado de Espadas",
-      "description": "Lança um número entre -2 e 8 para adicionar ao multiplicador para cada carta jogada do naipe de Espadas."
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Espadas."
     }
   },
   "powerUpsData": {

@@ -62,8 +62,13 @@ const loadTutorialTranslations = async () => {
       title: i18n.t("gameTutorial.intro.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.intro.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
-      placement: "bottom",
+      placement: isMobile ? "center" : "bottom",
       offset: isMobile ? 0 : -100,
+      styles: {
+        options: {
+          arrowColor: "none",
+        },
+      },
     },
     {
       target: ".game-tutorial-step-1",
