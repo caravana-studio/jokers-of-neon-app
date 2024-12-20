@@ -2,12 +2,12 @@
   "lootBoxData": {
     "1": {
       "name": "Caja Básica",
-      "description": "Contiene principalmente cartas tradicionales y modificadores",
-      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener un modificador\n4% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
+      "description": "Contiene principalmente cartas tradicionales y modificadoras",
+      "details": "2% de probabilidad de obtener una carta especial\n5% de probabilidad de obtener una modificadora\n4% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n88% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "2": {
       "name": "Caja Avanzada",
-      "description": "Puede contener una carta especial o un joker",
+      "description": "Más posibilidades de obtener una carta especial o un joker",
       "details": "4% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n8% de probabilidad de obtener un joker\n2% de probabilidad de obtener un joker de neón\n76% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "3": {
@@ -22,12 +22,12 @@
     },
     "5": {
       "name": "Caja de Modificadores",
-      "description": "Contiene principalmente modificadores",
+      "description": "Contiene principalmente modificadoras",
       "details": "50% de probabilidad de obtener un modificador\n50% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "6": {
       "name": "Caja de Figuras",
-      "description": "Contiene principalmente cartas de figuras",
+      "description": "Contiene principalmente figuras",
       "details": "70% de probabilidad de obtener una figura\n30% de probabilidad de obtener otras cartas tradicionales\nTamaño de la caja 5"
     },
     "7": {
@@ -37,17 +37,17 @@
     },
     "8": {
       "name": "Caja de los Amantes",
-      "description": "Todas las cartas con el palo de corazones, puede contener cartas especiales y modificadores.",
-      "details": "45% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener el As de Corazones\n10% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"    
+      "description": "Contiene solo cartas tradicionales y modificadoras de corazones.",
+      "details": "45% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener el As de Corazones\n10% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"
     },
     "9": {
       "name": "Caja de Apuesta Especial",
-      "description": "caja pequeña con posibilidades de obtener una carta especial o modificador",
+      "description": "Pequeña caja que puede contener una carta especial o una modificadora",
       "details": "5% de probabilidad de obtener una carta especial\n10% de probabilidad de obtener un modificador\n85% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
     },
     "10": {
       "name": "Caja de Neón",
-      "description": "Una caja exclusiva con posibilidades de obtener cartas de neón",
+      "description": "Una caja exclusiva de cartas de neón",
       "details": "97% de probabilidad de obtener una carta de neón\n3% de probabilidad de obtener un Joker de Neón\nTamaño de la caja 5"
     }
   }
