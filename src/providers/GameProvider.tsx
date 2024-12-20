@@ -16,8 +16,8 @@ import {
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
-  discardSfx,
   cashSfx,
+  discardSfx,
   multiSfx,
   negativeMultiSfx,
   pointsSfx,
@@ -31,24 +31,21 @@ import { gameExists } from "../dojo/utils/getGame.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { Speed } from "../enums/speed.ts";
+import { Suits } from "../enums/suits.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
 import { Card } from "../types/Card";
+import { PowerUp } from "../types/PowerUp.ts";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { PlayEvents } from "../types/ScoreData";
+import { changeCardNeon } from "../utils/changeCardNeon.ts";
 import { changeCardSuit } from "../utils/changeCardSuit";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
-import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-//import { getNeonCardId } from "../utils/changeCardNeon.ts";
-import { PowerUp } from "../types/PowerUp.ts";
-import { changeCardNeon } from "../utils/changeCardNeon.ts";
-import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { Suits } from "../enums/suits.ts";
-import { getCardData } from "../utils/getCardData.ts";
+import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -135,9 +132,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [sfxOn, setSfxOn] = useState(!localStorage.getItem(SFX_ON));
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
-  const [transformedCards, setTransformedCards] = useState<Map<number, number>>(
-    new Map()
-  ); // cardIdx, originalCardId
 
   const round = useRound();
   const handsLeft = round?.hands ?? 0;
@@ -712,7 +706,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       setPreSelectedCards([]);
       setPreSelectedModifiers({});
       setPreselectedPowerUps([]);
-      setTransformedCards(new Map());
     }
   };
 
@@ -739,14 +732,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const unPreSelectCard = (cardIndex: number) => {
-    const originalCardId = transformedCards.get(cardIndex);
-
-    if (originalCardId) {
-      const unPreselectedCard = hand.find((c) => c.idx === cardIndex)!;
-      unPreselectedCard.card_id = originalCardId;
-      unPreselectedCard.img = `${originalCardId}.png`;
-    }
-
     setPreSelectedModifiers((prev) => {
       return {
         ...prev,
@@ -892,27 +877,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (modifiers.length < 1) {
       const newModifiers = [...modifiers, modifierIdx];
       setPreSelectedModifiers((prev) => {
-        let modifierCard = hand.find((c) => c.idx === modifierIdx);
-        let modifiedCard = hand.find((c) => c.idx === cardIdx);
-
-        const transformedCard = transformCardByModifierId(
-          modifierCard?.card_id!,
-          modifiedCard?.card_id!
-        );
-
-        if (transformedCard != -1) {
-          if (modifiedCard) {
-            setTransformedCards((prev) => {
-              const newMap = new Map(prev);
-              newMap.set(cardIdx, modifiedCard?.card_id ?? -1);
-              return newMap;
-            });
-            modifiedCard.card_id = transformedCard;
-            modifiedCard.img = `${transformedCard}.png`;
-            modifiedCard.suit = getCardData(modifiedCard).suit;
-          }
-        }
-
         return {
           ...prev,
           [cardIdx]: newModifiers,
