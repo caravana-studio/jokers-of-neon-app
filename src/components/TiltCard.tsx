@@ -64,7 +64,7 @@ export const TiltCard = ({
         ...card,
         card_id: transformedCard,
         img: `${transformedCard}.png`,
-        suit: getCardData(card).suit,
+        suit: getCardData(transformedCard).suit,
       };
     }
   }
@@ -178,7 +178,7 @@ export const TiltCard = ({
             sx={{
               zIndex: 5 - index,
               top: `-${MODIFIERS_OFFSET}px`,
-              left: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
+              left: `-${(MODIFIERS_OFFSET) * (index + 1)}px`,
               position: "absolute",
             }}
           >
