@@ -49,9 +49,6 @@ export const TiltCard = ({
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
 
-  const isSilent = useIsSilent(card);
-  const { t } = useTranslation(["store"]);
-
   let modifiedCard = card;
 
   if ((card.modifiers?.length ?? 0) > 0) {
@@ -71,6 +68,9 @@ export const TiltCard = ({
       };
     }
   }
+
+  const isSilent = useIsSilent(modifiedCard);
+  const { t } = useTranslation(["store"]);
 
   const tiltCardComponent = (
     <Box
