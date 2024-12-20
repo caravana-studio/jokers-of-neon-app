@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  SystemStyleObject,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Box, Heading, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import Tilt from "react-parallax-tilt";
 import {
@@ -17,13 +10,13 @@ import {
 
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import ClockIcon from "../assets/clock.svg?component";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
-import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
+import { getCardData } from "../utils/getCardData.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
+import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
@@ -59,11 +52,25 @@ export const TiltCard = ({
   const isSilent = useIsSilent(card);
   const { t } = useTranslation(["store"]);
 
-  const fontSize = isMobile
-    ? 15
-    : card.discount_cost != undefined && card.discount_cost > 0
-      ? 15
-      : 18;
+  let modifiedCard = card;
+
+  if ((card.modifiers?.length ?? 0) > 0) {
+    let modifierCard = card.modifiers![0];
+
+    const transformedCard = transformCardByModifierId(
+      modifierCard?.card_id!,
+      card?.card_id!
+    );
+
+    if (transformedCard != -1) {
+      modifiedCard = {
+        ...card,
+        card_id: transformedCard,
+        img: `${transformedCard}.png`,
+        suit: getCardData(card).suit,
+      };
+    }
+  }
 
   const tiltCardComponent = (
     <Box
@@ -80,14 +87,18 @@ export const TiltCard = ({
         }}
       >
         <ConditionalTilt cardId={card.card_id ?? 0}>
-          <Tooltip hasArrow label={getTooltip(card, isPack)} closeOnPointerDown>
+          <Tooltip
+            hasArrow
+            label={getTooltip(modifiedCard, isPack)}
+            closeOnPointerDown
+          >
             <Box position="relative" w={`${cardWith}px`} h={`${cardHeight}px`}>
               <CachedImage
                 borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                src={`Cards/${(card.card_id ?? 0) < 300 && isMobile ? "mobile/" : ""}${img}`}
-                alt={img}
+                src={`Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile ? "mobile/" : ""}${modifiedCard.img}`}
+                alt={modifiedCard.img}
                 w="100%"
                 height="100%"
                 onClick={(e) => {
