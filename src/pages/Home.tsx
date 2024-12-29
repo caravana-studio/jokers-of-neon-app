@@ -50,7 +50,7 @@ export const Home = () => {
               color="white"
               fontSize={{ base: 8, sm: 17, md: 23, lg: 27 }}
             >
-              BUIDL YOUR DECK, RULE THE GAME
+              BUILD YOUR DECK, RULE THE GAME
             </Heading>
             <Img
               width={{ base: "85%", sm: "75%", md: "70%" }}
