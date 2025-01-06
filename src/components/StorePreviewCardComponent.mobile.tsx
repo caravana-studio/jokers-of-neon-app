@@ -80,6 +80,7 @@ export const StorePreviewCardComponentMobile = ({
         </Flex>
         <Box w={card?.isSpecial ? "55%" : "60%"}>
           <CardImage3D
+            hideTooltip
             card={{
               ...card,
               temporary: duration === Duration.TEMPORAL,

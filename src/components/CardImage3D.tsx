@@ -8,6 +8,12 @@ import { getTooltip } from "../utils/getTooltip";
 import CachedImage from "./CachedImage";
 import { TemporalBadge } from "./TemporalBadge";
 
+interface ICardImage3DProps {
+  card: Card;
+  small?: boolean;
+  hideTooltip?: boolean;
+}
+
 const checkImageExists = (src: string): Promise<boolean> => {
   return new Promise((resolve) => {
     const img = new Image();
@@ -19,10 +25,8 @@ const checkImageExists = (src: string): Promise<boolean> => {
 export const CardImage3D = ({
   card,
   small = false,
-}: {
-  card: Card;
-  small?: boolean;
-}) => {
+  hideTooltip = false,
+}: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
 
   const [image1Available, setImage1Available] = useState(false);
@@ -42,17 +46,25 @@ export const CardImage3D = ({
 
   const showPlain = isSmallScreen && small;
 
+  const mainImg = (
+    <CachedImage
+      position={"absolute"}
+      borderRadius={borderRadius}
+      src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
+      width={"100%"}
+      zIndex={-1}
+    />
+  );
+
   return (
     <ConditionalTilt cardId={cid} small={small}>
-      <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
-        <CachedImage
-          position={"absolute"}
-          borderRadius={borderRadius}
-          src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
-          width={"100%"}
-          zIndex={-1}
-        />
-      </Tooltip>
+      {hideTooltip ? (
+        mainImg
+      ) : (
+        <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
+          {mainImg}
+        </Tooltip>
+      )}
 
       {!showPlain && image1Available && (
         <CachedImage
