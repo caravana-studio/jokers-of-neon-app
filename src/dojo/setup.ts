@@ -101,7 +101,10 @@ export async function setup({ ...config }: DojoConfig) {
           ],
         },
       },
+      order_by: [],
       dont_include_hashed_keys: false,
+      entity_models: [],
+      entity_updated_after: 0,
     };
 
     if (gameID) {
@@ -155,7 +158,7 @@ export async function setup({ ...config }: DojoConfig) {
     contractComponents,
     systemCalls: createSystemCalls({ client }, clientComponents, world),
     publish: (typedData: string, signature: ArraySignatureType) => {
-      toriiClient.publishMessage(typedData, signature, false);
+      toriiClient.publishMessage(typedData, signature);
     },
     config,
     dojoProvider,
