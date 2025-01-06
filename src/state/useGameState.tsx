@@ -113,9 +113,11 @@ export const useGameState = () => {
   const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
+  const dojoLevelScore = round?.level_score ?? 0;
   const dojoCash = game?.cash ?? 0;
-
   const score = lockedScore ?? dojoScore;
+
+  const [levelScore, setLevelScore] = useState(dojoLevelScore);
   const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const resetMultiPoints = () => {
@@ -210,6 +212,8 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
+    levelScore,
+    setLevelScore,
     apiHand: dojoHand,
     plays,
     sortBy,

@@ -5,13 +5,16 @@ import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 import { useTranslation } from "react-i18next";
 import { isTutorial } from "../utils/isTutorial";
+import { useGameContext } from "../providers/GameProvider";
+import { RollingNumber } from "./RollingNumber";
 
 export const LevelPoints = () => {
   const inTutorial = isTutorial();
   const game = useGame();
+  const gameContext = useGameContext();
   const round = useRound();
   const level = inTutorial ? 1 : game?.level ?? 0;
-  const levelScore = inTutorial ? 300 : round?.level_score ?? 0;
+  const levelScore = inTutorial ? 300 : gameContext.levelScore;
   const { t } = useTranslation(["game"]);
 
   return (
@@ -30,7 +33,7 @@ export const LevelPoints = () => {
             {t("game.level-points.target-score")}
           </Heading>
           <Heading size={{ base: "s", md: "m" }} px={2}>
-            {levelScore}
+            <RollingNumber className="italic" n={levelScore} />
           </Heading>
         </PointBox>
       </Flex>
@@ -43,9 +46,10 @@ export const LevelPoints = () => {
 
 export const MobileLevelPoints = () => {
   const game = useGame();
+  const gameContext = useGameContext();
   const round = useRound();
   const level = game?.level ?? 0;
-  const levelScore = round?.level_score ?? 0;
+  const levelScore = gameContext.levelScore;
   const { t } = useTranslation(["game"]);
 
   return (

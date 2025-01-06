@@ -82,6 +82,8 @@ export interface IGameContext {
   restartGame: () => void;
   preSelectionLocked: boolean;
   score: number;
+  levelScore: number;
+  setLevelScore: (score: number) => void;
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
@@ -324,7 +326,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPlayIsNeon(true);
       setAnimatedCard({
-        animationIndex: -1,
+        animationIndex: 1,
         suit: 5,
         idx: playEvents.neonPlayEvent.neon_cards_idx,
       });
@@ -914,6 +916,34 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onShopSkip = () => {
     resetLevel();
   };
+
+  useEffect(() => {
+    if (state.lifeSaverSpecialCardEvent) {
+      const lifeSaverEvent = state.lifeSaverSpecialCardEvent;
+      const oldScore =
+        lifeSaverEvent.old_level_score != undefined
+          ? lifeSaverEvent.old_level_score
+          : state.levelScore;
+      const newScore =
+        lifeSaverEvent.new_level_score != undefined
+          ? oldScore - lifeSaverEvent.new_level_score
+          : state.levelScore;
+
+      state.setLevelScore(oldScore);
+
+      setTimeout(() => {
+        pointsSound();
+        setAnimatedCard({
+          special_idx: lifeSaverEvent.special_idx,
+          animationIndex: 1100,
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        state.setLevelScore(newScore);
+      }, 2000);
+    }
+  }, [state.lifeSaverSpecialCardEvent]);
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
