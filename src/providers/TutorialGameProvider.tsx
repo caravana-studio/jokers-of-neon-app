@@ -66,9 +66,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   }>({});
   const state = useGameState();
   const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
-  const [transformedCards, setTransformedCards] = useState<Map<number, number>>(
-    new Map()
-  );
 
   const { setPlayIsNeon, setPlayAnimation } = state;
 
@@ -219,26 +216,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     if (modifiers.length < 1) {
       const newModifiers = [...modifiers, modifierIdx];
       setPreSelectedModifiers((prev) => {
-        let modifierCard = hand.find((c) => c.idx === modifierIdx);
-        let modifiedCard = hand.find((c) => c.idx === cardIdx);
-
-        const transformedCard = transformCardByModifierId(
-          modifierCard?.card_id!,
-          modifiedCard?.card_id!
-        );
-
-        if (transformedCard != -1) {
-          if (modifiedCard) {
-            setTransformedCards((prev) => {
-              const newMap = new Map(prev);
-              newMap.set(cardIdx, modifiedCard?.card_id ?? -1);
-              return newMap;
-            });
-            modifiedCard.card_id = transformedCard;
-            modifiedCard.img = `${transformedCard}.png`;
-          }
-        }
-
         return {
           ...prev,
           [cardIdx]: newModifiers,
@@ -248,14 +225,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const unPreSelectCard = (cardIndex: number) => {
-    const originalCardId = transformedCards.get(cardIndex);
-
-    if (originalCardId) {
-      const unPreselectedCard = hand.find((c) => c.idx === cardIndex)!;
-      unPreselectedCard.card_id = originalCardId;
-      unPreselectedCard.img = `${originalCardId}.png`;
-    }
-
     setPreSelectedModifiers((prev) => {
       return {
         ...prev,

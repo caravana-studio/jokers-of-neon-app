@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Coins } from "../pages/Game/Coins";
+import { MobileCoins } from "../pages/store/Coins";
 import { colorizeText } from "../utils/getTooltip";
 import { Background } from "./Background";
 import { MobileBottomBar } from "./MobileBottomBar";
@@ -35,7 +35,7 @@ export const StorePreviewPowerUpComponentMobile = ({
         textAlign="center"
       >
         <Flex justifyContent="flex-end" mr={3} w="100%">
-          <Coins rolling={false} />
+          <MobileCoins />
         </Flex>
         <Flex
           gap={1}
