@@ -43,7 +43,7 @@ const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
   }, [targetDate]);
 
   if (!timeLeft) {
-    return <div>Tournament's over!</div>;
+    return <Text size='l'>Tournament's over!</Text>;
   }
 
   const { days, hours, minutes, seconds } = timeLeft;

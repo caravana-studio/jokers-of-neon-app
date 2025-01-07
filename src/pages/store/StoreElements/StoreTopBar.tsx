@@ -1,12 +1,12 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
-import { IoIosInformationCircleOutline } from "react-icons/io";
-import { PriceBox } from "../../../components/PriceBox";
-import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
-import { useStore } from "../../../providers/StoreProvider";
-import { Coins } from "../../Game/Coins";
-import RerollButton from "./RerollButton";
+import { Flex } from "@chakra-ui/react";
+import CoinIcon from "../../../assets/coins.svg?component";
+import { CashSymbol } from "../../../components/CashSymbol";
 import { InformationIcon } from "../../../components/InformationIcon";
+import { PriceBox } from "../../../components/PriceBox";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useStore } from "../../../providers/StoreProvider";
+import RerollButton from "./RerollButton";
+import { MobileCoins } from "../Coins";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
@@ -14,7 +14,8 @@ interface StoreTopBarProps {
 
 export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
   const { rerollInformation } = useStore();
-  const { t } = useTranslation("store", { keyPrefix: "information" });
+  const game = useGame();
+  const cash = game?.cash ?? 0;
 
   return (
     <Flex
@@ -44,7 +45,7 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
         )}
       </Flex>
       <Flex alignItems={"center"}>
-        <Coins />
+        <MobileCoins />
       </Flex>
     </Flex>
   );

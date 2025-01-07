@@ -131,7 +131,7 @@ export const RageRoundAnimation = () => {
                 Sacrificed card:
               </Heading>
               <Box boxShadow={"0px 0px 20px 7px red"} borderRadius="20px">
-                <CachedImage src={`/Cards/big/${destroyedSpecialCardId}.png`} />
+                <CachedImage src={`/Cards/${destroyedSpecialCardId}.png`} />
               </Box>
             </animated.div>
           )}

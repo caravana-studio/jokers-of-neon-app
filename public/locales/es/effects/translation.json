@@ -29,59 +29,59 @@
   "specialCardsData": {
     "300": {
       "name": "Corazones Multiplicados",
-      "description": "Añade +2 multi por cada carta de corazones jugada"
+      "description": "Añade +2 multi a cada carta de corazones jugada"
     },
     "301": {
       "name": "Tréboles Multiplicados",
-      "description": "Añade +2 multi por cada carta de tréboles jugada"
+      "description": "Añade +2 multi a cada carta de tréboles jugada"
     },
     "302": {
       "name": "Diamantes Multiplicados",
-      "description": "Añade +2 multi por cada carta de diamantes jugada"
+      "description": "Añade +2 multi a cada carta de diamantes jugada"
     },
     "303": {
       "name": "Picas Multiplicadas",
-      "description": "Añade +2 multi por cada carta de picas jugada"
+      "description": "Añade +2 multi a cada carta de picas jugada"
     },
     "304": {
       "name": "Potenciador de Par",
-      "description": "Mejora la mano de Par en 4 niveles"
+      "description": "Mejora PAR en 4 niveles"
     },
     "305": {
       "name": "Potenciador de Doble Par",
-      "description": "Mejora la mano de Doble Par en 4 niveles"
+      "description": "Mejora DOBLE PAR en 4 niveles"
     },
     "306": {
       "name": "Potenciador de Escalera",
-      "description": "Mejora la mano de Escalera en 4 niveles"
+      "description": "Mejora ESCALERA en 4 niveles"
     },
     "307": {
       "name": "Potenciador de Color",
-      "description": "Mejora la mano de Color en 4 niveles"
+      "description": "Mejora COLOR en 4 niveles"
     },
     "308": {
-      "name": "Escalera Fácil",
-      "description": "La mano de escalera se puede hacer con 4 cartas"
+      "name": "Escalera simplificada",
+      "description": "Se necesitan 4 cartas para formar ESCALERA"
     },
     "309": {
-      "name": "Color Fácil",
-      "description": "La mano de color se puede hacer con 4 cartas"
+      "name": "Color simplificado",
+      "description": "Se necesitan 4 cartas para formar COLOR"
     },
     "310": {
       "name": "Potenciador de Joker",
-      "description": "Todos los Jokers jugados puntúan el doble y tienen doble multi"
+      "description": "Se duplican los puntos y el multi de los Jokers jugados"
     },
     "311": {
       "name": "Potenciador de Poderes",
-      "description": "Todas los PODERES jugados puntúan el doble y tienen doble multi"
+      "description": " Se duplican los puntos y el multi de todos los PODERES jugados"
     },
     "312": {
       "name": "Potenciador de Figuras",
-      "description": "Todas las cartas de FIGURAS jugadas puntúan +50 puntos"
+      "description": "Todas las FIGURAS jugadas suman +50 puntos"
     },
     "313": {
       "name": "Ases Multiplicados",
-      "description": "Añade +5 multi por cada carta de As jugada"
+      "description": "Añade +5 multi a cada AS jugado"
     },
     "314": {
       "name": "El Amor está en el Aire",
@@ -89,7 +89,7 @@
     },
     "315": {
       "name": "El Ladrón de Manos",
-      "description": "Añade +1 manos y +1 descartes a la ronda"
+      "description": "Agrega +1 jugada y +1 descarte"
     },
     "316": {
       "name": "Ayuda Extra",
@@ -97,31 +97,31 @@
     },
     "317": {
       "name": "Suerte 7",
-      "description": "Todas las cartas 7 puntúan +77 puntos"
+      "description": "Todas las cartas 7 suman +77 puntos"
     },
     "318": {
       "name": "Bono Neon",
-      "description": "Todas las cartas Neon puntúan +20 puntos. Las jugadas Neon son niveladas en 2 niveles adicionales."
+      "description": "Las cartas Neon suman +20 puntos. Ademas, se sube dos niveles a la jugada si es de Neon"
     },
     "319": {
       "name": "Fecha Límite",
-      "description": "Cuando juegues tu última mano, aumenta el nivel de juego 10 veces"
+      "description": "La última jugada sube el nivel 10 veces"
     },
     "320": {
       "name": "Ventaja Inicial",
-      "description": "La primera mano jugada puntúa +100 puntos y +10 multi"
+      "description": "La primera mano jugada suma +100 puntos y +10 multi"
     },
     "321": {
       "name": "Mano de la suerte",
-      "description": "Agrega 50 monedas por cada carta de diamantes que se juega"
+      "description": "Obtén 50 monedas por cada carta de diamantes que juegues"
     },
     "322": {
       "name": "Maestría en descartes",
-      "description": "Suma +10 al multiplicador si no tienes descartes restantes"
+      "description": "Si no te quedan descartes cada mano jugada suma +10 multi"
     },
     "323": {
       "name": "Segunda oportunidad",
-      "description": "Cuando pierdes, esta carta se destruye, pero puedes seguir jugando"
+      "description": "Esta carta permite seguir jugando aunque el nivel no se supere. Se destruye al perder"
     },
     "324": {
       "name": "Escudo del guardián",
@@ -129,23 +129,23 @@
     },
     "325": {
       "name": "Sinergia de neón",
-      "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se convierten en neón"
+      "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
     "331": {
       "name": "Atajo",
-      "description": "Reduce los puntos necesarios para superar el nivel en un 20%"
+      "description": ":os puntos necesarios para superar el nivel se reducen en un 20%"
     },
     "332": {
       "name": "Día de suerte",
-      "description": "Obtén 500 monedas extra por cada Joker en la mano al final de la ronda"
+      "description": "Obtén 500 monedas extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
     },
     "333": {
       "name": "Efecto espejo",
       "description": "Repite el efecto de la carta especial a la izquierda"
     },
     "334": {
-      "name": "Packs en oferta",
-      "description": "Los packs tienen un 30% de descuento"
+      "name": "Cajas en oferta",
+      "description": "Las cajas tienen un 30% de descuento"
     },
     "335": {
       "name": "Selecciones extra",
@@ -169,11 +169,11 @@
     },
     "340": {
       "name": "Doses salvajes",
-      "description": "Todos los 2s se consideran jokers"
+      "description": "Todos los 2s se consideran comodines"
     },
     "341": {
       "name": "Robo inmortal",
-      "description": "La primera mano descartada sube de nivel"
+      "description": "Sube de nivel la primer mano descartada"
     },
     "342": {
       "name": "Inicio protegido",
@@ -181,53 +181,69 @@
     },
     "343": {
       "name": "Potenciador de Full",
-      "description": "Mejora la mano Full en 4 niveles"
+      "description": "Mejora FULL en 4 niveles"
     },
     "344": {
       "name": "Potenciador de Trío",
-      "description": "Mejora la mano de Trío en 4 niveles"
+      "description": "Mejora TRÍO en 4 niveles"
     },
     "345": {
       "name": "Potenciador de Póker",
-      "description": "Mejora la mano de Póker en 4 niveles"
+      "description": "Mejora PÓKER en 4 niveles"
     },
     "346": {
       "name": "Potenciador de Repóker",
-      "description": "Mejora la mano de Repóker en 4 niveles"
+      "description": "Mejora REPÓKER en 4 niveles"
+    },
+    "347": {
+      "name": "Dado de Corazones",
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de corazones"
+    },
+    "348": {
+      "name": "Dado de Tréboles",
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de tréboles"
+    },
+    "349": {
+      "name": "Dado de Diamantes",
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de diamantes"
+    },
+    "350": {
+      "name": "Dado de Picas",
+      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
     }
   },
   "powerUpsData": {
     "800": {
       "name": "+25 Puntos",
-      "description": "Puntuación adicional de +25"
+      "description": "Suma +25 puntos"
     },
     "801": {
       "name": "+50 Puntos",
-      "description": "Puntuación adicional de +50"
+      "description": "Suma +50 puntos"
     },
     "802": {
       "name": "+75 Puntos",
-      "description": "Puntuación adicional de +75"
+      "description": "Suma +75 puntos"
     },
     "803": {
       "name": "+100 Puntos",
-      "description": "Puntuación adicional de +100"
+      "description": "Suma +100 puntos"
     },
     "804": {
       "name": "+3 multi",
-      "description": "Añade +3 al multi"
+      "description": "Añade +3 multi"
     },
     "805": {
       "name": "+5 multi",
-      "description": "Añade +5 al multi"
+      "description": "Añade +5 multi"
     },
     "806": {
       "name": "+7 multi",
-      "description": "Añade +7 al multi"
+      "description": "Añade +7 multi"
     },
     "807": {
       "name": "+10 multi",
-      "description": "Añade +10 al multi"
+      "description": "Añade +10 multi"
     }
   }
 }

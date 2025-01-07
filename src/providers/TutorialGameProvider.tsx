@@ -23,7 +23,9 @@ import {
   CJ,
   CK,
   CQ,
+  D10,
   D2,
+  D4,
   D5,
   H10,
   H3,
@@ -36,6 +38,8 @@ import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { LevelPokerHand } from "../types/LevelPokerHand.ts";
+import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
+import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 
 export const mockTutorialGameContext = createContext<IGameContext>({
   ...gameProviderDefaults,
@@ -45,9 +49,10 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   cash: 1000,
   discards: 1,
   sfxVolume: 100,
+  powerUps: [m5, p25],
 });
 
-export let handsLeftTutorial = 1;
+export let handsLeftTutorial = 3;
 let context: IGameContext;
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -60,10 +65,11 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     [key: number]: number[];
   }>({});
   const state = useGameState();
+  const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
 
   const { setPlayIsNeon, setPlayAnimation } = state;
 
-  const { setAnimatedCard } = useCardAnimations();
+  const { setAnimatedCard, setAnimatedPowerUp } = useCardAnimations();
 
   const playAnimationDuration = Math.max(700 - 1 - 1 * 50, 400);
   const { play: preselectCardSound } = useAudio(preselectedCardSfx);
@@ -72,8 +78,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: multiSound } = useAudio(multiSfx);
 
   const c7 = C7;
-  c7.idx = D5.idx;
-  c7.id = D5.id;
+  c7.idx = D2.idx;
+  c7.id = D2.id;
 
   const c5 = C5;
   c5.idx = H3.idx;
@@ -86,6 +92,14 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const cm = ClubModifier;
   cm.id = H7.id;
   cm.idx = H7.idx;
+
+  const d4 = D4;
+  d4.id = c5.id;
+  d4.idx = c5.idx;
+
+  const d10 = D10;
+  d10.id = D5.id;
+  d10.idx = D5.idx;
 
   const cards: Card[] = [c7, c5];
 
@@ -102,12 +116,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }
 
-  handsLeftTutorial = 1;
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [points, setPoints] = useState(0);
   const [multi, setMulti] = useState(0);
+  const [discards, setDiscards] = useState(1);
 
   context = useGameContext();
 
@@ -166,12 +180,41 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const unPreSelectPowerUp = (powerUpIdx: number) => {
+    setPreselectedPowerUps((prev) => {
+      return prev.filter((idx) => powerUpIdx !== idx);
+    });
+  };
+
+  const powerUpIsPreselected = (powerUpId: number) => {
+    return preselectedPowerUps.filter((idx) => idx === powerUpId).length > 0;
+  };
+
+  const preSelectPowerUp = (powerUpIdx: number) => {
+    if (!preselectedPowerUps.includes(powerUpIdx)) {
+      setPreselectedPowerUps((prev) => {
+        return [...prev, powerUpIdx];
+      });
+    }
+  };
+
+  const togglePreselectedPowerUp = (powerUpIdx: number) => {
+    if (!preSelectionLocked) {
+      if (powerUpIsPreselected(powerUpIdx)) {
+        unPreSelectPowerUp(powerUpIdx);
+        preselectCardSound();
+      } else if (preselectedPowerUps.length < 5) {
+        preSelectPowerUp(powerUpIdx);
+        preselectCardSound();
+      }
+    }
+  };
+
   const addModifier = (cardIdx: number, modifierIdx: number) => {
     const modifiers = preSelectedModifiers[cardIdx] ?? [];
 
     if (modifiers.length < 1) {
       const newModifiers = [...modifiers, modifierIdx];
-
       setPreSelectedModifiers((prev) => {
         return {
           ...prev,
@@ -182,12 +225,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const unPreSelectCard = (cardIndex: number) => {
-    // setPreSelectedModifiers((prev) => {
-    //   return {
-    //     ...prev,
-    //     [cardIndex]: [],
-    //   };
-    // });
+    setPreSelectedModifiers((prev) => {
+      return {
+        ...prev,
+        [cardIndex]: [],
+      };
+    });
+
     setPreSelectedCards((prev) => {
       return prev.filter((idx) => cardIndex !== idx);
     });
@@ -206,6 +250,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const animatePlay = (playEvents: PlayEvents) => {
+    const calculateDuration = (
+      events?: any[],
+      baseDuration = playAnimationDuration,
+      multiplier = 1
+    ) => (events?.length ?? 0) * baseDuration * multiplier;
+
     if (playEvents) {
       const NEON_PLAY_DURATION = playEvents.neonPlayEvent
         ? playAnimationDuration
@@ -225,6 +275,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         playAnimationDuration * (playEvents.cashEvents?.length ?? 0);
       const SPECIAL_CARDS_DURATION =
         playAnimationDuration * (playEvents.specialCards?.length ?? 0);
+
+      const POWER_UP_DURATION = calculateDuration(playEvents.powerUpEvents);
+
       const ALL_CARDS_DURATION =
         NEON_PLAY_DURATION +
         MODIFIER_SUIT_CHANGE_DURATION +
@@ -234,7 +287,34 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         COMMON_CARDS_DURATION +
         SPECIAL_CARDS_DURATION +
         CASH_DURATION +
+        POWER_UP_DURATION +
         500;
+
+      const handlePowerUps = () => {
+        playEvents.powerUpEvents?.forEach((event, index) => {
+          setTimeout(() => {
+            const { idx, points, multi } = event;
+            console.log(event);
+
+            setAnimatedPowerUp({
+              idx,
+              points,
+              multi,
+              animationIndex: 250 + index,
+            });
+
+            if (points) {
+              pointsSound();
+              setPoints((prev) => prev + points);
+            }
+
+            if (multi) {
+              multiSound();
+              setMulti((prev) => prev + multi);
+            }
+          }, playAnimationDuration * index);
+        });
+      };
 
       setPreSelectionLocked(true);
 
@@ -282,6 +362,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
           );
         });
       }
+
       setTimeout(() => {
         if (playEvents.specialSuitEvents) {
           playEvents.specialSuitEvents.forEach((event, index) => {
@@ -305,6 +386,19 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
               return newHand;
             });
           });
+        }
+
+        if (playEvents.powerUpEvents) {
+          setTimeout(
+            () => {
+              handlePowerUps();
+            },
+            NEON_PLAY_DURATION +
+              MODIFIER_SUIT_CHANGE_DURATION +
+              SPECIAL_SUIT_CHANGE_DURATION +
+              SPECIAL_CARDS_DURATION +
+              POWER_UP_DURATION
+          );
         }
 
         setTimeout(() => {
@@ -450,6 +544,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     discardSound();
     replaceCards(cards);
     clearPreSelection();
+    setDiscards(discards - 1);
   };
 
   const eventFlush = {
@@ -469,7 +564,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         points: 10,
       },
       {
-        idx: 16,
+        idx: c7.idx,
         multi: 0,
         points: 10,
       },
@@ -497,7 +592,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       },
       {
         special_idx: 301,
-        idx: 16,
+        idx: c7.idx,
         multi: 2,
       },
       {
@@ -516,8 +611,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     globalEvents: [],
     modifierSuitEvents: [{ idx: 34, suit: 1 }],
     cards: [],
-    score: 3624,
+    score: 5200,
     cashEvents: [],
+    powerUpEvents: [],
   };
 
   const eventPair = {
@@ -526,13 +622,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       points: 0,
     },
     cardScore: [
-      { idx: 16, multi: 0, points: 7 },
+      { idx: c7.idx, multi: 0, points: 7 },
       { idx: 31, multi: 0, points: 7 },
     ],
     specialCards: [
       {
         special_idx: 301,
-        idx: 16,
+        idx: c7.idx,
         multi: 2,
       },
     ],
@@ -545,16 +641,59 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     cashEvents: [],
   };
 
-  const events = [eventPair, eventFlush];
+  const eventPairPowerUps = {
+    play: {
+      multi: 1,
+      points: 0,
+    },
+    cardScore: [
+      { idx: c5.idx, multi: 0, points: 5 },
+      { idx: D5.idx, multi: 0, points: 5 },
+    ],
+    specialCards: [
+      {
+        special_idx: 301,
+        idx: c5.idx,
+        multi: 2,
+      },
+    ],
+    gameOver: false,
+    specialSuitEvents: [],
+    globalEvents: [],
+    modifierSuitEvents: [],
+    cards: [d4, d10],
+    score: 96,
+    cashEvents: [],
+    powerUpEvents: [
+      {
+        idx: 0,
+        points: 0,
+        multi: 5,
+      },
+      {
+        idx: 1,
+        points: 25,
+        multi: 0,
+      },
+    ],
+  };
+
+  const events = [eventPair, eventPairPowerUps, eventFlush];
 
   const play = () => {
     animatePlay(events[indexEvent]);
     setIndexEvent(indexEvent + 1);
+    handsLeftTutorial -= 1;
   };
 
   const clearPreSelection = () => {
     resetMultiPoints();
     setPreSelectedCards([]);
+    let powerUpLeft = context.powerUps;
+    powerUpLeft = powerUpLeft.filter(
+      (powerUp) => !preselectedPowerUps.includes(powerUp?.idx ?? 0)
+    );
+    context.powerUps = powerUpLeft;
   };
 
   const replaceCards = (cards: Card[]) => {
@@ -579,6 +718,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.score = score;
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
+  context.discards = discards;
 
   if (hand.length > 0) context.hand = hand;
 
@@ -590,6 +730,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     unPreSelectCard,
     addModifier,
     getModifiers,
+    powerUpIsPreselected,
+    togglePreselectedPowerUp,
   };
 
   return (

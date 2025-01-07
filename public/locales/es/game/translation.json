@@ -1,7 +1,7 @@
 {
   "error": {
     "labels": {
-      "error-msj": "Error al crear el juego",
+      "error-msj": "Error al crear un juego",
       "label-error-btn": "CREAR NUEVO JUEGO"
     }
   },
@@ -104,7 +104,7 @@
         "heart": "Corazón",
         "diamond": "Diamante",
         "neon": "Neón",
-        "modifier": "Modificador"
+        "modifier": "Modificadora"
       },
       "btns": {
         "special-cards": "Ver cartas especiales",

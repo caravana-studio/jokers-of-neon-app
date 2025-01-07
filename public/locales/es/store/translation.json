@@ -1,6 +1,6 @@
 {
   "information": {
-    "reroll": "Actualiza todos los objetos disponibles en la tienda actual. Solo se puede usar una vez por tienda.",
+    "reroll": "Actualiza todos los objetos disponibles en la tienda. Solo se puede usar una vez por tienda.",
     "special": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
     "traditional": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
@@ -21,7 +21,7 @@
       "cards": "Cartas",
       "loot-boxes": "Cajas",
       "utilities": "Utilidades",
-      "no-coins": "No tienes suficientes monedas"
+      "no-coins": "Monedas insuficientes"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
@@ -48,7 +48,7 @@
     "preview-card": {
       "temporal": "TEMPORAL",
       "permanent": "PERMANENTE",
-      "slot-title": "Espacio carta especial",
+      "slot-title": "Espacio especial",
       "slot-description": "Desbloquear un nuevo espacio para cartas especiales",
       "title": {
         "card-type": "Tipo:",
@@ -58,7 +58,7 @@
         "temporal-price": "Precio temporal:"
       },
       "tooltip": {
-        "no-coins": "No tienes suficientes monedas para comprar este artículo",
+        "no-coins": "Monedas insuficientes",
         "no-space": "No tienes espacios disponibles para comprar esta carta especial.",
         "no-space-power-ups": "No tienes espacios disponibles para comprar este poder."
       },
@@ -88,7 +88,7 @@
         "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
         "tooltip": {
           "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
-          "no-coins": "No tienes suficientes monedas para comprar este item"
+          "no-coins": "Monedas insuficientes"
         }
       }
     },

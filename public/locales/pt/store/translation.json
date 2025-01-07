@@ -21,7 +21,7 @@
       "cards": "Cartas",
       "loot-boxes": "Caixas",
       "utilities": "Utilidades",
-      "no-coins": "Você não tem moedas suficientes"
+      "no-coins": "Moedas insuficientes"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",
@@ -48,7 +48,7 @@
     "preview-card": {
       "temporal": "TEMPORÁRIO",
       "permanent": "PERMANENTE",
-      "slot-title": "Slot carta especial",
+      "slot-title": "Slot especial",
       "slot-description": "Desbloqueie um novo slot para cartas especiais",
       "title": {
         "card-type": "Tipo de carta:",
@@ -58,7 +58,7 @@
         "temporal-price": "Preço temporário:"
       },
       "tooltip": {
-        "no-coins": "Você não tem moedas suficientes para comprar este item",
+        "no-coins": "Moedas insuficientes",
         "no-space": "Você não tem slots disponíveis suficientes para outra carta especial.",
         "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro poder."
       },
@@ -88,7 +88,7 @@
         "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
         "tooltip": {
           "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
-          "no-coins": "Você não tem moedas suficientes para comprar este item"
+          "no-coins": "Moedas insuficientes"
         }
       }
     },

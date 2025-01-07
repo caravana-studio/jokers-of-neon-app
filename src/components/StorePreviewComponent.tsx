@@ -264,7 +264,7 @@ export const StorePreviewComponent = ({
                           {price}
                           <CashSymbol />
                         </Heading>
-                        {discountPrice && (
+                        {discountPrice !== 0 && (
                           <Heading
                             fontSize={{ base: "sm", sm: "lg" }}
                             variant="italic"

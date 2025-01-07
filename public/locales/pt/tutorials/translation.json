@@ -2,7 +2,7 @@
   "gameTutorial": {
     "action": {
       "select": "Selecione esta carta.",
-      "select-mobile": "Arraste e solte esta carta."
+      "select-mobile": "Arraste e solte."
     },
     "intro": {
       "title": "Bem-vindo ao Jokers of Neon",
@@ -15,7 +15,8 @@
     "playableHand": {
       "step-1": "Você deve usar as cartas da sua mão para formar uma mão de pôquer.",
       "step-2": "Se as cartas da sua mão não formarem uma mão de pôquer, você pode usar um descarte para obter novas cartas. Vamos tentar isso.",
-      "step-3": "Ótimo! Conseguimos um PAR de 7 para jogar, vamos lá!",
+      "pair": "Ótimo! Conseguimos um PAR de 7 para jogar, vamos lá!",
+      "secondPair": "Agora temos um PAR de 5's para jogar, vamos lá!",
       "straight": "Olha, agora conseguimos uma SEQUÊNCIA para jogar, vamos lá!",
       "plays": "Você pode clicar aqui para ver as possíveis mãos de pôquer que pode formar."
     },
@@ -42,6 +43,11 @@
       "title": "Cartas Modificadoras",
       "content": "Oh, você conseguiu um modificador de naipe. Se você aplicá-lo ao 10, obterá um ROYAL FLUSH. Vamos tentar!",
       "drag": "Arraste e solte o modificador de naipe de paus sobre o 10, depois clique em 'Próximo' para continuar."
+    },
+    "power-ups": {
+      "title": "Potencializadores",
+      "content": "Os power-ups concedem pontos extras e aumentam seu multiplicador. Use-os uma vez e depois compre mais na loja.",
+      "select": "Selecione esse potencializador"
     }
   },
   "storeTutorial": {

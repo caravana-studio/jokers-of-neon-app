@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import CoinsIcon from "../../assets/coins.svg?component";
@@ -24,7 +24,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
       />
       <Heading
         variant={"italic"}
-        size={{base: 's', sm: "s"}}
+        size={{ base: "s", sm: "s" }}
         sx={{
           ml: 2,
           position: "relative",
@@ -41,10 +41,31 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
           },
         }}
       >
-        {t('store.labels.coins').toString() + " "}
+        {t("store.labels.coins").toString() + " "}
         {rolling ? <RollingNumber className="italic" n={cash} /> : cash}
         <CashSymbol />
       </Heading>
+    </Flex>
+  );
+};
+
+export const MobileCoins = () => {
+  const game = useGame();
+  const cash = game?.cash ?? 0;
+  return (
+    <Flex flexDirection="row" alignItems="center" gap={1}>
+      <CoinsIcon height={25} />
+      <Flex
+        gap={1.5}
+        alignItems="center"
+        justifyContent="center"
+        color="white"
+        minWidth={{ base: "50px", sm: "70px" }}
+        p={{ base: "5px 5px", sm: "15px 6px" }}
+      >
+        <Text fontSize="18px" mt={1}>{cash}</Text>
+        <CashSymbol />
+      </Flex>
     </Flex>
   );
 };

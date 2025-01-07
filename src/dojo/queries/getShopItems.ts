@@ -84,6 +84,7 @@ const getPowerUp = (txPowerUp: any) => {
     game_id: parseInt(txPowerUp.game_id),
     idx: parseInt(txPowerUp.idx),
     power_up_id: parseInt(txPowerUp.power_up_id),
+    discount_cost: parseInt(txPowerUp.discount_cost),
     cost: parseInt(txPowerUp.cost),
     purchased: txPowerUp.purchased,
     img: `/powerups/${txPowerUp.power_up_id}.png`,

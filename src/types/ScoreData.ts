@@ -36,6 +36,7 @@ export interface LevelEvent {
 export interface MultiPoints {
   multi?: number;
   points?: number;
+  negative?: boolean;
 }
 
 export interface CardScore extends MultiPoints {
