@@ -15,6 +15,7 @@ export const LevelPoints = () => {
   const round = useRound();
   const level = inTutorial ? 1 : game?.level ?? 0;
   const levelScore = inTutorial ? 300 : gameContext.levelScore;
+  const lifeSaverEvent = gameContext.lifeSaverSpecialCardEvent;
   const { t } = useTranslation(["game"]);
 
   return (
@@ -33,7 +34,21 @@ export const LevelPoints = () => {
             {t("game.level-points.target-score")}
           </Heading>
           <Heading size={{ base: "s", md: "m" }} px={2}>
-            <RollingNumber className="italic" n={levelScore} />
+            {lifeSaverEvent &&
+            lifeSaverEvent.new_level_score &&
+            lifeSaverEvent.old_level_score ? (
+              <RollingNumber
+                className="italic"
+                from={lifeSaverEvent.old_level_score}
+                n={
+                  lifeSaverEvent.old_level_score -
+                  lifeSaverEvent.new_level_score
+                }
+                delay={1000}
+              />
+            ) : (
+              levelScore
+            )}
           </Heading>
         </PointBox>
       </Flex>
@@ -65,7 +80,10 @@ export const MobileLevelPoints = () => {
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
-          {t("game.level-points.score", { score: levelScore, level: level })}
+          {t("game.level-points.score", {
+            score: levelScore,
+            level: level,
+          })}
         </Text>
         <Score />
       </Flex>

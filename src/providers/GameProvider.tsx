@@ -920,13 +920,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (state.lifeSaverSpecialCardEvent) {
       const lifeSaverEvent = state.lifeSaverSpecialCardEvent;
-      const oldScore = lifeSaverEvent.old_level_score ?? state.levelScore;
-      const newScore =
-        lifeSaverEvent.new_level_score != undefined
-          ? oldScore - lifeSaverEvent.new_level_score
-          : state.levelScore;
-
-      state.setLevelScore(oldScore);
 
       setTimeout(() => {
         pointsSound();
@@ -934,11 +927,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           special_idx: lifeSaverEvent.special_idx,
           animationIndex: 0,
         });
-      }, 1000);
-
-      setTimeout(() => {
-        state.setLevelScore(newScore);
-      }, 2000);
+      }, 0);
     }
   }, [state.lifeSaverSpecialCardEvent]);
 

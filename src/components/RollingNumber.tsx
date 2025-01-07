@@ -4,17 +4,19 @@ interface RollingNumberProps {
   from?: number;
   n: number;
   className?: string;
+  delay?: number;
 }
 
 export const RollingNumber = ({
   n,
   className = "headline",
   from = 0,
+  delay = 100,
 }: RollingNumberProps) => {
   const { number } = useSpring({
     from: { number: from },
     number: n,
-    delay: 100,
+    delay: delay,
     config: { mass: 1, tension: 26, friction: 10 },
   });
   return (
