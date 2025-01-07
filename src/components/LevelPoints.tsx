@@ -12,7 +12,6 @@ export const LevelPoints = () => {
   const inTutorial = isTutorial();
   const game = useGame();
   const gameContext = useGameContext();
-  const round = useRound();
   const level = inTutorial ? 1 : game?.level ?? 0;
   const levelScore = inTutorial ? 300 : gameContext.levelScore;
   const lifeSaverEvent = gameContext.lifeSaverSpecialCardEvent;

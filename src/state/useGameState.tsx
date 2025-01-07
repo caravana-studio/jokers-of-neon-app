@@ -139,6 +139,10 @@ export const useGameState = () => {
     }
   }, [dojoPowerUps]);
 
+  useEffect(() => {
+    setLevelScore(dojoLevelScore);
+  }, [dojoLevelScore]);
+
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
     const multi =
