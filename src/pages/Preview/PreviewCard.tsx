@@ -107,6 +107,7 @@ const PreviewCard = () => {
 
   const image = (
     <CardImage3D
+      hideTooltip
       card={{
         ...card,
         temporary: duration === Duration.TEMPORAL,
