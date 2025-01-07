@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
 import SpineAnimation from "./SpineAnimation";
+import { isMobile } from "react-device-detect";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -57,16 +58,20 @@ export const Background = ({
       }}
     >
       {type === "home" && (
-        <Flex width={"100vw"} height={"100svh"} position={"absolute"}>
-          <SpineAnimation
-            jsonUrl={`/spine-animations/bg/HomeBg.json`}
-            atlasUrl={`/spine-animations/bg/HomeBg.atlas`}
-            initialAnimation={"animation"}
-            loopAnimation={"animation"}
-            scale={2}
-            yOffset={-800}
-            home
-          />
+        <Flex position={"absolute"} width={"100%"} height={"100%"}>
+          <Flex p={0} m={0}>
+            <SpineAnimation
+              jsonUrl={`/spine-animations/bg/HomeBg.json`}
+              atlasUrl={`/spine-animations/bg/HomeBg.atlas`}
+              initialAnimation={"animation"}
+              loopAnimation={"animation"}
+              scale={isMobile ? 1 : 2}
+              yOffset={isMobile ? -500 : -800}
+              width={isMobile ? 350 : 500}
+              height={isMobile ? 800 : 1500}
+              home
+            />
+          </Flex>
         </Flex>
       )}
 
