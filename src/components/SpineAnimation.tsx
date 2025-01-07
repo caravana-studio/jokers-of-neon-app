@@ -223,8 +223,8 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           style={{
-            width: !home ? "100%" : "auto",
-            height: !home ? "100%" : "auto",
+            width: "100%",
+            height: "100%",
             cursor: isPurchased ? "default" : "pointer",
             opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
           }}

@@ -57,7 +57,7 @@ export const Background = ({
       }}
     >
       {type === "home" && (
-        <Flex width={"100%"} height={"100%"} position={"absolute"}>
+        <Flex width={"100vw"} height={"100svh"} position={"absolute"}>
           <SpineAnimation
             jsonUrl={`/spine-animations/bg/HomeBg.json`}
             atlasUrl={`/spine-animations/bg/HomeBg.atlas`}
