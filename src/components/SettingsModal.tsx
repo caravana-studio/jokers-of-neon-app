@@ -3,6 +3,10 @@ import {
   Button,
   Flex,
   Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -26,6 +30,9 @@ import AudioPlayer from "./AudioPlayer";
 import { MdGraphicEq } from "react-icons/md";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Speed } from "../enums/speed";
+import { useState } from "react";
+import { languageMap } from "../constants/language";
+import { animationSpeedLabels } from "../constants/animationSpeed";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -51,8 +58,13 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   const animSpeedLbl = t("settings-modal.anim-speed");
 
   const changeLanguage = (lng: string) => {
+    setSelectedLanguage(lng);
     i18n.changeLanguage(lng);
   };
+
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language.toString().substring(0, 2)
+  );
 
   return (
     <Modal isOpen={true} onClose={close || (() => {})} size={"xl"} isCentered>
@@ -74,17 +86,40 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size={"md"} width={"50%"}>
                 {languageLbl}
               </Text>
-              <Select
-                size="lg"
-                variant="outline"
-                focusBorderColor="teal.500"
-                onChange={(e) => changeLanguage(e.target.value)}
-                defaultValue={i18n.language.toString().substring(0, 2)}
-              >
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="pt">Português</option>
-              </Select>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  size="sm"
+                  bg="gray.800"
+                  color="white"
+                  width={"100%"}
+                  variant={"defaultOutline"}
+                >
+                  {languageMap[selectedLanguage]}
+                </MenuButton>
+                <MenuList
+                  bg="black"
+                  color="white"
+                  border="2px solid teal.500"
+                  zIndex={10000}
+                >
+                  {Object.keys(languageMap).map((languageKey) => {
+                    return (
+                      <MenuItem
+                        onClick={() => changeLanguage(languageKey)}
+                        _focus={{
+                          bg: "black",
+                          border: "none",
+                          boxShadow: "none",
+                          outline: "none",
+                        }}
+                      >
+                        {languageMap[languageKey]}
+                      </MenuItem>
+                    );
+                  })}
+                </MenuList>
+              </Menu>
             </Flex>
             <Flex gap={2} alignItems={"center"}>
               <Text size="md" width={"50%"}>
@@ -150,23 +185,44 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {animSpeedLbl}
               </Text>
-              <Select
-                size="lg"
-                variant="outline"
-                focusBorderColor="teal.500"
-                value={animationSpeed}
-                onChange={(evt) => setAnimationSpeed(evt.target.value as Speed)}
-              >
-                <option value={Speed.NORMAL}>
-                  {t("settings-modal.speed.normal")}
-                </option>
-                <option value={Speed.FAST}>
-                  {t("settings-modal.speed.fast")}
-                </option>
-                <option value={Speed.FASTEST}>
-                  {t("settings-modal.speed.fastest")}
-                </option>
-              </Select>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  size="sm"
+                  bg="gray.800"
+                  color="white"
+                  width={"100%"}
+                  variant={"defaultOutline"}
+                >
+                  {t(animationSpeedLabels[animationSpeed])}
+                </MenuButton>
+                <MenuList
+                  bg="black"
+                  color="white"
+                  border="2px solid teal.500"
+                  zIndex={10000}
+                >
+                  {Object.entries(animationSpeedLabels).map(
+                    ([speedKey, label]) => {
+                      const speed = speedKey as Speed;
+                      return (
+                        <MenuItem
+                          key={speed}
+                          onClick={() => setAnimationSpeed(speed)}
+                          _focus={{
+                            bg: "black",
+                            border: "none",
+                            boxShadow: "none",
+                            outline: "none",
+                          }}
+                        >
+                          {t(label)}
+                        </MenuItem>
+                      );
+                    }
+                  )}
+                </MenuList>
+              </Menu>
             </Flex>
           </Flex>
         </ModalBody>
