@@ -86,34 +86,14 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size={"md"} width={"50%"}>
                 {languageLbl}
               </Text>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  size="sm"
-                  bg="gray.800"
-                  color="white"
-                  width={"100%"}
-                  variant={"defaultOutline"}
-                >
+              <Menu variant={"menuOutline"}>
+                <MenuButton width={"100%"}>
                   {languageMap[selectedLanguage]}
                 </MenuButton>
-                <MenuList
-                  bg="black"
-                  color="white"
-                  border="2px solid teal.500"
-                  zIndex={10000}
-                >
+                <MenuList zIndex={10000}>
                   {Object.keys(languageMap).map((languageKey) => {
                     return (
-                      <MenuItem
-                        onClick={() => changeLanguage(languageKey)}
-                        _focus={{
-                          bg: "black",
-                          border: "none",
-                          boxShadow: "none",
-                          outline: "none",
-                        }}
-                      >
+                      <MenuItem onClick={() => changeLanguage(languageKey)}>
                         {languageMap[languageKey]}
                       </MenuItem>
                     );
@@ -185,23 +165,11 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {animSpeedLbl}
               </Text>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  size="sm"
-                  bg="gray.800"
-                  color="white"
-                  width={"100%"}
-                  variant={"defaultOutline"}
-                >
+              <Menu variant={"menuOutline"}>
+                <MenuButton width={"100%"}>
                   {t(animationSpeedLabels[animationSpeed])}
                 </MenuButton>
-                <MenuList
-                  bg="black"
-                  color="white"
-                  border="2px solid teal.500"
-                  zIndex={10000}
-                >
+                <MenuList zIndex={10000}>
                   {Object.entries(animationSpeedLabels).map(
                     ([speedKey, label]) => {
                       const speed = speedKey as Speed;
@@ -209,12 +177,6 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                         <MenuItem
                           key={speed}
                           onClick={() => setAnimationSpeed(speed)}
-                          _focus={{
-                            bg: "black",
-                            border: "none",
-                            boxShadow: "none",
-                            outline: "none",
-                          }}
                         >
                           {t(label)}
                         </MenuItem>
