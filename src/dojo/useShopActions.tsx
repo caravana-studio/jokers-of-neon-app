@@ -2,6 +2,7 @@ import { DESTROYED_SPECIAL_CARD_EVENT } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
+import { getSpecialLifeSaverEvent } from "../utils/playEvents/getSpecialLifeSaverEvent";
 import {
   failedTransactionToast,
   showTransactionToast,
@@ -31,17 +32,21 @@ export const useShopActions = () => {
         const event = tx.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT
         );
+
+        const lifeSaverSpecialCardEvents = getSpecialLifeSaverEvent(tx.events);
+
         return {
           success: true,
           cards: getCardsFromEvents(tx.events),
           destroyedSpecialCard: event && getNumberValueFromEvent(event, 3),
+          lifeSaverSpecialCardEvents: lifeSaverSpecialCardEvents,
           powerUps: getPowerUpsFromEvents(tx.events),
         };
       } else {
         return {
           success: false,
           cards: [],
-          powerUps: []
+          powerUps: [],
         };
       }
     } catch (e) {
@@ -50,7 +55,7 @@ export const useShopActions = () => {
       return {
         success: false,
         cards: [],
-        powerUps: []
+        powerUps: [],
       };
     }
   };
@@ -82,16 +87,13 @@ export const useShopActions = () => {
     }
   };
 
-  const buyPowerUp = async (
-    gameId: number,
-    power_up_idx: number,
-  ) => {
+  const buyPowerUp = async (gameId: number, power_up_idx: number) => {
     try {
       showTransactionToast();
       const response = await client.shop_system.buyPowerUpItem(
         account,
         gameId,
-        power_up_idx,
+        power_up_idx
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash);

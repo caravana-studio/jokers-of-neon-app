@@ -17,6 +17,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { LifeSaverSpecialCardEvent } from "../utils/playEvents/getSpecialLifeSaverEvent";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -48,6 +49,8 @@ export const useGameState = () => {
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
+  const [lifeSaverSpecialCardEvent, setLifeSaverSpecialCardEvent] =
+    useState<LifeSaverSpecialCardEvent>({});
   const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
 
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
@@ -110,9 +113,11 @@ export const useGameState = () => {
   const username = lsUser;
 
   const dojoScore = round?.player_score ?? 0;
+  const dojoLevelScore = round?.level_score ?? 0;
   const dojoCash = game?.cash ?? 0;
-
   const score = lockedScore ?? dojoScore;
+
+  const [levelScore, setLevelScore] = useState(dojoLevelScore);
   const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const resetMultiPoints = () => {
@@ -133,6 +138,10 @@ export const useGameState = () => {
       setPowerUps(dojoPowerUps);
     }
   }, [dojoPowerUps]);
+
+  useEffect(() => {
+    setLevelScore(dojoLevelScore);
+  }, [dojoLevelScore]);
 
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
@@ -207,6 +216,8 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
+    levelScore,
+    setLevelScore,
     apiHand: dojoHand,
     plays,
     sortBy,
@@ -225,6 +236,8 @@ export const useGameState = () => {
     setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    lifeSaverSpecialCardEvent,
+    setLifeSaverSpecialCardEvent,
     levelUpHand,
     setLevelUpHand,
     specialSwitcherOn,

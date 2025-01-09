@@ -33,7 +33,10 @@ export const AnimatedCard = ({
   const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
   const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
   const cash = useMemo(() => animatedCard?.cash, [animatedCard?.cash]);
-  const negative = useMemo(() => animatedCard?.negative ?? false, [animatedCard?.negative]);
+  const negative = useMemo(
+    () => animatedCard?.negative ?? false,
+    [animatedCard?.negative]
+  );
   const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
@@ -86,10 +89,7 @@ export const AnimatedCard = ({
   }));
 
   useEffect(() => {
-    if (
-      (points || multi || suit || cash || isNeon) &&
-      animatedCardIdxArray?.includes(idx)
-    ) {
+    if (animatedCardIdxArray?.includes(idx)) {
       const animateColor = getColor();
       cardApi.start({
         from: {
@@ -193,7 +193,8 @@ export const AnimatedCard = ({
               }}
               zIndex={99}
             >
-              {negative ? '-' : '+'}{points || multi || (isSpecial && cash)}
+              {negative ? "-" : "+"}
+              {points || multi || (isSpecial && cash)}
               {isSpecial && cash && <CashSymbol />}
             </Heading>
           </animated.div>

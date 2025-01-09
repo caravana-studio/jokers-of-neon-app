@@ -45,6 +45,7 @@ import { changeCardSuit } from "../utils/changeCardSuit";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { LifeSaverSpecialCardEvent } from "../utils/playEvents/getSpecialLifeSaverEvent.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
@@ -80,6 +81,8 @@ export interface IGameContext {
   restartGame: () => void;
   preSelectionLocked: boolean;
   score: number;
+  levelScore: number;
+  setLevelScore: (score: number) => void;
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
@@ -100,6 +103,10 @@ export interface IGameContext {
   setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
+  lifeSaverSpecialCardEvent: LifeSaverSpecialCardEvent;
+  setLifeSaverSpecialCardEvent: (
+    specialLifeSaverEvent: LifeSaverSpecialCardEvent
+  ) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
   setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
   specialSwitcherOn: boolean;
@@ -315,7 +322,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
       setPlayIsNeon(true);
       setAnimatedCard({
-        animationIndex: -1,
+        animationIndex: 1,
         suit: 5,
         idx: playEvents.neonPlayEvent.neon_cards_idx,
       });
@@ -888,6 +895,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onShopSkip = () => {
     resetLevel();
   };
+
+  useEffect(() => {
+    if (state.lifeSaverSpecialCardEvent) {
+      const lifeSaverEvent = state.lifeSaverSpecialCardEvent;
+
+      setTimeout(() => {
+        pointsSound();
+        setAnimatedCard({
+          special_idx: lifeSaverEvent.special_idx,
+          animationIndex: 0,
+        });
+      }, 0);
+    }
+  }, [state.lifeSaverSpecialCardEvent]);
 
   const onDiscardSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
