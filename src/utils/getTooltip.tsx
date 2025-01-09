@@ -49,10 +49,14 @@ export const colorizeText = (inputText: string) => {
 
 export const getTooltip = (card: Card, isPack = false) => {
   const { name, description } = getCardData(card, isPack);
-  const tooltip = `${name}: ${description}`;
+
+  if (card.isModifier) {
+    return <>{colorizeText(description)}</>;
+  }
+
   return (
     <>
-      {colorizeText(card.isModifier || card.isSpecial ? description : tooltip)}
+      <strong>{name}</strong>: {colorizeText(description)}
     </>
   );
 };
