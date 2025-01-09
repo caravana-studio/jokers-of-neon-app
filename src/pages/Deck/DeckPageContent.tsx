@@ -11,6 +11,7 @@ import { DeckCardsGrid } from "./DeckCardsGrid";
 import { DeckFilters } from "./DeckFilters";
 import { DeckHeading } from "./DeckHeading";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface DeckPageContentProps {
   inStore?: boolean;
@@ -23,6 +24,7 @@ export const DeckPageContent = ({
 }: DeckPageContentProps) => {
   const { filterButtonsState } = useDeckFilters();
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
 
   const [cardToBurn, setCardToBurn] = useState<Card>();
 
@@ -81,6 +83,9 @@ export const DeckPageContent = ({
           >
             {burn && (
               <Button
+                fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
+                size={isSmallScreen ? "xs" : "md"}
+                lineHeight={1.6}
                 isDisabled={
                   cardToBurn === undefined ||
                   cash < effectiveCost ||
