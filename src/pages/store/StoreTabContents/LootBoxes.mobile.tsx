@@ -2,7 +2,6 @@ import { Box, Button, Flex, Heading, keyframes, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
@@ -95,12 +94,11 @@ export const LootBoxesMobile = () => {
             <Button
               onClick={() => {
                 setBuyDisabled(true);
-                spineAnimationRef.current?.updateAnimationState();
+                setLockRedirection(true);
                 buyPack(pack)
                   .then((response) => {
                     if (response) {
                       spineAnimationRef.current?.playOpenBoxAnimation();
-                      setLockRedirection(true);
                     } else {
                       setBuyDisabled(false);
                     }
