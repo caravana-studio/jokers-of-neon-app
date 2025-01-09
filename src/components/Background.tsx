@@ -57,7 +57,7 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
-      {type === "home" && (
+      {/* {type === "home" && (
         <Flex position={"absolute"} width={"100%"} height={"100%"}>
           <Flex p={0} m={0}>
             <SpineAnimation
@@ -73,7 +73,7 @@ export const Background = ({
             />
           </Flex>
         </Flex>
-      )}
+      )} */}
 
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
