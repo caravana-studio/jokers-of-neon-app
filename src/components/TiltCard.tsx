@@ -33,6 +33,7 @@ interface ICardProps {
   className?: string;
   used?: boolean;
   onDeck?: boolean;
+  onHold?: () => void;
 }
 
 export const TiltCard = ({
@@ -44,6 +45,7 @@ export const TiltCard = ({
   className,
   used = false,
   onDeck = false,
+  onHold,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -178,7 +180,7 @@ export const TiltCard = ({
             sx={{
               zIndex: 5 - index,
               top: `-${MODIFIERS_OFFSET}px`,
-              left: `-${(MODIFIERS_OFFSET) * (index + 1)}px`,
+              left: `-${MODIFIERS_OFFSET * (index + 1)}px`,
               position: "absolute",
             }}
           >
@@ -213,7 +215,11 @@ export const TiltCard = ({
   // when is a special card, prefix with s and use idx instead of id
   const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
 
-  return <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>;
+  return (
+    <DraggableCard id={cardId} onCardHold={onHold}>
+      {tiltCardComponent}
+    </DraggableCard>
+  );
 };
 
 const ConditionalTilt = ({

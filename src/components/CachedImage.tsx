@@ -1,6 +1,6 @@
-import React, { useEffect, useState, forwardRef } from "react";
-import { getImageFromCache } from "../utils/preloadImages";
 import { Image, ImageProps } from "@chakra-ui/react";
+import { forwardRef, useEffect, useState } from "react";
+import { getImageFromCache } from "../utils/preloadImages";
 
 interface CachedImageProps extends Omit<ImageProps, "src"> {
   src: string;
@@ -34,7 +34,16 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
       return null;
     }
 
-    return <Image ref={ref} src={imageSrc} alt={alt} {...props} />;
+    return (
+      <Image
+        ref={ref}
+        src={imageSrc}
+        onContextMenu={(e) => e.preventDefault()}
+        onTouchStart={(e) => e.preventDefault()}
+        alt={alt}
+        {...props}
+      />
+    );
   }
 );
 
