@@ -75,15 +75,13 @@ export const preloadImages = async (urls?: string[]) => {
     const cache = await caches.open(CACHE_NAME);
 
     const cachePromises = imageUrls.map(async (url) => {
-      const cachedResponse = await cache.match(url);
-      if (!cachedResponse) {
-        // If not in cache, fetch and add to cache
-        const response = await fetch(url, { cache: "reload" });
-        if (response.ok) {
-          await cache.put(url, response.clone());
-        } else {
-          console.warn(`Failed to preload ${url}`);
-        }
+      // Always fetch the new image to check for updates
+      const response = await fetch(url, { cache: "reload" });
+
+      if (response.ok) {
+        await cache.put(url, response.clone()); // Update cache with new response
+      } else {
+        console.warn(`Failed to preload ${url}`);
       }
     });
 
