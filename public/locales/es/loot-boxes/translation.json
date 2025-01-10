@@ -13,12 +13,12 @@
     "3": {
       "name": "Caja de Jokers",
       "description": "Más posibilidades de obtener un joker",
-      "details": "15% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
+      "details": "15% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n84% de probabilidad de obtener una carta tradicional\nTamaño de la caja 5"
     },
     "4": {
       "name": "Caja de Cartas Especiales",
       "description": "Más posibilidades de obtener una carta especial",
-      "details": "15% de probabilidad de obtener una carta especial\n20% de probabilidad de obtener un modificador\n65% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
+      "details": "25% de probabilidad de obtener una carta especial\n15% de probabilidad de obtener un modificador\n60% de probabilidad de obtener una carta tradicional\nTamaño de la caja 3"
     },
     "5": {
       "name": "Caja de Modificadores",
@@ -33,12 +33,12 @@
     "7": {
       "name": "Caja del Joker Engañoso",
       "description": "1 joker garantizado",
-      "details": "1 joker garantizado\n6% de probabilidad de obtener un joker\n2% de probabilidad de obtener un joker de neón\n92% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
+      "details": "1 joker garantizado\n9% de probabilidad de obtener un joker\n1% de probabilidad de obtener un joker de neón\n90% de probabilidad de obtener una carta tradicional\nTamaño de la caja 4"
     },
     "8": {
       "name": "Caja de los Amantes",
       "description": "Contiene solo cartas tradicionales y modificadoras de corazones.",
-      "details": "45% de probabilidad de obtener cartas de Corazones\n30% de probabilidad de obtener el As de Corazones\n10% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"
+      "details": "55% de probabilidad de obtener cartas de Corazones\n20% de probabilidad de obtener el As de Corazones\n10% de probabilidad de obtener cartas de Corazones de Neon\n10% de probabilidad de obtener un modificador del palo de Corazones\n5% de probabilidad de obtener la carta especial 'Todas las cartas a corazones'\nTamaño de la caja 5"
     },
     "9": {
       "name": "Caja de Apuesta Especial",
