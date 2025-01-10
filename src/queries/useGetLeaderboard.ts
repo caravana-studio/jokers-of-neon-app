@@ -62,7 +62,7 @@ const fetchGraphQLData = async (): Promise<LeaderboardResponse> => {
 
 export const useGetLeaderboard = (gameId?: number) => {
   const queryResponse = useQuery<LeaderboardResponse>(
-    [LEADERBOARD_QUERY_KEY],
+    [LEADERBOARD_QUERY_KEY, gameId],
     () => fetchGraphQLData()
   );
   const { data } = queryResponse;
