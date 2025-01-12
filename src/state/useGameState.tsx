@@ -84,7 +84,7 @@ export const useGameState = () => {
       const newPowerUps = [...prev, powerUp];
       return newPowerUps;
     });
-  }
+  };
 
   const {
     setup: {
@@ -94,12 +94,12 @@ export const useGameState = () => {
   } = useDojo();
 
   useEffect(() => {
-    if (client && account && plays.length == 0) {
+    if (client && account) {
       getPlayerPokerHands(client, gameId).then((plays: any) => {
         if (plays != undefined) setPlays(plays);
       });
     }
-  }, [client, account, gameId, plays]);
+  }, [client, account, gameId, game?.level]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 

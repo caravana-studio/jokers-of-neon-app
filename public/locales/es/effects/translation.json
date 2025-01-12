@@ -72,8 +72,8 @@
       "description": "Se duplican los puntos y el multi de los Jokers jugados"
     },
     "311": {
-      "name": "Potenciador de Poderes",
-      "description": " Se duplican los puntos y el multi de todos los PODERES jugados"
+      "name": "Potenciador de Power-ups",
+      "description": " Se duplican los puntos y el multi de todos los Power-ups jugados"
     },
     "312": {
       "name": "Potenciador de Figuras",

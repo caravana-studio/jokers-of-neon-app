@@ -6,12 +6,13 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { AnimatedCard } from "./AnimatedCard.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
-import { FilledUnlockedSlot, UnlockedSlot } from "./UnlockedSlot.tsx";
+import { UnlockedSlot } from "./UnlockedSlot.tsx";
 
 export const SpecialCardsRow = () => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
@@ -163,18 +164,11 @@ export const SpecialCardsRow = () => {
         })}
         {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
           <Flex key={`unlocked-slot-${index}`} maxWidth={`${slotWidth}%`}>
-            {isRageRound ? (
-              <UnlockedSlot
-                key={`unlocked-${index}`}
-                scale={specialCardScale - specialCardScale * 0.1}
-                backgroundColor="black"
-              />
-            ) : (
-              <FilledUnlockedSlot
-                key={`unlocked-${index}`}
-                scale={specialCardScale - specialCardScale * 0.1}
-              />
-            )}
+            <UnlockedSlot
+              key={`unlocked-${index}`}
+              backgroundColor={isRageRound ? "black" : BACKGROUND_BLUE}
+              scale={specialCardScale - specialCardScale * 0.1}
+            />
           </Flex>
         ))}
         {Array.from({ length: lockedSlots }).map((_, index) => (
