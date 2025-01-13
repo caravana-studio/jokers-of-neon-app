@@ -77,28 +77,35 @@ const fetchModImages = async (modId: string): Promise<string[]> => {
   const baseUrl = import.meta.env.VITE_MOD_URL + modId;
   const imageUrls: string[] = [];
 
-  try {
-    const response = await fetch(baseUrl);
+  const fetchDirectory = async (url: string): Promise<void> => {
+    try {
+      const response = await fetch(url);
 
-    if (!response.ok) {
-      console.error(
-        `Failed to fetch mod resources for ${modId}: ${response.statusText}`
-      );
-      return [];
+      if (!response.ok) {
+        console.error(
+          `Failed to fetch directory contents: ${response.statusText}`
+        );
+        return;
+      }
+
+      const data = await response.json();
+
+      for (const item of data) {
+        if (item.type === "file" && item.name.endsWith(".png")) {
+          imageUrls.push(item.download_url);
+        } else if (item.type === "dir") {
+          await fetchDirectory(item.url);
+        }
+      }
+    } catch (error) {
+      console.error(`Error fetching directory contents: ${error}`);
     }
+  };
 
-    const data = await response.json();
+  // Start fetching from the base URL
+  await fetchDirectory(baseUrl);
 
-    // Filter only `.png` files and extract the `download_url`
-    data
-      .filter((item: any) => item.type === "file" && item.name.endsWith(".png"))
-      .forEach((item: any) => imageUrls.push(item.download_url));
-
-    return imageUrls;
-  } catch (error) {
-    console.error("Error fetching mod images:", error);
-    return [];
-  }
+  return imageUrls;
 };
 
 export const preloadImages = async (urls?: string[]) => {
