@@ -24,6 +24,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
+import { DocsContentMobile } from "./pages/Docs";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -92,6 +93,10 @@ function App() {
                       <DeckPage />
                     </StoreProvider>
                   }
+                />
+                <Route
+                  path="/docs"
+                  element={<DocsContentMobile lastIndexTab={0} />}
                 />
               </Routes>
             </AudioPlayerProvider>
