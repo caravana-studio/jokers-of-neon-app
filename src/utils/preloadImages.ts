@@ -8,7 +8,7 @@ import {
 
 const CACHE_NAME = "image-cache";
 
-const getDefaultImageUrls = (): string[] => {
+const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
 
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
@@ -65,11 +65,46 @@ const getDefaultImageUrls = (): string[] => {
   imageUrls.push("store/slot-image.png");
   imageUrls.push("store/unlocked-slot.png");
 
+  const modId = "mod-test";
+
+  const externalImageUrls = await fetchModImages(modId);
+  imageUrls.push(...externalImageUrls);
+
   return imageUrls;
 };
 
+const fetchModImages = async (modId: string): Promise<string[]> => {
+  const baseUrl =
+    "https://api.github.com/repos/caravana-studio/jon-resources-mod-test/contents/public/resources/" +
+    modId;
+  const imageUrls: string[] = [];
+
+  try {
+    const response = await fetch(baseUrl);
+
+    if (!response.ok) {
+      console.error(
+        `Failed to fetch mod resources for ${modId}: ${response.statusText}`
+      );
+      return [];
+    }
+
+    const data = await response.json();
+
+    // Filter only `.png` files and extract the `download_url`
+    data
+      .filter((item: any) => item.type === "file" && item.name.endsWith(".png"))
+      .forEach((item: any) => imageUrls.push(item.download_url));
+
+    return imageUrls;
+  } catch (error) {
+    console.error("Error fetching mod images:", error);
+    return [];
+  }
+};
+
 export const preloadImages = async (urls?: string[]) => {
-  const imageUrls: string[] = urls ?? getDefaultImageUrls();
+  const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
 
   try {
     const cache = await caches.open(CACHE_NAME);
