@@ -51,6 +51,7 @@
   },
   "mods": {
     "title": "Select the Jokers of Neon version you want to play",
-    "back": "Back"
+    "back": "Back",
+    "community-mods": "Community mods"
   }
 }

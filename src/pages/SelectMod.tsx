@@ -1,12 +1,18 @@
-import { Button, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
-import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
 
-const MODS = [
+const OFFICIAL_MODS = [
   {
     title: "Classic Jokers of Neon",
     id: "classic",
@@ -20,9 +26,19 @@ const MODS = [
       "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",
     url: "https://ls.jokersofneon.com",
   },
+];
+
+const MODS = [
   {
     title: "Pepe mod",
     id: "pepe",
+    description: "Have fun with Pepe (Community made)",
+  },
+  {
+    title: "BROTHER MOD",
+    id: "brother",
+    description:
+      "Jokers of Neon version for the Starknet BROTHERhood (Community made)",
   },
 ];
 
@@ -40,12 +56,14 @@ export const SelectMod = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex
-          flexDirection="column"
-          alignItems="center"
-          w="100%"
-        >
-          <Heading maxW="80%" lineHeight={1.8} textAlign="center" size="xl" fontSize={{ base: 13, sm: 16, md: 20, lg: 25 }}>
+        <Flex flexDirection="column" alignItems="center" w="100%">
+          <Heading
+            maxW="80%"
+            lineHeight={1.8}
+            textAlign="center"
+            size="xl"
+            fontSize={{ base: 13, sm: 16, md: 20, lg: 25 }}
+          >
             {t("title")}
           </Heading>
         </Flex>
@@ -53,12 +71,28 @@ export const SelectMod = () => {
           w="80%"
           backgroundColor="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
-          mt={[0,4]}
+          mt={[0, 4]}
           p={6}
           flexWrap="wrap"
           maxH={"70%"}
           overflowY="auto"
         >
+          {OFFICIAL_MODS.map((mod) => (
+            <ModBox key={mod.id} mod={mod} isOfficial />
+          ))}
+
+          <Divider orientation="horizontal" borderColor="white" my={6} />
+          <Heading
+            w="100%"
+            size={{ base: "sm", sm: "lg" }}
+            textAlign="center"
+            variant="italic"
+            mt={4}
+            mb={2}
+          >
+            {t("community-mods")}
+          </Heading>
+
           {MODS.map((mod) => (
             <ModBox key={mod.id} mod={mod} />
           ))}
@@ -77,23 +111,33 @@ export const SelectMod = () => {
   );
 };
 
-const ModBox = ({
-  mod,
-}: {
+interface IModBoxProps {
   mod: { title: string; id: string; description?: string; url?: string };
-}) => {
+  isOfficial?: boolean;
+}
+
+const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
 
   return (
     <Tooltip label={mod.description}>
       <Flex
-        w={{ base: "100%", sm: "33%" }}
+        w={{
+          base: isOfficial ? "100%" : "50%",
+          sm: isOfficial ? "50%" : "33%",
+        }}
         p={4}
         flexDirection="column"
         justifyContent="space-between"
         alignItems="center"
         gap={4}
+        sx={{
+          _hover: {
+            transform: "scale(1.05)",
+            transition: "all 0.2s ease-in-out",
+          },
+        }}
         onClick={() =>
           mod.url
             ? mod.url.startsWith("http")
