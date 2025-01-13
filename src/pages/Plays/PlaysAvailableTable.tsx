@@ -64,7 +64,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
     <>
       {plays ? (
         <TableContainer
-          maxHeight={maxHeight}
+          height={maxHeight}
           border={`2px solid ${blueLight}`}
           borderRadius={"25px"}
           boxShadow={`0px 0px 20px 15px ${blue}`}
@@ -80,6 +80,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                 borderSpacing: 0,
               }}
               width={"100%"}
+              h="100%"
               variant={isSmallScreen ? "store-mobile" : "store"}
             >
               <Thead
@@ -92,44 +93,17 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                 }}
               >
                 <Tr>
-                  {
-                    <>
-                      <Td fontSize={isSmallScreen ? 12 : 17}>
-                        {t("game.plays.table.level-head").toUpperCase()}
-                      </Td>
-                      <Td fontSize={isSmallScreen ? 12 : 17}>
-                        {t("game.plays.table.hand-head").toUpperCase()}
-                      </Td>
-                      <Td fontSize={isSmallScreen ? 12 : 17}>
-                        {t("game.plays.table.points-multi-head").toUpperCase()}
-                      </Td>
-                    </>
-                  }
-                </Tr>
-                <Tr>
                   <Td
                     colSpan={3}
                     sx={{
                       position: "sticky",
                       top: "0px",
                       backgroundColor: "black",
-                      _before: {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: { base: "2.5%", sm: "5%" },
-                        width: { base: "95%", sm: "90%" },
-                        height: { base: "1px", sm: "2px" },
-                        backgroundColor: "white",
-                        boxShadow:
-                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-                      },
                     }}
                     p={4}
                   >
                     <Text
-                      color={"white"}
-                      p={2}
+                      pt={2}
                       sx={{
                         whiteSpace: "normal",
                         wordWrap: "break-word",
@@ -144,7 +118,6 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                   <Td
                     colSpan={3}
                     sx={{ position: "sticky", backgroundColor: "black" }}
-                    p={2}
                   >
                     <Box
                       sx={{
@@ -186,6 +159,17 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         )}
                       </Flex>
                     </Box>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td fontSize={isSmallScreen ? 12 : 17}>
+                    {t("game.plays.table.level-head").toUpperCase()}
+                  </Td>
+                  <Td fontSize={isSmallScreen ? 12 : 17}>
+                    {t("game.plays.table.hand-head").toUpperCase()}
+                  </Td>
+                  <Td fontSize={isSmallScreen ? 12 : 17}>
+                    {t("game.plays.table.points-multi-head").toUpperCase()}
                   </Td>
                 </Tr>
               </Thead>
@@ -260,6 +244,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         height={"30px"}
                         onClick={() => setPlaysExampleIndex(index)}
                         sx={{ cursor: "pointer" }}
+                        backgroundColor={playsExampleIndex === index ? '#242424' : 'none'}
                       >
                         {
                           <>
