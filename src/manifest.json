@@ -1,7 +1,7 @@
 {
   "world": {
-    "class_hash": "0x79d9ce84b97bcc2a631996c3100d57966fc2f5b061fb1ec4dfd0040976bcac6",
-    "address": "0x4954d7b273d69855376ff8e98d278c7b6ca2eba65a60746ae25f78215124280",
+    "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
+    "address": "0x73ee6c7c914e4b89f66be4d314d9f8dd916f12ba45cf06c03ca7a8f38339354",
     "seed": "jokers_of_neon",
     "name": "jokers_of_neon",
     "entrypoints": [
@@ -92,6 +92,10 @@
           {
             "name": "metadata_uri",
             "type": "core::byte_array::ByteArray"
+          },
+          {
+            "name": "metadata_hash",
+            "type": "core::felt252"
           }
         ]
       },
@@ -1002,6 +1006,11 @@
             "name": "uri",
             "type": "core::byte_array::ByteArray",
             "kind": "data"
+          },
+          {
+            "name": "hash",
+            "type": "core::felt252",
+            "kind": "data"
           }
         ]
       },
@@ -1243,7 +1252,7 @@
   },
   "contracts": [
     {
-      "address": "0x4dfaeeaafd603539adddb115dccefaa3996ccf9ca102c87a6105f7ff4341e18",
+      "address": "0x20154c38b7483a2f32b3dab51762fd7434a2ca6496ae20a071f8c35e6dbe779",
       "class_hash": "0x2ad0e16e56f80f8532cf93f03f499dfa2babf1e4da59a0804a4d2f021e156cb",
       "abi": [
         {
@@ -1606,7 +1615,7 @@
       ]
     },
     {
-      "address": "0x2bbb3fb3f0222887fc01fd24317d57fb691467010d0867f1661d9f0ebc44e1f",
+      "address": "0xd891f7371eab132edeb262b7274e45e0421013adde5e07e14f959093888322",
       "class_hash": "0xb8fbc5d95833d88c9117a056909eb618067a1b0d83582e7d2c4a5368001d2f",
       "abi": [
         {
@@ -1885,7 +1894,7 @@
       ]
     },
     {
-      "address": "0x7b8491ce4fa8f25a684bfb2b4480ad3f97127f56196a99eca3f5ffe2d4cb6fe",
+      "address": "0x3626cb1109a77a3f79876f566481acea703016e7282a623277eac6baccc666f",
       "class_hash": "0x488d753cd86373016d74798630f3a7513aa8b40dbb1963ecdab750cfd6171ab",
       "abi": [
         {
@@ -2085,7 +2094,7 @@
       ]
     },
     {
-      "address": "0x74effa7df358847dfb9e0ccc37877302a999f228e10349386d74961afa57f68",
+      "address": "0x715c3c982f4dc2af91d2815bc653e4d9784e8ff4871183ea8df9b3435b83e4c",
       "class_hash": "0x7ade914846df30b48fe71f83223970de24e3cada56d0d918eca5048fcc3172a",
       "abi": [
         {

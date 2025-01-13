@@ -9,7 +9,6 @@ export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
-  fieldOrder: [],
   discount_cost: 0,
 };
 
@@ -17,7 +16,6 @@ export const EMPTY_BURN_ITEM: BurnItem = {
   game_id: 0,
   cost: 0,
   purchased: true,
-  fieldOrder: [],
   discount_cost: 0,
 };
 
