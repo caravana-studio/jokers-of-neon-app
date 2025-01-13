@@ -33,7 +33,6 @@ export const SelectMod = () => {
   return (
     <Background type="home">
       <PositionedGameMenu />
-      <PositionedDiscordLink />
       <Flex
         height="100%"
         justifyContent="center"
@@ -44,9 +43,9 @@ export const SelectMod = () => {
         <Flex
           flexDirection="column"
           alignItems="center"
-          gap={{ base: 6, sm: 8, md: 12 }}
+          w="100%"
         >
-          <Heading size="xl" fontSize={{ base: 10, sm: 12, md: 20, lg: 25 }}>
+          <Heading maxW="80%" lineHeight={1.8} textAlign="center" size="xl" fontSize={{ base: 13, sm: 16, md: 20, lg: 25 }}>
             {t("title")}
           </Heading>
         </Flex>
@@ -54,7 +53,7 @@ export const SelectMod = () => {
           w="80%"
           backgroundColor="rgba(0, 0, 0, 0.6)"
           borderRadius="25px"
-          mt={4}
+          mt={[0,4]}
           p={6}
           flexWrap="wrap"
           maxH={"70%"}
