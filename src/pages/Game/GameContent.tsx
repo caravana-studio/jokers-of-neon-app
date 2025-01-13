@@ -284,7 +284,7 @@ export const GameContent = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 14,
+            bottom: 16,
             right: 20,
           }}
         >
