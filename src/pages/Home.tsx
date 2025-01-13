@@ -78,14 +78,16 @@ export const Home = () => {
                 onClick={() => {
                   setLeaderboardOpen(true);
                 }}
+                minW={["150px", "300px"]}  
               >
                 {t("home.btn.leaderboard-btn")}
               </Button>
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  navigate("/mods");
                 }}
+                minW={["150px", "300px"]} 
               >
                 {t("home.btn.playDemo-btn")}
               </Button>

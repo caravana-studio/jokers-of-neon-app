@@ -24,6 +24,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
+import { SelectMod } from "./pages/SelectMod";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -35,6 +36,7 @@ function App() {
             <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/mods" element={<SelectMod />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/gameover/:gameId" element={<GameOver />} />
                 <Route path="/demo" element={<GamePage />} />
