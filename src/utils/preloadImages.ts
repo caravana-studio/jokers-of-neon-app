@@ -74,9 +74,7 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
 };
 
 const fetchModImages = async (modId: string): Promise<string[]> => {
-  const baseUrl =
-    "https://api.github.com/repos/caravana-studio/jon-resources-mod-test/contents/public/resources/" +
-    modId;
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId;
   const imageUrls: string[] = [];
 
   try {
