@@ -25,6 +25,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import { DocsContentMobile } from "./pages/Docs/Docs";
+import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -96,7 +97,11 @@ function App() {
                 />
                 <Route
                   path="/docs"
-                  element={<DocsContentMobile lastIndexTab={0} />}
+                  element={
+                    <CardHighlightProvider>
+                      <DocsContentMobile lastIndexTab={0} />
+                    </CardHighlightProvider>
+                  }
                 />
               </Routes>
             </AudioPlayerProvider>
