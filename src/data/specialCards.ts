@@ -163,36 +163,6 @@ const loadTranslations = async () => {
         ns: "effects",
       }),
     },
-    326: {
-      name: i18n.t("specialCardsData.326.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.326.description", {
-        ns: "effects",
-      }),
-    },
-    327: {
-      name: i18n.t("specialCardsData.327.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.327.description", {
-        ns: "effects",
-      }),
-    },
-    328: {
-      name: i18n.t("specialCardsData.328.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.328.description", {
-        ns: "effects",
-      }),
-    },
-    329: {
-      name: i18n.t("specialCardsData.329.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.329.description", {
-        ns: "effects",
-      }),
-    },
-    330: {
-      name: i18n.t("specialCardsData.330.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.330.description", {
-        ns: "effects",
-      }),
-    },
     331: {
       name: i18n.t("specialCardsData.331.name", { ns: "effects" }),
       description: i18n.t("specialCardsData.331.description", {

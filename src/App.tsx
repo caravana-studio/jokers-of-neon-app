@@ -24,7 +24,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
-import { DocsContentMobile } from "./pages/Docs";
+import { DocsContentMobile } from "./pages/Docs/Docs";
 
 function App() {
   const theme = extendTheme(customTheme);

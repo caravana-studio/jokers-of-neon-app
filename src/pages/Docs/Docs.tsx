@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import { MobileDecoration } from "../components/MobileDecoration";
+import { MobileDecoration } from "../../components/MobileDecoration";
 import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { DocsCardsRow } from "./DocsCardsRow";
+import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
+import { RAGE_CARDS_DATA } from "../../data/rageCards";
+import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 
 export const DocsContentMobile = ({
   lastIndexTab = 0,
@@ -34,7 +38,7 @@ export const DocsContentMobile = ({
 
       <Flex
         width="100%"
-        height="100%"
+        height={"100vh"}
         flexDirection="column"
         alignItems="center"
         justifyContent="space-between"
@@ -48,7 +52,7 @@ export const DocsContentMobile = ({
             isFitted
             color="white"
           >
-            <TabList width={"100%"}>
+            <TabList width={"100%"} height={"100%"}>
               <Tab fontSize={10}>{t("labels.special-cards")}</Tab>
               <Tab fontSize={10}>{t("labels.modifier-cards")}</Tab>
               <Tab fontSize={10}>{t("labels.rage-cards")}</Tab>
@@ -56,10 +60,10 @@ export const DocsContentMobile = ({
             </TabList>
           </Tabs>
         </Flex>
-        <Flex w="100%" flexGrow={1}>
-          {tabIndex === 0 && <></>}
-          {tabIndex === 1 && <></>}
-          {tabIndex === 2 && <></>}
+        <Flex w="100%" flexGrow={1} height={"70%"} mb={8} alignItems={"center"}>
+          {tabIndex === 0 && <DocsCardsRow cardDataMap={SPECIAL_CARDS_DATA} />}
+          {tabIndex === 1 && <DocsCardsRow cardDataMap={MODIFIER_CARDS_DATA} />}
+          {tabIndex === 2 && <DocsCardsRow cardDataMap={RAGE_CARDS_DATA} />}
           {tabIndex === 3 && <></>}
         </Flex>
       </Flex>
