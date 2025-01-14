@@ -5,6 +5,7 @@ import {
   TRADITIONAL_CARDS_DATA,
   NEON_CARDS_DATA,
 } from "../data/traditionalCards";
+import { fetchModImages } from "../data/modImageCache";
 
 const CACHE_NAME = "image-cache";
 
@@ -69,41 +70,6 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
 
   const externalImageUrls = await fetchModImages(modId);
   imageUrls.push(...externalImageUrls);
-
-  return imageUrls;
-};
-
-const fetchModImages = async (modId: string): Promise<string[]> => {
-  const baseUrl = import.meta.env.VITE_MOD_URL + modId;
-  const imageUrls: string[] = [];
-
-  const fetchDirectory = async (url: string): Promise<void> => {
-    try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        console.error(
-          `Failed to fetch directory contents: ${response.statusText}`
-        );
-        return;
-      }
-
-      const data = await response.json();
-
-      for (const item of data) {
-        if (item.type === "file" && item.name.endsWith(".png")) {
-          imageUrls.push(item.download_url);
-        } else if (item.type === "dir") {
-          await fetchDirectory(item.url);
-        }
-      }
-    } catch (error) {
-      console.error(`Error fetching directory contents: ${error}`);
-    }
-  };
-
-  // Start fetching from the base URL
-  await fetchDirectory(baseUrl);
 
   return imageUrls;
 };
