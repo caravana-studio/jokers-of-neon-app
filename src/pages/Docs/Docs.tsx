@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DocsCardsRow } from "./DocsCardsRow";
 import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
@@ -33,11 +33,11 @@ export const DocsContentMobile = ({
   });
 
   return (
-    <>
+    <Box overflow={"hidden"}>
       <MobileDecoration />
 
       <Flex
-        width="100%"
+        width="100vw"
         height={"100vh"}
         flexDirection="column"
         alignItems="center"
@@ -67,6 +67,6 @@ export const DocsContentMobile = ({
           {tabIndex === 3 && <></>}
         </Flex>
       </Flex>
-    </>
+    </Box>
   );
 };
