@@ -23,19 +23,15 @@ export const DocsContentMobile = ({
   };
 
   const handlers = useSwipeable({
-    onSwipedLeft: !highlightedCard
-      ? () => {
-          if (tabIndex < 2) setTabIndex(tabIndex + 1);
-        }
-      : undefined,
-    onSwipedRight: !highlightedCard
-      ? () => {
-          if (tabIndex > 0) {
-            setTabIndex(tabIndex - 1);
-          }
-        }
-      : undefined,
-    trackTouch: true,
+    onSwipedLeft: () => {
+      if (tabIndex < 2) setTabIndex(tabIndex + 1);
+    },
+    onSwipedRight: () => {
+      if (tabIndex > 0) {
+        setTabIndex(tabIndex - 1);
+      }
+    },
+    trackTouch: !highlightedCard,
   });
 
   return (
