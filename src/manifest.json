@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x20154c38b7483a2f32b3dab51762fd7434a2ca6496ae20a071f8c35e6dbe779",
-      "class_hash": "0x2ad0e16e56f80f8532cf93f03f499dfa2babf1e4da59a0804a4d2f021e156cb",
+      "address": "0x586b965c1cadcdf405f4c9e7afb51b705de1b7a6da7ce57b7f2d42474149d77",
+      "class_hash": "0x3dfc4035909cf3911363aec8df79e61fa6caf75e3a89150e72980d61e9e61d2",
       "abi": [
         {
           "type": "impl",
@@ -3005,6 +3005,12 @@
       "class_hash": "0x58e255907a6a5746ab683703a41934759a15c085d1f188961f55310f590c216",
       "tag": "jokers_of_neon-BuySpecialCardEvent",
       "selector": "0x57ff2165a7861103414c22d151d328d0e6d1e345f7e1d6716ec841a13672f10"
+    },
+    {
+      "members": [],
+      "class_hash": "0x57620cdae62b3eb4b13cbe33c4f827f8cb9cf2cf4fa92302cddefba576bfbf7",
+      "tag": "jokers_of_neon-CardPlayEvent",
+      "selector": "0x71c3b1cb27c719c9c3da1d46df80a8021cad398335c326f633a1e01ac94dc03"
     },
     {
       "members": [],
