@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
+import { useGameMods } from "../dojo/queries/useGameMods";
 
 const OFFICIAL_MODS = [
   {
@@ -45,6 +46,9 @@ const MODS = [
 export const SelectMod = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
+
+  const mods = useGameMods();
+  // would be awesome to look for the images and read the json files from the mods folder here
 
   return (
     <Background type="home">

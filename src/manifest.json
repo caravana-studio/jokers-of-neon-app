@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x22706999593a634a2a70ce8975755c638be8818e1018ce8850feed621e2a611",
-      "class_hash": "0x6a9411d3a54a8fed4c7117629389c7e8bcc364bd341c7501b3a1a4205c0e71e",
+      "address": "0x46aa69b149b28ff682b4af15c90fb3e184a468f627b1168d50487070caf658a",
+      "class_hash": "0x4f52ea758a1f6d844c9fdbc995773256bd4805b69a6d6152a35edd6667682cb",
       "abi": [
         {
           "type": "impl",
@@ -1380,7 +1380,7 @@
             },
             {
               "type": "function",
-              "name": "discard_modifier_card",
+              "name": "discard_effect_card",
               "inputs": [
                 {
                   "name": "game_id",
@@ -1534,7 +1534,7 @@
         "create_game",
         "play",
         "discard",
-        "discard_modifier_card",
+        "discard_effect_card",
         "discard_special_card",
         "upgrade"
       ]
