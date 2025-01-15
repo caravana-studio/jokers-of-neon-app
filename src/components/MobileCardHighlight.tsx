@@ -14,9 +14,13 @@ import { ConfirmationModal } from "./ConfirmationModal";
 
 interface MobileCardHighlightProps {
   card: Card;
+  confirmationBtn?: boolean;
 }
 
-export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
+export const MobileCardHighlight = ({
+  card,
+  confirmationBtn = false,
+}: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
   const { name, description, type } = getCardData(card, false);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
@@ -121,16 +125,17 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
-      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) && (
-        <Button
-          isDisabled={loading}
-          onClick={handleClick}
-          width="40%"
-          variant={loading ? "defaultOutline" : "secondarySolid"}
-        >
-          {getLabel()}
-        </Button>
-      )}
+      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) &&
+        confirmationBtn && (
+          <Button
+            isDisabled={loading}
+            onClick={handleClick}
+            width="40%"
+            variant={loading ? "defaultOutline" : "secondarySolid"}
+          >
+            {getLabel()}
+          </Button>
+        )}
     </Flex>
   );
 };

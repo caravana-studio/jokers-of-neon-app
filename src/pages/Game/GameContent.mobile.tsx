@@ -183,7 +183,9 @@ export const MobileGameContent = () => {
       }}
       className="game-tutorial-intro"
     >
-      {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
+      {highlightedCard && (
+        <MobileCardHighlight card={highlightedCard} confirmationBtn />
+      )}
       <MobileDecoration />
       <Box
         sx={{
