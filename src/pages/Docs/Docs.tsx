@@ -7,6 +7,7 @@ import { DocsCardsRow } from "./DocsCardsRow";
 import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
 import { RAGE_CARDS_DATA } from "../../data/rageCards";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
 
 export const DocsContentMobile = ({
   lastIndexTab = 0,
@@ -15,20 +16,25 @@ export const DocsContentMobile = ({
 }) => {
   const { t } = useTranslation(["docs"]);
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
+  const { highlightedCard } = useCardHighlight();
 
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
 
   const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (tabIndex < 2) setTabIndex(tabIndex + 1);
-    },
-    onSwipedRight: () => {
-      if (tabIndex > 0) {
-        setTabIndex(tabIndex - 1);
-      }
-    },
+    onSwipedLeft: !highlightedCard
+      ? () => {
+          if (tabIndex < 2) setTabIndex(tabIndex + 1);
+        }
+      : undefined,
+    onSwipedRight: !highlightedCard
+      ? () => {
+          if (tabIndex > 0) {
+            setTabIndex(tabIndex - 1);
+          }
+        }
+      : undefined,
     trackTouch: true,
   });
 
