@@ -1,8 +1,9 @@
 import type { SchemaType } from "@dojoengine/sdk";
 
+type WithFieldOrder<T> = T & { fieldOrder: string[] };
+
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItem` struct
 export interface BlisterPackItem {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   blister_pack_id: number;
@@ -13,7 +14,6 @@ export interface BlisterPackItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItemValue` struct
 export interface BlisterPackItemValue {
-  fieldOrder: string[];
   blister_pack_id: number;
   cost: number;
   discount_cost: number;
@@ -22,14 +22,12 @@ export interface BlisterPackItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResultValue` struct
 export interface BlisterPackResultValue {
-  fieldOrder: string[];
   cards_picked: boolean;
   cards: Array<number>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult` struct
 export interface BlisterPackResult {
-  fieldOrder: string[];
   game_id: number;
   cards_picked: boolean;
   cards: Array<number>;
@@ -37,7 +35,6 @@ export interface BlisterPackResult {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItem` struct
 export interface BurnItem {
-  fieldOrder: string[];
   game_id: number;
   cost: number;
   discount_cost: number;
@@ -46,7 +43,6 @@ export interface BurnItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItemValue` struct
 export interface BurnItemValue {
-  fieldOrder: string[];
   cost: number;
   discount_cost: number;
   purchased: boolean;
@@ -54,7 +50,6 @@ export interface BurnItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemValue` struct
 export interface CardItemValue {
-  fieldOrder: string[];
   card_id: number;
   cost: number;
   discount_cost: number;
@@ -63,7 +58,6 @@ export interface CardItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItem` struct
 export interface CardItem {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   item_type: CardItemType;
@@ -75,20 +69,17 @@ export interface CardItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHand` struct
 export interface CurrentHand {
-  fieldOrder: string[];
   game_id: number;
   cards: Array<number>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHandValue` struct
 export interface CurrentHandValue {
-  fieldOrder: string[];
   cards: Array<number>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards` struct
 export interface CurrentSpecialCards {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   effect_card_id: number;
@@ -98,7 +89,6 @@ export interface CurrentSpecialCards {
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCardsValue` struct
 export interface CurrentSpecialCardsValue {
-  fieldOrder: string[];
   effect_card_id: number;
   is_temporary: boolean;
   remaining: number;
@@ -106,7 +96,6 @@ export interface CurrentSpecialCardsValue {
 
 // Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCard` struct
 export interface DeckCard {
-  fieldOrder: string[];
   game_id: number;
   index: number;
   card_id: number;
@@ -114,13 +103,11 @@ export interface DeckCard {
 
 // Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCardValue` struct
 export interface DeckCardValue {
-  fieldOrder: string[];
   card_id: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
 export interface GameValue {
-  fieldOrder: string[];
   mod_id: number;
   owner: string;
   player_name: number;
@@ -141,7 +128,6 @@ export interface GameValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::Game` struct
 export interface Game {
-  fieldOrder: string[];
   id: number;
   mod_id: number;
   owner: string;
@@ -163,14 +149,12 @@ export interface Game {
 
 // Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeckValue` struct
 export interface GameDeckValue {
-  fieldOrder: string[];
   len: number;
   round_len: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeck` struct
 export interface GameDeck {
-  fieldOrder: string[];
   game_id: number;
   len: number;
   round_len: number;
@@ -178,7 +162,6 @@ export interface GameDeck {
 
 // Type definition for `jokers_of_neon_lib::models::data::game_mod::GameMod` struct
 export interface GameMod {
-  fieldOrder: string[];
   id: number;
   name: number;
   owner: string;
@@ -189,7 +172,6 @@ export interface GameMod {
 
 // Type definition for `jokers_of_neon_lib::models::data::game_mod::GameModValue` struct
 export interface GameModValue {
-  fieldOrder: string[];
   name: number;
   owner: string;
   loot_boxes_info_system_address: string;
@@ -199,39 +181,33 @@ export interface GameModValue {
 
 // Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUpValue` struct
 export interface GamePowerUpValue {
-  fieldOrder: string[];
   power_ups: Array<number>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUp` struct
 export interface GamePowerUp {
-  fieldOrder: string[];
   game_id: number;
   power_ups: Array<number>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::mod_tracker::ModTrackerValue` struct
 export interface ModTrackerValue {
-  fieldOrder: string[];
   total_mods: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::mod_tracker::ModTracker` struct
 export interface ModTracker {
-  fieldOrder: string[];
   id: number;
   total_mods: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHandValue` struct
 export interface PlayerLevelPokerHandValue {
-  fieldOrder: string[];
   level: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand` struct
 export interface PlayerLevelPokerHand {
-  fieldOrder: string[];
   game_id: number;
   poker_hand: PokerHand;
   level: number;
@@ -239,7 +215,6 @@ export interface PlayerLevelPokerHand {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItem` struct
 export interface PokerHandItem {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   poker_hand: PokerHand;
@@ -253,7 +228,6 @@ export interface PokerHandItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItemValue` struct
 export interface PokerHandItemValue {
-  fieldOrder: string[];
   poker_hand: PokerHand;
   level: number;
   multi: number;
@@ -265,7 +239,6 @@ export interface PokerHandItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItemValue` struct
 export interface PowerUpItemValue {
-  fieldOrder: string[];
   power_up_id: number;
   cost: number;
   discount_cost: number;
@@ -274,7 +247,6 @@ export interface PowerUpItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItem` struct
 export interface PowerUpItem {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   power_up_id: number;
@@ -285,7 +257,6 @@ export interface PowerUpItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRoundValue` struct
 export interface RageRoundValue {
-  fieldOrder: string[];
   is_active: boolean;
   current_probability: number;
   active_rage_ids: Array<number>;
@@ -294,7 +265,6 @@ export interface RageRoundValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRound` struct
 export interface RageRound {
-  fieldOrder: string[];
   game_id: number;
   is_active: boolean;
   current_probability: number;
@@ -304,7 +274,6 @@ export interface RageRound {
 
 // Type definition for `jokers_of_neon_lib::models::status::round::round::RoundValue` struct
 export interface RoundValue {
-  fieldOrder: string[];
   player_score: number;
   level_score: number;
   hands: number;
@@ -313,7 +282,6 @@ export interface RoundValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::round::round::Round` struct
 export interface Round {
-  fieldOrder: string[];
   game_id: number;
   player_score: number;
   level_score: number;
@@ -323,7 +291,6 @@ export interface Round {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::Shop` struct
 export interface Shop {
-  fieldOrder: string[];
   game_id: number;
   reroll_cost: number;
   reroll_executed: boolean;
@@ -337,7 +304,6 @@ export interface Shop {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::ShopValue` struct
 export interface ShopValue {
-  fieldOrder: string[];
   reroll_cost: number;
   reroll_executed: boolean;
   len_item_common_cards: number;
@@ -350,14 +316,12 @@ export interface ShopValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::ShopTrackerValue` struct
 export interface ShopTrackerValue {
-  fieldOrder: string[];
   count_reroll: number;
   count_burn: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::ShopTracker` struct
 export interface ShopTracker {
-  fieldOrder: string[];
   game_id: number;
   count_reroll: number;
   count_burn: number;
@@ -365,7 +329,6 @@ export interface ShopTracker {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItem` struct
 export interface SlotSpecialCardsItem {
-  fieldOrder: string[];
   game_id: number;
   cost: number;
   discount_cost: number;
@@ -374,7 +337,6 @@ export interface SlotSpecialCardsItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItemValue` struct
 export interface SlotSpecialCardsItemValue {
-  fieldOrder: string[];
   cost: number;
   discount_cost: number;
   purchased: boolean;
@@ -382,7 +344,6 @@ export interface SlotSpecialCardsItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItem` struct
 export interface SpecialCardItem {
-  fieldOrder: string[];
   game_id: number;
   idx: number;
   card_id: number;
@@ -395,7 +356,6 @@ export interface SpecialCardItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItemValue` struct
 export interface SpecialCardItemValue {
-  fieldOrder: string[];
   card_id: number;
   cost: number;
   discount_cost: number;
@@ -406,13 +366,11 @@ export interface SpecialCardItemValue {
 
 // Type definition for `jokers_of_neon_lib::models::data::special_data::SpecialDataValue` struct
 export interface SpecialDataValue {
-  fieldOrder: string[];
   contract_address: string;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::special_data::SpecialData` struct
 export interface SpecialData {
-  fieldOrder: string[];
   mod_id: number;
   special_id: number;
   contract_address: string;
@@ -451,53 +409,53 @@ export enum PokerHand {
 
 export interface JokersOfNeonLibSchemaType extends SchemaType {
   jokers_of_neon_lib: {
-    BlisterPackItem: BlisterPackItem;
-    BlisterPackItemValue: BlisterPackItemValue;
-    BlisterPackResultValue: BlisterPackResultValue;
-    BlisterPackResult: BlisterPackResult;
-    BurnItem: BurnItem;
-    BurnItemValue: BurnItemValue;
-    CardItemValue: CardItemValue;
-    CardItem: CardItem;
-    CurrentHand: CurrentHand;
-    CurrentHandValue: CurrentHandValue;
-    CurrentSpecialCards: CurrentSpecialCards;
-    CurrentSpecialCardsValue: CurrentSpecialCardsValue;
-    DeckCard: DeckCard;
-    DeckCardValue: DeckCardValue;
-    GameValue: GameValue;
-    Game: Game;
-    GameDeckValue: GameDeckValue;
-    GameDeck: GameDeck;
-    GameMod: GameMod;
-    GameModValue: GameModValue;
-    GamePowerUpValue: GamePowerUpValue;
-    GamePowerUp: GamePowerUp;
-    ModTrackerValue: ModTrackerValue;
-    ModTracker: ModTracker;
-    PlayerLevelPokerHandValue: PlayerLevelPokerHandValue;
-    PlayerLevelPokerHand: PlayerLevelPokerHand;
-    PokerHandItem: PokerHandItem;
-    PokerHandItemValue: PokerHandItemValue;
-    PowerUpItemValue: PowerUpItemValue;
-    PowerUpItem: PowerUpItem;
-    RageRoundValue: RageRoundValue;
-    RageRound: RageRound;
-    RoundValue: RoundValue;
-    Round: Round;
-    Shop: Shop;
-    ShopValue: ShopValue;
-    ShopTrackerValue: ShopTrackerValue;
-    ShopTracker: ShopTracker;
-    SlotSpecialCardsItem: SlotSpecialCardsItem;
-    SlotSpecialCardsItemValue: SlotSpecialCardsItemValue;
-    SpecialCardItem: SpecialCardItem;
-    SpecialCardItemValue: SpecialCardItemValue;
-    SpecialDataValue: SpecialDataValue;
-    SpecialData: SpecialData;
-    ERC__Balance: ERC__Balance;
-    ERC__Token: ERC__Token;
-    ERC__Transfer: ERC__Transfer;
+    BlisterPackItem: WithFieldOrder<BlisterPackItem>;
+    BlisterPackItemValue: WithFieldOrder<BlisterPackItemValue>;
+    BlisterPackResultValue: WithFieldOrder<BlisterPackResultValue>;
+    BlisterPackResult: WithFieldOrder<BlisterPackResult>;
+    BurnItem: WithFieldOrder<BurnItem>;
+    BurnItemValue: WithFieldOrder<BurnItemValue>;
+    CardItemValue: WithFieldOrder<CardItemValue>;
+    CardItem: WithFieldOrder<CardItem>;
+    CurrentHand: WithFieldOrder<CurrentHand>;
+    CurrentHandValue: WithFieldOrder<CurrentHandValue>;
+    CurrentSpecialCards: WithFieldOrder<CurrentSpecialCards>;
+    CurrentSpecialCardsValue: WithFieldOrder<CurrentSpecialCardsValue>;
+    DeckCard: WithFieldOrder<DeckCard>;
+    DeckCardValue: WithFieldOrder<DeckCardValue>;
+    GameValue: WithFieldOrder<GameValue>;
+    Game: WithFieldOrder<Game>;
+    GameDeckValue: WithFieldOrder<GameDeckValue>;
+    GameDeck: WithFieldOrder<GameDeck>;
+    GameMod: WithFieldOrder<GameMod>;
+    GameModValue: WithFieldOrder<GameModValue>;
+    GamePowerUpValue: WithFieldOrder<GamePowerUpValue>;
+    GamePowerUp: WithFieldOrder<GamePowerUp>;
+    ModTrackerValue: WithFieldOrder<ModTrackerValue>;
+    ModTracker: WithFieldOrder<ModTracker>;
+    PlayerLevelPokerHandValue: WithFieldOrder<PlayerLevelPokerHandValue>;
+    PlayerLevelPokerHand: WithFieldOrder<PlayerLevelPokerHand>;
+    PokerHandItem: WithFieldOrder<PokerHandItem>;
+    PokerHandItemValue: WithFieldOrder<PokerHandItemValue>;
+    PowerUpItemValue: WithFieldOrder<PowerUpItemValue>;
+    PowerUpItem: WithFieldOrder<PowerUpItem>;
+    RageRoundValue: WithFieldOrder<RageRoundValue>;
+    RageRound: WithFieldOrder<RageRound>;
+    RoundValue: WithFieldOrder<RoundValue>;
+    Round: WithFieldOrder<Round>;
+    Shop: WithFieldOrder<Shop>;
+    ShopValue: WithFieldOrder<ShopValue>;
+    ShopTrackerValue: WithFieldOrder<ShopTrackerValue>;
+    ShopTracker: WithFieldOrder<ShopTracker>;
+    SlotSpecialCardsItem: WithFieldOrder<SlotSpecialCardsItem>;
+    SlotSpecialCardsItemValue: WithFieldOrder<SlotSpecialCardsItemValue>;
+    SpecialCardItem: WithFieldOrder<SpecialCardItem>;
+    SpecialCardItemValue: WithFieldOrder<SpecialCardItemValue>;
+    SpecialDataValue: WithFieldOrder<SpecialDataValue>;
+    SpecialData: WithFieldOrder<SpecialData>;
+    ERC__Balance: WithFieldOrder<ERC__Balance>;
+    ERC__Token: WithFieldOrder<ERC__Token>;
+    ERC__Transfer: WithFieldOrder<ERC__Transfer>;
   };
 }
 export const schema: JokersOfNeonLibSchemaType = {
@@ -1047,7 +1005,6 @@ export interface ERC__Token {
   contractAddress: string;
 }
 export interface ERC__Transfer {
-  fieldOrder: string[];
   from: string;
   to: string;
   amount: string;
