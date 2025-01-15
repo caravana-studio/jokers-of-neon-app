@@ -15,11 +15,13 @@ import { ConfirmationModal } from "./ConfirmationModal";
 interface MobileCardHighlightProps {
   card: Card;
   confirmationBtn?: boolean;
+  showExtraInfo?: boolean;
 }
 
 export const MobileCardHighlight = ({
   card,
   confirmationBtn = false,
+  showExtraInfo = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
   const { name, description, type } = getCardData(card, false);
@@ -125,6 +127,20 @@ export const MobileCardHighlight = ({
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
+      {showExtraInfo && (
+        <>
+          {card.rarity && (
+            <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
+              Rarity: {card.rarity}
+            </Text>
+          )}
+          {card.price && (
+            <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
+              Price: {card.price}
+            </Text>
+          )}
+        </>
+      )}
       {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) &&
         confirmationBtn && (
           <Button

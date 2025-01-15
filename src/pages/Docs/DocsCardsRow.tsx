@@ -12,7 +12,9 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
 
   return (
     <>
-      {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
+      {highlightedCard && (
+        <MobileCardHighlight card={highlightedCard} showExtraInfo />
+      )}
 
       <Flex
         width="100%"
@@ -28,10 +30,10 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
         {docCards.map((docCardData, index) => (
           <Flex key={index} justifyContent={"center"} alignItems={"center"}>
             <TiltCard
-              card={docCardData.card}
+              card={{ ...docCardData, price: undefined }}
               scale={0.9}
               onClick={() => {
-                highlightCard(docCardData.card);
+                highlightCard(docCardData);
               }}
             />
           </Flex>
