@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEffect } from "react";
@@ -11,24 +11,29 @@ import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
 import { ConfirmationModal } from "./ConfirmationModal";
+import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
+import { animationsData } from "../constants/spineAnimations";
 
 interface MobileCardHighlightProps {
   card: Card;
   confirmationBtn?: boolean;
   showExtraInfo?: boolean;
+  isPack?: boolean;
 }
 
 export const MobileCardHighlight = ({
   card,
   confirmationBtn = false,
   showExtraInfo = false,
+  isPack = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type } = getCardData(card, false);
+  const { name, description, type, animation } = getCardData(card, isPack);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game"]);
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
 
   const discard =
     type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
@@ -117,12 +122,28 @@ export const MobileCardHighlight = ({
         </Text>
       </Flex>
       <Box
-        width={"60%"}
+        width={animation ? "100%" : "60%"}
+        height={animation ? "50vh" : "auto"}
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
       >
-        <CardImage3D card={card} />
+        {!animation ? (
+          <CardImage3D card={card} />
+        ) : (
+          <SpineAnimation
+            ref={spineAnimationRef}
+            jsonUrl={animation.jsonUrl}
+            atlasUrl={animation.atlasUrl}
+            initialAnimation={animationsData.loopAnimation}
+            loopAnimation={animationsData.loopAnimation}
+            openBoxAnimation={animationsData.openBoxAnimation}
+            width={1200}
+            height={1500}
+            xOffset={-750}
+            scale={1}
+          />
+        )}
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}

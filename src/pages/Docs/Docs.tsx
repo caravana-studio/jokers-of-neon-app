@@ -8,6 +8,7 @@ import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
 import { RAGE_CARDS_DATA } from "../../data/rageCards";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { DocsBoxesRow } from "./DocsBoxesRow";
 
 export const DocsContentMobile = ({
   lastIndexTab = 0,
@@ -66,7 +67,7 @@ export const DocsContentMobile = ({
           {tabIndex === 0 && <DocsCardsRow cardDataMap={SPECIAL_CARDS_DATA} />}
           {tabIndex === 1 && <DocsCardsRow cardDataMap={MODIFIER_CARDS_DATA} />}
           {tabIndex === 2 && <DocsCardsRow cardDataMap={RAGE_CARDS_DATA} />}
-          {tabIndex === 3 && <></>}
+          {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
       </Flex>
     </Box>

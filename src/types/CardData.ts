@@ -2,6 +2,7 @@ import { CARDS_RARITY } from "../constants/cardsRarity";
 import { Cards } from "../enums/cards";
 import { CardTypes } from "../enums/cardTypes";
 import { Suits } from "../enums/suits";
+import { SpineAnimationInfo } from "./SpineAnimationInfo";
 
 export interface CardData {
     name: string;
@@ -13,6 +14,7 @@ export interface CardData {
     size?: number;
     rarity?: CARDS_RARITY;
     price?: number;
+    animation?: SpineAnimationInfo;
 }
 
 export type CardDataMap = {
