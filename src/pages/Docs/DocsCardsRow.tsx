@@ -1,13 +1,12 @@
-import { MobileDecoration } from "../../components/MobileDecoration";
-import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
-import { getDocCardsData } from "./Utils/DocsUtils";
+import { Flex } from "@chakra-ui/react";
+import { getSortedDocCardsData } from "./Utils/DocsUtils";
 import { CardDataMap } from "../../types/CardData";
 import { TiltCard } from "../../components/TiltCard";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 
 export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
-  const docCards = getDocCardsData(cardDataMap);
+  const docCards = getSortedDocCardsData(cardDataMap);
   const { highlightCard, highlightedCard } = useCardHighlight();
 
   return (
