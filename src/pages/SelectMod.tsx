@@ -15,29 +15,33 @@ import { useGameMods } from "../dojo/queries/useGameMods";
 
 const OFFICIAL_MODS = [
   {
-    title: "Classic Jokers of Neon",
-    id: "classic",
-    description: "The classic version of Jokers of Neon",
-    url: "/login",
-  },
-  {
     title: "Loot Survivor MOD",
-    id: "loot-survivor",
+    id: -1,
+    image: "loot-survivor",
     description:
       "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",
     url: "https://ls.jokersofneon.com",
+  },
+  {
+    title: "Classic Jokers of Neon",
+    id: -2,
+    image: "classic",
+    description: "The classic version of Jokers of Neon",
+    url: "/login",
   },
 ];
 
 const MODS = [
   {
     title: "Pepe mod",
-    id: "pepe",
+    id: -3,
+    image: "pepe",
     description: "Have fun with Pepe (Community made)",
   },
   {
     title: "BROTHER MOD",
-    id: "brother",
+    id: -4,
+    image: "brother",
     description:
       "Jokers of Neon version for the Starknet BROTHERhood (Community made)",
   },
@@ -47,7 +51,12 @@ export const SelectMod = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
 
-  const mods = useGameMods();
+  const mods = useGameMods().mods;
+
+  mods.forEach((mod) => {
+    OFFICIAL_MODS[mod.id].id = mod.id;
+  });
+
   // would be awesome to look for the images and read the json files from the mods folder here
 
   return (
@@ -116,7 +125,13 @@ export const SelectMod = () => {
 };
 
 interface IModBoxProps {
-  mod: { title: string; id: string; description?: string; url?: string };
+  mod: {
+    title: string;
+    id: number;
+    image: string;
+    description?: string;
+    url?: string;
+  };
   isOfficial?: boolean;
 }
 
@@ -153,7 +168,7 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
         <Text size="l">{mod.title}</Text>
         <CachedImage
           cursor="pointer"
-          src={`/mods/${mod.id}.png`}
+          src={`/mods/${mod.image}.png`}
           alt={mod.title}
           w="100%"
         />
