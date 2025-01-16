@@ -36,7 +36,7 @@ export const MobileCardHighlight = ({
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const { t } = useTranslation(["game"]);
+  const { t } = useTranslation(["game", "docs"]);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
@@ -158,7 +158,7 @@ export const MobileCardHighlight = ({
         <>
           {rarity && (
             <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              Rarity: {rarity}
+              {t("labels.rarity", { ns: "docs" })}: {rarity}
             </Text>
           )}
           {price &&
