@@ -30,7 +30,7 @@ export const DocsBoxesRow = () => {
         justifyContent={"center"}
         alignContent={"flex-start"}
         wrap={"wrap"}
-        gap={2}
+        rowGap={4}
         overflow={"scroll"}
       >
         {boxes.map((box, index) => {
@@ -41,6 +41,9 @@ export const DocsBoxesRow = () => {
               key={index}
               justifyContent={"center"}
               alignItems={"center"}
+              alignContent={"center"}
+              width={"50%"}
+              height={"30vh"}
               onClick={() => {
                 highlightCard(box);
               }}

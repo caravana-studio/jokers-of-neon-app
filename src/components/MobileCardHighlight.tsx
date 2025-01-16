@@ -89,10 +89,10 @@ export const MobileCardHighlight = ({
       height={"100%"}
       zIndex={1100}
       opacity={opacity}
+      flexDirection={"column"}
       transition="opacity 0.5s ease"
       justifyContent={"center"}
       alignItems={"center"}
-      flexDirection={"column"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
       gap={6}
@@ -124,9 +124,10 @@ export const MobileCardHighlight = ({
           - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
-      <Box
+      <Flex
         width={animation ? "100%" : "60%"}
         height={animation ? "50vh" : "auto"}
+        justifyContent={"center"}
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
@@ -147,7 +148,7 @@ export const MobileCardHighlight = ({
             scale={1}
           />
         )}
-      </Box>
+      </Flex>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
