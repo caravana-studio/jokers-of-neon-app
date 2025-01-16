@@ -17,6 +17,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
@@ -97,6 +98,8 @@ export const useGameState = () => {
   useEffect(() => {
     if (client && account) {
       setModId(game?.mod_id ?? 0);
+      // fetchAndMergeSpecialCardsData(String(2));
+      fetchAndMergeSpecialCardsData(String(game?.mod_id ?? 0));
       getPlayerPokerHands(client, gameId).then((plays: any) => {
         if (plays != undefined) setPlays(plays);
       });

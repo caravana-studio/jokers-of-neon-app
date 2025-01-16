@@ -907,7 +907,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
     const externalImageUrls = await fetchModImages(String(modId));
     // const externalImageUrls = await fetchModImages(String(2));
+
     preloadImages(externalImageUrls);
+
     fetchAndMergeSpecialCardsData(String(modId));
     // fetchAndMergeSpecialCardsData(String(2));
 
