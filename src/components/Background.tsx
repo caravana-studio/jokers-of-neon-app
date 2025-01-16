@@ -1,7 +1,8 @@
 import { Box, Text } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
+import { useGameContext } from "../providers/GameProvider";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -18,6 +19,28 @@ const getBackgroundColor = (type: string) => {
       return "black";
     default:
       return "transparent";
+  }
+};
+
+const fetchBackgroundImageUrl = async (
+  type: string,
+  modId: number
+): Promise<string | null> => {
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/bg";
+
+  try {
+    const response = await fetch(`${baseUrl}/${type}-bg.jpg`);
+
+    if (!response.ok) {
+      console.error(`Failed to fetch background image: ${response.statusText}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data.download_url; // Use the raw file URL
+  } catch (error) {
+    console.error("Error fetching background image:", error);
+    return null;
   }
 };
 
@@ -40,11 +63,29 @@ export const Background = ({
   scrollOnMobile = false,
 }: BackgroundProps) => {
   const { isSmallScreen } = useResponsiveValues();
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
+
+  const { modId } = useGameContext();
+
+  useEffect(() => {
+    const loadBackgroundImage = async () => {
+      if (modId !== 1) {
+        const imageUrl = await fetchBackgroundImageUrl(type, modId);
+        setBackgroundImageUrl(imageUrl || "none");
+      }
+    };
+
+    loadBackgroundImage();
+  }, [type]);
+
   return (
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
-        backgroundImage: getBackgroundImage(type),
+        backgroundImage:
+          modId === 1 || modId === 0
+            ? getBackgroundImage(type)
+            : backgroundImageUrl,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",

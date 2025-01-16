@@ -23,7 +23,7 @@ const fetchModImages = async (modId: string): Promise<string[]> => {
       const data = await response.json();
 
       for (const item of data) {
-        if (item.type === "file" && item.name.endsWith(".png")) {
+        if (item.type === "file" && /\.(png|jpg)$/i.test(item.name)) {
           externalImageUrls.push(item.download_url);
         } else if (item.type === "dir") {
           await fetchDirectory(item.url);
