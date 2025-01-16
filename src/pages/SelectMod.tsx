@@ -12,6 +12,7 @@ import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { useGameMods } from "../dojo/queries/useGameMods";
+import { useGameContext } from "../providers/GameProvider";
 
 const OFFICIAL_MODS = [
   {
@@ -138,6 +139,7 @@ interface IModBoxProps {
 const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
+  const { setModId } = useGameContext();
 
   return (
     <Tooltip label={mod.description}>
@@ -157,13 +159,14 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
             transition: "all 0.2s ease-in-out",
           },
         }}
-        onClick={() =>
+        onClick={() => {
+          setModId(mod.id);
           mod.url
             ? mod.url.startsWith("http")
               ? (window.location.href = mod.url)
               : navigate(mod.url)
-            : navigate(`/play/${mod.id}`)
-        }
+            : navigate(`/play/${mod.id}`);
+        }}
       >
         <Text size="l">{mod.title}</Text>
         <CachedImage

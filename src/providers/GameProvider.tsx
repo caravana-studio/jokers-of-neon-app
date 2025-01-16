@@ -114,6 +114,8 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
+  modId: number;
+  setModId: (modId: number) => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -206,6 +208,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreselectedPowerUps,
     removePowerUp,
     resetPowerUps,
+    modId,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
