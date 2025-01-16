@@ -20,6 +20,7 @@ import { sortCards } from "../utils/sortCards";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
+  const [modId, setModId] = useState<number>(getLSGameId());
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
@@ -95,6 +96,7 @@ export const useGameState = () => {
 
   useEffect(() => {
     if (client && account) {
+      setModId(game?.mod_id ?? 0);
       getPlayerPokerHands(client, gameId).then((plays: any) => {
         if (plays != undefined) setPlays(plays);
       });
@@ -238,5 +240,7 @@ export const useGameState = () => {
     resetPowerUps,
     setPowerUps,
     addPowerUp,
+    modId,
+    setModId,
   };
 };

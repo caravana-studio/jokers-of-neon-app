@@ -9,12 +9,15 @@ import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
+
+  const enableMods = useFeatureFlagEnabled("global", "showMods");
 
   return (
     <Background type="home">
@@ -78,14 +81,16 @@ export const Home = () => {
                 onClick={() => {
                   setLeaderboardOpen(true);
                 }}
+                minW={["150px", "300px"]}
               >
                 {t("home.btn.leaderboard-btn")}
               </Button>
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  navigate(enableMods ? "/mods" : "/login");
                 }}
+                minW={["150px", "300px"]}
               >
                 {t("home.btn.playDemo-btn")}
               </Button>
