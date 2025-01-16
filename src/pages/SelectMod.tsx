@@ -58,8 +58,6 @@ export const SelectMod = () => {
     OFFICIAL_MODS[mod.id].id = mod.id;
   });
 
-  // would be awesome to look for the images and read the json files from the mods folder here
-
   return (
     <Background type="home">
       <PositionedGameMenu />

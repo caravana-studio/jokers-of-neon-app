@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { CardDataMap } from "../types/CardData";
+import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {};
 
@@ -320,22 +321,8 @@ export const fetchAndMergeSpecialCardsData = async (modId: string) => {
   const url = import.meta.env.VITE_MOD_URL + `${modId}/specials.json`;
 
   try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      console.error(`Failed to fetch specials.json: ${response.statusText}`);
-      return;
-    }
-
-    const data = await response.json();
-
-    if (data.encoding === "base64") {
-      const content = JSON.parse(atob(data.content));
-      console.log(content);
-      Object.assign(SPECIAL_CARDS_DATA, content);
-    } else {
-      console.error("Unexpected encoding format:", data.encoding);
-    }
+    const content = await getJsonFromUrl(url);
+    Object.assign(SPECIAL_CARDS_DATA, content);
   } catch (error) {
     console.error("Error fetching specials.json:", error);
   }
