@@ -5,10 +5,11 @@ import {
   TRADITIONAL_CARDS_DATA,
   NEON_CARDS_DATA,
 } from "../data/traditionalCards";
+import { fetchModImages } from "../data/modImageCache";
 
 const CACHE_NAME = "image-cache";
 
-const getDefaultImageUrls = (): string[] => {
+const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
 
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
@@ -65,11 +66,16 @@ const getDefaultImageUrls = (): string[] => {
   imageUrls.push("store/slot-image.png");
   imageUrls.push("store/unlocked-slot.png");
 
+  const modId = "mod-test";
+
+  const externalImageUrls = await fetchModImages(modId);
+  imageUrls.push(...externalImageUrls);
+
   return imageUrls;
 };
 
 export const preloadImages = async (urls?: string[]) => {
-  const imageUrls: string[] = urls ?? getDefaultImageUrls();
+  const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
 
   try {
     const cache = await caches.open(CACHE_NAME);
