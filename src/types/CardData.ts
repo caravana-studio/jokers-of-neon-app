@@ -15,6 +15,7 @@ export interface CardData {
     rarity?: CARDS_RARITY;
     price?: number;
     animation?: SpineAnimationInfo;
+    temporaryPrice?: number;
 }
 
 export type CardDataMap = {

@@ -37,11 +37,12 @@ export const DurationSwitcher = ({
       justifyContent="center"
       mt={3}
       flexDir={isSmallScreen ? "column" : "row-reverse"}
+      onClick={(event) => event.stopPropagation()}
     >
       <Flex justifyContent="center" alignItems="center" gap={2}>
-      <Text size="md">
-        {duration === Duration.TEMPORAL ? t("temporal") : t("permanent")}
-      </Text>
+        <Text size="md">
+          {duration === Duration.TEMPORAL ? t("temporal") : t("permanent")}
+        </Text>
         <InformationIcon
           title={duration === Duration.TEMPORAL ? "temporal" : "permanent"}
         />

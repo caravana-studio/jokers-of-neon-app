@@ -13,6 +13,9 @@ import { CardImage3D } from "./CardImage3D";
 import { ConfirmationModal } from "./ConfirmationModal";
 import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 import { animationsData } from "../constants/spineAnimations";
+import { DurationSwitcher } from "./DurationSwitcher";
+import { Duration } from "../enums/duration";
+import { PriceBox } from "./PriceBox";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -28,15 +31,14 @@ export const MobileCardHighlight = ({
   isPack = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type, animation, price, rarity } = getCardData(
-    card,
-    isPack
-  );
+  const { name, description, type, animation, price, rarity, temporaryPrice } =
+    getCardData(card, isPack);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game"]);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const discard =
     type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
@@ -95,7 +97,7 @@ export const MobileCardHighlight = ({
       alignItems={"center"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={6}
+      gap={temporaryPrice ? 4 : 6}
       onClick={() => {
         onClose();
       }}
@@ -159,11 +161,23 @@ export const MobileCardHighlight = ({
               Rarity: {rarity}
             </Text>
           )}
-          {price && (
-            <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              Price: {price}
-            </Text>
-          )}
+          {price &&
+            (temporaryPrice ? (
+              <DurationSwitcher
+                price={price}
+                temporalPrice={temporaryPrice}
+                duration={duration}
+                onDurationChange={(newDuration) => {
+                  setDuration(newDuration);
+                }}
+              />
+            ) : (
+              <PriceBox
+                price={price}
+                purchased={false}
+                absolutePosition={false}
+              />
+            ))}
         </>
       )}
       {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) &&

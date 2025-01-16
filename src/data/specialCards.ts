@@ -21,6 +21,7 @@ const createCardData = (
   description: i18n.t(`specialCardsData.${id}.description`, { ns }),
   rarity,
   price: CARDS_PRICE[rarity],
+  temporaryPrice: Math.round((CARDS_PRICE[rarity] / 3) / 100) * 100,
 });
 
 const loadTranslations = async () => {
