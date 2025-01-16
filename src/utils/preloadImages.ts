@@ -66,11 +66,6 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
   imageUrls.push("store/slot-image.png");
   imageUrls.push("store/unlocked-slot.png");
 
-  const modId = "mod-test";
-
-  const externalImageUrls = await fetchModImages(modId);
-  imageUrls.push(...externalImageUrls);
-
   return imageUrls;
 };
 

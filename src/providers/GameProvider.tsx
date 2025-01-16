@@ -46,6 +46,8 @@ import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts"
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { fetchModImages } from "../data/modImageCache.ts";
+import { preloadImages } from "../utils/preloadImages.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -899,8 +901,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const checkOrCreateGame = () => {
+  const checkOrCreateGame = async () => {
     console.log("checking game exists", gameId);
+
+    const externalImageUrls = await fetchModImages(String(modId));
+    preloadImages(externalImageUrls);
+
     clearPreSelection();
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       setTimeout(() => {
