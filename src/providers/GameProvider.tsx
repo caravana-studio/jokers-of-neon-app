@@ -241,7 +241,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
-      const modId: number = 1;
       createGame(modId, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
