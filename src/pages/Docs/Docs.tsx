@@ -9,6 +9,7 @@ import { RAGE_CARDS_DATA } from "../../data/rageCards";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
+import { Background } from "../../components/Background";
 
 export const DocsContentMobile = ({
   lastIndexTab = 0,
@@ -36,7 +37,7 @@ export const DocsContentMobile = ({
   });
 
   return (
-    <Box overflow={"hidden"}>
+    <Background type="store">
       <MobileDecoration />
 
       <Flex
@@ -70,6 +71,6 @@ export const DocsContentMobile = ({
           {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
       </Flex>
-    </Box>
+    </Background>
   );
 };
