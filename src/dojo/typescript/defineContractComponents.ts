@@ -363,6 +363,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           id: RecsType.Number,
+          mod_id: RecsType.Number,
           owner: RecsType.BigInt,
           player_name: RecsType.BigInt,
           max_hands: RecsType.Number,
@@ -384,6 +385,7 @@ export function defineContractComponents(world: World) {
             namespace: "jokers_of_neon",
             name: "Game",
             types: [
+              "u32",
               "u32",
               "ContractAddress",
               "felt252",
