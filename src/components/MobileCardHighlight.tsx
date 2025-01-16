@@ -28,7 +28,10 @@ export const MobileCardHighlight = ({
   isPack = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type, animation } = getCardData(card, isPack);
+  const { name, description, type, animation, price, rarity } = getCardData(
+    card,
+    isPack
+  );
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -150,14 +153,14 @@ export const MobileCardHighlight = ({
       </Text>
       {showExtraInfo && (
         <>
-          {card.rarity && (
+          {rarity && (
             <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              Rarity: {card.rarity}
+              Rarity: {rarity}
             </Text>
           )}
-          {card.price && (
+          {price && (
             <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              Price: {card.price}
+              Price: {price}
             </Text>
           )}
         </>

@@ -7,17 +7,20 @@ import SpineAnimation, {
 } from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useRef } from "react";
-import { Card } from "../../types/Card";
 import { getCardData } from "../../utils/getCardData";
+import { getSortedDocCardsData } from "./Utils/DocsUtils";
 
 export const DocsBoxesRow = () => {
-  const boxes = LOOT_BOXES_DATA;
+  const isPack = true;
+  const boxes = getSortedDocCardsData(LOOT_BOXES_DATA, isPack);
   const { highlightCard, highlightedCard } = useCardHighlight();
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
 
   return (
     <>
-      {highlightedCard && <MobileCardHighlight card={highlightedCard} isPack />}
+      {highlightedCard && (
+        <MobileCardHighlight card={highlightedCard} isPack showExtraInfo />
+      )}
 
       <Flex
         width="100%"
@@ -30,15 +33,8 @@ export const DocsBoxesRow = () => {
         gap={2}
         overflow={"scroll"}
       >
-        {Object.keys(boxes).map((boxKey, index) => {
-          const cardId = Number(boxKey);
-          const box: Card = {
-            id: boxKey,
-            img: "",
-            idx: Number(boxKey),
-            card_id: cardId,
-          };
-          const boxData = getCardData(box, true);
+        {boxes.map((box, index) => {
+          const boxData = getCardData(box, isPack);
 
           return (
             <Flex

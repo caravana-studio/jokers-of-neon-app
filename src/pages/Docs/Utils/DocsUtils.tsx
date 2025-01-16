@@ -1,7 +1,8 @@
-import { CARDS_RARITY } from "../../../constants/cardsRarity";
+import { RARITY } from "../../../constants/rarity";
 import { getCardFromCardId } from "../../../dojo/utils/getCardFromCardId";
 import { Card } from "../../../types/Card";
 import { CardDataMap } from "../../../types/CardData";
+import { getCardData } from "../../../utils/getCardData";
 
 export interface DocCardData {
   name: string;
@@ -9,12 +10,12 @@ export interface DocCardData {
   price?: number;
 }
 
-const rarityOrder: Record<CARDS_RARITY, number> = {
-  [CARDS_RARITY.SS]: 1,
-  [CARDS_RARITY.S]: 2,
-  [CARDS_RARITY.A]: 3,
-  [CARDS_RARITY.B]: 4,
-  [CARDS_RARITY.C]: 5,
+const rarityOrder: Record<RARITY, number> = {
+  [RARITY.SS]: 1,
+  [RARITY.S]: 2,
+  [RARITY.A]: 3,
+  [RARITY.B]: 4,
+  [RARITY.C]: 5,
 };
 
 const getDocCardsData = (cardDataMap: CardDataMap) => {
@@ -22,24 +23,28 @@ const getDocCardsData = (cardDataMap: CardDataMap) => {
     const cardId = Number(key);
     let card: Card = getCardFromCardId(cardId, cardId);
 
-    const cardData = cardDataMap[cardId];
-    card = {
-      ...card,
-      ...cardData,
-      price: cardDataMap[cardId].price,
-      rarity: cardDataMap[cardId].rarity,
-    };
-
     return card;
   });
 };
 
-export const getSortedDocCardsData = (cardDataMap: CardDataMap): Card[] => {
+export const getSortedDocCardsData = (
+  cardDataMap: CardDataMap,
+  isPack: boolean = false
+): Card[] => {
   const cards: Card[] = getDocCardsData(cardDataMap);
 
   return cards.slice().sort((a, b) => {
-    const rarityA = a.rarity ? rarityOrder[a.rarity] : Infinity;
-    const rarityB = b.rarity ? rarityOrder[b.rarity] : Infinity;
+    const aData = getCardData(a, isPack);
+    const bData = getCardData(b, isPack);
+
+    const rarityA =
+      aData.rarity && rarityOrder[aData.rarity as RARITY] !== undefined
+        ? rarityOrder[aData.rarity as RARITY]
+        : Infinity;
+    const rarityB =
+      bData.rarity && rarityOrder[bData.rarity as RARITY] !== undefined
+        ? rarityOrder[bData.rarity as RARITY]
+        : Infinity;
     return rarityA - rarityB;
   });
 };

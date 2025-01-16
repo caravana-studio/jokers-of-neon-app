@@ -1,20 +1,20 @@
-import { CARDS_RARITY } from "../constants/cardsRarity";
+import { RARITY } from "../constants/rarity";
 import { CardDataMap } from "../types/CardData";
 import i18n from 'i18next';
 
 export const MODIFIER_CARDS_DATA: CardDataMap = {};
 
-const CARDS_PRICE: Record<CARDS_RARITY, number> = {
-  [CARDS_RARITY.B]: 300,
-  [CARDS_RARITY.A]: 750,
-  [CARDS_RARITY.S]: 1000,
-  [CARDS_RARITY.C]: 0,
-  [CARDS_RARITY.SS]: 0
+const CARDS_PRICE: Record<RARITY, number> = {
+  [RARITY.B]: 300,
+  [RARITY.A]: 750,
+  [RARITY.S]: 1000,
+  [RARITY.C]: 0,
+  [RARITY.SS]: 0
 };
 
 const createCardData = (
   id: number,
-  rarity: CARDS_RARITY,
+  rarity: RARITY,
   ns: string = "effects"
 ) => ({
   name: i18n.t(`modifierCardsData.${id}.name`, { ns }),
@@ -27,12 +27,12 @@ const loadTranslations = async () => {
   await i18n.loadNamespaces(["effects"]);
 
   Object.assign(MODIFIER_CARDS_DATA, {
-    608: createCardData(608, CARDS_RARITY.B),
-    609: createCardData(609, CARDS_RARITY.B),
-    610: createCardData(610, CARDS_RARITY.B),
-    611: createCardData(611, CARDS_RARITY.B),
-    612: createCardData(612, CARDS_RARITY.S),
-    613: createCardData(613, CARDS_RARITY.A),
+    608: createCardData(608, RARITY.B),
+    609: createCardData(609, RARITY.B),
+    610: createCardData(610, RARITY.B),
+    611: createCardData(611, RARITY.B),
+    612: createCardData(612, RARITY.S),
+    613: createCardData(613, RARITY.A),
   });
 };
 

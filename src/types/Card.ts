@@ -1,4 +1,3 @@
-import { CARDS_RARITY } from "../constants/cardsRarity";
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { Effect } from "./Effect";
@@ -24,7 +23,6 @@ export interface Card {
   discount_cost?: number;
   temporary_discount_cost?: number;
   temporary_price?: number;
-  rarity?: CARDS_RARITY;
 }
 
 export interface StaticEffectCard extends Effect {

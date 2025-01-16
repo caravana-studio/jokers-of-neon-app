@@ -1,4 +1,4 @@
-export enum CARDS_RARITY {
+export enum RARITY {
     C = "C",
     B = "B",
     A = "A",

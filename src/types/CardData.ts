@@ -1,4 +1,4 @@
-import { CARDS_RARITY } from "../constants/cardsRarity";
+import { CARDS_RARITY } from "../constants/rarity";
 import { Cards } from "../enums/cards";
 import { CardTypes } from "../enums/cardTypes";
 import { Suits } from "../enums/suits";
