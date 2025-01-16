@@ -439,38 +439,40 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         // we only support one special card at a time
         const special_idx = event.specials[0]?.idx;
 
-        event.hand.forEach((card, innerIndex) => {
-          const { idx, quantity } = card;
-          setTimeout(() => {
-            if (isPoints) {
-              pointsSound();
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                points: quantity,
-                animationIndex: 400 + index,
-              });
-              setPoints((prev) => prev + quantity);
-            } else if (isMulti) {
-              multiSound();
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                multi: quantity,
-                animationIndex: 400 + index,
-              });
-              setMulti((prev) => prev + quantity);
-            } else if (isCash) {
-              cashSound();
-              setAnimatedCard({
-                special_idx,
-                idx: [idx],
-                cash: quantity,
-                animationIndex: 400 + index,
-              });
-            }
-          }, playAnimationDuration * innerIndex);
-        });
+        setTimeout(() => {
+          event.hand.forEach((card, innerIndex) => {
+            const { idx, quantity } = card;
+            setTimeout(() => {
+              if (isPoints) {
+                pointsSound();
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  points: quantity,
+                  animationIndex: 400 + index,
+                });
+                setPoints((prev) => prev + quantity);
+              } else if (isMulti) {
+                multiSound();
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  multi: quantity,
+                  animationIndex: 400 + index,
+                });
+                setMulti((prev) => prev + quantity);
+              } else if (isCash) {
+                cashSound();
+                setAnimatedCard({
+                  special_idx,
+                  idx: [idx],
+                  cash: quantity,
+                  animationIndex: 400 + index,
+                });
+              }
+            }, playAnimationDuration * innerIndex);
+          });
+        }, playAnimationDuration * index);
       });
     };
 
