@@ -13,24 +13,9 @@ import CachedImage from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { useGameMods } from "../dojo/queries/useGameMods";
 import { useGameContext } from "../providers/GameProvider";
+import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
-const OFFICIAL_MODS = [
-  {
-    title: "Loot Survivor MOD",
-    id: -1,
-    image: "loot-survivor",
-    description:
-      "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",
-    url: "https://ls.jokersofneon.com",
-  },
-  {
-    title: "Classic Jokers of Neon",
-    id: -2,
-    image: "classic",
-    description: "The classic version of Jokers of Neon",
-    url: "/login",
-  },
-];
+const OFFICIAL_MODS: any[] = [];
 
 const MODS = [
   {
@@ -54,9 +39,16 @@ export const SelectMod = () => {
 
   const mods = useGameMods().mods;
 
-  mods.forEach((mod) => {
-    OFFICIAL_MODS[mod.id].id = mod.id;
+  const url = import.meta.env.VITE_MOD_URL + "official-mods.json";
+  console.log(url);
+
+  getJsonFromUrl(url).then((response) => {
+    Object.assign(OFFICIAL_MODS, response);
   });
+
+  // mods.forEach((mod) => {
+  //   OFFICIAL_MODS[mod.id].id = mod.id;
+  // });
 
   return (
     <Background type="home">
