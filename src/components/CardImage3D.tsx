@@ -51,7 +51,8 @@ export const CardImage3D = ({
       position={"absolute"}
       borderRadius={borderRadius}
       src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
-      width={"100%"}
+      width={"auto"}
+      height={"100%"}
       zIndex={-1}
     />
   );
@@ -70,7 +71,8 @@ export const CardImage3D = ({
           position={"absolute"}
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l1.png`}
-          width={"100%"}
+          width={"auto"}
+          height={"100%"}
           pointerEvents="none"
           transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
@@ -80,7 +82,8 @@ export const CardImage3D = ({
           position={"absolute"}
           borderRadius={borderRadius}
           src={`/Cards/big/${cid}-l2.png`}
-          width={"100%"}
+          width={"auto"}
+          height={"100%"}
           pointerEvents="none"
           transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
@@ -90,7 +93,8 @@ export const CardImage3D = ({
         src={`/Cards/big/empty.png`}
         pointerEvents="none"
         alt={`empty`}
-        width={"100%"}
+        width={"auto"}
+        height={"100%"}
       />
 
       {card.temporary && card.remaining && (
