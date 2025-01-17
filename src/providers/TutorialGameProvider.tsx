@@ -67,32 +67,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
   const [remainingPlaysTutorial, setRemainingPlaysTutorial] = useState(5);
-  /* 
-  const c7 = C7;
-  c7.idx = D2.idx;
-  c7.id = D2.id;
-
-  const c5 = C5;
-  c5.idx = H3.idx;
-  c5.id = H3.id;
-
-  const cq = CQ;
-  cq.id = c7.id;
-  cq.idx = c7.idx;
-
-  const cm = ClubModifier;
-  cm.id = H7.id;
-  cm.idx = H7.idx;
-
-  const d4 = D4;
-  d4.id = c5.id;
-  d4.idx = c5.idx;
-
-  const d10 = D10;
-  d10.id = D5.id;
-  d10.idx = D5.idx;
-
-  const cards: Card[] = [c7, c5]; */
 
   const {
     setup: {
