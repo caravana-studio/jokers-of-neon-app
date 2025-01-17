@@ -57,10 +57,10 @@ export const DocsContentMobile = ({
             color="white"
           >
             <TabList width={"100%"} height={"100%"}>
-              <Tab fontSize={10}>{t("labels.special-cards")}</Tab>
-              <Tab fontSize={10}>{t("labels.modifier-cards")}</Tab>
-              <Tab fontSize={10}>{t("labels.rage-cards")}</Tab>
-              <Tab fontSize={10}>{t("labels.loot-boxes")}</Tab>
+              <Tab fontSize={"0.5rem"}>{t("labels.special-cards")}</Tab>
+              <Tab fontSize={"0.5rem"}>{t("labels.modifier-cards")}</Tab>
+              <Tab fontSize={"0.5rem"}>{t("labels.rage-cards")}</Tab>
+              <Tab fontSize={"0.5rem"}>{t("labels.loot-boxes")}</Tab>
             </TabList>
           </Tabs>
         </Flex>
