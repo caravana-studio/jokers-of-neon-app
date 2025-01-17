@@ -5,5 +5,12 @@
     "rage-cards": "Rages",
     "loot-boxes": "Caixas",
     "rarity": "Raridade"
+  },
+  "rarity": {
+    "ss": "Lendário",
+    "s": "Épico",
+    "a": "Raro",
+    "b": "Incomum",
+    "c": "Comum"
   }
 }

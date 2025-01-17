@@ -17,6 +17,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { Duration } from "../enums/duration";
 import { PriceBox } from "./PriceBox";
 import { LootBoxRateInfo } from "./LootBoxRateInfo";
+import { RARITY, RarityLabels } from "../constants/rarity";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -167,7 +168,8 @@ export const MobileCardHighlight = ({
         <>
           {rarity && (
             <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              {t("labels.rarity", { ns: "docs" })}: {rarity}
+              {t("labels.rarity", { ns: "docs" })}:{" "}
+              {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
             </Text>
           )}
           {isPack && <LootBoxRateInfo name={name} details={details} />}
