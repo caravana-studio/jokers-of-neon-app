@@ -15,24 +15,15 @@ import { useGameState } from "../state/useGameState";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 import { checkHand } from "../utils/checkHand";
-import {
-  C5,
-  C7,
-  CA,
-  CJ,
-  CK,
-  CQ,
-  D10,
-  D2,
-  D4,
-  D5,
-  H10,
-  H3,
-  H7,
-} from "../utils/mocks/cardMocks";
-import { ClubModifier } from "../utils/mocks/modifierMocks";
 import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
+import {
+  EVENT_FLUSH,
+  EVENT_PAIR,
+  EVENT_PAIR_POWER_UPS,
+  HAND_1,
+  HAND_2,
+} from "../utils/mocks/tutorialMocks.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
@@ -42,8 +33,8 @@ import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 export const mockTutorialGameContext = createContext<IGameContext>({
   ...gameProviderDefaults,
   gameId: 1,
-  hand: [D2, H3, D5, H7, H10, CJ, CK, CA],
-  score: 300,
+  hand: HAND_1,
+  score: 600,
   cash: 1000,
   discards: 1,
   sfxVolume: 100,
@@ -52,7 +43,6 @@ export const mockTutorialGameContext = createContext<IGameContext>({
 
 const emptyFn = () => {};
 
-export let handsLeftTutorial = 3;
 let context: IGameContext;
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -76,7 +66,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: discardSound } = useAudio(discardSfx, 4);
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
-
+  const [remainingPlaysTutorial, setRemainingPlaysTutorial] = useState(5);
+  /* 
   const c7 = C7;
   c7.idx = D2.idx;
   c7.id = D2.id;
@@ -101,7 +92,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   d10.id = D5.id;
   d10.idx = D5.idx;
 
-  const cards: Card[] = [c7, c5];
+  const cards: Card[] = [c7, c5]; */
 
   const {
     setup: {
@@ -238,7 +229,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const togglePreselected = (cardIndex: number) => {
-    if (!preSelectionLocked && handsLeftTutorial > 0) {
+    if (!preSelectionLocked && remainingPlaysTutorial > 0) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
         preselectCardSound();
@@ -251,143 +242,12 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const discard = () => {
     discardSound();
-    replaceCards(cards);
+    setHand(HAND_2);
     clearPreSelection();
     setDiscards(discards - 1);
   };
 
-  const eventFlush = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      {
-        idx: 34,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 9,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: c7.idx,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 11,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 12,
-        multi: 0,
-        points: 11,
-      },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: 34,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 9,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: c7.idx,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 11,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 12,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [{ idx: 34, suit: 1 }],
-    cards: [],
-    score: 5200,
-    cashEvents: [],
-    powerUpEvents: [],
-  };
-
-  const eventPair = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      { idx: c7.idx, multi: 0, points: 7 },
-      { idx: 31, multi: 0, points: 7 },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: c7.idx,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [],
-    cards: [cq, cm],
-    score: 96,
-    cashEvents: [],
-  };
-
-  const eventPairPowerUps = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      { idx: c5.idx, multi: 0, points: 5 },
-      { idx: D5.idx, multi: 0, points: 5 },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: c5.idx,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [],
-    cards: [d4, d10],
-    score: 96,
-    cashEvents: [],
-    powerUpEvents: [
-      {
-        idx: 0,
-        points: 0,
-        multi: 5,
-      },
-      {
-        idx: 1,
-        points: 25,
-        multi: 0,
-      },
-    ],
-  };
-
-  const events = [eventPair, eventPairPowerUps, eventFlush];
+  const events = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
 
   const play = () => {
     animatePlay({
@@ -419,8 +279,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       handsLeft: 1,
       setAnimateSecondChanceCard: emptyFn,
     });
+    setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);
-    handsLeftTutorial -= 1;
+    setRemainingPlaysTutorial(remainingPlaysTutorial - 1);
   };
 
   const clearPreSelection = () => {
@@ -434,18 +295,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const replaceCards = (cards: Card[]) => {
-    const newHand = context.hand
-      ?.map((card) => {
-        const newCard = cards.find((c) => c.idx === card.idx);
-        if (newCard) {
-          return newCard;
-        } else {
-          return card;
-        }
-      })
-      .filter((card) => card.card_id !== 9999);
-
-    setHand(sortCards(newHand, SortBy.RANK));
+    setHand(sortCards(cards, SortBy.RANK));
   };
 
   context.preSelectedCards = preSelectedCards;
@@ -456,6 +306,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
   context.discards = discards;
+  context.remainingPlaysTutorial = remainingPlaysTutorial;
 
   if (hand.length > 0) context.hand = hand;
 

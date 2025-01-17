@@ -111,6 +111,7 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
+  remainingPlaysTutorial?: number;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
