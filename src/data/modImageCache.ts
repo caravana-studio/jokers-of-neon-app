@@ -42,12 +42,4 @@ const fetchModImages = async (modId: string): Promise<string[]> => {
   return externalImageUrls;
 };
 
-/**
- * Retrieves the cached image URLs.
- * @returns The cached image URLs.
- */
-const getCachedImageUrls = (): string[] => {
-  return [...externalImageUrls];
-};
-
-export { fetchModImages, getCachedImageUrls };
+export { fetchModImages };
