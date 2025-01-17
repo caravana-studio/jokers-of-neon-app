@@ -1,4 +1,4 @@
-import { EventType } from "../enums/eventType";
+import { EventType } from "../dojo/typescript/models.gen";
 import { CardPlayEvent } from "../types/ScoreData";
 
 export const scoreEventFilter = (event: CardPlayEvent) =>

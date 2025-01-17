@@ -1,5 +1,5 @@
 import { DojoProvider } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoCustomEnum } from "starknet";
+import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
 import * as models from "./models.gen";
 
 export function setupWorld(provider: DojoProvider) {
@@ -180,40 +180,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_checkHand_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>) => {
-		return {
-			contractName: "game_system",
-			entrypoint: "check_hand",
-			calldata: [gameId, cardsIndex, modifiersIndex],
-		};
-	};
-
-	const game_system_checkHand = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>) => {
-		try {
-			return await provider.execute(
-				snAccount,
-				build_game_system_checkHand_calldata(gameId, cardsIndex, modifiersIndex),
-				"jokers_of_neon",
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
-	const build_game_system_createGame_calldata = (playerName: BigNumberish) => {
+	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish) => {
 		return {
 			contractName: "game_system",
 			entrypoint: "create_game",
-			calldata: [playerName],
+			calldata: [modId, playerName],
 		};
 	};
 
-	const game_system_createGame = async (snAccount: Account | AccountInterface, playerName: BigNumberish) => {
+	const game_system_createGame = async (snAccount: Account | AccountInterface, modId: BigNumberish, playerName: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_game_system_createGame_calldata(playerName),
+				build_game_system_createGame_calldata(modId, playerName),
 				"jokers_of_neon",
 			);
 		} catch (error) {
@@ -222,19 +201,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_discard_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>) => {
+	const build_game_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		return {
 			contractName: "game_system",
 			entrypoint: "discard",
-			calldata: [gameId, cardsIndex, modifiersIndex],
+			calldata: [gameId, playedCardsIndexes, playedModifiersIndexes],
 		};
 	};
 
-	const game_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>) => {
+	const game_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_game_system_discard_calldata(gameId, cardsIndex, modifiersIndex),
+				build_game_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
 				"jokers_of_neon",
 			);
 		} catch (error) {
@@ -243,19 +222,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_discardEffectCard_calldata = (gameId: BigNumberish, cardIndex: BigNumberish) => {
+	const build_game_system_discardEffectCard_calldata = (gameId: BigNumberish, playedCardsIndexes: BigNumberish) => {
 		return {
 			contractName: "game_system",
 			entrypoint: "discard_effect_card",
-			calldata: [gameId, cardIndex],
+			calldata: [gameId, playedCardsIndexes],
 		};
 	};
 
-	const game_system_discardEffectCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardIndex: BigNumberish) => {
+	const game_system_discardEffectCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_game_system_discardEffectCard_calldata(gameId, cardIndex),
+				build_game_system_discardEffectCard_calldata(gameId, playedCardsIndexes),
 				"jokers_of_neon",
 			);
 		} catch (error) {
@@ -319,19 +298,40 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_play_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>, powerUpsIndex: Array<BigNumberish>) => {
+	const build_game_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		return {
 			contractName: "game_system",
 			entrypoint: "play",
-			calldata: [gameId, cardsIndex, modifiersIndex, powerUpsIndex],
+			calldata: [gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes],
 		};
 	};
 
-	const game_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>, modifiersIndex: Array<BigNumberish>, powerUpsIndex: Array<BigNumberish>) => {
+	const game_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_game_system_play_calldata(gameId, cardsIndex, modifiersIndex, powerUpsIndex),
+				build_game_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
+				"jokers_of_neon",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_mod_manager_registrator_registerManagers_calldata = (modManagerAddress: string, rageManagerAddress: string, specialManagerAddress: string) => {
+		return {
+			contractName: "mod_manager_registrator",
+			entrypoint: "register_managers",
+			calldata: [modManagerAddress, rageManagerAddress, specialManagerAddress],
+		};
+	};
+
+	const mod_manager_registrator_registerManagers = async (snAccount: Account | AccountInterface, modManagerAddress: string, rageManagerAddress: string, specialManagerAddress: string) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_mod_manager_registrator_registerManagers_calldata(modManagerAddress, rageManagerAddress, specialManagerAddress),
 				"jokers_of_neon",
 			);
 		} catch (error) {
@@ -353,6 +353,27 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_reroll_calldata(gameId),
+				"jokers_of_neon",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_rage_system_reset_calldata = (gameId: BigNumberish) => {
+		return {
+			contractName: "rage_system",
+			entrypoint: "reset",
+			calldata: [gameId],
+		};
+	};
+
+	const rage_system_reset = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_rage_system_reset_calldata(gameId),
 				"jokers_of_neon",
 			);
 		} catch (error) {
@@ -433,10 +454,10 @@ export function setupWorld(provider: DojoProvider) {
 		rage_system: {
 			calculate: rage_system_calculate,
 			buildCalculateCalldata: build_rage_system_calculate_calldata,
+			reset: rage_system_reset,
+			buildResetCalldata: build_rage_system_reset_calldata,
 		},
 		game_system: {
-			checkHand: game_system_checkHand,
-			buildCheckHandCalldata: build_game_system_checkHand_calldata,
 			createGame: game_system_createGame,
 			buildCreateGameCalldata: build_game_system_createGame_calldata,
 			discard: game_system_discard,
@@ -451,6 +472,10 @@ export function setupWorld(provider: DojoProvider) {
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
 			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
+		},
+		mod_manager_registrator: {
+			registerManagers: mod_manager_registrator_registerManagers,
+			buildRegisterManagersCalldata: build_mod_manager_registrator_registerManagers_calldata,
 		},
 	};
 }

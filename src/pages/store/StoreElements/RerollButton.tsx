@@ -50,7 +50,7 @@ const RerollButton  = () => {
         {t("store.labels.reroll").toUpperCase()}
         {!isSmallScreen && (
           <>
-            &nbsp;${rerollInformation.rerollCost} <CashSymbol />
+            &nbsp;{rerollInformation.rerollCost} <CashSymbol />
           </>
         )}
       </Button>

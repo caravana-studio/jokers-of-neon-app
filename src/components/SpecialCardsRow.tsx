@@ -33,7 +33,7 @@ export const SpecialCardsRow = () => {
   const { highlightCard } = useCardHighlight();
 
   const game = useGame();
-  const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
+  const unlockedSpecialSlots = game?.special_slots ?? 1;
 
   const lockedSlots =
     unlockedSpecialSlots === MAX_SPECIAL_CARDS

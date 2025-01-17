@@ -20,7 +20,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
 
   const game = useGame();
   const visible =
-    (game?.len_max_current_special_cards ?? 1) < MAX_SPECIAL_CARDS;
+    (game?.special_slots ?? 1) < MAX_SPECIAL_CARDS;
 
   const price = specialSlotItem?.cost;
   const purchased = specialSlotItem?.purchased ?? false;

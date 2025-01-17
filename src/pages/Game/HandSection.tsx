@@ -45,7 +45,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
+  const handsLeft = !isTutorial() ? round?.remaining_plays ?? 0 : handsLeftTutorial;
 
   const { activeNode } = useDndContext();
 

@@ -1,46 +1,61 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
-import { number } from 'starknet';
-
 type WithFieldOrder<T> = T & { fieldOrder: string[] };
 
-// Type definition for `jokers_of_neon::models::data::game_deck::DeckCard` struct
+// Type definition for `jokers_of_neon::systems::mod_manager_registrator::ModManagerRegistrator` struct
+export interface ModManagerRegistrator {
+	mod_manager_key: number;
+	owner: string;
+	mod_manager_address: string;
+	rage_manager_address: string;
+	special_manager_address: string;
+}
+
+// Type definition for `jokers_of_neon::systems::mod_manager_registrator::ModManagerRegistratorValue` struct
+export interface ModManagerRegistratorValue {
+	owner: string;
+	mod_manager_address: string;
+	rage_manager_address: string;
+	special_manager_address: string;
+}
+
+// Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCard` struct
 export interface DeckCard {
 	game_id: number;
 	index: number;
 	card_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::game_deck::DeckCardValue` struct
+// Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCardValue` struct
 export interface DeckCardValue {
 	card_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::game_deck::GameDeck` struct
+// Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeck` struct
 export interface GameDeck {
 	game_id: number;
 	len: number;
 	round_len: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::game_deck::GameDeckValue` struct
+// Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeckValue` struct
 export interface GameDeckValue {
 	len: number;
 	round_len: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::power_up::GamePowerUp` struct
+// Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUp` struct
 export interface GamePowerUp {
 	game_id: number;
 	power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::data::power_up::GamePowerUpValue` struct
+// Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUpValue` struct
 export interface GamePowerUpValue {
 	power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::game::CurrentSpecialCards` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards` struct
 export interface CurrentSpecialCards {
 	game_id: number;
 	idx: number;
@@ -49,65 +64,59 @@ export interface CurrentSpecialCards {
 	remaining: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::game::CurrentSpecialCardsValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCardsValue` struct
 export interface CurrentSpecialCardsValue {
 	effect_card_id: number;
 	is_temporary: boolean;
 	remaining: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::game::Game` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::game::Game` struct
 export interface Game {
 	id: number;
+	mod_id: number;
+	state: GameState;
 	owner: string;
 	player_name: number;
-	max_hands: number;
-	max_discard: number;
-	max_jokers: number;
-	round: number;
 	player_score: number;
 	level: number;
-	len_hand: number;
-	len_max_current_special_cards: number;
-	len_current_special_cards: number;
-	current_jokers: number;
-	len_max_current_power_ups: number;
-	state: GameState;
+	hand_len: number;
+	plays: number;
+	discards: number;
+	current_specials_len: number;
+	special_slots: number;
 	cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::game::GameValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
 export interface GameValue {
+	mod_id: number;
+	state: GameState;
 	owner: string;
 	player_name: number;
-	max_hands: number;
-	max_discard: number;
-	max_jokers: number;
-	round: number;
 	player_score: number;
 	level: number;
-	len_hand: number;
-	len_max_current_special_cards: number;
-	len_current_special_cards: number;
-	current_jokers: number;
-	len_max_current_power_ups: number;
-	state: GameState;
+	hand_len: number;
+	plays: number;
+	discards: number;
+	current_specials_len: number;
+	special_slots: number;
 	cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::player::PlayerLevelPokerHand` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand` struct
 export interface PlayerLevelPokerHand {
 	game_id: number;
 	poker_hand: PokerHand;
 	level: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::player::PlayerLevelPokerHandValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHandValue` struct
 export interface PlayerLevelPokerHandValue {
 	level: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::rage::RageRound` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRound` struct
 export interface RageRound {
 	game_id: number;
 	is_active: boolean;
@@ -116,7 +125,7 @@ export interface RageRound {
 	last_active_level: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::game::rage::RageRoundValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRoundValue` struct
 export interface RageRoundValue {
 	is_active: boolean;
 	current_probability: number;
@@ -124,35 +133,35 @@ export interface RageRoundValue {
 	last_active_level: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` struct
+// Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHand` struct
 export interface CurrentHand {
 	game_id: number;
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHandValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHandValue` struct
 export interface CurrentHandValue {
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::status::round::round::Round` struct
+// Type definition for `jokers_of_neon_lib::models::status::round::round::Round` struct
 export interface Round {
 	game_id: number;
 	player_score: number;
 	level_score: number;
-	hands: number;
-	discard: number;
+	remaining_plays: number;
+	remaining_discards: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::round::round::RoundValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::round::round::RoundValue` struct
 export interface RoundValue {
 	player_score: number;
 	level_score: number;
-	hands: number;
-	discard: number;
+	remaining_plays: number;
+	remaining_discards: number;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BlisterPackItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItem` struct
 export interface BlisterPackItem {
 	game_id: number;
 	idx: number;
@@ -162,7 +171,7 @@ export interface BlisterPackItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BlisterPackItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItemValue` struct
 export interface BlisterPackItemValue {
 	blister_pack_id: number;
 	cost: number;
@@ -170,20 +179,20 @@ export interface BlisterPackItemValue {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BlisterPackResult` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult` struct
 export interface BlisterPackResult {
 	game_id: number;
 	cards_picked: boolean;
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BlisterPackResultValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResultValue` struct
 export interface BlisterPackResultValue {
 	cards_picked: boolean;
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BurnItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItem` struct
 export interface BurnItem {
 	game_id: number;
 	cost: number;
@@ -191,14 +200,14 @@ export interface BurnItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::BurnItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItemValue` struct
 export interface BurnItemValue {
 	cost: number;
 	discount_cost: number;
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::CardItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItem` struct
 export interface CardItem {
 	game_id: number;
 	idx: number;
@@ -209,7 +218,7 @@ export interface CardItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::CardItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemValue` struct
 export interface CardItemValue {
 	card_id: number;
 	cost: number;
@@ -217,7 +226,7 @@ export interface CardItemValue {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::PokerHandItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItem` struct
 export interface PokerHandItem {
 	game_id: number;
 	idx: number;
@@ -230,7 +239,7 @@ export interface PokerHandItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::PokerHandItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItemValue` struct
 export interface PokerHandItemValue {
 	poker_hand: PokerHand;
 	level: number;
@@ -241,7 +250,7 @@ export interface PokerHandItemValue {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::PowerUpItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItem` struct
 export interface PowerUpItem {
 	game_id: number;
 	idx: number;
@@ -251,7 +260,7 @@ export interface PowerUpItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::PowerUpItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItemValue` struct
 export interface PowerUpItemValue {
 	power_up_id: number;
 	cost: number;
@@ -259,45 +268,7 @@ export interface PowerUpItemValue {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::Shop` struct
-export interface Shop {
-	game_id: number;
-	reroll_cost: number;
-	reroll_executed: boolean;
-	len_item_common_cards: number;
-	len_item_modifier_cards: number;
-	len_item_special_cards: number;
-	len_item_poker_hands: number;
-	len_item_blister_pack: number;
-	len_item_power_ups: number;
-}
-
-// Type definition for `jokers_of_neon::models::status::shop::shop::ShopTracker` struct
-export interface ShopTracker {
-	game_id: number;
-	count_reroll: number;
-	count_burn: number;
-}
-
-// Type definition for `jokers_of_neon::models::status::shop::shop::ShopTrackerValue` struct
-export interface ShopTrackerValue {
-	count_reroll: number;
-	count_burn: number;
-}
-
-// Type definition for `jokers_of_neon::models::status::shop::shop::ShopValue` struct
-export interface ShopValue {
-	reroll_cost: number;
-	reroll_executed: boolean;
-	len_item_common_cards: number;
-	len_item_modifier_cards: number;
-	len_item_special_cards: number;
-	len_item_poker_hands: number;
-	len_item_blister_pack: number;
-	len_item_power_ups: number;
-}
-
-// Type definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItem` struct
 export interface SlotSpecialCardsItem {
 	game_id: number;
 	cost: number;
@@ -305,14 +276,14 @@ export interface SlotSpecialCardsItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItemValue` struct
 export interface SlotSpecialCardsItemValue {
 	cost: number;
 	discount_cost: number;
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::SpecialCardItem` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItem` struct
 export interface SpecialCardItem {
 	game_id: number;
 	idx: number;
@@ -324,7 +295,7 @@ export interface SpecialCardItem {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::SpecialCardItemValue` struct
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItemValue` struct
 export interface SpecialCardItemValue {
 	card_id: number;
 	cost: number;
@@ -334,78 +305,63 @@ export interface SpecialCardItemValue {
 	purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyBlisterPackEvent` struct
-export interface BuyBlisterPackEvent {
-	game_id: number;
-	level: number;
-	idx: number;
-	blister_pack_id: number;
+// Type definition for `jokers_of_neon_mods::models::mod_config::ModConfig` struct
+export interface ModConfig {
+	mod_id: number;
+	deck_address: string;
+	specials_address: string;
+	rages_address: string;
+	loot_boxes_address: string;
+	game_config_address: string;
+	shop_config_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyBlisterPackEventValue` struct
-export interface BuyBlisterPackEventValue {
-	blister_pack_id: number;
+// Type definition for `jokers_of_neon_mods::models::mod_config::ModConfigValue` struct
+export interface ModConfigValue {
+	deck_address: string;
+	specials_address: string;
+	rages_address: string;
+	loot_boxes_address: string;
+	game_config_address: string;
+	shop_config_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyCardEvent` struct
-export interface BuyCardEvent {
-	game_id: number;
-	level: number;
-	idx: number;
-	item_type: CardItemType;
-	card_id: number;
+// Type definition for `jokers_of_neon_mods::models::mod_tracker::ModTracker` struct
+export interface ModTracker {
+	mod_tracker_key: number;
+	total_mods: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyCardEventValue` struct
-export interface BuyCardEventValue {
-	card_id: number;
+// Type definition for `jokers_of_neon_mods::models::mod_tracker::ModTrackerValue` struct
+export interface ModTrackerValue {
+	total_mods: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyPokerHandEvent` struct
-export interface BuyPokerHandEvent {
-	game_id: number;
-	level: number;
-	idx: number;
-	poker_hand: PokerHand;
-	level_hand: number;
+// Type definition for `jokers_of_neon_mods::models::rage_data::RageData` struct
+export interface RageData {
+	mod_id: number;
+	rage_id: number;
+	contract_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyPokerHandEventValue` struct
-export interface BuyPokerHandEventValue {
-	poker_hand: PokerHand;
-	level_hand: number;
+// Type definition for `jokers_of_neon_mods::models::rage_data::RageDataValue` struct
+export interface RageDataValue {
+	contract_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyRerollEvent` struct
-export interface BuyRerollEvent {
-	game_id: number;
-	level: number;
-	reroll_cost: number;
-	reroll_executed: boolean;
+// Type definition for `jokers_of_neon_mods::models::special_data::SpecialData` struct
+export interface SpecialData {
+	mod_id: number;
+	special_id: number;
+	contract_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuyRerollEventValue` struct
-export interface BuyRerollEventValue {
-	reroll_cost: number;
-	reroll_executed: boolean;
+// Type definition for `jokers_of_neon_mods::models::special_data::SpecialDataValue` struct
+export interface SpecialDataValue {
+	contract_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::BuySpecialCardEvent` struct
-export interface BuySpecialCardEvent {
-	game_id: number;
-	level: number;
-	idx: number;
-	card_id: number;
-	is_temporary: boolean;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::BuySpecialCardEventValue` struct
-export interface BuySpecialCardEventValue {
-	card_id: number;
-	is_temporary: boolean;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::CardScoreEvent` struct
+// Type definition for `jokers_of_neon::models::events::CardScoreEvent` struct
 export interface CardScoreEvent {
 	player: string;
 	index: number;
@@ -413,47 +369,36 @@ export interface CardScoreEvent {
 	points: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::CardScoreEventValue` struct
+// Type definition for `jokers_of_neon::models::events::CardScoreEventValue` struct
 export interface CardScoreEventValue {
 	index: number;
 	multi: number;
 	points: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::CreateGameEvent` struct
+// Type definition for `jokers_of_neon::models::events::CreateGameEvent` struct
 export interface CreateGameEvent {
 	player: string;
 	game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::CreateGameEventValue` struct
+// Type definition for `jokers_of_neon::models::events::CreateGameEventValue` struct
 export interface CreateGameEventValue {
 	game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::CurrentHandEvent` struct
+// Type definition for `jokers_of_neon::models::events::CurrentHandEvent` struct
 export interface CurrentHandEvent {
 	game_id: number;
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::CurrentHandEventValue` struct
+// Type definition for `jokers_of_neon::models::events::CurrentHandEventValue` struct
 export interface CurrentHandEventValue {
 	cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::DestroyedSpecialCardEvent` struct
-export interface DestroyedSpecialCardEvent {
-	player: string;
-	card_id: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::DestroyedSpecialCardEventValue` struct
-export interface DestroyedSpecialCardEventValue {
-	card_id: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::DetailEarnedEvent` struct
+// Type definition for `jokers_of_neon::models::events::DetailEarnedEvent` struct
 export interface DetailEarnedEvent {
 	player: string;
 	game_id: number;
@@ -468,7 +413,7 @@ export interface DetailEarnedEvent {
 	total: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::DetailEarnedEventValue` struct
+// Type definition for `jokers_of_neon::models::events::DetailEarnedEventValue` struct
 export interface DetailEarnedEventValue {
 	game_id: number;
 	round_defeat: number;
@@ -482,9 +427,10 @@ export interface DetailEarnedEventValue {
 	total: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::GameEvent` struct
+// Type definition for `jokers_of_neon::models::events::GameEvent` struct
 export interface GameEvent {
 	id: number;
+	mod_id: number;
 	owner: string;
 	player_name: number;
 	max_hands: number;
@@ -497,12 +443,14 @@ export interface GameEvent {
 	len_max_current_special_cards: number;
 	len_current_special_cards: number;
 	current_jokers: number;
+	len_max_current_power_ups: number;
 	state: GameState;
 	cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::GameEventValue` struct
+// Type definition for `jokers_of_neon::models::events::GameEventValue` struct
 export interface GameEventValue {
+	mod_id: number;
 	owner: string;
 	player_name: number;
 	max_hands: number;
@@ -515,64 +463,25 @@ export interface GameEventValue {
 	len_max_current_special_cards: number;
 	len_current_special_cards: number;
 	current_jokers: number;
+	len_max_current_power_ups: number;
 	state: GameState;
 	cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::GamePowerUpEvent` struct
+// Type definition for `jokers_of_neon::models::events::GamePowerUpEvent` struct
 export interface GamePowerUpEvent {
 	player: string;
 	game_id: number;
 	power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::GamePowerUpEventValue` struct
+// Type definition for `jokers_of_neon::models::events::GamePowerUpEventValue` struct
 export interface GamePowerUpEventValue {
 	game_id: number;
 	power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::LevelUpHandEvent` struct
-export interface LevelUpHandEvent {
-	player: string;
-	hand: PokerHand;
-	old_level: number;
-	old_points: number;
-	old_multi: number;
-	level: number;
-	points: number;
-	multi: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::LevelUpHandEventValue` struct
-export interface LevelUpHandEventValue {
-	hand: PokerHand;
-	old_level: number;
-	old_points: number;
-	old_multi: number;
-	level: number;
-	points: number;
-	multi: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::LifeSaverSpecialCardEvent` struct
-export interface LifeSaverSpecialCardEvent {
-	player: string;
-	game_id: number;
-	special_card_idx: number;
-	old_level_score: number;
-	new_level_score: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::LifeSaverSpecialCardEventValue` struct
-export interface LifeSaverSpecialCardEventValue {
-	game_id: number;
-	special_card_idx: number;
-	old_level_score: number;
-	new_level_score: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::ModifierCardSuitEvent` struct
+// Type definition for `jokers_of_neon::models::events::ModifierCardSuitEvent` struct
 export interface ModifierCardSuitEvent {
 	player: string;
 	game_id: number;
@@ -581,7 +490,7 @@ export interface ModifierCardSuitEvent {
 	suit: Suit;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::ModifierCardSuitEventValue` struct
+// Type definition for `jokers_of_neon::models::events::ModifierCardSuitEventValue` struct
 export interface ModifierCardSuitEventValue {
 	game_id: number;
 	modifier_card_idx: number;
@@ -589,7 +498,7 @@ export interface ModifierCardSuitEventValue {
 	suit: Suit;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::ModifierNeonCardEvent` struct
+// Type definition for `jokers_of_neon::models::events::ModifierNeonCardEvent` struct
 export interface ModifierNeonCardEvent {
 	player: string;
 	game_id: number;
@@ -597,14 +506,14 @@ export interface ModifierNeonCardEvent {
 	current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::ModifierNeonCardEventValue` struct
+// Type definition for `jokers_of_neon::models::events::ModifierNeonCardEventValue` struct
 export interface ModifierNeonCardEventValue {
 	game_id: number;
 	modifier_card_idx: number;
 	current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::ModifierWildCardEvent` struct
+// Type definition for `jokers_of_neon::models::events::ModifierWildCardEvent` struct
 export interface ModifierWildCardEvent {
 	player: string;
 	game_id: number;
@@ -612,55 +521,25 @@ export interface ModifierWildCardEvent {
 	current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::ModifierWildCardEventValue` struct
+// Type definition for `jokers_of_neon::models::events::ModifierWildCardEventValue` struct
 export interface ModifierWildCardEventValue {
 	game_id: number;
 	modifier_card_idx: number;
 	current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::NeonPokerHandEvent` struct
-export interface NeonPokerHandEvent {
-	player: string;
-	game_id: number;
-	neon_cards_idx: Array<number>;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::NeonPokerHandEventValue` struct
-export interface NeonPokerHandEventValue {
-	game_id: number;
-	neon_cards_idx: Array<number>;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::PlayGameOverEvent` struct
+// Type definition for `jokers_of_neon::models::events::PlayGameOverEvent` struct
 export interface PlayGameOverEvent {
 	player: string;
 	game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::PlayGameOverEventValue` struct
+// Type definition for `jokers_of_neon::models::events::PlayGameOverEventValue` struct
 export interface PlayGameOverEventValue {
 	game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::PlayPokerHandEvent` struct
-export interface PlayPokerHandEvent {
-	game_id: number;
-	level: number;
-	count_hand: number;
-	poker_hand: PokerHand;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::PlayPokerHandEventValue` struct
-export interface PlayPokerHandEventValue {
-	poker_hand: PokerHand;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::PlayWinGameEvent` struct
+// Type definition for `jokers_of_neon::models::events::PlayWinGameEvent` struct
 export interface PlayWinGameEvent {
 	player: string;
 	game_id: number;
@@ -668,187 +547,61 @@ export interface PlayWinGameEvent {
 	player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::PlayWinGameEventValue` struct
+// Type definition for `jokers_of_neon::models::events::PlayWinGameEventValue` struct
 export interface PlayWinGameEventValue {
 	game_id: number;
 	level: number;
 	player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::PokerHandEvent` struct
-export interface PokerHandEvent {
-	player: string;
-	poker_hand: number;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::PokerHandEventValue` struct
-export interface PokerHandEventValue {
-	poker_hand: number;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::PowerUpEvent` struct
+// Type definition for `jokers_of_neon::models::events::PowerUpEvent` struct
 export interface PowerUpEvent {
 	player: string;
 	index: number;
 	multi: number;
 	points: number;
-	special_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::PowerUpEventValue` struct
+// Type definition for `jokers_of_neon::models::events::PowerUpEventValue` struct
 export interface PowerUpEventValue {
 	index: number;
 	multi: number;
 	points: number;
-	special_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::RoundScoreEvent` struct
+// Type definition for `jokers_of_neon::models::events::RoundScoreEvent` struct
 export interface RoundScoreEvent {
 	player: string;
 	game_id: number;
 	player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::RoundScoreEventValue` struct
+// Type definition for `jokers_of_neon::models::events::RoundScoreEventValue` struct
 export interface RoundScoreEventValue {
 	game_id: number;
 	player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::SecondChanceEvent` struct
-export interface SecondChanceEvent {
-	player: string;
-	special_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SecondChanceEventValue` struct
-export interface SecondChanceEventValue {
-	special_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialCashEvent` struct
-export interface SpecialCashEvent {
-	player: string;
-	cash: number;
-	card_idx: number;
-	special_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialCashEventValue` struct
-export interface SpecialCashEventValue {
-	cash: number;
-	card_idx: number;
-	special_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialGlobalEvent` struct
-export interface SpecialGlobalEvent {
+// Type definition for `jokers_of_neon_lib::events::card_play_event::CardPlayEvent` struct
+export interface CardPlayEvent {
 	player: string;
 	game_id: number;
-	current_special_card_idx: number;
-	multi: number;
-	points: number;
+	mod_id: number;
+	event_type: EventType;
+	special: Array<[number, number]>;
+	hand: Array<[number, number]>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::SpecialGlobalEventValue` struct
-export interface SpecialGlobalEventValue {
+// Type definition for `jokers_of_neon_lib::events::card_play_event::CardPlayEventValue` struct
+export interface CardPlayEventValue {
 	game_id: number;
-	current_special_card_idx: number;
-	multi: number;
-	points: number;
+	mod_id: number;
+	event_type: EventType;
+	special: Array<[number, number]>;
+	hand: Array<[number, number]>;
 }
 
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierMultiEvent` struct
-export interface SpecialModifierMultiEvent {
-	player: string;
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	multi: number;
-	is_negative: boolean;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierMultiEventValue` struct
-export interface SpecialModifierMultiEventValue {
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	multi: number;
-	is_negative: boolean;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierPointsEvent` struct
-export interface SpecialModifierPointsEvent {
-	player: string;
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierPointsEventValue` struct
-export interface SpecialModifierPointsEventValue {
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierSuitEvent` struct
-export interface SpecialModifierSuitEvent {
-	player: string;
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	suit: Suit;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialModifierSuitEventValue` struct
-export interface SpecialModifierSuitEventValue {
-	game_id: number;
-	current_special_card_idx: number;
-	current_hand_card_idx: number;
-	suit: Suit;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialNeonCardEvent` struct
-export interface SpecialNeonCardEvent {
-	player: string;
-	game_id: number;
-	special_card_idx: number;
-	current_hand_card_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialNeonCardEventValue` struct
-export interface SpecialNeonCardEventValue {
-	game_id: number;
-	special_card_idx: number;
-	current_hand_card_idx: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialPokerHandEvent` struct
-export interface SpecialPokerHandEvent {
-	player: string;
-	game_id: number;
-	current_special_card_idx: number;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::events::SpecialPokerHandEventValue` struct
-export interface SpecialPokerHandEventValue {
-	game_id: number;
-	current_special_card_idx: number;
-	multi: number;
-	points: number;
-}
-
-// Type definition for `jokers_of_neon::models::data::poker_hand::PokerHand` enum
+// Type definition for `jokers_of_neon_lib::models::data::poker_hand::PokerHand` enum
 export enum PokerHand {
 	None,
 	RoyalFlush,
@@ -864,7 +617,7 @@ export enum PokerHand {
 	HighCard,
 }
 
-// Type definition for `jokers_of_neon::models::status::game::game::GameState` enum
+// Type definition for `jokers_of_neon_lib::models::status::game::game::GameState` enum
 export enum GameState {
 	IN_GAME,
 	AT_SHOP,
@@ -872,14 +625,26 @@ export enum GameState {
 	OPEN_BLISTER_PACK,
 }
 
-// Type definition for `jokers_of_neon::models::status::shop::shop::CardItemType` enum
+// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemType` enum
 export enum CardItemType {
 	None,
 	Common,
 	Modifier,
 }
 
-// Type definition for `jokers_of_neon::models::data::card::Suit` enum
+// Type definition for `jokers_of_neon_lib::events::card_play_event::EventType` enum
+export enum EventType {
+	Cash,
+	Club,
+	Diamond,
+	Point,
+	Multi,
+	Neon,
+	Spade,
+	Heart,
+}
+
+// Type definition for `jokers_of_neon_lib::models::data::card::Suit` enum
 export enum Suit {
 	None,
 	Clubs,
@@ -892,6 +657,10 @@ export enum Suit {
 
 export interface SchemaType extends ISchemaType {
 	jokers_of_neon: {
+		ModManagerRegistrator: WithFieldOrder<ModManagerRegistrator>,
+		ModManagerRegistratorValue: WithFieldOrder<ModManagerRegistratorValue>,
+	},
+	jokers_of_neon_lib: {
 		DeckCard: WithFieldOrder<DeckCard>,
 		DeckCardValue: WithFieldOrder<DeckCardValue>,
 		GameDeck: WithFieldOrder<GameDeck>,
@@ -922,82 +691,69 @@ export interface SchemaType extends ISchemaType {
 		PokerHandItemValue: WithFieldOrder<PokerHandItemValue>,
 		PowerUpItem: WithFieldOrder<PowerUpItem>,
 		PowerUpItemValue: WithFieldOrder<PowerUpItemValue>,
-		Shop: WithFieldOrder<Shop>,
-		ShopTracker: WithFieldOrder<ShopTracker>,
-		ShopTrackerValue: WithFieldOrder<ShopTrackerValue>,
-		ShopValue: WithFieldOrder<ShopValue>,
 		SlotSpecialCardsItem: WithFieldOrder<SlotSpecialCardsItem>,
 		SlotSpecialCardsItemValue: WithFieldOrder<SlotSpecialCardsItemValue>,
 		SpecialCardItem: WithFieldOrder<SpecialCardItem>,
 		SpecialCardItemValue: WithFieldOrder<SpecialCardItemValue>,
-		BuyBlisterPackEvent: WithFieldOrder<BuyBlisterPackEvent>,
-		BuyBlisterPackEventValue: WithFieldOrder<BuyBlisterPackEventValue>,
-		BuyCardEvent: WithFieldOrder<BuyCardEvent>,
-		BuyCardEventValue: WithFieldOrder<BuyCardEventValue>,
-		BuyPokerHandEvent: WithFieldOrder<BuyPokerHandEvent>,
-		BuyPokerHandEventValue: WithFieldOrder<BuyPokerHandEventValue>,
-		BuyRerollEvent: WithFieldOrder<BuyRerollEvent>,
-		BuyRerollEventValue: WithFieldOrder<BuyRerollEventValue>,
-		BuySpecialCardEvent: WithFieldOrder<BuySpecialCardEvent>,
-		BuySpecialCardEventValue: WithFieldOrder<BuySpecialCardEventValue>,
+	},
+	jokers_of_neon_mods: {
+		ModConfig: WithFieldOrder<ModConfig>,
+		ModConfigValue: WithFieldOrder<ModConfigValue>,
+		ModTracker: WithFieldOrder<ModTracker>,
+		ModTrackerValue: WithFieldOrder<ModTrackerValue>,
+		RageData: WithFieldOrder<RageData>,
+		RageDataValue: WithFieldOrder<RageDataValue>,
+		SpecialData: WithFieldOrder<SpecialData>,
+		SpecialDataValue: WithFieldOrder<SpecialDataValue>,
 		CardScoreEvent: WithFieldOrder<CardScoreEvent>,
 		CardScoreEventValue: WithFieldOrder<CardScoreEventValue>,
 		CreateGameEvent: WithFieldOrder<CreateGameEvent>,
 		CreateGameEventValue: WithFieldOrder<CreateGameEventValue>,
 		CurrentHandEvent: WithFieldOrder<CurrentHandEvent>,
 		CurrentHandEventValue: WithFieldOrder<CurrentHandEventValue>,
-		DestroyedSpecialCardEvent: WithFieldOrder<DestroyedSpecialCardEvent>,
-		DestroyedSpecialCardEventValue: WithFieldOrder<DestroyedSpecialCardEventValue>,
 		DetailEarnedEvent: WithFieldOrder<DetailEarnedEvent>,
 		DetailEarnedEventValue: WithFieldOrder<DetailEarnedEventValue>,
 		GameEvent: WithFieldOrder<GameEvent>,
 		GameEventValue: WithFieldOrder<GameEventValue>,
 		GamePowerUpEvent: WithFieldOrder<GamePowerUpEvent>,
 		GamePowerUpEventValue: WithFieldOrder<GamePowerUpEventValue>,
-		LevelUpHandEvent: WithFieldOrder<LevelUpHandEvent>,
-		LevelUpHandEventValue: WithFieldOrder<LevelUpHandEventValue>,
-		LifeSaverSpecialCardEvent: WithFieldOrder<LifeSaverSpecialCardEvent>,
-		LifeSaverSpecialCardEventValue: WithFieldOrder<LifeSaverSpecialCardEventValue>,
 		ModifierCardSuitEvent: WithFieldOrder<ModifierCardSuitEvent>,
 		ModifierCardSuitEventValue: WithFieldOrder<ModifierCardSuitEventValue>,
 		ModifierNeonCardEvent: WithFieldOrder<ModifierNeonCardEvent>,
 		ModifierNeonCardEventValue: WithFieldOrder<ModifierNeonCardEventValue>,
 		ModifierWildCardEvent: WithFieldOrder<ModifierWildCardEvent>,
 		ModifierWildCardEventValue: WithFieldOrder<ModifierWildCardEventValue>,
-		NeonPokerHandEvent: WithFieldOrder<NeonPokerHandEvent>,
-		NeonPokerHandEventValue: WithFieldOrder<NeonPokerHandEventValue>,
 		PlayGameOverEvent: WithFieldOrder<PlayGameOverEvent>,
 		PlayGameOverEventValue: WithFieldOrder<PlayGameOverEventValue>,
-		PlayPokerHandEvent: WithFieldOrder<PlayPokerHandEvent>,
-		PlayPokerHandEventValue: WithFieldOrder<PlayPokerHandEventValue>,
 		PlayWinGameEvent: WithFieldOrder<PlayWinGameEvent>,
 		PlayWinGameEventValue: WithFieldOrder<PlayWinGameEventValue>,
-		PokerHandEvent: WithFieldOrder<PokerHandEvent>,
-		PokerHandEventValue: WithFieldOrder<PokerHandEventValue>,
 		PowerUpEvent: WithFieldOrder<PowerUpEvent>,
 		PowerUpEventValue: WithFieldOrder<PowerUpEventValue>,
 		RoundScoreEvent: WithFieldOrder<RoundScoreEvent>,
 		RoundScoreEventValue: WithFieldOrder<RoundScoreEventValue>,
-		SecondChanceEvent: WithFieldOrder<SecondChanceEvent>,
-		SecondChanceEventValue: WithFieldOrder<SecondChanceEventValue>,
-		SpecialCashEvent: WithFieldOrder<SpecialCashEvent>,
-		SpecialCashEventValue: WithFieldOrder<SpecialCashEventValue>,
-		SpecialGlobalEvent: WithFieldOrder<SpecialGlobalEvent>,
-		SpecialGlobalEventValue: WithFieldOrder<SpecialGlobalEventValue>,
-		SpecialModifierMultiEvent: WithFieldOrder<SpecialModifierMultiEvent>,
-		SpecialModifierMultiEventValue: WithFieldOrder<SpecialModifierMultiEventValue>,
-		SpecialModifierPointsEvent: WithFieldOrder<SpecialModifierPointsEvent>,
-		SpecialModifierPointsEventValue: WithFieldOrder<SpecialModifierPointsEventValue>,
-		SpecialModifierSuitEvent: WithFieldOrder<SpecialModifierSuitEvent>,
-		SpecialModifierSuitEventValue: WithFieldOrder<SpecialModifierSuitEventValue>,
-		SpecialNeonCardEvent: WithFieldOrder<SpecialNeonCardEvent>,
-		SpecialNeonCardEventValue: WithFieldOrder<SpecialNeonCardEventValue>,
-		SpecialPokerHandEvent: WithFieldOrder<SpecialPokerHandEvent>,
-		SpecialPokerHandEventValue: WithFieldOrder<SpecialPokerHandEventValue>,
+		CardPlayEvent: WithFieldOrder<CardPlayEvent>,
+		CardPlayEventValue: WithFieldOrder<CardPlayEventValue>,
 	},
 }
 export const schema: SchemaType = {
 	jokers_of_neon: {
+		ModManagerRegistrator: {
+			fieldOrder: ['mod_manager_key', 'owner', 'mod_manager_address', 'rage_manager_address', 'special_manager_address'],
+			mod_manager_key: 0,
+			owner: "",
+			mod_manager_address: "",
+			rage_manager_address: "",
+			special_manager_address: "",
+		},
+		ModManagerRegistratorValue: {
+			fieldOrder: ['owner', 'mod_manager_address', 'rage_manager_address', 'special_manager_address'],
+			owner: "",
+			mod_manager_address: "",
+			rage_manager_address: "",
+			special_manager_address: "",
+		},
+	},
+	jokers_of_neon_lib: {
 		DeckCard: {
 			fieldOrder: ['game_id', 'index', 'card_id'],
 			game_id: 0,
@@ -1043,40 +799,34 @@ export const schema: SchemaType = {
 			remaining: 0,
 		},
 		Game: {
-			fieldOrder: ['id', 'owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'len_max_current_power_ups', 'state', 'cash'],
+			fieldOrder: ['id', 'mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash'],
 			id: 0,
+			mod_id: 0,
+		state: GameState.IN_GAME,
 			owner: "",
 			player_name: 0,
-			max_hands: 0,
-			max_discard: 0,
-			max_jokers: 0,
-			round: 0,
 			player_score: 0,
 			level: 0,
-			len_hand: 0,
-			len_max_current_special_cards: 0,
-			len_current_special_cards: 0,
-			current_jokers: 0,
-			len_max_current_power_ups: 0,
-		state: GameState.IN_GAME,
+			hand_len: 0,
+			plays: 0,
+			discards: 0,
+			current_specials_len: 0,
+			special_slots: 0,
 			cash: 0,
 		},
 		GameValue: {
-			fieldOrder: ['owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'len_max_current_power_ups', 'state', 'cash'],
+			fieldOrder: ['mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash'],
+			mod_id: 0,
+		state: GameState.IN_GAME,
 			owner: "",
 			player_name: 0,
-			max_hands: 0,
-			max_discard: 0,
-			max_jokers: 0,
-			round: 0,
 			player_score: 0,
 			level: 0,
-			len_hand: 0,
-			len_max_current_special_cards: 0,
-			len_current_special_cards: 0,
-			current_jokers: 0,
-			len_max_current_power_ups: 0,
-		state: GameState.IN_GAME,
+			hand_len: 0,
+			plays: 0,
+			discards: 0,
+			current_specials_len: 0,
+			special_slots: 0,
 			cash: 0,
 		},
 		PlayerLevelPokerHand: {
@@ -1114,19 +864,19 @@ export const schema: SchemaType = {
 			cards: [0],
 		},
 		Round: {
-			fieldOrder: ['game_id', 'player_score', 'level_score', 'hands', 'discard'],
+			fieldOrder: ['game_id', 'player_score', 'level_score', 'remaining_plays', 'remaining_discards'],
 			game_id: 0,
 			player_score: 0,
 			level_score: 0,
-			hands: 0,
-			discard: 0,
+			remaining_plays: 0,
+			remaining_discards: 0,
 		},
 		RoundValue: {
-			fieldOrder: ['player_score', 'level_score', 'hands', 'discard'],
+			fieldOrder: ['player_score', 'level_score', 'remaining_plays', 'remaining_discards'],
 			player_score: 0,
 			level_score: 0,
-			hands: 0,
-			discard: 0,
+			remaining_plays: 0,
+			remaining_discards: 0,
 		},
 		BlisterPackItem: {
 			fieldOrder: ['game_id', 'idx', 'blister_pack_id', 'cost', 'discount_cost', 'purchased'],
@@ -1223,40 +973,6 @@ export const schema: SchemaType = {
 			discount_cost: 0,
 			purchased: false,
 		},
-		Shop: {
-			fieldOrder: ['game_id', 'reroll_cost', 'reroll_executed', 'len_item_common_cards', 'len_item_modifier_cards', 'len_item_special_cards', 'len_item_poker_hands', 'len_item_blister_pack', 'len_item_power_ups'],
-			game_id: 0,
-			reroll_cost: 0,
-			reroll_executed: false,
-			len_item_common_cards: 0,
-			len_item_modifier_cards: 0,
-			len_item_special_cards: 0,
-			len_item_poker_hands: 0,
-			len_item_blister_pack: 0,
-			len_item_power_ups: 0,
-		},
-		ShopTracker: {
-			fieldOrder: ['game_id', 'count_reroll', 'count_burn'],
-			game_id: 0,
-			count_reroll: 0,
-			count_burn: 0,
-		},
-		ShopTrackerValue: {
-			fieldOrder: ['count_reroll', 'count_burn'],
-			count_reroll: 0,
-			count_burn: 0,
-		},
-		ShopValue: {
-			fieldOrder: ['reroll_cost', 'reroll_executed', 'len_item_common_cards', 'len_item_modifier_cards', 'len_item_special_cards', 'len_item_poker_hands', 'len_item_blister_pack', 'len_item_power_ups'],
-			reroll_cost: 0,
-			reroll_executed: false,
-			len_item_common_cards: 0,
-			len_item_modifier_cards: 0,
-			len_item_special_cards: 0,
-			len_item_poker_hands: 0,
-			len_item_blister_pack: 0,
-			len_item_power_ups: 0,
-		},
 		SlotSpecialCardsItem: {
 			fieldOrder: ['game_id', 'cost', 'discount_cost', 'purchased'],
 			game_id: 0,
@@ -1290,66 +1006,55 @@ export const schema: SchemaType = {
 			temporary_discount_cost: 0,
 			purchased: false,
 		},
-		BuyBlisterPackEvent: {
-			fieldOrder: ['game_id', 'level', 'idx', 'blister_pack_id'],
-			game_id: 0,
-			level: 0,
-			idx: 0,
-			blister_pack_id: 0,
+	},
+	jokers_of_neon_mods: {
+		ModConfig: {
+			fieldOrder: ['mod_id', 'deck_address', 'specials_address', 'rages_address', 'loot_boxes_address', 'game_config_address', 'shop_config_address'],
+			mod_id: 0,
+			deck_address: "",
+			specials_address: "",
+			rages_address: "",
+			loot_boxes_address: "",
+			game_config_address: "",
+			shop_config_address: "",
 		},
-		BuyBlisterPackEventValue: {
-			fieldOrder: ['blister_pack_id'],
-			blister_pack_id: 0,
+		ModConfigValue: {
+			fieldOrder: ['deck_address', 'specials_address', 'rages_address', 'loot_boxes_address', 'game_config_address', 'shop_config_address'],
+			deck_address: "",
+			specials_address: "",
+			rages_address: "",
+			loot_boxes_address: "",
+			game_config_address: "",
+			shop_config_address: "",
 		},
-		BuyCardEvent: {
-			fieldOrder: ['game_id', 'level', 'idx', 'item_type', 'card_id'],
-			game_id: 0,
-			level: 0,
-			idx: 0,
-		item_type: CardItemType.None,
-			card_id: 0,
+		ModTracker: {
+			fieldOrder: ['mod_tracker_key', 'total_mods'],
+			mod_tracker_key: 0,
+			total_mods: 0,
 		},
-		BuyCardEventValue: {
-			fieldOrder: ['card_id'],
-			card_id: 0,
+		ModTrackerValue: {
+			fieldOrder: ['total_mods'],
+			total_mods: 0,
 		},
-		BuyPokerHandEvent: {
-			fieldOrder: ['game_id', 'level', 'idx', 'poker_hand', 'level_hand'],
-			game_id: 0,
-			level: 0,
-			idx: 0,
-		poker_hand: PokerHand.None,
-			level_hand: 0,
+		RageData: {
+			fieldOrder: ['mod_id', 'rage_id', 'contract_address'],
+			mod_id: 0,
+			rage_id: 0,
+			contract_address: "",
 		},
-		BuyPokerHandEventValue: {
-			fieldOrder: ['poker_hand', 'level_hand'],
-		poker_hand: PokerHand.None,
-			level_hand: 0,
+		RageDataValue: {
+			fieldOrder: ['contract_address'],
+			contract_address: "",
 		},
-		BuyRerollEvent: {
-			fieldOrder: ['game_id', 'level', 'reroll_cost', 'reroll_executed'],
-			game_id: 0,
-			level: 0,
-			reroll_cost: 0,
-			reroll_executed: false,
+		SpecialData: {
+			fieldOrder: ['mod_id', 'special_id', 'contract_address'],
+			mod_id: 0,
+			special_id: 0,
+			contract_address: "",
 		},
-		BuyRerollEventValue: {
-			fieldOrder: ['reroll_cost', 'reroll_executed'],
-			reroll_cost: 0,
-			reroll_executed: false,
-		},
-		BuySpecialCardEvent: {
-			fieldOrder: ['game_id', 'level', 'idx', 'card_id', 'is_temporary'],
-			game_id: 0,
-			level: 0,
-			idx: 0,
-			card_id: 0,
-			is_temporary: false,
-		},
-		BuySpecialCardEventValue: {
-			fieldOrder: ['card_id', 'is_temporary'],
-			card_id: 0,
-			is_temporary: false,
+		SpecialDataValue: {
+			fieldOrder: ['contract_address'],
+			contract_address: "",
 		},
 		CardScoreEvent: {
 			fieldOrder: ['player', 'index', 'multi', 'points'],
@@ -1382,15 +1087,6 @@ export const schema: SchemaType = {
 			fieldOrder: ['cards'],
 			cards: [0],
 		},
-		DestroyedSpecialCardEvent: {
-			fieldOrder: ['player', 'card_id'],
-			player: "",
-			card_id: 0,
-		},
-		DestroyedSpecialCardEventValue: {
-			fieldOrder: ['card_id'],
-			card_id: 0,
-		},
 		DetailEarnedEvent: {
 			fieldOrder: ['player', 'game_id', 'round_defeat', 'level_bonus', 'hands_left', 'hands_left_cash', 'discard_left', 'discard_left_cash', 'rage_card_defeated', 'rage_card_defeated_cash', 'total'],
 			player: "",
@@ -1419,8 +1115,9 @@ export const schema: SchemaType = {
 			total: 0,
 		},
 		GameEvent: {
-			fieldOrder: ['id', 'owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'state', 'cash'],
+			fieldOrder: ['id', 'mod_id', 'owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'len_max_current_power_ups', 'state', 'cash'],
 			id: 0,
+			mod_id: 0,
 			owner: "",
 			player_name: 0,
 			max_hands: 0,
@@ -1433,11 +1130,13 @@ export const schema: SchemaType = {
 			len_max_current_special_cards: 0,
 			len_current_special_cards: 0,
 			current_jokers: 0,
+			len_max_current_power_ups: 0,
 		state: GameState.IN_GAME,
 			cash: 0,
 		},
 		GameEventValue: {
-			fieldOrder: ['owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'state', 'cash'],
+			fieldOrder: ['mod_id', 'owner', 'player_name', 'max_hands', 'max_discard', 'max_jokers', 'round', 'player_score', 'level', 'len_hand', 'len_max_current_special_cards', 'len_current_special_cards', 'current_jokers', 'len_max_current_power_ups', 'state', 'cash'],
+			mod_id: 0,
 			owner: "",
 			player_name: 0,
 			max_hands: 0,
@@ -1450,6 +1149,7 @@ export const schema: SchemaType = {
 			len_max_current_special_cards: 0,
 			len_current_special_cards: 0,
 			current_jokers: 0,
+			len_max_current_power_ups: 0,
 		state: GameState.IN_GAME,
 			cash: 0,
 		},
@@ -1463,42 +1163,6 @@ export const schema: SchemaType = {
 			fieldOrder: ['game_id', 'power_ups'],
 			game_id: 0,
 			power_ups: [0],
-		},
-		LevelUpHandEvent: {
-			fieldOrder: ['player', 'hand', 'old_level', 'old_points', 'old_multi', 'level', 'points', 'multi'],
-			player: "",
-		hand: PokerHand.None,
-			old_level: 0,
-			old_points: 0,
-			old_multi: 0,
-			level: 0,
-			points: 0,
-			multi: 0,
-		},
-		LevelUpHandEventValue: {
-			fieldOrder: ['hand', 'old_level', 'old_points', 'old_multi', 'level', 'points', 'multi'],
-		hand: PokerHand.None,
-			old_level: 0,
-			old_points: 0,
-			old_multi: 0,
-			level: 0,
-			points: 0,
-			multi: 0,
-		},
-		LifeSaverSpecialCardEvent: {
-			fieldOrder: ['player', 'game_id', 'special_card_idx', 'old_level_score', 'new_level_score'],
-			player: "",
-			game_id: 0,
-			special_card_idx: 0,
-			old_level_score: 0,
-			new_level_score: 0,
-		},
-		LifeSaverSpecialCardEventValue: {
-			fieldOrder: ['game_id', 'special_card_idx', 'old_level_score', 'new_level_score'],
-			game_id: 0,
-			special_card_idx: 0,
-			old_level_score: 0,
-			new_level_score: 0,
 		},
 		ModifierCardSuitEvent: {
 			fieldOrder: ['player', 'game_id', 'modifier_card_idx', 'current_hand_card_idx', 'suit'],
@@ -1541,21 +1205,6 @@ export const schema: SchemaType = {
 			modifier_card_idx: 0,
 			current_hand_card_idx: 0,
 		},
-		NeonPokerHandEvent: {
-			fieldOrder: ['player', 'game_id', 'neon_cards_idx', 'multi', 'points'],
-			player: "",
-			game_id: 0,
-			neon_cards_idx: [0],
-			multi: 0,
-			points: 0,
-		},
-		NeonPokerHandEventValue: {
-			fieldOrder: ['game_id', 'neon_cards_idx', 'multi', 'points'],
-			game_id: 0,
-			neon_cards_idx: [0],
-			multi: 0,
-			points: 0,
-		},
 		PlayGameOverEvent: {
 			fieldOrder: ['player', 'game_id'],
 			player: "",
@@ -1564,17 +1213,6 @@ export const schema: SchemaType = {
 		PlayGameOverEventValue: {
 			fieldOrder: ['game_id'],
 			game_id: 0,
-		},
-		PlayPokerHandEvent: {
-			fieldOrder: ['game_id', 'level', 'count_hand', 'poker_hand'],
-			game_id: 0,
-			level: 0,
-			count_hand: 0,
-		poker_hand: PokerHand.None,
-		},
-		PlayPokerHandEventValue: {
-			fieldOrder: ['poker_hand'],
-		poker_hand: PokerHand.None,
 		},
 		PlayWinGameEvent: {
 			fieldOrder: ['player', 'game_id', 'level', 'player_score'],
@@ -1589,33 +1227,18 @@ export const schema: SchemaType = {
 			level: 0,
 			player_score: 0,
 		},
-		PokerHandEvent: {
-			fieldOrder: ['player', 'poker_hand', 'multi', 'points'],
-			player: "",
-			poker_hand: 0,
-			multi: 0,
-			points: 0,
-		},
-		PokerHandEventValue: {
-			fieldOrder: ['poker_hand', 'multi', 'points'],
-			poker_hand: 0,
-			multi: 0,
-			points: 0,
-		},
 		PowerUpEvent: {
-			fieldOrder: ['player', 'index', 'multi', 'points', 'special_idx'],
+			fieldOrder: ['player', 'index', 'multi', 'points'],
 			player: "",
 			index: 0,
 			multi: 0,
 			points: 0,
-			special_idx: 0,
 		},
 		PowerUpEventValue: {
-			fieldOrder: ['index', 'multi', 'points', 'special_idx'],
+			fieldOrder: ['index', 'multi', 'points'],
 			index: 0,
 			multi: 0,
 			points: 0,
-			special_idx: 0,
 		},
 		RoundScoreEvent: {
 			fieldOrder: ['player', 'game_id', 'player_score'],
@@ -1628,225 +1251,101 @@ export const schema: SchemaType = {
 			game_id: 0,
 			player_score: 0,
 		},
-		SecondChanceEvent: {
-			fieldOrder: ['player', 'special_idx'],
-			player: "",
-			special_idx: 0,
-		},
-		SecondChanceEventValue: {
-			fieldOrder: ['special_idx'],
-			special_idx: 0,
-		},
-		SpecialCashEvent: {
-			fieldOrder: ['player', 'cash', 'card_idx', 'special_idx'],
-			player: "",
-			cash: 0,
-			card_idx: 0,
-			special_idx: 0,
-		},
-		SpecialCashEventValue: {
-			fieldOrder: ['cash', 'card_idx', 'special_idx'],
-			cash: 0,
-			card_idx: 0,
-			special_idx: 0,
-		},
-		SpecialGlobalEvent: {
-			fieldOrder: ['player', 'game_id', 'current_special_card_idx', 'multi', 'points'],
+		CardPlayEvent: {
+			fieldOrder: ['player', 'game_id', 'mod_id', 'event_type', 'special', 'hand'],
 			player: "",
 			game_id: 0,
-			current_special_card_idx: 0,
-			multi: 0,
-			points: 0,
+			mod_id: 0,
+		event_type: EventType.Cash,
+			special: [[0, 0]],
+			hand: [[0, 0]],
 		},
-		SpecialGlobalEventValue: {
-			fieldOrder: ['game_id', 'current_special_card_idx', 'multi', 'points'],
+		CardPlayEventValue: {
+			fieldOrder: ['game_id', 'mod_id', 'event_type', 'special', 'hand'],
 			game_id: 0,
-			current_special_card_idx: 0,
-			multi: 0,
-			points: 0,
-		},
-		SpecialModifierMultiEvent: {
-			fieldOrder: ['player', 'game_id', 'current_special_card_idx', 'current_hand_card_idx', 'multi', 'is_negative'],
-			player: "",
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-			multi: 0,
-			is_negative: false,
-		},
-		SpecialModifierMultiEventValue: {
-			fieldOrder: ['game_id', 'current_special_card_idx', 'current_hand_card_idx', 'multi', 'is_negative'],
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-			multi: 0,
-			is_negative: false,
-		},
-		SpecialModifierPointsEvent: {
-			fieldOrder: ['player', 'game_id', 'current_special_card_idx', 'current_hand_card_idx', 'points'],
-			player: "",
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-			points: 0,
-		},
-		SpecialModifierPointsEventValue: {
-			fieldOrder: ['game_id', 'current_special_card_idx', 'current_hand_card_idx', 'points'],
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-			points: 0,
-		},
-		SpecialModifierSuitEvent: {
-			fieldOrder: ['player', 'game_id', 'current_special_card_idx', 'current_hand_card_idx', 'suit'],
-			player: "",
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-		suit: Suit.None,
-		},
-		SpecialModifierSuitEventValue: {
-			fieldOrder: ['game_id', 'current_special_card_idx', 'current_hand_card_idx', 'suit'],
-			game_id: 0,
-			current_special_card_idx: 0,
-			current_hand_card_idx: 0,
-		suit: Suit.None,
-		},
-		SpecialNeonCardEvent: {
-			fieldOrder: ['player', 'game_id', 'special_card_idx', 'current_hand_card_idx'],
-			player: "",
-			game_id: 0,
-			special_card_idx: 0,
-			current_hand_card_idx: 0,
-		},
-		SpecialNeonCardEventValue: {
-			fieldOrder: ['game_id', 'special_card_idx', 'current_hand_card_idx'],
-			game_id: 0,
-			special_card_idx: 0,
-			current_hand_card_idx: 0,
-		},
-		SpecialPokerHandEvent: {
-			fieldOrder: ['player', 'game_id', 'current_special_card_idx', 'multi', 'points'],
-			player: "",
-			game_id: 0,
-			current_special_card_idx: 0,
-			multi: 0,
-			points: 0,
-		},
-		SpecialPokerHandEventValue: {
-			fieldOrder: ['game_id', 'current_special_card_idx', 'multi', 'points'],
-			game_id: 0,
-			current_special_card_idx: 0,
-			multi: 0,
-			points: 0,
+			mod_id: 0,
+		event_type: EventType.Cash,
+			special: [[0, 0]],
+			hand: [[0, 0]],
 		},
 	},
 };
 export enum ModelsMapping {
-	DeckCard = 'jokers_of_neon-DeckCard',
-	DeckCardValue = 'jokers_of_neon-DeckCardValue',
-	GameDeck = 'jokers_of_neon-GameDeck',
-	GameDeckValue = 'jokers_of_neon-GameDeckValue',
-	PokerHand = 'jokers_of_neon-PokerHand',
-	GamePowerUp = 'jokers_of_neon-GamePowerUp',
-	GamePowerUpValue = 'jokers_of_neon-GamePowerUpValue',
-	CurrentSpecialCards = 'jokers_of_neon-CurrentSpecialCards',
-	CurrentSpecialCardsValue = 'jokers_of_neon-CurrentSpecialCardsValue',
-	Game = 'jokers_of_neon-Game',
-	GameState = 'jokers_of_neon-GameState',
-	GameValue = 'jokers_of_neon-GameValue',
-	PlayerLevelPokerHand = 'jokers_of_neon-PlayerLevelPokerHand',
-	PlayerLevelPokerHandValue = 'jokers_of_neon-PlayerLevelPokerHandValue',
-	RageRound = 'jokers_of_neon-RageRound',
-	RageRoundValue = 'jokers_of_neon-RageRoundValue',
-	CurrentHand = 'jokers_of_neon-CurrentHand',
-	CurrentHandValue = 'jokers_of_neon-CurrentHandValue',
-	Round = 'jokers_of_neon-Round',
-	RoundValue = 'jokers_of_neon-RoundValue',
-	BlisterPackItem = 'jokers_of_neon-BlisterPackItem',
-	BlisterPackItemValue = 'jokers_of_neon-BlisterPackItemValue',
-	BlisterPackResult = 'jokers_of_neon-BlisterPackResult',
-	BlisterPackResultValue = 'jokers_of_neon-BlisterPackResultValue',
-	BurnItem = 'jokers_of_neon-BurnItem',
-	BurnItemValue = 'jokers_of_neon-BurnItemValue',
-	CardItem = 'jokers_of_neon-CardItem',
-	CardItemType = 'jokers_of_neon-CardItemType',
-	CardItemValue = 'jokers_of_neon-CardItemValue',
-	PokerHandItem = 'jokers_of_neon-PokerHandItem',
-	PokerHandItemValue = 'jokers_of_neon-PokerHandItemValue',
-	PowerUpItem = 'jokers_of_neon-PowerUpItem',
-	PowerUpItemValue = 'jokers_of_neon-PowerUpItemValue',
-	Shop = 'jokers_of_neon-Shop',
-	ShopTracker = 'jokers_of_neon-ShopTracker',
-	ShopTrackerValue = 'jokers_of_neon-ShopTrackerValue',
-	ShopValue = 'jokers_of_neon-ShopValue',
-	SlotSpecialCardsItem = 'jokers_of_neon-SlotSpecialCardsItem',
-	SlotSpecialCardsItemValue = 'jokers_of_neon-SlotSpecialCardsItemValue',
-	SpecialCardItem = 'jokers_of_neon-SpecialCardItem',
-	SpecialCardItemValue = 'jokers_of_neon-SpecialCardItemValue',
-	Suit = 'jokers_of_neon-Suit',
-	BuyBlisterPackEvent = 'jokers_of_neon-BuyBlisterPackEvent',
-	BuyBlisterPackEventValue = 'jokers_of_neon-BuyBlisterPackEventValue',
-	BuyCardEvent = 'jokers_of_neon-BuyCardEvent',
-	BuyCardEventValue = 'jokers_of_neon-BuyCardEventValue',
-	BuyPokerHandEvent = 'jokers_of_neon-BuyPokerHandEvent',
-	BuyPokerHandEventValue = 'jokers_of_neon-BuyPokerHandEventValue',
-	BuyRerollEvent = 'jokers_of_neon-BuyRerollEvent',
-	BuyRerollEventValue = 'jokers_of_neon-BuyRerollEventValue',
-	BuySpecialCardEvent = 'jokers_of_neon-BuySpecialCardEvent',
-	BuySpecialCardEventValue = 'jokers_of_neon-BuySpecialCardEventValue',
+	ModManagerRegistrator = 'jokers_of_neon-ModManagerRegistrator',
+	ModManagerRegistratorValue = 'jokers_of_neon-ModManagerRegistratorValue',
+	DeckCard = 'jokers_of_neon_lib-DeckCard',
+	DeckCardValue = 'jokers_of_neon_lib-DeckCardValue',
+	GameDeck = 'jokers_of_neon_lib-GameDeck',
+	GameDeckValue = 'jokers_of_neon_lib-GameDeckValue',
+	PokerHand = 'jokers_of_neon_lib-PokerHand',
+	GamePowerUp = 'jokers_of_neon_lib-GamePowerUp',
+	GamePowerUpValue = 'jokers_of_neon_lib-GamePowerUpValue',
+	CurrentSpecialCards = 'jokers_of_neon_lib-CurrentSpecialCards',
+	CurrentSpecialCardsValue = 'jokers_of_neon_lib-CurrentSpecialCardsValue',
+	Game = 'jokers_of_neon_lib-Game',
+	GameState = 'jokers_of_neon_lib-GameState',
+	GameValue = 'jokers_of_neon_lib-GameValue',
+	PlayerLevelPokerHand = 'jokers_of_neon_lib-PlayerLevelPokerHand',
+	PlayerLevelPokerHandValue = 'jokers_of_neon_lib-PlayerLevelPokerHandValue',
+	RageRound = 'jokers_of_neon_lib-RageRound',
+	RageRoundValue = 'jokers_of_neon_lib-RageRoundValue',
+	CurrentHand = 'jokers_of_neon_lib-CurrentHand',
+	CurrentHandValue = 'jokers_of_neon_lib-CurrentHandValue',
+	Round = 'jokers_of_neon_lib-Round',
+	RoundValue = 'jokers_of_neon_lib-RoundValue',
+	BlisterPackItem = 'jokers_of_neon_lib-BlisterPackItem',
+	BlisterPackItemValue = 'jokers_of_neon_lib-BlisterPackItemValue',
+	BlisterPackResult = 'jokers_of_neon_lib-BlisterPackResult',
+	BlisterPackResultValue = 'jokers_of_neon_lib-BlisterPackResultValue',
+	BurnItem = 'jokers_of_neon_lib-BurnItem',
+	BurnItemValue = 'jokers_of_neon_lib-BurnItemValue',
+	CardItem = 'jokers_of_neon_lib-CardItem',
+	CardItemType = 'jokers_of_neon_lib-CardItemType',
+	CardItemValue = 'jokers_of_neon_lib-CardItemValue',
+	PokerHandItem = 'jokers_of_neon_lib-PokerHandItem',
+	PokerHandItemValue = 'jokers_of_neon_lib-PokerHandItemValue',
+	PowerUpItem = 'jokers_of_neon_lib-PowerUpItem',
+	PowerUpItemValue = 'jokers_of_neon_lib-PowerUpItemValue',
+	SlotSpecialCardsItem = 'jokers_of_neon_lib-SlotSpecialCardsItem',
+	SlotSpecialCardsItemValue = 'jokers_of_neon_lib-SlotSpecialCardsItemValue',
+	SpecialCardItem = 'jokers_of_neon_lib-SpecialCardItem',
+	SpecialCardItemValue = 'jokers_of_neon_lib-SpecialCardItemValue',
+	ModConfig = 'jokers_of_neon_mods-ModConfig',
+	ModConfigValue = 'jokers_of_neon_mods-ModConfigValue',
+	ModTracker = 'jokers_of_neon_mods-ModTracker',
+	ModTrackerValue = 'jokers_of_neon_mods-ModTrackerValue',
+	RageData = 'jokers_of_neon_mods-RageData',
+	RageDataValue = 'jokers_of_neon_mods-RageDataValue',
+	SpecialData = 'jokers_of_neon_mods-SpecialData',
+	SpecialDataValue = 'jokers_of_neon_mods-SpecialDataValue',
 	CardScoreEvent = 'jokers_of_neon-CardScoreEvent',
 	CardScoreEventValue = 'jokers_of_neon-CardScoreEventValue',
 	CreateGameEvent = 'jokers_of_neon-CreateGameEvent',
 	CreateGameEventValue = 'jokers_of_neon-CreateGameEventValue',
 	CurrentHandEvent = 'jokers_of_neon-CurrentHandEvent',
 	CurrentHandEventValue = 'jokers_of_neon-CurrentHandEventValue',
-	DestroyedSpecialCardEvent = 'jokers_of_neon-DestroyedSpecialCardEvent',
-	DestroyedSpecialCardEventValue = 'jokers_of_neon-DestroyedSpecialCardEventValue',
 	DetailEarnedEvent = 'jokers_of_neon-DetailEarnedEvent',
 	DetailEarnedEventValue = 'jokers_of_neon-DetailEarnedEventValue',
 	GameEvent = 'jokers_of_neon-GameEvent',
 	GameEventValue = 'jokers_of_neon-GameEventValue',
 	GamePowerUpEvent = 'jokers_of_neon-GamePowerUpEvent',
 	GamePowerUpEventValue = 'jokers_of_neon-GamePowerUpEventValue',
-	LevelUpHandEvent = 'jokers_of_neon-LevelUpHandEvent',
-	LevelUpHandEventValue = 'jokers_of_neon-LevelUpHandEventValue',
-	LifeSaverSpecialCardEvent = 'jokers_of_neon-LifeSaverSpecialCardEvent',
-	LifeSaverSpecialCardEventValue = 'jokers_of_neon-LifeSaverSpecialCardEventValue',
 	ModifierCardSuitEvent = 'jokers_of_neon-ModifierCardSuitEvent',
 	ModifierCardSuitEventValue = 'jokers_of_neon-ModifierCardSuitEventValue',
 	ModifierNeonCardEvent = 'jokers_of_neon-ModifierNeonCardEvent',
 	ModifierNeonCardEventValue = 'jokers_of_neon-ModifierNeonCardEventValue',
 	ModifierWildCardEvent = 'jokers_of_neon-ModifierWildCardEvent',
 	ModifierWildCardEventValue = 'jokers_of_neon-ModifierWildCardEventValue',
-	NeonPokerHandEvent = 'jokers_of_neon-NeonPokerHandEvent',
-	NeonPokerHandEventValue = 'jokers_of_neon-NeonPokerHandEventValue',
 	PlayGameOverEvent = 'jokers_of_neon-PlayGameOverEvent',
 	PlayGameOverEventValue = 'jokers_of_neon-PlayGameOverEventValue',
-	PlayPokerHandEvent = 'jokers_of_neon-PlayPokerHandEvent',
-	PlayPokerHandEventValue = 'jokers_of_neon-PlayPokerHandEventValue',
 	PlayWinGameEvent = 'jokers_of_neon-PlayWinGameEvent',
 	PlayWinGameEventValue = 'jokers_of_neon-PlayWinGameEventValue',
-	PokerHandEvent = 'jokers_of_neon-PokerHandEvent',
-	PokerHandEventValue = 'jokers_of_neon-PokerHandEventValue',
 	PowerUpEvent = 'jokers_of_neon-PowerUpEvent',
 	PowerUpEventValue = 'jokers_of_neon-PowerUpEventValue',
 	RoundScoreEvent = 'jokers_of_neon-RoundScoreEvent',
 	RoundScoreEventValue = 'jokers_of_neon-RoundScoreEventValue',
-	SecondChanceEvent = 'jokers_of_neon-SecondChanceEvent',
-	SecondChanceEventValue = 'jokers_of_neon-SecondChanceEventValue',
-	SpecialCashEvent = 'jokers_of_neon-SpecialCashEvent',
-	SpecialCashEventValue = 'jokers_of_neon-SpecialCashEventValue',
-	SpecialGlobalEvent = 'jokers_of_neon-SpecialGlobalEvent',
-	SpecialGlobalEventValue = 'jokers_of_neon-SpecialGlobalEventValue',
-	SpecialModifierMultiEvent = 'jokers_of_neon-SpecialModifierMultiEvent',
-	SpecialModifierMultiEventValue = 'jokers_of_neon-SpecialModifierMultiEventValue',
-	SpecialModifierPointsEvent = 'jokers_of_neon-SpecialModifierPointsEvent',
-	SpecialModifierPointsEventValue = 'jokers_of_neon-SpecialModifierPointsEventValue',
-	SpecialModifierSuitEvent = 'jokers_of_neon-SpecialModifierSuitEvent',
-	SpecialModifierSuitEventValue = 'jokers_of_neon-SpecialModifierSuitEventValue',
-	SpecialNeonCardEvent = 'jokers_of_neon-SpecialNeonCardEvent',
-	SpecialNeonCardEventValue = 'jokers_of_neon-SpecialNeonCardEventValue',
-	SpecialPokerHandEvent = 'jokers_of_neon-SpecialPokerHandEvent',
-	SpecialPokerHandEventValue = 'jokers_of_neon-SpecialPokerHandEventValue',
+	CardPlayEvent = 'jokers_of_neon_lib-CardPlayEvent',
+	CardPlayEventValue = 'jokers_of_neon_lib-CardPlayEventValue',
+	EventType = 'jokers_of_neon_lib-EventType',
+	Suit = 'jokers_of_neon_lib-Suit',
 }

@@ -20,7 +20,7 @@ export const PlayButton = ({
 
   const round = useRound();
   const game = useGame();
-  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
+  const handsLeft = !isTutorial() ? round?.remaining_plays ?? 0 : handsLeftTutorial;
 
   const cantPlay =
     !highlight &&
@@ -57,7 +57,7 @@ export const PlayButton = ({
       <PlayDiscardIndicators
         disabled={cantPlay}
         type="play"
-        total={game?.max_hands ?? 5}
+        total={game?.plays ?? 5}
         active={handsLeft}
       />
     </Flex>
