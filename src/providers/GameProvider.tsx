@@ -905,14 +905,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const checkOrCreateGame = async () => {
     console.log("checking game exists", gameId);
 
-    const externalImageUrls = await fetchModImages(String(modId));
-    // const externalImageUrls = await fetchModImages(String(2));
-
-    preloadImages(externalImageUrls);
-
-    fetchAndMergeSpecialCardsData(String(modId));
-    // fetchAndMergeSpecialCardsData(String(2));
-
     clearPreSelection();
     if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
       setTimeout(() => {

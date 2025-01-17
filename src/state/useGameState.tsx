@@ -18,10 +18,12 @@ import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
 import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
+import { fetchModImages } from "../data/modImageCache";
+import { preloadImages } from "../utils/preloadImages";
 
 export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
-  const [modId, setModId] = useState<number>(getLSGameId());
+
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
@@ -66,6 +68,8 @@ export const useGameState = () => {
   const round = useRound();
   const game = useGame();
 
+  const [modId, setModId] = useState<number>(game?.mod_id ?? 0);
+
   const dojoHand = useCurrentHand(sortBy);
 
   const dojoPowerUps = useGamePowerUps();
@@ -97,14 +101,18 @@ export const useGameState = () => {
 
   useEffect(() => {
     if (client && account) {
-      setModId(game?.mod_id ?? 0);
-      // fetchAndMergeSpecialCardsData(String(2));
-      fetchAndMergeSpecialCardsData(String(game?.mod_id ?? 0));
       getPlayerPokerHands(client, gameId).then((plays: any) => {
         if (plays != undefined) setPlays(plays);
       });
     }
   }, [client, account, gameId, game?.level]);
+
+  useEffect(() => {
+    fetchModImages(String(game?.mod_id)).then((externalImageUrls) => {
+      preloadImages(externalImageUrls);
+    });
+    fetchAndMergeSpecialCardsData(String(game?.mod_id));
+  }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
