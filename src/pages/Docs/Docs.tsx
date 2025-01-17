@@ -41,11 +41,14 @@ export const DocsContentMobile = ({
       <MobileDecoration />
 
       <Flex
-        width="100vw"
-        height={"100vh"}
+        width={["100vw", "90vw"]}
+        height={["100vh", "90vh"]}
+        margin={"0 auto"}
+        my={4}
+        mt={[4, 4, 20]}
         flexDirection="column"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="center"
         {...handlers}
       >
         <Flex p={2} mt={6} width={"100%"}>
@@ -57,10 +60,10 @@ export const DocsContentMobile = ({
             color="white"
           >
             <TabList width={"100%"} height={"100%"}>
-              <Tab fontSize={"0.5rem"}>{t("labels.special-cards")}</Tab>
-              <Tab fontSize={"0.5rem"}>{t("labels.modifier-cards")}</Tab>
-              <Tab fontSize={"0.5rem"}>{t("labels.rage-cards")}</Tab>
-              <Tab fontSize={"0.5rem"}>{t("labels.loot-boxes")}</Tab>
+              <Tab fontSize={"1.7vw"}>{t("labels.special-cards")}</Tab>
+              <Tab fontSize={"1.7vw"}>{t("labels.modifier-cards")}</Tab>
+              <Tab fontSize={"1.7vw"}>{t("labels.rage-cards")}</Tab>
+              <Tab fontSize={"1.7vw"}>{t("labels.loot-boxes")}</Tab>
             </TabList>
           </Tabs>
         </Flex>

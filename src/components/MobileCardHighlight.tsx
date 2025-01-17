@@ -145,7 +145,7 @@ export const MobileCardHighlight = ({
         transition="all 0.5s ease"
       >
         {!animation ? (
-          <CardImage3D card={card} />
+          <CardImage3D card={card} hideTooltip />
         ) : (
           <SpineAnimation
             ref={spineAnimationRef}
@@ -156,7 +156,7 @@ export const MobileCardHighlight = ({
             openBoxAnimation={animationsData.openBoxAnimation}
             width={1200}
             height={1500}
-            xOffset={-750}
+            xOffset={-650}
             scale={1}
           />
         )}

@@ -42,7 +42,7 @@ export const DocsBoxesRow = () => {
               justifyContent={"center"}
               alignItems={"center"}
               alignContent={"center"}
-              width={"50%"}
+              width={["50%", "25%"]}
               height={"30vh"}
               onClick={() => {
                 highlightCard(box);

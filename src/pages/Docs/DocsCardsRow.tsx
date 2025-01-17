@@ -17,7 +17,8 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
 
       <Flex
         width="100%"
-        height="100%"
+        height={["90%"]}
+        my={[4, 2]}
         flexDirection="row"
         alignItems={"center"}
         justifyContent={"center"}

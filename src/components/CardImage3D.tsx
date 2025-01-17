@@ -65,7 +65,6 @@ export const CardImage3D = ({
           {mainImg}
         </Tooltip>
       )}
-
       {!showPlain && image1Available && (
         <CachedImage
           position={"absolute"}
