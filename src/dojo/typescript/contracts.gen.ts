@@ -264,6 +264,23 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_getGameConfig_calldata = (modId: BigNumberish) => {
+		return {
+			contractName: "game_system",
+			entrypoint: "get_game_config",
+			calldata: [modId],
+		};
+	};
+
+	const game_system_getGameConfig = async (modId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon", build_game_system_getGameConfig_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_poker_hand_system_getPlayerPokerHands_calldata = (gameId: BigNumberish) => {
 		return {
 			contractName: "poker_hand_system",
@@ -466,6 +483,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildDiscardEffectCardCalldata: build_game_system_discardEffectCard_calldata,
 			discardSpecialCard: game_system_discardSpecialCard,
 			buildDiscardSpecialCardCalldata: build_game_system_discardSpecialCard_calldata,
+			getGameConfig: game_system_getGameConfig,
+			buildGetGameConfigCalldata: build_game_system_getGameConfig_calldata,
 			play: game_system_play,
 			buildPlayCalldata: build_game_system_play_calldata,
 		},

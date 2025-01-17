@@ -112,6 +112,8 @@ export interface IGameContext {
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
   remainingPlaysTutorial?: number;
+  maxSpecialCards: number;
+  maxPowerUpSlots: number;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);

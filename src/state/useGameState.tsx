@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
@@ -19,6 +20,13 @@ import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
 
 export const useGameState = () => {
+  const {
+    setup: {
+      client,
+      account: { account },
+    },
+  } = useDojo();
+
   const [gameId, setGameId] = useState<number>(getLSGameId());
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [playIsNeon, setPlayIsNeon] = useState(false);
@@ -54,6 +62,21 @@ export const useGameState = () => {
 
   const [powerUps, setPowerUps] = useState<(PowerUp | null)[]>([]);
   const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
+  const [maxSpecialCards, setMaxSpecialCards] = useState(0);
+  const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
+
+  const fetchGameConfig = async () => {
+    //TODO: dehardcode modId
+    const gameConfig = await getGameConfig(client, 1);
+    if (gameConfig) {
+      setMaxSpecialCards(gameConfig.maxSpecialCards);
+      setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
+    }
+  };
+
+  useEffect(() => {
+    fetchGameConfig();
+  }, []);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -85,13 +108,6 @@ export const useGameState = () => {
       return newPowerUps;
     });
   };
-
-  const {
-    setup: {
-      client,
-      account: { account },
-    },
-  } = useDojo();
 
   useEffect(() => {
     if (client && account) {
@@ -238,5 +254,7 @@ export const useGameState = () => {
     resetPowerUps,
     setPowerUps,
     addPowerUp,
+    maxSpecialCards,
+    maxPowerUpSlots,
   };
 };

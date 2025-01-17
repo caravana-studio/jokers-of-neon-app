@@ -22,11 +22,11 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
     setHand,
     gameId,
     setPowerUps,
+    maxPowerUpSlots,
   } = useGameContext();
   const { skipShop } = useShopActions();
 
   const game = useGame();
-  const powerUpSize = game?.len_max_current_power_ups ?? 4;
 
   const { locked, setLoading } = useStore();
 
@@ -38,7 +38,7 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
         setHand(response.cards);
 
         const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < powerUpSize) {
+        while (powerUps.length < maxPowerUpSlots) {
           powerUps.push(null);
         }
         setPowerUps(powerUps);
