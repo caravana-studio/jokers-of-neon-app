@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Box, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DocsCardsRow } from "./DocsCardsRow";
 import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
@@ -11,11 +11,7 @@ import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { Background } from "../../components/Background";
 
-export const DocsContentMobile = ({
-  lastIndexTab = 0,
-}: {
-  lastIndexTab: number;
-}) => {
+export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();

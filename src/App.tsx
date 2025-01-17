@@ -24,7 +24,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
-import { DocsContentMobile } from "./pages/Docs/Docs";
+import { DocsPage } from "./pages/Docs/Docs";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 
 function App() {
@@ -99,7 +99,7 @@ function App() {
                   path="/docs"
                   element={
                     <CardHighlightProvider>
-                      <DocsContentMobile lastIndexTab={0} />
+                      <DocsPage lastIndexTab={0} />
                     </CardHighlightProvider>
                   }
                 />
