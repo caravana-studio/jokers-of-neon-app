@@ -14,8 +14,7 @@ import { PositionedGameMenu } from "../components/GameMenu";
 import { useGameMods } from "../dojo/queries/useGameMods";
 import { useGameContext } from "../providers/GameProvider";
 import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
-
-const OFFICIAL_MODS: any[] = [];
+import { useState } from "react";
 
 const MODS = [
   {
@@ -35,15 +34,15 @@ const MODS = [
 
 export const SelectMod = () => {
   const navigate = useNavigate();
+  const [OFFICIAL_MODS, setOfficialMods] = useState<any>([]);
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
 
   const mods = useGameMods().mods;
 
   const url = import.meta.env.VITE_MOD_URL + "official-mods.json";
-  console.log(url);
 
   getJsonFromUrl(url).then((response) => {
-    Object.assign(OFFICIAL_MODS, response);
+    setOfficialMods(response);
   });
 
   // mods.forEach((mod) => {
@@ -81,7 +80,7 @@ export const SelectMod = () => {
           maxH={"70%"}
           overflowY="auto"
         >
-          {OFFICIAL_MODS.map((mod) => (
+          {OFFICIAL_MODS.map((mod: any) => (
             <ModBox key={mod.id} mod={mod} isOfficial />
           ))}
 
