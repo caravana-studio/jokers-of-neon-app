@@ -259,7 +259,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   const handlePowerUps = () => {
     playEvents.powerUpEvents?.forEach((event, index) => {
       setTimeout(() => {
-        const { idx, points, multi, special_idx } = event;
+        const { idx, points, multi } = event;
 
         setAnimatedPowerUp({
           idx,
@@ -269,7 +269,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         });
 
         setAnimatedCard({
-          special_idx,
           points,
           multi,
           animationIndex: 600 + index,
