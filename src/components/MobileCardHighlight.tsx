@@ -16,6 +16,7 @@ import { animationsData } from "../constants/spineAnimations";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { Duration } from "../enums/duration";
 import { PriceBox } from "./PriceBox";
+import { LootBoxRateInfo } from "./LootBoxRateInfo";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -31,8 +32,16 @@ export const MobileCardHighlight = ({
   isPack = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type, animation, price, rarity, temporaryPrice } =
-    getCardData(card, isPack);
+  const {
+    name,
+    description,
+    type,
+    animation,
+    price,
+    rarity,
+    temporaryPrice,
+    details,
+  } = getCardData(card, isPack);
   const { discardEffectCard, discardSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -161,6 +170,7 @@ export const MobileCardHighlight = ({
               {t("labels.rarity", { ns: "docs" })}: {rarity}
             </Text>
           )}
+          {isPack && <LootBoxRateInfo name={name} details={details} />}
           {price &&
             (temporaryPrice ? (
               <DurationSwitcher
