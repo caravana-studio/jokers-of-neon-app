@@ -1,4 +1,4 @@
-import { CARDS_RARITY } from "../constants/rarity";
+import { RARITY } from "../constants/rarity";
 import { Cards } from "../enums/cards";
 import { CardTypes } from "../enums/cardTypes";
 import { Suits } from "../enums/suits";
@@ -12,7 +12,7 @@ export interface CardData {
     details?: string;
     type?: CardTypes
     size?: number;
-    rarity?: CARDS_RARITY;
+    rarity?: RARITY;
     price?: number;
     animation?: SpineAnimationInfo;
     temporaryPrice?: number;
