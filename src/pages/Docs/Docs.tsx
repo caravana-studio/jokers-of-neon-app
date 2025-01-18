@@ -40,8 +40,8 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
         width={["100vw", "90vw"]}
         height={["100vh", "90vh"]}
         margin={"0 auto"}
-        my={4}
-        mt={[4, 4, 20]}
+        py={4}
+        pt={[4, 4, 20]}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
