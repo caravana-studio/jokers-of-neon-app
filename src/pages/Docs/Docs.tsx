@@ -15,7 +15,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();
-
+  const tabFontSize = ["2.6vw", "1.9vw", "1.4vw", "1vw"];
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
@@ -56,10 +56,18 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
             color="white"
           >
             <TabList width={"100%"} height={"100%"}>
-              <Tab fontSize={"1.7vw"}>{t("labels.special-cards")}</Tab>
-              <Tab fontSize={"1.7vw"}>{t("labels.modifier-cards")}</Tab>
-              <Tab fontSize={"1.7vw"}>{t("labels.rage-cards")}</Tab>
-              <Tab fontSize={"1.7vw"}>{t("labels.loot-boxes")}</Tab>
+              <Tab fontSize={tabFontSize} px={2}>
+                {t("labels.special-cards")}
+              </Tab>
+              <Tab fontSize={tabFontSize} px={2}>
+                {t("labels.modifier-cards")}
+              </Tab>
+              <Tab fontSize={tabFontSize} px={2}>
+                {t("labels.rage-cards")}
+              </Tab>
+              <Tab fontSize={tabFontSize} px={2}>
+                {t("labels.loot-boxes")}
+              </Tab>
             </TabList>
           </Tabs>
         </Flex>
