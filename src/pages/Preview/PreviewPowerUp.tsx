@@ -24,7 +24,7 @@ export const PreviewPowerUp = () => {
 
   const game = useGame();
   const { buyPowerUp, locked } = useStore();
-  const { powerUps } = useGameContext();
+  const { powerUps, maxPowerUpSlots } = useGameContext();
   const cash = game?.cash ?? 0;
 
   const name = `${POWER_UPS_CARDS_DATA[powerUp.power_up_id].name}`;
@@ -36,9 +36,7 @@ export const PreviewPowerUp = () => {
       ? cash < Number(powerUp?.discount_cost ?? 0)
       : cash < Number(powerUp.cost));
 
-  const noSpace =
-    powerUps.filter((p) => !!p).length >=
-    (game?.len_max_current_power_ups ?? 4);
+  const noSpace = powerUps.filter((p) => !!p).length >= maxPowerUpSlots;
 
   const onBuyButtonClick = () => {
     setBuyDisabled(true);

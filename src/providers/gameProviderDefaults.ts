@@ -74,4 +74,6 @@ export const gameProviderDefaults: IGameContext = {
   addPowerUp: (_) => {},
   modId: 0,
   setModId: (_) => {},
+  maxSpecialCards: 7,
+  maxPowerUpSlots: 4,
 };

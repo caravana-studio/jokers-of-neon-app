@@ -13,46 +13,36 @@ import { SortBy } from "../enums/sortBy";
 import { useAudio } from "../hooks/useAudio";
 import { useGameState } from "../state/useGameState";
 import { Card } from "../types/Card";
-import { PlayEvents } from "../types/ScoreData";
-import { changeCardSuit } from "../utils/changeCardSuit";
+import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 import { checkHand } from "../utils/checkHand";
-import {
-  C5,
-  C7,
-  CA,
-  CJ,
-  CK,
-  CQ,
-  D10,
-  D2,
-  D4,
-  D5,
-  H10,
-  H3,
-  H7,
-} from "../utils/mocks/cardMocks";
-import { ClubModifier } from "../utils/mocks/modifierMocks";
+import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
+import {
+  EVENT_FLUSH,
+  EVENT_PAIR,
+  EVENT_PAIR_POWER_UPS,
+  HAND_1,
+  HAND_2,
+} from "../utils/mocks/tutorialMocks.ts";
+import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { LevelPokerHand } from "../types/LevelPokerHand.ts";
-import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
-import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 
 export const mockTutorialGameContext = createContext<IGameContext>({
   ...gameProviderDefaults,
   gameId: 1,
-  hand: [D2, H3, D5, H7, H10, CJ, CK, CA],
-  score: 300,
+  hand: HAND_1,
+  score: 600,
   cash: 1000,
   discards: 1,
   sfxVolume: 100,
   powerUps: [m5, p25],
 });
 
-export let handsLeftTutorial = 3;
+const emptyFn = () => {};
+
 let context: IGameContext;
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -76,32 +66,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: discardSound } = useAudio(discardSfx, 4);
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
-
-  const c7 = C7;
-  c7.idx = D2.idx;
-  c7.id = D2.id;
-
-  const c5 = C5;
-  c5.idx = H3.idx;
-  c5.id = H3.id;
-
-  const cq = CQ;
-  cq.id = c7.id;
-  cq.idx = c7.idx;
-
-  const cm = ClubModifier;
-  cm.id = H7.id;
-  cm.idx = H7.idx;
-
-  const d4 = D4;
-  d4.id = c5.id;
-  d4.idx = c5.idx;
-
-  const d10 = D10;
-  d10.id = D5.id;
-  d10.idx = D5.idx;
-
-  const cards: Card[] = [c7, c5];
+  const [remainingPlaysTutorial, setRemainingPlaysTutorial] = useState(5);
 
   const {
     setup: {
@@ -238,7 +203,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const togglePreselected = (cardIndex: number) => {
-    if (!preSelectionLocked && handsLeftTutorial > 0) {
+    if (!preSelectionLocked && remainingPlaysTutorial > 0) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
         preselectCardSound();
@@ -249,441 +214,48 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const animatePlay = (playEvents: PlayEvents) => {
-    const calculateDuration = (
-      events?: any[],
-      baseDuration = playAnimationDuration,
-      multiplier = 1
-    ) => (events?.length ?? 0) * baseDuration * multiplier;
-
-    if (playEvents) {
-      const NEON_PLAY_DURATION = playEvents.neonPlayEvent
-        ? playAnimationDuration
-        : 0;
-      const MODIFIER_SUIT_CHANGE_DURATION =
-        (playEvents.modifierSuitEvents?.length ?? 0) * playAnimationDuration;
-      const SPECIAL_SUIT_CHANGE_DURATION =
-        (playEvents.specialSuitEvents?.length ?? 0) * playAnimationDuration;
-      const GLOBAL_BOOSTER_DURATION =
-        (playEvents.globalEvents?.length ?? 0) * playAnimationDuration * 2;
-      const LEVEL_BOOSTER_DURATION = playEvents.levelEvent
-        ? playAnimationDuration * 2
-        : 0;
-      const COMMON_CARDS_DURATION =
-        playAnimationDuration * playEvents.cardScore.length;
-      const CASH_DURATION =
-        playAnimationDuration * (playEvents.cashEvents?.length ?? 0);
-      const SPECIAL_CARDS_DURATION =
-        playAnimationDuration * (playEvents.specialCards?.length ?? 0);
-
-      const POWER_UP_DURATION = calculateDuration(playEvents.powerUpEvents);
-
-      const ALL_CARDS_DURATION =
-        NEON_PLAY_DURATION +
-        MODIFIER_SUIT_CHANGE_DURATION +
-        SPECIAL_SUIT_CHANGE_DURATION +
-        LEVEL_BOOSTER_DURATION +
-        GLOBAL_BOOSTER_DURATION +
-        COMMON_CARDS_DURATION +
-        SPECIAL_CARDS_DURATION +
-        CASH_DURATION +
-        POWER_UP_DURATION +
-        500;
-
-      const handlePowerUps = () => {
-        playEvents.powerUpEvents?.forEach((event, index) => {
-          setTimeout(() => {
-            const { idx, points, multi } = event;
-            console.log(event);
-
-            setAnimatedPowerUp({
-              idx,
-              points,
-              multi,
-              animationIndex: 250 + index,
-            });
-
-            if (points) {
-              pointsSound();
-              setPoints((prev) => prev + points);
-            }
-
-            if (multi) {
-              multiSound();
-              setMulti((prev) => prev + multi);
-            }
-          }, playAnimationDuration * index);
-        });
-      };
-
-      setPreSelectionLocked(true);
-
-      if (playEvents.neonPlayEvent) {
-        setPlayIsNeon(true);
-
-        setAnimatedCard({
-          animationIndex: -1,
-          suit: 5,
-          idx: playEvents.neonPlayEvent.neon_cards_idx,
-        });
-        pointsSound();
-        playEvents.neonPlayEvent.points &&
-          setPoints(playEvents.neonPlayEvent.points);
-        multiSound();
-        playEvents.neonPlayEvent.multi &&
-          setMulti(playEvents.neonPlayEvent.multi);
-      }
-
-      if (playEvents.modifierSuitEvents) {
-        playEvents.modifierSuitEvents.forEach((event, index) => {
-          setTimeout(
-            () => {
-              pointsSound();
-              setAnimatedCard({
-                suit: event.suit,
-                idx: [event.idx],
-                animationIndex: index,
-              });
-              setHand((prev) => {
-                const newHand = prev?.map((card) => {
-                  if (event.idx === card.idx) {
-                    return {
-                      ...card,
-                      suit: event.suit,
-                      img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                    };
-                  }
-                  return card;
-                });
-                return newHand;
-              });
-            },
-            playAnimationDuration * index + NEON_PLAY_DURATION
-          );
-        });
-      }
-
-      setTimeout(() => {
-        if (playEvents.specialSuitEvents) {
-          playEvents.specialSuitEvents.forEach((event, index) => {
-            pointsSound();
-            setAnimatedCard({
-              suit: event.suit,
-              special_idx: event.special_idx,
-              idx: event.idx,
-              animationIndex: 10 + index,
-            });
-            setHand((prev) => {
-              const newHand = prev?.map((card) => {
-                if (event.idx.includes(card.idx)) {
-                  return {
-                    ...card,
-                    // img: `${changeCardSuit(card.card_id!, event.suit)}.png`,
-                  };
-                }
-                return card;
-              });
-              return newHand;
-            });
-          });
-        }
-
-        if (playEvents.powerUpEvents) {
-          setTimeout(
-            () => {
-              handlePowerUps();
-            },
-            NEON_PLAY_DURATION +
-              MODIFIER_SUIT_CHANGE_DURATION +
-              SPECIAL_SUIT_CHANGE_DURATION +
-              SPECIAL_CARDS_DURATION +
-              POWER_UP_DURATION
-          );
-        }
-
-        setTimeout(() => {
-          //global boosters
-          if (playEvents.globalEvents) {
-            playEvents.globalEvents.forEach((event, index) => {
-              setTimeout(() => {
-                const { special_idx, multi, points } = event;
-                if (points) {
-                  pointsSound();
-                  setAnimatedCard({
-                    special_idx,
-                    points,
-                    animationIndex: 20 + index,
-                  });
-                  setPoints((prev) => prev + points);
-                }
-                if (multi) {
-                  setTimeout(() => {
-                    multiSound();
-                    //animate multi
-                    setAnimatedCard({
-                      special_idx,
-                      multi,
-                      animationIndex: 31 + index,
-                    });
-                    setMulti((prev) => prev + multi);
-                  }, playAnimationDuration);
-                }
-              }, playAnimationDuration * index);
-            });
-          }
-
-          setTimeout(() => {
-            //level boosters
-            if (playEvents.levelEvent) {
-              const {
-                special_idx,
-                multi: eventMulti,
-                points: eventPoints,
-              } = playEvents.levelEvent;
-              //animate points
-              if (eventPoints) {
-                pointsSound();
-                setAnimatedCard({
-                  special_idx,
-                  points: eventPoints - points,
-                  animationIndex: 31,
-                });
-                setPoints(eventPoints);
-              }
-              if (eventMulti) {
-                multiSound();
-                setTimeout(() => {
-                  //animate multi
-                  setAnimatedCard({
-                    special_idx,
-                    multi: eventMulti - multi,
-                    animationIndex: 41,
-                  });
-                  setMulti(eventMulti);
-                }, playAnimationDuration);
-              }
-            }
-
-            setTimeout(() => {
-              //traditional cards and modifiers
-              playEvents.cardScore.forEach((card, index) => {
-                setTimeout(() => {
-                  const { idx, points, multi } = card;
-
-                  setAnimatedCard({
-                    idx: [idx],
-                    points,
-                    multi,
-                    animationIndex: 50 + index,
-                  });
-                  if (points) pointsSound();
-                  points && setPoints((prev) => prev + points);
-                  if (multi) multiSound();
-                  multi && setMulti((prev) => prev + multi);
-                }, playAnimationDuration * index);
-              });
-
-              // cash events
-              setTimeout(() => {
-                playEvents.cashEvents?.forEach((event, index) => {
-                  setTimeout(() => {
-                    const { idx, special_idx, cash } = event;
-                    setAnimatedCard({
-                      idx: [idx],
-                      special_idx,
-                      cash,
-                      animationIndex: 60 + index,
-                    });
-                  }, playAnimationDuration * index);
-                });
-
-                //special cards
-                setTimeout(() => {
-                  playEvents.specialCards?.forEach((event, index) => {
-                    setTimeout(() => {
-                      const { idx, points, multi, special_idx } = event;
-                      setAnimatedCard({
-                        idx: [idx],
-                        points,
-                        multi,
-                        special_idx,
-                        animationIndex: 70 + index,
-                      });
-                      if (points) pointsSound();
-                      points && setPoints((prev) => prev + points);
-                      if (multi) multiSound();
-                      multi && setMulti((prev) => prev + multi);
-                    }, playAnimationDuration * index);
-                  });
-                }, CASH_DURATION);
-              }, COMMON_CARDS_DURATION);
-            }, LEVEL_BOOSTER_DURATION);
-          }, GLOBAL_BOOSTER_DURATION);
-        }, SPECIAL_SUIT_CHANGE_DURATION);
-      }, MODIFIER_SUIT_CHANGE_DURATION + NEON_PLAY_DURATION);
-
-      setTimeout(() => {
-        setPlayAnimation(true);
-      }, ALL_CARDS_DURATION);
-
-      setTimeout(() => {
-        setAnimatedCard(undefined);
-        // setLockedScore(undefined);
-
-        setPlayAnimation(false);
-        clearPreSelection();
-        setPreSelectionLocked(false);
-        setPlayIsNeon(false);
-        playEvents.cards && replaceCards(playEvents.cards);
-        setScore(playEvents.score);
-      }, ALL_CARDS_DURATION + 500);
-    }
-  };
-
   const discard = () => {
     discardSound();
-    replaceCards(cards);
+    setHand(HAND_2);
     clearPreSelection();
     setDiscards(discards - 1);
   };
 
-  const eventFlush = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      {
-        idx: 34,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 9,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: c7.idx,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 11,
-        multi: 0,
-        points: 10,
-      },
-      {
-        idx: 12,
-        multi: 0,
-        points: 11,
-      },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: 34,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 9,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: c7.idx,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 11,
-        multi: 2,
-      },
-      {
-        special_idx: 301,
-        idx: 12,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [{ idx: 34, suit: 1 }],
-    cards: [],
-    score: 5200,
-    cashEvents: [],
-    powerUpEvents: [],
-  };
-
-  const eventPair = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      { idx: c7.idx, multi: 0, points: 7 },
-      { idx: 31, multi: 0, points: 7 },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: c7.idx,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [],
-    cards: [cq, cm],
-    score: 96,
-    cashEvents: [],
-  };
-
-  const eventPairPowerUps = {
-    play: {
-      multi: 1,
-      points: 0,
-    },
-    cardScore: [
-      { idx: c5.idx, multi: 0, points: 5 },
-      { idx: D5.idx, multi: 0, points: 5 },
-    ],
-    specialCards: [
-      {
-        special_idx: 301,
-        idx: c5.idx,
-        multi: 2,
-      },
-    ],
-    gameOver: false,
-    specialSuitEvents: [],
-    globalEvents: [],
-    modifierSuitEvents: [],
-    cards: [d4, d10],
-    score: 96,
-    cashEvents: [],
-    powerUpEvents: [
-      {
-        idx: 0,
-        points: 0,
-        multi: 5,
-      },
-      {
-        idx: 1,
-        points: 25,
-        multi: 0,
-      },
-    ],
-  };
-
-  const events = [eventPair, eventPairPowerUps, eventFlush];
+  const events = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
 
   const play = () => {
-    animatePlay(events[indexEvent]);
+    animatePlay({
+      playEvents: events[indexEvent],
+      playAnimationDuration,
+      setPlayIsNeon,
+      setAnimatedCard,
+      setAnimatedPowerUp,
+      pointsSound,
+      multiSound,
+      negativeMultiSound: emptyFn,
+      cashSound: emptyFn,
+      setPoints,
+      setMulti,
+      setHand,
+      setPlayAnimation,
+      setPreSelectionLocked,
+      setLockedScore: emptyFn,
+      setLockedSpecialCards: emptyFn,
+      setLockedCash: emptyFn,
+      clearPreSelection,
+      removePowerUp: emptyFn,
+      preselectedPowerUps,
+      navigate: emptyFn,
+      gameId: 0,
+      setLockRedirection: emptyFn,
+      setRoundRewards: emptyFn,
+      replaceCards,
+      handsLeft: 1,
+      setAnimateSecondChanceCard: emptyFn,
+    });
+    setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);
-    handsLeftTutorial -= 1;
+    setRemainingPlaysTutorial(remainingPlaysTutorial - 1);
   };
 
   const clearPreSelection = () => {
@@ -697,18 +269,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const replaceCards = (cards: Card[]) => {
-    const newHand = context.hand
-      ?.map((card) => {
-        const newCard = cards.find((c) => c.idx === card.idx);
-        if (newCard) {
-          return newCard;
-        } else {
-          return card;
-        }
-      })
-      .filter((card) => card.card_id !== 9999);
-
-    setHand(sortCards(newHand, SortBy.RANK));
+    setHand(sortCards(cards, SortBy.RANK));
   };
 
   context.preSelectedCards = preSelectedCards;
@@ -719,6 +280,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
   context.discards = discards;
+  context.remainingPlaysTutorial = remainingPlaysTutorial;
 
   if (hand.length > 0) context.hand = hand;
 

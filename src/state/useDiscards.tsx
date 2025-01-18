@@ -5,7 +5,7 @@ import { useRound } from "../dojo/queries/useRound";
 export const useDiscards = () => {
   const round = useRound();
   const game = useGame()
-  const discardsLeft = round?.discard ?? 0;
+  const discardsLeft = round?.remaining_discards ?? 0;
   const [optimisticDiscards, setOptimisticDiscards] = useState<
     number | undefined
   >(undefined);

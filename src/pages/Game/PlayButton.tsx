@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
-import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
 import { isTutorial } from "../../utils/isTutorial";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
@@ -16,11 +15,14 @@ export const PlayButton = ({
   highlight = false,
   onTutorialCardClick,
 }: PlayButtonProps) => {
-  const { preSelectedCards, play, preSelectionLocked } = useGameContext();
+  const { preSelectedCards, play, preSelectionLocked, remainingPlaysTutorial } =
+    useGameContext();
 
   const round = useRound();
   const game = useGame();
-  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
+  const handsLeft = !isTutorial()
+    ? round?.remaining_plays ?? 0
+    : remainingPlaysTutorial ?? 0;
 
   const cantPlay =
     !highlight &&
@@ -57,7 +59,7 @@ export const PlayButton = ({
       <PlayDiscardIndicators
         disabled={cantPlay}
         type="play"
-        total={game?.max_hands ?? 5}
+        total={game?.plays ?? 5}
         active={handsLeft}
       />
     </Flex>

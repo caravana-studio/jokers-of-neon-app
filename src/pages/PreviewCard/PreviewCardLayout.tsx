@@ -55,8 +55,8 @@ const PreviewCardLayout = () => {
   const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card, isPack);
-  const specialMaxLength = game?.len_max_current_special_cards ?? 0;
-  const specialLength = game?.len_current_special_cards ?? 0;
+  const specialMaxLength = game?.special_slots ?? 0;
+  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
