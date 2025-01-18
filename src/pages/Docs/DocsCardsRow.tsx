@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { getSortedDocCardsData } from "./Utils/DocsUtils";
 import { CardDataMap } from "../../types/CardData";
 import { TiltCard } from "../../components/TiltCard";
@@ -8,6 +8,11 @@ import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
   const docCards = getSortedDocCardsData(cardDataMap);
   const { highlightCard, highlightedCard } = useCardHighlight();
+
+  const customCardScale = useBreakpointValue({
+    base: 0.9,
+    sm: 1,
+  });
 
   return (
     <>
@@ -31,7 +36,7 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
           <Flex key={index} justifyContent={"center"} alignItems={"center"}>
             <TiltCard
               card={{ ...docCardData, price: undefined }}
-              scale={0.9}
+              scale={customCardScale}
               onClick={() => {
                 highlightCard(docCardData);
               }}
