@@ -52,7 +52,7 @@ export const DiscardButton = ({
       <PlayDiscardIndicators
         disabled={cantDiscard}
         type="discard"
-        total={game?.max_discard ?? 5}
+        total={game?.discards ?? 5}
         active={discards}
       />
     </Flex>

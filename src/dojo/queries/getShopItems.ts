@@ -94,6 +94,7 @@ export const getShopItems = async (client: any, gameId: number) => {
   if (gameId != 0) {
     try {
       let tx_result = await client.shop_system.getShopItems(gameId);
+      console.log(tx_result);
       const modifiersAndCommonCards = tx_result[CARDS_IDX].map(
         (txCard: any) => {
           return getCard(txCard);
@@ -133,8 +134,8 @@ export const getShopItems = async (client: any, gameId: number) => {
       };
 
       const rerollInformation = {
-        rerollCost: parseInt(tx_result[REROLL_IDX].reroll_cost),
-        rerollExecuted: tx_result[REROLL_IDX].reroll_executed,
+        rerollCost: parseInt(tx_result[REROLL_IDX].cost),
+        rerollExecuted: tx_result[REROLL_IDX].purchased,
       };
 
       const powerUpItems = tx_result[POWERUPS_IDX].map((txPowerUp: any) => {

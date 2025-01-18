@@ -12,11 +12,7 @@ export const GAME_QUERY = gql`
           cash
           state
           round
-          len_max_current_special_cards
-          len_current_special_cards
           player_score
-          max_hands
-          max_discard
           owner
         }
       }
@@ -29,11 +25,7 @@ interface GameEdge {
     cash: number;
     state: string;
     round: number;
-    len_max_current_special_cards: number;
-    len_current_special_cards: number;
     player_score: number;
-    max_hands: number;
-    max_discard: number;
     owner: string;
   };
 }
