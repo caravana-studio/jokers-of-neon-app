@@ -83,7 +83,8 @@
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Ativar som",
       "logout-btn": "Sair",
-      "settings-btn": "Configuração"
+      "settings-btn": "Configuração",
+      "docs-btn": "Guia"
     },
     "plays": {
       "title": "Jogadas disponíveis",

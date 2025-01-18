@@ -83,7 +83,8 @@
       "tutorial-btn": "See tutorial",
       "sound-btn": "Turn sound",
       "logout-btn": "Logout",
-      "settings-btn": "Settings"
+      "settings-btn": "Settings",
+      "docs-btn": "Guide"
     },
     "plays": {
       "title": "Available plays",

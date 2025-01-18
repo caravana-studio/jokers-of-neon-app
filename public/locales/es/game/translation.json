@@ -83,7 +83,8 @@
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Sonido",
       "logout-btn": "Cerrar sesión",
-      "settings-btn": "Configuración"
+      "settings-btn": "Configuración",
+      "docs-btn": "Guía"
     },
     "plays": {
       "title": "Jugadas disponibles",
