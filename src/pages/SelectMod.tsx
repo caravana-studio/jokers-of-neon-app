@@ -11,43 +11,31 @@ import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
-import { useGameMods } from "../dojo/queries/useGameMods";
+import { IMod, useGameMods } from "../dojo/queries/useGameMods";
 import { useGameContext } from "../providers/GameProvider";
-import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
-import { useState } from "react";
 
-const MODS = [
+const OFFICIAL_MODS: IMod[] = [
   {
-    title: "Pepe mod",
-    id: -3,
-    image: "pepe",
-    description: "Have fun with Pepe (Community made)",
+    name: "Classic Jokers of Neon",
+    id: 1,
+    image: "classic",
+    description: "The classic version of Jokers of Neon",
   },
   {
-    title: "BROTHER MOD",
-    id: -4,
-    image: "brother",
+    name: "Loot Survivor MOD",
+    id: 0,
+    image: "loot-survivor",
     description:
-      "Jokers of Neon version for the Starknet BROTHERhood (Community made)",
+      "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",
+    url: "https://ls.jokersofneon.com",
   },
 ];
 
 export const SelectMod = () => {
   const navigate = useNavigate();
-  const [OFFICIAL_MODS, setOfficialMods] = useState<any>([]);
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
 
-  const mods = useGameMods().mods;
-
-  const url = import.meta.env.VITE_MOD_URL + "official-mods.json";
-
-  getJsonFromUrl(url).then((response) => {
-    setOfficialMods(response);
-  });
-
-  // mods.forEach((mod) => {
-  //   OFFICIAL_MODS[mod.id].id = mod.id;
-  // });
+  const mods = useGameMods();
 
   return (
     <Background type="home">
@@ -80,25 +68,28 @@ export const SelectMod = () => {
           maxH={"70%"}
           overflowY="auto"
         >
-          {OFFICIAL_MODS.map((mod: any) => (
+          {OFFICIAL_MODS.map((mod: IMod) => (
             <ModBox key={mod.id} mod={mod} isOfficial />
           ))}
+          {mods.length > 0 && (
+            <>
+              <Divider orientation="horizontal" borderColor="white" my={6} />
+              <Heading
+                w="100%"
+                size={{ base: "sm", sm: "lg" }}
+                textAlign="center"
+                variant="italic"
+                mt={4}
+                mb={2}
+              >
+                {t("community-mods")}
+              </Heading>
 
-          <Divider orientation="horizontal" borderColor="white" my={6} />
-          <Heading
-            w="100%"
-            size={{ base: "sm", sm: "lg" }}
-            textAlign="center"
-            variant="italic"
-            mt={4}
-            mb={2}
-          >
-            {t("community-mods")}
-          </Heading>
-
-          {MODS.map((mod) => (
-            <ModBox key={mod.id} mod={mod} />
-          ))}
+              {mods.map((mod) => (
+                <ModBox key={mod.id} mod={mod} />
+              ))}
+            </>
+          )}
         </Flex>
         <Button
           onClick={() => {
@@ -115,13 +106,7 @@ export const SelectMod = () => {
 };
 
 interface IModBoxProps {
-  mod: {
-    title: string;
-    id: number;
-    image: string;
-    description?: string;
-    url?: string;
-  };
+  mod: IMod;
   isOfficial?: boolean;
 }
 
@@ -149,19 +134,19 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
           },
         }}
         onClick={() => {
-          setModId(mod.id);
-          mod.url
-            ? mod.url.startsWith("http")
-              ? (window.location.href = mod.url)
-              : navigate(mod.url)
-            : navigate(`/play/${mod.id}`);
+          if (mod.url) {
+            window.location.href = mod.url;
+          } else {
+            setModId(mod.id);
+            navigate(`/login`);
+          }
         }}
       >
-        <Text size="l">{mod.title}</Text>
+        <Text size="l">{mod.name}</Text>
         <CachedImage
           cursor="pointer"
           src={`/mods/${mod.image}.png`}
-          alt={mod.title}
+          alt={mod.name}
           w="100%"
         />
       </Flex>

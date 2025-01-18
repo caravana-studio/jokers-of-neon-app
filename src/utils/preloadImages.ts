@@ -1,11 +1,10 @@
-import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { LOOT_BOXES_DATA } from "../data/lootBoxes";
+import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import {
-  TRADITIONAL_CARDS_DATA,
   NEON_CARDS_DATA,
+  TRADITIONAL_CARDS_DATA,
 } from "../data/traditionalCards";
-import { fetchModImages } from "../data/modImageCache";
 
 const CACHE_NAME = "image-cache";
 

@@ -1,11 +1,19 @@
+import { useEntityQuery } from "@dojoengine/react";
 import { getComponentValue, Has } from "@dojoengine/recs";
-import { GameMod } from "../typescript/models.gen";
 import { useEffect, useState } from "react";
 import { useDojo } from "../useDojo";
-import { useEntityQuery } from "@dojoengine/react";
+import { decodeString } from "../utils/decodeString";
 
-export const useGameMods = (): { mods: GameMod[] } => {
-  const [plays, setPlays] = useState<any>({});
+export interface IMod {
+  name: string;
+  id: number;
+  image: string;
+  description?: string;
+  url?: string;
+}
+
+export const useGameMods = (): IMod[] => {
+  const [mods, setMods] = useState<IMod[]>([]);
 
   const {
     setup: {
@@ -14,19 +22,20 @@ export const useGameMods = (): { mods: GameMod[] } => {
   } = useDojo();
 
   const gameKeys = useEntityQuery([Has(GameMod)]);
+  console.log("gameKeys", gameKeys);
 
   useEffect(() => {
-    const components = gameKeys.map((entity) => {
-      const component = getComponentValue(GameMod, entity);
+    const transformedMods: IMod[] = gameKeys
+      .map((entity) => getComponentValue(GameMod, entity))
+      .filter((mod) => mod !== undefined)
+      .map((mod) => ({
+        name: decodeString(mod.name.toString()),
+        id: mod.id,
+        image: "classic",
+      }));
 
-      if (!component) {
-        return undefined;
-      }
-      return component;
-    });
+    setMods(transformedMods);
+  }, [gameKeys, GameMod]);
 
-    setPlays(components);
-  }, [gameKeys]);
-
-  return { mods: Object.values(plays) };
+  return mods;
 };

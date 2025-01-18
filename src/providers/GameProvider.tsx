@@ -43,9 +43,6 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { fetchModImages } from "../data/modImageCache.ts";
-import { preloadImages } from "../utils/preloadImages.ts";
-import { fetchAndMergeSpecialCardsData } from "../data/specialCards.ts";
 
 export interface IGameContext {
   gameId: number;
