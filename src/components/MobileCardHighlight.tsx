@@ -177,6 +177,7 @@ export const MobileCardHighlight = ({
           {price &&
             (temporaryPrice ? (
               <DurationSwitcher
+                flexDir="column"
                 price={price}
                 temporalPrice={temporaryPrice}
                 duration={duration}
