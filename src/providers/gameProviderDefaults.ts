@@ -1,3 +1,4 @@
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
@@ -72,7 +73,7 @@ export const gameProviderDefaults: IGameContext = {
   powerUpIsPreselected: (_) => false,
   setPowerUps: (_) => {},
   addPowerUp: (_) => {},
-  modId: 0,
+  modId: CLASSIC_MOD_ID,
   setModId: (_) => {},
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,

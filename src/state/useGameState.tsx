@@ -21,6 +21,7 @@ import { sortCards } from "../utils/sortCards";
 import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { fetchModImages } from "../data/modImageCache";
 import { preloadImages } from "../utils/preloadImages";
+import { CLASSIC_MOD_ID } from "../constants/general";
 
 export const useGameState = () => {
   const {
@@ -70,7 +71,7 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
 
   const fetchGameConfig = async () => {
-    const gameConfig = await getGameConfig(client, game?.mod_id ?? 0);
+    const gameConfig = await getGameConfig(client, game?.mod_id ?? CLASSIC_MOD_ID);
     if (gameConfig) {
       setMaxSpecialCards(gameConfig.maxSpecialCards);
       setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
@@ -90,7 +91,7 @@ export const useGameState = () => {
   const round = useRound();
   const game = useGame();
 
-  const [modId, setModId] = useState<number>(game?.mod_id ?? 0);
+  const [modId, setModId] = useState<string>(game?.mod_id ?? CLASSIC_MOD_ID);
 
   const dojoHand = useCurrentHand(sortBy);
 

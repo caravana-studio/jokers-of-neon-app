@@ -17,13 +17,13 @@ import { useGameContext } from "../providers/GameProvider";
 const OFFICIAL_MODS: IMod[] = [
   {
     name: "Classic Jokers of Neon",
-    id: 1,
+    id: "classic",
     image: "classic",
     description: "The classic version of Jokers of Neon",
   },
   {
     name: "Loot Survivor MOD",
-    id: 0,
+    id: "loot-survivor",
     image: "loot-survivor",
     description:
       "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",

@@ -363,7 +363,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           id: RecsType.Number,
-          mod_id: RecsType.Number,
+          mod_id: RecsType.String,
           state: RecsType.String,
           owner: RecsType.BigInt,
           player_name: RecsType.BigInt,

@@ -6,36 +6,46 @@ import { decodeString } from "../utils/decodeString";
 
 export interface IMod {
   name: string;
-  id: number;
+  id: string;
   image: string;
   description?: string;
   url?: string;
 }
+
+const getMods = async (client: any) => {
+  try {
+    let tx_result = await client.game_system.getGameMods();
+    console.log('tx_result', tx_result);
+     /*return {
+      maxPowerUpSlots: parseInt(tx_result.max_power_up_slots),
+      maxSpecialCards: parseInt(tx_result.max_special_slots),
+    }; */
+  } catch (e) {
+    console.log(e);
+  }
+  return ; 
+};
+
 
 export const useGameMods = (): IMod[] => {
   const [mods, setMods] = useState<IMod[]>([]);
 
   const {
     setup: {
-      clientComponents: { GameMod },
+      client
     },
   } = useDojo();
 
-  const gameKeys = useEntityQuery([Has(GameMod)]);
-  console.log("gameKeys", gameKeys);
 
   useEffect(() => {
-    const transformedMods: IMod[] = gameKeys
-      .map((entity) => getComponentValue(GameMod, entity))
-      .filter((mod) => mod !== undefined)
-      .map((mod) => ({
+    const transformedMods/* : IMod[] */ = getMods(client)/* .map((mod) => ({
         name: decodeString(mod.name.toString()),
         id: mod.id,
         image: "classic",
-      }));
+      })); */
 
-    setMods(transformedMods);
-  }, [gameKeys, GameMod]);
+    setMods([{ name: "nicon", id: "jokers_of_neon_nicon", image: "classic" }]);
+  }, []);
 
   return mods;
 };

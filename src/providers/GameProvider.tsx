@@ -111,8 +111,8 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
-  modId: number;
-  setModId: (modId: number) => void;
+  modId: string;
+  setModId: (modId: string) => void;
   remainingPlaysTutorial?: number;
   maxSpecialCards: number;
   maxPowerUpSlots: number;

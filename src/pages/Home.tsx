@@ -11,6 +11,7 @@ import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
+import { CLASSIC_MOD_ID } from "../constants/general";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -96,7 +97,7 @@ export const Home = () => {
                     navigate("/mods");
                   } else {
                     //default to classic
-                    setModId(1);
+                    setModId(CLASSIC_MOD_ID);
                     navigate("/login");
                   }
                 }}

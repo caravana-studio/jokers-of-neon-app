@@ -2,6 +2,7 @@ import React, { useEffect, useState, forwardRef } from "react";
 import { getImageFromCache } from "../utils/preloadImages";
 import { Image, ImageProps } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
+import { CLASSIC_MOD_ID } from "../constants/general";
 
 interface CachedImageProps extends Omit<ImageProps, "src"> {
   src: string;
@@ -11,13 +12,12 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
   ({ src, alt, ...props }, ref) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const { modId } = useGameContext();
-    // const modId = 2;
     const baseUrl = import.meta.env.VITE_CACHE_URL + modId;
 
     useEffect(() => {
       const loadImage = async () => {
         const cachedImage = await getImageFromCache(
-          modId != 1 ? baseUrl + src : src
+          modId != CLASSIC_MOD_ID ? baseUrl + src : src
           // baseUrl + src
         );
         if (cachedImage) {

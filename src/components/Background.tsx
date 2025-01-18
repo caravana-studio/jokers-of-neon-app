@@ -3,6 +3,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
 import { useGameContext } from "../providers/GameProvider";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { decodeString } from "../dojo/utils/decodeString";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -24,9 +26,9 @@ const getBackgroundColor = (type: string) => {
 
 const fetchBackgroundImageUrl = async (
   type: string,
-  modId: number
+  modId: string
 ): Promise<string | null> => {
-  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/bg";
+  const baseUrl = import.meta.env.VITE_MOD_URL + decodeString(modId) + "/resources/bg";
 
   try {
     const response = await fetch(`${baseUrl}/${type}-bg.jpg`);
@@ -69,7 +71,7 @@ export const Background = ({
 
   useEffect(() => {
     const loadBackgroundImage = async () => {
-      if (modId !== 1) {
+      if (modId !== CLASSIC_MOD_ID) {
         const imageUrl = await fetchBackgroundImageUrl(type, modId);
         setBackgroundImageUrl(imageUrl || "none");
       }
@@ -83,7 +85,7 @@ export const Background = ({
       sx={{
         backgroundColor: getBackgroundColor(type),
         backgroundImage:
-          modId === 1 || modId === 0
+          modId === CLASSIC_MOD_ID
             ? getBackgroundImage(type)
             : backgroundImageUrl,
         backgroundSize: "cover",
