@@ -28,7 +28,8 @@ const fetchBackgroundImageUrl = async (
   type: string,
   modId: string
 ): Promise<string | null> => {
-  const baseUrl = import.meta.env.VITE_MOD_URL + decodeString(modId) + "/resources/bg";
+  console.log(modId);
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources/bg";
 
   try {
     const response = await fetch(`${baseUrl}/${type}-bg.jpg`);
@@ -87,7 +88,9 @@ export const Background = ({
         backgroundImage:
           modId === CLASSIC_MOD_ID
             ? getBackgroundImage(type)
-            : backgroundImageUrl,
+            : backgroundImageUrl != "none"
+              ? backgroundImageUrl
+              : getBackgroundImage(type),
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",
