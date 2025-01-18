@@ -40,7 +40,7 @@ export const useCurrentSpecialCards = () => {
   const gameId = game?.id ?? 0;
 
   const specialCardsMaxLength = 7;
-  const len_current_special_cards = game?.len_current_special_cards ?? 0;
+  const len_current_special_cards = game?.current_specials_len ?? 0;
 
   const specialCardsIds = Array.from(
     { length: specialCardsMaxLength },

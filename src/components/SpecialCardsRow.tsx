@@ -1,7 +1,6 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MAX_SPECIAL_CARDS } from "../constants/config.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
@@ -21,6 +20,7 @@ export const SpecialCardsRow = () => {
     roundRewards,
     isRageRound,
     specialCards: cards,
+    maxSpecialCards,
   } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
@@ -33,10 +33,10 @@ export const SpecialCardsRow = () => {
   const { highlightCard } = useCardHighlight();
 
   const game = useGame();
-  const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
+  const unlockedSpecialSlots = game?.special_slots ?? 1;
 
   const lockedSlots =
-    unlockedSpecialSlots === MAX_SPECIAL_CARDS
+    unlockedSpecialSlots === maxSpecialCards
       ? 0
       : Math.max(0, 5 - unlockedSpecialSlots);
 

@@ -4,6 +4,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { PowerUp } from "../../types/PowerUp";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
+import { useGameContext } from "../../providers/GameProvider";
 
 export const getPowerUp = (power_up_id: number, idx: number, game_id: number = 0) => {
   return {
@@ -26,9 +27,10 @@ export const useGamePowerUps = () => {
     },
   } = useDojo();
 
+  const { maxPowerUpSlots } = useGameContext();
+
   const game = useGame();
 
-  const powerUpSize = game?.len_max_current_power_ups ?? 4;
   const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
   const gamePowerUp = useComponentValue(GamePowerUp, entityId);
   if (!game) return [];
@@ -43,7 +45,7 @@ export const useGamePowerUps = () => {
     .filter((powerUp: any) => powerUp.power_up_id !== 9999);
 
   // Fill the remaining slots with null placeholders up to powerUpSize
-  while (powerUps.length < powerUpSize) {
+  while (powerUps.length < maxPowerUpSlots) {
     powerUps.push(null);
   }
 

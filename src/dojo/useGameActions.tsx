@@ -32,6 +32,8 @@ export const useGameActions = () => {
       showTransactionToast();
       const response = await client.game_system.createGame(
         account,
+        //TODO: dehardcode modId
+        1,
         BigInt(shortString.encodeShortString(username))
       );
       const transaction_hash = response?.transaction_hash ?? "";
