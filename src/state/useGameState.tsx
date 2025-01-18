@@ -96,7 +96,7 @@ export const useGameState = () => {
   const game = useGame();
 
   const [modId, setModId] = useState<string>(
-    decodeString(game?.mod_id ?? "") ?? CLASSIC_MOD_ID
+    game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
   );
 
   const dojoHand = useCurrentHand(sortBy);
