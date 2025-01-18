@@ -17,7 +17,7 @@ import { useGameContext } from "../providers/GameProvider";
 const OFFICIAL_MODS: IMod[] = [
   {
     name: "Classic Jokers of Neon",
-    id: "classic",
+    id: "jokers_of_neon_classic",
     image: "classic",
     description: "The classic version of Jokers of Neon",
   },

@@ -15,30 +15,27 @@ export interface IMod {
 const getMods = async (client: any) => {
   try {
     let tx_result = await client.game_system.getGameMods();
-    console.log('tx_result', tx_result);
-     /*return {
+    console.log("tx_result", tx_result);
+    console.log(decodeString(tx_result.id));
+    /*return {
       maxPowerUpSlots: parseInt(tx_result.max_power_up_slots),
       maxSpecialCards: parseInt(tx_result.max_special_slots),
     }; */
   } catch (e) {
     console.log(e);
   }
-  return ; 
+  return;
 };
-
 
 export const useGameMods = (): IMod[] => {
   const [mods, setMods] = useState<IMod[]>([]);
 
   const {
-    setup: {
-      client
-    },
+    setup: { client },
   } = useDojo();
 
-
   useEffect(() => {
-    const transformedMods/* : IMod[] */ = getMods(client)/* .map((mod) => ({
+    const transformedMods /* : IMod[] */ = getMods(client); /* .map((mod) => ({
         name: decodeString(mod.name.toString()),
         id: mod.id,
         image: "classic",
