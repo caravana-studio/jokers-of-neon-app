@@ -16,7 +16,6 @@ const getMods = async (client: any) => {
   try {
     let tx_result = await client.game_system.getGameMods();
     console.log("tx_result", tx_result);
-    console.log(decodeString(tx_result.id));
     /*return {
       maxPowerUpSlots: parseInt(tx_result.max_power_up_slots),
       maxSpecialCards: parseInt(tx_result.max_special_slots),

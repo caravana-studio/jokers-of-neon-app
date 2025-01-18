@@ -22,6 +22,7 @@ import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { fetchModImages } from "../data/modImageCache";
 import { preloadImages } from "../utils/preloadImages";
 import { CLASSIC_MOD_ID } from "../constants/general";
+import { decodeString } from "../dojo/utils/decodeString";
 
 export const useGameState = () => {
   const {
@@ -71,7 +72,10 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
 
   const fetchGameConfig = async () => {
-    const gameConfig = await getGameConfig(client, game?.mod_id ?? CLASSIC_MOD_ID);
+    const gameConfig = await getGameConfig(
+      client,
+      game?.mod_id ?? CLASSIC_MOD_ID
+    );
     if (gameConfig) {
       setMaxSpecialCards(gameConfig.maxSpecialCards);
       setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
@@ -91,7 +95,9 @@ export const useGameState = () => {
   const round = useRound();
   const game = useGame();
 
-  const [modId, setModId] = useState<string>(game?.mod_id ?? CLASSIC_MOD_ID);
+  const [modId, setModId] = useState<string>(
+    decodeString(game?.mod_id ?? "") ?? CLASSIC_MOD_ID
+  );
 
   const dojoHand = useCurrentHand(sortBy);
 
@@ -124,9 +130,13 @@ export const useGameState = () => {
   }, [client, account, gameId, game?.level]);
 
   useEffect(() => {
-    fetchModImages(String(game?.mod_id)).then((externalImageUrls) => {
-      preloadImages(externalImageUrls);
-    });
+    console.log(decodeString(game?.mod_id ?? ""));
+    fetchModImages(decodeString(game?.mod_id ?? "")).then(
+      (externalImageUrls) => {
+        console.log(externalImageUrls);
+        preloadImages(externalImageUrls);
+      }
+    );
     fetchAndMergeSpecialCardsData(String(game?.mod_id));
   }, [game?.mod_id]);
 
