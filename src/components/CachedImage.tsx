@@ -2,6 +2,7 @@ import { Image, ImageProps } from "@chakra-ui/react";
 import { forwardRef, useEffect, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
+import { getImageFromCache } from "../utils/preloadImages";
 
 interface CachedImageProps extends Omit<ImageProps, "src"> {
   src: string;
@@ -25,9 +26,13 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
 
     useEffect(() => {
       const loadImage = async () => {
+        const cachedImage = await getImageFromCache(src);
+
         if (modId !== CLASSIC_MOD_ID) {
           const exists = await checkImageExists(modAwareSrc);
           setImageSrc(exists ? modAwareSrc : src);
+        } else if (cachedImage) {
+          setImageSrc(URL.createObjectURL(cachedImage));
         } else {
           setImageSrc(src);
         }

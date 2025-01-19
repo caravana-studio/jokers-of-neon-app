@@ -3,7 +3,8 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import CachedImage from "./CachedImage";
+import { getImageFromCache } from "../utils/preloadImages";
+import CachedImage, { checkImageExists } from "./CachedImage";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -45,18 +46,26 @@ export const Background = ({
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
   const { modId } = useGameContext();
-  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources/bg";
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
+  const src = `/bg/${type}-bg.jpg`;
+  const modAwareSrc = modId !== CLASSIC_MOD_ID ? baseUrl + src : src;
 
   useEffect(() => {
     const loadBackgroundImage = async () => {
+      const cachedImage = await getImageFromCache(src);
+
       if (modId !== CLASSIC_MOD_ID) {
-        const imageUrl = `${baseUrl}/${type}-bg.jpg`;
-        setBackgroundImageUrl(imageUrl || "none");
+        const exists = await checkImageExists(modAwareSrc);
+        setBackgroundImageUrl(exists ? modAwareSrc : src);
+      } else if (cachedImage) {
+        setBackgroundImageUrl(URL.createObjectURL(cachedImage));
+      } else {
+        setBackgroundImageUrl(src);
       }
     };
 
     loadBackgroundImage();
-  }, [type]);
+  }, [type, modId]);
 
   return (
     <Box
