@@ -7,6 +7,15 @@ interface CachedImageProps extends Omit<ImageProps, "src"> {
   src: string;
 }
 
+export const checkImageExists = async (url: string): Promise<boolean> => {
+  try {
+    const response = await fetch(url, { method: "HEAD" });
+    return response.ok;
+  } catch {
+    return false;
+  }
+};
+
 const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
   ({ src, alt, ...props }, ref) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -15,15 +24,6 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
     const modAwareSrc = modId !== CLASSIC_MOD_ID ? baseUrl + src : src;
 
     useEffect(() => {
-      const checkImageExists = async (url: string): Promise<boolean> => {
-        try {
-          const response = await fetch(url, { method: "HEAD" });
-          return response.ok;
-        } catch {
-          return false;
-        }
-      };
-
       const loadImage = async () => {
         if (modId !== CLASSIC_MOD_ID) {
           const exists = await checkImageExists(modAwareSrc);

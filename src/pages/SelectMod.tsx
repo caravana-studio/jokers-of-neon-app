@@ -6,25 +6,28 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Background } from "../components/Background";
-import CachedImage from "../components/CachedImage";
+import CachedImage, { checkImageExists } from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { IMod, useGameMods } from "../dojo/queries/useGameMods";
 import { useGameContext } from "../providers/GameProvider";
+import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 const OFFICIAL_MODS: IMod[] = [
   {
     name: "Classic Jokers of Neon",
     id: "jokers_of_neon_classic",
-    image: "classic",
+    image: "/mods/classic.png",
     description: "The classic version of Jokers of Neon",
   },
   {
     name: "Loot Survivor MOD",
     id: "loot-survivor",
-    image: "loot-survivor",
+    image: "/mods/loot-survivor.png",
     description:
       "Play to die in this Loot Survivor inspired mod. Face obstacles and kill beasts while you explore the dungeon. Live on mainnet!",
     url: "https://ls.jokersofneon.com",
@@ -34,6 +37,12 @@ const OFFICIAL_MODS: IMod[] = [
 export const SelectMod = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
+
+  const { setModId } = useGameContext();
+
+  useEffect(() => {
+    setModId(CLASSIC_MOD_ID);
+  }, []);
 
   const mods = useGameMods();
 
@@ -105,6 +114,8 @@ export const SelectMod = () => {
   );
 };
 
+const MOD_URL = import.meta.env.VITE_MOD_URL;
+
 interface IModBoxProps {
   mod: IMod;
   isOfficial?: boolean;
@@ -115,8 +126,44 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
   const { setModId } = useGameContext();
 
+  const [loading, setLoading] = useState(!isOfficial);
+
+  const imageUrl = MOD_URL + mod.id + "/resources/thumbnail.png";
+  const configUrl = MOD_URL + mod.id + "/resources/config.json";
+
+  useEffect(() => {
+    if (!isOfficial) {
+      getJsonFromUrl(configUrl).then((response) => {
+        if (response) {
+          setModConfig(response);
+        }
+      });
+      checkImageExists(imageUrl)
+        .then((exists) => {
+          if (exists) {
+            setImageSrc(imageUrl);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, []);
+
+  const [modConfig, setModConfig] = useState<{
+    name: string;
+    description?: string;
+  }>({
+    name: mod.name,
+    description: mod.description,
+  });
+
+  const [imageSrc, setImageSrc] = useState<string>(
+    mod.image ?? "/thumbnail.png"
+  );
+
   return (
-    <Tooltip label={mod.description}>
+    <Tooltip label={modConfig?.description ?? mod.description}>
       <Flex
         w={{
           base: isOfficial ? "100%" : "50%",
@@ -137,18 +184,24 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
           if (mod.url) {
             window.location.href = mod.url;
           } else {
-            setModId(mod.id);
+            //TODO dehardcode this
+            setModId("jokers_of_neon_nicon");
+            // setModId(mod.id);
             navigate(`/login`);
           }
         }}
       >
-        <Text size="l">{mod.name}</Text>
-        <CachedImage
-          cursor="pointer"
-          src={`/mods/${mod.image}.png`}
-          alt={mod.name}
-          w="100%"
-        />
+        <Text size="l">{modConfig?.name ?? mod.name}</Text>
+        {loading ? (
+          <>loading</>
+        ) : (
+          <CachedImage
+            cursor="pointer"
+            src={imageSrc}
+            alt={mod.name}
+            w="100%"
+          />
+        )}
       </Flex>
     </Tooltip>
   );

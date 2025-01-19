@@ -1,14 +1,12 @@
-import { useEntityQuery } from "@dojoengine/react";
-import { getComponentValue, Has } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
+import { CLASSIC_MOD_ID } from "../../constants/general";
 import { useDojo } from "../useDojo";
 import { decodeString } from "../utils/decodeString";
-import { CLASSIC_MOD_ID } from "../../constants/general";
 
 export interface IMod {
   name: string;
   id: string;
-  image: string;
+  image?: string;
   description?: string;
   url?: string;
 }
@@ -20,8 +18,8 @@ const getMods = async (client: any) => {
     const transformedMods: IMod[] = tx_result.map((mod: any) => ({
       name: decodeString(mod.id),
       id: decodeString(mod.id),
-      image: "classic",
     }));
+
     return transformedMods;
   } catch (e) {
     console.log(e);
