@@ -20,7 +20,7 @@ import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 const OFFICIAL_MODS: IMod[] = [
   {
     name: "Classic Jokers of Neon",
-    id: "jokers_of_neon_classic",
+    id: CLASSIC_MOD_ID,
     image: "/mods/classic.png",
     description: "The classic version of Jokers of Neon",
   },
@@ -184,9 +184,7 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
           if (mod.url) {
             window.location.href = mod.url;
           } else {
-            //TODO dehardcode this
-            setModId("jokers_of_neon_nicon");
-            // setModId(mod.id);
+            setModId(mod.id);
             navigate(`/login`);
           }
         }}

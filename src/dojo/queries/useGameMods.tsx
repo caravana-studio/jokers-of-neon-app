@@ -6,6 +6,7 @@ import { decodeString } from "../utils/decodeString";
 export interface IMod {
   name: string;
   id: string;
+  rawId?: string;
   image?: string;
   description?: string;
   url?: string;
@@ -18,6 +19,7 @@ const getMods = async (client: any) => {
     const transformedMods: IMod[] = tx_result.map((mod: any) => ({
       name: decodeString(mod.id),
       id: decodeString(mod.id),
+      rawId: mod.id
     }));
 
     return transformedMods;

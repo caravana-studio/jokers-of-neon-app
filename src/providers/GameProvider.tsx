@@ -43,6 +43,7 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { useGameMods } from "../dojo/queries/useGameMods.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -525,9 +526,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     console.log("checking game exists", gameId);
 
     clearPreSelection();
-    if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
+    if (!gameId || gameId === 0 || !gameExists(Game, gameId, modId)) {
       setTimeout(() => {
-        if (!gameExists(Game, gameId)) {
+        if (!gameExists(Game, gameId, modId)) {
           executeCreateGame();
         } else {
           setGameLoading(false);
