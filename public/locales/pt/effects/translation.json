@@ -73,8 +73,8 @@
       "description": "Todos os Jokers jogados marcam pontos e multiplicador em dobro"
     },
     "311": {
-      "name": "Impulsionador de Poderes",
-      "description": "Todos os Poderes jogados marcam pontos e multiplicador em dobro"
+      "name": "Impulsionador de Power-ups",
+      "description": "Todos os Power-ups jogados marcam pontos e multiplicador em dobro"
     },
     "312": {
       "name": "Impulsionador de Figuras",

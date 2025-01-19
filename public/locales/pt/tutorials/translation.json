@@ -45,9 +45,9 @@
       "drag": "Arraste e solte o modificador de naipe de paus sobre o 10, depois clique em 'Próximo' para continuar."
     },
     "power-ups": {
-      "title": "Potencializadores",
+      "title": "Power-ups",
       "content": "Os power-ups concedem pontos extras e aumentam seu multiplicador. Use-os uma vez e depois compre mais na loja.",
-      "select": "Selecione esse potencializador"
+      "select": "Selecione esse power-up"
     }
   },
   "storeTutorial": {

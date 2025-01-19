@@ -31,7 +31,7 @@
       "improve-plays": "Melhore suas mãos de pôquer",
       "my-special-cards": "Minhas cartas especiais",
       "packs": "Pacotes",
-      "powerups": "Poderes"
+      "powerups": "Power-ups"
     },
     "tooltip": {
       "reroll-default": "Atualizar itens disponíveis",
@@ -60,7 +60,7 @@
       "tooltip": {
         "no-coins": "Moedas insuficientes",
         "no-space": "Você não tem slots disponíveis suficientes para outra carta especial.",
-        "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro poder."
+        "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro power-up."
       },
       "labels": {
         "buy": "Comprar",
@@ -71,7 +71,7 @@
         "temporary": "Temporário",
         "close": "Fechar",
         "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
-        "power-up": "Poder"
+        "power-up": "Power-up"
       }
     },
     "packs": {
