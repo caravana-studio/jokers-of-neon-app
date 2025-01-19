@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
@@ -8,6 +10,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
+import { decodeString } from "../dojo/utils/decodeString";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
@@ -18,11 +21,6 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
-import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
-import { fetchModImages } from "../data/modImageCache";
-import { preloadImages } from "../utils/preloadImages";
-import { CLASSIC_MOD_ID } from "../constants/general";
-import { decodeString } from "../dojo/utils/decodeString";
 
 export const useGameState = () => {
   const {
@@ -130,13 +128,9 @@ export const useGameState = () => {
   }, [client, account, gameId, game?.level]);
 
   useEffect(() => {
-    console.log(decodeString(game?.mod_id ?? ""));
-    fetchModImages(decodeString(game?.mod_id ?? "")).then(
-      (externalImageUrls) => {
-        preloadImages(externalImageUrls);
-      }
-    );
-    fetchAndMergeSpecialCardsData(String(game?.mod_id));
+    if (modId && modId !== CLASSIC_MOD_ID) {
+      fetchAndMergeSpecialCardsData(modId);
+    }
   }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();

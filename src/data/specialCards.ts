@@ -318,8 +318,7 @@ const loadTranslations = async () => {
 };
 
 export const fetchAndMergeSpecialCardsData = async (modId: string) => {
-  const url = import.meta.env.VITE_MOD_URL + `${modId}/specials.json`;
-
+  const url = import.meta.env.VITE_MOD_URL + `${modId}/resources/specials.json`;
   try {
     const content = await getJsonFromUrl(url);
     Object.assign(SPECIAL_CARDS_DATA, content);

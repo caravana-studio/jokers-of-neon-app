@@ -3,13 +3,15 @@ export const getJsonFromUrl = async (url: string) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      console.error(`Failed to fetch specials.json: ${response.statusText}`);
+      console.error(`Failed to fetch ${url}: ${response.statusText}`);
       return;
     }
 
     const data = await response.json();
 
-    if (data.encoding === "base64") {
+    if (!data.encoding) {
+      return data;
+    } else if (data.encoding === "base64") {
       const content = JSON.parse(atob(data.content));
       return content;
     } else {

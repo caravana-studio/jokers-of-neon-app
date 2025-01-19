@@ -41,6 +41,7 @@ export const PlayDiscardIndicators = ({
     <Flex w="100%" justifyContent="space-around" alignItems="center">
       {Array.from({ length: total }).map((_, index) => (
         <PlayDiscardIndicator
+          key={index}
           disabled={disabled}
           on={index < active}
           color={color}

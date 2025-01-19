@@ -1,10 +1,9 @@
 import { Box, Text } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
-import { useGameContext } from "../providers/GameProvider";
-import { CLASSIC_MOD_ID } from "../constants/general";
-import { decodeString } from "../dojo/utils/decodeString";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -21,29 +20,6 @@ const getBackgroundColor = (type: string) => {
       return "black";
     default:
       return "transparent";
-  }
-};
-
-const fetchBackgroundImageUrl = async (
-  type: string,
-  modId: string
-): Promise<string | null> => {
-  console.log(modId);
-  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources/bg";
-
-  try {
-    const response = await fetch(`${baseUrl}/${type}-bg.jpg`);
-
-    if (!response.ok) {
-      console.error(`Failed to fetch background image: ${response.statusText}`);
-      return null;
-    }
-
-    const data = await response.json();
-    return data.download_url; // Use the raw file URL
-  } catch (error) {
-    console.error("Error fetching background image:", error);
-    return null;
   }
 };
 
@@ -69,11 +45,12 @@ export const Background = ({
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
   const { modId } = useGameContext();
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources/bg";
 
   useEffect(() => {
     const loadBackgroundImage = async () => {
       if (modId !== CLASSIC_MOD_ID) {
-        const imageUrl = await fetchBackgroundImageUrl(type, modId);
+        const imageUrl = `${baseUrl}/${type}-bg.jpg`;
         setBackgroundImageUrl(imageUrl || "none");
       }
     };
