@@ -3,6 +3,7 @@ import { getComponentValue, Has } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
 import { useDojo } from "../useDojo";
 import { decodeString } from "../utils/decodeString";
+import { CLASSIC_MOD_ID } from "../../constants/general";
 
 export interface IMod {
   name: string;
@@ -15,11 +16,13 @@ export interface IMod {
 const getMods = async (client: any) => {
   try {
     let tx_result = await client.game_system.getGameMods();
-    console.log("tx_result", tx_result);
-    /*return {
-      maxPowerUpSlots: parseInt(tx_result.max_power_up_slots),
-      maxSpecialCards: parseInt(tx_result.max_special_slots),
-    }; */
+
+    const transformedMods: IMod[] = tx_result.map((mod: any) => ({
+      name: decodeString(mod.id),
+      id: decodeString(mod.id),
+      image: "classic",
+    }));
+    return transformedMods;
   } catch (e) {
     console.log(e);
   }
@@ -34,13 +37,11 @@ export const useGameMods = (): IMod[] => {
   } = useDojo();
 
   useEffect(() => {
-    const transformedMods /* : IMod[] */ = getMods(client); /* .map((mod) => ({
-        name: decodeString(mod.name.toString()),
-        id: mod.id,
-        image: "classic",
-      })); */
-
-    setMods([{ name: "nicon", id: "jokers_of_neon_nicon", image: "classic" }]);
+    getMods(client).then((transformedMods) => {
+      setMods(
+        transformedMods?.filter((mod) => mod.id !== CLASSIC_MOD_ID) ?? []
+      );
+    });
   }, []);
 
   return mods;

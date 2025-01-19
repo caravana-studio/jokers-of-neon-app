@@ -133,7 +133,6 @@ export const useGameState = () => {
     console.log(decodeString(game?.mod_id ?? ""));
     fetchModImages(decodeString(game?.mod_id ?? "")).then(
       (externalImageUrls) => {
-        console.log(externalImageUrls);
         preloadImages(externalImageUrls);
       }
     );
