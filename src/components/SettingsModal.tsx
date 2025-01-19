@@ -27,7 +27,7 @@ import { NEON_PINK } from "../theme/colors";
 import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
-import { MdGraphicEq } from "react-icons/md";
+import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Speed } from "../enums/speed";
 import { useState } from "react";
@@ -88,7 +88,9 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               </Text>
               <Menu variant={"menuOutline"}>
                 <MenuButton width={"100%"}>
-                  {languageMap[selectedLanguage]}
+                  <Flex alignItems="center" gap={2}>
+                    <MdArrowDropDown /> {languageMap[selectedLanguage]}
+                  </Flex>
                 </MenuButton>
                 <MenuList zIndex={10000}>
                   {Object.keys(languageMap).map((languageKey) => {
@@ -167,7 +169,10 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               </Text>
               <Menu variant={"menuOutline"}>
                 <MenuButton width={"100%"}>
-                  {t(animationSpeedLabels[animationSpeed])}
+                  <Flex alignItems="center" gap={2}>
+                    <MdArrowDropDown />{" "}
+                    {t(animationSpeedLabels[animationSpeed])}
+                  </Flex>
                 </MenuButton>
                 <MenuList zIndex={10000}>
                   {Object.entries(animationSpeedLabels).map(
