@@ -7,3 +7,12 @@ export const ClubModifier: Card = {
   card_id: 608,
   isModifier: true,
 };
+
+export const WildcardModifier: Card = {
+  value: 16,
+  img: "613.png",
+  id: "613",
+  idx: 613,
+  card_id: 613,
+  isModifier: true,
+};
