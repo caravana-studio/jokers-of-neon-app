@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
@@ -43,7 +44,6 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { useGameMods } from "../dojo/queries/useGameMods.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -246,7 +246,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate(showTutorial ? "/tutorial" : "/demo");
+          navigate(modId === CLASSIC_MOD_ID && showTutorial ? "/tutorial" : "/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
