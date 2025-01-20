@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x81cd99d680fa4fadf87e9d4caf7e0a7bc45e14036f4110763b0467566e9aa8",
-      "class_hash": "0x1680e986daf1fb523443070e71d931c3b5948c55b6753f639c7c1a3f2bc0e92",
+      "address": "0xd1df0a5132d7038ab8831878383cbb7c619e660b76de5022139f0f845fe725",
+      "class_hash": "0x475030e7ed33eb9b0a9ae37b8582ce53bf8eef32dd6d0be12d00197c6145cc",
       "abi": [
         {
           "type": "impl",
@@ -1353,32 +1353,6 @@
           ]
         },
         {
-          "type": "struct",
-          "name": "jokers_of_neon_mods::models::game_mod::GameMod",
-          "members": [
-            {
-              "name": "id",
-              "type": "core::felt252"
-            },
-            {
-              "name": "owner",
-              "type": "core::starknet::contract_address::ContractAddress"
-            },
-            {
-              "name": "total_games",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "created_date",
-              "type": "core::integer::u64"
-            },
-            {
-              "name": "last_update_date",
-              "type": "core::integer::u64"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "jokers_of_neon::systems::game_system::IGameSystem",
           "items": [
@@ -1388,7 +1362,7 @@
               "inputs": [
                 {
                   "name": "mod_id",
-                  "type": "core::felt252"
+                  "type": "core::integer::u32"
                 },
                 {
                   "name": "player_name",
@@ -1484,23 +1458,12 @@
               "inputs": [
                 {
                   "name": "mod_id",
-                  "type": "core::felt252"
+                  "type": "core::integer::u32"
                 }
               ],
               "outputs": [
                 {
                   "type": "jokers_of_neon_lib::configs::game::GameConfig"
-                }
-              ],
-              "state_mutability": "view"
-            },
-            {
-              "type": "function",
-              "name": "get_game_mods",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::array::Array::<jokers_of_neon_mods::models::game_mod::GameMod>"
                 }
               ],
               "state_mutability": "view"
@@ -2122,8 +2085,8 @@
       ]
     },
     {
-      "address": "0x5e8a395cbd3281525025bcb67b0e77e21e9b43ea92dcafb1f9c128159010647",
-      "class_hash": "0x2dccbd9a5d3da826f0707470ed5ae348aa838f20a52876f0af2011aa1a3b47a",
+      "address": "0x72127d45c3dee9477970c13e16ad06b15d385c51cc0aebcdb8082ab948bce25",
+      "class_hash": "0x4fa5a29d44ded992729709073b3dc1cde97e909eff6d214663ad4021559b63",
       "abi": [
         {
           "type": "impl",
@@ -2335,8 +2298,8 @@
       ]
     },
     {
-      "address": "0x7fbb3019b37c258f99a646c9a07acd5b377718755887c88acae7fae0391a8c6",
-      "class_hash": "0x69bd21b71a65f92a910a07f54068fb90037b84f17ed9307fe8e127bf700bc13",
+      "address": "0x29b6db0e4efd8f4d3b690dc7c21963f8d5020c92d2cb38a602baea5ac120666",
+      "class_hash": "0x1bd2224bd9c39f1d14fa7230bb28f98a2826f27b6cb8e564cd7b5764411e51d",
       "abi": [
         {
           "type": "impl",
@@ -3125,7 +3088,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x7803f53c4b69bf61f71cd5508aaf649e46b8d34fe0fd8cf750e958add546cc4",
+      "class_hash": "0x6757167d12fffe4155de2cfb19ec252f92215bcc1bab06078d30dfa1849c919",
       "tag": "jokers_of_neon-Game",
       "selector": "0x162de85bf81c46cbd7965e88731f90adf3b7c1103aa4bba47ea03b86c72af4c"
     },
@@ -3143,7 +3106,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x5402582bf7381ad73cf7eba911a00c91e0d96a55616a8141b33126197888991",
+      "class_hash": "0x4a86047e51bbd94180b838584dca8fb46536fbe88bdc21e8c9b0fda2e6c66e3",
       "tag": "jokers_of_neon-ModConfig",
       "selector": "0x4d3169ab7ec746cdada95e675599d1e78b9362b4e81268beb21dc31c7c781e5"
     },
@@ -3185,7 +3148,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x46e27d796f0fd1f6ff011feaef1bd5eb915da68e214af72c4f9f3134b59855e",
+      "class_hash": "0x58677559ffb94e863594522e628dd2bc68d18eeae515712affb71c7641ce993",
       "tag": "jokers_of_neon-RageData",
       "selector": "0x13e1573593d10d94e638697ba392d814b2e9082eff5e580d20d749999d45872"
     },
@@ -3221,7 +3184,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1220eab46c20b83472611c8295be655967465885447bf7a902828eb747ac20a",
+      "class_hash": "0x4ed16d2a9378437acf524ccc83b883e3e15475667c15df9c234ac5bceb7630b",
       "tag": "jokers_of_neon-SpecialData",
       "selector": "0x40c56b0a47bf95668be8b7d15d6e0d33a2a4b485572351a70da7515a4620889"
     }
@@ -3229,7 +3192,7 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x277af2ced1e1c5eb838cbb5e7a219f78f0ead4a980898e02dd142f229e3cf31",
+      "class_hash": "0x26f37688a8662026d767bb9ed8647b5399cc22bffca55ba9326687fca09292e",
       "tag": "jokers_of_neon-CardPlayEvent",
       "selector": "0x71c3b1cb27c719c9c3da1d46df80a8021cad398335c326f633a1e01ac94dc03"
     },
@@ -3259,7 +3222,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x661c6b961779d6b9e580f440fca22f2ea60a10f9d8508ac97319a8edbcb163",
+      "class_hash": "0xda6f0ec57ed821a73984f50b6a27e9f29a3f0b32580ad08074dc918f2fe632",
       "tag": "jokers_of_neon-GameEvent",
       "selector": "0x749fa39838d1eefe4fd7efb6760f5abcf66eeedba7f30006f07ce912c0c32aa"
     },
