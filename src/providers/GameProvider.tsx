@@ -252,6 +252,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
+          
           await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
