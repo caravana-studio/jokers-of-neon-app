@@ -36,7 +36,7 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
         alignContent={"flex-start"}
         wrap={"wrap"}
         gap={2}
-        overflow={"scroll"}
+        overflow={"auto"}
       >
         {docCards.map((docCardData, index) => (
           <Flex key={index} justifyContent={"center"} alignItems={"center"}>

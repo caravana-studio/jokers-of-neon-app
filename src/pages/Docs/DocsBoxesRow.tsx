@@ -31,7 +31,7 @@ export const DocsBoxesRow = () => {
         alignContent={"flex-start"}
         wrap={"wrap"}
         rowGap={4}
-        overflow={"scroll"}
+        overflow={"auto"}
       >
         {boxes.map((box, index) => {
           const boxData = getCardData(box, isPack);
