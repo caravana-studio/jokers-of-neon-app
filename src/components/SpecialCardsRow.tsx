@@ -1,6 +1,7 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
@@ -21,6 +22,7 @@ export const SpecialCardsRow = () => {
     isRageRound,
     specialCards: cards,
     maxSpecialCards,
+    isClassic,
   } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
@@ -166,7 +168,13 @@ export const SpecialCardsRow = () => {
           <Flex key={`unlocked-slot-${index}`} maxWidth={`${slotWidth}%`}>
             <UnlockedSlot
               key={`unlocked-${index}`}
-              backgroundColor={isRageRound ? "black" : BACKGROUND_BLUE}
+              backgroundColor={
+                isClassic
+                  ? isRageRound
+                    ? "black"
+                    : BACKGROUND_BLUE
+                  : "transparent"
+              }
               scale={specialCardScale - specialCardScale * 0.1}
             />
           </Flex>

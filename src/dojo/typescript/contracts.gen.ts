@@ -47,19 +47,16 @@ export function setupWorld(provider: DojoProvider) {
 	};
 
 	const build_shop_system_buyCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, cardItemType: models.CardItemType) => {
-		
 		// Workaround to fix problem with starknet.js enum management
 		const itemIdToString = {
 			0: 'None',
 			1: 'Common',
 			2: 'Modifier',
-		  }
-
+		}
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_card_item",
-			calldata: [gameId, itemId, new CairoCustomEnum({ [itemIdToString[cardItemType]]: '()' })],
-		};
+			calldata: [gameId, itemId, new CairoCustomEnum({ [itemIdToString[cardItemType]]: '()' })],		};
 	};
 
 	const shop_system_buyCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: models.CardItemType) => {
@@ -97,6 +94,7 @@ export function setupWorld(provider: DojoProvider) {
 	};
 
 	const build_shop_system_buyPowerUpItem_calldata = (gameId: BigNumberish, itemId: BigNumberish) => {
+		
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_power_up_item",
@@ -275,6 +273,23 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_getGameConfig = async (modId: BigNumberish) => {
 		try {
 			return await provider.call("jokers_of_neon", build_game_system_getGameConfig_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_getGameMods_calldata = () => {
+		return {
+			contractName: "game_system",
+			entrypoint: "get_game_mods",
+			calldata: [],
+		};
+	};
+
+	const game_system_getGameMods = async () => {
+		try {
+			return await provider.call("jokers_of_neon", build_game_system_getGameMods_calldata());
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -485,6 +500,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildDiscardSpecialCardCalldata: build_game_system_discardSpecialCard_calldata,
 			getGameConfig: game_system_getGameConfig,
 			buildGetGameConfigCalldata: build_game_system_getGameConfig_calldata,
+			getGameMods: game_system_getGameMods,
+			buildGetGameModsCalldata: build_game_system_getGameMods_calldata,
 			play: game_system_play,
 			buildPlayCalldata: build_game_system_play_calldata,
 		},

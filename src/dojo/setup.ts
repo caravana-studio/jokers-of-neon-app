@@ -88,6 +88,12 @@ export async function setup({ ...config }: DojoConfig) {
       models: ["jokers_of_neon-Card"],
     };
 
+    const keysMod: torii.KeysClause = {
+      keys: [undefined],
+      pattern_matching: "FixedLen",
+      models: ["jokers_of_neon-GameMod"],
+    };
+
     const query: torii.Query = {
       limit: 10000,
       offset: 0,
@@ -98,6 +104,7 @@ export async function setup({ ...config }: DojoConfig) {
             { Keys: keysClause },
             { Keys: keysGame },
             { Keys: keysCard },
+            { Keys: keysMod },
           ],
         },
       },
@@ -121,6 +128,28 @@ export async function setup({ ...config }: DojoConfig) {
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
+    } else {
+      const query: torii.Query = {
+        limit: 10000,
+        offset: 0,
+        clause: {
+          Composite: {
+            operator: "Or",
+            clauses: [{ Keys: keysMod }],
+          },
+        },
+        order_by: [],
+        dont_include_hashed_keys: false,
+        entity_models: [],
+        entity_updated_after: 0,
+      };
+      await getEntities(toriiClient, contractComponents as any, query);
+      sync = await syncEntities(
+        toriiClient,
+        contractComponents as any,
+        [],
+        false
+      );
     }
   }
 
