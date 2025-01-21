@@ -40,7 +40,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
 
       <Flex
         width={["100vw", "90vw"]}
-        height={["100vh", "90vh"]}
+        height={"100vh"}
         margin={"0 auto"}
         py={4}
         pt={[4, 4, 20]}

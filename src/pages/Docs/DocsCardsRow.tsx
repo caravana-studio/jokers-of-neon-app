@@ -9,10 +9,16 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
   const docCards = getSortedDocCardsData(cardDataMap);
   const { highlightCard, highlightedCard } = useCardHighlight();
 
-  const customCardScale = useBreakpointValue({
-    base: 0.9,
-    sm: 1,
-  });
+  const customCardScale = useBreakpointValue(
+    {
+      base: 0.9,
+      sm: 1,
+      md: 1.2,
+      lg: 1.5,
+      xl: 3,
+    },
+    { ssr: false }
+  );
 
   return (
     <>
