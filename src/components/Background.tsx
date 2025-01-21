@@ -1,7 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import CachedImage from "./CachedImage";
+import { getImageFromCache } from "../utils/preloadImages";
+import CachedImage, { checkImageExists } from "./CachedImage";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -40,11 +43,40 @@ export const Background = ({
   scrollOnMobile = false,
 }: BackgroundProps) => {
   const { isSmallScreen } = useResponsiveValues();
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
+
+  const { isClassic, modId } = useGameContext();
+  const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
+  const src = `/bg/${type}-bg.jpg`;
+  const modAwareSrc = !isClassic ? baseUrl + src : src;
+
+  useEffect(() => {
+    const loadBackgroundImage = async () => {
+      const cachedImage = await getImageFromCache(src);
+
+      if (!isClassic) {
+        const exists = await checkImageExists(modAwareSrc);
+        setBackgroundImageUrl(exists ? modAwareSrc : src);
+      } else if (cachedImage) {
+        setBackgroundImageUrl(URL.createObjectURL(cachedImage));
+      } else {
+        setBackgroundImageUrl(src);
+      }
+    };
+
+    loadBackgroundImage();
+  }, [type, isClassic]);
+
   return (
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
-        backgroundImage: getBackgroundImage(type),
+        backgroundImage:
+          isClassic
+            ? getBackgroundImage(type)
+            : backgroundImageUrl != "none"
+              ? backgroundImageUrl
+              : getBackgroundImage(type),
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",

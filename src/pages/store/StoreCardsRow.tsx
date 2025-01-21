@@ -38,13 +38,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
 
-  useEffect(() => {
-    preloadImages(imageUrls)
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error preloading card images:", error);
-      });
-  }, [imageUrls]);
 
   if (!isCardScaleCalculated) {
     return null;

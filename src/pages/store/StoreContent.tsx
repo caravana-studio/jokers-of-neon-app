@@ -17,6 +17,8 @@ import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards } = useStore();
+  // specialCards[specialCards.length - 1].img = "355.png";
+  // specialCards[specialCards.length - 1].card_id = 355;
 
   const { t } = useTranslation(["store"]);
 
@@ -74,19 +76,13 @@ export const StoreContent = () => {
           >
             <Box className="game-tutorial-step-3">
               {commonCards.length > 0 && (
-                <StoreCardsRow
-                  cards={commonCards}
-                  title={"traditional"}
-                />
+                <StoreCardsRow cards={commonCards} title={"traditional"} />
               )}
             </Box>
             <Flex gap={4} w="100%">
               <Box w="70%" className="game-tutorial-step-4">
                 {modifierCards.length > 0 && (
-                  <StoreCardsRow
-                    cards={modifierCards}
-                    title={"modifiers"}
-                  />
+                  <StoreCardsRow cards={modifierCards} title={"modifiers"} />
                 )}
               </Box>
               <Box w="30%" className="game-tutorial-step-4">
@@ -95,10 +91,7 @@ export const StoreContent = () => {
             </Flex>
             <Box className="game-tutorial-step-5" mb={4}>
               {specialCards.length > 0 && (
-                <StoreCardsRow
-                  cards={specialCards}
-                  title={"special"}
-                />
+                <StoreCardsRow cards={specialCards} title={"special"} />
               )}
             </Box>
           </Box>

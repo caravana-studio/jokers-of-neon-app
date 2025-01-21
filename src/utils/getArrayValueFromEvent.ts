@@ -3,7 +3,7 @@ import { getNumberValueFromEvent } from "./getNumberValueFromEvent";
 
 export const getArrayValueFromEvent = (
   event: DojoEvent | undefined,
-  indexToGet: number
+  indexToGet: number,
 ): number[] => {
   if (!event) {
     return []

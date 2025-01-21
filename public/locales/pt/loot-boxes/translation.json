@@ -13,12 +13,12 @@
     "3": {
       "name": "Baú de Jokers",
       "description": "Mais chances de obter um Joker",
-      "details": "15% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n84% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+      "details": "15% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n84% de chance de obter uma carta tradicional\nTamanho do Baú 5"
     },
     "4": {
       "name": "Baú de Especiais",
       "description": "Mais chances de obter uma carta especial",
-      "details": "15% de chance de obter uma carta especial\n20% de chance de obter um modificador\n65% de chance de obter uma carta tradicional\nTamanho do Baú 3"
+      "details": "25% de chance de obter uma carta especial\n15% de chance de obter um modificador\n60% de chance de obter uma carta tradicional\nTamanho do Baú 3"
     },
     "5": {
       "name": "Baú de Modificadores",
@@ -33,12 +33,12 @@
     "7": {
       "name": "Baú do Joker Enganador",
       "description": "1 Joker garantido",
-      "details": "1 Joker garantido\n6% de chance de obter um Joker\n2% de chance de obter um Joker Neon\n92% de chance de obter uma carta tradicional\nTamanho do Baú 4"
+      "details": "1 Joker garantido\n9% de chance de obter um Joker\n1% de chance de obter um Joker Neon\n90% de chance de obter uma carta tradicional\nTamanho do Baú 4"
     },
     "8": {
       "name": "Baú dos Amantes",
       "description": "Todas as cartas do naipe de copas, pode conter cartas especiais e modificadores.",
-      "detalhes": "45% de probabilidade de obter cartas de Copas\n30% de probabilidade de obter o Ás de Copas\n10% de probabilidade de obter cartas de Copas Neon\n10% de probabilidade de obter um modificador do naipe de Copas\n5% de probabilidade de obter a carta especial 'Todas as cartas para Copas'\nTamanho da caixa: 5"
+      "detalhes": "55% de probabilidade de obter cartas de Copas\n20% de probabilidade de obter o Ás de Copas\n10% de probabilidade de obter cartas de Copas Neon\n10% de probabilidade de obter um modificador do naipe de Copas\n5% de probabilidade de obter a carta especial 'Todas as cartas para Copas'\nTamanho da caixa: 5"
     },
     "9": {
       "name": "Baú de Aposta Especial",

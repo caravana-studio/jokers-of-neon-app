@@ -5,44 +5,33 @@ import {
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
 import { getCardsFromEvents } from "../getCardsFromEvents";
-import { getCashEvents } from "./getCashEvents";
+import { cardScoreEventFilter, scoreEventFilter, specialScoreEventFilter } from "../scoreEventFilter";
+import { suitOrNeonEventFilter } from "../suitOrNeonEventFilter";
+import { getCardPlayEvents } from "./getCardPlayEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
-import { getGlobalEvents } from "./getGlobalEvents";
 import { getHandEvent } from "./getHandEvent";
 import { getLevelPassedEvent } from "./getLevelPassedEvent";
-import { getModifierNeonEvents } from "./getModifierNeonEvents";
-import { getModifierSuitEvents } from "./getModifierSuitEvents";
-import { getMultiPointEvents } from "./getMultiPointEvents";
 import { getNeonPlayEvent } from "./getNeonPlayEvent";
 import { getPowerUpEvents } from "./getPowerUpEvents";
 import { getScoreEvent } from "./getScoreEvent";
-import { getSpecialLevelEvent } from "./getSpecialLevelEvent";
-import { getSpecialNeonCardEvents } from "./getSpecialNeonCardEvents";
-import { getSpecialSuitEvents } from "./getSpecialSuitEvents";
-import { getTraditionalCardsEvents } from "./getTraditionalCardsEvents";
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
+  const cardPlayEvents = getCardPlayEvents(events);
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
-    cardScore: getTraditionalCardsEvents(events),
-    specialCards: getMultiPointEvents(events),
     gameOver: !!events.find((event) => event.keys[1] === PLAY_GAME_OVER_EVENT),
     levelPassed: getLevelPassedEvent(events),
     detailEarned: getDetailEarnedEvent(events),
-    levelEvent: getSpecialLevelEvent(events),
-    specialSuitEvents: getSpecialSuitEvents(events),
-    neonPlayEvent: getNeonPlayEvent(events),
-    globalEvents: getGlobalEvents(events),
-    modifierSuitEvents: getModifierSuitEvents(events),
+    neonPlayEvent: getNeonPlayEvent(events), 
     cards: getCardsFromEvents(events),
     score: getScoreEvent(events),
-    cashEvents: getCashEvents(events),
     secondChanceEvent: !!events.find(
       (event) => event.keys[1] === SECOND_CHANCE_EVENT
     ),
-    modifierNeonEvents: getModifierNeonEvents(events),
     powerUpEvents: getPowerUpEvents(events),
-    specialNeonCardEvents: getSpecialNeonCardEvents(events),
+    cardPlayChangeEvents: cardPlayEvents.filter(suitOrNeonEventFilter),
+    cardPlayScoreEvents: cardPlayEvents.filter(scoreEventFilter).filter(cardScoreEventFilter),
+    specialCardPlayScoreEvents: cardPlayEvents.filter(scoreEventFilter).filter(specialScoreEventFilter), 
   };
 
   console.log(playEvents);
