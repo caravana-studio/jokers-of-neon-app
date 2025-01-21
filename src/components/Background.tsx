@@ -45,16 +45,16 @@ export const Background = ({
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { modId } = useGameContext();
+  const { isClassic, modId } = useGameContext();
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
   const src = `/bg/${type}-bg.jpg`;
-  const modAwareSrc = modId !== CLASSIC_MOD_ID ? baseUrl + src : src;
+  const modAwareSrc = !isClassic ? baseUrl + src : src;
 
   useEffect(() => {
     const loadBackgroundImage = async () => {
       const cachedImage = await getImageFromCache(src);
 
-      if (modId !== CLASSIC_MOD_ID) {
+      if (!isClassic) {
         const exists = await checkImageExists(modAwareSrc);
         setBackgroundImageUrl(exists ? modAwareSrc : src);
       } else if (cachedImage) {
@@ -65,14 +65,14 @@ export const Background = ({
     };
 
     loadBackgroundImage();
-  }, [type, modId]);
+  }, [type, isClassic]);
 
   return (
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
         backgroundImage:
-          modId === CLASSIC_MOD_ID
+          isClassic
             ? getBackgroundImage(type)
             : backgroundImageUrl != "none"
               ? backgroundImageUrl

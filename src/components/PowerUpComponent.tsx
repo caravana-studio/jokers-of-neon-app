@@ -96,7 +96,7 @@ export const PowerUpComponent = ({
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const { isRageRound, modId } = useGameContext();
+  const { isRageRound, isClassic } = useGameContext();
 
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
@@ -108,7 +108,7 @@ const EmptyPowerUp = ({ width }: { width: number }) => {
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={
-        modId === CLASSIC_MOD_ID
+        isClassic
           ? isRageRound
             ? "black"
             : BACKGROUND_BLUE

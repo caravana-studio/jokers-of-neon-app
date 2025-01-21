@@ -1,7 +1,6 @@
 import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
 import { useDeck } from "../dojo/queries/useDeck.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -14,14 +13,14 @@ export const GameDeck = () => {
   const { t } = useTranslation(["game"]);
 
   const { cardScale } = useResponsiveValues();
-  const { modId } = useGameContext();
+  const { isClassic } = useGameContext();
 
   const cardWidth = CARD_WIDTH * cardScale;
 
   const ratio = (deck?.currentLength ?? 1) / (deck?.size ?? 1);
 
   const deckImg = () => {
-    if (modId !== CLASSIC_MOD_ID) {
+    if (!isClassic) {
       return "/Cards/Backs/back.png";
     } else if (ratio > 0.7) {
       return "/Cards/Backs/back-full.png";

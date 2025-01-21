@@ -39,7 +39,7 @@ export const CardContainerSwitcher = ({
 }: {
   children: ReactNode;
 }) => {
-  const { isRageRound, modId } = useGameContext();
+  const { isRageRound, isClassic } = useGameContext();
   return (
     <Flex
       border={`1px solid ${GREY_LINE}`}
@@ -53,7 +53,7 @@ export const CardContainerSwitcher = ({
       position="absolute"
       right={["-15px", "-25px"]}
       backgroundColor={
-        modId === CLASSIC_MOD_ID
+        isClassic
           ? isRageRound
             ? "black"
             : "backgroundBlue"

@@ -9,10 +9,7 @@ export const getGame = (gameId: number, Game: Component) => {
 
 export const gameExists = (Game: Component, gameId: number, modId?: string) => {
   const game = getGame(gameId, Game);
-  console.log("modId", modId);
-  console.log("game modId", decodeString(game?.mod_id ?? ""));
   const gameBelongsToCurrentMod =
     modId && modId === decodeString(game?.mod_id ?? "");
-  console.log("gameBelongsToCurrentMod", gameBelongsToCurrentMod);
   return !!game && gameBelongsToCurrentMod;
 };

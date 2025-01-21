@@ -97,6 +97,8 @@ export const useGameState = () => {
     game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
   );
 
+  const isClassic = modId === CLASSIC_MOD_ID;
+
   const dojoHand = useCurrentHand(sortBy);
 
   const dojoPowerUps = useGamePowerUps();
@@ -128,7 +130,7 @@ export const useGameState = () => {
   }, [client, account, gameId, game?.level]);
 
   useEffect(() => {
-    if (modId && modId !== CLASSIC_MOD_ID) {
+    if (modId && !isClassic) {
       fetchAndMergeSpecialCardsData(modId);
     }
   }, [game?.mod_id]);
@@ -274,5 +276,6 @@ export const useGameState = () => {
     setModId,
     maxSpecialCards,
     maxPowerUpSlots,
+    isClassic,
   };
 };

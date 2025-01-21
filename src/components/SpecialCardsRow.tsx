@@ -22,7 +22,7 @@ export const SpecialCardsRow = () => {
     isRageRound,
     specialCards: cards,
     maxSpecialCards,
-    modId,
+    isClassic,
   } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
@@ -169,7 +169,7 @@ export const SpecialCardsRow = () => {
             <UnlockedSlot
               key={`unlocked-${index}`}
               backgroundColor={
-                modId === CLASSIC_MOD_ID
+                isClassic
                   ? isRageRound
                     ? "black"
                     : BACKGROUND_BLUE

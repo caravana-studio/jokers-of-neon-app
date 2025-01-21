@@ -73,7 +73,7 @@ export const TiltCard = ({
 
   const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
-  const { modId } = useGameContext();
+  const { isClassic } = useGameContext();
 
   const tiltCardComponent = (
     <Box
@@ -100,7 +100,7 @@ export const TiltCard = ({
                 borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && modId === CLASSIC_MOD_ID ? "mobile/" : ""}${modifiedCard.img}`}
+                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${modifiedCard.img}`}
                 alt={modifiedCard.img}
                 w="100%"
                 height="100%"

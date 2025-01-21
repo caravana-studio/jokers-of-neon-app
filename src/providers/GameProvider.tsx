@@ -117,6 +117,7 @@ export interface IGameContext {
   remainingPlaysTutorial?: number;
   maxSpecialCards: number;
   maxPowerUpSlots: number;
+  isClassic: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -210,6 +211,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     removePowerUp,
     resetPowerUps,
     modId,
+    isClassic,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -246,7 +248,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate(modId === CLASSIC_MOD_ID && showTutorial ? "/tutorial" : "/demo");
+          navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();

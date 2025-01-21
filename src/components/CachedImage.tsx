@@ -20,15 +20,15 @@ export const checkImageExists = async (url: string): Promise<boolean> => {
 const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
   ({ src, alt, ...props }, ref) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const { modId } = useGameContext();
+    const { modId, isClassic } = useGameContext();
     const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
-    const modAwareSrc = modId !== CLASSIC_MOD_ID ? baseUrl + src : src;
+    const modAwareSrc = !isClassic ? baseUrl + src : src;
 
     useEffect(() => {
       const loadImage = async () => {
         const cachedImage = await getImageFromCache(src);
 
-        if (modId !== CLASSIC_MOD_ID) {
+        if (!isClassic) {
           const exists = await checkImageExists(modAwareSrc);
           setImageSrc(exists ? modAwareSrc : src);
         } else if (cachedImage) {

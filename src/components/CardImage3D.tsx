@@ -45,9 +45,9 @@ export const CardImage3D = ({
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
-  const { modId } = useGameContext()
+  const { isClassic } = useGameContext()
 
-  const showPlain = (isSmallScreen && small) || modId !== CLASSIC_MOD_ID;
+  const showPlain = (isSmallScreen && small) || !isClassic;
 
   const mainImg = (
     <CachedImage

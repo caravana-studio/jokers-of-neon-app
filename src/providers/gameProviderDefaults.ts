@@ -77,4 +77,5 @@ export const gameProviderDefaults: IGameContext = {
   setModId: (_) => {},
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
+  isClassic: true,
 };
