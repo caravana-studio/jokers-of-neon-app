@@ -10,12 +10,14 @@ import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { Background } from "../../components/Background";
+import { isMobile } from "react-device-detect";
 
 export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();
-  const tabFontSize = ["2.6vw", "1.9vw", "1.4vw", "1vw"];
+  const tabFontSize = isMobile ? ["2.6vw", "1.9vw", "1.4vw", "1vw"] : "0.85vw";
+  const tabsWidth = isMobile ? ["100vw", "90vw"] : "70%";
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
@@ -54,6 +56,8 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
             w="100%"
             isFitted
             color="white"
+            width={tabsWidth}
+            margin={"0 auto"}
           >
             <TabList width={"100%"} height={"100%"}>
               <Tab fontSize={tabFontSize} px={2}>
