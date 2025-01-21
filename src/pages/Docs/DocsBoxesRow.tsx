@@ -47,6 +47,7 @@ export const DocsBoxesRow = () => {
               onClick={() => {
                 highlightCard(box);
               }}
+              cursor="pointer"
             >
               {boxData.animation && (
                 <SpineAnimation

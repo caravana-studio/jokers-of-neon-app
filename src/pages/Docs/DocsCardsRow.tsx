@@ -46,6 +46,7 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
               onClick={() => {
                 highlightCard(docCardData);
               }}
+              cursor="pointer"
             />
           </Flex>
         ))}
