@@ -169,7 +169,6 @@ export const MobileCardHighlight = ({
         <>
           {rarity && (
             <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
-              {t("labels.rarity", { ns: "docs" })}:{" "}
               {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
             </Text>
           )}
