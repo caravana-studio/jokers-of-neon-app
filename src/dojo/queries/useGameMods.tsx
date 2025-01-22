@@ -15,11 +15,10 @@ export interface IMod {
 const getMods = async (client: any) => {
   try {
     let tx_result = await client.game_system.getGameMods();
-
     const transformedMods: IMod[] = tx_result.map((mod: any) => ({
       name: decodeString(mod.id),
       id: decodeString(mod.id),
-      rawId: mod.id
+      rawId: mod.id,
     }));
 
     return transformedMods;

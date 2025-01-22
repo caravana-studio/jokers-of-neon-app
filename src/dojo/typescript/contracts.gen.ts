@@ -94,7 +94,6 @@ export function setupWorld(provider: DojoProvider) {
 	};
 
 	const build_shop_system_buyPowerUpItem_calldata = (gameId: BigNumberish, itemId: BigNumberish) => {
-		
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_power_up_item",
