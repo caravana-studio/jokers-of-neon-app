@@ -4,6 +4,7 @@ import { CardDataMap } from "../../types/CardData";
 import { TiltCard } from "../../components/TiltCard";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { isMobile } from "react-device-detect";
 
 export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
   const docCards = getSortedDocCardsData(cardDataMap);
@@ -37,6 +38,7 @@ export const DocsCardsRow = ({ cardDataMap }: { cardDataMap: CardDataMap }) => {
         wrap={"wrap"}
         gap={2}
         overflow={"auto"}
+        pt={isMobile ? 0 : 2}
       >
         {docCards.map((docCardData, index) => (
           <Flex key={index} justifyContent={"center"} alignItems={"center"}>
