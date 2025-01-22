@@ -6,7 +6,7 @@ export type ContractComponents = Awaited<
 
 export function defineContractComponents(world: World) {
   return {
-    // Model definition for `jokers_of_neon::models::status::shop::shop::BlisterPackItem` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::BlisterPackItem` model
     BlisterPackItem: (() => {
       return defineComponent(
         world,
@@ -20,7 +20,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BlisterPackItem",
             types: ["u32", "u32", "u32", "u32", "u32", "bool"],
             customTypes: [],
@@ -29,7 +29,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::shop::shop::BlisterPackResult` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::BlisterPackResult` model
     BlisterPackResult: (() => {
       return defineComponent(
         world,
@@ -40,7 +40,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BlisterPackResult",
             types: ["u32", "bool", "array"],
             customTypes: [],
@@ -49,7 +49,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Type definition for `jokers_of_neon::models::status::shop::shop::BurnItem` struct
+    // Type definition for `jokers_of_neon_core::models::status::shop::shop::BurnItem` struct
     BurnItem: (() => {
       return defineComponent(
         world,
@@ -60,7 +60,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BurnItem",
             types: ["u32", "u32", "bool"],
             customTypes: [],
@@ -69,7 +69,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::BuyBlisterPackEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::BuyBlisterPackEvent` model
     BuyBlisterPackEvent: (() => {
       return defineComponent(
         world,
@@ -81,7 +81,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BuyBlisterPackEvent",
             types: ["u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -90,7 +90,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::BuyCardEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::BuyCardEvent` model
     BuyCardEvent: (() => {
       return defineComponent(
         world,
@@ -104,7 +104,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BuyCardEvent",
             types: ["u32", "u32", "u32", "CardItemType", "u32", "bool"],
             customTypes: [],
@@ -113,7 +113,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::BuyPokerHandEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::BuyPokerHandEvent` model
     BuyPokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -126,7 +126,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BuyPokerHandEvent",
             types: ["u32", "u32", "u32", "PokerHand", "u8"],
             customTypes: [],
@@ -135,7 +135,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::BuyRerollEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::BuyRerollEvent` model
     BuyRerollEvent: (() => {
       return defineComponent(
         world,
@@ -147,7 +147,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "BuyRerollEvent",
             types: ["u32", "u32", "u32", "bool"],
             customTypes: [],
@@ -156,7 +156,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::shop::shop::CardItem` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::CardItem` model
     CardItem: (() => {
       return defineComponent(
         world,
@@ -171,7 +171,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CardItem",
             types: ["u32", "u32", "CardItemType", "u32", "u32", "bool", "bool"],
             customTypes: [],
@@ -180,7 +180,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::CardScoreEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::CardScoreEvent` model
     CardScoreEvent: (() => {
       return defineComponent(
         world,
@@ -192,7 +192,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CardScoreEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -201,7 +201,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::CreateGameEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::CreateGameEvent` model
     CreateGameEvent: (() => {
       return defineComponent(
         world,
@@ -211,7 +211,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CreateGameEvent",
             types: ["ContractAddress", "u32"],
             customTypes: [],
@@ -220,7 +220,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::round::current_hand_card::CurrentHand` model
+    // Model definition for `jokers_of_neon_core::models::status::round::current_hand_card::CurrentHand` model
     CurrentHand: (() => {
       return defineComponent(
         world,
@@ -230,7 +230,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CurrentHand",
             types: ["u32", "array"],
             customTypes: [],
@@ -248,7 +248,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "GamePowerUp",
             types: ["u32", "array"],
             customTypes: [],
@@ -266,7 +266,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CurrentHandEvent",
             types: ["u32", "array"],
             customTypes: [],
@@ -275,7 +275,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::game::game::CurrentSpecialCards` model
+    // Model definition for `jokers_of_neon_core::models::status::game::game::CurrentSpecialCards` model
     CurrentSpecialCards: (() => {
       return defineComponent(
         world,
@@ -288,7 +288,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "CurrentSpecialCards",
             types: ["u32", "u32", "u32", "bool", "u32"],
             customTypes: [],
@@ -297,7 +297,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::game_deck::DeckCard` model
+    // Model definition for `jokers_of_neon_core::models::data::game_deck::DeckCard` model
     DeckCard: (() => {
       return defineComponent(
         world,
@@ -308,7 +308,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "DeckCard",
             types: ["u32", "u32", "u32"],
             customTypes: [],
@@ -317,7 +317,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::DetailEarnedEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::DetailEarnedEvent` model
     DetailEarnedEvent: (() => {
       return defineComponent(
         world,
@@ -336,7 +336,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "DetailEarnedEvent",
             types: [
               "ContractAddress",
@@ -357,7 +357,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::game::game::Game` model
+    // Model definition for `jokers_of_neon_core::models::status::game::game::Game` model
     Game: (() => {
       return defineComponent(
         world,
@@ -378,7 +378,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "Game",
             types: [
               "u32",
@@ -400,7 +400,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::game_deck::GameDeck` model
+    // Model definition for `jokers_of_neon_core::models::data::game_deck::GameDeck` model
     GameDeck: (() => {
       return defineComponent(
         world,
@@ -411,7 +411,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "GameDeck",
             types: ["u32", "u32", "u32"],
             customTypes: [],
@@ -420,7 +420,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::ModifierCardSuitEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::ModifierCardSuitEvent` model
     ModifierCardSuitEvent: (() => {
       return defineComponent(
         world,
@@ -433,7 +433,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "ModifierCardSuitEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
             customTypes: [],
@@ -442,7 +442,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::NeonPokerHandEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::NeonPokerHandEvent` model
     NeonPokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -455,7 +455,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "NeonPokerHandEvent",
             types: ["ContractAddress", "u32", "array", "u32", "u32"],
             customTypes: [],
@@ -464,7 +464,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::PlayGameOverEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::PlayGameOverEvent` model
     PlayGameOverEvent: (() => {
       return defineComponent(
         world,
@@ -474,7 +474,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PlayGameOverEvent",
             types: ["ContractAddress", "u32"],
             customTypes: [],
@@ -483,7 +483,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::PlayPokerHandEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::PlayPokerHandEvent` model
     PlayPokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -495,7 +495,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PlayPokerHandEvent",
             types: ["u32", "u32", "u8", "PokerHand"],
             customTypes: [],
@@ -504,7 +504,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::PlayWinGameEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::PlayWinGameEvent` model
     PlayWinGameEvent: (() => {
       return defineComponent(
         world,
@@ -516,7 +516,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PlayWinGameEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -525,7 +525,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::game::player::PlayerLevelPokerHand` model
+    // Model definition for `jokers_of_neon_core::models::status::game::player::PlayerLevelPokerHand` model
     PlayerLevelPokerHand: (() => {
       return defineComponent(
         world,
@@ -536,7 +536,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PlayerLevelPokerHand",
             types: ["u32", "PokerHand", "u8"],
             customTypes: [],
@@ -545,7 +545,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::PokerHandEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::PokerHandEvent` model
     PokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -557,7 +557,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PokerHandEvent",
             types: ["ContractAddress", "u8", "u32", "u32"],
             customTypes: [],
@@ -566,7 +566,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::shop::shop::PokerHandItem` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::PokerHandItem` model
     PokerHandItem: (() => {
       return defineComponent(
         world,
@@ -580,7 +580,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "PokerHandItem",
             types: ["u32", "u32", "PokerHand", "u8", "u32", "bool"],
             customTypes: [],
@@ -589,7 +589,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::game::rage::RageRound` model
+    // Model definition for `jokers_of_neon_core::models::status::game::rage::RageRound` model
     RageRound: (() => {
       return defineComponent(
         world,
@@ -602,7 +602,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "RageRound",
             types: ["u32", "bool", "u16", "array", "u8"],
             customTypes: [],
@@ -611,7 +611,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::round::round::Round` model
+    // Model definition for `jokers_of_neon_core::models::status::round::round::Round` model
     Round: (() => {
       return defineComponent(
         world,
@@ -624,7 +624,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "Round",
             types: ["u32", "u32", "u32", "u8", "u8"],
             customTypes: [],
@@ -633,7 +633,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::RoundScoreEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::RoundScoreEvent` model
     RoundScoreEvent: (() => {
       return defineComponent(
         world,
@@ -644,7 +644,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "RoundScoreEvent",
             types: ["ContractAddress", "u32", "u32"],
             customTypes: [],
@@ -653,7 +653,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::shop::shop::Shop` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::Shop` model
     Shop: (() => {
       return defineComponent(
         world,
@@ -669,7 +669,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "Shop",
             types: ["u32", "u32", "bool", "u32", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -678,7 +678,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::status::shop::shop::SlotSpecialCardsItem` model
+    // Model definition for `jokers_of_neon_core::models::status::shop::shop::SlotSpecialCardsItem` model
     SlotSpecialCardsItem: (() => {
       return defineComponent(
         world,
@@ -689,7 +689,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SlotSpecialCardsItem",
             types: ["u32", "u32", "bool"],
             customTypes: [],
@@ -698,7 +698,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialCashEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialCashEvent` model
     SpecialCashEvent: (() => {
       return defineComponent(
         world,
@@ -710,7 +710,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialCashEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -719,7 +719,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialGlobalEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialGlobalEvent` model
     SpecialGlobalEvent: (() => {
       return defineComponent(
         world,
@@ -732,7 +732,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialGlobalEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -741,7 +741,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialModifierMultiEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialModifierMultiEvent` model
     SpecialModifierMultiEvent: (() => {
       return defineComponent(
         world,
@@ -754,7 +754,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialModifierMultiEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -763,7 +763,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialModifierPointsEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialModifierPointsEvent` model
     SpecialModifierPointsEvent: (() => {
       return defineComponent(
         world,
@@ -776,7 +776,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialModifierPointsEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -785,7 +785,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialModifierSuitEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialModifierSuitEvent` model
     SpecialModifierSuitEvent: (() => {
       return defineComponent(
         world,
@@ -798,7 +798,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialModifierSuitEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
             customTypes: [],
@@ -807,7 +807,7 @@ export function defineContractComponents(world: World) {
       );
     })(),
 
-    // Model definition for `jokers_of_neon::models::data::events::SpecialPokerHandEvent` model
+    // Model definition for `jokers_of_neon_core::models::data::events::SpecialPokerHandEvent` model
     SpecialPokerHandEvent: (() => {
       return defineComponent(
         world,
@@ -820,7 +820,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "SpecialPokerHandEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -842,7 +842,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon",
+            namespace: "jokers_of_neon_core",
             name: "GameMod",
             types: [
               "u32",

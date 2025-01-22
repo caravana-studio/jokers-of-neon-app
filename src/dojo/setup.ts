@@ -58,7 +58,7 @@ export async function setup({ ...config }: DojoConfig) {
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
 
   type ClientComponentsKeys = keyof typeof clientComponents;
-  const defaultNameSpace = "jokers_of_neon-";
+  const defaultNameSpace = "jokers_of_neon_core-";
   const componentNames: string[] = [];
 
   (Object.keys(clientComponents) as ClientComponentsKeys[]).forEach((key) => {
@@ -79,19 +79,19 @@ export async function setup({ ...config }: DojoConfig) {
     const keysGame: torii.KeysClause = {
       keys: [gameID],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Game"],
+      models: ["jokers_of_neon_core-Game"],
     };
 
     const keysCard: torii.KeysClause = {
       keys: [gameID, undefined, undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Card"],
+      models: ["jokers_of_neon_core-Card"],
     };
 
     const keysMod: torii.KeysClause = {
       keys: [undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-GameMod"],
+      models: ["jokers_of_neon_core-GameMod"],
     };
 
     const query: torii.Query = {
