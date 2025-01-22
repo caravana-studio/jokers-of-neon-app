@@ -16,7 +16,7 @@ import { animationsData } from "../constants/spineAnimations";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { Duration } from "../enums/duration";
 import { PriceBox } from "./PriceBox";
-import { LootBoxRateInfo } from "./LootBoxRateInfo";
+import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { RARITY, RarityLabels } from "../constants/rarity";
 
 interface MobileCardHighlightProps {

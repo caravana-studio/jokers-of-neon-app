@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Duration } from "../enums/duration";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
-import { InformationIcon } from "./InformationIcon";
+import { DefaultInfo } from "./Info/DefaultInfo";
 
 interface DurationSwitcherProps {
   price?: number;
@@ -53,7 +53,7 @@ export const DurationSwitcher = ({
         <Text size="md">
           {duration === Duration.TEMPORAL ? t("temporal") : t("permanent")}
         </Text>
-        <InformationIcon
+        <DefaultInfo
           title={duration === Duration.TEMPORAL ? "temporal" : "permanent"}
         />
       </Flex>

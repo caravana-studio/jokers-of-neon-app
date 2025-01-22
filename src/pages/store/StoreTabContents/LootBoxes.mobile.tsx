@@ -14,7 +14,7 @@ import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 import { getCardData } from "../../../utils/getCardData";
-import { LootBoxRateInfo } from "../../../components/LootBoxRateInfo";
+import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 
 export const LootBoxesMobile = () => {
   const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();

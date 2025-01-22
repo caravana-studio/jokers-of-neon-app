@@ -2,13 +2,13 @@ import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { InformationIcon } from "../../components/InformationIcon";
 import { TiltCard } from "../../components/TiltCard";
 import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { preloadImages } from "../../utils/preloadImages";
+import { DefaultInfo } from "../../components/Info/DefaultInfo";
 
 interface CardsRowProps {
   title: string;
@@ -61,7 +61,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
               {t("store.titles." + title)}
             </Heading>
-            <InformationIcon title={title} />
+            <DefaultInfo title={title} />
           </Flex>
 
           {button && (
