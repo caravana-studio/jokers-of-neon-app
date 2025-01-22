@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DocsCardsRow } from "./DocsCardsRow";
 import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
@@ -11,9 +11,11 @@ import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { Background } from "../../components/Background";
 import { isMobile } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
+  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();
   const tabFontSize = isMobile ? ["2.6vw", "1.9vw", "1.4vw", "1vw"] : "0.85vw";
@@ -75,12 +77,19 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
             </TabList>
           </Tabs>
         </Flex>
-        <Flex w="100%" flexGrow={1} height={"70%"} mb={8} alignItems={"center"}>
+        <Flex w="100%" flexGrow={1} height={"70%"} mb={2} alignItems={"center"}>
           {tabIndex === 0 && <DocsCardsRow cardDataMap={SPECIAL_CARDS_DATA} />}
           {tabIndex === 1 && <DocsCardsRow cardDataMap={MODIFIER_CARDS_DATA} />}
           {tabIndex === 2 && <DocsCardsRow cardDataMap={RAGE_CARDS_DATA} />}
           {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
+        <Button
+          variant="secondarySolid"
+          mb={[4, 12, 14]}
+          onClick={() => navigate("/demo")}
+        >
+          {t("labels.back-btn")}
+        </Button>
       </Flex>
     </Background>
   );

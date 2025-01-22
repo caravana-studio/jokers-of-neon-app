@@ -3,7 +3,8 @@
     "special-cards": "Specials",
     "modifier-cards": "Modifiers",
     "rage-cards": "Rages",
-    "loot-boxes": "Boxes"
+    "loot-boxes": "Boxes",
+    "back-btn": "Back to game"
   },
   "rarity": {
     "ss": "Legendary",
