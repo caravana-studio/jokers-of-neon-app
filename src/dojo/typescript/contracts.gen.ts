@@ -17,7 +17,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buyBlisterPackItem_calldata(gameId, blisterPackItemId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -38,7 +38,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buyBurnItem_calldata(gameId, cardId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -64,7 +64,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buyCardItem_calldata(gameId, itemId, cardItemType),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -85,7 +85,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buyPokerHandItem_calldata(gameId, itemId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -107,7 +107,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buyPowerUpItem_calldata(gameId, itemId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -128,7 +128,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buySlotSpecialCardItem_calldata(gameId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -149,7 +149,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_buySpecialCardItem_calldata(gameId, itemId, isTemporary),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -170,7 +170,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_rage_system_calculate_calldata(gameId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -191,7 +191,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_game_system_createGame_calldata(modId, playerName),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -212,7 +212,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_game_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -233,7 +233,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_game_system_discardEffectCard_calldata(gameId, playedCardsIndexes),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -254,7 +254,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_game_system_discardSpecialCard_calldata(gameId, specialCardIndex),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -272,7 +272,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getGameConfig = async (modId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon", build_game_system_getGameConfig_calldata(modId));
+			return await provider.call("jokers_of_neon_core", build_game_system_getGameConfig_calldata(modId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -289,7 +289,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getGameMods = async () => {
 		try {
-			return await provider.call("jokers_of_neon", build_game_system_getGameMods_calldata());
+			return await provider.call("jokers_of_neon_core", build_game_system_getGameMods_calldata());
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -306,7 +306,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const poker_hand_system_getPlayerPokerHands = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon", build_poker_hand_system_getPlayerPokerHands_calldata(gameId));
+			return await provider.call("jokers_of_neon_core", build_poker_hand_system_getPlayerPokerHands_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -323,7 +323,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_system_getShopItems = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon", build_shop_system_getShopItems_calldata(gameId));
+			return await provider.call("jokers_of_neon_core", build_shop_system_getShopItems_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -343,7 +343,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_game_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -364,7 +364,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_mod_manager_registrator_registerManagers_calldata(modManagerAddress, rageManagerAddress, specialManagerAddress),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -385,7 +385,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_reroll_calldata(gameId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -406,7 +406,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_rage_system_reset_calldata(gameId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -427,7 +427,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_selectCardsFromBlister_calldata(gameId, cardsIndex),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -448,7 +448,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_shop_system_skipShop_calldata(gameId),
-				"jokers_of_neon",
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);

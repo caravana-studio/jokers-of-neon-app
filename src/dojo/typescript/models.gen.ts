@@ -2,7 +2,7 @@ import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
 type WithFieldOrder<T> = T & { fieldOrder: string[] };
 
-// Type definition for `jokers_of_neon::systems::mod_manager_registrator::ModManagerRegistrator` struct
+// Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistrator` struct
 export interface ModManagerRegistrator {
   mod_manager_key: number;
   owner: string;
@@ -11,7 +11,7 @@ export interface ModManagerRegistrator {
   special_manager_address: string;
 }
 
-// Type definition for `jokers_of_neon::systems::mod_manager_registrator::ModManagerRegistratorValue` struct
+// Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistratorValue` struct
 export interface ModManagerRegistratorValue {
   owner: string;
   mod_manager_address: string;
@@ -19,32 +19,32 @@ export interface ModManagerRegistratorValue {
   special_manager_address: string;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCard` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_deck::DeckCard` struct
 export interface DeckCard {
   game_id: number;
   index: number;
   card_id: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_deck::DeckCardValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_deck::DeckCardValue` struct
 export interface DeckCardValue {
   card_id: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeck` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_deck::GameDeck` struct
 export interface GameDeck {
   game_id: number;
   len: number;
   round_len: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_deck::GameDeckValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_deck::GameDeckValue` struct
 export interface GameDeckValue {
   len: number;
   round_len: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_mod::GameMod` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_mod::GameMod` struct
 export interface GameMod {
   id: number;
   name: number;
@@ -54,7 +54,7 @@ export interface GameMod {
   total_games: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::game_mod::GameModValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::game_mod::GameModValue` struct
 export interface GameModValue {
   name: number;
   owner: string;
@@ -63,18 +63,18 @@ export interface GameModValue {
   total_games: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUp` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::power_up::GamePowerUp` struct
 export interface GamePowerUp {
   game_id: number;
   power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::power_up::GamePowerUpValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::data::power_up::GamePowerUpValue` struct
 export interface GamePowerUpValue {
   power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::game::CurrentSpecialCards` struct
 export interface CurrentSpecialCards {
   game_id: number;
   idx: number;
@@ -83,14 +83,14 @@ export interface CurrentSpecialCards {
   remaining: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCardsValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::game::CurrentSpecialCardsValue` struct
 export interface CurrentSpecialCardsValue {
   effect_card_id: number;
   is_temporary: boolean;
   remaining: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::game::Game` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::game::Game` struct
 export interface Game {
   id: number;
   mod_id: number;
@@ -107,7 +107,7 @@ export interface Game {
   cash: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::game::GameValue` struct
 export interface GameValue {
   mod_id: number;
   state: GameState;
@@ -123,19 +123,19 @@ export interface GameValue {
   cash: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::player::PlayerLevelPokerHand` struct
 export interface PlayerLevelPokerHand {
   game_id: number;
   poker_hand: PokerHand;
   level: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHandValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::player::PlayerLevelPokerHandValue` struct
 export interface PlayerLevelPokerHandValue {
   level: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRound` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::rage::RageRound` struct
 export interface RageRound {
   game_id: number;
   is_active: boolean;
@@ -144,7 +144,7 @@ export interface RageRound {
   last_active_level: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::rage::RageRoundValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::game::rage::RageRoundValue` struct
 export interface RageRoundValue {
   is_active: boolean;
   current_probability: number;
@@ -152,18 +152,18 @@ export interface RageRoundValue {
   last_active_level: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHand` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::round::current_hand_card::CurrentHand` struct
 export interface CurrentHand {
   game_id: number;
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::round::current_hand_card::CurrentHandValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::round::current_hand_card::CurrentHandValue` struct
 export interface CurrentHandValue {
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::round::round::Round` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::round::round::Round` struct
 export interface Round {
   game_id: number;
   player_score: number;
@@ -172,7 +172,7 @@ export interface Round {
   remaining_discards: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::round::round::RoundValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::round::round::RoundValue` struct
 export interface RoundValue {
   player_score: number;
   level_score: number;
@@ -180,7 +180,7 @@ export interface RoundValue {
   remaining_discards: number;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BlisterPackItem` struct
 export interface BlisterPackItem {
   game_id: number;
   idx: number;
@@ -190,7 +190,7 @@ export interface BlisterPackItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BlisterPackItemValue` struct
 export interface BlisterPackItemValue {
   blister_pack_id: number;
   cost: number;
@@ -198,20 +198,20 @@ export interface BlisterPackItemValue {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BlisterPackResult` struct
 export interface BlisterPackResult {
   game_id: number;
   cards_picked: boolean;
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BlisterPackResultValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BlisterPackResultValue` struct
 export interface BlisterPackResultValue {
   cards_picked: boolean;
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BurnItem` struct
 export interface BurnItem {
   game_id: number;
   cost: number;
@@ -219,14 +219,14 @@ export interface BurnItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::BurnItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::BurnItemValue` struct
 export interface BurnItemValue {
   cost: number;
   discount_cost: number;
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::CardItem` struct
 export interface CardItem {
   game_id: number;
   idx: number;
@@ -237,7 +237,7 @@ export interface CardItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::CardItemValue` struct
 export interface CardItemValue {
   card_id: number;
   cost: number;
@@ -245,7 +245,7 @@ export interface CardItemValue {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::PokerHandItem` struct
 export interface PokerHandItem {
   game_id: number;
   idx: number;
@@ -258,7 +258,7 @@ export interface PokerHandItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::PokerHandItemValue` struct
 export interface PokerHandItemValue {
   poker_hand: PokerHand;
   level: number;
@@ -269,7 +269,7 @@ export interface PokerHandItemValue {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::PowerUpItem` struct
 export interface PowerUpItem {
   game_id: number;
   idx: number;
@@ -279,7 +279,7 @@ export interface PowerUpItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PowerUpItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::PowerUpItemValue` struct
 export interface PowerUpItemValue {
   power_up_id: number;
   cost: number;
@@ -287,7 +287,7 @@ export interface PowerUpItemValue {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::SlotSpecialCardsItem` struct
 export interface SlotSpecialCardsItem {
   game_id: number;
   cost: number;
@@ -295,14 +295,14 @@ export interface SlotSpecialCardsItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::SlotSpecialCardsItemValue` struct
 export interface SlotSpecialCardsItemValue {
   cost: number;
   discount_cost: number;
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItem` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::SpecialCardItem` struct
 export interface SpecialCardItem {
   game_id: number;
   idx: number;
@@ -314,7 +314,7 @@ export interface SpecialCardItem {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::SpecialCardItemValue` struct
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::SpecialCardItemValue` struct
 export interface SpecialCardItemValue {
   card_id: number;
   cost: number;
@@ -324,7 +324,7 @@ export interface SpecialCardItemValue {
   purchased: boolean;
 }
 
-// Type definition for `jokers_of_neon_mods::models::mod_config::ModConfig` struct
+// Type definition for `jokers_of_neon_core_mods::models::mod_config::ModConfig` struct
 export interface ModConfig {
   mod_id: number;
   deck_address: string;
@@ -335,7 +335,7 @@ export interface ModConfig {
   shop_config_address: string;
 }
 
-// Type definition for `jokers_of_neon_mods::models::mod_config::ModConfigValue` struct
+// Type definition for `jokers_of_neon_core_mods::models::mod_config::ModConfigValue` struct
 export interface ModConfigValue {
   deck_address: string;
   specials_address: string;
@@ -345,42 +345,42 @@ export interface ModConfigValue {
   shop_config_address: string;
 }
 
-// Type definition for `jokers_of_neon_mods::models::mod_tracker::ModTracker` struct
+// Type definition for `jokers_of_neon_core_mods::models::mod_tracker::ModTracker` struct
 export interface ModTracker {
   mod_tracker_key: number;
   total_mods: number;
 }
 
-// Type definition for `jokers_of_neon_mods::models::mod_tracker::ModTrackerValue` struct
+// Type definition for `jokers_of_neon_core_mods::models::mod_tracker::ModTrackerValue` struct
 export interface ModTrackerValue {
   total_mods: number;
 }
 
-// Type definition for `jokers_of_neon_mods::models::rage_data::RageData` struct
+// Type definition for `jokers_of_neon_core_mods::models::rage_data::RageData` struct
 export interface RageData {
   mod_id: number;
   rage_id: number;
   contract_address: string;
 }
 
-// Type definition for `jokers_of_neon_mods::models::rage_data::RageDataValue` struct
+// Type definition for `jokers_of_neon_core_mods::models::rage_data::RageDataValue` struct
 export interface RageDataValue {
   contract_address: string;
 }
 
-// Type definition for `jokers_of_neon_mods::models::special_data::SpecialData` struct
+// Type definition for `jokers_of_neon_core_mods::models::special_data::SpecialData` struct
 export interface SpecialData {
   mod_id: number;
   special_id: number;
   contract_address: string;
 }
 
-// Type definition for `jokers_of_neon_mods::models::special_data::SpecialDataValue` struct
+// Type definition for `jokers_of_neon_core_mods::models::special_data::SpecialDataValue` struct
 export interface SpecialDataValue {
   contract_address: string;
 }
 
-// Type definition for `jokers_of_neon::models::events::CardScoreEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::CardScoreEvent` struct
 export interface CardScoreEvent {
   player: string;
   index: number;
@@ -388,36 +388,36 @@ export interface CardScoreEvent {
   points: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::CardScoreEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::CardScoreEventValue` struct
 export interface CardScoreEventValue {
   index: number;
   multi: number;
   points: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::CreateGameEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::CreateGameEvent` struct
 export interface CreateGameEvent {
   player: string;
   game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::CreateGameEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::CreateGameEventValue` struct
 export interface CreateGameEventValue {
   game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::CurrentHandEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::CurrentHandEvent` struct
 export interface CurrentHandEvent {
   game_id: number;
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::events::CurrentHandEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::CurrentHandEventValue` struct
 export interface CurrentHandEventValue {
   cards: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::events::DetailEarnedEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::DetailEarnedEvent` struct
 export interface DetailEarnedEvent {
   player: string;
   game_id: number;
@@ -432,7 +432,7 @@ export interface DetailEarnedEvent {
   total: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::DetailEarnedEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::DetailEarnedEventValue` struct
 export interface DetailEarnedEventValue {
   game_id: number;
   round_defeat: number;
@@ -446,7 +446,7 @@ export interface DetailEarnedEventValue {
   total: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::GameEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::GameEvent` struct
 export interface GameEvent {
   id: number;
   mod_id: number;
@@ -467,7 +467,7 @@ export interface GameEvent {
   cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::GameEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::GameEventValue` struct
 export interface GameEventValue {
   mod_id: number;
   owner: string;
@@ -487,20 +487,20 @@ export interface GameEventValue {
   cash: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::GamePowerUpEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::GamePowerUpEvent` struct
 export interface GamePowerUpEvent {
   player: string;
   game_id: number;
   power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::events::GamePowerUpEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::GamePowerUpEventValue` struct
 export interface GamePowerUpEventValue {
   game_id: number;
   power_ups: Array<number>;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierCardSuitEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierCardSuitEvent` struct
 export interface ModifierCardSuitEvent {
   player: string;
   game_id: number;
@@ -509,7 +509,7 @@ export interface ModifierCardSuitEvent {
   suit: Suit;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierCardSuitEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierCardSuitEventValue` struct
 export interface ModifierCardSuitEventValue {
   game_id: number;
   modifier_card_idx: number;
@@ -517,7 +517,7 @@ export interface ModifierCardSuitEventValue {
   suit: Suit;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierNeonCardEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierNeonCardEvent` struct
 export interface ModifierNeonCardEvent {
   player: string;
   game_id: number;
@@ -525,14 +525,14 @@ export interface ModifierNeonCardEvent {
   current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierNeonCardEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierNeonCardEventValue` struct
 export interface ModifierNeonCardEventValue {
   game_id: number;
   modifier_card_idx: number;
   current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierWildCardEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierWildCardEvent` struct
 export interface ModifierWildCardEvent {
   player: string;
   game_id: number;
@@ -540,25 +540,25 @@ export interface ModifierWildCardEvent {
   current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::ModifierWildCardEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::ModifierWildCardEventValue` struct
 export interface ModifierWildCardEventValue {
   game_id: number;
   modifier_card_idx: number;
   current_hand_card_idx: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PlayGameOverEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::PlayGameOverEvent` struct
 export interface PlayGameOverEvent {
   player: string;
   game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PlayGameOverEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::PlayGameOverEventValue` struct
 export interface PlayGameOverEventValue {
   game_id: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PlayWinGameEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::PlayWinGameEvent` struct
 export interface PlayWinGameEvent {
   player: string;
   game_id: number;
@@ -566,14 +566,14 @@ export interface PlayWinGameEvent {
   player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PlayWinGameEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::PlayWinGameEventValue` struct
 export interface PlayWinGameEventValue {
   game_id: number;
   level: number;
   player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PowerUpEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::PowerUpEvent` struct
 export interface PowerUpEvent {
   player: string;
   index: number;
@@ -581,27 +581,27 @@ export interface PowerUpEvent {
   points: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::PowerUpEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::PowerUpEventValue` struct
 export interface PowerUpEventValue {
   index: number;
   multi: number;
   points: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::RoundScoreEvent` struct
+// Type definition for `jokers_of_neon_core::models::events::RoundScoreEvent` struct
 export interface RoundScoreEvent {
   player: string;
   game_id: number;
   player_score: number;
 }
 
-// Type definition for `jokers_of_neon::models::events::RoundScoreEventValue` struct
+// Type definition for `jokers_of_neon_core::models::events::RoundScoreEventValue` struct
 export interface RoundScoreEventValue {
   game_id: number;
   player_score: number;
 }
 
-// Type definition for `jokers_of_neon_lib::events::card_play_event::CardPlayEvent` struct
+// Type definition for `jokers_of_neon_core_lib::events::card_play_event::CardPlayEvent` struct
 export interface CardPlayEvent {
   player: string;
   game_id: number;
@@ -611,7 +611,7 @@ export interface CardPlayEvent {
   hand: Array<[number, number]>;
 }
 
-// Type definition for `jokers_of_neon_lib::events::card_play_event::CardPlayEventValue` struct
+// Type definition for `jokers_of_neon_core_lib::events::card_play_event::CardPlayEventValue` struct
 export interface CardPlayEventValue {
   game_id: number;
   mod_id: number;
@@ -620,7 +620,7 @@ export interface CardPlayEventValue {
   hand: Array<[number, number]>;
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::poker_hand::PokerHand` enum
+// Type definition for `jokers_of_neon_core_lib::models::data::poker_hand::PokerHand` enum
 export enum PokerHand {
   None,
   RoyalFlush,
@@ -636,7 +636,7 @@ export enum PokerHand {
   HighCard,
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::game::game::GameState` enum
+// Type definition for `jokers_of_neon_core_lib::models::status::game::game::GameState` enum
 export enum GameState {
   IN_GAME,
   AT_SHOP,
@@ -644,14 +644,14 @@ export enum GameState {
   OPEN_BLISTER_PACK,
 }
 
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemType` enum
+// Type definition for `jokers_of_neon_core_lib::models::status::shop::shop::CardItemType` enum
 export enum CardItemType {
   None,
   Common,
   Modifier,
 }
 
-// Type definition for `jokers_of_neon_lib::events::card_play_event::EventType` enum
+// Type definition for `jokers_of_neon_core_lib::events::card_play_event::EventType` enum
 export enum EventType {
   Cash,
   Club,
@@ -663,7 +663,7 @@ export enum EventType {
   Heart,
 }
 
-// Type definition for `jokers_of_neon_lib::models::data::card::Suit` enum
+// Type definition for `jokers_of_neon_core_lib::models::data::card::Suit` enum
 export enum Suit {
   None,
   Clubs,
@@ -675,11 +675,11 @@ export enum Suit {
 }
 
 export interface SchemaType extends ISchemaType {
-  jokers_of_neon: {
+  jokers_of_neon_core: {
     ModManagerRegistrator: WithFieldOrder<ModManagerRegistrator>;
     ModManagerRegistratorValue: WithFieldOrder<ModManagerRegistratorValue>;
   };
-  jokers_of_neon_lib: {
+  jokers_of_neon_core_lib: {
     DeckCard: WithFieldOrder<DeckCard>;
     DeckCardValue: WithFieldOrder<DeckCardValue>;
     GameDeck: WithFieldOrder<GameDeck>;
@@ -717,7 +717,7 @@ export interface SchemaType extends ISchemaType {
     SpecialCardItem: WithFieldOrder<SpecialCardItem>;
     SpecialCardItemValue: WithFieldOrder<SpecialCardItemValue>;
   };
-  jokers_of_neon_mods: {
+  jokers_of_neon_core_mods: {
     ModConfig: WithFieldOrder<ModConfig>;
     ModConfigValue: WithFieldOrder<ModConfigValue>;
     ModTracker: WithFieldOrder<ModTracker>;
@@ -757,7 +757,7 @@ export interface SchemaType extends ISchemaType {
   };
 }
 export const schema: SchemaType = {
-  jokers_of_neon: {
+  jokers_of_neon_core: {
     ModManagerRegistrator: {
       fieldOrder: [
         "mod_manager_key",
@@ -785,7 +785,7 @@ export const schema: SchemaType = {
       special_manager_address: "",
     },
   },
-  jokers_of_neon_lib: {
+  jokers_of_neon_core_lib: {
     DeckCard: {
       fieldOrder: ["game_id", "index", "card_id"],
       game_id: 0,
@@ -1180,7 +1180,7 @@ export const schema: SchemaType = {
       purchased: false,
     },
   },
-  jokers_of_neon_mods: {
+  jokers_of_neon_core_mods: {
     ModConfig: {
       fieldOrder: [
         "mod_id",
@@ -1545,81 +1545,81 @@ export const schema: SchemaType = {
   },
 };
 export enum ModelsMapping {
-  ModManagerRegistrator = "jokers_of_neon-ModManagerRegistrator",
-  ModManagerRegistratorValue = "jokers_of_neon-ModManagerRegistratorValue",
-  DeckCard = "jokers_of_neon_lib-DeckCard",
-  DeckCardValue = "jokers_of_neon_lib-DeckCardValue",
-  GameDeck = "jokers_of_neon_lib-GameDeck",
-  GameDeckValue = "jokers_of_neon_lib-GameDeckValue",
-  PokerHand = "jokers_of_neon_lib-PokerHand",
-  GamePowerUp = "jokers_of_neon_lib-GamePowerUp",
-  GamePowerUpValue = "jokers_of_neon_lib-GamePowerUpValue",
-  CurrentSpecialCards = "jokers_of_neon_lib-CurrentSpecialCards",
-  CurrentSpecialCardsValue = "jokers_of_neon_lib-CurrentSpecialCardsValue",
-  Game = "jokers_of_neon_lib-Game",
-  GameState = "jokers_of_neon_lib-GameState",
-  GameValue = "jokers_of_neon_lib-GameValue",
-  PlayerLevelPokerHand = "jokers_of_neon_lib-PlayerLevelPokerHand",
-  PlayerLevelPokerHandValue = "jokers_of_neon_lib-PlayerLevelPokerHandValue",
-  RageRound = "jokers_of_neon_lib-RageRound",
-  RageRoundValue = "jokers_of_neon_lib-RageRoundValue",
-  CurrentHand = "jokers_of_neon_lib-CurrentHand",
-  CurrentHandValue = "jokers_of_neon_lib-CurrentHandValue",
-  Round = "jokers_of_neon_lib-Round",
-  RoundValue = "jokers_of_neon_lib-RoundValue",
-  BlisterPackItem = "jokers_of_neon_lib-BlisterPackItem",
-  BlisterPackItemValue = "jokers_of_neon_lib-BlisterPackItemValue",
-  BlisterPackResult = "jokers_of_neon_lib-BlisterPackResult",
-  BlisterPackResultValue = "jokers_of_neon_lib-BlisterPackResultValue",
-  BurnItem = "jokers_of_neon_lib-BurnItem",
-  BurnItemValue = "jokers_of_neon_lib-BurnItemValue",
-  CardItem = "jokers_of_neon_lib-CardItem",
-  CardItemType = "jokers_of_neon_lib-CardItemType",
-  CardItemValue = "jokers_of_neon_lib-CardItemValue",
-  PokerHandItem = "jokers_of_neon_lib-PokerHandItem",
-  PokerHandItemValue = "jokers_of_neon_lib-PokerHandItemValue",
-  PowerUpItem = "jokers_of_neon_lib-PowerUpItem",
-  PowerUpItemValue = "jokers_of_neon_lib-PowerUpItemValue",
-  SlotSpecialCardsItem = "jokers_of_neon_lib-SlotSpecialCardsItem",
-  SlotSpecialCardsItemValue = "jokers_of_neon_lib-SlotSpecialCardsItemValue",
-  SpecialCardItem = "jokers_of_neon_lib-SpecialCardItem",
-  SpecialCardItemValue = "jokers_of_neon_lib-SpecialCardItemValue",
-  ModConfig = "jokers_of_neon_mods-ModConfig",
-  ModConfigValue = "jokers_of_neon_mods-ModConfigValue",
-  ModTracker = "jokers_of_neon_mods-ModTracker",
-  ModTrackerValue = "jokers_of_neon_mods-ModTrackerValue",
-  RageData = "jokers_of_neon_mods-RageData",
-  RageDataValue = "jokers_of_neon_mods-RageDataValue",
-  SpecialData = "jokers_of_neon_mods-SpecialData",
-  SpecialDataValue = "jokers_of_neon_mods-SpecialDataValue",
-  CardScoreEvent = "jokers_of_neon-CardScoreEvent",
-  CardScoreEventValue = "jokers_of_neon-CardScoreEventValue",
-  CreateGameEvent = "jokers_of_neon-CreateGameEvent",
-  CreateGameEventValue = "jokers_of_neon-CreateGameEventValue",
-  CurrentHandEvent = "jokers_of_neon-CurrentHandEvent",
-  CurrentHandEventValue = "jokers_of_neon-CurrentHandEventValue",
-  DetailEarnedEvent = "jokers_of_neon-DetailEarnedEvent",
-  DetailEarnedEventValue = "jokers_of_neon-DetailEarnedEventValue",
-  GameEvent = "jokers_of_neon-GameEvent",
-  GameEventValue = "jokers_of_neon-GameEventValue",
-  GamePowerUpEvent = "jokers_of_neon-GamePowerUpEvent",
-  GamePowerUpEventValue = "jokers_of_neon-GamePowerUpEventValue",
-  ModifierCardSuitEvent = "jokers_of_neon-ModifierCardSuitEvent",
-  ModifierCardSuitEventValue = "jokers_of_neon-ModifierCardSuitEventValue",
-  ModifierNeonCardEvent = "jokers_of_neon-ModifierNeonCardEvent",
-  ModifierNeonCardEventValue = "jokers_of_neon-ModifierNeonCardEventValue",
-  ModifierWildCardEvent = "jokers_of_neon-ModifierWildCardEvent",
-  ModifierWildCardEventValue = "jokers_of_neon-ModifierWildCardEventValue",
-  PlayGameOverEvent = "jokers_of_neon-PlayGameOverEvent",
-  PlayGameOverEventValue = "jokers_of_neon-PlayGameOverEventValue",
-  PlayWinGameEvent = "jokers_of_neon-PlayWinGameEvent",
-  PlayWinGameEventValue = "jokers_of_neon-PlayWinGameEventValue",
-  PowerUpEvent = "jokers_of_neon-PowerUpEvent",
-  PowerUpEventValue = "jokers_of_neon-PowerUpEventValue",
-  RoundScoreEvent = "jokers_of_neon-RoundScoreEvent",
-  RoundScoreEventValue = "jokers_of_neon-RoundScoreEventValue",
-  CardPlayEvent = "jokers_of_neon_lib-CardPlayEvent",
-  CardPlayEventValue = "jokers_of_neon_lib-CardPlayEventValue",
-  EventType = "jokers_of_neon_lib-EventType",
-  Suit = "jokers_of_neon_lib-Suit",
+  ModManagerRegistrator = "jokers_of_neon_core-ModManagerRegistrator",
+  ModManagerRegistratorValue = "jokers_of_neon_core-ModManagerRegistratorValue",
+  DeckCard = "jokers_of_neon_core_lib-DeckCard",
+  DeckCardValue = "jokers_of_neon_core_lib-DeckCardValue",
+  GameDeck = "jokers_of_neon_core_lib-GameDeck",
+  GameDeckValue = "jokers_of_neon_core_lib-GameDeckValue",
+  PokerHand = "jokers_of_neon_core_lib-PokerHand",
+  GamePowerUp = "jokers_of_neon_core_lib-GamePowerUp",
+  GamePowerUpValue = "jokers_of_neon_core_lib-GamePowerUpValue",
+  CurrentSpecialCards = "jokers_of_neon_core_lib-CurrentSpecialCards",
+  CurrentSpecialCardsValue = "jokers_of_neon_core_lib-CurrentSpecialCardsValue",
+  Game = "jokers_of_neon_core_lib-Game",
+  GameState = "jokers_of_neon_core_lib-GameState",
+  GameValue = "jokers_of_neon_core_lib-GameValue",
+  PlayerLevelPokerHand = "jokers_of_neon_core_lib-PlayerLevelPokerHand",
+  PlayerLevelPokerHandValue = "jokers_of_neon_core_lib-PlayerLevelPokerHandValue",
+  RageRound = "jokers_of_neon_core_lib-RageRound",
+  RageRoundValue = "jokers_of_neon_core_lib-RageRoundValue",
+  CurrentHand = "jokers_of_neon_core_lib-CurrentHand",
+  CurrentHandValue = "jokers_of_neon_core_lib-CurrentHandValue",
+  Round = "jokers_of_neon_core_lib-Round",
+  RoundValue = "jokers_of_neon_core_lib-RoundValue",
+  BlisterPackItem = "jokers_of_neon_core_lib-BlisterPackItem",
+  BlisterPackItemValue = "jokers_of_neon_core_lib-BlisterPackItemValue",
+  BlisterPackResult = "jokers_of_neon_core_lib-BlisterPackResult",
+  BlisterPackResultValue = "jokers_of_neon_core_lib-BlisterPackResultValue",
+  BurnItem = "jokers_of_neon_core_lib-BurnItem",
+  BurnItemValue = "jokers_of_neon_core_lib-BurnItemValue",
+  CardItem = "jokers_of_neon_core_lib-CardItem",
+  CardItemType = "jokers_of_neon_core_lib-CardItemType",
+  CardItemValue = "jokers_of_neon_core_lib-CardItemValue",
+  PokerHandItem = "jokers_of_neon_core_lib-PokerHandItem",
+  PokerHandItemValue = "jokers_of_neon_core_lib-PokerHandItemValue",
+  PowerUpItem = "jokers_of_neon_core_lib-PowerUpItem",
+  PowerUpItemValue = "jokers_of_neon_core_lib-PowerUpItemValue",
+  SlotSpecialCardsItem = "jokers_of_neon_core_lib-SlotSpecialCardsItem",
+  SlotSpecialCardsItemValue = "jokers_of_neon_core_lib-SlotSpecialCardsItemValue",
+  SpecialCardItem = "jokers_of_neon_core_lib-SpecialCardItem",
+  SpecialCardItemValue = "jokers_of_neon_core_lib-SpecialCardItemValue",
+  ModConfig = "jokers_of_neon_core_mods-ModConfig",
+  ModConfigValue = "jokers_of_neon_core_mods-ModConfigValue",
+  ModTracker = "jokers_of_neon_core_mods-ModTracker",
+  ModTrackerValue = "jokers_of_neon_core_mods-ModTrackerValue",
+  RageData = "jokers_of_neon_core_mods-RageData",
+  RageDataValue = "jokers_of_neon_core_mods-RageDataValue",
+  SpecialData = "jokers_of_neon_core_mods-SpecialData",
+  SpecialDataValue = "jokers_of_neon_core_mods-SpecialDataValue",
+  CardScoreEvent = "jokers_of_neon_core-CardScoreEvent",
+  CardScoreEventValue = "jokers_of_neon_core-CardScoreEventValue",
+  CreateGameEvent = "jokers_of_neon_core-CreateGameEvent",
+  CreateGameEventValue = "jokers_of_neon_core-CreateGameEventValue",
+  CurrentHandEvent = "jokers_of_neon_core-CurrentHandEvent",
+  CurrentHandEventValue = "jokers_of_neon_core-CurrentHandEventValue",
+  DetailEarnedEvent = "jokers_of_neon_core-DetailEarnedEvent",
+  DetailEarnedEventValue = "jokers_of_neon_core-DetailEarnedEventValue",
+  GameEvent = "jokers_of_neon_core-GameEvent",
+  GameEventValue = "jokers_of_neon_core-GameEventValue",
+  GamePowerUpEvent = "jokers_of_neon_core-GamePowerUpEvent",
+  GamePowerUpEventValue = "jokers_of_neon_core-GamePowerUpEventValue",
+  ModifierCardSuitEvent = "jokers_of_neon_core-ModifierCardSuitEvent",
+  ModifierCardSuitEventValue = "jokers_of_neon_core-ModifierCardSuitEventValue",
+  ModifierNeonCardEvent = "jokers_of_neon_core-ModifierNeonCardEvent",
+  ModifierNeonCardEventValue = "jokers_of_neon_core-ModifierNeonCardEventValue",
+  ModifierWildCardEvent = "jokers_of_neon_core-ModifierWildCardEvent",
+  ModifierWildCardEventValue = "jokers_of_neon_core-ModifierWildCardEventValue",
+  PlayGameOverEvent = "jokers_of_neon_core-PlayGameOverEvent",
+  PlayGameOverEventValue = "jokers_of_neon_core-PlayGameOverEventValue",
+  PlayWinGameEvent = "jokers_of_neon_core-PlayWinGameEvent",
+  PlayWinGameEventValue = "jokers_of_neon_core-PlayWinGameEventValue",
+  PowerUpEvent = "jokers_of_neon_core-PowerUpEvent",
+  PowerUpEventValue = "jokers_of_neon_core-PowerUpEventValue",
+  RoundScoreEvent = "jokers_of_neon_core-RoundScoreEvent",
+  RoundScoreEventValue = "jokers_of_neon_core-RoundScoreEventValue",
+  CardPlayEvent = "jokers_of_neon_core_lib-CardPlayEvent",
+  CardPlayEventValue = "jokers_of_neon_core_lib-CardPlayEventValue",
+  EventType = "jokers_of_neon_core_lib-EventType",
+  Suit = "jokers_of_neon_core_lib-Suit",
 }
