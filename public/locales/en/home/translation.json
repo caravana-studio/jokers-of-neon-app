@@ -5,7 +5,8 @@
         "btn":
         {
             "leaderboard-btn": "See leaderboard",
-            "playDemo-btn": "Play demo"
+            "playDemo-btn": "Play",
+            "start": "Start"
         },
         "join-discord": "Join our Discord!"
     },

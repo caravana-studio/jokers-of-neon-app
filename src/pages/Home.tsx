@@ -9,12 +9,18 @@ import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { useGameContext } from "../providers/GameProvider";
+import { CLASSIC_MOD_ID } from "../constants/general";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
+  const { setModId } = useGameContext();
+
+  const enableMods = useFeatureFlagEnabled("global", "showMods");
 
   return (
     <Background type="home">
@@ -74,20 +80,30 @@ export const Home = () => {
               flexWrap={{ base: "wrap", sm: "nowrap" }}
               justifyContent="center"
             >
-              <Button
-                onClick={() => {
-                  setLeaderboardOpen(true);
-                }}
-              >
-                {t("home.btn.leaderboard-btn")}
-              </Button>
+              {!enableMods && (
+                <Button
+                  onClick={() => {
+                    setLeaderboardOpen(true);
+                  }}
+                  minW={["150px", "300px"]}
+                >
+                  {t("home.btn.leaderboard-btn")}
+                </Button>
+              )}
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  if (enableMods) {
+                    navigate("/mods");
+                  } else {
+                    //default to classic
+                    setModId(CLASSIC_MOD_ID);
+                    navigate("/login");
+                  }
                 }}
+                minW={["150px", "300px"]}
               >
-                {t("home.btn.playDemo-btn")}
+                {t(enableMods ? "home.btn.start" : "home.btn.playDemo-btn")}
               </Button>
             </Flex>
           </Flex>

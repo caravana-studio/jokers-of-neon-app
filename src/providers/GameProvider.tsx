@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
@@ -111,9 +112,12 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
+  modId: string;
+  setModId: (modId: string) => void;
   remainingPlaysTutorial?: number;
   maxSpecialCards: number;
   maxPowerUpSlots: number;
+  isClassic: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -206,6 +210,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreselectedPowerUps,
     removePowerUp,
     resetPowerUps,
+    modId,
+    isClassic,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -238,16 +244,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
-      createGame(username).then(async (response) => {
+      createGame(modId, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
-          navigate(showTutorial ? "/tutorial" : "/demo");
+          navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           setHand(hand);
           setGameId(newGameId);
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
+          
           await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
@@ -309,7 +316,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setRoundRewards,
             replaceCards,
             handsLeft,
-            setAnimateSecondChanceCard
+            setAnimateSecondChanceCard,
           });
         } else {
           setPreSelectionLocked(false);
@@ -518,12 +525,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const checkOrCreateGame = () => {
+  const checkOrCreateGame = async () => {
     console.log("checking game exists", gameId);
+
     clearPreSelection();
-    if (!gameId || gameId === 0 || !gameExists(Game, gameId)) {
+    if (!gameId || gameId === 0 || !gameExists(Game, gameId, modId)) {
       setTimeout(() => {
-        if (!gameExists(Game, gameId)) {
+        if (!gameExists(Game, gameId, modId)) {
           executeCreateGame();
         } else {
           setGameLoading(false);

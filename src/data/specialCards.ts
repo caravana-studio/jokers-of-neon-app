@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { CardDataMap } from "../types/CardData";
 import { RARITY } from "../constants/rarity";
+import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {};
 
@@ -69,6 +70,16 @@ const loadTranslations = async () => {
     349: createCardData(349, RARITY.B),
     350: createCardData(350, RARITY.B),
   });
+};
+
+export const fetchAndMergeSpecialCardsData = async (modId: string) => {
+  const url = import.meta.env.VITE_MOD_URL + `${modId}/resources/specials.json`;
+  try {
+    const content = await getJsonFromUrl(url);
+    Object.assign(SPECIAL_CARDS_DATA, content);
+  } catch (error) {
+    console.error("Error fetching specials.json:", error);
+  }
 };
 
 i18n.on("initialized", loadTranslations);

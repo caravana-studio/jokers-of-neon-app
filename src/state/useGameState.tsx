@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
@@ -8,6 +10,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
+import { decodeString } from "../dojo/utils/decodeString";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
@@ -28,6 +31,7 @@ export const useGameState = () => {
   } = useDojo();
 
   const [gameId, setGameId] = useState<number>(getLSGameId());
+
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
@@ -66,8 +70,10 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
 
   const fetchGameConfig = async () => {
-    //TODO: dehardcode modId
-    const gameConfig = await getGameConfig(client, 1);
+    const gameConfig = await getGameConfig(
+      client,
+      game?.mod_id ?? CLASSIC_MOD_ID
+    );
     if (gameConfig) {
       setMaxSpecialCards(gameConfig.maxSpecialCards);
       setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
@@ -86,6 +92,12 @@ export const useGameState = () => {
 
   const round = useRound();
   const game = useGame();
+
+  const [modId, setModId] = useState<string>(
+    game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
+  );
+
+  const isClassic = modId === CLASSIC_MOD_ID;
 
   const dojoHand = useCurrentHand(sortBy);
 
@@ -116,6 +128,12 @@ export const useGameState = () => {
       });
     }
   }, [client, account, gameId, game?.level]);
+
+  useEffect(() => {
+    if (modId && !isClassic) {
+      fetchAndMergeSpecialCardsData(modId);
+    }
+  }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
@@ -254,7 +272,10 @@ export const useGameState = () => {
     resetPowerUps,
     setPowerUps,
     addPowerUp,
+    modId,
+    setModId,
     maxSpecialCards,
     maxPowerUpSlots,
+    isClassic,
   };
 };
