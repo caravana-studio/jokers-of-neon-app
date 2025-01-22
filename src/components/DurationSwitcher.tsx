@@ -37,8 +37,7 @@ export const DurationSwitcher = ({
   const priceFontSize = isSmallScreen ? 12 : 18;
   const discountPriceLineHeight = isSmallScreen ? 0.5 : 0.7;
   const priceLineHeight = isSmallScreen ? 1 : 1.2;
-
-  flexDir = flexDir || (isSmallScreen ? "column" : "row-reverse");
+  const computedFlexDir = flexDir || (isSmallScreen ? "column" : "row-reverse");
 
   return (
     <Flex
@@ -46,7 +45,7 @@ export const DurationSwitcher = ({
       alignItems="center"
       justifyContent="center"
       mt={3}
-      flexDir={flexDir}
+      flexDir={computedFlexDir}
       onClick={(event) => event.stopPropagation()}
     >
       <Flex justifyContent="center" alignItems="center" gap={2}>
