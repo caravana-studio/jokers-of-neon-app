@@ -1253,7 +1253,7 @@
   "contracts": [
     {
       "address": "0x6966d78b9f13f3c29ff95f612eaeac80f4650f35b2a5f986809f92f925992e1",
-      "class_hash": "0x5825ad1fd7f9f79893c210236375cff2fdcef8fe0b50678c33c38d4f3ea17a4",
+      "class_hash": "0x10bec5766c7ec958c30b819fde0a53cbc393a583b0d8b1bb8c84a42b483785f",
       "abi": [
         {
           "type": "impl",
@@ -1308,7 +1308,7 @@
         {
           "type": "impl",
           "name": "ActionsImpl",
-          "interface_name": "jokers_of_neon::systems::game_system::IGameSystem"
+          "interface_name": "jokers_of_neon_core::systems::game_system::IGameSystem"
         },
         {
           "type": "struct",
@@ -1380,7 +1380,7 @@
         },
         {
           "type": "interface",
-          "name": "jokers_of_neon::systems::game_system::IGameSystem",
+          "name": "jokers_of_neon_core::systems::game_system::IGameSystem",
           "items": [
             {
               "type": "function",
@@ -1606,7 +1606,7 @@
         },
         {
           "type": "event",
-          "name": "jokers_of_neon::systems::game_system::game_system::Event",
+          "name": "jokers_of_neon_core::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1636,7 +1636,7 @@
     },
     {
       "address": "0xb2979725fbdccce91c492b5b8391ad33f66d3dda2c187fbbdb0ca1fc791ae6",
-      "class_hash": "0x525f4c6849fa8382131cf77373ed3d0f48641dd605ef6e1533db54b9bd23a7f",
+      "class_hash": "0xbf90a46670d634d53b35e2c55d0322b28e5dd10bf09015d78fef5b749f24a4",
       "abi": [
         {
           "type": "impl",
@@ -1691,11 +1691,11 @@
         {
           "type": "impl",
           "name": "ModManagerRegistratorImpl",
-          "interface_name": "jokers_of_neon::systems::mod_manager_registrator::IModManagerRegistrator"
+          "interface_name": "jokers_of_neon_core::systems::mod_manager_registrator::IModManagerRegistrator"
         },
         {
           "type": "interface",
-          "name": "jokers_of_neon::systems::mod_manager_registrator::IModManagerRegistrator",
+          "name": "jokers_of_neon_core::systems::mod_manager_registrator::IModManagerRegistrator",
           "items": [
             {
               "type": "function",
@@ -1818,7 +1818,7 @@
         },
         {
           "type": "event",
-          "name": "jokers_of_neon::systems::mod_manager_registrator::mod_manager_registrator::Event",
+          "name": "jokers_of_neon_core::systems::mod_manager_registrator::mod_manager_registrator::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1844,7 +1844,7 @@
     },
     {
       "address": "0x74d30d3c78ba77a0a430434a82a33f2b6889572241988c6dc57342829c58aaa",
-      "class_hash": "0x46af205324fe424cb254aafe3e2f85aa9d3623b1d19f91da7837b86a06a041d",
+      "class_hash": "0x50e9b20f7044ae2dbd5e12045ebec334270d538ff50fc365e867fcf1c721476",
       "abi": [
         {
           "type": "impl",
@@ -1899,7 +1899,7 @@
         {
           "type": "impl",
           "name": "PokerHandSystem",
-          "interface_name": "jokers_of_neon::systems::poker_hand_system::IPokerHandSystem"
+          "interface_name": "jokers_of_neon_core::systems::poker_hand_system::IPokerHandSystem"
         },
         {
           "type": "enum",
@@ -1979,7 +1979,7 @@
         },
         {
           "type": "interface",
-          "name": "jokers_of_neon::systems::poker_hand_system::IPokerHandSystem",
+          "name": "jokers_of_neon_core::systems::poker_hand_system::IPokerHandSystem",
           "items": [
             {
               "type": "function",
@@ -2098,7 +2098,7 @@
         },
         {
           "type": "event",
-          "name": "jokers_of_neon::systems::poker_hand_system::poker_hand_system::Event",
+          "name": "jokers_of_neon_core::systems::poker_hand_system::poker_hand_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -2123,7 +2123,7 @@
     },
     {
       "address": "0x5e8a395cbd3281525025bcb67b0e77e21e9b43ea92dcafb1f9c128159010647",
-      "class_hash": "0x2dccbd9a5d3da826f0707470ed5ae348aa838f20a52876f0af2011aa1a3b47a",
+      "class_hash": "0x186ea8edbfef6ca1ef0f1d25efb15a1eac90d8535af77d9028a6f08582522e5",
       "abi": [
         {
           "type": "impl",
@@ -2178,11 +2178,11 @@
         {
           "type": "impl",
           "name": "RageImpl",
-          "interface_name": "jokers_of_neon::systems::rage_system::IRageSystem"
+          "interface_name": "jokers_of_neon_core::systems::rage_system::IRageSystem"
         },
         {
           "type": "interface",
-          "name": "jokers_of_neon::systems::rage_system::IRageSystem",
+          "name": "jokers_of_neon_core::systems::rage_system::IRageSystem",
           "items": [
             {
               "type": "function",
@@ -2309,7 +2309,7 @@
         },
         {
           "type": "event",
-          "name": "jokers_of_neon::systems::rage_system::rage_system::Event",
+          "name": "jokers_of_neon_core::systems::rage_system::rage_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -2336,7 +2336,7 @@
     },
     {
       "address": "0x7fbb3019b37c258f99a646c9a07acd5b377718755887c88acae7fae0391a8c6",
-      "class_hash": "0x69bd21b71a65f92a910a07f54068fb90037b84f17ed9307fe8e127bf700bc13",
+      "class_hash": "0x68c38d86e0f4252f91efb3fda321c62e59474b19daa557e60a05c2b8c319f8",
       "abi": [
         {
           "type": "impl",
@@ -2391,7 +2391,7 @@
         {
           "type": "impl",
           "name": "ShopImpl",
-          "interface_name": "jokers_of_neon::systems::shop_system::IShopSystem"
+          "interface_name": "jokers_of_neon_core::systems::shop_system::IShopSystem"
         },
         {
           "type": "enum",
@@ -2771,7 +2771,7 @@
         },
         {
           "type": "interface",
-          "name": "jokers_of_neon::systems::shop_system::IShopSystem",
+          "name": "jokers_of_neon_core::systems::shop_system::IShopSystem",
           "items": [
             {
               "type": "function",
@@ -3046,7 +3046,7 @@
         },
         {
           "type": "event",
-          "name": "jokers_of_neon::systems::shop_system::shop_system::Event",
+          "name": "jokers_of_neon_core::systems::shop_system::shop_system::Event",
           "kind": "enum",
           "variants": [
             {
@@ -3149,7 +3149,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x6d988bcef8d99b0fa32e21c71067836e9a0080982ce4bdf4949a7066c4b5e31",
+      "class_hash": "0xf97d306b5049afab3931dac256b60a49cb9ee16dc1ddb6055b6df23e690fbb",
       "tag": "jokers_of_neon-ModManagerRegistrator",
       "selector": "0x77f9fb1aa5abe0fc411897b593de4cf8f6ee51cc8ba2ffbbd94582367dd92a8"
     },
@@ -3235,79 +3235,79 @@
     },
     {
       "members": [],
-      "class_hash": "0x24fd4e75906a45532e58884258fcc82edb6539f1dea8079916a3f238ff09a91",
+      "class_hash": "0x5fc69920e4afa582150cde4969d57216780b22ffb20e93ebe6c5ec8b4bf9ee1",
       "tag": "jokers_of_neon-CardScoreEvent",
       "selector": "0x5e073648c5226de6e866f2384d278b60c1a2d910d8a1a44daea00c0e62e6113"
     },
     {
       "members": [],
-      "class_hash": "0x12c0ff1ba57d5ed9e438d832e1837cb29870a02108f5757b03307bdd45168e7",
+      "class_hash": "0x35d05b4f7100667c42f4d1ae1e73eb9e080d0fd72e768cf237d5ef211ff5488",
       "tag": "jokers_of_neon-CreateGameEvent",
       "selector": "0x17f86ee2f020b4f8b692f79866685e9c1bc49479150d1f501d7167b8c4f4cdb"
     },
     {
       "members": [],
-      "class_hash": "0x40bc4327c5ab00f5a919104b3da375744beb910aac9cf150b6d11ecd9fefd3e",
+      "class_hash": "0x7b3ca6a8d7891f00b8bb2f34b05abf0fc3b0a8412e995bf7510af7ad32d55d6",
       "tag": "jokers_of_neon-CurrentHandEvent",
       "selector": "0xca92d891011722ddc48b1e48d96d74b0356767991e1993d2c2a9bf712e4650"
     },
     {
       "members": [],
-      "class_hash": "0x39a4ad114d3267e27381c9b32ab6575bf3e8e7bf8cb0fc1aa8f8774e022d4fd",
+      "class_hash": "0x3e0c9127e6180df3afe0fcfe98d6a0fcb66b825d123dda90278a00c5d275dac",
       "tag": "jokers_of_neon-DetailEarnedEvent",
       "selector": "0x40f670e5ce4c93afb2a53fc6dd0a3de29f0e2e7f5d560074497c3c2c896bb41"
     },
     {
       "members": [],
-      "class_hash": "0x661c6b961779d6b9e580f440fca22f2ea60a10f9d8508ac97319a8edbcb163",
+      "class_hash": "0x7fc8ed6cdc9965320cde933ef10a3af8e45fbd2f97546c398b5ff776d563186",
       "tag": "jokers_of_neon-GameEvent",
       "selector": "0x749fa39838d1eefe4fd7efb6760f5abcf66eeedba7f30006f07ce912c0c32aa"
     },
     {
       "members": [],
-      "class_hash": "0x1c000feb7056704c0ff60a544bf04deb00f0f2edfb7d84a0a0b54aa9082eb19",
+      "class_hash": "0x71a66df5fdcbdba2ba8b43ed132f74904d02b958c881857632ac73d628a3652",
       "tag": "jokers_of_neon-GamePowerUpEvent",
       "selector": "0x31f4147e8bbd5b1fbb6a3b7c90a51ff81cfbbbc3919a2182ad6dae108eb2377"
     },
     {
       "members": [],
-      "class_hash": "0x57c03ada2a6c60d43accad0ac23464b00ef23926b04f93f89c0f88ffdc5dd2b",
+      "class_hash": "0x102aa3487904edf55975f2b1a9af8bc9dea4e6b4b179afc8961fbdef206185f",
       "tag": "jokers_of_neon-ModifierCardSuitEvent",
       "selector": "0x3733fa1c9c63d3af302e7c3a1c91154d2c5af0f8d3739491f4e615911053034"
     },
     {
       "members": [],
-      "class_hash": "0x3e8e3e6870dd06788c548334f2122a17da95bf2e9f7f2b51b10a6beddb63b2a",
+      "class_hash": "0x606f6a1e4b779dd0e575a41f558970a03151120d441d73b4e210f65b2390423",
       "tag": "jokers_of_neon-ModifierNeonCardEvent",
       "selector": "0x636e9180ae4a052965fb1eda914ec23faa1ac7034b3ca6839d7ca415ce64a15"
     },
     {
       "members": [],
-      "class_hash": "0x238e65b61df524791f1b8a81c28f1ce26b187990b9d6be91c0b1b59c066e11d",
+      "class_hash": "0x22e58fe78e9828f69f9a1ee6c1f6077d6f2c86fe56814c91fffc634f07db457",
       "tag": "jokers_of_neon-ModifierWildCardEvent",
       "selector": "0x2ca6ea6f0913020e601084e092b7a046f1c13b06d6e983360dc3a358353b80a"
     },
     {
       "members": [],
-      "class_hash": "0x4b54e45ecee3376db10eba58b0afb801880de17320a8426805db0996f0239f9",
+      "class_hash": "0x7ed342b5b4823a362267bcc75b0c076461df500c6e14305c44b4bbc00be448",
       "tag": "jokers_of_neon-PlayGameOverEvent",
       "selector": "0x12f13b9f9ec5749849134834c8a0f0679ce75dc3e10c307e881558dbd859d92"
     },
     {
       "members": [],
-      "class_hash": "0x37fbd349f1eedc68fcef8b14e83af5e5d3a8f4a2be297c2b685dc26ffaee9fa",
+      "class_hash": "0x6e227ba0caed4b292ccd486034fbf672d7e48ff2e14051184307a34e96e51ca",
       "tag": "jokers_of_neon-PlayWinGameEvent",
       "selector": "0xc57c8fdec8a37293614bf396089a7b0fdf77d9891d3c0530d4e1f80f65001b"
     },
     {
       "members": [],
-      "class_hash": "0x238b65d78893462d5db5e7b86724a1ae29559b06863361c15c89ae56936e54c",
+      "class_hash": "0x2a66c6f80115c5cb4059238600118317c651ceceddc68d14972bacf93f09f51",
       "tag": "jokers_of_neon-PowerUpEvent",
       "selector": "0x6d160681f8ea9068982978e94823ae0ca66c5428330bfb8e023d52464fdca58"
     },
     {
       "members": [],
-      "class_hash": "0x6e4c3ae55958087f7084f51fe0a41f93558b8ce1ac05faeee1214273d447c52",
+      "class_hash": "0x10de4588a7b12897b6d71bc88bbb1200e63319eecae2aa21bef3145d141a166",
       "tag": "jokers_of_neon-RoundScoreEvent",
       "selector": "0x58b5150166409c13d9da6bfc1877733d69ead129062edb2e8053d886de8c555"
     }
