@@ -4,6 +4,7 @@ import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
 import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
+import { useGameContext } from "../../providers/GameProvider.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 
 interface TopSectionProps {
@@ -11,6 +12,7 @@ interface TopSectionProps {
 }
 
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
+  const { powerUps } = useGameContext();
   return (
     <Flex flexDir="column">
       <Flex
@@ -48,9 +50,11 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
           <MultiPoints />
         </Flex>
       </Flex>
-      <Flex mt={-8} w="100%" justifyContent="center">
-        <PowerUps onTutorialCardClick={onTutorialCardClick} />
-      </Flex>
+      {powerUps?.length > 0 && (
+        <Flex mt={-8} w="100%" justifyContent="center">
+          <PowerUps onTutorialCardClick={onTutorialCardClick} />
+        </Flex>
+      )}
     </Flex>
   );
 };
