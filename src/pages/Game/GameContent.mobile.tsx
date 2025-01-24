@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
-import CachedImage from "../../components/CachedImage.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -33,7 +33,6 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -47,6 +46,7 @@ export const MobileGameContent = () => {
     preSelectCard,
     unPreSelectCard,
     isRageRound,
+    powerUps,
   } = useGameContext();
 
   const { highlightedCard } = useCardHighlight();
@@ -238,16 +238,18 @@ export const MobileGameContent = () => {
               sx={{ height: "245px", width: "100%" }}
             >
               <MobileTopSection />
-              <Flex mt={2} w="100%" justifyContent="center">
-                <PowerUps
-                  onTutorialCardClick={() => {
-                    if (run) {
-                      setButtonClicked(true);
-                      setStepIndex(stepIndex + 1);
-                    }
-                  }}
-                />
-              </Flex>
+              {powerUps?.length > 0 && (
+                <Flex mt={2} w="100%" justifyContent="center">
+                  <PowerUps
+                    onTutorialCardClick={() => {
+                      if (run) {
+                        setButtonClicked(true);
+                        setStepIndex(stepIndex + 1);
+                      }
+                    }}
+                  />
+                </Flex>
+              )}
             </Flex>
 
             <Box
