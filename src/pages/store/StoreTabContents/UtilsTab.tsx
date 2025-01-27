@@ -92,7 +92,6 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
-          h="140px"
         >
           <LevelUpTable />
         </Flex>
@@ -142,11 +141,11 @@ export const UtilsTab = () => {
       )}
 
       <Flex className="Utils" my={3} mx={4} gap={2}>
-        <Flex flexDir="column" w="50%" gap={2}>
-          <Heading fontWeight={"400"} fontSize="xs">
-            {t("store.preview-card.slot-title")}
-          </Heading>
-          {visible && (
+        {visible && (
+          <Flex flexDir="column" w="50%" gap={2}>
+            <Heading fontWeight={"400"} fontSize="xs">
+              {t("store.preview-card.slot-title")}
+            </Heading>
             <Flex
               flexDirection={"column"}
               justifyContent={"space-between"}
@@ -174,8 +173,8 @@ export const UtilsTab = () => {
                 </Flex>
               </Flex>
             </Flex>
-          )}
-        </Flex>
+          </Flex>
+        )}
 
         <Flex flexDir="column" w="50%" gap={2}>
           <Heading fontWeight={"400"} fontSize={"xs"}>

@@ -46,7 +46,7 @@ export const MobileGameContent = () => {
     preSelectCard,
     unPreSelectCard,
     isRageRound,
-    powerUps,
+    maxPowerUpSlots,
   } = useGameContext();
 
   const { highlightedCard } = useCardHighlight();
@@ -238,7 +238,7 @@ export const MobileGameContent = () => {
               sx={{ height: "245px", width: "100%" }}
             >
               <MobileTopSection />
-              {powerUps?.length > 0 && (
+              {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
                 <Flex mt={2} w="100%" justifyContent="center">
                   <PowerUps
                     onTutorialCardClick={() => {

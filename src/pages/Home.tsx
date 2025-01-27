@@ -20,6 +20,11 @@ export const Home = () => {
   const { t } = useTranslation(["home"]);
   const { setModId } = useGameContext();
 
+  const tournamentEnabled = useFeatureFlagEnabled(
+    "global",
+    "tournamentEnabled"
+  );
+
   useEffect(() => {
     setModId(CLASSIC_MOD_ID);
   }, []);
@@ -43,11 +48,13 @@ export const Home = () => {
               LEADERBOARD
             </Heading>
 
-            <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-12-30T00:00:00.000Z")}
-              />
-            </Box>
+            {tournamentEnabled && (
+              <Box mb={10} textAlign={"center"}>
+                <CountdownTimer
+                  targetDate={new Date("2024-12-30T00:00:00.000Z")}
+                />
+              </Box>
+            )}
 
             <Leaderboard />
             <Button
