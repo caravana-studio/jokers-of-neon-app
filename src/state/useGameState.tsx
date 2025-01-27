@@ -79,9 +79,11 @@ export const useGameState = () => {
     }
   };
 
+  const game = useGame();
+  
   useEffect(() => {
     fetchGameConfig();
-  }, []);
+  }, [game?.mod_id]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -90,7 +92,6 @@ export const useGameState = () => {
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
   const round = useRound();
-  const game = useGame();
 
   const [modId, setModId] = useState<string>(
     game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
