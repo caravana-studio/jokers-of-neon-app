@@ -70,13 +70,12 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
 
   const fetchGameConfig = async () => {
-    const gameConfig = await getGameConfig(
-      client,
-      game?.mod_id ?? CLASSIC_MOD_ID
-    );
-    if (gameConfig) {
-      setMaxSpecialCards(gameConfig.maxSpecialCards);
-      setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
+    if (game?.mod_id) {
+      const gameConfig = await getGameConfig(client, game.mod_id);
+      if (gameConfig) {
+        setMaxSpecialCards(gameConfig.maxSpecialCards);
+        setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
+      }
     }
   };
 

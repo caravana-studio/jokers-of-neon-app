@@ -12,7 +12,7 @@ interface TopSectionProps {
 }
 
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
-  const { powerUps } = useGameContext();
+  const { maxPowerUpSlots } = useGameContext();
   return (
     <Flex flexDir="column">
       <Flex
@@ -50,7 +50,7 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
           <MultiPoints />
         </Flex>
       </Flex>
-      {powerUps?.length > 0 && (
+      {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
         <Flex mt={-8} w="100%" justifyContent="center">
           <PowerUps onTutorialCardClick={onTutorialCardClick} />
         </Flex>
