@@ -12,7 +12,7 @@ import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {

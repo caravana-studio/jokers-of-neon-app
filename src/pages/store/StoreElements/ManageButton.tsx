@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../../providers/StoreProvider";
 
-interface SpecialsButtonProps {
+interface ManageButtonProps {
   isSmallScreen: boolean;
 }
 
-const SpecialsButton: React.FC<SpecialsButtonProps> = ({ isSmallScreen }) => {
+const ManageButton: React.FC<ManageButtonProps> = ({ isSmallScreen }) => {
   const { t } = useTranslation(["store"]);
   const navigate = useNavigate();
 
@@ -22,13 +22,13 @@ const SpecialsButton: React.FC<SpecialsButtonProps> = ({ isSmallScreen }) => {
         }
         size={isSmallScreen ? "xs" : "md"}
         onClick={() => {
-          navigate("/special-cards");
+          navigate("/manage");
         }}
       >
-        {t("store.labels.special-cards").toUpperCase()}
+        {t("store.labels.manage").toUpperCase()}
       </Button>
     )
   );
 };
 
-export default SpecialsButton;
+export default ManageButton;
