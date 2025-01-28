@@ -6,6 +6,7 @@ import { useState } from "react";
 import { SpecialCards } from "./SpecialCards";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Powerups } from "./Powerups";
 
 export const ManagePage = ({ lastIndexTab = 0 }: { lastIndexTab?: number }) => {
   const { t } = useTranslation(["store"]);
@@ -29,13 +30,13 @@ export const ManagePage = ({ lastIndexTab = 0 }: { lastIndexTab?: number }) => {
           >
             <TabList>
               <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
-              <Tab fontSize={10}>{t("store.labels.power-ups")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.powerups")}</Tab>
             </TabList>
           </Tabs>
         </Flex>
         <Flex w="100%" flexGrow={1}>
           {tabIndex === 0 && <SpecialCards />}
-          {/* {tabIndex === 1 && <PowerUpsPage />} */}
+          {tabIndex === 1 && <Powerups />}
         </Flex>
         {!isSmallScreen && <PositionedDiscordLink />}
       </Flex>

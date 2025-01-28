@@ -16,12 +16,16 @@ interface PowerUpProps {
   width: number;
   onClick?: () => void;
   inStore?: boolean;
+  bgColor?: string;
+  borderColor?: string;
 }
 export const PowerUpComponent = ({
   powerUp,
   onClick,
   inStore = false,
   width,
+  bgColor,
+  borderColor,
 }: PowerUpProps) => {
   const { t } = useTranslation(["store"]);
 
@@ -90,30 +94,36 @@ export const PowerUpComponent = ({
       </Tooltip>
     </AnimatedPowerUp>
   ) : (
-    <EmptyPowerUp width={width} />
+    <EmptyPowerUp width={width} bgColor={bgColor} borderColor={borderColor} />
   );
 };
 
-const EmptyPowerUp = ({ width }: { width: number }) => {
+const EmptyPowerUp = ({
+  width,
+  bgColor,
+  borderColor,
+}: {
+  width: number;
+  bgColor?: string;
+  borderColor?: string;
+}) => {
   const { isSmallScreen } = useResponsiveValues();
   const { isRageRound, isClassic } = useGameContext();
+  const computedBgColor =
+    bgColor ??
+    (isClassic ? (isRageRound ? "black" : BACKGROUND_BLUE) : "transparent");
+  const computedBorderColor = borderColor ?? GREY_LINE;
 
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
-      border={`1px solid ${GREY_LINE}`}
+      border={`1px solid ${computedBorderColor}`}
       borderRadius={["12px", "17px"]}
       width={`${componentWidth}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
-      backgroundColor={
-        isClassic
-          ? isRageRound
-            ? "black"
-            : BACKGROUND_BLUE
-          : "transparent"
-      }
+      backgroundColor={computedBgColor}
     />
   );
 };
