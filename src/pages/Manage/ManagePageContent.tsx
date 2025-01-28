@@ -1,22 +1,14 @@
-import { Flex, Tabs, TabList, Tab } from "@chakra-ui/react";
-import { t } from "i18next";
+import { Flex } from "@chakra-ui/react";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 
-export const ManagePageContent = ({
-  lastIndexTab = 0,
-}: {
-  lastIndexTab?: number;
-}) => {
-  const { t } = useTranslation(["store"]);
+export const ManagePageContent = () => {
   return (
-    <>
+    <Flex flexDirection={"column"} gap={2} alignItems={"center"}>
       <PositionedDiscordLink />
       <SpecialCards />
       <Powerups />
-    </>
+    </Flex>
   );
 };

@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Text, Tooltip, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  SystemStyleObject,
+  Text,
+  Tooltip,
+  useTheme,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../../../types/Card";
@@ -16,7 +24,13 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
-export const SpecialCards = () => {
+interface SpecialCardsProps {
+  containerSx?: SystemStyleObject;
+}
+
+export const SpecialCards: React.FC<SpecialCardsProps> = ({
+  containerSx = {},
+}) => {
   const navigate = useNavigate();
   const { colors } = useTheme();
 
@@ -53,6 +67,7 @@ export const SpecialCards = () => {
         flexDirection="column"
         gap={4}
         px={6}
+        sx={containerSx}
       >
         <Flex gap={4} flexDirection="column">
           <Text mx={2} size="l">
@@ -122,12 +137,7 @@ export const SpecialCards = () => {
               </Box>
             ))}
           </FullScreenCardContainer>
-          <Flex
-            flexDirection={"row"}
-            justifyContent="space-between"
-            gap={4}
-            mx={4}
-          >
+          <Flex flexDirection={"row"} justifyContent="center" gap={4} mx={4}>
             <Button
               isDisabled={!preselectedCard}
               variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}

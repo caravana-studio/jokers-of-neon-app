@@ -35,7 +35,13 @@ export const ManagePageContentMobile = ({
         </Tabs>
       </Flex>
       <Flex w="100%" flexGrow={1}>
-        {tabIndex === 0 && <SpecialCards />}
+        {tabIndex === 0 && (
+          <SpecialCards
+            containerSx={{
+              padding: "0",
+            }}
+          />
+        )}
         {tabIndex === 1 && <Powerups />}
       </Flex>
     </>
