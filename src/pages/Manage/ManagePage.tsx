@@ -30,7 +30,7 @@ export const ManagePage = ({ lastIndexTab = 0 }: { lastIndexTab?: number }) => {
           >
             <TabList>
               <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
-              <Tab fontSize={10}>{t("store.labels.powerups")}</Tab>
+              <Tab fontSize={10}>{t("store.titles.powerups")}</Tab>
             </TabList>
           </Tabs>
         </Flex>

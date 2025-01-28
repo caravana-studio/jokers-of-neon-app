@@ -14,8 +14,7 @@ export const Powerups = () => {
   });
 
   const { powerUps, maxPowerUpSlots } = useGameContext();
-  const { isSmallScreen, cardScale } = useResponsiveValues();
-  const scale = isSmallScreen ? cardScale * 1.2 : cardScale * 1.4;
+  const { isSmallScreen } = useResponsiveValues();
 
   const freeUnlockedSlots = maxPowerUpSlots - powerUps.length;
 
@@ -66,6 +65,7 @@ export const Powerups = () => {
             justifyContent="space-between"
             gap={4}
             mx={4}
+            my={4}
           >
             <Button
               fontSize={12}

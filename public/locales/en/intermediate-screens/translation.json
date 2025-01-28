@@ -53,5 +53,9 @@
     "title": "Select the Jokers of Neon version you want to play",
     "back": "Back",
     "community-mods": "Community mods"
+  },
+  "power-ups": {
+    "title": "Power Ups",
+    "go-back": "Go back"
   }
 }
