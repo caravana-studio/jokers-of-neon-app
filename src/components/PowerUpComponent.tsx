@@ -1,6 +1,11 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  SystemStyleObject,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { POWER_UPS_CARDS_DATA } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -16,16 +21,14 @@ interface PowerUpProps {
   width: number;
   onClick?: () => void;
   inStore?: boolean;
-  bgColor?: string;
-  borderColor?: string;
+  containerSx?: SystemStyleObject;
 }
 export const PowerUpComponent = ({
   powerUp,
   onClick,
   inStore = false,
   width,
-  bgColor,
-  borderColor,
+  containerSx,
 }: PowerUpProps) => {
   const { t } = useTranslation(["store"]);
 
@@ -94,36 +97,32 @@ export const PowerUpComponent = ({
       </Tooltip>
     </AnimatedPowerUp>
   ) : (
-    <EmptyPowerUp width={width} bgColor={bgColor} borderColor={borderColor} />
+    <EmptyPowerUp width={width} containerSx={containerSx} />
   );
 };
 
 const EmptyPowerUp = ({
   width,
-  bgColor,
-  borderColor,
+  containerSx,
 }: {
   width: number;
-  bgColor?: string;
-  borderColor?: string;
+  containerSx?: SystemStyleObject;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
   const { isRageRound, isClassic } = useGameContext();
-  const computedBgColor =
-    bgColor ??
-    (isClassic ? (isRageRound ? "black" : BACKGROUND_BLUE) : "transparent");
-  const computedBorderColor = borderColor ?? GREY_LINE;
-
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
-      border={`1px solid ${computedBorderColor}`}
+      border={`1px solid ${GREY_LINE}`}
       borderRadius={["12px", "17px"]}
       width={`${componentWidth}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
-      backgroundColor={computedBgColor}
+      backgroundColor={
+        isClassic ? (isRageRound ? "black" : BACKGROUND_BLUE) : "transparent"
+      }
+      sx={containerSx}
     />
   );
 };

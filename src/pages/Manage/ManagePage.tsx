@@ -5,6 +5,7 @@ import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export const ManagePage = () => {
   return (
     <Background bgDecoration dark type="home">
       <PositionedGameMenu decoratedPage />
+      <PositionedDiscordLink />
       <Flex
         flexDirection={"column"}
         height={"100%"}

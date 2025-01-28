@@ -8,7 +8,6 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
@@ -31,7 +30,6 @@ interface SpecialCardsProps {
 export const SpecialCards: React.FC<SpecialCardsProps> = ({
   containerSx = {},
 }) => {
-  const navigate = useNavigate();
   const { colors } = useTheme();
 
   const { t } = useTranslation("intermediate-screens", {

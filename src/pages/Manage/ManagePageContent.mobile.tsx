@@ -1,10 +1,8 @@
 import { Flex, Tabs, TabList, Tab } from "@chakra-ui/react";
-import { t } from "i18next";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
@@ -19,7 +17,6 @@ export const ManagePageContentMobile = ({
 
   return (
     <>
-      <PositionedDiscordLink />
       <Flex p={2} mt={6} width={"95%"}>
         <Tabs
           index={tabIndex}

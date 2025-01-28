@@ -1,8 +1,7 @@
-import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../../../providers/GameProvider";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 
@@ -14,8 +13,6 @@ export const Powerups = () => {
   });
 
   const { powerUps, maxPowerUpSlots } = useGameContext();
-  const { isSmallScreen } = useResponsiveValues();
-
   const freeUnlockedSlots = maxPowerUpSlots - powerUps.length;
 
   return (
@@ -54,8 +51,11 @@ export const Powerups = () => {
                 <PowerUpComponent
                   powerUp={null}
                   width={120}
-                  bgColor="transparent"
-                  borderColor="white"
+                  containerSx={{
+                    backgroundColor: "transparent",
+                    borderColor: "white",
+                    borderRadius: "16px",
+                  }}
                 />
               </Box>
             ))}
