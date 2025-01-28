@@ -94,23 +94,15 @@ export const preloadImages = async (urls?: string[]) => {
 };
 
 export const getImageFromCache = async (url: string): Promise<Blob | null> => {
-  const supportedExtensions = [".png", ".jpg", ".jpeg", ".webp"];
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const response = await cache.match(url);
 
-  const baseWithoutExtension = url.replace(/\.[^/.]+$/, "");
-
-  for (const ext of supportedExtensions) {
-    const srcWithExtension = `${baseWithoutExtension}${ext}`;
-
-    try {
-      const cache = await caches.open(CACHE_NAME);
-      const response = await cache.match(srcWithExtension);
-
-      if (response) {
-        return await response.blob();
-      }
-    } catch (error) {
-      console.error("Error getting image from cache", error);
+    if (response) {
+      return await response.blob();
     }
+  } catch (error) {
+    console.error("Error getting image from cache", error);
   }
 
   return null;
