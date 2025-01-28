@@ -1,17 +1,20 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Background } from "../../components/Background";
 import { PositionedGameMenu } from "../../components/GameMenu";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 export const ManagePage = () => {
-  const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
+  });
+
+  const isSmallMobile = useBreakpointValue({
+    base: true,
+    sm: false,
   });
 
   return (
@@ -23,13 +26,13 @@ export const ManagePage = () => {
         gap={4}
         alignItems={"center"}
       >
-        {isSmallScreen ? <ManagePageContentMobile /> : <ManagePageContent />}
+        {isSmallMobile ? <ManagePageContentMobile /> : <ManagePageContent />}
         <Flex
           flexDirection={"row"}
           justifyContent="space-between"
           gap={4}
           mx={4}
-          my={4}
+          mt={14}
         >
           <Button
             fontSize={12}

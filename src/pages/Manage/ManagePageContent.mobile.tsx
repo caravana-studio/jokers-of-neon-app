@@ -28,7 +28,7 @@ export const ManagePageContentMobile = ({
           isFitted
           color="white"
         >
-          <TabList>
+          <TabList width={["100%", "80%"]} margin={"0 auto"}>
             <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
             <Tab fontSize={10}>{t("store.titles.powerups")}</Tab>
           </TabList>

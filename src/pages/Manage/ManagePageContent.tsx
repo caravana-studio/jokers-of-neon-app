@@ -5,7 +5,13 @@ import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const ManagePageContent = () => {
   return (
-    <Flex flexDirection={"column"} gap={2} alignItems={"center"}>
+    <Flex
+      height={"100%"}
+      flexDirection={"column"}
+      gap={2}
+      alignItems={"center"}
+      justifyContent={"space-around"}
+    >
       <PositionedDiscordLink />
       <SpecialCards />
       <Powerups />
