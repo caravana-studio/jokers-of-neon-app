@@ -17,6 +17,23 @@ export const checkImageExists = async (url: string): Promise<boolean> => {
   }
 };
 
+export const findValidImagePath = async (
+  baseSrc: string,
+  extensions: string[]
+): Promise<string | null> => {
+  const baseWithoutExtension = baseSrc.replace(/\.[^/.]+$/, "");
+
+  for (const ext of extensions) {
+    const srcWithExtension = `${baseWithoutExtension}${ext}`;
+    const exists = await checkImageExists(srcWithExtension);
+    if (exists) {
+      return srcWithExtension;
+    }
+  }
+
+  return null;
+};
+
 const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
   ({ src, alt, ...props }, ref) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -24,13 +41,19 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
     const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
     const modAwareSrc = !isClassic ? baseUrl + src : src;
 
+    const supportedExtensions = [".png", ".jpg", ".jpeg", ".webp"];
+
     useEffect(() => {
       const loadImage = async () => {
         const cachedImage = await getImageFromCache(src);
 
         if (!isClassic) {
-          const exists = await checkImageExists(modAwareSrc);
-          setImageSrc(exists ? modAwareSrc : src);
+          const validModSrc = await findValidImagePath(
+            modAwareSrc,
+            supportedExtensions
+          );
+
+          setImageSrc(validModSrc || src);
         } else if (cachedImage) {
           setImageSrc(URL.createObjectURL(cachedImage));
         } else {
