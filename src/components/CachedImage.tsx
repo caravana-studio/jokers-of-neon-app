@@ -1,6 +1,6 @@
 import { Image, ImageProps } from "@chakra-ui/react";
 import { forwardRef, useEffect, useState } from "react";
-import { CLASSIC_MOD_ID } from "../constants/general";
+import { CLASSIC_MOD_ID, SUPPORTED_EXTENSIONS } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
 import { getImageFromCache } from "../utils/preloadImages";
 
@@ -41,8 +41,6 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
     const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
     const modAwareSrc = !isClassic ? baseUrl + src : src;
 
-    const supportedExtensions = [".png", ".jpg", ".jpeg", ".webp"];
-
     useEffect(() => {
       const loadImage = async () => {
         const cachedImage = await getImageFromCache(src);
@@ -50,7 +48,7 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
         if (!isClassic) {
           const validModSrc = await findValidImagePath(
             modAwareSrc,
-            supportedExtensions
+            SUPPORTED_EXTENSIONS
           );
 
           setImageSrc(validModSrc || src);
