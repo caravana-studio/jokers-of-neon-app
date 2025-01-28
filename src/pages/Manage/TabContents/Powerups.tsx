@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Text, useTheme } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useGameContext } from "../../providers/GameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { FullScreenCardContainer } from "../FullScreenCardContainer";
-import { PowerUpComponent } from "../../components/PowerUpComponent";
+import { useGameContext } from "../../../providers/GameProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { FullScreenCardContainer } from "../../FullScreenCardContainer";
+import { PowerUpComponent } from "../../../components/PowerUpComponent";
 
 export const Powerups = () => {
   const navigate = useNavigate();
@@ -60,23 +60,6 @@ export const Powerups = () => {
               </Box>
             ))}
           </FullScreenCardContainer>
-          <Flex
-            flexDirection={"row"}
-            justifyContent="space-between"
-            gap={4}
-            mx={4}
-            my={4}
-          >
-            <Button
-              fontSize={12}
-              onClick={() => {
-                navigate(-1);
-              }}
-              width={isSmallScreen ? "50%" : "unset"}
-            >
-              {t("go-back")}
-            </Button>
-          </Flex>
         </Flex>
       </Flex>
     </>

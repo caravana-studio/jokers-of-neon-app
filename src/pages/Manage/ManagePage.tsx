@@ -1,44 +1,46 @@
-import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { Background } from "../../components/Background";
 import { PositionedGameMenu } from "../../components/GameMenu";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { SpecialCards } from "./SpecialCards";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { Powerups } from "./Powerups";
+import { ManagePageContent } from "./ManagePageContent";
+import { ManagePageContentMobile } from "./ManagePageContent.mobile";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-export const ManagePage = ({ lastIndexTab = 0 }: { lastIndexTab?: number }) => {
-  const { t } = useTranslation(["store"]);
-  const [tabIndex, setTabIndex] = useState(lastIndexTab);
+export const ManagePage = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const navigate = useNavigate();
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "power-ups",
+  });
 
-  const handleTabChange = (index: number) => {
-    setTabIndex(index);
-  };
   return (
     <Background bgDecoration dark type="home">
       <PositionedGameMenu decoratedPage />
-      <Flex flexDirection={"column"} height={"100%"}>
-        <Flex p={2} mt={6} width={"95%"}>
-          <Tabs
-            index={tabIndex}
-            onChange={handleTabChange}
-            w="100%"
-            isFitted
-            color="white"
+      <Flex
+        flexDirection={"column"}
+        height={"100%"}
+        gap={4}
+        alignItems={"center"}
+      >
+        {isSmallScreen ? <ManagePageContentMobile /> : <ManagePageContent />}
+        <Flex
+          flexDirection={"row"}
+          justifyContent="space-between"
+          gap={4}
+          mx={4}
+          my={4}
+        >
+          <Button
+            fontSize={12}
+            onClick={() => {
+              navigate(-1);
+            }}
+            width={"unset"}
           >
-            <TabList>
-              <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
-              <Tab fontSize={10}>{t("store.titles.powerups")}</Tab>
-            </TabList>
-          </Tabs>
+            {t("go-back")}
+          </Button>
         </Flex>
-        <Flex w="100%" flexGrow={1}>
-          {tabIndex === 0 && <SpecialCards />}
-          {tabIndex === 1 && <Powerups />}
-        </Flex>
-        {!isSmallScreen && <PositionedDiscordLink />}
       </Flex>
     </Background>
   );

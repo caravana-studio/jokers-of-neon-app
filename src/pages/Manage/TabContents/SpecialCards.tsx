@@ -1,20 +1,20 @@
 import { Box, Button, Flex, Text, Tooltip, useTheme } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "../../types/Card";
+import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
-import CachedImage from "../../components/CachedImage";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { LockedSlot } from "../../components/LockedSlot";
-import { TemporalBadge } from "../../components/TemporalBadge";
-import { UnlockedSlot } from "../../components/UnlockedSlot";
-import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useGame } from "../../dojo/queries/useGame";
-import { useGameContext } from "../../providers/GameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { getTooltip } from "../../utils/getTooltip";
-import { FullScreenCardContainer } from "../FullScreenCardContainer";
+import CachedImage from "../../../components/CachedImage";
+import { ConfirmationModal } from "../../../components/ConfirmationModal";
+import { LockedSlot } from "../../../components/LockedSlot";
+import { TemporalBadge } from "../../../components/TemporalBadge";
+import { UnlockedSlot } from "../../../components/UnlockedSlot";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useGameContext } from "../../../providers/GameProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { getTooltip } from "../../../utils/getTooltip";
+import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 export const SpecialCards = () => {
   const navigate = useNavigate();
@@ -128,15 +128,6 @@ export const SpecialCards = () => {
             gap={4}
             mx={4}
           >
-            <Button
-              fontSize={12}
-              onClick={() => {
-                navigate(-1);
-              }}
-              width={isSmallScreen ? "50%" : "unset"}
-            >
-              {t("go-back")}
-            </Button>
             <Button
               isDisabled={!preselectedCard}
               variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
