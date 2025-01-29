@@ -22,6 +22,7 @@ interface PowerUpProps {
   onClick?: () => void;
   inStore?: boolean;
   containerSx?: SystemStyleObject;
+  isActive?: boolean;
 }
 export const PowerUpComponent = ({
   powerUp,
@@ -29,11 +30,13 @@ export const PowerUpComponent = ({
   inStore = false,
   width,
   containerSx,
+  isActive,
 }: PowerUpProps) => {
   const { t } = useTranslation(["store"]);
 
   const { powerUpIsPreselected } = useGameContext();
-  const isActive = powerUp && powerUpIsPreselected(powerUp.idx);
+  const calculatedIsActive =
+    isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
   const price = inStore && powerUp?.cost;
   const discount_cost = inStore && powerUp?.discount_cost;
   const purchased = inStore && powerUp?.purchased;
@@ -52,7 +55,7 @@ export const PowerUpComponent = ({
           width={`${width}px`}
           borderRadius="17px"
           background={"black"}
-          transform={isActive ? "scale(1.1)" : "scale(1)"}
+          transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
           transition="all 0.2s ease-in-out"
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
@@ -85,7 +88,7 @@ export const PowerUpComponent = ({
             </Box>
           )}
           <CachedImage
-            opacity={inStore || isActive ? 1 : 0.6}
+            opacity={inStore || calculatedIsActive ? 1 : 0.6}
             borderRadius={["12px", "17px"]}
             cursor="pointer"
             height={`${100}%`}

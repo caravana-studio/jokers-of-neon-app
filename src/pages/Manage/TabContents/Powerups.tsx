@@ -6,14 +6,11 @@ import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 
 export const Powerups = () => {
-  const navigate = useNavigate();
-
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
   });
 
-  const { powerUps, maxPowerUpSlots } = useGameContext();
-  const freeUnlockedSlots = maxPowerUpSlots - powerUps.length;
+  const { powerUps } = useGameContext();
 
   return (
     <>
@@ -35,30 +32,15 @@ export const Powerups = () => {
                   powerUp={powerUp}
                   width={120}
                   key={index}
-                  inStore
-                  onClick={() => {
-                    if (powerUp && !powerUp.purchased) {
-                      navigate("/preview/power-up", {
-                        state: { powerUp },
-                      });
-                    }
-                  }}
-                />
-              );
-            })}
-            {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-              <Box mx={1.5} p={1}>
-                <PowerUpComponent
-                  powerUp={null}
-                  width={120}
+                  isActive
                   containerSx={{
                     backgroundColor: "transparent",
                     borderColor: "white",
                     borderRadius: "16px",
                   }}
                 />
-              </Box>
-            ))}
+              );
+            })}
           </FullScreenCardContainer>
         </Flex>
       </Flex>
