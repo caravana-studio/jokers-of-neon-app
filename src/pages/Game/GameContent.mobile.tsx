@@ -9,37 +9,33 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight.tsx";
-import { ShowPlays } from "../../components/ShowPlays.tsx";
-import { SortBy } from "../../components/SortBy.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import {
-  GAME_TUTORIAL_STEPS,
   JOYRIDE_LOCALES,
-  MODIFIERS_TUTORIAL_STEPS,
-  SPECIAL_CARDS_TUTORIAL_STEPS,
+  TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial";
 import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import {
-  SKIP_TUTORIAL_GAME,
-  SKIP_TUTORIAL_MODIFIERS,
-  SKIP_TUTORIAL_SPECIAL_CARDS,
-} from "../../constants/localStorage.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
+import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
+  const inTutorial = isTutorial();
   const {
     hand,
     preSelectedCards,
@@ -49,6 +45,8 @@ export const MobileGameContent = () => {
     addModifier,
     preSelectCard,
     unPreSelectCard,
+    isRageRound,
+    maxPowerUpSlots,
   } = useGameContext();
 
   const { highlightedCard } = useCardHighlight();
@@ -61,46 +59,68 @@ export const MobileGameContent = () => {
     })
   );
   const [run, setRun] = useState(false);
-  const [runSpecial, setRunSpecial] = useState(false);
-  const [runTutorialModifiers, setRunTutorialModifiers] = useState(false);
-  const [specialTutorialCompleted, setSpecialTutorialCompleted] =
-    useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [cardClicked, setCardClicked] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [autoStep, setAutoStep] = useState(false);
   const { t } = useTranslation(["game"]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_GAME);
-    if (showTutorial) setRun(true);
+    setRun(inTutorial);
   }, []);
 
+  const stepData = [
+    { step: 14, delay: 2700 },
+    { step: 22, delay: 4200 },
+    { step: 32, delay: 7500 },
+  ];
+
+  useEffect(() => {
+    const stepInfo = stepData.find((data) => data.step === stepIndex);
+
+    if (stepInfo) {
+      const timeout = setTimeout(() => {
+        setAutoStep(true);
+        setStepIndex(stepIndex + 1);
+      }, stepInfo.delay);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [stepIndex]);
+
   const handleJoyrideCallbackFactory = (
-    storageKey: string,
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     return (data: CallBackProps) => {
       const { type } = data;
 
+      if (type === "error:target_not_found") {
+        setStepIndex(stepIndex + 1);
+        return;
+      }
+
+      if (
+        type === "step:after" &&
+        !cardClicked &&
+        !buttonClicked &&
+        !autoStep
+      ) {
+        setStepIndex(stepIndex + 1);
+      }
+
+      setCardClicked(false);
+      setButtonClicked(false);
+      setAutoStep(false);
+
       if (type === "tour:end") {
-        window.localStorage.setItem(storageKey, "true");
         setRunCallback(false);
-        if (storageKey === SKIP_TUTORIAL_SPECIAL_CARDS) {
-          setSpecialTutorialCompleted(true);
-        }
+        navigate("/demo");
       }
     };
   };
 
-  const handleJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_GAME,
-    setRun
-  );
-  const handleSpecialJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_SPECIAL_CARDS,
-    setRunSpecial
-  );
-  const handleModifiersJoyrideCallback = handleJoyrideCallbackFactory(
-    SKIP_TUTORIAL_MODIFIERS,
-    setRunTutorialModifiers
-  );
+  const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
@@ -116,6 +136,8 @@ export const MobileGameContent = () => {
       !isModifier &&
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
+      setCardClicked(true);
+      setStepIndex(stepIndex + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -123,30 +145,6 @@ export const MobileGameContent = () => {
   };
 
   const game = useGame();
-
-  useEffect(() => {
-    const showSpecialCardTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_SPECIAL_CARDS
-    );
-    const showModifiersTutorial = !localStorage.getItem(
-      SKIP_TUTORIAL_MODIFIERS
-    );
-
-    if (
-      showSpecialCardTutorial &&
-      game?.len_current_special_cards != undefined &&
-      game?.len_current_special_cards > 0
-    ) {
-      setRunSpecial(true);
-    } else if (specialTutorialCompleted || !showSpecialCardTutorial) {
-      if (showModifiersTutorial) {
-        const hasModifier = hand.some((card) => card.isModifier);
-        if (hasModifier) {
-          setRunTutorialModifiers(true);
-        }
-      }
-    }
-  }, [game, hand, specialTutorialCompleted]);
 
   if (error) {
     return (
@@ -183,9 +181,10 @@ export const MobileGameContent = () => {
       sx={{
         height: "100%",
       }}
+      className="game-tutorial-intro"
     >
       {highlightedCard && <MobileCardHighlight card={highlightedCard} />}
-
+      <MobileDecoration />
       <Box
         sx={{
           position: "fixed",
@@ -195,42 +194,18 @@ export const MobileGameContent = () => {
         bottom={[1, 4]}
       >
         <Joyride
-          steps={GAME_TUTORIAL_STEPS}
+          steps={TUTORIAL_STEPS}
           run={run}
           continuous
-          showSkipButton
-          showProgress
+          showProgress={false}
           callback={handleJoyrideCallback}
           styles={TUTORIAL_STYLE}
           locale={JOYRIDE_LOCALES}
-        />
-
-        <Joyride
-          steps={SPECIAL_CARDS_TUTORIAL_STEPS}
-          run={runSpecial}
-          continuous
+          stepIndex={stepIndex}
+          disableCloseOnEsc
+          disableOverlayClose
           showSkipButton
-          showProgress
-          callback={handleSpecialJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        />
-
-        <Joyride
-          steps={MODIFIERS_TUTORIAL_STEPS}
-          run={runTutorialModifiers}
-          continuous
-          showSkipButton
-          showProgress
-          callback={handleModifiersJoyrideCallback}
-          styles={TUTORIAL_STYLE}
-          locale={JOYRIDE_LOCALES}
-        />
-
-        <PositionedGameMenu
-          showTutorial={() => {
-            setRun(true);
-          }}
+          hideCloseButton
         />
       </Box>
 
@@ -256,12 +231,30 @@ export const MobileGameContent = () => {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ height: "205px", width: "100%" }}>
+            <Flex
+              flexDir="column"
+              alignItems="center"
+              mt={3}
+              sx={{ height: "245px", width: "100%" }}
+            >
               <MobileTopSection />
-            </Box>
+              {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
+                <Flex mt={2} w="100%" justifyContent="center">
+                  <PowerUps
+                    onTutorialCardClick={() => {
+                      if (run) {
+                        setButtonClicked(true);
+                        setStepIndex(stepIndex + 1);
+                      }
+                    }}
+                  />
+                </Flex>
+              )}
+            </Flex>
+
             <Box
               sx={{
-                width: "90%",
+                width: "100%",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
@@ -271,35 +264,34 @@ export const MobileGameContent = () => {
             >
               <MobilePreselectedCardsSection />
             </Box>
-            <Flex width="90%" mt={2} mx={4} justifyContent={"space-between"}>
-              <DiscardButton highlight={run} />
-              <PlayButton highlight={run} />
-            </Flex>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-              }}
-              width={"100%"}
-            >
-              <Box width={"100%"}>
-                <Box pb={2} display={"flex"} justifyContent={"center"}>
-                  <HandSection />
-                </Box>
-                <Box
-                  width="100%"
-                  display={"flex"}
-                  alignItems={"center"}
-                  backgroundColor="rgba(0,0,0,0.5)"
-                  px={18}
-                  gap={4}
-                >
-                  <SortBy />
-                  <ShowPlays />
-                </Box>
-              </Box>
+            <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
+              <HandSection />
             </Box>
+            <MobileBottomBar
+              setRun={setRun}
+              firstButton={
+                <DiscardButton
+                  highlight={run}
+                  onTutorialCardClick={() => {
+                    if (run) {
+                      setCardClicked(true);
+                      setStepIndex(stepIndex + 1);
+                    }
+                  }}
+                />
+              }
+              secondButton={
+                <PlayButton
+                  highlight={run}
+                  onTutorialCardClick={() => {
+                    if (run) {
+                      setCardClicked(true);
+                      setStepIndex(stepIndex + 1);
+                    }
+                  }}
+                />
+              }
+            />
           </Box>
         </DndContext>
       </Box>

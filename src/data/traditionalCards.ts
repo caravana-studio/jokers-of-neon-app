@@ -18,7 +18,7 @@ const loadTranslations = async () => {
     };
   }
   
-  for (let i = 200; i <= 251; i++) {
+  for (let i = 200; i <= 253; i++) {
     NEON_CARDS_DATA[i] = {
       name: i18n.t(`neonCardsData.${i}.name`, {ns:'neon-cards'}),
       description: i18n.t(`neonCardsData.${i}.description`, {ns:'neon-cards'}),
@@ -254,9 +254,10 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
     suit: Suits.JOKER,
   },
   53: {
-    card: Cards.JOKER,
-    suit: Suits.JOKER,
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
   },
+  
   200: {
     card: Cards.TWO,
     suit: Suits.CLUBS,
@@ -464,5 +465,13 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
   251: {
     card: Cards.ACE,
     suit: Suits.SPADES,
+  },
+  252: {
+    card: Cards.JOKER,
+    suit: Suits.JOKER,
+  },
+  253: {
+    card: Cards.WILDCARD,
+    suit: Suits.WILDCARD,
   },
 };

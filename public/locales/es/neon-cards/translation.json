@@ -207,6 +207,14 @@
           "251": {
             "name": "As de Picas de neón",
             "description": "Suma +22 puntos y +1 multi"
-          }
+          },
+          "252": {
+            "name": "Joker de Neón",
+            "description": "Sustituye cualquier carta tradicional. +200 puntos y +2 multi"
+        },
+        "253": {
+          "name": "Comodín de Neón",
+          "description": "Sustituye cualquier carta de neón"
+      }
     }
 }

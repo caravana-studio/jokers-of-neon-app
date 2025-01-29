@@ -48,5 +48,10 @@
       "title": "Remove special card",
       "description": "Are you sure you want to remove this special card? There is no way to undo this action."
     }
+  },
+  "mods": {
+    "title": "Select the Jokers of Neon version you want to play",
+    "back": "Back",
+    "community-mods": "Community mods"
   }
 }

@@ -5,11 +5,16 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
 import { Background } from "../components/Background";
+import CountdownTimer from "../components/CountdownTimer";
 import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
+
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { useGameContext } from "../providers/GameProvider";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -21,10 +26,22 @@ export const Home = () => {
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
+  const { setModId } = useGameContext();
+
+  const tournamentEnabled = useFeatureFlagEnabled(
+    "global",
+    "tournamentEnabled"
+  );
+
+  useEffect(() => {
+    setModId(CLASSIC_MOD_ID);
+  }, []);
+
+  const enableMods = useFeatureFlagEnabled("global", "showMods");
 
   useEffect(() => {
     if (account && playButtonClicked) {
-      navigate("/demo");
+      navigate(enableMods ? "/mods" : "/demo");
     }
   }, [account, playButtonClicked]);
 
@@ -41,17 +58,17 @@ export const Home = () => {
       >
         {leaderboardOpen ? (
           <Box>
-            <Heading mb={"40px"} size="l" variant="italic" textAlign={"center"}>
+            <Heading mb={"10px"} size="l" variant="italic" textAlign={"center"}>
               LEADERBOARD
             </Heading>
-            {/* 
-                    
-            <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-10-05T21:00:00.000Z")}
-              />
-            </Box>
-                    */}
+
+            {tournamentEnabled && (
+              <Box mb={10} textAlign={"center"}>
+                <CountdownTimer
+                  targetDate={new Date("2024-12-30T00:00:00.000Z")}
+                />
+              </Box>
+            )}
 
             <Leaderboard />
             <Button
@@ -88,25 +105,29 @@ export const Home = () => {
               flexWrap={{ base: "wrap", sm: "nowrap" }}
               justifyContent="center"
             >
-              <Button
-                onClick={() => {
-                  setLeaderboardOpen(true);
-                }}
-              >
-                {t("home.btn.leaderboard-btn")}
-              </Button>
+              {!enableMods && (
+                <Button
+                  onClick={() => {
+                    setLeaderboardOpen(true);
+                  }}
+                  minW={["150px", "300px"]}
+                >
+                  {t("home.btn.leaderboard-btn")}
+                </Button>
+              )}
               <Button
                 variant="secondarySolid"
                 onClick={() => {
                   if (isDev) {
-                    navigate("/login");
+                    navigate(enableMods ? "/mods" : "/login");
                   } else {
                     setPlayButtonClicked(true);
                     connect({ connector: connectors[0] });
                   }
                 }}
+                minW={["150px", "300px"]}
               >
-                {t("home.btn.playDemo-btn")}
+                {t(enableMods ? "home.btn.start" : "home.btn.playDemo-btn")}
               </Button>
             </Flex>
           </Flex>

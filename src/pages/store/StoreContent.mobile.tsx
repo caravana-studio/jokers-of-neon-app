@@ -1,174 +1,85 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
-import { Coins } from "./Coins.tsx";
-import { LootBoxes } from "./LootBoxes.tsx";
-import { StoreCardsRow } from "./StoreCardsRow.tsx";
-import useStoreContent from "./UseStoreContent.ts";
-import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
-import RerollButton from "./StoreElements/RerollButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
+import { useSwipeable } from "react-swipeable";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
+import { MobileDecoration } from "../../components/MobileDecoration.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import { LootBoxesMobile } from "./StoreTabContents/LootBoxes.mobile.tsx";
+import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
+import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
+import { UtilsTab } from "./StoreTabContents/UtilsTab.tsx";
 
-export const StoreContentMobile = () => {
-  const {
-    rerollCost,
-    notEnoughCash,
-    rerolled,
-    setRerolled,
-    setLoading,
-    specialCards,
-    skipShop,
-    setRun,
-    reroll,
-    locked,
-    shopItems,
-    onShopSkip,
-    gameId,
-    setHand,
-  } = useStoreContent();
+export const StoreContentMobile = ({
+  lastIndexTab = 0,
+}: {
+  lastIndexTab: number;
+}) => {
+  const { setRun } = useStore();
 
   const { t } = useTranslation(["store"]);
+  const [tabIndex, setTabIndex] = useState(lastIndexTab);
+
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+  };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (tabIndex < 2) setTabIndex(tabIndex + 1);
+    },
+    onSwipedRight: () => {
+      if (tabIndex > 0) {
+        setTabIndex(tabIndex - 1);
+      }
+    },
+    trackTouch: true,
+  });
 
   return (
     <>
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
-        }}
-      />
+      <MobileDecoration />
+
       <Flex
         width="100%"
         height="100%"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="space-between"
+        {...handlers}
       >
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          alignItems="center"
-          justifyContent="center"
-          width="100%"
-          overflow="scroll"
-          pt={4}
-          px={2}
-        >
-          <Box
-            display="flex"
-            w={["100%", "100%", "100%", "40%", "40%"]}
-            flexDirection="column"
-            pb={4}
+        <Flex p={2} mt={6} width={"95%"}>
+          <Tabs
+            index={tabIndex}
+            onChange={handleTabChange}
+            w="100%"
+            isFitted
+            color="white"
           >
-            <Flex flexDirection={"column"} gap={0} mb={4} mt={0}>
-              <Heading
-                variant="italic"
-                size="l"
-                ml={4}
-                textAlign={{ base: "left", sm: "center" }}
-              >
-                {t("store.titles.level-game").toUpperCase()}
-              </Heading>
-              <Flex margin={{ base: "0", sm: "0 auto" }} mt={2}>
-                <Coins rolling />
-              </Flex>
-            </Flex>
-            <Flex justifyContent={{ base: "left", sm: "center" }}>
-              <LootBoxes />
-            </Flex>
-          </Box>
-          <Box
-            width={{ base: "100%", sm: "auto" }}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            pb={4}
-            pl={4}
-            gap={2}
-          >
-            <Box className="game-tutorial-step-3">
-              {shopItems.commonCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.commonCards}
-                  title={t("store.titles.traditional")}
-                />
-              )}
-            </Box>
-            <Box className="game-tutorial-step-4">
-              {shopItems.modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
-              )}
-            </Box>
-            <Box className="game-tutorial-step-5">
-              {shopItems.specialCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.specialCards}
-                  title={t("store.titles.special")}
-                />
-              )}
-            </Box>
-          </Box>
-          <Box mb={3} mx={4}>
-            <SpecialSlotItem />
-          </Box>
-          <Box
-            className="game-tutorial-step-2"
-            width={{ base: "95%", sm: "75%" }}
-            background="rgba(0,0,0,0.5)"
-            px={4}
-            borderRadius="10px"
-          >
-            <Heading variant="italic" size="m" mt={4}>
-              {t("store.titles.improve-plays").toUpperCase()}
-            </Heading>
-            <LevelUpTable shopItems={shopItems} isSmallScreen={true} />
-          </Box>
+            <TabList>
+              <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.loot-boxes")}</Tab>
+              <Tab fontSize={10}>{t("store.labels.utilities")}</Tab>
+            </TabList>
+          </Tabs>
+        </Flex>
+        <StoreTopBar />
+        <Flex w="100%" flexGrow={1}>
+          {tabIndex === 0 && <StoreCards />}
 
-          <Box
-            display="flex"
-            flexDirection={"row-reverse"}
-            w={"100%"}
-            justifyContent={"center"}
-            gap={10}
-            px={2}
-          >
-            <Flex
-              width="100%"
-              mx={2}
-              justifyContent="center"
-              my={6}
-              mb={12}
-              gap={6}
-            >
-              <RerollButton
-                rerolled={rerolled}
-                locked={locked}
-                notEnoughCash={notEnoughCash}
-                rerollCost={rerollCost}
-                setRerolled={setRerolled}
-                isSmallScreen={true}
-                reroll={reroll}
-              />
-              <SpecialsButton
-                specialCards={specialCards}
-                isSmallScreen={true}
-              />
-              <NextLevelButton
-                setLoading={setLoading}
-                onShopSkip={onShopSkip}
-                skipShop={skipShop}
-                gameId={gameId}
-                setHand={setHand}
-                locked={false}
-                isSmallScreen={true}
-              />
-            </Flex>
-          </Box>
-        </Box>
+          {tabIndex === 1 && <LootBoxesMobile />}
+
+          {tabIndex === 2 && <UtilsTab />}
+        </Flex>
+
+        <MobileBottomBar
+          setRun={setRun}
+          firstButton={<SpecialsButton isSmallScreen={true} />}
+          secondButton={<NextLevelButton isSmallScreen={true} />}
+          navigateState={{ state: { inStore: true } }}
+        />
       </Flex>
     </>
   );

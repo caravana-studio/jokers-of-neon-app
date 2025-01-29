@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useSpecialCardSlotItem } from "../../dojo/queries/useSpecialCardSlotItem";
 import { useGame } from "../../dojo/queries/useGame";
-import { MAX_SPECIAL_CARDS } from "../../constants/config";
+import { useGameContext } from "../../providers/GameProvider";
+import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ISpecialSlotItem {}
@@ -14,12 +14,13 @@ interface ISpecialSlotItem {}
 export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
-  const specialSlotItem = useSpecialCardSlotItem();
   const navigate = useNavigate();
+  const { maxSpecialCards } = useGameContext();
+
+  const { specialSlotItem } = useStore();
 
   const game = useGame();
-  const visible =
-    (game?.len_max_current_special_cards ?? 1) < MAX_SPECIAL_CARDS;
+  const visible = (game?.special_slots ?? 1) < maxSpecialCards;
 
   const price = specialSlotItem?.cost;
   const purchased = specialSlotItem?.purchased ?? false;
@@ -36,7 +37,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
           width={`${width}px`}
           cursor={purchased ? "not-allowed" : "pointer"}
           onClick={() => {
-            if (!purchased) {
+            if (!purchased && !isSmallScreen) {
               navigate("/preview/slot");
             }
           }}
@@ -46,7 +47,15 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
             src="/store/slot-icon.png"
             alt="slot-icon"
           />
-          {price && <PriceBox price={price} purchased={purchased} />}
+          {price && (
+            <PriceBox
+              price={Number(price)}
+              purchased={Boolean(purchased)}
+              discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
+              fontSize={isSmallScreen ? 12 : 16}
+              discountFontSize={isSmallScreen ? 10 : 12}
+            />
+          )}
           {purchased && (
             <Box
               sx={{

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { Background } from "../../components/Background";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
@@ -64,7 +65,7 @@ export const GamePage = () => {
       } else if (game?.state === "AT_SHOP") {
         navigate("/store");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
-        navigate("/open-pack");
+        navigate("/open-loot-box");
       }
     }
   }, [game?.state, roundRewards]);
@@ -72,6 +73,7 @@ export const GamePage = () => {
   return (
     <Background type={isRageRound ? "rage" : "game"}>
       {!skipRageAnimation && <RageRoundAnimation />}
+      <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {isSmallScreen ? (
         <CardHighlightProvider>

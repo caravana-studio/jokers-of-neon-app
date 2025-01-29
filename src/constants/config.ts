@@ -1,1 +1,0 @@
-export const MAX_SPECIAL_CARDS = 7;

@@ -15,6 +15,8 @@ export interface IAnimatedCardProps {
   scale?: number;
 }
 
+const TRANSLATE_Y_BASE = 40;
+
 export const AnimatedCard = ({
   children,
   idx,
@@ -31,12 +33,23 @@ export const AnimatedCard = ({
   const multi = useMemo(() => animatedCard?.multi, [animatedCard?.multi]);
   const suit = useMemo(() => animatedCard?.suit, [animatedCard?.suit]);
   const cash = useMemo(() => animatedCard?.cash, [animatedCard?.cash]);
+  const negative = useMemo(
+    () =>
+      (animatedCard?.points ?? 0) < 0 ||
+      (animatedCard?.multi ?? 0) < 0 ||
+      (animatedCard?.cash ?? 0) < 0,
+    [animatedCard?.points, animatedCard?.multi, animatedCard?.cash]
+  );
+
+  const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
   );
 
-  const { cardScale, isCardScaleCalculated } = useResponsiveValues();
+  const { cardScale, isCardScaleCalculated, isSmallScreen } =
+    useResponsiveValues();
+
   const cardBorderRadius = useBreakpointValue(
     {
       base: "5px",
@@ -53,27 +66,35 @@ export const AnimatedCard = ({
       return colors.neonPink;
     } else if (cash) {
       return colors.DIAMONDS;
+    } else if (isNeon) {
+      return colors.NEON;
     } else {
       return colors.neonGreen;
     }
   };
 
   const [cardSprings, cardApi] = useSpring(() => ({
-    from: { transform: "scale(1)", opacity: 1, x: 0, boxShadow: "0px" },
+    from: {
+      transform: "scale(1)",
+      opacity: 1,
+      x: 0,
+      boxShadow: "0px",
+      border: "2px solid transparent",
+    },
     config: { tension: 200, friction: 10 },
   }));
 
   const [pointsSprings, pointsApi] = useSpring(() => ({
     from: {
       opacity: 0,
-      transform: "translateY(-30px) scale(1)",
+      transform: `translateY(-${(TRANSLATE_Y_BASE - 10) / (isSmallScreen ? 2 : 1)}px) scale(1)`,
     },
     config: { tension: 300, friction: 20 },
   }));
 
   useEffect(() => {
     if (
-      (points || multi || suit || cash) &&
+      (points || multi || suit || cash || isNeon) &&
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
@@ -81,28 +102,40 @@ export const AnimatedCard = ({
         from: {
           transform: "scale(1)",
           boxShadow: `0px 0px 5px 0px ${animateColor}`,
+          border: `2px solid ${animateColor}`,
         },
         to: {
           transform: "scale(1.1)",
-          boxShadow: `0px 0px 20px 12px  ${animateColor}`,
+          boxShadow: `0px 0px ${isSmallScreen ? 10 : 20}px ${isSmallScreen ? 6 : 12}px  ${animateColor}`,
+          border: `2px solid ${animateColor}`,
         },
         onRest: () =>
           cardApi.start({
             transform: "scale(1)",
             boxShadow: `0px 0px 0px 0px ${animateColor}`,
+            border: `2px solid transparent`,
           }),
       });
 
       pointsApi.start({
         from: { opacity: 0, transform: "translateY(-30px) scale(1)" },
         to: [
-          { opacity: 1, transform: "translateY(-50px) scale(1.2)" },
-          { opacity: 1, transform: "translateY(-40px) scale(1)" },
-          { opacity: 0, transform: "translateY(-30px) scale(1)" },
+          {
+            opacity: 1,
+            transform: `translateY(-${(TRANSLATE_Y_BASE + 10) / (isSmallScreen ? 2 : 1)}px) scale(1.2)`,
+          },
+          {
+            opacity: 1,
+            transform: `translateY(-${TRANSLATE_Y_BASE / (isSmallScreen ? 2 : 1)}px) scale(1)`,
+          },
+          {
+            opacity: 0,
+            transform: `translateY(-${(TRANSLATE_Y_BASE - 10) / (isSmallScreen ? 2 : 1)}px) scale(1)`,
+          },
         ],
       });
     }
-  }, [points, multi, suit, animatedCardIdxArray, animationIndex]);
+  }, [points, multi, suit, animatedCardIdxArray, animationIndex, isNeon]);
 
   useEffect(() => {
     if (played) {
@@ -138,15 +171,16 @@ export const AnimatedCard = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: `${(CARD_WIDTH + 8) * scale}px`,
-        height: `${(CARD_HEIGHT + 8) * scale}px`,
+        width: `${(CARD_WIDTH + (isSmallScreen ? 12 : 8)) * scale}px`,
+        height: `${(CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * scale}px`,
         borderRadius: cardBorderRadius,
+        zIndex: 10,
         ...cardSprings,
       }}
     >
       {!!(points || multi || cash) &&
         // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
-        !(isSpecial && animatedCard?.idx?.length) &&
+        (!(isSpecial && animatedCard?.idx?.length) || cash) &&
         animatedCardIdxArray?.includes(idx) && (
           <animated.div
             style={{
@@ -159,13 +193,16 @@ export const AnimatedCard = ({
           >
             <Heading
               color={getColor()}
-              mb={{ base: 4, md: 6 }}
+              mb={[4, 6]}
+              fontSize={[12, 24]}
               sx={{
                 textShadow: `0 0 5px  ${getColor()}`,
               }}
+              zIndex={99}
             >
-              +{points || multi || cash}
-              {cash && <CashSymbol />}
+              {!negative && (isSpecial || !cash) && "+"}
+              {points || multi || (isSpecial && cash)}
+              {isSpecial && cash && <CashSymbol />}
             </Heading>
           </animated.div>
         )}

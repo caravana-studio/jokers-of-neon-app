@@ -14,26 +14,40 @@ import { useDisconnect } from "@starknet-react/core";
 interface GameMenuProps {
   onlySound?: boolean;
   showTutorial?: () => void;
-  setSettingsModalOpened?: (opened: boolean) => void;
 }
 
 export const GameMenu = ({
   onlySound = false,
   showTutorial,
-  setSettingsModalOpened,
 }: GameMenuProps) => {
   const username = useUsername();
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const { isSmallScreen } = useResponsiveValues();
+  const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
 
   const { disconnect } = useDisconnect();
 
   return (
     <>
+      {isSettingsModalOpened && (
+        <SettingsModal close={() => setSettingsModalOpened(false)} />
+      )}
       <Menu>
-        <MenuButton className="game-tutorial-step-9">
-          <FontAwesomeIcon icon={faBars} style={{ verticalAlign: "middle" }} />
+        <MenuButton
+          height={["30px", "45px"]}
+          width={["30px", "45px"]}
+          borderRadius={["8px", "14px"]}
+          className="game-tutorial-step-9"
+        >
+          <FontAwesomeIcon
+            icon={faBars}
+            style={{
+              verticalAlign: "middle",
+              fontSize: isSmallScreen ? 14 : 20,
+            }}
+          />
         </MenuButton>
         <MenuList>
           <MenuItem
@@ -49,12 +63,19 @@ export const GameMenu = ({
             </MenuItem>
           )}
           {showTutorial && (
-            <MenuItem onClick={showTutorial}>
+            <MenuItem
+              onClick={() => {
+                navigate("/tutorial");
+              }}
+            >
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
           <MenuItem
             onClick={() => {
+              console.log(
+                "is settings modal opened: " + setSettingsModalOpened
+              );
               if (setSettingsModalOpened) {
                 setSettingsModalOpened(true);
               }
@@ -91,16 +112,12 @@ export const PositionedGameMenu = ({
   ...rest
 }: PositionedGameMenuProps) => {
   const { isSmallScreen } = useResponsiveValues();
-  const [isSettingsModal, setIsSettingsModal] = useState(false);
 
   if (!bottomPositionDesktop)
     bottomPositionDesktop = decoratedPage ? "100px" : "20px";
 
   return (
     <>
-      {isSettingsModal && (
-        <SettingsModal close={() => setIsSettingsModal(false)} />
-      )}
       {isSmallScreen ? (
         <Box
           sx={{
@@ -111,7 +128,7 @@ export const PositionedGameMenu = ({
             transform: "scale(0.7)",
           }}
         >
-          <GameMenu {...rest} setSettingsModalOpened={setIsSettingsModal} />
+          <GameMenu {...rest} />
         </Box>
       ) : (
         <Box
@@ -122,7 +139,7 @@ export const PositionedGameMenu = ({
             zIndex: 1000,
           }}
         >
-          <GameMenu {...rest} setSettingsModalOpened={setIsSettingsModal} />
+          <GameMenu {...rest} />
         </Box>
       )}
     </>

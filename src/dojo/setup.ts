@@ -8,7 +8,7 @@ import { GAME_ID } from "../constants/localStorage";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
-import { defineContractComponents } from "./typescript/models.gen";
+import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
@@ -58,7 +58,7 @@ export async function setup({ ...config }: DojoConfig) {
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
 
   type ClientComponentsKeys = keyof typeof clientComponents;
-  const defaultNameSpace = "jokers_of_neon-";
+  const defaultNameSpace = "jokers_of_neon_core-";
   const componentNames: string[] = [];
 
   (Object.keys(clientComponents) as ClientComponentsKeys[]).forEach((key) => {
@@ -79,13 +79,19 @@ export async function setup({ ...config }: DojoConfig) {
     const keysGame: torii.KeysClause = {
       keys: [gameID],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Game"],
+      models: ["jokers_of_neon_core-Game"],
     };
 
     const keysCard: torii.KeysClause = {
       keys: [gameID, undefined, undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon-Card"],
+      models: ["jokers_of_neon_core-Card"],
+    };
+
+    const keysMod: torii.KeysClause = {
+      keys: [undefined],
+      pattern_matching: "FixedLen",
+      models: ["jokers_of_neon_core-GameMod"],
     };
 
     const query: torii.Query = {
@@ -98,21 +104,52 @@ export async function setup({ ...config }: DojoConfig) {
             { Keys: keysClause },
             { Keys: keysGame },
             { Keys: keysCard },
+            { Keys: keysMod },
           ],
         },
       },
+      order_by: [],
       dont_include_hashed_keys: false,
+      entity_models: [],
+      entity_updated_after: 0,
     };
 
     if (gameID) {
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query);
-      sync = await syncEntities(toriiClient, contractComponents as any, []);
+      sync = await syncEntities(
+        toriiClient,
+        contractComponents as any,
+        [],
+        false
+      );
 
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
+    } else {
+      const query: torii.Query = {
+        limit: 10000,
+        offset: 0,
+        clause: {
+          Composite: {
+            operator: "Or",
+            clauses: [{ Keys: keysMod }],
+          },
+        },
+        order_by: [],
+        dont_include_hashed_keys: false,
+        entity_models: [],
+        entity_updated_after: 0,
+      };
+      await getEntities(toriiClient, contractComponents as any, query);
+      sync = await syncEntities(
+        toriiClient,
+        contractComponents as any,
+        [],
+        false
+      );
     }
   }
 

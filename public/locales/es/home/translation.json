@@ -3,7 +3,8 @@
         "slogan": "CONSTRUYE TU MAZO, DOMINA EL JUEGO",
         "btn": {
             "leaderboard-btn": "Ver leaderboard",
-            "playDemo-btn": "Jugar demo"
+            "playDemo-btn": "Jugar",
+            "start": "Comenzar"
         },
         "join-discord": "¡Únete a nuestro Discord!"
     },

@@ -1,22 +1,31 @@
+import { EventType } from "../dojo/typescript/models.gen";
 import { Suits } from "../enums/suits";
 import { Card } from "./Card";
 
 export interface PlayEvents {
   play: MultiPoints;
-  cardScore: CardScore[];
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
   detailEarned?: DetailEarned;
-  specialCards?: CardScore[];
-  levelEvent?: LevelEvent;
-  globalEvents?: LevelEvent[];
-  specialSuitEvents?: SpecialSuitEvent[];
   neonPlayEvent?: NeonPlayEvent;
-  modifierSuitEvents?: ModifierSuitEvent[];
   cards: Card[];
   score: number;
-  cashEvents?: CashEvent[];
   secondChanceEvent?: boolean;
+  powerUpEvents?: PowerUpScore[];
+  cardPlayChangeEvents?: CardPlayEvent[];
+  cardPlayScoreEvents?: CardPlayEvent[];
+  specialCardPlayScoreEvents?: CardPlayEvent[];
+}
+
+export interface CardPlayEvent {
+  hand: CardPlayEventValue[];
+  specials: CardPlayEventValue[];
+  eventType: EventType;
+}
+
+export interface CardPlayEventValue {
+  idx: number;
+  quantity: number;
 }
 
 export interface LevelPassedEvent {
@@ -33,9 +42,15 @@ export interface LevelEvent {
 export interface MultiPoints {
   multi?: number;
   points?: number;
+  negative?: boolean;
 }
 
 export interface CardScore extends MultiPoints {
+  idx: number;
+  special_idx?: number;
+}
+
+export interface PowerUpScore extends MultiPoints {
   idx: number;
   special_idx?: number;
 }
@@ -50,8 +65,17 @@ export interface SpecialSuitEvent {
   idx: number[];
 }
 
+export interface SpecialNeonCardEvent {
+  idx: number;
+  special_idx: number;
+}
+
 export interface ModifierSuitEvent {
   suit: Suits;
+  idx: number;
+}
+
+export interface ModifierNeonEvent {
   idx: number;
 }
 

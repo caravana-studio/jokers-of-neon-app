@@ -1,27 +1,22 @@
-import { Button, Tooltip } from "@chakra-ui/react";
-import { CashSymbol } from "../../../components/CashSymbol";
+import { Box, Button, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useStore } from "../../../providers/StoreProvider";
+import { CashSymbol } from "../../../components/CashSymbol";
+import { FiRefreshCw } from "react-icons/fi";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
-interface RerollButtonProps {
-  rerolled: boolean;
-  locked: boolean;
-  notEnoughCash: boolean;
-  rerollCost: number;
-  setRerolled: (value: boolean) => void;
-  isSmallScreen: boolean;
-  reroll: () => Promise<boolean>;
-}
 
-const RerollButton: React.FC<RerollButtonProps> = ({
-  rerolled,
-  locked,
-  notEnoughCash,
-  rerollCost,
-  setRerolled,
-  isSmallScreen,
-  reroll,
-}) => {
+
+const RerollButton  = () => {
   const { t } = useTranslation(["store"]);
+
+  const { isSmallScreen } = useResponsiveValues();
+
+  const { cash, locked, reroll, rerollInformation } = useStore();
+
+  const notEnoughCash = cash < rerollInformation.rerollCost;
+
+  const rerolled = rerollInformation.rerollExecuted;
   const rerollDisabled = rerolled || locked || notEnoughCash;
 
   return (
@@ -35,23 +30,29 @@ const RerollButton: React.FC<RerollButtonProps> = ({
     >
       <Button
         className="game-tutorial-step-6"
-        fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-        w={
-          isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]
-        }
-        variant={rerollDisabled ? "defaultOutline" : "solid"}
+        fontSize={isSmallScreen ? 8 : [10, 10, 10, 14, 14]}
+        w={"100%"}
+        minWidth={"90px"}
+        height={"100%"}
+        p={isSmallScreen ? "4px" : 0}
+        size={isSmallScreen ? "xs" : "md"}
+        variant={rerollDisabled ? "defaultOutline" : "secondarySolid"}
         isDisabled={rerollDisabled}
         onClick={() => {
-          reroll().then((response) => {
-            if (response) {
-              setRerolled(true);
-            }
-          });
+          reroll();
         }}
       >
+        {isSmallScreen && (
+          <Box mr={2}>
+            <FiRefreshCw />
+          </Box>
+        )}
         {t("store.labels.reroll").toUpperCase()}
-        {isSmallScreen && <br />} {rerollCost}
-        <CashSymbol />
+        {!isSmallScreen && (
+          <>
+            &nbsp;{rerollInformation.rerollCost} <CashSymbol />
+          </>
+        )}
       </Button>
     </Tooltip>
   );

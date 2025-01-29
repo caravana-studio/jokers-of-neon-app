@@ -1,38 +1,6 @@
 {
   "activated": "Activado",
   "modifierCardsData": {
-    "600": {
-      "name": "+10 Pontos",
-      "description": "A carta modificada ganhará +10 pontos adicionais"
-    },
-    "601": {
-      "name": "+20 Pontos",
-      "description": "A carta modificada ganhará +20 pontos adicionais"
-    },
-    "602": {
-      "name": "+50 Pontos",
-      "description": "A carta modificada ganhará +50 pontos adicionais"
-    },
-    "603": {
-      "name": "+100 Pontos",
-      "description": "A carta modificada ganhará +100 pontos adicionais"
-    },
-    "604": {
-      "name": "+1 multiplicador",
-      "description": "A carta modificada adicionará +1 ao multiplicador"
-    },
-    "605": {
-      "name": "+2 multiplicador",
-      "description": "A carta modificada adicionará +2 ao multiplicador"
-    },
-    "606": {
-      "name": "+5 multiplicador",
-      "description": "A carta modificada adicionará +5 ao multiplicador"
-    },
-    "607": {
-      "name": "+10 multiplicador",
-      "description": "A carta modificada adicionará +10 ao multiplicador"
-    },
     "608": {
       "name": "Mudar para Paus",
       "description": "A carta modificada será considerada como uma carta de Paus"
@@ -48,7 +16,16 @@
     "611": {
       "name": "Mudar para Espadas",
       "description": "A carta modificada será considerada como uma carta de Espadas"
+    },
+    "612": {
+      "name": "Mudar para Neon",
+      "description": "A carta modificada será considerada como uma carta de Neon"
+    },
+    "613": {
+      "name": "Mudar para Coringa",
+      "description": "A carta modificada será considerada como uma carta de Coringa"
     }
+    
   },
   "specialCardsData": {
     "300": {
@@ -92,12 +69,12 @@
       "description": "A mão de Flush pode ser feita com 4 cartas"
     },
     "310": {
-      "name": "Impulsionador de Coringa",
-      "description": "Todos os Coringas jogados marcam pontos e multiplicador em dobro"
+      "name": "Impulsionador de Joker",
+      "description": "Todos os Jokers jogados marcam pontos e multiplicador em dobro"
     },
     "311": {
-      "name": "Impulsionador de Modificadores",
-      "description": "Todas as cartas de MODIFICADOR jogadas marcam pontos e multiplicador em dobro"
+      "name": "Impulsionador de Power-ups",
+      "description": "Todos os Power-ups jogados marcam pontos e multiplicador em dobro"
     },
     "312": {
       "name": "Impulsionador de Figuras",
@@ -105,7 +82,7 @@
     },
     "313": {
       "name": "Ases Multiplicados",
-      "description": "Adiciona +3 ao multiplicador para cada carta de Ás jogada"
+      "description": "Adiciona +5 ao multiplicador para cada carta de Ás jogada"
     },
     "314": {
       "name": "O amor está no ar",
@@ -125,7 +102,7 @@
     },
     "318": {
       "name": "Bônus Neon",
-      "description": "Todas as cartas Neon ganham +20 pontos"
+      "description": "Todas as cartas Neon ganham +20 pontos. As jogadas Neon são níveladas em 2 níveis adicionais."
     },
     "319": {
       "name": "Prazo final",
@@ -193,7 +170,7 @@
     },
     "340": {
       "name": "Duques Selvagens",
-      "description": "Todos os 2s são considerados coringas"
+      "description": "Todos os 2s são considerados jokers"
     },
     "341": {
       "name": "Compra Imortal",
@@ -218,6 +195,56 @@
     "346": {
       "name": "Impulsionador de Quinteto",
       "description": "Aprimora a mão Quinteto em 4 níveis"
+    },
+    "347": {
+      "name": "Dado de Copas",
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Copas."
+    },
+    "348": {
+      "name": "Dado de Paus",
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Paus."
+    },
+    "349": {
+      "name": "Dado de Ouros",
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Ouros."
+    },
+    "350": {
+      "name": "Dado de Espadas",
+      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Espadas."
+    }
+  },
+  "powerUpsData": {
+    "800": {
+      "name": "+25 Pontos",
+      "description": "Pontuação adicional de +25"
+    },
+    "801": {
+      "name": "+50 Pontos",
+      "description": "Pontuação adicional de +50"
+    },
+    "802": {
+      "name": "+75 Pontos",
+      "description": "Pontuação adicional de +75"
+    },
+    "803": {
+      "name": "+100 Pontos",
+      "description": "Pontuação adicional de +100"
+    },
+    "804": {
+      "name": "+3 multi",
+      "description": "Adiciona +3 ao multi"
+    },
+    "805": {
+      "name": "+5 multi",
+      "description": "Adiciona +5 ao multi"
+    },
+    "806": {
+      "name": "+7 multi",
+      "description": "Adiciona +7 ao multi"
+    },
+    "807": {
+      "name": "+10 multi",
+      "description": "Adiciona +10 ao multi"
     }
   }
 }

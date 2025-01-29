@@ -13,10 +13,12 @@ import { PlayButton } from "./PlayButton.tsx";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
 export const PreselectedCardsSection = ({
   isTutorialRunning = false,
+  onTutorialCardClick,
 }: PreselectedCardsProps) => {
   const {
     preSelectedCards,
@@ -47,8 +49,11 @@ export const PreselectedCardsSection = ({
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Box className="game-tutorial-step-3">
-          <DiscardButton highlight={isTutorialRunning} />
+        <Box className="game-tutorial-step-3" width="200px">
+          <DiscardButton
+            highlight={isTutorialRunning}
+            onTutorialCardClick={onTutorialCardClick}
+          />
         </Box>
 
         <Box
@@ -96,8 +101,11 @@ export const PreselectedCardsSection = ({
             })}
           </Flex>
         </Box>
-        <Box className="game-tutorial-step-4">
-          <PlayButton highlight={isTutorialRunning} />
+        <Box className="game-tutorial-step-4" width="200px">
+          <PlayButton
+            highlight={isTutorialRunning}
+            onTutorialCardClick={onTutorialCardClick}
+          />
         </Box>
       </Flex>
       <CurrentPlay />

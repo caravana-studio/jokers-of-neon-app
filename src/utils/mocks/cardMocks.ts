@@ -64,4 +64,8 @@ export const SA: Card = { value: Cards.ACE, suit: Suits.SPADES, img: "51.png", i
 
 // Jokers
 export const JOKER1: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "52.png", id: "52", idx: 52 , card_id:52 };
-export const JOKER2: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "53.png", id: "53", idx: 53 , card_id:53 };
+export const JOKER2: Card = { value: Cards.JOKER, suit: Suits.JOKER, img: "252.png", id: "53", idx: 252 , card_id:252 };
+
+// Neon
+export const S6N: Card = { value: Cards.SIX, suit: Suits.SPADES, img: "243.png", id: "243", idx: 243 , card_id:243, isNeon: true };
+export const D8N: Card = { value: Cards.EIGHT, suit: Suits.SPADES, img: "219.png", id: "219", idx: 219 , card_id:219, isNeon: true };

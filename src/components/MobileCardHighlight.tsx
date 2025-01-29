@@ -1,15 +1,16 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { useEffect } from "react";
 import { CardTypes } from "../enums/cardTypes";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
-import CachedImage from "./CachedImage";
+import { CardImage3D } from "./CardImage3D";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { TemporalBadge } from "./TiltCard";
-import { useTranslation } from "react-i18next";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -47,11 +48,23 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
 
   const getLabel = () => {
     if (type === CardTypes.MODIFIER) {
-      return loading ? t('game.card-highlight.buttons.changing') : t('game.card-highlight.buttons.change');
+      return loading
+        ? t("game.card-highlight.buttons.changing")
+        : t("game.card-highlight.buttons.change");
     } else if (type === CardTypes.SPECIAL) {
-      return loading ? t('game.card-highlight.buttons.removing') : t('game.card-highlight.buttons.remove');
+      return loading
+        ? t("game.card-highlight.buttons.removing")
+        : t("game.card-highlight.buttons.remove");
     }
   };
+
+  const [opacity, setOpacity] = useState(0);
+  const [scale, setScale] = useState(0.8);
+
+  useEffect(() => {
+    setOpacity(1);
+    setScale(1);
+  }, []);
 
   return (
     <Flex
@@ -60,7 +73,9 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       left={0}
       width={"100%"}
       height={"100%"}
-      zIndex={1000}
+      zIndex={1100}
+      opacity={opacity}
+      transition="opacity 0.5s ease"
       justifyContent={"center"}
       alignItems={"center"}
       flexDirection={"column"}
@@ -95,23 +110,18 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
           - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
-      <Box width={"60%"} position={"relative"}>
-        <CachedImage
-          borderRadius={"20px"}
-          boxShadow={"0px 0px 20px 2px white, inset 0px 0px 20px 5px white"}
-          src={`Cards/big/${card.img}`}
-          alt={`Card: ${name}`}
-          width={"100%"}
-        />
-        {card.temporary && card.remaining && (
-          <TemporalBadge remaining={card.remaining} scale={1.6} />
-        )}
+      <Box
+        width={"60%"}
+        position={"relative"}
+        transform={`scale(${scale})`}
+        transition="all 0.5s ease"
+      >
+        <CardImage3D card={card} />
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
-      {(type === CardTypes.MODIFIER ||
-        type === CardTypes.SPECIAL) && (
+      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) && (
         <Button
           isDisabled={loading}
           onClick={handleClick}

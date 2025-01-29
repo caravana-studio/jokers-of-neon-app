@@ -1,14 +1,18 @@
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useGame } from "../../dojo/queries/useGame";
 import { useGameContext } from "../../providers/GameProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { ButtonContainer } from "./ButtonContainer";
+import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface DiscardButtonProps {
   highlight?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
-export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
+export const DiscardButton = ({
+  highlight = false,
+  onTutorialCardClick,
+}: DiscardButtonProps) => {
   const { preSelectedCards, discard, preSelectionLocked, discards } =
     useGameContext();
 
@@ -20,43 +24,37 @@ export const DiscardButton = ({ highlight = false }: DiscardButtonProps) => {
       discards === 0);
 
   const { t } = useTranslation(["game"]);
-  const { isSmallScreen } = useResponsiveValues();
+  const game = useGame();
 
   return (
-    <ButtonContainer>
+    <Flex flexDir="column" w="100%" gap={[3, 4]}>
       <Button
-        width={["48%", "48%", "150px"]}
+        width={"100%"}
         onClick={() => {
+          if (onTutorialCardClick) onTutorialCardClick();
           discard();
+        }}
+        sx={{
+          _disabled: {
+            opacity: 1,
+          },
         }}
         variant={cantDiscard ? "defaultOutline" : "solid"}
         isDisabled={cantDiscard}
         className="game-tutorial-step-3"
+        height={["30px", "32px"]}
+        borderRadius="12px"
       >
-        {isSmallScreen ? (
-          <Box>
-            <Text fontFamily="Orbitron" fontSize={16} height={"16px"}>
-              {t("game.preselected-cards-section.discard-btn-lbl.discard")}
-            </Text>
-            <Heading mt={1} fontSize={9}>
-              {t("game.preselected-cards-section.discard-btn-lbl.left", {
-                discards: discards,
-              })}
-            </Heading>
-          </Box>
-        ) : (
-          t(
-            "game.preselected-cards-section.discard-btn-lbl.discard"
-          ).toUpperCase()
-        )}
-      </Button>
-      {!isSmallScreen && (
-        <Text size="l" textAlign={"center"}>
-          {t("game.preselected-cards-section.discard-btn-lbl.left", {
-            discards: discards,
-          })}
+        <Text fontFamily="Orbitron" fontSize={[14, 16]}>
+          {t("game.preselected-cards-section.discard-btn-lbl.discard")}
         </Text>
-      )}
-    </ButtonContainer>
+      </Button>
+      <PlayDiscardIndicators
+        disabled={cantDiscard}
+        type="discard"
+        total={game?.discards ?? 5}
+        active={discards}
+      />
+    </Flex>
   );
 };

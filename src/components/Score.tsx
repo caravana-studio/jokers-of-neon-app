@@ -16,7 +16,7 @@ export const Score = () => {
       whiteSpace="nowrap"
       className="game-tutorial-step-7"
     >
-      {t('game.score')} <RollingNumber className="italic" n={score} />
+      {t("game.score")} <RollingNumber className="italic" n={score} />
     </Heading>
   );
 };

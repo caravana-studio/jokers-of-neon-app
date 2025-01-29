@@ -1,12 +1,14 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { InformationIcon } from "../../components/InformationIcon";
 import { TiltCard } from "../../components/TiltCard";
-import { useStore } from "../../providers/StoreProvider";
+import { GREY_LINE } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { preloadImages } from "../../utils/preloadImages";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface CardsRowProps {
   title: string;
@@ -19,7 +21,6 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const { isPurchased } = useStore();
   const imageUrls = useMemo(() => {
     return cards.map((card) => {
       return card.isSpecial || card.isModifier
@@ -28,20 +29,15 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     });
   }, [cards]);
 
+  const { t } = useTranslation(["store"]);
+
   const { isSmallScreen, cardScale, isCardScaleCalculated } =
     useResponsiveValues();
 
   const adjustedScale = isSmallScreen
-    ? cardScale
+    ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
 
-  useEffect(() => {
-    preloadImages(imageUrls)
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error preloading card images:", error);
-      });
-  }, [imageUrls]);
 
   if (!isCardScaleCalculated) {
     return null;
@@ -49,15 +45,18 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
   return (
     <>
-      <Box mb={8}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading
-            size={{ base: "s", sm: "xs" }}
-            mb={[1, 1, 1, 2, 2]}
-            fontWeight={"400"}
-          >
-            {title}
-          </Heading>
+      <Flex flexDir="column" gap={1.5} width={"100%"}>
+        <Flex
+          justifyContent={isSmallScreen ? "space-between" : "flex-start"}
+          alignItems="center"
+        >
+          <Flex alignItems={"center"} gap={2}>
+            <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
+              {t("store.titles." + title)}
+            </Heading>
+            <InformationIcon title={title} />
+          </Flex>
+
           {button && (
             <Button
               variant="outline"
@@ -71,21 +70,26 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
 
         <Flex
           flexDirection="row"
-          justifyContent="flex-start"
-          wrap={"wrap"}
+          justifyContent={isSmallScreen ? "space-around" : "initial"}
+          wrap={"nowrap"}
+          width={"100%"}
           gap={[2, 4, 6]}
           rowGap={4}
+          backgroundColor={isSmallScreen ? "rgba(0,0,0,0.45)" : "transparent"}
+          p={isSmallScreen ? 4 : 0}
+          py={isSmallScreen ? 4 : 2}
+          borderRadius={"10px"}
+          boxShadow={isSmallScreen ? `0px 0px 6px 0px ${GREY_LINE}` : "0px"}
         >
           {cards.map((card) => {
-            const purchased = isPurchased(card);
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
                 <TiltCard
                   cursor="pointer"
                   scale={adjustedScale}
-                  card={{ ...card, purchased }}
+                  card={card}
                   onClick={() => {
-                    if (!isPurchased(card)) {
+                    if (!card.purchased) {
                       navigate("/preview/card", {
                         state: { card: card },
                       });
@@ -96,7 +100,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             );
           })}
         </Flex>
-      </Box>
+      </Flex>
     </>
   );
 };

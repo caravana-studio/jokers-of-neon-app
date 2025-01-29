@@ -1,22 +1,37 @@
 {
+  "information": {
+    "reroll": "Actualiza todos los objetos disponibles en la tienda. Solo se puede usar una vez por tienda.",
+    "special": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
+    "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
+    "traditional": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
+    "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
+    "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
+    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles."
+  },
   "store": {
     "labels": {
       "reroll": "Actualizar",
       "see-my": "Cartas",
       "special-cards": "especiales",
+      "full-deck": "Mazo completo",
       "go-to": "Ir al",
-      "next-level": "Siguiente nivel",
+      "next-level": "Siguiente",
       "purchased": "Comprado",
-      "coins": "Monedas:"
+      "coins": "Monedas:",
+      "cards": "Cartas",
+      "loot-boxes": "Cajas",
+      "utilities": "Utilidades",
+      "no-coins": "Monedas insuficientes"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "improve-plays": "Mejora tus manos",
+      "improve-plays": "Mejora tus manos de póker",
       "my-special-cards": "Mis especiales",
-      "packs": "Paquetes"
+      "packs": "Paquetes",
+      "powerups": "Power-ups"
     },
     "tooltip": {
       "reroll-default": "Actualizar items",
@@ -31,31 +46,37 @@
       "purchased": "Comprado"
     },
     "preview-card": {
-      "slot-title": "Espacio para cartas especiales",
+      "temporal": "TEMPORAL",
+      "permanent": "PERMANENTE",
+      "slot-title": "Espacio especial",
       "slot-description": "Desbloquear un nuevo espacio para cartas especiales",
       "title": {
         "card-type": "Tipo:",
         "description": "Descripción:",
         "details": "Detalles:",
-        "price": "Precio:"
+        "price": "Precio:",
+        "temporal-price": "Precio temporal:"
       },
       "tooltip": {
-        "no-coins": "No tienes suficientes monedas para comprar este artículo"
+        "no-coins": "Monedas insuficientes",
+        "no-space": "No tienes espacios disponibles para comprar esta carta especial.",
+        "no-space-power-ups": "No tienes espacios disponibles para comprar este power-up."
       },
       "labels": {
         "buy": "Comprar",
+        "buy-temporal": "Comprar temporal",
         "special": "Especial",
         "modifier": "Modificadora",
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
         "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
-        "tooltip": {
-          "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales."
-        }
+        "power-up": "Power-up"
       }
     },
     "packs": {
+      "offering-rates": "Tasas de aparición",
+      "size": "Tamaño: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
@@ -67,12 +88,16 @@
         "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
         "tooltip": {
           "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
-          "no-coins": "No tienes suficientes monedas para comprar este item"
+          "no-coins": "Monedas insuficientes"
         }
       }
     },
     "special-slot": {
       "tooltip": "Desbloquea un nuevo espacio para cartas especiales"
+    },
+    "burn-item": {
+      "title": "Quemar carta",
+      "tooltip": "Elimina una carta de tu mazo"
     }
   }
 }

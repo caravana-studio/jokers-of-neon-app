@@ -93,13 +93,36 @@
         "hand-head": "Hand",
         "points-multi-head": "Points/Multi"
       }
+    },
+    "deck": {
+      "tooltip": "See my deck",
+      "title": "My full deck",
+      "filter-title": "Filter by",
+      "suit": {
+        "club": "Club",
+        "spade": "Spade",
+        "heart": "Heart",
+        "diamond": "Diamond",
+        "neon": "Neon",
+        "modifier": "Modifier"
+      },
+      "btns": {
+        "special-cards": "See special cards",
+        "back": "Back to game",
+        "burn": "Burn card"
+      },
+      "tabs": {
+        "full-deck": "Full deck",
+        "plays": "Plays"
+      },
+      "no-cards": "No cards matching your selected filters."
     }
   },
   "confirmation-modal": {
     "confirm": "Confirm",
     "close": "Close"
   },
-  "points":"points",
+  "points": "points",
   "settings-modal": {
     "title": "Settings",
     "language": "Language",
@@ -111,5 +134,18 @@
       "fast": "Fast",
       "fastest": "Fastest"
     }
+  },
+  "animations": {
+    "labels": {
+      "level": "LEVEL",
+      "head": "HAND LEVELED UP"
+    }
+  },
+  "rage-cards": {
+    "no-cards": "On rage rounds, you will see the rage cards here"
+  },
+  "specials-box": {
+    "specials-tooltip": "Special cards",
+    "rage-tooltip": "Rage cards"
   }
 }

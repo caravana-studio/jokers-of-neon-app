@@ -2,6 +2,8 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import { BurnItem } from "./BurnItem.tsx";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
@@ -9,26 +11,15 @@ import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
+import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
-import useStoreContent from "./UseStoreContent.ts";
+import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
-  const {
-    rerollCost,
-    notEnoughCash,
-    rerolled,
-    setRerolled,
-    setLoading,
-    specialCards,
-    skipShop,
-    setRun,
-    reroll,
-    locked,
-    shopItems,
-    onShopSkip,
-    gameId,
-    setHand,
-  } = useStoreContent();
+  const { setRun, specialCards, commonCards, modifierCards, powerUps } =
+    useStore();
+  // specialCards[specialCards.length - 1].img = "355.png";
+  // specialCards[specialCards.length - 1].card_id = 355;
 
   const { t } = useTranslation(["store"]);
 
@@ -72,7 +63,7 @@ export const StoreContent = () => {
             </Heading>
             <LootBoxes />
             <Flex mt={8}>
-              <LevelUpTable shopItems={shopItems} isSmallScreen={false} />
+              <LevelUpTable />
             </Flex>
           </Box>
           <Box
@@ -85,27 +76,25 @@ export const StoreContent = () => {
             gap={6}
           >
             <Box className="game-tutorial-step-3">
-              {shopItems.commonCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.commonCards}
-                  title={t("store.titles.traditional")}
-                />
+              {commonCards.length > 0 && (
+                <StoreCardsRow cards={commonCards} title={"traditional"} />
               )}
             </Box>
-            <Box className="game-tutorial-step-4">
-              {shopItems.modifierCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.modifierCards}
-                  title={t("store.titles.modifiers")}
-                />
+            <Flex gap={4} w="100%">
+              {modifierCards.length > 0 && (
+                <Box w="70%" className="game-tutorial-step-4">
+                  <StoreCardsRow cards={modifierCards} title={"modifiers"} />
+                </Box>
               )}
-            </Box>
-            <Box className="game-tutorial-step-5">
-              {shopItems.specialCards.length > 0 && (
-                <StoreCardsRow
-                  cards={shopItems.specialCards}
-                  title={t("store.titles.special")}
-                />
+              {powerUps.length > 0 && (
+                <Box w="30%" className="game-tutorial-step-4">
+                  <StorePowerUpsRow />
+                </Box>
+              )}
+            </Flex>
+            <Box className="game-tutorial-step-5" mb={4}>
+              {specialCards.length > 0 && (
+                <StoreCardsRow cards={specialCards} title={"special"} />
               )}
             </Box>
           </Box>
@@ -115,36 +104,21 @@ export const StoreContent = () => {
             w={"20%"}
             h={"100%"}
             justifyContent={"space-between"}
-            gap={10}
             px={0}
             pr={"2%"}
           >
             <>
-              <NextLevelButton
-                setLoading={setLoading}
-                onShopSkip={onShopSkip}
-                skipShop={skipShop}
-                gameId={gameId}
-                setHand={setHand}
-                locked={false}
-                isSmallScreen={false}
-              />
-              <SpecialSlotItem />
+              <NextLevelButton isSmallScreen={false} />
+              <Flex flexDirection={"row"} gap={10}>
+                <SpecialSlotItem />
+                <BurnItem />
+              </Flex>
+
               <Flex flexDirection="column" gap={14}>
-                <RerollButton
-                  rerolled={rerolled}
-                  locked={locked}
-                  notEnoughCash={notEnoughCash}
-                  rerollCost={rerollCost}
-                  setRerolled={setRerolled}
-                  isSmallScreen={false}
-                  reroll={reroll}
-                />
-                <SpecialsButton
-                  specialCards={specialCards}
-                  isSmallScreen={false}
-                />
-                <Coins rolling />
+                <RerollButton />
+                <SpecialsButton isSmallScreen={false} />
+                <SeeFullDeckButton isSmallScreen={false} />
+                <Coins />
               </Flex>
             </>
           </Box>

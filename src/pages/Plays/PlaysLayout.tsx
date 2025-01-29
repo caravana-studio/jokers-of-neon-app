@@ -1,6 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Background } from "../../components/Background";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { PositionedGameMenu } from "../../components/GameMenu";
@@ -11,6 +11,8 @@ export const PlaysLayout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
+  const { state } = useLocation();
+  const isTutorial = state?.isTutorial;
 
   return (
     <Background type="game" dark bgDecoration>
@@ -43,7 +45,9 @@ export const PlaysLayout = () => {
           size="md"
           variant="solid"
           onClick={() =>
-            navigate("/demo", { state: { skipRageAnimation: true } })
+            isTutorial
+              ? navigate(-1)
+              : navigate("/demo", { state: { skipRageAnimation: true } })
           }
         >
           {t("game.plays.go-back-btn")}

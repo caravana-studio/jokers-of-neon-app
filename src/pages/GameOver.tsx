@@ -1,9 +1,9 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Background } from "../components/Background";
 import { DiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -18,19 +18,19 @@ import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 const GAME_URL = "https://jokersofneon.com";
 
 export const GameOver = () => {
-  const navigate = useNavigate();
-
   const params = useParams();
 
   const gameId = Number(params.gameId);
 
-  const { restartGame, setIsRageRound } = useGameContext();
+  const { restartGame, setIsRageRound, executeCreateGame } = useGameContext();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard();
+  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
   const { t } = useTranslation(["intermediate-screens"]);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   let congratulationsMsj = "";
 
@@ -95,11 +95,13 @@ export const GameOver = () => {
             <Button
               width={"50%"}
               variant="secondarySolid"
+              isDisabled={isLoading}
               onClick={() => {
+                setIsLoading(true);
                 localStorage.removeItem(GAME_ID);
                 restartGame();
                 stopLooseSound();
-                navigate("/demo");
+                executeCreateGame();
               }}
             >
               {t("game-over.btn.gameOver-newGame-btn")}

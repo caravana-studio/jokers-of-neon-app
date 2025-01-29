@@ -1,22 +1,37 @@
 import { useEffect, useMemo, useState } from "react";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
+import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import { useRound } from "../dojo/queries/useRound";
-import { LevelPokerHand } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo";
+import { decodeString } from "../dojo/utils/decodeString";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
+import { LevelPokerHand } from "../types/LevelPokerHand";
+import { PowerUp } from "../types/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
 
 export const useGameState = () => {
+  const {
+    setup: {
+      client,
+      account: { account },
+    },
+  } = useDojo();
+
   const [gameId, setGameId] = useState<number>(getLSGameId());
+
   const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [points, setPoints] = useState(0);
@@ -43,7 +58,32 @@ export const useGameState = () => {
   const [isRageRound, setIsRageRound] = useState(false);
   const [rageCards, setRageCards] = useState<Card[]>([]);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
-  const [destroyedSpecialCardId, setDestroyedSpecialCardId] = useState<number>();
+  const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
+    useState<number>();
+  const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
+
+  const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
+
+  const [powerUps, setPowerUps] = useState<(PowerUp | null)[]>([]);
+  const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
+  const [maxSpecialCards, setMaxSpecialCards] = useState(0);
+  const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
+
+  const fetchGameConfig = async () => {
+    if (game?.mod_id) {
+      const gameConfig = await getGameConfig(client, game.mod_id);
+      if (gameConfig) {
+        setMaxSpecialCards(gameConfig.maxSpecialCards);
+        setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
+      }
+    }
+  };
+
+  const game = useGame();
+  
+  useEffect(() => {
+    fetchGameConfig();
+  }, [game?.mod_id]);
 
   const sortBy: SortBy = useMemo(
     () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
@@ -52,25 +92,48 @@ export const useGameState = () => {
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
   const round = useRound();
-  const game = useGame();
+
+  const [modId, setModId] = useState<string>(
+    game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
+  );
+
+  const isClassic = modId === CLASSIC_MOD_ID;
 
   const dojoHand = useCurrentHand(sortBy);
-  const {
-    setup: {
-      client,
-      account: { account }
-    },
-  } = useDojo();
+
+  const dojoPowerUps = useGamePowerUps();
+
+  const removePowerUp = (idx: number) => {
+    setPowerUps((prev) => {
+      const newPowerUps = [
+        ...prev.filter((powerUp: PowerUp | null) => powerUp?.idx !== idx),
+        null,
+      ];
+
+      return newPowerUps;
+    });
+  };
+
+  const addPowerUp = (powerUp: PowerUp) => {
+    setPowerUps((prev) => {
+      const newPowerUps = [...prev, powerUp];
+      return newPowerUps;
+    });
+  };
 
   useEffect(() => {
-    if (client && account && plays.length == 0) {
-      getPlayerPokerHands(client, gameId).then((plays: any)=> {
-        if(plays!= undefined)
-          setPlays(plays);
-      })
+    if (client && account) {
+      getPlayerPokerHands(client, gameId).then((plays: any) => {
+        if (plays != undefined) setPlays(plays);
+      });
     }
-  }, [client, account, gameId, plays]);
+  }, [client, account, gameId, game?.level]);
 
+  useEffect(() => {
+    if (modId && !isClassic) {
+      fetchAndMergeSpecialCardsData(modId);
+    }
+  }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
@@ -98,10 +161,18 @@ export const useGameState = () => {
     }
   }, [dojoHand]);
 
+  useEffect(() => {
+    if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
+      setPowerUps(dojoPowerUps);
+    }
+  }, [dojoPowerUps]);
+
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
-    const multi = typeof playerPokerHand.multi === 'number' ? playerPokerHand.multi : 0;
-    const points = typeof playerPokerHand.points === 'number' ? playerPokerHand.points : 0;
+    const multi =
+      typeof playerPokerHand.multi === "number" ? playerPokerHand.multi : 0;
+    const points =
+      typeof playerPokerHand.points === "number" ? playerPokerHand.points : 0;
     setMulti(multi);
     setPoints(points);
   };
@@ -116,13 +187,28 @@ export const useGameState = () => {
       );
       setPreSelectedPlay(play);
       if (plays?.length != 0) {
-          setMultiAndPoints(play);
-      } 
+        setMultiAndPoints(play);
+      }
     } else {
       setPreSelectedPlay(Plays.NONE);
       resetMultiPoints();
     }
   }, [preSelectedCards, preSelectedModifiers]);
+
+  const toggleSpecialSwitcher = () => {
+    setSpecialSwitcherOn(!specialSwitcherOn);
+  };
+  const showRages = () => {
+    setSpecialSwitcherOn(false);
+  };
+  const showSpecials = () => {
+    setSpecialSwitcherOn(true);
+  };
+
+  const resetPowerUps = () => {
+    setPowerUps([null, null, null, null]);
+    setPreselectedPowerUps([]);
+  };
 
   return {
     gameId,
@@ -171,5 +257,23 @@ export const useGameState = () => {
     setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    levelUpHand,
+    setLevelUpHand,
+    specialSwitcherOn,
+    toggleSpecialSwitcher,
+    showRages,
+    showSpecials,
+    powerUps,
+    removePowerUp,
+    preselectedPowerUps,
+    setPreselectedPowerUps,
+    resetPowerUps,
+    setPowerUps,
+    addPowerUp,
+    modId,
+    setModId,
+    maxSpecialCards,
+    maxPowerUpSlots,
+    isClassic,
   };
 };

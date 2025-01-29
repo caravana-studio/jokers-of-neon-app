@@ -1,22 +1,37 @@
 {
+  "information": {
+    "reroll": "Atualiza todos os itens disponíveis na loja atual. Pode ser usado apenas uma vez por loja.",
+    "special": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 níveis.",
+    "modifiers": "As cartas modificadoras concedem efeitos únicos a cartas individuais, aprimorando suas habilidades.",
+    "traditional": "As cartas tradicionais são a base do jogo, usadas para formar mãos de pôquer e avançar pelos níveis. As cartas neon são uma variante aprimorada que oferecem o dobro de pontos e um multiplicador adicional de +1, tornando-as muito valiosas.",
+    "power-ups": "Os power-ups são itens consumíveis que melhoram suas jogadas, aumentando pontos ou multiplicadores.",
+    "permanent": "As cartas permanentes permanecem com você até que decida removê-las.",
+    "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis."
+  },
   "store": {
     "labels": {
       "reroll": "Reembaralhar",
       "see-my": "Ver meus",
       "special-cards": "Cartas especiais",
+      "full-deck": "Baralho completo",
       "go-to": "Ir para",
-      "next-level": "Próximo nível",
+      "next-level": "Próximo",
       "purchased": "Comprado",
-      "coins": "Moedas:"
+      "coins": "Moedas:",
+      "cards": "Cartas",
+      "loot-boxes": "Caixas",
+      "utilities": "Utilidades",
+      "no-coins": "Moedas insuficientes"
     },
     "titles": {
       "level-game": "Aprimore seu jogo",
       "traditional": "cartas tradicionais e neon",
       "modifiers": "cartas modificadoras",
       "special": "cartas especiais",
-      "improve-plays": "Melhore suas jogadas",
+      "improve-plays": "Melhore suas mãos de pôquer",
       "my-special-cards": "Minhas cartas especiais",
-      "packs": "Pacotes"
+      "packs": "Pacotes",
+      "powerups": "Power-ups"
     },
     "tooltip": {
       "reroll-default": "Atualizar itens disponíveis",
@@ -31,31 +46,37 @@
       "purchased": "Comprado"
     },
     "preview-card": {
-      "slot-title": "Slot para cartas especiais",
+      "temporal": "TEMPORÁRIO",
+      "permanent": "PERMANENTE",
+      "slot-title": "Slot especial",
       "slot-description": "Desbloqueie um novo slot para cartas especiais",
       "title": {
         "card-type": "Tipo de carta:",
         "description": "Descrição:",
         "details": "Detalhes:",
-        "price": "Preço:"
+        "price": "Preço:",
+        "temporal-price": "Preço temporário:"
       },
       "tooltip": {
-        "no-coins": "Você não tem moedas suficientes para comprar este item"
+        "no-coins": "Moedas insuficientes",
+        "no-space": "Você não tem slots disponíveis suficientes para outra carta especial.",
+        "no-space-power-ups": "Você não tem slots disponíveis suficientes para outro power-up."
       },
       "labels": {
         "buy": "Comprar",
+        "buy-temporal": "Comprar temporário",
         "special": "Especial",
         "modifier": "Modificador",
         "traditional": "Tradicional",
         "temporary": "Temporário",
         "close": "Fechar",
         "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
-        "tooltip": {
-          "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta"
-        }
+        "power-up": "Power-up"
       }
     },
     "packs": {
+      "offering-rates": "Probabilidades de aparição",
+      "size": "Tamanho: {{size}}",
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecione as cartas que deseja manter",
       "select-all-lbl": "Selecionar tudo",
@@ -67,12 +88,16 @@
         "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
         "tooltip": {
           "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
-          "no-coins": "Você não tem moedas suficientes para comprar este item"
+          "no-coins": "Moedas insuficientes"
         }
       }
     },
     "special-slot": {
       "tooltip": "Desbloqueie um novo slot para cartas especiais"
+    },
+    "burn-item": {
+      "title": "Queimar carta",
+      "tooltip": "Remove uma carta do seu baralho"
     }
   }
 }

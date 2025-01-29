@@ -7,7 +7,7 @@ export const getCardFromCardId = (cardId: number, index: number) => {
     isModifier: cardType === CardTypes.MODIFIER,
     isSpecial: cardType === CardTypes.SPECIAL,
     card_id: cardId,
-    id: cardId.toString() ?? "",
+    id: cardId?.toString() ?? "",
     idx: index,
     img: `${cardId}.png`,
   };

@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
-import useStoreContent from "./UseStoreContent.ts";
 import { Loading } from "../../components/Loading.tsx";
 
 import {
@@ -20,13 +19,14 @@ import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const { loading, setRun, run } = useStoreContent();
-
   const { gameId, setIsRageRound } = useGameContext();
   const game = useGame();
   const state = game?.state;
-  const { lockRedirection } = useStore();
+  const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
+
+  const location = useLocation();
+  const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
   useEffect(() => {
     setIsRageRound(false);
@@ -39,7 +39,7 @@ export const Store = () => {
       } else if (game?.state === "IN_GAME") {
         navigate("/demo");
       } else if (game?.state === "OPEN_BLISTER_PACK") {
-        navigate("/open-pack");
+        navigate("/open-loot-box");
       }
     }
   }, [game?.state, lockRedirection]);
@@ -94,7 +94,11 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {isSmallScreen ? <StoreContentMobile /> : <StoreContent />}
+      {isSmallScreen ? (
+        <StoreContentMobile lastIndexTab={lastTabIndex} />
+      ) : (
+        <StoreContent />
+      )}
     </Background>
   );
 };

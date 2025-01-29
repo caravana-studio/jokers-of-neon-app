@@ -1,7 +1,7 @@
 {
   "error": {
     "labels": {
-      "error-msj": "Error al crear el juego",
+      "error-msj": "Error al crear un juego",
       "label-error-btn": "CREAR NUEVO JUEGO"
     }
   },
@@ -93,13 +93,37 @@
         "hand-head": "Mano",
         "points-multi-head": "Puntos/Multi"
       }
-    }
+    },
+    "deck": {
+      "tooltip": "Ver mazo",
+      "title": "Mi mazo",
+      "filter-title": "Filtrar por",
+      "suit": {
+        "club": "Trébol",
+        "spade": "Pica",
+        "heart": "Corazón",
+        "diamond": "Diamante",
+        "neon": "Neón",
+        "modifier": "Modificadora"
+      },
+      "btns": {
+        "special-cards": "Ver cartas especiales",
+        "back": "Volver al juego",
+        "burn": "Quemar carta"
+      },
+      "tabs": {
+        "full-deck": "Mazo",
+        "plays": "Jugadas"
+      }
+    },
+    
+    "no-cards": "No hay cartas que coincidan con los filtros seleccionados."
   },
   "confirmation-modal": {
     "confirm": "Confirmar",
     "close": "Cerrar"
   },
-  "points":"puntos",
+  "points": "puntos",
   "settings-modal": {
     "title": "Configuración",
     "language": "Idioma",
@@ -111,5 +135,18 @@
       "fast": "Rápido",
       "fastest": "Más rápido"
     }
+  },
+  "animations": {
+    "labels": {
+      "level": "NIVEL",
+      "head": "MANO MEJORADA"
+    }
+  },
+  "rage-cards": {
+    "no-cards": "En los rondas de rage, verás las cartas de rage aquí"
+  },
+  "specials-box": {
+    "specials-tooltip": "Cartas especiales",
+    "rage-tooltip": "Cartas rage"
   }
 }

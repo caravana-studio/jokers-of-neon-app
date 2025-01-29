@@ -1,12 +1,6 @@
-import {
-  Box,
-  Heading,
-  SystemStyleObject,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Box, Heading, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { Tilt } from "react-tilt";
+import Tilt from "react-parallax-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
@@ -14,19 +8,22 @@ import {
   TILT_OPTIONS,
 } from "../constants/visualProps";
 
-import ClockIcon from "../assets/clock.svg?component";
+import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
+import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
-import { getTemporalCardText } from "../utils/getTemporalCardText.ts";
+import { getCardData } from "../utils/getCardData.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
+import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
-import { HoloEffect } from "./HoloEffect.tsx";
-import { CashSymbol } from "./CashSymbol.tsx";
-import { useTranslation } from "react-i18next";
 import { PriceBox } from "./PriceBox.tsx";
+import { TemporalBadge } from "./TemporalBadge.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -34,8 +31,10 @@ interface ICardProps {
   onClick?: () => void;
   cursor?: string;
   isPack?: boolean;
-  isHolographic?: boolean;
   scale?: number;
+  className?: string;
+  used?: boolean;
+  onDeck?: boolean;
 }
 
 export const TiltCard = ({
@@ -43,19 +42,42 @@ export const TiltCard = ({
   onClick,
   cursor,
   isPack = false,
-  isHolographic = false,
   scale = 1,
+  className,
+  used = false,
+  onDeck = false,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
 
-  const isSilent = useIsSilent(card);
+  let modifiedCard = card;
+
+  if ((card.modifiers?.length ?? 0) > 0) {
+    let modifierCard = card.modifiers![0];
+
+    const transformedCard = transformCardByModifierId(
+      modifierCard?.card_id!,
+      card?.card_id!
+    );
+
+    if (transformedCard != -1) {
+      modifiedCard = {
+        ...card,
+        card_id: transformedCard,
+        img: `${transformedCard}.png`,
+        suit: getCardData(transformedCard).suit,
+      };
+    }
+  }
+
+  const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
+  const { isClassic } = useGameContext();
 
   const tiltCardComponent = (
     <Box
-      width={cardWith}
+      width={`${cardWith}px`}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
@@ -67,77 +89,69 @@ export const TiltCard = ({
             : "none",
         }}
       >
-        <Tilt options={TILT_OPTIONS}>
-          {isHolographic && (
-            <Tooltip
-              hasArrow
-              label={getTooltip(card, isPack)}
-              closeOnPointerDown
-            >
-              <Box
+        <ConditionalTilt cardId={card.card_id ?? 0}>
+          <Tooltip
+            hasArrow
+            label={getTooltip(modifiedCard, isPack)}
+            closeOnPointerDown
+          >
+            <Box position="relative" w={`${cardWith}px`} h={`${cardHeight}px`}>
+              <CachedImage
+                borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
+                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${modifiedCard.img}`}
+                alt={modifiedCard.img}
+                w="100%"
+                height="100%"
                 onClick={(e) => {
                   e.stopPropagation();
                   onClick?.();
                 }}
-              >
-                <HoloEffect
-                  url={`Cards/${img}`}
-                  width={`${cardWith}px`}
-                  height={`${cardHeight}px`}
-                  borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                />
-              </Box>
-            </Tooltip>
+                className={className}
+              />
+
+              {isSilent && !onDeck && (
+                <>
+                  <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    w="100%"
+                    h="100%"
+                    backgroundColor="rgba(0,0,0,0.3)"
+                    backgroundImage={'url("/broken.png")'}
+                    backgroundSize="cover"
+                    borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
+                    pointerEvents="none"
+                  />
+                </>
+              )}
+              {used && (
+                <>
+                  <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    w="100%"
+                    h="100%"
+                    zIndex={-1}
+                    backgroundColor="rgba(0,0,0,1)"
+                    borderRadius={{ base: "5px", sm: "8px" }}
+                    pointerEvents="none"
+                  />
+                </>
+              )}
+            </Box>
+          </Tooltip>
+
+          {card.price && (
+            <PriceBox
+              price={card.price}
+              purchased={purchased}
+              discountPrice={card.discount_cost}
+            />
           )}
-
-          {!isHolographic && (
-            <Tooltip
-              hasArrow
-              label={getTooltip(card, isPack)}
-              closeOnPointerDown
-            >
-              <Box
-                position="relative"
-                w={`${cardWith}px`}
-                h={`${cardHeight}px`}
-              >
-                <CachedImage
-                  borderRadius={{ base: "5px", sm: "8px" }}
-                  boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
-                  sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                  src={`Cards/${(card.card_id ?? 0) <= 51 && isMobile ? "mobile/" : ""}${img}`}
-                  alt={img}
-                  w="100%"
-                  height="100%"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClick?.();
-                  }}
-                />
-
-                {isSilent && (
-                  <>
-                    <Box
-                      position="absolute"
-                      top={0}
-                      left={0}
-                      w="100%"
-                      h="100%"
-                      backgroundColor="rgba(0,0,0,0.3)"
-                      backgroundImage={'url("/broken.png")'}
-                      backgroundSize="cover"
-                      borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                      pointerEvents="none"
-                    />
-                  </>
-                )}
-              </Box>
-            </Tooltip>
-          )}
-
-          {card.price && <PriceBox price={card.price} purchased={purchased} />}
           {card.purchased && (
             <Box
               sx={{
@@ -158,7 +172,7 @@ export const TiltCard = ({
               purchased={purchased}
             />
           )}
-        </Tilt>
+        </ConditionalTilt>
       </Box>
       {card.modifiers?.map((c, index) => {
         return (
@@ -166,12 +180,12 @@ export const TiltCard = ({
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              top: `-${ MODIFIERS_OFFSET}px`,
-              left: `-${(MODIFIERS_OFFSET / 2) * (index + 1)}px`,
+              top: `-${MODIFIERS_OFFSET}px`,
+              left: `-${MODIFIERS_OFFSET * (index + 1)}px`,
               position: "absolute",
             }}
           >
-            <Tilt options={TILT_OPTIONS}>
+            <Tilt {...TILT_OPTIONS}>
               <AnimatedCard idx={c.idx}>
                 <Tooltip
                   hasArrow
@@ -181,7 +195,7 @@ export const TiltCard = ({
                 >
                   <CachedImage
                     sx={{ maxWidth: "unset" }}
-                    src={`Cards/${c.img}`}
+                    src={`/Cards/${c.img}`}
                     alt={c.img}
                     width={`${cardWith}px`}
                     height={`${cardHeight}px`}
@@ -205,45 +219,22 @@ export const TiltCard = ({
   return <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>;
 };
 
-interface TemporalBadgeProps {
-  scale?: number;
-  remaining: number;
-  purchased?: boolean;
-}
-
-export const TemporalBadge = ({
-  remaining,
-  purchased,
-  scale = 1,
-}: TemporalBadgeProps) => {
-  return (
-    <Tooltip hasArrow label={getTemporalCardText(remaining)} closeOnPointerDown>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          zIndex: 10,
-          opacity: purchased ? 0.5 : 1,
-          padding: "2px 6px",
-          background:
-            "linear-gradient(90deg, rgba(97,97,97,1) 0%, rgba(61,61,61,1) 49%, rgba(35,35,35,1) 100%)",
-          borderRadius: "20%",
-          display: "flex",
-          alignItems: "center",
-          direction: "row",
-          gap: 1.5,
-          transform:
-            scale > 1 ? `scale(${scale}) translateX(-20%) translateY(20%)` : "",
-        }}
-      >
-        <ClockIcon color="white" width={14} height={14} />
-        {
-          <Text color="white" fontSize="xs">
-            {remaining ? remaining : 3}
-          </Text>
-        }
-      </Box>
-    </Tooltip>
+const ConditionalTilt = ({
+  children,
+  cardId,
+}: {
+  children: ReactNode;
+  cardId: number;
+}) => {
+  const { isSmallScreen } = useResponsiveValues();
+  return isSmallScreen ? (
+    <>{children}</>
+  ) : (
+    <Tilt
+      {...TILT_OPTIONS}
+      glareMaxOpacity={cardId > 52 ? 0.2 : TILT_OPTIONS.glareMaxOpacity}
+    >
+      {children}
+    </Tilt>
   );
 };

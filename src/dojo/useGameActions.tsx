@@ -3,8 +3,10 @@ import {
   CREATE_GAME_EVENT,
   PLAY_GAME_OVER_EVENT,
 } from "../constants/dojoEventKeys";
+import { getLevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
+import { getCashEvents } from "../utils/playEvents/getCashEvents";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -25,12 +27,13 @@ export const useGameActions = () => {
     account: { account },
   } = useDojo();
 
-  const createGame = async (username: string) => {
+  const createGame = async (modId: string, username: string) => {
     try {
       showTransactionToast();
       const response = await client.game_system.createGame(
         account,
-        Number(shortString.encodeShortString(username))
+        BigInt(shortString.encodeShortString(modId)),
+        BigInt(shortString.encodeShortString(username))
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash, "Creating game...");
@@ -94,6 +97,8 @@ export const useGameActions = () => {
           gameOver: !!tx.events.find(
             (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
           ),
+          cashEvent: getCashEvents(tx.events),
+          levelUpHandEvent: getLevelUpPlayEvent(tx.events),
         };
       } else {
         return {
@@ -172,16 +177,19 @@ export const useGameActions = () => {
   const play = async (
     gameId: number,
     cards: number[],
-    modifiers: { [key: number]: number[] }
+    modifiers: { [key: number]: number[] },
+    powerUps: number[]
   ) => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
+
     try {
       showTransactionToast();
       const response = await client.game_system.play(
         account,
         gameId,
         cards,
-        modifiers1
+        modifiers1,
+        powerUps
       );
       const transaction_hash = response?.transaction_hash ?? "";
 

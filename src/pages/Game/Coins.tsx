@@ -1,10 +1,16 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import CoinIcon from "../../assets/coins.svg?component";
+import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
-import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const Coins = () => {
+interface CoinsProps {
+  rolling?: boolean;
+}
+
+export const Coins = ({ rolling = false }: CoinsProps) => {
   const { cash } = useGameContext();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
@@ -13,11 +19,9 @@ export const Coins = () => {
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
       alignItems="center"
-      gap={0.5}
+      gap={1}
     >
-      <Text size="m" pl={{ base: 1, sm: 0 }}>
-        {t("game.hand-section.my-coins")}
-      </Text>
+      <CoinIcon height={isSmallScreen ? 25 : 27} />
       <Flex
         gap={1.5}
         alignItems="center"
@@ -29,7 +33,8 @@ export const Coins = () => {
         p={{ base: "5px 5px", sm: "15px 6px" }}
         fontSize="13px"
       >
-        <RollingNumber n={cash} />
+        {rolling ? <RollingNumber n={cash} /> : <span>{cash}</span>}
+        <CashSymbol />
       </Flex>
     </Flex>
   );

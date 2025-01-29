@@ -42,6 +42,42 @@ const loadTranslations = async () => {
     409: {
       name: i18n.t('rageCardsData.409.name', {ns:'rage'}),
       description: i18n.t('rageCardsData.409.description', {ns:'rage'}),
+    },
+    410: {
+      name: i18n.t('rageCardsData.410.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.410.description', {ns:'rage'}),
+    },
+    411: {
+      name: i18n.t('rageCardsData.411.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.411.description', {ns:'rage'}),
+    },
+    412: {
+      name: i18n.t('rageCardsData.412.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.412.description', {ns:'rage'}),
+    },
+    413: {
+      name: i18n.t('rageCardsData.413.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.413.description', {ns:'rage'}),
+    },
+    414: {
+      name: i18n.t('rageCardsData.414.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.414.description', {ns:'rage'}),
+    },
+    415: {
+      name: i18n.t('rageCardsData.415.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.415.description', {ns:'rage'}),
+    },
+    416: {
+      name: i18n.t('rageCardsData.416.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.416.description', {ns:'rage'}),
+    },
+    417: {
+      name: i18n.t('rageCardsData.417.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.417.description', {ns:'rage'}),
+    },
+    418: {
+      name: i18n.t('rageCardsData.418.name', {ns:'rage'}),
+      description: i18n.t('rageCardsData.418.description', {ns:'rage'}),
     }
   });
 }

@@ -15,6 +15,8 @@ export const RageRoundAnimation = () => {
     rageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
+    showRages,
+    showSpecials,
   } = useGameContext();
 
   const descriptions = rageCards?.map((card) => getCardData(card).description);
@@ -58,6 +60,7 @@ export const RageRoundAnimation = () => {
 
   useEffect(() => {
     if (isRageRound) {
+      showRages();
       setShowAnimationHeading(true);
       setTimeout(() => {
         setShowAnimationText(true);
@@ -65,6 +68,9 @@ export const RageRoundAnimation = () => {
       setTimeout(() => {
         setPhase(2);
       }, 3000);
+      setTimeout(() => {
+        showSpecials();
+      }, 5000);
 
       const timer = setTimeout(
         () => {
@@ -125,7 +131,7 @@ export const RageRoundAnimation = () => {
                 Sacrificed card:
               </Heading>
               <Box boxShadow={"0px 0px 20px 7px red"} borderRadius="20px">
-                <CachedImage src={`/Cards/big/${destroyedSpecialCardId}.png`} />
+                <CachedImage src={`/Cards/${destroyedSpecialCardId}.png`} />
               </Box>
             </animated.div>
           )}

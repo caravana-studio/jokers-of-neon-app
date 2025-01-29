@@ -28,10 +28,12 @@ interface SpineAnimationProps {
   onOpenAnimationStart?: () => void;
   isPurchased?: boolean;
   price?: number;
+  discountPrice?: number;
 }
 
 export interface SpineAnimationRef {
   playOpenBoxAnimation: () => void;
+  updateAnimationState: () => void;
 }
 
 const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
@@ -52,6 +54,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       onOpenAnimationStart,
       isPurchased,
       price,
+      discountPrice,
     },
     ref
   ) => {
@@ -62,6 +65,13 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const { setLockRedirection } = useStore();
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
+    const [isAnimationRunning, setIsAnimationRunning] = useState(false);
+
+    const fontSize = isMobile
+      ? 15
+      : discountPrice != undefined && discountPrice > 0
+        ? 15
+        : 18;
 
     useImperativeHandle(ref, () => ({
       playOpenBoxAnimation: () => {
@@ -79,6 +89,9 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             }, 2);
           }
         }
+      },
+      updateAnimationState: () => {
+        setIsAnimationRunning(true);
       },
     }));
 
@@ -108,6 +121,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
                     entry.animation.name.includes(openBoxAnimation)
                   ) {
                     setLockRedirection(false);
+                    setIsAnimationRunning(false);
                   }
                 },
               });
@@ -169,7 +183,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             sx={{
               position: "absolute",
               bottom: `10%`,
-              left: `50%`,
+              left: isMobile ? `55%` : `50%`,
               transform: "translate(-65%)",
               zIndex: 10,
             }}
@@ -183,16 +197,23 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             </Heading>
           </Box>
         )}
-        {price && <Box
-          sx={{
-            position: "absolute",
-            bottom: isMobile ? `-20px` : 0,
-            left: `45%`,
-            zIndex: 10,
-          }}
-        >
-          <PriceBox price={price} purchased={isPurchased ?? false} />
-        </Box>}
+        {price && (
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: isMobile ? `-20px` : 0,
+              left: `45%`,
+              zIndex: 10,
+            }}
+          >
+            <PriceBox
+              price={price}
+              purchased={isPurchased ?? false}
+              discountPrice={discountPrice}
+              fontSize={fontSize}
+            />
+          </Box>
+        )}
         <Flex
           ref={containerRef}
           onClick={onClick}
@@ -202,7 +223,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             width: "100%",
             height: "100%",
             cursor: isPurchased ? "default" : "pointer",
-            opacity: isPurchased ? 0.3 : 1,
+            opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
           }}
         ></Flex>
       </Box>

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Table,
   TableContainer,
@@ -13,38 +14,36 @@ import {
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { CashSymbol } from "../../components/CashSymbol.tsx";
+import { PriceBox } from "../../components/PriceBox.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useGame } from "../../dojo/queries/useGame";
-import { useShopItems } from "../../dojo/queries/useShopItems";
-import { LevelPokerHand } from "../../dojo/typescript/models.gen.ts";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { BLUE } from "../../theme/colors";
+import { BLUE, GREY_LINE } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import theme from "../../theme/theme";
+import { LevelPokerHand } from "../../types/LevelPokerHand.ts";
 
 interface PlaysTableProps {
   inStore?: boolean;
 }
 
-const { blue, white, purple } = theme.colors;
+const { blue, white, purple, violet } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { gameId } = useGameContext();
-  const { locked } = useStore();
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
-  const store = useStore();
-  const { isPurchased } = store;
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const levelUpPlay = store?.levelUpPlay;
-  const { pokerHandItems } = useShopItems();
   const { t } = useTranslation(["store"]);
+
+  const { pokerHandItems, locked, levelUpPlay } = useStore();
+  const { isSmallScreen } = useResponsiveValues();
 
   const {
     setup: {
@@ -78,52 +77,27 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   return (
     <>
       {filteredPlays ? (
-        <TableContainer>
+        <TableContainer overflow={inStore ? "hidden" : "auto"}>
           <Table
             sx={{
               borderCollapse: "separate",
               borderSpacing: "0 .3em",
-              marginBottom: 4,
+              marginBottom: isMobile ? 0 : 4,
             }}
             width={"100%"}
             variant={isMobile ? "store-mobile" : "store"}
           >
-            <Thead
-              sx={{
-                position: "relative",
-                _after: {
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "1px",
-                  background:
-                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                  boxShadow:
-                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-                },
-                _before: {
-                  content: '""',
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "1px",
-                  background:
-                    "linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%)",
-                  boxShadow:
-                    "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-                },
-              }}
-            >
+            <Thead>
               <Tr>
                 {inStore ? (
                   <>
-                    <Td textAlign={"left"} fontSize={isMobile ? 12 : undefined}>
-                      {t("store.plays-table.hand").toUpperCase()}
-                    </Td>
                     <Td>{t("store.plays-table.level").toUpperCase()}</Td>
+                    <Td>{t("store.plays-table.hand").toUpperCase()}</Td>
+                    {isMobile && (
+                      <Td>
+                        {t("store.plays-table.points-multi").toUpperCase()}
+                      </Td>
+                    )}
                     <Td>{t("store.plays-table.price").toUpperCase()}</Td>
                     <Td></Td>
                   </>
@@ -147,11 +121,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                   );
 
                   const purchased =
-                    storePlay != undefined ? isPurchased(storePlay) : false;
+                    storePlay != undefined ? storePlay.purchased : false;
 
                   const textColor = storePlay
                     ? purchased
-                      ? blue
+                      ? GREY_LINE
                       : white
                     : purple;
 
@@ -161,7 +135,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                   const levelTd = (
                     <Td sx={opacitySx} textColor={textColor}>
-                      {play.level.toString()}
+                      {storePlay?.level.toString()}
                     </Td>
                   );
                   const nameTd = (
@@ -169,6 +143,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       sx={opacitySx}
                       textAlign={"start"}
                       textColor={textColor}
+                      width={"15%"}
                     >
                       {PLAYS[Number(pokerHandParsed.value)]}
                     </Td>
@@ -201,8 +176,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       </Box>
                     </Td>
                   );
-
-                  const notEnoughCash = !!storePlay && cash < storePlay.cost;
+                  const notEnoughCash =
+                    !!storePlay &&
+                    (storePlay.discount_cost
+                      ? cash < storePlay.discount_cost
+                      : cash < storePlay.cost);
 
                   const buyButton = (
                     <Button
@@ -213,10 +191,12 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                         notEnoughCash || locked ? "defaultOutline" : "solid"
                       }
                       isDisabled={notEnoughCash || locked}
-                      size="sm"
+                      size={isMobile ? "xs" : "sm"}
                       px={isMobile ? 2 : 4}
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                      fontSize={10}
+                      fontSize={isMobile ? 8 : 10}
+                      borderRadius={isMobile ? 6 : 12}
+                      height={isMobile ? 5 : 8}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -224,29 +204,73 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
                   return (
                     <Tr key={index} height={"30px"}>
-                      {inStore ? (
-                        <>
-                          {nameTd}
-                          {levelTd}
-                        </>
-                      ) : (
-                        <>
-                          {levelTd}
-                          {nameTd}
-                        </>
-                      )}
+                      {levelTd}
+                      {nameTd}
 
                       {inStore ? (
                         <>
+                          {isMobile && (
+                            <Td>
+                              <Box
+                                color={"white"}
+                                display={"flex"}
+                                flexDirection={"row"}
+                                justifyContent={"center"}
+                                sx={{
+                                  opacity:
+                                    inStore && (!storePlay || purchased)
+                                      ? 0.5
+                                      : 1,
+                                }}
+                              >
+                                <Box
+                                  backgroundColor={`${blue}`}
+                                  borderRadius={4}
+                                  width={isSmallScreen ? "30px" : "40px"}
+                                  mr={1}
+                                  boxShadow={`0px 0px 5px 3px ${blue}`}
+                                  lineHeight={1.8}
+                                  height="15px"
+                                >
+                                  {storePlay?.points}
+                                </Box>
+                                <Heading fontSize={isSmallScreen ? "8" : "10"}>
+                                  x
+                                </Heading>
+                                <Box
+                                  backgroundColor={"neonPink"}
+                                  borderRadius={4}
+                                  width={isSmallScreen ? "30px" : "40px"}
+                                  ml={1}
+                                  boxShadow={`0px 0px 5px 3px ${violet}`}
+                                  lineHeight={1.8}
+                                  height="15px"
+                                >
+                                  {storePlay?.multi}
+                                </Box>
+                              </Box>
+                            </Td>
+                          )}
+
                           <Td sx={opacitySx} color={textColor}>
-                            {storePlay?.cost ? `${storePlay.cost}` : ""}
-                            <CashSymbol />
+                            <Flex width={["80%", "80px"]} margin={"0 auto"}>
+                              <PriceBox
+                                price={Number(storePlay?.cost)}
+                                purchased={Boolean(storePlay?.purchased)}
+                                discountPrice={Number(
+                                  storePlay?.discount_cost ?? 0
+                                )}
+                                absolutePosition={false}
+                                fontSize={isSmallScreen ? 10 : 16}
+                                discountFontSize={isSmallScreen ? 8 : 12}
+                              />
+                            </Flex>
                           </Td>
                           <Td>
                             {!!storePlay ? (
-                              isPurchased(storePlay) ? (
+                              storePlay.purchased ? (
                                 <Heading
-                                  color="blue"
+                                  color={GREY_LINE}
                                   size={isMobile ? "base" : "xs"}
                                 >
                                   {t(

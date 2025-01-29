@@ -1,13 +1,15 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
-import { decodeString } from "../dojo/utils/decodeString";
+import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
+import { useGameContext } from "../providers/GameProvider";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
 export const LEADERBOARD_QUERY = gql`
-  query {
-    jokersOfNeonGameModels(
+  query ($modId: String!) {
+    jokersOfNeonCoreGameModels(
+      where: { mod_idEQ: $modId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -33,21 +35,21 @@ interface GameEdge {
 }
 
 interface LeaderboardResponse {
-  jokersOfNeonGameModels: {
+  jokersOfNeonCoreGameModels: {
     edges: GameEdge[];
   };
 }
 
 const getPrize = (position: number): number => {
-  if (position > 3 && position < 11) {
+  if (position >= 3 && position <= 6) {
     return 100;
+  } else if (position >= 7 && position <= 10) {
+    return 50;
   }
   switch (position) {
     case 1:
-      return 1000;
+      return 300;
     case 2:
-      return 500;
-    case 3:
       return 200;
     default:
       return 0;
@@ -56,18 +58,26 @@ const getPrize = (position: number): number => {
 
 export const CURRENT_LEADER_NAME_KEY = "current_leader_name";
 
-const fetchGraphQLData = async (): Promise<LeaderboardResponse> => {
-  return await graphQLClient.request(LEADERBOARD_QUERY);
+const fetchGraphQLData = async (
+  modId: string
+): Promise<LeaderboardResponse> => {
+  console.log("modId", modId);
+  console.log("modId eb", encodeString(modId));
+  return await graphQLClient.request(LEADERBOARD_QUERY, {
+    modId: encodeString(modId),
+  });
 };
 
 export const useGetLeaderboard = (gameId?: number) => {
+  const { modId } = useGameContext();
   const queryResponse = useQuery<LeaderboardResponse>(
-    [LEADERBOARD_QUERY_KEY],
-    () => fetchGraphQLData()
+    [LEADERBOARD_QUERY_KEY, modId, gameId],
+    () => fetchGraphQLData(modId)
   );
   const { data } = queryResponse;
+  console.log("data", data);
 
-  const dojoLeaders = data?.jokersOfNeonGameModels?.edges
+  const dojoLeaders = data?.jokersOfNeonCoreGameModels?.edges
     ?.filter((edge) => edge.node.player_score > 0)
     .sort((a, b) => {
       if (a.node.level !== b.node.level) {

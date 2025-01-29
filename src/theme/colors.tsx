@@ -20,3 +20,7 @@ export const ERROR_TOAST = "#b8202b";
 export const ROYAL_BLUE = "#066A9AFF";
 
 export const NEON = "#FFFFFF";
+
+export const GREY_LINE = "#999999";
+export const GREY_MEDIUM = "#1A202C";
+export const BACKGROUND_BLUE = "#062640";

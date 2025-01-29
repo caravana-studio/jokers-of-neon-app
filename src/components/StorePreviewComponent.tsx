@@ -15,14 +15,16 @@ import CachedImage from "../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { Duration } from "../enums/duration.ts";
 import { Coins } from "../pages/store/Coins.tsx";
 import theme from "../theme/theme";
 import { CashSymbol } from "./CashSymbol.tsx";
+import { DurationSwitcher } from "./DurationSwitcher.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
 
-interface IStorePreviewComponent {
+export interface IStorePreviewComponent {
   buyButton: JSX.Element;
   image: JSX.Element;
   title: string;
@@ -31,9 +33,15 @@ interface IStorePreviewComponent {
   extraDescription?: string;
   details?: string;
   price: number;
+  temporalPrice?: number;
   isPack?: boolean;
   spine?: JSX.Element;
   showOverlay?: boolean;
+  discountPrice?: number;
+  temporalDiscountPrice?: number;
+  duration?: Duration;
+  onDurationChange?: (duration: Duration) => void;
+  tab?: number;
 }
 
 export const StorePreviewComponent = ({
@@ -45,9 +53,14 @@ export const StorePreviewComponent = ({
   extraDescription,
   details,
   price,
+  temporalPrice,
   isPack = false,
   spine,
   showOverlay,
+  discountPrice,
+  temporalDiscountPrice,
+  duration,
+  onDurationChange,
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
@@ -56,6 +69,10 @@ export const StorePreviewComponent = ({
   from { opacity: 0; }
   to { opacity: 1; }
 `;
+
+  console.log("temporal Price", temporalPrice);
+  console.log("duration", duration);
+  console.log("onDurationChange", onDurationChange);
 
   return (
     <Background type="home" dark scrollOnMobile>
@@ -94,9 +111,7 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex
-                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
-              >
+              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
                 {image}
               </Flex>
             )}
@@ -149,7 +164,7 @@ export const StorePreviewComponent = ({
                   </Text>
                 </Box>
               )}
-              <Box>
+              <Box mb={4}>
                 <Text
                   color="white"
                   fontSize={{ base: "md", sm: "lg" }}
@@ -185,7 +200,7 @@ export const StorePreviewComponent = ({
               </Box>
 
               {details && (
-                <Box>
+                <Box mb={4}>
                   <Text
                     color="white"
                     fontSize={{ base: "md", sm: "lg" }}
@@ -217,10 +232,50 @@ export const StorePreviewComponent = ({
                 </Box>
               )}
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
-                <Heading fontSize={{ base: "sm", sm: "lg" }} variant="italic">
-                  {t("store.preview-card.title.price")} {price}
-                  <CashSymbol />
-                </Heading>
+                <Flex flexDirection={"column"} gap={5}>
+                  <Flex gap={3}>
+                    {temporalPrice &&
+                    duration !== undefined &&
+                    onDurationChange ? (
+                      <DurationSwitcher
+                        price={price}
+                        discountPrice={discountPrice}
+                        temporalDiscountPrice={temporalDiscountPrice}
+                        temporalPrice={temporalPrice}
+                        duration={duration}
+                        onDurationChange={onDurationChange}
+                      />
+                    ) : (
+                      <Flex gap={3}>
+                        <Heading
+                          fontSize={{ base: "sm", sm: "lg" }}
+                          variant="italic"
+                        >
+                          {t("store.preview-card.title.price")}
+                        </Heading>
+                        <Heading
+                          fontSize={{ base: "sm", sm: "lg" }}
+                          variant="italic"
+                          textDecoration={
+                            discountPrice ? "line-through" : "none"
+                          }
+                        >
+                          {price}
+                          <CashSymbol />
+                        </Heading>
+                        {discountPrice !== 0 && (
+                          <Heading
+                            fontSize={{ base: "sm", sm: "lg" }}
+                            variant="italic"
+                          >
+                            {discountPrice}
+                            <CashSymbol />
+                          </Heading>
+                        )}
+                      </Flex>
+                    )}
+                  </Flex>
+                </Flex>
               </Box>
             </Flex>
           </Flex>
@@ -239,7 +294,6 @@ export const StorePreviewComponent = ({
           <Coins />
           <HStack gap={4}>
             {buyButton}
-
             <Button
               variant="outlineSecondaryGlow"
               onClick={() => navigate("/store")}
