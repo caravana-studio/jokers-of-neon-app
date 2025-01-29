@@ -1,178 +1,214 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useDeck } from "../../dojo/queries/useDeck";
+import { Cards } from "../../enums/cards";
 import { Suits } from "../../enums/suits";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Card } from "../../types/Card";
 
-export const DeckFilters = () => {
-  const { t } = useTranslation(["game"]);
-  const { filterButtonsState, updateFilters } = useDeckFilters();
-  const { isSmallScreen } = useResponsiveValues();
+const filterBySuit = (suit: Suits) => (card: Card) => card.suit === suit;
+
+interface FilterButtonProps {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+  filterFn: (card: Card) => boolean;
+  inStore?: boolean;
+}
+
+const FilterButton = ({
+  label,
+  isActive,
+  onClick,
+  filterFn,
+  inStore = false,
+}: FilterButtonProps) => {
+  const deck = useDeck();
+  const deckLength = deck?.fullDeckCards.filter(filterFn)?.length ?? 0;
+  const usedCardsLength = inStore
+    ? 0
+    : deck?.usedCards.filter(filterFn)?.length ?? 0;
+  const unusedCardsLength = deckLength - usedCardsLength;
 
   return (
-    <Flex flexDirection={"column"} alignItems={"center"}>
-      {!isSmallScreen && (
-        <Text
-          size={"sm"}
-          mb={6}
-          sx={{
-            position: "relative",
-            _before: {
-              content: '""',
-              position: "absolute",
-              bottom: "0px",
-              left: 0,
-              width: "100%",
-              height: "1px",
-              background: `linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.5) 100%)`,
-              boxShadow:
-                "0 0 10px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5)",
-            },
-          }}
-        >
-          {t("game.deck.filter-title")}
-        </Text>
-      )}
+    <Button
+      size={"sm"}
+      variant={isActive ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+      px={[2, 3]}
+      borderRadius={["12px", "25px"]}
+      height={"25px"}
+      onClick={onClick}
+    >
+      <Flex gap={3}>
+        <Box fontFamily="Orbitron">{label}</Box>
+        <Box fontFamily="Orbitron">
+          {unusedCardsLength !== deckLength
+            ? `(${unusedCardsLength} / ${deckLength})`
+            : `(${deckLength})`}
+        </Box>
+      </Flex>
+    </Button>
+  );
+};
+
+interface DeckFiltersProps {
+  inStore?: boolean;
+}
+
+export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
+  const { t } = useTranslation("game", { keyPrefix: "game.deck" });
+  const { filterButtonsState, updateFilters } = useDeckFilters();
+
+  const deck = useDeck();
+
+  const noNeonCards =
+    deck?.fullDeckCards.filter((card) => !card.isNeon).length ?? 0 === 0;
+  const noModifierCards =
+    deck?.fullDeckCards.filter((card) => !card.isModifier).length ?? 0 === 0;
+
+  const handleFilterChange = (filter: Partial<typeof filterButtonsState>) => {
+    updateFilters({
+      suit: undefined,
+      isNeon: undefined,
+      isModifier: undefined,
+      isFigures: undefined,
+      isAces: undefined,
+      ...filter,
+    });
+  };
+
+  return (
+    <Flex flexDirection={"column"} alignItems={"center"} px={5}>
       <Flex
         alignItems={"space-around"}
         justifyContent={"center"}
         wrap={"wrap"}
         gap={[1, 4]}
         mt={2}
-        width={"95%"}
+        width={"100%"}
       >
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.suit === Suits.CLUBS
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+        <FilterButton
+          label={t("suit.club").toUpperCase()}
+          isActive={filterButtonsState.suit === Suits.CLUBS}
           onClick={() =>
-            updateFilters({
+            handleFilterChange({
               suit:
                 filterButtonsState.suit !== Suits.CLUBS
                   ? Suits.CLUBS
                   : undefined,
-              isNeon: undefined,
-              isModifier: undefined,
             })
           }
-        >
-          {t("game.deck.suit.club").toUpperCase()}
-        </Button>
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.suit === Suits.SPADES
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+          filterFn={filterBySuit(Suits.CLUBS)}
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.spade").toUpperCase()}
+          isActive={filterButtonsState.suit === Suits.SPADES}
           onClick={() =>
-            updateFilters({
+            handleFilterChange({
               suit:
                 filterButtonsState.suit !== Suits.SPADES
                   ? Suits.SPADES
                   : undefined,
-              isNeon: undefined,
-              isModifier: undefined,
             })
           }
-        >
-          {t("game.deck.suit.spade").toUpperCase()}
-        </Button>
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.suit === Suits.HEARTS
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+          filterFn={filterBySuit(Suits.SPADES)}
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.heart").toUpperCase()}
+          isActive={filterButtonsState.suit === Suits.HEARTS}
           onClick={() =>
-            updateFilters({
+            handleFilterChange({
               suit:
                 filterButtonsState.suit !== Suits.HEARTS
                   ? Suits.HEARTS
                   : undefined,
-              isNeon: undefined,
-              isModifier: undefined,
             })
           }
-        >
-          {t("game.deck.suit.heart").toUpperCase()}
-        </Button>
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.suit === Suits.DIAMONDS
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+          filterFn={filterBySuit(Suits.HEARTS)}
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.diamond").toUpperCase()}
+          isActive={filterButtonsState.suit === Suits.DIAMONDS}
           onClick={() =>
-            updateFilters({
+            handleFilterChange({
               suit:
                 filterButtonsState.suit !== Suits.DIAMONDS
                   ? Suits.DIAMONDS
                   : undefined,
-              isNeon: undefined,
-              isModifier: undefined,
             })
           }
-        >
-          {t("game.deck.suit.diamond").toUpperCase()}
-        </Button>
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.isNeon
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+          filterFn={filterBySuit(Suits.DIAMONDS)}
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.joker").toUpperCase()}
+          isActive={filterButtonsState.suit === Suits.JOKER}
           onClick={() =>
-            updateFilters({
-              isNeon: !filterButtonsState.isNeon ? true : undefined,
-              suit: undefined,
-              isModifier: undefined,
+            handleFilterChange({
+              suit:
+                filterButtonsState.suit !== Suits.JOKER
+                  ? Suits.JOKER
+                  : undefined,
             })
           }
-        >
-          {t("game.deck.suit.neon").toUpperCase()}
-        </Button>
-        <Button
-          size={"sm"}
-          variant={
-            filterButtonsState.isModifier
-              ? "outlineSecondaryGlowActive"
-              : "outlineSecondaryGlow"
-          }
-          px={[2, 3]}
-          borderRadius={["12px", "25px"]}
-          height={"25px"}
+          filterFn={filterBySuit(Suits.JOKER)}
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.figures").toUpperCase()}
+          isActive={!!filterButtonsState.isFigures}
           onClick={() =>
-            updateFilters({
-              isModifier: !filterButtonsState.isModifier ? true : undefined,
-              suit: undefined,
-              isNeon: undefined,
+            handleFilterChange({
+              isFigures: !filterButtonsState.isFigures ? true : undefined,
             })
           }
-        >
-          {t("game.deck.suit.modifier").toUpperCase()}
-        </Button>
+          filterFn={(card) =>
+            card.card === Cards.JACK ||
+            card.card === Cards.QUEEN ||
+            card.card === Cards.KING
+          }
+          inStore={inStore}
+        />
+        <FilterButton
+          label={t("suit.aces").toUpperCase()}
+          isActive={!!filterButtonsState.isAces}
+          onClick={() =>
+            handleFilterChange({
+              isAces: !filterButtonsState.isAces ? true : undefined,
+            })
+          }
+          filterFn={(card) => card.card === Cards.ACE}
+          inStore={inStore}
+        />
+        {!noNeonCards && (
+          <FilterButton
+            label={t("suit.neon").toUpperCase()}
+            isActive={!!filterButtonsState.isNeon}
+            onClick={() =>
+              handleFilterChange({
+                isNeon: !filterButtonsState.isNeon ? true : undefined,
+              })
+            }
+            filterFn={(card) => !!card.isNeon}
+            inStore={inStore}
+          />
+        )}
+        {!noModifierCards && (
+          <FilterButton
+            label={t("suit.modifier").toUpperCase()}
+            isActive={!!filterButtonsState.isModifier}
+            onClick={() =>
+              handleFilterChange({
+                isModifier: !filterButtonsState.isModifier ? true : undefined,
+              })
+            }
+            filterFn={(card) => !!card.isModifier}
+            inStore={inStore}
+          />
+        )}
       </Flex>
     </Flex>
   );

@@ -4,6 +4,8 @@ import { DeckFiltersContextType, DeckFiltersState } from "../types/DeckFilters";
 const defaultFilters: DeckFiltersState = {
   isNeon: undefined,
   isModifier: undefined,
+  isFigures: undefined,
+  isAces: undefined,
   suit: null,
 };
 

@@ -15,6 +15,7 @@ import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 import { DeckCardsGrid } from "./DeckCardsGrid";
 import { DeckFilters } from "./DeckFilters";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
+import { Deck } from "./Deck";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;
@@ -25,13 +26,20 @@ export const DeckPageContentMobile = ({
   inStore = false,
   burn = false,
 }: DeckPageContentMobileProps) => {
-  const { filterButtonsState } = useDeckFilters();
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
 
-  const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
-  const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
   const [tabIndex, setTabIndex] = useState(0);
+
+  const handleCardSelect = (card: Card) => {
+    if (!burnItem.purchased) {
+      if (cardToBurn?.id === card.id) {
+        setCardToBurn(undefined);
+      } else {
+        setCardToBurn(card);
+      }
+    }
+  };
 
   // Handle tab change
   const handleTabChange = (index: number) => {
@@ -54,16 +62,6 @@ export const DeckPageContentMobile = ({
   });
 
   const { cash, burnCard, burnItem } = useStore();
-
-  const handleCardSelect = (card: Card) => {
-    if (!burnItem.purchased) {
-      if (cardToBurn?.id === card.id) {
-        setCardToBurn(undefined);
-      } else {
-        setCardToBurn(card);
-      }
-    }
-  };
 
   const handleBurnCard = (card: Card) => {
     burnCard(card);
@@ -112,33 +110,7 @@ export const DeckPageContentMobile = ({
         </Flex>
 
         {tabIndex === 0 && (
-          <>
-            <DeckFilters />
-            <Flex
-              alignItems={"center"}
-              width={"100%"}
-              flexGrow={1}
-              overflowY="auto"
-              gap={4}
-              mt={1}
-              px={6}
-              paddingTop={"10px"}
-            >
-              <Box w="100%" height={"100%"}>
-                <DeckCardsGrid
-                  cards={fullDeck}
-                  usedCards={!inStore ? usedCards : []}
-                  filters={{
-                    isNeon: filterButtonsState.isNeon,
-                    isModifier: filterButtonsState.isModifier,
-                    suit: filterButtonsState.suit ?? undefined,
-                  }}
-                  onCardSelect={burn ? handleCardSelect : () => {}}
-                  inBurn={burn}
-                />
-              </Box>
-            </Flex>
-          </>
+          <Deck inStore={inStore} burn={burn} onCardSelect={handleCardSelect} />
         )}
 
         {tabIndex === 1 && (

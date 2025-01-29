@@ -4,15 +4,13 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { TiltCard } from "../../components/TiltCard";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
+import { Cards } from "../../enums/cards";
 import { SortBy } from "../../enums/sortBy";
 import { BLUE_LIGHT } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { DeckFiltersState } from "../../types/DeckFilters";
 import { sortCards } from "../../utils/sortCards";
-
-const SCALE = 0.55;
-const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
-const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
 
 interface DeckCardsGridProps {
   cards: Card[] | undefined;
@@ -29,11 +27,18 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   onCardSelect,
   inBurn = false,
 }) => {
+  const { isSmallScreen } = useResponsiveValues();
+  const SCALE = isSmallScreen ? 0.55 : 0.85;
+  const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
+  const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
+
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const hasFilters =
     filters?.isModifier != undefined ||
     filters?.isNeon != undefined ||
-    filters?.suit != undefined;
+    filters?.suit != undefined ||
+    filters?.isFigures != undefined ||
+    filters?.isAces != undefined;
   const sortedCards = hasFilters
     ? sortCards(cards ?? [], SortBy.RANK)
     : sortCards(cards ?? [], SortBy.SUIT);
@@ -50,6 +55,24 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
 
       if (filters.isModifier !== undefined) {
         matchesFilter = matchesFilter && card.isModifier === filters.isModifier;
+      }
+
+      if (filters.isFigures !== undefined) {
+        matchesFilter =
+          matchesFilter &&
+          (filters.isFigures
+            ? card.card === Cards.JACK ||
+              card.card === Cards.QUEEN ||
+              card.card === Cards.KING
+            : card.card !== Cards.JACK &&
+              card.card !== Cards.QUEEN &&
+              card.card !== Cards.KING);
+      }
+
+      if (filters.isAces !== undefined) {
+        matchesFilter =
+          matchesFilter &&
+          (filters.isAces ? card.card === Cards.ACE : card.card !== Cards.ACE);
       }
 
       if (filters.suit !== undefined) {
