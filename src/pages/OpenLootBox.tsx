@@ -45,7 +45,7 @@ export const OpenLootBox = () => {
   const navigate = useNavigate();
 
   const game = useGame();
-  const maxSpecialCards = game?.len_max_current_special_cards ?? 0;
+  const maxSpecialCards = game?.special_slots ?? 0;
 
   const blisterPackResult = useBlisterPackResult();
   const [cards, setCards] = useState<Card[]>([]);

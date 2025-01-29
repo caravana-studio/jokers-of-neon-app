@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { CardDataMap } from "../types/CardData";
+import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {};
 
@@ -314,6 +315,16 @@ const loadTranslations = async () => {
       }),
     },
   });
+};
+
+export const fetchAndMergeSpecialCardsData = async (modId: string) => {
+  const url = import.meta.env.VITE_MOD_URL + `${modId}/resources/specials.json`;
+  try {
+    const content = await getJsonFromUrl(url);
+    Object.assign(SPECIAL_CARDS_DATA, content);
+  } catch (error) {
+    console.error("Error fetching specials.json:", error);
+  }
 };
 
 i18n.on("initialized", loadTranslations);

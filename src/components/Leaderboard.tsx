@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
@@ -34,12 +35,18 @@ interface LeaderboardProps {
 }
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
-  const { data: fullLeaderboard, isLoading } = useGetLeaderboard();
+  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
   const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
   const currentLeaderIsInReducedLeaderboard = !!leaderboard?.find(
     (leader) => leader.id === gameId
   );
+
+  const tournamentEnabled = useFeatureFlagEnabled(
+    "global",
+    "tournamentEnabled"
+  );
+
   return (
     <Box
       sx={{
@@ -83,22 +90,24 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                   ).toUpperCase()}
                 </Td>
 
-                <Td>
-                  {t(
-                    "tournament.table-head.prize-leaderboard-head"
-                  ).toUpperCase()}{" "}
-                  {!isMobile && (
-                    <Tooltip
-                      label={t("tournament.table-head.tournament-tooltip")}
-                    >
-                      <InfoIcon
-                        color="white"
-                        ml={1}
-                        fontSize={{ base: "10px", md: "15px" }}
-                      />
-                    </Tooltip>
-                  )}
-                </Td>
+                {tournamentEnabled && (
+                  <Td>
+                    {t(
+                      "tournament.table-head.prize-leaderboard-head"
+                    ).toUpperCase()}{" "}
+                    {!isMobile && (
+                      <Tooltip
+                        label={t("tournament.table-head.tournament-tooltip")}
+                      >
+                        <InfoIcon
+                          color="white"
+                          ml={1}
+                          fontSize={{ base: "10px", md: "15px" }}
+                        />
+                      </Tooltip>
+                    )}
+                  </Td>
+                )}
               </Tr>
             </Thead>
             <Tbody>
@@ -130,17 +139,19 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                         leader.level
                       )}
                     </Td>
-                    <Td>
-                      <RollingNumber n={leader.prize} />{" "}
-                      <span
-                        style={{
-                          fontSize: isMobile ? "7px" : "12px",
-                          marginRight: "20px",
-                        }}
-                      >
-                        USDC
-                      </span>
-                    </Td>
+                    {tournamentEnabled && (
+                      <Td>
+                        <RollingNumber n={leader.prize} />{" "}
+                        <span
+                          style={{
+                            fontSize: isMobile ? "7px" : "12px",
+                            marginRight: "20px",
+                          }}
+                        >
+                          USDC
+                        </span>
+                      </Td>
+                    )}
                   </Tr>
                 ))}
               {currentLeader && !currentLeaderIsInReducedLeaderboard && (
@@ -160,9 +171,11 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     <Td>
                       <RollingNumber n={currentLeader.level} />
                     </Td>
-                    <Td>
-                      <RollingNumber n={currentLeader.prize} /> USDC
-                    </Td>
+                    {tournamentEnabled && (
+                      <Td>
+                        <RollingNumber n={currentLeader.prize} /> USDC
+                      </Td>
+                    )}
                   </Tr>
                 </>
               )}

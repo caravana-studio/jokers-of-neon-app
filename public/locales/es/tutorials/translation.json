@@ -45,9 +45,9 @@
       "drag": "Arrastra y suelta el modificador de palo de trébol sobre el 10, luego haz clic en 'Siguiente' para continuar."
     },
     "power-ups": {
-      "title": "Potenciadores",
+      "title": "Power-ups",
       "content": "Los power-ups otorgan puntos extra y aumentan tu multipli. Úsalos una vez y luego compra más en la tienda.",
-      "select": "Selecciona este potenciador"
+      "select": "Selecciona este power-up"
     }
   },
   "storeTutorial": {

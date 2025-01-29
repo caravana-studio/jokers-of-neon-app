@@ -3,7 +3,7 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Background } from "../components/Background";
 import { DiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -25,7 +25,7 @@ export const GameOver = () => {
   const { restartGame, setIsRageRound, executeCreateGame } = useGameContext();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard();
+  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
   const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
   const { t } = useTranslation(["intermediate-screens"]);
   const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);

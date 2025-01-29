@@ -12,7 +12,6 @@ import { PositionedGameMenu } from "../components/GameMenu";
 import { LockedSlot } from "../components/LockedSlot";
 import { TemporalBadge } from "../components/TemporalBadge";
 import { UnlockedSlot } from "../components/UnlockedSlot";
-import { MAX_SPECIAL_CARDS } from "../constants/config";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider";
@@ -28,7 +27,8 @@ export const SpecialCardsPage = () => {
     keyPrefix: "special-cards",
   });
 
-  const { discardSpecialCard, specialCards } = useGameContext();
+  const { discardSpecialCard, specialCards, maxSpecialCards } =
+    useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
@@ -36,11 +36,11 @@ export const SpecialCardsPage = () => {
 
   const game = useGame();
 
-  const unlockedSpecialSlots = game?.len_max_current_special_cards ?? 1;
+  const unlockedSpecialSlots = game?.special_slots ?? 1;
 
   const freeUnlockedSlots = unlockedSpecialSlots - specialCards.length;
   const lockedSlots =
-    unlockedSpecialSlots === MAX_SPECIAL_CARDS
+    unlockedSpecialSlots === maxSpecialCards
       ? 0
       : Math.max(1, 5 - unlockedSpecialSlots);
 
@@ -97,7 +97,7 @@ export const SpecialCardsPage = () => {
                       >
                         <CachedImage
                           borderRadius={{ base: "5px", sm: "8px" }}
-                          src={`Cards/${card.img}`}
+                          src={`/Cards/${card.img}`}
                           alt={card.img}
                           w="100%"
                           height="100%"

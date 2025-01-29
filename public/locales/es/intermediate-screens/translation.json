@@ -48,5 +48,10 @@
       "title": "Eliminar carta especial",
       "description": "¿Estás seguro de que quieres eliminar esta carta especial? No hay forma de deshacer esta acción."
     }
+  },
+  "mods": {
+    "title": "Selecciona la versión de Jokers of Neon que quieres jugar",
+    "back": "Atrás",
+    "community-mods": "Mods de la comunidad"
   }
 }

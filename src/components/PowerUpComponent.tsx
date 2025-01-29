@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { POWER_UPS_CARDS_DATA } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -95,7 +96,7 @@ export const PowerUpComponent = ({
 
 const EmptyPowerUp = ({ width }: { width: number }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const { isRageRound } = useGameContext();
+  const { isRageRound, isClassic } = useGameContext();
 
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
@@ -106,7 +107,13 @@ const EmptyPowerUp = ({ width }: { width: number }) => {
       width={`${componentWidth}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
-      backgroundColor={isRageRound ? "black" : BACKGROUND_BLUE}
+      backgroundColor={
+        isClassic
+          ? isRageRound
+            ? "black"
+            : BACKGROUND_BLUE
+          : "transparent"
+      }
     />
   );
 };

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Img } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
@@ -11,12 +11,27 @@ import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
 import SpineAnimation from "../components/SpineAnimation";
 import { isMobile } from "react-device-detect";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { useGameContext } from "../providers/GameProvider";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
+  const { setModId } = useGameContext();
+
+  const tournamentEnabled = useFeatureFlagEnabled(
+    "global",
+    "tournamentEnabled"
+  );
+
+  useEffect(() => {
+    setModId(CLASSIC_MOD_ID);
+  }, []);
+
+  const enableMods = useFeatureFlagEnabled("global", "showMods");
 
   return (
     <Background type="home">
@@ -35,11 +50,13 @@ export const Home = () => {
               LEADERBOARD
             </Heading>
 
-            <Box mb={10} textAlign={"center"}>
-              <CountdownTimer
-                targetDate={new Date("2024-12-30T00:00:00.000Z")}
-              />
-            </Box>
+            {tournamentEnabled && (
+              <Box mb={10} textAlign={"center"}>
+                <CountdownTimer
+                  targetDate={new Date("2024-12-30T00:00:00.000Z")}
+                />
+              </Box>
+            )}
 
             <Leaderboard />
             <Button
@@ -89,20 +106,30 @@ export const Home = () => {
               gap={{ base: 4, sm: 6 }}
               flexWrap={{ base: "wrap", sm: "nowrap" }}
             >
-              <Button
-                onClick={() => {
-                  setLeaderboardOpen(true);
-                }}
-              >
-                {t("home.btn.leaderboard-btn")}
-              </Button>
+              {!enableMods && (
+                <Button
+                  onClick={() => {
+                    setLeaderboardOpen(true);
+                  }}
+                  minW={["150px", "300px"]}
+                >
+                  {t("home.btn.leaderboard-btn")}
+                </Button>
+              )}
               <Button
                 variant="secondarySolid"
                 onClick={() => {
-                  navigate("/login");
+                  if (enableMods) {
+                    navigate("/mods");
+                  } else {
+                    //default to classic
+                    setModId(CLASSIC_MOD_ID);
+                    navigate("/login");
+                  }
                 }}
+                minW={["150px", "300px"]}
               >
-                {t("home.btn.playDemo-btn")}
+                {t(enableMods ? "home.btn.start" : "home.btn.playDemo-btn")}
               </Button>
             </Flex>
           </Flex>

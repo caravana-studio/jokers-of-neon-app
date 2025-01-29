@@ -43,6 +43,9 @@ export const checkHand = (
         if (newSuit) {
           modifiedCardData.suit = newSuit;
         }
+
+        if (modifierCard.card_id === ModifiersId.WILDCARD_MODIFIER)
+          modifiedCardData.card = Cards.WILDCARD;
       }
     });
 
