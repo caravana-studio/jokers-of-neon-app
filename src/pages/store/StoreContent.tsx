@@ -16,7 +16,8 @@ import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
-  const { setRun, specialCards, commonCards, modifierCards } = useStore();
+  const { setRun, specialCards, commonCards, modifierCards, powerUps } =
+    useStore();
   // specialCards[specialCards.length - 1].img = "355.png";
   // specialCards[specialCards.length - 1].card_id = 355;
 
@@ -80,14 +81,16 @@ export const StoreContent = () => {
               )}
             </Box>
             <Flex gap={4} w="100%">
-              <Box w="70%" className="game-tutorial-step-4">
-                {modifierCards.length > 0 && (
+              {modifierCards.length > 0 && (
+                <Box w="70%" className="game-tutorial-step-4">
                   <StoreCardsRow cards={modifierCards} title={"modifiers"} />
-                )}
-              </Box>
-              <Box w="30%" className="game-tutorial-step-4">
-                <StorePowerUpsRow />
-              </Box>
+                </Box>
+              )}
+              {powerUps.length > 0 && (
+                <Box w="30%" className="game-tutorial-step-4">
+                  <StorePowerUpsRow />
+                </Box>
+              )}
             </Flex>
             <Box className="game-tutorial-step-5" mb={4}>
               {specialCards.length > 0 && (

@@ -16,5 +16,6 @@ export interface IContainer {
 export const namespaceFlags: IContainer = {
   global: {
     showMods: new Flag(false),
+    tournamentEnabled: new Flag(false),
   },
 }
