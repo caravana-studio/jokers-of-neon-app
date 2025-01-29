@@ -97,7 +97,7 @@ export const SpecialCardsPage = () => {
                       >
                         <CachedImage
                           borderRadius={{ base: "5px", sm: "8px" }}
-                          src={`Cards/${card.img}`}
+                          src={`/Cards/${card.img}`}
                           alt={card.img}
                           w="100%"
                           height="100%"
