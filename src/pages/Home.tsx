@@ -12,6 +12,9 @@ import { PoweredBy } from "../components/PoweredBy";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
+import i18n from "../i18n";
+import { useGameState } from "../state/useGameState";
+import { Loading } from "../components/Loading";
 
 export const Home = () => {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
@@ -19,6 +22,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
   const { setModId } = useGameContext();
+  const { gameLoading, setGameLoading } = useGameState();
 
   const tournamentEnabled = useFeatureFlagEnabled(
     "global",
@@ -30,6 +34,24 @@ export const Home = () => {
   }, []);
 
   const enableMods = useFeatureFlagEnabled("global", "showMods");
+
+  useEffect(() => {
+    setGameLoading(true);
+  }, []);
+
+  const onInit = () => {
+    setGameLoading(false);
+  };
+
+  i18n.on("loaded", onInit);
+
+  if (gameLoading) {
+    return (
+      <Background type="home">
+        <Loading />
+      </Background>
+    );
+  }
 
   return (
     <Background type="home">
