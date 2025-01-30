@@ -58,6 +58,9 @@ export const StorePreviewCardComponentMobile = ({
           w="100%"
           justifyContent="center"
           alignItems="center"
+          sx={{
+            zIndex: 1,
+          }}
         >
           <Box>
             <Heading

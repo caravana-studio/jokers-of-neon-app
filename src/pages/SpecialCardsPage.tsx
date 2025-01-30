@@ -58,6 +58,9 @@ export const SpecialCardsPage = () => {
         flexDirection="column"
         gap={4}
         px={6}
+        sx={{
+          zIndex: 1,
+        }}
       >
         <Flex gap={4} flexDirection="column">
           <Text mx={2} size="l">

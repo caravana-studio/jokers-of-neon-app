@@ -18,8 +18,6 @@ import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards, powerUps } =
     useStore();
-  // specialCards[specialCards.length - 1].img = "355.png";
-  // specialCards[specialCards.length - 1].card_id = 355;
 
   const { t } = useTranslation(["store"]);
 
@@ -57,6 +55,9 @@ export const StoreContent = () => {
             pb={0}
             pt={0}
             pl={"2%"}
+            sx={{
+              zIndex: 1,
+            }}
           >
             <Heading variant="italic" ml={4}>
               {t("store.titles.level-game").toUpperCase()}
@@ -74,6 +75,9 @@ export const StoreContent = () => {
             alignItems={"flex-start"}
             pb={0}
             gap={6}
+            sx={{
+              zIndex: 1,
+            }}
           >
             <Box className="game-tutorial-step-3">
               {commonCards.length > 0 && (

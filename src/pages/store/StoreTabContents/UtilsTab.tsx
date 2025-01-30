@@ -77,7 +77,13 @@ export const UtilsTab = () => {
   );
 
   return (
-    <Flex flexDir={"column"} width={"100%"}>
+    <Flex
+      flexDir={"column"}
+      width={"100%"}
+      sx={{
+        zIndex: 1,
+      }}
+    >
       <Flex my={3} mx={4} flexDir={"column"}>
         <Flex justifyContent="space-between" mb={2} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
