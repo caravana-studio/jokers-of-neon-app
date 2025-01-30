@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
@@ -27,18 +27,20 @@ export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
   return (
     <>
       <Flex
-        px={[2, "80px"]}
+        px={[2, "50px"]}
         w="100%"
         justifyContent={isSmallScreen ? "center" : "space-between"}
         gap={4}
       >
         {!isSmallScreen && (
-          <Heading>
-            {t(burn ? "burn-title" : "title")}
-            {deck && deck.currentLength !== deck.size && !inStore
-              ? ` ( ${deck.currentLength} / ${deck.size} )`
-              : ` ( ${deck.size} )`}
-          </Heading>
+          <Flex gap={4} alignItems="flex-start" minWidth="300px">
+            <Heading>{t(burn ? "burn-title" : "title")}</Heading>
+            <Text size="lg" color="blueLight" pt={1.5} fontWeight={500}>
+              {deck && deck.currentLength !== deck.size && !inStore
+                ? ` ( ${deck.currentLength} / ${deck.size} )`
+                : ` ( ${deck.size} )`}
+            </Text>
+          </Flex>
         )}
         <DeckFilters inStore={inStore} />
       </Flex>
@@ -50,8 +52,7 @@ export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
         overflowY="auto"
         gap={4}
         mt={1}
-        px={6}
-        paddingTop={"10px"}
+        px={["30px", "50px"]}
       >
         <Box w="100%" height={"100%"}>
           <DeckCardsGrid

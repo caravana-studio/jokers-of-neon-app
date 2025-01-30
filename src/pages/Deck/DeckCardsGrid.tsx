@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { TiltCard } from "../../components/TiltCard";
@@ -21,74 +21,71 @@ interface DeckCardsGridProps {
 }
 
 export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
-  cards,
+  cards = [],
   filters,
   usedCards = [],
   onCardSelect,
   inBurn = false,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation("game", { keyPrefix: "game.deck" });
+
   const SCALE = isSmallScreen ? 0.55 : 0.85;
   const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
   const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
 
-  const { t } = useTranslation("game", { keyPrefix: "game.deck" });
-  const hasFilters =
-    filters?.isModifier != undefined ||
-    filters?.isNeon != undefined ||
-    filters?.suit != undefined ||
-    filters?.isFigures != undefined ||
-    filters?.isAces != undefined;
-  const sortedCards = hasFilters
-    ? sortCards(cards ?? [], SortBy.RANK)
-    : sortCards(cards ?? [], SortBy.SUIT);
-
   const [selectedCard, setSelectedCard] = useState<Card>();
 
-  const filteredCards = sortedCards?.filter((card) => {
-    let matchesFilter = true;
+  // Memoize filtering condition
+  const hasFilters = useMemo(
+    () =>
+      filters?.isModifier !== undefined ||
+      filters?.isNeon !== undefined ||
+      filters?.suit !== undefined ||
+      filters?.isFigures !== undefined ||
+      filters?.isAces !== undefined,
+    [filters]
+  );
 
-    if (filters) {
-      if (filters.isNeon !== undefined) {
-        matchesFilter = matchesFilter && card.isNeon === filters.isNeon;
-      }
+  // Memoized sorting
+  const sortedCards = useMemo(
+    () => sortCards(cards, hasFilters ? SortBy.RANK : SortBy.SUIT),
+    [cards, hasFilters]
+  );
 
-      if (filters.isModifier !== undefined) {
-        matchesFilter = matchesFilter && card.isModifier === filters.isModifier;
-      }
+  // Memoized filtering
+  const filteredCards = useMemo(() => {
+    return sortedCards.filter((card) => {
+      if (!filters) return true;
 
-      if (filters.isFigures !== undefined) {
-        matchesFilter =
-          matchesFilter &&
-          (filters.isFigures
-            ? card.card === Cards.JACK ||
-              card.card === Cards.QUEEN ||
-              card.card === Cards.KING
-            : card.card !== Cards.JACK &&
-              card.card !== Cards.QUEEN &&
-              card.card !== Cards.KING);
-      }
+      return (
+        (filters.isNeon === undefined || card.isNeon === filters.isNeon) &&
+        (filters.isModifier === undefined ||
+          card.isModifier === filters.isModifier) &&
+        (filters.isFigures === undefined ||
+          (card.card !== undefined &&
+            (filters.isFigures
+              ? [Cards.JACK, Cards.QUEEN, Cards.KING].includes(card.card)
+              : ![Cards.JACK, Cards.QUEEN, Cards.KING].includes(card.card)))) &&
+        (filters.isAces === undefined ||
+          (filters.isAces
+            ? card.card === Cards.ACE
+            : card.card !== Cards.ACE)) &&
+        (filters.suit === undefined || card.suit === filters.suit)
+      );
+    });
+  }, [sortedCards, filters]);
 
-      if (filters.isAces !== undefined) {
-        matchesFilter =
-          matchesFilter &&
-          (filters.isAces ? card.card === Cards.ACE : card.card !== Cards.ACE);
-      }
-
-      if (filters.suit !== undefined) {
-        matchesFilter = matchesFilter && card.suit === filters.suit;
-      }
-    }
-
-    return matchesFilter;
-  });
-
-  const countUsedCards = (card: Card): number => {
-    return usedCards.filter((usedCard) => usedCard.id === card.id).length;
-  };
+  // Memoized used card count lookup table
+  const usedCardCountMap = useMemo(() => {
+    return usedCards.reduce<Record<string, number>>((acc, card) => {
+      acc[card.id] = (acc[card.id] || 0) + 1;
+      return acc;
+    }, {});
+  }, [usedCards]);
 
   return (
-    <Box mb={4} overflow="visible">
+    <Box mb={4} overflow="visible" ml={[-3,-6]}>
       <Flex
         wrap="wrap"
         position="relative"
@@ -96,10 +93,9 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
         mb={4}
         overflow="visible"
         justifyContent="center"
-        pr={`${CUSTOM_CARD_WIDTH / 2}px`}
       >
-        {filteredCards?.map((card, index) => {
-          const usedCount = countUsedCards(card);
+        {filteredCards.map((card, index) => {
+          const usedCount = usedCardCountMap[card.id] || 0;
           const opacity = usedCount > 0 ? 0.6 : 1;
           const borderRadius = isMobile ? "5px" : "8px";
           const isSelected = selectedCard?.id === card.id;
@@ -113,18 +109,13 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
               mr={`-${CUSTOM_CARD_WIDTH / 5}px`}
               mb={4}
               sx={{
-                "& div": {
-                  // background: "rgba(0,0,0,1)",
-                  borderRadius: `${borderRadius}`,
-                },
-                "& img": {
-                  opacity: `${opacity}`,
-                },
+                "& div": { borderRadius },
+                "& img": { opacity },
                 transform: isSelected
                   ? `scale(1.1) translateX(-10px)`
                   : "scale(1)",
                 transition: "transform 0.3s ease, box-shadow 0.5s ease",
-                borderRadius: borderRadius,
+                borderRadius,
                 boxShadow: isSelected ? `0 0 5px 5px ${BLUE_LIGHT}` : "none",
               }}
             >
@@ -134,11 +125,9 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
                 used={usedCount > 0}
                 onClick={() => {
                   if (inBurn) {
-                    if (selectedCard?.id === card.id) {
-                      setSelectedCard(undefined);
-                    } else {
-                      setSelectedCard(card);
-                    }
+                    setSelectedCard(
+                      selectedCard?.id === card.id ? undefined : card
+                    );
                     onCardSelect?.(card);
                   }
                 }}
@@ -148,7 +137,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
           );
         })}
       </Flex>
-      {(!filteredCards || filteredCards.length === 0) && (
+      {filteredCards.length === 0 && (
         <Text color="white" size="l" textAlign="center">
           {t("no-cards")}
         </Text>

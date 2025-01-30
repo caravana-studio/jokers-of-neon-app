@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -6,16 +6,11 @@ import { useSwipeable } from "react-swipeable";
 import { CashSymbol } from "../../components/CashSymbol";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { useDeck } from "../../dojo/queries/useDeck";
-import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
-import { DeckCardsGrid } from "./DeckCardsGrid";
-import { DeckFilters } from "./DeckFilters";
-import { preprocessCards } from "./Utils/DeckCardsUtils";
 import { Deck } from "./Deck";
+import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;
@@ -91,7 +86,7 @@ export const DeckPageContentMobile = ({
           alignItems={"center"}
           width={"100%"}
           flexDirection={"column"}
-          my={2}
+          mt={2}
           px={4}
         >
           <Tabs

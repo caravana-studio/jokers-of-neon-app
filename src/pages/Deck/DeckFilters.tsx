@@ -1,9 +1,10 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useDeck } from "../../dojo/queries/useDeck";
 import { Cards } from "../../enums/cards";
 import { Suits } from "../../enums/suits";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 
 const filterBySuit = (suit: Suits) => (card: Card) => card.suit === suit;
@@ -35,17 +36,17 @@ const FilterButton = ({
       size={"sm"}
       variant={isActive ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
       px={[2, 3]}
-      borderRadius={["12px", "25px"]}
-      height={"25px"}
+      borderRadius={"full"}
+      h={["20px", "25px"]}
       onClick={onClick}
     >
-      <Flex gap={3}>
-        <Box fontFamily="Orbitron">{label}</Box>
-        <Box fontFamily="Orbitron">
+      <Flex gap={[1, 2]}>
+        <Text fontSize={[10, 14]}>{label}</Text>
+        <Text color="blueLight" fontSize={[10, 14]}>
           {unusedCardsLength !== deckLength
-            ? `(${unusedCardsLength} / ${deckLength})`
-            : `(${deckLength})`}
-        </Box>
+            ? `( ${unusedCardsLength} / ${deckLength} )`
+            : `( ${deckLength} )`}
+        </Text>
       </Flex>
     </Button>
   );
@@ -60,6 +61,8 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   const { filterButtonsState, updateFilters } = useDeckFilters();
 
   const deck = useDeck();
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const noNeonCards =
     deck?.fullDeckCards.filter((card) => !card.isNeon).length ?? 0 === 0;
@@ -78,12 +81,12 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   };
 
   return (
-    <Flex flexDirection={"column"} alignItems={"center"} px={5}>
+    <Flex flexDirection={"column"} px={5}>
       <Flex
         alignItems={"space-around"}
-        justifyContent={"center"}
+        justifyContent={isSmallScreen ? "center" : "flex-end"}
         wrap={"wrap"}
-        gap={[1, 4]}
+        gap={[1, 2]}
         mt={2}
         width={"100%"}
       >
