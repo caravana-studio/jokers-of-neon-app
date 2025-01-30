@@ -88,23 +88,24 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
-      {/* {type === "home" && (
-        <Flex position={"absolute"} width={"100%"} height={"100%"}>
-          <Flex p={0} m={0}>
-            <SpineAnimation
-              jsonUrl={`/spine-animations/bg/HomeBg.json`}
-              atlasUrl={`/spine-animations/bg/HomeBg.atlas`}
-              initialAnimation={"animation"}
-              loopAnimation={"animation"}
-              scale={isMobile ? 1 : 2}
-              yOffset={isMobile ? -500 : -800}
-              width={isMobile ? 350 : 500}
-              height={isMobile ? 800 : 1500}
-              home
-            />
-          </Flex>
-        </Flex>
-      )} */}
+      {type === "home" && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        >
+          <source src={"/bg/jn-bg.mp4"} type="video/mp4" />
+        </video>
+      )}
 
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
