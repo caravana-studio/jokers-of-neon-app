@@ -21,35 +21,55 @@ async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
+  let setupResult: any;
+  let setupFinished = false;
+  let i18nLoaded = false;
 
   root.render(<LoadingScreen />);
 
+  const onI18nLoaded = () => {
+    i18nLoaded = true;
+    renderApp();
+  };
+
   const loadImages = async () => {
-    await i18n.loadNamespaces(["traditional-cards", "neon-cards"]);
+    await i18n.loadNamespaces(
+      ["home", "traditional-cards", "neon-cards"],
+      onI18nLoaded
+    );
     preloadImages();
     preloadSpineAnimations();
   };
 
   i18n.on("initialized", loadImages);
+
   registerServiceWorker();
 
+  const renderApp = () => {
+    if (setupFinished && i18nLoaded) {
+      const queryClient = new QueryClient();
+
+      root.render(
+        <StarknetProvider>
+          <DojoProvider value={setupResult}>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <Toaster />
+                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                  <App />
+                </I18nextProvider>
+              </QueryClientProvider>
+            </BrowserRouter>
+          </DojoProvider>
+        </StarknetProvider>
+      );
+    }
+  };
+
   try {
-    const setupResult = await setup(dojoConfig);
-    const queryClient = new QueryClient();
-    root.render(
-      <StarknetProvider>
-        <DojoProvider value={setupResult}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <Toaster />
-              <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                <App />
-              </I18nextProvider>
-            </QueryClientProvider>
-          </BrowserRouter>
-        </DojoProvider>
-      </StarknetProvider>
-    );
+    setupResult = await setup(dojoConfig);
+    setupFinished = true;
+    renderApp();
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);
