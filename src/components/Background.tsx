@@ -69,6 +69,36 @@ export const Background = ({
     loadBackgroundImage();
   }, [type, isClassic]);
 
+  interface BackgroundVideoProps {
+    type: "home" | "store";
+  }
+
+  const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
+    const videoSources: Record<string, string> = {
+      home: "/bg/jn-bg.mp4",
+      store: "/bg/store-bg.mp4",
+    };
+
+    return (
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      >
+        <source src={videoSources[type]} type="video/mp4" />
+      </video>
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -88,43 +118,8 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
-      {type === "home" && (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        >
-          <source src={"/bg/jn-bg.mp4"} type="video/mp4" />
-        </video>
-      )}
-
-      {type === "store" && (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        >
-          <source src={"/bg/store-bg.mp4"} type="video/mp4" />
-        </video>
-      )}
+      {type === "home" && <BackgroundVideo type="home" />}
+      {type === "store" && <BackgroundVideo type="store" />}
 
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
