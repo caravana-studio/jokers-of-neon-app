@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage, { checkImageExists } from "./CachedImage";
 import SpineAnimation from "./SpineAnimation";
@@ -7,6 +7,7 @@ import { isMobile } from "react-device-detect";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
 import { getImageFromCache } from "../utils/preloadImages";
+import BackgroundVideo from "./BackgroundVideo";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -69,36 +70,6 @@ export const Background = ({
     loadBackgroundImage();
   }, [type, isClassic]);
 
-  interface BackgroundVideoProps {
-    type: "home" | "store";
-  }
-
-  const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
-    const videoSources: Record<string, string> = {
-      home: "/bg/jn-bg.mp4",
-      store: "/bg/store-bg.mp4",
-    };
-
-    return (
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      >
-        <source src={videoSources[type]} type="video/mp4" />
-      </video>
-    );
-  };
-
   return (
     <Box
       sx={{
@@ -120,6 +91,7 @@ export const Background = ({
     >
       {type === "home" && <BackgroundVideo type="home" />}
       {type === "store" && <BackgroundVideo type="store" />}
+      {type === "game" && <BackgroundVideo type="game" />}
 
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>

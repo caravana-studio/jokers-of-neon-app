@@ -53,6 +53,7 @@ export const MobilePreselectedCardsSection = () => {
           alignItems: "center",
           height: `${cardHeight + 70}px`,
           width: "100%",
+          zIndex: 1,
         }}
         mb={1}
         ref={setNodeRef}
@@ -64,7 +65,7 @@ export const MobilePreselectedCardsSection = () => {
             alignItems: "center",
             flexWrap: "no-wrap",
             width: "95%",
-            height: '100%',
+            height: "100%",
           }}
           background={"url(grid.png)"}
           backgroundSize={"contain"}
