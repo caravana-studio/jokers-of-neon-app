@@ -13,30 +13,35 @@ import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadImages } from "./utils/preloadImages.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
+import { preloadImages } from "./utils/preloadImages.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+
+const I18N_NAMESPACES = [
+  "game",
+  "rage",
+  "home",
+  "traditional-cards",
+  "neon-cards",
+  "store",
+  "effects",
+  "tutorials",
+  "itermediate-screens",
+  "plays",
+  "loot-boxes",
+];
 
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
-  let setupResult: any;
-  let setupFinished = false;
-  let i18nLoaded = false;
+
+  let promises = [];
 
   root.render(<LoadingScreen />);
 
-  const onI18nLoaded = () => {
-    i18nLoaded = true;
-    renderApp();
-  };
-
+  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
   const loadImages = async () => {
-    await i18n.loadNamespaces(
-      ["home", "traditional-cards", "neon-cards"],
-      onI18nLoaded
-    );
     preloadImages();
     preloadSpineAnimations();
   };
@@ -45,10 +50,13 @@ async function init() {
 
   registerServiceWorker();
 
-  const renderApp = () => {
-    if (setupFinished && i18nLoaded) {
-      const queryClient = new QueryClient();
+  try {
+    const setupPromise = setup(dojoConfig);
+    promises.push(setupPromise);
+    const setupResult = await setupPromise;
 
+    Promise.all(promises).then(() => {
+      const queryClient = new QueryClient();
       root.render(
         <StarknetProvider>
           <DojoProvider value={setupResult}>
@@ -63,13 +71,7 @@ async function init() {
           </DojoProvider>
         </StarknetProvider>
       );
-    }
-  };
-
-  try {
-    setupResult = await setup(dojoConfig);
-    setupFinished = true;
-    renderApp();
+    });
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);
