@@ -8,6 +8,7 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
 import { getImageFromCache } from "../utils/preloadImages";
 import BackgroundVideo from "./BackgroundVideo";
+import { useGame } from "../dojo/queries/useGame";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -89,9 +90,15 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
-      {type === "home" && <BackgroundVideo type="home" />}
-      {type === "store" && <BackgroundVideo type="store" />}
-      {type === "game" && <BackgroundVideo type="game" />}
+      {modId === CLASSIC_MOD_ID && type === "home" && (
+        <BackgroundVideo type="home" />
+      )}
+      {modId === CLASSIC_MOD_ID && type === "store" && (
+        <BackgroundVideo type="store" />
+      )}
+      {modId === CLASSIC_MOD_ID && type === "game" && (
+        <BackgroundVideo type="game" />
+      )}
 
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
