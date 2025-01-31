@@ -6,6 +6,7 @@ export interface Card {
   id: string;
   img: string;
   value?: Cards;
+  card?: Cards;
   suit?: Suits;
   modifiers?: Card[];
   name?: string;
