@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
 interface BackgroundVideoProps {
-  type: "home" | "store" | "game";
+  type: "home" | "store" | "game" | "rage";
 }
 
 const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
@@ -11,6 +11,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     home: "/bg/jn-bg.mp4",
     store: "/bg/store-bg.mp4",
     game: "/bg/game-bg.mp4",
+    rage: "/bg/rage-bg.mp4",
   };
 
   useEffect(() => {

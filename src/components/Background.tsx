@@ -93,11 +93,17 @@ export const Background = ({
       {modId === CLASSIC_MOD_ID && type === "home" && (
         <BackgroundVideo type="home" />
       )}
+
       {modId === CLASSIC_MOD_ID && type === "store" && (
         <BackgroundVideo type="store" />
       )}
+
       {modId === CLASSIC_MOD_ID && type === "game" && (
         <BackgroundVideo type="game" />
+      )}
+
+      {modId === CLASSIC_MOD_ID && type === "rage" && (
+        <BackgroundVideo type="rage" />
       )}
 
       {bgDecoration ? (
