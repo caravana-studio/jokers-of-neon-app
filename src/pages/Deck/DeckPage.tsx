@@ -14,7 +14,7 @@ export const DeckPage = () => {
 
   return (
     <DeckFilterProvider>
-      <Background type="store">
+      <Background type="game">
         {isSmallScreen ? (
           <DeckPageContentMobile inStore={inStore} burn={burn} />
         ) : (

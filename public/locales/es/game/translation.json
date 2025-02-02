@@ -97,14 +97,18 @@
     "deck": {
       "tooltip": "Ver mazo",
       "title": "Mi mazo",
+      "burn-title": "Selecciona una carta para quemar",
       "filter-title": "Filtrar por",
       "suit": {
-        "club": "Trébol",
-        "spade": "Pica",
-        "heart": "Corazón",
-        "diamond": "Diamante",
+        "club": "Tréboles",
+        "spade": "Picas",
+        "heart": "Corazones",
+        "diamond": "Diamantes",
         "neon": "Neón",
-        "modifier": "Modificadora"
+        "modifier": "Modificadoras",
+        "joker": "Jokers",
+        "figures": "Figuras",
+        "aces": "Ases"
       },
       "btns": {
         "special-cards": "Ver cartas especiales",
