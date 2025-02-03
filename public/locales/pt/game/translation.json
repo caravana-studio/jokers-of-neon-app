@@ -98,6 +98,7 @@
     "deck": {
       "tooltip": "Ver meu baralho",
       "title": "Meu baralho completo",
+      "burn-title": "Selecione uma carta para queimar",
       "filter-title": "Filtrar por",
       "suit": {
         "club": "Paus",
@@ -105,7 +106,10 @@
         "heart": "Copas",
         "diamond": "Ouros",
         "neon": "Neon",
-        "modifier": "Modificador"
+        "modifier": "Modificador",
+        "joker": "Joker",
+        "figures": "Figuras",
+        "aces": "As"
       },
       "btns": {
         "special-cards": "Ver cartas especiais",
@@ -115,9 +119,9 @@
       "tabs": {
         "full-deck": "Baralho",
         "plays": "Jogadas"
-    }
+      }
     },
-    
+
     "no-cards": "Não há cartas que correspondam aos filtros selecionados."
   },
   "confirmation-modal": {

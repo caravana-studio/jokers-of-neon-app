@@ -98,14 +98,18 @@
     "deck": {
       "tooltip": "See my deck",
       "title": "My full deck",
+      "burn-title": "Select a card to burn",
       "filter-title": "Filter by",
       "suit": {
-        "club": "Club",
-        "spade": "Spade",
-        "heart": "Heart",
-        "diamond": "Diamond",
+        "club": "Clubs",
+        "spade": "Spades",
+        "heart": "Hearts",
+        "diamond": "Diamonds",
         "neon": "Neon",
-        "modifier": "Modifier"
+        "modifier": "Modifiers",
+        "joker": "Jokers",
+        "figures": "Figures",
+        "aces": "Aces"
       },
       "btns": {
         "special-cards": "See special cards",
