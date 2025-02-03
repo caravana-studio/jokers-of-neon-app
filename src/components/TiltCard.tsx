@@ -10,7 +10,6 @@ import {
 
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";

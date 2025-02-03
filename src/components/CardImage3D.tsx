@@ -1,7 +1,6 @@
 import { Tooltip } from "@chakra-ui/react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import Tilt from "react-parallax-tilt";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { TILT_OPTIONS } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -31,33 +30,40 @@ export const CardImage3D = ({
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
 
-  const [image1Available, setImage1Available] = useState(false);
-  const [image2Available, setImage2Available] = useState(false);
+  const [layer0Available, setLayer0Available] = useState(false);
+  const [layer1Available, setLayer1Available] = useState(false);
+  const [layer2Available, setLayer2Available] = useState(false);
 
   useEffect(() => {
-    const src1 = `/Cards/big/${cid}-l1.png`;
-    const src2 = `/Cards/big/${cid}-l2.png`;
+    const src0 = `/Cards/3d/${cid}-l0.png`;
+    const src1 = `/Cards/3d/${cid}-l1.png`;
+    const src2 = `/Cards/3d/${cid}-l2.png`;
 
-    checkImageExists(src1).then(setImage1Available);
-    checkImageExists(src2).then(setImage2Available);
+    checkImageExists(src0).then(setLayer0Available);
+    checkImageExists(src1).then(setLayer1Available);
+    checkImageExists(src2).then(setLayer2Available);
   }, [cid]);
 
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
-  const { isClassic } = useGameContext()
+  const { isClassic } = useGameContext();
 
   const showPlain = (isSmallScreen && small) || !isClassic;
 
-  const mainImg = (
-    <CachedImage
+  const mainImg = useMemo(() => {
+    return <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
-      src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
+      src={
+        layer0Available && !showPlain
+          ? `/Cards/3d/${cid}-l0.png`
+          : `/Cards/${cid}.png`
+      }
       width={"100%"}
       zIndex={-1}
     />
-  );
+  }, [layer0Available, cid, showPlain]);
 
   return (
     <ConditionalTilt cardId={cid} small={small}>
@@ -69,21 +75,21 @@ export const CardImage3D = ({
         </Tooltip>
       )}
 
-      {!showPlain && image1Available && (
+      {layer1Available && !showPlain && (
         <CachedImage
           position={"absolute"}
           borderRadius={borderRadius}
-          src={`/Cards/big/${cid}-l1.png`}
+          src={`/Cards/3d/${cid}-l1.png`}
           width={"100%"}
           pointerEvents="none"
           transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
       )}
-      {!showPlain && image2Available && (
+      {layer2Available && !showPlain && (
         <CachedImage
           position={"absolute"}
           borderRadius={borderRadius}
-          src={`/Cards/big/${cid}-l2.png`}
+          src={`/Cards/3d/${cid}-l2.png`}
           width={"100%"}
           pointerEvents="none"
           transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
@@ -91,7 +97,7 @@ export const CardImage3D = ({
       )}
 
       <CachedImage
-        src={`/Cards/big/empty.png`}
+        src={`/Cards/empty.png`}
         pointerEvents="none"
         alt={`empty`}
         width={"100%"}

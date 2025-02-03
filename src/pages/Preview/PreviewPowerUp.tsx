@@ -84,7 +84,7 @@ export const PreviewPowerUp = () => {
     );
 
   const image = (
-    <CachedImage src={powerUp.img_big} alt={`PowerUp`} borderRadius="10px" />
+    <CachedImage src={powerUp.img} alt={`PowerUp`} borderRadius="10px" />
   );
 
   const props = {

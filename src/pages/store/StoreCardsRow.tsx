@@ -21,13 +21,6 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const imageUrls = useMemo(() => {
-    return cards.map((card) => {
-      return card.isSpecial || card.isModifier
-        ? `Cards/${card.card_id}.png`
-        : `Cards/big/${card.img}`;
-    });
-  }, [cards]);
 
   const { t } = useTranslation(["store"]);
 
