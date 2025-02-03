@@ -175,10 +175,10 @@ export const useShopState = () => {
       setCommonCards(shopItems.commonCards);
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
-      setSpecialSlotItem({...shopItems.specialSlotItem, fieldOrder: []});
+      setSpecialSlotItem({...shopItems.specialSlotItem});
       setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
-      setBurnItem({...shopItems.burnItem, fieldOrder: []});
+      setBurnItem({...shopItems.burnItem});
       setPowerUps(shopItems.powerUpItems);
     }
   };

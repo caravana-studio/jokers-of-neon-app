@@ -1,22 +1,21 @@
-import { useQuery } from "react-query";
-import graphQLClient from "../graphQLClient";
 import { gql } from "graphql-tag";
-import { getCardFromCardId } from "../dojo/utils/getCardFromCardId";
-import { getCardData } from "../utils/getCardData";
-import { Deck } from "../types/Deck";
+import graphQLClient from "../graphQLClient";
 
 export const DECK_QUERY_KEY = "deck";
 
 const GET_DECK_QUERY = gql`
   query GetDeck($gameId: ID!) {
-    jokersOfNeonRoundModels(where: { game_idEQ: $gameId }) {
+    jokersOfNeonCoreRoundModels(where: { game_idEQ: $gameId }) {
       edges {
         node {
           current_len_deck
         }
       }
     }
-    jokersOfNeonDeckCardModels(where: { game_idEQ: $gameId }, limit: 10000) {
+    jokersOfNeonCoreDeckCardModels(
+      where: { game_idEQ: $gameId }
+      limit: 10000
+    ) {
       edges {
         node {
           game_id
@@ -35,10 +34,10 @@ interface RoundEdge {
 }
 
 interface DeckQueryResponse {
-  jokersOfNeonRoundModels: {
+  jokersOfNeonCoreRoundModels: {
     edges: RoundEdge[];
   };
-  jokersOfNeonDeckCardModels: {
+  jokersOfNeonCoreDeckCardModels: {
     edges: {
       node: {
         game_id: number;
@@ -62,10 +61,10 @@ const fetchGraphQLData = async (gameId: number): Promise<DeckQueryResponse> => {
 
 //   const { data } = queryResponse;
 //   const deckSize =
-//     data?.jokersOfNeonRoundModels?.edges[0].node.current_len_deck ?? 0;
+//     data?.jokersOfNeonCoreRoundModels?.edges[0].node.current_len_deck ?? 0;
 
 //   const deckCards =
-//     data?.jokersOfNeonDeckCardModels?.edges
+//     data?.jokersOfNeonCoreDeckCardModels?.edges
 //       .filter(({ node: dojoCard }) => dojoCard.idx < deckSize)
 //       .map(({ node: dojoCard }) => {
 //         const card = getCardFromCardId(dojoCard?.card_id, dojoCard.idx);

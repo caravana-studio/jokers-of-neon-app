@@ -1,6 +1,6 @@
 import { menuAnatomy } from '@chakra-ui/anatomy';
-import { createMultiStyleConfigHelpers } from '@chakra-ui/react';
-import { BLUE} from "../theme/colors";
+import { createMultiStyleConfigHelpers  } from '@chakra-ui/react';
+import { BLUE, NEON_PINK} from "../theme/colors";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(menuAnatomy.keys)
@@ -71,4 +71,58 @@ const baseStyle = definePartsStyle({
   },
 })
 
-export const menuTheme = defineMultiStyleConfig({ baseStyle })
+
+const menuOutline = definePartsStyle((props) => {
+  const commonButtonStyles = {
+    bg: "greyMedium",
+    border: 0,
+    boxShadow: 0,
+  };
+  
+  return {
+    button: {
+      bg: "greyMedium",
+      border: `1px solid rgb(255,255,255) !important`,
+      color: "rgb(255,255,255)",
+      fontSize: "sm",
+      padding: "0.5rem",
+      height: "2rem",
+      _hover: commonButtonStyles,
+      _active: commonButtonStyles,
+      _focus: commonButtonStyles,
+    },
+    list: {
+      borderRadius: '0.3rem',
+      border: `1px solid white`,
+      boxShadow: 0,
+      bg: 'black',
+      p: 0,
+    },
+    item: {
+      ...baseStyle.item, 
+      bg: "grayMedium", 
+      _focus: {
+        bg: "black",
+        boxShadow: "none",
+        borderRadius: 0,
+        borderColor: "transparent",
+        outline: "none",
+      },
+      _hover: {
+        color: "white",
+        bg: NEON_PINK,
+        boxShadow: 0,
+        borderRadius: 0,
+        borderColor: "white",
+        outline: "none",
+      },
+    },
+  };
+});
+
+export const menuTheme = defineMultiStyleConfig({
+  baseStyle,
+  variants: {
+    menuOutline,
+  },
+});

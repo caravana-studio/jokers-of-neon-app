@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { InformationIcon } from "../../../components/InformationIcon";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
-import { MAX_SPECIAL_CARDS } from "../../../constants/config";
 import { useGame } from "../../../dojo/queries/useGame";
+import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
@@ -18,12 +18,12 @@ export const UtilsTab = () => {
   const navigate = useNavigate();
 
   const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
+  const { maxSpecialCards } = useGameContext();
 
   const game = useGame();
   const cash = game?.cash ?? 0;
 
-  const visible =
-    (game?.len_max_current_special_cards ?? 1) < MAX_SPECIAL_CARDS;
+  const visible = (game?.special_slots ?? 1) < maxSpecialCards;
 
   const notEnoughCashSlot =
     !specialSlotItem.cost ||
@@ -92,59 +92,60 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
-          h="140px"
         >
           <LevelUpTable />
         </Flex>
       </Flex>
 
-      <Flex className="PowerUps" mx={4} flexDir={"column"}>
-        <Flex gap={2} mb={2} alignItems="center">
-          <Heading fontWeight={"400"} fontSize={"xs"}>
-            {t("store.titles.powerups").toUpperCase()}
-          </Heading>
-          <InformationIcon title={"power-ups"} />
-        </Flex>
-        <Flex
-          flexDirection={"column"}
-          justifyContent={"space-between"}
-          margin={"0 auto"}
-          bg="rgba(0, 0, 0, 0.6)"
-          borderRadius="10px"
-          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-          width={"100%"}
-          pb={5}
-          pt={2}
-          h="75px"
-        >
-          <Flex flexDirection="row" justifyContent={"space-around"}>
-            {powerUps.map((powerUp, index) => {
-              return (
-                <PowerUpComponent
-                  powerUp={powerUp}
-                  width={60}
-                  key={index}
-                  inStore
-                  onClick={() => {
-                    if (!powerUp.purchased) {
-                      navigate("/preview/power-up", {
-                        state: { powerUp },
-                      });
-                    }
-                  }}
-                />
-              );
-            })}
+      {powerUps?.length > 0 && (
+        <Flex className="PowerUps" mx={4} flexDir={"column"}>
+          <Flex gap={2} mb={2} alignItems="center">
+            <Heading fontWeight={"400"} fontSize={"xs"}>
+              {t("store.titles.powerups").toUpperCase()}
+            </Heading>
+            <InformationIcon title={"power-ups"} />
+          </Flex>
+          <Flex
+            flexDirection={"column"}
+            justifyContent={"space-between"}
+            margin={"0 auto"}
+            bg="rgba(0, 0, 0, 0.6)"
+            borderRadius="10px"
+            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+            width={"100%"}
+            pb={5}
+            pt={2}
+            h="75px"
+          >
+            <Flex flexDirection="row" justifyContent={"space-around"}>
+              {powerUps.map((powerUp, index) => {
+                return (
+                  <PowerUpComponent
+                    powerUp={powerUp}
+                    width={60}
+                    key={index}
+                    inStore
+                    onClick={() => {
+                      if (!powerUp.purchased) {
+                        navigate("/preview/power-up", {
+                          state: { powerUp },
+                        });
+                      }
+                    }}
+                  />
+                );
+              })}
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      )}
 
       <Flex className="Utils" my={3} mx={4} gap={2}>
-        <Flex flexDir="column" w="50%" gap={2}>
-          <Heading fontWeight={"400"} fontSize="xs">
-            {t("store.preview-card.slot-title")}
-          </Heading>
-          {visible && (
+        {visible && (
+          <Flex flexDir="column" w="50%" gap={2}>
+            <Heading fontWeight={"400"} fontSize="xs">
+              {t("store.preview-card.slot-title")}
+            </Heading>
             <Flex
               flexDirection={"column"}
               justifyContent={"space-between"}
@@ -172,8 +173,8 @@ export const UtilsTab = () => {
                 </Flex>
               </Flex>
             </Flex>
-          )}
-        </Flex>
+          </Flex>
+        )}
 
         <Flex flexDir="column" w="50%" gap={2}>
           <Heading fontWeight={"400"} fontSize={"xs"}>

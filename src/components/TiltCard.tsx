@@ -10,7 +10,9 @@ import {
 
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
+import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
@@ -73,6 +75,7 @@ export const TiltCard = ({
 
   const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
+  const { isClassic } = useGameContext();
 
   const tiltCardComponent = (
     <Box
@@ -99,7 +102,7 @@ export const TiltCard = ({
                 borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
                 sx={{ maxWidth: "unset", opacity: purchased ? 0.3 : 1 }}
-                src={`Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile ? "mobile/" : ""}${modifiedCard.img}`}
+                src={`/Cards/${(modifiedCard.card_id ?? 0) < 300 && isMobile && isClassic ? "mobile/" : ""}${modifiedCard.img}`}
                 alt={modifiedCard.img}
                 w="100%"
                 height="100%"
@@ -194,7 +197,7 @@ export const TiltCard = ({
                 >
                   <CachedImage
                     sx={{ maxWidth: "unset" }}
-                    src={`Cards/${c.img}`}
+                    src={`/Cards/${c.img}`}
                     alt={c.img}
                     width={`${cardWith}px`}
                     height={`${cardHeight}px`}

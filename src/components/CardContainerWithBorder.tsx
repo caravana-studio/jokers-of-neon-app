@@ -1,21 +1,18 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { GREY_LINE } from "../theme/colors.tsx";
-import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 export const CardContainerWithBorder = ({
-    width = '100%',
-    height = '100%',
+  width = "100%",
+  height = "100%",
   children,
-
 }: {
-    width?: string;
-    height?: string;
+  width?: string;
+  height?: string;
   children: ReactNode;
 }) => {
-
   return (
     <Flex
       className="special-cards-step-3"
@@ -42,7 +39,7 @@ export const CardContainerSwitcher = ({
 }: {
   children: ReactNode;
 }) => {
-  const { isRageRound } = useGameContext();
+  const { isRageRound, isClassic } = useGameContext();
   return (
     <Flex
       border={`1px solid ${GREY_LINE}`}
@@ -55,7 +52,13 @@ export const CardContainerSwitcher = ({
       width={["28px", "50px"]}
       position="absolute"
       right={["-15px", "-25px"]}
-      backgroundColor={isRageRound ? "black" : "backgroundBlue"}
+      backgroundColor={
+        isClassic
+          ? isRageRound
+            ? "black"
+            : "backgroundBlue"
+          : "transparent"
+      }
       zIndex={10}
     >
       {children}

@@ -21,7 +21,6 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
-import { handsLeftTutorial } from "../../providers/TutorialGameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
@@ -38,6 +37,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     discardEffectCard,
     preSelectedModifiers,
     roundRewards,
+    remainingPlaysTutorial
   } = useGameContext();
 
   const { highlightCard } = useCardHighlight();
@@ -45,7 +45,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = !isTutorial() ? round?.hands ?? 0 : handsLeftTutorial;
+  const handsLeft = !isTutorial() ? round?.remaining_plays ?? 0 : remainingPlaysTutorial ?? 0;
 
   const { activeNode } = useDndContext();
 

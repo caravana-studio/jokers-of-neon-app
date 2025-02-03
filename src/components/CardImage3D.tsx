@@ -1,7 +1,9 @@
 import { Tooltip } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
+import { CLASSIC_MOD_ID } from "../constants/general";
 import { TILT_OPTIONS } from "../constants/visualProps";
+import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import { getTooltip } from "../utils/getTooltip";
@@ -43,8 +45,9 @@ export const CardImage3D = ({
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
+  const { isClassic } = useGameContext()
 
-  const showPlain = isSmallScreen && small;
+  const showPlain = (isSmallScreen && small) || !isClassic;
 
   const mainImg = (
     <CachedImage

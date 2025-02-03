@@ -1,25 +1,31 @@
+import { EventType } from "../dojo/typescript/models.gen";
 import { Suits } from "../enums/suits";
 import { Card } from "./Card";
 
 export interface PlayEvents {
   play: MultiPoints;
-  cardScore: CardScore[];
   gameOver: boolean;
   levelPassed?: LevelPassedEvent;
   detailEarned?: DetailEarned;
-  specialCards?: CardScore[];
-  levelEvent?: LevelEvent;
-  globalEvents?: LevelEvent[];
-  specialSuitEvents?: SpecialSuitEvent[];
   neonPlayEvent?: NeonPlayEvent;
-  modifierSuitEvents?: ModifierSuitEvent[];
   cards: Card[];
   score: number;
-  cashEvents?: CashEvent[];
   secondChanceEvent?: boolean;
-  modifierNeonEvents?: ModifierNeonEvent[];
   powerUpEvents?: PowerUpScore[];
-  specialNeonCardEvents?: SpecialNeonCardEvent[];
+  cardPlayChangeEvents?: CardPlayEvent[];
+  cardPlayScoreEvents?: CardPlayEvent[];
+  specialCardPlayScoreEvents?: CardPlayEvent[];
+}
+
+export interface CardPlayEvent {
+  hand: CardPlayEventValue[];
+  specials: CardPlayEventValue[];
+  eventType: EventType;
+}
+
+export interface CardPlayEventValue {
+  idx: number;
+  quantity: number;
 }
 
 export interface LevelPassedEvent {

@@ -6,17 +6,13 @@ export const GAME_QUERY_KEY = "game";
 
 export const GAME_QUERY = gql`
   query GetGame($gameId: ID!) {
-    jokersOfNeonGameModels(where: { idEQ: $gameId }) {
+    jokersOfNeonCoreGameModels(where: { idEQ: $gameId }) {
       edges {
         node {
           cash
           state
           round
-          len_max_current_special_cards
-          len_current_special_cards
           player_score
-          max_hands
-          max_discard
           owner
         }
       }
@@ -29,17 +25,13 @@ interface GameEdge {
     cash: number;
     state: string;
     round: number;
-    len_max_current_special_cards: number;
-    len_current_special_cards: number;
     player_score: number;
-    max_hands: number;
-    max_discard: number;
     owner: string;
   };
 }
 
 interface GameResponse {
-  jokersOfNeonGameModels: {
+  jokersOfNeonCoreGameModels: {
     edges: GameEdge[];
   };
 }
@@ -57,7 +49,7 @@ export const useGetGame = (id: number, refetching: boolean = false) => {
   );
   const { data } = queryResponse;
 
-  const game = data?.jokersOfNeonGameModels?.edges[0]?.node;
+  const game = data?.jokersOfNeonCoreGameModels?.edges[0]?.node;
 
   return {
     ...queryResponse,

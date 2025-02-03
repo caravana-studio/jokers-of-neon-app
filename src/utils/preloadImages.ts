@@ -1,14 +1,14 @@
-import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { LOOT_BOXES_DATA } from "../data/lootBoxes";
+import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import {
-  TRADITIONAL_CARDS_DATA,
   NEON_CARDS_DATA,
+  TRADITIONAL_CARDS_DATA,
 } from "../data/traditionalCards";
 
 const CACHE_NAME = "image-cache";
 
-const getDefaultImageUrls = (): string[] => {
+const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
 
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
@@ -69,7 +69,7 @@ const getDefaultImageUrls = (): string[] => {
 };
 
 export const preloadImages = async (urls?: string[]) => {
-  const imageUrls: string[] = urls ?? getDefaultImageUrls();
+  const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
 
   try {
     const cache = await caches.open(CACHE_NAME);

@@ -77,7 +77,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   return (
     <>
       {filteredPlays ? (
-        <TableContainer>
+        <TableContainer overflow={inStore ? "hidden" : "auto"}>
           <Table
             sx={{
               borderCollapse: "separate",

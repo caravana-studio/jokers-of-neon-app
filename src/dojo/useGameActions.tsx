@@ -27,11 +27,12 @@ export const useGameActions = () => {
     account: { account },
   } = useDojo();
 
-  const createGame = async (username: string) => {
+  const createGame = async (modId: string, username: string) => {
     try {
       showTransactionToast();
       const response = await client.game_system.createGame(
         account,
+        BigInt(shortString.encodeShortString(modId)),
         BigInt(shortString.encodeShortString(username))
       );
       const transaction_hash = response?.transaction_hash ?? "";

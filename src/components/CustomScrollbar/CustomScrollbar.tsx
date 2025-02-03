@@ -7,7 +7,7 @@ interface CustomScrollbarProps {
 
 const CustomScrollbar: React.FC<CustomScrollbarProps> = ({ children }) => {
   return (
-    <div className="scrollable-container">
+    <div className="scrollable-container" style={{ minHeight: "100%" }}>
       {children}
     </div>
   );

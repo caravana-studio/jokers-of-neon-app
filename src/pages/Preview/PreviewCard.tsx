@@ -35,8 +35,8 @@ const PreviewCard = () => {
     useStore();
   const cash = game?.cash ?? 0;
   const { name, description } = getCardData(card, false);
-  const specialMaxLength = game?.len_max_current_special_cards ?? 0;
-  const specialLength = game?.len_current_special_cards ?? 0;
+  const specialMaxLength = game?.special_slots ?? 0;
+  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash =
     (duration === Duration.PERMANENT &&

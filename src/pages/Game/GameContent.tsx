@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   DndContext,
   DragEndEvent,
@@ -28,6 +28,7 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import CachedImage from "../../components/CachedImage.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -195,7 +196,7 @@ export const GameContent = () => {
           sx={{ width: "100%", height: "100%" }}
           className="game-tutorial-intro"
         >
-          <Image
+          <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
             width="100%"
@@ -263,7 +264,7 @@ export const GameContent = () => {
               </DndContext>
             </Box>
           </Box>
-          <Image
+          <CachedImage
             src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
@@ -284,7 +285,7 @@ export const GameContent = () => {
         <Box
           sx={{
             position: "fixed",
-            bottom: 14,
+            bottom: 16,
             right: 20,
           }}
         >
