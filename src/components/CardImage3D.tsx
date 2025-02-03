@@ -56,6 +56,7 @@ export const CardImage3D = ({
       src={`/Cards/${showPlain ? "" : "big/"}${cid}.png`}
       width={"100%"}
       zIndex={-1}
+      pointerEvents={isSmallScreen ? "none" : "all"}
     />
   );
 
