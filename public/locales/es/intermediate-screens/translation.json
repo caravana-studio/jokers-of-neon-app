@@ -53,5 +53,9 @@
     "title": "Selecciona la versión de Jokers of Neon que quieres jugar",
     "back": "Atrás",
     "community-mods": "Mods de la comunidad"
+  },
+  "power-ups": {
+    "title": "Power-ups",
+    "go-back": "Atrás"
   }
 }

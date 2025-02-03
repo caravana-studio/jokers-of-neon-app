@@ -22,7 +22,7 @@ export const MobileBottomBar = ({
   const navigate = useNavigate();
   return (
     <Flex
-      width="96%"
+      width="98%"
       mx={4}
       mb={8}
       mt={3}

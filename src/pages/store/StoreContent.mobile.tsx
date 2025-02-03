@@ -7,7 +7,7 @@ import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { LootBoxesMobile } from "./StoreTabContents/LootBoxes.mobile.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
 import { UtilsTab } from "./StoreTabContents/UtilsTab.tsx";
