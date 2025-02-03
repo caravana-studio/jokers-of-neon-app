@@ -10,7 +10,6 @@ import {
 
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
@@ -97,7 +96,15 @@ export const TiltCard = ({
             label={getTooltip(modifiedCard, isPack)}
             closeOnPointerDown
           >
-            <Box position="relative" w={`${cardWith}px`} h={`${cardHeight}px`}>
+            <Box
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick?.();
+              }}
+              position="relative"
+              w={`${cardWith}px`}
+              h={`${cardHeight}px`}
+            >
               <CachedImage
                 borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
@@ -106,10 +113,6 @@ export const TiltCard = ({
                 alt={modifiedCard.img}
                 w="100%"
                 height="100%"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClick?.();
-                }}
                 className={className}
               />
 

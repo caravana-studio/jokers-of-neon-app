@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { POWER_UPS_CARDS_DATA } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -49,6 +48,7 @@ export const PowerUpComponent = ({
           transition="all 0.2s ease-in-out"
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
+          onClick={onClick}
         >
           {price && (
             <PriceBox
@@ -84,7 +84,6 @@ export const PowerUpComponent = ({
             height={`${100}%`}
             width={`${100}%`}
             src={powerUp.img}
-            onClick={onClick}
           />
         </Flex>
       </Tooltip>
@@ -108,11 +107,7 @@ const EmptyPowerUp = ({ width }: { width: number }) => {
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={
-        isClassic
-          ? isRageRound
-            ? "black"
-            : BACKGROUND_BLUE
-          : "transparent"
+        isClassic ? (isRageRound ? "black" : BACKGROUND_BLUE) : "transparent"
       }
     />
   );
