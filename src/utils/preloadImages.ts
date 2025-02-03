@@ -6,7 +6,7 @@ import {
   TRADITIONAL_CARDS_DATA,
 } from "../data/traditionalCards";
 
-const CACHE_NAME = "image-cache";
+const CACHE_NAME = "big-image-cache";
 
 const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
