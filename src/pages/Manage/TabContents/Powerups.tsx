@@ -1,16 +1,31 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useGameContext } from "../../../providers/GameProvider";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
+import { useEffect, useState } from "react";
+import { PowerUp } from "../../../types/PowerUp";
 
 export const Powerups = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
   });
 
-  const { powerUps } = useGameContext();
+  const { powerUps, maxPowerUpSlots } = useGameContext();
+  const [totalPowerUps, setTotalPowerups] = useState<(PowerUp | null)[]>([]);
+
+  useEffect(() => {
+    const nonEmptyPowerupsSlots: (PowerUp | null)[] = powerUps.filter(
+      (p) => p != null
+    );
+    const totalPowerupSlots = [...nonEmptyPowerupsSlots];
+
+    for (let i = nonEmptyPowerupsSlots.length; i < maxPowerUpSlots; i++) {
+      totalPowerupSlots.push(null);
+    }
+
+    setTotalPowerups(totalPowerupSlots);
+  }, [powerUps]);
 
   return (
     <>
@@ -26,7 +41,7 @@ export const Powerups = () => {
             {t("title")}
           </Text>
           <FullScreenCardContainer>
-            {powerUps.map((powerUp, index) => {
+            {totalPowerUps.map((powerUp, index) => {
               return (
                 <PowerUpComponent
                   powerUp={powerUp}
