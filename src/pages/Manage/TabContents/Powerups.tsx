@@ -1,15 +1,18 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
-import { useGameContext } from "../../../providers/GameProvider";
-import { FullScreenCardContainer } from "../../FullScreenCardContainer";
-import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { PowerUpComponent } from "../../../components/PowerUpComponent";
+import { useGameContext } from "../../../providers/GameProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { PowerUp } from "../../../types/PowerUp";
+import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 export const Powerups = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
   });
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { powerUps, maxPowerUpSlots } = useGameContext();
   const [totalPowerUps, setTotalPowerups] = useState<(PowerUp | null)[]>([]);
@@ -37,9 +40,11 @@ export const Powerups = () => {
         px={6}
       >
         <Flex gap={4} flexDirection="column">
-          <Text mx={2} size="l">
-            {t("title")}
-          </Text>
+          {!isSmallScreen && (
+            <Text mx={2} size="l">
+              {t("title")}
+            </Text>
+          )}
           <FullScreenCardContainer>
             {totalPowerUps.map((powerUp, index) => {
               return (
@@ -51,10 +56,10 @@ export const Powerups = () => {
                   containerSx={{
                     backgroundColor: "transparent",
                     borderColor: "white",
-                    borderRadius: "16px",
+                    borderRadius: "20px",
                     transform: "scale(1.1)",
-                    marginTop: 0,
-                    marginBottom: 0,
+                    marginTop: 2,
+                    marginBottom: 2,
                   }}
                 />
               );

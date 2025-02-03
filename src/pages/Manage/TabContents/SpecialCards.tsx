@@ -68,9 +68,11 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
         sx={containerSx}
       >
         <Flex gap={4} flexDirection="column">
-          <Text mx={2} size="l">
-            {t("title")}
-          </Text>
+          {!isSmallScreen && (
+            <Text mx={2} size="l">
+              {t("title")}
+            </Text>
+          )}
           <FullScreenCardContainer>
             {specialCards.map((card) => {
               const isDiscarded = discardedCards

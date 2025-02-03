@@ -1,15 +1,15 @@
-import { Flex, Tabs, TabList, Tab } from "@chakra-ui/react";
-import { Powerups } from "./TabContents/Powerups";
-import { SpecialCards } from "./TabContents/SpecialCards";
+import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Powerups } from "./TabContents/Powerups";
+import { SpecialCards } from "./TabContents/SpecialCards";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
 }: {
   lastIndexTab?: number;
 }) => {
-  const { t } = useTranslation(["store"]);
+  const { t } = useTranslation("intermediate-screens");
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const handleTabChange = (index: number) => {
     setTabIndex(index);
@@ -26,12 +26,12 @@ export const ManagePageContentMobile = ({
           color="white"
         >
           <TabList width={["100%", "80%"]} margin={"0 auto"}>
-            <Tab fontSize={10}>{t("store.labels.cards")}</Tab>
-            <Tab fontSize={10}>{t("store.titles.powerups")}</Tab>
+            <Tab fontSize={10}>{t("special-cards.title")}</Tab>
+            <Tab fontSize={10}>{t("power-ups.title")}</Tab>
           </TabList>
         </Tabs>
       </Flex>
-      <Flex w="100%" flexGrow={1}>
+      <Flex w="95%" flexGrow={1}>
         {tabIndex === 0 && (
           <SpecialCards
             containerSx={{
