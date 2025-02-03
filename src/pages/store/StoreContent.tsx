@@ -19,8 +19,6 @@ export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards, powerUps } =
     useStore();
 
-    console.log('specialCards', specialCards);
-
   const { t } = useTranslation(["store"]);
 
   return (
