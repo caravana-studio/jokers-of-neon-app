@@ -113,13 +113,12 @@ const EmptyPowerUp = ({
 }) => {
   const { isSmallScreen } = useResponsiveValues();
   const { isRageRound, isClassic } = useGameContext();
-  const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
       borderRadius={["12px", "17px"]}
-      width={`${componentWidth}px`}
+      width={`${width}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={

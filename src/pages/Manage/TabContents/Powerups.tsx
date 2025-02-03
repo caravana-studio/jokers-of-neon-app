@@ -37,6 +37,9 @@ export const Powerups = () => {
                     backgroundColor: "transparent",
                     borderColor: "white",
                     borderRadius: "16px",
+                    transform: "scale(1.1)",
+                    marginTop: 0,
+                    marginBottom: 0,
                   }}
                 />
               );
