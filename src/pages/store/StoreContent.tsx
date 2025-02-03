@@ -18,8 +18,6 @@ import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards, powerUps } =
     useStore();
-  // specialCards[specialCards.length - 1].img = "355.png";
-  // specialCards[specialCards.length - 1].card_id = 355;
 
   const { t } = useTranslation(["store"]);
 
