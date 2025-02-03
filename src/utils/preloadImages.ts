@@ -1,5 +1,5 @@
-import { LOOT_BOXES_DATA } from "../data/lootBoxes";
 import { MODIFIER_CARDS_DATA } from "../data/modifiers";
+import { POWER_UPS_CARDS_DATA } from "../data/powerups";
 import { SPECIAL_CARDS_DATA } from "../data/specialCards";
 import {
   NEON_CARDS_DATA,
@@ -13,25 +13,30 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
 
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
+    imageUrls.push(`Cards/mobile/${key}.png`);
   });
 
   Object.keys(NEON_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
+    imageUrls.push(`Cards/mobile/${key}.png`);
   });
 
   // Modifier cards
   Object.keys(MODIFIER_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
+  });  
+  
+  // Power-ups
+  Object.keys(POWER_UPS_CARDS_DATA).forEach((key) => {
+    imageUrls.push(`powerups/${key}.png`);
   });
 
   // Special cards
   Object.keys(SPECIAL_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
-  });
-
-  // Packs
-  Object.keys(LOOT_BOXES_DATA).forEach((key) => {
-    imageUrls.push(`Cards/packs/${key}.png`);
+    imageUrls.push(`Cards/3d/${key}-l0.png`);
+    imageUrls.push(`Cards/3d/${key}-l1.png`);
+    imageUrls.push(`Cards/3d/${key}-l2.png`);
   });
 
   // Backgrounds
@@ -70,7 +75,6 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
 
 export const preloadImages = async (urls?: string[]) => {
   const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
-
   try {
     const cache = await caches.open(CACHE_NAME);
 
@@ -78,11 +82,13 @@ export const preloadImages = async (urls?: string[]) => {
       const cachedResponse = await cache.match(url);
       if (!cachedResponse) {
         // If not in cache, fetch and add to cache
-        const response = await fetch(url, { cache: "reload" });
-        if (response.ok) {
-          await cache.put(url, response.clone());
-        } else {
-          console.warn(`Failed to preload ${url}`);
+        try {
+          const response = await fetch(url, { cache: "reload" });
+          if (response.ok) {
+            await cache.put(url, response.clone());
+          }
+        } catch {
+          // if the image doesn't exist, just ignore it
         }
       }
     });

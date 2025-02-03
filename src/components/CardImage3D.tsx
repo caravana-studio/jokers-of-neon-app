@@ -1,5 +1,5 @@
 import { Tooltip } from "@chakra-ui/react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider";
@@ -47,19 +47,23 @@ export const CardImage3D = ({
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
-  const { isClassic } = useGameContext()
+  const { isClassic } = useGameContext();
 
   const showPlain = (isSmallScreen && small) || !isClassic;
 
-  const mainImg = (
-    <CachedImage
+  const mainImg = useMemo(() => {
+    return <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
-      src={layer0Available ? `/Cards/3d/${cid}-l0.png` : `/Cards/${cid}.png`}
+      src={
+        layer0Available && !showPlain
+          ? `/Cards/3d/${cid}-l0.png`
+          : `/Cards/${cid}.png`
+      }
       width={"100%"}
       zIndex={-1}
     />
-  );
+  }, [layer0Available, cid, showPlain]);
 
   return (
     <ConditionalTilt cardId={cid} small={small}>
@@ -71,24 +75,24 @@ export const CardImage3D = ({
         </Tooltip>
       )}
 
-      {layer1Available && (
+      {layer1Available && !showPlain && (
         <CachedImage
           position={"absolute"}
           borderRadius={borderRadius}
           src={`/Cards/3d/${cid}-l1.png`}
           width={"100%"}
           pointerEvents="none"
-          transform={showPlain ? '' :`scale(0.95) translateZ(${small ? 20 : 60}px)`}
+          transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
       )}
-      {layer2Available && (
+      {layer2Available && !showPlain && (
         <CachedImage
           position={"absolute"}
           borderRadius={borderRadius}
           src={`/Cards/3d/${cid}-l2.png`}
           width={"100%"}
           pointerEvents="none"
-          transform={showPlain ? '' :`scale(0.9) translateZ(${small ? 40 : 80}px)`}
+          transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
       )}
 
