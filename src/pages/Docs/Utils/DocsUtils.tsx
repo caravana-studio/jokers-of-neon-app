@@ -1,7 +1,6 @@
 import { RARITY } from "../../../constants/rarity";
 import { getCardFromCardId } from "../../../dojo/utils/getCardFromCardId";
 import { Card } from "../../../types/Card";
-import { CardDataMap } from "../../../types/CardData";
 import { getCardData } from "../../../utils/getCardData";
 
 export interface DocCardData {
@@ -18,20 +17,22 @@ const rarityOrder: Record<RARITY, number> = {
   [RARITY.C]: 5,
 };
 
-const getDocCardsData = (cardDataMap: CardDataMap) => {
-  return Object.keys(cardDataMap).map((key) => {
-    const cardId = Number(key);
-    let card: Card = getCardFromCardId(cardId, cardId);
+const getDocCardsData = (cardsId: number[]) => {
+  const cards: Card[] = [];
 
-    return card;
+  cardsId.forEach((cardId) => {
+    const card: Card = getCardFromCardId(cardId, cardId);
+    cards.push(card);
   });
+
+  return cards;
 };
 
 export const getSortedDocCardsData = (
-  cardDataMap: CardDataMap,
+  cardsId: number[],
   isPack: boolean = false
 ): Card[] => {
-  const cards: Card[] = getDocCardsData(cardDataMap);
+  const cards: Card[] = getDocCardsData(cardsId);
 
   return cards.slice().sort((a, b) => {
     const aData = getCardData(a, isPack);

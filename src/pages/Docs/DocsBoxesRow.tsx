@@ -12,7 +12,10 @@ import { getSortedDocCardsData } from "./Utils/DocsUtils";
 
 export const DocsBoxesRow = () => {
   const isPack = true;
-  const boxes = getSortedDocCardsData(LOOT_BOXES_DATA, isPack);
+  const boxes = getSortedDocCardsData(
+    Object.keys(LOOT_BOXES_DATA).map(Number),
+    isPack
+  );
   const { highlightCard, highlightedCard } = useCardHighlight();
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
 

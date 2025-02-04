@@ -78,9 +78,19 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
           </Tabs>
         </Flex>
         <Flex w="100%" flexGrow={1} height={"70%"} mb={2} alignItems={"center"}>
-          {tabIndex === 0 && <DocsCardsRow cardDataMap={SPECIAL_CARDS_DATA} />}
-          {tabIndex === 1 && <DocsCardsRow cardDataMap={MODIFIER_CARDS_DATA} />}
-          {tabIndex === 2 && <DocsCardsRow cardDataMap={RAGE_CARDS_DATA} />}
+          {tabIndex === 0 && (
+            <DocsCardsRow
+              cardIds={Object.keys(SPECIAL_CARDS_DATA).map(Number)}
+            />
+          )}
+          {tabIndex === 1 && (
+            <DocsCardsRow
+              cardIds={Object.keys(MODIFIER_CARDS_DATA).map(Number)}
+            />
+          )}
+          {tabIndex === 2 && (
+            <DocsCardsRow cardIds={Object.keys(RAGE_CARDS_DATA).map(Number)} />
+          )}
           {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
         <Button
