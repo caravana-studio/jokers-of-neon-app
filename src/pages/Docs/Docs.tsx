@@ -12,6 +12,7 @@ import { DocsBoxesRow } from "./DocsBoxesRow";
 import { Background } from "../../components/Background";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
+import { useGameState } from "../../state/useGameState";
 
 export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
@@ -35,6 +36,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
     },
     trackTouch: !highlightedCard,
   });
+  const { modCardsConfig } = useGameState();
 
   return (
     <Background type="store">
@@ -79,9 +81,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
         </Flex>
         <Flex w="100%" flexGrow={1} height={"70%"} mb={2} alignItems={"center"}>
           {tabIndex === 0 && (
-            <DocsCardsRow
-              cardIds={Object.keys(SPECIAL_CARDS_DATA).map(Number)}
-            />
+            <DocsCardsRow cardIds={modCardsConfig?.specialCardsIds ?? []} />
           )}
           {tabIndex === 1 && (
             <DocsCardsRow
@@ -89,7 +89,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
             />
           )}
           {tabIndex === 2 && (
-            <DocsCardsRow cardIds={Object.keys(RAGE_CARDS_DATA).map(Number)} />
+            <DocsCardsRow cardIds={modCardsConfig?.rageCardsIds ?? []} />
           )}
           {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
