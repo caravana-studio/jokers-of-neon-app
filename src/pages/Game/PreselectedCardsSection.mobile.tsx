@@ -7,7 +7,9 @@ import { ModifiableCard } from "../../components/ModifiableCard.tsx";
 import { TiltCard } from "../../components/TiltCard.tsx";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
+import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
 
 export const MobilePreselectedCardsSection = () => {
@@ -19,6 +21,10 @@ export const MobilePreselectedCardsSection = () => {
     discardAnimation,
     playAnimation,
   } = useGameContext();
+
+  const { highlightCard } = useCardHighlight();
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
@@ -91,6 +97,9 @@ export const MobilePreselectedCardsSection = () => {
                         card={modifiedCard}
                         onClick={() => {
                           togglePreselected(idx);
+                        }}
+                        onHold={() => {
+                          isSmallScreen && highlightCard(card);
                         }}
                       />
                     </AnimatedCard>

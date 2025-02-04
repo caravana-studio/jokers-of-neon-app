@@ -62,6 +62,7 @@ export const CardImage3D = ({
       }
       width={"100%"}
       zIndex={-1}
+      pointerEvents={isSmallScreen ? "none" : "all"}
     />
   }, [layer0Available, cid, showPlain]);
 

@@ -9,13 +9,12 @@ export const SpecialRageSwitcher = () => {
 
   const { specialSwitcherOn, toggleSpecialSwitcher } = useGameContext();
   return (
-    <CardContainerSwitcher>
+    <CardContainerSwitcher onClick={() => toggleSpecialSwitcher()}>
       <Tooltip placement="right" label={t("specials-box.specials-tooltip")}>
         <CachedImage
           cursor="pointer"
           src={`specials-box/special-icon-${specialSwitcherOn ? "on" : "off"}.png`}
           height={{ base: 5, sm: 8, md: 10 }}
-          onClick={() => toggleSpecialSwitcher()}
         />
       </Tooltip>
       <Tooltip placement="right" label={t("specials-box.rage-tooltip")}>
@@ -23,7 +22,6 @@ export const SpecialRageSwitcher = () => {
           cursor="pointer"
           src={`specials-box/rage-icon-${specialSwitcherOn ? "off" : "on"}.png`}
           height={{ base: 5, sm: 8, md: 10 }}
-          onClick={() => toggleSpecialSwitcher()}
         />
       </Tooltip>
     </CardContainerSwitcher>
