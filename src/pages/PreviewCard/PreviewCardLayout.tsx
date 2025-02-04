@@ -128,7 +128,7 @@ const PreviewCardLayout = () => {
                 src={
                   isPack
                     ? `Cards/${card.img}.png`
-                    : `Cards/${card.isSpecial || card.isModifier ? `big/${card?.card_id}.png` : `big/${card?.img}`}`
+                    : `Cards/${card.isSpecial || card.isModifier ? `${card?.card_id}.png` : `${card?.img}`}`
                 }
                 alt={`Card: ${card.name}`} // Make sure to provide an appropriate alt text
                 borderRadius="10px"

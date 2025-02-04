@@ -17,7 +17,6 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
-import { SpecialCardsPage } from "./pages/SpecialCardsPage";
 import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
@@ -28,6 +27,7 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import { DocsPage } from "./pages/Docs/Docs";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
+import { ManagePage } from "./pages/Manage/ManagePage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -81,14 +81,6 @@ function App() {
                       </StoreProvider>
                     }
                   />
-                  <Route
-                    path="/special-cards"
-                    element={
-                      <StoreProvider>
-                        <SpecialCardsPage />
-                      </StoreProvider>
-                    }
-                  />
                   <Route path="/play" element={<Navigate to="/" />} />
                   <Route path="/plays" element={<PlaysLayout />} />
                   <Route
@@ -105,6 +97,14 @@ function App() {
                       <CardHighlightProvider>
                         <DocsPage lastIndexTab={0} />
                       </CardHighlightProvider>
+                    }
+                  />
+                  <Route
+                    path="/manage"
+                    element={
+                      <StoreProvider>
+                        <ManagePage />
+                      </StoreProvider>
                     }
                   />
                 </Routes>
