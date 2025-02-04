@@ -1,4 +1,5 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { getVideoFromCache } from "../utils/preloadVideos";
 
 interface BackgroundVideoProps {
   type: "home" | "store" | "game" | "rage";
@@ -6,6 +7,7 @@ interface BackgroundVideoProps {
 
 const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   const videoSources: Record<string, string> = {
     home: "/bg/jn-bg.mp4",
@@ -13,6 +15,15 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
     game: "/bg/game-bg.mp4",
     rage: "/bg/rage-bg.mp4",
   };
+
+  useEffect(() => {
+    const loadVideo = async () => {
+      const cachedVideo = await getVideoFromCache(videoSources[type]);
+      setVideoSrc(cachedVideo || videoSources[type]);
+    };
+
+    loadVideo();
+  }, [type]);
 
   useEffect(() => {
     if (videoRef.current) {

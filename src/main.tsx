@@ -16,6 +16,7 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { preloadImages } from "./utils/preloadImages.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { preloadVideos } from "./utils/preloadVideos.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -44,6 +45,7 @@ async function init() {
   const loadImages = async () => {
     preloadImages();
     preloadSpineAnimations();
+    preloadVideos();
   };
 
   i18n.on("initialized", loadImages);
