@@ -11,7 +11,12 @@ export const LootBoxes = () => {
 
   const { packs } = useStore();
   return (
-    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%">
+    <Flex
+      className="game-tutorial-step-packs"
+      m={isMobile ? 4 : 0}
+      h="60%"
+      minH={"60%"}
+    >
       <Flex flexDirection="row" justifyContent="space-between">
         {packs.map((pack) => {
           const card = {
@@ -32,6 +37,7 @@ export const LootBoxes = () => {
                 key={`pack-${pack.blister_pack_id}`}
                 justifyContent="center"
                 w="50%"
+                minW={"50%"}
               >
                 <SpineAnimation
                   jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
