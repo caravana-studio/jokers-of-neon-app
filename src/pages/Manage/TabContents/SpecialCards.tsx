@@ -104,6 +104,11 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                         w={`${CARD_WIDTH * scale}px`}
                         h={`${CARD_HEIGHT * scale}px`}
                         cursor={"pointer"}
+                        onClick={() => {
+                          setPreselectedCard((prev) =>
+                            prev === card ? undefined : card
+                          );
+                        }}
                       >
                         <CachedImage
                           borderRadius={{ base: "5px", sm: "8px" }}
@@ -111,11 +116,6 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                           alt={card.img}
                           w="100%"
                           height="100%"
-                          onClick={() => {
-                            setPreselectedCard((prev) =>
-                              prev === card ? undefined : card
-                            );
-                          }}
                         />
                         {card.temporary && (
                           <TemporalBadge remaining={card.remaining ?? 1} />

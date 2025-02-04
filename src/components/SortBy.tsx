@@ -7,7 +7,7 @@ import CachedImage from "./CachedImage.tsx";
 import { CardContainerSwitcher } from "./CardContainerWithBorder.tsx";
 
 export const SortBy = () => {
-  const { sortBy, toggleSortBy } = useGameContext();
+  const { sortBy } = useGameContext();
   const { t } = useTranslation(["game"]);
 
   return (
@@ -21,9 +21,6 @@ export const SortBy = () => {
           cursor="pointer"
           src={`sort/heart-${sortBy === SortByEnum.SUIT ? "on" : "off"}.png`}
           height={{ base: 5, sm: 8 }}
-          onClick={() => {
-            toggleSortBy();
-          }}
         />
       </Tooltip>
       <Tooltip
@@ -35,9 +32,6 @@ export const SortBy = () => {
           cursor="pointer"
           src={`sort/rank-${sortBy === SortByEnum.SUIT ? "off" : "on"}.png`}
           height={{ base: 5, sm: 8 }}
-          onClick={() => {
-            toggleSortBy();
-          }}
         />
       </Tooltip>
     </SortByContainer>
@@ -47,9 +41,13 @@ export const SortBy = () => {
 const SortByContainer = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslation(["game"]);
 
+  const { toggleSortBy } = useGameContext();
+
   const { isSmallScreen } = useResponsiveValues();
   return isSmallScreen ? (
-    <CardContainerSwitcher>{children}</CardContainerSwitcher>
+    <CardContainerSwitcher onClick={toggleSortBy}>
+      {children}
+    </CardContainerSwitcher>
   ) : (
     <Flex
       flexDirection={isSmallScreen ? "row" : "column"}
@@ -67,6 +65,10 @@ const SortByContainer = ({ children }: { children: React.ReactNode }) => {
         borderRadius="8px"
         minWidth={{ base: "50px", sm: "70px" }}
         p={{ base: "5px 5px", sm: "8px 5px" }}
+        cursor={"pointer"}
+        onClick={() => {
+          toggleSortBy();
+        }}
       >
         {children}
       </Flex>

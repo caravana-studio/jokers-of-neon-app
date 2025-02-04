@@ -34,6 +34,7 @@ interface ICardProps {
   className?: string;
   used?: boolean;
   onDeck?: boolean;
+  onHold?: () => void;
 }
 
 export const TiltCard = ({
@@ -45,6 +46,7 @@ export const TiltCard = ({
   className,
   used = false,
   onDeck = false,
+  onHold,
 }: ICardProps) => {
   const { img, purchased = false } = card;
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
@@ -94,7 +96,15 @@ export const TiltCard = ({
             label={getTooltip(modifiedCard, isPack)}
             closeOnPointerDown
           >
-            <Box position="relative" w={`${cardWith}px`} h={`${cardHeight}px`}>
+            <Box
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick?.();
+              }}
+              position="relative"
+              w={`${cardWith}px`}
+              h={`${cardHeight}px`}
+            >
               <CachedImage
                 borderRadius={{ base: "5px", sm: "8px" }}
                 boxShadow={"0px 0px 5px 0px rgba(0,0,0,0.5)"}
@@ -103,10 +113,6 @@ export const TiltCard = ({
                 alt={modifiedCard.img}
                 w="100%"
                 height="100%"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClick?.();
-                }}
                 className={className}
               />
 
@@ -215,7 +221,11 @@ export const TiltCard = ({
   // when is a special card, prefix with s and use idx instead of id
   const cardId = card.isSpecial ? "s" + card.idx.toString() : card.id ?? "";
 
-  return <DraggableCard id={cardId}>{tiltCardComponent}</DraggableCard>;
+  return (
+    <DraggableCard id={cardId} onCardHold={onHold}>
+      {tiltCardComponent}
+    </DraggableCard>
+  );
 };
 
 const ConditionalTilt = ({
