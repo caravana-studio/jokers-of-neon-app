@@ -41,12 +41,6 @@ async function init() {
   root.render(<LoadingScreen />);
 
   promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
-  const loadImages = async () => {
-    preloadImages();
-    preloadSpineAnimations();
-  };
-
-  i18n.on("initialized", loadImages);
 
   registerServiceWorker();
 
@@ -57,6 +51,8 @@ async function init() {
 
     Promise.all(promises).then(() => {
       const queryClient = new QueryClient();
+      preloadImages();
+      preloadSpineAnimations();
       root.render(
         <StarknetProvider>
           <DojoProvider value={setupResult}>

@@ -10,6 +10,7 @@ import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
+import { CashSymbol } from "./CashSymbol";
 import { ConfirmationModal } from "./ConfirmationModal";
 
 interface MobileCardHighlightProps {
@@ -52,9 +53,17 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         ? t("game.card-highlight.buttons.changing")
         : t("game.card-highlight.buttons.change");
     } else if (type === CardTypes.SPECIAL) {
-      return loading
-        ? t("game.card-highlight.buttons.removing")
-        : t("game.card-highlight.buttons.remove");
+      return loading ? (
+        t("game.card-highlight.buttons.selling")
+      ) : (
+        <>
+          {t("game.card-highlight.buttons.sell-for")}
+          <Box ml={1} />
+          <CashSymbol />
+          <Box ml={1} />
+          {card.selling_price}
+        </>
+      );
     }
   };
 
@@ -90,7 +99,9 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
           title={t("game.special-cards.confirmation-modal.title")}
-          description={t("game.special-cards.confirmation-modal.description")}
+          description={t("game.special-cards.confirmation-modal.description", {
+            price: card.selling_price,
+          })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
             handleDiscard();
@@ -116,7 +127,7 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
       >
-        <CardImage3D card={card} />
+        <CardImage3D card={card} small={false} />
       </Box>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}

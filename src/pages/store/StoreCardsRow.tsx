@@ -8,7 +8,6 @@ import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { preloadImages } from "../../utils/preloadImages";
 
 interface CardsRowProps {
   title: string;

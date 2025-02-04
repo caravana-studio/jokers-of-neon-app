@@ -1,5 +1,5 @@
 import { Tooltip } from "@chakra-ui/react";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
 import { useGameContext } from "../providers/GameProvider";
@@ -51,28 +51,39 @@ export const CardImage3D = ({
 
   const showPlain = (isSmallScreen && small) || !isClassic;
 
-  const mainImg = useMemo(() => {
-    return <CachedImage
+  const plainImg = (
+    <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
-      src={
-        layer0Available && !showPlain
-          ? `/Cards/3d/${cid}-l0.png`
-          : `/Cards/${cid}.png`
-      }
+      src={`/Cards/${cid}.png`}
       width={"100%"}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
     />
-  }, [layer0Available, cid, showPlain]);
+  );
+
+  const layer0Img = (
+    <CachedImage
+      position={"absolute"}
+      borderRadius={borderRadius}
+      src={`/Cards/3d/${cid}-l0.png`}
+      width={"100%"}
+      zIndex={-1}
+      pointerEvents={isSmallScreen ? "none" : "all"}
+    />
+  );
 
   return (
     <ConditionalTilt cardId={cid} small={small}>
       {hideTooltip ? (
-        mainImg
+        layer0Available && !showPlain ? (
+          layer0Img
+        ) : (
+          plainImg
+        )
       ) : (
         <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
-          {mainImg}
+          {layer0Available && !showPlain ? layer0Img : plainImg}
         </Tooltip>
       )}
 

@@ -6,9 +6,9 @@ import { useGame } from "./useGame.tsx";
 
 const getSellingPrice = (specialCard: any) => {
   let price;
-
+  
   if (specialCard.is_temporary && specialCard.remaining) {
-    price = (specialCard.selling_price / 9) * specialCard.remaining;
+    price = (specialCard.selling_price / 3) * specialCard.remaining;
   } else {
     price = specialCard.selling_price;
   }

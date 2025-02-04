@@ -23,9 +23,9 @@
     "card-highlight": {
       "buttons": {
         "change": "Alterar",
-        "remove": "Remover",
+        "sell-for": "Vender por",
         "changing": "Alterando...",
-        "removing": "Removendo..."
+        "selling": "Vendendo..."
       }
     },
     "level-points": {
