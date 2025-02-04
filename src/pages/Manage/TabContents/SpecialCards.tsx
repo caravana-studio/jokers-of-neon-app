@@ -1,26 +1,35 @@
-import { Box, Button, Flex, Text, Tooltip, useTheme } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  SystemStyleObject,
+  Text,
+  Tooltip,
+  useTheme,
+} from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
-import { Card } from "../types/Card";
+import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
-import CachedImage from "../components/CachedImage";
-import { ConfirmationModal } from "../components/ConfirmationModal";
-import { PositionedDiscordLink } from "../components/DiscordLink";
-import { PositionedGameMenu } from "../components/GameMenu";
-import { LockedSlot } from "../components/LockedSlot";
-import { TemporalBadge } from "../components/TemporalBadge";
-import { UnlockedSlot } from "../components/UnlockedSlot";
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
-import { useGame } from "../dojo/queries/useGame";
-import { useGameContext } from "../providers/GameProvider";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { getTooltip } from "../utils/getTooltip";
-import { FullScreenCardContainer } from "./FullScreenCardContainer";
+import CachedImage from "../../../components/CachedImage";
+import { ConfirmationModal } from "../../../components/ConfirmationModal";
+import { LockedSlot } from "../../../components/LockedSlot";
+import { TemporalBadge } from "../../../components/TemporalBadge";
+import { UnlockedSlot } from "../../../components/UnlockedSlot";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useGameContext } from "../../../providers/GameProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { getTooltip } from "../../../utils/getTooltip";
+import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
-export const SpecialCardsPage = () => {
-  const navigate = useNavigate();
+interface SpecialCardsProps {
+  containerSx?: SystemStyleObject;
+}
+
+export const SpecialCards: React.FC<SpecialCardsProps> = ({
+  containerSx = {},
+}) => {
   const { colors } = useTheme();
 
   const { t } = useTranslation("intermediate-screens", {
@@ -49,23 +58,21 @@ export const SpecialCardsPage = () => {
   const scale = isSmallScreen ? cardScale * 1.2 : cardScale * 1.4;
 
   return (
-    <Background type="home" dark bgDecoration>
-      <PositionedGameMenu decoratedPage />
-
+    <>
       <Flex
         height={"100%"}
         justifyContent="center"
         flexDirection="column"
         gap={4}
         px={6}
-        sx={{
-          zIndex: 1,
-        }}
+        sx={{ ...containerSx, zIndex: 1 }}
       >
         <Flex gap={4} flexDirection="column">
-          <Text mx={2} size="l">
-            {t("title")}
-          </Text>
+          {!isSmallScreen && (
+            <Text mx={2} size="l">
+              {t("title")}
+            </Text>
+          )}
           <FullScreenCardContainer>
             {specialCards.map((card) => {
               const isDiscarded = discardedCards
@@ -130,21 +137,7 @@ export const SpecialCardsPage = () => {
               </Box>
             ))}
           </FullScreenCardContainer>
-          <Flex
-            flexDirection={"row"}
-            justifyContent="space-between"
-            gap={4}
-            mx={4}
-          >
-            <Button
-              fontSize={12}
-              onClick={() => {
-                navigate(-1);
-              }}
-              width={isSmallScreen ? "50%" : "unset"}
-            >
-              {t("go-back")}
-            </Button>
+          <Flex flexDirection={"row"} justifyContent="center" gap={4} mx={4}>
             <Button
               isDisabled={!preselectedCard}
               variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
@@ -176,7 +169,6 @@ export const SpecialCardsPage = () => {
           }}
         />
       )}
-      {!isSmallScreen && <PositionedDiscordLink />}
-    </Background>
+    </>
   );
 };

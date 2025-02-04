@@ -21,7 +21,8 @@
       "cards": "Cartas",
       "loot-boxes": "Cajas",
       "utilities": "Utilidades",
-      "no-coins": "Monedas insuficientes"
+      "no-coins": "Monedas insuficientes",
+      "manage": "Administrar items"
     },
     "titles": {
       "level-game": "Sube de nivel tu juego",
