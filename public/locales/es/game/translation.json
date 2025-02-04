@@ -41,7 +41,7 @@
     "special-cards": {
       "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
-      "remove-special-cards-label": "Eliminar",
+      "remove-special-cards-label": "Vender",
       "confirmation-modal": {
         "title": "Eliminar carta especial",
         "description": "¿Estás seguro de que quieres eliminar esta carta especial? No hay forma de deshacer esta acción."
@@ -120,7 +120,7 @@
         "plays": "Jugadas"
       }
     },
-    
+
     "no-cards": "No hay cartas que coincidan con los filtros seleccionados."
   },
   "confirmation-modal": {

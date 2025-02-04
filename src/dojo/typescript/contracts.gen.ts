@@ -1,10 +1,10 @@
-import { DojoProvider } from "@dojoengine/core";
+import { DojoProvider, DojoCall } from "@dojoengine/core";
 import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
 import * as models from "./models.gen";
 
 export function setupWorld(provider: DojoProvider) {
 
-	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
+	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_blister_pack_item",
@@ -25,7 +25,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyBurnItem_calldata = (gameId: BigNumberish, cardId: BigNumberish) => {
+	const build_shop_system_buyBurnItem_calldata = (gameId: BigNumberish, cardId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_burn_item",
@@ -46,20 +46,15 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, cardItemType: models.CardItemType) => {
-		// Workaround to fix problem with starknet.js enum management
-		const itemIdToString = {
-			0: 'None',
-			1: 'Common',
-			2: 'Modifier',
-		}
+	const build_shop_system_buyCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_card_item",
-			calldata: [gameId, itemId, new CairoCustomEnum({ [itemIdToString[cardItemType]]: '()' })],		};
+			calldata: [gameId, itemId, cardItemType],
+		};
 	};
 
-	const shop_system_buyCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: models.CardItemType) => {
+	const shop_system_buyCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum) => {
 		try {
 			return await provider.execute(
 				snAccount,
@@ -72,7 +67,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyPokerHandItem_calldata = (gameId: BigNumberish, itemId: BigNumberish) => {
+	const build_shop_system_buyPokerHandItem_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_poker_hand_item",
@@ -93,7 +88,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyPowerUpItem_calldata = (gameId: BigNumberish, itemId: BigNumberish) => {
+	const build_shop_system_buyPowerUpItem_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_power_up_item",
@@ -114,7 +109,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buySlotSpecialCardItem_calldata = (gameId: BigNumberish) => {
+	const build_shop_system_buySlotSpecialCardItem_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_slot_special_card_item",
@@ -135,7 +130,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buySpecialCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean) => {
+	const build_shop_system_buySpecialCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_special_card_item",
@@ -156,7 +151,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_rage_system_calculate_calldata = (gameId: BigNumberish) => {
+	const build_rage_system_calculate_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "rage_system",
 			entrypoint: "calculate",
@@ -177,7 +172,28 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish) => {
+	const build_game_system_changeModifierCard_calldata = (gameId: BigNumberish, modifierIndex: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "change_modifier_card",
+			calldata: [gameId, modifierIndex],
+		};
+	};
+
+	const game_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_game_system_changeModifierCard_calldata(gameId, modifierIndex),
+				"jokers_of_neon_core",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "create_game",
@@ -198,7 +214,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
+	const build_game_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "discard",
@@ -219,49 +235,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_discardEffectCard_calldata = (gameId: BigNumberish, playedCardsIndexes: BigNumberish) => {
-		return {
-			contractName: "game_system",
-			entrypoint: "discard_effect_card",
-			calldata: [gameId, playedCardsIndexes],
-		};
-	};
-
-	const game_system_discardEffectCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: BigNumberish) => {
-		try {
-			return await provider.execute(
-				snAccount,
-				build_game_system_discardEffectCard_calldata(gameId, playedCardsIndexes),
-				"jokers_of_neon_core",
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
-	const build_game_system_discardSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish) => {
-		return {
-			contractName: "game_system",
-			entrypoint: "discard_special_card",
-			calldata: [gameId, specialCardIndex],
-		};
-	};
-
-	const game_system_discardSpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, specialCardIndex: BigNumberish) => {
-		try {
-			return await provider.execute(
-				snAccount,
-				build_game_system_discardSpecialCard_calldata(gameId, specialCardIndex),
-				"jokers_of_neon_core",
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
-	const build_game_system_getGameConfig_calldata = (modId: BigNumberish) => {
+	const build_game_system_getGameConfig_calldata = (modId: BigNumberish): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "get_game_config",
@@ -278,7 +252,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_getGameMods_calldata = () => {
+	const build_game_system_getGameMods_calldata = (): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "get_game_mods",
@@ -295,7 +269,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_poker_hand_system_getPlayerPokerHands_calldata = (gameId: BigNumberish) => {
+	const build_poker_hand_system_getPlayerPokerHands_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "poker_hand_system",
 			entrypoint: "get_player_poker_hands",
@@ -312,7 +286,41 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_getShopItems_calldata = (gameId: BigNumberish) => {
+	const build_mods_info_system_getRageCardsIds_calldata = (modId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_rage_cards_ids",
+			calldata: [modId],
+		};
+	};
+
+	const mods_info_system_getRageCardsIds = async (modId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_mods_info_system_getRageCardsIds_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_mod_manager_registrator_getRegisteredManagers_calldata = (): DojoCall => {
+		return {
+			contractName: "mod_manager_registrator",
+			entrypoint: "get_registered_managers",
+			calldata: [],
+		};
+	};
+
+	const mod_manager_registrator_getRegisteredManagers = async () => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_mod_manager_registrator_getRegisteredManagers_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_getShopItems_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "get_shop_items",
@@ -329,7 +337,24 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
+	const build_mods_info_system_getSpecialCardsIds_calldata = (modId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_special_cards_ids",
+			calldata: [modId],
+		};
+	};
+
+	const mods_info_system_getSpecialCardsIds = async (modId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_mods_info_system_getSpecialCardsIds_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "play",
@@ -350,7 +375,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_mod_manager_registrator_registerManagers_calldata = (modManagerAddress: string, rageManagerAddress: string, specialManagerAddress: string) => {
+	const build_mod_manager_registrator_registerManagers_calldata = (modManagerAddress: string, rageManagerAddress: string, specialManagerAddress: string): DojoCall => {
 		return {
 			contractName: "mod_manager_registrator",
 			entrypoint: "register_managers",
@@ -371,7 +396,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_reroll_calldata = (gameId: BigNumberish) => {
+	const build_shop_system_reroll_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "reroll",
@@ -392,7 +417,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_rage_system_reset_calldata = (gameId: BigNumberish) => {
+	const build_rage_system_reset_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "rage_system",
 			entrypoint: "reset",
@@ -413,7 +438,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_selectCardsFromBlister_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>) => {
+	const build_shop_system_selectCardsFromBlister_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "select_cards_from_blister",
@@ -434,7 +459,28 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_skipShop_calldata = (gameId: BigNumberish) => {
+	const build_game_system_sellSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "sell_special_card",
+			calldata: [gameId, specialCardIndex],
+		};
+	};
+
+	const game_system_sellSpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, specialCardIndex: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_game_system_sellSpecialCard_calldata(gameId, specialCardIndex),
+				"jokers_of_neon_core",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_skipShop_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "skip_shop",
@@ -489,26 +535,34 @@ export function setupWorld(provider: DojoProvider) {
 			buildResetCalldata: build_rage_system_reset_calldata,
 		},
 		game_system: {
+			changeModifierCard: game_system_changeModifierCard,
+			buildChangeModifierCardCalldata: build_game_system_changeModifierCard_calldata,
 			createGame: game_system_createGame,
 			buildCreateGameCalldata: build_game_system_createGame_calldata,
 			discard: game_system_discard,
 			buildDiscardCalldata: build_game_system_discard_calldata,
-			discardEffectCard: game_system_discardEffectCard,
-			buildDiscardEffectCardCalldata: build_game_system_discardEffectCard_calldata,
-			discardSpecialCard: game_system_discardSpecialCard,
-			buildDiscardSpecialCardCalldata: build_game_system_discardSpecialCard_calldata,
 			getGameConfig: game_system_getGameConfig,
 			buildGetGameConfigCalldata: build_game_system_getGameConfig_calldata,
 			getGameMods: game_system_getGameMods,
 			buildGetGameModsCalldata: build_game_system_getGameMods_calldata,
 			play: game_system_play,
 			buildPlayCalldata: build_game_system_play_calldata,
+			sellSpecialCard: game_system_sellSpecialCard,
+			buildSellSpecialCardCalldata: build_game_system_sellSpecialCard_calldata,
 		},
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
 			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
 		},
+		mods_info_system: {
+			getRageCardsIds: mods_info_system_getRageCardsIds,
+			buildGetRageCardsIdsCalldata: build_mods_info_system_getRageCardsIds_calldata,
+			getSpecialCardsIds: mods_info_system_getSpecialCardsIds,
+			buildGetSpecialCardsIdsCalldata: build_mods_info_system_getSpecialCardsIds_calldata,
+		},
 		mod_manager_registrator: {
+			getRegisteredManagers: mod_manager_registrator_getRegisteredManagers,
+			buildGetRegisteredManagersCalldata: build_mod_manager_registrator_getRegisteredManagers_calldata,
 			registerManagers: mod_manager_registrator_registerManagers,
 			buildRegisterManagersCalldata: build_mod_manager_registrator_registerManagers_calldata,
 		},

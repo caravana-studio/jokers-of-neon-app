@@ -34,7 +34,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     hand,
     preSelectedCards,
     togglePreselected,
-    discardEffectCard,
+    changeModifierCard,
     preSelectedModifiers,
     roundRewards,
     remainingPlaysTutorial
@@ -158,7 +158,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                             setDiscarding(true);
                             e.stopPropagation();
                             setHoveredButton(null);
-                            discardEffectCard(card.idx).then((_) => {
+                            changeModifierCard(card.idx).then((_) => {
                               setDiscarding(false);
                             });
                             onClose();

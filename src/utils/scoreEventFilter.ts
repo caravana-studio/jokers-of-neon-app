@@ -1,10 +1,10 @@
-import { EventType } from "../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../dojo/typescript/models.gen";
 import { CardPlayEvent } from "../types/ScoreData";
 
 export const scoreEventFilter = (event: CardPlayEvent) =>
-  event.eventType === EventType.Cash ||
-  event.eventType === EventType.Point ||
-  event.eventType === EventType.Multi;
+  event.eventType === EventTypeEnum.Cash ||
+  event.eventType === EventTypeEnum.Point ||
+  event.eventType === EventTypeEnum.Multi;
 
   export const cardScoreEventFilter = (event: CardPlayEvent) =>
     event.hand.length > 0;

@@ -19,13 +19,13 @@ interface MobileCardHighlightProps {
 export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
   const { name, description, type } = getCardData(card, false);
-  const { discardEffectCard, discardSpecialCard } = useGameContext();
+  const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game"]);
 
   const discard =
-    type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
+    type === CardTypes.MODIFIER ? changeModifierCard : sellSpecialCard;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

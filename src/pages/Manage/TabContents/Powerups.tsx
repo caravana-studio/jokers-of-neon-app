@@ -28,7 +28,7 @@ export const Powerups = () => {
     }
 
     setTotalPowerups(totalPowerupSlots);
-  }, [powerUps]);
+  }, [powerUps, maxPowerUpSlots]);
 
   return (
     <>

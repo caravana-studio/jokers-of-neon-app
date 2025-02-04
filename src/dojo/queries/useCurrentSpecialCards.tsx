@@ -25,6 +25,7 @@ const useSpecialCard = (
       img: `${card_id}.png`,
       temporary: specialCard?.is_temporary,
       remaining: specialCard?.remaining,
+      selling_price: specialCard?.selling_price,
     }
   );
 };
