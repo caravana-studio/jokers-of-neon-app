@@ -12,14 +12,12 @@ import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import SpecialsButton from "./StoreElements/SpecialsButton.tsx";
+import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards, powerUps } =
     useStore();
-  // specialCards[specialCards.length - 1].img = "355.png";
-  // specialCards[specialCards.length - 1].card_id = 355;
 
   const { t } = useTranslation(["store"]);
 
