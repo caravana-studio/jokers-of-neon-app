@@ -1,22 +1,22 @@
 import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
-import { Loading } from "../components/Loading";
-import { TiltCard } from "../components/TiltCard";
-import { useStore } from "../providers/StoreProvider";
-import { BLUE, BLUE_LIGHT } from "../theme/colors";
-import { Card } from "../types/Card";
-import { getCardUniqueId } from "../utils/getCardUniqueId";
-import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
+import { Loading } from "../components/Loading";
+import { TiltCard } from "../components/TiltCard";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
-import styled from "styled-components";
+import { useStore } from "../providers/StoreProvider";
+import { BLUE, BLUE_LIGHT } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { Card } from "../types/Card";
+import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
 
 const WhiteOverlay = styled.div<{ $visible: boolean }>`
@@ -162,6 +162,7 @@ export const OpenLootBox = () => {
                         ? `2px solid ${BLUE_LIGHT}`
                         : "2px solid transparent",
                     }}
+                    cursor={"pointer"}
                   >
                     <TiltCard
                       scale={adjustedCardScale}

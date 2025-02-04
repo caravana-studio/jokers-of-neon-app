@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { GREY_LINE } from "../theme/colors.tsx";
 
@@ -36,8 +35,10 @@ export const CardContainerWithBorder = ({
 
 export const CardContainerSwitcher = ({
   children,
+  onClick,
 }: {
   children: ReactNode;
+  onClick?: () => void;
 }) => {
   const { isRageRound, isClassic } = useGameContext();
   return (
@@ -53,13 +54,11 @@ export const CardContainerSwitcher = ({
       position="absolute"
       right={["-15px", "-25px"]}
       backgroundColor={
-        isClassic
-          ? isRageRound
-            ? "black"
-            : "backgroundBlue"
-          : "transparent"
+        isClassic ? (isRageRound ? "black" : "backgroundBlue") : "transparent"
       }
       zIndex={10}
+      onClick={onClick}
+      cursor={"pointer"}
     >
       {children}
     </Flex>

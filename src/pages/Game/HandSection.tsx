@@ -188,13 +188,14 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                         }
                         onClick={() => {
                           if (onTutorialCardClick) onTutorialCardClick();
-                          if (isSmallScreen) {
-                            highlightCard(card);
-                          } else if (!card.isModifier) {
+                          if (!card.isModifier) {
                             togglePreselected(card.idx);
                           }
                         }}
                         className={"hand-element-" + index}
+                        onHold={() => {
+                          isSmallScreen && highlightCard(card);
+                        }}
                       />
                     </AnimatedCard>
                   )}

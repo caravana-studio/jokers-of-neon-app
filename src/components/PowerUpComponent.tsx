@@ -59,6 +59,7 @@ export const PowerUpComponent = ({
           transition="all 0.2s ease-in-out"
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
+          onClick={onClick}
         >
           {price && (
             <PriceBox
@@ -94,7 +95,6 @@ export const PowerUpComponent = ({
             height={`${100}%`}
             width={`${100}%`}
             src={powerUp.img}
-            onClick={onClick}
           />
         </Flex>
       </Tooltip>

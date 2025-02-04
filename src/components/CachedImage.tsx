@@ -1,6 +1,6 @@
 import { Image, ImageProps } from "@chakra-ui/react";
 import { forwardRef, useEffect, useState } from "react";
-import { CLASSIC_MOD_ID, SUPPORTED_EXTENSIONS } from "../constants/general";
+import { SUPPORTED_EXTENSIONS } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
 import { getImageFromCache } from "../utils/preloadImages";
 
@@ -66,7 +66,16 @@ const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
       return null;
     }
 
-    return <Image ref={ref} src={imageSrc} alt={alt} {...props} />;
+    return (
+      <Image
+        ref={ref}
+        src={imageSrc}
+        onContextMenu={(e) => e.preventDefault()}
+        onTouchStart={(e) => e.preventDefault()}
+        alt={alt}
+        {...props}
+      />
+    );
   }
 );
 
