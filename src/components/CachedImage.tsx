@@ -2,7 +2,7 @@ import { Image, ImageProps } from "@chakra-ui/react";
 import { forwardRef, useEffect, useState } from "react";
 import { SUPPORTED_EXTENSIONS } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
-import { getImageFromCache } from "../utils/preloadImages";
+import { getImageFromCache } from "../utils/cacheUtils";
 
 interface CachedImageProps extends Omit<ImageProps, "src"> {
   src: string;

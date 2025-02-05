@@ -14,9 +14,8 @@ import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
-import { preloadImages } from "./utils/preloadImages.ts";
+import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { preloadVideos } from "./utils/preloadVideos.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -27,7 +26,7 @@ const I18N_NAMESPACES = [
   "store",
   "effects",
   "tutorials",
-  "itermediate-screens",
+  "intermediate-screens",
   "plays",
   "loot-boxes",
 ];
@@ -41,14 +40,15 @@ async function init() {
 
   root.render(<LoadingScreen />);
 
-  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
   const loadImages = async () => {
     preloadImages();
     preloadSpineAnimations();
     preloadVideos();
   };
 
-  i18n.on("initialized", loadImages);
+  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
+
+  Promise.all(promises).then(() => loadImages());
 
   registerServiceWorker();
 

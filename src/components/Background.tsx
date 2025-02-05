@@ -6,7 +6,7 @@ import SpineAnimation from "./SpineAnimation";
 import { isMobile } from "react-device-detect";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
-import { getImageFromCache } from "../utils/preloadImages";
+import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import { useGame } from "../dojo/queries/useGame";
 

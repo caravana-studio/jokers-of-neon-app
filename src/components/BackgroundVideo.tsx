@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { getVideoFromCache } from "../utils/preloadVideos";
+import { getVideoFromCache } from "../utils/cacheUtils";
 
 interface BackgroundVideoProps {
   type: "home" | "store" | "game" | "rage";
