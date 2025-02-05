@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DocsCardsRow } from "./DocsCardsRow";
-import { SPECIAL_CARDS_DATA } from "../../data/specialCards";
-import { RAGE_CARDS_DATA } from "../../data/rageCards";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
@@ -13,6 +11,9 @@ import { Background } from "../../components/Background";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import { useGameState } from "../../state/useGameState";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
@@ -37,6 +38,9 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
     trackTouch: !highlightedCard,
   });
   const { modCardsConfig } = useGameState();
+  const { isSmallScreen } = useResponsiveValues();
+
+  const goBackBtn = <BackToGameBtn />;
 
   return (
     <Background type="store">
@@ -47,10 +51,11 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
         height={"100vh"}
         margin={"0 auto"}
         py={4}
-        pt={[4, 4, 20]}
+        pt={[4, 4, 8]}
+        pb={isSmallScreen ? 0 : 16}
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
+        justifyContent="space-around"
         {...handlers}
       >
         <Flex p={2} mt={6} width={"100%"}>
@@ -79,7 +84,13 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
             </TabList>
           </Tabs>
         </Flex>
-        <Flex w="100%" flexGrow={1} height={"70%"} mb={2} alignItems={"center"}>
+        <Flex
+          w="100%"
+          flexGrow={1}
+          minHeight={isSmallScreen ? "50vh" : "50vh"}
+          maxHeight={isSmallScreen ? "80vh" : "60vh"}
+          alignItems={"center"}
+        >
           {tabIndex === 0 && (
             <DocsCardsRow cardIds={modCardsConfig?.specialCardsIds ?? []} />
           )}
@@ -93,13 +104,11 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
           )}
           {tabIndex === 3 && <DocsBoxesRow />}
         </Flex>
-        <Button
-          variant="secondarySolid"
-          mb={[4, 12, 14]}
-          onClick={() => navigate("/demo")}
-        >
-          {t("labels.back-btn")}
-        </Button>
+        {!isSmallScreen ? (
+          goBackBtn
+        ) : (
+          <MobileBottomBar secondButton={goBackBtn} firstButton={undefined} />
+        )}
       </Flex>
     </Background>
   );
