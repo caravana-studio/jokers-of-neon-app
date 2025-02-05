@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { getVideoFromCache } from "../utils/cacheUtils";
 
 interface BackgroundVideoProps {
-  type: "home" | "store" | "game" | "rage";
+  type: "home" | "store" | "game" | "rage" | "white";
 }
 
 const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
