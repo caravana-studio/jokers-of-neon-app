@@ -116,10 +116,10 @@ export const useGameActions = () => {
     }
   };
 
-  const discardEffectCard = async (gameId: number, card: number) => {
+  const changeModifierCard = async (gameId: number, card: number) => {
     try {
       showTransactionToast();
-      const response = await client.game_system.discardEffectCard(
+      const response = await client.game_system.changeModifierCard(
         account,
         gameId,
         card
@@ -154,9 +154,9 @@ export const useGameActions = () => {
     }
   };
 
-  const discardSpecialCard = async (gameId: number, card: number) => {
+  const sellSpecialCard = async (gameId: number, card: number) => {
     try {
-      const response = await client.game_system.discardSpecialCard(
+      const response = await client.game_system.sellSpecialCard(
         account,
         gameId,
         card
@@ -215,8 +215,8 @@ export const useGameActions = () => {
   return {
     createGame,
     discard,
-    discardEffectCard,
-    discardSpecialCard,
+    changeModifierCard,
+    sellSpecialCard,
     play,
   };
 };

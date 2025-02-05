@@ -59,6 +59,7 @@ export const MobilePreselectedCardsSection = () => {
           alignItems: "center",
           height: `${cardHeight + 70}px`,
           width: "100%",
+          zIndex: 1,
         }}
         mb={1}
         ref={setNodeRef}

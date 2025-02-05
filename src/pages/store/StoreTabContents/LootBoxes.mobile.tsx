@@ -139,6 +139,9 @@ export const LootBoxesMobile = () => {
             h={"50%"}
             key={`pack-${pack.blister_pack_id}`}
             overflow="hidden"
+            sx={{
+              zIndex: 1,
+            }}
           >
             <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
               <Flex h="100%" w="40%">

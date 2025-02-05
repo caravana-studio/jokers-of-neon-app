@@ -23,9 +23,9 @@
     "card-highlight": {
       "buttons": {
         "change": "Change",
-        "remove": "Remove",
+        "sell-for": "Sell for",
         "changing": "Changing...",
-        "removing": "Removing..."
+        "selling": "Selling..."
       }
     },
     "level-points": {
@@ -42,10 +42,10 @@
     "special-cards": {
       "locked-slot": "This slot is locked. You can unlock it in the store.",
       "special-cards-label": "Special cards",
-      "remove-special-cards-label": "Remove",
+      "remove-special-cards-label": "Sell",
       "confirmation-modal": {
-        "title": "Remove special card",
-        "description": "Are you sure you want to remove this special card? There is no way to undo this action."
+        "title": "Sell special card",
+        "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
       }
     },
     "hand-section": {

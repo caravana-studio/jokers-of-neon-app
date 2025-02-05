@@ -3,21 +3,22 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEffect } from "react";
+import { RARITY, RarityLabels } from "../constants/rarity";
+import { animationsData } from "../constants/spineAnimations";
 import { CardTypes } from "../enums/cardTypes";
+import { Duration } from "../enums/duration";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
+import { CashSymbol } from "./CashSymbol";
 import { ConfirmationModal } from "./ConfirmationModal";
-import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
-import { animationsData } from "../constants/spineAnimations";
 import { DurationSwitcher } from "./DurationSwitcher";
-import { Duration } from "../enums/duration";
-import { PriceBox } from "./PriceBox";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
-import { RARITY, RarityLabels } from "../constants/rarity";
+import { PriceBox } from "./PriceBox";
+import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -33,6 +34,7 @@ export const MobileCardHighlight = ({
   isPack = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
+
   const {
     name,
     description,
@@ -43,7 +45,7 @@ export const MobileCardHighlight = ({
     temporaryPrice,
     details,
   } = getCardData(card, isPack);
-  const { discardEffectCard, discardSpecialCard } = useGameContext();
+  const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game", "docs"]);
@@ -51,7 +53,7 @@ export const MobileCardHighlight = ({
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const discard =
-    type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
+    type === CardTypes.MODIFIER ? changeModifierCard : sellSpecialCard;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -78,9 +80,17 @@ export const MobileCardHighlight = ({
         ? t("game.card-highlight.buttons.changing")
         : t("game.card-highlight.buttons.change");
     } else if (type === CardTypes.SPECIAL) {
-      return loading
-        ? t("game.card-highlight.buttons.removing")
-        : t("game.card-highlight.buttons.remove");
+      return loading ? (
+        t("game.card-highlight.buttons.selling")
+      ) : (
+        <>
+          {t("game.card-highlight.buttons.sell-for")}
+          <Box ml={1} />
+          <CashSymbol />
+          <Box ml={1} />
+          {card.selling_price}
+        </>
+      );
     }
   };
 
@@ -116,7 +126,9 @@ export const MobileCardHighlight = ({
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
           title={t("game.special-cards.confirmation-modal.title")}
-          description={t("game.special-cards.confirmation-modal.description")}
+          description={t("game.special-cards.confirmation-modal.description", {
+            price: card.selling_price,
+          })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
             handleDiscard();
@@ -137,7 +149,9 @@ export const MobileCardHighlight = ({
         </Text>
       </Flex>
       <Flex
-        width={animation ? "100%" : showExtraInfo && temporaryPrice ? "45%" : "60%"}
+        width={
+          animation ? "100%" : showExtraInfo && temporaryPrice ? "45%" : "60%"
+        }
         height={isPack ? "45vh" : "auto"}
         justifyContent={"center"}
         position={"relative"}
@@ -145,7 +159,7 @@ export const MobileCardHighlight = ({
         transition="all 0.5s ease"
       >
         {!animation ? (
-          <CardImage3D card={card} hideTooltip />
+          <CardImage3D card={card} hideTooltip small={false} />
         ) : (
           <SpineAnimation
             ref={spineAnimationRef}

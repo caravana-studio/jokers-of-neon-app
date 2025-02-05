@@ -21,6 +21,9 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
         width="100%"
         justifyContent={"space-between"}
         alignItems={"flex-start"}
+        sx={{
+          zIndex: 1,
+        }}
       >
         <Box mr={4}>
           <CachedImage

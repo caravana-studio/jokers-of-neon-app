@@ -6,9 +6,10 @@ import {
   TRADITIONAL_CARDS_DATA,
 } from "../data/traditionalCards";
 
-const CACHE_NAME = "big-image-cache";
+export const CACHE_IMAGE = "big-image-cache";
+export const CACHE_VIDEO = "background-video-cache";
 
-const getDefaultImageUrls = async (): Promise<string[]> => {
+export const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
 
   Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
@@ -24,8 +25,8 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
   // Modifier cards
   Object.keys(MODIFIER_CARDS_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
-  });  
-  
+  });
+
   // Power-ups
   Object.keys(POWER_UPS_CARDS_DATA).forEach((key) => {
     imageUrls.push(`powerups/${key}.png`);
@@ -73,43 +74,9 @@ const getDefaultImageUrls = async (): Promise<string[]> => {
   return imageUrls;
 };
 
-export const preloadImages = async (urls?: string[]) => {
-  const imageUrls: string[] = urls ?? (await getDefaultImageUrls());
-  try {
-    const cache = await caches.open(CACHE_NAME);
-
-    const cachePromises = imageUrls.map(async (url) => {
-      const cachedResponse = await cache.match(url);
-      if (!cachedResponse) {
-        // If not in cache, fetch and add to cache
-        try {
-          const response = await fetch(url, { cache: "reload" });
-          if (response.ok) {
-            await cache.put(url, response.clone());
-          }
-        } catch {
-          // if the image doesn't exist, just ignore it
-        }
-      }
-    });
-
-    await Promise.all(cachePromises);
-  } catch (error) {
-    console.error("Error preloading images", error);
-  }
-};
-
-export const getImageFromCache = async (url: string): Promise<Blob | null> => {
-  try {
-    const cache = await caches.open(CACHE_NAME);
-    const response = await cache.match(url);
-
-    if (response) {
-      return await response.blob();
-    }
-  } catch (error) {
-    console.error("Error getting image from cache", error);
-  }
-
-  return null;
-};
+export const VIDEO_URLS = [
+  "/bg/jn-bg.mp4",
+  "/bg/store-bg.mp4",
+  "/bg/game-bg.mp4",
+  "/bg/rage-bg.mp4",
+];

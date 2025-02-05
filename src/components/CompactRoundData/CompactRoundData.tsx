@@ -23,7 +23,13 @@ export const CompactRoundData = () => {
   const target = round?.level_score ?? 0;
 
   return (
-    <Flex justifyContent="center" className="game-tutorial-step-1">
+    <Flex
+      justifyContent="center"
+      className="game-tutorial-step-1"
+      sx={{
+        zIndex: 1,
+      }}
+    >
       <Box px={4} mb={4} borderRadius="md" width="100%" maxW="600px">
         <LevelBox />
         <Flex justify="center" gap={1} align="center">

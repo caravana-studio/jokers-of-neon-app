@@ -1,4 +1,4 @@
-import { EventType } from "../../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import {
   C7,
   CA,
@@ -33,52 +33,52 @@ export const EVENT_FLUSH = {
     {
       hand: [{ idx: H10.idx, quantity: 10 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: CJ.idx, quantity: 10 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: CQ.idx, quantity: 10 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: CK.idx, quantity: 10 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: CA.idx, quantity: 11 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: H10.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CJ.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CQ.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CK.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CA.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
   ],
   gameOver: false,
@@ -95,17 +95,17 @@ export const EVENT_PAIR = {
     {
       hand: [{ idx: C7.idx, quantity: 7 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: H7.idx, quantity: 7 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: C7.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventType.Multi,
+      eventType: EventTypeEnum.Multi,
     },
   ],
   gameOver: false,
@@ -122,12 +122,12 @@ export const EVENT_PAIR_POWER_UPS = {
     {
       hand: [{ idx: H5.idx, quantity: 5 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: D5.idx, quantity: 5 }],
       specials: [],
-      eventType: EventType.Point,
+      eventType: EventTypeEnum.Point,
     },
   ],
   gameOver: false,

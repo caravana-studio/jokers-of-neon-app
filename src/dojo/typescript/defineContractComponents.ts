@@ -285,12 +285,13 @@ export function defineContractComponents(world: World) {
           effect_card_id: RecsType.Number,
           is_temporary: RecsType.Boolean,
           remaining: RecsType.Number,
+          selling_price: RecsType.Number,
         },
         {
           metadata: {
             namespace: "jokers_of_neon_core",
             name: "CurrentSpecialCards",
-            types: ["u32", "u32", "u32", "bool", "u32"],
+            types: ["u32", "u32", "u32", "bool", "u32", "u32"],
             customTypes: [],
           },
         }

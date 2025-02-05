@@ -1,12 +1,10 @@
-import { NumericCardTypes } from "../enums/cardTypes";
+import { CairoCustomEnum } from "starknet";
 import { Card } from "../types/Card";
 
-export const getCardType = (card: Card) => {
-  if (card.isModifier) {
-    return NumericCardTypes.MODIFIER;
-  } else if (card.isSpecial) {
-    return NumericCardTypes.SPECIAL;
-  } else {
-    return NumericCardTypes.COMMON;
-  }
+export const getCardType = (card: Card): CairoCustomEnum => {
+  return new CairoCustomEnum({
+    None: undefined,
+    Common: !card.isModifier ? "" : undefined,
+    Modifier: card.isModifier ? "" : undefined,
+  });
 };

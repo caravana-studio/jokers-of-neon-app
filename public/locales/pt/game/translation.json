@@ -23,9 +23,9 @@
     "card-highlight": {
       "buttons": {
         "change": "Alterar",
-        "remove": "Remover",
+        "sell-for": "Vender por",
         "changing": "Alterando...",
-        "removing": "Removendo..."
+        "selling": "Vendendo..."
       }
     },
     "level-points": {
@@ -42,10 +42,10 @@
     "special-cards": {
       "locked-slot": "Este espaço está bloqueado. Você pode desbloqueá-lo na loja.",
       "special-cards-label": "Cartas Especiais",
-      "remove-special-cards-label": "Remover",
+      "remove-special-cards-label": "Vender",
       "confirmation-modal": {
-        "title": "Remover cartão especial",
-        "description": "Tem certeza de que deseja remover este cartão especial? Não há como desfazer esta ação."
+        "title": "Vender cartão especial",
+        "description": "Tem certeza de que deseja vender este cartão especial por ¢{{price}}? Não há como desfazer esta ação."
       }
     },
     "hand-section": {
