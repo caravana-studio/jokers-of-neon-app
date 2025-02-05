@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x48fb9eb3d6adc6a1660f33d949d56cd321f04260a83c9f2bee15598c11525c7",
-      "class_hash": "0x45881676f33ab093c68e2a310e3c2d277b5fcea86cfafb371e39619e4c7586c",
+      "address": "0xa5cd0e8253702e31d0d6ce12ffd8a3b7538391642b0113b7cd8e3cffd8286a",
+      "class_hash": "0x1373d39d990af63b09ed631600d228910bcc0a73eb19183db7b115ba1c19a62",
       "abi": [
         {
           "type": "impl",
@@ -2352,8 +2352,8 @@
       ]
     },
     {
-      "address": "0x4bc7dd619baf237e6b99b5687f2b099d6ef86ebc47997ac86778e0e89be33c5",
-      "class_hash": "0x5ff505249d66e7255cc7c14ad99ed338b3dcd380398a2fa40ee2a09f7c25501",
+      "address": "0x136e5df5c0ef3a372218eb60c8d160e5aa0326fb00835ec02dc6e282ab172fe",
+      "class_hash": "0x78d88ab011af53089cfd48b37aef66892bbc71c48678afbd3b4903f01b6d4bf",
       "abi": [
         {
           "type": "impl",
@@ -2565,8 +2565,8 @@
       ]
     },
     {
-      "address": "0x295293c2932bae595769729b0fbe586e33a364e2f6a952e34f540dafcf31f30",
-      "class_hash": "0x5ffbe59d9a11bb7bb426711b0f26b3c68ee2b780f8aee2d48ddd47d5808fc91",
+      "address": "0x46ca9fe58e784f79749cd9a740ef6f163d090a82ee706e7bd509282985ffd03",
+      "class_hash": "0x13903619385fd3cc8a18537b6a464988af16738222c33209dd394a5c50c830c",
       "abi": [
         {
           "type": "impl",
