@@ -7,7 +7,6 @@ import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { preloadImages } from "../../utils/preloadImages";
 import { DefaultInfo } from "../../components/Info/DefaultInfo";
 
 interface CardsRowProps {
@@ -30,7 +29,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const adjustedScale = isSmallScreen
     ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
-
 
   if (!isCardScaleCalculated) {
     return null;

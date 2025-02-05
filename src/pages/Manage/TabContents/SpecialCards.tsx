@@ -65,7 +65,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
         flexDirection="column"
         gap={4}
         px={6}
-        sx={containerSx}
+        sx={{ ...containerSx, zIndex: 1 }}
       >
         <Flex gap={4} flexDirection="column">
           {!isSmallScreen && (

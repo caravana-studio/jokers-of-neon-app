@@ -13,29 +13,23 @@ export const StoreCards = () => {
       gap={3}
       p={2}
       justifyContent={"center"}
+      sx={{
+        zIndex: 1,
+      }}
     >
       <Flex className="game-tutorial-step-3" width={"100%"}>
         {commonCards.length > 0 && (
-          <StoreCardsRow
-            cards={commonCards}
-            title={"traditional"}
-          />
+          <StoreCardsRow cards={commonCards} title={"traditional"} />
         )}
       </Flex>
       <Flex className="game-tutorial-step-4" width={"100%"}>
         {modifierCards.length > 0 && (
-          <StoreCardsRow
-            cards={modifierCards}
-            title={"modifiers"}
-          />
+          <StoreCardsRow cards={modifierCards} title={"modifiers"} />
         )}
       </Flex>
       <Flex className="game-tutorial-step-5" width={"100%"}>
         {specialCards.length > 0 && (
-          <StoreCardsRow
-            cards={specialCards}
-            title={"special"}
-          />
+          <StoreCardsRow cards={specialCards} title={"special"} />
         )}
       </Flex>
     </Flex>

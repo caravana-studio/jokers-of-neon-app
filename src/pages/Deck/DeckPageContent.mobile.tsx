@@ -109,7 +109,15 @@ export const DeckPageContentMobile = ({
         )}
 
         {tabIndex === 1 && (
-          <Flex w="100%" alignItems="center" height={"100%"} px={3}>
+          <Flex
+            w="100%"
+            alignItems="center"
+            height={"100%"}
+            px={3}
+            sx={{
+              zIndex: 1,
+            }}
+          >
             <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
           </Flex>
         )}

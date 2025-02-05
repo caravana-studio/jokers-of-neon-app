@@ -27,6 +27,9 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
       borderRadius={"25px"}
       alignItems={"center"}
       justifyContent={"space-between"}
+      sx={{
+        zIndex: 1,
+      }}
     >
       <Flex gap={4} alignItems={"center"}>
         {!hideReroll && (
