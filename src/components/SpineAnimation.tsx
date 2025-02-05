@@ -107,6 +107,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           premultipliedAlpha: true,
           animation: initialAnimation,
           scale: scale,
+          showLoading: false,
           success: (player: SpinePlayer) => {
             if (player.skeleton != null) {
               // console.log(player.skeleton.data.animations.map((a) => a.name));
@@ -219,6 +220,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           onClick={onClick}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          justifyContent={"center"}
           style={{
             width: "100%",
             height: "100%",

@@ -1,8 +1,42 @@
-import { DojoProvider } from "@dojoengine/core";
+import { DojoCall, DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
 import * as models from "./models.gen";
 
 export function setupWorld(provider: DojoProvider) {
+
+	const build_mods_info_system_getSpecialCardsIds_calldata = (modId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_special_cards_ids",
+			calldata: [modId],
+		};
+	};
+
+	const mods_info_system_getSpecialCardsIds = async (modId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_mods_info_system_getSpecialCardsIds_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_mods_info_system_getRageCardsIds_calldata = (modId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_rage_cards_ids",
+			calldata: [modId],
+		};
+	};
+
+	const mods_info_system_getRageCardsIds = async (modId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_mods_info_system_getRageCardsIds_calldata(modId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
 
 	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
 		return {
@@ -507,6 +541,12 @@ export function setupWorld(provider: DojoProvider) {
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
 			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
+		},
+		mods_info_system: {
+			getRageCardsIds: mods_info_system_getRageCardsIds,
+			buildGetRageCardsIdsCalldata: build_mods_info_system_getRageCardsIds_calldata,
+			getSpecialCardsIds: mods_info_system_getSpecialCardsIds,
+			buildGetSpecialCardsIdsCalldata: build_mods_info_system_getSpecialCardsIds_calldata,
 		},
 		mod_manager_registrator: {
 			registerManagers: mod_manager_registrator_registerManagers,

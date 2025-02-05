@@ -1,0 +1,16 @@
+{
+  "labels": {
+    "special-cards": "Especiales",
+    "modifier-cards": "Modificadoras",
+    "rage-cards": "Rages",
+    "loot-boxes": "Cajas",
+    "back-btn": "Volver al juego"
+  },
+  "rarity": {
+    "ss": "Legendario",
+    "s": "Épico",
+    "a": "Raro",
+    "b": "Inusual",
+    "c": "Común"
+  }
+}
