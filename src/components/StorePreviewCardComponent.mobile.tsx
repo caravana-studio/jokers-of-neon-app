@@ -81,7 +81,12 @@ export const StorePreviewCardComponentMobile = ({
             {colorizeText(description)}
           </Text>
         </Flex>
-        <Box w={card?.isSpecial ? "55%" : "60%"}>
+        <Flex
+          w={"50vw"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          alignSelf={"center"}
+        >
           <CardImage3D
             hideTooltip
             card={{
@@ -90,7 +95,7 @@ export const StorePreviewCardComponentMobile = ({
               remaining: 3,
             }}
           />
-        </Box>
+        </Flex>
         {card?.isSpecial && duration !== undefined && onDurationChange ? (
           <DurationSwitcher
             price={card.price}

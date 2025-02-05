@@ -10,7 +10,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;

@@ -14,6 +14,7 @@ import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 import { getCardData } from "../../../utils/getCardData";
+import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 
 export const LootBoxesMobile = () => {
   const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();
@@ -169,30 +170,8 @@ export const LootBoxesMobile = () => {
                   </Text>
                 </Flex>
 
-                <Flex
-                  mb={4}
-                  gap={2}
-                  onClick={() => {
-                    setInformation(
-                      <Box>
-                        <Heading mb={4} fontWeight={"400"} fontSize={"sm"}>
-                          {name}
-                        </Heading>
-                        <Text color={neonGreen} fontSize={"sm"}>
-                          {t("store.packs.offering-rates")}: <br />
-                          {details?.split("\n").map((line, index) => (
-                            <span key={index}>
-                              {line}
-                              <br />
-                            </span>
-                          ))}
-                        </Text>
-                      </Box>
-                    );
-                  }}
-                >
-                  <Text>{t("store.packs.offering-rates")}</Text>
-                  <IoIosInformationCircleOutline color="white" size={"14px"} />
+                <Flex mb={4} gap={2}>
+                  <LootBoxRateInfo name={name} details={details} />
                 </Flex>
 
                 <Flex alignItems={"baseline"} justifyContent={"space-between"}>

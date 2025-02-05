@@ -52,18 +52,20 @@ export const CardImage3D = ({
   const showPlain = (isSmallScreen && small) || !isClassic;
 
   const mainImg = useMemo(() => {
-    return <CachedImage
-      position={"absolute"}
-      borderRadius={borderRadius}
-      src={
-        layer0Available && !showPlain
-          ? `/Cards/3d/${cid}-l0.png`
-          : `/Cards/${cid}.png`
-      }
-      width={"100%"}
-      zIndex={-1}
-      pointerEvents={isSmallScreen ? "none" : "all"}
-    />
+    return (
+      <CachedImage
+        position={"absolute"}
+        borderRadius={borderRadius}
+        src={
+          layer0Available && !showPlain
+            ? `/Cards/3d/${cid}-l0.png`
+            : `/Cards/${cid}.png`
+        }
+        width={"100%"}
+        zIndex={-1}
+        pointerEvents={isSmallScreen ? "none" : "all"}
+      />
+    );
   }, [layer0Available, cid, showPlain]);
 
   return (
@@ -129,7 +131,12 @@ const ConditionalTilt = ({
   ) : (
     <Tilt
       {...TILT_OPTIONS}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{
+        transformStyle: "preserve-3d",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
       glareMaxOpacity={cardId < 100 ? TILT_OPTIONS.glareMaxOpacity : 0.2}
       glareBorderRadius={small ? "7px" : "18px"}
     >

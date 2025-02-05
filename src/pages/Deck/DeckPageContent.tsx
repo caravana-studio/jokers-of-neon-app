@@ -7,7 +7,7 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 interface DeckPageContentProps {
   inStore?: boolean;

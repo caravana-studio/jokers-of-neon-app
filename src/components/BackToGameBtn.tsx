@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const BackToGameBtn = () => {
   const { t } = useTranslation(["game"]);

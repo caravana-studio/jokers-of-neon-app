@@ -224,6 +224,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           onMouseLeave={() => setIsHovered(false)}
           width={"100%"}
           height={"100%"}
+          justifyContent={"center"}
           style={{
             cursor: isPurchased ? "default" : "pointer",
             opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
