@@ -24,7 +24,7 @@ export const gameProviderDefaults: IGameContext = {
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
-  discardEffectCard: () =>
+  changeModifierCard: () =>
     new Promise((resolve) => resolve({ success: false, cards: [] })),
   error: false,
   clearPreSelection: () => {},
@@ -34,7 +34,7 @@ export const gameProviderDefaults: IGameContext = {
   sortBy: SortBy.RANK,
   toggleSortBy: () => {},
   onShopSkip: () => {},
-  discardSpecialCard: () => new Promise((resolve) => resolve(false)),
+  sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   restartGame: () => {},
   preSelectionLocked: false,

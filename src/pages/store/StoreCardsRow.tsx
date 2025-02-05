@@ -1,13 +1,12 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { TiltCard } from "../../components/TiltCard";
 import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { DefaultInfo } from "../../components/Info/DefaultInfo";
 
 interface CardsRowProps {
   title: string;

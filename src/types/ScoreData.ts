@@ -1,4 +1,4 @@
-import { EventType } from "../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../dojo/typescript/models.gen";
 import { Suits } from "../enums/suits";
 import { Card } from "./Card";
 
@@ -20,7 +20,7 @@ export interface PlayEvents {
 export interface CardPlayEvent {
   hand: CardPlayEventValue[];
   specials: CardPlayEventValue[];
-  eventType: EventType;
+  eventType: EventTypeEnum;
 }
 
 export interface CardPlayEventValue {

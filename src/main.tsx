@@ -13,8 +13,8 @@ import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 
 const I18N_NAMESPACES = [
