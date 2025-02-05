@@ -34,6 +34,7 @@
       "score": "Score {{score}} to clear the level {{level}}"
     },
     "score": "score:",
+    "score-total": "Total score",
     "multi-points": {
       "points": "Points",
       "multi": "Multi"

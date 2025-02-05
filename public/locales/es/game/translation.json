@@ -34,6 +34,7 @@
       "score": "Suma {{score}} para superar el nivel {{level}}"
     },
     "score": "Tu puntaje:",
+    "score-total": "Puntaje total",
     "multi-points": {
       "points": "Puntos",
       "multi": "Multi"
