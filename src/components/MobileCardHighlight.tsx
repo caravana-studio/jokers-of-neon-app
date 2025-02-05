@@ -137,9 +137,9 @@ export const MobileCardHighlight = ({
         </Text>
       </Flex>
       <Flex
-        width={animation ? "100%" : "60%"}
+        width={animation ? "100%" : showExtraInfo && temporaryPrice ? "45%" : "60%"}
         minHeight={isPack ? "50vh" : "auto"}
-        maxHeight={isPack ? "55vh" : temporaryPrice ? "40vh" : "50vh"}
+        maxHeight={isPack ? "55vh" : showExtraInfo && temporaryPrice ? "40vh" : "50vh"}
         justifyContent={"center"}
         position={"relative"}
         transform={`scale(${scale})`}
