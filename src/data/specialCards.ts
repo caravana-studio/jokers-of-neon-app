@@ -1,319 +1,74 @@
 import i18n from "i18next";
 import { CardDataMap } from "../types/CardData";
+import { RARITY } from "../constants/rarity";
 import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {};
+
+const CARDS_PRICE: Record<RARITY, number> = {
+  [RARITY.C]: 1000,
+  [RARITY.B]: 1750,
+  [RARITY.A]: 3500,
+  [RARITY.S]: 5000,
+  [RARITY.SS]: 7000,
+};
+
+const createCardData = (
+  id: number,
+  rarity: RARITY,
+  ns: string = "effects"
+) => ({
+  name: i18n.t(`specialCardsData.${id}.name`, { ns }),
+  description: i18n.t(`specialCardsData.${id}.description`, { ns }),
+  rarity,
+  price: CARDS_PRICE[rarity],
+  temporaryPrice: Math.round((CARDS_PRICE[rarity] / 3) / 100) * 100,
+});
 
 const loadTranslations = async () => {
   await i18n.loadNamespaces(["effects"]);
 
   Object.assign(SPECIAL_CARDS_DATA, {
-    300: {
-      name: i18n.t("specialCardsData.300.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.300.description", {
-        ns: "effects",
-      }),
-    },
-    301: {
-      name: i18n.t("specialCardsData.301.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.301.description", {
-        ns: "effects",
-      }),
-    },
-    302: {
-      name: i18n.t("specialCardsData.302.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.302.description", {
-        ns: "effects",
-      }),
-    },
-    303: {
-      name: i18n.t("specialCardsData.303.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.303.description", {
-        ns: "effects",
-      }),
-    },
-    304: {
-      name: i18n.t("specialCardsData.304.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.304.description", {
-        ns: "effects",
-      }),
-    },
-    305: {
-      name: i18n.t("specialCardsData.305.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.305.description", {
-        ns: "effects",
-      }),
-    },
-    306: {
-      name: i18n.t("specialCardsData.306.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.306.description", {
-        ns: "effects",
-      }),
-    },
-    307: {
-      name: i18n.t("specialCardsData.307.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.307.description", {
-        ns: "effects",
-      }),
-    },
-    308: {
-      name: i18n.t("specialCardsData.308.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.308.description", {
-        ns: "effects",
-      }),
-    },
-    309: {
-      name: i18n.t("specialCardsData.309.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.309.description", {
-        ns: "effects",
-      }),
-    },
-    310: {
-      name: i18n.t("specialCardsData.310.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.310.description", {
-        ns: "effects",
-      }),
-    },
-    311: {
-      name: i18n.t("specialCardsData.311.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.311.description", {
-        ns: "effects",
-      }),
-    },
-    312: {
-      name: i18n.t("specialCardsData.312.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.312.description", {
-        ns: "effects",
-      }),
-    },
-    313: {
-      name: i18n.t("specialCardsData.313.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.313.description", {
-        ns: "effects",
-      }),
-    },
-    314: {
-      name: i18n.t("specialCardsData.314.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.314.description", {
-        ns: "effects",
-      }),
-    },
-    315: {
-      name: i18n.t("specialCardsData.315.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.315.description", {
-        ns: "effects",
-      }),
-    },
-    316: {
-      name: i18n.t("specialCardsData.316.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.316.description", {
-        ns: "effects",
-      }),
-    },
-    317: {
-      name: i18n.t("specialCardsData.317.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.317.description", {
-        ns: "effects",
-      }),
-    },
-    318: {
-      name: i18n.t("specialCardsData.318.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.318.description", {
-        ns: "effects",
-      }),
-    },
-    319: {
-      name: i18n.t("specialCardsData.319.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.319.description", {
-        ns: "effects",
-      }),
-    },
-    320: {
-      name: i18n.t("specialCardsData.320.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.320.description", {
-        ns: "effects",
-      }),
-    },
-    321: {
-      name: i18n.t("specialCardsData.321.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.321.description", {
-        ns: "effects",
-      }),
-    },
-    322: {
-      name: i18n.t("specialCardsData.322.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.322.description", {
-        ns: "effects",
-      }),
-    },
-    323: {
-      name: i18n.t("specialCardsData.323.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.323.description", {
-        ns: "effects",
-      }),
-    },
-    324: {
-      name: i18n.t("specialCardsData.324.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.324.description", {
-        ns: "effects",
-      }),
-    },
-    325: {
-      name: i18n.t("specialCardsData.325.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.325.description", {
-        ns: "effects",
-      }),
-    },
-    326: {
-      name: i18n.t("specialCardsData.326.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.326.description", {
-        ns: "effects",
-      }),
-    },
-    327: {
-      name: i18n.t("specialCardsData.327.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.327.description", {
-        ns: "effects",
-      }),
-    },
-    328: {
-      name: i18n.t("specialCardsData.328.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.328.description", {
-        ns: "effects",
-      }),
-    },
-    329: {
-      name: i18n.t("specialCardsData.329.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.329.description", {
-        ns: "effects",
-      }),
-    },
-    330: {
-      name: i18n.t("specialCardsData.330.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.330.description", {
-        ns: "effects",
-      }),
-    },
-    331: {
-      name: i18n.t("specialCardsData.331.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.331.description", {
-        ns: "effects",
-      }),
-    },
-    332: {
-      name: i18n.t("specialCardsData.332.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.332.description", {
-        ns: "effects",
-      }),
-    },
-    333: {
-      name: i18n.t("specialCardsData.333.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.333.description", {
-        ns: "effects",
-      }),
-    },
-    334: {
-      name: i18n.t("specialCardsData.334.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.334.description", {
-        ns: "effects",
-      }),
-    },
-    335: {
-      name: i18n.t("specialCardsData.335.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.335.description", {
-        ns: "effects",
-      }),
-    },
-    336: {
-      name: i18n.t("specialCardsData.336.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.336.description", {
-        ns: "effects",
-      }),
-    },
-    337: {
-      name: i18n.t("specialCardsData.337.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.337.description", {
-        ns: "effects",
-      }),
-    },
-    338: {
-      name: i18n.t("specialCardsData.338.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.338.description", {
-        ns: "effects",
-      }),
-    },
-    339: {
-      name: i18n.t("specialCardsData.339.name", { ns: "effects" }),
-      description: i18n.t("specialCards.339.description", {
-        ns: "effects",
-      }),
-    },
-    340: {
-      name: i18n.t("specialCardsData.340.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.340.description", {
-        ns: "effects",
-      }),
-    },
-    341: {
-      name: i18n.t("specialCardsData.341.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.341.description", {
-        ns: "effects",
-      }),
-    },
-    342: {
-      name: i18n.t("specialCardsData.342.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.342.description", {
-        ns: "effects",
-      }),
-    },
-    343: {
-      name: i18n.t("specialCardsData.343.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.343.description", {
-        ns: "effects",
-      }),
-    },
-    344: {
-      name: i18n.t("specialCardsData.344.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.344.description", {
-        ns: "effects",
-      }),
-    },
-    345: {
-      name: i18n.t("specialCardsData.345.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.345.description", {
-        ns: "effects",
-      }),
-    },
-    346: {
-      name: i18n.t("specialCardsData.346.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.346.description", {
-        ns: "effects",
-      }),
-    },
-    347: {
-      name: i18n.t("specialCardsData.347.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.347.description", {
-        ns: "effects",
-      }),
-    },
-    348: {
-      name: i18n.t("specialCardsData.348.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.348.description", {
-        ns: "effects",
-      }),
-    },
-    349: {
-      name: i18n.t("specialCardsData.349.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.349.description", {
-        ns: "effects",
-      }),
-    },
-    350: {
-      name: i18n.t("specialCardsData.350.name", { ns: "effects" }),
-      description: i18n.t("specialCardsData.350.description", {
-        ns: "effects",
-      }),
-    },
+    300: createCardData(300, RARITY.C),
+    301: createCardData(301, RARITY.C),
+    302: createCardData(302, RARITY.C),
+    303: createCardData(303, RARITY.C),
+    304: createCardData(304, RARITY.C),
+    305: createCardData(305, RARITY.C),
+    306: createCardData(306, RARITY.B),
+    307: createCardData(307, RARITY.B),
+    308: createCardData(308, RARITY.B),
+    309: createCardData(309, RARITY.B),
+    310: createCardData(310, RARITY.S),
+    311: createCardData(311, RARITY.SS),
+    312: createCardData(312, RARITY.A),
+    313: createCardData(313, RARITY.B),
+    314: createCardData(314, RARITY.A),
+    315: createCardData(315, RARITY.A),
+    316: createCardData(316, RARITY.S),
+    317: createCardData(317, RARITY.A),
+    318: createCardData(318, RARITY.B),
+    319: createCardData(319, RARITY.S),
+    320: createCardData(320, RARITY.SS),
+    321: createCardData(321, RARITY.C),
+    322: createCardData(322, RARITY.A),
+    323: createCardData(323, RARITY.S),
+    325: createCardData(325, RARITY.A),
+    331: createCardData(331, RARITY.A),
+    332: createCardData(332, RARITY.B),
+    334: createCardData(334, RARITY.C),
+    336: createCardData(336, RARITY.B),
+    337: createCardData(337, RARITY.A),
+    338: createCardData(338, RARITY.A),
+    341: createCardData(341, RARITY.A),
+    343: createCardData(343, RARITY.A),
+    344: createCardData(344, RARITY.B),
+    345: createCardData(345, RARITY.A),
+    346: createCardData(346, RARITY.A),
+    347: createCardData(347, RARITY.B),
+    348: createCardData(348, RARITY.B),
+    349: createCardData(349, RARITY.B),
+    350: createCardData(350, RARITY.B),
   });
 };
 

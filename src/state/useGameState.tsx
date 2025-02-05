@@ -21,6 +21,11 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { ModCardsConfig } from "../types/ModConfig";
+import {
+  getModRageCardsId,
+  getModSpecialCardsId,
+} from "../dojo/queries/useModCardsId";
 
 export const useGameState = () => {
   const {
@@ -68,6 +73,7 @@ export const useGameState = () => {
   const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
   const [maxSpecialCards, setMaxSpecialCards] = useState(0);
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
+  const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
 
   const fetchGameConfig = async () => {
     if (game?.mod_id) {
@@ -79,10 +85,26 @@ export const useGameState = () => {
     }
   };
 
+  const fetchCardsConfig = async () => {
+    if (game?.mod_id) {
+      const modSpecialCards = await getModSpecialCardsId(client, game.mod_id);
+      const modRageCards = await getModRageCardsId(client, game.mod_id);
+
+      if (modSpecialCards) {
+        const modCardsConfig: ModCardsConfig = {
+          specialCardsIds: modSpecialCards,
+          rageCardsIds: modRageCards,
+        };
+        setModCardsConfig(modCardsConfig);
+      }
+    }
+  };
+
   const game = useGame();
-  
+
   useEffect(() => {
     fetchGameConfig();
+    fetchCardsConfig();
   }, [game?.mod_id]);
 
   const sortBy: SortBy = useMemo(
@@ -277,5 +299,6 @@ export const useGameState = () => {
     maxSpecialCards,
     maxPowerUpSlots,
     isClassic,
+    modCardsConfig,
   };
 };

@@ -1,7 +1,6 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { InformationIcon } from "../../../components/InformationIcon";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useGameContext } from "../../../providers/GameProvider";
@@ -11,6 +10,7 @@ import theme from "../../../theme/theme";
 import { BurnItem } from "../BurnItem";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
+import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -103,7 +103,7 @@ export const UtilsTab = () => {
             <Heading fontWeight={"400"} fontSize={"xs"}>
               {t("store.titles.powerups").toUpperCase()}
             </Heading>
-            <InformationIcon title={"power-ups"} />
+            <DefaultInfo title={"power-ups"} />
           </Flex>
           <Flex
             flexDirection={"column"}
