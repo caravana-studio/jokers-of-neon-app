@@ -2,7 +2,7 @@
   "gameTutorial": {
     "action": {
       "select": "Selecione esta carta.",
-      "select-mobile": "Arraste e solte."
+      "select-mobile": "Toque ou arraste."
     },
     "intro": {
       "title": "Bem-vindo ao Jokers of Neon",
