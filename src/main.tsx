@@ -13,43 +13,67 @@ import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadImages } from "./utils/preloadImages.ts";
+import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+
+const I18N_NAMESPACES = [
+  "game",
+  "rage",
+  "home",
+  "traditional-cards",
+  "neon-cards",
+  "store",
+  "effects",
+  "tutorials",
+  "intermediate-screens",
+  "plays",
+  "loot-boxes",
+];
 
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
+  let promises = [];
+
   root.render(<LoadingScreen />);
 
   const loadImages = async () => {
-    await i18n.loadNamespaces(["traditional-cards", "neon-cards"]);
     preloadImages();
     preloadSpineAnimations();
+    preloadVideos();
   };
 
-  i18n.on("initialized", loadImages);
+  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
+
+  Promise.all(promises).then(() => loadImages());
+
   registerServiceWorker();
 
   try {
-    const setupResult = await setup(dojoConfig);
-    const queryClient = new QueryClient();
-    root.render(
-      <StarknetProvider>
-        <DojoProvider value={setupResult}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <Toaster />
-              <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                <App />
-              </I18nextProvider>
-            </QueryClientProvider>
-          </BrowserRouter>
-        </DojoProvider>
-      </StarknetProvider>
-    );
+    const setupPromise = setup(dojoConfig);
+    promises.push(setupPromise);
+    const setupResult = await setupPromise;
+
+    Promise.all(promises).then(() => {
+      const queryClient = new QueryClient();
+      root.render(
+        <StarknetProvider>
+          <DojoProvider value={setupResult}>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <Toaster />
+                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                  <App />
+                </I18nextProvider>
+              </QueryClientProvider>
+            </BrowserRouter>
+          </DojoProvider>
+        </StarknetProvider>
+      );
+    });
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);

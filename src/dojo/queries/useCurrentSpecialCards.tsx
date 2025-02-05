@@ -4,6 +4,18 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "../useDojo.tsx";
 import { useGame } from "./useGame.tsx";
 
+const getSellingPrice = (specialCard: any) => {
+  let price;
+  
+  if (specialCard.is_temporary && specialCard.remaining) {
+    price = (specialCard.selling_price / 3) * specialCard.remaining;
+  } else {
+    price = specialCard.selling_price;
+  }
+
+  return Math.round(price / 50) * 50;
+};
+
 const useSpecialCard = (
   gameId: number,
   index: number,
@@ -25,6 +37,7 @@ const useSpecialCard = (
       img: `${card_id}.png`,
       temporary: specialCard?.is_temporary,
       remaining: specialCard?.remaining,
+      selling_price: getSellingPrice(specialCard),
     }
   );
 };

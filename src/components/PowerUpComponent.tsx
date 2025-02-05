@@ -1,6 +1,11 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  SystemStyleObject,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { POWER_UPS_CARDS_DATA } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -16,17 +21,22 @@ interface PowerUpProps {
   width: number;
   onClick?: () => void;
   inStore?: boolean;
+  containerSx?: SystemStyleObject;
+  isActive?: boolean;
 }
 export const PowerUpComponent = ({
   powerUp,
   onClick,
   inStore = false,
   width,
+  containerSx,
+  isActive,
 }: PowerUpProps) => {
   const { t } = useTranslation(["store"]);
 
   const { powerUpIsPreselected } = useGameContext();
-  const isActive = powerUp && powerUpIsPreselected(powerUp.idx);
+  const calculatedIsActive =
+    isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
   const price = inStore && powerUp?.cost;
   const discount_cost = inStore && powerUp?.discount_cost;
   const purchased = inStore && powerUp?.purchased;
@@ -45,10 +55,11 @@ export const PowerUpComponent = ({
           width={`${width}px`}
           borderRadius="17px"
           background={"black"}
-          transform={isActive ? "scale(1.1)" : "scale(1)"}
+          transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
           transition="all 0.2s ease-in-out"
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
+          onClick={onClick}
         >
           {price && (
             <PriceBox
@@ -78,42 +89,42 @@ export const PowerUpComponent = ({
             </Box>
           )}
           <CachedImage
-            opacity={inStore || isActive ? 1 : 0.6}
+            opacity={inStore || calculatedIsActive ? 1 : 0.6}
             borderRadius={["12px", "17px"]}
             cursor="pointer"
             height={`${100}%`}
             width={`${100}%`}
             src={powerUp.img}
-            onClick={onClick}
           />
         </Flex>
       </Tooltip>
     </AnimatedPowerUp>
   ) : (
-    <EmptyPowerUp width={width} />
+    <EmptyPowerUp width={width} containerSx={containerSx} />
   );
 };
 
-const EmptyPowerUp = ({ width }: { width: number }) => {
+const EmptyPowerUp = ({
+  width,
+  containerSx,
+}: {
+  width: number;
+  containerSx?: SystemStyleObject;
+}) => {
   const { isSmallScreen } = useResponsiveValues();
   const { isRageRound, isClassic } = useGameContext();
-
-  const componentWidth = isSmallScreen ? width - 4 : width - 10;
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
       borderRadius={["12px", "17px"]}
-      width={`${componentWidth}px`}
+      width={`${width}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
       backgroundColor={
-        isClassic
-          ? isRageRound
-            ? "black"
-            : BACKGROUND_BLUE
-          : "transparent"
+        isClassic ? (isRageRound ? "black" : BACKGROUND_BLUE) : "transparent"
       }
+      sx={containerSx}
     />
   );
 };

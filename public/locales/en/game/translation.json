@@ -23,9 +23,9 @@
     "card-highlight": {
       "buttons": {
         "change": "Change",
-        "remove": "Remove",
+        "sell-for": "Sell for",
         "changing": "Changing...",
-        "removing": "Removing..."
+        "selling": "Selling..."
       }
     },
     "level-points": {
@@ -41,10 +41,10 @@
     "special-cards": {
       "locked-slot": "This slot is locked. You can unlock it in the store.",
       "special-cards-label": "Special cards",
-      "remove-special-cards-label": "Remove",
+      "remove-special-cards-label": "Sell",
       "confirmation-modal": {
-        "title": "Remove special card",
-        "description": "Are you sure you want to remove this special card? There is no way to undo this action."
+        "title": "Sell special card",
+        "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
       }
     },
     "hand-section": {
@@ -83,7 +83,8 @@
       "tutorial-btn": "See tutorial",
       "sound-btn": "Turn sound",
       "logout-btn": "Logout",
-      "settings-btn": "Settings"
+      "settings-btn": "Settings",
+      "docs-btn": "Card list"
     },
     "plays": {
       "title": "Available plays",
@@ -97,14 +98,18 @@
     "deck": {
       "tooltip": "See my deck",
       "title": "My full deck",
+      "burn-title": "Select a card to burn",
       "filter-title": "Filter by",
       "suit": {
-        "club": "Club",
-        "spade": "Spade",
-        "heart": "Heart",
-        "diamond": "Diamond",
+        "club": "Clubs",
+        "spade": "Spades",
+        "heart": "Hearts",
+        "diamond": "Diamonds",
         "neon": "Neon",
-        "modifier": "Modifier"
+        "modifier": "Modifiers",
+        "joker": "Jokers",
+        "figures": "Figures",
+        "aces": "Aces"
       },
       "btns": {
         "special-cards": "See special cards",

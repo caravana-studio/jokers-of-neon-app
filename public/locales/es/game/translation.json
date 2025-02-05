@@ -23,9 +23,9 @@
     "card-highlight": {
       "buttons": {
         "change": "Cambiar",
-        "remove": "Eliminar",
+        "sell-for": "Vender por",
         "changing": "Cambiando...",
-        "removing": "Eliminando..."
+        "selling": "Vendiendo..."
       }
     },
     "level-points": {
@@ -41,7 +41,7 @@
     "special-cards": {
       "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
-      "remove-special-cards-label": "Eliminar",
+      "remove-special-cards-label": "Vender",
       "confirmation-modal": {
         "title": "Eliminar carta especial",
         "description": "¿Estás seguro de que quieres eliminar esta carta especial? No hay forma de deshacer esta acción."
@@ -83,7 +83,8 @@
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Sonido",
       "logout-btn": "Cerrar sesión",
-      "settings-btn": "Configuración"
+      "settings-btn": "Configuración",
+      "docs-btn": "Lista de cartas"
     },
     "plays": {
       "title": "Jugadas disponibles",
@@ -97,14 +98,18 @@
     "deck": {
       "tooltip": "Ver mazo",
       "title": "Mi mazo",
+      "burn-title": "Selecciona una carta para quemar",
       "filter-title": "Filtrar por",
       "suit": {
-        "club": "Trébol",
-        "spade": "Pica",
-        "heart": "Corazón",
-        "diamond": "Diamante",
+        "club": "Tréboles",
+        "spade": "Picas",
+        "heart": "Corazones",
+        "diamond": "Diamantes",
         "neon": "Neón",
-        "modifier": "Modificadora"
+        "modifier": "Modificadoras",
+        "joker": "Jokers",
+        "figures": "Figuras",
+        "aces": "Ases"
       },
       "btns": {
         "special-cards": "Ver cartas especiales",
@@ -116,7 +121,7 @@
         "plays": "Jugadas"
       }
     },
-    
+
     "no-cards": "No hay cartas que coincidan con los filtros seleccionados."
   },
   "confirmation-modal": {

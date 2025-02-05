@@ -1,4 +1,4 @@
-import { EventType } from "../../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
@@ -121,7 +121,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           const suit = eventTypeToSuit(event.eventType);
           const handIndexes = event.hand.map((card) => card.idx);
           const special_idx = event.specials[0]?.idx;
-          const isNeon = event.eventType === EventType.Neon;
+          const isNeon = event.eventType === EventTypeEnum.Neon;
 
           if (isNeon) {
             setAnimatedCard({
@@ -174,9 +174,9 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   const handleSpecialCardPlayScoreEvents = () => {
     playEvents.specialCardPlayScoreEvents?.forEach((event, index) => {
-      const isPoints = event.eventType === EventType.Point;
-      const isMulti = event.eventType === EventType.Multi;
-      const isCash = event.eventType === EventType.Cash;
+      const isPoints = event.eventType === EventTypeEnum.Point;
+      const isMulti = event.eventType === EventTypeEnum.Multi;
+      const isCash = event.eventType === EventTypeEnum.Cash;
       const special_idx = event.specials[0]?.idx;
       const quantity = event.specials[0]?.quantity;
 
@@ -214,9 +214,9 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   const handleCardPlayScoreEvents = () => {
     playEvents.cardPlayScoreEvents?.forEach((event, index) => {
-      const isPoints = event.eventType === EventType.Point;
-      const isMulti = event.eventType === EventType.Multi;
-      const isCash = event.eventType === EventType.Cash;
+      const isPoints = event.eventType === EventTypeEnum.Point;
+      const isMulti = event.eventType === EventTypeEnum.Multi;
+      const isCash = event.eventType === EventTypeEnum.Cash;
       const special_idx = event.specials[0]?.idx;
 
       setTimeout(() => {

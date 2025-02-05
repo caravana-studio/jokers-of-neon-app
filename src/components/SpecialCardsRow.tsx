@@ -1,7 +1,6 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
@@ -10,6 +9,7 @@ import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { AnimatedCard } from "./AnimatedCard.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
+import { CashSymbol } from "./CashSymbol.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
@@ -17,7 +17,7 @@ import { UnlockedSlot } from "./UnlockedSlot.tsx";
 export const SpecialCardsRow = () => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
   const {
-    discardSpecialCard,
+    sellSpecialCard,
     roundRewards,
     isRageRound,
     specialCards: cards,
@@ -26,7 +26,7 @@ export const SpecialCardsRow = () => {
   } = useGameContext();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-  const [cardToDiscard, setCardToDiscard] = useState<number | null>(null);
+  const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
   const { specialCardScale, isSmallScreen } = useResponsiveValues();
   const cardWidth = CARD_WIDTH * specialCardScale;
@@ -46,6 +46,8 @@ export const SpecialCardsRow = () => {
 
   const visibleCards = cards.length + freeUnlockedSlots + lockedSlots;
 
+  const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
+
   useEffect(() => {
     if (roundRewards) {
       setDiscardedCards((prev) => [
@@ -58,15 +60,15 @@ export const SpecialCardsRow = () => {
   }, [roundRewards, cards]);
 
   const handleDiscard = () => {
-    const card = cards.find((c) => c.idx === cardToDiscard);
+    const card = cards.find((c) => c.idx === cardToDiscardIdx);
     if (card) {
       setHoveredButton(null);
-      discardSpecialCard(cardToDiscard!).then((response) => {
+      sellSpecialCard(cardToDiscardIdx!).then((response) => {
         if (response) {
           setDiscardedCards((prev) => [...prev, card.id]);
         }
       });
-      setCardToDiscard(null);
+      setCardToDiscardIdx(null);
     }
   };
 
@@ -130,16 +132,19 @@ export const SpecialCardsRow = () => {
                           onMouseEnter={() => setHoveredButton(card.idx)}
                           onClick={() => {
                             console.log(card.idx);
-                            setCardToDiscard(card.idx);
+                            setCardToDiscardIdx(card.idx);
                           }}
                         >
                           <Text fontSize="10px">X</Text>
                           {hoveredButton === card.idx && (
-                            <Text fontSize="10px">
-                              {t(
-                                "game.special-cards.remove-special-cards-label"
-                              )}
-                            </Text>
+                            <>
+                              <Text fontSize="10px">
+                                {t(
+                                  "game.special-cards.remove-special-cards-label"
+                                )}
+                                <CashSymbol /> {card.selling_price}
+                              </Text>
+                            </>
                           )}
                         </Button>
                       )}
@@ -190,11 +195,13 @@ export const SpecialCardsRow = () => {
           </Flex>
         ))}
       </SimpleGrid>
-      {cardToDiscard !== null && (
+      {cardToDiscardIdx !== null && (
         <ConfirmationModal
-          close={() => setCardToDiscard(null)}
+          close={() => setCardToDiscardIdx(null)}
           title={t("game.special-cards.confirmation-modal.title")}
-          description={t("game.special-cards.confirmation-modal.description")}
+          description={t("game.special-cards.confirmation-modal.description", {
+            price: cardToDiscard?.selling_price ?? 0,
+          })}
           onConfirm={handleDiscard}
         />
       )}

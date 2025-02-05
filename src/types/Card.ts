@@ -6,6 +6,7 @@ export interface Card {
   id: string;
   img: string;
   value?: Cards;
+  card?: Cards;
   suit?: Suits;
   modifiers?: Card[];
   name?: string;
@@ -23,6 +24,7 @@ export interface Card {
   discount_cost?: number;
   temporary_discount_cost?: number;
   temporary_price?: number;
+  selling_price?: number;
 }
 
 export interface StaticEffectCard extends Effect {

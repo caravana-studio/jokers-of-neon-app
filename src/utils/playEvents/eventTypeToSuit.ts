@@ -1,15 +1,15 @@
-import { EventType } from "../../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import { Suits } from "../../enums/suits";
 
-export const eventTypeToSuit = (eventType: EventType) => {
+export const eventTypeToSuit = (eventType: EventTypeEnum) => {
   switch (eventType) {
-    case EventType.Club:
+    case EventTypeEnum.Club:
       return Suits.CLUBS;
-    case EventType.Diamond:
+    case EventTypeEnum.Diamond:
       return Suits.DIAMONDS;
-    case EventType.Heart:
+    case EventTypeEnum.Heart:
       return Suits.HEARTS;
-    case EventType.Spade:
+    case EventTypeEnum.Spade:
       return Suits.SPADES;
     default:
       return undefined;

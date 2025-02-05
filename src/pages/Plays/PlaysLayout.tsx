@@ -25,6 +25,9 @@ export const PlaysLayout = () => {
         width={{ base: "100%", sm: "75%", md: "50%" }}
         margin={"0 auto"}
         height={"100vh"}
+        sx={{
+          zIndex: 1,
+        }}
       >
         <Heading
           mt={{ base: 0, sm: 20, md: 20 }}
