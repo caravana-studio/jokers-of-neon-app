@@ -6,8 +6,6 @@ import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { PowerUps } from "./PowerUps.tsx";
-import { useTranslation } from "react-i18next";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { ScoreTotal } from "../../components/ScoreTotal.tsx";
 
 interface TopSectionProps {
@@ -16,8 +14,6 @@ interface TopSectionProps {
 
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
   const { maxPowerUpSlots } = useGameContext();
-  const { t } = useTranslation("game");
-  const { player_score } = useGame();
   return (
     <Flex flexDir="column">
       <Flex
