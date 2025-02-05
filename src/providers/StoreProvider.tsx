@@ -241,9 +241,16 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buyPackSound();
     const promise = dojoBuyPack(gameId, Number(pack.idx));
     buyBlisterPack(Number(pack.idx));
-    promise.catch(() => {
-      rollbackBuyBlisterPack(Number(pack.idx));
-    });
+    promise
+      .then((response) => {
+        if (!response) {
+          rollbackBuyBlisterPack(Number(pack.idx));
+        }
+        fetchShopItems();
+      })
+      .catch(() => {
+        rollbackBuyBlisterPack(Number(pack.idx));
+      });
     return promise;
   };
 
