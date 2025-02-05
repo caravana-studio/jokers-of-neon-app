@@ -8,9 +8,11 @@ import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
 import { isTutorial } from "../../utils/isTutorial";
+import { useGame } from "../../dojo/queries/useGame";
 
 export const CompactRoundData = () => {
-  const { t } = useTranslation("game", {
+  const { t } = useTranslation("game");
+  const { t: tCompactRoundData } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
 
@@ -20,6 +22,7 @@ export const CompactRoundData = () => {
 
   const round = useRound();
   const target = round?.level_score ?? 0;
+  const { player_score } = useGame();
 
   return (
     <Flex justifyContent="center" className="game-tutorial-step-1">
@@ -33,7 +36,7 @@ export const CompactRoundData = () => {
               textTransform="uppercase"
               fontWeight="500"
             >
-              {t("my-score")}
+              {tCompactRoundData("my-score")}
             </Text>
             <Heading
               textAlign="right"
@@ -57,7 +60,7 @@ export const CompactRoundData = () => {
 
           <Box className="game-tutorial-step-7">
             <Text fontSize="10px" textTransform="uppercase" fontWeight="500">
-              {t("target")}
+              {tCompactRoundData("target")}
             </Text>
             <Heading
               width="50px"
@@ -71,6 +74,18 @@ export const CompactRoundData = () => {
           </Box>
         </Flex>
         <ProgressBar progress={(score / target) * 100} />
+        <Heading
+          variant="italic"
+          fontSize={"0.5rem"}
+          mt={1}
+          textShadow="0 0 10px white"
+          whiteSpace="nowrap"
+          className="game-tutorial-step-7"
+          textAlign="center"
+        >
+          {t("game.score-total")}{" "}
+          <RollingNumber className="italic" n={player_score} />
+        </Heading>
       </Box>
     </Flex>
   );
