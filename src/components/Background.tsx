@@ -1,10 +1,14 @@
-import { Box, Text } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import CachedImage, { checkImageExists } from "./CachedImage";
+import SpineAnimation from "./SpineAnimation";
+import { isMobile } from "react-device-detect";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useGameContext } from "../providers/GameProvider";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { getImageFromCache } from "../utils/preloadImages";
-import CachedImage, { checkImageExists } from "./CachedImage";
+import { getImageFromCache } from "../utils/cacheUtils";
+import BackgroundVideo from "./BackgroundVideo";
+import { useGame } from "../dojo/queries/useGame";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -71,12 +75,11 @@ export const Background = ({
     <Box
       sx={{
         backgroundColor: getBackgroundColor(type),
-        backgroundImage:
-          isClassic
-            ? getBackgroundImage(type)
-            : backgroundImageUrl != "none"
-              ? backgroundImageUrl
-              : getBackgroundImage(type),
+        backgroundImage: isClassic
+          ? getBackgroundImage(type)
+          : backgroundImageUrl != "none"
+            ? backgroundImageUrl
+            : getBackgroundImage(type),
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100svh",
@@ -87,6 +90,8 @@ export const Background = ({
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
       }}
     >
+      {isClassic && <BackgroundVideo type={type} />}
+
       {bgDecoration ? (
         <BackgroundDecoration>{children}</BackgroundDecoration>
       ) : (

@@ -140,7 +140,12 @@ const ConditionalTilt = ({
   ) : (
     <Tilt
       {...TILT_OPTIONS}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{
+        transformStyle: "preserve-3d",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
       glareMaxOpacity={cardId < 100 ? TILT_OPTIONS.glareMaxOpacity : 0.2}
       glareBorderRadius={small ? "7px" : "18px"}
     >

@@ -1,8 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { InformationIcon } from "../../components/InformationIcon";
+import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { TiltCard } from "../../components/TiltCard";
 import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -30,7 +29,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
     ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
 
-
   if (!isCardScaleCalculated) {
     return null;
   }
@@ -46,7 +44,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
               {t("store.titles." + title)}
             </Heading>
-            <InformationIcon title={title} />
+            <DefaultInfo title={title} />
           </Flex>
 
           {button && (

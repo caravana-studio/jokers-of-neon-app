@@ -83,7 +83,8 @@
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Ativar som",
       "logout-btn": "Sair",
-      "settings-btn": "Configuração"
+      "settings-btn": "Configuração",
+      "docs-btn": "Lista de cartas"
     },
     "plays": {
       "title": "Jogadas disponíveis",

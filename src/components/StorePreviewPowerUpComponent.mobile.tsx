@@ -23,7 +23,7 @@ export const StorePreviewPowerUpComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -43,6 +43,9 @@ export const StorePreviewPowerUpComponentMobile = ({
           w="100%"
           justifyContent="center"
           alignItems="center"
+          sx={{
+            zIndex: 1,
+          }}
         >
           <Box>
             <Heading
@@ -63,7 +66,14 @@ export const StorePreviewPowerUpComponentMobile = ({
             {colorizeText(description)}
           </Text>
         </Flex>
-        <Box w={"60%"}>{image}</Box>
+        <Box
+          w={"60%"}
+          sx={{
+            zIndex: 1,
+          }}
+        >
+          {image}
+        </Box>
 
         <PriceBox
           absolutePosition={false}

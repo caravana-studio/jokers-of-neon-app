@@ -10,7 +10,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;
@@ -109,7 +109,15 @@ export const DeckPageContentMobile = ({
         )}
 
         {tabIndex === 1 && (
-          <Flex w="100%" alignItems="center" height={"100%"} px={3}>
+          <Flex
+            w="100%"
+            alignItems="center"
+            height={"100%"}
+            px={3}
+            sx={{
+              zIndex: 1,
+            }}
+          >
             <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
           </Flex>
         )}

@@ -25,6 +25,8 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
+import { DocsPage } from "./pages/Docs/Docs";
+import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { ManagePage } from "./pages/Manage/ManagePage";
 
 function App() {
@@ -87,6 +89,14 @@ function App() {
                       <StoreProvider>
                         <DeckPage />
                       </StoreProvider>
+                    }
+                  />
+                  <Route
+                    path="/docs"
+                    element={
+                      <CardHighlightProvider>
+                        <DocsPage lastIndexTab={0} />
+                      </CardHighlightProvider>
                     }
                   />
                   <Route

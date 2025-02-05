@@ -29,6 +29,7 @@ interface SpineAnimationProps {
   isPurchased?: boolean;
   price?: number;
   discountPrice?: number;
+  home?: boolean;
 }
 
 export interface SpineAnimationRef {
@@ -55,6 +56,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       isPurchased,
       price,
       discountPrice,
+      home = false,
     },
     ref
   ) => {
@@ -107,6 +109,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           premultipliedAlpha: true,
           animation: initialAnimation,
           scale: scale,
+          showLoading: false,
           success: (player: SpinePlayer) => {
             if (player.skeleton != null) {
               // console.log(player.skeleton.data.animations.map((a) => a.name));
@@ -219,9 +222,10 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           onClick={onClick}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          width={"100%"}
+          height={"100%"}
+          justifyContent={"center"}
           style={{
-            width: "100%",
-            height: "100%",
             cursor: isPurchased ? "default" : "pointer",
             opacity: isPurchased && !isAnimationRunning ? 0.3 : 1,
           }}

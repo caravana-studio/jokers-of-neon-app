@@ -37,7 +37,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     changeModifierCard,
     preSelectedModifiers,
     roundRewards,
-    remainingPlaysTutorial
+    remainingPlaysTutorial,
   } = useGameContext();
 
   const { highlightCard } = useCardHighlight();
@@ -45,7 +45,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = !isTutorial() ? round?.remaining_plays ?? 0 : remainingPlaysTutorial ?? 0;
+  const handsLeft = !isTutorial()
+    ? round?.remaining_plays ?? 0
+    : remainingPlaysTutorial ?? 0;
 
   const { activeNode } = useDndContext();
 
@@ -80,6 +82,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           pb={1}
           height={cardHeight}
           gap={1}
+          sx={{
+            zIndex: 1,
+          }}
         >
           <SortBy />
           <Coins rolling />

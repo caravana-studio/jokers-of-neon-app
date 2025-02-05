@@ -41,6 +41,9 @@ export const PreselectedCardsSection = ({
       alignItems={"center"}
       width={"100%"}
       height={"100%"}
+      sx={{
+        zIndex: 1,
+      }}
     >
       <Box height="60px"></Box>
       <Flex

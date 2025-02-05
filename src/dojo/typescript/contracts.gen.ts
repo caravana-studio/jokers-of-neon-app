@@ -1,10 +1,10 @@
-import { DojoProvider, DojoCall } from "@dojoengine/core";
+import { DojoCall, DojoProvider } from "@dojoengine/core";
 import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
 import * as models from "./models.gen";
 
 export function setupWorld(provider: DojoProvider) {
 
-	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish): DojoCall => {
+	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "buy_blister_pack_item",
