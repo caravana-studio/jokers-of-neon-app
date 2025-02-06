@@ -1,8 +1,7 @@
-import { Box, Button, Flex, Heading, keyframes, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
@@ -31,10 +30,6 @@ export const LootBoxesMobile = () => {
       setShowOverlay(true);
     }, 500);
   };
-
-  const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }`;
 
   return (
     <Flex
@@ -214,7 +209,6 @@ export const LootBoxesMobile = () => {
                 bottom="0"
                 backgroundColor="white"
                 zIndex="9999"
-                animation={`${fadeIn} 0.5s ease-out`}
               />
             )}
           </Flex>

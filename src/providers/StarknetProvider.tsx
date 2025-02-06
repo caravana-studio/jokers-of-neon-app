@@ -1,7 +1,7 @@
 
 "use client";
 import { mainnet, sepolia } from "@starknet-react/chains";
-import { Connector, StarknetConfig, jsonRpcProvider, voyager } from "@starknet-react/core";
+import { Connector, StarknetConfig, cartridgeProvider, jsonRpcProvider, voyager } from "@starknet-react/core";
 import React from "react";
 import { controller } from "../dojo/controller/controller";
 
@@ -17,7 +17,7 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
   return (
     <StarknetConfig
       chains={[mainnet, sepolia]}
-      provider={provider}
+      provider={cartridgeProvider()}
       connectors={[controller as unknown as Connector]}
       explorer={voyager}
       autoConnect

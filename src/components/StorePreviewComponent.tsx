@@ -5,7 +5,6 @@ import {
   HStack,
   Heading,
   Text,
-  keyframes,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -65,10 +64,6 @@ export const StorePreviewComponent = ({
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
-  const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
 
   console.log("temporal Price", temporalPrice);
   console.log("duration", duration);
@@ -314,7 +309,6 @@ export const StorePreviewComponent = ({
           bottom="0"
           backgroundColor="white"
           zIndex="9999"
-          animation={`${fadeIn} 0.5s ease-out`}
         />
       )}
       <PositionedDiscordLink />

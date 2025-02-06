@@ -19,57 +19,63 @@ const rage_system_contract_address = getContractByName(
   "rage_system"
 )?.address;
 
-export const policies = [
-  {
-    target: game_system_contract_address,
-    method: "create_game",
+export const policies = {
+  contracts: {
+    [game_system_contract_address]: {
+      methods: [
+        {
+          name: "create game",
+          entrypoint: "create_game",
+        },
+        {
+          name: "play",
+          entrypoint: "play",
+        },
+        {
+          name: "discard",
+          entrypoint: "discard",
+        },
+        {
+          name: "check hand",
+          entrypoint: "check_hand",
+        },
+        {
+          name: "discard effect card",
+          entrypoint: "discard_effect_card",
+        },
+        {
+          name: "sell special card",
+          entrypoint: "sell_special_card",
+        },
+      ],
+    },
+    [shop_system_contract_address]: {
+      methods: [
+        {
+          name: "skip shop",
+          entrypoint: "skip_shop",
+        },
+        {
+          name: "buy card item",
+          entrypoint: "buy_card_item",
+        },
+        {
+          name: "buy poker hand item",
+          entrypoint: "buy_poker_hand_item",
+        },
+        {
+          name: "buy blister pack item",
+          entrypoint: "buy_blister_pack_item",
+        },
+        {
+          name: "select cards from blister",
+          entrypoint: "select_cards_from_blister",
+        },
+        {
+          name: "reroll",
+          entrypoint: "reroll",
+        },
+      ],
+    },
   },
-  {
-    target: game_system_contract_address,
-    method: "play",
-  },
-  {
-    target: game_system_contract_address,
-    method: "discard",
-  },
-  {
-    target: game_system_contract_address,
-    method: "check_hand",
-  },
-  {
-    target: game_system_contract_address,
-    method: "discard_effect_card",
-  },
-  {
-    target: game_system_contract_address,
-    method: "discard_special_card",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "skip_shop",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "buy_card_item",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "buy_poker_hand_item",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "buy_blister_pack_item",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "select_cards_from_blister",
-  },
-  {
-    target: shop_system_contract_address,
-    method: "reroll",
-  },
-  {
-    target: rage_system_contract_address,
-    method: "calculate",
-  },
-];
+};
