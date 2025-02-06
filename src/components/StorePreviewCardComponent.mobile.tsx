@@ -38,7 +38,7 @@ export const StorePreviewCardComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -58,6 +58,9 @@ export const StorePreviewCardComponentMobile = ({
           w="100%"
           justifyContent="center"
           alignItems="center"
+          sx={{
+            zIndex: 1,
+          }}
         >
           <Box>
             <Heading

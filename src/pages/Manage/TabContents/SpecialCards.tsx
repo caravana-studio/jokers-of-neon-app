@@ -36,8 +36,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
     keyPrefix: "special-cards",
   });
 
-  const { discardSpecialCard, specialCards, maxSpecialCards } =
-    useGameContext();
+  const { sellSpecialCard, specialCards, maxSpecialCards } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
@@ -65,7 +64,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
         flexDirection="column"
         gap={4}
         px={6}
-        sx={containerSx}
+        sx={{ ...containerSx, zIndex: 1 }}
       >
         <Flex gap={4} flexDirection="column">
           {!isSmallScreen && (
@@ -147,7 +146,9 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               }}
               width={isSmallScreen ? "50%" : "unset"}
             >
-              {t("remove")}
+              {preselectedCard?.selling_price
+                ? t("sell-for", { price: preselectedCard.selling_price })
+                : t("sell")}
             </Button>
           </Flex>
         </Flex>
@@ -156,11 +157,13 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
           title={t("confirmation-modal.title")}
-          description={t("confirmation-modal.description")}
+          description={t("confirmation-modal.description", {
+            price: preselectedCard?.selling_price ?? 0,
+          })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
             preselectedCard &&
-              discardSpecialCard(preselectedCard.idx).then((response) => {
+              sellSpecialCard(preselectedCard.idx).then((response) => {
                 if (response) {
                   setDiscardedCards((prev) => [...prev, preselectedCard]);
                   setPreselectedCard(undefined);

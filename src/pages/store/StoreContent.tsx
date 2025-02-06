@@ -55,6 +55,9 @@ export const StoreContent = () => {
             pb={0}
             pt={0}
             pl={"2%"}
+            sx={{
+              zIndex: 1,
+            }}
           >
             <Heading variant="italic" ml={4}>
               {t("store.titles.level-game").toUpperCase()}
@@ -72,6 +75,9 @@ export const StoreContent = () => {
             alignItems={"flex-start"}
             pb={0}
             gap={6}
+            sx={{
+              zIndex: 1,
+            }}
           >
             <Box className="game-tutorial-step-3">
               {commonCards.length > 0 && (

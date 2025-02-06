@@ -1,5 +1,7 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
+import { CairoCustomEnum } from 'starknet';
+
 type WithFieldOrder<T> = T & { fieldOrder: string[] };
 
 // Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistrator` struct
@@ -62,6 +64,7 @@ export interface CurrentSpecialCards {
 	effect_card_id: number;
 	is_temporary: boolean;
 	remaining: number;
+	selling_price: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::CurrentSpecialCardsValue` struct
@@ -69,13 +72,14 @@ export interface CurrentSpecialCardsValue {
 	effect_card_id: number;
 	is_temporary: boolean;
 	remaining: number;
+	selling_price: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::Game` struct
 export interface Game {
 	id: number;
 	mod_id: number;
-	state: GameState;
+	state: GameStateEnum;
 	owner: string;
 	player_name: number;
 	player_score: number;
@@ -91,7 +95,7 @@ export interface Game {
 // Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
 export interface GameValue {
 	mod_id: number;
-	state: GameState;
+	state: GameStateEnum;
 	owner: string;
 	player_name: number;
 	player_score: number;
@@ -107,7 +111,7 @@ export interface GameValue {
 // Type definition for `jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand` struct
 export interface PlayerLevelPokerHand {
 	game_id: number;
-	poker_hand: PokerHand;
+	poker_hand: PokerHandEnum;
 	level: number;
 }
 
@@ -211,7 +215,7 @@ export interface BurnItemValue {
 export interface CardItem {
 	game_id: number;
 	idx: number;
-	item_type: CardItemType;
+	item_type: CardItemTypeEnum;
 	card_id: number;
 	cost: number;
 	discount_cost: number;
@@ -230,7 +234,7 @@ export interface CardItemValue {
 export interface PokerHandItem {
 	game_id: number;
 	idx: number;
-	poker_hand: PokerHand;
+	poker_hand: PokerHandEnum;
 	level: number;
 	multi: number;
 	points: number;
@@ -241,7 +245,7 @@ export interface PokerHandItem {
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::PokerHandItemValue` struct
 export interface PokerHandItemValue {
-	poker_hand: PokerHand;
+	poker_hand: PokerHandEnum;
 	level: number;
 	multi: number;
 	points: number;
@@ -266,31 +270,6 @@ export interface PowerUpItemValue {
 	cost: number;
 	discount_cost: number;
 	purchased: boolean;
-}
-
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PurchaseTracker` struct
-export interface PurchaseTracker {
-	game_id: number;
-	traditonal_cards_count: number;
-	modifier_cards_count: number;
-	special_cards_count: number;
-	loot_boxes_count: number;
-	power_up_count: number;
-	level_poker_hands_count: number;
-	burn_count: number;
-	reroll_count: number;
-}
-
-// Type definition for `jokers_of_neon_lib::models::status::shop::shop::PurchaseTrackerValue` struct
-export interface PurchaseTrackerValue {
-	traditonal_cards_count: number;
-	modifier_cards_count: number;
-	special_cards_count: number;
-	loot_boxes_count: number;
-	power_up_count: number;
-	level_poker_hands_count: number;
-	burn_count: number;
-	reroll_count: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::ReRollItem` struct
@@ -343,6 +322,79 @@ export interface SpecialCardItemValue {
 	temporary_cost: number;
 	temporary_discount_cost: number;
 	purchased: boolean;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::GameTracker` struct
+export interface GameTracker {
+	game_id: number;
+	power_ups_used: number;
+	highest_hand: number;
+	rage_wins: number;
+	special_cards_removed: number;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::GameTrackerValue` struct
+export interface GameTrackerValue {
+	power_ups_used: number;
+	highest_hand: number;
+	rage_wins: number;
+	special_cards_removed: number;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::PokerHandTracker` struct
+export interface PokerHandTracker {
+	game_id: number;
+	royal_flush: number;
+	straight_flush: number;
+	five_of_a_kind: number;
+	four_of_a_kind: number;
+	full_house: number;
+	straight: number;
+	flush: number;
+	three_of_a_kind: number;
+	two_pair: number;
+	one_pair: number;
+	high_card: number;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::PokerHandTrackerValue` struct
+export interface PokerHandTrackerValue {
+	royal_flush: number;
+	straight_flush: number;
+	five_of_a_kind: number;
+	four_of_a_kind: number;
+	full_house: number;
+	straight: number;
+	flush: number;
+	three_of_a_kind: number;
+	two_pair: number;
+	one_pair: number;
+	high_card: number;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::PurchaseTracker` struct
+export interface PurchaseTracker {
+	game_id: number;
+	traditonal_cards_count: number;
+	modifier_cards_count: number;
+	special_cards_count: number;
+	loot_boxes_count: number;
+	power_up_count: number;
+	level_poker_hands_count: number;
+	burn_count: number;
+	reroll_count: number;
+}
+
+// Type definition for `jokers_of_neon_lib::models::tracker::PurchaseTrackerValue` struct
+export interface PurchaseTrackerValue {
+	traditonal_cards_count: number;
+	modifier_cards_count: number;
+	special_cards_count: number;
+	loot_boxes_count: number;
+	power_up_count: number;
+	level_poker_hands_count: number;
+	burn_count: number;
+	reroll_count: number;
 }
 
 // Type definition for `jokers_of_neon_mods::models::mod_config::ModConfig` struct
@@ -484,7 +536,7 @@ export interface GameEvent {
 	len_current_special_cards: number;
 	current_jokers: number;
 	len_max_current_power_ups: number;
-	state: GameState;
+	state: GameStateEnum;
 	cash: number;
 }
 
@@ -504,7 +556,7 @@ export interface GameEventValue {
 	len_current_special_cards: number;
 	current_jokers: number;
 	len_max_current_power_ups: number;
-	state: GameState;
+	state: GameStateEnum;
 	cash: number;
 }
 
@@ -527,7 +579,7 @@ export interface ModifierCardSuitEvent {
 	game_id: number;
 	modifier_card_idx: number;
 	current_hand_card_idx: number;
-	suit: Suit;
+	suit: SuitEnum;
 }
 
 // Type definition for `jokers_of_neon_core::models::events::ModifierCardSuitEventValue` struct
@@ -535,7 +587,7 @@ export interface ModifierCardSuitEventValue {
 	game_id: number;
 	modifier_card_idx: number;
 	current_hand_card_idx: number;
-	suit: Suit;
+	suit: SuitEnum;
 }
 
 // Type definition for `jokers_of_neon_core::models::events::ModifierNeonCardEvent` struct
@@ -627,7 +679,7 @@ export interface CardPlayEvent {
 	player: string;
 	game_id: number;
 	mod_id: number;
-	event_type: EventType;
+	event_type: EventTypeTypeEnum;
 	special: Array<[number, number]>;
 	hand: Array<[number, number]>;
 }
@@ -636,44 +688,58 @@ export interface CardPlayEvent {
 export interface CardPlayEventValue {
 	game_id: number;
 	mod_id: number;
-	event_type: EventType;
+	event_type: EventTypeTypeEnum;
 	special: Array<[number, number]>;
 	hand: Array<[number, number]>;
 }
 
 // Type definition for `jokers_of_neon_lib::models::data::poker_hand::PokerHand` enum
-export enum PokerHand {
-	None,
-	RoyalFlush,
-	StraightFlush,
-	FiveOfAKind,
-	FourOfAKind,
-	FullHouse,
-	Straight,
-	Flush,
-	ThreeOfAKind,
-	TwoPair,
-	OnePair,
-	HighCard,
+export type PokerHand = {
+	None: string;
+	RoyalFlush: string;
+	StraightFlush: string;
+	FiveOfAKind: string;
+	FourOfAKind: string;
+	FullHouse: string;
+	Straight: string;
+	Flush: string;
+	ThreeOfAKind: string;
+	TwoPair: string;
+	OnePair: string;
+	HighCard: string;
 }
+export type PokerHandEnum = CairoCustomEnum;
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::GameState` enum
-export enum GameState {
-	IN_GAME,
-	AT_SHOP,
-	FINISHED,
-	OPEN_BLISTER_PACK,
+export type GameState = {
+	IN_GAME: string;
+	AT_SHOP: string;
+	FINISHED: string;
+	OPEN_BLISTER_PACK: string;
 }
+export type GameStateEnum = CairoCustomEnum;
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::CardItemType` enum
-export enum CardItemType {
-	None,
-	Common,
-	Modifier,
+export type CardItemType = {
+	None: string;
+	Common: string;
+	Modifier: string;
 }
+export type CardItemTypeEnum = CairoCustomEnum;
 
 // Type definition for `jokers_of_neon_lib::events::card_play_event::EventType` enum
-export enum EventType {
+export type EventType = {
+	Cash: string;
+	Club: string;
+	Diamond: string;
+	Point: string;
+	Multi: string;
+	Neon: string;
+	Spade: string;
+	Heart: string;
+}
+
+export enum EventTypeEnum {
 	Cash,
 	Club,
 	Diamond,
@@ -682,18 +748,21 @@ export enum EventType {
 	Neon,
 	Spade,
 	Heart,
-}
+  }
+
+export type EventTypeTypeEnum = CairoCustomEnum;
 
 // Type definition for `jokers_of_neon_lib::models::data::card::Suit` enum
-export enum Suit {
-	None,
-	Clubs,
-	Diamonds,
-	Hearts,
-	Spades,
-	Joker,
-	Wild,
+export type Suit = {
+	None: string;
+	Clubs: string;
+	Diamonds: string;
+	Hearts: string;
+	Spades: string;
+	Joker: string;
+	Wild: string;
 }
+export type SuitEnum = CairoCustomEnum;
 
 export interface SchemaType extends ISchemaType {
 	jokers_of_neon_core: {
@@ -731,14 +800,18 @@ export interface SchemaType extends ISchemaType {
 		PokerHandItemValue: WithFieldOrder<PokerHandItemValue>,
 		PowerUpItem: WithFieldOrder<PowerUpItem>,
 		PowerUpItemValue: WithFieldOrder<PowerUpItemValue>,
-		PurchaseTracker: WithFieldOrder<PurchaseTracker>,
-		PurchaseTrackerValue: WithFieldOrder<PurchaseTrackerValue>,
 		ReRollItem: WithFieldOrder<ReRollItem>,
 		ReRollItemValue: WithFieldOrder<ReRollItemValue>,
 		SlotSpecialCardsItem: WithFieldOrder<SlotSpecialCardsItem>,
 		SlotSpecialCardsItemValue: WithFieldOrder<SlotSpecialCardsItemValue>,
 		SpecialCardItem: WithFieldOrder<SpecialCardItem>,
 		SpecialCardItemValue: WithFieldOrder<SpecialCardItemValue>,
+		GameTracker: WithFieldOrder<GameTracker>,
+		GameTrackerValue: WithFieldOrder<GameTrackerValue>,
+		PokerHandTracker: WithFieldOrder<PokerHandTracker>,
+		PokerHandTrackerValue: WithFieldOrder<PokerHandTrackerValue>,
+		PurchaseTracker: WithFieldOrder<PurchaseTracker>,
+		PurchaseTrackerValue: WithFieldOrder<PurchaseTrackerValue>,
 	},
 	jokers_of_neon_mods: {
 		ModConfig: WithFieldOrder<ModConfig>,
@@ -796,8 +869,7 @@ export const schema: SchemaType = {
 			rage_manager_address: "",
 			special_manager_address: "",
 		},
-  },
-    jokers_of_neon_lib: {
+	}, jokers_of_neon_lib: {
 		DeckCard: {
 			fieldOrder: ['game_id', 'index', 'card_id'],
 			game_id: 0,
@@ -829,24 +901,30 @@ export const schema: SchemaType = {
 			power_ups: [0],
 		},
 		CurrentSpecialCards: {
-			fieldOrder: ['game_id', 'idx', 'effect_card_id', 'is_temporary', 'remaining'],
+			fieldOrder: ['game_id', 'idx', 'effect_card_id', 'is_temporary', 'remaining', 'selling_price'],
 			game_id: 0,
 			idx: 0,
 			effect_card_id: 0,
 			is_temporary: false,
 			remaining: 0,
+			selling_price: 0,
 		},
 		CurrentSpecialCardsValue: {
-			fieldOrder: ['effect_card_id', 'is_temporary', 'remaining'],
+			fieldOrder: ['effect_card_id', 'is_temporary', 'remaining', 'selling_price'],
 			effect_card_id: 0,
 			is_temporary: false,
 			remaining: 0,
+			selling_price: 0,
 		},
 		Game: {
 			fieldOrder: ['id', 'mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash'],
 			id: 0,
 			mod_id: 0,
-		state: GameState.IN_GAME,
+		state: new CairoCustomEnum({ 
+					IN_GAME: "",
+				AT_SHOP: undefined,
+				FINISHED: undefined,
+				OPEN_BLISTER_PACK: undefined, }),
 			owner: "",
 			player_name: 0,
 			player_score: 0,
@@ -861,7 +939,11 @@ export const schema: SchemaType = {
 		GameValue: {
 			fieldOrder: ['mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash'],
 			mod_id: 0,
-		state: GameState.IN_GAME,
+		state: new CairoCustomEnum({ 
+					IN_GAME: "",
+				AT_SHOP: undefined,
+				FINISHED: undefined,
+				OPEN_BLISTER_PACK: undefined, }),
 			owner: "",
 			player_name: 0,
 			player_score: 0,
@@ -876,7 +958,19 @@ export const schema: SchemaType = {
 		PlayerLevelPokerHand: {
 			fieldOrder: ['game_id', 'poker_hand', 'level'],
 			game_id: 0,
-		poker_hand: PokerHand.None,
+		poker_hand: new CairoCustomEnum({ 
+					None: "",
+				RoyalFlush: undefined,
+				StraightFlush: undefined,
+				FiveOfAKind: undefined,
+				FourOfAKind: undefined,
+				FullHouse: undefined,
+				Straight: undefined,
+				Flush: undefined,
+				ThreeOfAKind: undefined,
+				TwoPair: undefined,
+				OnePair: undefined,
+				HighCard: undefined, }),
 			level: 0,
 		},
 		PlayerLevelPokerHandValue: {
@@ -966,7 +1060,10 @@ export const schema: SchemaType = {
 			fieldOrder: ['game_id', 'idx', 'item_type', 'card_id', 'cost', 'discount_cost', 'purchased'],
 			game_id: 0,
 			idx: 0,
-		item_type: CardItemType.None,
+		item_type: new CairoCustomEnum({ 
+					None: "",
+				Common: undefined,
+				Modifier: undefined, }),
 			card_id: 0,
 			cost: 0,
 			discount_cost: 0,
@@ -983,7 +1080,19 @@ export const schema: SchemaType = {
 			fieldOrder: ['game_id', 'idx', 'poker_hand', 'level', 'multi', 'points', 'cost', 'discount_cost', 'purchased'],
 			game_id: 0,
 			idx: 0,
-		poker_hand: PokerHand.None,
+		poker_hand: new CairoCustomEnum({ 
+					None: "",
+				RoyalFlush: undefined,
+				StraightFlush: undefined,
+				FiveOfAKind: undefined,
+				FourOfAKind: undefined,
+				FullHouse: undefined,
+				Straight: undefined,
+				Flush: undefined,
+				ThreeOfAKind: undefined,
+				TwoPair: undefined,
+				OnePair: undefined,
+				HighCard: undefined, }),
 			level: 0,
 			multi: 0,
 			points: 0,
@@ -993,7 +1102,19 @@ export const schema: SchemaType = {
 		},
 		PokerHandItemValue: {
 			fieldOrder: ['poker_hand', 'level', 'multi', 'points', 'cost', 'discount_cost', 'purchased'],
-		poker_hand: PokerHand.None,
+		poker_hand: new CairoCustomEnum({ 
+					None: "",
+				RoyalFlush: undefined,
+				StraightFlush: undefined,
+				FiveOfAKind: undefined,
+				FourOfAKind: undefined,
+				FullHouse: undefined,
+				Straight: undefined,
+				Flush: undefined,
+				ThreeOfAKind: undefined,
+				TwoPair: undefined,
+				OnePair: undefined,
+				HighCard: undefined, }),
 			level: 0,
 			multi: 0,
 			points: 0,
@@ -1016,29 +1137,6 @@ export const schema: SchemaType = {
 			cost: 0,
 			discount_cost: 0,
 			purchased: false,
-		},
-		PurchaseTracker: {
-			fieldOrder: ['game_id', 'traditonal_cards_count', 'modifier_cards_count', 'special_cards_count', 'loot_boxes_count', 'power_up_count', 'level_poker_hands_count', 'burn_count', 'reroll_count'],
-			game_id: 0,
-			traditonal_cards_count: 0,
-			modifier_cards_count: 0,
-			special_cards_count: 0,
-			loot_boxes_count: 0,
-			power_up_count: 0,
-			level_poker_hands_count: 0,
-			burn_count: 0,
-			reroll_count: 0,
-		},
-		PurchaseTrackerValue: {
-			fieldOrder: ['traditonal_cards_count', 'modifier_cards_count', 'special_cards_count', 'loot_boxes_count', 'power_up_count', 'level_poker_hands_count', 'burn_count', 'reroll_count'],
-			traditonal_cards_count: 0,
-			modifier_cards_count: 0,
-			special_cards_count: 0,
-			loot_boxes_count: 0,
-			power_up_count: 0,
-			level_poker_hands_count: 0,
-			burn_count: 0,
-			reroll_count: 0,
 		},
 		ReRollItem: {
 			fieldOrder: ['game_id', 'cost', 'discount_cost', 'purchased'],
@@ -1086,8 +1184,74 @@ export const schema: SchemaType = {
 			temporary_discount_cost: 0,
 			purchased: false,
 		},
-  },
-  jokers_of_neon_mods: {
+		GameTracker: {
+			fieldOrder: ['game_id', 'power_ups_used', 'highest_hand', 'rage_wins', 'special_cards_removed'],
+			game_id: 0,
+			power_ups_used: 0,
+			highest_hand: 0,
+			rage_wins: 0,
+			special_cards_removed: 0,
+		},
+		GameTrackerValue: {
+			fieldOrder: ['power_ups_used', 'highest_hand', 'rage_wins', 'special_cards_removed'],
+			power_ups_used: 0,
+			highest_hand: 0,
+			rage_wins: 0,
+			special_cards_removed: 0,
+		},
+		PokerHandTracker: {
+			fieldOrder: ['game_id', 'royal_flush', 'straight_flush', 'five_of_a_kind', 'four_of_a_kind', 'full_house', 'straight', 'flush', 'three_of_a_kind', 'two_pair', 'one_pair', 'high_card'],
+			game_id: 0,
+			royal_flush: 0,
+			straight_flush: 0,
+			five_of_a_kind: 0,
+			four_of_a_kind: 0,
+			full_house: 0,
+			straight: 0,
+			flush: 0,
+			three_of_a_kind: 0,
+			two_pair: 0,
+			one_pair: 0,
+			high_card: 0,
+		},
+		PokerHandTrackerValue: {
+			fieldOrder: ['royal_flush', 'straight_flush', 'five_of_a_kind', 'four_of_a_kind', 'full_house', 'straight', 'flush', 'three_of_a_kind', 'two_pair', 'one_pair', 'high_card'],
+			royal_flush: 0,
+			straight_flush: 0,
+			five_of_a_kind: 0,
+			four_of_a_kind: 0,
+			full_house: 0,
+			straight: 0,
+			flush: 0,
+			three_of_a_kind: 0,
+			two_pair: 0,
+			one_pair: 0,
+			high_card: 0,
+		},
+		PurchaseTracker: {
+			fieldOrder: ['game_id', 'traditonal_cards_count', 'modifier_cards_count', 'special_cards_count', 'loot_boxes_count', 'power_up_count', 'level_poker_hands_count', 'burn_count', 'reroll_count'],
+			game_id: 0,
+			traditonal_cards_count: 0,
+			modifier_cards_count: 0,
+			special_cards_count: 0,
+			loot_boxes_count: 0,
+			power_up_count: 0,
+			level_poker_hands_count: 0,
+			burn_count: 0,
+			reroll_count: 0,
+		},
+		PurchaseTrackerValue: {
+			fieldOrder: ['traditonal_cards_count', 'modifier_cards_count', 'special_cards_count', 'loot_boxes_count', 'power_up_count', 'level_poker_hands_count', 'burn_count', 'reroll_count'],
+			traditonal_cards_count: 0,
+			modifier_cards_count: 0,
+			special_cards_count: 0,
+			loot_boxes_count: 0,
+			power_up_count: 0,
+			level_poker_hands_count: 0,
+			burn_count: 0,
+			reroll_count: 0,
+		},
+	}, jokers_of_neon_mods: {
 		ModConfig: {
 			fieldOrder: ['mod_id', 'deck_address', 'specials_address', 'rages_address', 'loot_boxes_address', 'game_config_address', 'shop_config_address'],
 			mod_id: 0,
@@ -1211,7 +1375,11 @@ export const schema: SchemaType = {
 			len_current_special_cards: 0,
 			current_jokers: 0,
 			len_max_current_power_ups: 0,
-		state: GameState.IN_GAME,
+		state: new CairoCustomEnum({ 
+					IN_GAME: "",
+				AT_SHOP: undefined,
+				FINISHED: undefined,
+				OPEN_BLISTER_PACK: undefined, }),
 			cash: 0,
 		},
 		GameEventValue: {
@@ -1230,7 +1398,11 @@ export const schema: SchemaType = {
 			len_current_special_cards: 0,
 			current_jokers: 0,
 			len_max_current_power_ups: 0,
-		state: GameState.IN_GAME,
+		state: new CairoCustomEnum({ 
+					IN_GAME: "",
+				AT_SHOP: undefined,
+				FINISHED: undefined,
+				OPEN_BLISTER_PACK: undefined, }),
 			cash: 0,
 		},
 		GamePowerUpEvent: {
@@ -1250,14 +1422,28 @@ export const schema: SchemaType = {
 			game_id: 0,
 			modifier_card_idx: 0,
 			current_hand_card_idx: 0,
-		suit: Suit.None,
+		suit: new CairoCustomEnum({ 
+					None: "",
+				Clubs: undefined,
+				Diamonds: undefined,
+				Hearts: undefined,
+				Spades: undefined,
+				Joker: undefined,
+				Wild: undefined, }),
 		},
 		ModifierCardSuitEventValue: {
 			fieldOrder: ['game_id', 'modifier_card_idx', 'current_hand_card_idx', 'suit'],
 			game_id: 0,
 			modifier_card_idx: 0,
 			current_hand_card_idx: 0,
-		suit: Suit.None,
+		suit: new CairoCustomEnum({ 
+					None: "",
+				Clubs: undefined,
+				Diamonds: undefined,
+				Hearts: undefined,
+				Spades: undefined,
+				Joker: undefined,
+				Wild: undefined, }),
 		},
 		ModifierNeonCardEvent: {
 			fieldOrder: ['player', 'game_id', 'modifier_card_idx', 'current_hand_card_idx'],
@@ -1336,7 +1522,15 @@ export const schema: SchemaType = {
 			player: "",
 			game_id: 0,
 			mod_id: 0,
-		event_type: EventType.Cash,
+		event_type: new CairoCustomEnum({ 
+					Cash: "",
+				Club: undefined,
+				Diamond: undefined,
+				Point: undefined,
+				Multi: undefined,
+				Neon: undefined,
+				Spade: undefined,
+				Heart: undefined, }),
 			special: [[0, 0]],
 			hand: [[0, 0]],
 		},
@@ -1344,7 +1538,15 @@ export const schema: SchemaType = {
 			fieldOrder: ['game_id', 'mod_id', 'event_type', 'special', 'hand'],
 			game_id: 0,
 			mod_id: 0,
-		event_type: EventType.Cash,
+		event_type: new CairoCustomEnum({ 
+					Cash: "",
+				Club: undefined,
+				Diamond: undefined,
+				Point: undefined,
+				Multi: undefined,
+				Neon: undefined,
+				Spade: undefined,
+				Heart: undefined, }),
 			special: [[0, 0]],
 			hand: [[0, 0]],
 		},
@@ -1386,14 +1588,18 @@ export enum ModelsMapping {
 	PokerHandItemValue = 'jokers_of_neon_lib-PokerHandItemValue',
 	PowerUpItem = 'jokers_of_neon_lib-PowerUpItem',
 	PowerUpItemValue = 'jokers_of_neon_lib-PowerUpItemValue',
-	PurchaseTracker = 'jokers_of_neon_lib-PurchaseTracker',
-	PurchaseTrackerValue = 'jokers_of_neon_lib-PurchaseTrackerValue',
 	ReRollItem = 'jokers_of_neon_lib-ReRollItem',
 	ReRollItemValue = 'jokers_of_neon_lib-ReRollItemValue',
 	SlotSpecialCardsItem = 'jokers_of_neon_lib-SlotSpecialCardsItem',
 	SlotSpecialCardsItemValue = 'jokers_of_neon_lib-SlotSpecialCardsItemValue',
 	SpecialCardItem = 'jokers_of_neon_lib-SpecialCardItem',
 	SpecialCardItemValue = 'jokers_of_neon_lib-SpecialCardItemValue',
+	GameTracker = 'jokers_of_neon_lib-GameTracker',
+	GameTrackerValue = 'jokers_of_neon_lib-GameTrackerValue',
+	PokerHandTracker = 'jokers_of_neon_lib-PokerHandTracker',
+	PokerHandTrackerValue = 'jokers_of_neon_lib-PokerHandTrackerValue',
+	PurchaseTracker = 'jokers_of_neon_lib-PurchaseTracker',
+	PurchaseTrackerValue = 'jokers_of_neon_lib-PurchaseTrackerValue',
 	ModConfig = 'jokers_of_neon_mods-ModConfig',
 	ModConfigValue = 'jokers_of_neon_mods-ModConfigValue',
 	ModTracker = 'jokers_of_neon_mods-ModTracker',

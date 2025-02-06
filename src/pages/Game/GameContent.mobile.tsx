@@ -267,7 +267,14 @@ export const MobileGameContent = () => {
               <MobilePreselectedCardsSection />
             </Box>
             <Box mt={2} pb={2} display={"flex"} justifyContent={"center"}>
-              <HandSection />
+              <HandSection
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setCardClicked(true);
+                    setStepIndex(stepIndex + 1);
+                  }
+                }}
+              />
             </Box>
             <MobileBottomBar
               setRun={setRun}

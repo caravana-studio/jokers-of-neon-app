@@ -56,7 +56,14 @@ export const SelectMod = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex flexDirection="column" alignItems="center" w="100%">
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          w="100%"
+          sx={{
+            zIndex: 1,
+          }}
+        >
           <Heading
             maxW="80%"
             lineHeight={1.8}
@@ -76,6 +83,9 @@ export const SelectMod = () => {
           flexWrap="wrap"
           maxH={"70%"}
           overflowY="auto"
+          sx={{
+            zIndex: 1,
+          }}
         >
           {OFFICIAL_MODS.map((mod: IMod) => (
             <ModBox key={mod.id} mod={mod} isOfficial />
@@ -179,6 +189,7 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
             transform: "scale(1.05)",
             transition: "all 0.2s ease-in-out",
           },
+          zIndex: 1,
         }}
         onClick={() => {
           if (mod.url) {
