@@ -82,7 +82,6 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           pb={1}
           height={cardHeight}
           gap={1}
-          width={"10vw"}
         >
           <SortBy />
           <Coins rolling />
