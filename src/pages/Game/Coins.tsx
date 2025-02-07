@@ -6,6 +6,19 @@ import { RollingNumber } from "../../components/RollingNumber";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
+const getPxBasedOnDigits = (num: number) => {
+  const basePx = 100;
+  const baseDigits = 5;
+  const extraPxPerDigit = 10;
+  const numDigits = num.toString().length;
+  const pxValue =
+    numDigits <= baseDigits
+      ? basePx
+      : basePx + (numDigits - baseDigits) * extraPxPerDigit;
+
+  return `${pxValue}px`;
+};
+
 interface CoinsProps {
   rolling?: boolean;
 }
@@ -30,6 +43,7 @@ export const Coins = ({ rolling = false }: CoinsProps) => {
         borderRadius="8px"
         color="white"
         minWidth={{ base: "50px", sm: "70px" }}
+        width={getPxBasedOnDigits(cash)}
         p={{ base: "5px 5px", sm: "15px 6px" }}
         fontSize="13px"
       >
