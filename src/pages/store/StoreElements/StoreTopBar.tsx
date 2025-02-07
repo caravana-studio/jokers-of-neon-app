@@ -1,12 +1,12 @@
 import { Flex } from "@chakra-ui/react";
 import CoinIcon from "../../../assets/coins.svg?component";
 import { CashSymbol } from "../../../components/CashSymbol";
-import { InformationIcon } from "../../../components/InformationIcon";
 import { PriceBox } from "../../../components/PriceBox";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
 import RerollButton from "./RerollButton";
 import { MobileCoins } from "../Coins";
+import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 
 interface StoreTopBarProps {
   hideReroll?: boolean;
@@ -27,6 +27,9 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
       borderRadius={"25px"}
       alignItems={"center"}
       justifyContent={"space-between"}
+      sx={{
+        zIndex: 1,
+      }}
     >
       <Flex gap={4} alignItems={"center"}>
         {!hideReroll && (
@@ -39,7 +42,7 @@ export const StoreTopBar = ({ hideReroll = false }: StoreTopBarProps) => {
                 absolutePosition={false}
                 fontSize={10}
               ></PriceBox>
-              <InformationIcon title="reroll" />
+              <DefaultInfo title="reroll" />
             </Flex>
           </>
         )}

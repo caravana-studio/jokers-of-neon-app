@@ -1,3 +1,4 @@
+import { CairoCustomEnum } from "starknet";
 import { DESTROYED_SPECIAL_CARD_EVENT } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
@@ -7,6 +8,7 @@ import {
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
+import { EventTypeTypeEnum } from "./typescript/models.gen";
 import { useDojo } from "./useDojo";
 
 export const useShopActions = () => {
@@ -58,7 +60,7 @@ export const useShopActions = () => {
   const buyCard = async (
     gameId: number,
     card_idx: number,
-    card_type: number
+    card_type: CairoCustomEnum
   ) => {
     try {
       showTransactionToast();

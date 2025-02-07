@@ -1,5 +1,5 @@
-import { EventType } from "@esotericsoftware/spine-player";
 import { CARD_PLAY_EVENT } from "../../constants/dojoEventKeys";
+import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import { DojoEvent } from "../../types/DojoEvent";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
@@ -7,7 +7,7 @@ export const getCardPlayEvents = (events: DojoEvent[]) => {
   return events
     .filter((event) => event.keys[1] === CARD_PLAY_EVENT)
     .map((event) => {
-      const eventType = getNumberValueFromEvent(event, 5) ?? (0 as EventType);
+      const eventType = getNumberValueFromEvent(event, 5) ?? (0 as EventTypeEnum);
       const firstArrayLength = getNumberValueFromEvent(event, 6) ?? 0;
 
       return {

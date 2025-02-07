@@ -1,70 +1,40 @@
+import { RARITY } from "../constants/rarity";
 import { CardDataMap } from "../types/CardData";
 import i18n from 'i18next';
 
 export const MODIFIER_CARDS_DATA: CardDataMap = {};
 
+const CARDS_PRICE: Record<RARITY, number> = {
+  [RARITY.B]: 300,
+  [RARITY.A]: 750,
+  [RARITY.S]: 1000,
+  [RARITY.C]: 0,
+  [RARITY.SS]: 0
+};
+
+const createCardData = (
+  id: number,
+  rarity: RARITY,
+  ns: string = "effects"
+) => ({
+  name: i18n.t(`modifierCardsData.${id}.name`, { ns }),
+  description: i18n.t(`modifierCardsData.${id}.description`, { ns }),
+  rarity,
+  price: CARDS_PRICE[rarity],
+});
+
 const loadTranslations = async () => {
-  await i18n.loadNamespaces(['effects']);
+  await i18n.loadNamespaces(["effects"]);
 
   Object.assign(MODIFIER_CARDS_DATA, {
-    600: {
-      name: i18n.t('modifierCardsData.600.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.600.description', {ns:'effects'}),
-    },
-    601: {
-      name: i18n.t('modifierCardsData.601.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.601.description', {ns:'effects'}),
-    },
-    602: {
-      name: i18n.t('modifierCardsData.602.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.602.description', {ns:'effects'}),
-    },
-    603: {
-      name: i18n.t('modifierCardsData.603.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.603.description', {ns:'effects'}),
-    },
-    604: {
-      name: i18n.t('modifierCardsData.604.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.604.description', {ns:'effects'}),
-    },
-    605: {
-      name: i18n.t('modifierCardsData.605.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.605.description', {ns:'effects'}),
-    },
-    606: {
-      name: i18n.t('modifierCardsData.606.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.606.description', {ns:'effects'}),
-    },
-    607: {
-      name: i18n.t('modifierCardsData.607.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.607.description', {ns:'effects'}),
-    },
-    608: {
-      name: i18n.t('modifierCardsData.608.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.608.description', {ns:'effects'}),
-    },
-    609: {
-      name: i18n.t('modifierCardsData.609.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.609.description', {ns:'effects'}),
-    },
-    610: {
-      name: i18n.t('modifierCardsData.610.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.610.description', {ns:'effects'}),
-    },
-    611: {
-      name: i18n.t('modifierCardsData.611.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.611.description', {ns:'effects'}),
-    },
-    612: {
-      name: i18n.t('modifierCardsData.612.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.612.description', {ns:'effects'}),
-    },
-    613: {
-      name: i18n.t('modifierCardsData.613.name', {ns:'effects'}),
-      description: i18n.t('modifierCardsData.613.description', {ns:'effects'}),
-    }
+    608: createCardData(608, RARITY.B),
+    609: createCardData(609, RARITY.B),
+    610: createCardData(610, RARITY.B),
+    611: createCardData(611, RARITY.B),
+    612: createCardData(612, RARITY.S),
+    613: createCardData(613, RARITY.A),
   });
-}
+};
 
 i18n.on('initialized', loadTranslations);
 i18n.on('languageChanged', loadTranslations);

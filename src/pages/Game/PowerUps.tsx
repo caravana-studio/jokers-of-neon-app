@@ -10,6 +10,8 @@ interface PowerUpsProps {
 export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
   const { powerUps, togglePreselectedPowerUp } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
+  const width = isSmallScreen ? 60 : 93;
+  const componentWidth = isSmallScreen ? width - 4 : width - 10;
 
   return (
     <Flex gap={[1, 4]} zIndex={1} className="game-tutorial-power-up">
@@ -17,7 +19,7 @@ export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
         return (
           <PowerUpComponent
             key={index}
-            width={isSmallScreen ? 60 : 93}
+            width={componentWidth}
             powerUp={powerUp}
             onClick={() => {
               if (powerUp) {

@@ -38,7 +38,7 @@ export const StorePreviewCardComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -58,6 +58,9 @@ export const StorePreviewCardComponentMobile = ({
           w="100%"
           justifyContent="center"
           alignItems="center"
+          sx={{
+            zIndex: 1,
+          }}
         >
           <Box>
             <Heading
@@ -78,7 +81,12 @@ export const StorePreviewCardComponentMobile = ({
             {colorizeText(description)}
           </Text>
         </Flex>
-        <Box w={card?.isSpecial ? "55%" : "60%"}>
+        <Flex
+          w={"50vw"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          alignSelf={"center"}
+        >
           <CardImage3D
             hideTooltip
             card={{
@@ -87,7 +95,7 @@ export const StorePreviewCardComponentMobile = ({
               remaining: 3,
             }}
           />
-        </Box>
+        </Flex>
         {card?.isSpecial && duration !== undefined && onDurationChange ? (
           <DurationSwitcher
             price={card.price}

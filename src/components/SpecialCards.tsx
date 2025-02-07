@@ -1,22 +1,12 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { Card } from "../types/Card.ts";
 import { CardContainerWithBorder } from "./CardContainerWithBorder.tsx";
-import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { RageCards } from "./RageCards.tsx";
 import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
 export const SpecialCards = () => {
-  const { t } = useTranslation(["game"]);
-
-  const { discardSpecialCard } = useGameContext();
-  const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
-  const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { specialCardScale } = useResponsiveValues();
   const { specialSwitcherOn } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
@@ -30,23 +20,6 @@ export const SpecialCards = () => {
     >
       {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
       <SpecialRageSwitcher />
-      {confirmationModalOpen && (
-        <ConfirmationModal
-          close={() => setConfirmationModalOpen(false)}
-          title={t("game.special-cards.confirmation-modal.title")}
-          description={t("game.special-cards.confirmation-modal.description")}
-          onConfirm={() => {
-            setConfirmationModalOpen(false);
-            preselectedCard &&
-              discardSpecialCard(preselectedCard.idx).then((response) => {
-                if (response) {
-                  setDiscardedCards((prev) => [...prev, preselectedCard]);
-                  setPreselectedCard(undefined);
-                }
-              });
-          }}
-        />
-      )}
     </CardContainerWithBorder>
   );
 };

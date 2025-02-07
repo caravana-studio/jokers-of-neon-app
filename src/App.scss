@@ -22,3 +22,8 @@
 .italic {
   font-family: "Sonara";
 }
+
+img {
+  user-select: none;
+  pointer-events: none;
+}

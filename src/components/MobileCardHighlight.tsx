@@ -1,31 +1,59 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEffect } from "react";
+import { RARITY, RarityLabels } from "../constants/rarity";
+import { animationsData } from "../constants/spineAnimations";
 import { CardTypes } from "../enums/cardTypes";
+import { Duration } from "../enums/duration";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
+import { CashSymbol } from "./CashSymbol";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { DurationSwitcher } from "./DurationSwitcher";
+import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
+import { PriceBox } from "./PriceBox";
+import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 
 interface MobileCardHighlightProps {
   card: Card;
+  confirmationBtn?: boolean;
+  showExtraInfo?: boolean;
+  isPack?: boolean;
 }
 
-export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
+export const MobileCardHighlight = ({
+  card,
+  confirmationBtn = false,
+  showExtraInfo = false,
+  isPack = false,
+}: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
-  const { name, description, type } = getCardData(card, false);
-  const { discardEffectCard, discardSpecialCard } = useGameContext();
+
+  const {
+    name,
+    description,
+    type,
+    animation,
+    price,
+    rarity,
+    temporaryPrice,
+    details,
+  } = getCardData(card, isPack);
+  const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const { t } = useTranslation(["game"]);
+  const { t } = useTranslation(["game", "docs"]);
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const discard =
-    type === CardTypes.MODIFIER ? discardEffectCard : discardSpecialCard;
+    type === CardTypes.MODIFIER ? changeModifierCard : sellSpecialCard;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -52,9 +80,17 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         ? t("game.card-highlight.buttons.changing")
         : t("game.card-highlight.buttons.change");
     } else if (type === CardTypes.SPECIAL) {
-      return loading
-        ? t("game.card-highlight.buttons.removing")
-        : t("game.card-highlight.buttons.remove");
+      return loading ? (
+        t("game.card-highlight.buttons.selling")
+      ) : (
+        <>
+          {t("game.card-highlight.buttons.sell-for")}
+          <Box ml={1} />
+          <CashSymbol />
+          <Box ml={1} />
+          {card.selling_price}
+        </>
+      );
     }
   };
 
@@ -75,13 +111,13 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
       height={"100%"}
       zIndex={1100}
       opacity={opacity}
+      flexDirection={"column"}
       transition="opacity 0.5s ease"
       justifyContent={"center"}
       alignItems={"center"}
-      flexDirection={"column"}
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0.5)"
-      gap={6}
+      gap={temporaryPrice ? 4 : 6}
       onClick={() => {
         onClose();
       }}
@@ -90,7 +126,9 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
           title={t("game.special-cards.confirmation-modal.title")}
-          description={t("game.special-cards.confirmation-modal.description")}
+          description={t("game.special-cards.confirmation-modal.description", {
+            price: card.selling_price,
+          })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
             handleDiscard();
@@ -110,27 +148,75 @@ export const MobileCardHighlight = ({ card }: MobileCardHighlightProps) => {
           - {t(`game.card-types.${type}`)} -
         </Text>
       </Flex>
-      <Box
-        width={"60%"}
+      <Flex
+        width={
+          animation ? "100%" : showExtraInfo && temporaryPrice ? "45%" : "60%"
+        }
+        height={isPack ? "45vh" : "auto"}
+        justifyContent={"center"}
         position={"relative"}
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
       >
-        <CardImage3D card={card} />
-      </Box>
+        {!animation ? (
+          <CardImage3D card={card} hideTooltip small={false} />
+        ) : (
+          <SpineAnimation
+            ref={spineAnimationRef}
+            jsonUrl={animation.jsonUrl}
+            atlasUrl={animation.atlasUrl}
+            initialAnimation={animationsData.loopAnimation}
+            loopAnimation={animationsData.loopAnimation}
+            openBoxAnimation={animationsData.openBoxAnimation}
+            width={1200}
+            height={1500}
+            xOffset={-650}
+            scale={1}
+          />
+        )}
+      </Flex>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}
       </Text>
-      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) && (
-        <Button
-          isDisabled={loading}
-          onClick={handleClick}
-          width="40%"
-          variant={loading ? "defaultOutline" : "secondarySolid"}
-        >
-          {getLabel()}
-        </Button>
+      {showExtraInfo && (
+        <>
+          {rarity && (
+            <Text textAlign="center" size="l" fontSize={"14px"} width={"65%"}>
+              {t(`rarity.${RarityLabels[rarity as RARITY]}`, { ns: "docs" })}
+            </Text>
+          )}
+          {isPack && <LootBoxRateInfo name={name} details={details} />}
+          {price &&
+            (temporaryPrice ? (
+              <DurationSwitcher
+                flexDir="column"
+                price={price}
+                temporalPrice={temporaryPrice}
+                duration={duration}
+                onDurationChange={(newDuration) => {
+                  setDuration(newDuration);
+                }}
+              />
+            ) : (
+              <PriceBox
+                price={price}
+                purchased={false}
+                absolutePosition={false}
+              />
+            ))}
+        </>
       )}
+      {(type === CardTypes.MODIFIER || type === CardTypes.SPECIAL) &&
+        confirmationBtn && (
+          <Button
+            isDisabled={loading}
+            onClick={handleClick}
+            width="40%"
+            variant={loading ? "defaultOutline" : "secondarySolid"}
+          >
+            {getLabel()}
+          </Button>
+        )}
     </Flex>
   );
 };

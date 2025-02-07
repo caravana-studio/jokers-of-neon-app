@@ -62,7 +62,7 @@ export interface IGameContext {
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
-  discardEffectCard: (
+  changeModifierCard: (
     cardIdx: number
   ) => Promise<{ success: boolean; cards: Card[] }>;
   error: boolean;
@@ -73,7 +73,7 @@ export interface IGameContext {
   sortBy: SortBy;
   toggleSortBy: () => void;
   onShopSkip: () => void;
-  discardSpecialCard: (cardIdx: number) => Promise<boolean>;
+  sellSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
   restartGame: () => void;
   preSelectionLocked: boolean;
@@ -149,7 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, discardEffectCard, discardSpecialCard } =
+  const { createGame, play, discard, changeModifierCard, sellSpecialCard } =
     useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -255,7 +255,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
-          
+
           await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
@@ -265,7 +265,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
       });
     } else {
-      console.error("No username")
+      console.error("No username");
+      setError(true);
     }
   };
 
@@ -464,7 +465,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const onDiscardEffectCard = (cardIdx: number) => {
+  const onChangeModifierCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
     const newHand = hand?.map((card) => {
       if (card.idx === cardIdx) {
@@ -486,7 +487,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
       setHand(newHand);
     };
-    const discardPromise = discardEffectCard(gameId, cardIdx);
+    const discardPromise = changeModifierCard(gameId, cardIdx);
     discardPromise
       .then((response): void => {
         if (response.success) {
@@ -521,9 +522,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
   };
 
-  const onDiscardSpecialCard = (cardIdx: number) => {
+  const onSellSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return discardSpecialCard(gameId, cardIdx).finally(() => {
+    return sellSpecialCard(gameId, cardIdx).finally(() => {
       setPreSelectionLocked(false);
     });
   };
@@ -603,12 +604,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     getModifiers,
     togglePreselected,
     discard: onDiscardClick,
-    discardEffectCard: onDiscardEffectCard,
+    changeModifierCard: onChangeModifierCard,
     clearPreSelection,
     addModifier,
     toggleSortBy,
     onShopSkip,
-    discardSpecialCard: onDiscardSpecialCard,
+    sellSpecialCard: onSellSpecialCard,
     checkOrCreateGame,
     restartGame: cleanGameId,
     executeCreateGame,

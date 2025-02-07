@@ -1,14 +1,12 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { InformationIcon } from "../../components/InformationIcon";
+import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { TiltCard } from "../../components/TiltCard";
 import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { preloadImages } from "../../utils/preloadImages";
 
 interface CardsRowProps {
   title: string;
@@ -21,13 +19,6 @@ interface CardsRowProps {
 
 export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const navigate = useNavigate();
-  const imageUrls = useMemo(() => {
-    return cards.map((card) => {
-      return card.isSpecial || card.isModifier
-        ? `Cards/${card.card_id}.png`
-        : `Cards/big/${card.img}`;
-    });
-  }, [cards]);
 
   const { t } = useTranslation(["store"]);
 
@@ -37,7 +28,6 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
   const adjustedScale = isSmallScreen
     ? cardScale - (cardScale * 15) / 100
     : cardScale - (cardScale * 25) / 100;
-
 
   if (!isCardScaleCalculated) {
     return null;
@@ -54,7 +44,7 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
             <Heading fontWeight={"400"} fontSize={["12px", "16px"]}>
               {t("store.titles." + title)}
             </Heading>
-            <InformationIcon title={title} />
+            <DefaultInfo title={title} />
           </Flex>
 
           {button && (

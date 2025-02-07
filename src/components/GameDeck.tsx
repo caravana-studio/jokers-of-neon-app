@@ -38,6 +38,7 @@ export const GameDeck = () => {
         alignItems="flex-end"
         gap={2}
         className="game-tutorial-step-8"
+        onClick={() => navigate("/deck")}
       >
         <Text size="s" mr={2}>
           {`${deck?.currentLength}/${deck?.size}`}
@@ -47,7 +48,6 @@ export const GameDeck = () => {
           src={deckImg()}
           alt={`Card back`}
           width={`${cardWidth * 1.05}px`}
-          onClick={() => navigate("/deck")}
           cursor={"pointer"}
         />
       </Flex>

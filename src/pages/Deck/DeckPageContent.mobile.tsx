@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -6,15 +6,11 @@ import { useSwipeable } from "react-swipeable";
 import { CashSymbol } from "../../components/CashSymbol";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { useDeck } from "../../dojo/queries/useDeck";
-import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
-import { BackToGameBtn } from "./DeckButtons/BackToGameBtn";
-import { DeckCardsGrid } from "./DeckCardsGrid";
-import { DeckFilters } from "./DeckFilters";
-import { preprocessCards } from "./Utils/DeckCardsUtils";
+import { Deck } from "./Deck";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 interface DeckPageContentMobileProps {
   inStore?: boolean;
@@ -25,13 +21,20 @@ export const DeckPageContentMobile = ({
   inStore = false,
   burn = false,
 }: DeckPageContentMobileProps) => {
-  const { filterButtonsState } = useDeckFilters();
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
 
-  const fullDeck = preprocessCards(useDeck()?.fullDeckCards ?? []);
-  const usedCards = preprocessCards(useDeck()?.usedCards ?? []);
   const [tabIndex, setTabIndex] = useState(0);
+
+  const handleCardSelect = (card: Card) => {
+    if (!burnItem.purchased) {
+      if (cardToBurn?.id === card.id) {
+        setCardToBurn(undefined);
+      } else {
+        setCardToBurn(card);
+      }
+    }
+  };
 
   // Handle tab change
   const handleTabChange = (index: number) => {
@@ -54,16 +57,6 @@ export const DeckPageContentMobile = ({
   });
 
   const { cash, burnCard, burnItem } = useStore();
-
-  const handleCardSelect = (card: Card) => {
-    if (!burnItem.purchased) {
-      if (cardToBurn?.id === card.id) {
-        setCardToBurn(undefined);
-      } else {
-        setCardToBurn(card);
-      }
-    }
-  };
 
   const handleBurnCard = (card: Card) => {
     burnCard(card);
@@ -93,7 +86,7 @@ export const DeckPageContentMobile = ({
           alignItems={"center"}
           width={"100%"}
           flexDirection={"column"}
-          my={2}
+          mt={2}
           px={4}
         >
           <Tabs
@@ -112,37 +105,19 @@ export const DeckPageContentMobile = ({
         </Flex>
 
         {tabIndex === 0 && (
-          <>
-            <DeckFilters />
-            <Flex
-              alignItems={"center"}
-              width={"100%"}
-              flexGrow={1}
-              overflowY="auto"
-              gap={4}
-              mt={1}
-              px={6}
-              paddingTop={"10px"}
-            >
-              <Box w="100%" height={"100%"}>
-                <DeckCardsGrid
-                  cards={fullDeck}
-                  usedCards={!inStore ? usedCards : []}
-                  filters={{
-                    isNeon: filterButtonsState.isNeon,
-                    isModifier: filterButtonsState.isModifier,
-                    suit: filterButtonsState.suit ?? undefined,
-                  }}
-                  onCardSelect={burn ? handleCardSelect : () => {}}
-                  inBurn={burn}
-                />
-              </Box>
-            </Flex>
-          </>
+          <Deck inStore={inStore} burn={burn} onCardSelect={handleCardSelect} />
         )}
 
         {tabIndex === 1 && (
-          <Flex w="100%" alignItems="center" height={"100%"} px={3}>
+          <Flex
+            w="100%"
+            alignItems="center"
+            height={"100%"}
+            px={3}
+            sx={{
+              zIndex: 1,
+            }}
+          >
             <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
           </Flex>
         )}

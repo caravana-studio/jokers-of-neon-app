@@ -43,15 +43,20 @@
   "special-cards": {
     "title": "Cartas especiales",
     "go-back": "Atrás",
-    "remove": "Eliminar",
+    "sell": "Vender",
+    "sell-for": "Vender por ¢ {{price}}",
     "confirmation-modal": {
-      "title": "Eliminar carta especial",
-      "description": "¿Estás seguro de que quieres eliminar esta carta especial? No hay forma de deshacer esta acción."
+      "title": "Vender carta especial",
+      "description": "¿Estás seguro de que quieres vender esta carta especial a cambio de ¢ {{price}}? No hay forma de deshacer esta acción."
     }
   },
   "mods": {
     "title": "Selecciona la versión de Jokers of Neon que quieres jugar",
     "back": "Atrás",
     "community-mods": "Mods de la comunidad"
+  },
+  "power-ups": {
+    "title": "Power-ups",
+    "go-back": "Atrás"
   }
 }

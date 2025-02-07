@@ -34,10 +34,10 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     hand,
     preSelectedCards,
     togglePreselected,
-    discardEffectCard,
+    changeModifierCard,
     preSelectedModifiers,
     roundRewards,
-    remainingPlaysTutorial
+    remainingPlaysTutorial,
   } = useGameContext();
 
   const { highlightCard } = useCardHighlight();
@@ -45,7 +45,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const [discarding, setDiscarding] = useState(false);
 
   const round = useRound();
-  const handsLeft = !isTutorial() ? round?.remaining_plays ?? 0 : remainingPlaysTutorial ?? 0;
+  const handsLeft = !isTutorial()
+    ? round?.remaining_plays ?? 0
+    : remainingPlaysTutorial ?? 0;
 
   const { activeNode } = useDndContext();
 
@@ -80,6 +82,9 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           pb={1}
           height={cardHeight}
           gap={1}
+          sx={{
+            zIndex: 1,
+          }}
         >
           <SortBy />
           <Coins rolling />
@@ -158,7 +163,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                             setDiscarding(true);
                             e.stopPropagation();
                             setHoveredButton(null);
-                            discardEffectCard(card.idx).then((_) => {
+                            changeModifierCard(card.idx).then((_) => {
                               setDiscarding(false);
                             });
                             onClose();
@@ -188,13 +193,14 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                         }
                         onClick={() => {
                           if (onTutorialCardClick) onTutorialCardClick();
-                          if (isSmallScreen) {
-                            highlightCard(card);
-                          } else if (!card.isModifier) {
+                          if (!card.isModifier) {
                             togglePreselected(card.idx);
                           }
                         }}
                         className={"hand-element-" + index}
+                        onHold={() => {
+                          isSmallScreen && highlightCard(card);
+                        }}
                       />
                     </AnimatedCard>
                   )}

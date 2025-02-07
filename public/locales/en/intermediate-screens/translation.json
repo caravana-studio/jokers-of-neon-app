@@ -43,15 +43,20 @@
   "special-cards": {
     "title": "Special cards",
     "go-back": "Go back",
-    "remove": "Remove card",
+    "sell": "Sell",
+    "sell-for": "Sell for ¢ {{price}}",
     "confirmation-modal": {
-      "title": "Remove special card",
-      "description": "Are you sure you want to remove this special card? There is no way to undo this action."
+      "title": "Sell special card",
+      "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
     }
   },
   "mods": {
     "title": "Select the Jokers of Neon version you want to play",
     "back": "Back",
     "community-mods": "Community mods"
+  },
+  "power-ups": {
+    "title": "Power-ups",
+    "go-back": "Go back"
   }
 }

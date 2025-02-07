@@ -88,6 +88,7 @@ export const StorePreviewComponent = ({
           mt={4}
           p={6}
           boxShadow={`0px 0px 10px 1px ${white}`}
+          zIndex={1}
         >
           <Flex
             flexDirection={{ base: "column", sm: "row" }}
