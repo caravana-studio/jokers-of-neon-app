@@ -17,7 +17,7 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
   return (
     <StarknetConfig
       chains={[mainnet, sepolia]}
-      provider={cartridgeProvider()}
+      provider={provider}
       connectors={[controller as unknown as Connector]}
       explorer={voyager}
       autoConnect
