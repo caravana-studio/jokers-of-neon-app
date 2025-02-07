@@ -7,7 +7,7 @@ import {
   Tooltip,
   useTheme,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
@@ -25,10 +25,12 @@ import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 interface SpecialCardsProps {
   containerSx?: SystemStyleObject;
+  setSellCardBtn?: (btn: JSX.Element | null) => void;
 }
 
 export const SpecialCards: React.FC<SpecialCardsProps> = ({
   containerSx = {},
+  setSellCardBtn,
 }) => {
   const { colors } = useTheme();
 
@@ -55,6 +57,28 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
   const { isSmallScreen, cardScale } = useResponsiveValues();
 
   const scale = isSmallScreen ? cardScale * 1.2 : cardScale * 1.4;
+
+  const sellCardBtn = (
+    <Button
+      isDisabled={!preselectedCard}
+      variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
+      fontSize={12}
+      onClick={() => {
+        setConfirmationModalOpen(true);
+      }}
+      width={isSmallScreen ? "100%" : "unset"}
+    >
+      {preselectedCard?.selling_price
+        ? t("sell-for", { price: preselectedCard.selling_price })
+        : t("sell")}
+    </Button>
+  );
+
+  useEffect(() => {
+    if (setSellCardBtn) {
+      setSellCardBtn(sellCardBtn);
+    }
+  }, [preselectedCard]);
 
   return (
     <>
@@ -136,21 +160,11 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               </Box>
             ))}
           </FullScreenCardContainer>
-          <Flex flexDirection={"row"} justifyContent="center" gap={4} mx={4}>
-            <Button
-              isDisabled={!preselectedCard}
-              variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
-              fontSize={12}
-              onClick={() => {
-                setConfirmationModalOpen(true);
-              }}
-              width={isSmallScreen ? "50%" : "unset"}
-            >
-              {preselectedCard?.selling_price
-                ? t("sell-for", { price: preselectedCard.selling_price })
-                : t("sell")}
-            </Button>
-          </Flex>
+          {!setSellCardBtn && (
+            <Flex flexDirection={"row"} justifyContent="center" gap={4} mx={4}>
+              {sellCardBtn}
+            </Flex>
+          )}
         </Flex>
       </Flex>
       {confirmationModalOpen && (

@@ -1,22 +1,31 @@
 import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
+import { MobileDecoration } from "../../components/MobileDecoration";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+
+interface managePageContentMobileProps {
+  lastIndexTab?: number;
+  goBackBtn: JSX.Element;
+}
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
-}: {
-  lastIndexTab?: number;
-}) => {
+  goBackBtn,
+}: managePageContentMobileProps) => {
   const { t } = useTranslation("intermediate-screens");
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
 
+  const [sellCardBtn, setSellCardBtn] = useState<JSX.Element | null>(null); // Use useState instead of useRef
+
   return (
     <>
+      <MobileDecoration />
       <Flex p={2} mt={6} width={"95%"}>
         <Tabs
           index={tabIndex}
@@ -37,10 +46,17 @@ export const ManagePageContentMobile = ({
             containerSx={{
               padding: "0",
             }}
+            setSellCardBtn={setSellCardBtn}
           />
         )}
         {tabIndex === 1 && <Powerups />}
       </Flex>
+
+      <MobileBottomBar
+        firstButton={sellCardBtn}
+        secondButton={goBackBtn}
+        navigateState={{ state: { inStore: true } }}
+      />
     </>
   );
 };

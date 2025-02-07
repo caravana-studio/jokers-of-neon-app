@@ -1,11 +1,9 @@
 import { Button, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Background } from "../../components/Background";
-import { PositionedGameMenu } from "../../components/GameMenu";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -18,34 +16,31 @@ export const ManagePage = () => {
     sm: false,
   });
 
+  const goBackBtn = (
+    <Button
+      fontSize={12}
+      onClick={() => {
+        navigate(-1);
+      }}
+      width={"unset"}
+    >
+      {t("go-back")}
+    </Button>
+  );
+
   return (
-    <Background bgDecoration dark type="home">
-      <PositionedGameMenu decoratedPage />
-      <PositionedDiscordLink />
+    <Background bgDecoration={!isSmallMobile} dark type="home">
       <Flex
         flexDirection={"column"}
         height={"100%"}
         gap={4}
         alignItems={"center"}
       >
-        {isSmallMobile ? <ManagePageContentMobile /> : <ManagePageContent />}
-        <Flex
-          flexDirection={"row"}
-          justifyContent="space-between"
-          gap={4}
-          mx={4}
-          mt={14}
-        >
-          <Button
-            fontSize={12}
-            onClick={() => {
-              navigate(-1);
-            }}
-            width={"unset"}
-          >
-            {t("go-back")}
-          </Button>
-        </Flex>
+        {isSmallMobile ? (
+          <ManagePageContentMobile goBackBtn={goBackBtn} />
+        ) : (
+          <ManagePageContent goBackBtn={goBackBtn} />
+        )}
       </Flex>
     </Background>
   );
