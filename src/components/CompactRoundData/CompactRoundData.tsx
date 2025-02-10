@@ -8,6 +8,7 @@ import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
 import { isTutorial } from "../../utils/isTutorial";
+import { ScoreTotal } from "../ScoreTotal";
 
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
@@ -29,7 +30,7 @@ export const CompactRoundData = () => {
         zIndex: 1,
       }}
     >
-      <Box px={4} mb={4} borderRadius="md" width="100%" maxW="600px">
+      <Box px={4} mb={1} borderRadius="md" width="100%" maxW="600px">
         <LevelBox />
         <Flex justify="center" gap={1} align="center">
           <Box>
@@ -77,6 +78,7 @@ export const CompactRoundData = () => {
           </Box>
         </Flex>
         <ProgressBar progress={(score / target) * 100} />
+        <ScoreTotal />
       </Box>
     </Flex>
   );
