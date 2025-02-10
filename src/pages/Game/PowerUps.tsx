@@ -14,7 +14,7 @@ export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
 
   return (
-    <Flex gap={[1, 4]} zIndex={1} className="game-tutorial-power-up">
+    <Flex gap={[1, 4]} zIndex={10} className="game-tutorial-power-up">
       {powerUps.map((powerUp, index) => {
         return (
           <PowerUpComponent

@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import CachedImage from "../../components/CachedImage.tsx";
 import { LevelPoints } from "../../components/LevelPoints.tsx";
 import { MultiPoints } from "../../components/MultiPoints.tsx";
@@ -6,6 +6,7 @@ import { Score } from "../../components/Score.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { PowerUps } from "./PowerUps.tsx";
+import { ScoreTotal } from "../../components/ScoreTotal.tsx";
 
 interface TopSectionProps {
   onTutorialCardClick?: () => void;
@@ -51,6 +52,9 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
         >
           <Score />
           <MultiPoints />
+          <Box mt={4}>
+            <ScoreTotal />
+          </Box>
         </Flex>
       </Flex>
       {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (

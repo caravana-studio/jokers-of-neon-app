@@ -134,7 +134,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
   const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL);
-  const [sfxOn, setSfxOn] = useState(!localStorage.getItem(SFX_ON));
+  const [sfxOn, setSfxOn] = useState(() => {
+    return localStorage.getItem(SFX_ON) === "true";
+  });
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
 
