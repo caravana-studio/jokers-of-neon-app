@@ -48,7 +48,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
 
       <Flex
         width={["100vw", "90vw"]}
-        height={"100vh"}
+        height={"100%"}
         margin={"0 auto"}
         py={4}
         pt={[4, 4, 8]}
@@ -87,8 +87,8 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
         <Flex
           w="100%"
           flexGrow={1}
-          minHeight={isSmallScreen ? "50vh" : "50vh"}
-          maxHeight={isSmallScreen ? "80vh" : "60vh"}
+          minHeight={"50%"}
+          maxHeight={isSmallScreen ? "80%" : "60%"}
           alignItems={"center"}
         >
           {tabIndex === 0 && (
