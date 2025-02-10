@@ -229,13 +229,7 @@ const DojoContextProvider = ({
           <img width="60%" src="logos/logo.png" alt="logo" />
           {!isConnected && (
             <button
-              style={{
-                borderRadius: "20px",
-                backgroundColor: BLUE,
-                boxShadow: `0px 0px 20px 10px ${BLUE}`,
-                fontSize: "20px",
-                width: "300px",
-              }}
+              className="login-button"
               onClick={connectWallet}
             >
               LOGIN
