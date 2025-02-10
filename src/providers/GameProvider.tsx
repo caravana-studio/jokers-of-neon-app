@@ -44,6 +44,7 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -254,7 +255,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           clearPreSelection();
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
-          
+
           await syncCall();
           setGameLoading(false);
           setPreSelectionLocked(false);
@@ -424,40 +425,79 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     discardSound();
     setPreSelectionLocked(true);
-    setDiscardAnimation(true);
     stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
-      if (response.success) {
-        if (response.cashEvent) {
-          // cash event
-          response.cashEvent.forEach((event, index) => {
-            setTimeout(() => {
-              const { idx, special_idx, cash } = event;
-              setAnimatedCard({
-                idx: [idx],
-                special_idx,
-                cash,
-                animationIndex: 900 + index,
-              });
-            }, playAnimationDuration * index); // Stagger animations for each event
-          });
-        }
-        if (response.levelUpHandEvent) {
-          state.setLevelUpHand(response.levelUpHandEvent);
-        }
-        if (response.gameOver) {
+      if (response) {
+        const calculateDuration = (
+          events?: any[],
+          baseDuration = playAnimationDuration,
+          multiplier = 1
+        ) => (events?.length ?? 0) * baseDuration * multiplier;
+
+        console.log(
+          response.cardPlayScoreEvents?.map((item) => item.hand).flat()
+        );
+
+        const durations = {
+          cardPlayScore: calculateDuration(
+            response.cardPlayScoreEvents?.map((item) => item.hand).flat() ?? []
+          ),
+          specialCardPlayScore: calculateDuration(
+            response.specialCardPlayScoreEvents
+          ),
+        };
+
+        const ALL_CARDS_DURATION = Object.values(durations).reduce(
+          (a, b) => a + b,
+          0
+        );
+
+        response.cardPlayScoreEvents?.forEach((event, index) => {
+          const isCash = event.eventType === EventTypeEnum.Cash;
+          const special_idx = event.specials[0]?.idx;
+
           setTimeout(() => {
-            navigate(`/gameover/${gameId}`);
-          }, 1000);
-        } else {
+            event.hand.forEach((card, innerIndex) => {
+              const { idx, quantity } = card;
+              setTimeout(() => {
+                if (isCash) {
+                  cashSound();
+                  setAnimatedCard({
+                    special_idx,
+                    idx: [idx],
+                    cash: quantity,
+                    animationIndex: 400 + index,
+                  });
+                }
+              }, playAnimationDuration * innerIndex);
+            });
+
+            if (response.gameOver) {
+              setTimeout(() => {
+                navigate(`/gameover/${gameId}`);
+              }, 1000);
+            }
+          }, playAnimationDuration * index);
+        });
+
+        //  if (response.levelUpHandEvent) {
+        //   state.setLevelUpHand(response.levelUpHandEvent);
+        // }
+
+        setTimeout(() => {
+          setDiscardAnimation(true);
+        }, ALL_CARDS_DURATION);
+
+        setTimeout(() => {
+          setPreSelectionLocked(false);
+          clearPreSelection();
+          setAnimatedCard(undefined);
+          setDiscardAnimation(false);
           replaceCards(response.cards);
-        }
+        }, ALL_CARDS_DURATION + 300);
       } else {
         rollbackDiscard();
       }
-      setPreSelectionLocked(false);
-      clearPreSelection();
-      setDiscardAnimation(false);
     });
   };
 
