@@ -434,10 +434,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           multiplier = 1
         ) => (events?.length ?? 0) * baseDuration * multiplier;
 
-        console.log(
-          response.cardPlayScoreEvents?.map((item) => item.hand).flat()
-        );
-
         const durations = {
           cardPlayScore: calculateDuration(
             response.cardPlayScoreEvents?.map((item) => item.hand).flat() ?? []
@@ -451,6 +447,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           (a, b) => a + b,
           0
         );
+
+        //  if (response.levelUpHandEvent) {
+        //   state.setLevelUpHand(response.levelUpHandEvent);
+        // }
 
         response.cardPlayScoreEvents?.forEach((event, index) => {
           const isCash = event.eventType === EventTypeEnum.Cash;
@@ -471,18 +471,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 }
               }, playAnimationDuration * innerIndex);
             });
-
-            if (response.gameOver) {
-              setTimeout(() => {
-                navigate(`/gameover/${gameId}`);
-              }, 1000);
-            }
           }, playAnimationDuration * index);
         });
 
-        //  if (response.levelUpHandEvent) {
-        //   state.setLevelUpHand(response.levelUpHandEvent);
-        // }
+        if (response.gameOver) {
+          setTimeout(() => {
+            navigate(`/gameover/${gameId}`);
+          }, 1000);
+        }
 
         setTimeout(() => {
           setDiscardAnimation(true);
