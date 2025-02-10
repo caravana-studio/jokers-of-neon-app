@@ -1,3 +1,4 @@
+import ControllerConnector from "@cartridge/connector/controller";
 import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect } from "@starknet-react/core";
 import {
@@ -10,9 +11,10 @@ import {
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
 import { LoadingScreen } from "../pages/LoadingScreen";
+import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
+import { BLUE } from "../theme/colors";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
-import ControllerConnector from "@cartridge/connector/controller";
 
 interface DojoAccount {
   create: () => void;
@@ -84,9 +86,11 @@ const useControllerAccount = () => {
     }
   }, [account, isConnected]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (connector) {
-      useAccountStore.getState().setConnector(connector as unknown as ControllerConnector);
+      useAccountStore
+        .getState()
+        .setConnector(connector as unknown as ControllerConnector);
     }
   }, [connector, isConnected]);
 
@@ -221,17 +225,23 @@ const DojoContextProvider = ({
     }
     if (!isConnected && !isConnecting && !controllerAccount) {
       return (
-        <div className="flex space-x-2 mt-8 justify-center">
+        <PreThemeLoadingPage>
+          <img width="60%" src="logos/logo.png" alt="logo" />
           {!isConnected && (
             <button
-              className="px-4 py-2 bg-[#ffc52a] border-2 border-[#ffc52a] text-black flex font-bold rounded text-lg fill-black uppercase leading-6 shadow-md hover:shadow-lg active:shadow-inner hover:scale-105 transition-all duration-300 hover:-translate-y-1"
+              style={{
+                borderRadius: "20px",
+                backgroundColor: BLUE,
+                boxShadow: `0px 0px 20px 10px ${BLUE}`,
+                fontSize: "20px",
+                width: "300px",
+              }}
               onClick={connectWallet}
             >
-              {/* <CartridgeSmall className="w-6 mr-2 fill-current self-center" /> */}{" "}
-              Login
+              LOGIN
             </button>
           )}
-        </div>
+        </PreThemeLoadingPage>
       );
     }
 

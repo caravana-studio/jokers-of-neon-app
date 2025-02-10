@@ -27,3 +27,7 @@ img {
   user-select: none;
   pointer-events: none;
 }
+
+body {
+  overflow-x: hidden !important;
+}
