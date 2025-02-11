@@ -1,21 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Background } from "../../components/Background";
+import { Loading } from "../../components/Loading.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
-import { Loading } from "../../components/Loading.tsx";
 
+import Joyride, { CallBackProps } from "react-joyride";
 import {
   JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
-import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 
+import { Flex } from "@chakra-ui/react";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
@@ -28,9 +29,19 @@ export const Store = () => {
   const location = useLocation();
   const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
+  const [delayedLoading, setDelayedLoading] = useState(true);
+
   useEffect(() => {
     setIsRageRound(false);
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setDelayedLoading(false);
+      }, 500);
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (!lockRedirection) {
@@ -74,14 +85,6 @@ export const Store = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
-
   return (
     <Background type="store" scrollOnMobile>
       <Joyride
@@ -94,11 +97,21 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {isSmallScreen ? (
-        <StoreContentMobile lastIndexTab={lastTabIndex} />
-      ) : (
-        <StoreContent />
-      )}
+
+      {delayedLoading && <Loading />}
+      <Flex
+        h="100%"
+        w="100%"
+        opacity={delayedLoading ? 0 : 1}
+        transform={delayedLoading ? "translateY(10px)" : "translateY(0px)"}
+        transition="all 0.5s ease-in-out"
+      >
+        {isSmallScreen ? (
+          <StoreContentMobile lastIndexTab={lastTabIndex} />
+        ) : (
+          <StoreContent />
+        )}
+      </Flex>
     </Background>
   );
 };

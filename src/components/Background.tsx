@@ -1,14 +1,11 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import CachedImage, { checkImageExists } from "./CachedImage";
-import SpineAnimation from "./SpineAnimation";
-import { isMobile } from "react-device-detect";
-import { CLASSIC_MOD_ID } from "../constants/general";
+import { Box, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useGameContext } from "../providers/GameProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
-import { useGame } from "../dojo/queries/useGame";
+import CachedImage, { checkImageExists } from "./CachedImage";
 
 interface BackgroundProps extends PropsWithChildren {
   type?: "game" | "store" | "home" | "white" | "rage";
@@ -72,32 +69,39 @@ export const Background = ({
   }, [type, isClassic]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: getBackgroundColor(type),
-        backgroundImage: isClassic
-          ? getBackgroundImage(type)
-          : backgroundImageUrl != "none"
-            ? backgroundImageUrl
-            : getBackgroundImage(type),
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100svh",
-        width: "100vw",
-        position: isSmallScreen ? "fixed" : "unset",
-        bottom: isSmallScreen ? 0 : "unset",
-        boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
-        overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
     >
-      {isClassic && <BackgroundVideo type={type} />}
+      <Box
+        sx={{
+          backgroundColor: getBackgroundColor(type),
+          backgroundImage: isClassic
+            ? getBackgroundImage(type)
+            : backgroundImageUrl != "none"
+              ? backgroundImageUrl
+              : getBackgroundImage(type),
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100svh",
+          width: "100vw",
+          position: isSmallScreen ? "fixed" : "unset",
+          bottom: isSmallScreen ? 0 : "unset",
+          boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
+          overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
+        }}
+      >
+        {isClassic && <BackgroundVideo type={type} />}
 
-      {bgDecoration ? (
-        <BackgroundDecoration>{children}</BackgroundDecoration>
-      ) : (
-        children
-      )}
-    </Box>
+        {bgDecoration ? (
+          <BackgroundDecoration>{children}</BackgroundDecoration>
+        ) : (
+          children
+        )}
+      </Box>
+    </motion.div>
   );
 };
 

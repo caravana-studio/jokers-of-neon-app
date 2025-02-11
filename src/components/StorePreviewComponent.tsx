@@ -75,7 +75,7 @@ export const StorePreviewComponent = ({
   console.log("onDurationChange", onDurationChange);
 
   return (
-    <Background type="home" dark scrollOnMobile>
+    <Background type="store" dark scrollOnMobile>
       <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
