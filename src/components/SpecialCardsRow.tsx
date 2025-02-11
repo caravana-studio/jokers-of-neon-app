@@ -189,7 +189,13 @@ export const SpecialCardsRow = () => {
             <LockedSlot
               key={`locked-${index}`}
               scale={specialCardScale - specialCardScale * 0.15}
-              backgroundColor={isRageRound ? "black" : "transparent"}
+              backgroundColor={
+                visibleCards <= 5
+                  ? "transparent"
+                  : isRageRound
+                    ? "black"
+                    : "transparent"
+              }
               borderRadius={isSmallScreen ? "0px" : "10%"}
             />
           </Flex>
