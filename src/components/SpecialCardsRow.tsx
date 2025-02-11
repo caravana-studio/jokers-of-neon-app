@@ -174,11 +174,13 @@ export const SpecialCardsRow = () => {
             <UnlockedSlot
               key={`unlocked-${index}`}
               backgroundColor={
-                isClassic
-                  ? isRageRound
-                    ? "black"
-                    : BACKGROUND_BLUE
-                  : "transparent"
+                visibleCards <= 5
+                  ? "transparent"
+                  : isClassic
+                    ? isRageRound
+                      ? "black"
+                      : BACKGROUND_BLUE
+                    : "transparent"
               }
               scale={specialCardScale - specialCardScale * 0.1}
             />
