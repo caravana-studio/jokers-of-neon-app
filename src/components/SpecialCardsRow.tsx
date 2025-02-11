@@ -86,6 +86,7 @@ export const SpecialCardsRow = () => {
         columns={visibleCards}
         position="relative"
         width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
+        alignItems={isSmallScreen ? "center" : "inherit"}
       >
         {cards.map((card) => {
           const isDiscarded = discardedCards.includes(card.id);
@@ -95,7 +96,7 @@ export const SpecialCardsRow = () => {
               key={card.idx}
               justifyContent="flex-start"
               width={`${slotWidth}%`}
-              maxWidth={`${cardWidth + 7}px`}
+              maxWidth={`${slotWidth + 7}px`}
               position="relative"
               zIndex={1}
               onMouseEnter={() => !isSmallScreen && setHoveredCard(card.idx)}
@@ -150,13 +151,10 @@ export const SpecialCardsRow = () => {
                       )}
                     </Flex>
                     <Box
-                      height={
-                        CARD_HEIGHT *
-                        (specialCardScale - specialCardScale * 0.1)
-                      }
-                      width={
-                        CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
-                      }
+                      width={`${CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)}`}
+                      height={"100%"}
+                      minWidth={`${CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)}`}
+                      maxWidth={`${slotWidth}%`}
                       onClick={() => {
                         isSmallScreen && highlightCard(card);
                       }}
@@ -182,7 +180,7 @@ export const SpecialCardsRow = () => {
                       : BACKGROUND_BLUE
                     : "transparent"
               }
-              scale={specialCardScale - specialCardScale * 0.1}
+              scale={specialCardScale - specialCardScale * 0.15}
             />
           </Flex>
         ))}
@@ -190,7 +188,7 @@ export const SpecialCardsRow = () => {
           <Flex key={`locked-slot-${index}`} maxWidth={`${slotWidth}%`}>
             <LockedSlot
               key={`locked-${index}`}
-              scale={specialCardScale - specialCardScale * 0.1}
+              scale={specialCardScale - specialCardScale * 0.15}
               backgroundColor={isRageRound ? "black" : "transparent"}
               borderRadius={isSmallScreen ? "0px" : "10%"}
             />
