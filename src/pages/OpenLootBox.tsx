@@ -143,6 +143,7 @@ export const OpenLootBox = () => {
                     key={getCardUniqueId(card)}
                     m={1.5}
                     p={1}
+                    zIndex={1}
                     sx={{
                       borderRadius: { base: "7px", sm: "12px", md: "15px" },
                       opacity:

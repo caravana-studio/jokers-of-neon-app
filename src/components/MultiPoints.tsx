@@ -38,9 +38,10 @@ export const MultiPoints = () => {
 interface PointBoxProps {
   children: JSX.Element[];
   type: "points" | "multi" | "level";
+  height?: string;
 }
 
-export const PointBox = ({ children, type }: PointBoxProps) => {
+export const PointBox = ({ children, type, height }: PointBoxProps) => {
   const { colors } = useTheme();
   const colorMap = {
     points: colors.neonGreen,
@@ -49,9 +50,10 @@ export const PointBox = ({ children, type }: PointBoxProps) => {
   };
 
   const color = colorMap[type];
+  const calculatedHeight = height ?? { base: 43, sm: 53, md: 81 };
   return (
     <Box
-      height={{ base: 43, sm: 53, md: 81 }}
+      height={calculatedHeight}
       minWidth={{ base: 70, md: 120 }}
       p={{ base: 1, md: 2 }}
       sx={{
