@@ -10,6 +10,7 @@ interface managePageContentMobileProps {
   lastIndexTab?: number;
   goBackBtn: JSX.Element;
 }
+import { useSwipeable } from "react-swipeable";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
@@ -22,6 +23,17 @@ export const ManagePageContentMobile = ({
   };
 
   const [sellCardBtn, setSellCardBtn] = useState<JSX.Element | null>(null); // Use useState instead of useRef
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      if (tabIndex < 1) setTabIndex(tabIndex + 1);
+    },
+    onSwipedRight: () => {
+      if (tabIndex > 0) {
+        setTabIndex(tabIndex - 1);
+      }
+    },
+    trackTouch: true,
+  });
 
   return (
     <>
@@ -40,7 +52,7 @@ export const ManagePageContentMobile = ({
           </TabList>
         </Tabs>
       </Flex>
-      <Flex w="95%" flexGrow={1}>
+      <Flex w="95%" flexGrow={1} {...handlers}>
         {tabIndex === 0 && (
           <SpecialCards
             containerSx={{

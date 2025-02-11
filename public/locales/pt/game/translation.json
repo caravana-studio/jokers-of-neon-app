@@ -34,6 +34,7 @@
       "score": "Pontuação {{score}} para passar o nível {{level}}"
     },
     "score": "Sua pontuação:",
+    "score-total": "Pontuação Total",
     "multi-points": {
       "points": "Pontos",
       "multi": "Multi"
