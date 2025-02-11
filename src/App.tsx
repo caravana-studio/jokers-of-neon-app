@@ -28,6 +28,7 @@ import customTheme from "./theme/theme";
 import { DocsPage } from "./pages/Docs/Docs";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { LeaderBoardPage } from "./pages/LeaderboardPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/gameover/:gameId" element={<GameOver />} />
                   <Route path="/demo" element={<GamePage />} />
                   <Route path="/rewards" element={<RewardsPage />} />
+                  <Route path="/leaderboard" element={<LeaderBoardPage />} />
 
                   <Route
                     path="/store"
