@@ -25,12 +25,16 @@ import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 interface SpecialCardsProps {
   containerSx?: SystemStyleObject;
-  setSellCardBtn?: (btn: JSX.Element | null) => void;
+  setSellCardInfo?: (
+    hasButton: boolean,
+    price: number | null,
+    sellAction: () => void
+  ) => void;
 }
 
 export const SpecialCards: React.FC<SpecialCardsProps> = ({
   containerSx = {},
-  setSellCardBtn,
+  setSellCardInfo,
 }) => {
   const { colors } = useTheme();
 
@@ -74,10 +78,18 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
     </Button>
   );
 
+  const sellCard = () => {
+    if (!preselectedCard) return;
+    setConfirmationModalOpen(true);
+  };
+
   useEffect(() => {
-    if (setSellCardBtn) {
-      setSellCardBtn(sellCardBtn);
-    }
+    if (setSellCardInfo)
+      setSellCardInfo(
+        !!preselectedCard,
+        preselectedCard?.selling_price ?? null,
+        sellCard
+      );
   }, [preselectedCard]);
 
   return (
@@ -160,7 +172,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               </Box>
             ))}
           </FullScreenCardContainer>
-          {!setSellCardBtn && (
+          {!setSellCardInfo && (
             <Flex flexDirection={"row"} justifyContent="center" gap={4} mx={4}>
               {sellCardBtn}
             </Flex>

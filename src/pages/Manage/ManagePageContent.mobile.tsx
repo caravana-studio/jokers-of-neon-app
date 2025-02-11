@@ -1,5 +1,5 @@
-import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
@@ -11,6 +11,7 @@ interface managePageContentMobileProps {
   goBackBtn: JSX.Element;
 }
 import { useSwipeable } from "react-swipeable";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
@@ -22,7 +23,12 @@ export const ManagePageContentMobile = ({
     setTabIndex(index);
   };
 
-  const [sellCardBtn, setSellCardBtn] = useState<JSX.Element | null>(null); // Use useState instead of useRef
+  const [hasSellCardButton, setHasSellCardButton] = useState(false);
+  const [sellCardPrice, setSellCardPrice] = useState<number | null>(null);
+  const [sellCard, setSellCard] = useState<(() => void) | null>(null);
+
+  const { isSmallScreen } = useResponsiveValues();
+
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (tabIndex < 1) setTabIndex(tabIndex + 1);
@@ -34,6 +40,24 @@ export const ManagePageContentMobile = ({
     },
     trackTouch: true,
   });
+
+  const sellCardBtn = (
+    <Button
+      isDisabled={!hasSellCardButton}
+      variant={!hasSellCardButton ? "defaultOutline" : "secondarySolid"}
+      fontSize={12}
+      onClick={() => {
+        if (sellCard) sellCard();
+      }}
+      width={isSmallScreen ? "100%" : "unset"}
+    >
+      {sellCardPrice
+        ? t("special-cards.sell-for", { price: sellCardPrice })
+        : t("special-cards.sell")}
+    </Button>
+  );
+
+  console.log(sellCardPrice);
 
   return (
     <>
@@ -58,7 +82,11 @@ export const ManagePageContentMobile = ({
             containerSx={{
               padding: "0",
             }}
-            setSellCardBtn={setSellCardBtn}
+            setSellCardInfo={(hasButton, price, sellAction) => {
+              setHasSellCardButton(hasButton);
+              setSellCardPrice(price);
+              setSellCard(() => sellAction);
+            }}
           />
         )}
         {tabIndex === 1 && <Powerups />}
