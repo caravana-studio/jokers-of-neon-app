@@ -85,7 +85,8 @@
       "sound-btn": "Turn sound",
       "logout-btn": "Logout",
       "settings-btn": "Settings",
-      "docs-btn": "Card list"
+      "docs-btn": "Card list",
+      "leaderboard-btn": "Leaderboard"
     },
     "plays": {
       "title": "Available plays",
