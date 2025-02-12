@@ -8,21 +8,18 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
-import { useLocation } from "react-router-dom";
 
 interface DeckPageContentProps {
-  inStore?: boolean;
-  burn?: boolean;
+  state: {
+    inStore: boolean;
+    burn: boolean;
+  };
 }
 
-export const DeckPageContent = ({
-  inStore = false,
-  burn = false,
-}: DeckPageContentProps) => {
+export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const { cash, burnCard, burnItem } = useStore();
-  const { state } = useLocation();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem.purchased) {
@@ -55,10 +52,14 @@ export const DeckPageContent = ({
       gap={4}
     >
       <MobileDecoration />
-      <Deck inStore={inStore} burn={burn} onCardSelect={handleCardSelect} />
+      <Deck
+        inStore={state.inStore}
+        burn={state.burn}
+        onCardSelect={handleCardSelect}
+      />
       <Flex gap={6}>
         <BackToGameBtn state={state} />
-        {burn && (
+        {state.burn && (
           <Button
             minWidth={"100px"}
             size={"md"}

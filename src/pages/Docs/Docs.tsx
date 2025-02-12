@@ -9,15 +9,18 @@ import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { Background } from "../../components/Background";
 import { isMobile } from "react-device-detect";
-import { useLocation } from "react-router-dom";
 import { useGameState } from "../../state/useGameState";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { useLocation } from "react-router-dom";
 
-export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
+interface DocsProps {
+  lastIndexTab: number;
+}
+
+export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   const { t } = useTranslation(["docs"]);
-  const { state } = useLocation();
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();
   const tabFontSize = isMobile ? ["2.6vw", "1.9vw", "1.4vw", "1vw"] : "0.85vw";
@@ -39,8 +42,8 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   });
   const { modCardsConfig } = useGameState();
   const { isSmallScreen } = useResponsiveValues();
-
-  const goBackBtn = <BackToGameBtn state={state} />;
+  const location = useLocation();
+  const goBackBtn = <BackToGameBtn state={location.state} />;
 
   return (
     <Background type="store">

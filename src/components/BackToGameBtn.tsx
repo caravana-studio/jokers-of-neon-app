@@ -17,13 +17,15 @@ export const BackToGameBtn: React.FC<{ state?: { inStore: boolean } }> = ({
       lineHeight={1.6}
       variant="secondarySolid"
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-      onClick={() =>
-        state?.inStore
-          ? navigate("/store", { state: { lastTabIndex: 2 } })
-          : navigate("/demo", {
-              state: { skipRageAnimation: true },
-            })
-      }
+      onClick={() => {
+        if (state) {
+          state.inStore
+            ? navigate("/store", { state: { lastTabIndex: 2 } })
+            : navigate("/demo", {
+                state: { skipRageAnimation: true },
+              });
+        } else navigate(-1);
+      }}
     >
       {t("game.deck.btns.back").toUpperCase()}
     </Button>
