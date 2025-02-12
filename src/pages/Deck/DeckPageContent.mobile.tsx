@@ -1,7 +1,7 @@
 import { Button, Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { CashSymbol } from "../../components/CashSymbol";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
@@ -23,8 +23,8 @@ export const DeckPageContentMobile = ({
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
-
   const [tabIndex, setTabIndex] = useState(0);
+  const { state } = useLocation();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem.purchased) {
@@ -144,7 +144,7 @@ export const DeckPageContentMobile = ({
               <></>
             )
           }
-          secondButton={<BackToGameBtn />}
+          secondButton={<BackToGameBtn state={state} />}
           hideDeckButton
         />
       </Flex>
