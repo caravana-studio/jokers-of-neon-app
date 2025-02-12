@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useSwipeable } from "react-swipeable";
-import { MobileDecoration } from "../../components/MobileDecoration";
 import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { DocsCardsRow } from "./DocsCardsRow";
+import { useNavigate } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
+import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { MobileDecoration } from "../../components/MobileDecoration";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
-import { DocsBoxesRow } from "./DocsBoxesRow";
-import { Background } from "../../components/Background";
-import { isMobile } from "react-device-detect";
-import { useNavigate } from "react-router-dom";
 import { useGameState } from "../../state/useGameState";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { DocsBoxesRow } from "./DocsBoxesRow";
+import { DocsCardsRow } from "./DocsCardsRow";
+import { DelayedLoading } from "../../components/DelayedLoading";
 
 export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const { t } = useTranslation(["docs"]);
@@ -43,7 +43,7 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   const goBackBtn = <BackToGameBtn />;
 
   return (
-    <Background type="store">
+    <DelayedLoading>
       <MobileDecoration />
 
       <Flex
@@ -110,6 +110,6 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
           <MobileBottomBar secondButton={goBackBtn} firstButton={undefined} />
         )}
       </Flex>
-    </Background>
+    </DelayedLoading>
   );
 };

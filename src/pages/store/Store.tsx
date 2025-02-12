@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../../components/Background";
-import { Loading } from "../../components/Loading.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -16,7 +14,7 @@ import {
 } from "../../constants/gameTutorial.ts";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 
-import { Flex } from "@chakra-ui/react";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
@@ -29,19 +27,9 @@ export const Store = () => {
   const location = useLocation();
   const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
-  const [delayedLoading, setDelayedLoading] = useState(true);
-
   useEffect(() => {
     setIsRageRound(false);
   }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        setDelayedLoading(false);
-      }, 500);
-    }
-  }, [loading]);
 
   useEffect(() => {
     if (!lockRedirection) {
@@ -86,7 +74,7 @@ export const Store = () => {
   };
 
   return (
-    <Background type="store" scrollOnMobile>
+    <>
       <Joyride
         steps={STORE_TUTORIAL_STEPS}
         run={run}
@@ -98,20 +86,13 @@ export const Store = () => {
         locale={JOYRIDE_LOCALES}
       />
 
-      {delayedLoading && <Loading />}
-      <Flex
-        h="100%"
-        w="100%"
-        opacity={delayedLoading ? 0 : 1}
-        transform={delayedLoading ? "translateY(10px)" : "translateY(0px)"}
-        transition="all 0.5s ease-in-out"
-      >
+      <DelayedLoading loading={loading}>
         {isSmallScreen ? (
           <StoreContentMobile lastIndexTab={lastTabIndex} />
         ) : (
           <StoreContent />
         )}
-      </Flex>
-    </Background>
+      </DelayedLoading>
+    </>
   );
 };

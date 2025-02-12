@@ -9,7 +9,6 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
 import CachedImage, { checkImageExists } from "../components/CachedImage";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { CLASSIC_MOD_ID } from "../constants/general";
@@ -47,7 +46,7 @@ export const SelectMod = () => {
   const mods = useGameMods();
 
   return (
-    <Background type="home">
+    <>
       <PositionedGameMenu />
       <Flex
         height="100%"
@@ -120,7 +119,7 @@ export const SelectMod = () => {
           {t("back")}
         </Button>
       </Flex>
-    </Background>
+    </>
   );
 };
 

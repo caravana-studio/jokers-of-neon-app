@@ -1,18 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
-
-interface BackgroundProps extends PropsWithChildren {
-  type?: "game" | "store" | "home" | "white" | "rage";
-  dark?: boolean;
-  scrollOnMobile?: boolean;
-  bgDecoration?: boolean;
-}
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -36,19 +29,77 @@ const getBackgroundImage = (type: string) => {
   }
 };
 
-export const Background = ({
-  children,
-  type = "game",
-  dark = false,
-  bgDecoration: bgDecoration = false,
-  scrollOnMobile = false,
-}: BackgroundProps) => {
+const scrollOnMobile = true;
+const dark = false;
+
+export enum BackgroundType {
+  Home = "home",
+  Game = "game",
+  Store = "store",
+  Rage = "rage",
+}
+
+const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
+  mods: {
+    bg: BackgroundType.Home,
+  },
+  login: {
+    bg: BackgroundType.Home,
+  },
+  gameover: {
+    bg: BackgroundType.Home,
+  },
+  demo: {
+    bg: BackgroundType.Game,
+  },
+  rewards: {
+    bg: BackgroundType.Game,
+  },
+  store: {
+    bg: BackgroundType.Store,
+  },
+  tutorial: {
+    bg: BackgroundType.Game,
+  },
+  preview: {
+    bg: BackgroundType.Store,
+  },
+  "open-loot-box": {
+    bg: BackgroundType.Store,
+  },
+  plays: {
+    bg: BackgroundType.Game,
+  },
+  manage: {
+    bg: BackgroundType.Store,
+  },
+};
+
+export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { isClassic, modId } = useGameContext();
+  const { isClassic, modId, isRageRound } = useGameContext();
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
-  const src = `/bg/${type}-bg.jpg`;
+
+  const location = useLocation();
+  const page = location.pathname.split("/")?.[1];
+  const type = bgConfig[page]?.bg;
+
+  const [src, setSrc] = useState("");
+  const [videoType, setVideoType] = useState<BackgroundType>(
+    BackgroundType.Home
+  );
+
+  useEffect(() => {
+    if (type) {
+      setSrc(`/bg/${type}-bg.jpg`);
+      setVideoType(
+        isRageRound && type === BackgroundType.Game ? BackgroundType.Rage : type
+      );
+    }
+  }, [type]);
+
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
   useEffect(() => {
@@ -69,43 +120,32 @@ export const Background = ({
   }, [type, isClassic]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.3 }}
+    <Box
+      sx={{
+        backgroundColor: getBackgroundColor(type),
+        backgroundImage: isClassic
+          ? getBackgroundImage(type)
+          : backgroundImageUrl != "none"
+            ? backgroundImageUrl
+            : getBackgroundImage(type),
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100svh",
+        width: "100vw",
+        position: isSmallScreen ? "fixed" : "unset",
+        bottom: isSmallScreen ? 0 : "unset",
+        boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
+        overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
+      }}
     >
-      <Box
-        sx={{
-          backgroundColor: getBackgroundColor(type),
-          backgroundImage: isClassic
-            ? getBackgroundImage(type)
-            : backgroundImageUrl != "none"
-              ? backgroundImageUrl
-              : getBackgroundImage(type),
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "100svh",
-          width: "100vw",
-          position: isSmallScreen ? "fixed" : "unset",
-          bottom: isSmallScreen ? 0 : "unset",
-          boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
-          overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
-        }}
-      >
-        {isClassic && <BackgroundVideo type={type} />}
+      {isClassic && <BackgroundVideo type={videoType} />}
 
-        {bgDecoration ? (
-          <BackgroundDecoration>{children}</BackgroundDecoration>
-        ) : (
-          children
-        )}
-      </Box>
-    </motion.div>
+      {children}
+    </Box>
   );
 };
 
-const BackgroundDecoration = ({ children }: PropsWithChildren) => {
+export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
@@ -135,6 +175,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
           width={"65%"}
           maxW={"300px"}
           ml={4}
+          zIndex={1}
         />
         {!isSmallScreen && (
           <CachedImage
@@ -144,6 +185,7 @@ const BackgroundDecoration = ({ children }: PropsWithChildren) => {
             alt="/logos/joker-logo.png"
             width={"25%"}
             maxW={"150px"}
+            zIndex={1}
           />
         )}
       </Box>
