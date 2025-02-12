@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Box } from "@chakra-ui/react";
 
 interface FadeInOutProps {
-  isVisible: boolean;
+  isVisible?: boolean;
   fadeOut?: boolean;
   fadeInDuration?: number;
   fadeInDelay?: number;
@@ -12,7 +12,7 @@ interface FadeInOutProps {
 }
 
 export const FadeInOut: React.FC<FadeInOutProps> = ({
-  isVisible,
+  isVisible = false,
   fadeOut,
   fadeInDuration = 0.5,
   fadeInDelay = 0,

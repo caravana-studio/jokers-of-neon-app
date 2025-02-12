@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { FadeInOut } from "../../components/animations/FadeInOut";
 
 interface LogoPresentationProps {
   visibleElements?: {
@@ -12,15 +13,17 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
 }) => {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
-      {visibleElements.logo && (
+      <FadeInOut isVisible={visibleElements.logo} fadeOut>
         <img
           style={{ marginTop: "80px" }}
           width="60%"
           src="logos/logo.png"
           alt="logo"
         />
-      )}
-      {visibleElements.text && <Text fontSize="lg">PRESENTS</Text>}
+      </FadeInOut>
+      <FadeInOut isVisible={visibleElements.text} fadeOut fadeInDelay={0.5}>
+        <Text fontSize="lg">PRESENTS</Text>
+      </FadeInOut>
     </Flex>
   );
 };

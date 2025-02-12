@@ -1,6 +1,8 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
+import { FadeInOut } from "../../components/animations/FadeInOut";
 
 interface PoweredByPresentationProps {
+  fadeInDelay?: number;
   visibleElements?: {
     text?: boolean;
     logo1?: boolean;
@@ -11,20 +13,37 @@ interface PoweredByPresentationProps {
 
 export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
   visibleElements = { text: true, logo1: true, logo2: true, logo3: true },
+  fadeInDelay = 0.5,
 }) => {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
-      {visibleElements.text && <Text fontSize="lg">POWERED BY</Text>}
+      <FadeInOut isVisible={visibleElements.text} fadeOut>
+        <Text fontSize="lg">POWERED BY</Text>
+      </FadeInOut>
       <Flex gap={2}>
-        {visibleElements.logo1 && (
+        <FadeInOut
+          isVisible={visibleElements.logo1}
+          fadeOut
+          fadeInDelay={fadeInDelay}
+        >
           <Image src="/logos/starknet-logo.png" alt="Starknet" />
-        )}
-        {visibleElements.logo2 && (
+        </FadeInOut>
+
+        <FadeInOut
+          isVisible={visibleElements.logo2}
+          fadeOut
+          fadeInDelay={fadeInDelay}
+        >
           <Image src="/logos/dojo-logo.png" alt="Dojo" />
-        )}
-        {visibleElements.logo3 && (
+        </FadeInOut>
+
+        <FadeInOut
+          isVisible={visibleElements.logo3}
+          fadeOut
+          fadeInDelay={fadeInDelay}
+        >
           <Image src="/logos/cartridge-logo.png" alt="Cartridge" />
-        )}
+        </FadeInOut>
       </Flex>
     </Flex>
   );
