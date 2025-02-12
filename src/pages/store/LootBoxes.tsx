@@ -11,8 +11,8 @@ export const LootBoxes = () => {
 
   const { packs } = useStore();
   return (
-    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%">
-      <Flex flexDirection="row" justifyContent="space-between">
+    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%" w="100%">
+      <Flex flexDirection="row" justifyContent="space-between" w="100%">
         {packs.map((pack) => {
           const card = {
             id: pack.blister_pack_id.toString(),
