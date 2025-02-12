@@ -19,20 +19,41 @@ export const FadeInOut: React.FC<FadeInOutProps> = ({
   fadeOutDelay = 1,
   fadeOutDuration = 0.5,
   children,
-}) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: isVisible ? 1 : 0 }}
-    exit={
-      fadeOut
-        ? {
-            opacity: 0,
-            transition: { duration: fadeOutDuration, delay: fadeOutDelay },
-          }
-        : undefined
-    }
-    transition={{ duration: fadeInDuration, delay: fadeInDelay }}
-  >
-    <Box>{children}</Box>
-  </motion.div>
-);
+}) => {
+  const shouldAnimate = isVisible || (fadeOut && !isVisible); // Key change
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, visibility: "hidden" }}
+      animate={
+        shouldAnimate
+          ? {
+              opacity: isVisible ? 1 : 0,
+              visibility: isVisible ? "visible" : "hidden",
+            }
+          : {}
+      } // Conditional animation
+      exit={
+        fadeOut
+          ? {
+              opacity: 0,
+              visibility: "hidden",
+              transition: {
+                duration: fadeOutDuration,
+                delay: fadeOutDelay,
+                ease: "easeOut",
+              },
+            }
+          : undefined
+      }
+      transition={{
+        duration: fadeInDuration,
+        delay: fadeInDelay,
+        ease: "easeIn",
+      }}
+      style={{ pointerEvents: isVisible ? "auto" : "none" }} // Prevent interaction when hidden
+    >
+      <Box width={"100%"}>{children}</Box>
+    </motion.div>
+  );
+};

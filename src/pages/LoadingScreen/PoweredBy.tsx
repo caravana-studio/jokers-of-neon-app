@@ -16,17 +16,30 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
   fadeInDelay = 0.5,
 }) => {
   return (
-    <Flex flexDirection="column" alignItems="center" gap={4}>
+    <Flex
+      flexDirection="column"
+      alignItems="center"
+      justifyContent={"center"}
+      textAlign={"center"}
+      gap={4}
+      width={"100%"}
+    >
       <FadeInOut isVisible={visibleElements.text} fadeOut>
         <Text fontSize="lg">POWERED BY</Text>
       </FadeInOut>
-      <Flex gap={2}>
+      <Flex
+        gap={40}
+        width={"100%"}
+        px={4}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <FadeInOut
           isVisible={visibleElements.logo1}
           fadeOut
           fadeInDelay={fadeInDelay}
         >
-          <Image src="/logos/starknet-logo.png" alt="Starknet" />
+          <Image src="/logos/starknet-logo.png" alt="Starknet" width={"5vw"} />
         </FadeInOut>
 
         <FadeInOut
@@ -34,7 +47,7 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
           fadeOut
           fadeInDelay={fadeInDelay}
         >
-          <Image src="/logos/dojo-logo.png" alt="Dojo" />
+          <Image src="/logos/dojo-logo.png" alt="Dojo" width={"5vw"} />
         </FadeInOut>
 
         <FadeInOut
@@ -42,7 +55,11 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
           fadeOut
           fadeInDelay={fadeInDelay}
         >
-          <Image src="/logos/cartridge-logo.png" alt="Cartridge" />
+          <Image
+            src="/logos/cartridge-logo.png"
+            alt="Cartridge"
+            width={"5vw"}
+          />
         </FadeInOut>
       </Flex>
     </Flex>
