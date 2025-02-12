@@ -1,16 +1,16 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 interface PoweredByPresentationProps {
-  visibleElements: {
-    text: boolean;
-    logo1: boolean;
-    logo2: boolean;
-    logo3: boolean;
+  visibleElements?: {
+    text?: boolean;
+    logo1?: boolean;
+    logo2?: boolean;
+    logo3?: boolean;
   };
 }
 
 export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
-  visibleElements,
+  visibleElements = { text: true, logo1: true, logo2: true, logo3: true },
 }) => {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>

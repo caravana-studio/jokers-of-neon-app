@@ -1,14 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 interface LogoPresentationProps {
-  visibleElements: {
-    logo: boolean;
-    text: boolean;
+  visibleElements?: {
+    logo?: boolean;
+    text?: boolean;
   };
 }
 
 export const LogoPresentation: React.FC<LogoPresentationProps> = ({
-  visibleElements,
+  visibleElements = { text: false, logo: false },
 }) => {
   return (
     <Flex flexDirection="column" alignItems="center" gap={4}>
