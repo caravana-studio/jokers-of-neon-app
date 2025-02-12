@@ -11,7 +11,7 @@ import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import localI18n from "./i18n.ts";
 import "./index.css";
-import { LoadingScreen } from "./pages/LoadingScreen.tsx";
+import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";

@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
-import { LoadingScreen } from "../pages/LoadingScreen";
+import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
 
