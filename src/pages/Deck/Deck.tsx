@@ -33,7 +33,7 @@ export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
         gap={4}
       >
         {!isSmallScreen && (
-          <Flex gap={4} alignItems="flex-start" minWidth="300px">
+          <Flex gap={4} alignItems="flex-start" minWidth="300px" zIndex={1}>
             <Heading>{t(burn ? "burn-title" : "title")}</Heading>
             <Text size="lg" color="blueLight" pt={1.5} fontWeight={500}>
               {deck && deck.currentLength !== deck.size && !inStore
