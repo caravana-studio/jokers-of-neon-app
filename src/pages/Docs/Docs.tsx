@@ -13,7 +13,6 @@ import { useGameState } from "../../state/useGameState";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
-import { useLocation } from "react-router-dom";
 
 interface DocsProps {
   lastIndexTab: number;
@@ -42,8 +41,7 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   });
   const { modCardsConfig } = useGameState();
   const { isSmallScreen } = useResponsiveValues();
-  const location = useLocation();
-  const goBackBtn = <BackToGameBtn state={location.state} />;
+  const goBackBtn = <BackToGameBtn />;
 
   return (
     <Background type="store">

@@ -148,7 +148,7 @@ export const DeckPageContentMobile = ({
               <></>
             )
           }
-          secondButton={<BackToGameBtn state={state} />}
+          secondButton={<BackToGameBtn />}
           hideDeckButton
         />
       </Flex>

@@ -1,14 +1,13 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
-export const BackToGameBtn: React.FC<{ state?: { inStore: boolean } }> = ({
-  state,
-}) => {
+export const BackToGameBtn = () => {
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
+  const { state } = useLocation();
 
   return (
     <Button

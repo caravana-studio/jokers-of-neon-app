@@ -58,7 +58,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
         onCardSelect={handleCardSelect}
       />
       <Flex gap={6}>
-        <BackToGameBtn state={state} />
+        <BackToGameBtn />
         {state.burn && (
           <Button
             minWidth={"100px"}
