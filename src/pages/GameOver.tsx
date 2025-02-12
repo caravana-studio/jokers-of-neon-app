@@ -66,6 +66,7 @@ export const GameOver = () => {
         flexDirection="column"
         alignItems="center"
         gap={4}
+        zIndex={1}
       >
         <Flex flexDirection="column" width="100%">
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
