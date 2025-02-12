@@ -57,6 +57,7 @@ export const CardImage3D = ({
       borderRadius={borderRadius}
       src={`/Cards/${cid}.png`}
       width={"100%"}
+      height={"100%"}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
     />
