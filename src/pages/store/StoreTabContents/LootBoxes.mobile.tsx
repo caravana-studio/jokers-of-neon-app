@@ -1,41 +1,22 @@
-import { Box, Button, Flex, Heading, keyframes, Text } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IoIosInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
   SpineAnimationRef,
 } from "../../../components/SpineAnimation";
 import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
-import { useInformationPopUp } from "../../../providers/InformationPopUpProvider";
+import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 import { getCardData } from "../../../utils/getCardData";
-import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 
 export const LootBoxesMobile = () => {
-  const { packs, setRun, buyPack, locked, setLockRedirection } = useStore();
-  const [buyDisabled, setBuyDisabled] = useState(false);
-  const game = useGame();
-  const cash = game?.cash ?? 0;
-  const { neonGreen, white } = theme.colors;
-  const { t } = useTranslation(["store"]);
-  const [showOverlay, setShowOverlay] = useState(false);
-
-  const { setInformation } = useInformationPopUp();
-
-  const openAnimationCallBack = () => {
-    setTimeout(() => {
-      setShowOverlay(true);
-    }, 500);
-  };
-
-  const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }`;
+  const { packs } = useStore();
 
   return (
     <Flex
@@ -50,22 +31,89 @@ export const LootBoxesMobile = () => {
       overflow="scroll"
     >
       {packs.map((pack) => {
-        const card = {
-          id: pack.blister_pack_id.toString(),
-          img: `packs/${pack.blister_pack_id}`,
-          idx: Number(pack.blister_pack_id),
-          price: Number(pack.cost),
-          card_id: Number(pack.blister_pack_id),
-        };
+        return <PackView key={`pack-${pack.blister_pack_id}`} pack={pack} />;
+      })}
+    </Flex>
+  );
+};
 
-        const notEnoughCash =
-          !card.price ||
-          (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
+const PackView = ({ pack }: { pack: BlisterPackItem }) => {
+  const { buyPack, locked, setLockRedirection } = useStore();
+  const [buyDisabled, setBuyDisabled] = useState(false);
+  const game = useGame();
+  const cash = game?.cash ?? 0;
+  const { neonGreen, white } = theme.colors;
+  const { t } = useTranslation(["store"]);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const navigate = useNavigate();
 
-        const { name, description, details, size } = getCardData(card, true);
-        const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const openAnimationCallBack = () => {
+    setTimeout(() => {
+      setShowOverlay(true);
+    }, 500);
+    setTimeout(() => {
+      navigate("/redirect/open-loot-box");
+    }, 1000);
+  };
 
-        const spineAnim = (
+  const card = {
+    id: pack.blister_pack_id.toString(),
+    img: `packs/${pack.blister_pack_id}`,
+    idx: Number(pack.blister_pack_id),
+    price: Number(pack.cost),
+    card_id: Number(pack.blister_pack_id),
+  };
+
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const notEnoughCash =
+    !card.price ||
+    (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
+
+  const { name, description, details, size } = getCardData(card, true);
+
+  const handleBuyClick = useMemo(
+    () => () => {
+      setBuyDisabled(true);
+      spineAnimationRef.current?.playOpenBoxAnimation();
+      buyPack(pack)
+        .then((response) => {
+          if (response) {
+            setLockRedirection(true);
+          } else {
+            setBuyDisabled(false);
+          }
+        })
+        .catch(() => {
+          setBuyDisabled(false);
+        });
+    },
+    [pack, buyPack]
+  );
+
+  useEffect(() => {
+    console.log("spineAnimationRef changed:", spineAnimationRef.current);
+  }, [spineAnimationRef.current]);
+
+  console.log("spineAnimationRef out", spineAnimationRef);
+  return (
+    <Flex
+      flexDirection={"column"}
+      justifyContent={"space-between"}
+      margin={"0 auto"}
+      bg="rgba(0, 0, 0, 0.6)"
+      borderRadius="10px"
+      pt={3}
+      pb={5}
+      pr={2}
+      boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+      width={"95%"}
+      h={"50%"}
+      key={`pack-${pack.blister_pack_id}`}
+      overflow="hidden"
+      zIndex={1}
+    >
+      <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
+        <Flex h="100%" w="40%">
           <Flex
             key={`pack-${pack.blister_pack_id}`}
             w="100%"
@@ -85,123 +133,79 @@ export const LootBoxesMobile = () => {
               onOpenAnimationStart={openAnimationCallBack}
             />
           </Flex>
-        );
+        </Flex>
 
-        const buyButton =
-          notEnoughCash && !pack.purchased ? (
+        <Flex
+          flexDirection={"column"}
+          width="60%"
+          flex="1"
+          height="100%"
+          justifyContent={"space-between"}
+        >
+          <Flex justifyContent="space-between" mb={2} alignItems="center">
+            <Heading fontWeight={"400"} fontSize={"xs"}>
+              {name}
+            </Heading>
+          </Flex>
+
+          <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
             <Text color={neonGreen} fontSize={"xs"}>
-              {t("store.labels.no-coins")}
+              {description}
             </Text>
-          ) : (
-            <Button
-              onClick={() => {
-                setBuyDisabled(true);
-                spineAnimationRef.current?.updateAnimationState();
-                buyPack(pack)
-                  .then((response) => {
-                    if (response) {
-                      spineAnimationRef.current?.playOpenBoxAnimation();
-                      setLockRedirection(true);
-                    } else {
-                      setBuyDisabled(false);
-                    }
-                  })
-                  .catch(() => {
-                    setBuyDisabled(false);
-                  });
-              }}
-              isDisabled={
-                notEnoughCash || locked || buyDisabled || pack.purchased
-              }
-              width={{ base: "30%", sm: "unset" }}
-              size={"xs"}
-              fontSize={10}
-              borderRadius={6}
-              height={5}
-              mr={2}
-            >
-              {t("store.preview-card.labels.buy")}
-            </Button>
-          );
+            <Text color={neonGreen} fontSize={"xs"}>
+              {t("store.packs.size", { size })}
+            </Text>
+          </Flex>
 
-        return (
-          <Flex
-            flexDirection={"column"}
-            justifyContent={"space-between"}
-            margin={"0 auto"}
-            bg="rgba(0, 0, 0, 0.6)"
-            borderRadius="10px"
-            pt={3}
-            pb={5}
-            pr={2}
-            boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-            width={"95%"}
-            h={"50%"}
-            key={`pack-${pack.blister_pack_id}`}
-            overflow="hidden"
-            sx={{
-              zIndex: 1,
-            }}
-          >
-            <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
-              <Flex h="100%" w="40%">
-                {spineAnim}
-              </Flex>
+          <Flex mb={4} gap={2}>
+            <LootBoxRateInfo name={name} details={details} />
+          </Flex>
 
-              <Flex
-                flexDirection={"column"}
-                width="60%"
-                flex="1"
-                height="100%"
-                justifyContent={"space-between"}
-              >
-                <Flex justifyContent="space-between" mb={2} alignItems="center">
-                  <Heading fontWeight={"400"} fontSize={"xs"}>
-                    {name}
-                  </Heading>
-                </Flex>
-
-                <Flex mb={4} flexGrow={1} flexDir={"column"} gap={2}>
-                  <Text color={neonGreen} fontSize={"xs"}>
-                    {description}
-                  </Text>
-                  <Text color={neonGreen} fontSize={"xs"}>
-                    {t("store.packs.size", { size })}
-                  </Text>
-                </Flex>
-
-                <Flex mb={4} gap={2}>
-                  <LootBoxRateInfo name={name} details={details} />
-                </Flex>
-
-                <Flex alignItems={"baseline"} justifyContent={"space-between"}>
-                  {card.price && (
-                    <PriceBox
-                      price={card.price}
-                      purchased={pack.purchased}
-                      discountPrice={pack.discount_cost}
-                      absolutePosition={false}
-                    />
-                  )}
-                  {buyButton}
-                </Flex>
-              </Flex>
-            </Flex>
-            {showOverlay && (
-              <Box
-                position="fixed"
-                top="0"
-                left="0"
-                right="0"
-                bottom="0"
-                backgroundColor="white"
-                zIndex="9999"
-                animation={`${fadeIn} 0.5s ease-out`}
+          <Flex alignItems={"baseline"} justifyContent={"space-between"}>
+            {card.price && (
+              <PriceBox
+                price={card.price}
+                purchased={pack.purchased}
+                discountPrice={pack.discount_cost}
+                absolutePosition={false}
               />
             )}
+            {notEnoughCash && !pack.purchased ? (
+              <Text color={neonGreen} fontSize={"xs"}>
+                {t("store.labels.no-coins")}
+              </Text>
+            ) : (
+              <Button
+                onClick={handleBuyClick}
+                isDisabled={
+                  notEnoughCash || locked || buyDisabled || pack.purchased
+                }
+                width={{ base: "30%", sm: "unset" }}
+                size={"xs"}
+                fontSize={10}
+                borderRadius={6}
+                height={5}
+                mr={2}
+              >
+                {t("store.preview-card.labels.buy")}
+              </Button>
+            )}
           </Flex>
-        );
-      })}
+        </Flex>
+      </Flex>
+      {showOverlay && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          backgroundColor="white"
+          zIndex={9999}
+          opacity={showOverlay ? 1 : 0}
+          animation={`opacity 0.5s ease-out`}
+        />
+      )}
     </Flex>
   );
 };
