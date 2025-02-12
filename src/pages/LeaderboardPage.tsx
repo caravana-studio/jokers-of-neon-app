@@ -38,7 +38,7 @@ export const LeaderBoardPage = () => {
         alignItems="center"
         gap={4}
       >
-        <Box>
+        <Box zIndex={1}>
           <Heading mb={"10px"} size="l" variant="italic" textAlign={"center"}>
             LEADERBOARD
           </Heading>
