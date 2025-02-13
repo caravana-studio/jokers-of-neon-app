@@ -1,14 +1,16 @@
 import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDisconnect } from "@starknet-react/core";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useGame } from "../dojo/queries/useGame.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { useState } from "react";
 import { SettingsModal } from "./SettingsModal.tsx";
-import { useGame } from "../dojo/queries/useGame.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -19,13 +21,15 @@ export const GameMenu = ({
   onlySound = false,
   showTutorial,
 }: GameMenuProps) => {
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const { executeCreateGame, restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const game = useGame();
+
+  const { disconnect } = useDisconnect();
 
   return (
     <>
@@ -95,6 +99,7 @@ export const GameMenu = ({
               onClick={() => {
                 localStorage.removeItem(GAME_ID);
                 localStorage.removeItem(LOGGED_USER);
+                disconnect();
                 restartGame();
                 navigate("/");
               }}

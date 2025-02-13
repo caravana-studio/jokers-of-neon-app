@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
@@ -29,6 +28,7 @@ import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { Speed } from "../enums/speed.ts";
@@ -195,7 +195,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setError,
     sortBySuit,
     setSortBySuit,
-    username,
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
@@ -241,6 +240,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const username = useUsername();
+
   const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
@@ -266,6 +267,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setError(true);
         }
       });
+    } else {
+      console.error("No username");
+      setError(true);
     }
   };
 

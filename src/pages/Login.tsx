@@ -7,6 +7,7 @@ import { Background } from "../components/Background.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { VIOLET } from "../theme/colors.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -21,13 +22,15 @@ export const Login = () => {
     navigate("/demo");
   };
 
+  const loggedInUser = useUsername()
+
   useEffect(() => {
     // if user is logged in, redirect to game
-    const user = localStorage.getItem(LOGGED_USER);
-    if (user) {
+    if (loggedInUser) {
+      console.log('redirecting to game', loggedInUser)
       redirectToGame();
     }
-  }, []);
+  }, [loggedInUser]);
 
   const validateAndCreateUser = () => {
     if (!username) {

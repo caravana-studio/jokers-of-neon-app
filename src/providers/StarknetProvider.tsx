@@ -1,16 +1,10 @@
 
 "use client";
-import { mainnet } from "@starknet-react/chains";
-import { StarknetConfig, jsonRpcProvider, voyager } from "@starknet-react/core";
+import { mainnet, sepolia } from "@starknet-react/chains";
+import { Connector, StarknetConfig, cartridgeProvider, jsonRpcProvider, voyager } from "@starknet-react/core";
 import React from "react";
+import { controller } from "../dojo/controller/controller";
 
-// import cartridgeConnector from "../cartridgeConnector";
-
-/* function rpc(chain: Chain) {
-  return {
-    nodeUrl: `https://starknet-mainnet.public.blastapi.io/rpc/v0_7`
-  }
-} */
 function rpc() {
   return {
     nodeUrl: import.meta.env.VITE_RPC_URL,
@@ -18,15 +12,15 @@ function rpc() {
 }
 
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
-//   const connectors = [/* cartridgeConnector */];
   const provider = jsonRpcProvider({ rpc });
 
   return (
     <StarknetConfig
-      chains={[mainnet]}
+      chains={[mainnet, sepolia]}
       provider={provider}
-      connectors={[]}
+      connectors={[controller as unknown as Connector]}
       explorer={voyager}
+      autoConnect
     >
       {children}
     </StarknetConfig>
