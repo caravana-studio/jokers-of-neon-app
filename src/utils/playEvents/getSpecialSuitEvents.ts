@@ -1,8 +1,13 @@
-import { SPECIAL_MODIFIER_SUIT_EVENT } from "../../constants/dojoEventKeys";
+import { DojoEvents } from "../../enums/dojoEvents";
 import { Suits } from "../../enums/suits";
 import { DojoEvent } from "../../types/DojoEvent";
 import { SpecialSuitEvent } from "../../types/ScoreData";
+import { getEventKey } from "../getEventKey";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
+
+const SPECIAL_MODIFIER_SUIT_EVENT_KEY = getEventKey(
+  DojoEvents.SPECIAL_MODIFIER_SUIT
+);
 
 export const getSpecialSuitEvents = (
   events: DojoEvent[]
@@ -11,7 +16,7 @@ export const getSpecialSuitEvents = (
   const specialSuit: { [key: number]: Suits } = {};
 
   const specialSuitEvents = events.filter(
-    (event) => event.keys[1] === SPECIAL_MODIFIER_SUIT_EVENT
+    (event) => event.keys[1] === SPECIAL_MODIFIER_SUIT_EVENT_KEY
   );
   specialSuitEvents.forEach((event) => {
     const special_idx = getNumberValueFromEvent(event, 4) ?? 0;

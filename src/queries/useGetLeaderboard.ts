@@ -3,12 +3,18 @@ import { useQuery } from "react-query";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
 import { useGameContext } from "../providers/GameProvider";
+import { snakeToCamel } from "../utils/snakeToCamel";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
+const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
+
 export const LEADERBOARD_QUERY = gql`
   query ($modId: String!) {
-    jokersOfNeonCoreGameModels(
+    ${QUERY_FIELD_NAME}(
       where: { mod_idEQ: $modId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
@@ -34,11 +40,7 @@ interface GameEdge {
   };
 }
 
-interface LeaderboardResponse {
-  jokersOfNeonCoreGameModels: {
-    edges: GameEdge[];
-  };
-}
+type LeaderboardResponse = Record<string, { edges: GameEdge[] }>;
 
 const getPrize = (position: number): number => {
   if (position >= 3 && position <= 6) {
@@ -75,9 +77,8 @@ export const useGetLeaderboard = (gameId?: number) => {
     () => fetchGraphQLData(modId)
   );
   const { data } = queryResponse;
-  console.log("data", data);
 
-  const dojoLeaders = data?.jokersOfNeonCoreGameModels?.edges
+  const dojoLeaders = data?.[QUERY_FIELD_NAME]?.edges
     ?.filter((edge) => edge.node.player_score > 0)
     .sort((a, b) => {
       if (a.node.level !== b.node.level) {
