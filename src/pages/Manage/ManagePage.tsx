@@ -1,11 +1,11 @@
 import { Button, Flex, useBreakpointValue } from "@chakra-ui/react";
-import { Background } from "../../components/Background";
-import { PositionedGameMenu } from "../../components/GameMenu";
-import { ManagePageContent } from "./ManagePageContent";
-import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { PositionedGameMenu } from "../../components/GameMenu";
+import { ManagePageContent } from "./ManagePageContent";
+import { ManagePageContentMobile } from "./ManagePageContent.mobile";
+import { BackgroundDecoration } from "../../components/Background";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const ManagePage = () => {
   });
 
   return (
-    <Background bgDecoration dark type="home">
+    <BackgroundDecoration>
       <PositionedGameMenu decoratedPage />
       <PositionedDiscordLink />
       <Flex
@@ -47,6 +47,6 @@ export const ManagePage = () => {
           </Button>
         </Flex>
       </Flex>
-    </Background>
+    </BackgroundDecoration>
   );
 };

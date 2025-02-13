@@ -1,9 +1,9 @@
-import { DeckPageContentMobile } from "./DeckPageContent.mobile";
-import { DeckPageContent } from "./DeckPageContent";
-import { Background } from "../../components/Background";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { DeckFilterProvider } from "../../providers/DeckFilterProvider";
 import { useLocation } from "react-router-dom";
+import { DelayedLoading } from "../../components/DelayedLoading";
+import { DeckFilterProvider } from "../../providers/DeckFilterProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { DeckPageContent } from "./DeckPageContent";
+import { DeckPageContentMobile } from "./DeckPageContent.mobile";
 
 export const DeckPage = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -13,14 +13,16 @@ export const DeckPage = () => {
   const burn = location.state?.burn ?? false;
 
   return (
-    <DeckFilterProvider>
-      <Background type="game">
-        {isSmallScreen ? (
-          <DeckPageContentMobile state={{ inStore, burn }} />
-        ) : (
-          <DeckPageContent state={{ inStore, burn }} />
-        )}
-      </Background>
-    </DeckFilterProvider>
+    <DelayedLoading ms={1000}>
+      <DeckFilterProvider>
+        <>
+          {isSmallScreen ? (
+            <DeckPageContentMobile state={{ inStore, burn }} />
+          ) : (
+            <DeckPageContent state={{ inStore, burn }} />
+          )}
+        </>
+      </DeckFilterProvider>
+    </DelayedLoading>
   );
 };

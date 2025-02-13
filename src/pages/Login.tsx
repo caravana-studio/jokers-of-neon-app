@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer.tsx";
-import { Background } from "../components/Background.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { VIOLET } from "../theme/colors.tsx";
@@ -77,7 +76,7 @@ export const Login = () => {
   }, []);
 
   return (
-    <Background type="home">
+    <>
       <AudioPlayer />
       <Flex
         direction="column"
@@ -155,6 +154,6 @@ export const Login = () => {
           </Button>
         </Flex>
       </Flex>
-    </Background>
+    </>
   );
 };

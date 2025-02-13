@@ -9,7 +9,6 @@ import {
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
@@ -70,7 +69,7 @@ export const StorePreviewComponent = ({
   console.log("onDurationChange", onDurationChange);
 
   return (
-    <Background type="home" dark scrollOnMobile>
+    <>
       <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
@@ -313,6 +312,6 @@ export const StorePreviewComponent = ({
         />
       )}
       <PositionedDiscordLink />
-    </Background>
+    </>
   );
 };

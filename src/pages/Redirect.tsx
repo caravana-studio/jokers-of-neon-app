@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Background } from "../components/Background";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { Loading } from "../components/Loading";
@@ -28,10 +27,10 @@ export const Redirect = () => {
   }, [state, page, navigate]);
 
   return (
-    <Background type={"game"}>
+    <>
       <Loading />
       <PositionedGameMenu />
       <PositionedDiscordLink />
-    </Background>
+    </>
   );
 };
