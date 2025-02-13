@@ -6,7 +6,6 @@ import {
 import { getLevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
-import { getCashEvents } from "../utils/playEvents/getCashEvents";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
   failedTransactionToast,
@@ -90,29 +89,13 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        const cards = getCardsFromEvents(tx.events);
-        return {
-          success: true,
-          cards: cards,
-          gameOver: !!tx.events.find(
-            (event) => event.keys[1] === PLAY_GAME_OVER_EVENT
-          ),
-          cashEvent: getCashEvents(tx.events),
-          levelUpHandEvent: getLevelUpPlayEvent(tx.events),
-        };
-      } else {
-        return {
-          success: false,
-          cards: [],
-        };
+        return getPlayEvents(tx.events);
       }
+      return;
     } catch (e) {
       failedTransactionToast();
       console.log(e);
-      return {
-        success: false,
-        cards: [],
-      };
+      return;
     }
   };
 

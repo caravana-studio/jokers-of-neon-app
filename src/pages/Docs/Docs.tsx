@@ -2,9 +2,9 @@ import { Flex, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
@@ -13,11 +13,13 @@ import { useGameState } from "../../state/useGameState";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { DocsCardsRow } from "./DocsCardsRow";
-import { DelayedLoading } from "../../components/DelayedLoading";
 
-export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
+interface DocsProps {
+  lastIndexTab: number;
+}
+
+export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   const { t } = useTranslation(["docs"]);
-  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const { highlightedCard } = useCardHighlight();
   const tabFontSize = isMobile ? ["2.6vw", "1.9vw", "1.4vw", "1vw"] : "0.85vw";
@@ -39,7 +41,6 @@ export const DocsPage = ({ lastIndexTab = 0 }: { lastIndexTab: number }) => {
   });
   const { modCardsConfig } = useGameState();
   const { isSmallScreen } = useResponsiveValues();
-
   const goBackBtn = <BackToGameBtn />;
 
   return (

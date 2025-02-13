@@ -1,4 +1,4 @@
-import { expect, test, beforeAll } from "vitest";
+import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
 import {
@@ -44,19 +44,21 @@ import {
   SA,
   SJ,
 } from "../../mocks/cardMocks";
-import i18n from "../../../i18n";
 import { WildcardModifier } from "../../mocks/modifierMocks";
-
-beforeAll(async () => {
-  await i18n.loadNamespaces(["traditional-cards", "neon-cards", "effects"]);
-});
 
 test("Royal flush should work", () => {
   expect(testCheckHand([HA, HK, HQ, HJ, H10])).toBe(Plays.ROYAL_FLUSH);
 });
 
 test("Royal flush with wildcard should work", () => {
-  expect(testCheckHand([C10, CQ, CA, H2, JOKER1, WildcardModifier], [], {[3]:[5]}, [0,1,2,3,4])).toBe(Plays.ROYAL_FLUSH);
+  expect(
+    testCheckHand(
+      [C10, CQ, CA, H2, JOKER1, WildcardModifier],
+      [],
+      { [3]: [5] },
+      [0, 1, 2, 3, 4]
+    )
+  ).toBe(Plays.ROYAL_FLUSH);
 });
 
 test("StraightFlush should work", () => {
@@ -64,7 +66,14 @@ test("StraightFlush should work", () => {
 });
 
 test("StraightFlush with wildcard should work", () => {
-  expect(testCheckHand([C2, HK, HQ, HJ, H9, WildcardModifier], [], {[0]:[5]}, [0,1,2,3,4] )).toBe(Plays.STRAIGHT_FLUSH);
+  expect(
+    testCheckHand(
+      [C2, HK, HQ, HJ, H9, WildcardModifier],
+      [],
+      { [0]: [5] },
+      [0, 1, 2, 3, 4]
+    )
+  ).toBe(Plays.STRAIGHT_FLUSH);
 });
 
 test("FourOfAKind should work", () => {
@@ -72,7 +81,14 @@ test("FourOfAKind should work", () => {
 });
 
 test("FourOfAKind with wildcard should work", () => {
-  expect(testCheckHand([H2, C2, D2, S3, WildcardModifier], [], {[3]:[4]}, [0,1,2,3])).toBe(Plays.FOUR_OF_A_KIND);
+  expect(
+    testCheckHand(
+      [H2, C2, D2, S3, WildcardModifier],
+      [],
+      { [3]: [4] },
+      [0, 1, 2, 3]
+    )
+  ).toBe(Plays.FOUR_OF_A_KIND);
 });
 
 test("FullHouse should work", () => {
@@ -80,7 +96,14 @@ test("FullHouse should work", () => {
 });
 
 test("FullHouse with wildcard should work", () => {
-  expect(testCheckHand([H2, C2, H6, C3, D3, WildcardModifier], [], {[2]:[5]}, [0,1,2,3,4])).toBe(Plays.FULL_HOUSE);
+  expect(
+    testCheckHand(
+      [H2, C2, H6, C3, D3, WildcardModifier],
+      [],
+      { [2]: [5] },
+      [0, 1, 2, 3, 4]
+    )
+  ).toBe(Plays.FULL_HOUSE);
 });
 
 test("Ace Straight should work", () => {
@@ -92,7 +115,14 @@ test("Straight should work", () => {
 });
 
 test("Straight with wildcard should work", () => {
-  expect(testCheckHand([S6N, CQ, D8N, S9, C5, WildcardModifier], [], {[1]:[5]}, [0,1,2,3,4])).toBe(Plays.STRAIGHT);
+  expect(
+    testCheckHand(
+      [S6N, CQ, D8N, S9, C5, WildcardModifier],
+      [],
+      { [1]: [5] },
+      [0, 1, 2, 3, 4]
+    )
+  ).toBe(Plays.STRAIGHT);
 });
 
 test("Straight high should work", () => {
@@ -108,7 +138,14 @@ test("Flush should work", () => {
 });
 
 test("Flush with wildcard should work", () => {
-  expect(testCheckHand([H2, H3, HQ, CK, H10, WildcardModifier], [], {[3]:[5]}, [0,1,2,3,4])).toBe(Plays.FLUSH);
+  expect(
+    testCheckHand(
+      [H2, H3, HQ, CK, H10, WildcardModifier],
+      [],
+      { [3]: [5] },
+      [0, 1, 2, 3, 4]
+    )
+  ).toBe(Plays.FLUSH);
 });
 
 test("ThreeOfAKind should work", () => {
@@ -116,7 +153,9 @@ test("ThreeOfAKind should work", () => {
 });
 
 test("ThreeOfAKind with wildcard should work", () => {
-  expect(testCheckHand([H2, C2, D3, WildcardModifier], [], {[2]:[3]}, [0,1,2])).toBe(Plays.THREE_OF_A_KIND);
+  expect(
+    testCheckHand([H2, C2, D3, WildcardModifier], [], { [2]: [3] }, [0, 1, 2])
+  ).toBe(Plays.THREE_OF_A_KIND);
 });
 
 test("Two Pairs should work", () => {
@@ -128,7 +167,9 @@ test("Pair should work", () => {
 });
 
 test("Pair with wildcard should work", () => {
-  expect(testCheckHand([H2, C10, WildcardModifier], [], {[1]:[2]}, [0,1])).toBe(Plays.PAIR);
+  expect(
+    testCheckHand([H2, C10, WildcardModifier], [], { [1]: [2] }, [0, 1])
+  ).toBe(Plays.PAIR);
 });
 
 test("HighCard should work", () => {
@@ -140,7 +181,9 @@ test("HighCard with A should work", () => {
 });
 
 test("HighCard with wildcard should work", () => {
-  expect(testCheckHand([H2, WildcardModifier], [], {[0]:[1]}, [0])).toBe(Plays.HIGH_CARD);
+  expect(testCheckHand([H2, WildcardModifier], [], { [0]: [1] }, [0])).toBe(
+    Plays.HIGH_CARD
+  );
 });
 
 test("FiveOfAKind should work", () => {

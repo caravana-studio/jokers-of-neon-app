@@ -13,17 +13,17 @@ import { Deck } from "./Deck";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
 
 interface DeckPageContentMobileProps {
-  inStore?: boolean;
-  burn?: boolean;
+  state: {
+    inStore: boolean;
+    burn: boolean;
+  };
 }
 
 export const DeckPageContentMobile = ({
-  inStore = false,
-  burn = false,
+  state,
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
-
   const [tabIndex, setTabIndex] = useState(0);
 
   const handleCardSelect = (card: Card) => {
@@ -105,7 +105,11 @@ export const DeckPageContentMobile = ({
         </Flex>
 
         {tabIndex === 0 && (
-          <Deck inStore={inStore} burn={burn} onCardSelect={handleCardSelect} />
+          <Deck
+            inStore={state.inStore}
+            burn={state.burn}
+            onCardSelect={handleCardSelect}
+          />
         )}
 
         {tabIndex === 1 && (
@@ -123,7 +127,7 @@ export const DeckPageContentMobile = ({
         )}
         <MobileBottomBar
           firstButton={
-            burn ? (
+            state.burn ? (
               <Button
                 size="xs"
                 fontSize={10}

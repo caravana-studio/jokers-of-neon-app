@@ -1,10 +1,8 @@
+import { Cards } from "../enums/cards";
+import { ModifiersId } from "../enums/modifiersId";
 import { Plays } from "../enums/plays";
 import { Suits } from "../enums/suits";
-import { ModifiersId } from "../enums/modifiersId";
 import { Card } from "../types/Card";
-import { CardData } from "../types/CardData";
-import { getCardData } from "./getCardData";
-import { Cards } from "../enums/cards";
 
 export const checkHand = (
   hand: Card[],
@@ -34,7 +32,7 @@ export const checkHand = (
   };
 
   const modifyCardData = (card: Card, modifiers: number[]) => {
-    let modifiedCardData = { ...getCardData(card) };
+    let modifiedCardData = { ...card, card: card.value, type: "" };
 
     modifiers.forEach((modifierIdx) => {
       const modifierCard = hand.find((mc) => mc.idx === modifierIdx);
@@ -50,7 +48,10 @@ export const checkHand = (
     });
 
     if (specialAllCardsToHearts) {
-      if (modifiedCardData.suit != Suits.JOKER && modifiedCardData.suit != Suits.WILDCARD) {
+      if (
+        modifiedCardData.suit != Suits.JOKER &&
+        modifiedCardData.suit != Suits.WILDCARD
+      ) {
         modifiedCardData.suit = Suits.HEARTS;
       }
     }
@@ -59,7 +60,7 @@ export const checkHand = (
   };
 
   let jokers = 0;
-  const cardsData = preSelectedCards.reduce<CardData[]>((acc, card_index) => {
+  const cardsData = preSelectedCards.reduce<any[]>((acc, card_index) => {
     const card = hand.find((c) => c.idx === card_index);
     if (card) {
       const modifiers = preSelectedModifiers[card_index] ?? [];

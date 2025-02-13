@@ -54,7 +54,10 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
 
   const { isSmallScreen, cardScale } = useResponsiveValues();
 
-  const scale = isSmallScreen ? cardScale * 1.2 : cardScale * 1.4;
+  const desktopScaleMultiplier = specialCards.length > 5 ? 1.4 : 1.2;
+  const scale = isSmallScreen
+    ? cardScale * 1.2
+    : cardScale * desktopScaleMultiplier;
 
   return (
     <>

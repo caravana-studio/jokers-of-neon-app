@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
+import { useUsername } from "../../dojo/utils/useUsername";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
@@ -21,7 +21,7 @@ export const GamePage = () => {
     setup: { masterAccount },
     account: { account },
   } = useDojo();
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const {
     checkOrCreateGame,
     setLockedCash,
@@ -55,8 +55,6 @@ export const GamePage = () => {
     setIsRageRound(rageRound?.is_active ?? false);
     setRageCards(rageCards);
   }, []);
-
-  if (!username) navigate("/");
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
