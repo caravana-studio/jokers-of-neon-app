@@ -54,7 +54,7 @@ export const ManagePage = () => {
         navigate(-1);
       }}
     >
-      {t("go-back")}
+      {t("power-ups.go-back")}
     </Button>
   );
 
