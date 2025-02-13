@@ -36,7 +36,12 @@ async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
-  let presentationEnded = sessionStorage.getItem(SKIP_PRESENTATION) === "true";
+
+  const hasSeenPresentation =
+    sessionStorage.getItem(SKIP_PRESENTATION) === "true";
+  const isNavigatingFromHome = window.location.pathname === "/";
+  const shouldSkipPresentation = hasSeenPresentation || !isNavigatingFromHome;
+  let presentationEnded = shouldSkipPresentation;
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -65,7 +70,7 @@ async function init() {
 
   root.render(
     <LoadingScreen
-      showPresentation
+      showPresentation={!shouldSkipPresentation}
       onPresentationEnd={() => {
         presentationEnded = true;
         sessionStorage.setItem(SKIP_PRESENTATION, "true");
