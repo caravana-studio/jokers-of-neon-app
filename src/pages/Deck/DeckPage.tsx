@@ -16,9 +16,9 @@ export const DeckPage = () => {
     <DeckFilterProvider>
       <Background type="game">
         {isSmallScreen ? (
-          <DeckPageContentMobile inStore={inStore} burn={burn} />
+          <DeckPageContentMobile state={{ inStore, burn }} />
         ) : (
-          <DeckPageContent inStore={inStore} burn={burn} />
+          <DeckPageContent state={{ inStore, burn }} />
         )}
       </Background>
     </DeckFilterProvider>

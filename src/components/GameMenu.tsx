@@ -8,6 +8,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { useState } from "react";
 import { SettingsModal } from "./SettingsModal.tsx";
+import { useGame } from "../dojo/queries/useGame.tsx";
 
 interface GameMenuProps {
   onlySound?: boolean;
@@ -24,6 +25,7 @@ export const GameMenu = ({
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
+  const game = useGame();
 
   return (
     <>
@@ -60,7 +62,9 @@ export const GameMenu = ({
           )}
           <MenuItem
             onClick={() => {
-              navigate("/docs");
+              navigate("/docs", {
+                state: { inStore: game?.state === "AT_SHOP" },
+              });
             }}
           >
             {t("game.game-menu.docs-btn")}
