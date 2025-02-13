@@ -144,7 +144,7 @@ export const GameContent = () => {
         gap={8}
         sx={{ height: "100%" }}
       >
-        <Heading size="xl" variant="neonGreen">
+        <Heading size="xl" zIndex={1} variant="neonGreen">
           {t("error.labels.error-msj")}
         </Heading>
         <Button

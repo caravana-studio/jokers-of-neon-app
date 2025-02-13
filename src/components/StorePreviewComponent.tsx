@@ -5,12 +5,10 @@ import {
   HStack,
   Heading,
   Text,
-  keyframes,
 } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Background } from "../components/Background";
 import CachedImage from "../components/CachedImage.tsx";
 import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../components/GameMenu.tsx";
@@ -65,17 +63,13 @@ export const StorePreviewComponent = ({
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
-  const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
 
   console.log("temporal Price", temporalPrice);
   console.log("duration", duration);
   console.log("onDurationChange", onDurationChange);
 
   return (
-    <Background type="home" dark scrollOnMobile>
+    <>
       <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
@@ -315,10 +309,9 @@ export const StorePreviewComponent = ({
           bottom="0"
           backgroundColor="white"
           zIndex="9999"
-          animation={`${fadeIn} 0.5s ease-out`}
         />
       )}
       <PositionedDiscordLink />
-    </Background>
+    </>
   );
 };

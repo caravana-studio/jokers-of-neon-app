@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x48fb9eb3d6adc6a1660f33d949d56cd321f04260a83c9f2bee15598c11525c7",
-      "class_hash": "0x45881676f33ab093c68e2a310e3c2d277b5fcea86cfafb371e39619e4c7586c",
+      "address": "0x1f36ad683d39a6a40c5ee674e8d5e640770d5bfb7231707d003d0c6733df2d3",
+      "class_hash": "0x11429237c9f7a2fa7f2e8dae60df30500bec60fc52afd42cac060a8fbd766a2",
       "abi": [
         {
           "type": "impl",
@@ -2352,8 +2352,8 @@
       ]
     },
     {
-      "address": "0x4bc7dd619baf237e6b99b5687f2b099d6ef86ebc47997ac86778e0e89be33c5",
-      "class_hash": "0x5ff505249d66e7255cc7c14ad99ed338b3dcd380398a2fa40ee2a09f7c25501",
+      "address": "0x3519dbb08152037659d93777dc8d3e9953f86e346008da312a842bc13d94e2a",
+      "class_hash": "0x4fc32d999325e9e3655f955c34dba95505dcff6c60c13b8717f5210add7dcbc",
       "abi": [
         {
           "type": "impl",
@@ -2565,8 +2565,8 @@
       ]
     },
     {
-      "address": "0x295293c2932bae595769729b0fbe586e33a364e2f6a952e34f540dafcf31f30",
-      "class_hash": "0x5ffbe59d9a11bb7bb426711b0f26b3c68ee2b780f8aee2d48ddd47d5808fc91",
+      "address": "0x6b0ee71b95205b4aaf076c31c279f710d3203d810e02b96efef0377b156b97",
+      "class_hash": "0x3b00857ca57b18d2a649418242749127d7efeccc699967a111d8e346e5ecd27",
       "abi": [
         {
           "type": "impl",
@@ -3552,6 +3552,18 @@
       "class_hash": "0x38512fc12307ef27f52eb0a6e1494fca4de3f6d9d233e359a6d5eb9b46fd9ae",
       "tag": "jokers_of_neon_core-RoundScoreEvent",
       "selector": "0x58ddb180a3356ec8a3ba8b8d3a27ea4542efacfa37647bbea9e097f9e4b8672"
+    },
+    {
+      "members": [],
+      "class_hash": "0x19a5c06b3a8417ff3f9883be3acb0e33c835795bd81fb87a5a47e6ed7d2d3af",
+      "tag": "jokers_of_neon_core-TrophyCreation",
+      "selector": "0x755abea9e75fbf35fbb4f1be02da784239e268a1a2358c9de58c7f8b06b93ce"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1922d2cd8b63eccf66321673234a52126cd9f0ab1bf6298c5abee6ee80c8990",
+      "tag": "jokers_of_neon_core-TrophyProgression",
+      "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
   ]
 }

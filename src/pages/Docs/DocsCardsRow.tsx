@@ -15,7 +15,7 @@ export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
       sm: 1,
       md: 1.2,
       lg: 1.5,
-      xl: 3,
+      xl: 2,
     },
     { ssr: false }
   );

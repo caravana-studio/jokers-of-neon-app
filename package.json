@@ -13,6 +13,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@cartridge/controller": "0.5.7",
+    "@cartridge/connector": "0.5.7",
     "@chakra-ui/anatomy": "^2.1.1",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
@@ -21,7 +23,7 @@
     "@dojoengine/create-burner": "1.0.9",
     "@dojoengine/react": "1.0.9",
     "@dojoengine/recs": "2.0.13",
-    "@dojoengine/sdk": "^1.0.9",
+    "@dojoengine/sdk": "1.0.9",
     "@dojoengine/state": "1.0.9",
     "@dojoengine/torii-client": "1.0.9",
     "@dojoengine/utils": "1.0.9",

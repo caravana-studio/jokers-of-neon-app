@@ -155,7 +155,7 @@ export const MobileGameContent = () => {
         gap={8}
         sx={{ height: "100%" }}
       >
-        <Heading size="xl" variant="neonGreen">
+        <Heading zIndex={1} size="xl" variant="neonGreen">
           {t("error.labels.error-msj")}
         </Heading>
         <Button

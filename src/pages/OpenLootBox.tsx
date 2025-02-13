@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Background } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -18,6 +17,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
+import { BackgroundDecoration } from "../components/Background";
 
 const WhiteOverlay = styled.div<{ $visible: boolean }>`
   position: fixed;
@@ -104,7 +104,7 @@ export const OpenLootBox = () => {
   );
 
   return (
-    <Background type="home" dark bgDecoration>
+    <BackgroundDecoration>
       <PositionedGameMenu decoratedPage />
       <WhiteOverlay $visible={overlayVisible} />
       {cards.length > 0 ? (
@@ -227,6 +227,6 @@ export const OpenLootBox = () => {
         />
       )}
       {!isSmallScreen && <PositionedDiscordLink />}
-    </Background>
+    </BackgroundDecoration>
   );
 };

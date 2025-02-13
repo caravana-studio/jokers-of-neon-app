@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { Background } from "../components/Background";
 import { DiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
@@ -14,6 +13,7 @@ import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
+import { BackgroundDecoration } from "../components/Background";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -58,7 +58,7 @@ export const GameOver = () => {
   }, [position]);
 
   return (
-    <Background type="game" bgDecoration>
+    <BackgroundDecoration>
       <PositionedGameMenu decoratedPage />
       <Flex
         height="100%"
@@ -66,6 +66,7 @@ export const GameOver = () => {
         flexDirection="column"
         alignItems="center"
         gap={4}
+        zIndex={1}
       >
         <Flex flexDirection="column" width="100%">
           <Heading size="md" variant="italic" textAlign={"center"} mb={3}>
@@ -112,6 +113,6 @@ export const GameOver = () => {
           </Flex>
         </Flex>
       </Flex>
-    </Background>
+    </BackgroundDecoration>
   );
 };

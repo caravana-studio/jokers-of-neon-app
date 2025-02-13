@@ -2,8 +2,10 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Background } from "../../components/Background";
+import { BackgroundDecoration } from "../../components/Background";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
+import { PositionedGameMenu } from "../../components/GameMenu";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
@@ -59,7 +61,9 @@ export const ManagePage = () => {
   );
 
   return (
-    <Background bgDecoration={!isSmallScreen} dark type="home">
+    <BackgroundDecoration>
+      <PositionedGameMenu decoratedPage />
+      <PositionedDiscordLink />
       <Flex
         flexDirection={"column"}
         height={"100%"}
@@ -77,11 +81,12 @@ export const ManagePage = () => {
           />
         ) : (
           <ManagePageContent
-          discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
-          onCardClick={handleCardClick}
-          sellButton={sellButton}
-          goBackButton={goBackButton} />
+            discardedCards={discardedCards}
+            preselectedCard={preselectedCard}
+            onCardClick={handleCardClick}
+            sellButton={sellButton}
+            goBackButton={goBackButton}
+          />
         )}
       </Flex>
       {confirmationModalOpen && (
@@ -103,6 +108,6 @@ export const ManagePage = () => {
           }}
         />
       )}
-    </Background>
+    </BackgroundDecoration>
   );
 };
