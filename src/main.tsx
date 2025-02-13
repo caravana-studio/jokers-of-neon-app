@@ -35,45 +35,60 @@ async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
+  let presentationEnded = false;
 
-  let promises = [];
-
-  root.render(<LoadingScreen />);
-
-  const loadImages = async () => {
-    preloadImages();
-    preloadSpineAnimations();
-    preloadVideos();
+  const renderApp = (setupResult: any) => {
+    const queryClient = new QueryClient();
+    root.render(
+      <StarknetProvider>
+        <DojoProvider value={setupResult}>
+          <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+              <Toaster />
+              <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                <App />
+              </I18nextProvider>
+            </QueryClientProvider>
+          </BrowserRouter>
+        </DojoProvider>
+      </StarknetProvider>
+    );
   };
 
-  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
+  const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES);
+  const imagesPromise = Promise.all([
+    preloadImages(),
+    preloadSpineAnimations(),
+    preloadVideos(),
+  ]);
 
-  Promise.all(promises).then(() => loadImages());
+  root.render(
+    <LoadingScreen
+      skipPresentation={false}
+      onPresentationEnd={() => {
+        presentationEnded = true;
+      }}
+    />
+  );
 
   registerServiceWorker();
+  await Promise.all([i18nPromise, imagesPromise]);
 
   try {
-    const setupPromise = setup(dojoConfig);
-    promises.push(setupPromise);
-    const setupResult = await setupPromise;
+    const setupResult = await setup(dojoConfig);
 
-    Promise.all(promises).then(() => {
-      const queryClient = new QueryClient();
-      root.render(
-        <StarknetProvider>
-          <DojoProvider value={setupResult}>
-            <BrowserRouter>
-              <QueryClientProvider client={queryClient}>
-                <Toaster />
-                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                  <App />
-                </I18nextProvider>
-              </QueryClientProvider>
-            </BrowserRouter>
-          </DojoProvider>
-        </StarknetProvider>
-      );
-    });
+    if (!presentationEnded) {
+      await new Promise<void>((resolve) => {
+        const interval = setInterval(() => {
+          if (presentationEnded) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 1000);
+      });
+    }
+
+    renderApp(setupResult);
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);

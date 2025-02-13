@@ -6,11 +6,13 @@ import { Flex } from "@chakra-ui/react";
 interface LoadingScreenProps {
   error?: boolean;
   skipPresentation?: boolean;
+  onPresentationEnd?: () => void;
 }
 
 export const LoadingScreen = ({
   error = false,
   skipPresentation = true,
+  onPresentationEnd = () => {},
 }: LoadingScreenProps) => {
   const [visibleSpinner, setVisibleSpinner] = useState(false);
 
@@ -48,6 +50,7 @@ export const LoadingScreen = ({
             <OpeningScreenAnimation
               onAnimationEnd={function (): void {
                 setVisibleSpinner(true);
+                onPresentationEnd();
               }}
             />
           )}
