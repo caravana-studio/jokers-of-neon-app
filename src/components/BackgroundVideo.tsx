@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getVideoFromCache } from "../utils/cacheUtils";
 
 interface BackgroundVideoProps {
@@ -54,6 +54,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
         width: "100%",
         height: "100%",
         objectFit: "cover",
+        pointerEvents: "none",
       }}
     />
   );
