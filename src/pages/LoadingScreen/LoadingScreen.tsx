@@ -5,13 +5,13 @@ import { Flex } from "@chakra-ui/react";
 
 interface LoadingScreenProps {
   error?: boolean;
-  skipPresentation?: boolean;
+  showPresentation?: boolean;
   onPresentationEnd?: () => void;
 }
 
 export const LoadingScreen = ({
   error = false,
-  skipPresentation = true,
+  showPresentation = false,
   onPresentationEnd = () => {},
 }: LoadingScreenProps) => {
   const [visibleSpinner, setVisibleSpinner] = useState(false);
@@ -46,7 +46,7 @@ export const LoadingScreen = ({
           justifyContent={"center"}
           alignItems={"center"}
         >
-          {!skipPresentation && (
+          {showPresentation && (
             <OpeningScreenAnimation
               onAnimationEnd={function (): void {
                 setVisibleSpinner(true);
@@ -55,7 +55,7 @@ export const LoadingScreen = ({
             />
           )}
 
-          {(visibleSpinner || skipPresentation) && (
+          {(visibleSpinner || !showPresentation) && (
             <img src="loader.gif" alt="loader" width="100px" />
           )}
         </Flex>

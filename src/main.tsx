@@ -16,6 +16,7 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -35,7 +36,7 @@ async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
-  let presentationEnded = false;
+  let presentationEnded = sessionStorage.getItem(SKIP_PRESENTATION) === "true";
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -64,9 +65,10 @@ async function init() {
 
   root.render(
     <LoadingScreen
-      skipPresentation={false}
+      showPresentation
       onPresentationEnd={() => {
         presentationEnded = true;
+        sessionStorage.setItem(SKIP_PRESENTATION, "true");
       }}
     />
   );
