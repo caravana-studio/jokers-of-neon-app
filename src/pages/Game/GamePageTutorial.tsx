@@ -1,11 +1,10 @@
+import { useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { RemoveScroll } from "react-remove-scroll";
-import { Background } from "../../components/Background";
-import { GameContent } from "./GameContent";
-import { MobileGameContent } from "./GameContent.mobile";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { SKIP_IN_GAME_TUTORIAL } from "../../constants/localStorage";
-import { useEffect } from "react";
+import { GameContent } from "./GameContent";
+import { MobileGameContent } from "./GameContent.mobile";
 
 export const GamePageTutorial = () => {
   useEffect(() => {
@@ -13,12 +12,12 @@ export const GamePageTutorial = () => {
   }, []);
 
   return (
-    <Background type={"game"}>
+    <>
       {isMobile ? <MobileGameContent /> : <GameContent />}
       <RemoveScroll>
         <></>
       </RemoveScroll>
       {!isMobile && <PositionedDiscordLink />}
-    </Background>
+    </>
   );
 };

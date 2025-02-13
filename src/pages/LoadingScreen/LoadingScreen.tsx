@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../../App.scss";
 import OpeningScreenAnimation from "./OpeningScreenAnimation";
 import { Flex } from "@chakra-ui/react";
+import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 
 interface LoadingScreenProps {
   error?: boolean;
@@ -17,25 +18,7 @@ export const LoadingScreen = ({
   const [visibleSpinner, setVisibleSpinner] = useState(false);
 
   return (
-    <div
-      style={{
-        height: "100%",
-        position: "fixed",
-        bottom: 0,
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        alignItems: "center",
-        fontFamily: "Orbitron",
-        fontSize: 30,
-        letterSpacing: "0.25em",
-        background: `url(bg/home-bg.jpg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        flexWrap: "wrap",
-      }}
-    >
+    <PreThemeLoadingPage>
       {error ? (
         <div>error loading game</div>
       ) : (
@@ -60,6 +43,6 @@ export const LoadingScreen = ({
           )}
         </Flex>
       )}
-    </div>
+    </PreThemeLoadingPage>
   );
 };

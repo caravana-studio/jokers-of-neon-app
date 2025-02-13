@@ -6,7 +6,6 @@ import { Duration } from "../enums/duration";
 import { MobileCoins } from "../pages/store/Coins";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
-import { Background } from "./Background";
 import { CardImage3D } from "./CardImage3D";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { MobileBottomBar } from "./MobileBottomBar";
@@ -38,7 +37,7 @@ export const StorePreviewCardComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="store" dark scrollOnMobile>
+    <>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -135,6 +134,6 @@ export const StorePreviewCardComponentMobile = ({
           secondButton={buyButton}
         />
       </Flex>
-    </Background>
+    </>
   );
 };

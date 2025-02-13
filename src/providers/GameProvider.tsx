@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CLASSIC_MOD_ID } from "../constants/general.ts";
 import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
@@ -29,6 +28,7 @@ import { useRound } from "../dojo/queries/useRound.tsx";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
 import { Speed } from "../enums/speed.ts";
@@ -44,6 +44,7 @@ import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -194,7 +195,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setError,
     sortBySuit,
     setSortBySuit,
-    username,
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
@@ -240,6 +240,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const username = useUsername();
+
   const executeCreateGame = async () => {
     setError(false);
     setGameLoading(true);
@@ -265,6 +267,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setError(true);
         }
       });
+    } else {
+      console.error("No username");
+      setError(true);
     }
   };
 
@@ -426,40 +431,75 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onDiscardClick = () => {
     discardSound();
     setPreSelectionLocked(true);
-    setDiscardAnimation(true);
     stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
-      if (response.success) {
-        if (response.cashEvent) {
-          // cash event
-          response.cashEvent.forEach((event, index) => {
-            setTimeout(() => {
-              const { idx, special_idx, cash } = event;
-              setAnimatedCard({
-                idx: [idx],
-                special_idx,
-                cash,
-                animationIndex: 900 + index,
-              });
-            }, playAnimationDuration * index); // Stagger animations for each event
-          });
-        }
-        if (response.levelUpHandEvent) {
-          state.setLevelUpHand(response.levelUpHandEvent);
-        }
+      if (response) {
+        const calculateDuration = (
+          events?: any[],
+          baseDuration = playAnimationDuration,
+          multiplier = 1
+        ) => (events?.length ?? 0) * baseDuration * multiplier;
+
+        const durations = {
+          cardPlayScore: calculateDuration(
+            response.cardPlayScoreEvents?.map((item) => item.hand).flat() ?? []
+          ),
+          specialCardPlayScore: calculateDuration(
+            response.specialCardPlayScoreEvents
+          ),
+        };
+
+        const ALL_CARDS_DURATION = Object.values(durations).reduce(
+          (a, b) => a + b,
+          0
+        );
+
+        //  if (response.levelUpHandEvent) {
+        //   state.setLevelUpHand(response.levelUpHandEvent);
+        // }
+
+        response.cardPlayScoreEvents?.forEach((event, index) => {
+          const isCash = event.eventType === EventTypeEnum.Cash;
+          const special_idx = event.specials[0]?.idx;
+
+          setTimeout(() => {
+            event.hand.forEach((card, innerIndex) => {
+              const { idx, quantity } = card;
+              setTimeout(() => {
+                if (isCash) {
+                  cashSound();
+                  setAnimatedCard({
+                    special_idx,
+                    idx: [idx],
+                    cash: quantity,
+                    animationIndex: 400 + index,
+                  });
+                }
+              }, playAnimationDuration * innerIndex);
+            });
+          }, playAnimationDuration * index);
+        });
+
         if (response.gameOver) {
           setTimeout(() => {
             navigate(`/gameover/${gameId}`);
           }, 1000);
-        } else {
-          replaceCards(response.cards);
         }
+
+        setTimeout(() => {
+          setDiscardAnimation(true);
+        }, ALL_CARDS_DURATION);
+
+        setTimeout(() => {
+          setPreSelectionLocked(false);
+          clearPreSelection();
+          setAnimatedCard(undefined);
+          setDiscardAnimation(false);
+          replaceCards(response.cards);
+        }, ALL_CARDS_DURATION + 300);
       } else {
         rollbackDiscard();
       }
-      setPreSelectionLocked(false);
-      clearPreSelection();
-      setDiscardAnimation(false);
     });
   };
 

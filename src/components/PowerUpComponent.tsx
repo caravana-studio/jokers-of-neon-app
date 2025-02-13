@@ -75,8 +75,10 @@ export const PowerUpComponent = ({
             <Box
               sx={{
                 position: "absolute",
-                top: `${width / 3 - 15}px`,
-                left: -1,
+                top: isSmallScreen
+                  ? `${width / 3 - 10}px`
+                  : `${width / 3 - 15}px`,
+                left: isSmallScreen ? 1 : -1,
                 zIndex: 10,
               }}
             >

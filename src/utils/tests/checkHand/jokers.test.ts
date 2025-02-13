@@ -1,12 +1,57 @@
-import { expect, test, beforeAll } from "vitest";
+import { expect, test } from "vitest";
 import { Plays } from "../../../enums/plays";
 import { testCheckHand } from "../../../testUtils/testCheckHand";
-import { C10, C2, C3, C4, C5, C6, C8, C9, CA, CJ, CK, CQ, D10, D2, D3, D4, D5, D6, D7, D8, DJ, DK, DQ, H10, H2, H3, H4, H5, H6, H7, H8, H9, HA, HJ, HK, HQ, JOKER1, JOKER2, S10, S2, S3, S4, S5, S6, S7, S8, S9, SA, SK } from "../../mocks/cardMocks";
-import i18n from "../../../i18n";
-
-beforeAll(async () => {
-  await i18n.loadNamespaces(['traditional-cards', 'neon-cards', 'effects']);
-});
+import {
+  C10,
+  C2,
+  C3,
+  C4,
+  C5,
+  C6,
+  C8,
+  C9,
+  CA,
+  CJ,
+  CK,
+  CQ,
+  D10,
+  D2,
+  D3,
+  D4,
+  D5,
+  D6,
+  D7,
+  D8,
+  DJ,
+  DK,
+  DQ,
+  H10,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  H7,
+  H8,
+  H9,
+  HA,
+  HJ,
+  HK,
+  HQ,
+  JOKER1,
+  JOKER2,
+  S10,
+  S2,
+  S3,
+  S4,
+  S5,
+  S6,
+  S7,
+  S8,
+  S9,
+  SA,
+  SK,
+} from "../../mocks/cardMocks";
 
 test("One Joker should be high card", () => {
   expect(testCheckHand([JOKER1])).toBe(Plays.HIGH_CARD);
@@ -21,7 +66,7 @@ test("Pair with one card and a joker should work", () => {
 });
 
 test("Pair with four cards and a joker should work", () => {
-  expect(testCheckHand([DK, S7, H4, C2 , JOKER2])).toBe(Plays.PAIR);
+  expect(testCheckHand([DK, S7, H4, C2, JOKER2])).toBe(Plays.PAIR);
 });
 
 test("Three Jokers should be ThreeOfAKind should work", () => {
@@ -45,15 +90,21 @@ test("ThreeOfAKind with two jokers", () => {
 });
 
 test("ThreeOfAKind with three cards and two jokers", () => {
-  expect(testCheckHand([H2, S3, D10, JOKER1, JOKER2])).toBe(Plays.THREE_OF_A_KIND);
+  expect(testCheckHand([H2, S3, D10, JOKER1, JOKER2])).toBe(
+    Plays.THREE_OF_A_KIND
+  );
 });
 
 test("Four Jokers should be FourOfAKind", () => {
-  expect(testCheckHand([JOKER1, JOKER2, JOKER1, JOKER2])).toBe(Plays.FOUR_OF_A_KIND);
+  expect(testCheckHand([JOKER1, JOKER2, JOKER1, JOKER2])).toBe(
+    Plays.FOUR_OF_A_KIND
+  );
 });
 
 test("FourOfAKind with one card should work", () => {
-  expect(testCheckHand([C2, JOKER2, JOKER1, JOKER2])).toBe(Plays.FOUR_OF_A_KIND);
+  expect(testCheckHand([C2, JOKER2, JOKER1, JOKER2])).toBe(
+    Plays.FOUR_OF_A_KIND
+  );
 });
 
 test("FourOfAKind with two cards should work", () => {
@@ -65,11 +116,15 @@ test("FourOfAKind with three cards should work", () => {
 });
 
 test("FiveOfAKind with a pair and three jokers should work", () => {
-  expect(testCheckHand([JOKER2, D2, H2, JOKER2, JOKER1])).toBe(Plays.FIVE_OF_A_KIND);
+  expect(testCheckHand([JOKER2, D2, H2, JOKER2, JOKER1])).toBe(
+    Plays.FIVE_OF_A_KIND
+  );
 });
 
 test("FiveOfAKind with three of a kind and two jokers should work", () => {
-  expect(testCheckHand([S2, D2, H2, JOKER2, JOKER1])).toBe(Plays.FIVE_OF_A_KIND);
+  expect(testCheckHand([S2, D2, H2, JOKER2, JOKER1])).toBe(
+    Plays.FIVE_OF_A_KIND
+  );
 });
 
 test("FiveOfAKind with four of a kind and a jokers should work", () => {
@@ -77,15 +132,21 @@ test("FiveOfAKind with four of a kind and a jokers should work", () => {
 });
 
 test("Five Jokers should be RoyalFlush", () => {
-  expect(testCheckHand([JOKER1, JOKER2, JOKER1, JOKER2, JOKER1])).toBe(Plays.ROYAL_FLUSH);
+  expect(testCheckHand([JOKER1, JOKER2, JOKER1, JOKER2, JOKER1])).toBe(
+    Plays.ROYAL_FLUSH
+  );
 });
 
 test("RoyalFlush with one card should work", () => {
-  expect(testCheckHand([H10, JOKER1, JOKER2, JOKER1, JOKER2])).toBe(Plays.ROYAL_FLUSH);
+  expect(testCheckHand([H10, JOKER1, JOKER2, JOKER1, JOKER2])).toBe(
+    Plays.ROYAL_FLUSH
+  );
 });
 
 test("RoyalFlush with two cards should work", () => {
-  expect(testCheckHand([H10, HJ, JOKER2, JOKER1, JOKER2])).toBe(Plays.ROYAL_FLUSH);
+  expect(testCheckHand([H10, HJ, JOKER2, JOKER1, JOKER2])).toBe(
+    Plays.ROYAL_FLUSH
+  );
 });
 
 test("RoyalFlush with three cards should work", () => {
@@ -109,7 +170,9 @@ test("StraightFlush with four cards should work", () => {
 });
 
 test("StraightFlush with four jokers should work", () => {
-  expect(testCheckHand([H5, JOKER1, JOKER2, JOKER1, JOKER2])).toBe(Plays.STRAIGHT_FLUSH);
+  expect(testCheckHand([H5, JOKER1, JOKER2, JOKER1, JOKER2])).toBe(
+    Plays.STRAIGHT_FLUSH
+  );
 });
 
 test("FullHouse with one joker should work", () => {
@@ -210,8 +273,8 @@ test("Flush should with one joker and almost straight should work", () => {
 
 test("Straigt case 4 with Joker", () => {
   expect(testCheckHand([S7, C8, S10, C6, JOKER1])).toBe(Plays.STRAIGHT);
-})
+});
 
 test("Full house case 1 with Joker", () => {
   expect(testCheckHand([CJ, DJ, CK, HK, JOKER1])).toBe(Plays.FULL_HOUSE);
-})
+});
