@@ -80,6 +80,8 @@ export const UtilsTab = () => {
     <Flex
       flexDir={"column"}
       width={"100%"}
+      justifyContent={"space-between"}
+      flexGrow={1}
       sx={{
         zIndex: 1,
       }}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
 import { CashSymbol } from "../../components/CashSymbol";
-import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useStore } from "../../providers/StoreProvider";
@@ -84,19 +83,17 @@ export const DeckPageContentMobile = ({
         />
       </Tab>
       <Tab title={t("tabs.plays")}>
-        <DelayedLoading>
-          <Flex
-            w="100%"
-            alignItems="center"
-            height={"100%"}
-            px={3}
-            sx={{
-              zIndex: 1,
-            }}
-          >
-            <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
-          </Flex>
-        </DelayedLoading>
+        <Flex
+          w="100%"
+          alignItems="center"
+          height={"100%"}
+          px={3}
+          sx={{
+            zIndex: 1,
+          }}
+        >
+          <PlaysAvailableTable maxHeight={{ base: "80%", lg: "60%" }} />
+        </Flex>
       </Tab>
     </TabPattern>
   );

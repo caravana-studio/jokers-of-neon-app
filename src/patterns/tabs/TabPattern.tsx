@@ -13,13 +13,17 @@ interface TabProps {
 interface TabPatternProps {
   children: React.ReactElement<TabProps>[];
   bottomBar?: ReactNode;
+  topBar?: ReactNode;
   lastIndexTab?: number;
+  disableGoBack?: boolean;
 }
 
 export const TabPattern = ({
   children,
+  topBar,
   bottomBar,
   lastIndexTab = 0,
+  disableGoBack = false,
 }: TabPatternProps) => {
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const navigate = useNavigate();
@@ -29,7 +33,7 @@ export const TabPattern = ({
       if (tabIndex < children.length - 1) setTabIndex(tabIndex + 1);
     },
     onSwipedRight: () => {
-      if (tabIndex === 0) {
+      if (tabIndex === 0 && !disableGoBack) {
         navigate(-1);
       } else if (tabIndex > 0) setTabIndex(tabIndex - 1);
     },
@@ -74,7 +78,9 @@ export const TabPattern = ({
         justify="center"
         align="center"
         overflow="hidden"
+        flexDir={"column"}
       >
+        {topBar}
         <AnimatePresence mode="wait">
           <motion.div
             key={tabIndex}
@@ -82,7 +88,7 @@ export const TabPattern = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", display: "flex", flexDirection: 'column' }}
           >
             {children[tabIndex]}
           </motion.div>
