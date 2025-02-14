@@ -1,28 +1,27 @@
 import { useEffect } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../../components/Background";
+import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
+import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { LOGGED_USER } from "../../constants/localStorage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
+import { useUsername } from "../../dojo/utils/useUsername";
+import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { useCardAnimations } from "../../providers/CardAnimationsProvider";
-import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
-import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 
 export const GamePage = () => {
   const {
     setup: { masterAccount },
     account: { account },
   } = useDojo();
-  const username = localStorage.getItem(LOGGED_USER);
+  const username = useUsername();
   const {
     checkOrCreateGame,
     setLockedCash,
@@ -57,8 +56,6 @@ export const GamePage = () => {
     setRageCards(rageCards);
   }, []);
 
-  if (!username) navigate("/");
-
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
@@ -73,7 +70,7 @@ export const GamePage = () => {
   }, [game?.state, roundRewards]);
 
   return (
-    <Background type={isRageRound ? "rage" : "game"}>
+    <>
       {!skipRageAnimation && <RageRoundAnimation />}
       <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
@@ -88,6 +85,6 @@ export const GamePage = () => {
         <></>
       </RemoveScroll>
       {!isSmallScreen && <PositionedDiscordLink />}
-    </Background>
+    </>
   );
 };

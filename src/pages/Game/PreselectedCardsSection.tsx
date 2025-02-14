@@ -74,6 +74,8 @@ export const PreselectedCardsSection = ({
             height="188px"
             background={"url(grid.png)"}
             width="90%"
+            backgroundRepeat="space"
+            backgroundSize="52px auto"
           >
             {preSelectedCards.map((idx) => {
               const card = hand.find((c) => c.idx === idx);

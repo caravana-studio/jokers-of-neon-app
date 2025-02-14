@@ -62,6 +62,7 @@ export default {
         overflow: "hidden",
         height: "100vh",
         width: "100vw",
+        backgroundImage: 'url(/bg/game-bg.jpg)'
       },
     },
   },

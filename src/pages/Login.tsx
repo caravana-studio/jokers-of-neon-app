@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer.tsx";
-import { Background } from "../components/Background.tsx";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
 import { VIOLET } from "../theme/colors.tsx";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -21,13 +21,15 @@ export const Login = () => {
     navigate("/demo");
   };
 
+  const loggedInUser = useUsername()
+
   useEffect(() => {
     // if user is logged in, redirect to game
-    const user = localStorage.getItem(LOGGED_USER);
-    if (user) {
+    if (loggedInUser) {
+      console.log('redirecting to game', loggedInUser)
       redirectToGame();
     }
-  }, []);
+  }, [loggedInUser]);
 
   const validateAndCreateUser = () => {
     if (!username) {
@@ -74,7 +76,7 @@ export const Login = () => {
   }, []);
 
   return (
-    <Background type="home">
+    <>
       <AudioPlayer />
       <Flex
         direction="column"
@@ -152,6 +154,6 @@ export const Login = () => {
           </Button>
         </Flex>
       </Flex>
-    </Background>
+    </>
   );
 };

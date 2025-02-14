@@ -3,19 +3,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
-import { Background } from "../../components/Background";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
-import { Loading } from "../../components/Loading.tsx";
 
+import Joyride, { CallBackProps } from "react-joyride";
 import {
   JOYRIDE_LOCALES,
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
-import Joyride, { CallBackProps } from "react-joyride";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
@@ -74,16 +73,8 @@ export const Store = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Background type="game">
-        <Loading />
-      </Background>
-    );
-  }
-
   return (
-    <Background type="store" scrollOnMobile>
+    <>
       <Joyride
         steps={STORE_TUTORIAL_STEPS}
         run={run}
@@ -94,11 +85,14 @@ export const Store = () => {
         callback={handleJoyrideCallback}
         locale={JOYRIDE_LOCALES}
       />
-      {isSmallScreen ? (
-        <StoreContentMobile lastIndexTab={lastTabIndex} />
-      ) : (
-        <StoreContent />
-      )}
-    </Background>
+
+      <DelayedLoading loading={loading}>
+        {isSmallScreen ? (
+          <StoreContentMobile lastIndexTab={lastTabIndex} />
+        ) : (
+          <StoreContent />
+        )}
+      </DelayedLoading>
+    </>
   );
 };

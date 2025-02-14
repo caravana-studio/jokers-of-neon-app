@@ -15,7 +15,6 @@ export const UnlockedSlot = ({
       width={`${CARD_WIDTH * scale}`}
       height={`${CARD_HEIGHT * scale}`}
       minWidth={`${CARD_WIDTH * scale}`}
-      border={"1px solid white"}
       borderRadius="12%"
       boxShadow={`0px 0px 1px 0px white, 0px 0px 1px 0px white inset`}
       backgroundColor={backgroundColor ?? "transparent"}

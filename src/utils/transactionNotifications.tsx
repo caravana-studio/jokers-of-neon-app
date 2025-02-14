@@ -57,7 +57,7 @@ const CircularToast = ({
     >
       {status === "loading" ? (
         <Spinner
-          boxSize={isMobile ? 10: 20}
+          boxSize={isMobile ? 10 : 20}
           thickness="2px"
           speed="0.65s"
           color="white"
