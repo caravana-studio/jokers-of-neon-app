@@ -16,6 +16,7 @@ interface TabPatternProps {
   topBar?: ReactNode;
   lastIndexTab?: number;
   disableGoBack?: boolean;
+  onTabChange?: (index: number) => void;
 }
 
 export const TabPattern = ({
@@ -24,6 +25,7 @@ export const TabPattern = ({
   bottomBar,
   lastIndexTab = 0,
   disableGoBack = false,
+  onTabChange,
 }: TabPatternProps) => {
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const navigate = useNavigate();
@@ -54,7 +56,10 @@ export const TabPattern = ({
       <MobileDecoration />
       <Tabs
         index={tabIndex}
-        onChange={setTabIndex}
+        onChange={(index) => {
+          setTabIndex(index);
+          onTabChange?.(index);
+        }}
         w="90%"
         isFitted
         color="white"
@@ -88,7 +93,12 @@ export const TabPattern = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ width: "100%", height: "100%", display: "flex", flexDirection: 'column' }}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
             {children[tabIndex]}
           </motion.div>
