@@ -1,20 +1,28 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useConnect } from "@starknet-react/core";
+import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
-import { Background } from "../components/Background";
 import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { PoweredBy } from "../components/PoweredBy";
+import { useDojo } from "../dojo/useDojo";
+
 import SpineAnimation from "../components/SpineAnimation";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
+const isDev = import.meta.env.VITE_DEV === "true";
+
 export const Home = () => {
+  const [playButtonClicked, setPlayButtonClicked] = useState(false);
+  const { connect, connectors } = useConnect();
+  const { account } = useDojo();
+
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
   const { setModId } = useGameContext();
@@ -26,8 +34,14 @@ export const Home = () => {
 
   const enableMods = useFeatureFlagEnabled("global", "showMods");
 
+  useEffect(() => {
+    if (account?.account && playButtonClicked) {
+      navigate(enableMods ? "/mods" : "/demo");
+    }
+  }, [account, playButtonClicked]);
+
   return (
-    <Background type="home">
+    <>
       <AudioPlayer />
       <LanguageSwitcher />
       <Flex
@@ -75,30 +89,19 @@ export const Home = () => {
             gap={{ base: 4, sm: 6 }}
             flexWrap={{ base: "wrap", sm: "nowrap" }}
           >
-            {!enableMods && (
-              <Button
-                onClick={() => {
-                  navigate("/leaderboard");
-                }}
-                minW={["150px", "300px"]}
-              >
-                {t("home.btn.leaderboard-btn")}
-              </Button>
-            )}
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (enableMods) {
-                  navigate("/mods");
+                if (isDev) {
+                  navigate(enableMods ? "/mods" : "/login");
                 } else {
-                  //default to classic
-                  setModId(CLASSIC_MOD_ID);
-                  navigate("/login");
+                  setPlayButtonClicked(true);
+                  connect({ connector: connectors[0] });
                 }
               }}
               minW={["150px", "300px"]}
             >
-              {t(enableMods ? "home.btn.start" : "home.btn.playDemo-btn")}
+              {t("home.btn.start")}
             </Button>
           </Flex>
         </Flex>
@@ -113,6 +116,6 @@ export const Home = () => {
       >
         <DiscordLink />
       </Box>
-    </Background>
+    </>
   );
 };
