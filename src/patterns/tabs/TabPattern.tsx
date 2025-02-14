@@ -1,4 +1,5 @@
 import { Tab as ChakraTab, Flex, TabList, Tabs } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
@@ -28,13 +29,13 @@ export const TabPattern = ({ children, bottomBar }: TabPatternProps) => {
 
   return (
     <Flex
-      width={"100%"}
-      height={"100%"}
+      width="100%"
+      height="100%"
       pt={8}
-      alignItems={"center"}
-      justifyContent={"space-between"}
+      alignItems="center"
+      justifyContent="space-between"
       gap={2}
-      flexDirection={"column"}
+      flexDirection="column"
       overflow="hidden"
     >
       <MobileDecoration />
@@ -54,7 +55,28 @@ export const TabPattern = ({ children, bottomBar }: TabPatternProps) => {
           ))}
         </TabList>
       </Tabs>
-      {children[tabIndex]}
+
+      <Flex
+        w="100%"
+        height="100%"
+        justify="center"
+        align="center"
+        overflow="hidden"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tabIndex}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ width: "100%", height: "100%" }}
+          >
+            {children[tabIndex]}
+          </motion.div>
+        </AnimatePresence>
+      </Flex>
+
       {bottomBar}
     </Flex>
   );
