@@ -7,6 +7,7 @@ import App from "./App.tsx";
 
 import i18n from "i18next";
 import { I18nextProvider } from "react-i18next";
+import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import localI18n from "./i18n.ts";
@@ -16,7 +17,6 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -40,8 +40,7 @@ async function init() {
   const hasSeenPresentation =
     sessionStorage.getItem(SKIP_PRESENTATION) === "true";
   const isNavigatingFromHome = window.location.pathname === "/";
-  const shouldSkipPresentation = hasSeenPresentation || !isNavigatingFromHome;
-  let presentationEnded = shouldSkipPresentation;
+  const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -61,6 +60,22 @@ async function init() {
     );
   };
 
+  const presentationPromise = shouldSkipPresentation
+    ? Promise.resolve()
+    : new Promise<void>((resolve) => {
+        root.render(
+          <LoadingScreen
+            showPresentation={true}
+            onPresentationEnd={() => {
+              sessionStorage.setItem(SKIP_PRESENTATION, "true");
+              resolve();
+            }}
+          />
+        );
+      });
+
+  registerServiceWorker();
+
   const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES);
   const imagesPromise = Promise.all([
     preloadImages(),
@@ -68,32 +83,15 @@ async function init() {
     preloadVideos(),
   ]);
 
-  root.render(
-    <LoadingScreen
-      showPresentation={!shouldSkipPresentation}
-      onPresentationEnd={() => {
-        presentationEnded = true;
-        sessionStorage.setItem(SKIP_PRESENTATION, "true");
-      }}
-    />
-  );
-
-  registerServiceWorker();
-  await Promise.all([i18nPromise, imagesPromise]);
-
   try {
-    const setupResult = await setup(dojoConfig);
+    const setupPromise = setup(dojoConfig);
 
-    if (!presentationEnded) {
-      await new Promise<void>((resolve) => {
-        const interval = setInterval(() => {
-          if (presentationEnded) {
-            clearInterval(interval);
-            resolve();
-          }
-        }, 1000);
-      });
-    }
+    const [setupResult] = await Promise.all([
+      setupPromise,
+      i18nPromise,
+      imagesPromise,
+      presentationPromise,
+    ]);
 
     renderApp(setupResult);
   } catch (e) {
