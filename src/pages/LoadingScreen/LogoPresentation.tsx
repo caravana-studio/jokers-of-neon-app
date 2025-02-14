@@ -1,5 +1,6 @@
 import { Flex, Text, Image } from "@chakra-ui/react";
 import { FadeInOut } from "../../components/animations/FadeInOut";
+import { isMobile } from "react-device-detect";
 
 interface LogoPresentationProps {
   visibleElements?: {
@@ -39,7 +40,7 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
         fadeOutDelay={1}
         fadeOutDuration={0.5}
       >
-        <Text fontSize="lg">PRESENTS</Text>
+        <Text fontSize={isMobile ? "1.2rem" : "2.2rem"}>PRESENTS</Text>
       </FadeInOut>
     </Flex>
   );
