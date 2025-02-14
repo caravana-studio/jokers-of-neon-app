@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
@@ -9,23 +8,16 @@ import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { Leaderboard } from "../components/Leaderboard";
 import { PoweredBy } from "../components/PoweredBy";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
-import { useGameContext } from "../providers/GameProvider";
 
 export const LeaderBoardPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
-  const { setModId } = useGameContext();
 
   const tournamentEnabled = useFeatureFlagEnabled(
     "global",
     "tournamentEnabled"
   );
-
-  useEffect(() => {
-    setModId(CLASSIC_MOD_ID);
-  }, []);
 
   return (
     <Background type="home">
