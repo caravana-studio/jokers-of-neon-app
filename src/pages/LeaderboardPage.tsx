@@ -20,7 +20,7 @@ export const LeaderBoardPage = () => {
   );
 
   return (
-    <Background type="home">
+    <Background>
       <AudioPlayer />
       <LanguageSwitcher />
       <Flex
