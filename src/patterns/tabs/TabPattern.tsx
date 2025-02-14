@@ -1,6 +1,7 @@
 import { Tab as ChakraTab, Flex, TabList, Tabs } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
 
@@ -12,17 +13,25 @@ interface TabProps {
 interface TabPatternProps {
   children: React.ReactElement<TabProps>[];
   bottomBar?: ReactNode;
+  lastIndexTab?: number;
 }
 
-export const TabPattern = ({ children, bottomBar }: TabPatternProps) => {
-  const [tabIndex, setTabIndex] = useState(0);
+export const TabPattern = ({
+  children,
+  bottomBar,
+  lastIndexTab = 0,
+}: TabPatternProps) => {
+  const [tabIndex, setTabIndex] = useState(lastIndexTab);
+  const navigate = useNavigate();
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (tabIndex < children.length - 1) setTabIndex(tabIndex + 1);
     },
     onSwipedRight: () => {
-      if (tabIndex > 0) setTabIndex(tabIndex - 1);
+      if (tabIndex === 0) {
+        navigate(-1);
+      } else if (tabIndex > 0) setTabIndex(tabIndex - 1);
     },
     trackTouch: true,
   });
@@ -31,7 +40,7 @@ export const TabPattern = ({ children, bottomBar }: TabPatternProps) => {
     <Flex
       width="100%"
       height="100%"
-      pt={8}
+      pt={[8, "80px"]}
       alignItems="center"
       justifyContent="space-between"
       gap={2}
@@ -49,7 +58,10 @@ export const TabPattern = ({ children, bottomBar }: TabPatternProps) => {
       >
         <TabList>
           {children.map((child, index) => (
-            <ChakraTab key={index} fontSize={12}>
+            <ChakraTab
+              key={index}
+              fontSize={children.length > 3 ? [10, 14] : [12, 14]}
+            >
               {child.props.title}
             </ChakraTab>
           ))}
