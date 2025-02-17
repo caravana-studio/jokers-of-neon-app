@@ -39,7 +39,7 @@ export const FilterButton = ({
       onClick={onClick}
     >
       <Flex gap={[1, 2]} alignItems={"center"}>
-        {Icon && <Icon width={12} fill={iconColor} />}
+        {Icon && <Icon width={12} fill={iconColor} height={"100%"} />}
         <Text fontSize={[10, 14]}>{label}</Text>
         <Text color="blueLight" fontSize={[10, 14]}>
           {unusedCardsLength !== deckLength
