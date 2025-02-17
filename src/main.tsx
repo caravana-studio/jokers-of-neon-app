@@ -17,6 +17,7 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 
 const I18N_NAMESPACES = [
   "game",
@@ -51,7 +52,9 @@ async function init() {
             <QueryClientProvider client={queryClient}>
               <Toaster />
               <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                <App />
+                <FadeInOut isVisible fadeInDelay={1}>
+                  <App />
+                </FadeInOut>
               </I18nextProvider>
             </QueryClientProvider>
           </BrowserRouter>

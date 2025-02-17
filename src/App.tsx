@@ -32,6 +32,7 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
+import { FadeInOut } from "./components/animations/FadeInOut";
 
 function App() {
   const location = useLocation();
@@ -46,14 +47,7 @@ function App() {
                 <Background>
                   <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
-                      <Route
-                        path="/"
-                        element={
-                          <AnimatedPage>
-                            <Home />
-                          </AnimatedPage>
-                        }
-                      />
+                      <Route path="/" element={<Home />} />
                       <Route
                         path="/mods"
                         element={

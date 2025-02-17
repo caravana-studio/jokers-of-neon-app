@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Box } from "@chakra-ui/react";
 
 interface FadeInOutProps {
   isVisible?: boolean;
@@ -53,7 +52,7 @@ export const FadeInOut: React.FC<FadeInOutProps> = ({
       }}
       style={{ pointerEvents: isVisible ? "auto" : "none" }}
     >
-      <Box width={"100%"}>{children}</Box>
+      {children}
     </motion.div>
   );
 };
