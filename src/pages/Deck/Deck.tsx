@@ -5,7 +5,7 @@ import { useDeckFilters } from "../../providers/DeckFilterProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { DeckCardsGrid } from "./DeckCardsGrid";
-import { DeckFilters } from "./DeckFilters";
+import { DeckFilters } from "./Filters/DeckFilters";
 import { preprocessCards } from "./Utils/DeckCardsUtils";
 
 interface DeckProps {

@@ -1,56 +1,15 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useDeck } from "../../dojo/queries/useDeck";
-import { Cards } from "../../enums/cards";
-import { Suits } from "../../enums/suits";
-import { useDeckFilters } from "../../providers/DeckFilterProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { Card } from "../../types/Card";
+import { useDeck } from "../../../dojo/queries/useDeck";
+import { Cards } from "../../../enums/cards";
+import { Suits } from "../../../enums/suits";
+import { useDeckFilters } from "../../../providers/DeckFilterProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { Card } from "../../../types/Card";
+import { FilterButton } from "./FilterButton";
+import { Icons } from "../../../constants/icons";
 
 const filterBySuit = (suit: Suits) => (card: Card) => card.suit === suit;
-
-interface FilterButtonProps {
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-  filterFn: (card: Card) => boolean;
-  inStore?: boolean;
-}
-
-const FilterButton = ({
-  label,
-  isActive,
-  onClick,
-  filterFn,
-  inStore = false,
-}: FilterButtonProps) => {
-  const deck = useDeck();
-  const deckLength = deck?.fullDeckCards.filter(filterFn)?.length ?? 0;
-  const usedCardsLength = inStore
-    ? 0
-    : deck?.usedCards.filter(filterFn)?.length ?? 0;
-  const unusedCardsLength = deckLength - usedCardsLength;
-
-  return (
-    <Button
-      size={"sm"}
-      variant={isActive ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
-      px={[2, 3]}
-      borderRadius={"full"}
-      h={["20px", "25px"]}
-      onClick={onClick}
-    >
-      <Flex gap={[1, 2]}>
-        <Text fontSize={[10, 14]}>{label}</Text>
-        <Text color="blueLight" fontSize={[10, 14]}>
-          {unusedCardsLength !== deckLength
-            ? `( ${unusedCardsLength} / ${deckLength} )`
-            : `( ${deckLength} )`}
-        </Text>
-      </Flex>
-    </Button>
-  );
-};
 
 interface DeckFiltersProps {
   inStore?: boolean;
@@ -92,6 +51,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
       >
         <FilterButton
           label={t("suit.club").toUpperCase()}
+          icon={Icons.CLUB}
           isActive={filterButtonsState.suit === Suits.CLUBS}
           onClick={() =>
             handleFilterChange({
@@ -106,6 +66,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.spade").toUpperCase()}
+          icon={Icons.SPADE}
           isActive={filterButtonsState.suit === Suits.SPADES}
           onClick={() =>
             handleFilterChange({
@@ -120,6 +81,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.heart").toUpperCase()}
+          icon={Icons.HEART}
           isActive={filterButtonsState.suit === Suits.HEARTS}
           onClick={() =>
             handleFilterChange({
@@ -134,6 +96,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.diamond").toUpperCase()}
+          icon={Icons.DIAMOND}
           isActive={filterButtonsState.suit === Suits.DIAMONDS}
           onClick={() =>
             handleFilterChange({
@@ -148,6 +111,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.joker").toUpperCase()}
+          icon={Icons.JOKER}
           isActive={filterButtonsState.suit === Suits.JOKER}
           onClick={() =>
             handleFilterChange({
@@ -162,6 +126,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.figures").toUpperCase()}
+          icon={Icons.FIGURE}
           isActive={!!filterButtonsState.isFigures}
           onClick={() =>
             handleFilterChange({
@@ -177,6 +142,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.aces").toUpperCase()}
+          icon={Icons.ACE}
           isActive={!!filterButtonsState.isAces}
           onClick={() =>
             handleFilterChange({
@@ -189,6 +155,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         {!noNeonCards && (
           <FilterButton
             label={t("suit.neon").toUpperCase()}
+            icon={Icons.NEON}
             isActive={!!filterButtonsState.isNeon}
             onClick={() =>
               handleFilterChange({
@@ -202,6 +169,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         {!noModifierCards && (
           <FilterButton
             label={t("suit.modifier").toUpperCase()}
+            icon={Icons.MODIFIER}
             isActive={!!filterButtonsState.isModifier}
             onClick={() =>
               handleFilterChange({
