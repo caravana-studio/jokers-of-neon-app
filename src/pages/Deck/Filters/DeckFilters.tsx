@@ -18,15 +18,11 @@ interface DeckFiltersProps {
 export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const { filterButtonsState, updateFilters } = useDeckFilters();
-
   const deck = useDeck();
-
   const { isSmallScreen } = useResponsiveValues();
 
-  const noNeonCards =
-    deck?.fullDeckCards.filter((card) => !card.isNeon).length ?? 0 === 0;
-  const noModifierCards =
-    deck?.fullDeckCards.filter((card) => !card.isModifier).length ?? 0 === 0;
+  const noNeonCards = !deck?.fullDeckCards.some((card) => card.isNeon);
+  const noModifierCards = !deck?.fullDeckCards.some((card) => card.isModifier);
 
   const handleFilterChange = (filter: Partial<typeof filterButtonsState>) => {
     updateFilters({
