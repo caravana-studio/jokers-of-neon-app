@@ -39,9 +39,9 @@ async function init() {
   const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
   const hasSeenPresentation =
-    sessionStorage.getItem(SKIP_PRESENTATION) === "true";
+    window.localStorage.getItem(SKIP_PRESENTATION) === "true";
   const isNavigatingFromHome = window.location.pathname === "/";
-  const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
+  const shouldSkipPresentation = hasSeenPresentation || !isNavigatingFromHome;
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -70,7 +70,7 @@ async function init() {
           <LoadingScreen
             showPresentation={true}
             onPresentationEnd={() => {
-              sessionStorage.setItem(SKIP_PRESENTATION, "true");
+              window.localStorage.setItem(SKIP_PRESENTATION, "true");
               resolve();
             }}
           />
