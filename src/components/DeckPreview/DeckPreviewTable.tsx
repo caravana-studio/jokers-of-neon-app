@@ -35,7 +35,9 @@ export const DeckPreviewTable = () => {
                 />
               </Th>
               {row.map((cell, cellIndex) => (
-                <Td key={`${rowIndex}-${cellIndex}`}>{cell.quantity}</Td>
+                <Td key={`${rowIndex}-${cellIndex}`} textAlign={"center"}>
+                  {cell.quantity}
+                </Td>
               ))}
             </Tr>
           ))}
