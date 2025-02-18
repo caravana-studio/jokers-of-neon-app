@@ -50,38 +50,27 @@ const cardValuesMap: Map<Cards, string> = new Map([
   ]);
 
   const getTableData = (): TableData => {
-    const deckCards = useDeck();
-    const usedDeckCards = deckCards.fullDeckCards;
-    const columnHeaders: ColumnHeader[] = [];
-    const rowHeaders: RowHeader[] = [];
-    const cells: Cell[][] = [];
+    const {fullDeckCards} = useDeck();
 
-    Array.from(cardValuesMap.keys()).forEach( cardValue =>
-    {
-        const quantity = usedDeckCards.filter(card => card.card === cardValue).length;
-        columnHeaders.push({cardValue: cardValue, quantity: quantity});
-    }
-    )
+    const columnHeaders = Array.from(cardValuesMap.keys()).map(cardValue => ({
+      cardValue,
+      quantity: fullDeckCards.filter(card => card.card === cardValue).length
+    }));
+  
+    const rowHeaders = Array.from(cardSuitsMap.keys()).map(cardSuit => ({
+      cardSuit,
+      quantity: fullDeckCards.filter(card => card.suit === cardSuit).length
+    }));
 
-    Array.from(cardSuitsMap.keys()).forEach( cardSuit =>
-        {
-            const quantity = usedDeckCards.filter(card => card.suit === cardSuit).length;
-            rowHeaders.push({cardSuit: cardSuit, quantity: quantity});
-        }
-        )
-
-    Array.from(cardSuitsMap.keys()).forEach(cardSuit => {
-        const row: Cell[] = [];
-        Array.from(cardValuesMap.keys()).forEach(cardValue => {
-          const quantity = usedDeckCards.filter(card => card.card === cardValue && card.suit === cardSuit).length;
-          row.push({ cardValue, cardSuit, quantity });
-        });
-        cells.push(row);
-      });
+    const cells = Array.from(cardSuitsMap.keys()).map(cardSuit =>
+      Array.from(cardValuesMap.keys()).map(cardValue => ({
+        cardValue,
+        cardSuit,
+        quantity: fullDeckCards.filter(card => card.card === cardValue && card.suit === cardSuit).length
+      }))
+    );
     
-
     return {columnHeaders: columnHeaders, rowHeaders: rowHeaders, cells: cells}
-
   }
   
   export { cardValuesMap, cardSuitsMap, getTableData, type ColumnHeader, type RowHeader, type TableData };
