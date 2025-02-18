@@ -20,7 +20,7 @@ interface Cell {
     quantity: number;
 }
 
-interface TableHeader {
+interface TableData {
     columnHeaders: ColumnHeader[];
     rowHeaders: RowHeader[];
     cells: Cell[][];
@@ -49,7 +49,7 @@ const cardValuesMap: Map<Cards, string> = new Map([
     [Suits.SPADES, Icons.SPADE],
   ]);
 
-  const getTableHeader = (): TableHeader => {
+  const getTableData = (): TableData => {
     const deckCards = useDeck();
     const usedDeckCards = deckCards.fullDeckCards;
     const columnHeaders: ColumnHeader[] = [];
@@ -84,5 +84,5 @@ const cardValuesMap: Map<Cards, string> = new Map([
 
   }
   
-  export { cardValuesMap, cardSuitsMap, getTableHeader, type ColumnHeader, type RowHeader, type TableHeader };
+  export { cardValuesMap, cardSuitsMap, getTableData, type ColumnHeader, type RowHeader, type TableData };
   

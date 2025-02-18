@@ -1,13 +1,13 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Flex } from "@chakra-ui/react";
-import { getTableHeader } from "./DeckPreviewTableUtils";
+import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 
 export const DeckPreviewTable = () => {
-  const tableHeader = getTableHeader();
-  const columnHeaders = tableHeader.columnHeaders;
-  const rowHeaders = tableHeader.rowHeaders;
-  const rows = tableHeader.cells;
+  const tableData = getTableData();
+  const columnHeaders = tableData.columnHeaders;
+  const rowHeaders = tableData.rowHeaders;
+  const rows = tableData.cells;
 
   return (
     <Flex flexDirection={"column"} position={"absolute"} zIndex={100}>
