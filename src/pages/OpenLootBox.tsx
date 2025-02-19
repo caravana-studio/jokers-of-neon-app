@@ -198,7 +198,7 @@ export const OpenLootBox = () => {
                 fontSize={12}
                 mx={{ base: 6, md: 0 }}
                 onClick={() => {
-                  navigate("/special-cards");
+                  navigate("/manage");
                 }}
               >
                 {t("store.packs.special-cards-btn")}
