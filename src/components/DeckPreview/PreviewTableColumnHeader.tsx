@@ -14,21 +14,19 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
       alignItems={"center"}
       justifyContent={"center"}
       rowGap={1}
-      px={2}
+      px={1}
       py={1}
       textAlign={"center"}
       backgroundColor={"black"}
       border={"1px"}
-      borderRadius={"15px"}
-      borderColor={"white"}
+      borderRadius={"12px"}
     >
       <Text>{cardValuesMap.get(cardValue)}</Text>
       <Box
-        px={2}
+        px={4}
         textAlign={"center"}
         borderRadius={"15px"}
         border={"1px"}
-        borderColor={GREY_LINE}
         color={GREY_LINE}
         backgroundColor={GREY_MEDIUM}
       >

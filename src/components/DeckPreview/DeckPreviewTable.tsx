@@ -6,6 +6,7 @@ import {
   Th,
   Td,
   Flex,
+  Text,
   useTheme,
 } from "@chakra-ui/react";
 import { getTableData } from "./DeckPreviewTableUtils";
@@ -32,7 +33,7 @@ export const DeckPreviewTable = () => {
           <Tr>
             <Th border="none"></Th>
             {columnHeaders.map((header, index) => (
-              <Th key={index} border="none">
+              <Th key={index} border="none" padding={0} paddingLeft={1}>
                 <PreviewTableColumnHeader
                   cardValue={header.cardValue}
                   quantity={header.quantity}
@@ -48,7 +49,7 @@ export const DeckPreviewTable = () => {
               border="none"
               borderBottom="2px solid transparent"
             >
-              <Th border="none" p={0} m={0} pr={2}>
+              <Th border="none" p={0} m={0} pr={1}>
                 <PreviewTableRowHeader
                   cardSuit={rowHeaders[rowIndex].cardSuit}
                   quantity={rowHeaders[rowIndex].quantity}
@@ -59,7 +60,7 @@ export const DeckPreviewTable = () => {
                 return (
                   <Td
                     key={`${rowIndex}-${cellIndex}`}
-                    p={2}
+                    p={1}
                     textAlign="center"
                     backgroundColor={suit ? colors[suit] : "transparent"}
                     opacity={0.8}
@@ -72,7 +73,9 @@ export const DeckPreviewTable = () => {
                           : "0"
                     }
                   >
-                    {cell.quantity}
+                    <Text opacity={cell.quantity > 0 ? 1 : 0.6}>
+                      {cell.quantity}
+                    </Text>
                   </Td>
                 );
               })}
