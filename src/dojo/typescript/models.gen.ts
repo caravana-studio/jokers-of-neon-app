@@ -4,6 +4,17 @@ import { CairoCustomEnum } from 'starknet';
 
 type WithFieldOrder<T> = T & { fieldOrder: string[] };
 
+// Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::GameToken` struct
+export interface GameToken {
+	game_token_key: number;
+	address: string;
+}
+
+// Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::GameTokenValue` struct
+export interface GameTokenValue {
+	address: string;
+}
+
 // Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistrator` struct
 export interface ModManagerRegistrator {
 	mod_manager_key: number;
@@ -766,6 +777,8 @@ export type SuitEnum = CairoCustomEnum;
 
 export interface SchemaType extends ISchemaType {
 	jokers_of_neon_core: {
+		GameToken: WithFieldOrder<GameToken>,
+		GameTokenValue: WithFieldOrder<GameTokenValue>,
 		ModManagerRegistrator: WithFieldOrder<ModManagerRegistrator>,
 		ModManagerRegistratorValue: WithFieldOrder<ModManagerRegistratorValue>,
 	},
@@ -854,6 +867,15 @@ export interface SchemaType extends ISchemaType {
 }
 export const schema: SchemaType = {
 	jokers_of_neon_core: {
+		GameToken: {
+			fieldOrder: ['game_token_key', 'address'],
+			game_token_key: 0,
+			address: "",
+		},
+		GameTokenValue: {
+			fieldOrder: ['address'],
+			address: "",
+		},
 		ModManagerRegistrator: {
 			fieldOrder: ['mod_manager_key', 'owner', 'mod_manager_address', 'rage_manager_address', 'special_manager_address'],
 			mod_manager_key: 0,
@@ -1553,6 +1575,8 @@ export const schema: SchemaType = {
 	},
 };
 export enum ModelsMapping {
+	GameToken = 'jokers_of_neon_core-GameToken',
+	GameTokenValue = 'jokers_of_neon_core-GameTokenValue',
 	ModManagerRegistrator = 'jokers_of_neon_core-ModManagerRegistrator',
 	ModManagerRegistratorValue = 'jokers_of_neon_core-ModManagerRegistratorValue',
 	DeckCard = 'jokers_of_neon_lib-DeckCard',
