@@ -33,7 +33,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
         borderRadius={"15px"}
         border={"1px"}
         borderColor={GREY_LINE}
-        color={"white"}
+        color={GREY_LINE}
         backgroundColor={GREY_MEDIUM}
       >
         {quantity}
