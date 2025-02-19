@@ -39,6 +39,7 @@ export const GameDeck = () => {
         gap={2}
         className="game-tutorial-step-8"
         onClick={() => navigate("/deck")}
+        cursor={"pointer"}
       >
         <Text size="s" mr={2}>
           {`${deck?.currentLength}/${deck?.size}`}
