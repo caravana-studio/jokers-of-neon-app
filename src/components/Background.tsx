@@ -141,7 +141,11 @@ export const Background = ({ children }: PropsWithChildren) => {
         bottom: isSmallScreen ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
       }}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {isClassic && <BackgroundVideo type={videoType} />}
 
