@@ -50,23 +50,25 @@ const cardValuesMap: Map<Cards, string> = new Map([
   ]);
 
   const getTableData = (): TableData => {
-    const {fullDeckCards} = useDeck();
+    const {fullDeckCards, usedCards} = useDeck();
+    const usedCardIds = new Set(usedCards.map(card => card.id));
+    const deck = fullDeckCards.filter(card => !usedCardIds.has(card.id));
 
     const columnHeaders = Array.from(cardValuesMap.keys()).map(cardValue => ({
       cardValue,
-      quantity: fullDeckCards.filter(card => card.card === cardValue).length
+      quantity: deck.filter(card => card.card === cardValue).length
     }));
   
     const rowHeaders = Array.from(cardSuitsMap.keys()).map(cardSuit => ({
       cardSuit,
-      quantity: fullDeckCards.filter(card => card.suit === cardSuit).length
+      quantity: deck.filter(card => card.suit === cardSuit).length
     }));
 
     const cells = Array.from(cardSuitsMap.keys()).map(cardSuit =>
       Array.from(cardValuesMap.keys()).map(cardValue => ({
         cardValue,
         cardSuit,
-        quantity: fullDeckCards.filter(card => card.card === cardValue && card.suit === cardSuit).length
+        quantity: deck.filter(card => card.card === cardValue && card.suit === cardSuit).length
       }))
     );
     
