@@ -2,7 +2,7 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
-import { Background } from "../components/Background";
+import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
 import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
@@ -20,7 +20,7 @@ export const LeaderBoardPage = () => {
   );
 
   return (
-    <Background>
+    <BackgroundDecoration>
       <AudioPlayer />
       <LanguageSwitcher />
       <Flex
@@ -66,6 +66,6 @@ export const LeaderBoardPage = () => {
       >
         <DiscordLink />
       </Box>
-    </Background>
+    </BackgroundDecoration>
   );
 };
