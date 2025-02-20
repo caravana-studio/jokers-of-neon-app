@@ -1,18 +1,15 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AudioPlayer from "../components/AudioPlayer";
 import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
-import { DiscordLink } from "../components/DiscordLink";
-import LanguageSwitcher from "../components/LanguageSwitcher";
+import { PositionedGameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
-import { PoweredBy } from "../components/PoweredBy";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 
 export const LeaderBoardPage = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation(["home"]);
+  const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
 
   const tournamentEnabled = useFeatureFlagEnabled(
     "global",
@@ -21,8 +18,6 @@ export const LeaderBoardPage = () => {
 
   return (
     <BackgroundDecoration>
-      <AudioPlayer />
-      <LanguageSwitcher />
       <Flex
         height="100%"
         justifyContent="center"
@@ -31,8 +26,8 @@ export const LeaderBoardPage = () => {
         gap={4}
       >
         <Box zIndex={1}>
-          <Heading mb={"10px"} size="l" variant="italic" textAlign={"center"}>
-            LEADERBOARD
+          <Heading mb={10} size="l" variant="italic" textAlign={"center"}>
+            {t("title")}
           </Heading>
 
           {tournamentEnabled && (
@@ -51,21 +46,11 @@ export const LeaderBoardPage = () => {
               navigate(-1);
             }}
           >
-            {t("leaderboard.btn.returnLeaderboard-btn")}
+            {t("btn.returnLeaderboard-btn")}
           </Button>
         </Box>
-
-        <PoweredBy />
       </Flex>
-      <Box
-        zIndex={999}
-        position="absolute"
-        left="15px"
-        top="15px"
-        cursor="pointer"
-      >
-        <DiscordLink />
-      </Box>
+      <PositionedGameMenu decoratedPage />
     </BackgroundDecoration>
   );
 };

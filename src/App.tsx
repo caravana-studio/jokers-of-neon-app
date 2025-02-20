@@ -7,7 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AnimatePresence } from "framer-motion";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
-import { DelayedLoading } from "./components/DelayedLoading";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
@@ -15,6 +14,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
+import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { OpenLootBox } from "./pages/OpenLootBox";
@@ -32,7 +32,6 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
-import { LeaderBoardPage } from "./pages/LeaderboardPage";
 
 function App() {
   const location = useLocation();
@@ -97,7 +96,11 @@ function App() {
                       />
                       <Route
                         path="/leaderboard"
-                        element={<LeaderBoardPage />}
+                        element={
+                          <AnimatedPage>
+                            <LeaderBoardPage />
+                          </AnimatedPage>
+                        }
                       />
                       <Route
                         path="/store"

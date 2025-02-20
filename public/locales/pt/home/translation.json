@@ -9,8 +9,9 @@
       "join-discord": "¡Únete a nuestro Discord!"
     },
     "leaderboard": {
+      "title": "Classificação",
       "btn": {
-        "returnLeaderboard-btn": "Voltar para o início"
+        "returnLeaderboard-btn": "Voltar"
       },
       "table-head": {
         "position-leaderboard-head": "Posição",
