@@ -52,6 +52,7 @@ export const TabPattern = ({
       gap={2}
       flexDirection="column"
       overflow="hidden"
+      {...handlers}
     >
       <MobileDecoration />
       <Tabs
@@ -63,13 +64,12 @@ export const TabPattern = ({
         w="90%"
         isFitted
         color="white"
-        {...handlers}
       >
         <TabList>
           {children.map((child, index) => (
             <ChakraTab
               key={index}
-              fontSize={children.length > 3 ? [10, 14] : [12, 14]}
+              fontSize={children.length > 3 ? [10, 14] : [11, 14]}
             >
               {child.props.title}
             </ChakraTab>
