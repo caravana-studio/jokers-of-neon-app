@@ -12,6 +12,7 @@ import {
 import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
+import { GREY_MEDIUM } from "../../theme/colors";
 
 export const DeckPreviewTable = () => {
   const tableData = getTableData();
@@ -57,7 +58,7 @@ export const DeckPreviewTable = () => {
                   key={`${rowIndex}-${cellIndex}`}
                   p={1}
                   textAlign="center"
-                  backgroundColor={suit ? colors[suit] : "transparent"}
+                  backgroundColor={rowIndex % 2 === 0 ? "black" : GREY_MEDIUM}
                   border="none"
                   borderRadius={
                     cellIndex === 0
