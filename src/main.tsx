@@ -41,7 +41,7 @@ async function init() {
   const hasSeenPresentation =
     window.localStorage.getItem(SKIP_PRESENTATION) === "true";
   const isNavigatingFromHome = window.location.pathname === "/";
-  const shouldSkipPresentation = hasSeenPresentation || !isNavigatingFromHome;
+  const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
