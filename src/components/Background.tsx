@@ -73,6 +73,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   manage: {
     bg: BackgroundType.Store,
   },
+  home: {
+    bg: BackgroundType.Home,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
@@ -83,7 +86,9 @@ export const Background = ({ children }: PropsWithChildren) => {
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
   const location = useLocation();
-  const page = location.pathname.split("/")?.[1];
+  const pathname = location.pathname.split("/")?.[1];
+  const page = pathname === "" ? "home" : pathname;
+  console.log("page", page);
   const type = bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
