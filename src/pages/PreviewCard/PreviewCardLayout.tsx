@@ -13,7 +13,7 @@ import { useState } from "react";
 import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { Background } from "../../components/Background.tsx";
+import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -21,7 +21,6 @@ import theme from "../../theme/theme.ts";
 import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 
 import { useTranslation } from "react-i18next";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
@@ -100,7 +99,7 @@ const PreviewCardLayout = () => {
   );
 
   return (
-    <Background type="home" dark>
+    <>
       <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
@@ -299,7 +298,7 @@ const PreviewCardLayout = () => {
         </Flex>
       </Flex>
       <PositionedDiscordLink />
-    </Background>
+    </>
   );
 };
 

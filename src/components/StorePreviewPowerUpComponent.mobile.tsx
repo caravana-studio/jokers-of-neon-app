@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MobileCoins } from "../pages/store/Coins";
 import { colorizeText } from "../utils/getTooltip";
-import { Background } from "./Background";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
@@ -23,7 +22,7 @@ export const StorePreviewPowerUpComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <Background type="store" dark scrollOnMobile>
+    <>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -104,6 +103,6 @@ export const StorePreviewPowerUpComponentMobile = ({
           secondButton={buyButton}
         />
       </Flex>
-    </Background>
+    </>
   );
 };

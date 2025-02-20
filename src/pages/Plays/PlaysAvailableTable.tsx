@@ -24,6 +24,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { LevelPokerHand } from "../../types/LevelPokerHand";
+import { Loading } from "../../components/Loading";
 
 const { blueLight, blue, violet } = theme.colors;
 

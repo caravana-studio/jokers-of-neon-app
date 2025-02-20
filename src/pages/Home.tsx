@@ -5,7 +5,6 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
-import { Background } from "../components/Background";
 import { DiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { PoweredBy } from "../components/PoweredBy";
@@ -42,7 +41,7 @@ export const Home = () => {
   }, [account, playButtonClicked]);
 
   return (
-    <Background type="home">
+    <>
       <AudioPlayer />
       <LanguageSwitcher />
       <Flex
@@ -117,6 +116,6 @@ export const Home = () => {
       >
         <DiscordLink />
       </Box>
-    </Background>
+    </>
   );
 };
