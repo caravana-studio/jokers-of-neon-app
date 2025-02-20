@@ -66,6 +66,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
         muted
         playsInline
         style={{
+          pointerEvents: "none",
           position: "absolute",
           top: 0,
           left: 0,
@@ -85,6 +86,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
           muted
           playsInline
           style={{
+            pointerEvents: "none",
             position: "absolute",
             top: 0,
             left: 0,
