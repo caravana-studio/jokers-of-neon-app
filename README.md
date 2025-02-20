@@ -17,12 +17,21 @@ Run the following commands to run the game:
 You can find a .env file in the root of the project that has the default values to connect to a local instance of katana, torii and graphql.
 Run the contracts before the frontend app.
 
+To generate new bindings, run the following command:
+
+    npm run generate
+
+After that, there are some manual steps so contracts.gen.ts takes into account the correct namespace:
+
+    1. Find and replace all instances of  "jokers_of_neon_core" with DOJO_NAMESPACE
+    2. Add this line at the top of the file:
+        `const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";`
 
 ## PoC
 
-Stable version available at: https://jokers-of-neon-app.onrender.com/ 
+Stable version available at: https://alpha.jokersofneon.com/ 
 
-Latest changes: https://jokers-of-neon-latest.onrender.com/ 
+Latest changes: https://test.jokersofneon.com/ 
 
 
 ## Key Features:
