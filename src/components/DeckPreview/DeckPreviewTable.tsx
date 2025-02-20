@@ -13,13 +13,13 @@ import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 import { GREY_MEDIUM } from "../../theme/colors";
+import { Suits } from "../../enums/suits";
 
 export const DeckPreviewTable = () => {
   const tableData = getTableData();
   const columnHeaders = tableData.columnHeaders;
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;
-  const { colors } = useTheme();
 
   return (
     <Table
@@ -55,6 +55,7 @@ export const DeckPreviewTable = () => {
               const suit = rowHeaders[rowIndex]?.cardSuit;
               return (
                 <Td
+                  visibility={suit != Suits.JOKER ? "visible" : "hidden"}
                   key={`${rowIndex}-${cellIndex}`}
                   p={1}
                   textAlign="center"

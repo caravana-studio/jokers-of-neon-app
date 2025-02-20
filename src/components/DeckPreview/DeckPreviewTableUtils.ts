@@ -42,7 +42,6 @@ const cardValuesMap: Map<Cards, CardValue> = new Map<Cards, CardValue>([
   [Cards.FOUR, '4'],
   [Cards.THREE, '3'],
   [Cards.TWO, '2'],
-  [Cards.JOKER, Icons.JOKER],
 ]);
 
   const cardSuitsMap: Map<Suits, FC<SVGProps<ReactSVGElement>>> = new Map([
