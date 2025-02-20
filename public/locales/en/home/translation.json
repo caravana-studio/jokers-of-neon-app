@@ -12,9 +12,10 @@
     },
     "leaderboard":
     {
+        "title": "Leaderboard",
         "btn":
         {
-            "returnLeaderboard-btn": "Go back home"
+            "returnLeaderboard-btn": "Go back"
         },
         "table-head":
         {

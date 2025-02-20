@@ -85,7 +85,8 @@
       "sound-btn": "Ativar som",
       "logout-btn": "Sair",
       "settings-btn": "Configuração",
-      "docs-btn": "Lista de cartas"
+      "docs-btn": "Lista de cartas",
+      "leaderboard-btn": "Classificação"
     },
     "plays": {
       "title": "Jogadas disponíveis",

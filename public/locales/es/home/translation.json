@@ -9,8 +9,9 @@
         "join-discord": "¡Únete a nuestro Discord!"
     },
     "leaderboard": {
+        "title": "Tabla de posiciones",
         "btn": {
-            "returnLeaderboard-btn": "Volver al inicio"
+            "returnLeaderboard-btn": "Volver"
         },
         "table-head": {
             "position-leaderboard-head": "Puesto",

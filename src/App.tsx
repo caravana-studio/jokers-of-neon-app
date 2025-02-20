@@ -14,6 +14,7 @@ import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
+import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { OpenLootBox } from "./pages/OpenLootBox";
@@ -86,7 +87,14 @@ function App() {
                           </AnimatedPage>
                         }
                       />
-
+                      <Route
+                        path="/leaderboard"
+                        element={
+                          <AnimatedPage>
+                            <LeaderBoardPage />
+                          </AnimatedPage>
+                        }
+                      />
                       <Route
                         path="/store"
                         element={
