@@ -26,27 +26,31 @@ interface TableData {
     cells: Cell[][];
 }
 
-const cardValuesMap: Map<Cards, string> = new Map([
-    [Cards.ACE, 'A'],
-    [Cards.KING, 'K'],
-    [Cards.QUEEN, 'Q'],
-    [Cards.JACK, 'J'],
-    [Cards.TEN, '10'],
-    [Cards.NINE, '9'],
-    [Cards.EIGHT, '8'],
-    [Cards.SEVEN, '7'],
-    [Cards.SIX, '6'],
-    [Cards.FIVE, '5'],
-    [Cards.FOUR, '4'],
-    [Cards.THREE, '3'],
-    [Cards.TWO, '2'],
-  ]);
+type CardValue = string | FC<SVGProps<ReactSVGElement>>;
+
+const cardValuesMap: Map<Cards, CardValue> = new Map<Cards, CardValue>([
+  [Cards.ACE, 'A'],
+  [Cards.KING, 'K'],
+  [Cards.QUEEN, 'Q'],
+  [Cards.JACK, 'J'],
+  [Cards.TEN, '10'],
+  [Cards.NINE, '9'],
+  [Cards.EIGHT, '8'],
+  [Cards.SEVEN, '7'],
+  [Cards.SIX, '6'],
+  [Cards.FIVE, '5'],
+  [Cards.FOUR, '4'],
+  [Cards.THREE, '3'],
+  [Cards.TWO, '2'],
+  [Cards.JOKER, Icons.JOKER],
+]);
 
   const cardSuitsMap: Map<Suits, FC<SVGProps<ReactSVGElement>>> = new Map([
     [Suits.CLUBS, Icons.CLUB],
     [Suits.DIAMONDS, Icons.DIAMOND],
     [Suits.HEARTS, Icons.HEART],
     [Suits.SPADES, Icons.SPADE],
+    [Suits.JOKER, Icons.JOKER],
   ]);
 
   const getTableData = (): TableData => {

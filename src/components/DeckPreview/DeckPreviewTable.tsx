@@ -68,7 +68,7 @@ export const DeckPreviewTable = () => {
                         : "0"
                   }
                 >
-                  <Text opacity={cell.quantity > 0 ? 1 : 0.6}>
+                  <Text opacity={cell.quantity > 0 ? 1 : 0.2}>
                     {cell.quantity}
                   </Text>
                 </Td>

@@ -1,12 +1,19 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { cardValuesMap, ColumnHeader } from "./DeckPreviewTableUtils";
 import { GREY_LINE, GREY_MEDIUM } from "../../theme/colors";
+import { FC, ReactSVGElement, SVGProps } from "react";
 
 export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
   cardValue,
   quantity,
 }) => {
   if (!cardValue || !quantity) return null;
+
+  const cardValueContent = cardValuesMap.get(cardValue);
+  const useIcon = typeof cardValueContent === "function";
+  const Icon = useIcon
+    ? (cardValueContent as FC<SVGProps<ReactSVGElement>>)
+    : null;
 
   return (
     <Flex
@@ -21,7 +28,11 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
       border={"1px"}
       borderRadius={"12px"}
     >
-      <Text>{cardValuesMap.get(cardValue)}</Text>
+      {useIcon ? (
+        Icon && <Icon width={15} fill={"white"} height={"100%"} />
+      ) : (
+        <Text>{cardValueContent}</Text>
+      )}
       <Box
         px={4}
         textAlign={"center"}
