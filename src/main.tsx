@@ -36,45 +36,56 @@ const I18N_NAMESPACES = [
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
-  const root = ReactDOM.createRoot(rootElement as HTMLElement);
+  const root = ReactDOM.createRoot(rootElement);
 
   const hasSeenPresentation =
     window.localStorage.getItem(SKIP_PRESENTATION) === "true";
   const isNavigatingFromHome = window.location.pathname === "/";
   const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
+  let setCanFadeOut: (value: boolean) => void = () => {};
+
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
     root.render(
-      <StarknetProvider>
-        <DojoProvider value={setupResult}>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-              <Toaster />
-              <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                <FadeInOut isVisible fadeInDelay={1}>
+      <FadeInOut isVisible fadeInDelay={1.5}>
+        <StarknetProvider>
+          <DojoProvider value={setupResult}>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <Toaster />
+                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
                   <App />
-                </FadeInOut>
-              </I18nextProvider>
-            </QueryClientProvider>
-          </BrowserRouter>
-        </DojoProvider>
-      </StarknetProvider>
+                </I18nextProvider>
+              </QueryClientProvider>
+            </BrowserRouter>
+          </DojoProvider>
+        </StarknetProvider>
+      </FadeInOut>
     );
   };
 
   const presentationPromise = shouldSkipPresentation
     ? Promise.resolve()
     : new Promise<void>((resolve) => {
-        root.render(
-          <LoadingScreen
-            showPresentation={true}
-            onPresentationEnd={() => {
-              window.localStorage.setItem(SKIP_PRESENTATION, "true");
-              resolve();
-            }}
-          />
-        );
+        const updateLoadingScreen = (canFadeOut: boolean) => {
+          root.render(
+            <LoadingScreen
+              showPresentation={true}
+              onPresentationEnd={() => {
+                window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                resolve();
+              }}
+              canFadeOut={canFadeOut}
+            />
+          );
+        };
+
+        setCanFadeOut = (value: boolean) => {
+          updateLoadingScreen(value);
+        };
+
+        updateLoadingScreen(false);
       });
 
   registerServiceWorker();
@@ -96,7 +107,11 @@ async function init() {
       presentationPromise,
     ]);
 
-    renderApp(setupResult);
+    setCanFadeOut(true);
+
+    setTimeout(() => {
+      renderApp(setupResult);
+    }, 1000);
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);

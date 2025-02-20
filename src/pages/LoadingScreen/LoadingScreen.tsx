@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../App.scss";
 import OpeningScreenAnimation from "./OpeningScreenAnimation";
 import { Flex } from "@chakra-ui/react";
@@ -9,17 +9,26 @@ interface LoadingScreenProps {
   error?: boolean;
   showPresentation?: boolean;
   onPresentationEnd?: () => void;
+  canFadeOut?: boolean;
 }
 
 export const LoadingScreen = ({
   error = false,
   showPresentation = false,
   onPresentationEnd = () => {},
+  canFadeOut = false,
 }: LoadingScreenProps) => {
   const [visibleSpinner, setVisibleSpinner] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  useEffect(() => {
+    if (canFadeOut) {
+      setTimeout(() => setIsFadingOut(true), 500);
+    }
+  }, [canFadeOut]);
 
   return (
-    <FadeInOut isVisible fadeOut fadeOutDelay={0.7}>
+    <FadeInOut isVisible={!isFadingOut} fadeOut fadeOutDelay={0.7}>
       <PreThemeLoadingPage>
         {error ? (
           <div>error loading game</div>

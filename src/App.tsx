@@ -7,7 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AnimatePresence } from "framer-motion";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
-import { DelayedLoading } from "./components/DelayedLoading";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
@@ -32,7 +31,6 @@ import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
-import { FadeInOut } from "./components/animations/FadeInOut";
 
 function App() {
   const location = useLocation();
