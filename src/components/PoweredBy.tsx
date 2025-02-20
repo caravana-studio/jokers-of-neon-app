@@ -5,7 +5,7 @@ export const PoweredBy = () => {
     <Box
       sx={{
         position: "fixed",
-        bottom: "2.5vh",
+        bottom: "8vh",
         zIndex: 1000,
         color: "white",
         filter: "blur(0.5px)",

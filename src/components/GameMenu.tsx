@@ -82,6 +82,15 @@ export const GameMenu = ({
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
+
+          <MenuItem
+            onClick={() => {
+              navigate("/leaderboard");
+            }}
+          >
+            {t("game.game-menu.leaderboard-btn")}
+          </MenuItem>
+
           <MenuItem
             onClick={() => {
               console.log(
