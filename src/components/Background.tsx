@@ -88,7 +88,6 @@ export const Background = ({ children }: PropsWithChildren) => {
   const location = useLocation();
   const pathname = location.pathname.split("/")?.[1];
   const page = pathname === "" ? "home" : pathname;
-  console.log("page", page);
   const type = bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
