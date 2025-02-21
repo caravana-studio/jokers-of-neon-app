@@ -195,6 +195,8 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                           if (onTutorialCardClick) onTutorialCardClick();
                           if (!card.isModifier) {
                             togglePreselected(card.idx);
+                          } else {
+                            highlightCard(card);
                           }
                         }}
                         className={"hand-element-" + index}

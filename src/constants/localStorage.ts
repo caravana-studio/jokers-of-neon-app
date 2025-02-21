@@ -14,3 +14,4 @@ export const SETTINGS_ANIMATION_SPEED = "ANIM_SPEED";
 export const SETTINGS_MUSIC_VOLUME = "MUSIC_VOLUME";
 export const SETTINGS_SFX_VOLUME = "SFX_VOLUME";
 export const SFX_ON = "SFX_ON";
+export const SKIP_PRESENTATION = "hasSeenPresentation";

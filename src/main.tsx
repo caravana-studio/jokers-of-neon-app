@@ -7,11 +7,13 @@ import App from "./App.tsx";
 
 import i18n from "i18next";
 import { I18nextProvider } from "react-i18next";
+import { FadeInOut } from "./components/animations/FadeInOut.tsx";
+import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import localI18n from "./i18n.ts";
 import "./index.css";
-import { LoadingScreen } from "./pages/LoadingScreen.tsx";
+import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
@@ -34,32 +36,19 @@ const I18N_NAMESPACES = [
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
-  const root = ReactDOM.createRoot(rootElement as HTMLElement);
+  const root = ReactDOM.createRoot(rootElement);
 
-  let promises = [];
+  const hasSeenPresentation =
+    window.localStorage.getItem(SKIP_PRESENTATION) === "true";
+  const isNavigatingFromHome = window.location.pathname === "/";
+  const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
-  root.render(<LoadingScreen />);
+  let setCanFadeOut: (value: boolean) => void = () => {};
 
-  const loadImages = async () => {
-    preloadImages();
-    preloadSpineAnimations();
-    preloadVideos();
-  };
-
-  promises.push(i18n.loadNamespaces(I18N_NAMESPACES));
-
-  Promise.all(promises).then(() => loadImages());
-
-  registerServiceWorker();
-
-  try {
-    const setupPromise = setup(dojoConfig);
-    promises.push(setupPromise);
-    const setupResult = await setupPromise;
-
-    Promise.all(promises).then(() => {
-      const queryClient = new QueryClient();
-      root.render(
+  const renderApp = (setupResult: any) => {
+    const queryClient = new QueryClient();
+    root.render(
+      <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
           <DojoProvider value={setupResult}>
             <BrowserRouter>
@@ -72,8 +61,60 @@ async function init() {
             </BrowserRouter>
           </DojoProvider>
         </StarknetProvider>
-      );
-    });
+      </FadeInOut>
+    );
+  };
+
+  const presentationPromise = shouldSkipPresentation
+    ? Promise.resolve()
+    : new Promise<void>((resolve) => {
+        const updateLoadingScreen = (canFadeOut: boolean) => {
+          root.render(
+            <LoadingScreen
+              showPresentation={true}
+              onPresentationEnd={() => {
+                window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                resolve();
+              }}
+              canFadeOut={canFadeOut}
+            />
+          );
+        };
+
+        setCanFadeOut = (value: boolean) => {
+          updateLoadingScreen(value);
+        };
+
+        updateLoadingScreen(false);
+      });
+
+  registerServiceWorker();
+
+  const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES);
+  const imagesPromise = Promise.all([
+    preloadImages(),
+    preloadSpineAnimations(),
+    preloadVideos(),
+  ]);
+
+  try {
+    const setupPromise = setup(dojoConfig);
+
+    const [setupResult] = await Promise.all([
+      setupPromise,
+      i18nPromise,
+      imagesPromise,
+      presentationPromise,
+    ]);
+
+    setCanFadeOut(true);
+
+    setTimeout(
+      () => {
+        renderApp(setupResult);
+      },
+      shouldSkipPresentation ? 0 : 1000
+    );
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);

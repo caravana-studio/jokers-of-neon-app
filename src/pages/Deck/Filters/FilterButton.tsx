@@ -1,7 +1,8 @@
 import { Card } from "../../../types/Card";
 import { useDeck } from "../../../dojo/queries/useDeck";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { ReactSVGElement, SVGProps } from "react";
+import { IconType, Icons } from "../../../constants/icons";
+import { isMobile } from "react-device-detect";
 
 interface FilterButtonProps {
   label: string;
@@ -9,8 +10,7 @@ interface FilterButtonProps {
   onClick: () => void;
   filterFn: (card: Card) => boolean;
   inStore?: boolean;
-  icon?: React.FC<SVGProps<ReactSVGElement>>;
-  iconColor?: string;
+  icon?: IconType;
 }
 
 export const FilterButton = ({
@@ -19,8 +19,7 @@ export const FilterButton = ({
   onClick,
   filterFn,
   inStore = false,
-  icon: Icon,
-  iconColor = "white",
+  icon,
 }: FilterButtonProps) => {
   const deck = useDeck();
   const deckLength = deck?.fullDeckCards.filter(filterFn)?.length ?? 0;
@@ -28,6 +27,9 @@ export const FilterButton = ({
     ? 0
     : deck?.usedCards.filter(filterFn)?.length ?? 0;
   const unusedCardsLength = deckLength - usedCardsLength;
+
+  const IconComponent = icon ? Icons[icon] : null;
+  const iconSize = isMobile ? "12px" : "16px";
 
   return (
     <Button
@@ -39,7 +41,17 @@ export const FilterButton = ({
       onClick={onClick}
     >
       <Flex gap={[1, 2]} alignItems={"center"}>
-        {Icon && <Icon width={12} fill={iconColor} height={"100%"} />}
+        {IconComponent &&
+          (typeof IconComponent === "string" ? (
+            <img
+              src={IconComponent}
+              alt={label}
+              width={iconSize}
+              height={iconSize}
+            />
+          ) : (
+            <IconComponent width={iconSize} height={iconSize} fill="white" />
+          ))}
         <Text fontSize={[10, 14]}>{label}</Text>
         <Text color="blueLight" fontSize={[10, 14]}>
           {unusedCardsLength !== deckLength

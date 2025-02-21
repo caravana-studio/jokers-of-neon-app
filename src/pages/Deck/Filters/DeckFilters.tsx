@@ -47,7 +47,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
       >
         <FilterButton
           label={t("suit.club").toUpperCase()}
-          icon={Icons.CLUB}
+          icon="CLUB"
           isActive={filterButtonsState.suit === Suits.CLUBS}
           onClick={() =>
             handleFilterChange({
@@ -62,7 +62,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.spade").toUpperCase()}
-          icon={Icons.SPADE}
+          icon="SPADE"
           isActive={filterButtonsState.suit === Suits.SPADES}
           onClick={() =>
             handleFilterChange({
@@ -77,7 +77,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.heart").toUpperCase()}
-          icon={Icons.HEART}
+          icon="HEART"
           isActive={filterButtonsState.suit === Suits.HEARTS}
           onClick={() =>
             handleFilterChange({
@@ -92,7 +92,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.diamond").toUpperCase()}
-          icon={Icons.DIAMOND}
+          icon="DIAMOND"
           isActive={filterButtonsState.suit === Suits.DIAMONDS}
           onClick={() =>
             handleFilterChange({
@@ -107,7 +107,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.joker").toUpperCase()}
-          icon={Icons.JOKER}
+          icon="JOKER"
           isActive={filterButtonsState.suit === Suits.JOKER}
           onClick={() =>
             handleFilterChange({
@@ -122,7 +122,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.figures").toUpperCase()}
-          icon={Icons.FIGURE}
+          icon="FIGURE"
           isActive={!!filterButtonsState.isFigures}
           onClick={() =>
             handleFilterChange({
@@ -138,7 +138,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         />
         <FilterButton
           label={t("suit.aces").toUpperCase()}
-          icon={Icons.ACE}
+          icon="AS"
           isActive={!!filterButtonsState.isAces}
           onClick={() =>
             handleFilterChange({
@@ -151,7 +151,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         {!noNeonCards && (
           <FilterButton
             label={t("suit.neon").toUpperCase()}
-            icon={Icons.NEON}
+            icon="NEON"
             isActive={!!filterButtonsState.isNeon}
             onClick={() =>
               handleFilterChange({
@@ -165,7 +165,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
         {!noModifierCards && (
           <FilterButton
             label={t("suit.modifier").toUpperCase()}
-            icon={Icons.MODIFIER}
+            icon="MODIFIER"
             isActive={!!filterButtonsState.isModifier}
             onClick={() =>
               handleFilterChange({

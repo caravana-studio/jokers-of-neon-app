@@ -1,12 +1,12 @@
-import HeartIcon from "../assets/heart.svg?component";
-import SpadeIcon from "../assets/spade.svg?component";
-import DiamondIcon from "../assets/diamond.svg?component";
-import ClubIcon from "../assets/club.svg?component";
+import HeartIcon from "../assets/heart.png";
+import SpadeIcon from "../assets/spade.png";
+import DiamondIcon from "../assets/diamond.png";
+import ClubIcon from "../assets/club.png";
 import ModifierIcon from "../assets/modifier.svg?component";
 import NeonIcon from "../assets/neon.svg?component";
-import JokerIcon from "../assets/joker.svg?component";
-import AceIcon from "../assets/ace.svg?component";
-import FigureIcon from "../assets/figure.svg?component";
+import JokerIcon from "../assets/joker.png";
+import AsIcon from "../assets/as.png";
+import FigureIcon from "../assets/figure.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -16,7 +16,7 @@ export const Icons = {
   MODIFIER: ModifierIcon,
   NEON: NeonIcon,
   JOKER: JokerIcon,
-  ACE: AceIcon,
+  AS: AsIcon,
   FIGURE: FigureIcon,
 } as const;
 

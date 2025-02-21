@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import { StoreCardsRow } from "../StoreCardsRow";
-import { useStore } from "../../../providers/StoreProvider";
 import { useTranslation } from "react-i18next";
+import { useStore } from "../../../providers/StoreProvider";
+import { StoreCardsRow } from "../StoreCardsRow";
 
 export const StoreCards = () => {
   const { commonCards, modifierCards, specialCards } = useStore();
@@ -10,9 +10,10 @@ export const StoreCards = () => {
     <Flex
       width={"100%"}
       flexDirection={"column"}
+      justifyContent={"space-between"}
+      flexGrow={1}
       gap={3}
       p={2}
-      justifyContent={"center"}
       sx={{
         zIndex: 1,
       }}

@@ -8,13 +8,13 @@ interface PowerUpsProps {
 }
 
 export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
-  const { powerUps, togglePreselectedPowerUp } = useGameContext();
+  const { powerUps, togglePreselectedPowerUp, preSelectionLocked } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const width = isSmallScreen ? 60 : 93;
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
 
   return (
-    <Flex gap={[1, 4]} zIndex={10} className="game-tutorial-power-up">
+    <Flex gap={[1, 4]} zIndex={preSelectionLocked ? 1 : 2} className="game-tutorial-power-up">
       {powerUps.map((powerUp, index) => {
         return (
           <PowerUpComponent
