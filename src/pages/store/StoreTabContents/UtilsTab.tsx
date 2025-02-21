@@ -1,6 +1,7 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useGameContext } from "../../../providers/GameProvider";
@@ -10,7 +11,6 @@ import theme from "../../../theme/theme";
 import { BurnItem } from "../BurnItem";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
-import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 
 export const UtilsTab = () => {
   const { t } = useTranslation(["store"]);
@@ -80,6 +80,8 @@ export const UtilsTab = () => {
     <Flex
       flexDir={"column"}
       width={"100%"}
+      justifyContent={"space-between"}
+      flexGrow={1}
       sx={{
         zIndex: 1,
       }}
@@ -98,6 +100,7 @@ export const UtilsTab = () => {
           borderRadius="10px"
           boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
+          minHeight={"135px"}
         >
           <LevelUpTable />
         </Flex>

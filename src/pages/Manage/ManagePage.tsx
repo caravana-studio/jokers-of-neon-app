@@ -1,11 +1,8 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { BackgroundDecoration } from "../../components/Background";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { PositionedGameMenu } from "../../components/GameMenu";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
@@ -61,34 +58,27 @@ export const ManagePage = () => {
   );
 
   return (
-    <BackgroundDecoration>
-      <PositionedGameMenu decoratedPage />
-      <PositionedDiscordLink />
-      <Flex
-        flexDirection={"column"}
-        height={"100%"}
-        w="100%"
-        gap={4}
-        alignItems={"center"}
-      >
-        {isSmallScreen ? (
-          <ManagePageContentMobile
-            discardedCards={discardedCards}
-            preselectedCard={preselectedCard}
-            onCardClick={handleCardClick}
-            sellButton={sellButton}
-            goBackButton={goBackButton}
-          />
-        ) : (
-          <ManagePageContent
-            discardedCards={discardedCards}
-            preselectedCard={preselectedCard}
-            onCardClick={handleCardClick}
-            sellButton={sellButton}
-            goBackButton={goBackButton}
-          />
-        )}
-      </Flex>
+    <>
+      {isSmallScreen ? (
+        <ManagePageContentMobile
+          discardedCards={discardedCards}
+          preselectedCard={preselectedCard}
+          onCardClick={handleCardClick}
+          sellButton={sellButton}
+          goBackButton={goBackButton}
+          onTabChange={() => {
+            setPreselectedCard(undefined);
+          }}
+        />
+      ) : (
+        <ManagePageContent
+          discardedCards={discardedCards}
+          preselectedCard={preselectedCard}
+          onCardClick={handleCardClick}
+          sellButton={sellButton}
+          goBackButton={goBackButton}
+        />
+      )}
       {confirmationModalOpen && (
         <ConfirmationModal
           close={() => setConfirmationModalOpen(false)}
@@ -108,6 +98,6 @@ export const ManagePage = () => {
           }}
         />
       )}
-    </BackgroundDecoration>
+    </>
   );
 };
