@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
-import { LoadingScreen } from "../pages/LoadingScreen";
+import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { BLUE } from "../theme/colors";
 import { useAccountStore } from "./accountStore";
@@ -228,10 +228,7 @@ const DojoContextProvider = ({
         <PreThemeLoadingPage>
           <img width="60%" src="logos/logo.png" alt="logo" />
           {!isConnected && (
-            <button
-              className="login-button"
-              onClick={connectWallet}
-            >
+            <button className="login-button" onClick={connectWallet}>
               LOGIN
             </button>
           )}
