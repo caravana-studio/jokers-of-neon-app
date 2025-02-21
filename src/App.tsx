@@ -46,7 +46,14 @@ function App() {
                 <Background>
                   <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
-                      <Route path="/" element={<Home />} />
+                      <Route
+                        path="/"
+                        element={
+                          <AnimatedPage>
+                            <Home />
+                          </AnimatedPage>
+                        }
+                      />
                       <Route
                         path="/mods"
                         element={

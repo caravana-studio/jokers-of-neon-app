@@ -7,6 +7,7 @@ import App from "./App.tsx";
 
 import i18n from "i18next";
 import { I18nextProvider } from "react-i18next";
+import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
@@ -17,7 +18,6 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 
 const I18N_NAMESPACES = [
   "game",
@@ -48,7 +48,7 @@ async function init() {
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
     root.render(
-      <FadeInOut isVisible fadeInDelay={1.5}>
+      <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
           <DojoProvider value={setupResult}>
             <BrowserRouter>
@@ -109,9 +109,12 @@ async function init() {
 
     setCanFadeOut(true);
 
-    setTimeout(() => {
-      renderApp(setupResult);
-    }, 1000);
+    setTimeout(
+      () => {
+        renderApp(setupResult);
+      },
+      shouldSkipPresentation ? 0 : 1000
+    );
   } catch (e) {
     console.error(e);
     root.render(<LoadingScreen error />);
