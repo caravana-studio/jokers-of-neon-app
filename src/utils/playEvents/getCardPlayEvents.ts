@@ -1,13 +1,17 @@
-import { CARD_PLAY_EVENT } from "../../constants/dojoEventKeys";
 import { EventTypeEnum } from "../../dojo/typescript/models.gen";
+import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
+import { getEventKey } from "../getEventKey";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
+
+const CARD_PLAY_EVENT_KEY = getEventKey(DojoEvents.CARD_PLAY);
 
 export const getCardPlayEvents = (events: DojoEvent[]) => {
   return events
-    .filter((event) => event.keys[1] === CARD_PLAY_EVENT)
+    .filter((event) => event.keys[1] === CARD_PLAY_EVENT_KEY)
     .map((event) => {
-      const eventType = getNumberValueFromEvent(event, 5) ?? (0 as EventTypeEnum);
+      const eventType =
+        getNumberValueFromEvent(event, 5) ?? (0 as EventTypeEnum);
       const firstArrayLength = getNumberValueFromEvent(event, 6) ?? 0;
 
       return {

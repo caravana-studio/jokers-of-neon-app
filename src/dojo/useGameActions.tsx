@@ -1,10 +1,7 @@
 import { shortString } from "starknet";
-import {
-  CREATE_GAME_EVENT,
-  PLAY_GAME_OVER_EVENT,
-} from "../constants/dojoEventKeys";
-import { getLevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
+import { DojoEvents } from "../enums/dojoEvents";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
+import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 import { getPlayEvents } from "../utils/playEvents/getPlayEvents";
 import {
@@ -19,6 +16,8 @@ const createGameEmptyResponse = {
   gameId: 0,
   hand: [],
 };
+
+const CREATE_GAME_EVENT_KEY = getEventKey(DojoEvents.CREATE_GAME)
 
 export const useGameActions = () => {
   const {
@@ -46,9 +45,9 @@ export const useGameActions = () => {
         const events = tx.events;
         console.log(
           "events",
-          events.filter((event) => event.keys[1] === CREATE_GAME_EVENT)
+          events.filter((event) => event.keys[1] === CREATE_GAME_EVENT_KEY)
         );
-        const gameId = getNumberValueFromEvents(events, CREATE_GAME_EVENT, 3);
+        const gameId = getNumberValueFromEvents(events, CREATE_GAME_EVENT_KEY, 3);
         console.log("Game " + gameId + " created");
         return {
           gameId,

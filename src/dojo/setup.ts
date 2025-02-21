@@ -12,6 +12,7 @@ import { defineContractComponents } from "./typescript/defineContractComponents"
 import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
+const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
 let sync: any;
 
@@ -58,7 +59,7 @@ export async function setup({ ...config }: DojoConfig) {
   const dojoProvider = new DojoProvider(config.manifest, config.rpcUrl);
 
   type ClientComponentsKeys = keyof typeof clientComponents;
-  const defaultNameSpace = "jokers_of_neon_core-";
+  const defaultNameSpace = `${DOJO_NAMESPACE}-`;
   const componentNames: string[] = [];
 
   (Object.keys(clientComponents) as ClientComponentsKeys[]).forEach((key) => {
@@ -79,19 +80,19 @@ export async function setup({ ...config }: DojoConfig) {
     const keysGame: torii.KeysClause = {
       keys: [gameID],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon_core-Game"],
+      models: [`${DOJO_NAMESPACE}-Game`],
     };
 
     const keysCard: torii.KeysClause = {
       keys: [gameID, undefined, undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon_core-Card"],
+      models: [`${DOJO_NAMESPACE}-Card`],
     };
 
     const keysMod: torii.KeysClause = {
       keys: [undefined],
       pattern_matching: "FixedLen",
-      models: ["jokers_of_neon_core-GameMod"],
+      models: [`${DOJO_NAMESPACE}-GameMod`],
     };
 
     const query: torii.Query = {

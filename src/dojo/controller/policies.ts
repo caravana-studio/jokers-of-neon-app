@@ -1,21 +1,24 @@
 import { getContractByName } from "@dojoengine/core";
 import manifest from "../../manifest.json";
 
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+
 const game_system_contract_address = getContractByName(
   manifest,
-  "jokers_of_neon_core",
+  DOJO_NAMESPACE,
   "game_system"
 )?.address;
 
 const shop_system_contract_address = getContractByName(
   manifest,
-  "jokers_of_neon_core",
+  DOJO_NAMESPACE,
   "shop_system"
 )?.address;
 
 const rage_system_contract_address = getContractByName(
   manifest,
-  "jokers_of_neon_core",
+  DOJO_NAMESPACE,
   "rage_system"
 )?.address;
 

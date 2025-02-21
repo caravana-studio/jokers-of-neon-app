@@ -1,14 +1,13 @@
-import {
-    POKER_HAND_EVENT
-} from "../../constants/dojoEventKeys";
+import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
-import {
-    getNumberValueFromEvents
-} from "../getNumberValueFromEvent";
+import { getEventKey } from "../getEventKey";
+import { getNumberValueFromEvents } from "../getNumberValueFromEvent";
+
+const POKER_HAND_EVENT_KEY = getEventKey(DojoEvents.POKER_HAND);
 
 export const getHandEvent = (events: DojoEvent[]) => {
-  const playMulti = getNumberValueFromEvents(events, POKER_HAND_EVENT, 1);
-  const playPoints = getNumberValueFromEvents(events, POKER_HAND_EVENT, 2);
+  const playMulti = getNumberValueFromEvents(events, POKER_HAND_EVENT_KEY, 1);
+  const playPoints = getNumberValueFromEvents(events, POKER_HAND_EVENT_KEY, 2);
 
   return {
     multi: playMulti ?? 1,
