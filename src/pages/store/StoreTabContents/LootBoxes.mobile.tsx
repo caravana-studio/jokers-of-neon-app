@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
@@ -22,6 +22,7 @@ export const LootBoxesMobile = () => {
     <Flex
       className="game-tutorial-step-packs"
       m={1}
+      flexGrow={1}
       w="100%"
       gap={2}
       flexDirection={"column"}
@@ -90,11 +91,6 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     [pack, buyPack]
   );
 
-  useEffect(() => {
-    console.log("spineAnimationRef changed:", spineAnimationRef.current);
-  }, [spineAnimationRef.current]);
-
-  console.log("spineAnimationRef out", spineAnimationRef);
   return (
     <Flex
       flexDirection={"column"}

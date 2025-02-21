@@ -5,20 +5,20 @@ import {
   useContext,
   useEffect,
   useState,
-} from 'react'
-import Rox from 'rox-browser'
+} from "react";
+import Rox from "rox-browser";
 
-import { LoadingScreen } from '../pages/LoadingScreen'
-import { IContainer, namespaceFlags } from './flags'
+import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
+import { IContainer, namespaceFlags } from "./flags";
 
 const FeatureFlagContext = createContext<IContainer>(namespaceFlags);
 
-const apiKey = import.meta.env.VITE_FM_APP_KEY
+const apiKey = import.meta.env.VITE_FM_APP_KEY;
 
-export const useFeatureFlagContext = () => useContext(FeatureFlagContext)
+export const useFeatureFlagContext = () => useContext(FeatureFlagContext);
 
 interface IInitFM {
-  apiKey: string
+  apiKey: string;
 }
 
 /**
@@ -37,48 +37,48 @@ interface IInitFM {
  * The user and organization props are required so that the custom
  * rox properties work correctly.
  */
-export const FeatureFlagProvider = ({
-  children,
-}: PropsWithChildren) => {
-  const [isFMReady, setIsFMReady] = useState(!apiKey)
+export const FeatureFlagProvider = ({ children }: PropsWithChildren) => {
+  const [isFMReady, setIsFMReady] = useState(!apiKey);
 
   if (!apiKey) {
-    console.warn('No FM API key found. Feature flags will not be available.')
+    console.warn("No FM API key found. Feature flags will not be available.");
   }
   const initFM = useCallback(async ({ apiKey }: IInitFM) => {
     // HACK: use a document global to ensure this doesn't run more than once.
     // This is necessary to avoid <StrictMode> causing problems since to forces
     // everything to run twice when running locally
 
-    const globalContext = document as unknown as { fmHasLoaded: boolean }
+    const globalContext = document as unknown as { fmHasLoaded: boolean };
     if (globalContext.fmHasLoaded) {
-      return
+      return;
     }
-    globalContext.fmHasLoaded = true
+    globalContext.fmHasLoaded = true;
 
-    const options = {}
+    const options = {};
 
     // Register the flags
-    Object.keys(namespaceFlags).forEach(namespace => {
-      const flagsUnderNamespace = (namespaceFlags as any)[namespace]
-      Rox.register(namespace, flagsUnderNamespace)
-    })
+    Object.keys(namespaceFlags).forEach((namespace) => {
+      const flagsUnderNamespace = (namespaceFlags as any)[namespace];
+      Rox.register(namespace, flagsUnderNamespace);
+    });
 
     // Setup the key (this can only be called once)
-    await Rox.setup(apiKey, options)
+    await Rox.setup(apiKey, options);
 
-    setIsFMReady(true)
-  }, [])
+    setIsFMReady(true);
+  }, []);
 
   useEffect(() => {
     if (apiKey) {
-      initFM({ apiKey })
+      initFM({ apiKey });
     }
-  }, [apiKey, initFM])
+  }, [apiKey, initFM]);
 
   return isFMReady ? (
-    <FeatureFlagContext.Provider value={namespaceFlags}>{children}</FeatureFlagContext.Provider>
+    <FeatureFlagContext.Provider value={namespaceFlags}>
+      {children}
+    </FeatureFlagContext.Provider>
   ) : (
     <LoadingScreen />
-  )
-}
+  );
+};

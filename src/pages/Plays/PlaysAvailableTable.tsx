@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { TiltCard } from "../../components/TiltCard";
 import { PLAYS, PLAYS_DATA } from "../../constants/plays";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
@@ -24,7 +25,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { LevelPokerHand } from "../../types/LevelPokerHand";
-import { Loading } from "../../components/Loading";
 
 const { blueLight, blue, violet } = theme.colors;
 
@@ -74,192 +74,196 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
           w={["100%", "unset"]}
         >
           <CustomScrollbar>
-            <Table
-              sx={{
-                borderCollapse: "separate",
-                marginBottom: 4,
-                borderSpacing: 0,
-              }}
-              width={"100%"}
-              h="100%"
-              variant={isSmallScreen ? "store-mobile" : "store"}
-            >
-              <Thead
+            <DelayedLoading>
+              <Table
                 sx={{
-                  position: "relative",
-                  background: "black",
-                  border: "10px",
-                  borderColor: "transparent",
-                  borderRadius: "25px",
+                  borderCollapse: "separate",
+                  marginBottom: 4,
+                  borderSpacing: 0,
                 }}
+                width={"100%"}
+                h="100%"
+                variant={isSmallScreen ? "store-mobile" : "store"}
               >
-                <Tr>
-                  <Td
-                    colSpan={3}
-                    sx={{
-                      position: "sticky",
-                      top: "0px",
-                      backgroundColor: "black",
-                    }}
-                    p={4}
-                  >
-                    <Text
-                      pt={2}
+                <Thead
+                  sx={{
+                    position: "relative",
+                    background: "black",
+                    border: "10px",
+                    borderColor: "transparent",
+                    borderRadius: "25px",
+                  }}
+                >
+                  <Tr>
+                    <Td
+                      colSpan={3}
                       sx={{
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
-                        overflowWrap: "break-word",
+                        position: "sticky",
+                        top: "0px",
+                        backgroundColor: "black",
                       }}
+                      p={4}
                     >
-                      {PLAYS_DATA[playsExampleIndex].description}
-                    </Text>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td
-                    colSpan={3}
-                    sx={{ position: "sticky", backgroundColor: "black" }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        padding: {
-                          base: "0px 2px 2px 2px",
-                          sm: "0px 4px 4px 4px",
-                        },
-                        flexDirection: "row",
-                      }}
+                      <Text
+                        pt={2}
+                        sx={{
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                          overflowWrap: "break-word",
+                        }}
+                      >
+                        {PLAYS_DATA[playsExampleIndex].description}
+                      </Text>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td
+                      colSpan={3}
+                      sx={{ position: "sticky", backgroundColor: "black" }}
                     >
-                      <Flex
-                        wrap={"nowrap"}
-                        width={"fit-content"}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        gap={isSmallScreen ? 0 : 4}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          padding: {
+                            base: "0px 2px 2px 2px",
+                            sm: "0px 4px 4px 4px",
+                          },
+                          flexDirection: "row",
+                        }}
                       >
-                        {PLAYS_DATA[playsExampleIndex].example.map(
-                          (card: Card, index) => {
-                            const isImportant = PLAYS_DATA[
-                              playsExampleIndex
-                            ].importantCards.some(
-                              (ic) => ic.card_id === card.card_id
-                            );
-                            return (
-                              <Box
-                                key={`${card.card_id}+"-"+${index}`}
-                                opacity={isImportant ? 1 : 0.5}
-                              >
-                                <TiltCard
-                                  card={card}
-                                  scale={cardScale - (cardScale * 33) / 100}
-                                />
-                              </Box>
-                            );
-                          }
-                        )}
-                      </Flex>
-                    </Box>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td fontSize={isSmallScreen ? 12 : 17}>
-                    {t("game.plays.table.level-head").toUpperCase()}
-                  </Td>
-                  <Td fontSize={isSmallScreen ? 12 : 17}>
-                    {t("game.plays.table.hand-head").toUpperCase()}
-                  </Td>
-                  <Td fontSize={isSmallScreen ? 12 : 17}>
-                    {t("game.plays.table.points-multi-head").toUpperCase()}
-                  </Td>
-                </Tr>
-              </Thead>
-
-              <Tbody>
-                {plays &&
-                  [...plays].map((play, index) => {
-                    const textColor =
-                      playsExampleIndex === index ? BLUE_LIGHT : "white";
-                    const opacitySx = {
-                      opacity: 1,
-                    };
-
-                    const levelTd = (
-                      <Td
-                        sx={opacitySx}
-                        textColor={textColor}
-                        fontSize={isSmallScreen ? 9 : 13}
-                      >
-                        {play.level.toString()}
-                      </Td>
-                    );
-                    const nameTd = (
-                      <Td
-                        sx={opacitySx}
-                        textAlign={"center"}
-                        textColor={textColor}
-                        fontSize={isSmallScreen ? 9 : 13}
-                      >
-                        {play.poker_hand &&
-                          PLAYS[parseHand(play.poker_hand.toString()).value]}
-                      </Td>
-                    );
-                    const pointsMultiTd = (
-                      <Td>
-                        <Box
-                          color={"white"}
-                          display={"flex"}
-                          flexDirection={"row"}
+                        <Flex
+                          wrap={"nowrap"}
+                          width={"fit-content"}
                           justifyContent={"center"}
+                          alignItems={"center"}
+                          gap={isSmallScreen ? 0 : 4}
                         >
-                          <Box
-                            backgroundColor={`${blue}`}
-                            borderRadius={4}
-                            width={isSmallScreen ? "40px" : "60px"}
-                            mr={1}
-                            boxShadow={`0px 0px 10px 6px ${blue}`}
-                            fontWeight={"400"}
-                          >
-                            {play.points.toString()}
-                          </Box>
-                          <Heading fontSize={isSmallScreen ? "8" : "10"}>
-                            x
-                          </Heading>
-                          <Box
-                            backgroundColor={"neonPink"}
-                            borderRadius={4}
-                            width={isSmallScreen ? "40px" : "60px"}
-                            ml={1}
-                            boxShadow={`0px 0px 10px 6px ${violet}`}
-                            fontWeight={"400"}
-                          >
-                            {play.multi.toString()}
-                          </Box>
-                        </Box>
-                      </Td>
-                    );
+                          {PLAYS_DATA[playsExampleIndex].example.map(
+                            (card: Card, index) => {
+                              const isImportant = PLAYS_DATA[
+                                playsExampleIndex
+                              ].importantCards.some(
+                                (ic) => ic.card_id === card.card_id
+                              );
+                              return (
+                                <Box
+                                  key={`${card.card_id}+"-"+${index}`}
+                                  opacity={isImportant ? 1 : 0.5}
+                                >
+                                  <TiltCard
+                                    card={card}
+                                    scale={cardScale - (cardScale * 33) / 100}
+                                  />
+                                </Box>
+                              );
+                            }
+                          )}
+                        </Flex>
+                      </Box>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                      {t("game.plays.table.level-head").toUpperCase()}
+                    </Td>
+                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                      {t("game.plays.table.hand-head").toUpperCase()}
+                    </Td>
+                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                      {t("game.plays.table.points-multi-head").toUpperCase()}
+                    </Td>
+                  </Tr>
+                </Thead>
 
-                    return (
-                      <Tr
-                        key={index}
-                        height={"30px"}
-                        onClick={() => setPlaysExampleIndex(index)}
-                        sx={{ cursor: "pointer" }}
-                        backgroundColor={playsExampleIndex === index ? '#242424' : 'none'}
-                      >
-                        {
-                          <>
-                            {levelTd}
-                            {nameTd}
-                          </>
-                        }
+                <Tbody>
+                  {plays &&
+                    [...plays].map((play, index) => {
+                      const textColor =
+                        playsExampleIndex === index ? BLUE_LIGHT : "white";
+                      const opacitySx = {
+                        opacity: 1,
+                      };
 
-                        {pointsMultiTd}
-                      </Tr>
-                    );
-                  })}
-              </Tbody>
-            </Table>
+                      const levelTd = (
+                        <Td
+                          sx={opacitySx}
+                          textColor={textColor}
+                          fontSize={isSmallScreen ? 9 : 13}
+                        >
+                          {play.level.toString()}
+                        </Td>
+                      );
+                      const nameTd = (
+                        <Td
+                          sx={opacitySx}
+                          textAlign={"center"}
+                          textColor={textColor}
+                          fontSize={isSmallScreen ? 9 : 13}
+                        >
+                          {play.poker_hand &&
+                            PLAYS[parseHand(play.poker_hand.toString()).value]}
+                        </Td>
+                      );
+                      const pointsMultiTd = (
+                        <Td>
+                          <Box
+                            color={"white"}
+                            display={"flex"}
+                            flexDirection={"row"}
+                            justifyContent={"center"}
+                          >
+                            <Box
+                              backgroundColor={`${blue}`}
+                              borderRadius={4}
+                              width={isSmallScreen ? "40px" : "60px"}
+                              mr={1}
+                              boxShadow={`0px 0px 10px 6px ${blue}`}
+                              fontWeight={"400"}
+                            >
+                              {play.points.toString()}
+                            </Box>
+                            <Heading fontSize={isSmallScreen ? "8" : "10"}>
+                              x
+                            </Heading>
+                            <Box
+                              backgroundColor={"neonPink"}
+                              borderRadius={4}
+                              width={isSmallScreen ? "40px" : "60px"}
+                              ml={1}
+                              boxShadow={`0px 0px 10px 6px ${violet}`}
+                              fontWeight={"400"}
+                            >
+                              {play.multi.toString()}
+                            </Box>
+                          </Box>
+                        </Td>
+                      );
+
+                      return (
+                        <Tr
+                          key={index}
+                          height={"30px"}
+                          onClick={() => setPlaysExampleIndex(index)}
+                          sx={{ cursor: "pointer" }}
+                          backgroundColor={
+                            playsExampleIndex === index ? "#242424" : "none"
+                          }
+                        >
+                          {
+                            <>
+                              {levelTd}
+                              {nameTd}
+                            </>
+                          }
+
+                          {pointsMultiTd}
+                        </Tr>
+                      );
+                    })}
+                </Tbody>
+              </Table>
+            </DelayedLoading>
           </CustomScrollbar>
         </TableContainer>
       ) : (

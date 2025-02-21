@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { BackgroundDecoration } from "../../components/Background";
 import { PositionedGameMenu } from "../../components/GameMenu";
 import { Card } from "../../types/Card";
 import { Powerups } from "./TabContents/Powerups";
@@ -12,6 +13,7 @@ export interface ManagePageContentProps {
   onCardClick: (card: Card) => void;
   sellButton: ReactNode;
   goBackButton: ReactNode;
+  onTabChange?: (index: number) => void;
 }
 
 export const ManagePageContent = ({
@@ -22,7 +24,7 @@ export const ManagePageContent = ({
   goBackButton,
 }: ManagePageContentProps) => {
   return (
-    <>
+    <BackgroundDecoration>
       <PositionedGameMenu decoratedPage />
       <Flex
         height={"100%"}
@@ -42,6 +44,6 @@ export const ManagePageContent = ({
           {sellButton}
         </Flex>
       </Flex>
-    </>
+    </BackgroundDecoration>
   );
 };

@@ -1,6 +1,6 @@
-import { LEVEL_UP_HAND_EVENT } from "../../constants/dojoEventKeys";
+import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
-import { CashEvent } from "../../types/ScoreData";
+import { getEventKey } from "../getEventKey";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
 export interface LevelUpPlayEvent {
@@ -13,9 +13,11 @@ export interface LevelUpPlayEvent {
   multi: number;
 }
 
+const LEVEL_UP_HAND_EVENT_KEY = getEventKey(DojoEvents.LEVEL_UP_HAND);
+
 export const getLevelUpPlayEvent = (events: DojoEvent[]) => {
   const levelUpEvent = events.find(
-    (event) => event.keys[1] === LEVEL_UP_HAND_EVENT
+    (event) => event.keys[1] === LEVEL_UP_HAND_EVENT_KEY
   );
 
   if (!levelUpEvent) return undefined;
