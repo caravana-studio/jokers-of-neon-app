@@ -2,7 +2,7 @@ import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { BackgroundDecoration } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { PositionedGameMenu } from "../components/GameMenu";
@@ -17,31 +17,8 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
-import { BackgroundDecoration } from "../components/Background";
-
-const WhiteOverlay = styled.div<{ $visible: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  z-index: 9999;
-  opacity: ${(props) => (props.$visible ? 1 : 0)};
-  transition: opacity 1s ease-out;
-  pointer-events: none;
-`;
 
 export const OpenLootBox = () => {
-  const [overlayVisible, setOverlayVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setOverlayVisible(false);
-    }, 700);
-
-    return () => clearTimeout(timer);
-  }, []);
   const navigate = useNavigate();
 
   const game = useGame();
@@ -61,9 +38,11 @@ export const OpenLootBox = () => {
   const adjustedCardScale = cardScale * 1.2;
 
   useEffect(() => {
-    if (game?.state === "IN_STORE") {
-      navigate("/redirect/store", { state: { lastTabIndex: 1 } });
-    }
+    setTimeout(() => {
+      if (game?.state === "AT_SHOP") {
+        navigate("/redirect/store", { state: { lastTabIndex: 1 } });
+      }
+    }, 3000);
   }, [game?.state]);
 
   useEffect(() => {
@@ -106,7 +85,6 @@ export const OpenLootBox = () => {
   return (
     <BackgroundDecoration>
       <PositionedGameMenu decoratedPage />
-      <WhiteOverlay $visible={overlayVisible} />
       {cards.length > 0 ? (
         <Flex
           height={"100%"}

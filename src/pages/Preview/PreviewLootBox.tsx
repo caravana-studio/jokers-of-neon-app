@@ -1,7 +1,7 @@
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import SpineAnimation, {
   SpineAnimationRef,
@@ -9,12 +9,12 @@ import SpineAnimation, {
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { animationsData } from "../../constants/spineAnimations.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { usePageTransitions } from "../../providers/PageTransitionsProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { getCardData } from "../../utils/getCardData.ts";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
 
   const { card, pack } = state || {};
 
@@ -30,29 +30,27 @@ export const PreviewLootBox = () => {
   const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card, true);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
-  const [showOverlay, setShowOverlay] = useState(false);
 
   const notEnoughCash =
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
+  const { transitionTo } = usePageTransitions();
+
   const openAnimationCallBack = () => {
     setTimeout(() => {
-      setShowOverlay(true);
-    }, 500);
-    setTimeout(() => {
-      navigate("/redirect/open-loot-box");
-    }, 1000);
+      transitionTo("/open-loot-box");
+    }, 200);
   };
 
   const buyButton = (
     <Button
       onClick={() => {
         setBuyDisabled(true);
+        spineAnimationRef.current?.playOpenBoxAnimation();
         buyPack(pack)
           .then((response) => {
             if (response) {
-              spineAnimationRef.current?.playOpenBoxAnimation();
               // setLockRedirection(true);
             } else {
               setBuyDisabled(false);
@@ -111,7 +109,7 @@ export const PreviewLootBox = () => {
       details={details}
       isPack
       spine={spineAnim}
-      showOverlay={showOverlay}
+      showOverlay={false}
       discountPrice={pack.discount_cost}
     />
   );
