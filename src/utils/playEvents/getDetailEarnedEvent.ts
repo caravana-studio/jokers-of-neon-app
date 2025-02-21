@@ -1,13 +1,16 @@
-import { DETAIL_EARNED_EVENT } from "../../constants/dojoEventKeys";
+import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
 import { DetailEarned } from "../../types/ScoreData";
+import { getEventKey } from "../getEventKey";
 import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
+
+const DETAIL_EARNED_EVENT_KEY = getEventKey(DojoEvents.DETAIL_EARNED);
 
 export const getDetailEarnedEvent = (
   events: DojoEvent[]
 ): DetailEarned | undefined => {
   const detailEarnedEvent = events.find(
-    (event) => event.keys[1] === DETAIL_EARNED_EVENT
+    (event) => event.keys[1] === DETAIL_EARNED_EVENT_KEY
   );
   if (!detailEarnedEvent) return undefined;
   const round_defeat = getNumberValueFromEvent(detailEarnedEvent, 4) ?? 0;

@@ -4,6 +4,8 @@ export type ContractComponents = Awaited<
   ReturnType<typeof defineContractComponents>
 >;
 
+const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+
 export function defineContractComponents(world: World) {
   return {
     // Model definition for `jokers_of_neon_core::models::status::shop::shop::BlisterPackItem` model
@@ -20,7 +22,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BlisterPackItem",
             types: ["u32", "u32", "u32", "u32", "u32", "bool"],
             customTypes: [],
@@ -40,7 +42,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BlisterPackResult",
             types: ["u32", "bool", "array"],
             customTypes: [],
@@ -60,7 +62,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BurnItem",
             types: ["u32", "u32", "bool"],
             customTypes: [],
@@ -81,7 +83,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BuyBlisterPackEvent",
             types: ["u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -104,7 +106,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BuyCardEvent",
             types: ["u32", "u32", "u32", "CardItemType", "u32", "bool"],
             customTypes: [],
@@ -126,7 +128,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BuyPokerHandEvent",
             types: ["u32", "u32", "u32", "PokerHand", "u8"],
             customTypes: [],
@@ -147,7 +149,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "BuyRerollEvent",
             types: ["u32", "u32", "u32", "bool"],
             customTypes: [],
@@ -171,7 +173,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CardItem",
             types: ["u32", "u32", "CardItemType", "u32", "u32", "bool", "bool"],
             customTypes: [],
@@ -192,7 +194,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CardScoreEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -211,7 +213,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CreateGameEvent",
             types: ["ContractAddress", "u32"],
             customTypes: [],
@@ -230,7 +232,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CurrentHand",
             types: ["u32", "array"],
             customTypes: [],
@@ -248,7 +250,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "GamePowerUp",
             types: ["u32", "array"],
             customTypes: [],
@@ -266,7 +268,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CurrentHandEvent",
             types: ["u32", "array"],
             customTypes: [],
@@ -289,7 +291,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "CurrentSpecialCards",
             types: ["u32", "u32", "u32", "bool", "u32", "u32"],
             customTypes: [],
@@ -309,7 +311,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "DeckCard",
             types: ["u32", "u32", "u32"],
             customTypes: [],
@@ -337,7 +339,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "DetailEarnedEvent",
             types: [
               "ContractAddress",
@@ -379,7 +381,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "Game",
             types: [
               "u32",
@@ -412,7 +414,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "GameDeck",
             types: ["u32", "u32", "u32"],
             customTypes: [],
@@ -434,7 +436,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "ModifierCardSuitEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
             customTypes: [],
@@ -456,7 +458,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "NeonPokerHandEvent",
             types: ["ContractAddress", "u32", "array", "u32", "u32"],
             customTypes: [],
@@ -475,7 +477,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PlayGameOverEvent",
             types: ["ContractAddress", "u32"],
             customTypes: [],
@@ -496,7 +498,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PlayPokerHandEvent",
             types: ["u32", "u32", "u8", "PokerHand"],
             customTypes: [],
@@ -517,7 +519,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PlayWinGameEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -537,7 +539,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PlayerLevelPokerHand",
             types: ["u32", "PokerHand", "u8"],
             customTypes: [],
@@ -558,7 +560,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PokerHandEvent",
             types: ["ContractAddress", "u8", "u32", "u32"],
             customTypes: [],
@@ -581,7 +583,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "PokerHandItem",
             types: ["u32", "u32", "PokerHand", "u8", "u32", "bool"],
             customTypes: [],
@@ -603,7 +605,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "RageRound",
             types: ["u32", "bool", "u16", "array", "u8"],
             customTypes: [],
@@ -625,7 +627,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "Round",
             types: ["u32", "u32", "u32", "u8", "u8"],
             customTypes: [],
@@ -645,7 +647,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "RoundScoreEvent",
             types: ["ContractAddress", "u32", "u32"],
             customTypes: [],
@@ -670,7 +672,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "Shop",
             types: ["u32", "u32", "bool", "u32", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -690,7 +692,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SlotSpecialCardsItem",
             types: ["u32", "u32", "bool"],
             customTypes: [],
@@ -711,7 +713,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialCashEvent",
             types: ["ContractAddress", "u32", "u32", "u32"],
             customTypes: [],
@@ -733,7 +735,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialGlobalEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -755,7 +757,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialModifierMultiEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -777,7 +779,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialModifierPointsEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -799,7 +801,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialModifierSuitEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "Suit"],
             customTypes: [],
@@ -821,7 +823,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "SpecialPokerHandEvent",
             types: ["ContractAddress", "u32", "u32", "u32", "u32"],
             customTypes: [],
@@ -843,7 +845,7 @@ export function defineContractComponents(world: World) {
         },
         {
           metadata: {
-            namespace: "jokers_of_neon_core",
+            namespace: DOJO_NAMESPACE,
             name: "GameMod",
             types: [
               "u32",

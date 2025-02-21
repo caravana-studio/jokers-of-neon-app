@@ -1,3 +1,4 @@
+import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { Cards } from "../enums/cards";
 import { ModifiersId } from "../enums/modifiersId";
 import { Plays } from "../enums/plays";
@@ -32,7 +33,15 @@ export const checkHand = (
   };
 
   const modifyCardData = (card: Card, modifiers: number[]) => {
-    let modifiedCardData = { ...card, card: card.value, type: "" };
+    const suit = card.card_id && CARDS_SUIT_DATA[card.card_id]?.suit;
+    const rank = card.card_id && CARDS_SUIT_DATA[card.card_id]?.card;
+
+    let modifiedCardData = {
+      ...card,
+      card: card.value ?? rank,
+      suit: card.suit ?? suit,
+      type: "",
+    };
 
     modifiers.forEach((modifierIdx) => {
       const modifierCard = hand.find((mc) => mc.idx === modifierIdx);

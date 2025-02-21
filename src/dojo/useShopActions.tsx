@@ -1,5 +1,4 @@
 import { CairoCustomEnum } from "starknet";
-import { DESTROYED_SPECIAL_CARD_EVENT } from "../constants/dojoEventKeys";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
@@ -8,8 +7,11 @@ import {
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
-import { EventTypeTypeEnum } from "./typescript/models.gen";
 import { useDojo } from "./useDojo";
+import { DojoEvents } from "../enums/dojoEvents";
+import { getEventKey } from "../utils/getEventKey";
+
+const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(DojoEvents.DESTROYED_SPECIAL_CARD)
 
 export const useShopActions = () => {
   const {
@@ -31,7 +33,7 @@ export const useShopActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const event = tx.events.find(
-          (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT
+          (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
         return {
           success: true,

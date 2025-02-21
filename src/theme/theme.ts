@@ -57,12 +57,11 @@ export default {
   styles: {
     global: {
       body: {
-        background: "#1b2838 none repeat scroll 0 0",
+        background: "#000 none repeat scroll 0 0",
         margin: 0,
         overflow: "hidden",
         height: "100vh",
         width: "100vw",
-        backgroundImage: 'url(/bg/game-bg.jpg)'
       },
     },
   },

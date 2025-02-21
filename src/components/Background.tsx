@@ -144,6 +144,7 @@ export const Background = ({ children }: PropsWithChildren) => {
         WebkitTouchCallout: "none",
         WebkitUserSelect: "none",
         userSelect: "none",
+        overflowX: "hidden",
       }}
       onContextMenu={(e) => e.preventDefault()}
     >

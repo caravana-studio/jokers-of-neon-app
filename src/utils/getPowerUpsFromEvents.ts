@@ -1,11 +1,16 @@
-import { GAME_POWER_UP_EVENT } from "../constants/dojoEventKeys";
 import { getPowerUp } from "../dojo/queries/useGamePowerUps";
+import { DojoEvents } from "../enums/dojoEvents";
 import { DojoEvent } from "../types/DojoEvent";
 import { PowerUp } from "../types/PowerUp";
 import { getArrayValueFromEvent } from "./getArrayValueFromEvent";
+import { getEventKey } from "./getEventKey";
+
+const GAME_POWER_UP_EVENT_KEY = getEventKey(DojoEvents.GAME_POWER_UP);
 
 export const getPowerUpsFromEvents = (events: DojoEvent[]): PowerUp[] => {
-  const event = events.find((event) => event.keys[1] === GAME_POWER_UP_EVENT);
+  const event = events.find(
+    (event) => event.keys[1] === GAME_POWER_UP_EVENT_KEY
+  );
 
   if (!event) return [];
 

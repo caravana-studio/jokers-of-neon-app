@@ -1,11 +1,14 @@
-import { CURRENT_HAND_EVENT } from "../constants/dojoEventKeys";
+import { DojoEvents } from "../enums/dojoEvents";
 import { Card } from "../types/Card";
 import { DojoEvent } from "../types/DojoEvent";
 import { getArrayValueFromEvent } from "./getArrayValueFromEvent";
+import { getEventKey } from "./getEventKey";
+
+const CURRENT_HAND_EVENT_KEY = getEventKey(DojoEvents.CURRENT_HAND);
 
 export const getCardsFromEvents = (events: DojoEvent[]): Card[] => {
   const event = events.find(
-    (event) => event.keys[1] === CURRENT_HAND_EVENT
+    (event) => event.keys[1] === CURRENT_HAND_EVENT_KEY
   );
 
   if (!event) return [];

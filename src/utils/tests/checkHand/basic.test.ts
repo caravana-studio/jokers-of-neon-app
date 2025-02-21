@@ -14,6 +14,7 @@ import {
   CJ,
   CK,
   CQ,
+  D10,
   D2,
   D3,
   D4,
@@ -164,6 +165,10 @@ test("Two Pairs should work", () => {
 
 test("Pair should work", () => {
   expect(testCheckHand([H2, C2])).toBe(Plays.PAIR);
+});
+
+test("Pair with more cards should work", () => {
+  expect(testCheckHand([S6, H9, D10, C10])).toBe(Plays.PAIR);
 });
 
 test("Pair with wildcard should work", () => {
