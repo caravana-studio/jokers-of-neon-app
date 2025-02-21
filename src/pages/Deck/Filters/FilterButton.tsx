@@ -3,6 +3,7 @@ import { useDeck } from "../../../dojo/queries/useDeck";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { IconType, Icons } from "../../../constants/icons";
 import { isMobile } from "react-device-detect";
+import { IconComponent } from "../../../components/IconComponent";
 
 interface FilterButtonProps {
   label: string;
@@ -28,7 +29,7 @@ export const FilterButton = ({
     : deck?.usedCards.filter(filterFn)?.length ?? 0;
   const unusedCardsLength = deckLength - usedCardsLength;
 
-  const IconComponent = icon ? Icons[icon] : null;
+  const iconSource = icon ? Icons[icon] : null;
   const iconSize = isMobile ? "12px" : "16px";
 
   return (
@@ -41,17 +42,9 @@ export const FilterButton = ({
       onClick={onClick}
     >
       <Flex gap={[1, 2]} alignItems={"center"}>
-        {IconComponent &&
-          (typeof IconComponent === "string" ? (
-            <img
-              src={IconComponent}
-              alt={label}
-              width={iconSize}
-              height={iconSize}
-            />
-          ) : (
-            <IconComponent width={iconSize} height={iconSize} fill="white" />
-          ))}
+        {iconSource && (
+          <IconComponent icon={iconSource} width={iconSize} height={iconSize} />
+        )}
         <Text fontSize={[10, 14]}>{label}</Text>
         <Text color="blueLight" fontSize={[10, 14]}>
           {unusedCardsLength !== deckLength
