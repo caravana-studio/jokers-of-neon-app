@@ -1,6 +1,7 @@
-import { Flex, Box, useTheme } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 import { cardSuitsMap, RowHeader } from "./DeckPreviewTableUtils";
 import { GREY_LINE, GREY_MEDIUM } from "../../theme/colors";
+import { IconComponent } from "../IconComponent";
 
 export const PreviewTableRowHeader: React.FC<RowHeader> = ({
   cardSuit,
@@ -10,8 +11,6 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
 
   const Icon = cardSuitsMap.get(cardSuit);
   if (!Icon) return null;
-
-  const { colors } = useTheme();
 
   return (
     <Flex
@@ -26,7 +25,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
       border={"1px"}
       borderRadius={"15px"}
     >
-      {Icon && <Icon width={12} fill={colors[cardSuit]} height={"100%"} />}
+      {Icon && <IconComponent icon={Icon} width={"14px"} height={"14px"} />}
       <Box
         px={4}
         textAlign={"center"}
@@ -34,6 +33,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
         border={"1px"}
         color={GREY_LINE}
         backgroundColor={GREY_MEDIUM}
+        width={"60px"}
       >
         {quantity}
       </Box>

@@ -25,10 +25,7 @@ interface TableData {
     rowHeaders: RowHeader[];
     cells: Cell[][];
 }
-
-type CardValue = string | FC<SVGProps<ReactSVGElement>>;
-
-const cardValuesMap: Map<Cards, CardValue> = new Map<Cards, CardValue>([
+const cardValuesMap: Map<Cards, string> = new Map<Cards, string>([
   [Cards.ACE, 'A'],
   [Cards.KING, 'K'],
   [Cards.QUEEN, 'Q'],
@@ -44,7 +41,7 @@ const cardValuesMap: Map<Cards, CardValue> = new Map<Cards, CardValue>([
   [Cards.TWO, '2'],
 ]);
 
-  const cardSuitsMap: Map<Suits, FC<SVGProps<ReactSVGElement>>> = new Map([
+  const cardSuitsMap: Map<Suits, string | FC<SVGProps<ReactSVGElement>>> = new Map([
     [Suits.CLUBS, Icons.CLUB],
     [Suits.DIAMONDS, Icons.DIAMOND],
     [Suits.HEARTS, Icons.HEART],
