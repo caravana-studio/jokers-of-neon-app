@@ -5,13 +5,19 @@ import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
 import { useStore } from "../../providers/StoreProvider";
 import { getTooltip } from "../../utils/getTooltip";
+import { RerollingAnimation } from "./StoreElements/RerollingAnimation";
 
 export const LootBoxes = () => {
   const navigate = useNavigate();
 
   const { packs } = useStore();
   return (
-    <Flex className="game-tutorial-step-packs" m={isMobile ? 4 : 0} h="60%" w="100%">
+    <Flex
+      className="game-tutorial-step-packs"
+      m={isMobile ? 4 : 0}
+      h="60%"
+      w="100%"
+    >
       <Flex flexDirection="row" justifyContent="space-between" w="100%">
         {packs.map((pack) => {
           const card = {
@@ -33,31 +39,33 @@ export const LootBoxes = () => {
                 justifyContent="center"
                 w="50%"
               >
-                <SpineAnimation
-                  jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
-                  atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
-                  initialAnimation={
-                    isMobile
-                      ? animationsData.loopAnimation
-                      : animationsData.initialAnimation
-                  }
-                  hoverAnimation={animationsData.hoverAnimation}
-                  loopAnimation={animationsData.loopAnimation}
-                  isPurchased={pack.purchased.valueOf()}
-                  price={card.price}
-                  discountPrice={pack.discount_cost.valueOf()}
-                  onClick={() => {
-                    if (!pack.purchased) {
-                      navigate("/preview/loot-box", {
-                        state: {
-                          card: card,
-                          isPack: true,
-                          pack: pack,
-                        },
-                      });
+                <RerollingAnimation>
+                  <SpineAnimation
+                    jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+                    atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
+                    initialAnimation={
+                      isMobile
+                        ? animationsData.loopAnimation
+                        : animationsData.initialAnimation
                     }
-                  }}
-                />
+                    hoverAnimation={animationsData.hoverAnimation}
+                    loopAnimation={animationsData.loopAnimation}
+                    isPurchased={pack.purchased.valueOf()}
+                    price={card.price}
+                    discountPrice={pack.discount_cost.valueOf()}
+                    onClick={() => {
+                      if (!pack.purchased) {
+                        navigate("/preview/loot-box", {
+                          state: {
+                            card: card,
+                            isPack: true,
+                            pack: pack,
+                          },
+                        });
+                      }
+                    }}
+                  />
+                </RerollingAnimation>
               </Flex>
             </Tooltip>
           );
