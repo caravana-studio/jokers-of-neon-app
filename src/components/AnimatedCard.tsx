@@ -140,7 +140,7 @@ export const AnimatedCard = ({
   useEffect(() => {
     if (played) {
       cardApi.start({
-        to: { x: isSmallScreen ? 500 : 1000, opacity: 0 },
+        to: { x: 1000, opacity: 0 },
         config: { duration: 200 },
       });
     }
@@ -149,7 +149,7 @@ export const AnimatedCard = ({
   useEffect(() => {
     if (discarded) {
       cardApi.start({
-        to: { x: isSmallScreen ? -500 : -1000, opacity: 0 },
+        to: { x: -1000, opacity: 0 },
         config: { duration: 200 },
       });
     } else {
