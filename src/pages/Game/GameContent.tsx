@@ -29,6 +29,7 @@ import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
 import CachedImage from "../../components/CachedImage.tsx";
+import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -59,6 +60,7 @@ export const GameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const [isDeckTableVisible, setIsDeckTableVisible] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -192,6 +194,17 @@ export const GameContent = () => {
           hideCloseButton
         />
 
+        <Flex
+          position={"absolute"}
+          zIndex={1000}
+          display={isDeckTableVisible ? "flex" : "none"}
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+        >
+          <DeckPreviewTable />
+        </Flex>
+
         <Box
           sx={{ width: "100%", height: "100%" }}
           className="game-tutorial-intro"
@@ -288,6 +301,8 @@ export const GameContent = () => {
             bottom: 16,
             right: 20,
           }}
+          onMouseEnter={() => setIsDeckTableVisible(true)}
+          onMouseLeave={() => setIsDeckTableVisible(false)}
         >
           <GameDeck />
         </Box>
