@@ -73,6 +73,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   manage: {
     bg: BackgroundType.Store,
   },
+  home: {
+    bg: BackgroundType.Home,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {
@@ -83,7 +86,8 @@ export const Background = ({ children }: PropsWithChildren) => {
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
   const location = useLocation();
-  const page = location.pathname.split("/")?.[1];
+  const pathname = location.pathname.split("/")?.[1];
+  const page = pathname === "" ? "home" : pathname;
   const type = bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
@@ -136,8 +140,12 @@ export const Background = ({ children }: PropsWithChildren) => {
         bottom: isSmallScreen ? 0 : "unset",
         boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
         overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
         overflowX: "hidden",
       }}
+      onContextMenu={(e) => e.preventDefault()}
     >
       {isClassic && <BackgroundVideo type={videoType} />}
 

@@ -1,7 +1,6 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 import { PriceBox } from "../../../components/PriceBox";
 import SpineAnimation, {
@@ -10,6 +9,7 @@ import SpineAnimation, {
 import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
 import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
+import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
@@ -43,18 +43,15 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
   const [buyDisabled, setBuyDisabled] = useState(false);
   const game = useGame();
   const cash = game?.cash ?? 0;
-  const { neonGreen, white } = theme.colors;
+  const { neonGreen } = theme.colors;
   const { t } = useTranslation(["store"]);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const navigate = useNavigate();
+
+  const { transitionTo } = usePageTransitions();
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
-      setShowOverlay(true);
-    }, 500);
-    setTimeout(() => {
-      navigate("/redirect/open-loot-box");
-    }, 1000);
+      transitionTo("/open-loot-box");
+    }, 200);
   };
 
   const card = {
@@ -189,19 +186,6 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
         </Flex>
       </Flex>
-      {showOverlay && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
-          backgroundColor="white"
-          zIndex={9999}
-          opacity={showOverlay ? 1 : 0}
-          animation={`opacity 0.5s ease-out`}
-        />
-      )}
     </Flex>
   );
 };
