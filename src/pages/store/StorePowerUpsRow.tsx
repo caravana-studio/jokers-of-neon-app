@@ -1,11 +1,12 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { PowerUpComponent } from "../../components/PowerUpComponent";
 import { CARD_WIDTH } from "../../constants/visualProps";
 import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { DefaultInfo } from "../../components/Info/DefaultInfo";
+import { RerollingAnimation } from "./StoreElements/RerollingAnimation";
 
 export const StorePowerUpsRow = () => {
   const { powerUps } = useStore();
@@ -38,19 +39,20 @@ export const StorePowerUpsRow = () => {
       >
         {powerUps.map((powerUp, index) => {
           return (
-            <PowerUpComponent
-              powerUp={powerUp}
-              width={width}
-              key={index}
-              inStore
-              onClick={() => {
-                if (!powerUp.purchased) {
-                  navigate("/preview/power-up", {
-                    state: { powerUp },
-                  });
-                }
-              }}
-            />
+            <RerollingAnimation key={index}>
+              <PowerUpComponent
+                powerUp={powerUp}
+                width={width}
+                inStore
+                onClick={() => {
+                  if (!powerUp.purchased) {
+                    navigate("/preview/power-up", {
+                      state: { powerUp },
+                    });
+                  }
+                }}
+              />
+            </RerollingAnimation>
           );
         })}
       </Flex>

@@ -4,6 +4,7 @@ import { Tab, TabPattern } from "../../patterns/tabs/TabPattern.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
 import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
 import { LootBoxesMobile } from "./StoreTabContents/LootBoxes.mobile.tsx";
 import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
@@ -33,13 +34,19 @@ export const StoreContentMobile = ({
       disableGoBack
     >
       <Tab title={t("store.labels.cards")}>
-        <StoreCards />
+        <RerollingAnimation>
+          <StoreCards />
+        </RerollingAnimation>
       </Tab>
       <Tab title={t("store.labels.loot-boxes")}>
-        <LootBoxesMobile />
+        <RerollingAnimation>
+          <LootBoxesMobile />
+        </RerollingAnimation>
       </Tab>
       <Tab title={t("store.labels.utilities")}>
-        <UtilsTab />
+        <RerollingAnimation>
+          <UtilsTab />
+        </RerollingAnimation>
       </Tab>
     </TabPattern>
   );
