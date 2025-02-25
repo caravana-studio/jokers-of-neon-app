@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { RemoveScroll } from "react-remove-scroll";
 import "../../App.scss";
 import { FadeInOut } from "../../components/animations/FadeInOut";
 import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
@@ -55,6 +56,9 @@ export const LoadingScreen = ({
           </Flex>
         )}
       </PreThemeLoadingPage>
+      <RemoveScroll>
+        <></>
+      </RemoveScroll>
     </FadeInOut>
   );
 };
