@@ -40,7 +40,7 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
         fadeOutDelay={1}
         fadeOutDuration={0.5}
       >
-        <Text fontSize={isMobile ? "1.2rem" : "2.2rem"}>PRESENTS</Text>
+        <Text color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>PRESENTS</Text>
       </FadeInOut>
     </Flex>
   );
