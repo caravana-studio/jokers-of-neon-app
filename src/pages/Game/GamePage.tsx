@@ -58,32 +58,13 @@ export const GamePage = () => {
 
   useEffect(() => {
     const resetZoom = () => {
-      let viewport = document.querySelector(
-        "meta[name=viewport]"
-      ) as HTMLMetaElement | null;
-
-      if (!viewport) {
-        viewport = document.createElement("meta") as HTMLMetaElement;
-        viewport.name = "viewport";
-        document.head.appendChild(viewport);
-      }
- 
-      // Temporarily allow zooming to force a reset
-      viewport.setAttribute(
-        "content",
-        "width=device-width, initial-scale=1.0, maximum-scale=10.0"
-      );
-
-      // Lock zoom after a short delay
-      setTimeout(() => {
-        viewport!.setAttribute(
-          "content",
-          "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        );
-      }, 100);
+      document.body.style.transform = "scale(1)";
+      document.body.style.transformOrigin = "top left";
+      document.documentElement.style.zoom = "100%"; // Works on some browsers
     };
 
-    resetZoom();
+    console.log("resetting zoom");
+    setTimeout(resetZoom, 100); // Ensures it runs after the initial render
   }, []);
 
   useEffect(() => {
