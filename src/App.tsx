@@ -5,6 +5,7 @@ import "./App.scss";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
@@ -33,13 +34,40 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
-import { usePreventZoom } from "./utils/usePreventZoom";
 
 function App() {
   const location = useLocation();
   const theme = extendTheme(customTheme);
 
-  usePreventZoom()
+  useEffect(() => {
+    const resetZoom = () => {
+      let viewport = document.querySelector(
+        "meta[name=viewport]"
+      ) as HTMLMetaElement | null;
+
+      if (!viewport) {
+        viewport = document.createElement("meta") as HTMLMetaElement;
+        viewport.name = "viewport";
+        document.head.appendChild(viewport);
+      }
+ 
+      // Temporarily allow zooming to force a reset
+      viewport.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1.0, maximum-scale=10.0"
+      );
+
+      // Lock zoom after a short delay
+      setTimeout(() => {
+        viewport!.setAttribute(
+          "content",
+          "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        );
+      }, 100);
+    };
+
+    resetZoom();
+  }, []);
 
   return (
     <ChakraBaseProvider theme={theme}>
