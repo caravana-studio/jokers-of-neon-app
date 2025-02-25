@@ -33,10 +33,14 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
+import { usePreventZoom } from "./utils/usePreventZoom";
 
 function App() {
   const location = useLocation();
   const theme = extendTheme(customTheme);
+
+  usePreventZoom()
+
   return (
     <ChakraBaseProvider theme={theme}>
       <FeatureFlagProvider>

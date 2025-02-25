@@ -1,9 +1,9 @@
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import "../../App.scss";
-import OpeningScreenAnimation from "./OpeningScreenAnimation";
-import { Flex } from "@chakra-ui/react";
-import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
 import { FadeInOut } from "../../components/animations/FadeInOut";
+import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
+import OpeningScreenAnimation from "./OpeningScreenAnimation";
 
 interface LoadingScreenProps {
   error?: boolean;
