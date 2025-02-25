@@ -57,6 +57,36 @@ export const GamePage = () => {
   }, []);
 
   useEffect(() => {
+    const resetZoom = () => {
+      let viewport = document.querySelector(
+        "meta[name=viewport]"
+      ) as HTMLMetaElement | null;
+
+      if (!viewport) {
+        viewport = document.createElement("meta") as HTMLMetaElement;
+        viewport.name = "viewport";
+        document.head.appendChild(viewport);
+      }
+ 
+      // Temporarily allow zooming to force a reset
+      viewport.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1.0, maximum-scale=10.0"
+      );
+
+      // Lock zoom after a short delay
+      setTimeout(() => {
+        viewport!.setAttribute(
+          "content",
+          "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        );
+      }, 100);
+    };
+
+    resetZoom();
+  }, []);
+
+  useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
       if (game?.state === "FINISHED") {
