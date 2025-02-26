@@ -57,17 +57,6 @@ export const GamePage = () => {
   }, []);
 
   useEffect(() => {
-    const resetZoom = () => {
-      document.body.style.transform = "scale(1)";
-      document.body.style.transformOrigin = "top left";
-      document.documentElement.style.zoom = "100%"; // Works on some browsers
-    };
-
-    console.log("resetting zoom");
-    setTimeout(resetZoom, 100); // Ensures it runs after the initial render
-  }, []);
-
-  useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
       if (game?.state === "FINISHED") {
