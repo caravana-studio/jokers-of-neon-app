@@ -429,7 +429,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const onDiscardClick = () => {
-    discardSound();
     setPreSelectionLocked(true);
     stateDiscard();
     discard(gameId, preSelectedCards, preSelectedModifiers).then((response) => {
@@ -487,6 +486,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
 
         setTimeout(() => {
+          discardSound();
           setDiscardAnimation(true);
         }, ALL_CARDS_DURATION);
 

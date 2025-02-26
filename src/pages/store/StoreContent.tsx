@@ -9,10 +9,11 @@ import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
+import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
+import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
@@ -64,7 +65,9 @@ export const StoreContent = () => {
             </Heading>
             <LootBoxes />
             <Flex mt={8}>
-              <LevelUpTable />
+              <RerollingAnimation>
+                <LevelUpTable />
+              </RerollingAnimation>
             </Flex>
           </Box>
           <Box
@@ -114,8 +117,12 @@ export const StoreContent = () => {
             <>
               <NextLevelButton isSmallScreen={false} />
               <Flex flexDirection={"row"} gap={10}>
-                <SpecialSlotItem />
-                <BurnItem />
+                <RerollingAnimation>
+                  <SpecialSlotItem />
+                </RerollingAnimation>
+                <RerollingAnimation>
+                  <BurnItem />
+                </RerollingAnimation>
               </Flex>
 
               <Flex flexDirection="column" gap={14}>

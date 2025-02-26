@@ -1,6 +1,6 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
-import { FadeInOut } from "../../components/animations/FadeInOut";
 import { isMobile } from "react-device-detect";
+import { FadeInOut } from "../../components/animations/FadeInOut";
 
 interface PoweredByPresentationProps {
   fadeInDelay?: number;
@@ -29,7 +29,9 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
       width={"100%"}
     >
       <FadeInOut isVisible={visibleElements.text} fadeOut>
-        <Text fontSize={isMobile ? "1.2rem" : "2.2rem"}>POWERED BY</Text>
+        <Text paddingLeft="10px" color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>
+          POWERED BY
+        </Text>
       </FadeInOut>
       <Flex
         gap={40}

@@ -76,6 +76,8 @@ export const useShopState = () => {
 
   const [cash, setCash] = useState(0);
 
+  const [rerolling, setRerolling] = useState(false);
+
   const decreaseCash = (amount: number) => {
     setCash(cash - amount);
   };
@@ -221,5 +223,7 @@ export const useShopState = () => {
     setRun,
     loading,
     setLoading,
+    rerolling,
+    setRerolling,
   };
 };

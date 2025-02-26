@@ -7,6 +7,7 @@ import { GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
+import { RerollingAnimation } from "./StoreElements/RerollingAnimation";
 
 interface CardsRowProps {
   title: string;
@@ -74,6 +75,8 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
           {cards.map((card) => {
             return (
               <Flex key={getCardUniqueId(card)} justifyContent="center">
+                <RerollingAnimation>
+
                 <TiltCard
                   cursor="pointer"
                   scale={adjustedScale}
@@ -85,7 +88,8 @@ export const StoreCardsRow = ({ title, cards, button }: CardsRowProps) => {
                       });
                     }
                   }}
-                />
+                  />
+                  </RerollingAnimation>
               </Flex>
             );
           })}

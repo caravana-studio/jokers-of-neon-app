@@ -1,13 +1,11 @@
 import { Box, Button, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../../../providers/StoreProvider";
-import { CashSymbol } from "../../../components/CashSymbol";
 import { FiRefreshCw } from "react-icons/fi";
+import { CashSymbol } from "../../../components/CashSymbol";
+import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
-
-
-const RerollButton  = () => {
+const RerollButton = () => {
   const { t } = useTranslation(["store"]);
 
   const { isSmallScreen } = useResponsiveValues();

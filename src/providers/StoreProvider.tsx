@@ -38,6 +38,7 @@ interface IStoreContext extends ShopItems {
   setLoading: (loading: boolean) => void;
   burnCard: (card: Card) => Promise<boolean>;
   buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
+  rerolling: boolean;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -86,6 +87,7 @@ const StoreContext = createContext<IStoreContext>({
   buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
+  rerolling: false
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -113,6 +115,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setRun,
     loading,
     setLoading,
+    rerolling,
+    setRerolling
   } = useShopState();
 
   const { gameId, addPowerUp } = useGameContext();
@@ -259,12 +263,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const reroll = () => {
+    setRerolling(true);
     rerollSound();
     setLocked(true);
     const promise = storeReroll(gameId);
     promise
       .then(() => {
-        fetchShopItems();
+        fetchShopItems().finally(() => {
+          setTimeout(() => {
+            setRerolling(false);
+          }, 200)
+        })
       })
       .finally(() => {
         setLocked(false);
@@ -335,6 +344,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setLoading,
         burnCard,
         buyPowerUp,
+        rerolling
       }}
     >
       {children}
