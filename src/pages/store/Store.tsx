@@ -14,6 +14,7 @@ import {
 } from "../../constants/gameTutorial.ts";
 import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
 
+import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
@@ -75,6 +76,9 @@ export const Store = () => {
 
   return (
     <>
+      <RemoveScroll>
+        <></>
+      </RemoveScroll>
       <Joyride
         steps={STORE_TUTORIAL_STEPS}
         run={run}
