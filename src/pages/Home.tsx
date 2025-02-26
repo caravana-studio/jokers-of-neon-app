@@ -10,6 +10,7 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
 
+import { RemoveScroll } from "react-remove-scroll";
 import SpineAnimation from "../components/SpineAnimation";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
@@ -42,6 +43,9 @@ export const Home = () => {
 
   return (
     <>
+      <RemoveScroll>
+        <></>
+      </RemoveScroll>
       <AudioPlayer />
       <LanguageSwitcher />
       <Flex
