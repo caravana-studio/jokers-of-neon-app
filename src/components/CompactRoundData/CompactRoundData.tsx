@@ -25,7 +25,7 @@ export const CompactRoundData = () => {
   return (
     <Flex
       justifyContent="center"
-      className="game-tutorial-step-1"
+      className="store-tutorial-step-1"
       sx={{
         zIndex: 1,
       }}

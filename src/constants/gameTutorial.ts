@@ -71,7 +71,7 @@ const loadTutorialTranslations = async () => {
       },
     },
     {
-      target: ".game-tutorial-step-1",
+      target: ".store-tutorial-step-1",
       title: i18n.t("gameTutorial.pointsTarget.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.pointsTarget.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
@@ -584,7 +584,7 @@ const loadTutorialTranslations = async () => {
 
   Object.assign(STORE_TUTORIAL_STEPS, [
     {
-      target: ".game-tutorial-step-1",
+      target: ".store-tutorial-step-1",
       title: i18n.t("storeTutorial.coins.title", { ns: "tutorials" }),
       content: i18n.t("storeTutorial.coins.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,

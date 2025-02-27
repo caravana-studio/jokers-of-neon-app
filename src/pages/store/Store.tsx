@@ -62,7 +62,9 @@ export const Store = () => {
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);
-    if (showTutorial) setRun(true);
+    setTimeout(() => {
+      if (showTutorial) setRun(true);
+    }, 1000);
   }, []);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
@@ -79,18 +81,18 @@ export const Store = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      <Joyride
-        steps={STORE_TUTORIAL_STEPS}
-        run={run}
-        continuous
-        showSkipButton
-        styles={TUTORIAL_STYLE}
-        showProgress
-        callback={handleJoyrideCallback}
-        locale={JOYRIDE_LOCALES}
-      />
 
       <DelayedLoading loading={loading}>
+        <Joyride
+          steps={STORE_TUTORIAL_STEPS}
+          run={run}
+          continuous
+          showSkipButton
+          styles={TUTORIAL_STYLE}
+          showProgress
+          callback={handleJoyrideCallback}
+          locale={JOYRIDE_LOCALES}
+        />
         {isSmallScreen ? (
           <StoreContentMobile lastIndexTab={lastTabIndex} />
         ) : (
