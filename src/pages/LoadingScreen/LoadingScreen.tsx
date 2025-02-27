@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import "../../App.scss";
-import OpeningScreenAnimation from "./OpeningScreenAnimation";
 import { Flex } from "@chakra-ui/react";
-import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
+import { useEffect, useState } from "react";
+import { RemoveScroll } from "react-remove-scroll";
+import "../../App.scss";
 import { FadeInOut } from "../../components/animations/FadeInOut";
+import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
+import OpeningScreenAnimation from "./OpeningScreenAnimation";
 
 interface LoadingScreenProps {
   error?: boolean;
@@ -55,6 +56,9 @@ export const LoadingScreen = ({
           </Flex>
         )}
       </PreThemeLoadingPage>
+      <RemoveScroll>
+        <></>
+      </RemoveScroll>
     </FadeInOut>
   );
 };
