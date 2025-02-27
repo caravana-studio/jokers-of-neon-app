@@ -41,7 +41,7 @@ export const Powerups = () => {
       >
         <Flex gap={4} flexDirection="column">
           {!isSmallScreen && (
-            <Text mx={2} size="l">
+            <Text mx={2} size="l" zIndex={2}>
               {t("title")}
             </Text>
           )}
