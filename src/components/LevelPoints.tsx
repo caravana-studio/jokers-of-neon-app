@@ -15,7 +15,7 @@ export const LevelPoints = () => {
   const { t } = useTranslation(["game"]);
 
   return (
-    <Box className="game-tutorial-step-1">
+    <Box className="store-tutorial-step-1">
       <Flex gap={6}>
         <PointBox type="level">
           <Heading size={{ base: "xs", md: "s" }}>
@@ -49,7 +49,7 @@ export const MobileLevelPoints = () => {
   const { t } = useTranslation(["game"]);
 
   return (
-    <Flex gap={2.5} alignItems="center" className="game-tutorial-step-1">
+    <Flex gap={2.5} alignItems="center" className="store-tutorial-step-1">
       <Flex
         border="1px solid white"
         borderRadius={10}

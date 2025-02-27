@@ -16,7 +16,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
   const { t } = useTranslation(["store"]);
 
   return (
-    <Flex alignItems={"center"} className="game-tutorial-step-1">
+    <Flex alignItems={"center"} className="store-tutorial-step-1">
       <CoinsIcon
         style={{ transform: `translateY(${isMobile ? "4px" : "6px"})` }}
         width={isMobile ? "35px" : "50px"}
