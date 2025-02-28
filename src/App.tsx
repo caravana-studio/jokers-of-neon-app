@@ -24,6 +24,7 @@ import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
 import { Store } from "./pages/store/Store";
+import { TestTournament } from "./pages/TestTournament";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
@@ -34,6 +35,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { TournamentTransactions } from "./pages/ExecuteTransaction";
 
 function App() {
   const location = useLocation();
@@ -51,6 +53,13 @@ function App() {
                     <Background>
                       <AnimatePresence mode="wait">
                         <Routes location={location} key={location.pathname}>
+                          <Route
+                            path="/tournament"
+                            element={<TestTournament />}
+                          />                          <Route
+                            path="/test"
+                            element={<TournamentTransactions />}
+                          />
                           <Route
                             path="/"
                             element={

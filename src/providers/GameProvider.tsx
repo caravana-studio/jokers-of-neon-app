@@ -248,7 +248,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
-      createGame(modId, username).then(async (response) => {
+      createGame(2, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
