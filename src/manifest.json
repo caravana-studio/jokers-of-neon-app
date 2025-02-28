@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x1f36ad683d39a6a40c5ee674e8d5e640770d5bfb7231707d003d0c6733df2d3",
-      "class_hash": "0x11429237c9f7a2fa7f2e8dae60df30500bec60fc52afd42cac060a8fbd766a2",
+      "address": "0x7f27279a3ab2dbf1ab7bacc739a65c7ea35267224b5a3ad36771e0dd3f11840",
+      "class_hash": "0x3ce2f4f93f05624d14a4e65c65261121a24ee4eead5bf10a5b7691762eaca6",
       "abi": [
         {
           "type": "impl",
@@ -1304,6 +1304,13 @@
               "state_mutability": "view"
             }
           ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
         },
         {
           "type": "impl",
@@ -1508,13 +1515,6 @@
           ]
         },
         {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
-        },
-        {
           "type": "impl",
           "name": "WorldProviderImpl",
           "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
@@ -1606,6 +1606,12 @@
         },
         {
           "type": "event",
+          "name": "achievement::components::achievable::AchievableComponent::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
           "name": "jokers_of_neon_core::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
@@ -1618,6 +1624,11 @@
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
               "kind": "nested"
+            },
+            {
+              "name": "AchievableEvent",
+              "type": "achievement::components::achievable::AchievableComponent::Event",
+              "kind": "flat"
             }
           ]
         }
@@ -1854,8 +1865,8 @@
       ]
     },
     {
-      "address": "0x22b753f2dd2f3432300fe8c1c6cc9feeec082da6e3654cde3855eb825204203",
-      "class_hash": "0x5a14f7a67058d926c2aa492717c15b3bb9d9524b22bee0c4145155b8017c06d",
+      "address": "0x4818dfe2a03f76e79b2b1ac44a86f1fd4658018e9386b597021cc6fb162993a",
+      "class_hash": "0x574d8eeae6b11802dea11182cf042554fa0641368a047bca62da39a591ac6c9",
       "abi": [
         {
           "type": "impl",
@@ -2073,8 +2084,8 @@
       ]
     },
     {
-      "address": "0x30205b6cec394036317713427d55927fd3e5c75c2cf97dd9d97ca7e279d4231",
-      "class_hash": "0x4fbaaee0127580a27b9c364f3f62d4ee925e1ed48170d5c3afc1776f33bbf0",
+      "address": "0x6312333038ee7693bf66a87b304a9834732b087ec8bdc9408fab9d4f57a3f95",
+      "class_hash": "0x1d54f17e8f7acbf97e975bcd88d4f1879d300651bc8344d51338f553005b8d0",
       "abi": [
         {
           "type": "impl",
@@ -2187,8 +2198,12 @@
         },
         {
           "type": "struct",
-          "name": "jokers_of_neon_lib::models::data::poker_hand::LevelPokerHand",
+          "name": "jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand",
           "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u32"
+            },
             {
               "name": "poker_hand",
               "type": "jokers_of_neon_lib::models::data::poker_hand::PokerHand"
@@ -2222,7 +2237,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::array::Array::<jokers_of_neon_lib::models::data::poker_hand::LevelPokerHand>"
+                  "type": "core::array::Array::<jokers_of_neon_lib::models::status::game::player::PlayerLevelPokerHand>"
                 }
               ],
               "state_mutability": "view"
@@ -2352,8 +2367,8 @@
       ]
     },
     {
-      "address": "0x3519dbb08152037659d93777dc8d3e9953f86e346008da312a842bc13d94e2a",
-      "class_hash": "0x4fc32d999325e9e3655f955c34dba95505dcff6c60c13b8717f5210add7dcbc",
+      "address": "0x232c2ac2b061030de42b8f99894ec9affe04cc4c6d58938a44169116e3a41ea",
+      "class_hash": "0x3a232dcadf6c03d911d221505e74685dcec7bd7bfa0f0feba2298bd6fbfb287",
       "abi": [
         {
           "type": "impl",
@@ -2565,8 +2580,8 @@
       ]
     },
     {
-      "address": "0x6b0ee71b95205b4aaf076c31c279f710d3203d810e02b96efef0377b156b97",
-      "class_hash": "0x3b00857ca57b18d2a649418242749127d7efeccc699967a111d8e346e5ecd27",
+      "address": "0x3bae4de5f2cd09ba1fc7db7091aa6e5f8f6fca0d05d60af49a655dd3845cb3c",
+      "class_hash": "0x487c7acd7719038ec4256327f77943cc385f481b57fec0ef2ec0eae8cb62b6a",
       "abi": [
         {
           "type": "impl",
@@ -3379,7 +3394,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x6db8f4062cfcda99e89aadcbc5cd6b02f3f5f88dabe3231a75112128e5b66f7",
+      "class_hash": "0x27d0b68304652e0106654f8391e37b48daccdbea1ca58563dff3e27431f2fd9",
       "tag": "jokers_of_neon_core-ModConfig",
       "selector": "0x21afac236d4cc991cdb932d942d61f396d50d8cbf8d2b5dd8c6a3929321d40d"
     },
@@ -3397,7 +3412,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x564e36b683f22f6a882444b67ef847ca005028848d18a5c18b8d94243603b35",
+      "class_hash": "0x25213ef9b1b4002c735e67a507a18bfc07ca643554a278882b7f66e999a87ab",
       "tag": "jokers_of_neon_core-PlayerLevelPokerHand",
       "selector": "0x2a50fcb041e683428ffafceb4a9086c7bbd7308aab00f7271539d22fa572137"
     },
@@ -3471,7 +3486,7 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x415b7ec8b24f1685447673779fe14d3124f7d42d3b2a863712663d38827b816",
+      "class_hash": "0x75cb5428c8a1b51bb0f744f470d4c917d8e9dc1000484b65d2f4c2ff6ee9a4f",
       "tag": "jokers_of_neon_core-CardPlayEvent",
       "selector": "0x7c0be4b31d3ebfb1687ab83341e208e0f176a0d6d45d317699a8b77e5753cdf"
     },
