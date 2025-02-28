@@ -51,7 +51,7 @@ export interface IGameContext {
   preSelectedPlay: Plays;
   points: number;
   multi: number;
-  executeCreateGame: () => void;
+  executeCreateGame: (gameId?: number) => void;
   gameLoading: boolean;
   preSelectedCards: number[];
   setPreSelectedCards: (cards: number[]) => void;
@@ -242,13 +242,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const username = useUsername();
 
-  const executeCreateGame = async () => {
+  const executeCreateGame = async (gameId?: number) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
     if (username) {
       console.log("Creating game...");
-      createGame(2, username).then(async (response) => {
+      createGame(gameId ?? 2, username).then(async (response) => {
         const { gameId: newGameId, hand } = response;
         if (newGameId) {
           resetLevel();
