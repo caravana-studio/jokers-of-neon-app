@@ -5,10 +5,14 @@ import { GREY_LINE } from "../theme/colors.tsx";
 
 export const CardContainerWithBorder = ({
   width = "100%",
+  minWidth = "100%",
+  maxWidth = "100%",
   height = "100%",
   children,
 }: {
   width?: string;
+  minWidth?: string;
+  maxWidth?: string;
   height?: string;
   children: ReactNode;
 }) => {
@@ -19,11 +23,12 @@ export const CardContainerWithBorder = ({
       pl={[2.5, 5]}
       pr={["12px", "25px"]}
       py={[1, 2]}
-      pb={[0, "25px"]}
       borderRadius={["12px", "20px"]}
       justifyContent="flex-start"
       alignItems="center"
       position="relative"
+      minWidth={minWidth}
+      maxWidth={maxWidth}
       width={width}
       height={height}
       zIndex={0}

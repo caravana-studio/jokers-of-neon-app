@@ -28,9 +28,9 @@ export const SpecialCardsRow = () => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
-  const { specialCardScale, isSmallScreen } = useResponsiveValues();
-  const cardWidth = CARD_WIDTH * specialCardScale;
-  const cardHeight = CARD_HEIGHT * specialCardScale;
+  const { cardScale, isSmallScreen } = useResponsiveValues();
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
 
   const { highlightCard } = useCardHighlight();
 
@@ -77,7 +77,6 @@ export const SpecialCardsRow = () => {
   return (
     <Flex
       width="100%"
-      height={`${cardHeight}px`}
       gap={{ base: "8px", sm: "14px" }}
       alignItems={"center"}
       justifyContent={"flex-start"}
@@ -109,7 +108,7 @@ export const SpecialCardsRow = () => {
                 <AnimatedCard
                   idx={card.idx}
                   isSpecial={!!card.isSpecial}
-                  scale={specialCardScale - specialCardScale * 0.1}
+                  scale={cardScale}
                 >
                   <Box position="relative">
                     <Flex
@@ -151,15 +150,18 @@ export const SpecialCardsRow = () => {
                       )}
                     </Flex>
                     <Box
-                      width={`${CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)}`}
-                      height={"100%"}
-                      minWidth={`${CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)}`}
+                      width={`${cardWidth}`}
+                      minWidth={`${cardWidth}`}
                       maxWidth={`${slotWidth}%`}
                       onClick={() => {
                         isSmallScreen && highlightCard(card);
                       }}
                     >
-                      <CardImage3D card={card} small />
+                      <CardImage3D
+                        card={card}
+                        height={`${cardHeight}px`}
+                        small
+                      />
                     </Box>
                   </Box>
                 </AnimatedCard>
@@ -180,7 +182,7 @@ export const SpecialCardsRow = () => {
                       : BACKGROUND_BLUE
                     : "transparent"
               }
-              scale={specialCardScale - specialCardScale * 0.15}
+              scale={cardScale}
             />
           </Flex>
         ))}
@@ -188,7 +190,7 @@ export const SpecialCardsRow = () => {
           <Flex key={`locked-slot-${index}`} maxWidth={`${slotWidth}%`}>
             <LockedSlot
               key={`locked-${index}`}
-              scale={specialCardScale - specialCardScale * 0.15}
+              scale={cardScale}
               backgroundColor={
                 visibleCards <= 5
                   ? "transparent"

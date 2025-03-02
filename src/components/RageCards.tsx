@@ -9,13 +9,13 @@ import { CardImage3D } from "./CardImage3D";
 export const RageCards = () => {
   const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
   const { rageCards } = useGameContext();
-  const { isSmallScreen, specialCardScale } = useResponsiveValues();
+  const { isSmallScreen, cardScale } = useResponsiveValues();
   const { highlightCard } = useCardHighlight();
 
   return (
     <Box width={"100%"}>
       <Flex
-        height={`${CARD_HEIGHT * specialCardScale}px`}
+        height={`${CARD_HEIGHT * cardScale}px`}
         justifyContent={"center"}
         alignItems={"center"}
       >
@@ -30,18 +30,18 @@ export const RageCards = () => {
               return (
                 <Box
                   position="relative"
-                  height={
-                    CARD_HEIGHT * (specialCardScale - specialCardScale * 0.1)
-                  }
-                  width={
-                    CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
-                  }
+                  height={CARD_HEIGHT * cardScale}
+                  width={CARD_WIDTH * cardScale}
                   onClick={() => {
                     isSmallScreen && highlightCard(card);
                   }}
                   key={index}
                 >
-                  <CardImage3D card={card} small />
+                  <CardImage3D
+                    card={card}
+                    small
+                    height={`${CARD_HEIGHT * cardScale}`}
+                  />
                 </Box>
               );
             })}
