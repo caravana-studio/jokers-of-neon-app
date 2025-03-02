@@ -28,7 +28,8 @@ export const SpecialCardsRow = () => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
   const { t } = useTranslation(["game"]);
-  const { cardScale, isSmallScreen } = useResponsiveValues();
+  const { cardScale, isSmallScreen, isCardScaleCalculated } =
+    useResponsiveValues();
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
 
@@ -186,7 +187,7 @@ export const SpecialCardsRow = () => {
                       : BACKGROUND_BLUE
                     : "transparent"
               }
-              scale={cardScale}
+              scale={isCardScaleCalculated ? cardScale : undefined}
             />
           </Flex>
         ))}
