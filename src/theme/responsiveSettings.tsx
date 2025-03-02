@@ -15,14 +15,15 @@ export const useResponsiveValues = () => {
     "18:37": 2.6, //samsung galaxy s8+
     "3:4": 2, //ipad mini, surface duo
     "4:3": 1, //ipad mini, surface duo (horizontal)
-    "41:59": 2.4, //ipad air
+    "41:59": 2.2, //ipad air
     "59:41": 1.2, //ipad air (horizontal)
-    "512:683": 2.4, //ipad pro
-    "683:512": 1.6, //ipad pro (horizontal)
-    "2:3": 2.4, //surface pro
-    "3:2": 1.5, //surface pro (horizontal)
-    "1280:853": 1.4, //asus zenbook fold (horizontal)
+    "512:683": 2.2, //ipad pro
+    "683:512": 1.3, //ipad pro (horizontal)
+    "2:3": 2.2, //surface pro
+    "3:2": 1.3, //surface pro (horizontal)
+    "1280:853": 1.2, //asus zenbook fold (horizontal)
     "128:75": 0.7, //nest hub
+    "8:5": 1.2, //nest hub max
     "640:289": 1.5, //desktop 4k
     "369:289": 1.6, //desktop 1476x1156
     "720:703": 1.5, //laptop L

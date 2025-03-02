@@ -86,6 +86,7 @@ export const SpecialCardsRow = () => {
         position="relative"
         width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
         alignItems={isSmallScreen ? "center" : "inherit"}
+        columnGap={2}
       >
         {cards.map((card) => {
           const isDiscarded = discardedCards.includes(card.id);
