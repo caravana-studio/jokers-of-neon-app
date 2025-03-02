@@ -21,7 +21,7 @@ export const CardContainerWithBorder = ({
       className="special-cards-step-3"
       border={`1px solid ${GREY_LINE}`}
       pl={[2.5, 5]}
-      pr={["12px", "25px"]}
+      pr={["20px", "30px", "40px"]}
       py={[1, 2]}
       borderRadius={["12px", "20px"]}
       justifyContent="flex-start"
@@ -32,6 +32,7 @@ export const CardContainerWithBorder = ({
       width={width}
       height={height}
       zIndex={0}
+      margin={"0 auto"}
     >
       {children}
     </Flex>

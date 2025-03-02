@@ -15,9 +15,9 @@ export const RageCards = () => {
   return (
     <Box width={"100%"}>
       <Flex
-        height={`${CARD_HEIGHT * cardScale}px`}
-        justifyContent={"center"}
+        width={"100%"}
         alignItems={"center"}
+        gap={{ base: "8px", sm: "14px" }}
       >
         {!rageCards.length && (
           <Text mx={6} size="l">
@@ -25,13 +25,20 @@ export const RageCards = () => {
           </Text>
         )}
         {rageCards && rageCards.length > 0 && (
-          <SimpleGrid columns={5} position="relative" width={"100%"}>
+          <SimpleGrid
+            columns={5}
+            position="relative"
+            width={"100%"}
+            alignItems={isSmallScreen ? "center" : "inherit"}
+            columnGap={2}
+            pb={isSmallScreen ? 0 : 4}
+          >
             {rageCards.map((card, index) => {
               return (
                 <Box
                   position="relative"
-                  height={CARD_HEIGHT * cardScale}
-                  width={CARD_WIDTH * cardScale}
+                  height={`100%`}
+                  width={`${CARD_WIDTH * cardScale}px`}
                   onClick={() => {
                     isSmallScreen && highlightCard(card);
                   }}

@@ -32,7 +32,7 @@ export const useResponsiveValues = () => {
     "16:10": 1.4, //steam deck
     "384:371": 1.4, //tablet
     "126:65": 1.4, //m3 pro chrome
-    "756:407": 1.5, //m3 pro safari
+    "756:407": 1.4, //m3 pro safari
   };
 
   const getBaseScaleForAspectRatio = (

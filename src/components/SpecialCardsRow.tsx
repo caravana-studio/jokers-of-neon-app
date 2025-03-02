@@ -87,6 +87,7 @@ export const SpecialCardsRow = () => {
         width={visibleCards > 5 ? "97%" : visibleCards > 6 ? "95%" : "100%"}
         alignItems={isSmallScreen ? "center" : "inherit"}
         columnGap={2}
+        pb={isSmallScreen ? 0 : 4}
       >
         {cards.map((card) => {
           const isDiscarded = discardedCards.includes(card.id);
@@ -151,9 +152,7 @@ export const SpecialCardsRow = () => {
                       )}
                     </Flex>
                     <Box
-                      width={`${cardWidth}`}
-                      minWidth={`${cardWidth}`}
-                      maxWidth={`${slotWidth}%`}
+                      width={`${cardWidth}px`}
                       onClick={() => {
                         isSmallScreen && highlightCard(card);
                       }}
@@ -171,7 +170,11 @@ export const SpecialCardsRow = () => {
           );
         })}
         {Array.from({ length: freeUnlockedSlots }).map((_, index) => (
-          <Flex key={`unlocked-slot-${index}`} maxWidth={`${slotWidth}%`}>
+          <Flex
+            key={`unlocked-slot-${index}`}
+            maxWidth={`${slotWidth}%`}
+            height={`${cardHeight}px`}
+          >
             <UnlockedSlot
               key={`unlocked-${index}`}
               backgroundColor={
@@ -188,7 +191,11 @@ export const SpecialCardsRow = () => {
           </Flex>
         ))}
         {Array.from({ length: lockedSlots }).map((_, index) => (
-          <Flex key={`locked-slot-${index}`} maxWidth={`${slotWidth}%`}>
+          <Flex
+            key={`locked-slot-${index}`}
+            maxWidth={`${slotWidth}%`}
+            height={`${cardHeight}px`}
+          >
             <LockedSlot
               key={`locked-${index}`}
               scale={cardScale}
