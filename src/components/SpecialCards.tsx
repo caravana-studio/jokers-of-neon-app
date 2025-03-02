@@ -8,14 +8,15 @@ import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
 export const SpecialCards = () => {
   const { specialSwitcherOn } = useGameContext();
-  const { isSmallScreen, cardScale, isCardScaleCalculated } =
-    useResponsiveValues();
+  const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 20 : 40;
+  const cardWidth = CARD_WIDTH * cardScale;
 
   return (
     <CardContainerWithBorder
-      width={"auto"}
       maxWidth={isSmallScreen ? "95%" : "100%"}
+      minWidth={`${cardWidth * 5 + (isSmallScreen ? 32 : 49)}px`}
+      width={"auto"}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
     >
       {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
