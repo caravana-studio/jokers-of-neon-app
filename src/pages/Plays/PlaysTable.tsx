@@ -144,6 +144,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       textAlign={"start"}
                       textColor={textColor}
                       width={"15%"}
+                      lineHeight={1.5}
                     >
                       {PLAYS[Number(pokerHandParsed.value)]}
                     </Td>
