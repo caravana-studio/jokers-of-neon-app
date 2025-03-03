@@ -144,6 +144,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       textAlign={"start"}
                       textColor={textColor}
                       width={"15%"}
+                      lineHeight={1.5}
                     >
                       {PLAYS[Number(pokerHandParsed.value)]}
                     </Td>
@@ -194,7 +195,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       size={isMobile ? "xs" : "sm"}
                       px={isMobile ? 2 : 4}
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
-                      fontSize={isMobile ? 8 : 10}
+                      fontSize={isMobile ? 6 : 10}
                       borderRadius={isMobile ? 6 : 12}
                       height={isMobile ? 5 : 8}
                     >

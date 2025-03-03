@@ -9,15 +9,15 @@ import { CardImage3D } from "./CardImage3D";
 export const RageCards = () => {
   const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
   const { rageCards } = useGameContext();
-  const { isSmallScreen, specialCardScale } = useResponsiveValues();
+  const { isSmallScreen, cardScale } = useResponsiveValues();
   const { highlightCard } = useCardHighlight();
 
   return (
     <Box width={"100%"}>
       <Flex
-        height={`${CARD_HEIGHT * specialCardScale}px`}
-        justifyContent={"center"}
+        width={"100%"}
         alignItems={"center"}
+        gap={{ base: "8px", sm: "14px" }}
       >
         {!rageCards.length && (
           <Text mx={6} size="l">
@@ -25,23 +25,30 @@ export const RageCards = () => {
           </Text>
         )}
         {rageCards && rageCards.length > 0 && (
-          <SimpleGrid columns={5} position="relative" width={"100%"}>
+          <SimpleGrid
+            columns={5}
+            position="relative"
+            width={"100%"}
+            alignItems={isSmallScreen ? "center" : "inherit"}
+            columnGap={2}
+            pb={isSmallScreen ? 0 : 4}
+          >
             {rageCards.map((card, index) => {
               return (
                 <Box
                   position="relative"
-                  height={
-                    CARD_HEIGHT * (specialCardScale - specialCardScale * 0.1)
-                  }
-                  width={
-                    CARD_WIDTH * (specialCardScale - specialCardScale * 0.1)
-                  }
+                  height={`100%`}
+                  width={`${CARD_WIDTH * cardScale}px`}
                   onClick={() => {
                     isSmallScreen && highlightCard(card);
                   }}
                   key={index}
                 >
-                  <CardImage3D card={card} small />
+                  <CardImage3D
+                    card={card}
+                    small
+                    height={`${CARD_HEIGHT * cardScale}`}
+                  />
                 </Box>
               );
             })}
