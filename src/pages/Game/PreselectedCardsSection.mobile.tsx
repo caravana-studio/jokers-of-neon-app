@@ -24,7 +24,7 @@ export const MobilePreselectedCardsSection = () => {
 
   const { highlightCard } = useCardHighlight();
 
-  const { isSmallScreen } = useResponsiveValues();
+  const { isSmallScreen, cardScale } = useResponsiveValues();
 
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
@@ -44,9 +44,8 @@ export const MobilePreselectedCardsSection = () => {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  const cardWidth = (boxWidth - 100) / 5;
-  const cardScale = cardWidth / CARD_WIDTH;
   const cardHeight = cardScale * CARD_HEIGHT;
+  const cardWidth = cardScale * CARD_WIDTH;
 
   return (
     <>
@@ -76,6 +75,7 @@ export const MobilePreselectedCardsSection = () => {
           background={"url(grid.png)"}
           backgroundSize={"contain"}
           ref={boxRef}
+          gap={2}
         >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
@@ -83,7 +83,7 @@ export const MobilePreselectedCardsSection = () => {
             const modifiedCard: Card = { ...card!, modifiers };
             return (
               card && (
-                <Box key={card.id} mx={3} width={`${cardWidth}px`}>
+                <Box key={card.id} width={`${cardWidth}px`}>
                   <ModifiableCard id={card.id}>
                     <AnimatedCard
                       idx={card.idx}

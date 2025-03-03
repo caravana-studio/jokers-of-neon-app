@@ -7,14 +7,14 @@ interface IUnlockedSlotProps {
 }
 
 export const UnlockedSlot = ({
-  scale = 1,
+  scale,
   backgroundColor,
 }: IUnlockedSlotProps) => {
   return (
     <Box
-      width={`${CARD_WIDTH * scale}`}
-      height={`${CARD_HEIGHT * scale}`}
-      minWidth={`${CARD_WIDTH * scale}`}
+      width={scale ? `${CARD_WIDTH * scale}` : 0}
+      height={scale ? `${CARD_HEIGHT * scale}` : 0}
+      minWidth={scale ? `${CARD_WIDTH * scale}` : 0}
       borderRadius="12%"
       boxShadow={`0px 0px 1px 0px white, 0px 0px 1px 0px white inset`}
       backgroundColor={backgroundColor ?? "transparent"}
