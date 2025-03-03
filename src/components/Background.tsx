@@ -102,7 +102,7 @@ export const Background = ({ children }: PropsWithChildren) => {
         isRageRound && type === BackgroundType.Game ? BackgroundType.Rage : type
       );
     }
-  }, [type]);
+  }, [type, isRageRound]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
