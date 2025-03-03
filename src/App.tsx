@@ -45,7 +45,7 @@ function App() {
         <FeatureFlagProvider>
           <CardAnimationsProvider>
             <GameProvider>
-              <PageTransitionsProvider>
+              <PageTransitionsProvider color="black">
                 <InformationPopUpProvider>
                   <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                     <Background>

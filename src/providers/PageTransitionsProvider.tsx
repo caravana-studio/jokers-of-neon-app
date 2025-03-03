@@ -12,15 +12,23 @@ interface IPageTransitionsContext {
   transitionTo: (page: string) => void;
 }
 
+interface PageTransitionsProviderProps extends PropsWithChildren {
+  color?: string;
+}
+
 const PageTransitionsContext = createContext<IPageTransitionsContext>({
   transitionTo: (_) => {},
 });
 export const usePageTransitions = () => useContext(PageTransitionsContext);
 
-export const PageTransitionsProvider = ({ children }: PropsWithChildren) => {
+export const PageTransitionsProvider = ({
+  children,
+  color,
+}: PageTransitionsProviderProps) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const navigate = useNavigate();
+  const bgColor = color ?? "white";
 
   useEffect(() => {
     if (isTransitioning) {
@@ -53,7 +61,7 @@ export const PageTransitionsProvider = ({ children }: PropsWithChildren) => {
           left="0"
           width="100vw"
           height="100vh"
-          backgroundColor="white"
+          backgroundColor={bgColor}
           zIndex="9999"
           initial={{ opacity: 0 }}
           animate={{ opacity: isTransitioning ? 1 : 0 }}
