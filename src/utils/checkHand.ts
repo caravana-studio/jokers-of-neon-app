@@ -33,7 +33,7 @@ export const checkHand = (
   };
 
   const modifyCardData = (card: Card, modifiers: number[]) => {
-    if (!card || card.card_id === undefined || card.card_id < 0) return;
+    if (!card || card.card_id === undefined || card.card_id < 0) return card;
 
     const cardId = Number(card.card_id);
     const cardSuitData = CARDS_SUIT_DATA[cardId];
@@ -50,7 +50,7 @@ export const checkHand = (
 
     modifiers.forEach((modifierIdx) => {
       const modifierCard = hand.find((mc) => mc.idx === modifierIdx);
-      if (modifierCard) {
+      if (modifierCard && modifiedCardData.suit != Suits.JOKER) {
         const newSuit = getNewSuit(modifierCard.card_id);
         if (newSuit) {
           modifiedCardData.suit = newSuit;
