@@ -33,8 +33,13 @@ export const checkHand = (
   };
 
   const modifyCardData = (card: Card, modifiers: number[]) => {
-    const suit = card.card_id && CARDS_SUIT_DATA[card.card_id]?.suit;
-    const rank = card.card_id && CARDS_SUIT_DATA[card.card_id]?.card;
+    if (!card || card.card_id === undefined || card.card_id < 0) return;
+
+    const cardId = Number(card.card_id);
+    const cardSuitData = CARDS_SUIT_DATA[cardId];
+
+    const suit = cardSuitData.suit;
+    const rank = CARDS_SUIT_DATA[cardId]?.card;
 
     let modifiedCardData = {
       ...card,
