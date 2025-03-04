@@ -76,7 +76,7 @@ export const GameMenu = ({
           {showTutorial && (
             <MenuItem
               onClick={() => {
-                navigate("/tutorial");
+                showTutorial();
               }}
             >
               {t("game.game-menu.tutorial-btn")}
