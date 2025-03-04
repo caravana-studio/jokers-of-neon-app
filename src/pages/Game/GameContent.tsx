@@ -253,7 +253,7 @@ export const GameContent = () => {
                 >
                   <Button
                     onClick={async () => {
-                      controllerConnector?.controller.openProfile();
+                      controllerConnector?.controller.openProfile("achievements");
                     }}
                     zIndex={100}
                   >
