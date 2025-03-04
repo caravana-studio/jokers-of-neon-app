@@ -9,14 +9,14 @@ import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
-  position: "top-right",
+  position: "top-left",
   closeButton: false,
   dismissible: true,
   style: {
     padding: 0,
     backgroundColor: "transparent",
     boxShadow: "none",
-    right: "12px",
+    left: "12px",
     width: "30px",
   },
   duration: 1750,

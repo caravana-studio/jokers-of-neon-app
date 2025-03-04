@@ -55,10 +55,6 @@ export const GameContent = () => {
     })
   );
 
-  const { connector } = useAccount();
-  const controllerConnector = connector as never as ControllerConnector;
-  console.log("controllerConnector", controllerConnector);
-
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
@@ -251,14 +247,6 @@ export const GameContent = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Button
-                    onClick={async () => {
-                      controllerConnector?.controller.openProfile("achievements");
-                    }}
-                    zIndex={100}
-                  >
-                    controller
-                  </Button>
                   <PreselectedCardsSection
                     isTutorialRunning={run}
                     onTutorialCardClick={() => {

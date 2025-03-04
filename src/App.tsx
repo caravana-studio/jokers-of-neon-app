@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
+import { PositionedControllerIcon } from "./icons/ControllerIcon";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { GamePage } from "./pages/Game/GamePage";
@@ -34,6 +35,8 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+
+const IS_DEV = import.meta.env.VITE_DEV === "true";
 
 function App() {
   const location = useLocation();
@@ -193,6 +196,7 @@ function App() {
                             }
                           />
                         </Routes>
+                        {!IS_DEV && <PositionedControllerIcon />}
                       </AnimatePresence>
                     </Background>
                   </AudioPlayerProvider>

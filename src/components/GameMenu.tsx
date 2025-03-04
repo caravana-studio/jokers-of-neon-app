@@ -134,7 +134,7 @@ export const PositionedGameMenu = ({
   const { isSmallScreen } = useResponsiveValues();
 
   if (!bottomPositionDesktop)
-    bottomPositionDesktop = decoratedPage ? "100px" : "20px";
+    bottomPositionDesktop = decoratedPage ? "70px" : "20px";
 
   return (
     <>
