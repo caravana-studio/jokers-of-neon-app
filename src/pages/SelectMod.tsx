@@ -9,8 +9,11 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import AudioPlayer from "../components/AudioPlayer";
 import CachedImage, { checkImageExists } from "../components/CachedImage";
-import { PositionedGameMenu } from "../components/GameMenu";
+import { PositionedDiscordLink } from "../components/DiscordLink";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { MobileDecoration } from "../components/MobileDecoration";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { IMod, useGameMods } from "../dojo/queries/useGameMods";
 import { useGameContext } from "../providers/GameProvider";
@@ -47,7 +50,10 @@ export const SelectMod = () => {
 
   return (
     <>
-      <PositionedGameMenu />
+      <MobileDecoration />
+      <AudioPlayer />
+      <LanguageSwitcher />
+      <PositionedDiscordLink />
       <Flex
         height="100%"
         justifyContent="center"

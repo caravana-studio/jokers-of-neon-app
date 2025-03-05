@@ -5,7 +5,7 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
-import { DiscordLink } from "../components/DiscordLink";
+import { DiscordLink, PositionedDiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
@@ -16,6 +16,7 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { MobileDecoration } from "../components/MobileDecoration";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -43,6 +44,7 @@ export const Home = () => {
 
   return (
     <>
+    <MobileDecoration />
       <RemoveScroll>
         <></>
       </RemoveScroll>
@@ -111,15 +113,7 @@ export const Home = () => {
         </Flex>
         <PoweredBy />
       </Flex>
-      <Box
-        zIndex={999}
-        position="absolute"
-        left="15px"
-        top="15px"
-        cursor="pointer"
-      >
-        <DiscordLink />
-      </Box>
+      <PositionedDiscordLink />
     </>
   );
 };

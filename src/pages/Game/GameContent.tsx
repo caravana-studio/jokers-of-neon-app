@@ -1,3 +1,4 @@
+import ControllerConnector from "@cartridge/connector/controller";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   DndContext,
@@ -6,10 +7,13 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { useAccount } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
+import CachedImage from "../../components/CachedImage.tsx";
+import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 import { GameDeck } from "../../components/GameDeck.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -28,8 +32,6 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import CachedImage from "../../components/CachedImage.tsx";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -295,6 +297,7 @@ export const GameContent = () => {
             setRun(true);
           }}
         />
+
         <Box
           sx={{
             position: "fixed",
