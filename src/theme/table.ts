@@ -86,7 +86,7 @@ const storeMobile = definePartsStyle({
     color: "white",
     fontFamily: "Orbitron",
     textAlign: "center",
-    fontSize: 9,
+    fontSize: 8,
   },
   thead: {
     tr: {
@@ -96,7 +96,7 @@ const storeMobile = definePartsStyle({
     td: {
       borderBottomWidth: 0,
       py: 0,
-      px: 0,
+      px: 2,
     },
   },
   tbody: {
@@ -105,9 +105,12 @@ const storeMobile = definePartsStyle({
       fontWeight: "bold",
       p: 0,
       borderBottomWidth: 0,
+      whiteSpace: "initial"
     },
     td: {
       p: 0,
+      px: 1,
+      width: "auto"
     },
   },
 });

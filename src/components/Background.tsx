@@ -102,7 +102,7 @@ export const Background = ({ children }: PropsWithChildren) => {
         isRageRound && type === BackgroundType.Game ? BackgroundType.Rage : type
       );
     }
-  }, [type]);
+  }, [type, isRageRound]);
 
   const modAwareSrc = !isClassic ? baseUrl + src : src;
 
@@ -144,6 +144,7 @@ export const Background = ({ children }: PropsWithChildren) => {
         WebkitUserSelect: "none",
         userSelect: "none",
         overflowX: "hidden",
+        overflowY: "hidden",
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
