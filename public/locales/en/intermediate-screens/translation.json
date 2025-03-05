@@ -1,4 +1,15 @@
 {
+  "my-games": {
+    "title": "My Games",
+    "go-back": "Go back",
+    "start-game": "Start new game",
+    "show-finished-games": "Show finished games",
+    "continue-btn": "continue",
+    "start-btn": "start",
+    "level-lbl": "Level",
+    "status-lbl": "Status",
+    "points-lbl": "points"
+  },
   "game-over": {
     "gameOver-msj": "GAME OVER",
     "table": {

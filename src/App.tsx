@@ -36,6 +36,7 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { TournamentTransactions } from "./pages/ExecuteTransaction";
+import { MyGames } from "./pages/MyGames";
 
 function App() {
   const location = useLocation();
@@ -97,6 +98,14 @@ function App() {
                             element={
                               <AnimatedPage>
                                 <GamePage />
+                              </AnimatedPage>
+                            }
+                          />
+                          <Route
+                            path="/my-games"
+                            element={
+                              <AnimatedPage>
+                                <MyGames />
                               </AnimatedPage>
                             }
                           />
