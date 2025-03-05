@@ -28,28 +28,30 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
 
   const game = useGame();
 
-  const { locked, setLoading } = useStore();
+  const { locked, setLoading, loading } = useStore();
 
   const handleNextLevelClick = () => {
-    setLoading(true);
-    onShopSkip();
-    skipShop(gameId).then((response): void => {
-      if (response.success) {
-        setHand(response.cards);
+    if (!loading) {
+      setLoading(true);
+      onShopSkip();
+      skipShop(gameId).then((response): void => {
+        if (response.success) {
+          setHand(response.cards);
 
-        const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
+          const powerUps: (PowerUp | null)[] = response.powerUps;
+          while (powerUps.length < maxPowerUpSlots) {
+            powerUps.push(null);
+          }
+          setPowerUps(powerUps);
+
+          response.destroyedSpecialCard &&
+            setDestroyedSpecialCardId(response.destroyedSpecialCard);
+          navigate("/redirect/demo");
+        } else {
+          setLoading(false);
         }
-        setPowerUps(powerUps);
-
-        response.destroyedSpecialCard &&
-          setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/redirect/demo");
-      } else {
-        setLoading(false);
-      }
-    });
+      });
+    }
   };
 
   return (
