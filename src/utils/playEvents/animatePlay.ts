@@ -2,8 +2,8 @@ import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
-import { changeCardNeon } from "../changeCardNeon";
-import { changeCardSuit } from "../changeCardSuit";
+import { changeCardNeon } from "../cardTransformation/changeCardNeon";
+import { changeCardSuit } from "../cardTransformation/changeCardSuit";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {

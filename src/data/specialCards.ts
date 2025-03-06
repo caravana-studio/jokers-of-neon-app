@@ -4,6 +4,7 @@ import { RARITY } from "../constants/rarity";
 import { getJsonFromUrl } from "../utils/loadJsonFromUrl";
 
 export const SPECIAL_CARDS_DATA: CardDataMap = {};
+export const SPECIAL_CARDS_BLOCKS_SUIT_CHANGE = [314];
 
 const CARDS_PRICE: Record<RARITY, number> = {
   [RARITY.C]: 1000,
