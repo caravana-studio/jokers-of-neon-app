@@ -17,6 +17,7 @@ import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
@@ -24,7 +25,6 @@ import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
 import { Store } from "./pages/store/Store";
-import { TestTournament } from "./pages/TestTournament";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
@@ -35,8 +35,6 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
-import { TournamentTransactions } from "./pages/ExecuteTransaction";
-import { MyGames } from "./pages/MyGames";
 
 function App() {
   const location = useLocation();
@@ -54,13 +52,7 @@ function App() {
                     <Background>
                       <AnimatePresence mode="wait">
                         <Routes location={location} key={location.pathname}>
-                          <Route
-                            path="/tournament"
-                            element={<TestTournament />}
-                          />                          <Route
-                            path="/test"
-                            element={<TournamentTransactions />}
-                          />
+
                           <Route
                             path="/"
                             element={

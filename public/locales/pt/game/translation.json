@@ -86,7 +86,8 @@
       "logout-btn": "Sair",
       "settings-btn": "Configuração",
       "docs-btn": "Lista de cartas",
-      "leaderboard-btn": "Classificação"
+      "leaderboard-btn": "Classificação",
+      "my-games": "Meus jogos"
     },
     "plays": {
       "title": "Jogadas disponíveis",

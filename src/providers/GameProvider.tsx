@@ -45,6 +45,7 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
+import { useTournaments } from "../hooks/useTournaments.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -119,7 +120,12 @@ export interface IGameContext {
   maxSpecialCards: number;
   maxPowerUpSlots: number;
   isClassic: boolean;
+  setGameId: (gameId: number) => void;
+  resetLevel: () => void;
 }
+
+const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID || "1"; 
+const tournamentId = Number(stringTournamentId);
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
@@ -148,7 +154,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setup: {
       clientComponents: { Game },
     },
-    account: { account },
     syncCall,
   } = useDojo();
 
@@ -242,31 +247,46 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const username = useUsername();
 
-  const executeCreateGame = async (gameId?: number) => {
+  
+
+  const {enterTournament } = useTournaments()
+
+
+  const executeCreateGame = async (providedGameId?: number) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
+    let gameId = providedGameId;
     if (username) {
-      console.log("Creating game...");
-      createGame(gameId ?? 2, username).then(async (response) => {
-        const { gameId: newGameId, hand } = response;
-        if (newGameId) {
-          resetLevel();
-          navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
-          setHand(hand);
-          setGameId(newGameId);
-          clearPreSelection();
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          console.log(`game ${newGameId} created`);
-
-          await syncCall();
-          setGameLoading(false);
-          setPreSelectionLocked(false);
-          setRoundRewards(undefined);
-        } else {
-          setError(true);
+      console.log("Registering user in tournament ", tournamentId)
+      try {
+        if (!providedGameId) {
+          gameId = await enterTournament(tournamentId, username);
         }
-      });
+        console.log("Creating game...");
+        createGame(gameId!, username).then(async (response) => {
+          const { gameId: newGameId, hand } = response;
+          if (newGameId) {
+            resetLevel();
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
+            setHand(hand);
+            setGameId(newGameId);
+            clearPreSelection();
+            localStorage.setItem(GAME_ID, newGameId.toString());
+            console.log(`game ${newGameId} created`);
+  
+            await syncCall();
+            setGameLoading(false);
+            setPreSelectionLocked(false);
+            setRoundRewards(undefined);
+          } else {
+            setError(true);
+          }
+        });
+      } catch (error) {
+        console.error("Error registering user in tournament", error);
+        setError(true);
+      }
     } else {
       console.error("No username");
       setError(true);
@@ -670,6 +690,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sfxOn,
         setSfxOn,
         powerUpIsPreselected,
+        resetLevel,
       }}
     >
       {children}

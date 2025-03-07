@@ -8,7 +8,15 @@
     "start-btn": "iniciar",
     "level-lbl": "Nível",
     "status-lbl": "Estado",
-    "points-lbl": "pontos"
+    "points-lbl": "pontos",
+    "no-games": "Você não tem nenhum jogo. Comece um novo!",
+    "create-game": {
+      "stage-1": "Procurando torneio {{tournamentId}}",
+      "stage-2": "Registrando usuário {{username}}",
+      "stage-3": "Transferindo token de jogo para sua conta",
+      "stage-4": "Misturando cartas",
+      "stage-5": "Jogo começando"
+    }
   },
   "game-over": {
     "gameOver-msj": "FIM DE JOGO",

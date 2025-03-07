@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
-import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
@@ -8,6 +8,10 @@ import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
+import {
+  getModRageCardsId,
+  getModSpecialCardsId,
+} from "../dojo/queries/useModCardsId";
 import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
 import { decodeString } from "../dojo/utils/decodeString";
@@ -16,16 +20,12 @@ import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
+import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
-import { ModCardsConfig } from "../types/ModConfig";
-import {
-  getModRageCardsId,
-  getModSpecialCardsId,
-} from "../dojo/queries/useModCardsId";
 
 export const useGameState = () => {
   const {
@@ -232,9 +232,14 @@ export const useGameState = () => {
     setPreselectedPowerUps([]);
   };
 
+  const lsSetGameId = (gameId: number) => {
+    localStorage.setItem(GAME_ID, gameId.toString());
+    setGameId(gameId);
+  }
+
   return {
     gameId,
-    setGameId,
+    setGameId: lsSetGameId,
     preSelectedPlay,
     setPreSelectedPlay,
     points,

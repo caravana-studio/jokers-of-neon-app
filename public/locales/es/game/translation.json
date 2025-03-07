@@ -86,7 +86,8 @@
       "logout-btn": "Cerrar sesión",
       "settings-btn": "Configuración",
       "docs-btn": "Lista de cartas",
-      "leaderboard-btn": "Tabla de posiciones"
+      "leaderboard-btn": "Tabla de posiciones",
+      "my-games": "Mis juegos"
     },
     "plays": {
       "title": "Jugadas disponibles",

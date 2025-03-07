@@ -2,6 +2,7 @@ import { getContractByName } from "@dojoengine/core";
 import { shortString } from "starknet";
 import { useDojo } from "../dojo/DojoContext";
 import manifest from "../manifest_tournaments.json";
+import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 
 const TOURNAMENT_NAMESPACE =
   import.meta.env.VITE_TOURNAMENT_NAMESPACE || "budokan";
@@ -14,6 +15,9 @@ const TOURNAMENT_CONTRACT_ADDRESS = getContractByName(
   TOURNAMENT_CONTRACT_NAME
 )?.address;
 
+const REGISTRATION_EVENT_KEY =
+  "0x4e2e644a78cbd3f34c269bf04c1aa8945d757ee70365a91aa3ff1c725e5e422";
+
 const BLAST_URL =
   import.meta.env.VITE_BLAST_URL ||
   "https://starknet-mainnet.blastapi.io/f3cfa120-6cef-4856-8ef3-1fcaf1a438a9";
@@ -25,7 +29,6 @@ export const useTournaments = () => {
 
   const GET_GAMES_URL = `${BLAST_URL}/builder/getWalletNFTs?contractAddress=${TOURNAMENT_CONTRACT_ADDRESS}&walletAddress=${account.address}&pageSize=100`;
 
-  console.log("GET_GAMES_URL", GET_GAMES_URL);
   const enterTournament = async (tournamentId: number, username: string) => {
     const { transaction_hash } = await account.execute({
       contractAddress: TOURNAMENT_CONTRACT_ADDRESS,
@@ -37,7 +40,12 @@ export const useTournaments = () => {
         1,
       ],
     });
-    return account.waitForTransaction(transaction_hash);
+    const result = await account.waitForTransaction(transaction_hash);
+
+    const registrationEvent = (result as any).events.find(
+      (e: any) => e.keys[1] === REGISTRATION_EVENT_KEY
+    );
+    return getNumberValueFromEvent(registrationEvent, 4) ?? 0;
   };
 
   const getPlayerGames = async () => {

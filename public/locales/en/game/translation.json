@@ -86,7 +86,8 @@
       "logout-btn": "Logout",
       "settings-btn": "Settings",
       "docs-btn": "Card list",
-      "leaderboard-btn": "Leaderboard"
+      "leaderboard-btn": "Leaderboard",
+      "my-games": "My games"
     },
     "plays": {
       "title": "Available plays",
