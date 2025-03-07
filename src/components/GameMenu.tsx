@@ -78,7 +78,7 @@ export const GameMenu = ({
           {showTutorial && !hideTutorialFF && (
             <MenuItem
               onClick={() => {
-                navigate("/tutorial");
+                showTutorial();
               }}
             >
               {t("game.game-menu.tutorial-btn")}
