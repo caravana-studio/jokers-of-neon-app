@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { SettingsModal } from "./SettingsModal.tsx";
@@ -28,6 +29,7 @@ export const GameMenu = ({
   const { isSmallScreen } = useResponsiveValues();
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const game = useGame();
+  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const { disconnect } = useDisconnect();
 
@@ -73,7 +75,7 @@ export const GameMenu = ({
           >
             {t("game.game-menu.docs-btn")}
           </MenuItem>
-          {showTutorial && (
+          {showTutorial && !hideTutorialFF && (
             <MenuItem
               onClick={() => {
                 navigate("/tutorial");

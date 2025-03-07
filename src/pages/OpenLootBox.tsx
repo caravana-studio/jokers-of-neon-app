@@ -38,12 +38,22 @@ export const OpenLootBox = () => {
   const adjustedCardScale = cardScale * 1.2;
 
   useEffect(() => {
-    setTimeout(() => {
-      if (game?.state === "AT_SHOP") {
-        navigate("/redirect/store", { state: { lastTabIndex: 1 } });
+    let timeoutId: any;
+    
+    if (game?.state === "AT_SHOP") {
+      timeoutId = setTimeout(() => {
+        if (game?.state === "AT_SHOP") {
+          navigate("/redirect/store", { state: { lastTabIndex: 1 } });
+        }
+      }, 3000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
-    }, 3000);
-  }, [game?.state]);
+    };
+  }, [game?.state, navigate]);
 
   useEffect(() => {
     if (blisterPackResult?.cardsPicked) {
