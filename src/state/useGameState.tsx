@@ -58,6 +58,9 @@ export const useGameState = () => {
     !!localStorage.getItem(SORT_BY_SUIT)
   );
   const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
+  const [lockedPlayerScore, setLockedPlayerScore] = useState<
+    number | undefined
+  >(undefined);
   const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
@@ -168,6 +171,7 @@ export const useGameState = () => {
   const dojoCash = game?.cash ?? 0;
 
   const score = lockedScore ?? dojoScore;
+  const playerScore = lockedPlayerScore ?? game?.player_score ?? 0;
   const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const resetMultiPoints = () => {
@@ -262,6 +266,7 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
+    playerScore,
     apiHand: dojoHand,
     plays,
     sortBy,
@@ -271,6 +276,7 @@ export const useGameState = () => {
     specialCards,
     setLockedSpecialCards,
     setLockedScore,
+    setLockedPlayerScore,
     isRageRound,
     setIsRageRound,
     cash,
