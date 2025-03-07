@@ -75,6 +75,7 @@ export const TabPattern = ({
           {children.map((child, index) => (
             <ChakraTab
               key={index}
+              px={children.length > 3 ? 1 : 3}
               fontSize={children.length > 3 ? [10, 14] : [11, 14]}
             >
               {child.props.title}

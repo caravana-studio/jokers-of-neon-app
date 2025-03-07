@@ -45,9 +45,9 @@ export const UtilsTab = () => {
         isDisabled={isDisable}
         width={{ base: "50px", sm: "unset" }}
         size={"xs"}
-        fontSize={10}
+        fontSize={9}
         borderRadius={6}
-        height={5}
+        height={4}
       >
         {t("store.preview-card.labels.buy")}
       </Button>
@@ -86,8 +86,8 @@ export const UtilsTab = () => {
         zIndex: 1,
       }}
     >
-      <Flex my={3} mx={4} flexDir={"column"}>
-        <Flex justifyContent="space-between" mb={2} alignItems="center">
+      <Flex my={1.5} mx={4} flexDir={"column"}>
+        <Flex justifyContent="space-between" mb={1} alignItems="center">
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.titles.improve-plays").toUpperCase()}
           </Heading>
@@ -108,7 +108,7 @@ export const UtilsTab = () => {
 
       {powerUps?.length > 0 && (
         <Flex className="PowerUps" mx={4} flexDir={"column"}>
-          <Flex gap={2} mb={2} alignItems="center">
+          <Flex gap={2} mb={1} alignItems="center">
             <Heading fontWeight={"400"} fontSize={"xs"}>
               {t("store.titles.powerups").toUpperCase()}
             </Heading>
@@ -122,9 +122,9 @@ export const UtilsTab = () => {
             borderRadius="10px"
             boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
             width={"100%"}
-            pb={5}
-            pt={2}
-            h="75px"
+            pb={1}
+            pt={1}
+            h="67px"
           >
             <Flex flexDirection="row" justifyContent={"space-around"}>
               {powerUps.map((powerUp, index) => {
@@ -151,7 +151,7 @@ export const UtilsTab = () => {
 
       <Flex className="Utils" my={3} mx={4} gap={2}>
         {visible && (
-          <Flex flexDir="column" w="50%" gap={2}>
+          <Flex flexDir="column" w="50%" gap={1}>
             <Heading fontWeight={"400"} fontSize="xs">
               {t("store.preview-card.slot-title")}
             </Heading>
@@ -185,7 +185,7 @@ export const UtilsTab = () => {
           </Flex>
         )}
 
-        <Flex flexDir="column" w="50%" gap={2}>
+        <Flex flexDir="column" w="50%" gap={1}>
           <Heading fontWeight={"400"} fontSize={"xs"}>
             {t("store.burn-item.title")}
           </Heading>
@@ -195,7 +195,7 @@ export const UtilsTab = () => {
             bg="rgba(0, 0, 0, 0.6)"
             borderRadius="10px"
             boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
-            p={3}
+            p={2.5}
             flexGrow={1}
           >
             <Flex gap={4} h="100%">
