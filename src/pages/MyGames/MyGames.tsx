@@ -15,13 +15,13 @@ import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GAME_ID } from "../../constants/localStorage.ts";
+import { useUsername } from "../../dojo/utils/useUsername.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { CreatingGameDialog } from "./CreatingGameDialog.tsx";
 import { GameBox } from "./GameBox.tsx";
-import { useUsername } from "../../dojo/utils/useUsername.tsx";
 
 export interface GameSummary {
   id: number;
@@ -30,7 +30,7 @@ export interface GameSummary {
   points?: number;
 }
 
-const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID || "1"; 
+const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID || "1";
 const tournamentId = Number(stringTournamentId);
 
 export const MyGames = () => {
@@ -72,22 +72,26 @@ export const MyGames = () => {
 
   return (
     <>
-      {creatingGame && (
+      {true && (
         <CreatingGameDialog
           headingStages={[
             {
-              text: t("create-game.stage-1", {tournamentId}),
+              text: t("create-game.stage-1", { tournamentId }),
               showAt: 0,
-            },{
-              text: t("create-game.stage-2", {username}),
+            },
+            {
+              text: t("create-game.stage-2", { username }),
               showAt: 2000,
-            },{
+            },
+            {
               text: t("create-game.stage-3"),
               showAt: 4000,
-            },{
+            },
+            {
               text: t("create-game.stage-4"),
               showAt: 8000,
-            },{
+            },
+            {
               text: t("create-game.stage-5"),
               showAt: 9500,
             },
@@ -115,7 +119,7 @@ export const MyGames = () => {
           borderRadius="20px"
           display="grid"
           px={[4, 8]}
-          py={4}
+          py={isSmallScreen ? 0 : 4}
           width={{ base: "90%", sm: "900px" }}
           height=" 50%"
           maxHeight="500px"
@@ -129,16 +133,18 @@ export const MyGames = () => {
             gap={4}
             my={4}
           >
-            <Checkbox
-              color="white"
-              checked={showFinishedGames}
-              onChange={(e) => {
-                setShowFinishedGames(e.target.checked);
-              }}
-            >
-              {t("show-finished-games").toUpperCase()}
-            </Checkbox>
-            <Flex flexDirection="column" gap={4} w="100%">
+            {!isSmallScreen && (
+              <Checkbox
+                color="white"
+                checked={showFinishedGames}
+                onChange={(e) => {
+                  setShowFinishedGames(e.target.checked);
+                }}
+              >
+                {t("show-finished-games").toUpperCase()}
+              </Checkbox>
+            )}
+            <Flex flexDirection="column" gap={3} w="100%">
               {isLoading && <Loading />}
               {filteredGames.map((game) => {
                 return <GameBox key={game.id} game={game} />;
