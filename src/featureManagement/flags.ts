@@ -17,5 +17,6 @@ export const namespaceFlags: IContainer = {
   global: {
     showMods: new Flag(false),
     tournamentEnabled: new Flag(false),
+    hideTutorial: new Flag(false),
   },
 }
