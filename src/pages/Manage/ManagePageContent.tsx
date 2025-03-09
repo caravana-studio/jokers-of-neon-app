@@ -1,10 +1,11 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BackgroundDecoration } from "../../components/Background";
 import { PositionedGameMenu } from "../../components/GameMenu";
 import { Card } from "../../types/Card";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
+import { Coins } from "../store/Coins";
 
 export interface ManagePageContentProps {
   lastIndexTab?: number;
@@ -31,6 +32,9 @@ export const ManagePageContent = ({
         alignItems={"center"}
         justifyContent={"space-around"}
       >
+        <Box position={"absolute"} top={28} right={"22%"}>
+          <Coins />
+        </Box>
         <SpecialCards
           discardedCards={discardedCards}
           preselectedCard={preselectedCard}
