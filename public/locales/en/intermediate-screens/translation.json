@@ -48,7 +48,8 @@
     "confirmation-modal": {
       "title": "Sell special card",
       "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
-    }
+    },
+    "locked-slot": "Unlock special card slot"
   },
   "mods": {
     "title": "Select the Jokers of Neon version you want to play",

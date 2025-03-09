@@ -48,7 +48,8 @@
     "confirmation-modal": {
       "title": "Vender carta especial",
       "description": "¿Estás seguro de que quieres vender esta carta especial a cambio de ¢ {{price}}? No hay forma de deshacer esta acción."
-    }
+    },
+    "locked-slot": "Desbloquea un espacio para una carta especial"
   },
   "mods": {
     "title": "Selecciona la versión de Jokers of Neon que quieres jugar",
