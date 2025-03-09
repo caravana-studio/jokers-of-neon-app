@@ -11,9 +11,8 @@ export const ManagePageContentMobile = ({
   discardedCards,
   preselectedCard,
   onCardClick,
-  sellButton,
   goBackButton,
-  onTabChange
+  onTabChange,
 }: ManagePageContentProps) => {
   const { t } = useTranslation("intermediate-screens");
 
@@ -24,7 +23,7 @@ export const ManagePageContentMobile = ({
       bottomBar={
         <MobileBottomBar
           firstButton={goBackButton}
-          secondButton={/* tabIndex === 0 &&  */ sellButton}
+          secondButton={null}
           hideDeckButton
         />
       }

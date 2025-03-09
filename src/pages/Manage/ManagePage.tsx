@@ -25,24 +25,6 @@ export const ManagePage = () => {
     setPreselectedCard((prev) => (prev === card ? undefined : card));
   };
 
-  const sellButton = (
-    <Button
-      isDisabled={!preselectedCard}
-      variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
-      minWidth={"100px"}
-      size={isSmallScreen ? "xs" : "md"}
-      lineHeight={1.6}
-      fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-      onClick={() => {
-        setConfirmationModalOpen(true);
-      }}
-    >
-      {preselectedCard?.selling_price
-        ? t("special-cards.sell-for", { price: preselectedCard.selling_price })
-        : t("special-cards.sell")}
-    </Button>
-  );
-
   const goBackButton = (
     <Button
       minWidth={"100px"}
@@ -64,7 +46,6 @@ export const ManagePage = () => {
           discardedCards={discardedCards}
           preselectedCard={preselectedCard}
           onCardClick={handleCardClick}
-          sellButton={sellButton}
           goBackButton={goBackButton}
           onTabChange={() => {
             setPreselectedCard(undefined);
@@ -75,7 +56,6 @@ export const ManagePage = () => {
           discardedCards={discardedCards}
           preselectedCard={preselectedCard}
           onCardClick={handleCardClick}
-          sellButton={sellButton}
           goBackButton={goBackButton}
         />
       )}

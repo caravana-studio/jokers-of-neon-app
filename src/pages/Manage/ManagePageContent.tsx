@@ -11,7 +11,6 @@ export interface ManagePageContentProps {
   discardedCards: Card[];
   preselectedCard?: Card;
   onCardClick: (card: Card) => void;
-  sellButton: ReactNode;
   goBackButton: ReactNode;
   onTabChange?: (index: number) => void;
 }
@@ -20,7 +19,6 @@ export const ManagePageContent = ({
   discardedCards,
   preselectedCard,
   onCardClick,
-  sellButton,
   goBackButton,
 }: ManagePageContentProps) => {
   return (
@@ -41,7 +39,6 @@ export const ManagePageContent = ({
         <Powerups />
         <Flex gap={12} mt={8}>
           {goBackButton}
-          {sellButton}
         </Flex>
       </Flex>
     </BackgroundDecoration>
