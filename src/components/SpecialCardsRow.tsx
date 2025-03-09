@@ -11,7 +11,7 @@ import { AnimatedCard } from "./AnimatedCard.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
-import { LockedSlot } from "./LockedSlot.tsx";
+import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
 
 export const SpecialCardsRow = () => {

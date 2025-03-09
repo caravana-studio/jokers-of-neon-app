@@ -10,7 +10,7 @@ import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../../components/CachedImage";
-import { LockedSlot } from "../../../components/LockedSlot";
+import { LockedSlot } from "../../../components/LockedSlot/LockedSlot";
 import { TemporalBadge } from "../../../components/TemporalBadge";
 import { UnlockedSlot } from "../../../components/UnlockedSlot";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
