@@ -19,36 +19,31 @@ export const ManagePageContentMobile = ({
 
   return (
     <>
-      <Flex pt={[4, 16]} alignItems={"center"} justifyContent={"center"}>
+      <Flex pt={[8, 16]} alignItems={"center"} justifyContent={"center"}>
         <Coins />
       </Flex>
-      <TabPattern
-        lastIndexTab={lastIndexTab}
-        onTabChange={onTabChange}
-        bottomBar={
-          <MobileBottomBar
-            firstButton={goBackButton}
-            secondButton={null}
-            hideDeckButton
-          />
-        }
-      >
-        <Tab title={t("special-cards.title")}>
-          <Flex h=" 100%" w="100%" flexDir="column" p={6}>
-            <SpecialCards
-              discardedCards={discardedCards}
-              preselectedCard={preselectedCard}
-              onCardClick={onCardClick}
-              containerSx={{
-                padding: "0",
-              }}
-            />
-          </Flex>
-        </Tab>
-        <Tab title={t("power-ups.title")}>
-          <Powerups />
-        </Tab>
-      </TabPattern>
+      <Flex height={"80%"}>
+        <TabPattern lastIndexTab={lastIndexTab} onTabChange={onTabChange}>
+          <Tab title={t("special-cards.title")}>
+            <Flex h="100%" w="100%" flexDir="column" p={6}>
+              <SpecialCards
+                discardedCards={discardedCards}
+                preselectedCard={preselectedCard}
+                onCardClick={onCardClick}
+                containerSx={{
+                  padding: "0",
+                }}
+              />
+            </Flex>
+          </Tab>
+          <Tab title={t("power-ups.title")}>
+            <Powerups />
+          </Tab>
+        </TabPattern>
+      </Flex>
+      <Flex justifyContent={"center"} alignItems={"center"}>
+        {goBackButton}
+      </Flex>
     </>
   );
 };
