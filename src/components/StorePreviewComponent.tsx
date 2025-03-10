@@ -98,7 +98,10 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+              <Flex
+                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+                justifyContent={"center"}
+              >
                 {image}
               </Flex>
             )}

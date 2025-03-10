@@ -8,6 +8,9 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { SellButton } from "./SellButton";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -20,9 +23,10 @@ export const ManagePage = () => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
+  const { highlightCard, highlightedCard } = useCardHighlight();
 
   const handleCardClick = (card: Card) => {
-    setPreselectedCard((prev) => (prev === card ? undefined : card));
+    highlightCard(card);
   };
 
   const goBackButton = (
@@ -39,8 +43,18 @@ export const ManagePage = () => {
     </Button>
   );
 
+  const sellButton = (
+    <SellButton
+      preselectedCard={highlightedCard}
+      onClick={() => setConfirmationModalOpen(true)}
+    />
+  );
+
   return (
     <>
+      {highlightedCard && (
+        <MobileCardHighlight card={highlightedCard} customBtn={sellButton} />
+      )}
       {isSmallScreen ? (
         <ManagePageContentMobile
           discardedCards={discardedCards}

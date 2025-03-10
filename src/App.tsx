@@ -187,7 +187,9 @@ function App() {
                             element={
                               <StoreProvider>
                                 <AnimatedPage>
-                                  <ManagePage />
+                                  <CardHighlightProvider>
+                                    <ManagePage />
+                                  </CardHighlightProvider>
                                 </AnimatedPage>
                               </StoreProvider>
                             }
