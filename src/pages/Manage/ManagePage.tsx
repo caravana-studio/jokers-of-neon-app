@@ -18,12 +18,11 @@ export const ManagePage = () => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const { sellSpecialCard, specialCards, maxSpecialCards } = useGameContext();
+  const { sellSpecialCard } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
-  const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
-  const { highlightCard, highlightedCard } = useCardHighlight();
+  const { highlightCard, highlightedCard, onClose } = useCardHighlight();
 
   const handleCardClick = (card: Card) => {
     highlightCard(card);
@@ -58,17 +57,14 @@ export const ManagePage = () => {
       {isSmallScreen ? (
         <ManagePageContentMobile
           discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
+          preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
           goBackButton={goBackButton}
-          onTabChange={() => {
-            setPreselectedCard(undefined);
-          }}
         />
       ) : (
         <ManagePageContent
           discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
+          preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
           goBackButton={goBackButton}
         />
@@ -78,15 +74,15 @@ export const ManagePage = () => {
           close={() => setConfirmationModalOpen(false)}
           title={t("special-cards.confirmation-modal.title")}
           description={t("special-cards.confirmation-modal.description", {
-            price: preselectedCard?.selling_price ?? 0,
+            price: highlightedCard?.selling_price ?? 0,
           })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
-            preselectedCard &&
-              sellSpecialCard(preselectedCard.idx).then((response) => {
+            onClose();
+            highlightedCard &&
+              sellSpecialCard(highlightedCard.idx).then((response) => {
                 if (response) {
-                  setDiscardedCards((prev) => [...prev, preselectedCard]);
-                  setPreselectedCard(undefined);
+                  setDiscardedCards((prev) => [...prev, highlightedCard]);
                 }
               });
           }}

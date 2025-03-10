@@ -25,7 +25,8 @@ export const SellButton: React.FC<SellButtonProps> = ({
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       onClick={
         onClick
-          ? () => {
+          ? (e) => {
+              e.stopPropagation();
               onClick();
             }
           : undefined
