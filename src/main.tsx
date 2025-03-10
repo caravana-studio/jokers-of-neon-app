@@ -90,7 +90,7 @@ async function init() {
 
   registerServiceWorker();
 
-  const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES);
+  const i18nPromise = await i18n.loadNamespaces(I18N_NAMESPACES);
   const imagesPromise = Promise.all([
     preloadImages(),
     preloadSpineAnimations(),
