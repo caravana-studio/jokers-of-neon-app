@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +55,6 @@ export const StorePreviewComponent = ({
 }: IStorePreviewComponent) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
-
 
   console.log("temporal Price", temporalPrice);
   console.log("duration", duration);
@@ -291,7 +283,7 @@ export const StorePreviewComponent = ({
             {buyButton}
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate("/store")}
+              onClick={() => navigate(-1)}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >
