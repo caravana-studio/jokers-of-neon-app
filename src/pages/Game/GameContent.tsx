@@ -292,7 +292,7 @@ export const GameContent = () => {
           decoratedPage
           bottomPositionDesktop={16}
           showTutorial={() => {
-            setRun(true);
+            navigate("/tutorial");
           }}
         />
         <Box

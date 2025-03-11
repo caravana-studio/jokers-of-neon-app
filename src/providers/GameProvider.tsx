@@ -45,6 +45,7 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -119,6 +120,7 @@ export interface IGameContext {
   maxSpecialCards: number;
   maxPowerUpSlots: number;
   isClassic: boolean;
+  playerScore: number;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -133,7 +135,9 @@ export const useGameContext = () => {
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
-  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL);
+  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
+
+  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
   const [sfxOn, setSfxOn] = useState(() => {
     return localStorage.getItem(SFX_ON) === "true";
   });
@@ -200,6 +204,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     specialCards,
     setLockedScore,
     score,
+    playerScore,
+    setLockedPlayerScore,
     cash,
     setLockedCash,
     isRageRound,
@@ -292,6 +298,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
     setLockedScore(score);
+    setLockedPlayerScore(playerScore);
     setLockedCash(cash);
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
@@ -312,6 +319,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation,
             setPreSelectionLocked,
             setLockedScore,
+            setLockedPlayerScore,
             setLockedSpecialCards,
             setLockedCash,
             clearPreSelection,

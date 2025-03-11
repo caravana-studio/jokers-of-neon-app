@@ -24,6 +24,7 @@ import {
   H10,
   H2,
   H3,
+  H4,
   H5,
   H6,
   H7,
@@ -223,4 +224,8 @@ test("Straight ace 3 case 2", () => {
 // Flush
 test("Flush case 1", () => {
   expect(testCheckHand([C3, C7, C8, CJ, CK])).toBe(Plays.FLUSH);
+});
+
+test("Straight with 3 and a gap shouldn't work", () => {
+  expect(testCheckHand([S2, H3, H4, C5, S7])).toBe(Plays.HIGH_CARD);
 });

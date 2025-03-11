@@ -24,17 +24,19 @@ const createCardData = (
   price: CARDS_PRICE[rarity],
 });
 
+export const MODIFIERS_KEYS = {
+  608: createCardData(608, RARITY.B),
+  609: createCardData(609, RARITY.B),
+  610: createCardData(610, RARITY.B),
+  611: createCardData(611, RARITY.B),
+  612: createCardData(612, RARITY.S),
+  613: createCardData(613, RARITY.A),
+}
+
 const loadTranslations = async () => {
   await i18n.loadNamespaces(["effects"]);
 
-  Object.assign(MODIFIER_CARDS_DATA, {
-    608: createCardData(608, RARITY.B),
-    609: createCardData(609, RARITY.B),
-    610: createCardData(610, RARITY.B),
-    611: createCardData(611, RARITY.B),
-    612: createCardData(612, RARITY.S),
-    613: createCardData(613, RARITY.A),
-  });
+  Object.assign(MODIFIER_CARDS_DATA, MODIFIERS_KEYS);
 };
 
 i18n.on('initialized', loadTranslations);

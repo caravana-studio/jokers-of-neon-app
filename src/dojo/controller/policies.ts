@@ -39,8 +39,8 @@ export const policies = {
           entrypoint: "discard",
         },
         {
-          name: "Discard effect card",
-          entrypoint: "discard_effect_card",
+          name: "Change modifier card",
+          entrypoint: "change_modifier_card",
         },
         {
           name: "Sell special card",

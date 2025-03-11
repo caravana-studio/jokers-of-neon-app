@@ -22,6 +22,7 @@ interface AnimatePlayConfig {
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   setLockedScore: (score: number | undefined) => void;
+  setLockedPlayerScore: (playerScore: number | undefined) => void;
   setLockedSpecialCards: (cards: Card[]) => void;
   setLockedCash: (cash: number | undefined) => void;
   clearPreSelection: () => void;
@@ -53,6 +54,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayAnimation,
     setPreSelectionLocked,
     setLockedScore,
+    setLockedPlayerScore,
     setLockedSpecialCards,
     setLockedCash,
     clearPreSelection,
@@ -356,6 +358,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
     setLockedScore(undefined);
+    setLockedPlayerScore(undefined);
     setPlayAnimation(false);
     preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
