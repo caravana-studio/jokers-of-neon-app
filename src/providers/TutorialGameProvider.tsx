@@ -240,6 +240,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPlayAnimation,
       setPreSelectionLocked,
       setLockedScore: emptyFn,
+      setLockedPlayerScore: emptyFn,
       setLockedSpecialCards: emptyFn,
       setLockedCash: emptyFn,
       clearPreSelection,
