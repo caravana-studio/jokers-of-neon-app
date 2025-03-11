@@ -39,6 +39,7 @@ export const gameProviderDefaults: IGameContext = {
   restartGame: () => {},
   preSelectionLocked: false,
   score: 0,
+  playerScore: 0,
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,

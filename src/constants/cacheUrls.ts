@@ -1,9 +1,8 @@
-import { MODIFIER_CARDS_DATA } from "../data/modifiers";
-import { POWER_UPS_CARDS_DATA } from "../data/powerups";
-import { SPECIAL_CARDS_DATA } from "../data/specialCards";
+import { MODIFIERS_KEYS } from "../data/modifiers";
+import { POWER_UPS_KEYS } from "../data/powerups";
+import { SPECIALS_KEYS } from "../data/specialCards";
 import {
-  NEON_CARDS_DATA,
-  TRADITIONAL_CARDS_DATA,
+  CARDS_SUIT_DATA
 } from "../data/traditionalCards";
 
 export const CACHE_IMAGE = "big-image-cache";
@@ -12,28 +11,23 @@ export const CACHE_VIDEO = "background-video-cache";
 export const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [];
 
-  Object.keys(TRADITIONAL_CARDS_DATA).forEach((key) => {
-    imageUrls.push(`Cards/${key}.png`);
-    imageUrls.push(`Cards/mobile/${key}.png`);
-  });
-
-  Object.keys(NEON_CARDS_DATA).forEach((key) => {
+  Object.keys(CARDS_SUIT_DATA).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
     imageUrls.push(`Cards/mobile/${key}.png`);
   });
 
   // Modifier cards
-  Object.keys(MODIFIER_CARDS_DATA).forEach((key) => {
+  Object.keys(MODIFIERS_KEYS).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
   });
 
   // Power-ups
-  Object.keys(POWER_UPS_CARDS_DATA).forEach((key) => {
+  Object.keys(POWER_UPS_KEYS).forEach((key) => {
     imageUrls.push(`powerups/${key}.png`);
   });
 
   // Special cards
-  Object.keys(SPECIAL_CARDS_DATA).forEach((key) => {
+  Object.keys(SPECIALS_KEYS).forEach((key) => {
     imageUrls.push(`Cards/${key}.png`);
     imageUrls.push(`Cards/3d/${key}-l0.png`);
     imageUrls.push(`Cards/3d/${key}-l1.png`);
@@ -53,6 +47,10 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
   imageUrls.push("logos/logo-variant.svg");
   imageUrls.push("logos/logo.png");
 
+  // Mods
+  imageUrls.push("mods/classic.png");
+  imageUrls.push("mods/loot-survivor.png");
+
   // Borders
   imageUrls.push("borders/bottom.png");
   imageUrls.push("borders/bottom-rage.png");
@@ -70,6 +68,31 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
   imageUrls.push("store/slot-icon.png");
   imageUrls.push("store/slot-image.png");
   imageUrls.push("store/unlocked-slot.png");
+
+  // specials-box
+  imageUrls.push("specials-box/rage-icon-off.png");
+  imageUrls.push("specials-box/rage-icon-on.png");
+  imageUrls.push("specials-box/special-icon-off.png");
+  imageUrls.push("specials-box/special-icon-on.png");
+
+  // store
+  imageUrls.push("store/locked-slot.png");
+  imageUrls.push("store/slot-icon.png");
+  imageUrls.push("store/slot-image.png");
+  imageUrls.push("store/unlocked-slot.png");
+  
+  // Backs
+  imageUrls.push("Cards/Backs/back-empty.png");
+  imageUrls.push("Cards/Backs/back-full.png");
+  imageUrls.push("Cards/Backs/back-mid.png");
+  imageUrls.push("Cards/Backs/back.png");
+
+  // others
+  imageUrls.push("broken.png");
+  imageUrls.push("deck-icon.png");
+  imageUrls.push("grid.png");
+  imageUrls.push("icon.png");
+  imageUrls.push("loader.gif");
 
   return imageUrls;
 };

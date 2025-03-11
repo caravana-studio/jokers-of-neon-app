@@ -120,6 +120,7 @@ export interface IGameContext {
   maxSpecialCards: number;
   maxPowerUpSlots: number;
   isClassic: boolean;
+  playerScore: number;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -203,6 +204,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     specialCards,
     setLockedScore,
     score,
+    playerScore,
+    setLockedPlayerScore,
     cash,
     setLockedCash,
     isRageRound,
@@ -295,6 +298,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
     setLockedScore(score);
+    setLockedPlayerScore(playerScore);
     setLockedCash(cash);
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
@@ -315,6 +319,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation,
             setPreSelectionLocked,
             setLockedScore,
+            setLockedPlayerScore,
             setLockedSpecialCards,
             setLockedCash,
             clearPreSelection,
