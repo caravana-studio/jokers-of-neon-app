@@ -9,6 +9,9 @@ export const t = (key: string) => {
 };
 
 export const colorizeText = (inputText: string) => {
+  if (!inputText) {
+    return "";
+  }
   const pointsTranslation = t("points");
   const escapedPointsTranslation = pointsTranslation.replace(
     /[.*+?^${}()|[\]\\]/g,
