@@ -35,6 +35,7 @@ interface AnimatePlayConfig {
   replaceCards: (cards: Card[]) => void;
   handsLeft: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
+  setCardTransformationLock: (locked: boolean) =>  void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -67,6 +68,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     replaceCards,
     handsLeft,
     setAnimateSecondChanceCard,
+    setCardTransformationLock
   } = config;
 
   if (!playEvents) return;
@@ -124,6 +126,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           const handIndexes = event.hand.map((card) => card.idx);
           const special_idx = event.specials[0]?.idx;
           const isNeon = event.eventType === EventTypeEnum.Neon;
+
+          setCardTransformationLock(true);
 
           if (isNeon) {
             setAnimatedCard({
@@ -367,5 +371,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setLockedSpecialCards([]);
 
     handleGameEnd();
+    setCardTransformationLock(false);
   }, ALL_CARDS_DURATION + 500);
 };

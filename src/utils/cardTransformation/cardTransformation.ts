@@ -6,14 +6,14 @@ import { getCardData } from "../getCardData";
 import { transformCardByModifierId } from "./modifierTransformation";
 
 export const getTransformedCard = (card: Card): Card => {
-  const { specialCards } = useGameContext();
+  const { specialCards, cardTransformationLock } = useGameContext();
 
   if ((card.modifiers?.length ?? 0) > 0) {
     const modifierCard = card.modifiers![0];
 
     const isBlocked = specialCards.some((specialCard) =>
         SPECIAL_CARDS_BLOCKS_SUIT_CHANGE.includes(specialCard.card_id ?? -1)
-      ) && MODIFIERS_SUIT_CHANGING.includes(modifierCard.card_id ?? -1);
+      ) && MODIFIERS_SUIT_CHANGING.includes(modifierCard.card_id ?? -1) && cardTransformationLock;
     
       if (isBlocked) {
         return card; 
