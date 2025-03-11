@@ -31,27 +31,25 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
   const { locked, setLoading, loading } = useStore();
 
   const handleNextLevelClick = () => {
-    if (!loading) {
-      setLoading(true);
-      onShopSkip();
-      skipShop(gameId).then((response): void => {
-        if (response.success) {
-          setHand(response.cards);
+    setLoading(true);
+    onShopSkip();
+    skipShop(gameId).then((response): void => {
+      if (response.success) {
+        setHand(response.cards);
 
-          const powerUps: (PowerUp | null)[] = response.powerUps;
-          while (powerUps.length < maxPowerUpSlots) {
-            powerUps.push(null);
-          }
-          setPowerUps(powerUps);
-
-          response.destroyedSpecialCard &&
-            setDestroyedSpecialCardId(response.destroyedSpecialCard);
-          navigate("/redirect/demo");
-        } else {
-          setLoading(false);
+        const powerUps: (PowerUp | null)[] = response.powerUps;
+        while (powerUps.length < maxPowerUpSlots) {
+          powerUps.push(null);
         }
-      });
-    }
+        setPowerUps(powerUps);
+
+        response.destroyedSpecialCard &&
+          setDestroyedSpecialCardId(response.destroyedSpecialCard);
+        navigate("/redirect/demo");
+      } else {
+        setLoading(false);
+      }
+    });
   };
 
   return (
@@ -61,7 +59,7 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
       minWidth={"100px"}
       size={isSmallScreen ? "xs" : "md"}
       onClick={handleNextLevelClick}
-      isDisabled={locked}
+      isDisabled={locked || loading}
       lineHeight={1.6}
       variant="secondarySolid"
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
