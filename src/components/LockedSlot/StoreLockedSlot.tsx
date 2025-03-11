@@ -33,6 +33,8 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
           ? {
               transform: "scale(1.1)",
               cursor: "pointer",
+              transition:
+                "background-image 0.6s ease-in-out, transform 0.6s ease",
             }
           : {}
       }
