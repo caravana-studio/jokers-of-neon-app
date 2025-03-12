@@ -3,5 +3,3 @@ export enum Speed {
   FAST = "FAST",
   FASTEST = "FASTEST",
 }
-
-export const LOOTBOX_TRANSITION_DEFAULT = "white";

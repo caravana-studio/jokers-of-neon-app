@@ -11,7 +11,8 @@ import {
   SETTINGS_SFX_VOLUME,
   SFX_ON,
 } from "../constants/localStorage";
-import { LOOTBOX_TRANSITION_DEFAULT, Speed } from "../enums/settings";
+import { LOOTBOX_TRANSITION_DEFAULT } from "../constants/settings.ts";
+import { Speed } from "../enums/settings.ts";
 
 interface SettingsContextType {
   sfxOn: boolean;
