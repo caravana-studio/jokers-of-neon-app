@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
   SETTINGS_ANIMATION_SPEED,
+  SETTINGS_LOOTBOX_TRANSITION,
   SETTINGS_SFX_VOLUME,
   SFX_ON,
   SKIP_IN_GAME_TUTORIAL,
@@ -31,7 +32,7 @@ import { gameExists } from "../dojo/utils/getGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
-import { Speed } from "../enums/speed.ts";
+import { LOOTBOX_TRANSITION_DEFAULT, Speed } from "../enums/settings.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
@@ -121,6 +122,8 @@ export interface IGameContext {
   maxPowerUpSlots: number;
   isClassic: boolean;
   playerScore: number;
+  lootboxTransition: string;
+  setLootboxTransition: (color: string) => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -137,12 +140,20 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
-  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
+  const showTutorial =
+    !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
   const [sfxOn, setSfxOn] = useState(() => {
     return localStorage.getItem(SFX_ON) === "true";
   });
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
+
+  const [lootboxTransition, setLootboxTransition] = useState(() => {
+    return (
+      localStorage.getItem(SETTINGS_LOOTBOX_TRANSITION) ??
+      LOOTBOX_TRANSITION_DEFAULT
+    );
+  });
 
   const round = useRound();
   const handsLeft = round?.remaining_plays ?? 0;
@@ -643,6 +654,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     );
   }, [animationSpeed]);
 
+  useEffect(() => {
+    localStorage.setItem(SETTINGS_LOOTBOX_TRANSITION, lootboxTransition);
+  }, [lootboxTransition]);
+
   const actions = {
     setPreSelectedCards,
     play: onPlayClick,
@@ -678,6 +693,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sfxOn,
         setSfxOn,
         powerUpIsPreselected,
+        lootboxTransition,
+        setLootboxTransition,
       }}
     >
       {children}

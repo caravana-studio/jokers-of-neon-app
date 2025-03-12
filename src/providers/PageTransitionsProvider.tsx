@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { MotionBox } from "../components/MotionBox";
+import { useGameContext } from "./GameProvider";
 
 interface IPageTransitionsContext {
   transitionTo: (page: string) => void;
@@ -28,7 +29,8 @@ export const PageTransitionsProvider = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const navigate = useNavigate();
-  const bgColor = color ?? "white";
+  const { lootboxTransition } = useGameContext();
+  const bgColor = color ?? lootboxTransition;
 
   useEffect(() => {
     if (isTransitioning) {

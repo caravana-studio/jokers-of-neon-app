@@ -141,6 +141,11 @@
       "normal": "Normal",
       "fast": "Rápido",
       "fastest": "Mais rápido"
+    },
+    "loot-box-transition": "Transição de caixa",
+    "loot-box-transition-colors": {
+      "white": "Branco",
+      "black": "Preto"
     }
   },
   "animations": {
