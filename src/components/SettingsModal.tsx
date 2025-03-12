@@ -14,7 +14,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -24,7 +23,6 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
-import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
 import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
@@ -36,6 +34,7 @@ import {
   animationSpeedLabels,
   lootboxTransitionLabels,
 } from "../constants/settingsLabels";
+import { useSettings } from "../providers/SettingsProvider";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -51,7 +50,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
     setAnimationSpeed,
     lootboxTransition,
     setLootboxTransition,
-  } = useGameContext();
+  } = useSettings();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
   const { isSmallScreen } = useResponsiveValues();
 

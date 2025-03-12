@@ -47,6 +47,7 @@ import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
+import { useSettings } from "./SettingsProvider.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -93,12 +94,6 @@ export interface IGameContext {
   discards: number;
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
-  sfxVolume: number;
-  setSfxVolume: (vol: number) => void;
-  animationSpeed: Speed;
-  setAnimationSpeed: (speed: Speed) => void;
-  sfxOn: boolean;
-  setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
@@ -122,8 +117,6 @@ export interface IGameContext {
   maxPowerUpSlots: number;
   isClassic: boolean;
   playerScore: number;
-  lootboxTransition: string;
-  setLootboxTransition: (color: string) => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -142,18 +135,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
-  const [sfxOn, setSfxOn] = useState(() => {
-    return localStorage.getItem(SFX_ON) === "true";
-  });
-  const [sfxVolume, setSfxVolume] = useState(1);
-  const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
-
-  const [lootboxTransition, setLootboxTransition] = useState(() => {
-    return (
-      localStorage.getItem(SETTINGS_LOOTBOX_TRANSITION) ??
-      LOOTBOX_TRANSITION_DEFAULT
-    );
-  });
 
   const round = useRound();
   const handsLeft = round?.remaining_plays ?? 0;
@@ -171,6 +152,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
+  const { sfxVolume, animationSpeed } = useSettings();
 
   const game = useGame();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
@@ -626,38 +608,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setLockRedirection(false);
   }, []);
 
-  useEffect(() => {
-    const savedVolume = localStorage.getItem(SETTINGS_SFX_VOLUME);
-    if (savedVolume !== null) {
-      setSfxVolume(JSON.parse(savedVolume));
-    }
-
-    const animationSpeed = localStorage.getItem(SETTINGS_ANIMATION_SPEED);
-    if (animationSpeed !== null) {
-      setAnimationSpeed(JSON.parse(animationSpeed));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(SETTINGS_SFX_VOLUME, JSON.stringify(sfxVolume));
-  }, [sfxVolume]);
-
-  useEffect(() => {
-    if (!sfxOn) localStorage.removeItem(SFX_ON);
-    else localStorage.setItem(SFX_ON, "true");
-  }, [sfxOn]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      SETTINGS_ANIMATION_SPEED,
-      JSON.stringify(animationSpeed)
-    );
-  }, [animationSpeed]);
-
-  useEffect(() => {
-    localStorage.setItem(SETTINGS_LOOTBOX_TRANSITION, lootboxTransition);
-  }, [lootboxTransition]);
-
   const actions = {
     setPreSelectedCards,
     play: onPlayClick,
@@ -676,7 +626,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     executeCreateGame,
     preSelectCard,
     unPreSelectCard,
-    setSfxVolume,
     togglePreselectedPowerUp,
   };
 
@@ -687,14 +636,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         ...actions,
         lockRedirection,
         discards,
-        sfxVolume,
-        animationSpeed,
-        setAnimationSpeed,
-        sfxOn,
-        setSfxOn,
         powerUpIsPreselected,
-        lootboxTransition,
-        setLootboxTransition,
       }}
     >
       {children}

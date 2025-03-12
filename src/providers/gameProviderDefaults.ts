@@ -2,7 +2,6 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
-import { LOOTBOX_TRANSITION_DEFAULT, Speed } from "../enums/settings";
 import { IGameContext } from "./GameProvider";
 
 export const gameProviderDefaults: IGameContext = {
@@ -52,12 +51,6 @@ export const gameProviderDefaults: IGameContext = {
   discards: 0,
   preSelectCard: (_) => {},
   unPreSelectCard: (_) => {},
-  sfxVolume: 1,
-  setSfxVolume: () => {},
-  sfxOn: true,
-  setSfxOn: () => {},
-  animationSpeed: Speed.NORMAL,
-  setAnimationSpeed: () => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
   levelUpHand: undefined,
@@ -79,6 +72,4 @@ export const gameProviderDefaults: IGameContext = {
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
   isClassic: true,
-  lootboxTransition: LOOTBOX_TRANSITION_DEFAULT,
-  setLootboxTransition: (_) => {},
 };

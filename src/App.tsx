@@ -34,177 +34,180 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { SettingsProvider } from "./providers/SettingsProvider";
 
 function App() {
   const location = useLocation();
   const theme = extendTheme(customTheme);
 
   return (
-    <ZoomPrevention>
-      <ChakraBaseProvider theme={theme}>
-        <FeatureFlagProvider>
-          <CardAnimationsProvider>
-            <GameProvider>
-              <PageTransitionsProvider>
-                <InformationPopUpProvider>
-                  <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
-                    <Background>
-                      <AnimatePresence mode="wait">
-                        <Routes location={location} key={location.pathname}>
-                          <Route
-                            path="/"
-                            element={
-                              <AnimatedPage>
-                                <Home />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/mods"
-                            element={
-                              <AnimatedPage>
-                                <SelectMod />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/login"
-                            element={
-                              <AnimatedPage>
-                                <Login />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/gameover/:gameId"
-                            element={
-                              <AnimatedPage>
-                                <GameOver />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/demo"
-                            element={
-                              <AnimatedPage>
-                                <GamePage />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/rewards"
-                            element={
-                              <AnimatedPage>
-                                <RewardsPage />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/leaderboard"
-                            element={
-                              <AnimatedPage>
-                                <LeaderBoardPage />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/store"
-                            element={
-                              <StoreProvider>
+    <SettingsProvider>
+      <ZoomPrevention>
+        <ChakraBaseProvider theme={theme}>
+          <FeatureFlagProvider>
+            <CardAnimationsProvider>
+              <GameProvider>
+                <PageTransitionsProvider>
+                  <InformationPopUpProvider>
+                    <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                      <Background>
+                        <AnimatePresence mode="wait">
+                          <Routes location={location} key={location.pathname}>
+                            <Route
+                              path="/"
+                              element={
                                 <AnimatedPage>
-                                  <Store />
+                                  <Home />
                                 </AnimatedPage>
-                              </StoreProvider>
-                            }
-                          />
+                              }
+                            />
+                            <Route
+                              path="/mods"
+                              element={
+                                <AnimatedPage>
+                                  <SelectMod />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/login"
+                              element={
+                                <AnimatedPage>
+                                  <Login />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/gameover/:gameId"
+                              element={
+                                <AnimatedPage>
+                                  <GameOver />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/demo"
+                              element={
+                                <AnimatedPage>
+                                  <GamePage />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/rewards"
+                              element={
+                                <AnimatedPage>
+                                  <RewardsPage />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/leaderboard"
+                              element={
+                                <AnimatedPage>
+                                  <LeaderBoardPage />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/store"
+                              element={
+                                <StoreProvider>
+                                  <AnimatedPage>
+                                    <Store />
+                                  </AnimatedPage>
+                                </StoreProvider>
+                              }
+                            />
 
-                          <Route
-                            path="/tutorial"
-                            element={
-                              <TutorialGameProvider>
-                                <AnimatedPage>
-                                  <GamePageTutorial />
-                                </AnimatedPage>
-                              </TutorialGameProvider>
-                            }
-                          />
+                            <Route
+                              path="/tutorial"
+                              element={
+                                <TutorialGameProvider>
+                                  <AnimatedPage>
+                                    <GamePageTutorial />
+                                  </AnimatedPage>
+                                </TutorialGameProvider>
+                              }
+                            />
 
-                          <Route
-                            path="/redirect/:page"
-                            element={<Redirect />}
-                          />
-                          <Route
-                            path="/preview/:type"
-                            element={
-                              <StoreProvider>
+                            <Route
+                              path="/redirect/:page"
+                              element={<Redirect />}
+                            />
+                            <Route
+                              path="/preview/:type"
+                              element={
+                                <StoreProvider>
+                                  <AnimatedPage>
+                                    <PreviewPage />
+                                  </AnimatedPage>
+                                </StoreProvider>
+                              }
+                            />
+                            <Route
+                              path="/open-loot-box"
+                              element={
+                                <StoreProvider>
+                                  <AnimatedPage>
+                                    <OpenLootBox />
+                                  </AnimatedPage>
+                                </StoreProvider>
+                              }
+                            />
+                            <Route path="/play" element={<Navigate to="/" />} />
+                            <Route
+                              path="/plays"
+                              element={
                                 <AnimatedPage>
-                                  <PreviewPage />
+                                  <PlaysLayout />
                                 </AnimatedPage>
-                              </StoreProvider>
-                            }
-                          />
-                          <Route
-                            path="/open-loot-box"
-                            element={
-                              <StoreProvider>
-                                <AnimatedPage>
-                                  <OpenLootBox />
-                                </AnimatedPage>
-                              </StoreProvider>
-                            }
-                          />
-                          <Route path="/play" element={<Navigate to="/" />} />
-                          <Route
-                            path="/plays"
-                            element={
-                              <AnimatedPage>
-                                <PlaysLayout />
-                              </AnimatedPage>
-                            }
-                          />
-                          <Route
-                            path="/deck"
-                            element={
-                              <StoreProvider>
-                                <AnimatedPage>
-                                  <DeckPage />
-                                </AnimatedPage>
-                              </StoreProvider>
-                            }
-                          />
-                          <Route
-                            path="/docs"
-                            element={
-                              <CardHighlightProvider>
-                                <AnimatedPage>
-                                  <DocsPage lastIndexTab={0} />
-                                </AnimatedPage>
-                              </CardHighlightProvider>
-                            }
-                          />
-                          <Route
-                            path="/manage"
-                            element={
-                              <StoreProvider>
-                                <AnimatedPage>
-                                  <ManagePage />
-                                </AnimatedPage>
-                              </StoreProvider>
-                            }
-                          />
-                        </Routes>
-                      </AnimatePresence>
-                    </Background>
-                  </AudioPlayerProvider>
-                </InformationPopUpProvider>
-              </PageTransitionsProvider>
-            </GameProvider>
-          </CardAnimationsProvider>
-        </FeatureFlagProvider>
-        <Analytics />
-        <SpeedInsights />
-      </ChakraBaseProvider>
-    </ZoomPrevention>
+                              }
+                            />
+                            <Route
+                              path="/deck"
+                              element={
+                                <StoreProvider>
+                                  <AnimatedPage>
+                                    <DeckPage />
+                                  </AnimatedPage>
+                                </StoreProvider>
+                              }
+                            />
+                            <Route
+                              path="/docs"
+                              element={
+                                <CardHighlightProvider>
+                                  <AnimatedPage>
+                                    <DocsPage lastIndexTab={0} />
+                                  </AnimatedPage>
+                                </CardHighlightProvider>
+                              }
+                            />
+                            <Route
+                              path="/manage"
+                              element={
+                                <StoreProvider>
+                                  <AnimatedPage>
+                                    <ManagePage />
+                                  </AnimatedPage>
+                                </StoreProvider>
+                              }
+                            />
+                          </Routes>
+                        </AnimatePresence>
+                      </Background>
+                    </AudioPlayerProvider>
+                  </InformationPopUpProvider>
+                </PageTransitionsProvider>
+              </GameProvider>
+            </CardAnimationsProvider>
+          </FeatureFlagProvider>
+          <Analytics />
+          <SpeedInsights />
+        </ChakraBaseProvider>
+      </ZoomPrevention>
+    </SettingsProvider>
   );
 }
 
