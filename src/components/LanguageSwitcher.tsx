@@ -9,16 +9,19 @@ import {
 } from "@chakra-ui/react";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { useTranslation } from "react-i18next";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation(["home"]);
+
+  const {isSmallScreen} = useResponsiveValues();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
 
   return (
-    <Box zIndex={999} position="absolute" right="20px" top="20px">
+    <Box transform={isSmallScreen ? "scale(0.7)": ""} zIndex={999} position="absolute" left={isSmallScreen ? "15px" : "90px"} top={isSmallScreen ? "15px" : "40px"}>
       <Menu>
         <MenuButton as={Button} p={"0 !important"} width={"auto"}>
           <Flex width={"25px"} m={"0 auto"}>

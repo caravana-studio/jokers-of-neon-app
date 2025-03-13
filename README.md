@@ -11,7 +11,7 @@ Branding design, logo and Twitter account are on the way.
 
 Run the following commands to run the game:
 
-    npm i
+    npm i --legacy-peer-deps
     npm run dev
 
 You can find a .env file in the root of the project that has the default values to connect to a local instance of katana, torii and graphql.

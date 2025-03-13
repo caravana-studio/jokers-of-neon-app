@@ -2,6 +2,7 @@ import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { faVolumeHigh, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface AudioPlayerProps {
   sx?: SystemStyleObject;
@@ -18,12 +19,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const effectiveIsEnabled = isEnabled ?? isPlaying;
   const effectiveOnClick = onClick ?? toggleSound;
 
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <Box
       sx={{
         position: "fixed",
-        bottom: "20px",
-        left: "20px",
+        bottom: isSmallScreen ? "25px" : "70px",
+        left: isSmallScreen ? "15px" : "50px",
         zIndex: 1000,
         ...sx,
       }}
