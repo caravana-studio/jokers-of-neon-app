@@ -39,6 +39,7 @@ export const gameProviderDefaults: IGameContext = {
   restartGame: () => {},
   preSelectionLocked: false,
   score: 0,
+  playerScore: 0,
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
@@ -78,4 +79,5 @@ export const gameProviderDefaults: IGameContext = {
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
   isClassic: true,
+  cardTransformationLock: false,
 };

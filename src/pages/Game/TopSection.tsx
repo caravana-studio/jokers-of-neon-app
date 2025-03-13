@@ -35,12 +35,13 @@ export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
           <LevelPoints />
         </Box>
         <Flex
-          px={2}
+          px={1}
           flexDirection="row"
           justifyContent="flex-start"
           alignItems="flex-start"
-          mx={2}
-          gap={2}
+          mx={1}
+          gap={1}
+          width={"100%"}
         >
           <SpecialCards />
         </Flex>

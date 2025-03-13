@@ -240,6 +240,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPlayAnimation,
       setPreSelectionLocked,
       setLockedScore: emptyFn,
+      setLockedPlayerScore: emptyFn,
       setLockedSpecialCards: emptyFn,
       setLockedCash: emptyFn,
       clearPreSelection,
@@ -252,6 +253,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       replaceCards,
       handsLeft: 1,
       setAnimateSecondChanceCard: emptyFn,
+      setCardTransformationLock: emptyFn,
     });
     setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);

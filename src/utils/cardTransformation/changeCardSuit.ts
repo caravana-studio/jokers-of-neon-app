@@ -1,10 +1,10 @@
 import {
   TRADITIONAL_CARDS_DATA,
   NEON_CARDS_DATA,
-} from "../data/traditionalCards";
-import { Cards } from "../enums/cards";
-import { Suits } from "../enums/suits";
-import { CardDataMap } from "../types/CardData";
+} from "../../data/traditionalCards";
+import { Cards } from "../../enums/cards";
+import { Suits } from "../../enums/suits";
+import { CardDataMap } from "../../types/CardData";
 
 function findKeyByCardAndSuit(
   map: CardDataMap,

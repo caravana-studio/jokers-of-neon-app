@@ -13,6 +13,7 @@ interface ICardImage3DProps {
   card: Card;
   small?: boolean;
   hideTooltip?: boolean;
+  height?: string;
 }
 
 const checkImageExists = (src: string): Promise<boolean> => {
@@ -27,6 +28,7 @@ export const CardImage3D = ({
   card,
   small = false,
   hideTooltip = false,
+  height,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
 
@@ -51,13 +53,15 @@ export const CardImage3D = ({
 
   const showPlain = (isSmallScreen && small) || !isClassic;
 
+  const calculatedHeight = height ?? "100%";
+
   const plainImg = (
     <CachedImage
       position={"absolute"}
       borderRadius={borderRadius}
       src={`/Cards/${cid}.png`}
       width={"100%"}
-      height={"100%"}
+      height={calculatedHeight}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
     />
@@ -69,6 +73,7 @@ export const CardImage3D = ({
       borderRadius={borderRadius}
       src={`/Cards/3d/${cid}-l0.png`}
       width={"100%"}
+      height={calculatedHeight}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
     />
@@ -94,6 +99,7 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/3d/${cid}-l1.png`}
           width={"100%"}
+          height={calculatedHeight}
           pointerEvents="none"
           transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
         />
@@ -104,6 +110,7 @@ export const CardImage3D = ({
           borderRadius={borderRadius}
           src={`/Cards/3d/${cid}-l2.png`}
           width={"100%"}
+          height={calculatedHeight}
           pointerEvents="none"
           transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
         />
@@ -114,6 +121,7 @@ export const CardImage3D = ({
         pointerEvents="none"
         alt={`empty`}
         width={"100%"}
+        height={calculatedHeight}
       />
 
       {card.temporary && card.remaining && (

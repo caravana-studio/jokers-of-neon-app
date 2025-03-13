@@ -38,12 +38,22 @@ export const OpenLootBox = () => {
   const adjustedCardScale = cardScale * 1.2;
 
   useEffect(() => {
-    setTimeout(() => {
-      if (game?.state === "AT_SHOP") {
-        navigate("/redirect/store", { state: { lastTabIndex: 1 } });
+    let timeoutId: any;
+
+    if (game?.state === "AT_SHOP") {
+      timeoutId = setTimeout(() => {
+        if (game?.state === "AT_SHOP") {
+          navigate("/redirect/store", { state: { lastTabIndex: 1 } });
+        }
+      }, 3000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
-    }, 3000);
-  }, [game?.state]);
+    };
+  }, [game?.state, navigate]);
 
   useEffect(() => {
     if (blisterPackResult?.cardsPicked) {
@@ -185,9 +195,17 @@ export const OpenLootBox = () => {
               <Box />
             )}
             {continueDisabled ? (
-              <Tooltip label={t("store.packs.error-lbl")}>
-                {continueButton}
-              </Tooltip>
+              isSmallScreen ? (
+                <Flex w="100%" justifyContent="center" alignItems="center">
+                  <Text textAlign="center" w="60%" size="lg" zIndex={2}>
+                    {t("store.packs.error-lbl")}
+                  </Text>
+                </Flex>
+              ) : (
+                <Tooltip label={t("store.packs.error-lbl")}>
+                  {continueButton}
+                </Tooltip>
+              )
             ) : (
               continueButton
             )}
