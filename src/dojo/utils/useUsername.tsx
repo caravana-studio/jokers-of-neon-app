@@ -8,7 +8,7 @@ export const useUsername = () => {
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isDev) {
+    if (!isDev && controller) {
       controller.username()?.then((username) => {
         setUsername(username);
       });
