@@ -79,4 +79,5 @@ export const gameProviderDefaults: IGameContext = {
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
   isClassic: true,
+  cardTransformationLock: false,
 };

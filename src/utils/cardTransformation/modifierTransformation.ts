@@ -1,4 +1,4 @@
-import { Suits } from "../enums/suits";
+import { Suits } from "../../enums/suits";
 import { changeCardNeon } from "./changeCardNeon";
 import { changeCardSuit } from "./changeCardSuit";
 import { changeWildcard } from "./changeWildcard";
