@@ -4,12 +4,12 @@ import { BackToGameBtn } from "../../components/BackToGameBtn";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedGameMenu } from "../../components/GameMenu";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
-import { MODIFIER_CARDS_DATA } from "../../data/modifiers";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useGameState } from "../../state/useGameState";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { DocsCardsRow } from "./DocsCardsRow";
+import { MODIFIERS_KEYS } from "../../data/modifiers";
 
 interface DocsProps {
   lastIndexTab: number;
@@ -46,7 +46,7 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
         </Tab>
         <Tab title={t("labels.modifier-cards")}>
           <DocsCardsRow
-            cardIds={Object.keys(MODIFIER_CARDS_DATA).map(Number)}
+            cardIds={Object.keys(MODIFIERS_KEYS).map(Number)}
           />
         </Tab>
         <Tab title={t("labels.rage-cards")}>
