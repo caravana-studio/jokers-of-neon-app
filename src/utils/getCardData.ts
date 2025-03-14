@@ -1,7 +1,7 @@
-import { MODIFIER_CARDS_DATA } from "../data/modifiers";
 import { LOOT_BOXES_DATA } from "../data/lootBoxes";
+import { getModifierCardData } from "../data/modifiers";
 import { RAGE_CARDS_DATA } from "../data/rageCards";
-import { SPECIAL_CARDS_DATA } from "../data/specialCards";
+import { getSpecialCardData } from "../data/specialCards";
 import {
   NEON_CARDS_DATA,
   TRADITIONAL_CARDS_DATA,
@@ -18,10 +18,10 @@ export const getCardData = (card: Card, isPack: boolean = false): CardData => {
     return { ...LOOT_BOXES_DATA[cardId], type: CardTypes.PACK };
   } else if (isRage && cardId in RAGE_CARDS_DATA) {
     return { ...RAGE_CARDS_DATA[cardId], type: CardTypes.RAGE };
-  } else if (card.isSpecial && cardId in SPECIAL_CARDS_DATA) {
-    return { ...SPECIAL_CARDS_DATA[cardId], type: CardTypes.SPECIAL };
-  } else if (card.isModifier && cardId in MODIFIER_CARDS_DATA) {
-    return { ...MODIFIER_CARDS_DATA[cardId], type: CardTypes.MODIFIER };
+  } else if (card.isSpecial && cardId) {
+    return getSpecialCardData(cardId);
+  } else if (card.isModifier && cardId) {
+    return getModifierCardData(cardId);
   } else if (cardId in TRADITIONAL_CARDS_DATA) {
     return { ...TRADITIONAL_CARDS_DATA[cardId], type: CardTypes.COMMON };
   } else if (cardId in NEON_CARDS_DATA) {
