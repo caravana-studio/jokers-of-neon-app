@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
@@ -155,12 +154,6 @@ export const useGameState = () => {
       });
     }
   }, [client, account, gameId, game?.level]);
-
-  useEffect(() => {
-    if (modId && !isClassic) {
-      fetchAndMergeSpecialCardsData(modId);
-    }
-  }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
