@@ -1,4 +1,5 @@
 {
+  "controller": "Cuenta de controller",
   "error": {
     "labels": {
       "error-msj": "Error al crear un juego",

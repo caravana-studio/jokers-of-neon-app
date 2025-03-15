@@ -78,6 +78,8 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
 
+  const [cardTransformationLock, setCardTransformationLock] = useState(false);
+
   const fetchGameConfig = async () => {
     if (game?.mod_id) {
       const gameConfig = await getGameConfig(client, game.mod_id);
@@ -304,5 +306,7 @@ export const useGameState = () => {
     maxPowerUpSlots,
     isClassic,
     modCardsConfig,
+    cardTransformationLock,
+    setCardTransformationLock,
   };
 };

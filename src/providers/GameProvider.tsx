@@ -116,6 +116,7 @@ export interface IGameContext {
   maxPowerUpSlots: number;
   isClassic: boolean;
   playerScore: number;
+  cardTransformationLock: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -212,6 +213,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetPowerUps,
     modId,
     isClassic,
+    cardTransformationLock,
+    setCardTransformationLock,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -324,6 +327,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             replaceCards,
             handsLeft,
             setAnimateSecondChanceCard,
+            setCardTransformationLock,
           });
         } else {
           setPreSelectionLocked(false);

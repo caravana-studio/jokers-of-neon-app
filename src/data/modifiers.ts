@@ -3,6 +3,7 @@ import { CardDataMap } from "../types/CardData";
 import i18n from 'i18next';
 
 export const MODIFIER_CARDS_DATA: CardDataMap = {};
+export const MODIFIERS_SUIT_CHANGING = [608, 609, 610, 611];
 
 const CARDS_PRICE: Record<RARITY, number> = {
   [RARITY.B]: 300,
