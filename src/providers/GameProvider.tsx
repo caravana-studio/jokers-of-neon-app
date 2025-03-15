@@ -140,9 +140,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
-  const [sfxOn, setSfxOn] = useState(() => {
-    return localStorage.getItem(SFX_ON) === "true";
-  });
+  const [sfxOn, setSfxOn] = useState(true);
+
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
 
@@ -630,6 +629,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (animationSpeed !== null) {
       setAnimationSpeed(JSON.parse(animationSpeed));
     }
+
+    const savedSfxOn = localStorage.getItem(SFX_ON);
+
+    if (savedSfxOn !== null) {
+      setSfxOn(JSON.parse(savedSfxOn));
+    }
   }, []);
 
   useEffect(() => {
@@ -637,8 +642,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [sfxVolume]);
 
   useEffect(() => {
-    if (!sfxOn) localStorage.removeItem(SFX_ON);
-    else localStorage.setItem(SFX_ON, "true");
+    localStorage.setItem(SFX_ON, JSON.stringify(sfxOn));
   }, [sfxOn]);
 
   useEffect(() => {
