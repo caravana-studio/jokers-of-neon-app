@@ -87,7 +87,7 @@ const StoreContext = createContext<IStoreContext>({
   buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
-  rerolling: false
+  rerolling: false,
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -116,7 +116,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     loading,
     setLoading,
     rerolling,
-    setRerolling
+    setRerolling,
   } = useShopState();
 
   const { gameId, addPowerUp } = useGameContext();
@@ -242,7 +242,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    buyPackSound();
+    setTimeout(() => {
+      buyPackSound();
+    }, 2);
     const promise = dojoBuyPack(gameId, Number(pack.idx));
     buyBlisterPack(Number(pack.idx));
     promise
@@ -272,8 +274,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         fetchShopItems().finally(() => {
           setTimeout(() => {
             setRerolling(false);
-          }, 200)
-        })
+          }, 200);
+        });
       })
       .finally(() => {
         setLocked(false);
@@ -344,7 +346,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setLoading,
         burnCard,
         buyPowerUp,
-        rerolling
+        rerolling,
       }}
     >
       {children}
