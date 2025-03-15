@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -30,9 +30,16 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
 
-  const SCALE = isSmallScreen ? 0.55 : 0.85;
-  const CUSTOM_CARD_WIDTH = CARD_WIDTH * SCALE;
-  const CUSTOM_CARD_HEIGHT = CARD_HEIGHT * SCALE;
+  const SCALE = useBreakpointValue(
+    {
+      base: isSmallScreen ? 0.55 : 0.85,
+      xl: 1.8,
+    },
+    { ssr: false }
+  );
+
+  const CUSTOM_CARD_WIDTH = SCALE ? CARD_WIDTH * SCALE : CARD_WIDTH;
+  const CUSTOM_CARD_HEIGHT = SCALE ? CARD_HEIGHT * SCALE : CARD_HEIGHT;
 
   const [selectedCard, setSelectedCard] = useState<Card>();
 
@@ -85,7 +92,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   }, [usedCards]);
 
   return (
-    <Box mb={4} overflow="visible" ml={[-3,-6]}>
+    <Box mb={4} overflow="visible" ml={[-3, -6]}>
       <Flex
         wrap="wrap"
         position="relative"
