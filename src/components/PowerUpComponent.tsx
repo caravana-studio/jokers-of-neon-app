@@ -6,7 +6,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { POWER_UPS_CARDS_DATA } from "../data/powerups";
+import { getPowerUpData } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -44,7 +44,7 @@ export const PowerUpComponent = ({
 
   const description =
     powerUp?.power_up_id &&
-    POWER_UPS_CARDS_DATA[powerUp.power_up_id]?.description;
+    getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
     <AnimatedPowerUp idx={powerUp.idx}>

@@ -1,4 +1,5 @@
 {
+  "controller": "Controller account",
   "error": {
     "labels": {
       "error-msj": "error creating game",

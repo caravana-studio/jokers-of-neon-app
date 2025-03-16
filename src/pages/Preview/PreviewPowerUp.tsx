@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { StorePreviewPowerUpComponentMobile } from "../../components/StorePreviewPowerUpComponent.mobile.tsx";
-import { POWER_UPS_CARDS_DATA } from "../../data/powerups.ts";
+import { getPowerUpData } from "../../data/powerups.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -27,8 +27,10 @@ export const PreviewPowerUp = () => {
   const { powerUps, maxPowerUpSlots } = useGameContext();
   const cash = game?.cash ?? 0;
 
-  const name = `${POWER_UPS_CARDS_DATA[powerUp.power_up_id].name}`;
-  const description = POWER_UPS_CARDS_DATA[powerUp.power_up_id].description;
+  const powerUpData = getPowerUpData(powerUp.power_up_id);
+
+  const name = powerUpData?.name;
+  const description = powerUpData?.description;
 
   const notEnoughCash =
     !powerUp.cost ||

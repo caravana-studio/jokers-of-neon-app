@@ -80,7 +80,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
           </Button>
         )}
       </Flex>
-      <PositionedGameMenu />
+      <PositionedGameMenu decoratedPage />
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useGameContext } from "../providers/GameProvider";
@@ -187,17 +187,6 @@ export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
           ml={4}
           zIndex={1}
         />
-        {!isSmallScreen && (
-          <CachedImage
-            alignSelf="center"
-            justifySelf="end"
-            src="/logos/joker-logo.png"
-            alt="/logos/joker-logo.png"
-            width={"25%"}
-            maxW={"150px"}
-            zIndex={1}
-          />
-        )}
       </Box>
       <Box
         sx={{
@@ -220,15 +209,7 @@ export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
             position="fixed"
             bottom={0}
           />
-          <Box
-            sx={{
-              position: "fixed",
-              bottom: 16,
-              left: 12,
-            }}
-          >
-            <Text size="m">BUILD YOUR DECK</Text>
-          </Box>
+
           <Box
             sx={{
               position: "fixed",
@@ -236,7 +217,14 @@ export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
               right: 12,
             }}
           >
-            <Text size="m">RULE THE GAME</Text>
+            <CachedImage
+              alignSelf="center"
+              justifySelf="end"
+              src="/logos/joker-logo.png"
+              alt="/logos/joker-logo.png"
+              maxW={"150px"}
+              zIndex={1}
+            />
           </Box>
         </>
       )}

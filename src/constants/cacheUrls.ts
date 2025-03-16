@@ -1,9 +1,7 @@
 import { MODIFIERS_KEYS } from "../data/modifiers";
-import { POWER_UPS_KEYS } from "../data/powerups";
+import { POWER_UP_KEYS } from "../data/powerups";
 import { SPECIALS_KEYS } from "../data/specialCards";
-import {
-  CARDS_SUIT_DATA
-} from "../data/traditionalCards";
+import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 
 export const CACHE_IMAGE = "big-image-cache";
 export const CACHE_VIDEO = "background-video-cache";
@@ -22,7 +20,7 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
   });
 
   // Power-ups
-  Object.keys(POWER_UPS_KEYS).forEach((key) => {
+  POWER_UP_KEYS.forEach((key) => {
     imageUrls.push(`powerups/${key}.png`);
   });
 
@@ -80,7 +78,7 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
   imageUrls.push("store/slot-icon.png");
   imageUrls.push("store/slot-image.png");
   imageUrls.push("store/unlocked-slot.png");
-  
+
   // Backs
   imageUrls.push("Cards/Backs/back-empty.png");
   imageUrls.push("Cards/Backs/back-full.png");

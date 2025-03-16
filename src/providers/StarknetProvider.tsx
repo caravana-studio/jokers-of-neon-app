@@ -1,7 +1,11 @@
-
 "use client";
 import { mainnet, sepolia } from "@starknet-react/chains";
-import { Connector, StarknetConfig, cartridgeProvider, jsonRpcProvider, voyager } from "@starknet-react/core";
+import {
+  Connector,
+  StarknetConfig,
+  jsonRpcProvider,
+  voyager
+} from "@starknet-react/core";
 import React from "react";
 import { controller } from "../dojo/controller/controller";
 

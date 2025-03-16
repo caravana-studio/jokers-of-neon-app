@@ -39,7 +39,7 @@ export const OpenLootBox = () => {
 
   useEffect(() => {
     let timeoutId: any;
-    
+
     if (game?.state === "AT_SHOP") {
       timeoutId = setTimeout(() => {
         if (game?.state === "AT_SHOP") {
@@ -195,9 +195,17 @@ export const OpenLootBox = () => {
               <Box />
             )}
             {continueDisabled ? (
-              <Tooltip label={t("store.packs.error-lbl")}>
-                {continueButton}
-              </Tooltip>
+              isSmallScreen ? (
+                <Flex w="100%" justifyContent="center" alignItems="center">
+                  <Text textAlign="center" w="60%" size="lg" zIndex={2}>
+                    {t("store.packs.error-lbl")}
+                  </Text>
+                </Flex>
+              ) : (
+                <Tooltip label={t("store.packs.error-lbl")}>
+                  {continueButton}
+                </Tooltip>
+              )
             ) : (
               continueButton
             )}
