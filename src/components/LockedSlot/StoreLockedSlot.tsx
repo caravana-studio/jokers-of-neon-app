@@ -39,7 +39,7 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
           : {}
       }
       onClick={canBuy ? () => navigate("/preview/slot") : undefined}
-      hoverBgImage={canBuy ? "/store/unlocking-slot-2.png" : undefined}
+      hoverBgImage={canBuy ? "/store/unlocking-slot.png" : undefined}
     />
   );
 };
