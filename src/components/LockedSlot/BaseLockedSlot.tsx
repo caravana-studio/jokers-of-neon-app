@@ -29,7 +29,7 @@ export const BaseLockedSlot = ({
     <Tooltip label={tooltipText}>
       <Box
         _hover={hoverEffect}
-        onClick={onClick?.()}
+        onClick={() => onClick?.()}
         onMouseEnter={() => hoverBgImage && setBgImage(hoverBgImage)}
         onMouseLeave={() => setBgImage(defaultBg)}
       >
