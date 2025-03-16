@@ -121,6 +121,7 @@ export interface IGameContext {
   maxPowerUpSlots: number;
   isClassic: boolean;
   playerScore: number;
+  cardTransformationLock: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -137,7 +138,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
-  const showTutorial = !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
+  const showTutorial =
+    !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
   const [sfxOn, setSfxOn] = useState(() => {
     return localStorage.getItem(SFX_ON) === "true";
   });
@@ -220,6 +222,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetPowerUps,
     modId,
     isClassic,
+    cardTransformationLock,
+    setCardTransformationLock,
   } = state;
 
   const maxPreSelectedCards = rageCards?.find(
@@ -332,6 +336,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             replaceCards,
             handsLeft,
             setAnimateSecondChanceCard,
+            setCardTransformationLock,
           });
         } else {
           setPreSelectionLocked(false);

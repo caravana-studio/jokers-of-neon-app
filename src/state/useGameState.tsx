@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
@@ -78,6 +77,8 @@ export const useGameState = () => {
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
 
+  const [cardTransformationLock, setCardTransformationLock] = useState(false);
+
   const fetchGameConfig = async () => {
     if (game?.mod_id) {
       const gameConfig = await getGameConfig(client, game.mod_id);
@@ -153,12 +154,6 @@ export const useGameState = () => {
       });
     }
   }, [client, account, gameId, game?.level]);
-
-  useEffect(() => {
-    if (modId && !isClassic) {
-      fetchAndMergeSpecialCardsData(modId);
-    }
-  }, [game?.mod_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
@@ -304,5 +299,7 @@ export const useGameState = () => {
     maxPowerUpSlots,
     isClassic,
     modCardsConfig,
+    cardTransformationLock,
+    setCardTransformationLock,
   };
 };

@@ -11,9 +11,10 @@ export const PoweredBy = () => {
         filter: "blur(0.5px)",
         opacity: 0.7,
         letterSpacing: "0.25em",
+        maxW: "70%"
       }}
     >
-      <Text fontFamily="Orbitron">powered by Dojo and Starknet</Text>
+      <Text textAlign="center" fontFamily="Orbitron">powered by Dojo and Starknet</Text>
     </Box>
   );
 };
