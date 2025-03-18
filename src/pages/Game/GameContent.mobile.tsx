@@ -277,7 +277,6 @@ export const MobileGameContent = () => {
               />
             </Box>
             <MobileBottomBar
-              setRun={setRun}
               firstButton={
                 <DiscardButton
                   highlight={run}
