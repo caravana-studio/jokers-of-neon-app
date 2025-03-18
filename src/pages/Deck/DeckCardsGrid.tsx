@@ -85,12 +85,13 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
   }, [usedCards]);
 
   return (
-    <Box mb={4} overflow="visible" ml={[-3,-6]}>
+    <Box mb={4} overflow="visible" ml={[-3, -6]}>
       <Flex
         wrap="wrap"
         position="relative"
         w="100%"
         mb={4}
+        pt={4}
         overflow="visible"
         justifyContent="center"
       >
