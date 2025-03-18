@@ -35,6 +35,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { SidebarMenu } from "./components/BarMenu/SidebarMenu";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
 
@@ -52,6 +53,7 @@ function App() {
                 <InformationPopUpProvider>
                   <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                     <Background>
+                      <SidebarMenu></SidebarMenu>
                       <AnimatePresence mode="wait">
                         <Routes location={location} key={location.pathname}>
                           <Route
