@@ -30,9 +30,13 @@ export const MobileBottomBar = ({
       zIndex={1000}
     >
       <GameMenu
-        showTutorial={() => {
-          navigate("/tutorial");
-        }}
+        showTutorial={
+          setRun
+            ? () => {
+                setRun(true);
+              }
+            : undefined
+        }
       />
       <Box w="30%">{firstButton}</Box>
       <Box w="30%">{secondButton}</Box>
