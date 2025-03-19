@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame";
 import { GameMenu } from "../GameMenu";
+import { ControllerIcon } from "../../icons/ControllerIcon";
 
 export const SidebarMenu = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -43,12 +44,7 @@ export const SidebarMenu = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <BarMenuBtn
-            icon={Icons.CARTRIDGE}
-            description={"Controller account"}
-            onClick={() => {}}
-            width={iconWidth}
-          />
+          <ControllerIcon width={iconWidth} />
           <BarMenuBtn
             icon={Icons.MAP}
             description={"Map"}
