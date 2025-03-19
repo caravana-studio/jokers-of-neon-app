@@ -114,11 +114,7 @@ export const SidebarMenu = () => {
               width={iconWidth}
             />
           </Flex>
-          <Tooltip label="Game menu" placement="right">
-            <Box>
-              <GameMenu />
-            </Box>
-          </Tooltip>
+          <GameMenu />
         </Flex>
       </Flex>
     </>

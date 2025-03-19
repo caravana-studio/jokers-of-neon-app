@@ -29,7 +29,7 @@ export const GameMenu = ({
 
   return (
     <>
-      <Menu>
+      <Menu placement="right">
         <MenuButton
           height={["30px", "45px"]}
           width={["30px", "45px"]}
