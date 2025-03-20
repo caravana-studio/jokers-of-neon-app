@@ -53,7 +53,6 @@ function App() {
                 <InformationPopUpProvider>
                   <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
                     <Background>
-                      <SidebarMenu></SidebarMenu>
                       <AnimatePresence mode="wait">
                         <Routes location={location} key={location.pathname}>
                           <Route

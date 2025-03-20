@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useGameContext } from "../providers/GameProvider";
@@ -6,6 +6,9 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
+import { SidebarMenu } from "./BarMenu/SidebarMenu";
+import { hiddenBarMenu } from "./BarMenu/BarMenuConfig";
+import { isMobile } from "react-device-detect";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -124,34 +127,38 @@ export const Background = ({ children }: PropsWithChildren) => {
   }, [type, isClassic]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: getBackgroundColor(type),
-        backgroundImage: isClassic
-          ? getBackgroundImage(type)
-          : backgroundImageUrl != "none"
-            ? backgroundImageUrl
-            : getBackgroundImage(type),
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100svh",
-        width: "100vw",
-        position: isSmallScreen ? "fixed" : "unset",
-        bottom: isSmallScreen ? 0 : "unset",
-        boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
-        overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
-        WebkitTouchCallout: "none",
-        WebkitUserSelect: "none",
-        userSelect: "none",
-        overflowX: "hidden",
-        overflowY: "hidden",
-      }}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {isClassic && <BackgroundVideo type={videoType} />}
+    <Flex height={"100svh"} width={"100vw"}>
+      <SidebarMenu></SidebarMenu>
+      <Box
+        sx={{
+          backgroundColor: getBackgroundColor(type),
+          backgroundImage: isClassic
+            ? getBackgroundImage(type)
+            : backgroundImageUrl != "none"
+              ? backgroundImageUrl
+              : getBackgroundImage(type),
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100%",
+          width: "100%",
+          position: isSmallScreen ? "fixed" : "unset",
+          bottom: isSmallScreen ? 0 : "unset",
+          boxShadow: dark ? "inset 0 0 0 1000px rgba(0,0,0,.4)" : "none",
+          overflow: scrollOnMobile && isSmallScreen ? "scroll" : "unset",
+          WebkitTouchCallout: "none",
+          WebkitUserSelect: "none",
+          userSelect: "none",
+          overflowX: "hidden",
+          overflowY: "hidden",
+          paddingLeft: isMobile ? "0px" : "12px",
+        }}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        {isClassic && <BackgroundVideo type={videoType} />}
 
-      {children}
-    </Box>
+        {children}
+      </Box>
+    </Flex>
   );
 };
 
