@@ -7,7 +7,11 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import CachedImage from "./CachedImage.tsx";
 
-export const GameDeck = () => {
+interface GameDeckProps {
+  inStore?: boolean;
+}
+
+export const GameDeck = ({ inStore = false }: GameDeckProps) => {
   const deck = useDeck();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
@@ -41,9 +45,11 @@ export const GameDeck = () => {
         onClick={() => navigate("/deck")}
         cursor={"pointer"}
       >
-        <Text size="s" mr={2}>
-          {`${deck?.currentLength}/${deck?.size}`}
-        </Text>
+        {!inStore && (
+          <Text size="s" mr={2}>
+            {`${deck?.currentLength}/${deck?.size}`}
+          </Text>
+        )}
         <CachedImage
           sx={{ maxWidth: "unset" }}
           src={deckImg()}
