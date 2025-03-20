@@ -271,6 +271,10 @@ test("Flush should with one joker and almost straight should work", () => {
   expect(testCheckHand([CJ, CQ, CA, C9, JOKER2])).toBe(Plays.FLUSH);
 });
 
+test("Straight Flush shouldnt work", () => {
+  expect(testCheckHand([C2, C3, CA, CQ, JOKER1])).toBe(Plays.FLUSH);
+});
+
 test("Straigt case 4 with Joker", () => {
   expect(testCheckHand([S7, C8, S10, C6, JOKER1])).toBe(Plays.STRAIGHT);
 });

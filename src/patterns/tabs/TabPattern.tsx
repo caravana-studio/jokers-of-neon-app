@@ -31,18 +31,27 @@ export const TabPattern = ({
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const navigate = useNavigate();
   const { highlightedCard } = useCardHighlight();
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right">(
+    "left"
+  );
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (!highlightedCard) {
-        if (tabIndex < children.length - 1) setTabIndex(tabIndex + 1);
+        if (tabIndex < children.length - 1) {
+          setSwipeDirection("left");
+          setTabIndex(tabIndex + 1);
+        }
       }
     },
     onSwipedRight: () => {
       if (!highlightedCard) {
         if (tabIndex === 0 && !disableGoBack) {
           navigate(-1);
-        } else if (tabIndex > 0) setTabIndex(tabIndex - 1);
+        } else if (tabIndex > 0) {
+          setSwipeDirection("right");
+          setTabIndex(tabIndex - 1);
+        }
       }
     },
     trackTouch: true,
@@ -64,6 +73,7 @@ export const TabPattern = ({
       <Tabs
         index={tabIndex}
         onChange={(index) => {
+          setSwipeDirection(index > tabIndex ? "left" : "right");
           setTabIndex(index);
           onTabChange?.(index);
         }}
@@ -75,6 +85,7 @@ export const TabPattern = ({
           {children.map((child, index) => (
             <ChakraTab
               key={index}
+              px={children.length > 3 ? 1 : 3}
               fontSize={children.length > 3 ? [10, 14] : [11, 14]}
             >
               {child.props.title}
@@ -95,9 +106,9 @@ export const TabPattern = ({
         <AnimatePresence mode="wait">
           <motion.div
             key={tabIndex}
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: swipeDirection === "left" ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
+            exit={{ opacity: 0, x: swipeDirection === "left" ? 50 : -50 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             style={{
               width: "100%",

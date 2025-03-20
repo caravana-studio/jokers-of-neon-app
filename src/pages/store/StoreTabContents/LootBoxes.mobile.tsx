@@ -41,6 +41,7 @@ export const LootBoxesMobile = () => {
 const PackView = ({ pack }: { pack: BlisterPackItem }) => {
   const { buyPack, locked, setLockRedirection } = useStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
+  const [isAnimationRunning, setIsAnimationRunning] = useState(false);
   const game = useGame();
   const cash = game?.cash ?? 0;
   const { neonGreen } = theme.colors;
@@ -72,6 +73,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
   const handleBuyClick = useMemo(
     () => () => {
       setBuyDisabled(true);
+      setIsAnimationRunning(true);
       spineAnimationRef.current?.playOpenBoxAnimation();
       buyPack(pack)
         .then((response) => {
@@ -79,10 +81,12 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
             setLockRedirection(true);
           } else {
             setBuyDisabled(false);
+            setIsAnimationRunning(false);
           }
         })
         .catch(() => {
           setBuyDisabled(false);
+          setIsAnimationRunning(false);
         });
     },
     [pack, buyPack]
@@ -121,7 +125,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
               initialAnimation={animationsData.loopAnimation}
               loopAnimation={animationsData.loopAnimation}
               openBoxAnimation={animationsData.openBoxAnimation}
-              isPurchased={pack.purchased.valueOf()}
+              isPurchased={pack.purchased.valueOf() && !isAnimationRunning}
               xOffset={-270}
               onOpenAnimationStart={openAnimationCallBack}
             />

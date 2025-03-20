@@ -38,7 +38,7 @@ const LinkContainer = ({ children }: PropsWithChildren) => {
       zIndex={999}
       position="absolute"
       right="15px"
-      top="15px"
+      bottom="25px"
       cursor="pointer"
     >
       {children}

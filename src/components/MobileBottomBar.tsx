@@ -35,7 +35,9 @@ export const MobileBottomBar = ({
             ? () => {
                 setRun(true);
               }
-            : undefined
+            : () => {
+                navigate("/tutorial");
+              }
         }
       />
       <Box w="30%">{firstButton}</Box>

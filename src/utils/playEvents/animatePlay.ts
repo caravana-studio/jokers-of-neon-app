@@ -2,8 +2,8 @@ import { EventTypeEnum } from "../../dojo/typescript/models.gen";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
-import { changeCardNeon } from "../changeCardNeon";
-import { changeCardSuit } from "../changeCardSuit";
+import { changeCardNeon } from "../cardTransformation/changeCardNeon";
+import { changeCardSuit } from "../cardTransformation/changeCardSuit";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {
@@ -22,6 +22,7 @@ interface AnimatePlayConfig {
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   setLockedScore: (score: number | undefined) => void;
+  setLockedPlayerScore: (playerScore: number | undefined) => void;
   setLockedSpecialCards: (cards: Card[]) => void;
   setLockedCash: (cash: number | undefined) => void;
   clearPreSelection: () => void;
@@ -34,6 +35,7 @@ interface AnimatePlayConfig {
   replaceCards: (cards: Card[]) => void;
   handsLeft: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
+  setCardTransformationLock: (locked: boolean) =>  void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -53,6 +55,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayAnimation,
     setPreSelectionLocked,
     setLockedScore,
+    setLockedPlayerScore,
     setLockedSpecialCards,
     setLockedCash,
     clearPreSelection,
@@ -65,6 +68,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     replaceCards,
     handsLeft,
     setAnimateSecondChanceCard,
+    setCardTransformationLock
   } = config;
 
   if (!playEvents) return;
@@ -122,6 +126,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           const handIndexes = event.hand.map((card) => card.idx);
           const special_idx = event.specials[0]?.idx;
           const isNeon = event.eventType === EventTypeEnum.Neon;
+
+          setCardTransformationLock(true);
 
           if (isNeon) {
             setAnimatedCard({
@@ -356,6 +362,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
     setLockedScore(undefined);
+    setLockedPlayerScore(undefined);
     setPlayAnimation(false);
     preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
@@ -364,5 +371,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setLockedSpecialCards([]);
 
     handleGameEnd();
+    setCardTransformationLock(false);
   }, ALL_CARDS_DURATION + 500);
 };

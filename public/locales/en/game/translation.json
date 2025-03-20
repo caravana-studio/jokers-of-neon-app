@@ -1,4 +1,5 @@
 {
+  "controller": "Controller account",
   "error": {
     "labels": {
       "error-msj": "error creating game",
@@ -141,6 +142,11 @@
       "normal": "Normal",
       "fast": "Fast",
       "fastest": "Fastest"
+    },
+    "loot-box-transition": "Loot box transition",
+    "loot-box-transition-colors": {
+      "white": "White",
+      "black": "Black"
     }
   },
   "animations": {

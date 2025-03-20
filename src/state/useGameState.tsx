@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
-import { fetchAndMergeSpecialCardsData } from "../data/specialCards";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
@@ -58,6 +57,9 @@ export const useGameState = () => {
     !!localStorage.getItem(SORT_BY_SUIT)
   );
   const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
+  const [lockedPlayerScore, setLockedPlayerScore] = useState<
+    number | undefined
+  >(undefined);
   const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
@@ -74,6 +76,8 @@ export const useGameState = () => {
   const [maxSpecialCards, setMaxSpecialCards] = useState(0);
   const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
+
+  const [cardTransformationLock, setCardTransformationLock] = useState(false);
 
   const fetchGameConfig = async () => {
     if (game?.mod_id) {
@@ -151,12 +155,6 @@ export const useGameState = () => {
     }
   }, [client, account, gameId, game?.level]);
 
-  useEffect(() => {
-    if (modId && !isClassic) {
-      fetchAndMergeSpecialCardsData(modId);
-    }
-  }, [game?.mod_id]);
-
   const dojoSpecialCards = useCurrentSpecialCards();
 
   const specialCards =
@@ -168,6 +166,7 @@ export const useGameState = () => {
   const dojoCash = game?.cash ?? 0;
 
   const score = lockedScore ?? dojoScore;
+  const playerScore = lockedPlayerScore ?? game?.player_score ?? 0;
   const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const resetMultiPoints = () => {
@@ -235,7 +234,7 @@ export const useGameState = () => {
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
     setGameId(gameId);
-  }
+  };
 
   return {
     gameId,
@@ -267,6 +266,7 @@ export const useGameState = () => {
     sortBySuit,
     setSortBySuit,
     score,
+    playerScore,
     apiHand: dojoHand,
     plays,
     sortBy,
@@ -276,6 +276,7 @@ export const useGameState = () => {
     specialCards,
     setLockedSpecialCards,
     setLockedScore,
+    setLockedPlayerScore,
     isRageRound,
     setIsRageRound,
     cash,
@@ -303,5 +304,7 @@ export const useGameState = () => {
     maxPowerUpSlots,
     isClassic,
     modCardsConfig,
+    cardTransformationLock,
+    setCardTransformationLock,
   };
 };

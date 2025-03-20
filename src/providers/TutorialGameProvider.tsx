@@ -37,7 +37,6 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   score: 600,
   cash: 1000,
   discards: 1,
-  sfxVolume: 100,
   powerUps: [m5, p25],
 });
 
@@ -240,6 +239,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPlayAnimation,
       setPreSelectionLocked,
       setLockedScore: emptyFn,
+      setLockedPlayerScore: emptyFn,
       setLockedSpecialCards: emptyFn,
       setLockedCash: emptyFn,
       clearPreSelection,
@@ -252,6 +252,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       replaceCards,
       handsLeft: 1,
       setAnimateSecondChanceCard: emptyFn,
+      setCardTransformationLock: emptyFn,
     });
     setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);

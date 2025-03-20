@@ -15,14 +15,13 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
-import { getCardData } from "../utils/getCardData.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
-import { transformCardByModifierId } from "../utils/modifierTransformation.ts";
 import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
+import { getTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -52,25 +51,7 @@ export const TiltCard = ({
   const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
   const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
 
-  let modifiedCard = card;
-
-  if ((card.modifiers?.length ?? 0) > 0) {
-    let modifierCard = card.modifiers![0];
-
-    const transformedCard = transformCardByModifierId(
-      modifierCard?.card_id!,
-      card?.card_id!
-    );
-
-    if (transformedCard != -1) {
-      modifiedCard = {
-        ...card,
-        card_id: transformedCard,
-        img: `${transformedCard}.png`,
-        suit: getCardData(transformedCard).suit,
-      };
-    }
-  }
+  const modifiedCard = getTransformedCard(card);
 
   const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
