@@ -48,7 +48,7 @@ export const SidebarMenu = () => {
           <ControllerIcon width={iconWidth} />
           <BarMenuBtn
             icon={Icons.MAP}
-            description={"Map"}
+            description={t("game.game-menu.map-btn")}
             onClick={() => {}}
             width={iconWidth}
           />
