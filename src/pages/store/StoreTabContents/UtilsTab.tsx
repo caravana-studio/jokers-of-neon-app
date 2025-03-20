@@ -96,9 +96,9 @@ export const UtilsTab = () => {
           flexDirection={"column"}
           justifyContent={"space-between"}
           margin={"0 auto"}
-          bg="rgba(0, 0, 0, 0.6)"
-          borderRadius="10px"
-          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
+          // bg="rgba(0, 0, 0, 0.6)"
+          // borderRadius="10px"
+          // boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
           minHeight={"135px"}
         >
