@@ -1,5 +1,4 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Flex, Heading } from "@chakra-ui/react";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { Icons } from "../../constants/icons";
 import { useState } from "react";
@@ -10,16 +9,16 @@ import { useGame } from "../../dojo/queries/useGame";
 import { GameMenu } from "../GameMenu";
 import { ControllerIcon } from "../../icons/ControllerIcon";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
+import { hiddenBarMenu } from "./BarMenuConfig";
 
 export const SidebarMenu = () => {
-  const { isSmallScreen } = useResponsiveValues();
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageName();
 
-  // if (isSmallScreen) return null;
+  if (hiddenBarMenu()) return null;
 
   const iconWidth = "50%";
 
