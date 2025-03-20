@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame";
 import { GameMenu } from "../GameMenu";
 import { ControllerIcon } from "../../icons/ControllerIcon";
+import { useCurrentPageName } from "../../hooks/useCurrentPageName";
 
 export const SidebarMenu = () => {
   const { isSmallScreen } = useResponsiveValues();
@@ -16,6 +17,7 @@ export const SidebarMenu = () => {
   const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
+  const page = useCurrentPageName();
 
   // if (isSmallScreen) return null;
 
@@ -91,18 +93,21 @@ export const SidebarMenu = () => {
             py={8}
             justifyContent={"center"}
             alignItems={"center"}
+            onClick={() => page?.url && navigate(page.url)}
+            cursor={"pointer"}
           >
             <Heading
               variant="italic"
               mb={4}
               size={"sm"}
+              textTransform={"uppercase"}
               sx={{
                 writingMode: "vertical-lr",
                 whiteSpace: "nowrap",
                 transform: "rotate(-180deg)",
               }}
             >
-              REWARDS - GLOBALS
+              {page?.name}
             </Heading>
             <BarMenuBtn
               icon={Icons.CIRCLE}
