@@ -80,9 +80,11 @@ export const MobileGameContent = () => {
     const stepInfo = stepData.find((data) => data.step === stepIndex);
 
     if (stepInfo) {
+      setRun(false);
       const timeout = setTimeout(() => {
         setAutoStep(true);
         setStepIndex(stepIndex + 1);
+        setRun(true);
       }, stepInfo.delay);
 
       return () => clearTimeout(timeout);
@@ -277,7 +279,6 @@ export const MobileGameContent = () => {
               />
             </Box>
             <MobileBottomBar
-              setRun={setRun}
               firstButton={
                 <DiscardButton
                   highlight={run}
