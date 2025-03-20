@@ -1,4 +1,4 @@
-import { Speed } from "../enums/speed";
+import { Speed } from "../enums/settings";
 
 export const getMinimumDuration = (level: number, speed: Speed) => {
   if (Speed.NORMAL === speed) {
