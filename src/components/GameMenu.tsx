@@ -52,6 +52,7 @@ export const GameMenu = ({
           >
             {t("game.game-menu.home-btn")}
           </MenuItem>
+
           {!onlySound && (
             <MenuItem onClick={() => executeCreateGame()}>
               {t("game.game-menu.new-game-btn")}

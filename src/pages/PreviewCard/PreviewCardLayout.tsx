@@ -23,7 +23,6 @@ import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
 
 import { useTranslation } from "react-i18next";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -100,7 +99,6 @@ const PreviewCardLayout = () => {
 
   return (
     <>
-      <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
           flexDirection={"column"}

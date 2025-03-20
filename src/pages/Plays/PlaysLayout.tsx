@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { PositionedDiscordLink } from "../../components/DiscordLink";
-import { PositionedGameMenu } from "../../components/GameMenu";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
 
@@ -18,7 +17,6 @@ export const PlaysLayout = () => {
   return (
     <DelayedLoading>
       <BackgroundDecoration>
-        <PositionedGameMenu decoratedPage />
         <Flex
           py={2}
           px={8}

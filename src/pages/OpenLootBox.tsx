@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
 import { PositionedDiscordLink } from "../components/DiscordLink";
-import { PositionedGameMenu } from "../components/GameMenu";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
@@ -94,7 +93,6 @@ export const OpenLootBox = () => {
 
   return (
     <BackgroundDecoration>
-      <PositionedGameMenu decoratedPage />
       {cards.length > 0 ? (
         <Flex
           height={"100%"}
