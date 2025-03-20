@@ -128,7 +128,7 @@ export const Background = ({ children }: PropsWithChildren) => {
 
   return (
     <Flex height={"100svh"} width={"100vw"}>
-      <SidebarMenu></SidebarMenu>
+      <SidebarMenu />
       <Box
         sx={{
           backgroundColor: getBackgroundColor(type),
@@ -150,7 +150,7 @@ export const Background = ({ children }: PropsWithChildren) => {
           userSelect: "none",
           overflowX: "hidden",
           overflowY: "hidden",
-          paddingLeft: isMobile ? "0px" : "12px",
+          paddingLeft: isMobile ? "0px" : "16px",
         }}
         onContextMenu={(e) => e.preventDefault()}
       >
