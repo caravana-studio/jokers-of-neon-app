@@ -76,6 +76,31 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
   return (
     <>
+      {!isMobile && (
+        <Flex
+          justifyContent="space-between"
+          mb={1}
+          alignItems="center"
+          width={"100%"}
+          sx={{
+            position: "relative",
+            _before: {
+              content: '""',
+              position: "absolute",
+              bottom: 0,
+              width: "95%",
+              height: "0.1px",
+              backgroundColor: "white",
+              boxShadow:
+                "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+            },
+          }}
+        >
+          <Heading fontWeight={"400"} fontSize={"m"}>
+            {t("store.titles.improve-plays").toUpperCase()}
+          </Heading>
+        </Flex>
+      )}
       {filteredPlays ? (
         <TableContainer overflow={inStore ? "hidden" : "auto"}>
           <Table
