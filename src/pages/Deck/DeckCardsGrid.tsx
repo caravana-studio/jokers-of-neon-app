@@ -98,6 +98,7 @@ export const DeckCardsGrid: React.FC<DeckCardsGridProps> = ({
         position="relative"
         w="100%"
         mb={4}
+        pt={4}
         overflow="visible"
         justifyContent="center"
       >
