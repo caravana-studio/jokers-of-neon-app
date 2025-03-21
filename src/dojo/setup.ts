@@ -12,7 +12,8 @@ import { defineContractComponents } from "./typescript/defineContractComponents"
 import { world } from "./world";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
-const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
 let sync: any;
 
@@ -43,7 +44,7 @@ const getEntities = async <S extends Schema>(
 export async function setup({ ...config }: DojoConfig) {
   // torii client
   const toriiClient = await torii.createClient({
-    rpcUrl: config.rpcUrl,
+    // rpcUrl: config.rpcUrl,
     toriiUrl: config.toriiUrl,
     relayUrl: "",
     worldAddress: config.manifest.world.address || "",
