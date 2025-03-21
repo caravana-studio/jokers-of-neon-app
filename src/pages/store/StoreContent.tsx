@@ -50,7 +50,7 @@ export const StoreContent = () => {
           <Box
             h="100%"
             display="flex"
-            w={"40%"}
+            // w={"40%"}
             flexDirection="column"
             justifyContent="space-between"
             pb={0}

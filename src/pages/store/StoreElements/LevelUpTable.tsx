@@ -18,7 +18,7 @@ const LevelUpTable = () => {
       margin={"0 auto"}
       bg="rgba(0, 0, 0, 0.6)"
       borderRadius="25px"
-      mt={4}
+      mt={8}
       p={6}
       boxShadow={`0px 0px 10px 1px ${white}`}
     >

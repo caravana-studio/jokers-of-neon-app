@@ -226,7 +226,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       boxShadow={`0px 0px 10px 2px ${BLUE}`}
                       fontSize={isMobile ? 6 : 10}
                       borderRadius={isMobile ? 6 : 12}
-                      height={isMobile ? 5 : 8}
+                      height={isMobile ? 5 : 7}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -326,7 +326,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                           </Td>
 
                           <Td sx={opacitySx} color={textColor}>
-                            <Flex width={["80%", "80px"]} margin={"0 auto"}>
+                            <Flex
+                              justifyContent={"center"}
+                              width={["80%", "80px"]}
+                              margin={"0 auto"}
+                            >
                               <PriceBox
                                 price={Number(storePlay?.cost)}
                                 purchased={Boolean(storePlay?.purchased)}

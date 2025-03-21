@@ -76,7 +76,7 @@ const store = definePartsStyle({
       borderBottomWidth: 0,
     },
     td: {
-      py: [0],
+      py: [1],
     },
   },
 });
@@ -105,12 +105,12 @@ const storeMobile = definePartsStyle({
       fontWeight: "bold",
       p: 0,
       borderBottomWidth: 0,
-      whiteSpace: "initial"
+      whiteSpace: "initial",
     },
     td: {
       p: 0,
       px: 1,
-      width: "auto"
+      width: "auto",
     },
   },
 });
