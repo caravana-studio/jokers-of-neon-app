@@ -130,10 +130,10 @@ export const DynamicStorePage = () => {
                     sm: "0px 0px 15px rgba(255,255,255,0.5)",
                   }}
                   borderRadius={{ base: "10px", sm: "20px" }}
-                  py={{ base: 3, sm: 6 }}
+                  py={{ base: 2, sm: 6 }}
                   px={{ base: 4, sm: 8 }}
                   flexDir={"column"}
-                  gap={{ base: 2, sm: 4 }}
+                  gap={{ base: 1, sm: 4 }}
                 >
                   <Flex
                     gap={2}
