@@ -109,6 +109,7 @@ const storeMobile = definePartsStyle({
     },
     td: {
       p: 0,
+      py: 3,
       px: 1,
       width: "auto",
     },
