@@ -168,7 +168,7 @@ export async function setup({ ...config }: DojoConfig) {
       config.masterPrivateKey
     ),
     accountClassHash: config.accountClassHash,
-    rpcProvider: dojoProvider.provider,
+    rpcProvider: dojoProvider.provider as any,
     feeTokenAddress: config.feeTokenAddress,
   });
 
