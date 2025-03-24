@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x6d7a560b1c63eb397cbbf1b353038d7986275ee6ed15a211c84cb4f62656a4a",
-    "seed": "tournaments",
+    "address": "0x7cea35eb4b77d384aaf4de98d690659a93e8e836d2f0bdc63c5db89ffdf7e3c",
+    "seed": "budokan",
     "name": "Budokan",
     "entrypoints": [
       "uuid",
@@ -1312,7 +1312,7 @@
   },
   "contracts": [
     {
-      "address": "0x788184819d74bfa25e613fa07ebd747136ef84e4288b673609c043cdcc86f00",
+      "address": "0x7a8795020a381c025cf0f7fdf173965c992a18b59626f72901023c7c6aecac9",
       "class_hash": "0x17a6b66d68b3f0218cdf141629fb56e967474982d1cc95a413cd4bc7db289f8",
       "abi": [
         {
@@ -1821,7 +1821,7 @@
       ]
     },
     {
-      "address": "0x5a9c36fdbf7e3bb47bca22b52f36970d524f6b26de6287704673183d4f74668",
+      "address": "0x1d49fbde869b8c73dcb54d75df9cf29733c943f289082bf2b1e1ac077f0c08e",
       "class_hash": "0x579ccb402e3d32011dd9b391b397b6ba1bd643255dc83c79e8af3c4c2deab61",
       "abi": [
         {
@@ -2528,7 +2528,7 @@
       ]
     },
     {
-      "address": "0x240a993e9f430068c02b4a53b33783eb6e3d7f128c4a4842907862376343e15",
+      "address": "0x35389eec883a077ca4cc036cbe17fc802d297a08e8d7e930781de9ed492d05",
       "class_hash": "0x38941be9845ab7fc54c194d9f151fe4f5ef38dce7b6feb11d6795a4a06267a4",
       "abi": [
         {
@@ -3609,8 +3609,8 @@
       ]
     },
     {
-      "address": "0x53ce121f72bbe85f0a6eb6aeafe43cbd5655caa95896138af4cebcdd09dc097",
-      "class_hash": "0x65a72abacedc4f119ae41759aa99bfe0f0d8c973c512c71f7cf44e3fdc4039b",
+      "address": "0x1b37ea80d09a71961bedcc02ed93327312ce237237882e38edcd7d83d369e74",
+      "class_hash": "0x7a63e5cc83e8cad9ca4ee910b420a7b1303bfc3cfd65baff81016234bf2e2ce",
       "abi": [
         {
           "type": "impl",
@@ -3921,20 +3921,6 @@
           ]
         },
         {
-          "type": "enum",
-          "name": "core::option::Option::<core::integer::u32>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
-        },
-        {
           "type": "struct",
           "name": "core::array::Span::<core::integer::u64>",
           "members": [
@@ -3992,7 +3978,7 @@
           "members": [
             {
               "name": "entry_limit",
-              "type": "core::option::Option::<core::integer::u32>"
+              "type": "core::integer::u8"
             },
             {
               "name": "entry_requirement_type",
@@ -4109,6 +4095,10 @@
             {
               "name": "NFT",
               "type": "tournaments::components::models::tournament::NFTQualification"
+            },
+            {
+              "name": "Address",
+              "type": "core::starknet::contract_address::ContractAddress"
             }
           ]
         },
@@ -5156,7 +5146,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2fa32243b81a35c918e176d4c986d6a8c1cf7ffc78c29de0424f25903245d88",
+      "class_hash": "0x3c01ae05c0f6f10bd363839149c09948d2f6491aad3707e5d8eef65f23945b0",
       "tag": "budokan_v_1_0_4-QualificationEntries",
       "selector": "0x84aa2be1a441d0eb7c261c4ca43f88845f1ef2350ec77f97329011f493ea49"
     },
@@ -5204,7 +5194,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x4655e9e085581c0476ee908f2a7276f392ef72be400d9de644aca3711406724",
+      "class_hash": "0x16532bd5435b5f7eb2ffb43457dd1b92284154ec6b6d82349c0f098e31d8eaf",
       "tag": "budokan_v_1_0_4-Tournament",
       "selector": "0x477c9c161e9441c9061edf9f670e83b85c4c1a2f692223981c3359d1bd31184"
     },
