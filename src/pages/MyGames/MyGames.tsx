@@ -72,7 +72,7 @@ export const MyGames = () => {
 
   return (
     <>
-      {true && (
+      {creatingGame && (
         <CreatingGameDialog
           headingStages={[
             {
