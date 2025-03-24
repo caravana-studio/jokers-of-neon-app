@@ -10,6 +10,9 @@ import { GameMenu } from "../GameMenu";
 import { ControllerIcon } from "../../icons/ControllerIcon";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
 import { hiddenBarMenu } from "./BarMenuConfig";
+import { DiscordLink } from "../DiscordLink";
+import { FadeInOut } from "../animations/FadeInOut";
+import { AnimatedText } from "../AnimatedText";
 
 export const SidebarMenu = () => {
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
@@ -106,7 +109,9 @@ export const SidebarMenu = () => {
                 transform: "rotate(-180deg)",
               }}
             >
-              {page?.name}
+              <FadeInOut isVisible>
+                <AnimatedText text={page?.name} />
+              </FadeInOut>
             </Heading>
             <BarMenuBtn
               icon={Icons.CIRCLE}
@@ -115,6 +120,7 @@ export const SidebarMenu = () => {
             />
           </Flex>
           <GameMenu />
+          <DiscordLink width={"100%"} />
         </Flex>
       </Flex>
     </>
