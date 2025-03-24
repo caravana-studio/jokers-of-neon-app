@@ -47,6 +47,7 @@ export const CardComponent = ({
         justifyContent={{ base: "center", sm: "space-between" }}
         alignItems="center"
         gap={{ base: 3, sm: 4 }}
+        flexWrap={doubleRow ? "wrap" : "nowrap"}
       >
         {cards.map((card) => (
           <TiltCard
@@ -61,11 +62,17 @@ export const CardComponent = ({
             }}
             height={
               height
-                ? height > maxCardHeight
-                  ? maxCardHeight
-                  : height * 0.92
+                ? doubleRow
+                  ? (height / 2) * 0.92
+                  : height > maxCardHeight
+                    ? maxCardHeight
+                    : height * 0.92
                 : undefined
             }
+            sx={{
+              flex: doubleRow ? "1 1 calc(50% - 12px)" : undefined,
+              maxWidth: doubleRow ? "calc(50% - 12px)" : undefined,
+            }}
           />
         ))}
       </Flex>
