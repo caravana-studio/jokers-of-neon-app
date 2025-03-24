@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TiltCard } from "../../../components/TiltCard";
 import { useStore } from "../../../providers/StoreProvider";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getCardUniqueId } from "../../../utils/getCardUniqueId";
 import { RerollingAnimation } from "../../store/StoreElements/RerollingAnimation";
 
@@ -21,6 +22,7 @@ export const CardComponent = ({
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
   const navigate = useNavigate();
+  const { isSmallScreen } = useResponsiveValues();
 
   const cards =
     id === "traditionals"
@@ -66,7 +68,7 @@ export const CardComponent = ({
                   ? (height / 2) * 0.92
                   : height > maxCardHeight
                     ? maxCardHeight
-                    : height * 0.92
+                    : height * (isSmallScreen ? 0.85 : 0.92)
                 : undefined
             }
             sx={{
