@@ -1,19 +1,33 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { ReactNode } from "react";
 
 interface AnimatedTextProps {
-  text: string | null | undefined;
+  children: ReactNode;
+  duration: number;
+  key: string;
 }
 
-export const AnimatedText = ({ text }: AnimatedTextProps) => {
+export const AnimatedText = ({
+  children,
+  duration,
+  key,
+}: AnimatedTextProps) => {
   return (
-    <motion.span
-      key={text}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.3 }}
+    <div
+      style={{ position: "relative", overflow: "visible", display: "block" }}
     >
-      {text}
-    </motion.span>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={key}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration }}
+          style={{ display: "inline-block" }}
+        >
+          {children}
+        </motion.span>
+      </AnimatePresence>
+    </div>
   );
 };

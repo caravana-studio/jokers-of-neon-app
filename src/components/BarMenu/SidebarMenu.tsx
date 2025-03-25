@@ -11,7 +11,6 @@ import { ControllerIcon } from "../../icons/ControllerIcon";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
 import { hiddenBarMenu } from "./BarMenuConfig";
 import { DiscordLink } from "../DiscordLink";
-import { FadeInOut } from "../animations/FadeInOut";
 import { AnimatedText } from "../AnimatedText";
 
 export const SidebarMenu = () => {
@@ -24,7 +23,6 @@ export const SidebarMenu = () => {
   if (hiddenBarMenu()) return null;
 
   const iconWidth = "50%";
-
   return (
     <>
       {isSettingsModalOpened && (
@@ -98,21 +96,23 @@ export const SidebarMenu = () => {
             onClick={() => page?.url && navigate(page.url)}
             cursor={"pointer"}
           >
-            <Heading
-              variant="italic"
-              mb={4}
-              size={"sm"}
-              textTransform={"uppercase"}
-              sx={{
-                writingMode: "vertical-lr",
-                whiteSpace: "nowrap",
-                transform: "rotate(-180deg)",
-              }}
-            >
-              <FadeInOut isVisible>
-                <AnimatedText text={page?.name} />
-              </FadeInOut>
-            </Heading>
+            <AnimatedText key={page?.name ?? ""} duration={1}>
+              <Heading
+                variant="italic"
+                as="span"
+                mb={4}
+                size={"sm"}
+                textTransform={"uppercase"}
+                height={"200px"}
+                sx={{
+                  writingMode: "vertical-lr",
+                  whiteSpace: "nowrap",
+                  transform: "rotate(-180deg)",
+                }}
+              >
+                {page?.name ?? ""}
+              </Heading>
+            </AnimatedText>
             <BarMenuBtn
               icon={Icons.CIRCLE}
               description={""}
