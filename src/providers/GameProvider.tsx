@@ -8,12 +8,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
-  SETTINGS_ANIMATION_SPEED,
-  SETTINGS_LOOTBOX_TRANSITION,
-  SETTINGS_SFX_VOLUME,
-  SFX_ON,
   SKIP_IN_GAME_TUTORIAL,
-  SORT_BY_SUIT,
+  SORT_BY_SUIT
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -26,13 +22,16 @@ import {
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
+import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
@@ -43,11 +42,8 @@ import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts"
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
-import { useTournaments } from "../hooks/useTournaments.tsx";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -122,8 +118,8 @@ export interface IGameContext {
   cardTransformationLock: boolean;
 }
 
-const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID || "1";
-const tournamentId = Number(stringTournamentId);
+const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
+const tournamentId = stringTournamentId && Number(stringTournamentId);
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
@@ -153,7 +149,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, changeModifierCard, sellSpecialCard } =
+  const { createGame, play, discard, changeModifierCard, sellSpecialCard, mintGame } =
     useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -256,10 +252,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     let gameId = providedGameId;
     if (username) {
-      console.log("Registering user in tournament ", tournamentId);
       try {
         if (!providedGameId) {
-          gameId = await enterTournament(tournamentId, username);
+          if (tournamentId) {
+            console.log("Registering user in tournament ", tournamentId);
+            gameId = await enterTournament(tournamentId, username);
+          } else {
+            console.log("No tournament ID provided, minting game directly");
+            gameId = await mintGame(username);
+          }
         }
         console.log("Creating game...");
         createGame(gameId!, username).then(async (response) => {

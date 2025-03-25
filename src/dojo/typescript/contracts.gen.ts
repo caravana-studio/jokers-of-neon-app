@@ -503,7 +503,26 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_mint_calldata = (playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "mint",
+			calldata: [playerName, settingsId, start, end, to],
+		};
+	};
 
+	const game_system_mint = async (snAccount: Account | AccountInterface, playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_mint_calldata(playerName, settingsId, start, end, to),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
 
 	return {
 		shop_system: {
@@ -551,6 +570,7 @@ export function setupWorld(provider: DojoProvider) {
 			buildPlayCalldata: build_game_system_play_calldata,
 			sellSpecialCard: game_system_sellSpecialCard,
 			buildSellSpecialCardCalldata: build_game_system_sellSpecialCard_calldata,
+			mint: game_system_mint,
 		},
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,

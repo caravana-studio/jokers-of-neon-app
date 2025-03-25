@@ -70,32 +70,53 @@ export const MyGames = () => {
     executeCreateGame();
   };
 
+  const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
+  const tournamentId = stringTournamentId && Number(stringTournamentId);
+
+  const headingStages = tournamentId
+    ? [
+        {
+          text: t("create-game.stage-1", { tournamentId }),
+          showAt: 0,
+        },
+        {
+          text: t("create-game.stage-2", { username }),
+          showAt: 2000,
+        },
+        {
+          text: t("create-game.stage-3"),
+          showAt: 4000,
+        },
+        {
+          text: t("create-game.stage-4"),
+          showAt: 8000,
+        },
+        {
+          text: t("create-game.stage-5"),
+          showAt: 9500,
+        },
+      ]
+    : [
+        {
+          text: t("create-game.stage-3"),
+          showAt: 0,
+        },
+        {
+          text: t("create-game.stage-4"),
+          showAt: 1000,
+        },
+        {
+          text: t("create-game.stage-5"),
+          showAt: 1500,
+        },
+      ];
+
   return (
     <>
       {creatingGame && (
         <CreatingGameDialog
-          headingStages={[
-            {
-              text: t("create-game.stage-1", { tournamentId }),
-              showAt: 0,
-            },
-            {
-              text: t("create-game.stage-2", { username }),
-              showAt: 2000,
-            },
-            {
-              text: t("create-game.stage-3"),
-              showAt: 4000,
-            },
-            {
-              text: t("create-game.stage-4"),
-              showAt: 8000,
-            },
-            {
-              text: t("create-game.stage-5"),
-              showAt: 9500,
-            },
-          ]}
+          headingStages={headingStages}
+          duration={tournamentId ? 10000 : 1000}
         />
       )}
       <MobileDecoration />
