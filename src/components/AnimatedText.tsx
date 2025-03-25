@@ -19,9 +19,9 @@ export const AnimatedText = ({
       <AnimatePresence mode="wait">
         <motion.span
           key={key}
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -10 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
           transition={{ duration }}
           style={{ display: "inline-block" }}
         >
