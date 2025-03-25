@@ -13,7 +13,6 @@ import { useState } from "react";
 import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
@@ -295,7 +294,6 @@ const PreviewCardLayout = () => {
           </HStack>
         </Flex>
       </Flex>
-      <PositionedDiscordLink />
     </>
   );
 };

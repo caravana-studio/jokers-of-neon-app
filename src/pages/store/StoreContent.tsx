@@ -1,6 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
 import { Coins } from "./Coins.tsx";
@@ -128,7 +127,6 @@ export const StoreContent = () => {
           </Box>
         </Flex>
       </Flex>
-      <PositionedDiscordLink />
     </>
   );
 };

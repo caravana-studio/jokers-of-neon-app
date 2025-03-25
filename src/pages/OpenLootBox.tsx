@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../components/Background";
 import { ConfirmationModal } from "../components/ConfirmationModal";
-import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Loading } from "../components/Loading";
 import { TiltCard } from "../components/TiltCard";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
@@ -220,7 +219,6 @@ export const OpenLootBox = () => {
           onConfirm={confirmSelectCards}
         />
       )}
-      {!isSmallScreen && <PositionedDiscordLink />}
     </BackgroundDecoration>
   );
 };

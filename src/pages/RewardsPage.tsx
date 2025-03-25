@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PositionedDiscordLink } from "../components/DiscordLink";
 import { RewardsDetail } from "../components/RewardsDetail";
 import { useGameContext } from "../providers/GameProvider";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
@@ -21,7 +20,6 @@ export const RewardsPage = () => {
   return (
     <BackgroundDecoration>
       <RewardsDetail roundRewards={roundRewards} />
-      <PositionedDiscordLink />
     </BackgroundDecoration>
   );
 };

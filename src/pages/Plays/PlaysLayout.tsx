@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PlaysAvailableTable } from "./PlaysAvailableTable";
 
@@ -56,7 +55,6 @@ export const PlaysLayout = () => {
             {t("game.plays.go-back-btn")}
           </Button>
         </Flex>
-        {!isSmallScreen && <PositionedDiscordLink />}
       </BackgroundDecoration>
     </DelayedLoading>
   );
