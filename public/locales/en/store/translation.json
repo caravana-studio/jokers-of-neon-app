@@ -9,6 +9,15 @@
     "temporal": "Temporary cards are removed automatically after 3 levels."
   },
   "store": {
+    "dynamic": {
+      "manage-items": "Manage items",
+      "next": "Next",
+      "titles": {
+        "traditionals": "Traditional and neon cards",
+        "modifiers": "Modifier cards",
+        "burn": "Burn card"
+      }
+    },
     "labels": {
       "reroll": "Reroll",
       "see-my": "See my",

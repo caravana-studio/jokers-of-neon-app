@@ -9,6 +9,15 @@
     "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis."
   },
   "store": {
+    "dynamic": {
+      "manage-items": "Gerenciar itens",
+      "next": "Próximo",
+      "titles": {
+        "traditionals": "Cartas tradicionais e neon",
+        "modifiers": "Cartas modificadoras",
+        "burn": "Queimar carta"
+      }
+    },
     "labels": {
       "reroll": "Reembaralhar",
       "see-my": "Ver meus",
