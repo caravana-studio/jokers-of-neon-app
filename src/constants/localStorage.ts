@@ -13,6 +13,7 @@ export const SKIP_IN_GAME_TUTORIAL = "SKIP_TUTORIAL";
 export const SETTINGS_ANIMATION_SPEED = "ANIM_SPEED";
 export const SETTINGS_MUSIC_VOLUME = "MUSIC_VOLUME";
 export const SETTINGS_SFX_VOLUME = "SFX_VOLUME";
+export const SETTINGS_LOOTBOX_TRANSITION = "LOOTBOX_TRANSITION";
 export const SFX_ON = "SFX_ON";
 export const SKIP_PRESENTATION = "hasSeenPresentation";
 export const LAST_PAGE = "LAST_PAGE";

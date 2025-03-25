@@ -1306,13 +1306,6 @@
           ]
         },
         {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
-        },
-        {
           "type": "impl",
           "name": "ActionsImpl",
           "interface_name": "jokers_of_neon_core::systems::game_system::IGameSystem"
@@ -1511,6 +1504,13 @@
           ]
         },
         {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
           "type": "impl",
           "name": "WorldProviderImpl",
           "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
@@ -1602,12 +1602,6 @@
         },
         {
           "type": "event",
-          "name": "achievement::components::achievable::AchievableComponent::Event",
-          "kind": "enum",
-          "variants": []
-        },
-        {
-          "type": "event",
           "name": "jokers_of_neon_core::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
@@ -1620,11 +1614,6 @@
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
               "kind": "nested"
-            },
-            {
-              "name": "AchievableEvent",
-              "type": "achievement::components::achievable::AchievableComponent::Event",
-              "kind": "flat"
             }
           ]
         }
