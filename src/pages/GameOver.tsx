@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { DiscordLink } from "../components/DiscordLink";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
@@ -105,9 +104,6 @@ export const GameOver = () => {
             >
               {t("game-over.btn.gameOver-newGame-btn")}
             </Button>
-          </Flex>
-          <Flex mt={{ base: 4, sm: 10 }} justifyContent="center">
-            <DiscordLink />
           </Flex>
         </Flex>
       </Flex>

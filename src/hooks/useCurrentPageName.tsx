@@ -37,12 +37,17 @@ export const useCurrentPageName = (): Page | null => {
       : pageNameResolver;
 
   useEffect(() => {
-    if (pageName && (!currentPage || currentPage.url !== location.pathname)) {
+    if (
+      pageName &&
+      (!currentPage ||
+        currentPage.url !== location.pathname ||
+        currentPage.name !== pageName)
+    ) {
       const newPage = { name: pageName, url: location.pathname };
       setCurrentPage(newPage);
       localStorage.setItem(LAST_PAGE, JSON.stringify(newPage));
     }
-  }, [pageName, location.pathname]);
+  }, [pageName, location.pathname, level]);
 
   return currentPage;
 };
