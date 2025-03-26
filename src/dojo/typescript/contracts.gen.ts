@@ -198,7 +198,7 @@ export function setupWorld(provider: DojoProvider) {
 	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish): DojoCall => {
 		return {
 			contractName: "game_system",
-			entrypoint: "create_game",
+			entrypoint: "start_game",
 			calldata: [modId, playerName],
 		};
 	};
