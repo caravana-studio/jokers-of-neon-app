@@ -47,6 +47,7 @@ export const DurationSwitcher = ({
       mt={3}
       flexDir={computedFlexDir}
       onClick={(event) => event.stopPropagation()}
+      zIndex={2}
     >
       <Flex justifyContent="center" alignItems="center" gap={2}>
         <Text size="md">
