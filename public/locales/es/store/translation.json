@@ -6,7 +6,8 @@
     "traditional": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
     "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
-    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles."
+    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
+    "level-up-table": "Mejora tus manos de póker y progresa en el juego."
   },
   "store": {
     "dynamic": {
@@ -15,7 +16,9 @@
       "titles": {
         "traditionals": "Cartas tradicionales y neon",
         "modifiers": "Cartas modificadoras",
-        "burn": "Quemar carta"
+        "burn": "Quemar carta",
+        "level-up-table": "Mejora tus manos de póker",
+        "level-up-table-mobile": "Manos de póker"
       }},
     "labels": {
       "reroll": "Actualizar",
@@ -37,8 +40,6 @@
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "improve-plays": "Mejora tus manos de póker",
-      "improve-plays-mobile": "Manos de póker",
       "my-special-cards": "Mis especiales",
       "packs": "Paquetes",
       "powerups": "Power-ups"

@@ -76,7 +76,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
   return (
     <>
-      {/* TODO: Change the title for POKER HANDS only and center it */}
       <Flex
         justifyContent={isMobile ? "center" : "space-between"}
         mb={1}
@@ -96,11 +95,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
           },
         }}
       >
-        <Heading fontWeight={"400"} fontSize={"m"}>
+        {/* <Heading fontWeight={"400"} fontSize={"m"}>
           {isMobile
             ? t("store.titles.improve-plays-mobile").toUpperCase()
             : t("store.titles.improve-plays").toUpperCase()}
-        </Heading>
+        </Heading> */}
       </Flex>
       {filteredPlays ? (
         <TableContainer overflow={inStore ? "hidden" : "auto"}>

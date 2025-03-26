@@ -12,15 +12,15 @@ const LevelUpTable = () => {
   return (
     <Box
       className="game-tutorial-step-2"
-      py={[0, 2, 2, 2, 4]}
+      // py={[0, 2, 2, 2, 4]}
       width={"100%"}
       height={"80%"}
       margin={"0 auto"}
-      bg="rgba(0, 0, 0, 0.6)"
-      borderRadius="25px"
-      mt={8}
-      p={6}
-      boxShadow={`0px 0px 10px 1px ${white}`}
+      // bg="rgba(0, 0, 0, 0.6)"
+      // borderRadius="25px"
+      // mt={8}
+      // p={6}
+      // boxShadow={`0px 0px 10px 1px ${white}`}
     >
       {pokerHandItems.length > 0 && <PlaysTable inStore />}
     </Box>

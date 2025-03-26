@@ -38,4 +38,42 @@ export const storesConfig = [
       },
     },
   },
+  {
+    id: "level-up",
+    name: "Level up",
+    distribution: {
+      desktop: {
+        rows: [
+          {
+            height: 50,
+            columns: [
+              {
+                id: "level-up-table",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 50,
+            columns: [
+              {
+                id: "modifiers",
+                width: 80,
+              },
+              {
+                id: "burn",
+                width: 20,
+              },
+            ],
+          },
+        ],
+      },
+      mobile: {
+        rows: [
+          { height:65, columns: [{id: "level-up-table", width: 100 }] },
+          { height: 20, columns: [{ id: "modifiers", width: 100 }] },
+        ],
+      },
+    },
+  },
 ];

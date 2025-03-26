@@ -1,3 +1,4 @@
+import LevelUpTable from "../../store/StoreElements/LevelUpTable";
 import { TestComponent } from "./TestComponent";
 
 export const getComponent = (id: string) => {
@@ -8,6 +9,8 @@ export const getComponent = (id: string) => {
       return <TestComponent />;
     case "burn":
       return <TestComponent />;
+      case "level-up-table":
+        return <LevelUpTable/>;
     default:
       return <TestComponent />;
   }
