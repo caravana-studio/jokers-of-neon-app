@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import { Howl } from "howler";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
+import { useGameContext } from "./GameProvider.tsx";
+
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -20,28 +22,51 @@ const AudioPlayerContext = createContext<AudioPlayerContextProps | undefined>(
 );
 
 interface AudioPlayerProviderProps extends PropsWithChildren {
-  songPath: string;
+  baseSongPath: string;
+  rageSongPath: string;
 }
 
 export const AudioPlayerProvider = ({
   children,
-  songPath,
+  baseSongPath,
+  rageSongPath
 }: AudioPlayerProviderProps) => {
   const [sound, setSound] = useState<Howl | undefined>(undefined);
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
   const [musicVolume, setMusicVolume] = useState(0.2);
+  const { isRageRound } = useGameContext();
 
   useEffect(() => {
-    const howl = new Howl({
-      src: [songPath],
+    if (sound) {
+      sound.stop();
+      sound.unload();
+    }
+
+    const newSound = new Howl({
+      src: [isRageRound ? rageSongPath : baseSongPath],
       loop: true,
       volume: musicVolume,
     });
-    setSound(howl);
-  }, [songPath]);
+
+    if(sound)
+      sound.stop();
+
+    setSound(newSound);
+
+    if (gameWithSound) {
+      newSound.play();
+      setIsPlaying(true);
+    }
+
+    return () => {
+      newSound.stop();
+      newSound.unload();
+    };
+  }, [isRageRound, baseSongPath, rageSongPath]);
 
   useEffect(() => {
     if (sound) {
