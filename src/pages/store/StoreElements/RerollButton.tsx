@@ -46,11 +46,6 @@ const RerollButton = () => {
           </Box>
         )}
         {t("store.labels.reroll").toUpperCase()}
-        {!isSmallScreen && (
-          <>
-            &nbsp;{rerollInformation.rerollCost} <CashSymbol />
-          </>
-        )}
       </Button>
     </Tooltip>
   );

@@ -12,6 +12,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { storesConfig } from "./storesConfig";
+import { TopBarStore } from "./storeComponents/TopBarStore";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
@@ -101,9 +102,10 @@ export const DynamicStorePage = () => {
         zIndex={2}
         px={{ base: 0, sm: 6 }}
       >
-        <Flex backgroundColor="blue" h={{ base: "55px", sm: "70px" }} w="100%">
-          TopBar
+        <Flex h={{ base: "55px", sm: "70px" }} w="100%">
+          <TopBarStore></TopBarStore>
         </Flex>
+
         <Flex
           flexGrow={1}
           my={{ base: 0, sm: 6 }}
