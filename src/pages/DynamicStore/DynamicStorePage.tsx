@@ -15,7 +15,7 @@ import { storesConfig } from "./storesConfig";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-  const store = storesConfig.find((s) => s.id === "deck");
+  const store = storesConfig.find((s) => s.id === "global");
   const { isSmallScreen } = useResponsiveValues();
 
   const distribution =
@@ -110,7 +110,7 @@ export const DynamicStorePage = () => {
           pt={{ base: 3, sm: 0 }}
           w="100%"
           flexDirection="column"
-          gap={{ base: 1.5, sm: 8 }}
+          gap={{ base: 1.5, sm: 6 }}
           px={{ base: 2, sm: 0 }}
         >
           {distribution?.rows.map((row, rowIndex) => (
@@ -118,7 +118,7 @@ export const DynamicStorePage = () => {
               key={rowIndex}
               h={`${row.height}%`}
               w="100%"
-              gap={{ base: 1.5, sm: 8 }}
+              gap={{ base: 1.5, sm: 6 }}
             >
               {row.columns.map((col, colIndex) => (
                 <Flex
@@ -145,7 +145,7 @@ export const DynamicStorePage = () => {
                     </Heading>
                     <DefaultInfo title={col.id} />
                   </Flex>
-                  {getComponent(col.id)}
+                  {getComponent(col.id, col.doubleRow ?? false)}
                 </Flex>
               ))}
             </Flex>

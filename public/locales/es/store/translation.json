@@ -1,12 +1,13 @@
 {
   "information": {
     "reroll": "Actualiza todos los objetos disponibles en la tienda. Solo se puede usar una vez por tienda.",
-    "special": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
+    "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
-    "traditional": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
+    "traditionals": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
     "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
-    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles."
+    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
+    "burn": "Elimina una carta de tu mazo"
   },
   "store": {
     "dynamic": {
@@ -15,7 +16,13 @@
       "titles": {
         "traditionals": "Cartas tradicionales y neon",
         "modifiers": "Cartas modificadoras",
-        "burn": "Quemar carta"
+        "burn": "Quemar carta",
+        "level-game": "Sube de nivel tu juego",
+        "specials": "Cartas especiales",
+        "improve-plays": "Mejora tus manos de póker",
+        "my-special-cards": "Mis especiales",
+        "packs": "Paquetes",
+        "power-ups": "Power-ups"
       }},
     "labels": {
       "reroll": "Actualizar",
