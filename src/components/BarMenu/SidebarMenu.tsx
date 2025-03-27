@@ -9,7 +9,6 @@ import { useGame } from "../../dojo/queries/useGame";
 import { GameMenu } from "../GameMenu";
 import { ControllerIcon } from "../../icons/ControllerIcon";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
-import { hiddenBarMenu } from "./BarMenuConfig";
 import { DiscordLink } from "../DiscordLink";
 import { AnimatedText } from "../AnimatedText";
 
@@ -19,8 +18,6 @@ export const SidebarMenu = () => {
   const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageName();
-
-  if (hiddenBarMenu()) return null;
 
   const iconWidth = "50%";
   return (
