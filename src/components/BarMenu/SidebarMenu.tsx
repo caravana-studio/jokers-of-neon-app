@@ -30,6 +30,7 @@ export const SidebarMenu = () => {
         position="fixed"
         width={12}
         p={1}
+        py={12}
         height="100%"
         flexDirection={"column"}
         justifyContent={"space-around"}
@@ -86,6 +87,7 @@ export const SidebarMenu = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}
+          flex={1}
         >
           <Flex
             flexDirection={"column"}
@@ -94,15 +96,16 @@ export const SidebarMenu = () => {
             alignItems={"center"}
             onClick={() => page?.url && navigate(page.url)}
             cursor={"pointer"}
+            flex={1}
           >
             <AnimatedText duration={1} displayedText={page?.name ?? ""}>
               <Heading
                 variant="italic"
-                as="span"
+                as="div"
                 mb={4}
                 size={"sm"}
                 textTransform={"uppercase"}
-                height={"300px"}
+                flex={1}
                 sx={{
                   writingMode: "vertical-lr",
                   whiteSpace: "nowrap",

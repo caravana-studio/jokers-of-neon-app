@@ -23,19 +23,26 @@ export const AnimatedText = ({
   }, [children]);
 
   return (
-    <div style={{ position: "relative", overflow: "hidden", display: "block" }}>
+    <motion.div
+      style={{
+        position: "relative",
+        overflow: "visible",
+        display: "flex",
+        height: "100%",
+      }}
+    >
       <AnimatePresence mode="wait">
-        <motion.span
+        <motion.div
           key={key}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration }}
-          style={{ display: "inline-block" }}
+          style={{ display: "flex", flex: 1 }}
         >
           {children}
-        </motion.span>
+        </motion.div>
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
