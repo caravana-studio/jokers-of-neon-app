@@ -15,13 +15,13 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
+import { getTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
-import { getTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -34,6 +34,7 @@ interface ICardProps {
   used?: boolean;
   onDeck?: boolean;
   onHold?: () => void;
+  height?: number;
 }
 
 export const TiltCard = ({
@@ -46,10 +47,19 @@ export const TiltCard = ({
   used = false,
   onDeck = false,
   onHold,
+  height,
 }: ICardProps) => {
   const { img, purchased = false } = card;
-  const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
-  const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+  const cardHeight = height
+    ? height
+    : scale
+      ? CARD_HEIGHT * scale
+      : CARD_HEIGHT;
+  const cardWith = height
+    ? height / 1.52
+    : scale
+      ? CARD_WIDTH * scale
+      : CARD_WIDTH;
 
   const modifiedCard = getTransformedCard(card);
 
@@ -60,6 +70,7 @@ export const TiltCard = ({
   const tiltCardComponent = (
     <Box
       width={`${cardWith}px`}
+      height={`${cardHeight}px`}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
