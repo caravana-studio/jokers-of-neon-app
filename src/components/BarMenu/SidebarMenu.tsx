@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { Icons } from "../../constants/icons";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { ControllerIcon } from "../../icons/ControllerIcon";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
 import { DiscordLink } from "../DiscordLink";
 import { AnimatedText } from "../AnimatedText";
+import { BarMenuComingSoonBtn } from "./BarMenuComingSoonBtn";
 
 export const SidebarMenu = () => {
   const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
@@ -44,12 +45,13 @@ export const SidebarMenu = () => {
           alignItems={"center"}
         >
           <ControllerIcon width={iconWidth} />
-          <BarMenuBtn
+
+          <BarMenuComingSoonBtn
+            width={iconWidth}
             icon={Icons.MAP}
             description={t("game.game-menu.map-btn")}
-            onClick={() => {}}
-            width={iconWidth}
           />
+
           <BarMenuBtn
             icon={Icons.PODIUM}
             description={t("game.game-menu.leaderboard-btn")}
