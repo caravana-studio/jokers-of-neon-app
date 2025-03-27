@@ -76,27 +76,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
 
   return (
     <>
-      <Flex
-        justifyContent={isMobile ? "center" : "space-between"}
-        mb={1}
-        alignItems="center"
-        width={"100%"}
-        sx={{
-          position: "relative",
-          _before: {
-            content: '""',
-            position: "absolute",
-            bottom: 0,
-            width: "95%",
-            height: "1px",
-            backgroundColor: "white",
-            boxShadow:
-              "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
-          },
-        }}
-      ></Flex>
       {filteredPlays ? (
-        <TableContainer overflow={inStore ? "hidden" : "auto"}>
+        <TableContainer overflow={inStore ? "hidden" : "auto"} width={"100%"}>
           <Table
             sx={{
               borderCollapse: "separate",
