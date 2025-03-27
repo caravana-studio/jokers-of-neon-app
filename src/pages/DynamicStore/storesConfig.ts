@@ -71,7 +71,7 @@ export const storesConfig = [
       mobile: {
         rows: [
           { height: 65, columns: [{ id: "level-up-table", width: 100 }] },
-          { height: 40, columns: [{ id: "modifiers", width: 100 }] },
+          { height: 35, columns: [{ id: "modifiers", width: 100 }] },
         ],
       },
     },
