@@ -1,21 +1,29 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface AnimatedTextProps {
   children: ReactNode;
   duration: number;
-  key: string;
+  displayedText: string;
 }
 
 export const AnimatedText = ({
   children,
   duration,
-  key,
+  displayedText,
 }: AnimatedTextProps) => {
+  const [newText, setNewText] = useState(displayedText);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (newText != displayedText) {
+      setKey((prev) => prev + 1);
+      setNewText(displayedText);
+    }
+  }, [children]);
+
   return (
-    <div
-      style={{ position: "relative", overflow: "visible", display: "block" }}
-    >
+    <div style={{ position: "relative", overflow: "hidden", display: "block" }}>
       <AnimatePresence mode="wait">
         <motion.span
           key={key}

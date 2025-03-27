@@ -95,14 +95,14 @@ export const SidebarMenu = () => {
             onClick={() => page?.url && navigate(page.url)}
             cursor={"pointer"}
           >
-            <AnimatedText key={page?.name ?? ""} duration={1}>
+            <AnimatedText duration={1} displayedText={page?.name ?? ""}>
               <Heading
                 variant="italic"
                 as="span"
                 mb={4}
                 size={"sm"}
                 textTransform={"uppercase"}
-                height={"200px"}
+                height={"300px"}
                 sx={{
                   writingMode: "vertical-lr",
                   whiteSpace: "nowrap",
