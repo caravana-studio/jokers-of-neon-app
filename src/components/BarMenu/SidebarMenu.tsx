@@ -34,6 +34,8 @@ export const SidebarMenu = () => {
         height="100%"
         flexDirection={"column"}
         justifyContent={"space-around"}
+        alignItems={"center"}
+        alignContent={"center"}
         zIndex={1000}
         left={0}
         top={0}

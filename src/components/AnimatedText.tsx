@@ -29,6 +29,8 @@ export const AnimatedText = ({
         overflow: "visible",
         display: "flex",
         height: "100%",
+        alignContent: "center",
+        justifyContent: "center",
       }}
     >
       <AnimatePresence mode="wait">
@@ -38,7 +40,12 @@ export const AnimatedText = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration }}
-          style={{ display: "flex", flex: 1 }}
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "center",
+            alignContent: "center",
+          }}
         >
           {children}
         </motion.div>
