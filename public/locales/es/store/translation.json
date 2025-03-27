@@ -17,9 +17,9 @@
         "traditionals": "Cartas tradicionales y neon",
         "modifiers": "Cartas modificadoras",
         "burn": "Quemar carta",
-        "level-up-table": "Mejora tus manos de póker",
-        "level-up-table-mobile": "Manos de póker"
-      }},
+        "level-up-table": "Manos de póker"
+      }
+    },
     "labels": {
       "reroll": "Actualizar",
       "see-my": "Cartas",
