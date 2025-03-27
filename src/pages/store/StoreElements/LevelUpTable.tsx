@@ -19,7 +19,7 @@ const LevelUpTable = () => {
             content: '""',
             position: "absolute",
             bottom: 0,
-            width: "95%",
+            width: "100%",
             height: "1px",
             backgroundColor: "white",
             boxShadow:
@@ -32,6 +32,7 @@ const LevelUpTable = () => {
         alignContent={"center"}
         mb={1}
         alignItems="center"
+        justifyContent={"center"}
         width={"100%"}
         height={"100%"}
       >

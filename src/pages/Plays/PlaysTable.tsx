@@ -92,9 +92,15 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                 {inStore ? (
                   <>
                     <Td>{t("store.plays-table.level").toUpperCase()}</Td>
-                    <Td>{t("store.plays-table.hand").toUpperCase()}</Td>
-                    <Td>{t("store.plays-table.points-multi").toUpperCase()}</Td>
-                    <Td>{t("store.plays-table.price").toUpperCase()}</Td>
+                    <Td textAlign={"center"}>
+                      {t("store.plays-table.hand").toUpperCase()}
+                    </Td>
+                    <Td textAlign={"center"}>
+                      {t("store.plays-table.points-multi").toUpperCase()}
+                    </Td>
+                    <Td textAlign={"center"}>
+                      {t("store.plays-table.price").toUpperCase()}
+                    </Td>
                     <Td></Td>
                   </>
                 ) : (
@@ -145,7 +151,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                   const nameTd = (
                     <Td
                       sx={opacitySx}
-                      textAlign={"start"}
+                      textAlign={"center"}
                       textColor={textColor}
                       width={"15%"}
                       lineHeight={1.5}
@@ -318,7 +324,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                               />
                             </Flex>
                           </Td>
-                          <Td>
+                          <Td textAlign={"end"}>
                             {!!storePlay ? (
                               storePlay.purchased ? (
                                 <Heading

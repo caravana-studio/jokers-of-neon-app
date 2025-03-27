@@ -55,7 +55,7 @@ const store = definePartsStyle({
   td: {
     color: "white",
     fontFamily: "Orbitron",
-    textAlign: "center",
+    p: 0,
     fontSize: [8, 10, 12, 14],
   },
   thead: {
@@ -64,7 +64,6 @@ const store = definePartsStyle({
     },
     td: {
       borderBottomWidth: 0,
-      px: [2, 2, 4],
       py: 2,
     },
   },
@@ -73,9 +72,9 @@ const store = definePartsStyle({
       fontSize: ["sm", "sm", "sm", "lg"],
       fontWeight: "bold",
       px: [1, 1, 4],
-      borderBottomWidth: 0,
     },
     td: {
+      // textAlign: "center",
       py: [1],
     },
   },
