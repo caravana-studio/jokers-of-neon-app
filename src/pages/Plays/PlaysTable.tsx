@@ -95,11 +95,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
           },
         }}
       >
-        {/* <Heading fontWeight={"400"} fontSize={"m"}>
-          {isMobile
-            ? t("store.titles.improve-plays-mobile").toUpperCase()
-            : t("store.titles.improve-plays").toUpperCase()}
-        </Heading> */}
       </Flex>
       {filteredPlays ? (
         <TableContainer overflow={inStore ? "hidden" : "auto"}>
