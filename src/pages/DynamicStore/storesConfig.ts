@@ -64,7 +64,8 @@ export const storesConfig: StoreConfig[] = [
         ],
       },
     },
-  },{
+  },
+  {
     id: "global",
     name: "Global",
     distribution: {
@@ -107,6 +108,55 @@ export const storesConfig: StoreConfig[] = [
             columns: [
               {
                 id: "power-ups",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },{
+    id: "specials",
+    name: "Specials",
+    distribution: {
+      desktop: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "specials",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+      mobile: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "specials",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "loot-boxes",
                 width: 100,
               },
             ],
