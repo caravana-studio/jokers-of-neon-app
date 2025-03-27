@@ -226,13 +226,15 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                               display={"flex"}
                               flexDirection={isMobile ? "column" : "row"}
                               justifyContent={"center"}
+                              alignItems={"center"}
+                              textAlign={"center"}
                               sx={{
                                 opacity:
                                   inStore && (!storePlay || purchased)
                                     ? 0.5
                                     : 1,
                               }}
-                              gap={"10%"}
+                              gap={"5%"}
                             >
                               {/* Current Play level data */}
                               <Flex>
@@ -270,7 +272,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                 </Box>
                               </Flex>
 
-                              <Heading fontSize={isSmallScreen ? "8" : "10"}>
+                              <Heading fontSize={isSmallScreen ? "5" : "10"}>
                                 {isMobile ? " v " : " > "}
                               </Heading>
 
@@ -311,6 +313,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                               justifyContent={"center"}
                               width={["80%", "80px"]}
                               margin={"0 auto"}
+                              textAlign={"center"}
                             >
                               <PriceBox
                                 price={Number(storePlay?.cost)}
