@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x5f296774b751934cbee1a4192a220c4f3267fb214323bcf390992115a989d9a",
-      "class_hash": "0x73b47a0ddc756940c8ec32fe22dcebc7108f86637a96869edbca7864f063f56",
+      "address": "0x21d6520f0b9e0a8caa17f24de840876df270aacd3cf9aeaa23f567bfc4d18fa",
+      "class_hash": "0x4b53c8bbfc5a0a0879735614c54b761b461b2a3942268908fe89a3596eaf608",
       "abi": [
         {
           "type": "impl",
@@ -1556,6 +1556,13 @@
           ]
         },
         {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
           "type": "impl",
           "name": "ActionsImpl",
           "interface_name": "jokers_of_neon_core::systems::game_system::IGameSystem"
@@ -1585,13 +1592,6 @@
               "state_mutability": "external"
             }
           ]
-        },
-        {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
         },
         {
           "type": "impl",
@@ -1685,6 +1685,12 @@
         },
         {
           "type": "event",
+          "name": "achievement::components::achievable::AchievableComponent::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
           "name": "jokers_of_neon_core::systems::game_system::game_system::Event",
           "kind": "enum",
           "variants": [
@@ -1697,6 +1703,11 @@
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
               "kind": "nested"
+            },
+            {
+              "name": "AchievableEvent",
+              "type": "achievement::components::achievable::AchievableComponent::Event",
+              "kind": "flat"
             }
           ]
         }
