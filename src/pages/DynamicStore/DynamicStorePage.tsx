@@ -12,6 +12,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { storesConfig } from "./storesConfig";
+import { useGame } from "../../dojo/queries/useGame";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
@@ -30,6 +31,10 @@ export const DynamicStorePage = () => {
     setPowerUps,
     maxPowerUpSlots,
   } = useGameContext();
+
+  const game = useGame();
+  console.log('game', game);
+
   const { skipShop } = useShopActions();
 
   const { locked, setLoading } = useStore();
