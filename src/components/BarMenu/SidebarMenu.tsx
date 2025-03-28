@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { Icons } from "../../constants/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SettingsModal } from "../SettingsModal";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,15 @@ export const SidebarMenu = () => {
   const page = useCurrentPageName();
 
   const iconWidth = "50%";
+
+  const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimatedText(page?.name ?? "");
+    }, 1000);
+  }, [page?.name]);
+
   return (
     <>
       {isSettingsModalOpened && (
@@ -114,7 +123,7 @@ export const SidebarMenu = () => {
                   transform: "rotate(-180deg)",
                 }}
               >
-                {page?.name ?? ""}
+                {animatedText}
               </Heading>
             </AnimatedText>
             <BarMenuBtn

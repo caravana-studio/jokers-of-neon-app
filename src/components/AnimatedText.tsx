@@ -13,14 +13,13 @@ export const AnimatedText = ({
   displayedText,
 }: AnimatedTextProps) => {
   const [newText, setNewText] = useState(displayedText);
-  const [key, setKey] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    if (newText != displayedText) {
-      setKey((prev) => prev + 1);
-      setNewText(displayedText);
+    if (displayedText !== newText) {
+      setIsExiting(true);
     }
-  }, [children]);
+  }, [displayedText]);
 
   return (
     <motion.div
@@ -33,22 +32,30 @@ export const AnimatedText = ({
         justifyContent: "center",
       }}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={key}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration }}
-          style={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "center",
-            alignContent: "center",
-          }}
-        >
-          {children}
-        </motion.div>
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => {
+          setNewText(displayedText);
+          setIsExiting(false);
+        }}
+      >
+        {!isExiting && (
+          <motion.div
+            key={newText}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration }}
+            style={{
+              display: "flex",
+              flex: 1,
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            {children}
+          </motion.div>
+        )}
       </AnimatePresence>
     </motion.div>
   );
