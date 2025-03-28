@@ -176,7 +176,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_changeModifierCard_calldata = (gameId: BigNumberish, modifierIndex: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "action_system",
 			entrypoint: "change_modifier_card",
 			calldata: [gameId, modifierIndex],
 		};
@@ -218,7 +218,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "action_system",
 			entrypoint: "discard",
 			calldata: [gameId, playedCardsIndexes, playedModifiersIndexes],
 		};
@@ -239,7 +239,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_getGameConfig_calldata = (modId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "mods_info_system",
 			entrypoint: "get_game_config",
 			calldata: [modId],
 		};
@@ -256,7 +256,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_getGameMods_calldata = (): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "mods_info_system",
 			entrypoint: "get_game_mods",
 			calldata: [],
 		};
@@ -358,7 +358,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "action_system",
 			entrypoint: "play",
 			calldata: [gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes],
 		};
@@ -463,7 +463,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const build_game_system_sellSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "shop_system",
 			entrypoint: "sell_special_card",
 			calldata: [gameId, specialCardIndex],
 		};
