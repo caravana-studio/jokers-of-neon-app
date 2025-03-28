@@ -54,7 +54,7 @@ function App() {
               <GameProvider>
                 <PageTransitionsProvider>
                   <InformationPopUpProvider>
-                    <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                    <AudioPlayerProvider baseSongPath={"/music/new-track.mp3"} rageSongPath={"/music/rage_soundtrack.mp3"}>
                       <Background>
                         <AnimatePresence mode="wait">
                           <Routes location={location} key={location.pathname}>
