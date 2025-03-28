@@ -56,7 +56,7 @@ export const useTournaments = () => {
       );
       return 0;
     }
-    return getNumberValueFromEvent(registrationEvent, 4) ?? 0;
+    return getNumberValueFromEvent(registrationEvent, 3) ?? 0;
   };
 
   const getPlayerGames = async () => {
