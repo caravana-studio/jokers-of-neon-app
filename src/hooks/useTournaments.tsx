@@ -47,8 +47,6 @@ export const useTournaments = () => {
       (e: any) => e.keys[1] === REGISTRATION_EVENT_KEY
     );
 
-    console.log("events", (result as any).events);
-
     if (!registrationEvent) {
       console.error(
         "No registration event found with key",
