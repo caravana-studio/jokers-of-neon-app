@@ -4,8 +4,7 @@ import {
   Checkbox,
   Flex,
   Heading,
-  Spinner,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,12 +14,10 @@ import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GAME_ID } from "../../constants/localStorage.ts";
-import { useUsername } from "../../dojo/utils/useUsername.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { CreatingGameDialog } from "./CreatingGameDialog.tsx";
 import { GameBox } from "./GameBox.tsx";
 
 export interface GameSummary {
@@ -30,9 +27,6 @@ export interface GameSummary {
   points?: number;
 }
 
-const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID || "1";
-const tournamentId = Number(stringTournamentId);
-
 export const MyGames = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
@@ -41,8 +35,6 @@ export const MyGames = () => {
   const { data: games, isLoading, error, refetch } = useGetMyGames();
 
   const navigate = useNavigate();
-
-  const username = useUsername();
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -55,8 +47,6 @@ export const MyGames = () => {
     return showFinishedGames ? true : game.status !== "FINISHED";
   });
 
-  const [creatingGame, setCreatingGame] = useState(false);
-
   useEffect(() => {
     setGameId(0);
     localStorage.removeItem(GAME_ID);
@@ -66,59 +56,12 @@ export const MyGames = () => {
   }, []);
 
   const handleCreateGame = async () => {
-    setCreatingGame(true);
     executeCreateGame();
+    navigate("/entering-tournament");
   };
-
-  const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
-  const tournamentId = stringTournamentId && Number(stringTournamentId);
-
-  const headingStages = tournamentId
-    ? [
-        {
-          text: t("create-game.stage-1", { tournamentId }),
-          showAt: 0,
-        },
-        {
-          text: t("create-game.stage-2", { username }),
-          showAt: 2000,
-        },
-        {
-          text: t("create-game.stage-3"),
-          showAt: 4000,
-        },
-        {
-          text: t("create-game.stage-4"),
-          showAt: 8000,
-        },
-        {
-          text: t("create-game.stage-5"),
-          showAt: 9500,
-        },
-      ]
-    : [
-        {
-          text: t("create-game.stage-3"),
-          showAt: 0,
-        },
-        {
-          text: t("create-game.stage-4"),
-          showAt: 1000,
-        },
-        {
-          text: t("create-game.stage-5"),
-          showAt: 1500,
-        },
-      ];
 
   return (
     <>
-      {creatingGame && (
-        <CreatingGameDialog
-          headingStages={headingStages}
-          duration={tournamentId ? 10000 : 1000}
-        />
-      )}
       <MobileDecoration />
       <LanguageSwitcher />
       <AudioPlayer />
@@ -192,12 +135,11 @@ export const MyGames = () => {
             {t("go-back")}
           </Button>
           <Button
-            disabled={creatingGame}
             onClick={handleCreateGame}
             width="46%"
             variant="secondarySolid"
           >
-            {t("start-game")} {creatingGame && <Spinner ml={3} />}
+            {t("start-game")}
           </Button>
         </Flex>
       </Flex>

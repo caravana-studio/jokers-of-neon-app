@@ -37,6 +37,7 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { SettingsProvider } from "./providers/SettingsProvider";
+import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
 
@@ -102,6 +103,14 @@ function App() {
                               element={
                                 <AnimatedPage>
                                   <MyGames />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/entering-tournament"
+                              element={
+                                <AnimatedPage>
+                                  <EnteringTournament />
                                 </AnimatedPage>
                               }
                             />

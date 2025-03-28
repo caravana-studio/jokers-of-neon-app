@@ -1,16 +1,11 @@
 import {
-    Flex,
-    Heading,
-    Modal,
-    ModalContent,
-    ModalOverlay,
+  Flex,
+  Heading
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { ProgressBar } from "../../components/CompactRoundData/ProgressBar";
-import { BLUE } from "../../theme/colors";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const CreatingGameDialog = ({
+export const CreatingGameProgressBar = ({
   isOpen = true,
   duration = 10000, // Default 10 seconds in milliseconds
   headingStages = [{ text: "Creating game", showAt: 0 }],
@@ -23,8 +18,6 @@ export const CreatingGameDialog = ({
   const startTimeRef = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const slowPhaseStartedRef = useRef<boolean>(false);
-
-  const { isSmallScreen } = useResponsiveValues();
 
   // Setup the animation loop
   useEffect(() => {
@@ -156,34 +149,21 @@ export const CreatingGameDialog = ({
   }, []);
 
   return (
-    <Modal isOpen={isOpen} onClose={() => {}} size="lg">
-      <ModalOverlay backdropFilter="blur(10px) " />
-      <ModalContent
-        borderRadius={"20px"}
-        boxShadow={`0px 0px 20px 15px ${BLUE}`}
-        mt="35vh"
-      >
-        <Flex
-          p={6}
-          w="100%"
-          h="150px"
-          justifyContent={"center"}
-          flexDirection="column"
-          gap={4}
-        >
-          <Heading
-            size="sm"
-            textAlign="center"
-            variant="italic"
-          >
-            {currentHeading}
-            {dots}
-          </Heading>
-          <ProgressBar progress={Math.round(progress)} />
-        </Flex>
-      </ModalContent>
-    </Modal>
+    <Flex
+      p={6}
+      w="100%"
+      h="150px"
+      justifyContent={"center"}
+      flexDirection="column"
+      gap={4}
+    >
+      <Heading zIndex={2} size="sm" textAlign="center" variant="italic">
+        {currentHeading}
+        {dots}
+      </Heading>
+      <ProgressBar progress={Math.round(progress)} />
+    </Flex>
   );
 };
 
-export default CreatingGameDialog;
+export default CreatingGameProgressBar;
