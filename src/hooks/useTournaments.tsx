@@ -16,6 +16,7 @@ const TOURNAMENT_CONTRACT_ADDRESS = getContractByName(
 )?.address;
 
 const REGISTRATION_EVENT_KEY =
+  import.meta.env.VITE_REGISTRATION_EVENT_KEY ||
   "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac";
 
 const BLAST_URL =
