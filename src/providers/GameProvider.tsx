@@ -8,12 +8,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
-  SETTINGS_ANIMATION_SPEED,
-  SETTINGS_LOOTBOX_TRANSITION,
-  SETTINGS_SFX_VOLUME,
-  SFX_ON,
   SKIP_IN_GAME_TUTORIAL,
-  SORT_BY_SUIT,
+  SORT_BY_SUIT
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -26,13 +22,16 @@ import {
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
+import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
@@ -43,17 +42,15 @@ import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts"
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   gameId: number;
   preSelectedPlay: Plays;
   points: number;
   multi: number;
-  executeCreateGame: () => void;
+  executeCreateGame: (gameId?: number) => void;
   gameLoading: boolean;
   preSelectedCards: number[];
   setPreSelectedCards: (cards: number[]) => void;
@@ -115,9 +112,14 @@ export interface IGameContext {
   maxSpecialCards: number;
   maxPowerUpSlots: number;
   isClassic: boolean;
+  setGameId: (gameId: number) => void;
+  resetLevel: () => void;
   playerScore: number;
   cardTransformationLock: boolean;
 }
+
+const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
+const tournamentId = stringTournamentId && Number(stringTournamentId);
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
@@ -144,11 +146,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setup: {
       clientComponents: { Game },
     },
-    account: { account },
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, changeModifierCard, sellSpecialCard } =
+  const { createGame, play, discard, changeModifierCard, sellSpecialCard, mintGame } =
     useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -243,31 +244,48 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const username = useUsername();
 
-  const executeCreateGame = async () => {
+  const { enterTournament } = useTournaments();
+
+  const executeCreateGame = async (providedGameId?: number) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
+    let gameId = providedGameId;
     if (username) {
-      console.log("Creating game...");
-      createGame(modId, username).then(async (response) => {
-        const { gameId: newGameId, hand } = response;
-        if (newGameId) {
-          resetLevel();
-          navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
-          setHand(hand);
-          setGameId(newGameId);
-          clearPreSelection();
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          console.log(`game ${newGameId} created`);
-
-          await syncCall();
-          setGameLoading(false);
-          setPreSelectionLocked(false);
-          setRoundRewards(undefined);
-        } else {
-          setError(true);
+      try {
+        if (!providedGameId) {
+          if (tournamentId) {
+            console.log("Registering user in tournament ", tournamentId);
+            gameId = await enterTournament(tournamentId, username);
+          } else {
+            console.log("No tournament ID provided, minting game directly");
+            gameId = await mintGame(username);
+          }
         }
-      });
+        console.log("Creating game...");
+        createGame(gameId!, username).then(async (response) => {
+          const { gameId: newGameId, hand } = response;
+          if (newGameId) {
+            resetLevel();
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
+            setHand(hand);
+            setGameId(newGameId);
+            clearPreSelection();
+            localStorage.setItem(GAME_ID, newGameId.toString());
+            console.log(`game ${newGameId} created`);
+
+            await syncCall();
+            setGameLoading(false);
+            setPreSelectionLocked(false);
+            setRoundRewards(undefined);
+          } else {
+            setError(true);
+          }
+        });
+      } catch (error) {
+        console.error("Error registering user in tournament", error);
+        setError(true);
+      }
     } else {
       console.error("No username");
       setError(true);
@@ -640,6 +658,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         lockRedirection,
         discards,
         powerUpIsPreselected,
+        resetLevel,
       }}
     >
       {children}
