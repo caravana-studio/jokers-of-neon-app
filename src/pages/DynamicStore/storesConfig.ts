@@ -46,11 +46,11 @@ export const storesConfig: StoreConfig[] = [
             columns: [
               {
                 id: "modifiers",
-                width: 80,
+                width: 78,
               },
               {
                 id: "burn",
-                width: 20,
+                width: 22,
               },
             ],
           },
@@ -64,7 +64,8 @@ export const storesConfig: StoreConfig[] = [
         ],
       },
     },
-  },{
+  },
+  {
     id: "global",
     name: "Global",
     distribution: {

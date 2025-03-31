@@ -1,3 +1,4 @@
+import { BurnItem } from "../../store/BurnItem";
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
 import { CardComponent } from "./CardComponent";
 import { TestComponent } from "./TestComponent";
@@ -11,7 +12,7 @@ export const getComponent = (id: string, doubleRow = false) => {
     case "specials":
       return <CardComponent id="specials" doubleRow={doubleRow} />;
     case "burn":
-      return <TestComponent />;
+      return <BurnItem />;
     case "level-up-table":
       return <LevelUpTable />;
     default:
