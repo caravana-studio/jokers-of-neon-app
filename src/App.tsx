@@ -37,7 +37,6 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
-import { SettingsProvider } from "./providers/SettingsProvider";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
@@ -55,7 +54,10 @@ function App() {
               <GameProvider>
                 <PageTransitionsProvider>
                   <InformationPopUpProvider>
-                    <AudioPlayerProvider baseSongPath={"/music/new-track.mp3"} rageSongPath={"/music/rage_soundtrack.mp3"}>
+                    <AudioPlayerProvider
+                      baseSongPath={"/music/new-track.mp3"}
+                      rageSongPath={"/music/rage_soundtrack.mp3"}
+                    >
                       <Background>
                         <AnimatePresence mode="wait">
                           <Routes location={location} key={location.pathname}>
