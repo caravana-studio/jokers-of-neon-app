@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PositionedDiscordLink } from "../components/DiscordLink";
-import { PositionedGameMenu } from "../components/GameMenu";
 import { Loading } from "../components/Loading";
 import { useGame } from "../dojo/queries/useGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -38,7 +37,6 @@ export const Redirect = () => {
   return (
     <>
       <Loading />
-      <PositionedGameMenu />
       <PositionedDiscordLink />
     </>
   );

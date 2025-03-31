@@ -3,7 +3,6 @@ import { RemoveScroll } from "react-remove-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
-import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { useGame } from "../../dojo/queries/useGame";
 import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
 import { useDojo } from "../../dojo/useDojo";
@@ -84,7 +83,6 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      {!isSmallScreen && <PositionedDiscordLink />}
     </>
   );
 };
