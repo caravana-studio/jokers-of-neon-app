@@ -213,7 +213,7 @@ export const GameContent = () => {
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             maxHeight="70px"
             position="fixed"
             top={0}
@@ -282,7 +282,7 @@ export const GameContent = () => {
             src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             position="fixed"
             bottom={0}
             sx={{ pointerEvents: "none" }}
