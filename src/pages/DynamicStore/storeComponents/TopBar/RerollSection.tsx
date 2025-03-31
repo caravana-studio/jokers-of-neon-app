@@ -1,27 +1,32 @@
 import { Flex } from "@chakra-ui/react";
 import RerollButton from "../../../store/StoreElements/RerollButton";
-import { PlayDiscardIndicators } from "../../../Game/PlayDiscardIndicator";
 import { DefaultInfo } from "../../../../components/Info/DefaultInfo";
 import { MobileCoins } from "../../../store/Coins";
 import { RerollIndicators } from "./RerollIndicators";
+import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 
 export const RerollSection = () => {
-  const rerollCant = 5;
-  const rerollActiveCant = 5;
+  const rerollCant = 6;
+  const rerollActiveCant = 6;
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <Flex justifyContent="space-between" alignItems={"center"}>
-      <Flex gap={4} py={1} alignItems={"center"}>
+      <Flex gap={isSmallScreen ? 1 : 4} py={1} alignItems={"center"}>
         <RerollButton />
-        <Flex width={"100px"} ml={4}>
+        <Flex width={"100px"} ml={4} columnGap={2}>
           <RerollIndicators
             rerolls={rerollCant}
             rerollsActive={rerollActiveCant}
           />
+          <DefaultInfo title="reroll" />
         </Flex>
-        <DefaultInfo title="reroll" />
       </Flex>
       <Flex>
-        <MobileCoins />
+        <MobileCoins
+          fontSize={isSmallScreen ? "12px" : undefined}
+          iconSize={isSmallScreen ? 20 : undefined}
+        />
       </Flex>
     </Flex>
   );

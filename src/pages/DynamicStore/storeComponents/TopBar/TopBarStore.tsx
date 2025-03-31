@@ -10,6 +10,7 @@ export const TopBarStore = () => {
     <Flex
       flexDirection="column"
       p={2}
+      py={1}
       px={"16px"}
       width={"100%"}
       backgroundColor={"black"}

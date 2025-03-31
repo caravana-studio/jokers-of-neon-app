@@ -10,7 +10,7 @@ export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
   rerolls,
   rerollsActive,
 }) => {
-  if (rerolls >= 5)
+  if (rerolls > 5)
     return (
       <Flex gap={4} justifyContent={"center"} alignItems={"center"}>
         <PlayDiscardIndicators
