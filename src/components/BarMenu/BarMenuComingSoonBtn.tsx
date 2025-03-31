@@ -1,11 +1,16 @@
 import { Box, Text } from "@chakra-ui/react";
 import { BarMenuBtn, BarMenuBtnProps } from "./BarMenuBtn";
 
-interface BarMenuComingSoonBtnProps extends Omit<BarMenuBtnProps, "disabled"> {}
+interface BarMenuComingSoonBtnProps extends Omit<BarMenuBtnProps, "disabled"> {
+  mtText?: string | number;
+  fontSizeText?: string | number;
+}
 
-export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = (
-  props
-) => {
+export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = ({
+  mtText = "14px",
+  fontSizeText = "7px",
+  ...props
+}) => {
   return (
     <Box position="relative" display="inline-block" mb={2}>
       <BarMenuBtn {...props} disabled />
@@ -20,9 +25,9 @@ export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = (
         fontSize="sm"
         fontWeight="bold"
         pointerEvents="none"
-        mt="14px"
+        mt={mtText}
       >
-        <Text fontSize="7px" textAlign="center" lineHeight="1">
+        <Text fontSize={fontSizeText} textAlign="center" lineHeight="1">
           Coming Soon
         </Text>
       </Box>
