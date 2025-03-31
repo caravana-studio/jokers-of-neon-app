@@ -103,7 +103,6 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />
-      <RewardItem label={labels[1]} value={level_bonus} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
       {rage_card_defeated_cash > 0 && (

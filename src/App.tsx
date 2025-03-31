@@ -19,6 +19,7 @@ import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
@@ -36,6 +37,8 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { SettingsProvider } from "./providers/SettingsProvider";
+import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
 
@@ -52,7 +55,7 @@ function App() {
               <GameProvider>
                 <PageTransitionsProvider>
                   <InformationPopUpProvider>
-                    <AudioPlayerProvider songPath={"/music/new-track.mp3"}>
+                    <AudioPlayerProvider baseSongPath={"/music/new-track.mp3"} rageSongPath={"/music/rage_soundtrack.mp3"}>
                       <Background>
                         <AnimatePresence mode="wait">
                           <Routes location={location} key={location.pathname}>
@@ -93,6 +96,22 @@ function App() {
                               element={
                                 <AnimatedPage>
                                   <GamePage />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/my-games"
+                              element={
+                                <AnimatedPage>
+                                  <MyGames />
+                                </AnimatedPage>
+                              }
+                            />
+                            <Route
+                              path="/entering-tournament"
+                              element={
+                                <AnimatedPage>
+                                  <EnteringTournament />
                                 </AnimatedPage>
                               }
                             />

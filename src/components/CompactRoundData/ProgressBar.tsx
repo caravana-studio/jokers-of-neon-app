@@ -6,7 +6,7 @@ interface IProgressBarProps {
 }
 export const ProgressBar = ({ progress }: IProgressBarProps) => {
   return (
-    <Box mt={1.5} position="relative">
+    <Box mt={1.5} position="relative" w="100%">
       <Box
         h="14px"
         borderRadius="full"
