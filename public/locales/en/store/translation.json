@@ -7,8 +7,9 @@
     "power-ups": "Power-ups are consumable items that enhance your plays by boosting points or multi.",
     "permanent": "Permanent cards stay with you until you choose to remove them.",
     "temporal": "Temporary cards are removed automatically after 3 levels.",
-    "level-up-table": "Level up your poker hands and progress through the game.",
-    "burn": "Remove a card from your deck"
+    "burn": "Remove a card from your deck",
+    "loot-boxes": "Get random rewards",
+    "level-up-table": "Level up your poker hands and progress through the game."
   },
   "store": {
     "dynamic": {
@@ -23,7 +24,7 @@
         "specials": "special cards",
         "improve-plays": "Level up your poker hands",
         "my-special-cards": "My special cards",
-        "packs": "Packs",
+        "loot-boxes": "Loot boxes",
         "power-ups": "Power-ups"
       }
     },
