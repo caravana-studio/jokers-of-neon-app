@@ -17,7 +17,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buyBlisterPackItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buyBlisterPackItem_calldata(gameId, blisterPackItemId),
 				DOJO_NAMESPACE,
 			);
@@ -38,7 +38,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buyBurnItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buyBurnItem_calldata(gameId, cardId),
 				DOJO_NAMESPACE,
 			);
@@ -59,7 +59,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buyCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buyCardItem_calldata(gameId, itemId, cardItemType),
 				DOJO_NAMESPACE,
 			);
@@ -80,7 +80,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buyPokerHandItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buyPokerHandItem_calldata(gameId, itemId),
 				DOJO_NAMESPACE,
 			);
@@ -101,7 +101,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buyPowerUpItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buyPowerUpItem_calldata(gameId, itemId),
 				DOJO_NAMESPACE,
 			);
@@ -122,7 +122,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buySlotSpecialCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buySlotSpecialCardItem_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
@@ -143,7 +143,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_buySpecialCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_buySpecialCardItem_calldata(gameId, itemId, isTemporary),
 				DOJO_NAMESPACE,
 			);
@@ -164,7 +164,7 @@ export function setupWorld(provider: DojoProvider) {
 	const rage_system_calculate = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_rage_system_calculate_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
@@ -185,7 +185,7 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_game_system_changeModifierCard_calldata(gameId, modifierIndex),
 				DOJO_NAMESPACE,
 			);
@@ -198,7 +198,7 @@ export function setupWorld(provider: DojoProvider) {
 	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish): DojoCall => {
 		return {
 			contractName: "game_system",
-			entrypoint: "create_game",
+			entrypoint: "start_game",
 			calldata: [modId, playerName],
 		};
 	};
@@ -206,7 +206,7 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_createGame = async (snAccount: Account | AccountInterface, modId: BigNumberish, playerName: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_game_system_createGame_calldata(modId, playerName),
 				DOJO_NAMESPACE,
 			);
@@ -227,7 +227,7 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_game_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
 				DOJO_NAMESPACE,
 			);
@@ -367,7 +367,7 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_game_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
 				DOJO_NAMESPACE,
 			);
@@ -388,7 +388,7 @@ export function setupWorld(provider: DojoProvider) {
 	const mod_manager_registrator_registerManagers = async (snAccount: Account | AccountInterface, modManagerAddress: string, rageManagerAddress: string, specialManagerAddress: string) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_mod_manager_registrator_registerManagers_calldata(modManagerAddress, rageManagerAddress, specialManagerAddress),
 				DOJO_NAMESPACE,
 			);
@@ -409,7 +409,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_reroll = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_reroll_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
@@ -430,7 +430,7 @@ export function setupWorld(provider: DojoProvider) {
 	const rage_system_reset = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_rage_system_reset_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
@@ -451,7 +451,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_selectCardsFromBlister = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_selectCardsFromBlister_calldata(gameId, cardsIndex),
 				DOJO_NAMESPACE,
 			);
@@ -472,7 +472,7 @@ export function setupWorld(provider: DojoProvider) {
 	const game_system_sellSpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, specialCardIndex: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_game_system_sellSpecialCard_calldata(gameId, specialCardIndex),
 				DOJO_NAMESPACE,
 			);
@@ -493,7 +493,7 @@ export function setupWorld(provider: DojoProvider) {
 	const shop_system_skipShop = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount,
+				snAccount as any,
 				build_shop_system_skipShop_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
@@ -503,7 +503,26 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_mint_calldata = (playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "mint",
+			calldata: [playerName, settingsId, start, end, to],
+		};
+	};
 
+	const game_system_mint = async (snAccount: Account | AccountInterface, playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_mint_calldata(playerName, settingsId, start, end, to),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
 
 	return {
 		shop_system: {
@@ -551,6 +570,7 @@ export function setupWorld(provider: DojoProvider) {
 			buildPlayCalldata: build_game_system_play_calldata,
 			sellSpecialCard: game_system_sellSpecialCard,
 			buildSellSpecialCardCalldata: build_game_system_sellSpecialCard_calldata,
+			mint: game_system_mint,
 		},
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,

@@ -8,7 +8,8 @@
     "permanent": "Permanent cards stay with you until you choose to remove them.",
     "temporal": "Temporary cards are removed automatically after 3 levels.",
     "burn": "Remove a card from your deck",
-    "loot-boxes": "Get random rewards"
+    "loot-boxes": "Get random rewards",
+    "level-up-table": "Level up your poker hands and progress through the game."
   },
   "store": {
     "dynamic": {
@@ -18,6 +19,7 @@
         "traditionals": "Traditional and neon cards",
         "modifiers": "Modifier cards",
         "burn": "Burn card",
+        "level-up-table": "Poker hands",
         "level-game": "Level up your game",
         "specials": "special cards",
         "improve-plays": "Level up your poker hands",
@@ -46,7 +48,6 @@
       "traditional": "traditional and neon cards",
       "modifiers": "modifier cards",
       "special": "special cards",
-      "improve-plays": "Level up your poker hands",
       "my-special-cards": "My special cards",
       "packs": "Packs",
       "powerups": "Power-ups"

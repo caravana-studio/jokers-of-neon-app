@@ -8,7 +8,8 @@
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
     "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
     "burn": "Elimina una carta de tu mazo",
-    "loot-boxes": "Obtén recompensas aleatorias"
+    "loot-boxes": "Obtén recompensas aleatorias",
+    "level-up-table": "Mejora tus manos de póker y progresa en el juego."
   },
   "store": {
     "dynamic": {
@@ -18,13 +19,15 @@
         "traditionals": "Cartas tradicionales y neon",
         "modifiers": "Cartas modificadoras",
         "burn": "Quemar carta",
+        "level-up-table": "Manos de póker",
         "level-game": "Sube de nivel tu juego",
         "specials": "Cartas especiales",
         "improve-plays": "Mejora tus manos de póker",
         "my-special-cards": "Mis especiales",
         "loot-boxes": "Cajas",
         "power-ups": "Power-ups"
-      }},
+      }
+    },
     "labels": {
       "reroll": "Actualizar",
       "see-my": "Cartas",
@@ -45,7 +48,6 @@
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "improve-plays": "Mejora tus manos de póker",
       "my-special-cards": "Mis especiales",
       "packs": "Paquetes",
       "powerups": "Power-ups"

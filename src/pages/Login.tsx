@@ -18,7 +18,7 @@ export const Login = () => {
   const { t } = useTranslation(["intermediate-screens"]);
 
   const redirectToGame = () => {
-    navigate("/demo");
+    navigate("/my-games");
   };
 
   const loggedInUser = useUsername()

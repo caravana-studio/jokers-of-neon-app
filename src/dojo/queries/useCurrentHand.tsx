@@ -5,7 +5,7 @@ import { SortBy } from "../../enums/sortBy";
 import { Card } from "../../types/Card";
 import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
-import { useGame } from "./useGame";
+import { getLSGameId } from "../utils/getLSGameId";
 
 export const getCard = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
@@ -22,11 +22,11 @@ export const useCurrentHand = (sortBy: SortBy) => {
     },
   } = useDojo();
 
-  const game = useGame();
-  const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+  const gameId = getLSGameId();
+  const entityId = getEntityIdFromKeys([BigInt(gameId ?? 0)]) as Entity;
   const currentHand = useComponentValue(CurrentHand, entityId);
-  if (!game) return [];
-  
+  if (gameId === undefined || gameId === null) return [];
+
   const dojoCards = currentHand?.cards ?? [];
 
   const cards: Card[] = dojoCards.map((card: any, index: number) => {
@@ -43,5 +43,3 @@ export const useCurrentHand = (sortBy: SortBy) => {
   const sortedCards = sortCards(cards, sortBy);
   return sortedCards;
 };
-
-
