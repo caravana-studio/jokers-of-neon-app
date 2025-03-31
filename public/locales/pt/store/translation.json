@@ -7,8 +7,9 @@
     "power-ups": "Os power-ups são itens consumíveis que melhoram suas jogadas, aumentando pontos ou multiplicadores.",
     "permanent": "As cartas permanentes permanecem com você até que decida removê-las.",
     "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis.",
-    "level-up-table": "Aprimore suas mãos de pôquer e avance no jogo.",
-    "burn": "Remove uma carta do seu deck"
+    "burn": "Remove uma carta do seu deck",
+    "loot-boxes": "Obtenha recompensas aleatórias",
+    "level-up-table": "Aprimore suas mãos de pôquer e avance no jogo."
   },
   "store": {
     "dynamic": {
@@ -23,7 +24,7 @@
         "specials": "cartas especiais",
         "improve-plays": "Melhore suas mãos de pôquer",
         "my-special-cards": "Minhas cartas especiais",
-        "packs": "Pacotes",
+        "loot-boxes": "Caixas",
         "power-ups": "Power-ups"
       }
     },

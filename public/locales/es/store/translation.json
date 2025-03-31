@@ -7,8 +7,9 @@
     "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
     "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
-    "level-up-table": "Mejora tus manos de póker y progresa en el juego.",
-    "burn": "Elimina una carta de tu mazo"
+    "burn": "Elimina una carta de tu mazo",
+    "loot-boxes": "Obtén recompensas aleatorias",
+    "level-up-table": "Mejora tus manos de póker y progresa en el juego."
   },
   "store": {
     "dynamic": {
@@ -23,7 +24,7 @@
         "specials": "Cartas especiales",
         "improve-plays": "Mejora tus manos de póker",
         "my-special-cards": "Mis especiales",
-        "packs": "Paquetes",
+        "loot-boxes": "Cajas",
         "power-ups": "Power-ups"
       }
     },

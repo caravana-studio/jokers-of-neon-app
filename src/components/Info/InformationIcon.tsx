@@ -24,10 +24,13 @@ export const InformationIcon = ({
         setInformation(informationContent);
       }}
       cursor="pointer"
+      style={{
+        zIndex: 10
+      }}
     />
   ) : (
     <Tooltip label={t(title)}>
-      <Box position={"relative"}>
+      <Box zIndex={10} position={"relative"}>
         <IoIosInformationCircleOutline color="white" size={isSmallScreen ? "14px" : "18px"} />
       </Box>
     </Tooltip>
