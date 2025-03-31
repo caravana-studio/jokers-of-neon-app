@@ -96,7 +96,8 @@
         "demo": "{{roundType}} - {{level}}",
         "rage-round": "Rage Round",
         "round": "Round"
-      }
+      },
+      "my-games": "My games"
     },
     "plays": {
       "title": "Available plays",

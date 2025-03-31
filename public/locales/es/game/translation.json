@@ -96,7 +96,8 @@
         "demo": "{{roundType}} - {{level}}",
         "rage-round": "Ronda Rage",
         "round": "Ronda"
-      }
+      },
+      "my-games": "Mis juegos"
     },
     "plays": {
       "title": "Jugadas disponibles",

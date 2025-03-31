@@ -18,6 +18,7 @@ import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
@@ -36,6 +37,7 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
 import { SettingsProvider } from "./providers/SettingsProvider";
+import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { Layout } from "./components/Layout";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
@@ -98,6 +100,22 @@ function App() {
                                 element={
                                   <AnimatedPage>
                                     <GamePage />
+                                  </AnimatedPage>
+                                }
+                              />
+                              <Route
+                                path="/my-games"
+                                element={
+                                  <AnimatedPage>
+                                    <MyGames />
+                                  </AnimatedPage>
+                                }
+                              />
+                              <Route
+                                path="/entering-tournament"
+                                element={
+                                  <AnimatedPage>
+                                    <EnteringTournament />
                                   </AnimatedPage>
                                 }
                               />

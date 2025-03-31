@@ -11,16 +11,12 @@ import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 
 interface GameMenuProps {
-  onlySound?: boolean;
   showTutorial?: () => void;
 }
 
-export const GameMenu = ({
-  onlySound = false,
-  showTutorial,
-}: GameMenuProps) => {
+export const GameMenu = ({ showTutorial }: GameMenuProps) => {
   const username = useUsername();
-  const { executeCreateGame, restartGame } = useGameContext();
+  const { restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
@@ -53,12 +49,13 @@ export const GameMenu = ({
             {t("game.game-menu.home-btn")}
           </MenuItem>
 
-          {!onlySound && (
-            <MenuItem onClick={() => executeCreateGame()}>
-              {t("game.game-menu.new-game-btn")}
-            </MenuItem>
-          )}
-
+          <MenuItem
+            onClick={() => {
+              navigate("/my-games");
+            }}
+          >
+            {t("game.game-menu.my-games")}
+          </MenuItem>
           {showTutorial && !hideTutorialFF && (
             <MenuItem
               onClick={() => {
@@ -68,20 +65,17 @@ export const GameMenu = ({
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
-
-          {!onlySound && (
-            <MenuItem
-              onClick={() => {
-                localStorage.removeItem(GAME_ID);
-                localStorage.removeItem(LOGGED_USER);
-                disconnect();
-                restartGame();
-                navigate("/");
-              }}
-            >
-              {t("game.game-menu.logout-btn")} {username}{" "}
-            </MenuItem>
-          )}
+          <MenuItem
+            onClick={() => {
+              localStorage.removeItem(GAME_ID);
+              localStorage.removeItem(LOGGED_USER);
+              disconnect();
+              restartGame();
+              navigate("/");
+            }}
+          >
+            {t("game.game-menu.logout-btn")} {username}{" "}
+          </MenuItem>
         </MenuList>
       </Menu>
     </>

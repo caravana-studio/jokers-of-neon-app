@@ -5,6 +5,13 @@ import { Loading } from "../components/Loading";
 import { useGame } from "../dojo/queries/useGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 
+const stateToPageMap = {
+  FINISHED: "/gameover",
+  IN_GAME: "/demo",
+  AT_SHOP: "/store",
+  OPEN_BLISTER_PACK: "/open-loot-box",
+};
+
 export const Redirect = () => {
   const game = useGame();
   const state = game?.state;
@@ -22,6 +29,8 @@ export const Redirect = () => {
       navigate("/store", { state: { lastTabIndex: lastTabIndex } });
     } else if (state === "OPEN_BLISTER_PACK" && page === "open-loot-box") {
       navigate("/open-loot-box");
+    } else if (page === "state" && state) {
+      navigate(stateToPageMap[state as keyof typeof stateToPageMap] ?? "/", {replace: true});
     }
   }, [state, page, navigate]);
 
