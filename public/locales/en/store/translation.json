@@ -109,5 +109,14 @@
       "title": "Burn card",
       "tooltip": "Remove a card from your deck"
     }
+  },
+  "config": {
+      "0": {"name": "" },
+      "1": {"name": "Deck" },
+      "2": {"name": "Global" },
+      "3": {"name": "Specials" },
+      "4": {"name": "Level ups" },
+      "5": {"name": "Modifiers" },
+      "6": {"name": "Mix" }
   }
 }

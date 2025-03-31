@@ -378,6 +378,7 @@ export function defineContractComponents(world: World) {
           current_specials_len: RecsType.Number,
           special_slots: RecsType.Number,
           cash: RecsType.Number,
+          shop_config_id: RecsType.Number,
         },
         {
           metadata: {
@@ -392,6 +393,7 @@ export function defineContractComponents(world: World) {
               "u32",
               "u8",
               "u8",
+              "u32",
               "u32",
               "u32",
               "u32",

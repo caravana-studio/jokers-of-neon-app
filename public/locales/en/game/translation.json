@@ -87,7 +87,17 @@
       "logout-btn": "Logout",
       "settings-btn": "Settings",
       "docs-btn": "Card list",
-      "leaderboard-btn": "Leaderboard"
+      "leaderboard-btn": "Leaderboard",
+      "map-btn": "Map",
+      "pages": {
+        "gameover": "Game Over",
+        "open-loot-box": "Open Loot Box",
+        "store": "Rewards - {{shopName}}",
+        "demo": "{{roundType}} - {{level}}",
+        "rage-round": "Rage Round",
+        "round": "Round"
+      },
+      "my-games": "My games"
     },
     "plays": {
       "title": "Available plays",

@@ -22,6 +22,12 @@ const rage_system_contract_address = getContractByName(
   "rage_system"
 )?.address;
 
+const action_system_contract_address = getContractByName(
+  manifest,
+  DOJO_NAMESPACE,
+  "action_system"
+)?.address;
+
 export const policies = {
   contracts: {
     [game_system_contract_address]: {
@@ -30,6 +36,10 @@ export const policies = {
           name: "Create game",
           entrypoint: "create_game",
         },
+      ],
+    },
+    [action_system_contract_address]: {
+      methods: [
         {
           name: "Play",
           entrypoint: "play",
@@ -41,10 +51,6 @@ export const policies = {
         {
           name: "Change modifier card",
           entrypoint: "change_modifier_card",
-        },
-        {
-          name: "Sell special card",
-          entrypoint: "sell_special_card",
         },
       ],
     },
@@ -89,6 +95,10 @@ export const policies = {
         {
           name: "Reroll",
           entrypoint: "reroll",
+        },
+        {
+          name: "Sell special card",
+          entrypoint: "sell_special_card",
         },
       ],
     },
