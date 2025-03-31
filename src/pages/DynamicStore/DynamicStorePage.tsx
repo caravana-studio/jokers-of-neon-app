@@ -12,7 +12,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { storesConfig } from "./storesConfig";
-import { TopBarStore } from "./storeComponents/TopBarStore";
+import { TopBarStore } from "./storeComponents/TopBar/TopBarStore";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
