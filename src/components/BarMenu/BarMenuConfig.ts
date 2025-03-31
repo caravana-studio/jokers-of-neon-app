@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-const hiddenRoutes = ["/", "/login", "/mods"];
+const hiddenRoutes = ["/", "/login", "/mods", "/my-games"];
 
 export const hiddenBarMenu = (): boolean => {
   const { isSmallScreen } = useResponsiveValues();
