@@ -1,9 +1,9 @@
 import { Divider, Flex } from "@chakra-ui/react";
-import { RerollSection } from "./RerollSection";
-import { MenuSection } from "./MenuSection";
 import { useResponsiveValues } from "../../../../theme/responsiveSettings";
+import { MenuSection } from "./MenuSection";
+import { RerollSection } from "./RerollSection";
 
-export const TopBarStore = () => {
+export const StoreTopBar = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   return (
