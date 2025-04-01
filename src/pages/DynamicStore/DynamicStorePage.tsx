@@ -103,7 +103,7 @@ export const DynamicStorePage = () => {
         px={{ base: 0, sm: 6 }}
       >
         <Flex h={{ base: "55px", sm: "70px" }} w="100%">
-          <TopBarStore></TopBarStore>
+          <TopBarStore />
         </Flex>
 
         <Flex

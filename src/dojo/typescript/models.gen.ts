@@ -91,6 +91,7 @@ export interface Game {
 	special_slots: number;
 	cash: number;
 	shop_config_id: number;
+	available_rerolls: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
@@ -918,7 +919,7 @@ export const schema: SchemaType = {
 			selling_price: 0,
 		},
 		Game: {
-			fieldOrder: ['id', 'mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash', 'shop_config_id'],
+			fieldOrder: ['id', 'mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash', 'shop_config_id', 'available_rerolls'],
 			id: 0,
 			mod_id: 0,
 		state: new CairoCustomEnum({ 
@@ -937,9 +938,10 @@ export const schema: SchemaType = {
 			special_slots: 0,
 			cash: 0,
 			shop_config_id: 0,
+			available_rerolls: 0,
 		},
 		GameValue: {
-			fieldOrder: ['mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash', 'shop_config_id'],
+			fieldOrder: ['mod_id', 'state', 'owner', 'player_name', 'player_score', 'level', 'hand_len', 'plays', 'discards', 'current_specials_len', 'special_slots', 'cash', 'shop_config_id', 'available_rerolls'],
 			mod_id: 0,
 		state: new CairoCustomEnum({ 
 					IN_GAME: "",

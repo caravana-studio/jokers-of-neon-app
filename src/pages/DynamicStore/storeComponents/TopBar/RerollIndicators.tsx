@@ -1,25 +1,32 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { PlayDiscardIndicators } from "../../../Game/PlayDiscardIndicator";
+import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 
 interface PlayDiscardIndicatorsProps {
   rerolls: number;
-  rerollsActive: number;
 }
 
 export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
   rerolls,
-  rerollsActive,
 }) => {
+  const { isSmallScreen } = useResponsiveValues();
+
+  if (rerolls === 0) return;
+
   if (rerolls > 5)
     return (
-      <Flex gap={4} justifyContent={"center"} alignItems={"center"}>
+      <Flex
+        gap={isSmallScreen ? 2 : 4}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
         <PlayDiscardIndicators
           disabled={false}
           type={"play"}
           total={1}
-          active={rerollsActive === 0 ? 0 : 1}
+          active={rerolls === 0 ? 0 : 1}
         />
-        <Text style={{ whiteSpace: "nowrap" }}>X {rerollsActive}</Text>
+        <Text style={{ whiteSpace: "nowrap" }}>X {rerolls}</Text>
       </Flex>
     );
   else
@@ -28,7 +35,7 @@ export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
         disabled={false}
         type={"play"}
         total={rerolls}
-        active={rerollsActive}
+        active={rerolls}
       />
     );
 };

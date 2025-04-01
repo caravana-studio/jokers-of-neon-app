@@ -379,6 +379,7 @@ export function defineContractComponents(world: World) {
           special_slots: RecsType.Number,
           cash: RecsType.Number,
           shop_config_id: RecsType.Number,
+          available_rerolls: RecsType.BigInt,
         },
         {
           metadata: {
