@@ -1,12 +1,15 @@
 {
   "information": {
     "reroll": "Atualiza todos os itens disponíveis na loja atual.",
-    "special": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 níveis.",
+    "specials": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 níveis.",
     "modifiers": "As cartas modificadoras concedem efeitos únicos a cartas individuais, aprimorando suas habilidades.",
-    "traditional": "As cartas tradicionais são a base do jogo, usadas para formar mãos de pôquer e avançar pelos níveis. As cartas neon são uma variante aprimorada que oferecem o dobro de pontos e um multiplicador adicional de +1, tornando-as muito valiosas.",
+    "traditionals": "As cartas tradicionais são a base do jogo, usadas para formar mãos de pôquer e avançar pelos níveis. As cartas neon são uma variante aprimorada que oferecem o dobro de pontos e um multiplicador adicional de +1, tornando-as muito valiosas.",
     "power-ups": "Os power-ups são itens consumíveis que melhoram suas jogadas, aumentando pontos ou multiplicadores.",
     "permanent": "As cartas permanentes permanecem com você até que decida removê-las.",
-    "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis."
+    "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis.",
+    "burn": "Remove uma carta do seu deck",
+    "loot-boxes": "Obtenha recompensas aleatórias",
+    "level-up-table": "Aprimore suas mãos de pôquer e avance no jogo."
   },
   "store": {
     "dynamic": {
@@ -15,7 +18,14 @@
       "titles": {
         "traditionals": "Cartas tradicionais e neon",
         "modifiers": "Cartas modificadoras",
-        "burn": "Queimar carta"
+        "burn": "Queimar carta",
+        "level-up-table": "Mãos de pôquer",
+        "level-game": "Aprimore seu jogo",
+        "specials": "cartas especiais",
+        "improve-plays": "Melhore suas mãos de pôquer",
+        "my-special-cards": "Minhas cartas especiais",
+        "loot-boxes": "Caixas",
+        "power-ups": "Power-ups"
       }
     },
     "labels": {
@@ -38,7 +48,6 @@
       "traditional": "cartas tradicionais e neon",
       "modifiers": "cartas modificadoras",
       "special": "cartas especiais",
-      "improve-plays": "Melhore suas mãos de pôquer",
       "my-special-cards": "Minhas cartas especiais",
       "packs": "Pacotes",
       "powerups": "Power-ups"
