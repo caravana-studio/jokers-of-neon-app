@@ -1,4 +1,4 @@
-import { BurnItem } from "../../store/BurnItem";
+import { BurnComponent } from "./ BurnComponent";
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
 import { CardComponent } from "./CardComponent";
 import { LootBoxComponent } from "./LootBoxComponent";
@@ -15,7 +15,7 @@ export const getComponent = (id: string, doubleRow = false) => {
     case "loot-boxes":
       return <LootBoxComponent />;
     case "burn":
-      return <BurnItem />;
+      return <BurnComponent />;
     case "level-up-table":
       return <LevelUpTable />;
     default:

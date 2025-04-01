@@ -60,7 +60,7 @@ export const storesConfig: StoreConfig[] = [
         rows: [
           { height: 30, columns: [{ id: "traditionals", width: 100 }] },
           { height: 40, columns: [{ id: "modifiers", width: 100 }] },
-          { height: 30, columns: [{ id: "burn", width: 100 }] },
+          { height: 20, columns: [{ id: "burn", width: 100 }] },
         ],
       },
     },
@@ -115,7 +115,8 @@ export const storesConfig: StoreConfig[] = [
         ],
       },
     },
-  },{
+  },
+  {
     id: "specials",
     name: "Specials",
     distribution: {
