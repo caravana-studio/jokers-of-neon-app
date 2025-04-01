@@ -5,7 +5,6 @@ interface BarMenuComingSoonBtnProps extends Omit<BarMenuBtnProps, "disabled"> {
   mtText?: string | number;
   fontSizeText?: string | number;
 }
-
 export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = ({
   mtText = "14px",
   fontSizeText = "7px",

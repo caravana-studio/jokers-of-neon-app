@@ -61,7 +61,6 @@ export const GameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
-  const [isDeckTableVisible, setIsDeckTableVisible] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -195,16 +194,6 @@ export const GameContent = () => {
           hideCloseButton
         />
 
-        <Flex
-          position={"absolute"}
-          zIndex={1000}
-          display={isDeckTableVisible ? "flex" : "none"}
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-        >
-          <DeckPreviewTable />
-        </Flex>
         <Box
           sx={{ width: "100%", height: "100%" }}
           className="game-tutorial-intro"
@@ -212,7 +201,7 @@ export const GameContent = () => {
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             maxHeight="70px"
             position="fixed"
             top={0}
@@ -281,7 +270,7 @@ export const GameContent = () => {
             src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             position="fixed"
             bottom={0}
             sx={{ pointerEvents: "none" }}
@@ -289,17 +278,6 @@ export const GameContent = () => {
         </Box>
 
         <PositionedGameDeck />
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 16,
-            right: 20,
-          }}
-          onMouseEnter={() => setIsDeckTableVisible(true)}
-          onMouseLeave={() => setIsDeckTableVisible(false)}
-        >
-          <GameDeck />
-        </Box>
       </Box>
     </Box>
   );

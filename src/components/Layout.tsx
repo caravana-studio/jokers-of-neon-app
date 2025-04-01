@@ -8,7 +8,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <Flex width={"100%"} height={"100%"}>
       {!sidebarHidden && <SidebarMenu />}
-      <Flex ml={sidebarHidden ? 0 : "10px"} width={"100%"}>
+      <Flex zIndex={2} flexGrow={1} height="100%">
         {children}
       </Flex>
     </Flex>
