@@ -14,7 +14,7 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import { PowerUpsComponent } from "../DynamicStore/storeComponents/StorePowerUpsRow.tsx";
+import { PowerUpsComponent } from "../DynamicStore/storeComponents/PowerUpsComponent.tsx";
 
 export const StoreContent = () => {
   const { setRun, specialCards, commonCards, modifierCards, powerUps } =

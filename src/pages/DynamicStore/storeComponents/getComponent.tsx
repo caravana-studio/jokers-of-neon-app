@@ -1,10 +1,9 @@
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
-import { PowerUpsComponent } from "./StorePowerUpsRow";
+import { PowerUpsComponent } from "./PowerUpsComponent";
 import { CardComponent } from "./CardComponent";
 import { LootBoxComponent } from "./LootBoxComponent";
 import { TestComponent } from "./TestComponent";
-import { isMobile } from "react-device-detect";
 
 export const getComponent = (id: string, doubleRow = false) => {
   switch (id) {

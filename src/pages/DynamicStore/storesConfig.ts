@@ -184,13 +184,18 @@ export const storesConfig: StoreConfig[] = [
           {
             height: 50,
             columns: [
+              // {
+              //   id: "power-ups",
+              //   width: 100,
+              //   doubleRow: true,
+              // },
               {
                 id: "modifiers",
-                width: 75,
+                width: 65,
               },
               {
                 id: "power-ups",
-                width: 25,
+                width: 35,
               },
             ],
           },
@@ -200,7 +205,7 @@ export const storesConfig: StoreConfig[] = [
         rows: [
           { height: 65, columns: [{ id: "level-up-table", width: 100 }] },
           {
-            height: 20,
+            height: 35,
             columns: [
               {
                 id: "power-ups",

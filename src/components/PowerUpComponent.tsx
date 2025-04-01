@@ -43,8 +43,7 @@ export const PowerUpComponent = ({
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
   const description =
-    powerUp?.power_up_id &&
-    getPowerUpData(powerUp.power_up_id)?.description;
+    powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
     <AnimatedPowerUp idx={powerUp.idx}>
@@ -65,7 +64,7 @@ export const PowerUpComponent = ({
             <PriceBox
               price={Number(price)}
               purchased={Boolean(purchased)}
-              isPowerUp
+              isPowerUp={!inStore}
               fontSize={isSmallScreen ? 12 : 16}
               discountFontSize={isSmallScreen ? 10 : 12}
               discountPrice={Number(discount_cost)}
