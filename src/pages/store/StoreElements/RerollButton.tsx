@@ -8,11 +8,11 @@ import { useGame } from "../../../dojo/queries/useGame";
 const RerollButton = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
-  const { cash, locked, reroll, rerollInformation } = useStore();
+  const { locked, reroll } = useStore();
   const game = useGame();
 
-  const rerolled = rerollInformation.rerollExecuted;
-  const rerollDisabled = rerolled || locked || game?.available_rerolls === 0n;
+  const rerolled = game?.available_rerolls === 0n;
+  const rerollDisabled = locked || rerolled;
 
   return (
     <Tooltip
