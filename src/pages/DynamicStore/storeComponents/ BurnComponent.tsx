@@ -1,11 +1,12 @@
-import { Box, Flex, Heading, Tooltip, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import useResizeObserver from "@react-hook/resize-observer";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BurnIcon from "../../../assets/burn.svg?component";
 import { PriceBox } from "../../../components/PriceBox";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
-import theme from "../../../theme/theme";
 
 interface IBurnItem {}
 
@@ -18,52 +19,59 @@ export const BurnComponent = ({}: IBurnItem) => {
 
   const price = burnItem?.cost;
   const purchased = burnItem?.purchased ?? false;
+  const flexRef = useRef<HTMLDivElement>(null);
+
+  const [height, setHeight] = useState<number | undefined>(undefined);
+
+  useResizeObserver(flexRef, (entry) => {
+    setHeight(entry.contentRect.height);
+  });
 
   return (
     <Tooltip label={t("store.burn-item.tooltip")} placement="top">
       <Flex
         width={"100%"}
         height={"100%"}
-        alignItems={isSmallScreen ? "auto" : "center"}
-        justifyContent={isSmallScreen ? "space-between" : "center"}
-        flexDirection={isSmallScreen ? "row-reverse" : "column"}
-        gap={"10%"}
-        pt={isSmallScreen ? "0" : "10%"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        flexDirection={"column"}
+        ref={flexRef}
+        onClick={() => {
+          if (!purchased) {
+            navigate("/deck", { state: { inStore: true, burn: true } });
+          }
+        }}
       >
         <Flex
-          width={isSmallScreen ? "20%" : "50%"}
+          height={"100%"}
+          w={"100%"}
+          flexDirection="column"
+          justifyContent={"center"}
           cursor={purchased ? "not-allowed" : "pointer"}
           opacity={purchased ? 0.3 : 1}
-          onClick={() => {
-            if (!purchased) {
-              navigate("/deck", { state: { inStore: true, burn: true } });
-            }
-          }}
         >
-          <BurnIcon />
+          <BurnIcon height={`${height ? height * 0.7 : 70}px`} />
         </Flex>
-        <Flex flexDirection={"column"} justifyContent={"space-evenly"}>
-          <Flex>
-            {price && (
-              <PriceBox
-                price={Number(price)}
-                purchased={Boolean(purchased)}
-                discountPrice={Number(burnItem?.discount_cost ?? 0)}
-                absolutePosition={false}
-              />
-            )}
-            {purchased && (
-              <Box>
-                <Heading
-                  variant="italic"
-                  fontSize={isSmallScreen ? 6 : 11 * cardScale}
-                >
-                  {t("store.labels.purchased").toLocaleUpperCase()}
-                </Heading>
-              </Box>
-            )}
-          </Flex>
-        </Flex>
+        {purchased && (
+          <Box>
+            <Heading
+              mt={{base: -6, sm: -12}}
+              variant="italic"
+              textAlign="center"
+              fontSize={isSmallScreen ? 6 : 11 * cardScale}
+            >
+              {t("store.labels.purchased").toLocaleUpperCase()}
+            </Heading>
+          </Box>
+        )}
+        {price && (
+          <PriceBox
+            price={Number(price)}
+            purchased={Boolean(purchased)}
+            discountPrice={Number(burnItem?.discount_cost ?? 0)}
+            absolutePosition={false}
+          />
+        )}
       </Flex>
     </Tooltip>
   );

@@ -59,8 +59,8 @@ export const storesConfig: StoreConfig[] = [
       mobile: {
         rows: [
           { height: 30, columns: [{ id: "traditionals", width: 100 }] },
-          { height: 40, columns: [{ id: "modifiers", width: 100 }] },
-          { height: 20, columns: [{ id: "burn", width: 100 }] },
+          { height: 45, columns: [{ id: "modifiers", width: 100 }] },
+          { height: 25, columns: [{ id: "burn", width: 100 }] },
         ],
       },
     },
