@@ -1,14 +1,15 @@
 {
   "information": {
-    "reroll": "Actualiza todos los objetos disponibles en la tienda. Solo se puede usar una vez por tienda.",
+    "reroll": "Actualiza todos los objetos disponibles en la tienda.",
     "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
     "traditionals": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
     "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
     "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
-    "level-up-table": "Mejora tus manos de póker y progresa en el juego.",
-    "burn": "Elimina una carta de tu mazo"
+    "burn": "Elimina una carta de tu mazo",
+    "loot-boxes": "Obtén recompensas aleatorias",
+    "level-up-table": "Mejora tus manos de póker y progresa en el juego."
   },
   "store": {
     "dynamic": {
@@ -23,7 +24,7 @@
         "specials": "Cartas especiales",
         "improve-plays": "Mejora tus manos de póker",
         "my-special-cards": "Mis especiales",
-        "packs": "Paquetes",
+        "loot-boxes": "Cajas",
         "power-ups": "Power-ups"
       }
     },
@@ -53,7 +54,7 @@
     },
     "tooltip": {
       "reroll-default": "Actualizar items",
-      "rerolled": "Disponible una vez por nivel"
+      "rerolled": "No tienes actualizaciones disponibles"
     },
     "plays-table": {
       "hand": "Mano",
@@ -117,5 +118,14 @@
       "title": "Quemar carta",
       "tooltip": "Elimina una carta de tu mazo"
     }
+  },
+  "config": {
+      "0": {"name": "" },
+      "1": {"name": "Mazo" },
+      "2": {"name": "Global" },
+      "3": {"name": "Especiales" },
+      "4": {"name": "Mejoras de nivel" },
+      "5": {"name": "Modificadoras" },
+      "6": {"name": "Mix" }
   }
 }

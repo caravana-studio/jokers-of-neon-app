@@ -2,7 +2,6 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CashSymbol } from "../../components/CashSymbol";
-import { PositionedGameMenu } from "../../components/GameMenu";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
@@ -80,7 +79,6 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
           </Button>
         )}
       </Flex>
-      <PositionedGameMenu decoratedPage />
     </Flex>
   );
 };

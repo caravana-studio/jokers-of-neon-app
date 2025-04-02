@@ -46,11 +46,11 @@ export const storesConfig: StoreConfig[] = [
             columns: [
               {
                 id: "modifiers",
-                width: 80,
+                width: 78,
               },
               {
                 id: "burn",
-                width: 20,
+                width: 22,
               },
             ],
           },
@@ -59,12 +59,13 @@ export const storesConfig: StoreConfig[] = [
       mobile: {
         rows: [
           { height: 30, columns: [{ id: "traditionals", width: 100 }] },
-          { height: 40, columns: [{ id: "modifiers", width: 100 }] },
-          { height: 30, columns: [{ id: "burn", width: 100 }] },
+          { height: 45, columns: [{ id: "modifiers", width: 100 }] },
+          { height: 25, columns: [{ id: "burn", width: 100 }] },
         ],
       },
     },
-  },{
+  },
+  {
     id: "global",
     name: "Global",
     distribution: {
@@ -116,6 +117,56 @@ export const storesConfig: StoreConfig[] = [
     },
   },
   {
+    id: "specials",
+    name: "Specials",
+    distribution: {
+      desktop: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "specials",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+      mobile: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "specials",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
     id: "level-up",
     name: "Level up",
     distribution: {
@@ -135,11 +186,12 @@ export const storesConfig: StoreConfig[] = [
             columns: [
               {
                 id: "modifiers",
-                width: 80,
+                width: 65,
               },
               {
-                id: "burn",
-                width: 20,
+                id: "power-ups",
+                width: 35,
+                doubleRow: true,
               },
             ],
           },
@@ -148,7 +200,15 @@ export const storesConfig: StoreConfig[] = [
       mobile: {
         rows: [
           { height: 65, columns: [{ id: "level-up-table", width: 100 }] },
-          { height: 35, columns: [{ id: "modifiers", width: 100 }] },
+          {
+            height: 35,
+            columns: [
+              {
+                id: "power-ups",
+                width: 100,
+              },
+            ],
+          },
         ],
       },
     },

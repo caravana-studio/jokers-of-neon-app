@@ -109,15 +109,14 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
       overflow="hidden"
       zIndex={1}
     >
-      <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
-        <Flex h="100%" w="40%">
-          <Flex
-            key={`pack-${pack.blister_pack_id}`}
-            w="100%"
-            h={"100%"}
-            justifyContent={"center"}
-            pl={2}
-          >
+      <Flex flexDirection="row" height="100%" alignItems="stretch">
+        <Flex
+          width="40%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Flex key={`pack-${pack.blister_pack_id}`} w="100%" h="100%" pl={2}>
             <SpineAnimation
               ref={spineAnimationRef}
               jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
@@ -133,11 +132,9 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
         </Flex>
 
         <Flex
-          flexDirection={"column"}
           width="60%"
-          flex="1"
-          height="100%"
-          justifyContent={"space-between"}
+          flexDirection="column"
+          justifyContent="space-between"
         >
           <Flex justifyContent="space-between" mb={2} alignItems="center">
             <Heading fontWeight={"400"} fontSize={"xs"}>

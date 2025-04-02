@@ -87,7 +87,17 @@
       "logout-btn": "Sair",
       "settings-btn": "Configuração",
       "docs-btn": "Lista de cartas",
-      "leaderboard-btn": "Classificação"
+      "leaderboard-btn": "Classificação",
+      "map-btn": "Mapa",
+      "pages": {
+        "gameover": "Fim do jogo",
+        "open-loot-box": "Abrir caixa",
+        "store": "Recompensas - {{shopName}}",
+        "demo": "{{roundType}} - {{level}}",
+        "rage-round": "Rodada Rage",
+        "round": "Rodada"
+      },
+      "my-games": "Meus jogos"
     },
     "plays": {
       "title": "Jogadas disponíveis",

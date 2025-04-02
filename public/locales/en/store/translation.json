@@ -1,14 +1,15 @@
 {
   "information": {
-    "reroll": "Refreshes all available items in the current store. Can only be used once per store.",
+    "reroll": "Refreshes all available items in the current store.",
     "specials": "Special cards introduce global effects that impact specific cards or gameplay mechanics. They come in two types: Permanent and Temporary. Temporary cards expire after 3 levels.",
     "modifiers": "Modifier cards provide unique effects to individual cards, enhancing their capabilities.",
     "traditionals": "Traditional cards are the foundation of the game, used to create poker hands and progress through levels. Neon cards are an upgraded variant that offer double points and an additional +1 multi.",
     "power-ups": "Power-ups are consumable items that enhance your plays by boosting points or multi.",
     "permanent": "Permanent cards stay with you until you choose to remove them.",
     "temporal": "Temporary cards are removed automatically after 3 levels.",
-    "level-up-table": "Level up your poker hands and progress through the game.",
-    "burn": "Remove a card from your deck"
+    "burn": "Remove a card from your deck",
+    "loot-boxes": "Get random rewards",
+    "level-up-table": "Level up your poker hands and progress through the game."
   },
   "store": {
     "dynamic": {
@@ -23,7 +24,7 @@
         "specials": "special cards",
         "improve-plays": "Level up your poker hands",
         "my-special-cards": "My special cards",
-        "packs": "Packs",
+        "loot-boxes": "Loot boxes",
         "power-ups": "Power-ups"
       }
     },
@@ -53,7 +54,7 @@
     },
     "tooltip": {
       "reroll-default": "Update available items",
-      "rerolled": "Available only once per level"
+      "rerolled": "You don't have available rerolls"
     },
     "plays-table": {
       "hand": "Hand",
@@ -117,5 +118,14 @@
       "title": "Burn card",
       "tooltip": "Remove a card from your deck"
     }
+  },
+  "config": {
+      "0": {"name": "" },
+      "1": {"name": "Deck" },
+      "2": {"name": "Global" },
+      "3": {"name": "Specials" },
+      "4": {"name": "Level ups" },
+      "5": {"name": "Modifiers" },
+      "6": {"name": "Mix" }
   }
 }

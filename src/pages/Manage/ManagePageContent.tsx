@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BackgroundDecoration } from "../../components/Background";
-import { PositionedGameMenu } from "../../components/GameMenu";
 import { Card } from "../../types/Card";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
@@ -25,7 +24,6 @@ export const ManagePageContent = ({
 }: ManagePageContentProps) => {
   return (
     <BackgroundDecoration>
-      <PositionedGameMenu decoratedPage />
       <Flex
         height={"100%"}
         flexDirection={"column"}

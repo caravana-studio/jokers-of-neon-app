@@ -34,9 +34,7 @@ interface SettingsProviderProps {
 }
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
-  const [sfxOn, setSfxOn] = useState(() => {
-    return localStorage.getItem(SFX_ON) === "true";
-  });
+  const [sfxOn, setSfxOn] = useState(true);
   const [sfxVolume, setSfxVolume] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
   const [lootboxTransition, setLootboxTransition] = useState(() => {
@@ -56,6 +54,12 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     if (savedAnimationSpeed !== null) {
       setAnimationSpeed(JSON.parse(savedAnimationSpeed));
     }
+
+    const savedSfxOn = localStorage.getItem(SFX_ON);
+
+    if (savedSfxOn !== null) {
+      setSfxOn(JSON.parse(savedSfxOn));
+    }
   }, []);
 
   useEffect(() => {
@@ -63,8 +67,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   }, [sfxVolume]);
 
   useEffect(() => {
-    if (!sfxOn) localStorage.removeItem(SFX_ON);
-    else localStorage.setItem(SFX_ON, "true");
+    localStorage.setItem(SFX_ON, JSON.stringify(sfxOn));
   }, [sfxOn]);
 
   useEffect(() => {

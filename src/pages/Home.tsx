@@ -44,7 +44,7 @@ export const Home = () => {
 
   return (
     <>
-    <MobileDecoration />
+      <MobileDecoration />
       <RemoveScroll>
         <></>
       </RemoveScroll>

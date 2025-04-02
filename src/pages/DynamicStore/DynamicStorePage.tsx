@@ -5,19 +5,20 @@ import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
+import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
+import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
-import { useGame } from "../../dojo/queries/useGame";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-  const store = storesConfig.find((s) => s.id === "level-up");
-  // const store = storesConfig.find((s) => s.id === "global");
+  const store = storesConfig.find((s) => s.id === "deck");
+
   const { isSmallScreen } = useResponsiveValues();
 
   const distribution =
@@ -107,9 +108,10 @@ export const DynamicStorePage = () => {
         zIndex={2}
         px={{ base: 0, sm: 6 }}
       >
-        <Flex backgroundColor="blue" h={{ base: "55px", sm: "70px" }} w="100%">
-          TopBar
+        <Flex h={{ base: "55px", sm: "70px" }} w="100%">
+          <StoreTopBar />
         </Flex>
+
         <Flex
           flexGrow={1}
           my={{ base: 0, sm: 6 }}
