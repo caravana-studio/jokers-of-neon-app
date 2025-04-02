@@ -37,58 +37,65 @@ export const LoadingScreen = ({
   };
 
   return (
-    <FadeInOut isVisible={!isFadingOut} fadeOut fadeOutDelay={0.7}>
-      <PreThemeLoadingPage>
-        {error ? (
-          <div>error loading game</div>
-        ) : (
-          <Flex
-            width={"100%"}
-            flexDirection={"column"}
-            gap={4}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            {showPresentation && (
-              <OpeningScreenAnimation
-                skipAnimation={skipAnimation}
-                onAnimationEnd={handleAnimationEnd}
-              />
-            )}
+    <Flex
+      width={"100%"}
+      height={"100%"}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
+      <FadeInOut isVisible={!isFadingOut} fadeOut fadeOutDelay={0.7}>
+        <PreThemeLoadingPage>
+          {error ? (
+            <div>error loading game</div>
+          ) : (
+            <Flex
+              width={"100%"}
+              flexDirection={"column"}
+              gap={4}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              {showPresentation && (
+                <OpeningScreenAnimation
+                  skipAnimation={skipAnimation}
+                  onAnimationEnd={handleAnimationEnd}
+                />
+              )}
 
-            {(visibleSpinner || !showPresentation) && (
-              <img src="loader.gif" alt="loader" width="100px" />
-            )}
+              {(visibleSpinner || !showPresentation) && (
+                <img src="loader.gif" alt="loader" width="100px" />
+              )}
 
-            {!skipAnimation && !isMobile && (
-              <Button
-                onClick={handleAnimationEnd}
-                position="absolute"
-                bottom="20px"
-                right="20px"
-                variant="secondarySolid"
-              >
-                Skip
-              </Button>
-            )}
-          </Flex>
+              {!skipAnimation && !isMobile && (
+                <Button
+                  onClick={handleAnimationEnd}
+                  position="absolute"
+                  bottom="20px"
+                  right="20px"
+                  variant="secondarySolid"
+                >
+                  Skip
+                </Button>
+              )}
+            </Flex>
+          )}
+        </PreThemeLoadingPage>
+        <RemoveScroll>
+          <></>
+        </RemoveScroll>
+        {!skipAnimation && isMobile && (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+            onClick={handleAnimationEnd}
+          />
         )}
-      </PreThemeLoadingPage>
-      <RemoveScroll>
-        <></>
-      </RemoveScroll>
-      {!skipAnimation && isMobile && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-          onClick={handleAnimationEnd}
-        />
-      )}
-    </FadeInOut>
+      </FadeInOut>
+    </Flex>
   );
 };
