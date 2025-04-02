@@ -118,5 +118,14 @@
       "title": "Quemar carta",
       "tooltip": "Elimina una carta de tu mazo"
     }
+  },
+  "config": {
+      "0": {"name": "" },
+      "1": {"name": "Mazo" },
+      "2": {"name": "Global" },
+      "3": {"name": "Especiales" },
+      "4": {"name": "Mejoras de nivel" },
+      "5": {"name": "Modificadoras" },
+      "6": {"name": "Mix" }
   }
 }

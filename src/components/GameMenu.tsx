@@ -2,16 +2,13 @@ import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDisconnect } from "@starknet-react/core";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useGame } from "../dojo/queries/useGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { SettingsModal } from "./SettingsModal.tsx";
 
 interface GameMenuProps {
   showTutorial?: () => void;
@@ -19,22 +16,16 @@ interface GameMenuProps {
 
 export const GameMenu = ({ showTutorial }: GameMenuProps) => {
   const username = useUsername();
-  const { executeCreateGame, restartGame } = useGameContext();
+  const { restartGame } = useGameContext();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
-  const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
-  const game = useGame();
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
-
   const { disconnect } = useDisconnect();
 
   return (
     <>
-      {isSettingsModalOpened && (
-        <SettingsModal close={() => setSettingsModalOpened(false)} />
-      )}
-      <Menu>
+      <Menu placement="right">
         <MenuButton
           height={["30px", "45px"]}
           width={["30px", "45px"]}
@@ -57,21 +48,13 @@ export const GameMenu = ({ showTutorial }: GameMenuProps) => {
           >
             {t("game.game-menu.home-btn")}
           </MenuItem>
+
           <MenuItem
             onClick={() => {
               navigate("/my-games");
             }}
           >
             {t("game.game-menu.my-games")}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              navigate("/docs", {
-                state: { inStore: game?.state === "AT_SHOP" },
-              });
-            }}
-          >
-            {t("game.game-menu.docs-btn")}
           </MenuItem>
           {showTutorial && !hideTutorialFF && (
             <MenuItem
@@ -82,27 +65,6 @@ export const GameMenu = ({ showTutorial }: GameMenuProps) => {
               {t("game.game-menu.tutorial-btn")}
             </MenuItem>
           )}
-
-          <MenuItem
-            onClick={() => {
-              navigate("/leaderboard");
-            }}
-          >
-            {t("game.game-menu.leaderboard-btn")}
-          </MenuItem>
-
-          <MenuItem
-            onClick={() => {
-              console.log(
-                "is settings modal opened: " + setSettingsModalOpened
-              );
-              if (setSettingsModalOpened) {
-                setSettingsModalOpened(true);
-              }
-            }}
-          >
-            {t("game.game-menu.settings-btn")}
-          </MenuItem>
           <MenuItem
             onClick={() => {
               localStorage.removeItem(GAME_ID);

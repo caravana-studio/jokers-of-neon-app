@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { BackgroundDecoration } from "../components/Background";
-import { DiscordLink } from "../components/DiscordLink";
-import { PositionedGameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
@@ -59,7 +57,6 @@ export const GameOver = () => {
 
   return (
     <BackgroundDecoration>
-      <PositionedGameMenu decoratedPage />
       <Flex
         height="100%"
         justifyContent="center"
@@ -108,9 +105,6 @@ export const GameOver = () => {
             >
               {t("game-over.btn.gameOver-newGame-btn")}
             </Button>
-          </Flex>
-          <Flex mt={{ base: 4, sm: 10 }} justifyContent="center">
-            <DiscordLink />
           </Flex>
         </Flex>
       </Flex>
