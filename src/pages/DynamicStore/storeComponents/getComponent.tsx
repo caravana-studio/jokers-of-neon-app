@@ -1,6 +1,8 @@
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
+import { BurnComponent } from "./ BurnComponent";
 import { CardComponent } from "./CardComponent";
 import { LootBoxComponent } from "./LootBoxComponent";
+import { PowerUpsComponent } from "./PowerUpsComponent";
 import { TestComponent } from "./TestComponent";
 
 export const getComponent = (id: string, doubleRow = false) => {
@@ -14,9 +16,11 @@ export const getComponent = (id: string, doubleRow = false) => {
     case "loot-boxes":
       return <LootBoxComponent />;
     case "burn":
-      return <TestComponent />;
+      return <BurnComponent />;
     case "level-up-table":
       return <LevelUpTable />;
+    case "power-ups":
+      return <PowerUpsComponent doubleRow={doubleRow} />;
     default:
       return <TestComponent />;
   }

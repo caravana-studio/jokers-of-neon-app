@@ -103,6 +103,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         backgroundColor: "black",
                       }}
                       p={4}
+                      textAlign={"center"}
                     >
                       <Text
                         pt={2}
@@ -164,13 +165,13 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                     </Td>
                   </Tr>
                   <Tr>
-                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
                       {t("game.plays.table.level-head").toUpperCase()}
                     </Td>
-                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
                       {t("game.plays.table.hand-head").toUpperCase()}
                     </Td>
-                    <Td fontSize={isSmallScreen ? 12 : 17}>
+                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
                       {t("game.plays.table.points-multi-head").toUpperCase()}
                     </Td>
                   </Tr>
@@ -190,6 +191,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                           sx={opacitySx}
                           textColor={textColor}
                           fontSize={isSmallScreen ? 9 : 13}
+                          textAlign={"center"}
                         >
                           {play.level.toString()}
                         </Td>
@@ -206,7 +208,7 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
                         </Td>
                       );
                       const pointsMultiTd = (
-                        <Td>
+                        <Td textAlign={"center"}>
                           <Box
                             color={"white"}
                             display={"flex"}

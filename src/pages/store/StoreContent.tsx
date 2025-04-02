@@ -1,7 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../providers/StoreProvider.tsx";
-import { BurnItem } from "./BurnItem.tsx";
+import { BurnComponent } from "../DynamicStore/storeComponents/ BurnComponent.tsx";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
@@ -12,7 +12,7 @@ import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
+import { PowerUpsComponent } from "../DynamicStore/storeComponents/PowerUpsComponent.tsx";
 
 export const StoreContent = () => {
   const { specialCards, commonCards, modifierCards, powerUps } = useStore();
@@ -86,7 +86,7 @@ export const StoreContent = () => {
               )}
               {powerUps.length > 0 && (
                 <Box w="30%" className="game-tutorial-step-4">
-                  <StorePowerUpsRow />
+                  <PowerUpsComponent />
                 </Box>
               )}
             </Flex>
@@ -112,7 +112,7 @@ export const StoreContent = () => {
                   <SpecialSlotItem />
                 </RerollingAnimation>
                 <RerollingAnimation>
-                  <BurnItem />
+                  <BurnComponent />
                 </RerollingAnimation>
               </Flex>
 
