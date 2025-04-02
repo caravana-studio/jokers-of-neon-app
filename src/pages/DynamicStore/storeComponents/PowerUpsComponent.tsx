@@ -1,12 +1,11 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import useResizeObserver from "@react-hook/resize-observer";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
-import useResizeObserver from "@react-hook/resize-observer";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { RerollingAnimation } from "../../store/StoreElements/RerollingAnimation";
-import { useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
 
 interface PowerUpComponentProps {
   doubleRow?: boolean;
@@ -20,6 +19,7 @@ export const PowerUpsComponent = ({
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
 
+  const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
 
   useResizeObserver(flexRef, (entry) => {
@@ -27,7 +27,14 @@ export const PowerUpsComponent = ({
     setWidth(entry.contentRect.width);
   });
 
-  console.log(width);
+  const powerUpWidth =
+    width && height
+      ? doubleRow
+        ? width * 0.65
+        : (width / powerUps.length) - 30
+      : isSmallScreen
+        ? 100
+        : 150;
 
   return (
     <Box h={"100%"}>
@@ -35,11 +42,11 @@ export const PowerUpsComponent = ({
         ref={flexRef}
         h="100%"
         w="100%"
-        flexDirection={doubleRow ? "row" : "column"}
+        flexDirection={doubleRow ? "column" : "row"}
         alignContent="center"
         justifyContent="center"
         alignItems={"center"}
-        gap={[2, 4, 6]}
+        gap={[2, 4, 3]}
       >
         {powerUps.map((powerUp, index) => {
           return (
@@ -47,17 +54,7 @@ export const PowerUpsComponent = ({
               <RerollingAnimation key={index}>
                 <PowerUpComponent
                   powerUp={powerUp}
-                  width={
-                    doubleRow
-                      ? height
-                        ? isMobile
-                          ? height * 0.7
-                          : height
-                        : 0
-                      : width
-                        ? width / 2
-                        : 0
-                  }
+                  width={powerUpWidth}
                   inStore
                   onClick={() => {
                     if (!powerUp.purchased) {
