@@ -1,6 +1,6 @@
 {
   "information": {
-    "reroll": "Atualiza todos os itens disponíveis na loja atual. Pode ser usado apenas uma vez por loja.",
+    "reroll": "Atualiza todos os itens disponíveis na loja atual.",
     "specials": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 níveis.",
     "modifiers": "As cartas modificadoras concedem efeitos únicos a cartas individuais, aprimorando suas habilidades.",
     "traditionals": "As cartas tradicionais são a base do jogo, usadas para formar mãos de pôquer e avançar pelos níveis. As cartas neon são uma variante aprimorada que oferecem o dobro de pontos e um multiplicador adicional de +1, tornando-as muito valiosas.",
@@ -54,7 +54,7 @@
     },
     "tooltip": {
       "reroll-default": "Atualizar itens disponíveis",
-      "rerolled": "Disponível apenas uma vez por nível"
+      "rerolled": "Não tem atualizações disponíveis"
     },
     "plays-table": {
       "hand": "Mão",

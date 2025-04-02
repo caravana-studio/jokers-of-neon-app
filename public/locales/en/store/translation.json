@@ -1,6 +1,6 @@
 {
   "information": {
-    "reroll": "Refreshes all available items in the current store. Can only be used once per store.",
+    "reroll": "Refreshes all available items in the current store.",
     "specials": "Special cards introduce global effects that impact specific cards or gameplay mechanics. They come in two types: Permanent and Temporary. Temporary cards expire after 3 levels.",
     "modifiers": "Modifier cards provide unique effects to individual cards, enhancing their capabilities.",
     "traditionals": "Traditional cards are the foundation of the game, used to create poker hands and progress through levels. Neon cards are an upgraded variant that offer double points and an additional +1 multi.",
@@ -54,7 +54,7 @@
     },
     "tooltip": {
       "reroll-default": "Update available items",
-      "rerolled": "Available only once per level"
+      "rerolled": "You don't have available rerolls"
     },
     "plays-table": {
       "hand": "Hand",

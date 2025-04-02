@@ -185,7 +185,7 @@ export const StorePreviewComponent = ({
                   <LootBoxRateInfo name={title} details={details} />
                 </Flex>
               )}
-              
+
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
                 <Flex flexDirection={"column"} gap={5}>
                   <Flex gap={3}>
