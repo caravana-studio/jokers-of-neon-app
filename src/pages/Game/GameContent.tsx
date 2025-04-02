@@ -11,9 +11,6 @@ import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
-import { GameDeck } from "../../components/GameDeck.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck.tsx";
 import {
