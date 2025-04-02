@@ -1,4 +1,6 @@
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
+import { PowerUpsComponent } from "./PowerUpsComponent";
 import { CardComponent } from "./CardComponent";
 import { LootBoxComponent } from "./LootBoxComponent";
 import { TestComponent } from "./TestComponent";
@@ -17,6 +19,8 @@ export const getComponent = (id: string, doubleRow = false) => {
       return <TestComponent />;
     case "level-up-table":
       return <LevelUpTable />;
+    case "power-ups":
+      return <PowerUpsComponent doubleRow={doubleRow} />;
     default:
       return <TestComponent />;
   }
