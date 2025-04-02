@@ -13,9 +13,9 @@ export const RerollSection = () => {
 
   return (
     <Flex justifyContent="space-between" alignItems={"center"}>
-      <Flex gap={isSmallScreen ? 1 : 4} py={1} alignItems={"center"}>
+      <Flex gap={isSmallScreen ? 0 : 2} py={1} alignItems={"center"}>
         <RerollButton />
-        <Flex ml={4} columnGap={2}>
+        <Flex ml={4} columnGap={{base: 3, sm: 6}}>
           <RerollIndicators rerolls={availableRerolls} />
           <DefaultInfo title="reroll" />
         </Flex>

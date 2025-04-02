@@ -38,7 +38,7 @@ export const PlayDiscardIndicators = ({
 }: PlayDiscardIndicatorsProps) => {
   const color = type === "play" ? VIOLET : BLUE;
   return (
-    <Flex w="100%" justifyContent="space-around" alignItems="center">
+    <Flex w="100%" justifyContent="space-around" alignItems="center" gap={{base: 2, sm: 4}}>
       {Array.from({ length: total }).map((_, index) => (
         <PlayDiscardIndicator
           key={index}
