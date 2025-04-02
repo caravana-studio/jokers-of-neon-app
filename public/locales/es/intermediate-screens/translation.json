@@ -1,4 +1,23 @@
 {
+  "my-games": {
+    "title": "Mis juegos",
+    "go-back": "Volver",
+    "start-game": "Iniciar nuevo juego",
+    "show-finished-games": "Mostrar juegos terminados",
+    "continue-btn": "continuar",
+    "start-btn": "iniciar",
+    "level-lbl": "Nivel",
+    "status-lbl": "Estado",
+    "points-lbl": "puntos",
+    "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",
+    "create-game": {
+      "stage-1": "Buscando torneo {{tournamentId}}",
+      "stage-2": "Registrando usuario {{username}}",
+      "stage-3": "Transfiriendo token de juego a tu cuenta",
+      "stage-4": "Mezclando cartas",
+      "stage-5": "Comenzando el juego"
+    }
+  },
   "game-over": {
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {

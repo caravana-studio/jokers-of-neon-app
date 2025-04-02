@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
 import { GameDeck } from "../../components/GameDeck.tsx";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import {
   JOYRIDE_LOCALES,
@@ -214,7 +213,7 @@ export const GameContent = () => {
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             maxHeight="70px"
             position="fixed"
             top={0}
@@ -283,20 +282,12 @@ export const GameContent = () => {
             src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
             maxHeight="70px"
             height="8%"
-            width="100%"
+            width="calc(100% - 48px)"
             position="fixed"
             bottom={0}
             sx={{ pointerEvents: "none" }}
           />
         </Box>
-
-        <PositionedGameMenu
-          decoratedPage
-          bottomPositionDesktop={16}
-          showTutorial={() => {
-            navigate("/tutorial");
-          }}
-        />
 
         <Box
           sx={{

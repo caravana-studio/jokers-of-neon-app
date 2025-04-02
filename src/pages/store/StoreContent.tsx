@@ -1,7 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnItem } from "./BurnItem.tsx";
 import { Coins } from "./Coins.tsx";
@@ -17,18 +15,12 @@ import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
 import { StorePowerUpsRow } from "./StorePowerUpsRow.tsx";
 
 export const StoreContent = () => {
-  const { setRun, specialCards, commonCards, modifierCards, powerUps } =
-    useStore();
+  const { specialCards, commonCards, modifierCards, powerUps } = useStore();
 
   const { t } = useTranslation(["store"]);
 
   return (
     <>
-      <PositionedGameMenu
-        showTutorial={() => {
-          setRun(true);
-        }}
-      />
       <Flex
         width="100%"
         height="100%"
@@ -135,7 +127,6 @@ export const StoreContent = () => {
           </Box>
         </Flex>
       </Flex>
-      <PositionedDiscordLink />
     </>
   );
 };

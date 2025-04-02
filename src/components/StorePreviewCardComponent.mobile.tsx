@@ -49,7 +49,7 @@ export const StorePreviewCardComponentMobile = ({
         h="100%"
         textAlign="center"
       >
-        <Flex justifyContent="flex-end" mr={3} w="100%">
+        <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
           <MobileCoins />
         </Flex>
         <Flex

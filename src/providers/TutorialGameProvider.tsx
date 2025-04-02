@@ -37,7 +37,6 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   score: 600,
   cash: 1000,
   discards: 1,
-  sfxVolume: 100,
   powerUps: [m5, p25],
 });
 

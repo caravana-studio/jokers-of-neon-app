@@ -100,5 +100,14 @@
       "title": "Queimar carta",
       "tooltip": "Remove uma carta do seu baralho"
     }
+  },
+  "config": {
+      "0": {"name": "" },
+      "1": {"name": "Baralho" },
+      "2": {"name": "Global" },
+      "3": {"name": "Especiais" },
+      "4": {"name": "Upgrades de nível" },
+      "5": {"name": "Modificadoras" },
+      "6": {"name": "Mistura" }
   }
 }

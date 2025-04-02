@@ -3,8 +3,6 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../components/CachedImage.tsx";
-import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
-import { PositionedGameMenu } from "../components/GameMenu.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { Duration } from "../enums/duration.ts";
 import { Coins } from "../pages/store/Coins.tsx";
@@ -62,7 +60,6 @@ export const StorePreviewComponent = ({
 
   return (
     <>
-      <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
@@ -306,7 +303,6 @@ export const StorePreviewComponent = ({
           zIndex="9999"
         />
       )}
-      <PositionedDiscordLink />
     </>
   );
 };
