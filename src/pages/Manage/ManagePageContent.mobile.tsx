@@ -5,7 +5,7 @@ import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { ManagePageContentProps } from "./ManagePageContent";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
-import { Coins } from "../store/Coins";
+import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
@@ -18,32 +18,32 @@ export const ManagePageContentMobile = ({
   const { t } = useTranslation("intermediate-screens");
 
   return (
-    <>
-      <Flex pt={[8, 16]} alignItems={"center"} justifyContent={"center"}>
-        <Coins />
-      </Flex>
-      <Flex height={"80%"}>
-        <TabPattern lastIndexTab={lastIndexTab} onTabChange={onTabChange}>
-          <Tab title={t("special-cards.title")}>
-            <Flex h="100%" w="100%" flexDir="column" p={6}>
-              <SpecialCards
-                discardedCards={discardedCards}
-                preselectedCard={preselectedCard}
-                onCardClick={onCardClick}
-                containerSx={{
-                  padding: "0",
-                }}
-              />
-            </Flex>
-          </Tab>
-          <Tab title={t("power-ups.title")}>
-            <Powerups />
-          </Tab>
-        </TabPattern>
-      </Flex>
-      <Flex justifyContent={"center"} alignItems={"center"}>
-        {goBackButton}
-      </Flex>
-    </>
+    <TabPattern
+      lastIndexTab={lastIndexTab}
+      topBar={<StoreTopBar hideReroll />}
+      bottomBar={
+        <MobileBottomBar
+          firstButton={undefined}
+          secondButton={goBackButton}
+          hideDeckButton
+        />
+      }
+    >
+      <Tab title={t("special-cards.title")}>
+        <Flex h="100%" w="100%" flexDir="column" p={6}>
+          <SpecialCards
+            discardedCards={discardedCards}
+            preselectedCard={preselectedCard}
+            onCardClick={onCardClick}
+            containerSx={{
+              padding: "0",
+            }}
+          />
+        </Flex>
+      </Tab>
+      <Tab title={t("power-ups.title")}>
+        <Powerups />
+      </Tab>
+    </TabPattern>
   );
 };
