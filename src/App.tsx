@@ -11,6 +11,7 @@ import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
 import { PositionedControllerIcon } from "./icons/ControllerIcon";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
+import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver";
@@ -25,7 +26,6 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
-import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
@@ -140,7 +140,7 @@ function App() {
                                 element={
                                   <StoreProvider>
                                     <AnimatedPage>
-                                      <Store />
+                                      <DynamicStorePage />
                                     </AnimatedPage>
                                   </StoreProvider>
                                 }
