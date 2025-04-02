@@ -15,7 +15,8 @@ import { storesConfig } from "./storesConfig";
 
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-  const store = storesConfig.find((s) => s.id === "level-up");
+  const store = storesConfig.find((s) => s.id === "deck");
+
   const { isSmallScreen } = useResponsiveValues();
 
   const distribution =

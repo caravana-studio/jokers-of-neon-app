@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { PositionedGameMenu } from "../../components/GameMenu.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
-import { BurnItem } from "./BurnItem.tsx";
+import { BurnComponent } from "../DynamicStore/storeComponents/ BurnComponent.tsx";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
@@ -120,7 +120,7 @@ export const StoreContent = () => {
                   <SpecialSlotItem />
                 </RerollingAnimation>
                 <RerollingAnimation>
-                  <BurnItem />
+                  <BurnComponent />
                 </RerollingAnimation>
               </Flex>
 
