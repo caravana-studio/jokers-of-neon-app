@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import useResizeObserver from "@react-hook/resize-observer";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,45 +30,48 @@ export const PowerUpsComponent = ({
   const powerUpWidth =
     width && height
       ? doubleRow
-        ? width * 0.65
-        : (width / powerUps.length) - 30
+        ? isSmallScreen
+          ? width * 0.9
+          : width * 0.7
+        : width / powerUps.length - 60
       : isSmallScreen
         ? 100
         : 150;
 
+  const maxWidth = isSmallScreen ? 100 : 170;
   return (
-    <Box h={"100%"}>
-      <Flex
-        ref={flexRef}
-        h="100%"
-        w="100%"
-        flexDirection={doubleRow ? "column" : "row"}
-        alignContent="center"
-        justifyContent="center"
-        alignItems={"center"}
-        gap={[2, 4, 3]}
-      >
-        {powerUps.map((powerUp, index) => {
-          return (
-            <Flex width={"100%"}>
-              <RerollingAnimation key={index}>
-                <PowerUpComponent
-                  powerUp={powerUp}
-                  width={powerUpWidth}
-                  inStore
-                  onClick={() => {
-                    if (!powerUp.purchased) {
-                      navigate("/preview/power-up", {
-                        state: { powerUp },
-                      });
-                    }
-                  }}
-                />
-              </RerollingAnimation>
-            </Flex>
-          );
-        })}
-      </Flex>
-    </Box>
+    <Flex
+      ref={flexRef}
+      h="100%"
+      w="100%"
+      maxH="100%"
+      maxW="100%"
+      flexDirection={doubleRow ? "column" : "row"}
+      alignContent="center"
+      justifyContent="center"
+      alignItems={"center"}
+      gap={[2, 4, 3]}
+    >
+      {powerUps.map((powerUp, index) => {
+        return (
+          <Flex key={index}>
+            <RerollingAnimation>
+              <PowerUpComponent
+                powerUp={powerUp}
+                width={powerUpWidth > maxWidth ? maxWidth : powerUpWidth}
+                inStore
+                onClick={() => {
+                  if (!powerUp.purchased) {
+                    navigate("/preview/power-up", {
+                      state: { powerUp },
+                    });
+                  }
+                }}
+              />
+            </RerollingAnimation>
+          </Flex>
+        );
+      })}
+    </Flex>
   );
 };

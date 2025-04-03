@@ -55,6 +55,7 @@ export const CardComponent = ({
           <TiltCard
             key={getCardUniqueId(card)}
             card={card}
+            cursor="pointer"
             onClick={() => {
               if (!card.purchased) {
                 navigate("/preview/card", {
@@ -66,9 +67,9 @@ export const CardComponent = ({
               height
                 ? doubleRow
                   ? (height / 2) * 0.92
-                  : height > maxCardHeight
+                  : height * (isSmallScreen ? 0.82 : 0.92) > maxCardHeight
                     ? maxCardHeight
-                    : height * (isSmallScreen ? 0.85 : 0.92)
+                    : height * (isSmallScreen ? 0.82 : 0.92)
                 : undefined
             }
             sx={{

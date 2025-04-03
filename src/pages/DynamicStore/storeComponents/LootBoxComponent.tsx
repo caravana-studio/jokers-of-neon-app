@@ -22,7 +22,7 @@ export const LootBoxComponent = () => {
         h="100%"
         w="100%"
         justifyContent={{ base: "center" }}
-        alignItems="top"
+        alignItems={{base: 'top', sm: "flex-end"}}
         gap={{ base: 3, sm: 4 }}
       >
         {packs.map((pack) => {
@@ -45,6 +45,8 @@ export const LootBoxComponent = () => {
                 justifyContent="center"
                 h={isSmallScreen ? "85%" : "100%"}
                 w={`${(isSmallScreen ? 90 : 80) / packs.length}%`}
+                maxW={isSmallScreen ? "unset" : "250px"}
+                maxH={isSmallScreen ? "unset" : "200px"}
                 position="relative"
               >
                 <SpineContainer>

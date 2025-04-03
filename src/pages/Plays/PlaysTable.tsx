@@ -80,9 +80,12 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
         <TableContainer overflow={inStore ? "hidden" : "auto"} width={"100%"}>
           <Table
             sx={{
-              borderCollapse: "separate",
-              borderSpacing: "0 .3em",
+              borderCollapse: "collapse",
+              borderSpacing: 0,
               marginBottom: isMobile ? 0 : 4,
+              td: {
+                py: { base: 1, sm: 2 },
+              },
             }}
             width={"100%"}
             variant={isMobile ? "store-mobile" : "store"}
@@ -208,6 +211,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       fontSize={isMobile ? 6 : 10}
                       borderRadius={isMobile ? 6 : 12}
                       height={isMobile ? 5 : 7}
+                      mr={{base: 0, sm: 2}}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -234,7 +238,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                     ? 0.5
                                     : 1,
                               }}
-                              gap={"5%"}
                             >
                               {/* Current Play level data */}
                               <Flex>
@@ -272,7 +275,11 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                 </Box>
                               </Flex>
 
-                              <Heading fontSize={isSmallScreen ? "5" : "10"}>
+                              <Heading
+                                lineHeight={0.9}
+                                mx={{ base: 0, sm: 3 }}
+                                fontSize={isSmallScreen ? "5" : "10"}
+                              >
                                 {isMobile ? " v " : " > "}
                               </Heading>
 
@@ -327,12 +334,12 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                               />
                             </Flex>
                           </Td>
-                          <Td textAlign={"end"}>
+                          <Td textAlign={"center"}>
                             {!!storePlay ? (
                               storePlay.purchased ? (
                                 <Heading
                                   color={GREY_LINE}
-                                  size={isMobile ? "base" : "xs"}
+                                  fontSize={{base: 7, sm: 12}}
                                 >
                                   {t(
                                     "store.plays-table.purchased"
