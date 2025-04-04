@@ -36,6 +36,14 @@ export const policies = {
           name: "Create game",
           entrypoint: "create_game",
         },
+        {
+          name: "Mint game",
+          entrypoint: "mint",
+        },
+        {
+          name: "Start game",
+          entrypoint: "start_game",
+        },
       ],
     },
     [action_system_contract_address]: {
