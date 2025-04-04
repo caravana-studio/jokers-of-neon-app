@@ -1,35 +1,10 @@
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { CardDataMap } from "../types/CardData";
-import i18n from 'i18next';
+import i18n from "i18next";
 
 export const TRADITIONAL_CARDS_DATA: CardDataMap = {};
 export const NEON_CARDS_DATA: CardDataMap = {};
-
-const loadTranslations = async () => {
-  await i18n.loadNamespaces(['traditional-cards', 'neon-cards']);
-
-  for (let i = 0; i <= 53; i++) {
-    TRADITIONAL_CARDS_DATA[i] = {
-      name: i18n.t(`traditionalCardsData.${i}.name`, {ns:'traditional-cards'}),
-      description: i18n.t(`traditionalCardsData.${i}.description`, {ns:'traditional-cards'}),
-      card: CARDS_SUIT_DATA[i].card,
-      suit: CARDS_SUIT_DATA[i].suit,
-    };
-  }
-  
-  for (let i = 200; i <= 253; i++) {
-    NEON_CARDS_DATA[i] = {
-      name: i18n.t(`neonCardsData.${i}.name`, {ns:'neon-cards'}),
-      description: i18n.t(`neonCardsData.${i}.description`, {ns:'neon-cards'}),
-      card: CARDS_SUIT_DATA[i].card,
-      suit: CARDS_SUIT_DATA[i].suit,
-    };
-  }
-}
-
-i18n.on('initialized', loadTranslations);
-i18n.on('languageChanged', loadTranslations);
 
 interface CardMultiSuitData {
   card?: Cards;
@@ -257,7 +232,6 @@ export const CARDS_SUIT_DATA: CardMultiSuitDataMap = {
     card: Cards.WILDCARD,
     suit: Suits.WILDCARD,
   },
-  
   200: {
     card: Cards.TWO,
     suit: Suits.CLUBS,
