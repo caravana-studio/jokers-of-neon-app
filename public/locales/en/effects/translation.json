@@ -270,6 +270,14 @@
     "361": {
       "name": "Twos Matter",
       "description": "Gain +30 points for every 2 held in your hand."
+    },
+    "374": {
+      "name": "Wildcard Booster",
+      "description": "Each Wildcard grants +100 points."
+    },
+    "379": {
+      "name": "Rainbow",
+      "description": "Gain +200 points and +5 multi if your play includes all four suits."
     }
   },
   "powerUpsData": {

@@ -270,6 +270,14 @@
     "361": {
       "name": "Los Doses Importan",
       "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
+    },
+    "374": {
+      "name": "Impulso de Comodines",
+      "description": "Cada comodín otorga +100 puntos."
+    },
+    "379": {
+      "name": "Arcoíris",
+      "description": "Obtén +200 puntos y +5 multi si tu jugada incluye los cuatro palos."
     }
   },
   "powerUpsData": {
