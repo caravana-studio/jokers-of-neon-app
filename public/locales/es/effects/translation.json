@@ -131,6 +131,22 @@
       "name": "Sinergia de neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
+    "327": {
+      "name": "Blackjack",
+      "description": "Logra exactamente 21 con tus cartas jugadas para obtener +21 multi."
+    },
+    "328": {
+      "name": "Juego Eficiente",
+      "description": "Gana +15 multi y +50 puntos al jugar 3 o menos cartas."
+    },
+    "329": {
+      "name": "Sacrificio Especial",
+      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida."
+    },
+    "330": {
+      "name": "Rompedor de Rages",
+      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada."
+    },
     "331": {
       "name": "Atajo",
       "description": ":os puntos necesarios para superar el nivel se reducen en un 20%"
@@ -210,6 +226,50 @@
     "350": {
       "name": "Dado de Picas",
       "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
+    },
+    "351": {
+      "name": "Multiplicador Especial",
+      "description": "Obtén +3 multi por cada carta especial que poseas."
+    },
+    "352": {
+      "name": "Coleccionista",
+      "description": "Gana +1 puntos por cada carta en tu mazo."
+    },
+    "353": {
+      "name": "Reinicio de Rage",
+      "description": "Permite volver a tirar cartas de Rage una vez por ronda. Cuesta 500 por cada carta Rage en la ronda."
+    },
+    "354": {
+      "name": "Omitir Bonus",
+      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta)."
+    },
+    "355": {
+      "name": "Recompensas Ardientes",
+      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo."
+    },
+    "356": {
+      "name": "Guardián de Slots",
+      "description": "Gana +50 puntos por cada Slot desbloqueado pero vacío."
+    },
+    "357": {
+      "name": "Gran apostador",
+      "description": "Obtén +1 multi (acumulativo) por cada Carta Alta jugada."
+    },
+    "358": {
+      "name": "Ruleta de Palos",
+      "description": "Obtén +5 multi por cada carta que coincida con un palo aleatorio. El palo cambia cada ronda."
+    },
+    "359": {
+      "name": "Guardián de Tréboles",
+      "description": "Gana +10 puntos por cada carta de Trébol en tu mazo."
+    },
+    "360": {
+      "name": "Trío de Picas",
+      "description": "Si tu mano tiene al menos 3 cartas de Picas, gana +100 puntos y +3 multi."
+    },
+    "361": {
+      "name": "Los Doses Importan",
+      "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
     }
   },
   "powerUpsData": {
