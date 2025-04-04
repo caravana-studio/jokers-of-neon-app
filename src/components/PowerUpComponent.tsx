@@ -15,6 +15,7 @@ import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
+import SparklesEffect from "./animations/SparklesEffect";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -43,64 +44,65 @@ export const PowerUpComponent = ({
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
   const description =
-    powerUp?.power_up_id &&
-    getPowerUpData(powerUp.power_up_id)?.description;
+    powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
-    <AnimatedPowerUp idx={powerUp.idx}>
-      <Tooltip label={description && colorizeText(description)}>
-        <Flex
-          justifyContent="center"
-          position="relative"
-          width={`${width}px`}
-          borderRadius="17px"
-          background={"black"}
-          transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
-          transition="all 0.2s ease-in-out"
-          cursor={purchased ? "not-allowed" : "pointer"}
-          opacity={purchased ? 0.3 : 1}
-          onClick={onClick}
-        >
-          {price && (
-            <PriceBox
-              price={Number(price)}
-              purchased={Boolean(purchased)}
-              isPowerUp
-              fontSize={isSmallScreen ? 12 : 16}
-              discountFontSize={isSmallScreen ? 10 : 12}
-              discountPrice={Number(discount_cost)}
-            />
-          )}
-          {purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: isSmallScreen
-                  ? `${width / 3 - 10}px`
-                  : `${width / 3 - 15}px`,
-                left: isSmallScreen ? 1 : -1,
-                zIndex: 10,
-              }}
-            >
-              <Heading
-                variant="italic"
-                fontSize={isSmallScreen ? 6 : 11 * cardScale}
+    <SparklesEffect spriteSrc={"/vfx/sparkle.png"}>
+      <AnimatedPowerUp idx={powerUp.idx}>
+        <Tooltip label={description && colorizeText(description)}>
+          <Flex
+            justifyContent="center"
+            position="relative"
+            width={`${width}px`}
+            borderRadius="17px"
+            background={"black"}
+            transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
+            transition="all 0.2s ease-in-out"
+            cursor={purchased ? "not-allowed" : "pointer"}
+            opacity={purchased ? 0.3 : 1}
+            onClick={onClick}
+          >
+            {price && (
+              <PriceBox
+                price={Number(price)}
+                purchased={Boolean(purchased)}
+                isPowerUp
+                fontSize={isSmallScreen ? 12 : 16}
+                discountFontSize={isSmallScreen ? 10 : 12}
+                discountPrice={Number(discount_cost)}
+              />
+            )}
+            {purchased && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: isSmallScreen
+                    ? `${width / 3 - 10}px`
+                    : `${width / 3 - 15}px`,
+                  left: isSmallScreen ? 1 : -1,
+                  zIndex: 10,
+                }}
               >
-                {t("store.labels.purchased").toLocaleUpperCase()}
-              </Heading>
-            </Box>
-          )}
-          <CachedImage
-            opacity={inStore || calculatedIsActive ? 1 : 0.6}
-            borderRadius={["12px", "17px"]}
-            cursor="pointer"
-            height={`${100}%`}
-            width={`${100}%`}
-            src={powerUp.img}
-          />
-        </Flex>
-      </Tooltip>
-    </AnimatedPowerUp>
+                <Heading
+                  variant="italic"
+                  fontSize={isSmallScreen ? 6 : 11 * cardScale}
+                >
+                  {t("store.labels.purchased").toLocaleUpperCase()}
+                </Heading>
+              </Box>
+            )}
+            <CachedImage
+              opacity={inStore || calculatedIsActive ? 1 : 0.6}
+              borderRadius={["12px", "17px"]}
+              cursor="pointer"
+              height={`${100}%`}
+              width={`${100}%`}
+              src={powerUp.img}
+            />
+          </Flex>
+        </Tooltip>
+      </AnimatedPowerUp>
+    </SparklesEffect>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );
