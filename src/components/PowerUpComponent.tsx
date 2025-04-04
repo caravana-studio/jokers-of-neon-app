@@ -47,7 +47,10 @@ export const PowerUpComponent = ({
     powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
-    <SparklesEffect spriteSrc={"/vfx/sparkle.png"}>
+    <SparklesEffect
+      spriteSrc={"/vfx/sparkle.png"}
+      active={calculatedIsActive ?? false}
+    >
       <AnimatedPowerUp idx={powerUp.idx}>
         <Tooltip label={description && colorizeText(description)}>
           <Flex

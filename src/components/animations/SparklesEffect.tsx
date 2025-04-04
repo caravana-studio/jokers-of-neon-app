@@ -18,6 +18,7 @@ interface SparklesEffectProps {
   maxRadiusY?: number;
   offsetX?: number;
   offsetY?: number;
+  active?: boolean;
 }
 
 const SparklesEffect = ({
@@ -28,7 +29,7 @@ const SparklesEffect = ({
   amount = 30,
   width = 100,
   height = 60,
-  speed = 4,
+  speed = 3,
   expansionSpeed = 3,
   minRadiusX = 0.9,
   maxRadiusX = 1,
@@ -36,7 +37,10 @@ const SparklesEffect = ({
   maxRadiusY = 1,
   offsetX = -10,
   offsetY = -10,
+  active = true,
 }: SparklesEffectProps) => {
+  if (!active) return <>{children}</>;
+
   return (
     <Box position="relative" display="inline-block">
       <Box
