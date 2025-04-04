@@ -36,7 +36,6 @@ export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
   const game = useGame();
   const shopId: number = game?.shop_config_id ?? DECK_SHOP_CONFIG_ID;
-  console.log(shopId);
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );
@@ -54,8 +53,6 @@ export const DynamicStorePage = () => {
     setPowerUps,
     maxPowerUpSlots,
   } = useGameContext();
-
-  console.log("game", game);
 
   const { skipShop } = useShopActions();
 
