@@ -172,7 +172,7 @@ export const storesConfig: StoreConfig[] = [
       desktop: {
         rows: [
           {
-            height: 50,
+            height: 45,
             columns: [
               {
                 id: "level-up-table",
@@ -181,16 +181,11 @@ export const storesConfig: StoreConfig[] = [
             ],
           },
           {
-            height: 50,
+            height: 55,
             columns: [
               {
-                id: "modifiers",
-                width: 65,
-              },
-              {
-                id: "power-ups",
-                width: 35,
-                doubleRow: true,
+                id: "specials",
+                width: 100,
               },
             ],
           },
@@ -198,12 +193,12 @@ export const storesConfig: StoreConfig[] = [
       },
       mobile: {
         rows: [
-          { height: 65, columns: [{ id: "level-up-table", width: 100 }] },
+          { height: 55, columns: [{ id: "level-up-table", width: 100 }] },
           {
-            height: 35,
+            height: 45,
             columns: [
               {
-                id: "power-ups",
+                id: "specials",
                 width: 100,
               },
             ],
@@ -297,7 +292,7 @@ export const storesConfig: StoreConfig[] = [
               {
                 id: "power-ups",
                 width: 35,
-                doubleRow: true
+                doubleRow: true,
               },
             ],
           },
