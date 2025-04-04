@@ -229,7 +229,7 @@
     },
     "351": {
       "name": "Special Multiplier",
-      "description": "Gain +3 multi for each special card owned."
+      "description": "Gain +3 multi for each active special card"
     },
     "352": {
       "name": "Deck Collector",
