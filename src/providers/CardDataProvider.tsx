@@ -1,11 +1,26 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { MODIFIERS_PRICE, MODIFIERS_RARITY } from "../data/modifiers.ts";
-import { SPECIALS_PRICE, SPECIALS_RARITY } from "../data/specialCards.ts";
+import {
+  SPECIALS_CUMULATIVE,
+  SPECIALS_PRICE,
+  SPECIALS_RARITY,
+} from "../data/specialCards.ts";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards.ts";
-import { SpecialCardInfo } from "../dojo/queries/getSpecialCardInfo.ts";
+import {
+  getSpecialCardInfo,
+  SpecialCardInfo,
+} from "../dojo/queries/getSpecialCardInfo.ts";
+import { useDojo } from "../dojo/useDojo.tsx";
 import { CardTypes } from "../enums/cardTypes.ts";
 import { CardData } from "../types/CardData.ts";
+import { useGameContext } from "./GameProvider.tsx";
 
 interface CardDataContextType {
   getCardData: (id: number) => CardData;
@@ -23,9 +38,19 @@ interface CardDataProviderProps {
 export const CardDataProvider = ({ children }: CardDataProviderProps) => {
   const { t } = useTranslation("cards");
 
+  const { modId, gameId } = useGameContext();
+
+  const {
+    setup: { client },
+  } = useDojo();
+
   const [cumulativeCardsData, setCumulativeCardsData] = useState<
     Record<number, SpecialCardInfo>
   >({});
+
+  useEffect(() => {
+    refetchSpecialCardsData();
+  }, []);
 
   const getCardData = (cardId: number) => {
     const isTraditional = cardId < 100;
@@ -43,9 +68,14 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     } else if (isSpecial) {
       const rarity = SPECIALS_RARITY[cardId];
       const price = SPECIALS_PRICE[rarity];
+      const cardData = cumulativeCardsData[cardId];
       return {
         name: t(`specials.${cardId}.name`),
-        description: t(`specials.${cardId}.description`),
+        description: t(`specials.${cardId}.description`, {
+          points: cardData?.points,
+          multi: cardData?.multi,
+          cash: cardData?.cash,
+        }),
         rarity,
         price,
         type: CardTypes.SPECIAL,
@@ -85,8 +115,18 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     }
   };
 
-  const refetchSpecialCardsData = () => {
-    return
+  const refetchSpecialCardsData = async () => {
+    const record: Record<number, SpecialCardInfo> = {};
+    SPECIALS_CUMULATIVE.forEach(async (specialId) => {
+      const cardInfo = await getSpecialCardInfo(
+        client,
+        modId,
+        gameId ?? 0,
+        specialId
+      );
+      record[specialId] = cardInfo;
+    });
+    setCumulativeCardsData(record);
   };
 
   return (
