@@ -15,7 +15,8 @@ import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
-import SparklesEffect from "./animations/SparklesEffect";
+import { ParticlesAnimation } from "./animations/ParticlesAnimation";
+import { VFX_SPARKLES } from "../constants/vfx";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -47,8 +48,8 @@ export const PowerUpComponent = ({
     powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
-    <SparklesEffect
-      spriteSrc={"/vfx/sparkle.png"}
+    <ParticlesAnimation
+      spriteSrc={VFX_SPARKLES}
       active={calculatedIsActive ?? false}
     >
       <AnimatedPowerUp idx={powerUp.idx}>
@@ -105,7 +106,7 @@ export const PowerUpComponent = ({
           </Flex>
         </Tooltip>
       </AnimatedPowerUp>
-    </SparklesEffect>
+    </ParticlesAnimation>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );

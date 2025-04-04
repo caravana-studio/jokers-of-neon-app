@@ -1,0 +1,1 @@
+export const VFX_SPARKLES = "/vfx/sparkle.png";

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Box, Image } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-interface SparklesEffectProps {
+interface ParticlesAnimationProps {
   children: ReactNode;
   spriteSrc: string;
   minSize?: number;
@@ -21,7 +21,7 @@ interface SparklesEffectProps {
   active?: boolean;
 }
 
-const SparklesEffect = ({
+export const ParticlesAnimation = ({
   children,
   spriteSrc,
   minSize = 0,
@@ -38,7 +38,7 @@ const SparklesEffect = ({
   offsetX = -10,
   offsetY = -10,
   active = true,
-}: SparklesEffectProps) => {
+}: ParticlesAnimationProps) => {
   if (!active) return <>{children}</>;
 
   return (
@@ -101,5 +101,3 @@ const SparklesEffect = ({
     </Box>
   );
 };
-
-export default SparklesEffect;
