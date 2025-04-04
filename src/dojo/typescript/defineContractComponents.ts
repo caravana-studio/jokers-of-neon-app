@@ -4,7 +4,8 @@ export type ContractComponents = Awaited<
   ReturnType<typeof defineContractComponents>
 >;
 
-const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
 export function defineContractComponents(world: World) {
   return {
@@ -379,6 +380,7 @@ export function defineContractComponents(world: World) {
           special_slots: RecsType.Number,
           cash: RecsType.Number,
           shop_config_id: RecsType.Number,
+          available_rerolls: RecsType.Number,
         },
         {
           metadata: {
@@ -393,6 +395,7 @@ export function defineContractComponents(world: World) {
               "u32",
               "u8",
               "u8",
+              "u32",
               "u32",
               "u32",
               "u32",

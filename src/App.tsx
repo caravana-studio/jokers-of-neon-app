@@ -7,10 +7,12 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AnimatePresence } from "framer-motion";
 import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
+import { Layout } from "./components/Layout";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
 import { PositionedControllerIcon } from "./icons/ControllerIcon";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
+import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver";
@@ -18,6 +20,7 @@ import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
@@ -25,20 +28,17 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
-import { Store } from "./pages/store/Store";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
+import { SettingsProvider } from "./providers/SettingsProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
-import { SettingsProvider } from "./providers/SettingsProvider";
-import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
-import { Layout } from "./components/Layout";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
 
@@ -140,7 +140,7 @@ function App() {
                                 element={
                                   <StoreProvider>
                                     <AnimatedPage>
-                                      <Store />
+                                      <DynamicStorePage />
                                     </AnimatedPage>
                                   </StoreProvider>
                                 }

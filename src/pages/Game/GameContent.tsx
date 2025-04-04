@@ -1,4 +1,3 @@
-import ControllerConnector from "@cartridge/connector/controller";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import {
   DndContext,
@@ -7,15 +6,13 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useAccount } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Joyride, { CallBackProps } from "react-joyride";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable.tsx";
-import { GameDeck } from "../../components/GameDeck.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { PositionedGameDeck } from "../../components/PositionedGameDeck.tsx";
 import {
   JOYRIDE_LOCALES,
   TUTORIAL_STEPS,
@@ -61,7 +58,6 @@ export const GameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
-  const [isDeckTableVisible, setIsDeckTableVisible] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -195,17 +191,6 @@ export const GameContent = () => {
           hideCloseButton
         />
 
-        <Flex
-          position={"absolute"}
-          zIndex={1000}
-          display={isDeckTableVisible ? "flex" : "none"}
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-        >
-          <DeckPreviewTable />
-        </Flex>
-
         <Box
           sx={{ width: "100%", height: "100%" }}
           className="game-tutorial-intro"
@@ -289,17 +274,7 @@ export const GameContent = () => {
           />
         </Box>
 
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 16,
-            right: 20,
-          }}
-          onMouseEnter={() => setIsDeckTableVisible(true)}
-          onMouseLeave={() => setIsDeckTableVisible(false)}
-        >
-          <GameDeck />
-        </Box>
+        <PositionedGameDeck />
       </Box>
     </Box>
   );

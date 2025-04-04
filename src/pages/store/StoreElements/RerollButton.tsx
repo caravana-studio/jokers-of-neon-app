@@ -1,21 +1,18 @@
 import { Box, Button, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiRefreshCw } from "react-icons/fi";
-import { CashSymbol } from "../../../components/CashSymbol";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { useGame } from "../../../dojo/queries/useGame";
 
 const RerollButton = () => {
   const { t } = useTranslation(["store"]);
-
   const { isSmallScreen } = useResponsiveValues();
+  const { locked, reroll } = useStore();
+  const game = useGame();
 
-  const { cash, locked, reroll, rerollInformation } = useStore();
-
-  const notEnoughCash = cash < rerollInformation.rerollCost;
-
-  const rerolled = rerollInformation.rerollExecuted;
-  const rerollDisabled = rerolled || locked || notEnoughCash;
+  const rerolled = game?.available_rerolls === 0;
+  const rerollDisabled = locked || rerolled;
 
   return (
     <Tooltip
@@ -39,6 +36,7 @@ const RerollButton = () => {
         onClick={() => {
           reroll();
         }}
+        zIndex={100}
       >
         {isSmallScreen && (
           <Box mr={2}>
@@ -46,11 +44,6 @@ const RerollButton = () => {
           </Box>
         )}
         {t("store.labels.reroll").toUpperCase()}
-        {!isSmallScreen && (
-          <>
-            &nbsp;{rerollInformation.rerollCost} <CashSymbol />
-          </>
-        )}
       </Button>
     </Tooltip>
   );
