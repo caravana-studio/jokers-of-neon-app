@@ -93,7 +93,7 @@
         "gameover": "Fim do jogo",
         "open-loot-box": "Abrir caixa",
         "store": "Recompensas - {{shopName}}",
-        "demo": "{{roundType}} - {{level}}",
+        "demo": "{{roundType}} {{level}}",
         "rage-round": "Rodada Rage",
         "round": "Rodada"
       },
