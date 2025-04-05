@@ -16,7 +16,7 @@ import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
 import { ParticlesAnimation } from "./animations/ParticlesAnimation";
-import { VFX_SPARKLES } from "../constants/vfx";
+import { VFX_DUST } from "../constants/vfx";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -49,8 +49,12 @@ export const PowerUpComponent = ({
 
   return powerUp ? (
     <ParticlesAnimation
-      spriteSrc={VFX_SPARKLES}
+      spriteSrc={VFX_DUST}
       active={calculatedIsActive ?? false}
+      maxSize={2}
+      amount={150}
+      offsetX={-4}
+      offsetY={-4}
     >
       <AnimatedPowerUp idx={powerUp.idx}>
         <Tooltip label={description && colorizeText(description)}>
