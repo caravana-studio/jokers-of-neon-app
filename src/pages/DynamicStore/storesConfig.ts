@@ -46,11 +46,11 @@ export const storesConfig: StoreConfig[] = [
             columns: [
               {
                 id: "modifiers",
-                width: 80,
+                width: 78,
               },
               {
                 id: "burn",
-                width: 20,
+                width: 22,
               },
             ],
           },
@@ -59,8 +59,8 @@ export const storesConfig: StoreConfig[] = [
       mobile: {
         rows: [
           { height: 30, columns: [{ id: "traditionals", width: 100 }] },
-          { height: 40, columns: [{ id: "modifiers", width: 100 }] },
-          { height: 30, columns: [{ id: "burn", width: 100 }] },
+          { height: 45, columns: [{ id: "modifiers", width: 100 }] },
+          { height: 25, columns: [{ id: "burn", width: 100 }] },
         ],
       },
     },
@@ -72,7 +72,7 @@ export const storesConfig: StoreConfig[] = [
       desktop: {
         rows: [
           {
-            height: 70,
+            height: 65,
             columns: [
               {
                 id: "specials",
@@ -81,7 +81,7 @@ export const storesConfig: StoreConfig[] = [
             ],
           },
           {
-            height: 30,
+            height: 35,
             columns: [
               {
                 id: "power-ups",
@@ -94,17 +94,16 @@ export const storesConfig: StoreConfig[] = [
       mobile: {
         rows: [
           {
-            height: 75,
+            height: 65,
             columns: [
               {
                 id: "specials",
                 width: 100,
-                doubleRow: true,
               },
             ],
           },
           {
-            height: 25,
+            height: 35,
             columns: [
               {
                 id: "power-ups",
@@ -115,7 +114,8 @@ export const storesConfig: StoreConfig[] = [
         ],
       },
     },
-  },{
+  },
+  {
     id: "specials",
     name: "Specials",
     distribution: {
@@ -166,13 +166,13 @@ export const storesConfig: StoreConfig[] = [
     },
   },
   {
-    id: "level-up",
-    name: "Level up",
+    id: "level-ups",
+    name: "Level ups",
     distribution: {
       desktop: {
         rows: [
           {
-            height: 50,
+            height: 45,
             columns: [
               {
                 id: "level-up-table",
@@ -181,15 +181,11 @@ export const storesConfig: StoreConfig[] = [
             ],
           },
           {
-            height: 50,
+            height: 55,
             columns: [
               {
-                id: "modifiers",
-                width: 80,
-              },
-              {
-                id: "burn",
-                width: 20,
+                id: "specials",
+                width: 100,
               },
             ],
           },
@@ -197,8 +193,118 @@ export const storesConfig: StoreConfig[] = [
       },
       mobile: {
         rows: [
-          { height: 65, columns: [{ id: "level-up-table", width: 100 }] },
-          { height: 35, columns: [{ id: "modifiers", width: 100 }] },
+          { height: 55, columns: [{ id: "level-up-table", width: 100 }] },
+          {
+            height: 45,
+            columns: [
+              {
+                id: "specials",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: "modifiers",
+    name: "Modifiers",
+    distribution: {
+      desktop: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "modifiers",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+      mobile: {
+        rows: [
+          { height: 40, columns: [{ id: "modifiers", width: 100 }] },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: "mix",
+    name: "Mix",
+    distribution: {
+      desktop: {
+        rows: [
+          {
+            height: 55,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 75,
+              },
+              {
+                id: "power-ups",
+                width: 25,
+                doubleRow: true,
+              },
+            ],
+          },
+          {
+            height: 45,
+            columns: [
+              {
+                id: "level-up-table",
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+      mobile: {
+        rows: [
+          {
+            height: 40,
+            columns: [
+              {
+                id: "loot-boxes",
+                width: 65,
+              },
+              {
+                id: "power-ups",
+                width: 35,
+                doubleRow: true,
+              },
+            ],
+          },
+          {
+            height: 60,
+            columns: [
+              {
+                id: "level-up-table",
+                width: 100,
+              },
+            ],
+          },
         ],
       },
     },

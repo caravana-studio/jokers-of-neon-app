@@ -43,8 +43,7 @@ export const PowerUpComponent = ({
   const { cardScale, isSmallScreen } = useResponsiveValues();
 
   const description =
-    powerUp?.power_up_id &&
-    getPowerUpData(powerUp.power_up_id)?.description;
+    powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
   return powerUp ? (
     <AnimatedPowerUp idx={powerUp.idx}>
@@ -53,7 +52,7 @@ export const PowerUpComponent = ({
           justifyContent="center"
           position="relative"
           width={`${width}px`}
-          borderRadius="17px"
+          borderRadius={"22%"}
           background={"black"}
           transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
           transition="all 0.2s ease-in-out"
@@ -65,7 +64,7 @@ export const PowerUpComponent = ({
             <PriceBox
               price={Number(price)}
               purchased={Boolean(purchased)}
-              isPowerUp
+              isPowerUp={!inStore}
               fontSize={isSmallScreen ? 12 : 16}
               discountFontSize={isSmallScreen ? 10 : 12}
               discountPrice={Number(discount_cost)}
@@ -92,7 +91,7 @@ export const PowerUpComponent = ({
           )}
           <CachedImage
             opacity={inStore || calculatedIsActive ? 1 : 0.6}
-            borderRadius={["12px", "17px"]}
+            borderRadius={"18%"}
             cursor="pointer"
             height={`${100}%`}
             width={`${100}%`}
@@ -119,7 +118,7 @@ const EmptyPowerUp = ({
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
-      borderRadius={["12px", "17px"]}
+      borderRadius={{base: "10px", sm: "15px"}}
       width={`${width}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}

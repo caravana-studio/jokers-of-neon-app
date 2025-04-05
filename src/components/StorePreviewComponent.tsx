@@ -55,10 +55,6 @@ export const StorePreviewComponent = ({
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
-  console.log("temporal Price", temporalPrice);
-  console.log("duration", duration);
-  console.log("onDurationChange", onDurationChange);
-
   return (
     <>
       <Flex

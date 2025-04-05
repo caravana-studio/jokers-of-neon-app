@@ -25,7 +25,6 @@
       "name": "Mudar para Coringa",
       "description": "A carta modificada será considerada como uma carta de Coringa"
     }
-    
   },
   "specialCardsData": {
     "300": {
@@ -132,6 +131,22 @@
       "name": "Sinergia de neon",
       "description": "Se mais de 50% das cartas jogadas são neon, todas as outras cartas são convertidas em neon"
     },
+    "327": {
+      "name": "Blackjack",
+      "description": "Atinge exatamente 21 com as cartas jogadas para ganhar +21 multi."
+    },
+    "328": {
+      "name": "Jogo Eficiente",
+      "description": "Ganhe +15 multi e +50 pontos ao jogar 3 ou menos cartas."
+    },
+    "329": {
+      "name": "Sacrifício Especial",
+      "description": "Ganhe +1 multi (acumulativo) para cada carta especial vendida."
+    },
+    "330": {
+      "name": "Quebrador de Rage",
+      "description": "Ganhe +3 multi (acumulativo) para cada Rage derrotada."
+    },
     "331": {
       "name": "Atalho",
       "description": "Reduz os pontos necessários para vencer o nível em 20%"
@@ -211,6 +226,58 @@
     "350": {
       "name": "Dado de Espadas",
       "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Espadas."
+    },
+    "351": {
+      "name": "Multiplicador Especial",
+      "description": "Ganhe +3 multi para cada carta especial que possuir."
+    },
+    "352": {
+      "name": "Colecionador",
+      "description": "Ganhe +1 pontos para cada carta no seu baralho."
+    },
+    "353": {
+      "name": "Reinício da Rage",
+      "description": "Permite relançar cartas de Rage uma vez por rodada. Custa 500 por cada Rage na rodada."
+    },
+    "354": {
+      "name": "Bônus de Pular",
+      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta)."
+    },
+    "355": {
+      "name": "Recompensas em Chamas",
+      "description": "Ganhe +25 pontos (acumulativos) para cada carta queimar do seu baralho."
+    },
+    "356": {
+      "name": "Guardião de Slot",
+      "description": "Ganhe +50 pontos para cada Slot desbloqueado, mas vazio."
+    },
+    "357": {
+      "name": "Apostadores de Alto Nível",
+      "description": "Ganhe +1 multi (acumulativo) para cada Carta Alta jogada."
+    },
+    "358": {
+      "name": "Roleta de Naipes",
+      "description": "Ganhe +5 multi para cada carta que corresponda a um naipe aleatório. O naipe muda a cada rodada."
+    },
+    "359": {
+      "name": "Guardião dos Paus",
+      "description": "Ganhe +10 pontos para cada carta de Paus no seu baralho."
+    },
+    "360": {
+      "name": "Trio de Espadas",
+      "description": "Se sua mão tiver pelo menos 3 cartas de Espadas, ganhe +100 pontos e +3 multi."
+    },
+    "361": {
+      "name": "Os Dois Contam",
+      "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
+    },
+    "374": {
+      "name": "Impulso de Curingas",
+      "description": "Cada curinga concede +100 pontos."
+    },
+    "379": {
+      "name": "Arco-íris",
+      "description": "Ganhe +200 pontos e +5 multi se sua jogada incluir todos os quatro naipes."
     }
   },
   "powerUpsData": {

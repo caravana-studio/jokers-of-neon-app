@@ -69,9 +69,9 @@ export const MobileCoins: React.FC<MobileCoins> = ({ fontSize, iconSize }) => {
         p={{ base: "5px 5px", sm: "15px 6px" }}
       >
         <Text fontSize={fontSize ?? "18px"} mt={1}>
-          {cash}
+          {cash}{" "}
+          <CashSymbol />
         </Text>
-        <CashSymbol />
       </Flex>
     </Flex>
   );

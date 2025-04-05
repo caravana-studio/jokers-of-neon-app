@@ -26,7 +26,7 @@ export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
           total={1}
           active={1}
         />
-        <Text style={{ whiteSpace: "nowrap" }}>X {rerolls}</Text>
+        <Text style={{ whiteSpace: "nowrap" }}>x {rerolls}</Text>
       </Flex>
     );
   else
