@@ -93,7 +93,7 @@
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
         "store": "Rewards - {{shopName}}",
-        "demo": "{{roundType}} - {{level}}",
+        "demo": "{{roundType}} {{level}}",
         "rage-round": "Rage Round",
         "round": "Round"
       },

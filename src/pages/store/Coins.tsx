@@ -49,12 +49,17 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
   );
 };
 
-export const MobileCoins = () => {
+interface MobileCoins {
+  fontSize?: string;
+  iconSize?: number;
+}
+
+export const MobileCoins: React.FC<MobileCoins> = ({ fontSize, iconSize }) => {
   const game = useGame();
   const cash = game?.cash ?? 0;
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
-      <CoinsIcon height={25} />
+      <CoinsIcon height={iconSize ?? 25} />
       <Flex
         gap={1.5}
         alignItems="center"
@@ -63,8 +68,10 @@ export const MobileCoins = () => {
         minWidth={{ base: "50px", sm: "70px" }}
         p={{ base: "5px 5px", sm: "15px 6px" }}
       >
-        <Text fontSize="18px" mt={1}>{cash}</Text>
-        <CashSymbol />
+        <Text fontSize={fontSize ?? "18px"} mt={1}>
+          {cash}{" "}
+          <CashSymbol />
+        </Text>
       </Flex>
     </Flex>
   );

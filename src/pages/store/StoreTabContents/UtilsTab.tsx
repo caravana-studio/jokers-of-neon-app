@@ -8,7 +8,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { BurnItem } from "../BurnItem";
+import { BurnComponent } from "../../DynamicStore/storeComponents/ BurnComponent";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
 
@@ -96,9 +96,6 @@ export const UtilsTab = () => {
           flexDirection={"column"}
           justifyContent={"space-between"}
           margin={"0 auto"}
-          bg="rgba(0, 0, 0, 0.6)"
-          borderRadius="10px"
-          boxShadow={`0px 0px 6px 0px ${GREY_LINE}`}
           width={"100%"}
           minHeight={"135px"}
         >
@@ -199,7 +196,7 @@ export const UtilsTab = () => {
             flexGrow={1}
           >
             <Flex gap={4} h="100%">
-              <BurnItem />
+              <BurnComponent />
 
               <Flex
                 flexDirection={"column"}

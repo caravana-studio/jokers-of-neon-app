@@ -55,7 +55,7 @@ const store = definePartsStyle({
   td: {
     color: "white",
     fontFamily: "Orbitron",
-    textAlign: "center",
+    p: 0,
     fontSize: [8, 10, 12, 14],
   },
   thead: {
@@ -64,7 +64,6 @@ const store = definePartsStyle({
     },
     td: {
       borderBottomWidth: 0,
-      px: [2, 2, 4],
       py: 2,
     },
   },
@@ -73,10 +72,9 @@ const store = definePartsStyle({
       fontSize: ["sm", "sm", "sm", "lg"],
       fontWeight: "bold",
       px: [1, 1, 4],
-      borderBottomWidth: 0,
     },
     td: {
-      py: [0],
+      py: [1],
     },
   },
 });
@@ -85,7 +83,7 @@ const storeMobile = definePartsStyle({
   td: {
     color: "white",
     fontFamily: "Orbitron",
-    textAlign: "center",
+    p: 0,
     fontSize: 8,
   },
   thead: {
@@ -96,7 +94,6 @@ const storeMobile = definePartsStyle({
     td: {
       borderBottomWidth: 0,
       py: 0,
-      px: 2,
     },
   },
   tbody: {
@@ -105,12 +102,14 @@ const storeMobile = definePartsStyle({
       fontWeight: "bold",
       p: 0,
       borderBottomWidth: 0,
-      whiteSpace: "initial"
+      whiteSpace: "initial",
     },
     td: {
       p: 0,
+      py: 2,
       px: 1,
-      width: "auto"
+      width: "auto",
+      textAlign: "center",
     },
   },
 });
