@@ -14,6 +14,7 @@ interface ICardImage3DProps {
   small?: boolean;
   hideTooltip?: boolean;
   height?: string;
+  layerCount?: number;
 }
 
 const checkImageExists = (src: string): Promise<boolean> => {
@@ -24,26 +25,28 @@ const checkImageExists = (src: string): Promise<boolean> => {
     img.onerror = () => resolve(false);
   });
 };
+
 export const CardImage3D = ({
   card,
   small = false,
   hideTooltip = false,
   height,
+  layerCount = 4,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
 
-  const [layer0Available, setLayer0Available] = useState(false);
-  const [layer1Available, setLayer1Available] = useState(false);
-  const [layer2Available, setLayer2Available] = useState(false);
+  const [availableLayers, setAvailableLayers] = useState<boolean[]>([]);
 
   useEffect(() => {
-    const src0 = `/Cards/3d/${cid}-l0.png`;
-    const src1 = `/Cards/3d/${cid}-l1.png`;
-    const src2 = `/Cards/3d/${cid}-l2.png`;
-
-    checkImageExists(src0).then(setLayer0Available);
-    checkImageExists(src1).then(setLayer1Available);
-    checkImageExists(src2).then(setLayer2Available);
+    const checkLayers = async () => {
+      const results = await Promise.all(
+        Array.from({ length: layerCount }, (_, i) =>
+          checkImageExists(`/Cards/3d/${cid}-l${i}.png`)
+        )
+      );
+      setAvailableLayers(results);
+    };
+    checkLayers();
   }, [cid]);
 
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
@@ -79,42 +82,41 @@ export const CardImage3D = ({
     />
   );
 
+  const getLayerImage = (index: number) => {
+    const scale = 1 - index * 0.05;
+    const translateZ = (small ? 20 : 40) * index;
+
+    return (
+      <CachedImage
+        key={`layer-${index}`}
+        position="absolute"
+        borderRadius={borderRadius}
+        src={`/Cards/3d/${cid}-l${index}.png`}
+        width="100%"
+        height={calculatedHeight}
+        pointerEvents="none"
+        transform={`scale(${scale}) translateZ(${translateZ}px)`}
+      />
+    );
+  };
+
   return (
     <ConditionalTilt cardId={cid} small={small}>
       {hideTooltip ? (
-        layer0Available && !showPlain ? (
+        availableLayers[0] && !showPlain ? (
           layer0Img
         ) : (
           plainImg
         )
       ) : (
         <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
-          {layer0Available && !showPlain ? layer0Img : plainImg}
+          {availableLayers[0] && !showPlain ? layer0Img : plainImg}
         </Tooltip>
       )}
 
-      {layer1Available && !showPlain && (
-        <CachedImage
-          position={"absolute"}
-          borderRadius={borderRadius}
-          src={`/Cards/3d/${cid}-l1.png`}
-          width={"100%"}
-          height={calculatedHeight}
-          pointerEvents="none"
-          transform={`scale(0.95) translateZ(${small ? 20 : 60}px)`}
-        />
-      )}
-      {layer2Available && !showPlain && (
-        <CachedImage
-          position={"absolute"}
-          borderRadius={borderRadius}
-          src={`/Cards/3d/${cid}-l2.png`}
-          width={"100%"}
-          height={calculatedHeight}
-          pointerEvents="none"
-          transform={`scale(0.9) translateZ(${small ? 40 : 80}px)`}
-        />
-      )}
+      {availableLayers
+        .map((exists, i) => exists && i > 0 && !showPlain && getLayerImage(i))
+        .filter(Boolean)}
 
       <CachedImage
         src={`/Cards/empty.png`}
