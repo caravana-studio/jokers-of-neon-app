@@ -7,6 +7,7 @@ import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
 import { IStorePreviewComponent } from "./StorePreviewComponent";
+import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
 
 export const StorePreviewPowerUpComponentMobile = ({
   image,
@@ -89,7 +90,8 @@ export const StorePreviewPowerUpComponentMobile = ({
             <Button
               size={"xs"}
               onClick={() => {
-                navigate("/redirect/store", { state: { lastTabIndex: tab } });
+                sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
+                navigate(-1);
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"

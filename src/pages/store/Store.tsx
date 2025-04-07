@@ -12,7 +12,10 @@ import {
   STORE_TUTORIAL_STEPS,
   TUTORIAL_STYLE,
 } from "../../constants/gameTutorial.ts";
-import { SKIP_TUTORIAL_STORE } from "../../constants/localStorage.ts";
+import {
+  SKIP_TUTORIAL_STORE,
+  STORE_LAST_TAB_INDEX,
+} from "../../constants/localStorage.ts";
 
 import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
@@ -25,8 +28,8 @@ export const Store = () => {
   const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
-  const location = useLocation();
-  const lastTabIndex = location.state?.lastTabIndex ?? 0;
+  const lastTabIndex =
+    Number(sessionStorage.getItem(STORE_LAST_TAB_INDEX)) ?? 0;
 
   useEffect(() => {
     setIsRageRound(false);

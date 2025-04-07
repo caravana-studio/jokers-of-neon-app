@@ -92,7 +92,10 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+              <Flex
+                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+                justifyContent={"center"}
+              >
                 {image}
               </Flex>
             )}
@@ -251,7 +254,7 @@ export const StorePreviewComponent = ({
             {buyButton}
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate("/store")}
+              onClick={() => navigate(-1)}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >

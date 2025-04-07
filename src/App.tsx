@@ -217,9 +217,11 @@ function App() {
                                 path="/manage"
                                 element={
                                   <StoreProvider>
-                                    <AnimatedPage>
-                                      <ManagePage />
-                                    </AnimatedPage>
+                                    <CardHighlightProvider>
+                                      <AnimatedPage>
+                                        <ManagePage />
+                                      </AnimatedPage>
+                                    </CardHighlightProvider>
                                   </StoreProvider>
                                 }
                               />

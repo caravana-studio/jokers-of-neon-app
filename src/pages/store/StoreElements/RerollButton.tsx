@@ -10,7 +10,6 @@ const RerollButton = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { locked, reroll } = useStore();
   const game = useGame();
-
   const rerolled = game?.available_rerolls === 0;
   const rerollDisabled = locked || rerolled;
 
