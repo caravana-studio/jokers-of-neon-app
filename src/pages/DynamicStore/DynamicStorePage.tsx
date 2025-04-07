@@ -10,11 +10,12 @@ import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
-import { storesConfig } from "./storesConfig";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
+import { storesConfig } from "./storesConfig";
 
 export const DynamicStorePage = () => {
   const DECK_SHOP_CONFIG_ID = 1;
@@ -165,12 +166,32 @@ export const DynamicStorePage = () => {
                     <Flex
                       gap={2}
                       alignItems="center"
-                      justifyContent={{ base: "center", sm: "flex-start" }}
+                      justifyContent={{
+                        base:
+                          col.id === "specials" ? "space-between" : "center",
+                        sm: "space-between",
+                      }}
                     >
-                      <Heading fontSize={{ base: "xs", sm: "sm" }}>
-                        {t(`titles.${col.id}`)}
-                      </Heading>
-                      <DefaultInfo title={col.id} />
+                      <Flex gap={2} alignItems=" center">
+                        <Heading fontSize={{ base: "xs", sm: "sm" }}>
+                          {t(`titles.${col.id}`)}
+                        </Heading>
+                        <DefaultInfo title={col.id} />
+                      </Flex>
+                      {col.id === "specials" && (
+                        <Button
+                          size="xs"
+                          fontSize={{ base: "9px", sm: "12px" }}
+                          px={{ base: 3, sm: 6 }}
+                          borderRadius={7}
+                          boxShadow={`0 0 10px 5px ${BLUE}`}
+                          onClick={() => {
+                            navigate("/preview/slot");
+                          }}
+                        >
+                          {t("unlock-slot")}
+                        </Button>
+                      )}
                     </Flex>
                     {getComponent(col.id, col.doubleRow ?? false)}
                   </Flex>
