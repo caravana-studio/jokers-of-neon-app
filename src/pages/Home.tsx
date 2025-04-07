@@ -38,7 +38,7 @@ export const Home = () => {
 
   useEffect(() => {
     if (account?.account && playButtonClicked) {
-      navigate(enableMods ? "/mods" : "/demo");
+      navigate(enableMods ? "/mods" : "/my-games");
     }
   }, [account, playButtonClicked]);
 
