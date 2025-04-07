@@ -10,14 +10,11 @@ import { useFeatureFlagEnabled } from "../../featureManagement/useFeatureFlagEna
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameMenuProps } from "./GameMenu.tsx";
-import { useState } from "react";
-import { SettingsModal } from "../SettingsModal.tsx";
 import { connectControllerCommand } from "../../commands/connectController.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useSettingsModal } from "../../hooks/useSettingsModal.tsx";
 
 export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
-  const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const username = useUsername();
   const { restartGame } = useGameContext();
   const navigate = useNavigate();
@@ -32,9 +29,6 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
 
   return (
     <>
-      {isSettingsModalOpened && (
-        <SettingsModal close={() => setSettingsModalOpened(false)} />
-      )}
       <Menu placement="right" variant={"menuGameOutline"}>
         <MenuButton
           height={["30px", "45px"]}
