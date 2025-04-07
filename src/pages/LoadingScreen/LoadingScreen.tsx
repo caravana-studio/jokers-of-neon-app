@@ -72,7 +72,7 @@ export const LoadingScreen = ({
                   position="absolute"
                   bottom="20px"
                   right="20px"
-                  variant="secondarySolid"
+                  variant={"ghost"}
                 >
                   Skip
                 </Button>
