@@ -226,7 +226,6 @@ function App() {
                                 }
                               />
                             </Routes>
-                            {!IS_DEV && <PositionedControllerIcon />}
                           </AnimatePresence>
                         </Layout>
                       </Background>
