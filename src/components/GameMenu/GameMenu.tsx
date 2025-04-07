@@ -1,16 +1,16 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDisconnect } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useUsername } from "../dojo/utils/useUsername.tsx";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
-import { useGameContext } from "../providers/GameProvider";
-import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { GAME_ID, LOGGED_USER } from "../../constants/localStorage.ts";
+import { useUsername } from "../../dojo/utils/useUsername.tsx";
+import { useFeatureFlagEnabled } from "../../featureManagement/useFeatureFlagEnabled.ts";
+import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
-interface GameMenuProps {
+export interface GameMenuProps {
   showTutorial?: () => void;
 }
 
@@ -78,50 +78,6 @@ export const GameMenu = ({ showTutorial }: GameMenuProps) => {
           </MenuItem>
         </MenuList>
       </Menu>
-    </>
-  );
-};
-
-interface PositionedGameMenuProps extends GameMenuProps {
-  decoratedPage?: boolean;
-  bottomPositionDesktop?: number | string;
-}
-export const PositionedGameMenu = ({
-  decoratedPage = false,
-  bottomPositionDesktop,
-  ...rest
-}: PositionedGameMenuProps) => {
-  const { isSmallScreen } = useResponsiveValues();
-
-  if (!bottomPositionDesktop)
-    bottomPositionDesktop = decoratedPage ? "70px" : "20px";
-
-  return (
-    <>
-      {isSmallScreen ? (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: "5px",
-            right: "5px",
-            zIndex: 1000,
-            transform: "scale(0.7)",
-          }}
-        >
-          <GameMenu {...rest} />
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: bottomPositionDesktop,
-            left: decoratedPage ? 20 : "20px",
-            zIndex: 1000,
-          }}
-        >
-          <GameMenu {...rest} />
-        </Box>
-      )}
     </>
   );
 };

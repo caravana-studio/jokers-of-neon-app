@@ -93,7 +93,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size={"md"} width={"50%"}>
                 {languageLbl}
               </Text>
-              <Menu variant={"menuOutline"}>
+              <Menu variant={"menuSettingsOutline"}>
                 <MenuButton width={"100%"}>
                   <Flex alignItems="center" gap={2}>
                     <MdArrowDropDown /> {languageMap[selectedLanguage]}
@@ -174,7 +174,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {animSpeedLbl}
               </Text>
-              <Menu variant={"menuOutline"}>
+              <Menu variant={"menuSettingsOutline"}>
                 <MenuButton width={"100%"}>
                   <Flex alignItems="center" gap={2}>
                     <MdArrowDropDown />{" "}
@@ -202,7 +202,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {lootboxTransitionLbl}
               </Text>
-              <Menu variant={"menuOutline"}>
+              <Menu variant={"menuSettingsOutline"}>
                 <MenuButton width={"100%"}>
                   <Flex alignItems="center" gap={2}>
                     <MdArrowDropDown />{" "}

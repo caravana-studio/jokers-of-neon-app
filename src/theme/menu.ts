@@ -9,6 +9,8 @@ const boxShadow = `0px 0px 8px 2px ${BLUE}`;
 const boxShadowMenuItem = `0px 0px 10px 2px ${BLUE}, inset 0px 0px 10px 2px ${BLUE}`;
 const border = `3px solid ${BLUE}`;
 const borderThin = `2px solid ${BLUE}`;
+const boxShadowThick = `0px 0px 15px 7px ${BLUE}`;
+const borderDisabled = `1px solid rgb(255,255,255)`;
 
 // define the base component styles
 const baseStyle = definePartsStyle({
@@ -63,8 +65,31 @@ const baseStyle = definePartsStyle({
   },
 })
 
+const menuGameOutline = definePartsStyle({
+  button: {
+    ...baseStyle.button,
+    border: borderDisabled,
+    _hover: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+    },
+    _focus: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+      outline: "none",
+    },
+    _active: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+    }
+  },
+})
 
-const menuOutline = definePartsStyle((props) => {
+
+const menuSettingsOutline = definePartsStyle((props) => {
   const commonButtonStyles = {
     bg: "greyMedium",
     border: 0,
@@ -114,6 +139,7 @@ const menuOutline = definePartsStyle((props) => {
 export const menuTheme = defineMultiStyleConfig({
   baseStyle,
   variants: {
-    menuOutline,
+    menuSettingsOutline,
+    menuGameOutline,
   },
 });
