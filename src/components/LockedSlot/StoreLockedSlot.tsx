@@ -22,7 +22,7 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
       ? cash < Number(specialSlotItem?.discount_cost ?? 0)
       : cash < Number(price));
 
-  const canBuy = !notEnoughCash && !locked && !specialSlotItem.purchased;
+  const canBuy = !notEnoughCash && !locked;
 
   return (
     <BaseLockedSlot

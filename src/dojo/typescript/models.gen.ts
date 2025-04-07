@@ -294,7 +294,6 @@ export interface SlotSpecialCardsItem {
 	game_id: number;
 	cost: number;
 	discount_cost: number;
-	purchased: boolean;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::shop::shop::SlotSpecialCardsItemValue` struct
@@ -1156,11 +1155,10 @@ export const schema: SchemaType = {
 			purchased: false,
 		},
 		SlotSpecialCardsItem: {
-			fieldOrder: ['game_id', 'cost', 'discount_cost', 'purchased'],
+			fieldOrder: ['game_id', 'cost', 'discount_cost'],
 			game_id: 0,
 			cost: 0,
 			discount_cost: 0,
-			purchased: false,
 		},
 		SlotSpecialCardsItemValue: {
 			fieldOrder: ['cost', 'discount_cost', 'purchased'],
