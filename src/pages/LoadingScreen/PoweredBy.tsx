@@ -29,12 +29,17 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
       width={"100%"}
     >
       <FadeInOut isVisible={visibleElements.text} fadeOut>
-        <Text paddingLeft="10px" color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>
+        <Text
+          paddingLeft="10px"
+          color="white"
+          fontSize={isMobile ? "1.2rem" : "2.2rem"}
+          mb={12}
+        >
           POWERED BY
         </Text>
       </FadeInOut>
       <Flex
-        gap={40}
+        gap={isMobile ? 8 : 20}
         width={"100%"}
         px={4}
         justifyContent={"center"}
