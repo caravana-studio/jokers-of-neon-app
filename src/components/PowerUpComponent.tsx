@@ -51,10 +51,21 @@ export const PowerUpComponent = ({
     <ParticlesAnimation
       spriteSrc={VFX_DUST}
       active={calculatedIsActive ?? false}
-      maxSize={2}
-      amount={150}
       offsetX={-4}
       offsetY={-4}
+      minSize={0}
+      maxSize={2}
+      amount={150}
+      width={90}
+      height={60}
+      speed={3}
+      expansionSpeed={2}
+      minRadiusX={1}
+      maxRadiusX={1.1}
+      minRadiusY={0.8}
+      maxRadiusY={1.05}
+      cornerRadius={18}
+      backward
     >
       <AnimatedPowerUp idx={powerUp.idx}>
         <Tooltip label={description && colorizeText(description)}>
