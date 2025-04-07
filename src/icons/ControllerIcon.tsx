@@ -1,24 +1,21 @@
-import ControllerConnector from "@cartridge/connector/controller";
 import { Box } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { BarMenuBtn } from "../components/BarMenu/BarMenuBtn";
 import { Icons } from "../constants/icons";
+import { connectControllerCommand } from "../commands/connectController";
 
 export const ControllerIcon = ({ width }: { width: string }) => {
   const { t } = useTranslation("game");
   const { connector } = useAccount();
-  const controllerConnector = connector as never as ControllerConnector;
 
   return (
     <BarMenuBtn
       icon={Icons.CARTRIDGE}
       description={t("controller")}
       width={width}
-      onClick={async () => {
-        controllerConnector?.controller.openProfile("achievements");
-      }}
+      onClick={() => connectControllerCommand(connector)}
     />
   );
 };

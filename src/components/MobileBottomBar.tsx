@@ -2,7 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
-import { GameMenu } from "./GameMenu";
+import { GameMenu } from "./GameMenu/GameMenu";
+import { GameMenuMobile } from "./GameMenu/GameMenu.mobile";
 
 interface MobileBottomBarProps {
   firstButton: ReactNode;
@@ -29,7 +30,7 @@ export const MobileBottomBar = ({
       justifyContent={"space-between"}
       zIndex={1000}
     >
-      <GameMenu
+      <GameMenuMobile
         showTutorial={
           setRun
             ? () => {
