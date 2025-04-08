@@ -45,8 +45,8 @@
       "special-cards-label": "Cartas especiales",
       "remove-special-cards-label": "Vender",
       "confirmation-modal": {
-        "title": "Eliminar carta especial",
-        "description": "¿Estás seguro de que quieres eliminar esta carta especial? No hay forma de deshacer esta acción."
+        "title": "Vender carta especial",
+        "description": "¿Estás seguro de que quieres Vender esta carta especial por ¢{{price}}? No hay forma de deshacer esta acción."
       }
     },
     "hand-section": {
