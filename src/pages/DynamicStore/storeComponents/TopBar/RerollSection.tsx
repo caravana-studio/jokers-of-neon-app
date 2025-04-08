@@ -5,6 +5,7 @@ import { MobileCoins } from "../../../store/Coins";
 import { RerollIndicators } from "./RerollIndicators";
 import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 import { useGame } from "../../../../dojo/queries/useGame";
+import CachedImage from "../../../../components/CachedImage";
 
 interface RerollSectionProps {
   hideReroll?: boolean;
@@ -16,11 +17,8 @@ export const RerollSection: React.FC<RerollSectionProps> = ({ hideReroll }) => {
   const availableRerolls = Number(game?.available_rerolls ?? 0);
 
   return (
-    <Flex
-      justifyContent={!hideReroll ? "space-between" : "flex-end"}
-      alignItems={"center"}
-    >
-      {!hideReroll && (
+    <Flex justifyContent={"space-between"} alignItems={"center"}>
+      {!hideReroll ? (
         <Flex gap={isSmallScreen ? 1 : 4} py={1} alignItems={"center"}>
           <RerollButton />
           <Flex ml={4} columnGap={2}>
@@ -28,7 +26,17 @@ export const RerollSection: React.FC<RerollSectionProps> = ({ hideReroll }) => {
             <DefaultInfo title="reroll" />
           </Flex>
         </Flex>
+      ) : (
+        <Flex>
+          <CachedImage
+            src="/logos/logo-variant.svg"
+            alt="logo-variant"
+            width={"40%"}
+            maxW={"300px"}
+          />
+        </Flex>
       )}
+
       <Flex>
         <MobileCoins
           fontSize={isSmallScreen ? "12px" : undefined}

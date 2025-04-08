@@ -23,26 +23,27 @@ export const ManagePageContent = ({
   goBackButton,
 }: ManagePageContentProps) => {
   return (
-    <BackgroundDecoration>
+    <BackgroundDecoration hidelogo>
       <Flex
         height={"100%"}
         flexDirection={"column"}
         gap={2}
         alignItems={"center"}
         justifyContent={"space-around"}
+        mt={40}
       >
         <Box width={"100%"} mb={2}>
           <StoreTopBar hideReroll />
         </Box>
-        <SpecialCards
-          discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
-          onCardClick={onCardClick}
-        />
-        <Powerups />
-        <Flex gap={12} mt={8}>
-          {goBackButton}
+        <Flex direction={"column"} mb={12} mt={16} gap={16} maxHeight={"90%"}>
+          <SpecialCards
+            discardedCards={discardedCards}
+            preselectedCard={preselectedCard}
+            onCardClick={onCardClick}
+          />
+          <Powerups />
         </Flex>
+        <Flex mt={[0, 0, 0, 4]}>{goBackButton}</Flex>
       </Flex>
     </BackgroundDecoration>
   );
