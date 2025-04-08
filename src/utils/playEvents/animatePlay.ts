@@ -36,6 +36,7 @@ interface AnimatePlayConfig {
   handsLeft: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) =>  void;
+  setIsRageRound: (isRageRound: boolean) => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -68,7 +69,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     replaceCards,
     handsLeft,
     setAnimateSecondChanceCard,
-    setCardTransformationLock
+    setCardTransformationLock,
+    setIsRageRound
   } = config;
 
   if (!playEvents) return;
@@ -306,6 +308,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           ...playEvents.detailEarned!,
           level: level,
         });
+        setIsRageRound(false);
         navigate("/rewards");
       }, 1000);
       setPreSelectionLocked(true);
