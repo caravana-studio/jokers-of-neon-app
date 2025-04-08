@@ -56,7 +56,7 @@ export const UtilsTab = () => {
 
   const buySlotButton = createBuyButton(() => {
     buySpecialSlot();
-  }, notEnoughCashSlot || specialSlotItem.purchased);
+  }, notEnoughCashSlot);
 
   const buyBurnButton = createBuyButton(() => {
     if (!burnItem.purchased) {

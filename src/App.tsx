@@ -217,14 +217,15 @@ function App() {
                                 path="/manage"
                                 element={
                                   <StoreProvider>
-                                    <AnimatedPage>
-                                      <ManagePage />
-                                    </AnimatedPage>
+                                    <CardHighlightProvider>
+                                      <AnimatedPage>
+                                        <ManagePage />
+                                      </AnimatedPage>
+                                    </CardHighlightProvider>
                                   </StoreProvider>
                                 }
                               />
                             </Routes>
-                            {!IS_DEV && <PositionedControllerIcon />}
                           </AnimatePresence>
                         </Layout>
                       </Background>

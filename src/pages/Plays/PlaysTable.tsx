@@ -211,7 +211,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       fontSize={isMobile ? 6 : 10}
                       borderRadius={isMobile ? 6 : 12}
                       height={isMobile ? 5 : 7}
-                      mr={{base: 0, sm: 2}}
+                      mr={{ base: 0, sm: 2 }}
                     >
                       {t("store.plays-table.level-up")}
                     </Button>
@@ -274,7 +274,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                                   {Number(play.multi)}
                                 </Box>
                               </Flex>
-
                               <Heading
                                 lineHeight={0.9}
                                 mx={{ base: 0, sm: 3 }}
@@ -339,7 +338,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                               storePlay.purchased ? (
                                 <Heading
                                   color={GREY_LINE}
-                                  fontSize={{base: 7, sm: 12}}
+                                  fontSize={{ base: 7, sm: 12 }}
                                 >
                                   {t(
                                     "store.plays-table.purchased"

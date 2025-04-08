@@ -253,7 +253,7 @@
     },
     "357": {
       "name": "Apostadores de Alto Nível",
-      "description": "Ganhe +1 multi (acumulativo) para cada Carta Alta jogada."
+      "description": "1 em 2 chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada."
     },
     "358": {
       "name": "Roleta de Naipes",
@@ -270,6 +270,14 @@
     "361": {
       "name": "Os Dois Contam",
       "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
+    },
+    "374": {
+      "name": "Impulso de Curingas",
+      "description": "Cada curinga concede +100 pontos."
+    },
+    "379": {
+      "name": "Arco-íris",
+      "description": "Ganhe +200 pontos e +5 multi se sua jogada incluir todos os quatro naipes."
     }
   },
   "powerUpsData": {

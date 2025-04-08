@@ -8,13 +8,12 @@ import { useCurrentPageName } from "../../hooks/useCurrentPageName";
 import { ControllerIcon } from "../../icons/ControllerIcon";
 import { AnimatedText } from "../AnimatedText";
 import { DiscordLink } from "../DiscordLink";
-import { GameMenu } from "../GameMenu";
-import { SettingsModal } from "../SettingsModal";
+import { GameMenu } from "../GameMenu/GameMenu";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { BarMenuComingSoonBtn } from "./BarMenuComingSoonBtn";
+import { useSettingsModal } from "../../hooks/useSettingsModal";
 
 export const SidebarMenu = () => {
-  const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
@@ -23,6 +22,7 @@ export const SidebarMenu = () => {
   const iconWidth = "50%";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+  const { openSettings, Modal } = useSettingsModal();
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,9 +45,6 @@ export const SidebarMenu = () => {
       top={0}
       backgroundColor={"black"}
     >
-      {isSettingsModalOpened && (
-        <SettingsModal close={() => setSettingsModalOpened(false)} />
-      )}
       <Flex
         flexDirection={"column"}
         gap={4}
@@ -83,13 +80,10 @@ export const SidebarMenu = () => {
         <BarMenuBtn
           icon={Icons.SETTINGS}
           description={t("game.game-menu.settings-btn")}
-          onClick={() => {
-            if (setSettingsModalOpened) {
-              setSettingsModalOpened(true);
-            }
-          }}
+          onClick={openSettings}
           width={iconWidth}
         />
+        {Modal}
       </Flex>
       <Flex
         gap={4}

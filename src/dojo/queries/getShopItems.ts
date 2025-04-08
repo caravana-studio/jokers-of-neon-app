@@ -8,7 +8,6 @@ import {
 export const EMPTY_SPECIAL_SLOT_ITEM: SlotSpecialCardsItem = {
   game_id: 0,
   cost: 0,
-  purchased: true,
   discount_cost: 0,
 };
 

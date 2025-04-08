@@ -18,6 +18,8 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
+import customTheme from "./theme/theme";
 
 const I18N_NAMESPACES = [
   "game",
@@ -45,6 +47,8 @@ async function init() {
 
   let setCanFadeOut: (value: boolean) => void = () => {};
 
+  const theme = extendTheme(customTheme);
+
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
     root.render(
@@ -70,14 +74,16 @@ async function init() {
     : new Promise<void>((resolve) => {
         const updateLoadingScreen = (canFadeOut: boolean) => {
           root.render(
-            <LoadingScreen
-              showPresentation={true}
-              onPresentationEnd={() => {
-                window.localStorage.setItem(SKIP_PRESENTATION, "true");
-                resolve();
-              }}
-              canFadeOut={canFadeOut}
-            />
+            <ChakraBaseProvider theme={theme}>
+              <LoadingScreen
+                showPresentation={true}
+                onPresentationEnd={() => {
+                  window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                  resolve();
+                }}
+                canFadeOut={canFadeOut}
+              />
+            </ChakraBaseProvider>
           );
         };
 

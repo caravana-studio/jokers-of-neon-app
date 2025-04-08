@@ -3,7 +3,11 @@ import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 import { MenuSection } from "./MenuSection";
 import { RerollSection } from "./RerollSection";
 
-export const StoreTopBar = () => {
+interface StoreTopBarProps {
+  hideReroll?: boolean;
+}
+
+export const StoreTopBar: React.FC<StoreTopBarProps> = ({ hideReroll }) => {
   const { isSmallScreen } = useResponsiveValues();
 
   return (
@@ -21,7 +25,7 @@ export const StoreTopBar = () => {
           <Divider orientation="horizontal" color="white" />
         </>
       )}
-      <RerollSection />
+      <RerollSection hideReroll={hideReroll} />
     </Flex>
   );
 };

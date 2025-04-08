@@ -15,6 +15,7 @@
     "dynamic": {
       "manage-items": "Gestionar items",
       "next": "Siguiente",
+      "unlock-slot": "Desbloquear espacio",
       "titles": {
         "traditionals": "Cartas tradicionales y neon",
         "modifiers": "Cartas modificadoras",

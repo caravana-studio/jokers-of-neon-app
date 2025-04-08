@@ -46,6 +46,17 @@ const outline = defineStyle({
   },
 });
 
+const ghost = defineStyle({
+  backgroundColor: "transparent",
+  border: "none",
+  color: "white",
+  "&:hover": {
+    backgroundColor: "transparent",
+    border: "none",
+    boxShadow: "none",
+  },
+});
+
 const defaultOutline = defineStyle({
   backgroundColor: "transparent",
   border: `1px solid rgb(255,255,255) !important`,
@@ -129,7 +140,7 @@ export const buttonTheme = defineStyleConfig({
     color: "white",
     textTransform: "uppercase",
   },
-  variants: { solid, outline, secondarySolid, defaultOutline, discardSecondarySolid, outlineSecondaryGlow,
+  variants: { ghost, solid, outline, secondarySolid, defaultOutline, discardSecondarySolid, outlineSecondaryGlow,
      outlinePrimaryGlow, outlineSecondaryGlowActive, transparent },
   sizes: {
     sm: {

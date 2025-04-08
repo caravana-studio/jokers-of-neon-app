@@ -23,7 +23,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const visible = (game?.special_slots ?? 1) < maxSpecialCards;
 
   const price = specialSlotItem?.cost;
-  const purchased = specialSlotItem?.purchased ?? false;
+  const purchased = false;
 
   const height = CARD_HEIGHT * cardScale * 0.8;
   const width = CARD_WIDTH * cardScale * 0.8;

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEffect } from "react";
@@ -23,6 +23,7 @@ import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 interface MobileCardHighlightProps {
   card: Card;
   confirmationBtn?: boolean;
+  customBtn?: ReactNode;
   showExtraInfo?: boolean;
   isPack?: boolean;
 }
@@ -32,6 +33,7 @@ export const MobileCardHighlight = ({
   confirmationBtn = false,
   showExtraInfo = false,
   isPack = false,
+  customBtn,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
@@ -217,6 +219,7 @@ export const MobileCardHighlight = ({
             {getLabel()}
           </Button>
         )}
+      <Box py={4}>{customBtn}</Box>
     </Flex>
   );
 };

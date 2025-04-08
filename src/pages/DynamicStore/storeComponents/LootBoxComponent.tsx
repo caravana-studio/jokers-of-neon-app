@@ -22,7 +22,7 @@ export const LootBoxComponent = () => {
         h="100%"
         w="100%"
         justifyContent={{ base: "center" }}
-        alignItems={{base: 'top', sm: "flex-end"}}
+        alignItems={{ base: "top", sm: "flex-end" }}
         gap={{ base: 3, sm: 4 }}
       >
         {packs.map((pack) => {
