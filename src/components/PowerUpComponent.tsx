@@ -15,6 +15,7 @@ import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
+import { PurchasedLbl } from "./PurchasedLbl";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -32,8 +33,6 @@ export const PowerUpComponent = ({
   containerSx,
   isActive,
 }: PowerUpProps) => {
-  const { t } = useTranslation(["store"]);
-
   const { powerUpIsPreselected } = useGameContext();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
@@ -70,25 +69,11 @@ export const PowerUpComponent = ({
               discountPrice={Number(discount_cost)}
             />
           )}
-          {purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: isSmallScreen
-                  ? `${width / 3 - 10}px`
-                  : `${width / 3 - 15}px`,
-                left: isSmallScreen ? 1 : -1,
-                zIndex: 10,
-              }}
-            >
-              <Heading
-                variant="italic"
-                fontSize={isSmallScreen ? 6 : 11 * cardScale}
-              >
-                {t("store.labels.purchased").toLocaleUpperCase()}
-              </Heading>
-            </Box>
-          )}
+          <PurchasedLbl
+            purchased={purchased ?? false}
+            topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
+            fontSize={isSmallScreen ? 6 : 11 * cardScale}
+          />
           <CachedImage
             opacity={inStore || calculatedIsActive ? 1 : 0.6}
             borderRadius={"18%"}
@@ -118,7 +103,7 @@ const EmptyPowerUp = ({
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}
       border={`1px solid ${GREY_LINE}`}
-      borderRadius={{base: "10px", sm: "15px"}}
+      borderRadius={{ base: "10px", sm: "15px" }}
       width={`${width}px`}
       mt={isSmallScreen ? 1.5 : 2.5}
       mx={2}
