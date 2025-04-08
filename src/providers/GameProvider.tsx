@@ -346,6 +346,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             handsLeft,
             setAnimateSecondChanceCard,
             setCardTransformationLock,
+            setIsRageRound,
           });
         } else {
           setPreSelectionLocked(false);
