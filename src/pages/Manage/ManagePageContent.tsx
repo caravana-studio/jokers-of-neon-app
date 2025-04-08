@@ -5,6 +5,7 @@ import { Card } from "../../types/Card";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
 import { Coins } from "../store/Coins";
+import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
 
 export interface ManagePageContentProps {
   lastIndexTab?: number;
@@ -30,8 +31,8 @@ export const ManagePageContent = ({
         alignItems={"center"}
         justifyContent={"space-around"}
       >
-        <Box position={"absolute"} top={28} right={"22%"}>
-          <Coins />
+        <Box width={"100%"} mb={2}>
+          <StoreTopBar hideReroll />
         </Box>
         <SpecialCards
           discardedCards={discardedCards}
