@@ -49,17 +49,17 @@ export const PowerUpComponent = ({
 
   return powerUp ? (
     <ParticlesAnimation
-      spriteSrc={VFX_DUST}
+      spriteSrc={powerUp.vfx ?? ""}
       active={calculatedIsActive ?? false}
       offsetX={-4}
-      offsetY={-4}
+      offsetY={-8}
       minSize={0}
-      maxSize={2}
-      amount={150}
+      maxSize={3}
+      amount={30}
       width={isSmallScreen ? 65 : 90}
       height={isSmallScreen ? 40 : 60}
       speed={3}
-      expansionSpeed={2}
+      expansionSpeed={6}
       minRadiusX={1}
       maxRadiusX={1.1}
       minRadiusY={0.8}
@@ -68,17 +68,17 @@ export const PowerUpComponent = ({
       backward
     >
       <ParticlesAnimation
-        spriteSrc={VFX_DUST}
+        spriteSrc={powerUp.vfx ?? ""}
         active={calculatedIsActive ?? false}
         offsetX={-4}
         offsetY={-4}
         minSize={0}
-        maxSize={2}
-        amount={50}
+        maxSize={3}
+        amount={20}
         width={isSmallScreen ? 65 : 90}
         height={isSmallScreen ? 40 : 60}
         speed={3}
-        expansionSpeed={4}
+        expansionSpeed={8}
         minRadiusX={0.7}
         maxRadiusX={1.1}
         minRadiusY={0.7}
