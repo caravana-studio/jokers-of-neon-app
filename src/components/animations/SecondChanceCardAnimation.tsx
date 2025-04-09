@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 
 export const SecondChanceCardAnimation = () => {
-  const { t } = useTranslation("effects");
+  const { t } = useTranslation("cards");
   const { setAnimateSecondChanceCard } = useCardAnimations();
   const navigate = useNavigate();
   useEffect(() => {

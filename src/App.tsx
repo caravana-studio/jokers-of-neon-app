@@ -9,7 +9,6 @@ import { AnimatedPage } from "./components/AnimatedPage";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
 import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
-import { PositionedControllerIcon } from "./icons/ControllerIcon";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
@@ -30,6 +29,7 @@ import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
+import { CardDataProvider } from "./providers/CardDataProvider";
 import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
@@ -52,187 +52,192 @@ function App() {
         <ChakraBaseProvider theme={theme}>
           <FeatureFlagProvider>
             <CardAnimationsProvider>
-              <GameProvider>
-                <PageTransitionsProvider>
-                  <InformationPopUpProvider>
-                    <AudioPlayerProvider
-                      baseSongPath={"/music/new-track.mp3"}
-                      rageSongPath={"/music/rage_soundtrack.mp3"}
-                    >
-                      <Background>
-                        <Layout>
-                          <AnimatePresence mode="wait">
-                            <Routes location={location} key={location.pathname}>
-                              <Route
-                                path="/"
-                                element={
-                                  <AnimatedPage>
-                                    <Home />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/mods"
-                                element={
-                                  <AnimatedPage>
-                                    <SelectMod />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/login"
-                                element={
-                                  <AnimatedPage>
-                                    <Login />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/gameover/:gameId"
-                                element={
-                                  <AnimatedPage>
-                                    <GameOver />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/demo"
-                                element={
-                                  <AnimatedPage>
-                                    <GamePage />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/my-games"
-                                element={
-                                  <AnimatedPage>
-                                    <MyGames />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/entering-tournament"
-                                element={
-                                  <AnimatedPage>
-                                    <EnteringTournament />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/rewards"
-                                element={
-                                  <AnimatedPage>
-                                    <RewardsPage />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/leaderboard"
-                                element={
-                                  <AnimatedPage>
-                                    <LeaderBoardPage />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/store"
-                                element={
-                                  <StoreProvider>
+              <CardDataProvider>
+                <GameProvider>
+                  <PageTransitionsProvider>
+                    <InformationPopUpProvider>
+                      <AudioPlayerProvider
+                        baseSongPath={"/music/new-track.mp3"}
+                        rageSongPath={"/music/rage_soundtrack.mp3"}
+                      >
+                        <Background>
+                          <Layout>
+                            <AnimatePresence mode="wait">
+                              <Routes
+                                location={location}
+                                key={location.pathname}
+                              >
+                                <Route
+                                  path="/"
+                                  element={
                                     <AnimatedPage>
-                                      <DynamicStorePage />
+                                      <Home />
                                     </AnimatedPage>
-                                  </StoreProvider>
-                                }
-                              />
+                                  }
+                                />
+                                <Route
+                                  path="/mods"
+                                  element={
+                                    <AnimatedPage>
+                                      <SelectMod />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/login"
+                                  element={
+                                    <AnimatedPage>
+                                      <Login />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/gameover/:gameId"
+                                  element={
+                                    <AnimatedPage>
+                                      <GameOver />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/demo"
+                                  element={
+                                    <AnimatedPage>
+                                      <GamePage />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/my-games"
+                                  element={
+                                    <AnimatedPage>
+                                      <MyGames />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/entering-tournament"
+                                  element={
+                                    <AnimatedPage>
+                                      <EnteringTournament />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/rewards"
+                                  element={
+                                    <AnimatedPage>
+                                      <RewardsPage />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/leaderboard"
+                                  element={
+                                    <AnimatedPage>
+                                      <LeaderBoardPage />
+                                    </AnimatedPage>
+                                  }
+                                />
+                                <Route
+                                  path="/store"
+                                  element={
+                                    <StoreProvider>
+                                      <AnimatedPage>
+                                        <DynamicStorePage />
+                                      </AnimatedPage>
+                                    </StoreProvider>
+                                  }
+                                />
 
-                              <Route
-                                path="/tutorial"
-                                element={
-                                  <TutorialGameProvider>
-                                    <AnimatedPage>
-                                      <GamePageTutorial />
-                                    </AnimatedPage>
-                                  </TutorialGameProvider>
-                                }
-                              />
+                                <Route
+                                  path="/tutorial"
+                                  element={
+                                    <TutorialGameProvider>
+                                      <AnimatedPage>
+                                        <GamePageTutorial />
+                                      </AnimatedPage>
+                                    </TutorialGameProvider>
+                                  }
+                                />
 
-                              <Route
-                                path="/redirect/:page"
-                                element={<Redirect />}
-                              />
-                              <Route
-                                path="/preview/:type"
-                                element={
-                                  <StoreProvider>
+                                <Route
+                                  path="/redirect/:page"
+                                  element={<Redirect />}
+                                />
+                                <Route
+                                  path="/preview/:type"
+                                  element={
+                                    <StoreProvider>
+                                      <AnimatedPage>
+                                        <PreviewPage />
+                                      </AnimatedPage>
+                                    </StoreProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/open-loot-box"
+                                  element={
+                                    <StoreProvider>
+                                      <AnimatedPage>
+                                        <OpenLootBox />
+                                      </AnimatedPage>
+                                    </StoreProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/play"
+                                  element={<Navigate to="/" />}
+                                />
+                                <Route
+                                  path="/plays"
+                                  element={
                                     <AnimatedPage>
-                                      <PreviewPage />
+                                      <PlaysLayout />
                                     </AnimatedPage>
-                                  </StoreProvider>
-                                }
-                              />
-                              <Route
-                                path="/open-loot-box"
-                                element={
-                                  <StoreProvider>
-                                    <AnimatedPage>
-                                      <OpenLootBox />
-                                    </AnimatedPage>
-                                  </StoreProvider>
-                                }
-                              />
-                              <Route
-                                path="/play"
-                                element={<Navigate to="/" />}
-                              />
-                              <Route
-                                path="/plays"
-                                element={
-                                  <AnimatedPage>
-                                    <PlaysLayout />
-                                  </AnimatedPage>
-                                }
-                              />
-                              <Route
-                                path="/deck"
-                                element={
-                                  <StoreProvider>
-                                    <AnimatedPage>
-                                      <DeckPage />
-                                    </AnimatedPage>
-                                  </StoreProvider>
-                                }
-                              />
-                              <Route
-                                path="/docs"
-                                element={
-                                  <CardHighlightProvider>
-                                    <AnimatedPage>
-                                      <DocsPage lastIndexTab={0} />
-                                    </AnimatedPage>
-                                  </CardHighlightProvider>
-                                }
-                              />
-                              <Route
-                                path="/manage"
-                                element={
-                                  <StoreProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/deck"
+                                  element={
+                                    <StoreProvider>
+                                      <AnimatedPage>
+                                        <DeckPage />
+                                      </AnimatedPage>
+                                    </StoreProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/docs"
+                                  element={
                                     <CardHighlightProvider>
                                       <AnimatedPage>
-                                        <ManagePage />
+                                        <DocsPage lastIndexTab={0} />
                                       </AnimatedPage>
                                     </CardHighlightProvider>
-                                  </StoreProvider>
-                                }
-                              />
-                            </Routes>
-                          </AnimatePresence>
-                        </Layout>
-                      </Background>
-                    </AudioPlayerProvider>
-                  </InformationPopUpProvider>
-                </PageTransitionsProvider>
-              </GameProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/manage"
+                                  element={
+                                    <StoreProvider>
+                                      <CardHighlightProvider>
+                                        <AnimatedPage>
+                                          <ManagePage />
+                                        </AnimatedPage>
+                                      </CardHighlightProvider>
+                                    </StoreProvider>
+                                  }
+                                />
+                              </Routes>
+                            </AnimatePresence>
+                          </Layout>
+                        </Background>
+                      </AudioPlayerProvider>
+                    </InformationPopUpProvider>
+                  </PageTransitionsProvider>
+                </GameProvider>
+              </CardDataProvider>
             </CardAnimationsProvider>
           </FeatureFlagProvider>
           <Analytics />

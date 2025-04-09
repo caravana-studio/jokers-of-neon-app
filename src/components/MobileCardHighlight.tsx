@@ -7,10 +7,10 @@ import { RARITY, RarityLabels } from "../constants/rarity";
 import { animationsData } from "../constants/spineAnimations";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
+import { useCardData } from "../providers/CardDataProvider";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
-import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
 import { CashSymbol } from "./CashSymbol";
@@ -37,6 +37,9 @@ export const MobileCardHighlight = ({
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
+  const { getCardData, getLootBoxData } = useCardData();
+
+  const getDataFn = isPack ? getLootBoxData : getCardData;
   const {
     name,
     description,
@@ -46,7 +49,8 @@ export const MobileCardHighlight = ({
     rarity,
     temporaryPrice,
     details,
-  } = getCardData(card, isPack);
+  } = getDataFn(card.card_id ?? 0);
+
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);

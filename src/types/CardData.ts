@@ -17,7 +17,3 @@ export interface CardData {
     animation?: SpineAnimationInfo;
     temporaryPrice?: number;
 }
-
-export type CardDataMap = {
-    [key: number]: CardData;
-  };

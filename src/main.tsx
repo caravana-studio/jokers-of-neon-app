@@ -23,16 +23,12 @@ import customTheme from "./theme/theme";
 
 const I18N_NAMESPACES = [
   "game",
-  "rage",
   "home",
-  "traditional-cards",
-  "neon-cards",
   "store",
-  "effects",
+  "cards",
   "tutorials",
   "intermediate-screens",
   "plays",
-  "loot-boxes",
 ];
 
 async function init() {

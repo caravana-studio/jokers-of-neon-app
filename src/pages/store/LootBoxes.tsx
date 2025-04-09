@@ -6,17 +6,20 @@ import { animationsData } from "../../constants/spineAnimations";
 import { useStore } from "../../providers/StoreProvider";
 import { getTooltip } from "../../utils/getTooltip";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation";
+import { useCardData } from "../../providers/CardDataProvider";
 
 export const LootBoxes = () => {
   const navigate = useNavigate();
 
+  const { getLootBoxData } = useCardData();
+  
   const { packs } = useStore();
   return (
     <Flex
-      className="game-tutorial-step-packs"
-      m={isMobile ? 4 : 0}
-      h="60%"
-      w="100%"
+    className="game-tutorial-step-packs"
+    m={isMobile ? 4 : 0}
+    h="60%"
+    w="100%"
     >
       <Flex flexDirection="row" justifyContent="space-between" w="100%">
         {packs.map((pack) => {
@@ -27,10 +30,11 @@ export const LootBoxes = () => {
             price: Number(pack.cost),
             card_id: Number(pack.blister_pack_id),
           };
+          const { name, description } = getLootBoxData(pack.blister_pack_id);
           return (
             <Tooltip
               hasArrow
-              label={getTooltip(card, true)}
+              label={getTooltip(name, description)}
               closeOnPointerDown
               key={`pack-${pack.blister_pack_id}`}
             >

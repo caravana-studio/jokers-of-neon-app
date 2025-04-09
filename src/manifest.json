@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x6e7bce9265990218ab8eb69703063e260a209b7934ef48c6bdaf08078fb5258",
-      "class_hash": "0x446bf5f4398317516b5a38c275e014bf992adccb05200918aa4b22a01742301",
+      "address": "0x240bea200cfc97eb063bde2bc034529d3f6f76598b4a6790273ad804b5d8e85",
+      "class_hash": "0x5644ef5d6c733afc5dccdbe6722c7abc318eb4785c883aacb21bfd785885620",
       "abi": [
         {
           "type": "impl",
@@ -3658,8 +3658,8 @@
       ]
     },
     {
-      "address": "0x5dbd7a9260a6239e920a194dfda148b08cf35e409987df4d4c33aaeaf16a30b",
-      "class_hash": "0x2a1b045af46dd4fcc4369308fab0c26202453628c828c1a191bdb025781f223",
+      "address": "0x117db7e23e7f329513961e63dc2be6fb26d6d18f8d5fe5d31f2cf374a242960",
+      "class_hash": "0x5ccdeda86cb3505f8d0b71367b315ab7734b7172d32c7b0309fecad6efdb718",
       "abi": [
         {
           "type": "impl",
@@ -4041,10 +4041,6 @@
             {
               "name": "discount_cost",
               "type": "core::integer::u32"
-            },
-            {
-              "name": "purchased",
-              "type": "core::bool"
             }
           ]
         },
@@ -4588,7 +4584,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x20cb78e309caecf05c077954da3b7324435297e027c932a43493cc4c4b31a70",
+      "class_hash": "0x5f1f8c5206393ab24ca2ff1eef181151a4311099b167716b712ac99ff022367",
       "tag": "jokers_of_neon_core-SlotSpecialCardsItem",
       "selector": "0x53e54eda0d708016b4afcef37fb3cab30f906c72811206bac13f3fba44272da"
     },

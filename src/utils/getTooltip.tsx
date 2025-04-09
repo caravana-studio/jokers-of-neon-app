@@ -1,6 +1,5 @@
 import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
 import { Card } from "../types/Card";
-import { getCardData } from "./getCardData";
 
 import i18n from "i18next";
 
@@ -50,13 +49,7 @@ export const colorizeText = (inputText: string) => {
   });
 };
 
-export const getTooltip = (card: Card, isPack = false) => {
-  const { name, description } = getCardData(card, isPack);
-
-  if (card.isModifier) {
-    return <>{colorizeText(description)}</>;
-  }
-
+export const getTooltip = (name: string, description: string) => {
   return (
     <>
       <strong>{name}</strong>: {colorizeText(description)}
