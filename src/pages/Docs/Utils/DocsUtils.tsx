@@ -1,7 +1,7 @@
 import { RARITY } from "../../../constants/rarity";
 import { getCardFromCardId } from "../../../dojo/utils/getCardFromCardId";
 import { Card } from "../../../types/Card";
-import { getCardData } from "../../../utils/getCardData";
+import { CardData } from "../../../types/CardData";
 
 export interface DocCardData {
   name: string;
@@ -30,13 +30,13 @@ const getDocCardsData = (cardsId: number[]) => {
 
 export const getSortedDocCardsData = (
   cardsId: number[],
-  isPack: boolean = false
+  getCardData: (cardId: number) => CardData
 ): Card[] => {
   const cards: Card[] = getDocCardsData(cardsId);
 
   return cards.slice().sort((a, b) => {
-    const aData = getCardData(a, isPack);
-    const bData = getCardData(b, isPack);
+    const aData = getCardData(a.card_id ?? 0);
+    const bData = getCardData(b.card_id ?? 0);
 
     const rarityA =
       aData.rarity && rarityOrder[aData.rarity as RARITY] !== undefined

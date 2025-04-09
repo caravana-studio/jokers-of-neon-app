@@ -1,11 +1,11 @@
-import { LOOT_BOXES_DATA } from "../data/lootBoxes";
+import { BOXES_RARITY } from "../data/lootBoxes";
 
 const CACHE_NAME = "spine-assets";
 
 export const preloadSpineAnimations = async (
   basePath: string = "/spine-animations/"
 ): Promise<void> => {
-  const ids = Object.keys(LOOT_BOXES_DATA).map(Number);
+  const ids = Object.keys(BOXES_RARITY).map(Number);
   try {
     const cache = await caches.open(CACHE_NAME);
 

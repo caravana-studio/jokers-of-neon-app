@@ -1,6 +1,6 @@
 import i18n from "i18next";
 
-const ns = "effects";
+const ns = "cards";
 
 export const POWER_UP_KEYS = [800, 801, 802, 803, 804, 805, 806, 807];
 

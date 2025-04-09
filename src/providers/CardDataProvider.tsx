@@ -2,10 +2,10 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
-  useState,
+  useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { BOXES_PRICE, BOXES_RARITY } from "../data/lootBoxes.ts";
 import { MODIFIERS_PRICE, MODIFIERS_RARITY } from "../data/modifiers.ts";
 import {
   SPECIALS_CUMULATIVE,
@@ -20,11 +20,11 @@ import {
 import { useDojo } from "../dojo/useDojo.tsx";
 import { CardTypes } from "../enums/cardTypes.ts";
 import { CardData } from "../types/CardData.ts";
-import { useGameContext } from "./GameProvider.tsx";
 
 interface CardDataContextType {
   getCardData: (id: number) => CardData;
-  refetchSpecialCardsData: () => {};
+  getLootBoxData: (id: number) => CardData;
+  refetchSpecialCardsData: (modId: string, gameId: number) => {};
 }
 
 const CardDataContext = createContext<CardDataContextType | undefined>(
@@ -35,11 +35,11 @@ interface CardDataProviderProps {
   children: ReactNode;
 }
 
+const animationFolder = "/spine-animations/";
+const animationPrefix = "loot_box_";
+
 export const CardDataProvider = ({ children }: CardDataProviderProps) => {
   const { t } = useTranslation("cards");
-
-  const { modId, gameId } = useGameContext();
-
   const {
     setup: { client },
   } = useDojo();
@@ -48,9 +48,25 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     Record<number, SpecialCardInfo>
   >({});
 
-  useEffect(() => {
-    refetchSpecialCardsData();
-  }, []);
+  const getLootBoxData = (id: number) => {
+    const rarity = BOXES_RARITY[id].rarity;
+    const price = BOXES_PRICE[rarity];
+    const size = BOXES_RARITY[id].size;
+
+    return {
+      name: t(`lootBoxes.${id}.name`),
+      description: t(`lootBoxes.${id}.description`),
+      details: t(`lootBoxes.${id}.details`),
+      rarity,
+      price,
+      size,
+      type: CardTypes.PACK,
+      animation: {
+        jsonUrl: `${animationFolder}${animationPrefix}${id}.json`,
+        atlasUrl: `${animationFolder}${animationPrefix}${id}.atlas`,
+      },
+    };
+  };
 
   const getCardData = (cardId: number) => {
     const isTraditional = cardId < 100;
@@ -115,7 +131,7 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     }
   };
 
-  const refetchSpecialCardsData = async () => {
+  const refetchSpecialCardsData = async (modId: string, gameId: number) => {
     const record: Record<number, SpecialCardInfo> = {};
     SPECIALS_CUMULATIVE.forEach(async (specialId) => {
       const cardInfo = await getSpecialCardInfo(
@@ -134,6 +150,7 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
       value={{
         getCardData,
         refetchSpecialCardsData,
+        getLootBoxData,
       }}
     >
       {children}

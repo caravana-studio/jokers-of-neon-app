@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
   SKIP_IN_GAME_TUTORIAL,
-  SORT_BY_SUIT
+  SORT_BY_SUIT,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -41,6 +41,7 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
+import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
@@ -141,6 +142,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const round = useRound();
   const handsLeft = round?.remaining_plays ?? 0;
 
+  const { refetchSpecialCardsData } = useCardData();
+
   const navigate = useNavigate();
   const {
     setup: {
@@ -149,8 +152,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, changeModifierCard, sellSpecialCard, mintGame } =
-    useGameActions();
+  const {
+    createGame,
+    play,
+    discard,
+    changeModifierCard,
+    sellSpecialCard,
+    mintGame,
+  } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
   const { sfxVolume, animationSpeed } = useSettings();
@@ -348,6 +357,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setCardTransformationLock,
             setIsRageRound,
           });
+          refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -519,6 +529,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setAnimatedCard(undefined);
           setDiscardAnimation(false);
           replaceCards(response.cards);
+          refetchSpecialCardsData(modId, gameId);
         }, ALL_CARDS_DURATION + 300);
       } else {
         rollbackDiscard();
@@ -628,6 +639,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     // start with redirection unlocked
     setLockRedirection(false);
+    refetchSpecialCardsData(modId, gameId);
   }, []);
 
   const actions = {
