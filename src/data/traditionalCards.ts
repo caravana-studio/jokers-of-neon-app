@@ -1,10 +1,5 @@
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
-import { CardDataMap } from "../types/CardData";
-import i18n from "i18next";
-
-export const TRADITIONAL_CARDS_DATA: CardDataMap = {};
-export const NEON_CARDS_DATA: CardDataMap = {};
 
 interface CardMultiSuitData {
   card?: Cards;
