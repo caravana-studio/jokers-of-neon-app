@@ -7,6 +7,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
 import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { useNavigate } from "react-router-dom";
 
 interface DeckPageContentProps {
   state: {
@@ -19,6 +20,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const { cash, burnCard, burnItem } = useStore();
+  const navigate = useNavigate();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem.purchased) {
@@ -31,8 +33,9 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   };
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card);
+    burnCard(card).then(()=> navigate(-1));
     setCardToBurn(undefined);
+    
   };
 
   const effectiveCost: number =
