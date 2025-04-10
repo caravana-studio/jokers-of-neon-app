@@ -253,7 +253,7 @@
     },
     "357": {
       "name": "Gran apostador",
-      "description": "1 de 2 posibilidades de ganar +1 multi (acumulativo) por cada Carta Alta jugada."
+      "description": "1 de 2 posibilidades de ganar +1 multi (acumulativo) por cada Carta Alta jugada. Actualmente +{{multi}} multi."
     },
     "358": {
       "name": "Ruleta de Palos",

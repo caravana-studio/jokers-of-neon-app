@@ -253,7 +253,7 @@
     },
     "357": {
       "name": "Apostadores de Alto Nível",
-      "description": "1 em 2 chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada."
+      "description": "1 em 2 chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada. Actualmente +{{multi}} multi."
     },
     "358": {
       "name": "Roleta de Naipes",
