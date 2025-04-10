@@ -7,6 +7,7 @@ import BurnIcon from "../../../assets/burn.svg?component";
 import { PriceBox } from "../../../components/PriceBox";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { PurchasedLbl } from "../../../components/PurchasedLbl";
 
 interface IBurnItem {}
 
@@ -48,22 +49,22 @@ export const BurnComponent = ({}: IBurnItem) => {
           flexDirection="column"
           justifyContent={"center"}
           cursor={purchased ? "not-allowed" : "pointer"}
-          opacity={purchased ? 0.3 : 1}
+          position={"relative"}
         >
-          <BurnIcon height={`${height ? height * 0.7 : 70}px`} />
+          <Flex
+            opacity={purchased ? 0.3 : 1}
+            flexDirection="column"
+            justifyContent={"center"}
+          >
+            <BurnIcon height={`${height ? height * 0.7 : 70}px`} />
+          </Flex>
+
+          <PurchasedLbl
+            purchased={purchased ?? false}
+            fontSize={isSmallScreen ? 6 : 11 * cardScale}
+            topOffset={"50%"}
+          />
         </Flex>
-        {purchased && (
-          <Box>
-            <Heading
-              mt={{base: -6, sm: -12}}
-              variant="italic"
-              textAlign="center"
-              fontSize={isSmallScreen ? 6 : 11 * cardScale}
-            >
-              {t("store.labels.purchased").toLocaleUpperCase()}
-            </Heading>
-          </Box>
-        )}
         {price && (
           <PriceBox
             price={Number(price)}

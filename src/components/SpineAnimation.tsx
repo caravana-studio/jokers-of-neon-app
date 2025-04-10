@@ -11,6 +11,7 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../providers/StoreProvider";
 import { PriceBox } from "./PriceBox";
+import { PurchasedLbl } from "./PurchasedLbl";
 
 interface SpineAnimationProps {
   jsonUrl: string;
@@ -181,25 +182,11 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {isPurchased && (
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: `10%`,
-              left: isMobile ? `55%` : `50%`,
-              transform: "translate(-65%)",
-              zIndex: 10,
-            }}
-          >
-            <Heading
-              variant="italic"
-              fontSize={isMobile ? 7 : 14 * scale}
-              justifyContent={"center"}
-            >
-              {t("store.labels.purchased").toUpperCase()}
-            </Heading>
-          </Box>
-        )}
+        <PurchasedLbl
+          purchased={isPurchased ?? false}
+          position="bottom"
+          fontSize={isMobile ? 7 : 14 * scale}
+        />
         {price && (
           <Box
             sx={{

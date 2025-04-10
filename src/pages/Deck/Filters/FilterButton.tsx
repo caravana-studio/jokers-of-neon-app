@@ -1,6 +1,6 @@
 import { Card } from "../../../types/Card";
 import { useDeck } from "../../../dojo/queries/useDeck";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { IconType, Icons } from "../../../constants/icons";
 import { isMobile } from "react-device-detect";
 import { IconComponent } from "../../../components/IconComponent";
@@ -40,13 +40,34 @@ export const FilterButton = ({
       borderRadius={"full"}
       h={["20px", "25px"]}
       onClick={onClick}
+      alignItems={"center"}
+      justifyContent={"center"}
     >
-      <Flex gap={[1, 2]} alignItems={"center"}>
+      <Flex gap={[1, 2]} alignItems={"center"} justifyContent={"center"}>
         {iconSource && (
-          <IconComponent icon={iconSource} width={iconSize} height={iconSize} />
+          <Box display="flex" alignItems="center">
+            <IconComponent
+              icon={iconSource}
+              width={iconSize}
+              height={iconSize}
+            />
+          </Box>
         )}
-        <Text fontSize={[10, 14]}>{label}</Text>
-        <Text color="blueLight" fontSize={[10, 14]}>
+        <Text
+          fontSize={[10, 14]}
+          lineHeight="1"
+          display="flex"
+          alignItems="center"
+        >
+          {label}
+        </Text>
+        <Text
+          color="blueLight"
+          fontSize={[10, 14]}
+          lineHeight="1"
+          display="flex"
+          alignItems="center"
+        >
           {unusedCardsLength !== deckLength
             ? `( ${unusedCardsLength} / ${deckLength} )`
             : `( ${deckLength} )`}

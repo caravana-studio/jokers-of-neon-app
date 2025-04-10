@@ -5,6 +5,7 @@ import { Card } from "../../types/Card";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
 import { Coins } from "../store/Coins";
+import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
 
 export interface ManagePageContentProps {
   lastIndexTab?: number;
@@ -22,26 +23,27 @@ export const ManagePageContent = ({
   goBackButton,
 }: ManagePageContentProps) => {
   return (
-    <BackgroundDecoration>
+    <BackgroundDecoration hidelogo>
       <Flex
         height={"100%"}
         flexDirection={"column"}
         gap={2}
         alignItems={"center"}
         justifyContent={"space-around"}
+        mt={40}
       >
-        <Box position={"absolute"} top={28} right={"22%"}>
-          <Coins />
+        <Box width={"100%"} mb={2}>
+          <StoreTopBar hideReroll />
         </Box>
-        <SpecialCards
-          discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
-          onCardClick={onCardClick}
-        />
-        <Powerups />
-        <Flex gap={12} mt={8}>
-          {goBackButton}
+        <Flex direction={"column"} mb={12} mt={16} gap={16} maxHeight={"90%"}>
+          <SpecialCards
+            discardedCards={discardedCards}
+            preselectedCard={preselectedCard}
+            onCardClick={onCardClick}
+          />
+          <Powerups />
         </Flex>
+        <Flex mt={[0, 0, 0, 4]}>{goBackButton}</Flex>
       </Flex>
     </BackgroundDecoration>
   );

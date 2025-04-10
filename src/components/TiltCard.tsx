@@ -1,4 +1,4 @@
-import { Box, Heading, SystemStyleObject, Tooltip } from "@chakra-ui/react";
+import { Box, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import Tilt from "react-parallax-tilt";
 import {
@@ -11,6 +11,7 @@ import {
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
+import { useCardData } from "../providers/CardDataProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
@@ -21,8 +22,8 @@ import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
+import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
-import { useCardData } from "../providers/CardDataProvider.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -154,20 +155,11 @@ export const TiltCard = ({
               discountPrice={card.discount_cost}
             />
           )}
-          {card.purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: `${cardHeight / 2 - 10}px`,
-                left: 0,
-                zIndex: 10,
-              }}
-            >
-              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                {t("store.labels.purchased").toUpperCase()}
-              </Heading>
-            </Box>
-          )}
+          <PurchasedLbl
+            purchased={purchased ?? false}
+            topOffset={`${cardHeight / 2 - 10}px`}
+            fontSize={isMobile ? 7 : 14 * scale}
+          />
           {card.temporary && (
             <TemporalBadge
               remaining={card.remaining ?? 3}
