@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x74e5f87abbba50f22ee70ae5f9ba9b2606b3e961a618bb44dab2da5fc052bd7",
-      "class_hash": "0x34008f5ac4ca765038c2111dcf783241f64e64d958fd8442059915b9aff0a2c",
+      "address": "0x12516ad55d36393871b3445d9016f2b47ec8a10030e41caaecbe46cf5b9f37",
+      "class_hash": "0x36ee416a45c7f46c907fb508c218f24c3ea56d276c528d7fd42e3fc01d942d6",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x32e897b41dc915de86925f9c89289299655f1b0ccd9323ebcdfb433a2d7b442",
-      "class_hash": "0x1c2396754d64c4c7b72f3ed7e501b88514207956b5d0280213baf5c0a98d284",
+      "address": "0x240bea200cfc97eb063bde2bc034529d3f6f76598b4a6790273ad804b5d8e85",
+      "class_hash": "0x5644ef5d6c733afc5dccdbe6722c7abc318eb4785c883aacb21bfd785885620",
       "abi": [
         {
           "type": "impl",
@@ -3658,8 +3658,8 @@
       ]
     },
     {
-      "address": "0x58f0313b0f96bc54820a0d7e12717ed8e32bd79d241e09490e3eae504569d0",
-      "class_hash": "0x59c649d0abf6308076b4f5826a42b6f9dd48401c59a9960b86323729725a4e9",
+      "address": "0x117db7e23e7f329513961e63dc2be6fb26d6d18f8d5fe5d31f2cf374a242960",
+      "class_hash": "0x5ccdeda86cb3505f8d0b71367b315ab7734b7172d32c7b0309fecad6efdb718",
       "abi": [
         {
           "type": "impl",
@@ -4041,10 +4041,6 @@
             {
               "name": "discount_cost",
               "type": "core::integer::u32"
-            },
-            {
-              "name": "purchased",
-              "type": "core::bool"
             }
           ]
         },
@@ -4588,7 +4584,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x20cb78e309caecf05c077954da3b7324435297e027c932a43493cc4c4b31a70",
+      "class_hash": "0x5f1f8c5206393ab24ca2ff1eef181151a4311099b167716b712ac99ff022367",
       "tag": "jokers_of_neon_core-SlotSpecialCardsItem",
       "selector": "0x53e54eda0d708016b4afcef37fb3cab30f906c72811206bac13f3fba44272da"
     },
