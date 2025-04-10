@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import RerollButton from "../../../store/StoreElements/RerollButton";
-import { DefaultInfo } from "../../../../components/Info/DefaultInfo";
-import { MobileCoins } from "../../../store/Coins";
-import { RerollIndicators } from "./RerollIndicators";
-import { useResponsiveValues } from "../../../../theme/responsiveSettings";
-import { useGame } from "../../../../dojo/queries/useGame";
 import CachedImage from "../../../../components/CachedImage";
+import { DefaultInfo } from "../../../../components/Info/DefaultInfo";
+import { useGame } from "../../../../dojo/queries/useGame";
+import { useResponsiveValues } from "../../../../theme/responsiveSettings";
+import { MobileCoins } from "../../../store/Coins";
+import RerollButton from "../../../store/StoreElements/RerollButton";
+import { RerollIndicators } from "./RerollIndicators";
 
 interface RerollSectionProps {
   hideReroll?: boolean;
@@ -28,12 +28,14 @@ export const RerollSection: React.FC<RerollSectionProps> = ({ hideReroll }) => {
         </Flex>
       ) : (
         <Flex>
-          <CachedImage
-            src="/logos/logo-variant.svg"
-            alt="logo-variant"
-            width={"40%"}
-            maxW={"300px"}
-          />
+          {!isSmallScreen && (
+            <CachedImage
+              ml={6}
+              src="/logos/logo-variant.svg"
+              alt="logo-variant"
+              width="200px"
+            />
+          )}
         </Flex>
       )}
 
