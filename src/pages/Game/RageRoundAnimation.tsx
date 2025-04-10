@@ -2,8 +2,8 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import CachedImage from "../../components/CachedImage";
+import { useCardData } from "../../providers/CardDataProvider";
 import { useGameContext } from "../../providers/GameProvider";
-import { getCardData } from "../../utils/getCardData";
 
 export const RageRoundAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
@@ -19,7 +19,11 @@ export const RageRoundAnimation = () => {
     showSpecials,
   } = useGameContext();
 
-  const descriptions = rageCards?.map((card) => getCardData(card).description);
+  const { getCardData } = useCardData();
+
+  const descriptions = rageCards?.map(
+    (card) => getCardData(card.card_id ?? 0).description
+  );
 
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },

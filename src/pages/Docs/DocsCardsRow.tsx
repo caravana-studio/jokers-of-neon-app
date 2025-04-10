@@ -5,9 +5,12 @@ import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { isMobile } from "react-device-detect";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useCardData } from "../../providers/CardDataProvider";
 
 export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
-  const docCards = getSortedDocCardsData(cardIds);
+    const { getCardData } = useCardData();
+  
+  const docCards = getSortedDocCardsData(cardIds, getCardData);
   const { highlightCard, highlightedCard } = useCardHighlight();
   const { isSmallScreen } = useResponsiveValues();
 

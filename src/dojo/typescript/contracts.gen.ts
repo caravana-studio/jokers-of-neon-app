@@ -1,6 +1,5 @@
 import { DojoCall, DojoProvider } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
-import * as models from "./models.gen";
+import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption } from "starknet";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
@@ -524,6 +523,23 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_mods_info_system_getCumulativeInfo_calldata = (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_cumulative_info",
+			calldata: [modId, gameId, specialCardId],
+		};
+	};
+
+	const mods_info_system_getCumulativeInfo = async (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getCumulativeInfo_calldata(modId, gameId, specialCardId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		shop_system: {
 			buyBlisterPackItem: shop_system_buyBlisterPackItem,
@@ -577,6 +593,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
 		},
 		mods_info_system: {
+			getCumulativeInfo: mods_info_system_getCumulativeInfo,
+			buildGetCumulativeInfoCalldata: build_mods_info_system_getCumulativeInfo_calldata,
 			getRageCardsIds: mods_info_system_getRageCardsIds,
 			buildGetRageCardsIdsCalldata: build_mods_info_system_getRageCardsIds_calldata,
 			getSpecialCardsIds: mods_info_system_getSpecialCardsIds,

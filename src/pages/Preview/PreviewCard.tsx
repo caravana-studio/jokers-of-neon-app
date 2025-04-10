@@ -7,9 +7,9 @@ import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCa
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { Duration } from "../../enums/duration.ts";
+import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
 const PreviewCard = () => {
@@ -33,8 +33,11 @@ const PreviewCard = () => {
 
   const { buyCard, buySpecialCardItem, locked, setLockRedirection } =
     useStore();
+
+  const { getCardData } = useCardData();
+
   const cash = game?.cash ?? 0;
-  const { name, description } = getCardData(card, false);
+  const { name, description } = getCardData(card.card_id ?? 0);
   const specialMaxLength = game?.special_slots ?? 0;
   const specialLength = game?.current_specials_len ?? 0;
 
