@@ -155,7 +155,14 @@ export const Background = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
+interface BackgroundDecorationProps {
+  hidelogo?: boolean;
+}
+
+export const BackgroundDecoration = ({
+  children,
+  hidelogo = false,
+}: PropsWithChildren<BackgroundDecorationProps>) => {
   const { isSmallScreen } = useResponsiveValues();
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
@@ -169,25 +176,27 @@ export const BackgroundDecoration = ({ children }: PropsWithChildren) => {
           top={0}
         />
       )}
-      <Box
-        height="15%"
-        width="100%"
-        display="flex"
-        justifyContent={isSmallScreen ? "center" : "space-between"}
-        alignItems="center"
-        padding={isSmallScreen ? "0 50px" : "25px 50px 0px 50px"}
-      >
-        <CachedImage
-          alignSelf="center"
-          justifySelf="end"
-          src="/logos/logo-variant.svg"
-          alt="logo-variant"
-          width={"65%"}
-          maxW={"300px"}
-          ml={4}
-          zIndex={1}
-        />
-      </Box>
+      {!hidelogo && (
+        <Box
+          height="15%"
+          width="100%"
+          display="flex"
+          justifyContent={isSmallScreen ? "center" : "space-between"}
+          alignItems="center"
+          padding={isSmallScreen ? "0 50px" : "25px 50px 0px 50px"}
+        >
+          <CachedImage
+            alignSelf="center"
+            justifySelf="end"
+            src="/logos/logo-variant.svg"
+            alt="logo-variant"
+            width={"65%"}
+            maxW={"300px"}
+            ml={4}
+            zIndex={1}
+          />
+        </Box>
+      )}
       <Box
         sx={{
           height: { base: "80%", sm: "60%" },
