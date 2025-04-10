@@ -22,6 +22,7 @@ import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
+import { PurchasedLbl } from "./PurchasedLbl.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -149,20 +150,11 @@ export const TiltCard = ({
               discountPrice={card.discount_cost}
             />
           )}
-          {card.purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: `${cardHeight / 2 - 10}px`,
-                left: 0,
-                zIndex: 10,
-              }}
-            >
-              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                {t("store.labels.purchased").toUpperCase()}
-              </Heading>
-            </Box>
-          )}
+          <PurchasedLbl
+            purchased={purchased ?? false}
+            topOffset={`${cardHeight / 2 - 10}px`}
+            fontSize={isMobile ? 7 : 14 * scale}
+          />
           {card.temporary && (
             <TemporalBadge
               remaining={card.remaining ?? 3}
