@@ -6,7 +6,7 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
   cardValue,
   quantity,
 }) => {
-  if (!cardValue || !quantity) return null;
+  if (!cardValue) return null;
 
   const cardValueContent = cardValuesMap.get(cardValue);
 
