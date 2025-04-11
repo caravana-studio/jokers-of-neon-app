@@ -4,16 +4,20 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
+import SpineAnimation from "../SpineAnimation";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const SecondChanceCardAnimation = () => {
   const { t } = useTranslation("cards");
   const { setAnimateSecondChanceCard } = useCardAnimations();
+  const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(() => {
-      navigate("/redirect/store");
+      // navigate("/redirect/store");
       setAnimateSecondChanceCard(false);
-    }, 3200);
+    }, 3000);
   }, []);
 
   const bgProps = useSpring({
@@ -87,7 +91,18 @@ export const SecondChanceCardAnimation = () => {
           - {t("activated")} -
         </Heading>
       </animated.div>
-      <animated.img
+
+      <Flex h={"100%"} w={"100%"} justifyContent={"center"} pl={2}>
+        <SpineAnimation
+          jsonUrl={`/spine-animations/phoenix/phoenix.json`}
+          atlasUrl={`/spine-animations/phoenix/phoenix.atlas`}
+          initialAnimation={"animation"}
+          loopAnimation={"animation"}
+          scale={isSmallScreen ? 0.5 : 0.8}
+          yOffset={-800}
+        />
+      </Flex>
+      {/* <animated.img
         src="/phoenix/phoenix-bg.png"
         style={{
           height: "60%",
@@ -105,7 +120,7 @@ export const SecondChanceCardAnimation = () => {
           zIndex: 2,
           ...phoenixProps,
         }}
-      />
+      /> */}
     </Flex>
   );
 };
