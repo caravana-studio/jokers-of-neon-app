@@ -356,6 +356,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimateSecondChanceCard,
             setCardTransformationLock,
             setIsRageRound,
+            specialCards,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {

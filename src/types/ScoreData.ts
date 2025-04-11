@@ -15,6 +15,7 @@ export interface PlayEvents {
   cardPlayChangeEvents?: CardPlayEvent[];
   cardPlayScoreEvents?: CardPlayEvent[];
   specialCardPlayScoreEvents?: CardPlayEvent[];
+  cardActivateEvent?: CardActivateEvent;
 }
 
 export interface CardPlayEvent {
@@ -77,6 +78,10 @@ export interface ModifierSuitEvent {
 
 export interface ModifierNeonEvent {
   idx: number;
+}
+
+export interface CardActivateEvent {
+  special_id: number;
 }
 
 export interface DetailEarned {

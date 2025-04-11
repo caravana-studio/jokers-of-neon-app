@@ -15,7 +15,7 @@ export const SecondChanceCardAnimation = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      // navigate("/redirect/store");
+      navigate("/redirect/store");
       setAnimateSecondChanceCard(false);
     }, 3000);
   }, []);
@@ -79,7 +79,7 @@ export const SecondChanceCardAnimation = () => {
           textTransform="uppercase"
           textAlign="center"
         >
-          {t("specialCardsData.323.name")}
+          {t("specials.323.name")}
         </Heading>
         <Heading
           size="md"
