@@ -9,11 +9,11 @@ import SpineAnimation, {
 import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
 import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
+import { useCardData } from "../../../providers/CardDataProvider";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { getCardData } from "../../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
   const { packs } = useStore();
@@ -68,7 +68,11 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
-  const { name, description, details, size } = getCardData(card, true);
+  const { getLootBoxData } = useCardData();
+
+  const { name, description, details, size } = getLootBoxData(
+    card.card_id ?? 0
+  );
 
   const handleBuyClick = useMemo(
     () => () => {
@@ -131,11 +135,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
         </Flex>
 
-        <Flex
-          width="60%"
-          flexDirection="column"
-          justifyContent="space-between"
-        >
+        <Flex width="60%" flexDirection="column" justifyContent="space-between">
           <Flex justifyContent="space-between" mb={2} alignItems="center">
             <Heading fontWeight={"400"} fontSize={"xs"}>
               {name}

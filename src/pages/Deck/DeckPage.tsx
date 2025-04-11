@@ -1,10 +1,10 @@
 import { useLocation } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { useGame } from "../../dojo/queries/useGame";
 import { DeckFilterProvider } from "../../providers/DeckFilterProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DeckPageContent } from "./DeckPageContent";
 import { DeckPageContentMobile } from "./DeckPageContent.mobile";
+import { useGame } from "../../dojo/queries/useGame";
 
 export const DeckPage = () => {
   const { isSmallScreen } = useResponsiveValues();

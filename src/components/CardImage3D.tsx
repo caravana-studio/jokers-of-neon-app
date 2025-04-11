@@ -2,6 +2,7 @@ import { Tooltip } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
+import { useCardData } from "../providers/CardDataProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
@@ -36,6 +37,8 @@ export const CardImage3D = ({
   const cid = card.card_id ?? 0;
 
   const [availableLayers, setAvailableLayers] = useState<boolean[]>([]);
+
+  const { getCardData } = useCardData();
 
   useEffect(() => {
     const checkLayers = async () => {
@@ -100,6 +103,8 @@ export const CardImage3D = ({
     );
   };
 
+  const { name, description } = getCardData(card.card_id ?? 0);
+
   return (
     <ConditionalTilt cardId={cid} small={small}>
       {hideTooltip ? (
@@ -109,7 +114,7 @@ export const CardImage3D = ({
           plainImg
         )
       ) : (
-        <Tooltip hasArrow label={getTooltip(card, false)} closeOnPointerDown>
+        <Tooltip hasArrow label={getTooltip(name, description)} closeOnPointerDown>
           {availableLayers[0] && !showPlain ? layer0Img : plainImg}
         </Tooltip>
       )}

@@ -13,10 +13,10 @@ import SpineAnimation, {
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { animationsData } from "../../constants/spineAnimations.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { usePageTransitions } from "../../providers/PageTransitionsProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { getCardData } from "../../utils/getCardData.ts";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
 
@@ -37,8 +37,10 @@ export const PreviewLootBox = () => {
 
   const game = useGame();
   const { buyPack, locked } = useStore();
+  const { getLootBoxData } = useCardData();
+
   const cash = game?.cash ?? 0;
-  const { name, description, details } = getCardData(card, true);
+  const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
 
   const notEnoughCash =

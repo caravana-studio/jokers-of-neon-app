@@ -4,6 +4,7 @@ import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation from "../../../components/SpineAnimation";
 import { animationsData } from "../../../constants/spineAnimations";
+import { useCardData } from "../../../providers/CardDataProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
@@ -14,6 +15,7 @@ export const LootBoxComponent = () => {
   const flexRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
+  const { getLootBoxData } = useCardData();
 
   return (
     <RerollingAnimation>
@@ -33,10 +35,11 @@ export const LootBoxComponent = () => {
             price: Number(pack.cost),
             card_id: Number(pack.blister_pack_id),
           };
+          const { name, description } = getLootBoxData(card.card_id ?? 0);
           return (
             <Tooltip
               hasArrow
-              label={getTooltip(card, true)}
+              label={getTooltip(name, description)}
               closeOnPointerDown
               key={`pack-${pack.blister_pack_id}`}
             >

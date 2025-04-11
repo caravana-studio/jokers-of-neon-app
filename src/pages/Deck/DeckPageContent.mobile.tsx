@@ -9,6 +9,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
+import { useNavigate } from "react-router-dom";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -22,6 +23,7 @@ export const DeckPageContentMobile = ({
 }: DeckPageContentMobileProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
+  const navigate = useNavigate();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem.purchased) {
@@ -36,7 +38,7 @@ export const DeckPageContentMobile = ({
   const { cash, burnCard, burnItem } = useStore();
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card);
+    burnCard(card).then(()=> navigate(-1));
   };
 
   const effectiveCost: number =
