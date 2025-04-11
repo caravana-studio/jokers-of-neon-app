@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { useGame } from "../../dojo/queries/useGame";
 import { DeckFilterProvider } from "../../providers/DeckFilterProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DeckPageContent } from "./DeckPageContent";
@@ -9,7 +10,8 @@ export const DeckPage = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   const location = useLocation();
-  const inStore = location.state?.inStore ?? false;
+  const game = useGame();
+  const inStore = game?.state === "AT_SHOP";
   const burn = location.state?.burn ?? false;
 
   return (

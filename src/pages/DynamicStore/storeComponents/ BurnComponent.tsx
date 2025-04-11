@@ -38,7 +38,7 @@ export const BurnComponent = ({}: IBurnItem) => {
         ref={flexRef}
         onClick={() => {
           if (!purchased) {
-            navigate("/deck", { state: { inStore: true, burn: true } });
+            navigate("/deck", { state: { burn: true } });
           }
         }}
       >
@@ -55,7 +55,7 @@ export const BurnComponent = ({}: IBurnItem) => {
         {purchased && (
           <Box>
             <Heading
-              mt={{base: -6, sm: -12}}
+              mt={{ base: -6, sm: -12 }}
               variant="italic"
               textAlign="center"
               fontSize={isSmallScreen ? 6 : 11 * cardScale}

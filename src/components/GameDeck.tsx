@@ -42,7 +42,7 @@ export const GameDeck = ({ inStore = false }: GameDeckProps) => {
         alignItems="flex-end"
         gap={2}
         className="game-tutorial-step-8"
-        onClick={() => navigate("/deck", { state: { inStore: inStore } })}
+        onClick={() => navigate("/deck")}
         cursor={"pointer"}
       >
         {!inStore && (

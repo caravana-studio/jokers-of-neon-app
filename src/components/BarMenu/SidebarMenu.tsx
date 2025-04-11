@@ -71,9 +71,7 @@ export const SidebarMenu = () => {
           icon={Icons.FILES}
           description={t("game.game-menu.docs-btn")}
           onClick={() => {
-            navigate("/docs", {
-              state: { inStore: game?.state === "AT_SHOP" },
-            });
+            navigate("/docs");
           }}
           width={iconWidth}
         />
