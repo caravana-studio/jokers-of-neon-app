@@ -29,7 +29,9 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
       >
         <Image
           style={{ marginTop: "80px" }}
-          width={["100%", "100%", "60%"]}
+          width={"60%"}
+          margin={"0 auto"}
+          mb={4}
           src="/logos/caravana-logo.png"
           alt="logo"
         />
@@ -40,7 +42,9 @@ export const LogoPresentation: React.FC<LogoPresentationProps> = ({
         fadeOutDelay={1}
         fadeOutDuration={0.5}
       >
-        <Text color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>PRESENTS</Text>
+        <Text color="white" fontSize={isMobile ? "1.2rem" : "2.2rem"}>
+          PRESENTS
+        </Text>
       </FadeInOut>
     </Flex>
   );

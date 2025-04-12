@@ -1,20 +1,20 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { useGame } from "../../dojo/queries/useGame";
 import { useCurrentPageName } from "../../hooks/useCurrentPageName";
+import { useSettingsModal } from "../../hooks/useSettingsModal";
 import { ControllerIcon } from "../../icons/ControllerIcon";
 import { AnimatedText } from "../AnimatedText";
+import CachedImage from "../CachedImage";
 import { DiscordLink } from "../DiscordLink";
-import { GameMenu } from "../GameMenu";
-import { SettingsModal } from "../SettingsModal";
+import { GameMenu } from "../GameMenu/GameMenu";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { BarMenuComingSoonBtn } from "./BarMenuComingSoonBtn";
 
 export const SidebarMenu = () => {
-  const [isSettingsModalOpened, setSettingsModalOpened] = useState(false);
   const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ export const SidebarMenu = () => {
   const iconWidth = "50%";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+  const { openSettings, Modal } = useSettingsModal();
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,9 +46,6 @@ export const SidebarMenu = () => {
       top={0}
       backgroundColor={"black"}
     >
-      {isSettingsModalOpened && (
-        <SettingsModal close={() => setSettingsModalOpened(false)} />
-      )}
       <Flex
         flexDirection={"column"}
         gap={4}
@@ -83,13 +81,10 @@ export const SidebarMenu = () => {
         <BarMenuBtn
           icon={Icons.SETTINGS}
           description={t("game.game-menu.settings-btn")}
-          onClick={() => {
-            if (setSettingsModalOpened) {
-              setSettingsModalOpened(true);
-            }
-          }}
+          onClick={openSettings}
           width={iconWidth}
         />
+        {Modal}
       </Flex>
       <Flex
         gap={4}
@@ -125,6 +120,21 @@ export const SidebarMenu = () => {
             </Heading>
           </AnimatedText>
           <BarMenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
+          <Flex
+            sx={{
+              h: "30px",
+              w: "80px",
+              transform: "rotate(-90deg)",
+              alignItems: "center",
+              mt: 8,
+            }}
+          >
+            <CachedImage src="/logos/jn.png" height="15px" />
+            <Text fontFamily="Orbitron" fontSize="15px" fontWeight="500">
+              {" "}
+              · {game?.id}
+            </Text>
+          </Flex>
         </Flex>
         <GameMenu />
         <DiscordLink width={"100%"} />

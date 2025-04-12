@@ -16,4 +16,5 @@ export const SETTINGS_SFX_VOLUME = "SFX_VOLUME";
 export const SETTINGS_LOOTBOX_TRANSITION = "LOOTBOX_TRANSITION";
 export const SFX_ON = "SFX_ON";
 export const SKIP_PRESENTATION = "hasSeenPresentation";
+export const STORE_LAST_TAB_INDEX = "STORE_LAST_TAB_INDEX";
 export const LAST_PAGE = "LAST_PAGE";

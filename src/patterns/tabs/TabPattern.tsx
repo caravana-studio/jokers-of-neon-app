@@ -69,6 +69,7 @@ export const TabPattern = ({
       overflow="hidden"
       {...handlers}
     >
+      {topBar}
       <MobileDecoration />
       <Tabs
         index={tabIndex}
@@ -102,7 +103,7 @@ export const TabPattern = ({
         overflow="hidden"
         flexDir={"column"}
       >
-        {topBar}
+        
         <AnimatePresence mode="wait">
           <motion.div
             key={tabIndex}

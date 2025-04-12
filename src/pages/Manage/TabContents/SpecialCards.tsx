@@ -10,11 +10,12 @@ import { Card } from "../../../types/Card";
 
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../../components/CachedImage";
-import { LockedSlot } from "../../../components/LockedSlot";
+import { LockedSlot } from "../../../components/LockedSlot/LockedSlot";
 import { TemporalBadge } from "../../../components/TemporalBadge";
 import { UnlockedSlot } from "../../../components/UnlockedSlot";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
 import { useGame } from "../../../dojo/queries/useGame";
+import { useCardData } from "../../../providers/CardDataProvider";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
@@ -41,6 +42,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
 
   const game = useGame();
   const { specialCards, maxSpecialCards } = useGameContext();
+  const { getCardData } = useCardData();
 
   const unlockedSpecialSlots = game?.special_slots ?? 1;
 
@@ -80,6 +82,8 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
               .map((card) => card.card_id)
               .includes(card.card_id!);
 
+            const { name, description } = getCardData(card.card_id ?? 0);
+
             return (
               card &&
               !isDiscarded && (
@@ -99,7 +103,7 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
                         : "none",
                   }}
                 >
-                  <Tooltip label={getTooltip(card, false)}>
+                  <Tooltip label={getTooltip(name, description)}>
                     <Box
                       position="relative"
                       w={`${CARD_WIDTH * scale}px`}

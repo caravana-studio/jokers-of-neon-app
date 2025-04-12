@@ -8,6 +8,9 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { SellButton } from "./SellButton";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -15,33 +18,15 @@ export const ManagePage = () => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const { sellSpecialCard, specialCards, maxSpecialCards } = useGameContext();
+  const { sellSpecialCard } = useGameContext();
   const [discardedCards, setDiscardedCards] = useState<Card[]>([]);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
-  const [preselectedCard, setPreselectedCard] = useState<Card | undefined>();
+  const { highlightCard, highlightedCard, onClose } = useCardHighlight();
 
   const handleCardClick = (card: Card) => {
-    setPreselectedCard((prev) => (prev === card ? undefined : card));
+    highlightCard(card);
   };
-
-  const sellButton = (
-    <Button
-      isDisabled={!preselectedCard}
-      variant={!preselectedCard ? "defaultOutline" : "secondarySolid"}
-      minWidth={"100px"}
-      size={isSmallScreen ? "xs" : "md"}
-      lineHeight={1.6}
-      fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-      onClick={() => {
-        setConfirmationModalOpen(true);
-      }}
-    >
-      {preselectedCard?.selling_price
-        ? t("special-cards.sell-for", { price: preselectedCard.selling_price })
-        : t("special-cards.sell")}
-    </Button>
-  );
 
   const goBackButton = (
     <Button
@@ -57,25 +42,30 @@ export const ManagePage = () => {
     </Button>
   );
 
+  const sellButton = (
+    <SellButton
+      preselectedCard={highlightedCard}
+      onClick={() => setConfirmationModalOpen(true)}
+    />
+  );
+
   return (
     <>
+      {highlightedCard && (
+        <MobileCardHighlight card={highlightedCard} customBtn={sellButton} />
+      )}
       {isSmallScreen ? (
         <ManagePageContentMobile
           discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
+          preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
-          sellButton={sellButton}
           goBackButton={goBackButton}
-          onTabChange={() => {
-            setPreselectedCard(undefined);
-          }}
         />
       ) : (
         <ManagePageContent
           discardedCards={discardedCards}
-          preselectedCard={preselectedCard}
+          preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
-          sellButton={sellButton}
           goBackButton={goBackButton}
         />
       )}
@@ -84,15 +74,15 @@ export const ManagePage = () => {
           close={() => setConfirmationModalOpen(false)}
           title={t("special-cards.confirmation-modal.title")}
           description={t("special-cards.confirmation-modal.description", {
-            price: preselectedCard?.selling_price ?? 0,
+            price: highlightedCard?.selling_price ?? 0,
           })}
           onConfirm={() => {
             setConfirmationModalOpen(false);
-            preselectedCard &&
-              sellSpecialCard(preselectedCard.idx).then((response) => {
+            onClose();
+            highlightedCard &&
+              sellSpecialCard(highlightedCard.idx).then((response) => {
                 if (response) {
-                  setDiscardedCards((prev) => [...prev, preselectedCard]);
-                  setPreselectedCard(undefined);
+                  setDiscardedCards((prev) => [...prev, highlightedCard]);
                 }
               });
           }}

@@ -16,6 +16,7 @@ import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
 import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
+import { PurchasedLbl } from "./PurchasedLbl";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -33,8 +34,6 @@ export const PowerUpComponent = ({
   containerSx,
   isActive,
 }: PowerUpProps) => {
-  const { t } = useTranslation(["store"]);
-
   const { powerUpIsPreselected } = useGameContext();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
@@ -85,25 +84,11 @@ export const PowerUpComponent = ({
                 discountPrice={Number(discount_cost)}
               />
             )}
-            {purchased && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: isSmallScreen
-                    ? `${width / 3 - 10}px`
-                    : `${width / 3 - 15}px`,
-                  left: isSmallScreen ? 1 : -1,
-                  zIndex: 10,
-                }}
-              >
-                <Heading
-                  variant="italic"
-                  fontSize={isSmallScreen ? 6 : 11 * cardScale}
-                >
-                  {t("store.labels.purchased").toLocaleUpperCase()}
-                </Heading>
-              </Box>
-            )}
+            <PurchasedLbl
+              purchased={purchased ?? false}
+              topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
+              fontSize={isSmallScreen ? 6 : 11 * cardScale}
+            />
             <Box
               {...(calculatedIsActive && {
                 border: "solid 1px white",

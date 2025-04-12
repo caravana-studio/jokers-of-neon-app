@@ -6,19 +6,16 @@ import SpineAnimation, {
   SpineAnimationRef,
 } from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
-import { LOOT_BOXES_DATA } from "../../data/lootBoxes";
+import { BOXES_RARITY } from "../../data/lootBoxes";
+import { useCardData } from "../../providers/CardDataProvider";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
-import { getCardData } from "../../utils/getCardData";
-import { getSortedDocCardsData } from "./Utils/DocsUtils";
 
 export const DocsBoxesRow = () => {
-  const isPack = true;
-  const boxes = getSortedDocCardsData(
-    Object.keys(LOOT_BOXES_DATA).map(Number),
-    isPack
-  );
+  const boxes = Object.keys(BOXES_RARITY).map(Number);
   const { highlightCard, highlightedCard } = useCardHighlight();
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
+
+  const { getLootBoxData } = useCardData();
 
   return (
     <>
@@ -39,7 +36,7 @@ export const DocsBoxesRow = () => {
           overflow={"auto"}
         >
           {boxes.map((box, index) => {
-            const boxData = getCardData(box, isPack);
+            const boxData = getLootBoxData(box);
 
             return (
               <Flex
@@ -50,7 +47,7 @@ export const DocsBoxesRow = () => {
                 width={["50%", "25%"]}
                 height={"30vh"}
                 onClick={() => {
-                  highlightCard(box);
+                  highlightCard({ card_id: box, id: "", idx: 0, img: "" });
                 }}
                 cursor="pointer"
               >

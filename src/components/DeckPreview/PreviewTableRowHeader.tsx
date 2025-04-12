@@ -7,7 +7,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
   cardSuit,
   quantity,
 }) => {
-  if (!cardSuit || !quantity) return null;
+  if (!cardSuit) return null;
 
   const Icon = cardSuitsMap.get(cardSuit);
   if (!Icon) return null;
