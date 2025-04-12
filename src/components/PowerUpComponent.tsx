@@ -10,13 +10,12 @@ import { getPowerUpData } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { PowerUp } from "../types/PowerUp";
+import { PowerUp } from "../types/Powerup/PowerUp";
 import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
-import { ParticlesAnimation } from "./animations/ParticlesAnimation";
-import { VFX_DUST } from "../constants/vfx";
+import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -47,87 +46,75 @@ export const PowerUpComponent = ({
   const description =
     powerUp?.power_up_id && getPowerUpData(powerUp.power_up_id)?.description;
 
+  const powerupStyle = powerUp?.style;
+
   return powerUp ? (
-    <ParticlesAnimation
-      spriteSrc={powerUp.vfx ?? ""}
-      active={calculatedIsActive ?? false}
-      offsetX={-4}
-      offsetY={-8}
-      minSize={0}
-      maxSize={3}
-      amount={30}
-      width={isSmallScreen ? 65 : 90}
-      height={isSmallScreen ? 40 : 60}
-      speed={3}
-      expansionSpeed={6}
-      minRadiusX={1}
-      maxRadiusX={1.1}
-      minRadiusY={0.8}
-      maxRadiusY={1.05}
-      cornerRadius={18}
+    <FadingParticleAnimation
+      width={isSmallScreen ? 120 : 190}
+      height={isSmallScreen ? 35 : 70}
+      spriteSrc={powerupStyle?.vfx ?? ""}
+      particleSize={5}
+      amount={isSmallScreen ? 300 : 500}
+      delayRange={3}
+      minHeight={5}
       backward
+      active={calculatedIsActive ?? false}
+      spreadOffset={0.3}
     >
-      <ParticlesAnimation
-        spriteSrc={powerUp.vfx ?? ""}
-        active={calculatedIsActive ?? false}
-        offsetX={-4}
-        offsetY={-4}
-        minSize={0}
-        maxSize={3}
-        amount={20}
-        width={isSmallScreen ? 65 : 90}
-        height={isSmallScreen ? 40 : 60}
-        speed={3}
-        expansionSpeed={8}
-        minRadiusX={0.7}
-        maxRadiusX={1.1}
-        minRadiusY={0.7}
-        maxRadiusY={1.05}
-        cornerRadius={18}
-      >
-        <AnimatedPowerUp idx={powerUp.idx}>
-          <Tooltip label={description && colorizeText(description)}>
-            <Flex
-              justifyContent="center"
-              position="relative"
-              width={`${width}px`}
-              borderRadius={"22%"}
-              background={"black"}
-              transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
-              transition="all 0.2s ease-in-out"
-              cursor={purchased ? "not-allowed" : "pointer"}
-              opacity={purchased ? 0.3 : 1}
-              onClick={onClick}
-            >
-              {price && (
-                <PriceBox
-                  price={Number(price)}
-                  purchased={Boolean(purchased)}
-                  isPowerUp={!inStore}
-                  fontSize={isSmallScreen ? 12 : 16}
-                  discountFontSize={isSmallScreen ? 10 : 12}
-                  discountPrice={Number(discount_cost)}
-                />
-              )}
-              {purchased && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: isSmallScreen
-                      ? `${width / 3 - 10}px`
-                      : `${width / 3 - 15}px`,
-                    left: isSmallScreen ? 1 : -1,
-                    zIndex: 10,
-                  }}
+      <AnimatedPowerUp idx={powerUp.idx}>
+        <Tooltip label={description && colorizeText(description)}>
+          <Flex
+            justifyContent="center"
+            position="relative"
+            width={`${width}px`}
+            borderRadius={"22%"}
+            background={"black"}
+            transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
+            transition="all 0.2s ease-in-out"
+            cursor={purchased ? "not-allowed" : "pointer"}
+            opacity={purchased ? 0.3 : 1}
+            onClick={onClick}
+          >
+            {price && (
+              <PriceBox
+                price={Number(price)}
+                purchased={Boolean(purchased)}
+                isPowerUp={!inStore}
+                fontSize={isSmallScreen ? 12 : 16}
+                discountFontSize={isSmallScreen ? 10 : 12}
+                discountPrice={Number(discount_cost)}
+              />
+            )}
+            {purchased && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: isSmallScreen
+                    ? `${width / 3 - 10}px`
+                    : `${width / 3 - 15}px`,
+                  left: isSmallScreen ? 1 : -1,
+                  zIndex: 10,
+                }}
+              >
+                <Heading
+                  variant="italic"
+                  fontSize={isSmallScreen ? 6 : 11 * cardScale}
                 >
-                  <Heading
-                    variant="italic"
-                    fontSize={isSmallScreen ? 6 : 11 * cardScale}
-                  >
-                    {t("store.labels.purchased").toLocaleUpperCase()}
-                  </Heading>
-                </Box>
-              )}
+                  {t("store.labels.purchased").toLocaleUpperCase()}
+                </Heading>
+              </Box>
+            )}
+            <Box
+              {...(calculatedIsActive && {
+                border: "solid 1px white",
+                borderRadius: `${isSmallScreen ? "10px" : "14px"}`,
+                boxShadow: `
+                  0 0 20px ${powerupStyle?.shadowLightColor},     
+                  0 0 40px ${powerupStyle?.shadowColor},      
+                  inset 0 0 10px ${powerupStyle?.shadowColor} 
+                `,
+              })}
+            >
               <CachedImage
                 opacity={inStore || calculatedIsActive ? 1 : 0.6}
                 borderRadius={"18%"}
@@ -136,11 +123,11 @@ export const PowerUpComponent = ({
                 width={`${100}%`}
                 src={powerUp.img}
               />
-            </Flex>
-          </Tooltip>
-        </AnimatedPowerUp>
-      </ParticlesAnimation>
-    </ParticlesAnimation>
+            </Box>
+          </Flex>
+        </Tooltip>
+      </AnimatedPowerUp>
+    </FadingParticleAnimation>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );
