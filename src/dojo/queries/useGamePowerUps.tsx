@@ -1,22 +1,11 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { PowerUp } from "../../types/PowerUp";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useGameContext } from "../../providers/GameProvider";
-import { VFX_MOTE_MULTI, VFX_MOTE_POINTS } from "../../constants/vfx";
-
-const powerupVfx: Record<number, string> = {
-  800: VFX_MOTE_POINTS,
-  801: VFX_MOTE_POINTS,
-  802: VFX_MOTE_POINTS,
-  803: VFX_MOTE_POINTS,
-  804: VFX_MOTE_MULTI,
-  805: VFX_MOTE_MULTI,
-  806: VFX_MOTE_MULTI,
-  807: VFX_MOTE_MULTI,
-};
+import { powerupStyles } from "../../constants/powerupStyles";
 
 export const getPowerUp = (
   power_up_id: number,
@@ -32,7 +21,7 @@ export const getPowerUp = (
     purchased: false,
     fieldOrder: [],
     game_id,
-    vfx: powerupVfx[power_up_id],
+    style: powerupStyles[power_up_id],
   };
 };
 

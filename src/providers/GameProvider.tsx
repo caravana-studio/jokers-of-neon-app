@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
   SKIP_IN_GAME_TUTORIAL,
-  SORT_BY_SUIT
+  SORT_BY_SUIT,
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
@@ -36,7 +36,7 @@ import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
 import { Card } from "../types/Card";
-import { PowerUp } from "../types/PowerUp.ts";
+import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -149,8 +149,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, changeModifierCard, sellSpecialCard, mintGame } =
-    useGameActions();
+  const {
+    createGame,
+    play,
+    discard,
+    changeModifierCard,
+    sellSpecialCard,
+    mintGame,
+  } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
   const { sfxVolume, animationSpeed } = useSettings();
