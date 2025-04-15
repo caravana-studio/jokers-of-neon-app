@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { IconComponent } from "./IconComponent";
+import { Icons } from "../constants/icons";
 
 export const PositionedDiscordLink = () => {
   return (
@@ -20,7 +22,7 @@ export const DiscordLink = ({ width }: { width: string }) => {
   return (
     <Link href="https://discord.gg/4y296W6jaq" target="_blank">
       <Tooltip label={t("home.join-discord")} placement="left">
-        <FontAwesomeIcon color="white" fontSize={width} icon={faDiscord} />
+        <IconComponent width={width} icon={Icons.DISCORD} height={width} />
       </Tooltip>
     </Link>
   );

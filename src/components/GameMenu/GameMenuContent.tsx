@@ -20,6 +20,10 @@ import CachedImage from "../CachedImage";
 import { useGame } from "../../dojo/queries/useGame";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useDisconnect } from "@starknet-react/core";
+import { useGameContext } from "../../providers/GameProvider";
+import { GAME_ID, LOGGED_USER } from "../../constants/localStorage.ts";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -30,12 +34,15 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   isOpen,
   onClose,
 }) => {
-  const iconWidth = "50%";
+  const iconWidth = "36px";
   const fontSize = "22px";
   const { openSettings, Modal: SettingsModal } = useSettingsModal();
   const game = useGame();
   const username = useUsername();
   const { t } = useTranslation(["game"]);
+  const navigate = useNavigate();
+  const { disconnect } = useDisconnect();
+  const { restartGame } = useGameContext();
 
   return (
     <Modal
@@ -49,20 +56,19 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <ModalHeader>
           <Flex
             sx={{
-              w: `${iconWidth}`,
               alignItems: "center",
               mt: 2,
               pl: 4,
             }}
           >
-            <CachedImage src="/logos/jn.png" width={iconWidth} />
+            <CachedImage src="/logos/jn.png" width="52px" />
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
               · {game?.id}
             </Text>
           </Flex>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton padding={4} mt={2} size={"lg"} mr={2} />
         <ModalBody
           display={"flex"}
           flexDir={"column"}
@@ -70,13 +76,21 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           alignItems={"left"}
           py={12}
           fontSize={fontSize}
+          gap={4}
         >
           <Flex gap={4} alignItems={"center"}>
             <ControllerIcon width={iconWidth} />
             Controller
           </Flex>
           <Flex gap={4} alignItems={"center"}>
-            <BarMenuBtn width={iconWidth} icon={Icons.JOKER} description={""} />
+            <BarMenuBtn
+              width={iconWidth}
+              icon={Icons.JOKER}
+              description={""}
+              onClick={() => {
+                navigate("/my-games");
+              }}
+            />
             {t("game.game-menu.my-games")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
@@ -92,11 +106,14 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               width={iconWidth}
               icon={Icons.PODIUM}
               description={""}
+              onClick={() => {
+                navigate("/leaderboard");
+              }}
             />
             {t("game.game-menu.leaderboard-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
-            <BarMenuBtn width={iconWidth} icon={Icons.FILES} description={""} />
+            <BarMenuBtn width={iconWidth} icon={Icons.DOCS} description={""} />
             {t("game.game-menu.docs-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
@@ -110,7 +127,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
             {t("game.game-menu.settings-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
-            <DiscordLink width="100%" />
+            <DiscordLink width={iconWidth} />
             Discord
           </Flex>
         </ModalBody>
@@ -120,6 +137,13 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               width={iconWidth}
               icon={Icons.LOGOUT}
               description={""}
+              onClick={() => {
+                localStorage.removeItem(GAME_ID);
+                localStorage.removeItem(LOGGED_USER);
+                disconnect();
+                restartGame();
+                navigate("/");
+              }}
             />
             {t("game.game-menu.logout-btn")} {username}{" "}
           </Flex>

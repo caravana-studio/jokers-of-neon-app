@@ -63,7 +63,7 @@ export const MenuSection = () => {
             width={iconWidth}
           />
           <BarMenuBtn
-            icon={Icons.FILES}
+            icon={Icons.DOCS}
             description={t("game.game-menu.docs-btn")}
             onClick={() => {
               navigate("/docs", {
