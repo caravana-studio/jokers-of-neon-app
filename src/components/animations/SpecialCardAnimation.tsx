@@ -7,12 +7,14 @@ import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface SpecialCardAnimationProps {
+  specialId: string;
   bgPath?: string;
   animatedImgPath?: string;
   animation?: ReactNode;
 }
 
 export const SpecialCardAnimation = ({
+  specialId,
   bgPath,
   animatedImgPath,
   animation,
@@ -87,7 +89,7 @@ export const SpecialCardAnimation = ({
           textTransform="uppercase"
           textAlign="center"
         >
-          {t("specials.323.name")}
+          {t(`specials.${specialId}.name`)}
         </Heading>
         <Heading
           size="md"

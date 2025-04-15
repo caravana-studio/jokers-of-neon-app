@@ -13,11 +13,11 @@ export const SecondChanceCardAnimation = () => {
         atlasUrl={`/spine-animations/phoenix/phoenix.atlas`}
         initialAnimation={"animation"}
         loopAnimation={"animation"}
-        scale={isSmallScreen ? 0.5 : 0.8}
+        scale={isSmallScreen ? 0.4 : 0.6}
         yOffset={-800}
       />
     </Flex>
   );
 
-  return <SpecialCardAnimation animation={phoenixSpine} />;
+  return <SpecialCardAnimation specialId={"323"} animation={phoenixSpine} />;
 };
