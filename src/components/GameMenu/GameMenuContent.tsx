@@ -77,7 +77,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuBtn width={iconWidth} icon={Icons.JOKER} description={""} />
-            My games
+            {t("game.game-menu.my-games")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuComingSoonBtn
@@ -85,7 +85,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               icon={Icons.MAP}
               description={""}
             />
-            Map
+            {t("game.game-menu.map-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuBtn
@@ -93,11 +93,11 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               icon={Icons.PODIUM}
               description={""}
             />
-            Leaderboard
+            {t("game.game-menu.leaderboard-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuBtn width={iconWidth} icon={Icons.FILES} description={""} />
-            Card list
+            {t("game.game-menu.docs-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuBtn
@@ -107,14 +107,14 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
               width={iconWidth}
             />
             {SettingsModal}
-            Settings
+            {t("game.game-menu.settings-btn")}
           </Flex>
           <Flex gap={4} alignItems={"center"}>
             <DiscordLink width="100%" />
             Discord
           </Flex>
         </ModalBody>
-        <ModalFooter justifyContent={"left"}>
+        <ModalFooter justifyContent={"left"} fontSize={fontSize}>
           <Flex gap={4} alignItems={"center"}>
             <BarMenuBtn
               width={iconWidth}
