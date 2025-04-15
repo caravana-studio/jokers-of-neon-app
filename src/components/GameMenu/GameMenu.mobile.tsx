@@ -45,9 +45,8 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
           borderRadius={["8px", "14px"]}
           className="game-tutorial-step-9"
           onClick={() => setIsMenuOpen(true)}
-        />
-
-        {/* <FontAwesomeIcon
+        >
+          <FontAwesomeIcon
             icon={faBars}
             style={{
               verticalAlign: "middle",
@@ -55,7 +54,7 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
             }}
           />
         </MenuButton>
-        <MenuList>
+        {/*<MenuList>
           <MenuItem onClick={() => connectControllerCommand(connector)}>
             {t("controller")}
           </MenuItem>
