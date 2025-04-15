@@ -13,6 +13,8 @@ import { GameMenuProps } from "./GameMenu.tsx";
 import { connectControllerCommand } from "../../commands/connectController.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useSettingsModal } from "../../hooks/useSettingsModal.tsx";
+import { useState } from "react";
+import { GameMenuContent } from "./GameMenuContent.tsx";
 
 export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
   const username = useUsername();
@@ -26,17 +28,26 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
   const { connector } = useAccount();
   const game = useGame();
   const { openSettings, Modal } = useSettingsModal();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
+      {isMenuOpen && (
+        <GameMenuContent
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+        />
+      )}
       <Menu placement="right" variant={"menuGameOutline"}>
         <MenuButton
           height={["30px", "45px"]}
           width={["30px", "45px"]}
           borderRadius={["8px", "14px"]}
           className="game-tutorial-step-9"
-        >
-          <FontAwesomeIcon
+          onClick={() => setIsMenuOpen(true)}
+        />
+
+        {/* <FontAwesomeIcon
             icon={faBars}
             style={{
               verticalAlign: "middle",
@@ -110,7 +121,7 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
           >
             {t("game.game-menu.logout-btn")} {username}{" "}
           </MenuItem>
-        </MenuList>
+        </MenuList> */}
       </Menu>
     </>
   );

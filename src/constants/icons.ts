@@ -14,6 +14,7 @@ import MapIcon from "../assets/MenuIcons/map.png";
 import PodiumIcon from "../assets/MenuIcons/podium.png";
 import SettingsIcon from "../assets/MenuIcons/settings.png";
 import CartridgeIcon from "../assets/MenuIcons/cartridge.png";
+import LogoutIcon from "../assets/MenuIcons/logout.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -32,6 +33,7 @@ export const Icons = {
   PODIUM: PodiumIcon,
   SETTINGS: SettingsIcon,
   CARTRIDGE: CartridgeIcon,
+  LOGOUT: LogoutIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
