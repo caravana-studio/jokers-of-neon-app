@@ -184,9 +184,36 @@ export const StorePreviewComponent = ({
               </Box>
 
               {details && (
-                <Flex mb={4} gap={2}>
-                  <LootBoxRateInfo name={title} details={details} />
-                </Flex>
+                <Box mb={4}>
+                  <Text
+                    color="white"
+                    fontSize={{ base: "md", sm: "lg" }}
+                    mb={2}
+                    sx={{
+                      position: "relative",
+                      _before: {
+                        content: '""',
+                        position: "absolute",
+                        bottom: 0,
+                        width: "95%",
+                        height: "2px",
+                        backgroundColor: "white",
+                        boxShadow:
+                          "0px 0px 12px rgba(255, 255, 255, 0.8), 0px 6px 20px rgba(255, 255, 255, 0.5)",
+                      },
+                    }}
+                  >
+                    {t("store.preview-card.title.details")}
+                  </Text>
+                  <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
+                    {details?.split("\n").map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
+                  </Text>
+                </Box>
               )}
 
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
