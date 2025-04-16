@@ -1,4 +1,11 @@
 import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
   Modal,
   ModalBody,
@@ -19,6 +26,7 @@ import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
+import { useRef } from "react";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -33,41 +41,58 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const fontSize = "22px";
   const game = useGame();
 
+  const touchStartX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX.current;
+
+    if (deltaX < -80) {
+      onClose();
+    }
+  };
+
   return (
-    <Modal
+    <Drawer
       onClose={() => onClose()}
-      size="full"
       isOpen={isOpen}
-      variant={"fullscreen"}
+      placement="left"
+      size="full"
+      variant="fullscreen"
     >
-      <ModalOverlay />
-      <ModalContent justifyContent={"center"} p={8}>
-        <ModalHeader>
-          <Flex
-            sx={{
-              alignItems: "center",
-            }}
-          >
+      <DrawerOverlay />
+      <DrawerContent
+        justifyContent="center"
+        p={8}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <DrawerHeader>
+          <Flex alignItems="center">
             <CachedImage src="/logos/jn.png" width="58px" />
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
               · {game?.id}
             </Text>
           </Flex>
-          <ModalCloseButton
+          <DrawerCloseButton
             padding={4}
             m={8}
-            fontSize={"xl"}
+            fontSize="xl"
             top={4}
             right={4}
           />
-        </ModalHeader>
+        </DrawerHeader>
 
-        <ModalBody
-          display={"flex"}
-          flexDir={"column"}
-          justifyContent={"space-around"}
-          alignItems={"left"}
+        <DrawerBody
+          display="flex"
+          flexDir="column"
+          justifyContent="space-around"
+          alignItems="flex-start"
           py={8}
           fontSize={fontSize}
           gap={4}
@@ -79,11 +104,12 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           <DocsMenuBtn width={iconWidth} label />
           <SettingsMenuBtn width={iconWidth} label />
           <DiscordLink width={iconWidth} label />
-        </ModalBody>
-        <ModalFooter justifyContent={"left"} fontSize={fontSize}>
+        </DrawerBody>
+
+        <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>
           <LogoutMenuBtn width={iconWidth} label />
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 };
