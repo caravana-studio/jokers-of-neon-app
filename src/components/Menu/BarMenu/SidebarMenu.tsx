@@ -1,29 +1,28 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Icons } from "../../constants/icons";
-import { useGame } from "../../dojo/queries/useGame";
-import { useCurrentPageName } from "../../hooks/useCurrentPageName";
-import { useSettingsModal } from "../../hooks/useSettingsModal";
-import { ControllerIcon } from "../../icons/ControllerIcon";
-import { AnimatedText } from "../AnimatedText";
-import CachedImage from "../CachedImage";
-import { DiscordLink } from "../DiscordLink";
-import { GameMenu } from "../GameMenu/GameMenu";
-import { BarMenuBtn } from "./BarMenuBtn";
-import { BarMenuComingSoonBtn } from "./BarMenuComingSoonBtn";
+import { Icons } from "../../../constants/icons";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useCurrentPageName } from "../../../hooks/useCurrentPageName";
+import { ControllerIcon } from "../../../icons/ControllerIcon";
+import { AnimatedText } from "../../AnimatedText";
+import CachedImage from "../../CachedImage";
+import { DiscordLink } from "../../DiscordLink";
+import { BarMenuBtn } from "../Buttons/BarMenuBtn";
+import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
+import { MapMenuBtn } from "../Buttons/MapMenuBtn";
+import { LeaderboardBtn } from "../Buttons/LeaderboardBtn";
+import { DocsBtn } from "../Buttons/DocsBtn";
+import { SettingsBtn } from "../Buttons/SettingsBtn";
 
 export const SidebarMenu = () => {
-  const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageName();
 
-  const iconWidth = "50%";
+  const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
-  const { openSettings, Modal } = useSettingsModal();
 
   useEffect(() => {
     setTimeout(() => {
@@ -53,38 +52,10 @@ export const SidebarMenu = () => {
         alignItems={"center"}
       >
         <ControllerIcon width={iconWidth} />
-
-        <BarMenuComingSoonBtn
-          width={iconWidth}
-          icon={Icons.MAP}
-          description={t("game.game-menu.map-btn")}
-        />
-
-        <BarMenuBtn
-          icon={Icons.PODIUM}
-          description={t("game.game-menu.leaderboard-btn")}
-          onClick={() => {
-            navigate("/leaderboard");
-          }}
-          width={iconWidth}
-        />
-        <BarMenuBtn
-          icon={Icons.DOCS}
-          description={t("game.game-menu.docs-btn")}
-          onClick={() => {
-            navigate("/docs", {
-              state: { inStore: game?.state === "AT_SHOP" },
-            });
-          }}
-          width={iconWidth}
-        />
-        <BarMenuBtn
-          icon={Icons.SETTINGS}
-          description={t("game.game-menu.settings-btn")}
-          onClick={openSettings}
-          width={iconWidth}
-        />
-        {Modal}
+        <MapMenuBtn width={iconWidth} />
+        <LeaderboardBtn width={iconWidth} />
+        <DocsBtn width={iconWidth} />
+        <SettingsBtn width={iconWidth} />
       </Flex>
       <Flex
         gap={4}
@@ -136,8 +107,8 @@ export const SidebarMenu = () => {
             </Text>
           </Flex>
         </Flex>
-        <GameMenu />
-        <DiscordLink width={"100%"} />
+        <LogoutMenuBtn width={iconWidth} />
+        <DiscordLink width={iconWidth} />
       </Flex>
     </Flex>
   );

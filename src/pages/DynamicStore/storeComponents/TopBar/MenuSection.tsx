@@ -1,7 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { BarMenuBtn } from "../../../../components/BarMenu/BarMenuBtn";
+import { BarMenuBtn } from "../../../../components/Menu/Buttons/BarMenuBtn";
 import { Icons } from "../../../../constants/icons";
-import { BarMenuComingSoonBtn } from "../../../../components/BarMenu/BarMenuComingSoonBtn";
 import { ControllerIcon } from "../../../../icons/ControllerIcon";
 import { SettingsModal } from "../../../../components/SettingsModal";
 import { useGame } from "../../../../dojo/queries/useGame";
@@ -10,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useCurrentPageName } from "../../../../hooks/useCurrentPageName";
 import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 import { useState } from "react";
+import { BarMenuComingSoonBtn } from "../../../../components/Menu/Buttons/BarMenuComingSoonBtn";
 
 export const MenuSection = () => {
   const { isSmallScreen } = useResponsiveValues();

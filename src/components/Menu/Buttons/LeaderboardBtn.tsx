@@ -1,0 +1,27 @@
+import { useTranslation } from "react-i18next";
+import { BarMenuBtn } from "./BarMenuBtn";
+import { Icons } from "../../../constants/icons";
+import { useNavigate } from "react-router-dom";
+
+export const LeaderboardBtn = ({
+  width,
+  label,
+}: {
+  width: string;
+  label?: boolean;
+}) => {
+  const { t } = useTranslation("game");
+  const navigate = useNavigate();
+
+  return (
+    <BarMenuBtn
+      width={width}
+      icon={Icons.PODIUM}
+      label={label ? t("game.game-menu.leaderboard-btn") : undefined}
+      description={t("game.game-menu.leaderboard-btn")}
+      onClick={() => {
+        navigate("/leaderboard");
+      }}
+    />
+  );
+};

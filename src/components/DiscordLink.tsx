@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { IconComponent } from "./IconComponent";
 import { Icons } from "../constants/icons";
+import { BarMenuBtn } from "./Menu/Buttons/BarMenuBtn";
 
 export const PositionedDiscordLink = () => {
   return (
@@ -15,16 +16,29 @@ export const PositionedDiscordLink = () => {
   );
 };
 
-export const DiscordLink = ({ width }: { width: string }) => {
+export const DiscordLink = ({
+  width,
+  label,
+}: {
+  width: string;
+  label?: boolean;
+}) => {
   const { t } = useTranslation(["home"]);
-  const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <Link href="https://discord.gg/4y296W6jaq" target="_blank">
-      <Tooltip label={t("home.join-discord")} placement="left">
-        <IconComponent width={width} icon={Icons.DISCORD} height={width} />
-      </Tooltip>
-    </Link>
+    <BarMenuBtn
+      width={width}
+      icon={Icons.DISCORD}
+      description={t("home.join-discord")}
+      label={label ? "Discord" : undefined}
+      onClick={() =>
+        window.open(
+          "https://discord.gg/4y296W6jaq",
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+    />
   );
 };
 
