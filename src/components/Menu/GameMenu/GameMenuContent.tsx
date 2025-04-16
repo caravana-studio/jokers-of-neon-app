@@ -25,7 +25,7 @@ import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
-import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
+import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { useRef } from "react";
 
 interface GameMenuContentProps {

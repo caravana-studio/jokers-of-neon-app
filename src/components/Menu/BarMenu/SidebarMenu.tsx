@@ -9,12 +9,12 @@ import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
 import { DiscordLink } from "../../DiscordLink";
 import { MenuBtn } from "../Buttons/MenuBtn";
-import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
 import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
+import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 
 export const SidebarMenu = () => {
   const game = useGame();
@@ -110,7 +110,7 @@ export const SidebarMenu = () => {
             </Text>
           </Flex>
         </Flex>
-        <LogoutMenuBtn width={iconWidth} />
+        <LogoutMenuListBtn width={iconWidth} />
       </Flex>
     </Flex>
   );
