@@ -39,7 +39,7 @@ export const BurnComponent = ({}: IBurnItem) => {
         ref={flexRef}
         onClick={() => {
           if (!purchased) {
-            navigate("/deck", { state: { inStore: true, burn: true } });
+            navigate("/deck", { state: { burn: true } });
           }
         }}
       >
