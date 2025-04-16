@@ -52,29 +52,34 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
       variant={"fullscreen"}
     >
       <ModalOverlay />
-      <ModalContent justifyContent={"center"} px={8} pb={8}>
+      <ModalContent justifyContent={"center"} p={8}>
         <ModalHeader>
           <Flex
             sx={{
               alignItems: "center",
-              mt: 2,
-              pl: 4,
             }}
           >
-            <CachedImage src="/logos/jn.png" width="52px" />
+            <CachedImage src="/logos/jn.png" width="58px" />
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
               · {game?.id}
             </Text>
           </Flex>
+          <ModalCloseButton
+            padding={4}
+            m={8}
+            fontSize={"xl"}
+            top={4}
+            right={4}
+          />
         </ModalHeader>
-        <ModalCloseButton padding={4} mt={2} size={"lg"} mr={2} />
+
         <ModalBody
           display={"flex"}
           flexDir={"column"}
           justifyContent={"space-around"}
           alignItems={"left"}
-          py={12}
+          py={8}
           fontSize={fontSize}
           gap={4}
         >
@@ -132,7 +137,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           </Flex>
         </ModalBody>
         <ModalFooter justifyContent={"left"} fontSize={fontSize}>
-          <Flex gap={4} alignItems={"center"}>
+          <Flex columnGap={4} alignItems={"center"}>
             <BarMenuBtn
               width={iconWidth}
               icon={Icons.LOGOUT}
