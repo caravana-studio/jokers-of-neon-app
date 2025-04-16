@@ -44,7 +44,7 @@ export const MenuSection = () => {
             {page?.name ?? ""}
           </Heading>
         </Flex>
-        <Flex gap={4} justifyContent={"center"} alignItems={"center"}>
+        <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
           <SettingsMenuBtn width={iconWidth} />
           <DocsMenuBtn width={iconWidth} />
           <LeaderboardMenuBtn width={iconWidth} />
