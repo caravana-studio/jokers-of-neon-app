@@ -12,7 +12,7 @@ const calculateEdges = (nodes: NodeData[]) => {
   const edges: Edge[] = [];
   nodes.forEach((node) => {
     node.children.forEach((childId) => {
-      edges.push({ id: node.id + "-" + childId, source: node.id.toString(), target: childId.toString() });
+      edges.push({ id: node.id + "-" + childId, source: node.id.toString(), target: childId.toString(), type: 'straight' });
     })
   })
 
