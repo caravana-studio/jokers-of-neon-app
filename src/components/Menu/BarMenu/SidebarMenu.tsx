@@ -58,6 +58,7 @@ export const SidebarMenu = () => {
         <DocsMenuBtn width={iconWidth} />
         <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
+        <DiscordLink width={iconWidth} />
       </Flex>
       <Flex
         gap={4}
@@ -110,7 +111,6 @@ export const SidebarMenu = () => {
           </Flex>
         </Flex>
         <LogoutMenuBtn width={iconWidth} />
-        <DiscordLink width={iconWidth} />
       </Flex>
     </Flex>
   );
