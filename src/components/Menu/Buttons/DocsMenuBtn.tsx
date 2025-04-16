@@ -4,7 +4,7 @@ import { Icons } from "../../../constants/icons";
 import { BarMenuBtn } from "./BarMenuBtn";
 import { useGame } from "../../../dojo/queries/useGame";
 
-export const DocsBtn = ({
+export const DocsMenuBtn = ({
   width,
   label,
 }: {

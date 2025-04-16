@@ -11,9 +11,9 @@ import { DiscordLink } from "../../DiscordLink";
 import { BarMenuBtn } from "../Buttons/BarMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
 import { MapMenuBtn } from "../Buttons/MapMenuBtn";
-import { LeaderboardBtn } from "../Buttons/LeaderboardBtn";
-import { DocsBtn } from "../Buttons/DocsBtn";
-import { SettingsBtn } from "../Buttons/SettingsBtn";
+import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
+import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
+import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 
 export const SidebarMenu = () => {
   const game = useGame();
@@ -53,9 +53,9 @@ export const SidebarMenu = () => {
       >
         <ControllerIcon width={iconWidth} />
         <MapMenuBtn width={iconWidth} />
-        <LeaderboardBtn width={iconWidth} />
-        <DocsBtn width={iconWidth} />
-        <SettingsBtn width={iconWidth} />
+        <LeaderboardMenuBtn width={iconWidth} />
+        <DocsMenuBtn width={iconWidth} />
+        <SettingsMenuBtn width={iconWidth} />
       </Flex>
       <Flex
         gap={4}

@@ -1,7 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { BarMenuBtn, BarMenuBtnProps } from "./BarMenuBtn";
 
-interface BarMenuComingSoonBtnProps extends Omit<BarMenuBtnProps, "disabled"> {
+export interface BarMenuComingSoonBtnProps
+  extends Omit<BarMenuBtnProps, "disabled"> {
   mtText?: string | number;
   fontSizeText?: string | number;
 }

@@ -3,7 +3,7 @@ import { BarMenuBtn } from "./BarMenuBtn";
 import { Icons } from "../../../constants/icons";
 import { useSettingsModal } from "../../../hooks/useSettingsModal";
 
-export const SettingsBtn = ({
+export const SettingsMenuBtn = ({
   width,
   label,
 }: {

@@ -3,7 +3,7 @@ import { BarMenuBtn } from "./BarMenuBtn";
 import { Icons } from "../../../constants/icons";
 import { useNavigate } from "react-router-dom";
 
-export const LeaderboardBtn = ({
+export const LeaderboardMenuBtn = ({
   width,
   label,
 }: {

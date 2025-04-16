@@ -15,9 +15,9 @@ import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { DiscordLink } from "../../DiscordLink";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { MapMenuBtn } from "../Buttons/MapMenuBtn";
-import { LeaderboardBtn } from "../Buttons/LeaderboardBtn";
-import { DocsBtn } from "../Buttons/DocsBtn";
-import { SettingsBtn } from "../Buttons/SettingsBtn";
+import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
+import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
+import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
 
 interface GameMenuContentProps {
@@ -74,10 +74,10 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         >
           <ControllerIcon width={iconWidth} label />
           <MyGamesMenuBtn width={iconWidth} label />
-          <MapMenuBtn width={iconWidth} label />
-          <LeaderboardBtn width={iconWidth} label />
-          <DocsBtn width={iconWidth} label />
-          <SettingsBtn width={iconWidth} label />
+          <MapMenuBtn width={iconWidth} useLabel />
+          <LeaderboardMenuBtn width={iconWidth} label />
+          <DocsMenuBtn width={iconWidth} label />
+          <SettingsMenuBtn width={iconWidth} label />
           <DiscordLink width={iconWidth} label />
         </ModalBody>
         <ModalFooter justifyContent={"left"} fontSize={fontSize}>
