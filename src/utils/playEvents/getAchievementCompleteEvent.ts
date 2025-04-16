@@ -19,8 +19,6 @@ export const getAchievementCompleteEvent = (
 
   const player = getNumberValueFromEvent(achievementComplete, 2) ?? 0;
 
-  console.log(getNumberValueFromEvent(achievementComplete, 3) ?? 0);
-
   const txValue = achievementComplete.data.at(3);
   const achievementId = decodeString(txValue ?? "");
 

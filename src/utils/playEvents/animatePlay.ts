@@ -4,6 +4,7 @@ import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
 import { changeCardNeon } from "../cardTransformation/changeCardNeon";
 import { changeCardSuit } from "../cardTransformation/changeCardSuit";
+import { handleAchievementPush } from "../pushAchievements";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {
@@ -35,9 +36,11 @@ interface AnimatePlayConfig {
   replaceCards: (cards: Card[]) => void;
   handsLeft: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
-  setCardTransformationLock: (locked: boolean) =>  void;
+  setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
 }
+
+const ggUrl = import.meta.env.GG_URL;
 
 export const animatePlay = (config: AnimatePlayConfig) => {
   const {
@@ -70,7 +73,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     handsLeft,
     setAnimateSecondChanceCard,
     setCardTransformationLock,
-    setIsRageRound
+    setIsRageRound,
   } = config;
 
   if (!playEvents) return;
@@ -295,7 +298,12 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     });
   };
 
-  const handleGameEnd = () => {
+  const handleGameEnd = async () => {
+    console.log(ggUrl);
+    if (playEvents.achievementCompleted) {
+      await handleAchievementPush(playEvents.achievementCompleted);
+    }
+
     if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);
