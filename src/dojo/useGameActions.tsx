@@ -224,11 +224,7 @@ export const useGameActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        const gameId = getNumberValueFromEvents(
-          events,
-          MINT_GAME_EVENT_KEY,
-          3
-        );
+        const gameId = getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3);
         console.log("Game " + gameId + " minted");
         return gameId;
       } else {

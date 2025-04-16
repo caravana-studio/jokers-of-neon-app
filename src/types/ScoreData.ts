@@ -15,6 +15,7 @@ export interface PlayEvents {
   cardPlayChangeEvents?: CardPlayEvent[];
   cardPlayScoreEvents?: CardPlayEvent[];
   specialCardPlayScoreEvents?: CardPlayEvent[];
+  achievementCompleted?: AchievementCompleted;
 }
 
 export interface CardPlayEvent {
@@ -95,4 +96,9 @@ export interface CashEvent {
   cash: number;
   idx: number;
   special_idx: number;
+}
+
+export interface AchievementCompleted {
+  player: number;
+  achievementId: string;
 }
