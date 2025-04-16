@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getMap } from "../../dojo/queries/getMap";
 import { useDojo } from "../../dojo/useDojo";
 import { getLayoutedElements } from "./layout";
+import { NodeData } from "./types";
 
 const initialNodes = [
   {
@@ -36,6 +37,17 @@ const initialEdges = [
   { id: "e4", source: "node2", target: "boss" },
 ];
 
+const calculateEdges = (nodes: NodeData[]) => {
+  const edges: Edge[] = [];
+  nodes.forEach((node) => {
+    node.children.forEach((childId) => {
+      edges.push({ id: node.id + "-" + childId, source: node.id.toString(), target: childId.toString() });
+    })
+  })
+
+  return edges;
+}
+
 export const Map = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -46,14 +58,25 @@ export const Map = () => {
   } = useDojo();
 
   useEffect(() => {
-    getMap(client, 1, 1);
-    getLayoutedElements(initialNodes, initialEdges).then(({ nodes, edges }) => {
-      setNodes(nodes);
-      setEdges(edges);
-    });
+    getMap(client, 1, 1).then((dataNodes) => {
+        const transformedNodes = dataNodes.map((node) => {
+          return {
+            id: node.id.toString(),
+            type: "emoji",
+            position: { x: 0, y: 0 },
+            data: {icon: "🧙" }
+          }
+        })
+        const calculatedEdges = calculateEdges(dataNodes);
+        console.log('calculatedEdges', calculatedEdges);
+        getLayoutedElements(transformedNodes, calculatedEdges).then(({ nodes, edges }) => {
+          setNodes(nodes);
+          setEdges(edges);
+        });
+    })
   }, []);
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh", width: "100vw", zIndex: 10 }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

@@ -2605,8 +2605,8 @@
       ]
     },
     {
-      "address": "0x1f7e515aa41564f7eee994ff0bc49de07c4849e4d134924264f020c17cffb93",
-      "class_hash": "0x66a179a6e8656a6a30776d125435df081125db55a1971b53dbce67c44341808",
+      "address": "0x790d2bb73d8de5609fc02b95f3422c691067c19ca835c57421c96b6177a7932",
+      "class_hash": "0x6eddfc5e26e1214105a86a80bbb3f9a1db95534adfd44736dc761873253cfda",
       "abi": [
         {
           "type": "impl",
@@ -2705,11 +2705,19 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<jokers_of_neon_lib::models::data::map::NodeType>",
+          "name": "jokers_of_neon_lib::models::data::map::Node",
           "members": [
             {
-              "name": "snapshot",
-              "type": "@core::array::Array::<jokers_of_neon_lib::models::data::map::NodeType>"
+              "name": "id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "node_type",
+              "type": "jokers_of_neon_lib::models::data::map::NodeType"
+            },
+            {
+              "name": "data",
+              "type": "core::felt252"
             }
           ]
         },
@@ -2725,33 +2733,49 @@
         },
         {
           "type": "struct",
-          "name": "core::array::Span::<core::array::Span::<core::integer::u32>>",
+          "name": "jokers_of_neon_lib::models::data::map::NodeChilds",
           "members": [
             {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::array::Span::<core::integer::u32>>"
+              "name": "node_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "childs",
+              "type": "core::array::Span::<core::integer::u32>"
             }
           ]
         },
         {
           "type": "struct",
-          "name": "jokers_of_neon_lib::models::data::map::LevelMap",
+          "name": "core::array::Span::<(jokers_of_neon_lib::models::data::map::Node, jokers_of_neon_lib::models::data::map::NodeChilds)>",
           "members": [
             {
-              "name": "game_id",
-              "type": "core::integer::u64"
-            },
+              "name": "snapshot",
+              "type": "@core::array::Array::<(jokers_of_neon_lib::models::data::map::Node, jokers_of_neon_lib::models::data::map::NodeChilds)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<(jokers_of_neon_lib::models::data::map::Node, jokers_of_neon_lib::models::data::map::NodeChilds)>>",
+          "members": [
             {
-              "name": "level",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "stages",
-              "type": "core::array::Span::<jokers_of_neon_lib::models::data::map::NodeType>"
-            },
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<(jokers_of_neon_lib::models::data::map::Node, jokers_of_neon_lib::models::data::map::NodeChilds)>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::data::map::ParsedLevelMap",
+          "members": [
             {
               "name": "level_nodes",
-              "type": "core::array::Span::<core::array::Span::<core::integer::u32>>"
+              "type": "core::array::Span::<core::array::Span::<(jokers_of_neon_lib::models::data::map::Node, jokers_of_neon_lib::models::data::map::NodeChilds)>>"
+            },
+            {
+              "name": "traveled_nodes",
+              "type": "core::array::Span::<core::integer::u32>"
             }
           ]
         },
@@ -2806,7 +2830,7 @@
               ],
               "outputs": [
                 {
-                  "type": "jokers_of_neon_lib::models::data::map::LevelMap"
+                  "type": "jokers_of_neon_lib::models::data::map::ParsedLevelMap"
                 }
               ],
               "state_mutability": "view"
