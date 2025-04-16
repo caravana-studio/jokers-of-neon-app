@@ -18,7 +18,7 @@ export const MyGamesMenuBtn = ({
       width={width}
       icon={Icons.JOKER}
       label={label ? t("game.game-menu.my-games") : undefined}
-      description={""}
+      description={t("game.game-menu.my-games")}
       onClick={() => {
         navigate("/my-games");
       }}

@@ -14,6 +14,7 @@ import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
 import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
+import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 
 export const SidebarMenu = () => {
   const game = useGame();
@@ -55,6 +56,7 @@ export const SidebarMenu = () => {
         <MapMenuBtn width={iconWidth} />
         <LeaderboardMenuBtn width={iconWidth} />
         <DocsMenuBtn width={iconWidth} />
+        <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
       </Flex>
       <Flex
