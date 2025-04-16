@@ -36,7 +36,7 @@ const CircularToast = ({
   onClickFn,
 }: CircularToastProps) => (
   <Tooltip
-    hasArrow
+    placement="right"
     label={description}
     closeOnPointerDown
     color="white"
@@ -90,6 +90,10 @@ export const showTransactionToast = (
   );
 };
 
+const openTx = function (transaction_hash: string): void {
+  window.open(getEnvString("VITE_TRANSACTIONS_URL") + transaction_hash);
+};
+
 export const updateTransactionToast = (
   transaction_hash: string,
   succeed: boolean
@@ -99,22 +103,22 @@ export const updateTransactionToast = (
 
   if (succeed) {
     toast.success(
-      <CircularToast backgroundColor={backgroundColor} status={"success"} />,
+      <CircularToast
+        backgroundColor={backgroundColor}
+        status={"success"}
+        onClickFn={() => openTx(transaction_hash)}
+      />,
       {
         ...TOAST_COMMON_OPTIONS,
       }
     );
   } else {
-    const showErrorFn = function (): void {
-      window.open(getEnvString("VITE_TRANSACTIONS_URL") + transaction_hash);
-    };
-
     toast.error(
       <CircularToast
         backgroundColor={backgroundColor}
         status={"error"}
         description={description}
-        onClickFn={showErrorFn}
+        onClickFn={() => openTx(transaction_hash)}
       />,
       {
         ...TOAST_COMMON_OPTIONS,
