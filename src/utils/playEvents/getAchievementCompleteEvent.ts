@@ -17,7 +17,7 @@ export const getAchievementCompleteEvent = (
   );
   if (!achievementComplete) return undefined;
 
-  const player = getNumberValueFromEvent(achievementComplete, 2) ?? 0;
+  const player = achievementComplete.data.at(1) ?? "";
 
   const txValue = achievementComplete.data.at(3);
   const achievementId = decodeString(txValue ?? "");

@@ -99,6 +99,6 @@ export interface CashEvent {
 }
 
 export interface AchievementCompleted {
-  player: number;
+  player: string;
   achievementId: string;
 }

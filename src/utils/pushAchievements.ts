@@ -1,17 +1,13 @@
+import { AchievementCompleted } from "../types/ScoreData";
 import { PushActionsPayload, pushActions } from "./pushActions";
 
-interface AchievementCompletedEvent {
-  achievementId: string;
-  player: { toString(): string };
-}
-
 export const handleAchievementPush = async (
-  achievementEvent: AchievementCompletedEvent
+  achievementEvent: AchievementCompleted
 ) => {
   const payloads: PushActionsPayload[] = [
     {
       actions: [achievementEvent.achievementId],
-      address: achievementEvent.player.toString(),
+      address: achievementEvent.player,
     },
   ];
 
