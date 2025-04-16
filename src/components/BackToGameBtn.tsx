@@ -1,13 +1,14 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { useGame } from "../dojo/queries/useGame";
 
 export const BackToGameBtn = () => {
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
-  const { state } = useLocation();
+  const game = useGame();
 
   return (
     <Button
@@ -17,8 +18,8 @@ export const BackToGameBtn = () => {
       variant="secondarySolid"
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       onClick={() => {
-        if (state) {
-          state.inStore
+        if (game) {
+          game.state === "AT_SHOP"
             ? navigate("/store", { state: { lastTabIndex: 2 } })
             : navigate("/demo", {
                 state: { skipRageAnimation: true },

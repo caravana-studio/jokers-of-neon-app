@@ -11,7 +11,7 @@ export const DeckPage = () => {
 
   const location = useLocation();
   const game = useGame();
-  const inStore = game?.state == "AT_SHOP";
+  const inStore = game?.state === "AT_SHOP";
   const burn = location.state?.burn ?? false;
 
   return (

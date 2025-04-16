@@ -22,9 +22,7 @@ export const DocsMenuBtn = ({
       description={t("game.game-menu.docs-btn")}
       label={label ? t("game.game-menu.docs-btn") : undefined}
       onClick={() => {
-        navigate("/docs", {
-          state: { inStore: game?.state === "AT_SHOP" },
-        });
+        navigate("/docs");
       }}
     />
   );
