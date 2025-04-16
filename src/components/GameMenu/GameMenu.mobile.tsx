@@ -57,9 +57,7 @@ export const GameMenuMobile = ({ showTutorial }: GameMenuProps) => {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              navigate("/docs", {
-                state: { inStore: game?.state === "AT_SHOP" },
-              });
+              navigate("/docs");
             }}
           >
             {t("game.game-menu.docs-btn")}
