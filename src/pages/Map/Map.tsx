@@ -6,36 +6,7 @@ import { useEffect, useState } from "react";
 import { getMap } from "../../dojo/queries/getMap";
 import { useDojo } from "../../dojo/useDojo";
 import { getLayoutedElements } from "./layout";
-import { NodeData } from "./types";
-
-const initialNodes = [
-  {
-    id: "start",
-    data: { icon: "🏁" },
-    type: "emoji",
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "node1",
-    data: { icon: "🃏" },
-    type: "emoji",
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: "node2",
-    data: { icon: "🧙" },
-    type: "emoji",
-    position: { x: 0, y: 0 },
-  },
-  { id: "boss", data: { icon: "💀" }, type: "emoji", position: { x: 0, y: 0 } },
-];
-
-const initialEdges = [
-  { id: "e1", source: "start", target: "node1" },
-  { id: "e2", source: "start", target: "node2" },
-  { id: "e3", source: "node1", target: "boss" },
-  { id: "e4", source: "node2", target: "boss" },
-];
+import { NodeData, NodeType } from "./types";
 
 const calculateEdges = (nodes: NodeData[]) => {
   const edges: Edge[] = [];
@@ -46,6 +17,21 @@ const calculateEdges = (nodes: NodeData[]) => {
   })
 
   return edges;
+}
+
+const getIcon = (nodeType: NodeType) => {
+  switch (nodeType) {
+    case NodeType.STORE:
+      return "🛍️";
+    case NodeType.ROUND:
+      return "🃏";
+    case NodeType.RAGE:
+      return "💀";
+    case NodeType.REWARD:
+      return "💰";
+    default:
+      return "❓";
+  }
 }
 
 export const Map = () => {
@@ -64,7 +50,7 @@ export const Map = () => {
             id: node.id.toString(),
             type: "emoji",
             position: { x: 0, y: 0 },
-            data: {icon: "🧙" }
+            data: {icon: getIcon(node.nodeType), visited: node.visited}
           }
         })
         const calculatedEdges = calculateEdges(dataNodes);

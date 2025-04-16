@@ -53,16 +53,19 @@ export const getMap = async (
     );
     console.log("tx_result", tx_result);
 
-    const nodes = tx_result.level_nodes.map((node) => {
-      const id = Number(node[0][0].id);
+    const flatNodes = tx_result.level_nodes.flatMap((subArray) => subArray);
+
+    const nodes = flatNodes.map((node) => {
+      const id = Number(node[0].id);
       return {
         id,
-        nodeType: getNodeType(node[0][0].node_type.variant),
-        data: Number(node[0][0].data),
-        children: node[0][1].childs.map((childId) => Number(childId)),
-        visited: tx_result.traveled_nodes.includes(node[0][0].id),
+        nodeType: getNodeType(node[0].node_type.variant),
+        data: Number(node[0].data),
+        children: node[1].childs.map((childId) => Number(childId)),
+        visited: tx_result.traveled_nodes.includes(node[0].id),
       };
     });
+
     console.log("nodes", nodes);
     return nodes;
   } catch (e) {

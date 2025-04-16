@@ -4,8 +4,13 @@ const elk = new ELK();
 
 const layoutOptions = {
   "elk.algorithm": "layered",
-  "elk.direction": "UP",
-  "elk.spacing.nodeNode": "40",
+  "elk.direction": "DOWN",
+  "elk.spacing.nodeNode": "60",
+  "elk.layered.spacing.nodeNodeBetweenLayers": "80",
+  // "elk.layered.edgeRouting": "ORTHOGONAL",
+  "elk.layered.nodeAlignment.default": "CENTER", 
+  // "elk.layered.cycleBreaking.strategy": "DFS", 
+  // "elk.layered.nodePlacement.strategy": "BRANDES_KOEPF", 
 };
 
 export const getLayoutedElements = async (
