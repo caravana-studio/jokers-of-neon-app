@@ -40,8 +40,6 @@ interface AnimatePlayConfig {
   setIsRageRound: (isRageRound: boolean) => void;
 }
 
-const ggUrl = import.meta.env.GG_URL;
-
 export const animatePlay = (config: AnimatePlayConfig) => {
   const {
     playEvents,
@@ -299,7 +297,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   };
 
   const handleGameEnd = async () => {
-    console.log(ggUrl);
     if (playEvents.achievementCompleted) {
       await handleAchievementPush(playEvents.achievementCompleted);
     }

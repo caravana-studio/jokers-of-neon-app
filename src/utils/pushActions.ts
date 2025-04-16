@@ -4,10 +4,8 @@ export type PushActionsPayload = {
 };
 
 export async function pushActions({ actions, address }: PushActionsPayload) {
-  const ggUrl = import.meta.env.VITE_GG_URL;
   const secret = import.meta.env.VITE_GG_SECRET_KEY;
-
-  const url = `${ggUrl}/api/v2/action-dispatcher/dispatch/public`;
+  const url = `/api/forward-push`;
 
   const body = JSON.stringify({ actions, playerAddress: address });
 
