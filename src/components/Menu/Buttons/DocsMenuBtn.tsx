@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
-import { BarMenuBtn } from "./BarMenuBtn";
+import { MenuBtn } from "./MenuBtn";
 import { useGame } from "../../../dojo/queries/useGame";
 
 export const DocsMenuBtn = ({
@@ -16,7 +16,7 @@ export const DocsMenuBtn = ({
   const game = useGame();
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       width={width}
       icon={Icons.DOCS}
       description={t("game.game-menu.docs-btn")}

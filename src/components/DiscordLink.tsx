@@ -1,12 +1,9 @@
-import { Box, Link, Tooltip } from "@chakra-ui/react";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { IconComponent } from "./IconComponent";
 import { Icons } from "../constants/icons";
-import { BarMenuBtn } from "./Menu/Buttons/BarMenuBtn";
+import { MenuBtn } from "./Menu/Buttons/MenuBtn";
 
 export const PositionedDiscordLink = () => {
   return (
@@ -26,7 +23,7 @@ export const DiscordLink = ({
   const { t } = useTranslation(["home"]);
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       width={width}
       icon={Icons.DISCORD}
       description={t("home.join-discord")}

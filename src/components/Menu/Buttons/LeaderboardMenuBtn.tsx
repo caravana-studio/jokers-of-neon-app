@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { BarMenuBtn } from "./BarMenuBtn";
+import { MenuBtn } from "./MenuBtn";
 import { Icons } from "../../../constants/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ export const LeaderboardMenuBtn = ({
   const navigate = useNavigate();
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       width={width}
       icon={Icons.PODIUM}
       label={label ? t("game.game-menu.leaderboard-btn") : undefined}

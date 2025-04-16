@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { BarMenuBtn } from "./BarMenuBtn";
+import { MenuBtn } from "./MenuBtn";
 import { Icons } from "../../../constants/icons";
 import { useSettingsModal } from "../../../hooks/useSettingsModal";
 
@@ -16,7 +16,7 @@ export const SettingsMenuBtn = ({
   return (
     <>
       {SettingsModal}
-      <BarMenuBtn
+      <MenuBtn
         icon={Icons.SETTINGS}
         label={label ? t("game.game-menu.settings-btn") : undefined}
         description={t("game.game-menu.settings-btn")}

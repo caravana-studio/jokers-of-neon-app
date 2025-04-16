@@ -2,7 +2,7 @@ import { Flex, Tooltip } from "@chakra-ui/react";
 import { IconComponent } from "../../IconComponent";
 import { FC, ReactSVGElement, SVGProps } from "react";
 
-export interface BarMenuBtnProps {
+export interface MenuBtnProps {
   icon: string | FC<SVGProps<ReactSVGElement>>;
   description: string;
   label?: string;
@@ -11,7 +11,7 @@ export interface BarMenuBtnProps {
   disabled?: boolean;
 }
 
-export const BarMenuBtn: React.FC<BarMenuBtnProps> = ({
+export const MenuBtn: React.FC<MenuBtnProps> = ({
   icon,
   description,
   label,

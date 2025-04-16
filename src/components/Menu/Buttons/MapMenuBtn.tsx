@@ -1,12 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Icons } from "../../../constants/icons";
-import {
-  BarMenuComingSoonBtn,
-  BarMenuComingSoonBtnProps,
-} from "./BarMenuComingSoonBtn";
+import { MenuComingSoonBtn, MenuComingSoonBtnProps } from "./MenuComingSoonBtn";
 
 interface MapMenuBtnProps
-  extends Omit<BarMenuComingSoonBtnProps, "icon" | "description"> {
+  extends Omit<MenuComingSoonBtnProps, "icon" | "description"> {
   width: string;
   useLabel?: boolean;
 }
@@ -20,7 +17,7 @@ export const MapMenuBtn: React.FC<MapMenuBtnProps> = ({
   const { t } = useTranslation("game");
 
   return (
-    <BarMenuComingSoonBtn
+    <MenuComingSoonBtn
       width={width}
       icon={Icons.MAP}
       label={useLabel ? t("game.game-menu.map-btn") : undefined}

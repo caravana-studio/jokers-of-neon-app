@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { BarMenuBtn } from "../components/Menu/Buttons/BarMenuBtn";
+import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import { Icons } from "../constants/icons";
 import { connectControllerCommand } from "../commands/connectController";
 
@@ -17,7 +17,7 @@ export const ControllerIcon = ({
   const { connector } = useAccount();
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       icon={Icons.CARTRIDGE}
       description={t("controller")}
       label={label ? "Controller" : undefined}

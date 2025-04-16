@@ -8,7 +8,7 @@ import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
 import { DiscordLink } from "../../DiscordLink";
-import { BarMenuBtn } from "../Buttons/BarMenuBtn";
+import { MenuBtn } from "../Buttons/MenuBtn";
 import { LogoutMenuBtn } from "../Buttons/LogoutMenuBtn";
 import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
@@ -90,7 +90,7 @@ export const SidebarMenu = () => {
               {animatedText}
             </Heading>
           </AnimatedText>
-          <BarMenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
+          <MenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
           <Flex
             sx={{
               h: "30px",

@@ -1,12 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { BarMenuBtn, BarMenuBtnProps } from "./BarMenuBtn";
+import { MenuBtn, MenuBtnProps } from "./MenuBtn";
 
-export interface BarMenuComingSoonBtnProps
-  extends Omit<BarMenuBtnProps, "disabled"> {
+export interface MenuComingSoonBtnProps extends Omit<MenuBtnProps, "disabled"> {
   mtText?: string | number;
   fontSizeText?: string | number;
 }
-export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = ({
+export const MenuComingSoonBtn: React.FC<MenuComingSoonBtnProps> = ({
   mtText = "14px",
   fontSizeText = "7px",
   label,
@@ -18,7 +17,7 @@ export const BarMenuComingSoonBtn: React.FC<BarMenuComingSoonBtnProps> = ({
     </Text>
   );
 
-  const menuBtn = <BarMenuBtn {...props} disabled label={label} />;
+  const menuBtn = <MenuBtn {...props} disabled label={label} />;
   return (
     <>
       {!label ? (

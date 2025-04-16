@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { BarMenuBtn } from "./BarMenuBtn";
+import { MenuBtn } from "./MenuBtn";
 import { GAME_ID, LOGGED_USER } from "../../../constants/localStorage";
 import { Icons } from "../../../constants/icons";
 import { useDisconnect } from "@starknet-react/core";
@@ -19,7 +19,7 @@ export const LogoutMenuBtn = ({
   const { restartGame } = useGameContext();
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       width={width}
       icon={Icons.LOGOUT}
       description={t("game.game-menu.logout-btn")}
