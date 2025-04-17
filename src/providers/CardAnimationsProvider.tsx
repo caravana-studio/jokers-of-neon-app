@@ -8,6 +8,16 @@ interface ICardAnimationsContext {
   setAnimateSecondChanceCard: (animate: boolean) => void;
   animatedPowerUp: IAnimatedPowerUp | undefined;
   setAnimatedPowerUp: (powerUp: IAnimatedPowerUp | undefined) => void;
+  animateSpecialCardDefault: IAnimatedSpecialCardDefault | undefined;
+  setanimateSpecialCardDefault: (
+    specialCardDefault: IAnimatedSpecialCardDefault | undefined
+  ) => void;
+}
+
+interface IAnimatedSpecialCardDefault {
+  specialId: string;
+  bgPath: string;
+  animatedImgPath: string;
 }
 
 interface IAnimatedCard {
@@ -35,6 +45,8 @@ const CardAnimationsContext = createContext<ICardAnimationsContext>({
   setAnimateSecondChanceCard: (_) => {},
   animatedPowerUp: undefined,
   setAnimatedPowerUp: (_) => {},
+  animateSpecialCardDefault: undefined,
+  setanimateSpecialCardDefault: (_) => {},
 });
 export const useCardAnimations = () => useContext(CardAnimationsContext);
 
@@ -44,6 +56,9 @@ export const CardAnimationsProvider = ({ children }: PropsWithChildren) => {
     IAnimatedPowerUp | undefined
   >();
   const [animateSecondChanceCard, setAnimateSecondChanceCard] = useState(false);
+  const [animateSpecialCardDefault, setanimateSpecialCardDefault] = useState<
+    IAnimatedSpecialCardDefault | undefined
+  >();
   return (
     <CardAnimationsContext.Provider
       value={{
@@ -53,6 +68,8 @@ export const CardAnimationsProvider = ({ children }: PropsWithChildren) => {
         setAnimateSecondChanceCard,
         animatedPowerUp,
         setAnimatedPowerUp,
+        animateSpecialCardDefault,
+        setanimateSpecialCardDefault,
       }}
     >
       {children}

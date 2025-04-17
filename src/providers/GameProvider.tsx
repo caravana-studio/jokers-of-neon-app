@@ -177,8 +177,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     animationSpeed
   );
 
-  const { setAnimatedCard, setAnimateSecondChanceCard, setAnimatedPowerUp } =
-    useCardAnimations();
+  const {
+    setAnimatedCard,
+    setAnimateSecondChanceCard,
+    setAnimatedPowerUp,
+    setanimateSpecialCardDefault,
+  } = useCardAnimations();
 
   const {
     gameId,
@@ -357,6 +361,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setCardTransformationLock,
             setIsRageRound,
             specialCards,
+            setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {

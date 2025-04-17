@@ -38,6 +38,7 @@ interface AnimatePlayConfig {
   setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
   specialCards: Card[];
+  setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -73,6 +74,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setCardTransformationLock,
     setIsRageRound,
     specialCards,
+    setAnimateSpecialCardDefault,
   } = config;
 
   if (!playEvents) return;
@@ -301,7 +303,15 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     if (playEvents.cardActivateEvent) {
       const specialCardInHand =
         specialCards[playEvents.cardActivateEvent.special_id];
-      if (specialCardInHand.card_id == 323) setAnimateSecondChanceCard(true);
+      if (specialCardInHand.card_id == 323) {
+        setAnimateSecondChanceCard(true);
+      } else {
+        setAnimateSpecialCardDefault({
+          specialId: specialCardInHand.card_id,
+          bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
+          animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
+        });
+      }
     } else if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);
