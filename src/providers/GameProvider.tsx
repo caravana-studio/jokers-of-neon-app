@@ -596,9 +596,21 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onSellSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return sellSpecialCard(gameId, cardIdx).finally(() => {
-      setPreSelectionLocked(false);
-    });
+    const promise = sellSpecialCard(gameId, cardIdx)
+      .then(({ success, achievementEvent }) => {
+        if (achievementEvent) {
+          console.log(achievementEvent);
+        }
+        return success;
+      })
+      .catch(() => {
+        return false;
+      })
+      .finally(() => {
+        setPreSelectionLocked(false);
+      });
+
+    return promise;
   };
 
   const checkOrCreateGame = async () => {

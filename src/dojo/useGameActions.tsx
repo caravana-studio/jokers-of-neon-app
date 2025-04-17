@@ -12,6 +12,7 @@ import {
 import { useDojo } from "./useDojo";
 
 import { getModifiersForContract } from "./utils/getModifiersForContract";
+import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -158,10 +159,18 @@ export const useGameActions = () => {
         retryInterval: 100,
       });
 
-      return tx.isSuccess();
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 

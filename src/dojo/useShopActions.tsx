@@ -10,8 +10,12 @@ import {
 import { useDojo } from "./useDojo";
 import { DojoEvents } from "../enums/dojoEvents";
 import { getEventKey } from "../utils/getEventKey";
+import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
+import { AchievementCompleted } from "../types/ScoreData";
 
-const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(DojoEvents.DESTROYED_SPECIAL_CARD)
+const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
+  DojoEvents.DESTROYED_SPECIAL_CARD
+);
 
 export const useShopActions = () => {
   const {
@@ -45,7 +49,7 @@ export const useShopActions = () => {
         return {
           success: false,
           cards: [],
-          powerUps: []
+          powerUps: [],
         };
       }
     } catch (e) {
@@ -54,7 +58,7 @@ export const useShopActions = () => {
       return {
         success: false,
         cards: [],
-        powerUps: []
+        powerUps: [],
       };
     }
   };
@@ -79,23 +83,28 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
-  const buyPowerUp = async (
-    gameId: number,
-    power_up_idx: number,
-  ) => {
+  const buyPowerUp = async (gameId: number, power_up_idx: number) => {
     try {
       showTransactionToast();
       const response = await client.shop_system.buyPowerUpItem(
         account,
         gameId,
-        power_up_idx,
+        power_up_idx
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash);
@@ -126,10 +135,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -153,10 +170,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -175,10 +200,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -198,10 +231,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -221,10 +262,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -244,10 +293,18 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      let achievementEvent;
+      if (tx.isSuccess()) {
+        achievementEvent = getAchievementCompleteEvent(tx.events);
+      }
+
+      return { success, achievementEvent };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
