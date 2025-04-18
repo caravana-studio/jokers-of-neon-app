@@ -21,8 +21,8 @@ const createGameEmptyResponse = {
 
 const CREATE_GAME_EVENT_KEY = getEventKey(DojoEvents.CREATE_GAME);
 
-//TODO: dehardcode this
 const MINT_GAME_EVENT_KEY =
+  import.meta.env.VITE_MINT_GAME_EVENT_KEY ||
   "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac";
 
 export const useGameActions = () => {
@@ -233,7 +233,10 @@ export const useGameActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        const gameId = getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3);
+        console.log("events", events);
+        const gameId =
+          getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3) ||
+          getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 2, 0);
         console.log("Game " + gameId + " minted");
         return gameId;
       } else {

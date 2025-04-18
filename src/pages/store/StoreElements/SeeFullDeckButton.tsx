@@ -17,7 +17,7 @@ const SeeFullDeckButton: React.FC<SeeFullDeckButtonProps> = ({
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       w={isSmallScreen ? "unset" : ["unset", "unset", "unset", "100%", "100%"]}
       onClick={() => {
-        navigate("/deck", { state: { inStore: true } });
+        navigate("/deck");
       }}
     >
       {t("store.labels.see-my").toUpperCase()}

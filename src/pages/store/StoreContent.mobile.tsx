@@ -28,7 +28,6 @@ export const StoreContentMobile = ({
           setRun={setRun}
           firstButton={<SpecialsButton isSmallScreen={true} />}
           secondButton={<NextLevelButton isSmallScreen={true} />}
-          navigateState={{ state: { inStore: true } }}
         />
       }
       disableGoBack

@@ -60,7 +60,7 @@ export const UtilsTab = () => {
 
   const buyBurnButton = createBuyButton(() => {
     if (!burnItem.purchased) {
-      navigate("/deck", { state: { inStore: true, burn: true } });
+      navigate("/deck", { state: { burn: true } });
     }
   }, notEnoughCashBurn || burnItem.purchased);
 
