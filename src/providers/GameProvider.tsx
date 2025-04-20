@@ -45,6 +45,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { handleAchievementPush } from "../utils/pushAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -597,9 +598,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onSellSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
     const promise = sellSpecialCard(gameId, cardIdx)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         return success;
       })

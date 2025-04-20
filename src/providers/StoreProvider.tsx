@@ -18,6 +18,7 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
+import { handleAchievementPush } from "../utils/pushAchievements.ts";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -165,12 +166,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     stateBuyCard(card);
 
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card))
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (!success) {
           stateRollbackBuyCard(card);
         }
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         fetchShopItems();
         return success;
@@ -214,9 +215,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
 
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         fetchShopItems();
         return success;
@@ -238,12 +239,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     stateBuyCard(card);
 
     const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (!success) {
           stateRollbackBuyCard(card);
         }
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         fetchShopItems();
         return success;
@@ -263,14 +264,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buyPackSound();
     buyBlisterPack(Number(pack.idx));
     const promise = dojoBuyPack(gameId, Number(pack.idx))
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (!success) {
           rollbackBuyBlisterPack(Number(pack.idx));
         }
         fetchShopItems();
 
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
 
         return success;
@@ -284,9 +285,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
     const promise = dojoSelectCardsFromPack(gameId, cardIndices)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         return success;
       })
@@ -320,13 +321,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     buyPokerHand(item.idx);
     const promise = dojoLevelUpHand(gameId, item.idx)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (!success) {
           rollbackBuyPokerHand(item.idx);
         }
 
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
 
         return success;
@@ -346,9 +347,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySlotSpecialCard();
 
     const promise = dojoBuySpecialSlot(gameId)
-      .then(({ success, achievementEvent }) => {
+      .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          console.log(achievementEvent);
+          await handleAchievementPush(achievementEvent);
         }
         return success;
       })
