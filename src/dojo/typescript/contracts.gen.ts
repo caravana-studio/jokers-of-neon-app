@@ -1,23 +1,23 @@
-import { DojoCall, DojoProvider } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption } from "starknet";
+import { DojoProvider, DojoCall } from "@dojoengine/core";
+import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
 export function setupWorld(provider: DojoProvider) {
 
-	const build_shop_system_buyBlisterPackItem_calldata = (gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
+	const build_map_system_advanceNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
 		return {
-			contractName: "shop_system",
-			entrypoint: "buy_blister_pack_item",
-			calldata: [gameId, blisterPackItemId],
+			contractName: "map_system",
+			entrypoint: "advance_node",
+			calldata: [gameId, nodeId],
 		};
 	};
 
-	const shop_system_buyBlisterPackItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, blisterPackItemId: BigNumberish) => {
+	const map_system_advanceNode = async (snAccount: Account | AccountInterface, gameId: BigNumberish, nodeId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buyBlisterPackItem_calldata(gameId, blisterPackItemId),
+				build_map_system_advanceNode_calldata(gameId, nodeId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -26,19 +26,57 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyBurnItem_calldata = (gameId: BigNumberish, cardId: BigNumberish): DojoCall => {
+	const build_game_system_approve_calldata = (to: string, tokenId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "approve",
+			calldata: [to, tokenId],
+		};
+	};
+
+	const game_system_approve = async (snAccount: Account | AccountInterface, to: string, tokenId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_approve_calldata(to, tokenId),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_balanceOf_calldata = (account: string): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "balanceOf",
+			calldata: [account],
+		};
+	};
+
+	const game_system_balanceOf = async (account: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_balanceOf_calldata(account));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_burnCard_calldata = (gameId: BigNumberish, cardId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
-			entrypoint: "buy_burn_item",
+			entrypoint: "burn_card",
 			calldata: [gameId, cardId],
 		};
 	};
 
-	const shop_system_buyBurnItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardId: BigNumberish) => {
+	const shop_system_burnCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buyBurnItem_calldata(gameId, cardId),
+				build_shop_system_burnCard_calldata(gameId, cardId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -47,19 +85,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum): DojoCall => {
+	const build_shop_system_buyCard_calldata = (gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum): DojoCall => {
 		return {
 			contractName: "shop_system",
-			entrypoint: "buy_card_item",
+			entrypoint: "buy_card",
 			calldata: [gameId, itemId, cardItemType],
 		};
 	};
 
-	const shop_system_buyCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum) => {
+	const shop_system_buyCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, cardItemType: CairoCustomEnum) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buyCardItem_calldata(gameId, itemId, cardItemType),
+				build_shop_system_buyCard_calldata(gameId, itemId, cardItemType),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -68,19 +106,40 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyPokerHandItem_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
+	const build_shop_system_buyLootBox_calldata = (gameId: BigNumberish, lootBoxItemId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
-			entrypoint: "buy_poker_hand_item",
+			entrypoint: "buy_loot_box",
+			calldata: [gameId, lootBoxItemId],
+		};
+	};
+
+	const shop_system_buyLootBox = async (snAccount: Account | AccountInterface, gameId: BigNumberish, lootBoxItemId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_shop_system_buyLootBox_calldata(gameId, lootBoxItemId),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_buyPokerHand_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "buy_poker_hand",
 			calldata: [gameId, itemId],
 		};
 	};
 
-	const shop_system_buyPokerHandItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
+	const shop_system_buyPokerHand = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buyPokerHandItem_calldata(gameId, itemId),
+				build_shop_system_buyPokerHand_calldata(gameId, itemId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -89,19 +148,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buyPowerUpItem_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
+	const build_shop_system_buyPowerUp_calldata = (gameId: BigNumberish, itemId: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
-			entrypoint: "buy_power_up_item",
+			entrypoint: "buy_power_up",
 			calldata: [gameId, itemId],
 		};
 	};
 
-	const shop_system_buyPowerUpItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
+	const shop_system_buyPowerUp = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buyPowerUpItem_calldata(gameId, itemId),
+				build_shop_system_buyPowerUp_calldata(gameId, itemId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -110,40 +169,40 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_buySlotSpecialCardItem_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_shop_system_buySpecialCard_calldata = (gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean): DojoCall => {
 		return {
 			contractName: "shop_system",
-			entrypoint: "buy_slot_special_card_item",
-			calldata: [gameId],
-		};
-	};
-
-	const shop_system_buySlotSpecialCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
-		try {
-			return await provider.execute(
-				snAccount as any,
-				build_shop_system_buySlotSpecialCardItem_calldata(gameId),
-				DOJO_NAMESPACE,
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
-	const build_shop_system_buySpecialCardItem_calldata = (gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean): DojoCall => {
-		return {
-			contractName: "shop_system",
-			entrypoint: "buy_special_card_item",
+			entrypoint: "buy_special_card",
 			calldata: [gameId, itemId, isTemporary],
 		};
 	};
 
-	const shop_system_buySpecialCardItem = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean) => {
+	const shop_system_buySpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, itemId: BigNumberish, isTemporary: boolean) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_buySpecialCardItem_calldata(gameId, itemId, isTemporary),
+				build_shop_system_buySpecialCard_calldata(gameId, itemId, isTemporary),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_buySpecialSlot_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "buy_special_slot",
+			calldata: [gameId],
+		};
+	};
+
+	const shop_system_buySpecialSlot = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_shop_system_buySpecialSlot_calldata(gameId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -173,7 +232,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_changeModifierCard_calldata = (gameId: BigNumberish, modifierIndex: BigNumberish): DojoCall => {
+	const build_action_system_changeModifierCard_calldata = (gameId: BigNumberish, modifierIndex: BigNumberish): DojoCall => {
 		return {
 			contractName: "action_system",
 			entrypoint: "change_modifier_card",
@@ -181,11 +240,11 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
+	const action_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_changeModifierCard_calldata(gameId, modifierIndex),
+				build_action_system_changeModifierCard_calldata(gameId, modifierIndex),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -194,19 +253,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_createGame_calldata = (modId: BigNumberish, playerName: BigNumberish): DojoCall => {
+	const build_map_system_createMapLevel_calldata = (gameId: BigNumberish, seed: CairoOption<BigNumberish>): DojoCall => {
 		return {
-			contractName: "game_system",
-			entrypoint: "start_game",
-			calldata: [modId, playerName],
+			contractName: "map_system",
+			entrypoint: "create_map_level",
+			calldata: [gameId, seed],
 		};
 	};
 
-	const game_system_createGame = async (snAccount: Account | AccountInterface, modId: BigNumberish, playerName: BigNumberish) => {
+	const map_system_createMapLevel = async (snAccount: Account | AccountInterface, gameId: BigNumberish, seed: CairoOption<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_createGame_calldata(modId, playerName),
+				build_map_system_createMapLevel_calldata(gameId, seed),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -215,7 +274,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>): DojoCall => {
+	const build_action_system_discard_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "action_system",
 			entrypoint: "discard",
@@ -223,11 +282,11 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
+	const action_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
+				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -236,7 +295,96 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_getGameConfig_calldata = (modId: BigNumberish): DojoCall => {
+	const build_game_system_emitMetadataUpdate_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "emit_metadata_update",
+			calldata: [gameId],
+		};
+	};
+
+	const game_system_emitMetadataUpdate = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_emitMetadataUpdate_calldata(gameId),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_gameCount_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "game_count",
+			calldata: [],
+		};
+	};
+
+	const game_system_gameCount = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_gameCount_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_gameMetadata_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "game_metadata",
+			calldata: [],
+		};
+	};
+
+	const game_system_gameMetadata = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_gameMetadata_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_getApproved_calldata = (tokenId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "getApproved",
+			calldata: [tokenId],
+		};
+	};
+
+	const game_system_getApproved = async (tokenId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getApproved_calldata(tokenId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_mods_info_system_getCumulativeInfo_calldata = (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish): DojoCall => {
+		return {
+			contractName: "mods_info_system",
+			entrypoint: "get_cumulative_info",
+			calldata: [modId, gameId, specialCardId],
+		};
+	};
+
+	const mods_info_system_getCumulativeInfo = async (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getCumulativeInfo_calldata(modId, gameId, specialCardId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_mods_info_system_getGameConfig_calldata = (modId: BigNumberish): DojoCall => {
 		return {
 			contractName: "mods_info_system",
 			entrypoint: "get_game_config",
@@ -244,16 +392,16 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_getGameConfig = async (modId: BigNumberish) => {
+	const mods_info_system_getGameConfig = async (modId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getGameConfig_calldata(modId));
+			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getGameConfig_calldata(modId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_game_system_getGameMods_calldata = (): DojoCall => {
+	const build_mods_info_system_getGameMods_calldata = (): DojoCall => {
 		return {
 			contractName: "mods_info_system",
 			entrypoint: "get_game_mods",
@@ -261,9 +409,43 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_getGameMods = async () => {
+	const mods_info_system_getGameMods = async () => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getGameMods_calldata());
+			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getGameMods_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_map_system_getLevelMap_calldata = (gameId: BigNumberish, level: BigNumberish): DojoCall => {
+		return {
+			contractName: "map_system",
+			entrypoint: "get_level_map",
+			calldata: [gameId, level],
+		};
+	};
+
+	const map_system_getLevelMap = async (gameId: BigNumberish, level: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_map_system_getLevelMap_calldata(gameId, level));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_map_system_getNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
+		return {
+			contractName: "map_system",
+			entrypoint: "get_node",
+			calldata: [gameId, nodeId],
+		};
+	};
+
+	const map_system_getNode = async (gameId: BigNumberish, nodeId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_map_system_getNode_calldata(gameId, nodeId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -355,7 +537,79 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
+	const build_game_system_isApprovedForAll_calldata = (owner: string, operator: string): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "isApprovedForAll",
+			calldata: [owner, operator],
+		};
+	};
+
+	const game_system_isApprovedForAll = async (owner: string, operator: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_isApprovedForAll_calldata(owner, operator));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_mint_calldata = (playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "mint",
+			calldata: [playerName, settingsId, start, end, to],
+		};
+	};
+
+	const game_system_mint = async (snAccount: Account | AccountInterface, playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_mint_calldata(playerName, settingsId, start, end, to),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_name_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "name",
+			calldata: [],
+		};
+	};
+
+	const game_system_name = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_name_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_ownerOf_calldata = (tokenId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "ownerOf",
+			calldata: [tokenId],
+		};
+	};
+
+	const game_system_ownerOf = async (tokenId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_ownerOf_calldata(tokenId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_action_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "action_system",
 			entrypoint: "play",
@@ -363,11 +617,11 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
+	const action_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
+				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -439,19 +693,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_selectCardsFromBlister_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>): DojoCall => {
+	const build_game_system_safeTransferFrom_calldata = (from: string, to: string, tokenId: BigNumberish, data: Array<BigNumberish>): DojoCall => {
 		return {
-			contractName: "shop_system",
-			entrypoint: "select_cards_from_blister",
-			calldata: [gameId, cardsIndex],
+			contractName: "game_system",
+			entrypoint: "safeTransferFrom",
+			calldata: [from, to, tokenId, data],
 		};
 	};
 
-	const shop_system_selectCardsFromBlister = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>) => {
+	const game_system_safeTransferFrom = async (snAccount: Account | AccountInterface, from: string, to: string, tokenId: BigNumberish, data: Array<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_selectCardsFromBlister_calldata(gameId, cardsIndex),
+				build_game_system_safeTransferFrom_calldata(from, to, tokenId, data),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -460,7 +714,79 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_sellSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish): DojoCall => {
+	const build_game_system_score_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "score",
+			calldata: [gameId],
+		};
+	};
+
+	const game_system_score = async (gameId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_score_calldata(gameId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_scoreAttribute_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "score_attribute",
+			calldata: [],
+		};
+	};
+
+	const game_system_scoreAttribute = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_scoreAttribute_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_scoreModel_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "score_model",
+			calldata: [],
+		};
+	};
+
+	const game_system_scoreModel = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_scoreModel_calldata());
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_selectCardsFromLootBox_calldata = (gameId: BigNumberish, cardsIndex: Array<BigNumberish>): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "select_cards_from_loot_box",
+			calldata: [gameId, cardsIndex],
+		};
+	};
+
+	const shop_system_selectCardsFromLootBox = async (snAccount: Account | AccountInterface, gameId: BigNumberish, cardsIndex: Array<BigNumberish>) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_shop_system_selectCardsFromLootBox_calldata(gameId, cardsIndex),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_sellSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
 			entrypoint: "sell_special_card",
@@ -468,13 +794,68 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const game_system_sellSpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, specialCardIndex: BigNumberish) => {
+	const shop_system_sellSpecialCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, specialCardIndex: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_sellSpecialCard_calldata(gameId, specialCardIndex),
+				build_shop_system_sellSpecialCard_calldata(gameId, specialCardIndex),
 				DOJO_NAMESPACE,
 			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_setApprovalForAll_calldata = (operator: string, approved: boolean): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "setApprovalForAll",
+			calldata: [operator, approved],
+		};
+	};
+
+	const game_system_setApprovalForAll = async (snAccount: Account | AccountInterface, operator: string, approved: boolean) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_setApprovalForAll_calldata(operator, approved),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_settingExists_calldata = (settingsId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "setting_exists",
+			calldata: [settingsId],
+		};
+	};
+
+	const game_system_settingExists = async (settingsId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_settingExists_calldata(settingsId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_settingsModel_calldata = (): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "settings_model",
+			calldata: [],
+		};
+	};
+
+	const game_system_settingsModel = async () => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_settingsModel_calldata());
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -502,19 +883,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_mint_calldata = (playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string): DojoCall => {
+	const build_game_system_startGame_calldata = (gameId: BigNumberish, playerName: BigNumberish): DojoCall => {
 		return {
 			contractName: "game_system",
-			entrypoint: "mint",
-			calldata: [playerName, settingsId, start, end, to],
+			entrypoint: "start_game",
+			calldata: [gameId, playerName],
 		};
 	};
 
-	const game_system_mint = async (snAccount: Account | AccountInterface, playerName: BigNumberish, settingsId: BigNumberish, start: CairoOption<BigNumberish>, end: CairoOption<BigNumberish>, to: string) => {
+	const game_system_startGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playerName: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_mint_calldata(playerName, settingsId, start, end, to),
+				build_game_system_startGame_calldata(gameId, playerName),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -523,70 +904,87 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_mods_info_system_getCumulativeInfo_calldata = (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish): DojoCall => {
+	const build_game_system_supportsInterface_calldata = (interfaceId: BigNumberish): DojoCall => {
 		return {
-			contractName: "mods_info_system",
-			entrypoint: "get_cumulative_info",
-			calldata: [modId, gameId, specialCardId],
+			contractName: "game_system",
+			entrypoint: "supports_interface",
+			calldata: [interfaceId],
 		};
 	};
 
-	const mods_info_system_getCumulativeInfo = async (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish) => {
+	const game_system_supportsInterface = async (interfaceId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getCumulativeInfo_calldata(modId, gameId, specialCardId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_supportsInterface_calldata(interfaceId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_map_system_getLevelMap_calldata = (gameId: BigNumberish, level: BigNumberish): DojoCall => {
+	const build_game_system_symbol_calldata = (): DojoCall => {
 		return {
-			contractName: "map_system",
-			entrypoint: "get_level_map",
-			calldata: [gameId, level],
+			contractName: "game_system",
+			entrypoint: "symbol",
+			calldata: [],
 		};
 	};
 
-	const map_system_getLevelMap = async (gameId: BigNumberish, level: BigNumberish) => {
+	const game_system_symbol = async () => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_map_system_getLevelMap_calldata(gameId, level));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_symbol_calldata());
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_map_system_getNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
+	const build_game_system_tokenUri_calldata = (tokenId: BigNumberish): DojoCall => {
 		return {
-			contractName: "map_system",
-			entrypoint: "get_node",
-			calldata: [nodeId],
+			contractName: "game_system",
+			entrypoint: "tokenURI",
+			calldata: [tokenId],
 		};
 	};
 
-	const map_system_getNode = async (gameId: BigNumberish, nodeId: BigNumberish) => {
+	const game_system_tokenUri = async (tokenId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_map_system_getNode_calldata(gameId, nodeId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_tokenUri_calldata(tokenId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_map_system_advanceNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
+	const build_game_system_tokenMetadata_calldata = (tokenId: BigNumberish): DojoCall => {
 		return {
-			contractName: "map_system",
-			entrypoint: "advance_node",
-			calldata: [gameId, nodeId],
+			contractName: "game_system",
+			entrypoint: "token_metadata",
+			calldata: [tokenId],
 		};
 	};
 
-	const map_system_advanceNode = async (snAccount: Account | AccountInterface, gameId: BigNumberish, nodeId: BigNumberish) => {
+	const game_system_tokenMetadata = async (tokenId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_game_system_tokenMetadata_calldata(tokenId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_game_system_transferFrom_calldata = (from: string, to: string, tokenId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "transferFrom",
+			calldata: [from, to, tokenId],
+		};
+	};
+
+	const game_system_transferFrom = async (snAccount: Account | AccountInterface, from: string, to: string, tokenId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_map_system_advanceNode_calldata(gameId, nodeId),
+				build_game_system_transferFrom_calldata(from, to, tokenId),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -598,31 +996,85 @@ export function setupWorld(provider: DojoProvider) {
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
+			buildAdvanceNodeCalldata: build_map_system_advanceNode_calldata,
+			createMapLevel: map_system_createMapLevel,
+			buildCreateMapLevelCalldata: build_map_system_createMapLevel_calldata,
 			getLevelMap: map_system_getLevelMap,
-			getNode: map_system_getNode,
 			buildGetLevelMapCalldata: build_map_system_getLevelMap_calldata,
+			getNode: map_system_getNode,
+			buildGetNodeCalldata: build_map_system_getNode_calldata,
+		},
+		game_system: {
+			approve: game_system_approve,
+			buildApproveCalldata: build_game_system_approve_calldata,
+			balanceOf: game_system_balanceOf,
+			buildBalanceOfCalldata: build_game_system_balanceOf_calldata,
+			emitMetadataUpdate: game_system_emitMetadataUpdate,
+			buildEmitMetadataUpdateCalldata: build_game_system_emitMetadataUpdate_calldata,
+			gameCount: game_system_gameCount,
+			buildGameCountCalldata: build_game_system_gameCount_calldata,
+			gameMetadata: game_system_gameMetadata,
+			buildGameMetadataCalldata: build_game_system_gameMetadata_calldata,
+			getApproved: game_system_getApproved,
+			buildGetApprovedCalldata: build_game_system_getApproved_calldata,
+			isApprovedForAll: game_system_isApprovedForAll,
+			buildIsApprovedForAllCalldata: build_game_system_isApprovedForAll_calldata,
+			mint: game_system_mint,
+			buildMintCalldata: build_game_system_mint_calldata,
+			name: game_system_name,
+			buildNameCalldata: build_game_system_name_calldata,
+			ownerOf: game_system_ownerOf,
+			buildOwnerOfCalldata: build_game_system_ownerOf_calldata,
+			safeTransferFrom: game_system_safeTransferFrom,
+			buildSafeTransferFromCalldata: build_game_system_safeTransferFrom_calldata,
+			score: game_system_score,
+			buildScoreCalldata: build_game_system_score_calldata,
+			scoreAttribute: game_system_scoreAttribute,
+			buildScoreAttributeCalldata: build_game_system_scoreAttribute_calldata,
+			scoreModel: game_system_scoreModel,
+			buildScoreModelCalldata: build_game_system_scoreModel_calldata,
+			setApprovalForAll: game_system_setApprovalForAll,
+			buildSetApprovalForAllCalldata: build_game_system_setApprovalForAll_calldata,
+			settingExists: game_system_settingExists,
+			buildSettingExistsCalldata: build_game_system_settingExists_calldata,
+			settingsModel: game_system_settingsModel,
+			buildSettingsModelCalldata: build_game_system_settingsModel_calldata,
+			startGame: game_system_startGame,
+			buildStartGameCalldata: build_game_system_startGame_calldata,
+			supportsInterface: game_system_supportsInterface,
+			buildSupportsInterfaceCalldata: build_game_system_supportsInterface_calldata,
+			symbol: game_system_symbol,
+			buildSymbolCalldata: build_game_system_symbol_calldata,
+			tokenUri: game_system_tokenUri,
+			buildTokenUriCalldata: build_game_system_tokenUri_calldata,
+			tokenMetadata: game_system_tokenMetadata,
+			buildTokenMetadataCalldata: build_game_system_tokenMetadata_calldata,
+			transferFrom: game_system_transferFrom,
+			buildTransferFromCalldata: build_game_system_transferFrom_calldata,
 		},
 		shop_system: {
-			buyBlisterPackItem: shop_system_buyBlisterPackItem,
-			buildBuyBlisterPackItemCalldata: build_shop_system_buyBlisterPackItem_calldata,
-			buyBurnItem: shop_system_buyBurnItem,
-			buildBuyBurnItemCalldata: build_shop_system_buyBurnItem_calldata,
-			buyCardItem: shop_system_buyCardItem,
-			buildBuyCardItemCalldata: build_shop_system_buyCardItem_calldata,
-			buyPokerHandItem: shop_system_buyPokerHandItem,
-			buildBuyPokerHandItemCalldata: build_shop_system_buyPokerHandItem_calldata,
-			buyPowerUpItem: shop_system_buyPowerUpItem,
-			buildBuyPowerUpItemCalldata: build_shop_system_buyPowerUpItem_calldata,
-			buySlotSpecialCardItem: shop_system_buySlotSpecialCardItem,
-			buildBuySlotSpecialCardItemCalldata: build_shop_system_buySlotSpecialCardItem_calldata,
-			buySpecialCardItem: shop_system_buySpecialCardItem,
-			buildBuySpecialCardItemCalldata: build_shop_system_buySpecialCardItem_calldata,
+			burnCard: shop_system_burnCard,
+			buildBurnCardCalldata: build_shop_system_burnCard_calldata,
+			buyCard: shop_system_buyCard,
+			buildBuyCardCalldata: build_shop_system_buyCard_calldata,
+			buyLootBox: shop_system_buyLootBox,
+			buildBuyLootBoxCalldata: build_shop_system_buyLootBox_calldata,
+			buyPokerHand: shop_system_buyPokerHand,
+			buildBuyPokerHandCalldata: build_shop_system_buyPokerHand_calldata,
+			buyPowerUp: shop_system_buyPowerUp,
+			buildBuyPowerUpCalldata: build_shop_system_buyPowerUp_calldata,
+			buySpecialCard: shop_system_buySpecialCard,
+			buildBuySpecialCardCalldata: build_shop_system_buySpecialCard_calldata,
+			buySpecialSlot: shop_system_buySpecialSlot,
+			buildBuySpecialSlotCalldata: build_shop_system_buySpecialSlot_calldata,
 			getShopItems: shop_system_getShopItems,
 			buildGetShopItemsCalldata: build_shop_system_getShopItems_calldata,
 			reroll: shop_system_reroll,
 			buildRerollCalldata: build_shop_system_reroll_calldata,
-			selectCardsFromBlister: shop_system_selectCardsFromBlister,
-			buildSelectCardsFromBlisterCalldata: build_shop_system_selectCardsFromBlister_calldata,
+			selectCardsFromLootBox: shop_system_selectCardsFromLootBox,
+			buildSelectCardsFromLootBoxCalldata: build_shop_system_selectCardsFromLootBox_calldata,
+			sellSpecialCard: shop_system_sellSpecialCard,
+			buildSellSpecialCardCalldata: build_shop_system_sellSpecialCard_calldata,
 			skipShop: shop_system_skipShop,
 			buildSkipShopCalldata: build_shop_system_skipShop_calldata,
 		},
@@ -632,34 +1084,29 @@ export function setupWorld(provider: DojoProvider) {
 			reset: rage_system_reset,
 			buildResetCalldata: build_rage_system_reset_calldata,
 		},
-		game_system: {
-			changeModifierCard: game_system_changeModifierCard,
-			buildChangeModifierCardCalldata: build_game_system_changeModifierCard_calldata,
-			createGame: game_system_createGame,
-			buildCreateGameCalldata: build_game_system_createGame_calldata,
-			discard: game_system_discard,
-			buildDiscardCalldata: build_game_system_discard_calldata,
-			getGameConfig: game_system_getGameConfig,
-			buildGetGameConfigCalldata: build_game_system_getGameConfig_calldata,
-			getGameMods: game_system_getGameMods,
-			buildGetGameModsCalldata: build_game_system_getGameMods_calldata,
-			play: game_system_play,
-			buildPlayCalldata: build_game_system_play_calldata,
-			sellSpecialCard: game_system_sellSpecialCard,
-			buildSellSpecialCardCalldata: build_game_system_sellSpecialCard_calldata,
-			mint: game_system_mint,
-		},
-		poker_hand_system: {
-			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
-			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
+		action_system: {
+			changeModifierCard: action_system_changeModifierCard,
+			buildChangeModifierCardCalldata: build_action_system_changeModifierCard_calldata,
+			discard: action_system_discard,
+			buildDiscardCalldata: build_action_system_discard_calldata,
+			play: action_system_play,
+			buildPlayCalldata: build_action_system_play_calldata,
 		},
 		mods_info_system: {
 			getCumulativeInfo: mods_info_system_getCumulativeInfo,
 			buildGetCumulativeInfoCalldata: build_mods_info_system_getCumulativeInfo_calldata,
+			getGameConfig: mods_info_system_getGameConfig,
+			buildGetGameConfigCalldata: build_mods_info_system_getGameConfig_calldata,
+			getGameMods: mods_info_system_getGameMods,
+			buildGetGameModsCalldata: build_mods_info_system_getGameMods_calldata,
 			getRageCardsIds: mods_info_system_getRageCardsIds,
 			buildGetRageCardsIdsCalldata: build_mods_info_system_getRageCardsIds_calldata,
 			getSpecialCardsIds: mods_info_system_getSpecialCardsIds,
 			buildGetSpecialCardsIdsCalldata: build_mods_info_system_getSpecialCardsIds_calldata,
+		},
+		poker_hand_system: {
+			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
+			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
 		},
 		mod_manager_registrator: {
 			getRegisteredManagers: mod_manager_registrator_getRegisteredManagers,

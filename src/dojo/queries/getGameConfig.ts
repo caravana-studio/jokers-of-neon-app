@@ -1,7 +1,7 @@
 
 export const getGameConfig = async (client: any, encodedModId: string) => {
   try {
-    let tx_result = await client.game_system.getGameConfig(encodedModId);
+    let tx_result = await client.mods_info_system.getGameConfig(encodedModId);
     return {
       maxPowerUpSlots: parseInt(tx_result.max_power_up_slots),
       maxSpecialCards: parseInt(tx_result.max_special_slots),

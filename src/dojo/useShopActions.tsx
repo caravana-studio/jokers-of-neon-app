@@ -66,7 +66,7 @@ export const useShopActions = () => {
   ) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buyCardItem(
+      const response = await client.shop_system.buyCard(
         account,
         gameId,
         card_idx,
@@ -117,7 +117,7 @@ export const useShopActions = () => {
   ) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buyPowerUpItem(
+      const response = await client.shop_system.buyPowerUp(
         account,
         gameId,
         power_up_idx,
@@ -139,7 +139,7 @@ export const useShopActions = () => {
   const burnCard = async (gameId: number, card_id: number) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buyBurnItem(
+      const response = await client.shop_system.burnCard(
         account,
         gameId,
         card_id
@@ -165,7 +165,7 @@ export const useShopActions = () => {
   ) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buySpecialCardItem(
+      const response = await client.shop_system.buySpecialCard(
         account,
         gameId,
         card_idx,
@@ -188,7 +188,7 @@ export const useShopActions = () => {
   const buySpecialSlot = async (gameId: number) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buySlotSpecialCardItem(
+      const response = await client.shop_system.buySpecialSlot(
         account,
         gameId
       );
@@ -210,7 +210,7 @@ export const useShopActions = () => {
   const buyPack = async (gameId: number, pack_id: number) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buyBlisterPackItem(
+      const response = await client.shop_system.buyLootBox(
         account,
         gameId,
         pack_id
@@ -233,7 +233,7 @@ export const useShopActions = () => {
   const selectCardsFromPack = async (gameId: number, cardIndexes: number[]) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.selectCardsFromBlister(
+      const response = await client.shop_system.selectCardsFromLootBox(
         account,
         gameId,
         cardIndexes
@@ -256,7 +256,7 @@ export const useShopActions = () => {
   const levelUpPokerHand = async (gameId: number, item_id: number) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buyPokerHandItem(
+      const response = await client.shop_system.buyPokerHand(
         account,
         gameId,
         item_id

@@ -1,9 +1,10 @@
-import { useLocation } from "react-router-dom";
-import { useGameContext } from "../providers/GameProvider";
-import { useGame } from "../dojo/queries/useGame";
 import { useEffect, useState } from "react";
-import { LAST_PAGE } from "../constants/localStorage";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { LAST_PAGE } from "../constants/localStorage";
+import { useGame } from "../dojo/queries/useGame";
+import { useGameContext } from "../providers/GameProvider";
+import { useStore } from "../providers/StoreProvider";
 
 interface Page {
   name: string;
@@ -14,8 +15,8 @@ export const useCurrentPageName = (): Page | null => {
   const location = useLocation();
   const game = useGame();
   const { isRageRound } = useGameContext();
+  const { shopId } = useStore();
   const level = game?.level ?? 0;
-  const shopConfigId = game?.shop_config_id ?? 0;
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });
   const { t: tShop } = useTranslation(["store"]);
 
@@ -28,7 +29,7 @@ export const useCurrentPageName = (): Page | null => {
     "/gameover": tGame("game-menu.pages.gameover"),
     "/open-loot-box": tGame("game-menu.pages.open-loot-box"),
     "/store": () => {
-      const shopName = tShop(`config.${shopConfigId}.name`, {
+      const shopName = tShop(`config.${shopId}.name`, {
         defaultValue: "",
       });
       return tGame("game-menu.pages.store", { shopName });

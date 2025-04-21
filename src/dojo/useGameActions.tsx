@@ -33,7 +33,7 @@ export const useGameActions = () => {
   const createGame = async (gameId: number, username: string) => {
     try {
       showTransactionToast();
-      const response = await client.game_system.createGame(
+      const response = await client.game_system.startGame(
         account,
         BigInt(gameId),
         BigInt(shortString.encodeShortString(username))
@@ -81,7 +81,7 @@ export const useGameActions = () => {
     const { modifiers1 } = getModifiersForContract(cards, modifiers);
     try {
       showTransactionToast();
-      const response = await client.game_system.discard(
+      const response = await client.action_system.discard(
         account,
         gameId,
         cards,
@@ -110,7 +110,7 @@ export const useGameActions = () => {
   const changeModifierCard = async (gameId: number, card: number) => {
     try {
       showTransactionToast();
-      const response = await client.game_system.changeModifierCard(
+      const response = await client.action_system.changeModifierCard(
         account,
         gameId,
         card
@@ -147,7 +147,7 @@ export const useGameActions = () => {
 
   const sellSpecialCard = async (gameId: number, card: number) => {
     try {
-      const response = await client.game_system.sellSpecialCard(
+      const response = await client.shop_system.sellSpecialCard(
         account,
         gameId,
         card
@@ -175,7 +175,7 @@ export const useGameActions = () => {
 
     try {
       showTransactionToast();
-      const response = await client.game_system.play(
+      const response = await client.action_system.play(
         account,
         gameId,
         cards,

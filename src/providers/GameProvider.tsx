@@ -22,7 +22,7 @@ import {
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
-import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
+import { EventTypeEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
