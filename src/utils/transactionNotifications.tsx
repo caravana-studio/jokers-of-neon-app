@@ -90,6 +90,24 @@ export const showTransactionToast = (
   );
 };
 
+export const showAchievementToast = (achievementName: string): void => {
+  toast.success(`Achievement completed: ${achievementName}`, {
+    id: `achievement-${achievementName}`,
+    position: "top-left",
+    style: {
+      backgroundColor: SUCCESS_TOAST,
+      color: "white",
+      fontWeight: "bold",
+      fontSize: isMobile ? "12px" : "14px",
+      padding: isMobile ? "8px 12px" : "10px 16px",
+      borderRadius: "8px",
+      maxWidth: "300px",
+      boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+    },
+    duration: 2500,
+  });
+};
+
 const openTx = function (transaction_hash: string): void {
   window.open(getEnvString("VITE_TRANSACTIONS_URL") + transaction_hash);
 };

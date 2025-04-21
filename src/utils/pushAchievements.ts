@@ -1,5 +1,6 @@
 import { AchievementCompleted } from "../types/ScoreData";
 import { PushActionsPayload, pushActions } from "./pushActions";
+import { showAchievementToast } from "./transactionNotifications";
 
 export const handleAchievementPush = async (
   achievementEvent: AchievementCompleted
@@ -10,6 +11,8 @@ export const handleAchievementPush = async (
       address: achievementEvent.player,
     },
   ];
+
+  showAchievementToast(achievementEvent.achievementId);
 
   try {
     const promises = payloads.map((payload) => pushActions(payload));
