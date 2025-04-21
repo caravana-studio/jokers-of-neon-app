@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getNode } from "../dojo/queries/getNode";
 import {
   EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
@@ -28,7 +29,7 @@ export interface ShopItems {
   packs: BlisterPackItem[];
   specialSlotItem: SlotSpecialCardsItem;
   burnItem: BurnItem;
-  powerUps: PowerUp[]
+  powerUps: PowerUp[];
 }
 
 const sortByCardId = (a: Card, b: Card) => {
@@ -167,6 +168,18 @@ export const useShopState = () => {
 
   const game = useGame();
   const gameId = game?.id ?? 0;
+  const currentNodeId = game?.current_node_id;
+
+  const [shopId, setShopId] = useState<number>(0);
+
+  useEffect(() => {
+    if (currentNodeId) {
+      getNode(client, gameId, currentNodeId).then((shopId) => {
+        console.log("shopId", shopId);
+        setShopId(shopId);
+      });
+    }
+  }, [currentNodeId]);
 
   const fetchShopItems = async () => {
     const shopItems = await getShopItems(client, gameId);
@@ -177,10 +190,10 @@ export const useShopState = () => {
       setCommonCards(shopItems.commonCards);
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
-      setSpecialSlotItem({...shopItems.specialSlotItem});
+      setSpecialSlotItem({ ...shopItems.specialSlotItem });
       setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
-      setBurnItem({...shopItems.burnItem});
+      setBurnItem({ ...shopItems.burnItem });
       setPowerUps(shopItems.powerUpItems);
     }
   };
@@ -225,5 +238,6 @@ export const useShopState = () => {
     setLoading,
     rerolling,
     setRerolling,
+    shopId,
   };
 };

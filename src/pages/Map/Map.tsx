@@ -1,4 +1,4 @@
-import ReactFlow, { Background, Controls, Edge, Node } from "reactflow";
+import ReactFlow, { Controls, Edge, Node } from "reactflow";
 import "reactflow/dist/style.css";
 import EmojiNode from "./nodes/EmojiNode";
 
@@ -40,17 +40,17 @@ export const Map = () => {
 
   const {
     setup: { client },
-    account: { account },
   } = useDojo();
 
   useEffect(() => {
     getMap(client, 1, 1).then((dataNodes) => {
         const transformedNodes = dataNodes.map((node) => {
+          console.log("node", node);
           return {
             id: node.id.toString(),
             type: "emoji",
             position: { x: 0, y: 0 },
-            data: {icon: getIcon(node.nodeType), visited: node.visited}
+            data: {icon: getIcon(node.nodeType), visited: node.visited, id: node.id}
           }
         })
         const calculatedEdges = calculateEdges(dataNodes);
@@ -72,8 +72,8 @@ export const Map = () => {
         zoomOnScroll={false}
         nodesDraggable={false}
         nodesConnectable={false}
+        edgesFocusable={false}
       >
-        <Background />
         <Controls />
       </ReactFlow>
     </div>

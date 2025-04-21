@@ -162,7 +162,7 @@ export const useGameState = () => {
 
   const lsUser = localStorage.getItem(LOGGED_USER);
 
-  const dojoScore = round?.player_score ?? 0;
+  const dojoScore = round?.current_score ?? 0;
   const dojoCash = game?.cash ?? 0;
 
   const score = lockedScore ?? dojoScore;

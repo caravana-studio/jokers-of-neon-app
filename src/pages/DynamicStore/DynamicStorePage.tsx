@@ -16,6 +16,7 @@ import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useState } from "react";
 
 export const DynamicStorePage = () => {
   const DECK_SHOP_CONFIG_ID = 1;
@@ -35,8 +36,9 @@ export const DynamicStorePage = () => {
   };
 
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-  const game = useGame();
-  const shopId: number = game?.shop_config_id ?? DECK_SHOP_CONFIG_ID;
+
+  const { shopId } = useStore()
+
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );

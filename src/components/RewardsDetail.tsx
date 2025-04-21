@@ -99,7 +99,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <Heading color="lightViolet" size="s">
         {" "}
-        {t("final-score", { score: round?.player_score })}{" "}
+        {t("final-score", { score: round?.current_score })}{" "}
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />

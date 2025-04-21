@@ -1563,7 +1563,7 @@
     },
     {
       "address": "0x39014b398056073ef9cb07f26ac5478a128ceea054cc59f1ed21ec1958399f5",
-      "class_hash": "0x4c1d979abeea688f24d6c621b28d0cf283323945ed54bd81b8df6148dbc1925",
+      "class_hash": "0x46dd30e5ea2d03990a52ded727d9221eaa797785da05eef13d61ea3d7be0f44",
       "abi": [
         {
           "type": "impl",
@@ -2606,7 +2606,7 @@
     },
     {
       "address": "0x2d8dd30640f4b6f02b38516e2b131f4a186d7800988b40002731f61dd851da9",
-      "class_hash": "0x380337cbbded26c1d3a5268a1d132e1c65a6710f51b63f0b6645d8680b95aac",
+      "class_hash": "0x45c5c6b1a9579c14e1d23c0207f85397d4807faeb61a1c72417ba7929f1266e",
       "abi": [
         {
           "type": "impl",
@@ -2831,6 +2831,22 @@
               "outputs": [
                 {
                   "type": "jokers_of_neon_lib::models::data::map::ParsedLevelMap"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_node",
+              "inputs": [
+                {
+                  "name": "node_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::data::map::Node"
                 }
               ],
               "state_mutability": "view"

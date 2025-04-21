@@ -557,9 +557,49 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_map_system_getNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
+		return {
+			contractName: "map_system",
+			entrypoint: "get_node",
+			calldata: [nodeId],
+		};
+	};
+
+	const map_system_getNode = async (gameId: BigNumberish, nodeId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_map_system_getNode_calldata(gameId, nodeId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_map_system_advanceNode_calldata = (gameId: BigNumberish, nodeId: BigNumberish): DojoCall => {
+		return {
+			contractName: "map_system",
+			entrypoint: "advance_node",
+			calldata: [gameId, nodeId],
+		};
+	};
+
+	const map_system_advanceNode = async (snAccount: Account | AccountInterface, gameId: BigNumberish, nodeId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_map_system_advanceNode_calldata(gameId, nodeId),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
+			advanceNode: map_system_advanceNode,
 			getLevelMap: map_system_getLevelMap,
+			getNode: map_system_getNode,
 			buildGetLevelMapCalldata: build_map_system_getLevelMap_calldata,
 		},
 		shop_system: {

@@ -21,13 +21,15 @@ export const Redirect = () => {
   const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
   useEffect(() => {
-    if (state === "FINISHED") {
+    if (state === "GameOver") {
       navigate(`/gameover/${getLSGameId()}`);
-    } else if (state === "IN_GAME" && page === "demo") {
+    } else if ((state === "Round" || state === "Rage" )&& page === "demo") {
       navigate("/demo");
-    } else if (state === "AT_SHOP" && page === "store") {
+    } else if (state === "Map" && page === "map") {
+      navigate("/map");
+    } else if (state === "Store" && page === "store") {
       navigate("/store", { state: { lastTabIndex: lastTabIndex } });
-    } else if (state === "OPEN_BLISTER_PACK" && page === "open-loot-box") {
+    } else if (state === "Lootbox" && page === "open-loot-box") {
       navigate("/open-loot-box");
     } else if (page === "state" && state) {
       navigate(stateToPageMap[state as keyof typeof stateToPageMap] ?? "/", {replace: true});

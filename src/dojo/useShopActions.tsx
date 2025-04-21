@@ -86,6 +86,31 @@ export const useShopActions = () => {
     }
   };
 
+  const advanceNode = async (
+    gameId: number,
+    nodeId: number
+  ) => {
+    try {
+      showTransactionToast();
+      const response = await client.map_system.advanceNode(
+        account,
+        gameId,
+        nodeId
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash);
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      return updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      console.log(e);
+      return failedTransactionToast();
+    }
+  };
+
   const buyPowerUp = async (
     gameId: number,
     power_up_idx: number,
@@ -280,5 +305,6 @@ export const useShopActions = () => {
     storeReroll,
     buySpecialSlot,
     buyPowerUp,
+    advanceNode,
   };
 };

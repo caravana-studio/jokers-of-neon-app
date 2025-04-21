@@ -11,7 +11,7 @@ export const LevelPoints = () => {
   const game = useGame();
   const round = useRound();
   const level = inTutorial ? 1 : game?.level ?? 0;
-  const levelScore = inTutorial ? 300 : round?.level_score ?? 0;
+  const targetScore = inTutorial ? 300 : round?.target_score ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (
@@ -30,12 +30,12 @@ export const LevelPoints = () => {
             {t("game.level-points.target-score")}
           </Heading>
           <Heading size={{ base: "s", md: "m" }} px={2}>
-            {levelScore}
+            {targetScore}
           </Heading>
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
-        {t("game.level-points.score", { score: levelScore, level: level })}
+        {t("game.level-points.score", { score: targetScore, level: level })}
       </Text>
     </Box>
   );
@@ -45,7 +45,7 @@ export const MobileLevelPoints = () => {
   const game = useGame();
   const round = useRound();
   const level = game?.level ?? 0;
-  const levelScore = round?.level_score ?? 0;
+  const targetScore = round?.target_score ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (
@@ -61,7 +61,7 @@ export const MobileLevelPoints = () => {
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
-          {t("game.level-points.score", { score: levelScore, level: level })}
+          {t("game.level-points.score", { score: targetScore, level: level })}
         </Text>
         <Score />
       </Flex>
