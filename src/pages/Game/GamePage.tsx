@@ -14,6 +14,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const GamePage = () => {
   const {
@@ -58,11 +59,11 @@ export const GamePage = () => {
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
-      if (game?.state === "FINISHED") {
+      if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP") {
+      } else if (game?.state === GameStateEnum.Store) {
         navigate("/store");
-      } else if (game?.state === "OPEN_BLISTER_PACK") {
+      } else if (game?.state === GameStateEnum.Lootbox) {
         navigate("/open-loot-box");
       }
     }

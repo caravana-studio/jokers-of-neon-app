@@ -22,7 +22,7 @@ import {
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
-import { EventTypeEnum } from "../dojo/typescript/custom.ts";
+import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
@@ -627,9 +627,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (!lockRedirection) {
-      if (game?.state === "FINISHED") {
+      if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP" && location.pathname === "/demo") {
+      } else if (game?.state === GameStateEnum.Store && location.pathname === "/demo") {
         console.log("redirecting to store");
         navigate("/store");
       }

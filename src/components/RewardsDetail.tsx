@@ -94,7 +94,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       button={t("continue-btn")}
       onClick={() => {
         // stopNextLevelSound();
-        navigate("/redirect/store");
+        navigate("/redirect/map");
       }}
     >
       <Heading color="lightViolet" size="s">
