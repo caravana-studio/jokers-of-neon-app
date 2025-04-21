@@ -3,7 +3,6 @@ import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
 import { AchievementCompleted } from "../../types/ScoreData";
 import { getEventKey } from "../getEventKey";
-import { getNumberValueFromEvent } from "../getNumberValueFromEvent";
 
 const ACHIEVEMENT_COMPLETE_EVENT_KEY = getEventKey(
   DojoEvents.ACHIEVEMENT_COMPLETE
@@ -11,16 +10,15 @@ const ACHIEVEMENT_COMPLETE_EVENT_KEY = getEventKey(
 
 export const getAchievementCompleteEvent = (
   events: DojoEvent[]
-): AchievementCompleted | undefined => {
-  const achievementComplete = events.find(
-    (event) => event.keys[1] === ACHIEVEMENT_COMPLETE_EVENT_KEY
-  );
-  if (!achievementComplete) return undefined;
+): AchievementCompleted[] | undefined => {
+  return events
+    .filter((event) => event.keys[1] === ACHIEVEMENT_COMPLETE_EVENT_KEY)
+    .map((event) => {
+      const player = event.data.at(1) ?? "";
 
-  const player = achievementComplete.data.at(1) ?? "";
+      const txValue = event.data.at(3);
+      const achievementId = decodeString(txValue ?? "");
 
-  const txValue = achievementComplete.data.at(3);
-  const achievementId = decodeString(txValue ?? "");
-
-  return { player, achievementId };
+      return { player, achievementId };
+    });
 };

@@ -92,7 +92,7 @@ export const showTransactionToast = (
 
 export const showAchievementToast = (achievementName: string): void => {
   toast.success(`Achievement completed: ${achievementName}`, {
-    id: `achievement-${achievementName}`,
+    // id: `achievement-${achievementName}`,
     position: "top-left",
     style: {
       backgroundColor: SUCCESS_TOAST,

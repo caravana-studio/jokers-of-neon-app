@@ -3,16 +3,20 @@ import { PushActionsPayload, pushActions } from "./pushActions";
 import { showAchievementToast } from "./transactionNotifications";
 
 export const handleAchievementPush = async (
-  achievementEvent: AchievementCompleted
+  achievementEvents: AchievementCompleted[]
 ) => {
   const payloads: PushActionsPayload[] = [
     {
-      actions: [achievementEvent.achievementId],
-      address: achievementEvent.player,
+      actions: achievementEvents.map(
+        (achievement) => achievement.achievementId
+      ),
+      address: achievementEvents[0].player,
     },
   ];
 
-  showAchievementToast(achievementEvent.achievementId);
+  achievementEvents.forEach((achievement) => {
+    showAchievementToast(achievement.achievementId);
+  });
 
   try {
     const promises = payloads.map((payload) => pushActions(payload));
