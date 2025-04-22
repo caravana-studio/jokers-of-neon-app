@@ -31,7 +31,6 @@ export const FadingParticleAnimation = ({
   active = false,
   spreadOffset = 0.6,
 }: FadingParticleAnimationProps) => {
-  if (!active) return <>{children}</>;
   return (
     <Box
       position="relative"
@@ -49,6 +48,7 @@ export const FadingParticleAnimation = ({
         height={`${height}px`}
         pointerEvents="none"
         zIndex={backward ? -1 : 10}
+        opacity={active ? 1 : 0}
       >
         {[...Array(amount)].map((_, i) => {
           const center = width / 2;
@@ -71,11 +71,17 @@ export const FadingParticleAnimation = ({
                 bottom: `${startYOffset}px`,
                 left: `${startX}px`,
               }}
-              animate={{
-                y: [-height * 0.1, endY],
-                x: [0, (Math.random() - 0.5) * 20],
-                opacity: [0, 0.5, 1, 0.5, 0],
-              }}
+              animate={
+                active
+                  ? {
+                      y: [-height * 0.1, endY],
+                      x: [0, (Math.random() - 0.5) * 20],
+                      opacity: [0, 0.5, 1, 0.5, 0],
+                    }
+                  : {
+                      opacity: 0,
+                    }
+              }
               transition={{
                 duration,
                 repeat: Infinity,

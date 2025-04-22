@@ -87,7 +87,7 @@ export const PowerUpComponent = ({
               fontSize={isSmallScreen ? 6 : 11 * cardScale}
             />
             <HighlightAnimation
-              start={calculatedIsActive ?? false}
+              start={calculatedIsActive}
               onAnimationComplete={() => {
                 setStartParticles(true);
               }}
