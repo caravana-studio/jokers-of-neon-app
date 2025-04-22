@@ -14,7 +14,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -24,15 +23,18 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
-import { useGameContext } from "../providers/GameProvider";
 import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import AudioPlayer from "./AudioPlayer";
 import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { Speed } from "../enums/speed";
+import { Speed } from "../enums/settings";
 import { useState } from "react";
 import { languageMap } from "../constants/language";
-import { animationSpeedLabels } from "../constants/animationSpeed";
+import {
+  animationSpeedLabels,
+  lootboxTransitionLabels,
+} from "../constants/settingsLabels";
+import { useSettings } from "../providers/SettingsProvider";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -46,16 +48,21 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
     setSfxOn,
     animationSpeed,
     setAnimationSpeed,
-  } = useGameContext();
+    lootboxTransition,
+    setLootboxTransition,
+  } = useSettings();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
   const { isSmallScreen } = useResponsiveValues();
 
-  const { t, i18n } = useTranslation(["game"]);
-  const title = t("settings-modal.title");
-  const languageLbl = t("settings-modal.language");
-  const sfxLbl = t("settings-modal.sfx-volume");
-  const musicLbl = t("settings-modal.music-volume");
-  const animSpeedLbl = t("settings-modal.anim-speed");
+  const { t, i18n } = useTranslation(["game"], { keyPrefix: "settings-modal" });
+  const { t: tGeneral } = useTranslation(["game"]);
+
+  const title = t("title");
+  const languageLbl = t("language");
+  const sfxLbl = t("sfx-volume");
+  const musicLbl = t("music-volume");
+  const animSpeedLbl = t("anim-speed");
+  const lootboxTransitionLbl = t("loot-box-transition");
 
   const changeLanguage = (lng: string) => {
     setSelectedLanguage(lng);
@@ -86,7 +93,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size={"md"} width={"50%"}>
                 {languageLbl}
               </Text>
-              <Menu variant={"menuOutline"}>
+              <Menu variant={"menuSettingsOutline"}>
                 <MenuButton width={"100%"}>
                   <Flex alignItems="center" gap={2}>
                     <MdArrowDropDown /> {languageMap[selectedLanguage]}
@@ -167,7 +174,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Text size="md" width={"50%"}>
                 {animSpeedLbl}
               </Text>
-              <Menu variant={"menuOutline"}>
+              <Menu variant={"menuSettingsOutline"}>
                 <MenuButton width={"100%"}>
                   <Flex alignItems="center" gap={2}>
                     <MdArrowDropDown />{" "}
@@ -191,6 +198,33 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
                 </MenuList>
               </Menu>
             </Flex>
+            <Flex gap={2} alignItems={"center"}>
+              <Text size="md" width={"50%"}>
+                {lootboxTransitionLbl}
+              </Text>
+              <Menu variant={"menuSettingsOutline"}>
+                <MenuButton width={"100%"}>
+                  <Flex alignItems="center" gap={2}>
+                    <MdArrowDropDown />{" "}
+                    {t(lootboxTransitionLabels[lootboxTransition])}
+                  </Flex>
+                </MenuButton>
+                <MenuList zIndex={10000}>
+                  {Object.entries(lootboxTransitionLabels).map(
+                    ([color, label]) => {
+                      return (
+                        <MenuItem
+                          key={color}
+                          onClick={() => setLootboxTransition(color)}
+                        >
+                          {t(label)}
+                        </MenuItem>
+                      );
+                    }
+                  )}
+                </MenuList>
+              </Menu>
+            </Flex>
           </Flex>
         </ModalBody>
         <ModalFooter>
@@ -201,7 +235,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             ml={3}
             onClick={close}
           >
-            {t("confirmation-modal.confirm")}
+            {tGeneral("confirmation-modal.confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>

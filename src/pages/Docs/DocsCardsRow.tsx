@@ -4,10 +4,15 @@ import { TiltCard } from "../../components/TiltCard";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { isMobile } from "react-device-detect";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useCardData } from "../../providers/CardDataProvider";
 
 export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
-  const docCards = getSortedDocCardsData(cardIds);
+    const { getCardData } = useCardData();
+  
+  const docCards = getSortedDocCardsData(cardIds, getCardData);
   const { highlightCard, highlightedCard } = useCardHighlight();
+  const { isSmallScreen } = useResponsiveValues();
 
   const customCardScale = useBreakpointValue(
     {
@@ -27,8 +32,9 @@ export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
       )}
 
       <Flex
-        width="100%"
+        width={isSmallScreen ? "100%" : "90%"}
         height={["90%"]}
+        margin={"0 auto"}
         my={[4, 2]}
         flexDirection="row"
         alignItems={"center"}

@@ -8,6 +8,7 @@ import { useGame } from "../../dojo/queries/useGame";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { PurchasedLbl } from "../../components/PurchasedLbl";
 
 interface ISpecialSlotItem {}
 
@@ -23,7 +24,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const visible = (game?.special_slots ?? 1) < maxSpecialCards;
 
   const price = specialSlotItem?.cost;
-  const purchased = specialSlotItem?.purchased ?? false;
+  const purchased = false;
 
   const height = CARD_HEIGHT * cardScale * 0.8;
   const width = CARD_WIDTH * cardScale * 0.8;
@@ -56,23 +57,11 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
               discountFontSize={isSmallScreen ? 10 : 12}
             />
           )}
-          {purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: `${height / 2 - 10}px`,
-                left: 0,
-                zIndex: 10,
-              }}
-            >
-              <Heading
-                variant="italic"
-                fontSize={isSmallScreen ? 6 : 11 * cardScale}
-              >
-                PURCHASED
-              </Heading>
-            </Box>
-          )}
+          <PurchasedLbl
+            purchased={purchased}
+            fontSize={isSmallScreen ? 6 : 11 * cardScale}
+            topOffset={`${height / 2 - 10}px`}
+          />
         </Flex>
       </Tooltip>
     )

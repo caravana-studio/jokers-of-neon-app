@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useEffect } from "react";
@@ -7,10 +7,10 @@ import { RARITY, RarityLabels } from "../constants/rarity";
 import { animationsData } from "../constants/spineAnimations";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
+import { useCardData } from "../providers/CardDataProvider";
 import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
-import { getCardData } from "../utils/getCardData";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
 import { CashSymbol } from "./CashSymbol";
@@ -23,6 +23,7 @@ import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 interface MobileCardHighlightProps {
   card: Card;
   confirmationBtn?: boolean;
+  customBtn?: ReactNode;
   showExtraInfo?: boolean;
   isPack?: boolean;
 }
@@ -32,9 +33,13 @@ export const MobileCardHighlight = ({
   confirmationBtn = false,
   showExtraInfo = false,
   isPack = false,
+  customBtn,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
+  const { getCardData, getLootBoxData } = useCardData();
+
+  const getDataFn = isPack ? getLootBoxData : getCardData;
   const {
     name,
     description,
@@ -44,7 +49,8 @@ export const MobileCardHighlight = ({
     rarity,
     temporaryPrice,
     details,
-  } = getCardData(card, isPack);
+  } = getDataFn(card.card_id ?? 0);
+
   const { changeModifierCard, sellSpecialCard } = useGameContext();
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -217,6 +223,7 @@ export const MobileCardHighlight = ({
             {getLabel()}
           </Button>
         )}
+      <Box py={4}>{customBtn}</Box>
     </Flex>
   );
 };

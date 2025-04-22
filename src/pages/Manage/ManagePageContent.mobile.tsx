@@ -5,32 +5,32 @@ import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { ManagePageContentProps } from "./ManagePageContent";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
+import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
   discardedCards,
   preselectedCard,
   onCardClick,
-  sellButton,
   goBackButton,
-  onTabChange
+  onTabChange,
 }: ManagePageContentProps) => {
   const { t } = useTranslation("intermediate-screens");
 
   return (
     <TabPattern
       lastIndexTab={lastIndexTab}
-      onTabChange={onTabChange}
+      topBar={<StoreTopBar hideReroll />}
       bottomBar={
         <MobileBottomBar
-          firstButton={goBackButton}
-          secondButton={/* tabIndex === 0 &&  */ sellButton}
+          firstButton={undefined}
+          secondButton={goBackButton}
           hideDeckButton
         />
       }
     >
       <Tab title={t("special-cards.title")}>
-        <Flex h=" 100%" w="100%" flexDir="column" p={6}>
+        <Flex h="100%" w="100%" flexDir="column" p={6}>
           <SpecialCards
             discardedCards={discardedCards}
             preselectedCard={preselectedCard}

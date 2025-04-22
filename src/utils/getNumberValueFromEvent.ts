@@ -12,10 +12,11 @@ export const getNumberValueFromEvent = (
 export const getNumberValueFromEvents = (
   events: DojoEvent[],
   event_address: string,
-  indexToGet: number
+  indexToGet: number,
+  keyIndex = 1
 ): number | undefined => {
   const event = events?.find((e) => {
-    return e.keys[1] === event_address;
+    return e.keys[keyIndex] === event_address;
   });
   return event && getNumberValueFromEvent(event, indexToGet);
 };

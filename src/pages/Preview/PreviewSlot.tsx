@@ -6,10 +6,12 @@ import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewSlot = () => {
   const navigate = useNavigate();
   const { specialSlotItem } = useStore();
+  const { isSmallScreen } = useResponsiveValues();
 
   const price = specialSlotItem?.cost ?? 0;
   const [buyDisabled, setBuyDisabled] = useState(false);
@@ -18,6 +20,8 @@ export const PreviewSlot = () => {
   const game = useGame();
   const { buySpecialSlot, locked } = useStore();
   const cash = game?.cash ?? 0;
+
+  const imgSize = isSmallScreen ? "120px" : "auto";
 
   const notEnoughCash =
     !price ||
@@ -52,6 +56,7 @@ export const PreviewSlot = () => {
       alt={`special card slot`}
       pl={4}
       pt={4}
+      width={imgSize}
     />
   );
   return (

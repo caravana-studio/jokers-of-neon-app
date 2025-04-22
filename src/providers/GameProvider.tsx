@@ -8,9 +8,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   GAME_ID,
-  SETTINGS_ANIMATION_SPEED,
-  SETTINGS_SFX_VOLUME,
-  SFX_ON,
   SKIP_IN_GAME_TUTORIAL,
   SORT_BY_SUIT,
 } from "../constants/localStorage";
@@ -25,14 +22,16 @@ import {
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
+import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
 import { gameExists } from "../dojo/utils/getGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy.ts";
-import { Speed } from "../enums/speed.ts";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
@@ -42,17 +41,17 @@ import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
+import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { EventTypeEnum } from "../dojo/typescript/models.gen.ts";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 
 export interface IGameContext {
   gameId: number;
   preSelectedPlay: Plays;
   points: number;
   multi: number;
-  executeCreateGame: () => void;
+  executeCreateGame: (gameId?: number) => void;
   gameLoading: boolean;
   preSelectedCards: number[];
   setPreSelectedCards: (cards: number[]) => void;
@@ -92,12 +91,6 @@ export interface IGameContext {
   discards: number;
   preSelectCard: (cardIndex: number) => void;
   unPreSelectCard: (cardIndex: number) => void;
-  sfxVolume: number;
-  setSfxVolume: (vol: number) => void;
-  animationSpeed: Speed;
-  setAnimationSpeed: (speed: Speed) => void;
-  sfxOn: boolean;
-  setSfxOn: (sfxOn: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
@@ -120,9 +113,14 @@ export interface IGameContext {
   maxSpecialCards: number;
   maxPowerUpSlots: number;
   isClassic: boolean;
+  setGameId: (gameId: number) => void;
+  resetLevel: () => void;
   playerScore: number;
   cardTransformationLock: boolean;
 }
+
+const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
+const tournamentId = stringTournamentId && Number(stringTournamentId);
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
 
@@ -140,28 +138,31 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
-  const [sfxOn, setSfxOn] = useState(() => {
-    return localStorage.getItem(SFX_ON) === "true";
-  });
-  const [sfxVolume, setSfxVolume] = useState(1);
-  const [animationSpeed, setAnimationSpeed] = useState<Speed>(Speed.NORMAL);
 
   const round = useRound();
   const handsLeft = round?.remaining_plays ?? 0;
+
+  const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
   const {
     setup: {
       clientComponents: { Game },
     },
-    account: { account },
     syncCall,
   } = useDojo();
 
-  const { createGame, play, discard, changeModifierCard, sellSpecialCard } =
-    useGameActions();
+  const {
+    createGame,
+    play,
+    discard,
+    changeModifierCard,
+    sellSpecialCard,
+    mintGame,
+  } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
+  const { sfxVolume, animationSpeed } = useSettings();
 
   const game = useGame();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
@@ -252,31 +253,48 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const username = useUsername();
 
-  const executeCreateGame = async () => {
+  const { enterTournament } = useTournaments();
+
+  const executeCreateGame = async (providedGameId?: number) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
+    let gameId = providedGameId;
     if (username) {
-      console.log("Creating game...");
-      createGame(modId, username).then(async (response) => {
-        const { gameId: newGameId, hand } = response;
-        if (newGameId) {
-          resetLevel();
-          navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
-          setHand(hand);
-          setGameId(newGameId);
-          clearPreSelection();
-          localStorage.setItem(GAME_ID, newGameId.toString());
-          console.log(`game ${newGameId} created`);
-
-          await syncCall();
-          setGameLoading(false);
-          setPreSelectionLocked(false);
-          setRoundRewards(undefined);
-        } else {
-          setError(true);
+      try {
+        if (!providedGameId) {
+          if (tournamentId) {
+            console.log("Registering user in tournament ", tournamentId);
+            gameId = await enterTournament(tournamentId, username);
+          } else {
+            console.log("No tournament ID provided, minting game directly");
+            gameId = await mintGame(username);
+          }
         }
-      });
+        console.log("Creating game...");
+        createGame(gameId!, username).then(async (response) => {
+          const { gameId: newGameId, hand } = response;
+          if (newGameId) {
+            resetLevel();
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
+            setHand(hand);
+            setGameId(newGameId);
+            clearPreSelection();
+            localStorage.setItem(GAME_ID, newGameId.toString());
+            console.log(`game ${newGameId} created`);
+
+            await syncCall();
+            setGameLoading(false);
+            setPreSelectionLocked(false);
+            setRoundRewards(undefined);
+          } else {
+            setError(true);
+          }
+        });
+      } catch (error) {
+        console.error("Error registering user in tournament", error);
+        setError(true);
+      }
     } else {
       console.error("No username");
       setError(true);
@@ -337,7 +355,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             handsLeft,
             setAnimateSecondChanceCard,
             setCardTransformationLock,
+            setIsRageRound,
           });
+          refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -509,6 +529,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setAnimatedCard(undefined);
           setDiscardAnimation(false);
           replaceCards(response.cards);
+          refetchSpecialCardsData(modId, gameId);
         }, ALL_CARDS_DURATION + 300);
       } else {
         rollbackDiscard();
@@ -618,35 +639,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     // start with redirection unlocked
     setLockRedirection(false);
+    refetchSpecialCardsData(modId, gameId);
   }, []);
-
-  useEffect(() => {
-    const savedVolume = localStorage.getItem(SETTINGS_SFX_VOLUME);
-    if (savedVolume !== null) {
-      setSfxVolume(JSON.parse(savedVolume));
-    }
-
-    const animationSpeed = localStorage.getItem(SETTINGS_ANIMATION_SPEED);
-    if (animationSpeed !== null) {
-      setAnimationSpeed(JSON.parse(animationSpeed));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(SETTINGS_SFX_VOLUME, JSON.stringify(sfxVolume));
-  }, [sfxVolume]);
-
-  useEffect(() => {
-    if (!sfxOn) localStorage.removeItem(SFX_ON);
-    else localStorage.setItem(SFX_ON, "true");
-  }, [sfxOn]);
-
-  useEffect(() => {
-    localStorage.setItem(
-      SETTINGS_ANIMATION_SPEED,
-      JSON.stringify(animationSpeed)
-    );
-  }, [animationSpeed]);
 
   const actions = {
     setPreSelectedCards,
@@ -666,7 +660,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     executeCreateGame,
     preSelectCard,
     unPreSelectCard,
-    setSfxVolume,
     togglePreselectedPowerUp,
   };
 
@@ -677,12 +670,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         ...actions,
         lockRedirection,
         discards,
-        sfxVolume,
-        animationSpeed,
-        setAnimationSpeed,
-        sfxOn,
-        setSfxOn,
         powerUpIsPreselected,
+        resetLevel,
       }}
     >
       {children}

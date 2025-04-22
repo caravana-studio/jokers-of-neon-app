@@ -1,14 +1,14 @@
-import { Deck } from "../../types/Deck";
-import { useDojo } from "../useDojo";
-import { getCard } from "./useCurrentHand";
-import { getCardFromCardId } from "../utils/getCardFromCardId";
-import { getCardData } from "../../utils/getCardData";
-import { getLSGameId } from "../utils/getLSGameId";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { Entity } from "@dojoengine/recs";
 import { useComponentValue } from "@dojoengine/react";
+import { Entity } from "@dojoengine/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useMemo } from "react";
 import { CardTypes } from "../../enums/cardTypes";
+import { useCardData } from "../../providers/CardDataProvider";
+import { Deck } from "../../types/Deck";
+import { useDojo } from "../useDojo";
+import { getCardFromCardId } from "../utils/getCardFromCardId";
+import { getLSGameId } from "../utils/getLSGameId";
+import { getCard } from "./useCurrentHand";
 
 export const useDeck = (): Deck => {
   const {
@@ -23,6 +23,8 @@ export const useDeck = (): Deck => {
     [gameId]
   );
 
+  const { getCardData } = useCardData();
+
   const deck = useComponentValue(GameDeck, entityId);
 
   const fullDeckCards = [];
@@ -32,7 +34,7 @@ export const useDeck = (): Deck => {
     for (let i = 0; i < deck?.len; i++) {
       const deckCard = getCard(gameId ?? 0, i, DeckCard);
       const card = getCardFromCardId(deckCard?.card_id, i);
-      const cardData = { ...getCardData(card) };
+      const cardData = getCardData(card.card_id);
       const isNeonCard = cardData.type === CardTypes.NEON;
 
       fullDeckCards.push({

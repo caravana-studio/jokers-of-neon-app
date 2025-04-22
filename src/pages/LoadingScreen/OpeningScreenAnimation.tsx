@@ -8,10 +8,12 @@ const MotionBox = chakra(motion.div);
 
 interface OpeningScreenAnimationProps {
   onAnimationEnd: () => void;
+  skipAnimation?: boolean;
 }
 
 const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   onAnimationEnd,
+  skipAnimation,
 }) => {
   const [stage, setStage] = useState<"logo" | "poweredBy" | "end">("logo");
   const [logoVisibility, setLogoVisibility] = useState({
@@ -27,6 +29,12 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
   });
 
   useEffect(() => {
+    if (skipAnimation) {
+      setStage("end");
+      onAnimationEnd();
+      return;
+    }
+
     if (stage === "logo") {
       setTimeout(
         () => setLogoVisibility((prev) => ({ ...prev, logo: true })),
@@ -79,7 +87,7 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
         onAnimationEnd();
       }, 5000);
     }
-  }, [stage, onAnimationEnd]);
+  }, [stage, onAnimationEnd, skipAnimation]);
 
   return (
     <MotionBox

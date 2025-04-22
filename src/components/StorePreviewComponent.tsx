@@ -1,23 +1,15 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Heading, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../components/CachedImage.tsx";
-import { PositionedDiscordLink } from "../components/DiscordLink.tsx";
-import { PositionedGameMenu } from "../components/GameMenu.tsx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { Duration } from "../enums/duration.ts";
 import { Coins } from "../pages/store/Coins.tsx";
 import theme from "../theme/theme";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { DurationSwitcher } from "./DurationSwitcher.tsx";
+import { LootBoxRateInfo } from "./Info/LootBoxRateInfo.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -63,14 +55,8 @@ export const StorePreviewComponent = ({
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
-
-  console.log("temporal Price", temporalPrice);
-  console.log("duration", duration);
-  console.log("onDurationChange", onDurationChange);
-
   return (
     <>
-      <PositionedGameMenu />
       <Flex
         flexDirection={"column"}
         justifyContent={"center"}
@@ -106,7 +92,10 @@ export const StorePreviewComponent = ({
                 {spine}
               </Flex>
             ) : (
-              <Flex width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}>
+              <Flex
+                width={`${CARD_WIDTH * SIZE_MULTIPLIER + 30}px`}
+                justifyContent={"center"}
+              >
                 {image}
               </Flex>
             )}
@@ -226,6 +215,7 @@ export const StorePreviewComponent = ({
                   </Text>
                 </Box>
               )}
+
               <Box flex={1} alignItems={"end"} display={"flex"} flexDir={"row"}>
                 <Flex flexDirection={"column"} gap={5}>
                   <Flex gap={3}>
@@ -291,7 +281,7 @@ export const StorePreviewComponent = ({
             {buyButton}
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate("/store")}
+              onClick={() => navigate(-1)}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >
@@ -311,7 +301,6 @@ export const StorePreviewComponent = ({
           zIndex="9999"
         />
       )}
-      <PositionedDiscordLink />
     </>
   );
 };

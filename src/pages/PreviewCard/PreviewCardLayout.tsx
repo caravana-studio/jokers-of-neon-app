@@ -13,17 +13,15 @@ import { useState } from "react";
 import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { PositionedDiscordLink } from "../../components/DiscordLink.tsx";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import theme from "../../theme/theme.ts";
-import { getCardData } from "../../utils/getCardData.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
 
 import { useTranslation } from "react-i18next";
-import { PositionedGameMenu } from "../../components/GameMenu.tsx";
+import { useCardData } from "../../providers/CardDataProvider.tsx";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -46,14 +44,16 @@ const PreviewCardLayout = () => {
     navigate("/redirect/open-pack");
   }; */
 
+  const { getCardData } = useCardData();
+  const game = useGame();
+  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
+
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const game = useGame();
-  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
   const cash = game?.cash ?? 0;
-  const { name, description, details } = getCardData(card, isPack);
+  const { name, description, details } = getCardData(card.card_id ?? 0);
   const specialMaxLength = game?.special_slots ?? 0;
   const specialLength = game?.current_specials_len ?? 0;
 
@@ -100,7 +100,6 @@ const PreviewCardLayout = () => {
 
   return (
     <>
-      <PositionedGameMenu />
       <Flex flexDirection={"column"} justifyContent={"center"} height={"100vh"}>
         <Flex
           flexDirection={"column"}
@@ -297,7 +296,6 @@ const PreviewCardLayout = () => {
           </HStack>
         </Flex>
       </Flex>
-      <PositionedDiscordLink />
     </>
   );
 };

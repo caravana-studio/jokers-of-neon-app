@@ -1,4 +1,4 @@
-import { TRADITIONAL_CARDS_DATA } from "../data/traditionalCards";
+import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 
@@ -13,8 +13,8 @@ export const sortCards = (cards: Card[], sortBy: SortBy): Card[] => {
     }
 
     // Determine rank and suit for both cards
-    const cardA = TRADITIONAL_CARDS_DATA[(a.card_id ?? 0) % 200];
-    const cardB = TRADITIONAL_CARDS_DATA[(b.card_id ?? 0) % 200];
+    const cardA = CARDS_SUIT_DATA[(a.card_id ?? 0) % 200];
+    const cardB = CARDS_SUIT_DATA[(b.card_id ?? 0) % 200];
 
     if (cardA && cardB) {
       // Second layer: Sort by rank if sortBy is RANK

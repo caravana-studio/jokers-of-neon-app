@@ -1,4 +1,23 @@
 {
+  "my-games": {
+    "title": "My Games",
+    "go-back": "Go back",
+    "start-game": "Start new game",
+    "show-finished-games": "Show finished games",
+    "continue-btn": "continue",
+    "start-btn": "start",
+    "level-lbl": "Level",
+    "status-lbl": "Status",
+    "points-lbl": "points",
+    "no-games": "You don't have any games. Start a new one!",
+    "create-game": {
+      "stage-1": "Finding tournament {{tournamentId}}",
+      "stage-2": "Registering user {{username}}",
+      "stage-3": "Minting game token to your account",
+      "stage-4": "Shuffling cards",
+      "stage-5": "Game starting"
+    }
+  },
   "game-over": {
     "gameOver-msj": "GAME OVER",
     "table": {
@@ -48,7 +67,8 @@
     "confirmation-modal": {
       "title": "Sell special card",
       "description": "Are you sure you want to sell this special card for ¢{{price}}? There is no way to undo this action."
-    }
+    },
+    "locked-slot": "Unlock special card slot"
   },
   "mods": {
     "title": "Select the Jokers of Neon version you want to play",

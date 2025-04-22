@@ -6,11 +6,11 @@ const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(menuAnatomy.keys)
 
 const boxShadow = `0px 0px 8px 2px ${BLUE}`;
-const boxShadowThick = `0px 0px 15px 7px ${BLUE}`;
 const boxShadowMenuItem = `0px 0px 10px 2px ${BLUE}, inset 0px 0px 10px 2px ${BLUE}`;
-const borderDisabled = `1px solid rgb(255,255,255)`;
 const border = `3px solid ${BLUE}`;
 const borderThin = `2px solid ${BLUE}`;
+const boxShadowThick = `0px 0px 15px 7px ${BLUE}`;
+const borderDisabled = `1px solid rgb(255,255,255)`;
 
 // define the base component styles
 const baseStyle = definePartsStyle({
@@ -20,27 +20,21 @@ const baseStyle = definePartsStyle({
     bg: "rgba(0,0,0,0.5)",
     color: "white",
     borderRadius: 'xl',
-    border: borderDisabled,
     fontSize: [20, 20, 25],
     height: ["40px", "40px", "40px", "50px"],
     width: ["40px", "40px", "40px", "50px"],
     outline: "none",
+    border: "none !important",
     _hover: {
-      bg: `${BLUE}`,
-      border: border,
-      boxShadow: boxShadowThick,
+      border: "none",
       outline: "none",
     },
     _focus: {
-      bg: `${BLUE}`,
-      border: border,
-      boxShadow: boxShadowThick,
+      border: "none",
       outline: "none",
     },
     _active: {
-      bg: `${BLUE}`,
-      border: border,
-      boxShadow: boxShadowThick,
+      border: "none",
     }
   },
   list: {
@@ -71,8 +65,31 @@ const baseStyle = definePartsStyle({
   },
 })
 
+const menuGameOutline = definePartsStyle({
+  button: {
+    ...baseStyle.button,
+    border: borderDisabled,
+    _hover: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+    },
+    _focus: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+      outline: "none",
+    },
+    _active: {
+      bg: `${BLUE}`,
+      border: border,
+      boxShadow: boxShadowThick,
+    }
+  },
+})
 
-const menuOutline = definePartsStyle((props) => {
+
+const menuSettingsOutline = definePartsStyle((props) => {
   const commonButtonStyles = {
     bg: "greyMedium",
     border: 0,
@@ -82,7 +99,6 @@ const menuOutline = definePartsStyle((props) => {
   return {
     button: {
       bg: "greyMedium",
-      border: `1px solid rgb(255,255,255) !important`,
       color: "rgb(255,255,255)",
       fontSize: "sm",
       padding: "0.5rem",
@@ -123,6 +139,7 @@ const menuOutline = definePartsStyle((props) => {
 export const menuTheme = defineMultiStyleConfig({
   baseStyle,
   variants: {
-    menuOutline,
+    menuSettingsOutline,
+    menuGameOutline,
   },
 });

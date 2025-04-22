@@ -1,4 +1,4 @@
-import { Box, Heading, SystemStyleObject, Tooltip } from "@chakra-ui/react";
+import { Box, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import Tilt from "react-parallax-tilt";
 import {
@@ -11,17 +11,19 @@ import {
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
+import { useCardData } from "../providers/CardDataProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
+import { useTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
 import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
 import CachedImage from "./CachedImage.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
+import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
-import { getTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -34,6 +36,7 @@ interface ICardProps {
   used?: boolean;
   onDeck?: boolean;
   onHold?: () => void;
+  height?: number;
 }
 
 export const TiltCard = ({
@@ -46,20 +49,34 @@ export const TiltCard = ({
   used = false,
   onDeck = false,
   onHold,
+  height,
 }: ICardProps) => {
   const { img, purchased = false } = card;
-  const cardWith = scale ? CARD_WIDTH * scale : CARD_WIDTH;
-  const cardHeight = scale ? CARD_HEIGHT * scale : CARD_HEIGHT;
+  const cardHeight = height
+    ? height
+    : scale
+      ? CARD_HEIGHT * scale
+      : CARD_HEIGHT;
+  const cardWith = height
+    ? height / 1.52
+    : scale
+      ? CARD_WIDTH * scale
+      : CARD_WIDTH;
 
-  const modifiedCard = getTransformedCard(card);
+  const modifiedCard = useTransformedCard(card);
 
   const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
 
+  const { getCardData } = useCardData();
+
+  const { name, description } = getCardData(modifiedCard.card_id ?? 0);
+
   const tiltCardComponent = (
     <Box
       width={`${cardWith}px`}
+      height={`${cardHeight}px`}
       sx={{ cursor: cursor && !purchased ? cursor : "default" }}
     >
       <Box
@@ -74,7 +91,7 @@ export const TiltCard = ({
         <ConditionalTilt cardId={card.card_id ?? 0}>
           <Tooltip
             hasArrow
-            label={getTooltip(modifiedCard, isPack)}
+            label={getTooltip(name, description)}
             closeOnPointerDown
           >
             <Box
@@ -138,20 +155,11 @@ export const TiltCard = ({
               discountPrice={card.discount_cost}
             />
           )}
-          {card.purchased && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: `${cardHeight / 2 - 10}px`,
-                left: 0,
-                zIndex: 10,
-              }}
-            >
-              <Heading variant="italic" fontSize={isMobile ? 7 : 14 * scale}>
-                {t("store.labels.purchased").toUpperCase()}
-              </Heading>
-            </Box>
-          )}
+          <PurchasedLbl
+            purchased={purchased ?? false}
+            topOffset={`${cardHeight / 2 - 10}px`}
+            fontSize={isMobile ? 7 : 14 * scale}
+          />
           {card.temporary && (
             <TemporalBadge
               remaining={card.remaining ?? 3}
@@ -161,6 +169,7 @@ export const TiltCard = ({
         </ConditionalTilt>
       </Box>
       {card.modifiers?.map((c, index) => {
+        const { name, description } = getCardData(c.card_id ?? 0);
         return (
           <Box
             key={c.id}
@@ -175,7 +184,7 @@ export const TiltCard = ({
               <AnimatedCard idx={c.idx}>
                 <Tooltip
                   hasArrow
-                  label={getTooltip(c)}
+                  label={getTooltip(name, description)}
                   placement="top"
                   closeOnPointerDown
                 >

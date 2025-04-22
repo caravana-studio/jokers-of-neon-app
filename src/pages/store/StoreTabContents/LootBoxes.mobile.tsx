@@ -9,11 +9,11 @@ import SpineAnimation, {
 import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
 import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
+import { useCardData } from "../../../providers/CardDataProvider";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { getCardData } from "../../../utils/getCardData";
 
 export const LootBoxesMobile = () => {
   const { packs } = useStore();
@@ -68,7 +68,11 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
-  const { name, description, details, size } = getCardData(card, true);
+  const { getLootBoxData } = useCardData();
+
+  const { name, description, details, size } = getLootBoxData(
+    card.card_id ?? 0
+  );
 
   const handleBuyClick = useMemo(
     () => () => {
@@ -109,15 +113,14 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
       overflow="hidden"
       zIndex={1}
     >
-      <Flex flexDirection="row" alignItems="center" gap={4} height="100%">
-        <Flex h="100%" w="40%">
-          <Flex
-            key={`pack-${pack.blister_pack_id}`}
-            w="100%"
-            h={"100%"}
-            justifyContent={"center"}
-            pl={2}
-          >
+      <Flex flexDirection="row" height="100%" alignItems="stretch">
+        <Flex
+          width="40%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Flex key={`pack-${pack.blister_pack_id}`} w="100%" h="100%" pl={2}>
             <SpineAnimation
               ref={spineAnimationRef}
               jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
@@ -132,13 +135,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           </Flex>
         </Flex>
 
-        <Flex
-          flexDirection={"column"}
-          width="60%"
-          flex="1"
-          height="100%"
-          justifyContent={"space-between"}
-        >
+        <Flex width="60%" flexDirection="column" justifyContent="space-between">
           <Flex justifyContent="space-between" mb={2} alignItems="center">
             <Heading fontWeight={"400"} fontSize={"xs"}>
               {name}

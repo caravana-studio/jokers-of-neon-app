@@ -1,10 +1,8 @@
-import i18n from "i18next";
 import { RARITY } from "../constants/rarity";
-import { CardTypes } from "../enums/cardTypes";
 
 export const SPECIAL_CARDS_BLOCKS_SUIT_CHANGE = [314];
 
-const CARDS_PRICE: Record<RARITY, number> = {
+export const SPECIALS_PRICE: Record<RARITY, number> = {
   [RARITY.C]: 1000,
   [RARITY.B]: 1750,
   [RARITY.A]: 3500,
@@ -12,30 +10,7 @@ const CARDS_PRICE: Record<RARITY, number> = {
   [RARITY.SS]: 7000,
 };
 
-/* const url = import.meta.env.VITE_MOD_URL + `${modId}/resources/specials.json`;
-  try {
-    console.log("fetching specials.json");
-    const content = await getJsonFromUrl(url);
-  } catch (error) {
-    console.error("Error fetching specials.json:", error);
-  }
- */
-const ns = "effects";
-
-export const getSpecialCardData = (id: number) => {
-  const rarity = SPECIALS_KEYS[id];
-  const price = CARDS_PRICE[rarity];
-  return {
-    name: i18n.t(`specialCardsData.${id}.name`, { ns }),
-    description: i18n.t(`specialCardsData.${id}.description`, { ns }),
-    rarity,
-    price,
-    temporaryPrice: Math.round(price / 3 / 100) * 100,
-    type: CardTypes.SPECIAL,
-  };
-};
-
-export const SPECIALS_KEYS: Record<number, RARITY> = {
+export const SPECIALS_RARITY: Record<number, RARITY> = {
   300: RARITY.C,
   301: RARITY.C,
   302: RARITY.C,
@@ -61,12 +36,15 @@ export const SPECIALS_KEYS: Record<number, RARITY> = {
   322: RARITY.A,
   323: RARITY.S,
   325: RARITY.A,
+  327: RARITY.C,
+  328: RARITY.B,
   331: RARITY.A,
   332: RARITY.B,
   334: RARITY.C,
   336: RARITY.B,
   337: RARITY.A,
   338: RARITY.A,
+  340: RARITY.B,
   341: RARITY.A,
   343: RARITY.A,
   344: RARITY.B,
@@ -76,4 +54,14 @@ export const SPECIALS_KEYS: Record<number, RARITY> = {
   348: RARITY.B,
   349: RARITY.B,
   350: RARITY.B,
+  351: RARITY.C,
+  352: RARITY.C,
+  356: RARITY.C,
+  357: RARITY.A,
+  360: RARITY.B,
+  361: RARITY.C,
+  374: RARITY.B,
+  379: RARITY.A,
 };
+
+export const SPECIALS_CUMULATIVE = [357]

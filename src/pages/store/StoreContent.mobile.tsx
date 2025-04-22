@@ -5,7 +5,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import SpecialsButton from "./StoreElements/ManageButton.tsx";
 import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
-import { StoreTopBar } from "./StoreElements/StoreTopBar.tsx";
+import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar.tsx";
 import { LootBoxesMobile } from "./StoreTabContents/LootBoxes.mobile.tsx";
 import { StoreCards } from "./StoreTabContents/StoreCards.tsx";
 import { UtilsTab } from "./StoreTabContents/UtilsTab.tsx";
@@ -28,7 +28,6 @@ export const StoreContentMobile = ({
           setRun={setRun}
           firstButton={<SpecialsButton isSmallScreen={true} />}
           secondButton={<NextLevelButton isSmallScreen={true} />}
-          navigateState={{ state: { inStore: true } }}
         />
       }
       disableGoBack

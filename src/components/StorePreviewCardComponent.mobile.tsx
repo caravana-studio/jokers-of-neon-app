@@ -11,6 +11,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
+import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
 
 interface StorePreviewCardComponentMobileProps {
   card: Card;
@@ -48,7 +49,7 @@ export const StorePreviewCardComponentMobile = ({
         h="100%"
         textAlign="center"
       >
-        <Flex justifyContent="flex-end" mr={3} w="100%">
+        <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
           <MobileCoins />
         </Flex>
         <Flex
@@ -120,7 +121,8 @@ export const StorePreviewCardComponentMobile = ({
             <Button
               size={"xs"}
               onClick={() => {
-                navigate("/redirect/store", { state: { lastTabIndex: tab } });
+                sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
+                navigate(-1);
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"

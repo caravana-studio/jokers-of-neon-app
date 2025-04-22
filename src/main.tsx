@@ -18,19 +18,17 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
+import customTheme from "./theme/theme";
 
 const I18N_NAMESPACES = [
   "game",
-  "rage",
   "home",
-  "traditional-cards",
-  "neon-cards",
   "store",
-  "effects",
+  "cards",
   "tutorials",
   "intermediate-screens",
   "plays",
-  "loot-boxes",
 ];
 
 async function init() {
@@ -44,6 +42,8 @@ async function init() {
   const shouldSkipPresentation = hasSeenPresentation && !isNavigatingFromHome;
 
   let setCanFadeOut: (value: boolean) => void = () => {};
+
+  const theme = extendTheme(customTheme);
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -70,14 +70,16 @@ async function init() {
     : new Promise<void>((resolve) => {
         const updateLoadingScreen = (canFadeOut: boolean) => {
           root.render(
-            <LoadingScreen
-              showPresentation={true}
-              onPresentationEnd={() => {
-                window.localStorage.setItem(SKIP_PRESENTATION, "true");
-                resolve();
-              }}
-              canFadeOut={canFadeOut}
-            />
+            <ChakraBaseProvider theme={theme}>
+              <LoadingScreen
+                showPresentation={true}
+                onPresentationEnd={() => {
+                  window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                  resolve();
+                }}
+                canFadeOut={canFadeOut}
+              />
+            </ChakraBaseProvider>
           );
         };
 

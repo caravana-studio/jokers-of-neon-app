@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
-import { PositionedGameMenu } from "../components/GameMenu";
 import { Leaderboard } from "../components/Leaderboard";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 
@@ -50,7 +49,6 @@ export const LeaderBoardPage = () => {
           </Button>
         </Box>
       </Flex>
-      <PositionedGameMenu decoratedPage />
     </BackgroundDecoration>
   );
 };
