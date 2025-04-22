@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  SystemStyleObject,
-  Tooltip,
-} from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
+import { Box, Flex, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { getPowerUpData } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
@@ -17,6 +10,8 @@ import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
 import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 import { PurchasedLbl } from "./PurchasedLbl";
+import { HighlightAnimation } from "./animations/HighlightAnimation";
+import { useState } from "react";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -47,6 +42,8 @@ export const PowerUpComponent = ({
 
   const powerupStyle = powerUp?.style;
 
+  const [startParticles, setStartParticles] = useState(false);
+
   return powerUp ? (
     <FadingParticleAnimation
       width={isSmallScreen ? 120 : 190}
@@ -57,7 +54,7 @@ export const PowerUpComponent = ({
       delayRange={3}
       minHeight={5}
       backward
-      active={calculatedIsActive ?? false}
+      active={(calculatedIsActive ?? false) && startParticles}
       spreadOffset={0.3}
     >
       <AnimatedPowerUp idx={powerUp.idx}>
@@ -89,16 +86,14 @@ export const PowerUpComponent = ({
               topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
               fontSize={isSmallScreen ? 6 : 11 * cardScale}
             />
-            <Box
-              {...(calculatedIsActive && {
-                border: "solid 1px white",
-                borderRadius: `${isSmallScreen ? "10px" : "14px"}`,
-                boxShadow: `
-                  0 0 20px ${powerupStyle?.shadowLightColor},     
-                  0 0 40px ${powerupStyle?.shadowColor},      
-                  inset 0 0 10px ${powerupStyle?.shadowColor} 
-                `,
-              })}
+            <HighlightAnimation
+              start={calculatedIsActive ?? false}
+              onAnimationComplete={() => {
+                setStartParticles(true);
+              }}
+              shadowColor={powerupStyle?.shadowColor}
+              shadowLightColor={powerupStyle?.shadowLightColor}
+              borderRadius={`${isSmallScreen ? "10px" : "14px"}`}
             >
               <CachedImage
                 opacity={inStore || calculatedIsActive ? 1 : 0.6}
@@ -108,7 +103,7 @@ export const PowerUpComponent = ({
                 width={`${100}%`}
                 src={powerUp.img}
               />
-            </Box>
+            </HighlightAnimation>
           </Flex>
         </Tooltip>
       </AnimatedPowerUp>
