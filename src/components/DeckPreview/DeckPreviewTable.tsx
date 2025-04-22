@@ -14,6 +14,7 @@ import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 import { GREY_MEDIUM } from "../../theme/colors";
 import { Suits } from "../../enums/suits";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const DeckPreviewTable = () => {
   const tableData = getTableData();
@@ -21,13 +22,16 @@ export const DeckPreviewTable = () => {
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;
 
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <Table
       variant="simple"
       size="sm"
       border="none"
       borderWidth={0}
-      cellSpacing={"0 8px"}
+      cellSpacing={isSmallScreen ? "0 1px" : "0 8px"}
+      fontSize={isSmallScreen ? "8px" : "12px"}
     >
       <Thead>
         <Tr>
