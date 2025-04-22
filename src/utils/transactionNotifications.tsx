@@ -1,11 +1,15 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Spinner, Tooltip } from "@chakra-ui/react";
+import { Box, Spinner, Tooltip, Text, Image } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
 import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
+import { FaTrophy } from "react-icons/fa";
+import theme from "../theme/theme.ts";
+
+const { white, violet } = theme.colors;
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -91,21 +95,47 @@ export const showTransactionToast = (
 };
 
 export const showAchievementToast = (achievementName: string): void => {
-  toast.success(`Achievement completed: ${achievementName}`, {
-    // id: `achievement-${achievementName}`,
-    position: "top-left",
-    style: {
-      backgroundColor: SUCCESS_TOAST,
-      color: "white",
-      fontWeight: "bold",
-      fontSize: isMobile ? "12px" : "14px",
-      padding: isMobile ? "8px 12px" : "10px 16px",
-      borderRadius: "8px",
-      maxWidth: "300px",
-      boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-    },
-    duration: 2500,
-  });
+  toast.custom(
+    () => (
+      <Box
+        display="flex"
+        alignItems="center"
+        bg="black"
+        borderRadius="12px"
+        p={"10px"}
+        px={"20px"}
+        boxShadow={`0px 0px 10px 1px ${white}`}
+        maxW="300px"
+        color="white"
+        gap="10px"
+      >
+        <Image
+          src="/logos/trophy.png"
+          alt="Trophy Icon"
+          boxSize={isMobile ? "16px" : "20px"}
+          color={white}
+        />
+        <Box>
+          <Text
+            fontSize={isMobile ? "10px" : "12px"}
+            color={`${violet}`}
+            fontWeight="bold"
+            fontFamily={"Sonara"}
+            textTransform="uppercase"
+          >
+            Achievement Completed
+          </Text>
+          <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+            {achievementName}
+          </Text>
+        </Box>
+      </Box>
+    ),
+    {
+      position: isMobile ? "top-left" : "bottom-left",
+      duration: 2500,
+    }
+  );
 };
 
 const openTx = function (transaction_hash: string): void {
