@@ -57,7 +57,7 @@ export const HighlightAnimation = ({
       transition="transform 0.5s ease-in-out, border 0.2s ease-in-out, box-shadow 0.6s ease-in-out"
       borderRadius={borderRadius}
       {...(showBorder && {
-        border: "solid 1px white",
+        border: "solid 1px rgba(255, 255, 255, 0.8)",
         boxShadow: `
           0 0 20px ${shadowLightColor},     
           0 0 40px ${shadowColor},      
