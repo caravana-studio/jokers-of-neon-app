@@ -133,7 +133,7 @@ export const showAchievementToast = (achievementName: string): void => {
     ),
     {
       position: isMobile ? "top-left" : "bottom-left",
-      duration: 2500,
+      duration: 7000,
     }
   );
 };
