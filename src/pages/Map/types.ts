@@ -12,4 +12,5 @@ export interface NodeData {
     data: number;
     children: number[];
     visited: boolean;
+    current?: boolean;
 }
