@@ -1,5 +1,9 @@
 import { CairoCustomEnum } from "starknet";
+import { DojoEvents } from "../enums/dojoEvents";
+import { useGameContext } from "../providers/GameProvider";
+import { PowerUp } from "../types/PowerUp";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
+import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
 import {
@@ -8,16 +12,19 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { DojoEvents } from "../enums/dojoEvents";
-import { getEventKey } from "../utils/getEventKey";
 
-const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(DojoEvents.DESTROYED_SPECIAL_CARD)
+const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
+  DojoEvents.DESTROYED_SPECIAL_CARD
+);
 
 export const useShopActions = () => {
   const {
     setup: { client },
     account: { account },
   } = useDojo();
+
+  const { setDestroyedSpecialCardId, setHand, setPowerUps, maxPowerUpSlots } =
+    useGameContext();
 
   const skipShop = async (gameId: number) => {
     try {
@@ -45,7 +52,7 @@ export const useShopActions = () => {
         return {
           success: false,
           cards: [],
-          powerUps: []
+          powerUps: [],
         };
       }
     } catch (e) {
@@ -54,7 +61,7 @@ export const useShopActions = () => {
       return {
         success: false,
         cards: [],
-        powerUps: []
+        powerUps: [],
       };
     }
   };
@@ -86,10 +93,7 @@ export const useShopActions = () => {
     }
   };
 
-  const advanceNode = async (
-    gameId: number,
-    nodeId: number
-  ) => {
+  const advanceNode = async (gameId: number, nodeId: number) => {
     try {
       showTransactionToast();
       const response = await client.map_system.advanceNode(
@@ -104,6 +108,25 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
+      if (tx.isSuccess()) {
+        const event = tx.events.find(
+          (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
+        );
+        const cards = getCardsFromEvents(tx.events);
+        const destroyedSpecialCard = event && getNumberValueFromEvent(event, 3);
+        const responsePowerUps = getPowerUpsFromEvents(tx.events);
+
+        setHand(cards);
+
+        const powerUps: (PowerUp | null)[] = responsePowerUps;
+        while (powerUps.length < maxPowerUpSlots) {
+          powerUps.push(null);
+        }
+        setPowerUps(powerUps);
+
+        destroyedSpecialCard && setDestroyedSpecialCardId(destroyedSpecialCard);
+      }
+
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
@@ -111,16 +134,13 @@ export const useShopActions = () => {
     }
   };
 
-  const buyPowerUp = async (
-    gameId: number,
-    power_up_idx: number,
-  ) => {
+  const buyPowerUp = async (gameId: number, power_up_idx: number) => {
     try {
       showTransactionToast();
       const response = await client.shop_system.buyPowerUp(
         account,
         gameId,
-        power_up_idx,
+        power_up_idx
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash);
@@ -188,10 +208,7 @@ export const useShopActions = () => {
   const buySpecialSlot = async (gameId: number) => {
     try {
       showTransactionToast();
-      const response = await client.shop_system.buySpecialSlot(
-        account,
-        gameId
-      );
+      const response = await client.shop_system.buySpecialSlot(account, gameId);
       const transaction_hash = response?.transaction_hash ?? "";
 
       showTransactionToast(transaction_hash);

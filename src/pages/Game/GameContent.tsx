@@ -112,8 +112,6 @@ export const GameContent = () => {
 
   const game = useGame();
 
-  console.log('game', game);
-
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
     const modifiedCardId = Number(event.over?.id);

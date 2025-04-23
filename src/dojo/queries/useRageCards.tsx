@@ -2,7 +2,6 @@ import { useRound } from "./useRound";
 
 export const useRageCards = () => {
   const round = useRound();
-  console.log("round", round);
   if (!round || !round.rages || round.rages.length === 0) {
     return [];
   }

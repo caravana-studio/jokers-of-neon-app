@@ -6,17 +6,14 @@ import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
-import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
-import { useState } from "react";
 
 export const DynamicStorePage = () => {
   const DECK_SHOP_CONFIG_ID = 1;
@@ -37,7 +34,7 @@ export const DynamicStorePage = () => {
 
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
-  const { shopId } = useStore()
+  const { shopId } = useStore();
 
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
@@ -48,34 +45,17 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const {
-    setDestroyedSpecialCardId,
-    onShopSkip,
-    setHand,
-    gameId,
-    setPowerUps,
-    maxPowerUpSlots,
-  } = useGameContext();
+  const { onShopSkip, gameId } = useGameContext();
 
   const { skipShop } = useShopActions();
 
-  const { locked, setLoading } = useStore();
+  const { setLoading } = useStore();
 
   const handleNextLevelClick = () => {
     setLoading(true);
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        setHand(response.cards);
-
-        const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
-
-        response.destroyedSpecialCard &&
-          setDestroyedSpecialCardId(response.destroyedSpecialCard);
         navigate("/redirect/map");
       } else {
         setLoading(false);
