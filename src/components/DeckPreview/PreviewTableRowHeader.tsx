@@ -28,6 +28,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
       backgroundColor={"black"}
       border={"1px"}
       borderRadius={"15px"}
+      borderColor={"white"}
       width={isSmallScreen ? "100%" : "80px"}
     >
       {Icon && <IconComponent icon={Icon} width={iconSize} height={iconSize} />}

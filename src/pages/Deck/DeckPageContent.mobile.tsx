@@ -80,7 +80,7 @@ export const DeckPageContentMobile = ({
     <TabPattern bottomBar={bottomBar}>
       <Tab title={t("tabs.full-deck")}>
         {!state.inStore ? (
-          <Flex flexDirection={"column"} gap={2} height={"75vh"}>
+          <Flex flexDirection={"column"} gap={2} height={"100%"}>
             <Flex
               flexDirection={"column"}
               flexGrow={1}

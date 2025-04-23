@@ -128,10 +128,19 @@ const deck = definePartsStyle({
   th: {
     fontFamily: "Orbitron",
     fontSize: ["7px", "7px", "sm", "md"],
+    verticalAlign: "bottom", 
   },
   td: {
     fontFamily: "Orbitron",
-    fontSize: ["7px", "7px", "sm", "md"],
+    fontSize: ["7px", "7px", "sm", "md"], 
+    p: 0,
+    m: 0,
+    verticalAlign: "bottom",
+  },
+  thead: {
+    td: {
+      verticalAlign: "bottom", 
+    },
   },
 });
 

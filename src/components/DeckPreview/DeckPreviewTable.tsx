@@ -35,9 +35,14 @@ export const DeckPreviewTable = () => {
     >
       <Thead>
         <Tr>
-          <Th border="none"></Th>
+          <Th border="none" p={0} m={0} paddingLeft={"1px"}>
+            <PreviewTableRowHeader
+              cardSuit={rowHeaders[rowHeaders.length - 1].cardSuit}
+              quantity={rowHeaders[rowHeaders.length - 1].quantity}
+            />
+          </Th>
           {columnHeaders.map((header, index) => (
-            <Th key={index} border="none" padding={0} paddingLeft={1}>
+            <Th key={index} border="none" padding={0} paddingLeft={"1px"}>
               <PreviewTableColumnHeader
                 cardValue={header.cardValue}
                 quantity={header.quantity}
@@ -47,9 +52,9 @@ export const DeckPreviewTable = () => {
         </Tr>
       </Thead>
       <Tbody color={"white"}>
-        {rows.map((row, rowIndex) => (
-          <Tr key={rowIndex} border="none" borderBottom="2px solid transparent">
-            <Th border="none" p={0} m={0} pr={1}>
+        {rows.slice(0, -1).map((row, rowIndex) => (
+          <Tr key={rowIndex}>
+            <Th border="none" p={0} m={0}>
               <PreviewTableRowHeader
                 cardSuit={rowHeaders[rowIndex].cardSuit}
                 quantity={rowHeaders[rowIndex].quantity}
