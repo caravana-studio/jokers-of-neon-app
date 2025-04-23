@@ -29,10 +29,10 @@
         "selling": "Selling..."
       }
     },
-    "level-points": {
-      "level": "Level",
+    "round-points": {
+      "round": "Round",
       "target-score": "Score",
-      "score": "Score {{score}} to clear the level {{level}}"
+      "score": "Score {{score}} to clear round {{round}}"
     },
     "score": "score:",
     "score-total": "Total score",

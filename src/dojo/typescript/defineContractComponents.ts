@@ -629,12 +629,13 @@ export function defineContractComponents(world: World) {
           target_score: RecsType.Number,
           remaining_plays: RecsType.Number,
           remaining_discards: RecsType.Number,
+          rages: RecsType.NumberArray,
         },
         {
           metadata: {
             namespace: DOJO_NAMESPACE,
             name: "Round",
-            types: ["u32", "u32", "u32", "u8", "u8"],
+            types: ["u64", "u32", "u32", "u16", "u16", "array"],
             customTypes: [],
           },
         }

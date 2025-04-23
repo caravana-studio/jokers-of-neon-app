@@ -117,6 +117,7 @@ export interface IGameContext {
   resetLevel: () => void;
   playerScore: number;
   cardTransformationLock: boolean;
+  nodeRound: number;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;

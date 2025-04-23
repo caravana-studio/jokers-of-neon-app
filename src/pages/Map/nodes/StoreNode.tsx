@@ -36,7 +36,7 @@ const StoreNode = ({ data }: any) => {
         if (stateInMap) {
           advanceNode(gameId, data.id).then((response) => {
             if (response) {
-              navigate("/redirect/demo");
+              navigate("/redirect/store");
             }
           });
         } else if (data.current) {

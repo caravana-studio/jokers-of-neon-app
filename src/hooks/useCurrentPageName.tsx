@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { LAST_PAGE } from "../constants/localStorage";
-import { useGame } from "../dojo/queries/useGame";
 import { useGameContext } from "../providers/GameProvider";
 import { useStore } from "../providers/StoreProvider";
 
@@ -13,10 +12,8 @@ interface Page {
 
 export const useCurrentPageName = (): Page | null => {
   const location = useLocation();
-  const game = useGame();
-  const { isRageRound } = useGameContext();
+  const { isRageRound, nodeRound } = useGameContext();
   const { shopId } = useStore();
-  const level = game?.level ?? 0;
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });
   const { t: tShop } = useTranslation(["store"]);
 
@@ -39,7 +36,7 @@ export const useCurrentPageName = (): Page | null => {
         roundType: isRageRound
           ? tGame("game-menu.pages.rage-round")
           : tGame("game-menu.pages.round"),
-        level,
+        level: nodeRound,
       }),
   };
 
@@ -61,7 +58,7 @@ export const useCurrentPageName = (): Page | null => {
       setCurrentPage(newPage);
       localStorage.setItem(LAST_PAGE, JSON.stringify(newPage));
     }
-  }, [pageName, location.pathname, level]);
+  }, [pageName, location.pathname, nodeRound]);
 
   return currentPage;
 };

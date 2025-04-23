@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { useGame } from "../../dojo/queries/useGame";
-import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
+import { useRageCards } from "../../dojo/queries/useRageCards";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
@@ -14,7 +15,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const GamePage = () => {
   const {
@@ -35,7 +35,6 @@ export const GamePage = () => {
 
   const { animateSecondChanceCard } = useCardAnimations();
 
-  const rageRound = useRageRound();
   const rageCards = useRageCards();
   const navigate = useNavigate();
   const game = useGame();
@@ -52,7 +51,7 @@ export const GamePage = () => {
 
   useEffect(() => {
     setLockedCash(undefined);
-    setIsRageRound(rageRound?.is_active ?? false);
+    setIsRageRound(rageCards && rageCards.length > 0);
     setRageCards(rageCards);
   }, []);
 
