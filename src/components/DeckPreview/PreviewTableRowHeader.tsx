@@ -15,7 +15,6 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
 
   const { isSmallScreen } = useResponsiveValues();
   const iconSize = isSmallScreen ? "9px" : "14px";
-  const fontSize = isSmallScreen ? "7px" : "12px";
 
   return (
     <Flex
@@ -41,9 +40,7 @@ export const PreviewTableRowHeader: React.FC<RowHeader> = ({
         backgroundColor={GREY_MEDIUM}
         width={isSmallScreen ? "50%" : "fit-content"}
         minWidth={isSmallScreen ? "30px" : "50%"}
-        fontSize={fontSize}
         whiteSpace="normal"
-        wordBreak="break-word"
         display={"flex"}
         justifyContent={"center"}
       >

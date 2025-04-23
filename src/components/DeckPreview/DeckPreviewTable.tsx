@@ -8,6 +8,7 @@ import {
   Flex,
   Text,
   useTheme,
+  Box,
 } from "@chakra-ui/react";
 import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
@@ -26,12 +27,11 @@ export const DeckPreviewTable = () => {
 
   return (
     <Table
-      variant="simple"
+      variant="deck"
       size="sm"
       border="none"
       borderWidth={0}
       cellSpacing={isSmallScreen ? "0 1px" : "0 8px"}
-      fontSize={isSmallScreen ? "8px" : "12px"}
     >
       <Thead>
         <Tr>
@@ -73,9 +73,9 @@ export const DeckPreviewTable = () => {
                         : "0"
                   }
                 >
-                  <Text opacity={cell.quantity > 0 ? 1 : 0.2}>
+                  <Box opacity={cell.quantity > 0 ? 1 : 0.2}>
                     {cell.quantity}
-                  </Text>
+                  </Box>
                 </Td>
               );
             })}

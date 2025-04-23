@@ -120,11 +120,28 @@ const baseStyle = definePartsStyle({
   },
 });
 
+const deck = definePartsStyle({
+  table: {
+    fontFamily: "Orbitron",
+    fontSize: ["7px", "7px", "sm", "md"],
+  },
+  th: {
+    fontFamily: "Orbitron",
+    fontSize: ["7px", "7px", "sm", "md"],
+  },
+  td: {
+    fontFamily: "Orbitron",
+    fontSize: ["7px", "7px", "sm", "md"],
+  },
+});
+
+
 export const tableTheme = defineMultiStyleConfig({
   baseStyle: baseStyle,
   variants: {
     leaderboard: leaderboard,
     store: store,
     "store-mobile": storeMobile,
+    deck: deck,
   },
 });

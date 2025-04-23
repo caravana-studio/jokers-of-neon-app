@@ -1,4 +1,4 @@
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 import { cardValuesMap, ColumnHeader } from "./DeckPreviewTableUtils";
 import { GREY_LINE, GREY_MEDIUM } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -11,7 +11,6 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
 
   const cardValueContent = cardValuesMap.get(cardValue);
   const { isSmallScreen } = useResponsiveValues();
-  const fontSize = isSmallScreen ? "7px" : "12px";
 
   return (
     <Flex
@@ -25,10 +24,11 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
       border={"1px"}
       borderRadius={"12px"}
       w={"auto"}
-      fontSize={fontSize}
+      color={"white"}
     >
-      <Text>{cardValueContent}</Text>
-      <Box
+      {cardValueContent}
+      <Flex
+        justifyContent={"center"}
         px={isSmallScreen ? 1 : 4}
         textAlign={"center"}
         borderRadius={"15px"}
@@ -38,7 +38,7 @@ export const PreviewTableColumnHeader: React.FC<ColumnHeader> = ({
         width={"80%"}
       >
         {quantity}
-      </Box>
+      </Flex>
     </Flex>
   );
 };
