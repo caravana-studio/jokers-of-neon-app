@@ -19,6 +19,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
+import { LootBox } from "../../components/LootBox.tsx";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
@@ -51,7 +52,9 @@ export const PreviewLootBox = () => {
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
-      transitionTo("/open-loot-box");
+      transitionTo("/open-loot-box", {
+        state: { pack: pack },
+      });
     }, 200);
   };
 
@@ -102,17 +105,9 @@ export const PreviewLootBox = () => {
   );
 
   const spineAnim = (
-    <SpineAnimation
+    <LootBox
       ref={spineAnimationRef}
-      jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
-      atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
-      initialAnimation={animationsData.loopAnimation}
-      loopAnimation={animationsData.loopAnimation}
-      openBoxAnimation={animationsData.openBoxAnimation}
-      width={1200}
-      height={1500}
-      xOffset={-650}
-      scale={1}
+      pack={pack}
       onOpenAnimationStart={openAnimationCallBack}
     />
   );

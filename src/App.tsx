@@ -21,7 +21,7 @@ import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
-import { OpenLootBox } from "./pages/OpenLootBox";
+import { OpenLootBox } from "./pages/OpenLootBox/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";

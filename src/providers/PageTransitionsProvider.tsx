@@ -5,12 +5,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateOptions, useNavigate } from "react-router-dom";
 import { MotionBox } from "../components/MotionBox";
 import { useSettings } from "./SettingsProvider";
 
 interface IPageTransitionsContext {
-  transitionTo: (page: string) => void;
+  transitionTo: (page: string, state?: NavigateOptions) => void;
 }
 
 interface PageTransitionsProviderProps extends PropsWithChildren {
@@ -42,11 +42,11 @@ export const PageTransitionsProvider = ({
     }
   }, [isTransitioning]);
 
-  const transitionTo = async (page: string) => {
+  const transitionTo = async (page: string, state?: NavigateOptions) => {
     setIsTransitioning(true);
 
     setTimeout(() => {
-      navigate(page);
+      navigate(page, state ?? {});
       setTimeout(() => {
         setIsTransitioning(false);
       }, 500);

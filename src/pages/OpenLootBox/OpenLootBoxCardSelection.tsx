@@ -2,21 +2,21 @@ import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { BackgroundDecoration } from "../components/Background";
-import { ConfirmationModal } from "../components/ConfirmationModal";
-import { Loading } from "../components/Loading";
-import { TiltCard } from "../components/TiltCard";
-import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
-import { useGame } from "../dojo/queries/useGame";
-import { useStore } from "../providers/StoreProvider";
-import { BLUE, BLUE_LIGHT } from "../theme/colors";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { Card } from "../types/Card";
-import { getCardUniqueId } from "../utils/getCardUniqueId";
-import { FullScreenCardContainer } from "./FullScreenCardContainer";
+import { BackgroundDecoration } from "../../components/Background";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { Loading } from "../../components/Loading";
+import { TiltCard } from "../../components/TiltCard";
+import { useBlisterPackResult } from "../../dojo/queries/useBlisterPackResult";
+import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards";
+import { useGame } from "../../dojo/queries/useGame";
+import { useStore } from "../../providers/StoreProvider";
+import { BLUE, BLUE_LIGHT } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Card } from "../../types/Card";
+import { getCardUniqueId } from "../../utils/getCardUniqueId";
+import { FullScreenCardContainer } from "../FullScreenCardContainer";
 
-export const OpenLootBox = () => {
+export const OpenLootBoxCardSelection = () => {
   const navigate = useNavigate();
 
   const game = useGame();
