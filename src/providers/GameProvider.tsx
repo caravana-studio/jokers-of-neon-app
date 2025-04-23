@@ -19,6 +19,7 @@ import {
   negativeMultiSfx,
   pointsSfx,
   preselectedCardSfx,
+  achievementSfx,
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
@@ -172,6 +173,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
@@ -357,6 +359,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimateSecondChanceCard,
             setCardTransformationLock,
             setIsRageRound,
+            achievementSound,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -600,7 +603,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     const promise = sellSpecialCard(gameId, cardIdx)
       .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         return success;
       })

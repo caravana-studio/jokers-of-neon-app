@@ -1,6 +1,12 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
+import {
+  achievementSfx,
+  buyPackSfx,
+  buySfx,
+  levelUpSfx,
+  rerollSfx,
+} from "../constants/sfx.ts";
 import {
   EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
@@ -19,6 +25,7 @@ import { PowerUp } from "../types/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
 import { handleAchievementPush } from "../utils/pushAchievements.ts";
+import { useSettings } from "./SettingsProvider.tsx";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -120,6 +127,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setRerolling,
   } = useShopState();
 
+  const { sfxVolume } = useSettings();
+
   const { gameId, addPowerUp } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
@@ -127,6 +136,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: buyPackSound } = useAudio(buyPackSfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const {
     buyCard: dojoBuyCard,
@@ -171,7 +181,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
           stateRollbackBuyCard(card);
         }
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         fetchShopItems();
         return success;
@@ -217,7 +227,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
       .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         fetchShopItems();
         return success;
@@ -244,7 +254,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
           stateRollbackBuyCard(card);
         }
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         fetchShopItems();
         return success;
@@ -271,7 +281,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         fetchShopItems();
 
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
 
         return success;
@@ -287,7 +297,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     const promise = dojoSelectCardsFromPack(gameId, cardIndices)
       .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         return success;
       })
@@ -327,7 +337,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         }
 
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
 
         return success;
@@ -349,7 +359,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     const promise = dojoBuySpecialSlot(gameId)
       .then(async ({ success, achievementEvent }) => {
         if (achievementEvent) {
-          await handleAchievementPush(achievementEvent);
+          await handleAchievementPush(achievementEvent, achievementSound);
         }
         return success;
       })

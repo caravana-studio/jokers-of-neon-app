@@ -3,7 +3,8 @@ import { PushActionsPayload, pushActions } from "./pushActions";
 import { showAchievementToast } from "./transactionNotifications";
 
 export const handleAchievementPush = async (
-  achievementEvents: AchievementCompleted[]
+  achievementEvents: AchievementCompleted[],
+  achievementSound: () => void
 ) => {
   const payloads: PushActionsPayload[] = [
     {
@@ -14,6 +15,7 @@ export const handleAchievementPush = async (
     },
   ];
 
+  achievementSound();
   achievementEvents.forEach((achievement) => {
     showAchievementToast(achievement.achievementId);
   });

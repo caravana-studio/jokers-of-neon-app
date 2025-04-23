@@ -38,6 +38,7 @@ interface AnimatePlayConfig {
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
+  achievementSound: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -72,6 +73,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimateSecondChanceCard,
     setCardTransformationLock,
     setIsRageRound,
+    achievementSound,
   } = config;
 
   if (!playEvents) return;
@@ -301,7 +303,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       playEvents.achievementCompleted &&
       playEvents.achievementCompleted.length > 0
     ) {
-      await handleAchievementPush(playEvents.achievementCompleted);
+      await handleAchievementPush(
+        playEvents.achievementCompleted,
+        achievementSound
+      );
     }
 
     if (playEvents.gameOver) {
