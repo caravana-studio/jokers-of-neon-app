@@ -8,6 +8,7 @@ import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
 import { FaTrophy } from "react-icons/fa";
 import theme from "../theme/theme.ts";
+import i18n from "../i18n.ts";
 
 const { white, violet } = theme.colors;
 
@@ -123,7 +124,7 @@ export const showAchievementToast = (achievementName: string): void => {
             fontFamily={"Sonara"}
             textTransform="uppercase"
           >
-            Achievement Completed
+            {i18n.t(`title`, { ns: "achievements" })}
           </Text>
           <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
             {achievementName}
