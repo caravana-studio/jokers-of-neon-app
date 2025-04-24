@@ -39,6 +39,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/OpenLootBoxCardSelection";
 
 const IS_DEV = import.meta.env.VITE_DEV === "true";
 
@@ -181,6 +182,16 @@ function App() {
                                     <StoreProvider>
                                       <AnimatedPage>
                                         <OpenLootBox />
+                                      </AnimatedPage>
+                                    </StoreProvider>
+                                  }
+                                />
+                                <Route
+                                  path="/loot-box-cards-selection"
+                                  element={
+                                    <StoreProvider>
+                                      <AnimatedPage>
+                                        <OpenLootBoxCardSelection />
                                       </AnimatedPage>
                                     </StoreProvider>
                                   }

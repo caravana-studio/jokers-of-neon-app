@@ -48,25 +48,17 @@ export const PreviewLootBox = () => {
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
-  const { transitionTo } = usePageTransitions();
-
-  const openAnimationCallBack = () => {
-    setTimeout(() => {
-      transitionTo("/open-loot-box", {
-        state: { pack: pack },
-      });
-    }, 200);
-  };
-
   const buyButton = (
     <Button
       onClick={() => {
         setBuyDisabled(true);
-        spineAnimationRef.current?.playOpenBoxAnimation();
         buyPack(pack)
           .then((response) => {
             if (response) {
               // setLockRedirection(true);
+              navigate("/open-loot-box", {
+                state: { pack: pack },
+              });
             } else {
               setBuyDisabled(false);
             }
@@ -104,13 +96,7 @@ export const PreviewLootBox = () => {
     />
   );
 
-  const spineAnim = (
-    <LootBox
-      ref={spineAnimationRef}
-      pack={pack}
-      onOpenAnimationStart={openAnimationCallBack}
-    />
-  );
+  const spineAnim = <LootBox ref={spineAnimationRef} pack={pack} />;
 
   return isSmallScreen ? (
     <>

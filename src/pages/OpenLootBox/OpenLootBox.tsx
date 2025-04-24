@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
@@ -6,6 +6,7 @@ import { SpineAnimationRef } from "../../components/SpineAnimation";
 import { Button, Flex } from "@chakra-ui/react";
 import { LootBox } from "../../components/LootBox";
 import { OpenLootBoxCardSelection } from "./OpenLootBoxCardSelection";
+import { usePageTransitions } from "../../providers/PageTransitionsProvider";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -14,28 +15,13 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [cardsVisible, setCardsVisible] = useState(false);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const { transitionTo } = usePageTransitions();
 
   const { t } = useTranslation(["store"]);
 
   if (!pack) {
     return <p>LootBox not found.</p>;
   }
-
-  const openButton = (
-    <Button
-      onClick={() => {
-        setOpenDisabled(true);
-        spineAnimationRef.current?.playOpenBoxAnimation();
-      }}
-      isDisabled={openDisabled}
-      variant="ghost"
-      fontSize={{ base: 10, sm: "unset" }}
-      lineHeight={{ base: 1.6, sm: "unset" }}
-      visibility={openTextVisible ? "visible" : "hidden"}
-    >
-      Click to open
-    </Button>
-  );
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
@@ -47,39 +33,53 @@ export const OpenLootBox = () => {
     setOpenTextVisible(true);
   }, 2000);
 
+  useEffect(() => {
+    if (cardsVisible) {
+      transitionTo("/loot-box-cards-selection", {
+        state: { pack: pack },
+      });
+    }
+  }, [cardsVisible]);
+
   return (
-    <>
-      {cardsVisible ? (
-        <OpenLootBoxCardSelection />
-      ) : (
+    <Flex
+      flexDirection={"column"}
+      width={"100%"}
+      height={"100%"}
+      backgroundColor={"rgba(0,0,0,0.6)"}
+    >
+      <BackgroundDecoration contentHeight={"80%"}>
         <Flex
           flexDirection={"column"}
-          width={"100%"}
+          gap={4}
+          justifyContent={"center"}
+          alignItems={"center"}
+          p={4}
           height={"100%"}
-          backgroundColor={"rgba(0,0,0,0.6)"}
+          width={"100%"}
         >
-          <BackgroundDecoration contentHeight={"80%"}>
-            <Flex
-              flexDirection={"column"}
-              gap={4}
-              justifyContent={"center"}
-              alignItems={"center"}
-              p={4}
-              height={"100%"}
-              width={"100%"}
-            >
-              <Flex height={"90%"} width={"100%"}>
-                <LootBox
-                  ref={spineAnimationRef}
-                  pack={pack}
-                  onOpenAnimationStart={openAnimationCallBack}
-                ></LootBox>
-              </Flex>
-              <Flex>{!openDisabled && openButton}</Flex>
-            </Flex>
-          </BackgroundDecoration>
+          <Flex
+            height={"90%"}
+            width={"100%"}
+            onClick={() => {
+              setOpenDisabled(true);
+              spineAnimationRef.current?.playOpenBoxAnimation();
+            }}
+          >
+            <LootBox
+              ref={spineAnimationRef}
+              pack={pack}
+              onOpenAnimationStart={openAnimationCallBack}
+            />
+          </Flex>
+          <Flex
+            opacity={!openDisabled && openTextVisible ? 1 : 0}
+            transition={"all ease 0.5s"}
+          >
+            Click to Open
+          </Flex>
         </Flex>
-      )}
-    </>
+      </BackgroundDecoration>
+    </Flex>
   );
 };
