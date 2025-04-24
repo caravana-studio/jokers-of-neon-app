@@ -883,19 +883,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_startGame_calldata = (gameId: BigNumberish, playerName: BigNumberish): DojoCall => {
+	const build_game_system_startGame_calldata = (gameId: BigNumberish, playerName: BigNumberish, seed: CairoOption<BigNumberish>): DojoCall => {
 		return {
 			contractName: "game_system",
 			entrypoint: "start_game",
-			calldata: [gameId, playerName],
+			calldata: [gameId, playerName, seed],
 		};
 	};
 
-	const game_system_startGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playerName: BigNumberish) => {
+	const game_system_startGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playerName: BigNumberish, seed: CairoOption<BigNumberish>) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_startGame_calldata(gameId, playerName),
+				build_game_system_startGame_calldata(gameId, playerName, seed),
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {

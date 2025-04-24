@@ -36,7 +36,8 @@ export const useGameActions = () => {
       const response = await client.game_system.startGame(
         account,
         BigInt(gameId),
-        BigInt(shortString.encodeShortString(username))
+        BigInt(shortString.encodeShortString(username)),
+        new CairoOption(CairoOptionVariant.None)
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash, "Creating game...");
@@ -224,11 +225,7 @@ export const useGameActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
-        const gameId = getNumberValueFromEvents(
-          events,
-          MINT_GAME_EVENT_KEY,
-          3
-        );
+        const gameId = getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3);
         console.log("Game " + gameId + " minted");
         return gameId;
       } else {
