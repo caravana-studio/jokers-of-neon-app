@@ -20,6 +20,7 @@ interface MapContextType {
   fitViewToFullMap: () => void;
   currentNode: Node | undefined;
   layoutReady: boolean;
+  reachableNodes: string[];
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -53,6 +54,14 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     () => nodes.find((n) => n.data?.current) ?? nodes[0],
     [nodes]
   );
+
+  const reachableNodes = useMemo(() => {
+    return currentNode && edges
+      ? edges
+          .filter((edge) => edge.target === currentNode.id)
+          .map((edge) => edge.source)
+      : [];
+  }, [edges, currentNode?.id]);
 
   const {
     setup: { client },
@@ -107,6 +116,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         fitViewToFullMap,
         currentNode,
         layoutReady,
+        reachableNodes,
       }}
     >
       {children}

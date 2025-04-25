@@ -19,7 +19,6 @@ export const PlayButton = ({
     useGameContext();
 
   const round = useRound();
-  console.log('round', round);
   const game = useGame();
   const handsLeft = !isTutorial()
     ? round?.remaining_plays ?? 0

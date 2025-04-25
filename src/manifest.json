@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x2e69a096cfc38c0319027958baafb650b9320d4c16a93116e1bc35b249f1cea",
-      "class_hash": "0x7c3b522f243b1af27e409bd9b4ac067e83a94cc37bbdbdedce854f5170fa7aa",
+      "address": "0xcfd332638de8a0dc038654c17299194b0fa07a8b90c440287c49dffcf90a34",
+      "class_hash": "0x25b28e27fe0648d2aeb2c57ecdee5efc6a10c5353c9ea3fb2ac60e7d4ed0bf6",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x696252b7b6d1db80d7b6192273d3167ce34d90c4de567ae0117f6882635f41d",
-      "class_hash": "0x58a2debf365d79062b64ab28e2d2e811de71d243fd058852b8190d23bc68309",
+      "address": "0x168dccc6e440d44ccb905454cc8714b5484d03b72daa9d612b127fe2430ee44",
+      "class_hash": "0x7595c4b41a8b0054a6948c6c59b7e1e4e03e359f8910156de61247dc26163f8",
       "abi": [
         {
           "type": "impl",
@@ -2623,8 +2623,8 @@
       ]
     },
     {
-      "address": "0x61f7e21b275dceda31448c1ce4ed8cda9c2eb45d35c722b09db024c7bad4549",
-      "class_hash": "0x59dcf15d9f898ecfb5a47965c423be2bcdf1eeee1f901ba9d1fdd4f681b1d94",
+      "address": "0x384412594a8311c342d24715f971ad68a38066b03349c05d40fe774b0ca295e",
+      "class_hash": "0x6aa104de9dc5f63fd47cbec268a009eb9034ef0831861c065ca1f7851bfe25e",
       "abi": [
         {
           "type": "impl",
@@ -3830,8 +3830,8 @@
       ]
     },
     {
-      "address": "0x4a787f281497b802f83345c1b9bcac4d8a0f74687be4448b5a099dd30d58e26",
-      "class_hash": "0x7116c2b31f08a5205bd7ae3751df7c820275d92ac224628def41608d1a2844a",
+      "address": "0x5ce59ff9428abf1a392f0e1f5c8c2381ecb31dac9ea734aab42c296c25b83c3",
+      "class_hash": "0x68a1335e278c58ccfd682937b42cebe68f7edbc8f16276af1e6fa71bb48f45d",
       "abi": [
         {
           "type": "impl",
@@ -4043,8 +4043,8 @@
       ]
     },
     {
-      "address": "0x5ad983a323a073f35b569bc229582e17d6413cd414d7197fdcb5505d34179df",
-      "class_hash": "0x2a8961d7dea4c5fab52cb4ff0c3c140e29ad8d89b17b6370a11ca5d9e1359c9",
+      "address": "0x5d3e1ae6eb72876e248ce1c9657a05df383a03ec339a6969a7ed792c4117c68",
+      "class_hash": "0x60ff61c0c0fde3f758872ebbc001cad773217288068813ee6ee317f68e90e2d",
       "abi": [
         {
           "type": "impl",
@@ -4825,7 +4825,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x131a5b3b4728034af06d42ea6aa2f916eb54dff9015ca4f2e1154073f722576",
+      "class_hash": "0x3d98575413eab5057327171eb40d85523061722165af7e72b58a5407af5efbe",
       "tag": "jokers_of_neon_core-Game",
       "selector": "0x471153aaeb9b649e2e3a7709bcbe22e2f1c574e092379a6c5938fefe4f1f305"
     },

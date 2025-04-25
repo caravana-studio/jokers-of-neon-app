@@ -43,7 +43,7 @@ export const Map = () => {
           [NodeType.ROUND]: RoundNode,
         }}
         panOnScroll={false}
-        zoomOnScroll={false}
+        zoomOnScroll={true}
         nodesDraggable={false}
         nodesConnectable={false}
         edgesFocusable={false}
