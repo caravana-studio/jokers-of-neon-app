@@ -95,7 +95,8 @@
         "store": "Rewards - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rage Round",
-        "round": "Round"
+        "round": "Round",
+        "map": "Map"
       },
       "my-games": "My games"
     },

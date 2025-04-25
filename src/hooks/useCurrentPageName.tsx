@@ -25,6 +25,7 @@ export const useCurrentPageName = (): Page | null => {
   const pageMap: Record<string, string | (() => string)> = {
     "/gameover": tGame("game-menu.pages.gameover"),
     "/open-loot-box": tGame("game-menu.pages.open-loot-box"),
+    "/map": tGame("game-menu.pages.map"),
     "/store": () => {
       const shopName = tShop(`config.${shopId}.name`, {
         defaultValue: "",
