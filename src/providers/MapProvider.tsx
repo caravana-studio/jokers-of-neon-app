@@ -81,6 +81,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           id: node.id,
           current: node.current,
           shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
+          round: node.nodeType === NodeType.ROUND ? node.data : undefined,
         },
       }));
 
