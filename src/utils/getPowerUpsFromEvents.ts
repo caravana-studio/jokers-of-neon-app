@@ -1,7 +1,7 @@
 import { getPowerUp } from "../dojo/queries/useGamePowerUps";
 import { DojoEvents } from "../enums/dojoEvents";
 import { DojoEvent } from "../types/DojoEvent";
-import { PowerUp } from "../types/PowerUp";
+import { PowerUp } from "../types/Powerup/PowerUp";
 import { getArrayValueFromEvent } from "./getArrayValueFromEvent";
 import { getEventKey } from "./getEventKey";
 
