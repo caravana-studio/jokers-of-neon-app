@@ -5,20 +5,27 @@ import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
+import { useMap } from "../../../providers/MapProvider";
 
 const StoreNode = ({ data }: any) => {
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
   const navigate = useNavigate();
+  const { reachableNodes } = useMap();
 
   const game = useGame();
 
   const stateInMap = game?.state === GameStateEnum.Map;
+  const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
   return (
     <Box
       style={{
-        background: data.visited ? "green" : "rgba(255,255,255,0.1)",
+        background: reachable
+          ? "violet"
+          : data.visited
+            ? "green"
+            : "rgba(255,255,255,0.1)",
         padding: 10,
         borderRadius: "100%",
         width: 50,
