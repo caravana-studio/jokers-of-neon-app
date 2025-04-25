@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x12516ad55d36393871b3445d9016f2b47ec8a10030e41caaecbe46cf5b9f37",
-      "class_hash": "0x36ee416a45c7f46c907fb508c218f24c3ea56d276c528d7fd42e3fc01d942d6",
+      "address": "0x46bfd7a16134f8fbdfef5c6cc82038decf3255fa312a00dcba5a2b8f4a1d3e5",
+      "class_hash": "0x3756e19b9bb11aba3c628dba16524e56f2f232522df91b3d8d339666e870655",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x240bea200cfc97eb063bde2bc034529d3f6f76598b4a6790273ad804b5d8e85",
-      "class_hash": "0x5644ef5d6c733afc5dccdbe6722c7abc318eb4785c883aacb21bfd785885620",
+      "address": "0x761a42c039e0ceca0c019cea9a62c6226f0be8d1fc56e8bb7516f8c4ed6fc75",
+      "class_hash": "0x48d6598feeee660a8f84924be3368d9e4332f5da1077392e9adaf85cb5e89ad",
       "abi": [
         {
           "type": "impl",
@@ -3658,8 +3658,8 @@
       ]
     },
     {
-      "address": "0x117db7e23e7f329513961e63dc2be6fb26d6d18f8d5fe5d31f2cf374a242960",
-      "class_hash": "0x5ccdeda86cb3505f8d0b71367b315ab7734b7172d32c7b0309fecad6efdb718",
+      "address": "0x18dc2e7939399e0323cb0f33433c78fbecf427b5ec7089db3520770bfe8a734",
+      "class_hash": "0x40e141cc5e3b25a185af994409834e27c7ed467bfe9f4bf459440d504691538",
       "abi": [
         {
           "type": "impl",
@@ -4470,7 +4470,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x730f88268001e3dbb3050b4817442446adf4663a6b3bc4447c1f0b5bc16bdc2",
+      "class_hash": "0x42dbaac2dbe0a5c2b30da412ae6b183ba408511e399b43903efccbe610c4f41",
       "tag": "jokers_of_neon_core-GameTracker",
       "selector": "0x79881852a68773df960ad77f943df621daa2dd5b5d6e7ed6674d2218adf3d74"
     },

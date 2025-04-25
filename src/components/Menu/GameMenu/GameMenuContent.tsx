@@ -37,8 +37,8 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   isOpen,
   onClose,
 }) => {
-  const iconWidth = "36px";
-  const fontSize = "22px";
+  const iconWidth = "26px";
+  const fontSize = "18px";
   const game = useGame();
 
   const touchStartX = useRef(0);
@@ -82,7 +82,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           <DrawerCloseButton
             padding={4}
             m={8}
-            fontSize="xl"
+            fontSize="lg"
             top={4}
             right={4}
           />
@@ -91,11 +91,11 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
         <DrawerBody
           display="flex"
           flexDir="column"
-          justifyContent="space-around"
+          justifyContent="center"
           alignItems="flex-start"
           py={8}
           fontSize={fontSize}
-          gap={4}
+          gap={5}
         >
           <ControllerIcon width={iconWidth} label />
           <MyGamesMenuBtn width={iconWidth} label />
