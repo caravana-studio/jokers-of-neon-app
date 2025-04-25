@@ -80,6 +80,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           visited: node.visited,
           id: node.id,
           current: node.current,
+          shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
         },
       }));
 

@@ -15,22 +15,22 @@ import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
 
-export const DynamicStorePage = () => {
-  const DECK_SHOP_CONFIG_ID = 1;
-  const GLOBAL_SHOP_CONFIG_ID = 2;
-  const SPECIALS_SHOP_CONFIG_ID = 3;
-  const LEVEL_UPS_SHOP_CONFIG_ID = 4;
-  const MODIFIERS_SHOP_CONFIG_ID = 5;
-  const MIX_SHOP_CONFIG_ID = 6;
+const DECK_SHOP_CONFIG_ID = 1;
+const GLOBAL_SHOP_CONFIG_ID = 2;
+const SPECIALS_SHOP_CONFIG_ID = 3;
+const LEVEL_UPS_SHOP_CONFIG_ID = 4;
+const MODIFIERS_SHOP_CONFIG_ID = 5;
+const MIX_SHOP_CONFIG_ID = 6;
 
-  const SHOP_ID_MAP = {
-    [DECK_SHOP_CONFIG_ID]: "deck",
-    [GLOBAL_SHOP_CONFIG_ID]: "global",
-    [SPECIALS_SHOP_CONFIG_ID]: "specials",
-    [LEVEL_UPS_SHOP_CONFIG_ID]: "level-ups",
-    [MODIFIERS_SHOP_CONFIG_ID]: "modifiers",
-    [MIX_SHOP_CONFIG_ID]: "mix",
-  };
+export const SHOP_ID_MAP = {
+  [DECK_SHOP_CONFIG_ID]: "deck",
+  [GLOBAL_SHOP_CONFIG_ID]: "global",
+  [SPECIALS_SHOP_CONFIG_ID]: "specials",
+  [LEVEL_UPS_SHOP_CONFIG_ID]: "level-ups",
+  [MODIFIERS_SHOP_CONFIG_ID]: "modifiers",
+  [MIX_SHOP_CONFIG_ID]: "mix",
+};
+export const DynamicStorePage = () => {
 
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
