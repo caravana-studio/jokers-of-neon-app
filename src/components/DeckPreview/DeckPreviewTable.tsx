@@ -8,12 +8,14 @@ import {
   Flex,
   Text,
   useTheme,
+  Box,
 } from "@chakra-ui/react";
 import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
 import { GREY_MEDIUM } from "../../theme/colors";
 import { Suits } from "../../enums/suits";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const DeckPreviewTable = () => {
   const tableData = getTableData();
@@ -21,19 +23,26 @@ export const DeckPreviewTable = () => {
   const rowHeaders = tableData.rowHeaders;
   const rows = tableData.cells;
 
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <Table
-      variant="simple"
+      variant="deck"
       size="sm"
       border="none"
       borderWidth={0}
-      cellSpacing={"0 8px"}
+      cellSpacing={isSmallScreen ? "0 1px" : "0 8px"}
     >
       <Thead>
         <Tr>
-          <Th border="none"></Th>
+          <Th border="none" p={0} m={0} paddingLeft={"1px"}>
+            <PreviewTableRowHeader
+              cardSuit={rowHeaders[rowHeaders.length - 1].cardSuit}
+              quantity={rowHeaders[rowHeaders.length - 1].quantity}
+            />
+          </Th>
           {columnHeaders.map((header, index) => (
-            <Th key={index} border="none" padding={0} paddingLeft={1}>
+            <Th key={index} border="none" padding={0} paddingLeft={"1px"}>
               <PreviewTableColumnHeader
                 cardValue={header.cardValue}
                 quantity={header.quantity}
@@ -43,9 +52,9 @@ export const DeckPreviewTable = () => {
         </Tr>
       </Thead>
       <Tbody color={"white"}>
-        {rows.map((row, rowIndex) => (
-          <Tr key={rowIndex} border="none" borderBottom="2px solid transparent">
-            <Th border="none" p={0} m={0} pr={1}>
+        {rows.slice(0, -1).map((row, rowIndex) => (
+          <Tr key={rowIndex}>
+            <Th border="none" p={0} m={0}>
               <PreviewTableRowHeader
                 cardSuit={rowHeaders[rowIndex].cardSuit}
                 quantity={rowHeaders[rowIndex].quantity}
@@ -69,9 +78,9 @@ export const DeckPreviewTable = () => {
                         : "0"
                   }
                 >
-                  <Text opacity={cell.quantity > 0 ? 1 : 0.2}>
+                  <Box opacity={cell.quantity > 0 ? 1 : 0.2}>
                     {cell.quantity}
-                  </Text>
+                  </Box>
                 </Td>
               );
             })}
