@@ -12,6 +12,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 interface MapContextType {
   nodes: Node[];
@@ -82,6 +83,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           current: node.current,
           shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
           round: node.nodeType === NodeType.ROUND ? node.data : undefined,
+          rageData: node.nodeType === NodeType.RAGE ? getRageNodeData(node.data) : undefined,
         },
       }));
 

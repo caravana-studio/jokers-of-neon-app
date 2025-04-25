@@ -26,6 +26,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 export const useGameState = () => {
   const {
@@ -113,8 +114,8 @@ export const useGameState = () => {
   useEffect(() => {
     getNode(client, game?.id ?? 0, game?.current_node_id ?? 0).then((data) =>{
       if ((round?.rages?.length ?? 0) > 0) {
-        const rageRound = Math.round(data / Math.pow(2,32))
-        setNodeRound(rageRound);
+        const rageRoundData = getRageNodeData(data);
+        setNodeRound(rageRoundData.round);
       } else {
         setNodeRound(data)}
       }
