@@ -206,6 +206,7 @@ export const OpenLootBoxCardSelection = () => {
                         flipped={flippedStates[index]}
                         width={CARD_WIDTH * adjustedCardScale}
                         height={CARD_HEIGHT * adjustedCardScale}
+                        flipSpeed={0.6}
                       >
                         <TiltCard
                           key={index}

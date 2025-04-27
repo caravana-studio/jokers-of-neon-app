@@ -6,6 +6,7 @@ interface FlipCardProps {
   flipped?: boolean;
   width: number;
   height: number;
+  flipSpeed: number;
 }
 
 export const FlipCard: React.FC<FlipCardProps> = ({
@@ -13,6 +14,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
   flipped = false,
   width,
   height,
+  flipSpeed,
 }) => {
   const backImage = "/Cards/Backs/back.png";
 
@@ -58,7 +60,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         position="relative"
         sx={{
           transformStyle: "preserve-3d",
-          transition: "transform 0.6s",
+          transition: `transform ${flipSpeed}s`,
           transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
