@@ -16,6 +16,7 @@ import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "../FullScreenCardContainer";
 import { FlipCard } from "../../components/animations/FlipCardAnimation";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 
 export const OpenLootBoxCardSelection = () => {
   const navigate = useNavigate();
@@ -165,7 +166,14 @@ export const OpenLootBoxCardSelection = () => {
             </Checkbox>
           </Flex>
           <FullScreenCardContainer>
-            <Flex width={"100%"} height={"100%"} onClick={skipFlipping}>
+            <Flex
+              width={"100%"}
+              height={"100%"}
+              onClick={(e) => {
+                if (animationRunning) e.stopPropagation;
+                skipFlipping();
+              }}
+            >
               {cards.map((card, index) => {
                 const isSelected = cardsToKeep.some((c) => c.idx === card.idx);
 
@@ -196,23 +204,24 @@ export const OpenLootBoxCardSelection = () => {
                     >
                       <FlipCard
                         flipped={flippedStates[index]}
-                        card={
-                          <TiltCard
-                            key={index}
-                            scale={adjustedCardScale}
-                            card={card}
-                            onClick={() => {
-                              if (isSelected) {
-                                setCardsToKeep(
-                                  cardsToKeep.filter((c) => c.idx !== card.idx)
-                                );
-                              } else {
-                                setCardsToKeep([...cardsToKeep, card]);
-                              }
-                            }}
-                          />
-                        }
-                      />
+                        width={CARD_WIDTH * adjustedCardScale}
+                        height={CARD_HEIGHT * adjustedCardScale}
+                      >
+                        <TiltCard
+                          key={index}
+                          scale={adjustedCardScale}
+                          card={card}
+                          onClick={() => {
+                            if (isSelected) {
+                              setCardsToKeep(
+                                cardsToKeep.filter((c) => c.idx !== card.idx)
+                              );
+                            } else {
+                              setCardsToKeep([...cardsToKeep, card]);
+                            }
+                          }}
+                        />
+                      </FlipCard>
                     </Flex>
                   </Flex>
                 );

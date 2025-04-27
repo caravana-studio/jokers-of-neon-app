@@ -1,28 +1,20 @@
 import { Box, Image } from "@chakra-ui/react";
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 
 interface FlipCardProps {
-  card: React.ReactNode;
+  children: React.ReactNode;
   flipped?: boolean;
+  width: number;
+  height: number;
 }
 
 export const FlipCard: React.FC<FlipCardProps> = ({
-  card,
+  children,
   flipped = false,
+  width,
+  height,
 }) => {
   const backImage = "/Cards/Backs/back.png";
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState<{ width: number; height: number }>({
-    width: 0,
-    height: 0,
-  });
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setSize({ width: rect.width, height: rect.height });
-    }
-  }, [card]);
 
   const front = (
     <Box
@@ -33,7 +25,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
       h="100%"
       sx={{ backfaceVisibility: "hidden" }}
     >
-      {card}
+      {children}
     </Box>
   );
 
@@ -61,8 +53,8 @@ export const FlipCard: React.FC<FlipCardProps> = ({
   return (
     <Box p={0} sx={{ perspective: "1000px" }} display="inline-block">
       <Box
-        w={`${size.width}px`}
-        h={`${size.height}px`}
+        w={`${width}px`}
+        h={`${height}px`}
         position="relative"
         sx={{
           transformStyle: "preserve-3d",
@@ -70,8 +62,8 @@ export const FlipCard: React.FC<FlipCardProps> = ({
           transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
-        <Box ref={containerRef} visibility="hidden" position="absolute">
-          {card}
+        <Box visibility="hidden" position="absolute">
+          {children}
         </Box>
         {front}
         {back}
