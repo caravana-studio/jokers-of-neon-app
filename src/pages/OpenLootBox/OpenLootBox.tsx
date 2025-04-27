@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
 import { SpineAnimationRef } from "../../components/SpineAnimation";
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { LootBox } from "../../components/LootBox";
-import { OpenLootBoxCardSelection } from "./OpenLootBoxCardSelection";
 import { usePageTransitions } from "../../providers/PageTransitionsProvider";
 
 export const OpenLootBox = () => {
@@ -13,7 +12,6 @@ export const OpenLootBox = () => {
   const { pack } = state || {};
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
-  const [cardsVisible, setCardsVisible] = useState(false);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const { transitionTo } = usePageTransitions();
 
@@ -25,21 +23,18 @@ export const OpenLootBox = () => {
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
-      setCardsVisible(true);
-    }, 1000);
-  };
-
-  setTimeout(() => {
-    setOpenTextVisible(true);
-  }, 2000);
-
-  useEffect(() => {
-    if (cardsVisible) {
       transitionTo("/loot-box-cards-selection", {
         state: { pack: pack },
       });
-    }
-  }, [cardsVisible]);
+    }, 150);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpenTextVisible(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Flex
@@ -62,6 +57,7 @@ export const OpenLootBox = () => {
             height={"90%"}
             width={"100%"}
             onClick={() => {
+              if (openDisabled) return;
               setOpenDisabled(true);
               spineAnimationRef.current?.playOpenBoxAnimation();
             }}

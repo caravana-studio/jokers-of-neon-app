@@ -43,10 +43,9 @@ export const PageTransitionsProvider = ({
   }, [isTransitioning]);
 
   const transitionTo = async (page: string, state?: NavigateOptions) => {
-    setIsTransitioning(true);
-
     setTimeout(() => {
       navigate(page, state ?? {});
+      setIsTransitioning(true);
       setTimeout(() => {
         setIsTransitioning(false);
       }, 500);

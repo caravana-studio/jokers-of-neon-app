@@ -15,6 +15,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { getCardUniqueId } from "../../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "../FullScreenCardContainer";
+import { FlipCard } from "../../components/animations/FlipCardAnimation";
 
 export const OpenLootBoxCardSelection = () => {
   const navigate = useNavigate();
@@ -34,6 +35,51 @@ export const OpenLootBoxCardSelection = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const adjustedCardScale = cardScale * 1.2;
+
+  const [animationRunning, setAnimationRunning] = useState<boolean>(true);
+  const [flippedStates, setFlippedStates] = useState<boolean[]>(
+    Array(cards.length).fill(true)
+  );
+
+  const startFlippingCards = (flipDuration: number) => {
+    cards.forEach((_, index) => {
+      setTimeout(() => {
+        setFlippedStates((prev) => {
+          const updated = [...prev];
+          updated[index] = false;
+          return updated;
+        });
+      }, index * flipDuration);
+    });
+  };
+
+  const skipFlipping = () => {
+    setFlippedStates(Array(cards.length).fill(false));
+    setAnimationRunning(false);
+  };
+
+  useEffect(() => {
+    setFlippedStates(Array(cards.length).fill(true));
+
+    const flipDelay = 500;
+    const flipDuration = 500;
+
+    const delayTimeout = setTimeout(() => {
+      startFlippingCards(flipDuration);
+    }, flipDelay);
+
+    const finishTimeout = setTimeout(
+      () => {
+        setAnimationRunning(false);
+      },
+      flipDelay + cards.length * flipDuration + 2500
+    );
+
+    return () => {
+      clearTimeout(delayTimeout);
+      clearTimeout(finishTimeout);
+    };
+  }, [cards.length]);
 
   useEffect(() => {
     let timeoutId: any;
@@ -78,6 +124,7 @@ export const OpenLootBoxCardSelection = () => {
       fontSize={12}
       isDisabled={continueDisabled}
       variant={continueDisabled ? "defaultOutline" : "solid"}
+      opacity={animationRunning ? 0 : 1}
       onClick={() => {
         if (cardsToKeep.length === 0) {
           setConfirmationModalOpen(true);
@@ -104,6 +151,7 @@ export const OpenLootBoxCardSelection = () => {
             justifyContent="space-between"
             alignItems="center"
             mx={2}
+            opacity={animationRunning ? 0 : 1}
           >
             <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
             <Checkbox
@@ -117,59 +165,59 @@ export const OpenLootBoxCardSelection = () => {
             </Checkbox>
           </Flex>
           <FullScreenCardContainer>
-            {cards.map((card, index) => {
-              return (
-                <Flex
-                  key={`${card.card_id ?? ""}-${index}`}
-                  flexDirection="column"
-                  gap={4}
-                >
-                  <Box
-                    key={getCardUniqueId(card)}
-                    m={1.5}
-                    p={1}
-                    zIndex={1}
-                    sx={{
-                      borderRadius: { base: "7px", sm: "12px", md: "15px" },
-                      opacity:
-                        cardsToKeep
-                          .map((card) => card.idx)
-                          .includes(card.idx) || cardsToKeep.length === 0
-                          ? 1
-                          : 0.5,
-                      boxShadow: cardsToKeep
-                        .map((card) => card.idx)
-                        .includes(card.idx)
-                        ? `0px 0px 15px 12px ${BLUE}`
-                        : "none",
-                      border: cardsToKeep
-                        .map((card) => card.idx)
-                        .includes(card.idx)
-                        ? `2px solid ${BLUE_LIGHT}`
-                        : "2px solid transparent",
-                    }}
-                    cursor={"pointer"}
+            <Flex width={"100%"} height={"100%"} onClick={skipFlipping}>
+              {cards.map((card, index) => {
+                const isSelected = cardsToKeep.some((c) => c.idx === card.idx);
+
+                return (
+                  <Flex
+                    key={`${card.card_id ?? ""}-${index}`}
+                    flexDirection="column"
+                    gap={4}
                   >
-                    <TiltCard
-                      scale={adjustedCardScale}
-                      card={card}
-                      key={index}
-                      onClick={() => {
-                        if (
-                          cardsToKeep.map((card) => card.idx).includes(card.idx)
-                        ) {
-                          setCardsToKeep(
-                            cardsToKeep.filter((c) => c.idx !== card.idx)
-                          );
-                        } else {
-                          setCardsToKeep([...cardsToKeep, card]);
+                    <Flex
+                      key={`${card.card_id}-${index}`}
+                      m={1.5}
+                      p={1}
+                      zIndex={1}
+                      borderRadius={{ base: "7px", sm: "12px", md: "15px" }}
+                      opacity={isSelected || cardsToKeep.length === 0 ? 1 : 0.5}
+                      boxShadow={
+                        !animationRunning && isSelected
+                          ? `0px 0px 15px 12px ${BLUE}`
+                          : "none"
+                      }
+                      border={
+                        !animationRunning && isSelected
+                          ? `2px solid ${BLUE_LIGHT}`
+                          : "2px solid transparent"
+                      }
+                      cursor="pointer"
+                    >
+                      <FlipCard
+                        flipped={flippedStates[index]}
+                        card={
+                          <TiltCard
+                            key={index}
+                            scale={adjustedCardScale}
+                            card={card}
+                            onClick={() => {
+                              if (isSelected) {
+                                setCardsToKeep(
+                                  cardsToKeep.filter((c) => c.idx !== card.idx)
+                                );
+                              } else {
+                                setCardsToKeep([...cardsToKeep, card]);
+                              }
+                            }}
+                          />
                         }
-                      }}
-                    />
-                  </Box>
-                </Flex>
-              );
-            })}
+                      />
+                    </Flex>
+                  </Flex>
+                );
+              })}
+            </Flex>
           </FullScreenCardContainer>
           <Flex
             flexDirection={isSmallScreen ? "column" : "row"}
@@ -182,6 +230,7 @@ export const OpenLootBoxCardSelection = () => {
                 variant="outline"
                 fontSize={12}
                 mx={{ base: 6, md: 0 }}
+                opacity={animationRunning ? 0 : 1}
                 onClick={() => {
                   navigate("/manage");
                 }}
