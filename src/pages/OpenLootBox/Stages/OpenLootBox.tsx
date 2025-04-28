@@ -8,6 +8,7 @@ import { LootBox } from "../../../components/LootBox";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
+import { isMobile } from "react-device-detect";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -18,7 +19,9 @@ export const OpenLootBox = () => {
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useNavigate();
-  const { t } = useTranslation(["store"]);
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "open-lootbox",
+  });
   useRedirectByGameState();
 
   if (!pack) {
@@ -95,7 +98,7 @@ export const OpenLootBox = () => {
             color={"white"}
             transition={"all ease 0.5s"}
           >
-            Click to Open
+            {isMobile ? t("tap-open") : t("click-open")}
           </Flex>
         </Flex>
       </BackgroundDecoration>
