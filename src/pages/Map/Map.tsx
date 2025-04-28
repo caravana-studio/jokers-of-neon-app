@@ -50,7 +50,7 @@ export const Map = () => {
         nodesConnectable={false}
         edgesFocusable={false}
       >
-        <Controls />
+        <Controls showInteractive={false} />
       </ReactFlow>
 
       <Button
