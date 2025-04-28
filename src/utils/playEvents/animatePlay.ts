@@ -299,16 +299,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   };
 
   const handleGameEnd = async () => {
-    if (
-      playEvents.achievementCompleted &&
-      playEvents.achievementCompleted.length > 0
-    ) {
-      await handleAchievementPush(
-        playEvents.achievementCompleted,
-        achievementSound
-      );
-    }
-
     if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);

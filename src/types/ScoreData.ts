@@ -15,7 +15,6 @@ export interface PlayEvents {
   cardPlayChangeEvents?: CardPlayEvent[];
   cardPlayScoreEvents?: CardPlayEvent[];
   specialCardPlayScoreEvents?: CardPlayEvent[];
-  achievementCompleted?: AchievementCompleted[];
 }
 
 export interface CardPlayEvent {

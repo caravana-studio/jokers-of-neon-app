@@ -44,7 +44,6 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     specialCardPlayScoreEvents: cardPlayEvents
       .filter(scoreEventFilter)
       .filter(specialScoreEventFilter),
-    achievementCompleted: getAchievementCompleteEvent(events),
   };
 
   console.log(playEvents);

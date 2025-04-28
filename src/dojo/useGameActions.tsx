@@ -13,6 +13,10 @@ import { useDojo } from "./useDojo";
 
 import { getModifiersForContract } from "./utils/getModifiersForContract";
 import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
+import { handleAchievements } from "../utils/handleAchievements";
+import { useAudio } from "../hooks/useAudio";
+import { useSettings } from "../providers/SettingsProvider";
+import { achievementSfx } from "../constants/sfx";
 
 const createGameEmptyResponse = {
   gameId: 0,
@@ -30,6 +34,9 @@ export const useGameActions = () => {
     setup: { client },
     account: { account },
   } = useDojo();
+
+  const { sfxVolume } = useSettings();
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const createGame = async (gameId: number, username: string) => {
     try {
@@ -202,6 +209,8 @@ export const useGameActions = () => {
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
         const events = tx.events;
+
+        await handleAchievements(tx.events, achievementSound);
         return getPlayEvents(events);
       }
       return;

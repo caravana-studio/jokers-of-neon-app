@@ -12,6 +12,10 @@ import { DojoEvents } from "../enums/dojoEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
 import { AchievementCompleted } from "../types/ScoreData";
+import { handleAchievements } from "../utils/handleAchievements";
+import { useAudio } from "../hooks/useAudio";
+import { useSettings } from "../providers/SettingsProvider";
+import { achievementSfx } from "../constants/sfx";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -22,6 +26,9 @@ export const useShopActions = () => {
     setup: { client },
     account: { account },
   } = useDojo();
+
+  const { sfxVolume } = useSettings();
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const skipShop = async (gameId: number) => {
     try {
@@ -85,12 +92,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -137,12 +143,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -172,12 +177,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -202,12 +206,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -233,12 +236,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -264,12 +266,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -295,12 +296,11 @@ export const useShopActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();

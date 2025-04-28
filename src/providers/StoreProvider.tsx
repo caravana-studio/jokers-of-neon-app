@@ -176,13 +176,11 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     stateBuyCard(card);
 
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card))
-      .then(async ({ success, achievementEvent }) => {
+      .then(async ({ success }) => {
         if (!success) {
           stateRollbackBuyCard(card);
         }
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
+
         fetchShopItems();
         return success;
       })
@@ -225,10 +223,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
 
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
-      .then(async ({ success, achievementEvent }) => {
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
+      .then(async ({ success }) => {
         fetchShopItems();
         return success;
       })
@@ -249,12 +244,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     stateBuyCard(card);
 
     const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal)
-      .then(async ({ success, achievementEvent }) => {
+      .then(async ({ success }) => {
         if (!success) {
           stateRollbackBuyCard(card);
-        }
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
         }
         fetchShopItems();
         return success;
@@ -274,15 +266,11 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buyPackSound();
     buyBlisterPack(Number(pack.idx));
     const promise = dojoBuyPack(gameId, Number(pack.idx))
-      .then(async ({ success, achievementEvent }) => {
+      .then(async ({ success }) => {
         if (!success) {
           rollbackBuyBlisterPack(Number(pack.idx));
         }
         fetchShopItems();
-
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
 
         return success;
       })
@@ -295,10 +283,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
     const promise = dojoSelectCardsFromPack(gameId, cardIndices)
-      .then(async ({ success, achievementEvent }) => {
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
+      .then(async ({ success }) => {
         return success;
       })
       .catch(() => {
@@ -331,13 +316,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     buyPokerHand(item.idx);
     const promise = dojoLevelUpHand(gameId, item.idx)
-      .then(async ({ success, achievementEvent }) => {
+      .then(async ({ success }) => {
         if (!success) {
           rollbackBuyPokerHand(item.idx);
-        }
-
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
         }
 
         return success;
@@ -357,10 +338,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySlotSpecialCard();
 
     const promise = dojoBuySpecialSlot(gameId)
-      .then(async ({ success, achievementEvent }) => {
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
+      .then(async ({ success }) => {
         return success;
       })
       .catch(() => {
