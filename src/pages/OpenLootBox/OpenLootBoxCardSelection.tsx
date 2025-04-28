@@ -1,142 +1,63 @@
-import { Box, Button, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { Loading } from "../../components/Loading";
-import { TiltCard } from "../../components/TiltCard";
-import { useBlisterPackResult } from "../../dojo/queries/useBlisterPackResult";
-import { useCurrentSpecialCards } from "../../dojo/queries/useCurrentSpecialCards";
-import { useGame } from "../../dojo/queries/useGame";
-import { useStore } from "../../providers/StoreProvider";
-import { BLUE, BLUE_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { Card } from "../../types/Card";
-import { getCardUniqueId } from "../../utils/getCardUniqueId";
-import { FullScreenCardContainer } from "../FullScreenCardContainer";
-import { FlipCard } from "../../components/animations/FlipCardAnimation";
-import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
+import { useCardsFlipAnimation } from "../../hooks/useCardsFlipAnimation";
+import { FlipCardGrid } from "./FlipCardGrid";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
+import { ChooseCardsButton } from "./ChooseCardsButton";
+import { useCardsSelection } from "../../hooks/useCardsSelection";
+import { ManageSpecialCardsButton } from "./ManageSpecialCardsButton";
 
 export const OpenLootBoxCardSelection = () => {
-  const navigate = useNavigate();
+  const {
+    cards,
+    cardsToKeep,
+    chooseDisabled,
+    currentSpecialCardsLength,
+    allSelected,
+    setCardsToKeep,
+    onCardToggle,
+    confirmSelectCards,
+  } = useCardsSelection();
 
-  const game = useGame();
-  const maxSpecialCards = game?.special_slots ?? 0;
+  const { flippedStates, animationRunning, skipFlipping } =
+    useCardsFlipAnimation(cards.length, 1000, 500);
 
-  const blisterPackResult = useBlisterPackResult();
-  const [cards, setCards] = useState<Card[]>([]);
-  const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const currentSpecialCards = useCurrentSpecialCards();
-  const currentSpecialCardsLenght = currentSpecialCards?.length ?? 0;
-  const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
-  const continueDisabled =
-    specialCardsToKeep > maxSpecialCards - currentSpecialCardsLenght;
   const { t } = useTranslation(["store"]);
-  const { isSmallScreen, cardScale } = useResponsiveValues();
-  const adjustedCardScale = cardScale * 1.2;
+  const { isSmallScreen } = useResponsiveValues();
 
-  const [animationRunning, setAnimationRunning] = useState<boolean>(true);
-  const [flippedStates, setFlippedStates] = useState<boolean[]>(
-    Array(cards.length).fill(true)
-  );
-
-  const startFlippingCards = (flipDuration: number) => {
-    cards.forEach((_, index) => {
-      setTimeout(() => {
-        setFlippedStates((prev) => {
-          const updated = [...prev];
-          updated[index] = false;
-          return updated;
-        });
-      }, index * flipDuration);
-    });
-  };
-
-  const skipFlipping = () => {
-    setFlippedStates(Array(cards.length).fill(false));
-    setAnimationRunning(false);
-  };
-
-  useEffect(() => {
-    setFlippedStates(Array(cards.length).fill(true));
-
-    const flipDelay = 500;
-    const flipDuration = 500;
-
-    const delayTimeout = setTimeout(() => {
-      startFlippingCards(flipDuration);
-    }, flipDelay);
-
-    const finishTimeout = setTimeout(
-      () => {
-        setAnimationRunning(false);
-      },
-      flipDelay + cards.length * flipDuration + 2500
-    );
-
-    return () => {
-      clearTimeout(delayTimeout);
-      clearTimeout(finishTimeout);
-    };
-  }, [cards.length]);
-
-  useEffect(() => {
-    let timeoutId: any;
-
-    if (game?.state === "AT_SHOP") {
-      timeoutId = setTimeout(() => {
-        if (game?.state === "AT_SHOP") {
-          navigate("/redirect/store", { state: { lastTabIndex: 1 } });
-        }
-      }, 3000);
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [game?.state, navigate]);
-
-  useEffect(() => {
-    if (blisterPackResult?.cardsPicked) {
-      setCards([]);
-    } else {
-      setCards(blisterPackResult?.cards ?? []);
-      setCardsToKeep(blisterPackResult?.cards ?? []);
-    }
-  }, [blisterPackResult]);
-
-  const allSelected = cardsToKeep.length === cards.length;
-
-  const { selectCardsFromPack } = useStore();
-
-  const confirmSelectCards = () => {
-    selectCardsFromPack(cardsToKeep.map((c) => c.idx));
-    setCards([]);
-    navigate("/redirect/store", { state: { lastTabIndex: 1 } });
-  };
+  useRedirectByGameState();
 
   const continueButton = (
-    <Button
-      mx={{ base: 6, md: 0 }}
-      fontSize={12}
-      isDisabled={continueDisabled}
-      variant={continueDisabled ? "defaultOutline" : "solid"}
+    <ChooseCardsButton
+      disabled={chooseDisabled}
       opacity={animationRunning ? 0 : 1}
-      onClick={() => {
-        if (cardsToKeep.length === 0) {
-          setConfirmationModalOpen(true);
-        } else {
-          confirmSelectCards();
-        }
-      }}
-    >
-      {t("store.packs.continue-btn")}
-    </Button>
+      onConfirm={confirmSelectCards}
+      cardsToKeep={cardsToKeep.length}
+    />
   );
+
+  const renderContinueButton = () => {
+    if (chooseDisabled) {
+      if (isSmallScreen) {
+        return (
+          <Flex w="100%" justifyContent="center" alignItems="center">
+            <Text textAlign="center" w="60%" size="lg" zIndex={2}>
+              {t("store.packs.error-lbl")}
+            </Text>
+          </Flex>
+        );
+      }
+
+      return (
+        <Tooltip label={t("store.packs.error-lbl")}>{continueButton}</Tooltip>
+      );
+    }
+
+    return continueButton;
+  };
 
   return (
     <BackgroundDecoration>
@@ -165,118 +86,30 @@ export const OpenLootBoxCardSelection = () => {
               {t("store.packs.select-all-lbl").toUpperCase()}
             </Checkbox>
           </Flex>
-          <FullScreenCardContainer>
-            <Flex
-              width={"100%"}
-              height={"100%"}
-              onClick={(e) => {
-                if (animationRunning) e.stopPropagation;
-                skipFlipping();
-              }}
-            >
-              {cards.map((card, index) => {
-                const isSelected = cardsToKeep.some((c) => c.idx === card.idx);
-
-                return (
-                  <Flex
-                    key={`${card.card_id ?? ""}-${index}`}
-                    flexDirection="column"
-                    gap={4}
-                  >
-                    <Flex
-                      key={`${card.card_id}-${index}`}
-                      m={1.5}
-                      p={1}
-                      zIndex={1}
-                      borderRadius={{ base: "7px", sm: "12px", md: "15px" }}
-                      opacity={isSelected || cardsToKeep.length === 0 ? 1 : 0.5}
-                      boxShadow={
-                        !animationRunning && isSelected
-                          ? `0px 0px 15px 12px ${BLUE}`
-                          : "none"
-                      }
-                      border={
-                        !animationRunning && isSelected
-                          ? `2px solid ${BLUE_LIGHT}`
-                          : "2px solid transparent"
-                      }
-                      cursor="pointer"
-                    >
-                      <FlipCard
-                        flipped={flippedStates[index]}
-                        width={CARD_WIDTH * adjustedCardScale}
-                        height={CARD_HEIGHT * adjustedCardScale}
-                        flipSpeed={0.6}
-                      >
-                        <TiltCard
-                          key={index}
-                          scale={adjustedCardScale}
-                          card={card}
-                          onClick={() => {
-                            if (isSelected) {
-                              setCardsToKeep(
-                                cardsToKeep.filter((c) => c.idx !== card.idx)
-                              );
-                            } else {
-                              setCardsToKeep([...cardsToKeep, card]);
-                            }
-                          }}
-                        />
-                      </FlipCard>
-                    </Flex>
-                  </Flex>
-                );
-              })}
-            </Flex>
-          </FullScreenCardContainer>
+          <FlipCardGrid
+            cards={cards}
+            cardsToKeep={cardsToKeep}
+            flippedStates={flippedStates}
+            animationRunning={animationRunning}
+            onCardToggle={onCardToggle}
+            onGridClick={skipFlipping}
+          />
           <Flex
             flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
             mt={4}
             gap={4}
           >
-            {currentSpecialCardsLenght > 0 ? (
-              <Button
-                variant="outline"
-                fontSize={12}
-                mx={{ base: 6, md: 0 }}
-                opacity={animationRunning ? 0 : 1}
-                onClick={() => {
-                  navigate("/manage");
-                }}
-              >
-                {t("store.packs.special-cards-btn")}
-              </Button>
+            {currentSpecialCardsLength > 0 ? (
+              <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
             ) : (
               <Box />
             )}
-            {continueDisabled ? (
-              isSmallScreen ? (
-                <Flex w="100%" justifyContent="center" alignItems="center">
-                  <Text textAlign="center" w="60%" size="lg" zIndex={2}>
-                    {t("store.packs.error-lbl")}
-                  </Text>
-                </Flex>
-              ) : (
-                <Tooltip label={t("store.packs.error-lbl")}>
-                  {continueButton}
-                </Tooltip>
-              )
-            ) : (
-              continueButton
-            )}
+            {renderContinueButton()}
           </Flex>
         </Flex>
       ) : (
         <Loading />
-      )}
-      {confirmationModalOpen && (
-        <ConfirmationModal
-          close={() => setConfirmationModalOpen(false)}
-          title={t("store.packs.confirmation-modal.head")}
-          description={t("store.packs.confirmation-modal.description")}
-          onConfirm={confirmSelectCards}
-        />
       )}
     </BackgroundDecoration>
   );
