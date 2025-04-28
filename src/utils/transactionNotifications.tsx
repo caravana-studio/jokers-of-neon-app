@@ -1,5 +1,5 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Spinner, Tooltip, Text, Image } from "@chakra-ui/react";
+import { Box, Spinner, Tooltip, Text, Image, Flex } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
@@ -95,42 +95,102 @@ export const showTransactionToast = (
   );
 };
 
-export const showAchievementToast = (achievementName: string): void => {
+// export const showAchievementToast = (achievementNames: string[]): void => {
+//   achievementNames.forEach((achievementName, index) => {
+//     toast.custom(
+//       () => (
+//         <Box
+//           display="flex"
+//           alignItems="center"
+//           bg="black"
+//           borderRadius="12px"
+//           p="10px"
+//           px="20px"
+//           boxShadow={`0px 0px 10px 1px ${white}`}
+//           maxW="300px"
+//           color="white"
+//           gap="10px"
+//           ml="20px"
+//           mb={`${index * 80}px`} // stack each toast lower by 80px
+//         >
+//           <Image
+//             src="/logos/trophy.png"
+//             alt="Trophy Icon"
+//             boxSize={isMobile ? "16px" : "20px"}
+//             color={white}
+//           />
+//           <Box>
+//             <Text
+//               fontSize={isMobile ? "10px" : "12px"}
+//               color={violet}
+//               fontWeight="bold"
+//               fontFamily="Sonara"
+//               textTransform="uppercase"
+//             >
+//               {i18n.t(`title`, { ns: "achievements" })}
+//             </Text>
+//             <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+//               {achievementName}
+//             </Text>
+//           </Box>
+//         </Box>
+//       ),
+//       {
+//         position: isMobile ? "top-left" : "bottom-left",
+//         duration: 7000,
+//       }
+//     );
+//   });
+// };
+export const showAchievementToast = (achievementNames: string[]): void => {
   toast.custom(
-    () => (
-      <Box
-        display="flex"
-        alignItems="center"
-        bg="black"
-        borderRadius="12px"
-        p={"10px"}
-        px={"20px"}
-        boxShadow={`0px 0px 10px 1px ${white}`}
-        maxW="300px"
-        color="white"
-        gap="10px"
+    (t) => (
+      <Flex
+        direction="column"
+        gap="12px" // space between each toast
+        position="absolute"
+        left={isMobile ? "8px" : "16px"}
+        bottom="16px"
+        zIndex={10000}
+        w={"300px"}
       >
-        <Image
-          src="/logos/trophy.png"
-          alt="Trophy Icon"
-          boxSize={isMobile ? "16px" : "20px"}
-          color={white}
-        />
-        <Box>
-          <Text
-            fontSize={isMobile ? "10px" : "12px"}
-            color={`${violet}`}
-            fontWeight="bold"
-            fontFamily={"Sonara"}
-            textTransform="uppercase"
+        {achievementNames.map((achievementName, index) => (
+          <Box
+            key={index}
+            display="flex"
+            alignItems="center"
+            bg="black"
+            borderRadius="12px"
+            p="10px"
+            px="20px"
+            boxShadow={`0px 0px 10px 1px ${white}`}
+            maxW="300px"
+            color="white"
+            gap="10px"
           >
-            {i18n.t(`title`, { ns: "achievements" })}
-          </Text>
-          <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-            {achievementName}
-          </Text>
-        </Box>
-      </Box>
+            <Image
+              src="/logos/trophy.png"
+              alt="Trophy Icon"
+              boxSize={isMobile ? "16px" : "20px"}
+              color={white}
+            />
+            <Box>
+              <Text
+                fontSize={isMobile ? "10px" : "12px"}
+                color={violet}
+                fontWeight="bold"
+                fontFamily="Sonara"
+                textTransform="uppercase"
+              >
+                {i18n.t(`title`, { ns: "achievements" })}
+              </Text>
+              <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+                {achievementName}
+              </Text>
+            </Box>
+          </Box>
+        ))}
+      </Flex>
     ),
     {
       position: isMobile ? "top-left" : "bottom-left",

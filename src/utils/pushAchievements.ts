@@ -17,11 +17,11 @@ export const handleAchievementPush = async (
   ];
 
   achievementSound();
-  achievementEvents.forEach((achievement) => {
-    showAchievementToast(
-      i18n.t(`data.${achievement.achievementId}`, { ns: "achievements" })
-    );
-  });
+  const achievementNames = achievementEvents.map((achievement) =>
+    i18n.t(`data.${achievement.achievementId}`, { ns: "achievements" })
+  );
+
+  showAchievementToast(achievementNames);
 
   try {
     const promises = payloads.map((payload) => pushActions(payload));

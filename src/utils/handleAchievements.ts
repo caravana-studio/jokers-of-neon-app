@@ -6,6 +6,7 @@ export const handleAchievements = async (
   events: DojoEvent[],
   achievementSound: () => void
 ) => {
+  console.log(events);
   const achievementEvent = getAchievementCompleteEvent(events);
 
   if (achievementEvent && achievementEvent.length > 0) {
