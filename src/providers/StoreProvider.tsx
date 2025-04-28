@@ -15,7 +15,7 @@ import {
 } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
-import { PowerUp } from "../types/PowerUp.ts";
+import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
 
@@ -87,7 +87,7 @@ const StoreContext = createContext<IStoreContext>({
   buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
-  rerolling: false
+  rerolling: false,
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -116,7 +116,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     loading,
     setLoading,
     rerolling,
-    setRerolling
+    setRerolling,
   } = useShopState();
 
   const { gameId, addPowerUp } = useGameContext();
@@ -272,8 +272,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         fetchShopItems().finally(() => {
           setTimeout(() => {
             setRerolling(false);
-          }, 200)
-        })
+          }, 200);
+        });
       })
       .finally(() => {
         setLocked(false);
@@ -344,7 +344,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setLoading,
         burnCard,
         buyPowerUp,
-        rerolling
+        rerolling,
       }}
     >
       {children}

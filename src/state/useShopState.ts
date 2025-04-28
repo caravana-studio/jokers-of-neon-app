@@ -13,7 +13,7 @@ import {
 import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
-import { PowerUp } from "../types/PowerUp";
+import { PowerUp } from "../types/Powerup/PowerUp";
 
 export interface RerollInformation {
   rerollCost: number;
