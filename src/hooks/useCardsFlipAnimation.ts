@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { useSettings } from "../providers/SettingsProvider";
+import { getFlipSpeed } from "../constants/flipCardAnimation";
 
 export const useCardsFlipAnimation = (
   cardsLength: number,
   flipDelay: number,
-  flipDuration: number
 ) => {
   const [flippedStates, setFlippedStates] = useState<boolean[]>([]);
   const [animationRunning, setAnimationRunning] = useState(true);
   const timeoutIds = useRef<number[]>([]);
+  const { animationSpeed } = useSettings();
+  const flipDuration = getFlipSpeed(animationSpeed);
 
   useEffect(() => {
     setFlippedStates(Array(cardsLength).fill(true));

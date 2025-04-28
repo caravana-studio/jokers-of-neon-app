@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import { BackgroundDecoration } from "../../components/Background";
-import { SpineAnimationRef } from "../../components/SpineAnimation";
+import { BackgroundDecoration } from "../../../components/Background";
+import { SpineAnimationRef } from "../../../components/SpineAnimation";
 import { Flex } from "@chakra-ui/react";
-import { LootBox } from "../../components/LootBox";
-import { usePageTransitions } from "../../providers/PageTransitionsProvider";
+import { LootBox } from "../../../components/LootBox";
+import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -70,6 +70,7 @@ export const OpenLootBox = () => {
           </Flex>
           <Flex
             opacity={!openDisabled && openTextVisible ? 1 : 0}
+            color={"white"}
             transition={"all ease 0.5s"}
           >
             Click to Open

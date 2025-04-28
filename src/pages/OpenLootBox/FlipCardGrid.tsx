@@ -6,6 +6,8 @@ import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { BLUE, BLUE_LIGHT } from "../../theme/colors";
 import { Card } from "../../types/Card";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { getFlipSpeed } from "../../constants/flipCardAnimation";
+import { useSettings } from "../../providers/SettingsProvider";
 
 interface FlipCardGridProps {
   cards: Card[];
@@ -26,6 +28,8 @@ export const FlipCardGrid = ({
 }: FlipCardGridProps) => {
   const { cardScale } = useResponsiveValues();
   const adjustedCardScale = cardScale * 1.2;
+  const { animationSpeed } = useSettings();
+  const flipSpeed = getFlipSpeed(animationSpeed) / 1000;
 
   return (
     <FullScreenCardContainer>
@@ -61,7 +65,7 @@ export const FlipCardGrid = ({
                   flipped={flippedStates[index]}
                   width={CARD_WIDTH * adjustedCardScale}
                   height={CARD_HEIGHT * adjustedCardScale}
-                  flipSpeed={0.6}
+                  flipSpeed={flipSpeed}
                 >
                   <TiltCard
                     key={index}

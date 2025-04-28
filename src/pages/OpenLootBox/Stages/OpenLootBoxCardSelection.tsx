@@ -1,14 +1,14 @@
 import { Box, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { BackgroundDecoration } from "../../components/Background";
-import { Loading } from "../../components/Loading";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { useCardsFlipAnimation } from "../../hooks/useCardsFlipAnimation";
-import { FlipCardGrid } from "./FlipCardGrid";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
-import { ChooseCardsButton } from "./ChooseCardsButton";
-import { useCardsSelection } from "../../hooks/useCardsSelection";
-import { ManageSpecialCardsButton } from "./ManageSpecialCardsButton";
+import { BackgroundDecoration } from "../../../components/Background";
+import { Loading } from "../../../components/Loading";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
+import { FlipCardGrid } from "../FlipCardGrid";
+import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
+import { ChooseCardsButton } from "../ChooseCardsButton";
+import { useCardsSelection } from "../../../hooks/useCardsSelection";
+import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 
 export const OpenLootBoxCardSelection = () => {
   const {
@@ -23,7 +23,7 @@ export const OpenLootBoxCardSelection = () => {
   } = useCardsSelection();
 
   const { flippedStates, animationRunning, skipFlipping } =
-    useCardsFlipAnimation(cards.length, 1000, 500);
+    useCardsFlipAnimation(cards.length, 1000);
 
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
