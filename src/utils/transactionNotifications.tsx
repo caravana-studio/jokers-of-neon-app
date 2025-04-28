@@ -95,7 +95,6 @@ export const showTransactionToast = (
   );
 };
 
-// export const showAchievementToast = (achievementNames: string[]): void => {
 //   achievementNames.forEach((achievementName, index) => {
 //     toast.custom(
 //       () => (
