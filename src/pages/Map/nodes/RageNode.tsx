@@ -2,13 +2,13 @@ import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
+import CachedImage from "../../../components/CachedImage";
 import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { VIOLET } from "../../../theme/colors";
-import CachedImage from "../../../components/CachedImage";
 
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
@@ -42,22 +42,29 @@ const RageNode = ({ data }: any) => {
           fontSize: 36,
           color: "white",
           border: "1px solid white",
-          cursor: stateInMap ? "pointer" : "default",
+          cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
         onClick={() => {
-          if (stateInMap) {
+          if (data.current) {
+            navigate("/redirect/demo");
+          } else if (stateInMap && reachable) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 navigate("/redirect/demo");
               }
             });
-          } else if (data.current) {
-            navigate("/redirect/demo");
           }
         }}
       >
-        <CachedImage src={data.last ? "/map/icons/rage-final.png" : "/map/icons/rage-normal.png"} alt="rage" />
+        <CachedImage
+          src={
+            data.last
+              ? "/map/icons/rage-final.png"
+              : "/map/icons/rage-normal.png"
+          }
+          alt="rage"
+        />
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
           type="source"

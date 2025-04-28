@@ -38,18 +38,18 @@ const StoreNode = ({ data }: any) => {
           fontSize: 24,
           color: "white",
           border: "1px solid #fff",
-          cursor: stateInMap ? "pointer" : "default",
+          cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
         onClick={() => {
-          if (stateInMap) {
+          if (data.current) {
+            navigate("/redirect/store");
+          } else if (stateInMap && reachable) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 navigate("/redirect/store");
               }
             });
-          } else if (data.current) {
-            navigate("/redirect/store");
           }
         }}
       >

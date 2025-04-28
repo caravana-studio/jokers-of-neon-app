@@ -5,5 +5,6 @@
   "rage": {
     "name": "Rodada de rage {{round}}",
     "power": "Poder: {{power}}"
-  }
+  },
+  "go-to-current-node": "Ir para o nó atual"
 }

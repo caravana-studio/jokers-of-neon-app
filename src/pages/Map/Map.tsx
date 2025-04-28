@@ -4,6 +4,7 @@ import EmojiNode from "./nodes/EmojiNode";
 
 import { Button } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useMap } from "../../providers/MapProvider";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
@@ -11,6 +12,7 @@ import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
 
 export const Map = () => {
+  const { t } = useTranslation("map");
   const { nodes, edges, fitViewToCurrentNode, fitViewToFullMap, layoutReady } =
     useMap();
 
@@ -52,10 +54,11 @@ export const Map = () => {
       </ReactFlow>
 
       <Button
-        sx={{ transform: "translateY(-50px)" }}
+        sx={{ position: "absolute", bottom: "30px", right: "80px" }}
         onClick={() => fitViewToCurrentNode()}
+        size="sm"
       >
-        fit view
+        {t("go-to-current-node")}
       </Button>
     </div>
   );

@@ -40,18 +40,18 @@ const RoundNode = ({ data }: any) => {
           fontSize: 24,
           color: "white",
           border: "1px solid white",
-          cursor: stateInMap ? "pointer" : "default",
+          cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
         onClick={() => {
-          if (stateInMap) {
+          if (data.current) {
+            navigate("/redirect/demo");
+          } else if (stateInMap && reachable) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 navigate("/redirect/demo");
               }
             });
-          } else if (data.current) {
-            navigate("/redirect/demo");
           }
         }}
       >
