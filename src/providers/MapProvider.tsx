@@ -30,22 +30,6 @@ interface MapProviderProps {
   children: ReactNode;
 }
 
-const calculateEdges = (nodes: NodeData[]) => {
-  const edges: Edge[] = [];
-  nodes.forEach((node) => {
-    node.children.forEach((childId) => {
-      edges.push({
-        id: node.id + "-" + childId,
-        source: node.id.toString(),
-        target: childId.toString(),
-        type: "straight",
-      });
-    });
-  });
-
-  return edges;
-};
-
 export const MapProvider = ({ children }: MapProviderProps) => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -102,6 +86,30 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       );
     });
   }, []);
+
+  const calculateEdges = (nodes: NodeData[]) => {
+    const edges: Edge[] = [];
+    nodes.forEach((node) => {
+      node.children.forEach((childId) => {
+        const targetNode = nodes.find((n) => n.id === childId);
+        edges.push({
+          id: node.id + "-" + childId,
+          source: node.id.toString(),
+          target: childId.toString(),
+          type: "straight",
+          style: {
+            opacity:
+              (node.visited && targetNode?.visited) ||
+              childId === Number(currentNode?.id ?? 0)
+                ? 1
+                : 0.3,
+          },
+        });
+      });
+    });
+
+    return edges;
+  };
 
   const fitViewToCurrentNode = () => {
     reactFlowInstance.fitView({
