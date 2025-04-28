@@ -33,7 +33,13 @@ export const FlipCardGrid = ({
 
   return (
     <FullScreenCardContainer>
-      <Flex width="100%" height="100%" onClick={onGridClick}>
+      <Flex
+        width="100%"
+        height="100%"
+        onClick={onGridClick}
+        flexWrap={"wrap"}
+        justifyContent={"center"}
+      >
         {cards.map((card, index) => {
           const isSelected = cardsToKeep.some((c) => c.idx === card.idx);
 
