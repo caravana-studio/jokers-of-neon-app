@@ -1,20 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGame } from "../dojo/queries/useGame";
 import { useEffect } from "react";
+import { redirectConfig } from "../constants/redirectConfig";
 
-export const useRedirectByGameState = (delay = 3000) => {
-    const game = useGame();
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      if (game?.state !== "AT_SHOP") return;
-  
-      const timeoutId = setTimeout(() => {
-        if (game?.state === "AT_SHOP") {
-          navigate("/redirect/store", { state: { lastTabIndex: 1 } });
-        }
-      }, delay);
-  
-      return () => clearTimeout(timeoutId);
-    }, [game?.state, navigate, delay]);
-  };
+export const useRedirectByGameState = (lockRedirection: boolean = false, params: Record<string, any> = {}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const game = useGame();
+
+  useEffect(() => {
+    if (lockRedirection) return;
+    if (!game) navigate("/");
+
+    const currentPath = location.pathname;
+
+    const matchedRule = redirectConfig.find(({ matchPath, gameState: requiredState }) => {
+      let pathMatches = false;
+    
+      if (matchPath instanceof RegExp) {
+        pathMatches = matchPath.test(currentPath);
+      } else if (Array.isArray(matchPath)) {
+        pathMatches = matchPath.includes(currentPath);
+      } else {
+        pathMatches = matchPath === "*" || matchPath === currentPath;
+      }
+    
+      return pathMatches && requiredState === game?.state;
+    });
+
+    if (matchedRule) {
+      const { redirectTo } = matchedRule;
+      const finalPath = typeof redirectTo === "function" ? redirectTo(params) : redirectTo;
+      navigate(finalPath);
+    }
+  }, []);
+};

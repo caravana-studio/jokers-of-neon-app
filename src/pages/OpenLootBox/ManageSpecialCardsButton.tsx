@@ -18,6 +18,7 @@ export const ManageSpecialCardsButton: React.FC<
       fontSize={12}
       mx={{ base: 6, md: 0 }}
       opacity={opacity}
+      transition="opacity 0.3s ease"
       onClick={() => {
         navigate("/manage");
       }}

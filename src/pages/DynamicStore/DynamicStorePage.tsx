@@ -16,6 +16,7 @@ import { PowerUp } from "../../types/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
 export const DynamicStorePage = () => {
   const DECK_SHOP_CONFIG_ID = 1;
@@ -58,6 +59,7 @@ export const DynamicStorePage = () => {
   const { skipShop } = useShopActions();
 
   const { locked, setLoading } = useStore();
+  useRedirectByGameState();
 
   const handleNextLevelClick = () => {
     setLoading(true);

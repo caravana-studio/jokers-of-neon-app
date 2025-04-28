@@ -7,6 +7,7 @@ import { Flex } from "@chakra-ui/react";
 import { LootBox } from "../../../components/LootBox";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -17,8 +18,8 @@ export const OpenLootBox = () => {
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useNavigate();
-
   const { t } = useTranslation(["store"]);
+  useRedirectByGameState();
 
   if (!pack) {
     return <p>LootBox not found.</p>;

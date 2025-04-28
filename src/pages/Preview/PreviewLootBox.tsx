@@ -16,6 +16,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
 import { LootBox } from "../../components/LootBox.tsx";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
@@ -35,6 +36,7 @@ export const PreviewLootBox = () => {
   const cash = game?.cash ?? 0;
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  useRedirectByGameState();
 
   const notEnoughCash =
     !card.price ||

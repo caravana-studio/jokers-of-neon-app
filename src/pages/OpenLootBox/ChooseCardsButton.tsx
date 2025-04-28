@@ -27,6 +27,7 @@ export const ChooseCardsButton: React.FC<ChooseCardsButtonProps> = ({
         isDisabled={disabled}
         variant={disabled ? "defaultOutline" : "solid"}
         opacity={opacity}
+        transition="opacity 0.3s ease"
         onClick={() => {
           if (cardsToKeep === 0) {
             setConfirmationModalOpen(true);
