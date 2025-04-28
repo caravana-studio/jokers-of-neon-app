@@ -2,11 +2,13 @@ import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
+import CachedImage from "../../../components/CachedImage";
 import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
+import { VIOLET } from "../../../theme/colors";
 
 const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
@@ -23,11 +25,9 @@ const StoreNode = ({ data }: any) => {
     <Tooltip label={t(`${data.shopId}.name`)} placement="right">
       <Box
         style={{
-          background: reachable
-            ? "violet"
-            : data.visited
-              ? "green"
-              : "rgba(255,255,255,0.1)",
+          opacity: reachable || data.visited || data.current ? 1 : 0.5,
+          background:
+            reachable || data.current ? VIOLET : "rgba(255,255,255,0.1)",
           padding: 10,
           borderRadius: "100%",
           width: 50,
@@ -53,7 +53,8 @@ const StoreNode = ({ data }: any) => {
           }
         }}
       >
-        🛍️
+        <CachedImage src={"/map/icons/shop.png"} alt="shop" />
+
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
           type="source"

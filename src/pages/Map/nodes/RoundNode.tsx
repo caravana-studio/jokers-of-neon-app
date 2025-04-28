@@ -2,11 +2,13 @@ import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
+import CachedImage from "../../../components/CachedImage";
 import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
+import { VIOLET } from "../../../theme/colors";
 
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
@@ -25,11 +27,9 @@ const RoundNode = ({ data }: any) => {
     <Tooltip label={t("name", { round: data.round })} placement="right">
       <Box
         style={{
-          background: reachable
-            ? "violet"
-            : data.visited
-              ? "green"
-              : "rgba(255,255,255,0.1)",
+          opacity: reachable || data.visited || data.current ? 1 : 0.5,
+          background:
+            reachable || data.current ? VIOLET : "rgba(255,255,255,0.1)",
           padding: 10,
           borderRadius: 10,
           width: 50,
@@ -39,7 +39,7 @@ const RoundNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 24,
           color: "white",
-          border: "1px solid yellow",
+          border: "1px solid white",
           cursor: stateInMap ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
@@ -55,7 +55,8 @@ const RoundNode = ({ data }: any) => {
           }
         }}
       >
-        🃏
+        <CachedImage src={"/map/icons/cards.png"} alt="round" />
+
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
           type="source"

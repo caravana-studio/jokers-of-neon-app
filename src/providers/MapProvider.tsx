@@ -83,6 +83,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           current: node.current,
           shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
           round: node.nodeType === NodeType.ROUND ? node.data : undefined,
+          last: node.last,
           rageData:
             node.nodeType === NodeType.RAGE
               ? getRageNodeData(node.data)

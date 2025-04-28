@@ -57,6 +57,7 @@ export const getMap = async (
     const lastVisitedNode =
       tx_result.traveled_nodes[tx_result.traveled_nodes.length - 1];
     const flatNodes = tx_result.level_nodes.flatMap((subArray) => subArray);
+    const lastNode = flatNodes[flatNodes.length - 1]?.[0].id;
 
     const nodes = flatNodes.map((node) => {
       const id = Number(node[0].id);
@@ -67,9 +68,11 @@ export const getMap = async (
         children: node[1].childs.map((childId) => Number(childId)),
         visited: tx_result.traveled_nodes.includes(node[0].id),
         current: node[0].id === lastVisitedNode,
+        last: node[0].id === lastNode,
       };
     });
 
+    console.log("nodes", nodes);
     return nodes;
   } catch (e) {
     console.log(e);

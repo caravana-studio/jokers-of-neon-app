@@ -7,6 +7,8 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
+import { VIOLET } from "../../../theme/colors";
+import CachedImage from "../../../components/CachedImage";
 
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
@@ -28,20 +30,18 @@ const RageNode = ({ data }: any) => {
     >
       <Box
         style={{
-          background: reachable
-            ? "violet"
-            : data.visited
-              ? "green"
-              : "rgba(255,255,255,0.1)",
+          opacity: reachable || data.visited || data.current ? 1 : 0.5,
+          background:
+            reachable || data.current ? VIOLET : "rgba(255,255,255,0.1)",
           padding: 10,
-          width: 90,
-          height: 90,
+          width: data.last ? 120 : 70,
+          height: data.last ? 120 : 70,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontSize: 36,
           color: "white",
-          border: "1px solid red",
+          border: "1px solid white",
           cursor: stateInMap ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
@@ -57,7 +57,7 @@ const RageNode = ({ data }: any) => {
           }
         }}
       >
-        💀
+        <CachedImage src={data.last ? "/map/icons/rage-final.png" : "/map/icons/rage-normal.png"} alt="rage" />
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
           type="source"
