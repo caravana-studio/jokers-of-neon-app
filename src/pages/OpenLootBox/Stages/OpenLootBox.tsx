@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../../components/Background";
 import { SpineAnimationRef } from "../../../components/SpineAnimation";
 import { Flex } from "@chakra-ui/react";
 import { LootBox } from "../../../components/LootBox";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
+import { useStore } from "../../../providers/StoreProvider";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -14,6 +15,8 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const { transitionTo } = usePageTransitions();
+  const { buyPack } = useStore();
+  const navigate = useNavigate();
 
   const { t } = useTranslation(["store"]);
 
@@ -28,6 +31,24 @@ export const OpenLootBox = () => {
       });
     }, 150);
   };
+
+  useEffect(() => {
+    buyPack(pack)
+      .then((response) => {
+        if (response) {
+          // setLockRedirection(true);
+          navigate("/open-loot-box", {
+            state: { pack: pack },
+          });
+        } else {
+          navigate(-1);
+        }
+      })
+      .catch(() => {
+        navigate(-1);
+      });
+    return () => {};
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {

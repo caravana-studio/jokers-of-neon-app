@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
@@ -7,14 +7,10 @@ import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
-import SpineAnimation, {
-  SpineAnimationRef,
-} from "../../components/SpineAnimation.tsx";
+import { SpineAnimationRef } from "../../components/SpineAnimation.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { animationsData } from "../../constants/spineAnimations.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
-import { usePageTransitions } from "../../providers/PageTransitionsProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
@@ -24,12 +20,8 @@ import { LootBox } from "../../components/LootBox.tsx";
 export const PreviewLootBox = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-
   const { card, pack } = state || {};
-
   const { isSmallScreen } = useResponsiveValues();
-
-  const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
   if (!card) {
@@ -37,7 +29,7 @@ export const PreviewLootBox = () => {
   }
 
   const game = useGame();
-  const { buyPack, locked } = useStore();
+  const { locked } = useStore();
   const { getLootBoxData } = useCardData();
 
   const cash = game?.cash ?? 0;
@@ -51,23 +43,11 @@ export const PreviewLootBox = () => {
   const buyButton = (
     <Button
       onClick={() => {
-        setBuyDisabled(true);
-        buyPack(pack)
-          .then((response) => {
-            if (response) {
-              // setLockRedirection(true);
-              navigate("/open-loot-box", {
-                state: { pack: pack },
-              });
-            } else {
-              setBuyDisabled(false);
-            }
-          })
-          .catch(() => {
-            setBuyDisabled(false);
-          });
+        navigate("/open-loot-box", {
+          state: { pack: pack },
+        });
       }}
-      isDisabled={notEnoughCash || locked || buyDisabled}
+      isDisabled={notEnoughCash || locked}
       variant={{ base: "solid", sm: "outlinePrimaryGlow" }}
       height={{ base: "30px", sm: "100%" }}
       minWidth={"100px"}
