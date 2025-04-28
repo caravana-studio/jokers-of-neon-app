@@ -83,7 +83,10 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           current: node.current,
           shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
           round: node.nodeType === NodeType.ROUND ? node.data : undefined,
-          rageData: node.nodeType === NodeType.RAGE ? getRageNodeData(node.data) : undefined,
+          rageData:
+            node.nodeType === NodeType.RAGE
+              ? getRageNodeData(node.data)
+              : undefined,
         },
       }));
 
@@ -101,7 +104,12 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   const fitViewToCurrentNode = () => {
     reactFlowInstance.fitView({
-      nodes: [currentNode],
+      nodes: [
+        currentNode,
+        ...reachableNodes.map((id) => ({
+          id,
+        })),
+      ],
       padding: 0.1,
       duration: 600,
     });
