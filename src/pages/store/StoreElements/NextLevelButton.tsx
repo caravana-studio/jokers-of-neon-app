@@ -6,7 +6,7 @@ import { useGame } from "../../../dojo/queries/useGame";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
-import { PowerUp } from "../../../types/PowerUp";
+import { PowerUp } from "../../../types/Powerup/PowerUp";
 
 interface NextLevelButtonProps {
   isSmallScreen: boolean;

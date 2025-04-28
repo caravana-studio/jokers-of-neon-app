@@ -1,4 +1,4 @@
-import { PowerUp } from "../../types/PowerUp";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 
 export const p25: PowerUp = {
   img: "/powerups/800.png",

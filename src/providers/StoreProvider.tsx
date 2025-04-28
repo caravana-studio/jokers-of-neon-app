@@ -21,7 +21,7 @@ import {
 } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
-import { PowerUp } from "../types/PowerUp.ts";
+import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
 import { handleAchievementPush } from "../utils/pushAchievements.ts";

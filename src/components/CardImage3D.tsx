@@ -1,4 +1,4 @@
-import { Tooltip } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
@@ -114,7 +114,11 @@ export const CardImage3D = ({
           plainImg
         )
       ) : (
-        <Tooltip hasArrow label={getTooltip(name, description)} closeOnPointerDown>
+        <Tooltip
+          hasArrow
+          label={getTooltip(name, description)}
+          closeOnPointerDown
+        >
           {availableLayers[0] && !showPlain ? layer0Img : plainImg}
         </Tooltip>
       )}
