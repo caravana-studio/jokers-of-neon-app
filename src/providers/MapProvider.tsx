@@ -14,6 +14,13 @@ import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { getRageNodeData } from "../utils/getRageNodeData";
 
+export interface SelectedNodeData {
+  id: number;
+  title: string;
+  content?: string;
+  nodeType: NodeType;
+}
+
 interface MapContextType {
   nodes: Node[];
   edges: Edge[];
@@ -22,6 +29,8 @@ interface MapContextType {
   currentNode: Node | undefined;
   layoutReady: boolean;
   reachableNodes: string[];
+  selectedNodeData: SelectedNodeData | undefined;
+  setSelectedNodeData: (data: SelectedNodeData | undefined) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -34,6 +43,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [layoutReady, setLayoutReady] = useState(false);
+  const [selectedNodeData, setSelectedNodeData] = useState<
+    SelectedNodeData | undefined
+  >();
 
   const currentNode = useMemo(
     () => nodes.find((n) => n.data?.current) ?? nodes[0],
@@ -138,6 +150,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         currentNode,
         layoutReady,
         reachableNodes,
+        selectedNodeData,
+        setSelectedNodeData,
       }}
     >
       {children}

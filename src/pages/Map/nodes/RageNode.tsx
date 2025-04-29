@@ -9,6 +9,8 @@ import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { VIOLET } from "../../../theme/colors";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { NodeType } from "../types";
 
 const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
@@ -16,7 +18,9 @@ const RageNode = ({ data }: any) => {
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
   const navigate = useNavigate();
-  const { reachableNodes } = useMap();
+
+  const { reachableNodes, setSelectedNodeData } = useMap();
+  const { isSmallScreen } = useResponsiveValues();
 
   const game = useGame();
 
@@ -46,9 +50,16 @@ const RageNode = ({ data }: any) => {
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
         onClick={() => {
-          if (data.current) {
+          isSmallScreen &&
+            setSelectedNodeData({
+              id: data.id,
+              title: t("name", { round: data.rageData.round }),
+              content: t("power", { power: data.rageData.power }),
+              nodeType: NodeType.RAGE,
+            });
+          if (data.current && !stateInMap) {
             navigate("/redirect/demo");
-          } else if (stateInMap && reachable) {
+          } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 navigate("/redirect/demo");

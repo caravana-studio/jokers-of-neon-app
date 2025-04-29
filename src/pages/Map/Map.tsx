@@ -5,6 +5,8 @@ import EmojiNode from "./nodes/EmojiNode";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useMap } from "../../providers/MapProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
@@ -12,8 +14,16 @@ import { NodeType } from "./types";
 
 export const Map = () => {
   const { t } = useTranslation("map");
-  const { nodes, edges, fitViewToCurrentNode, fitViewToFullMap, layoutReady } =
-    useMap();
+  const {
+    nodes,
+    edges,
+    fitViewToCurrentNode,
+    fitViewToFullMap,
+    layoutReady,
+    selectedNodeData,
+  } = useMap();
+
+  const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -54,6 +64,7 @@ export const Map = () => {
           onFitView={() => fitViewToCurrentNode()}
         />
       </ReactFlow>
+      {isSmallScreen && selectedNodeData && <NodeDetailsMobileButton />}
     </div>
   );
 };

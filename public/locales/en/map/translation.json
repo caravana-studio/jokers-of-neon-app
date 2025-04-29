@@ -6,5 +6,5 @@
         "name": "Rage round {{round}}",
         "power": "Power: {{power}}"
     },
-    "go-to-current-node": "Go to current node"
+    "go": "Go"
 }

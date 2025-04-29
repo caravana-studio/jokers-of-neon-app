@@ -121,6 +121,7 @@
     }
   },
   "config": {
+    "shop": "Loja",
       "0": {"name": "" },
       "1": {"name": "Baralho" },
       "2": {"name": "Global" },

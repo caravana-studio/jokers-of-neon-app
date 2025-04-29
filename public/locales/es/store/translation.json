@@ -121,6 +121,7 @@
     }
   },
   "config": {
+    "shop": "Tienda",
       "0": {"name": "" },
       "1": {"name": "Mazo" },
       "2": {"name": "Global" },
