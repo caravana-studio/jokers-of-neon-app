@@ -9,6 +9,8 @@ import { useStore } from "../../../providers/StoreProvider";
 import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
 import { isMobile } from "react-device-detect";
 import { useGame } from "../../../dojo/queries/useGame";
+import { useAudio } from "../../../hooks/useAudio";
+import { openPackSfx } from "../../../constants/sfx";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -17,6 +19,7 @@ export const OpenLootBox = () => {
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
+  const { play: openPackSound } = useAudio(openPackSfx, 0.5);
   const game = useGame();
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
@@ -93,6 +96,7 @@ export const OpenLootBox = () => {
             onClick={() => {
               if (openDisabled || isBuying) return;
               setOpenDisabled(true);
+              openPackSound();
               lootBoxRef.current?.openBox();
             }}
           >

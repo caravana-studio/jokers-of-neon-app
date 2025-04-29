@@ -1,6 +1,6 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
+import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import {
   EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
@@ -124,7 +124,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
-  const { play: buyPackSound } = useAudio(buyPackSfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
 
   const {
@@ -242,7 +241,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    buyPackSound();
     const promise = dojoBuyPack(gameId, Number(pack.idx));
     buyBlisterPack(Number(pack.idx));
     promise
