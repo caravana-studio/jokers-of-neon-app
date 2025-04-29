@@ -47,7 +47,7 @@ export const NodeDetailsMobileButton = () => {
       <Flex flexDirection="column" gap={1}>
         <Heading size="sm">{selectedNodeData?.title}</Heading>
         {selectedNodeData?.content && (
-          <Text size="lg">{selectedNodeData.content}</Text>
+          <Text fontSize="13px" lineHeight={1.2}>{selectedNodeData.content}</Text>
         )}
       </Flex>
       {isReachable && (
