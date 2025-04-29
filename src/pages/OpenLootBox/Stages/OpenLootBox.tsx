@@ -8,6 +8,7 @@ import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
 import { isMobile } from "react-device-detect";
+import { useGame } from "../../../dojo/queries/useGame";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -15,6 +16,7 @@ export const OpenLootBox = () => {
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
+  const game = useGame();
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useNavigate();
@@ -36,20 +38,23 @@ export const OpenLootBox = () => {
   };
 
   useEffect(() => {
-    buyPack(pack)
-      .then((response) => {
-        if (response) {
-          // setLockRedirection(true);
-          navigate("/open-loot-box", {
-            state: { pack: pack },
-          });
-        } else {
+    if (game && game?.state !== "OPEN_BLISTER_PACK") {
+      buyPack(pack)
+        .then((response) => {
+          if (response) {
+            // setLockRedirection(true);
+            navigate("/open-loot-box", {
+              state: { pack: pack },
+            });
+          } else {
+            navigate(-1);
+          }
+        })
+        .catch(() => {
           navigate(-1);
-        }
-      })
-      .catch(() => {
-        navigate(-1);
-      });
+        });
+    }
+
     return () => {};
   }, []);
 
