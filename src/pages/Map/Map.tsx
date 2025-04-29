@@ -2,7 +2,6 @@ import ReactFlow, { Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import EmojiNode from "./nodes/EmojiNode";
 
-import { Button } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useMap } from "../../providers/MapProvider";
@@ -50,16 +49,11 @@ export const Map = () => {
         nodesConnectable={false}
         edgesFocusable={false}
       >
-        <Controls showInteractive={false} />
+        <Controls
+          showInteractive={false}
+          onFitView={() => fitViewToCurrentNode()}
+        />
       </ReactFlow>
-
-      <Button
-        sx={{ position: "absolute", bottom: "30px", right: "80px" }}
-        onClick={() => fitViewToCurrentNode()}
-        size="sm"
-      >
-        {t("go-to-current-node")}
-      </Button>
     </div>
   );
 };
