@@ -19,7 +19,7 @@ const RageNode = ({ data }: any) => {
   const { gameId } = useGameContext();
   const navigate = useNavigate();
 
-  const { reachableNodes, setSelectedNodeData } = useMap();
+  const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
   const game = useGame();
@@ -46,6 +46,7 @@ const RageNode = ({ data }: any) => {
           fontSize: 36,
           color: "white",
           border: "1px solid white",
+          transform: selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
