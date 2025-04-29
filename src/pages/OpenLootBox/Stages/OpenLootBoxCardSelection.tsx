@@ -75,6 +75,7 @@ export const OpenLootBoxCardSelection = () => {
             mx={2}
             opacity={animationRunning ? 0 : 1}
             transition="opacity 0.3s ease"
+            gap={isSmallScreen ? 2 : 8}
           >
             <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
             <Checkbox
