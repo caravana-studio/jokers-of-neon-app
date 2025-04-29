@@ -31,7 +31,6 @@ export const SHOP_ID_MAP = {
   [MIX_SHOP_CONFIG_ID]: "mix",
 };
 export const DynamicStorePage = () => {
-
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
   const { shopId } = useStore();

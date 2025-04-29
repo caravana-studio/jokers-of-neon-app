@@ -1,12 +1,17 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { PowerUp } from "../../types/PowerUp";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useGameContext } from "../../providers/GameProvider";
+import { powerupStyles } from "../../constants/powerupStyles";
 
-export const getPowerUp = (power_up_id: number, idx: number, game_id: number = 0) => {
+export const getPowerUp = (
+  power_up_id: number,
+  idx: number,
+  game_id: number = 0
+) => {
   return {
     power_up_id,
     img: `/powerups/${power_up_id}.png`,
@@ -16,6 +21,7 @@ export const getPowerUp = (power_up_id: number, idx: number, game_id: number = 0
     purchased: false,
     fieldOrder: [],
     game_id,
+    style: powerupStyles[power_up_id],
   };
 };
 

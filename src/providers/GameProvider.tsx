@@ -36,7 +36,7 @@ import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useDiscards } from "../state/useDiscards.tsx";
 import { useGameState } from "../state/useGameState.tsx";
 import { Card } from "../types/Card";
-import { PowerUp } from "../types/PowerUp.ts";
+import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";

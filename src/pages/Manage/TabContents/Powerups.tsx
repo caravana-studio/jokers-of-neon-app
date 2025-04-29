@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
-import { PowerUp } from "../../../types/PowerUp";
+import { PowerUp } from "../../../types/Powerup/PowerUp";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
 export const Powerups = () => {
