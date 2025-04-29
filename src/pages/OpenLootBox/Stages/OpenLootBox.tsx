@@ -15,6 +15,7 @@ export const OpenLootBox = () => {
   const { pack } = state || {};
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
+  const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
   const game = useGame();
   const { transitionTo } = usePageTransitions();
@@ -39,6 +40,7 @@ export const OpenLootBox = () => {
 
   useEffect(() => {
     if (game && game?.state !== "OPEN_BLISTER_PACK") {
+      setIsBuying(true);
       buyPack(pack)
         .then((response) => {
           if (response) {
@@ -52,6 +54,9 @@ export const OpenLootBox = () => {
         })
         .catch(() => {
           navigate(-1);
+        })
+        .finally(() => {
+          setIsBuying(false);
         });
     }
 
@@ -86,7 +91,7 @@ export const OpenLootBox = () => {
             height={"90%"}
             width={"100%"}
             onClick={() => {
-              if (openDisabled) return;
+              if (openDisabled || isBuying) return;
               setOpenDisabled(true);
               lootBoxRef.current?.openBox();
             }}
@@ -98,7 +103,7 @@ export const OpenLootBox = () => {
             />
           </Flex>
           <Flex
-            opacity={!openDisabled && openTextVisible ? 1 : 0}
+            opacity={!openDisabled && openTextVisible && !isBuying ? 1 : 0}
             color={"white"}
             transition={"all ease 0.5s"}
           >
