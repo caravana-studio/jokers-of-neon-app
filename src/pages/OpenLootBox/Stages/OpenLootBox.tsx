@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../../components/Background";
-import { SpineAnimationRef } from "../../../components/SpineAnimation";
 import { Flex } from "@chakra-ui/react";
-import { LootBox } from "../../../components/LootBox";
+import { LootBox, LootBoxRef } from "../../../components/LootBox";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
@@ -15,7 +14,7 @@ export const OpenLootBox = () => {
   const { pack } = state || {};
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
-  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const lootBoxRef = useRef<LootBoxRef>(null);
   const { transitionTo } = usePageTransitions();
   const { buyPack } = useStore();
   const navigate = useNavigate();
@@ -84,12 +83,12 @@ export const OpenLootBox = () => {
             onClick={() => {
               if (openDisabled) return;
               setOpenDisabled(true);
-              spineAnimationRef.current?.playOpenBoxAnimation();
+              lootBoxRef.current?.openBox();
             }}
           >
             <LootBox
-              ref={spineAnimationRef}
-              pack={pack}
+              ref={lootBoxRef}
+              boxId={pack.blister_pack_id}
               onOpenAnimationStart={openAnimationCallBack}
             />
           </Flex>

@@ -7,7 +7,6 @@ import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
-import { SpineAnimationRef } from "../../components/SpineAnimation.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
@@ -15,7 +14,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
-import { LootBox } from "../../components/LootBox.tsx";
+import { LootBox, LootBoxRef } from "../../components/LootBox.tsx";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 
 export const PreviewLootBox = () => {
@@ -35,7 +34,7 @@ export const PreviewLootBox = () => {
 
   const cash = game?.cash ?? 0;
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
-  const spineAnimationRef = useRef<SpineAnimationRef>(null);
+  const lootBoxRef = useRef<LootBoxRef>(null);
   useRedirectByGameState();
 
   const notEnoughCash =
@@ -78,7 +77,7 @@ export const PreviewLootBox = () => {
     />
   );
 
-  const spineAnim = <LootBox ref={spineAnimationRef} pack={pack} />;
+  const spineAnim = <LootBox ref={lootBoxRef} boxId={pack.blister_pack_id} />;
 
   return isSmallScreen ? (
     <>
