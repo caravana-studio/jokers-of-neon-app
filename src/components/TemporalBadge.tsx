@@ -63,6 +63,7 @@ export const TemporalBadge = ({
           direction: "row",
           gap: GAP[size],
         }}
+        transform={"scale(0.8) translateZ(60px);"}
       >
         <ClockIcon
           color="white"

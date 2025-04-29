@@ -12,7 +12,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { PowerUp } from "../../types/PowerUp";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";

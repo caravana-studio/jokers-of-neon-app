@@ -10,6 +10,7 @@ import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
 import { useNavigate } from "react-router-dom";
+import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -38,7 +39,7 @@ export const DeckPageContentMobile = ({
   const { cash, burnCard, burnItem } = useStore();
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(()=> navigate(-1));
+    burnCard(card).then(() => navigate(-1));
   };
 
   const effectiveCost: number =
@@ -78,11 +79,38 @@ export const DeckPageContentMobile = ({
   return (
     <TabPattern bottomBar={bottomBar}>
       <Tab title={t("tabs.full-deck")}>
-        <Deck
-          inStore={state.inStore}
-          burn={state.burn}
-          onCardSelect={handleCardSelect}
-        />
+        {!state.inStore ? (
+          <Flex flexDirection={"column"} gap={2} height={"100%"}>
+            <Flex
+              flexDirection={"column"}
+              flexGrow={1}
+              minHeight={0}
+              px={2}
+              overflow="hidden"
+            >
+              <Deck
+                inStore={state.inStore}
+                burn={state.burn}
+                onCardSelect={handleCardSelect}
+              />
+            </Flex>
+            <Flex
+              py={2}
+              px={2}
+              height={"auto"}
+              width={["100%", "80%"]}
+              margin={"0 auto"}
+            >
+              <DeckPreviewTable />
+            </Flex>
+          </Flex>
+        ) : (
+          <Deck
+            inStore={state.inStore}
+            burn={state.burn}
+            onCardSelect={handleCardSelect}
+          />
+        )}
       </Tab>
       <Tab title={t("tabs.plays")}>
         <Flex
