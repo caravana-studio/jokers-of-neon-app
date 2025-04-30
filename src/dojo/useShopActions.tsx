@@ -1,7 +1,7 @@
 import { CairoCustomEnum } from "starknet";
 import { DojoEvents } from "../enums/dojoEvents";
 import { useGameContext } from "../providers/GameProvider";
-import { PowerUp } from "../types/PowerUp";
+import { PowerUp } from "../types/Powerup/PowerUp";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
