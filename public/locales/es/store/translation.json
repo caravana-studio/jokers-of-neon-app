@@ -121,12 +121,31 @@
     }
   },
   "config": {
-      "0": {"name": "" },
-      "1": {"name": "Mazo" },
-      "2": {"name": "Global" },
-      "3": {"name": "Especiales" },
-      "4": {"name": "Mejoras de nivel" },
-      "5": {"name": "Modificadoras" },
-      "6": {"name": "Mix" }
+    "shop": "Tienda",
+    "0": { "name": "" },
+    "1": {
+      "name": "Mazo",
+      "content": "{{traditionals}} cartas tradicionales o neon, {{modifiers}} modificadores, quemar una carta de tu mazo"
+    },
+    "2": {
+      "name": "Global",
+      "content": "{{specials}} cartas especiales, {{powerups}} power-ups"
+    },
+    "3": {
+      "name": "Especiales",
+      "content": "{{specials}} cartas especiales, {{lootboxes}} cajas"
+    },
+    "4": {
+      "name": "Mejoras de nivel",
+      "content": "{{levelups}} mejoras de nivel, {{specials}} cartas especiales"
+    },
+    "5": {
+      "name": "Modificadoras",
+      "content": "{{modofiers}} modificadores, {{lootboxes}} cajas"
+    },
+    "6": {
+      "name": "Mix",
+      "content": "{{lootboxes}} cajas, {{powerups}} power-ups, {{levelups}} mejoras de nivel"
+    }
   }
 }

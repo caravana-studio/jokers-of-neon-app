@@ -29,6 +29,7 @@ const I18N_NAMESPACES = [
   "tutorials",
   "intermediate-screens",
   "plays",
+  "map"
 ];
 
 async function init() {

@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { useGame } from "../../dojo/queries/useGame";
-import { useRageCards, useRageRound } from "../../dojo/queries/useRageRound";
+import { useRageCards } from "../../dojo/queries/useRageCards";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
@@ -36,7 +37,6 @@ export const GamePage = () => {
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
 
-  const rageRound = useRageRound();
   const rageCards = useRageCards();
   const navigate = useNavigate();
   const game = useGame();
@@ -53,18 +53,18 @@ export const GamePage = () => {
 
   useEffect(() => {
     setLockedCash(undefined);
-    setIsRageRound(rageRound?.is_active ?? false);
+    setIsRageRound(rageCards && rageCards.length > 0);
     setRageCards(rageCards);
   }, []);
 
   useEffect(() => {
     // if roundRewards is true, we don't want to redirect user
     if (!roundRewards && !lockRedirection) {
-      if (game?.state === "FINISHED") {
+      if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "AT_SHOP") {
+      } else if (game?.state === GameStateEnum.Store) {
         navigate("/store");
-      } else if (game?.state === "OPEN_BLISTER_PACK") {
+      } else if (game?.state === GameStateEnum.Lootbox) {
         navigate("/open-loot-box");
       }
     }

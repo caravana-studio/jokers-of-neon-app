@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
@@ -19,6 +19,7 @@ import {
 
 import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
@@ -37,11 +38,11 @@ export const Store = () => {
 
   useEffect(() => {
     if (!lockRedirection) {
-      if (game?.state === "FINISHED") {
+      if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === "IN_GAME") {
+      } else if (game?.state === GameStateEnum.Round || game?.state === GameStateEnum.Rage) {
         navigate("/demo");
-      } else if (game?.state === "OPEN_BLISTER_PACK") {
+      } else if (game?.state === GameStateEnum.Lootbox) {
         navigate("/open-loot-box");
       }
     }
@@ -50,9 +51,9 @@ export const Store = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (state === "FINISHED") {
+    if (state ===GameStateEnum.GameOver) {
       navigate(`/gameover/${gameId}`);
-    } else if (state === "IN_GAME") {
+    } else if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
       navigate("/demo");
     }
   }, [state]);

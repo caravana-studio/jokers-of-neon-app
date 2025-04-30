@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
-import { MenuComingSoonBtn, MenuComingSoonBtnProps } from "./MenuComingSoonBtn";
+import { MenuBtn } from "./MenuBtn";
+import { MenuComingSoonBtnProps } from "./MenuComingSoonBtn";
 
 interface MapMenuBtnProps
   extends Omit<MenuComingSoonBtnProps, "icon" | "description"> {
@@ -15,15 +17,17 @@ export const MapMenuBtn: React.FC<MapMenuBtnProps> = ({
   fontSizeText,
 }) => {
   const { t } = useTranslation("game");
+  const navigate = useNavigate();
 
   return (
-    <MenuComingSoonBtn
+    <MenuBtn
       width={width}
       icon={Icons.MAP}
       label={useLabel ? t("game.game-menu.map-btn") : undefined}
       description={t("game.game-menu.map-btn")}
-      mtText={mtText}
-      fontSizeText={fontSizeText}
+      onClick={() => {
+        navigate("/map");
+      }}
     />
   );
 };

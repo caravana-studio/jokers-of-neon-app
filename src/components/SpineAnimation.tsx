@@ -113,7 +113,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           showLoading: false,
           success: (player: SpinePlayer) => {
             if (player.skeleton != null) {
-              // console.log(player.skeleton.data.animations.map((a) => a.name));
               player.startRendering();
               setPlayerReady(true);
 
