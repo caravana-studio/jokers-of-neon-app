@@ -38,13 +38,6 @@ export const RerollSection: React.FC<RerollSectionProps> = ({ hideReroll }) => {
           )}
         </Flex>
       )}
-
-      <Flex>
-        <MobileCoins
-          fontSize={isSmallScreen ? "12px" : undefined}
-          iconSize={isSmallScreen ? 20 : undefined}
-        />
-      </Flex>
     </Flex>
   );
 };

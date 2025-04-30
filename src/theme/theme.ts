@@ -15,6 +15,7 @@ import {
   VIOLET,
   VIOLET_LIGHT,
 } from "./colors";
+import { drawerTheme } from "./drawer.ts";
 import { headingTheme } from "./heading";
 import { inputTheme } from "./input";
 import { menuTheme } from "./menu.ts";
@@ -82,6 +83,7 @@ export default {
     Heading: headingTheme,
     Text: textTheme,
     Menu: menuTheme,
-    Tabs: tabsTheme
+    Tabs: tabsTheme,
+    Drawer: drawerTheme,
   },
 };
