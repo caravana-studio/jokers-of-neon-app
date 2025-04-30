@@ -1710,6 +1710,10 @@
                 {
                   "name": "player_name",
                   "type": "core::felt252"
+                },
+                {
+                  "name": "seed",
+                  "type": "core::option::Option::<core::felt252>"
                 }
               ],
               "outputs": [],
@@ -4068,7 +4072,7 @@
             },
             {
               "type": "function",
-              "name": "buy_card_item",
+              "name": "buy_card",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4088,7 +4092,7 @@
             },
             {
               "type": "function",
-              "name": "buy_special_card_item",
+              "name": "buy_special_card",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4108,7 +4112,7 @@
             },
             {
               "type": "function",
-              "name": "buy_poker_hand_item",
+              "name": "buy_poker_hand",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4124,7 +4128,7 @@
             },
             {
               "type": "function",
-              "name": "buy_power_up_item",
+              "name": "buy_power_up",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4140,14 +4144,14 @@
             },
             {
               "type": "function",
-              "name": "buy_blister_pack_item",
+              "name": "buy_loot_box",
               "inputs": [
                 {
                   "name": "game_id",
                   "type": "core::integer::u64"
                 },
                 {
-                  "name": "blister_pack_item_id",
+                  "name": "loot_box_item_id",
                   "type": "core::integer::u32"
                 }
               ],
@@ -4156,7 +4160,7 @@
             },
             {
               "type": "function",
-              "name": "select_cards_from_blister",
+              "name": "select_cards_from_loot_box",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4172,7 +4176,7 @@
             },
             {
               "type": "function",
-              "name": "buy_slot_special_card_item",
+              "name": "buy_special_slot",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4184,7 +4188,7 @@
             },
             {
               "type": "function",
-              "name": "buy_burn_item",
+              "name": "burn_card",
               "inputs": [
                 {
                   "name": "game_id",
@@ -4364,14 +4368,14 @@
       "selector": "0x566e6f8c02e3fb42edc0ebbd5ec94a99e5ed8f43e5f614c342316c5b74e3770",
       "systems": [
         "skip_shop",
-        "buy_card_item",
-        "buy_special_card_item",
-        "buy_poker_hand_item",
-        "buy_power_up_item",
-        "buy_blister_pack_item",
-        "select_cards_from_blister",
-        "buy_slot_special_card_item",
-        "buy_burn_item",
+        "buy_card",
+        "buy_special_card",
+        "buy_poker_hand",
+        "buy_power_up",
+        "buy_loot_box",
+        "select_cards_from_loot_box",
+        "buy_special_slot",
+        "burn_card",
         "reroll",
         "sell_special_card",
         "upgrade"

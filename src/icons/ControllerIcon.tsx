@@ -2,18 +2,25 @@ import { Box } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { BarMenuBtn } from "../components/BarMenu/BarMenuBtn";
+import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import { Icons } from "../constants/icons";
 import { connectControllerCommand } from "../commands/connectController";
 
-export const ControllerIcon = ({ width }: { width: string }) => {
+export const ControllerIcon = ({
+  width,
+  label,
+}: {
+  width: string;
+  label?: boolean;
+}) => {
   const { t } = useTranslation("game");
   const { connector } = useAccount();
 
   return (
-    <BarMenuBtn
+    <MenuBtn
       icon={Icons.CARTRIDGE}
       description={t("controller")}
+      label={label ? "Controller" : undefined}
       width={width}
       onClick={() => connectControllerCommand(connector)}
     />

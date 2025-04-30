@@ -3,6 +3,7 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
+import { getNode } from "../dojo/queries/getNode";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGame } from "../dojo/queries/useGame";
@@ -25,6 +26,7 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { sortCards } from "../utils/sortCards";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 export const useGameState = () => {
   const {
@@ -105,6 +107,20 @@ export const useGameState = () => {
   };
 
   const game = useGame();
+  const round = useRound();
+
+  const [nodeRound, setNodeRound] = useState<number>(0);
+
+  useEffect(() => {
+    getNode(client, game?.id ?? 0, game?.current_node_id ?? 0).then((data) =>{
+      if ((round?.rages?.length ?? 0) > 0) {
+        const rageRoundData = getRageNodeData(data);
+        setNodeRound(rageRoundData.round);
+      } else {
+        setNodeRound(data)}
+      }
+    );
+  }, [game?.id, game?.current_node_id, round?.rages]);
 
   useEffect(() => {
     fetchGameConfig();
@@ -117,7 +133,6 @@ export const useGameState = () => {
   );
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
-  const round = useRound();
 
   const [modId, setModId] = useState<string>(
     game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
@@ -162,7 +177,7 @@ export const useGameState = () => {
 
   const lsUser = localStorage.getItem(LOGGED_USER);
 
-  const dojoScore = round?.player_score ?? 0;
+  const dojoScore = round?.current_score ?? 0;
   const dojoCash = game?.cash ?? 0;
 
   const score = lockedScore ?? dojoScore;
@@ -306,5 +321,6 @@ export const useGameState = () => {
     modCardsConfig,
     cardTransformationLock,
     setCardTransformationLock,
+    nodeRound,
   };
 };

@@ -134,7 +134,6 @@ export const SpecialCardsRow = () => {
                           gap={4}
                           onMouseEnter={() => setHoveredButton(card.idx)}
                           onClick={() => {
-                            console.log(card.idx);
                             setCardToDiscardIdx(card.idx);
                           }}
                         >

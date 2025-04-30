@@ -9,11 +9,13 @@ import AsIcon from "../assets/as.png";
 import FigureIcon from "../assets/figure.png";
 import BarsIcon from "../assets/MenuIcons/bars.png";
 import CircleIcon from "../assets/MenuIcons/circle.png";
-import FilesIcon from "../assets/MenuIcons/files.png";
+import DocsIcon from "../assets/MenuIcons/docs.png";
 import MapIcon from "../assets/MenuIcons/map.png";
 import PodiumIcon from "../assets/MenuIcons/podium.png";
 import SettingsIcon from "../assets/MenuIcons/settings.png";
 import CartridgeIcon from "../assets/MenuIcons/cartridge.png";
+import LogoutIcon from "../assets/MenuIcons/logout.png";
+import DiscordIcon from "../assets/MenuIcons/discord.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -27,11 +29,13 @@ export const Icons = {
   FIGURE: FigureIcon,
   BARS: BarsIcon,
   CIRCLE: CircleIcon,
-  FILES: FilesIcon,
+  DOCS: DocsIcon,
   MAP: MapIcon,
   PODIUM: PodiumIcon,
   SETTINGS: SettingsIcon,
   CARTRIDGE: CartridgeIcon,
+  LOGOUT: LogoutIcon,
+  DISCORD: DiscordIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;

@@ -20,7 +20,7 @@ export const CompactRoundData = () => {
   const { score, points, multi } = useGameContext();
 
   const round = useRound();
-  const target = round?.level_score ?? 0;
+  const target = round?.target_score ?? 0;
 
   return (
     <Flex

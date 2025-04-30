@@ -17,7 +17,7 @@ export const useDiscards = () => {
   // reset optimistic discards when level changes
   useEffect(() => {
     setOptimisticDiscards(undefined)
-  }, [game?.level, game?.id])
+  }, [game?.current_node_id, game?.id])
 
   const discard = () => {
     setOptimisticDiscards(discards - 1);
