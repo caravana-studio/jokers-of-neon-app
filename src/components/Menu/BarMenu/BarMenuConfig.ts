@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
 const hiddenRoutes = ["/", "/login", "/mods", "/my-games"];
 

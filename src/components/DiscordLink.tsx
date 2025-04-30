@@ -1,9 +1,9 @@
-import { Box, Link, Tooltip } from "@chakra-ui/react";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { Icons } from "../constants/icons";
+import { MenuBtn } from "./Menu/Buttons/MenuBtn";
 
 export const PositionedDiscordLink = () => {
   return (
@@ -13,16 +13,29 @@ export const PositionedDiscordLink = () => {
   );
 };
 
-export const DiscordLink = ({ width }: { width: string }) => {
+export const DiscordLink = ({
+  width,
+  label,
+}: {
+  width: string;
+  label?: boolean;
+}) => {
   const { t } = useTranslation(["home"]);
-  const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <Link href="https://discord.gg/4y296W6jaq" target="_blank">
-      <Tooltip label={t("home.join-discord")} placement="left">
-        <FontAwesomeIcon color="white" fontSize={width} icon={faDiscord} />
-      </Tooltip>
-    </Link>
+    <MenuBtn
+      width={width}
+      icon={Icons.DISCORD}
+      description={t("home.join-discord")}
+      label={label ? "Discord" : undefined}
+      onClick={() =>
+        window.open(
+          "https://discord.gg/4y296W6jaq",
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+    />
   );
 };
 
