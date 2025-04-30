@@ -26,7 +26,7 @@ export const SpecialCardAnimation = ({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigate("/redirect/store");
+      navigate("/redirect/map");
       setAnimateSecondChanceCard(false);
     }, 4000);
 
@@ -130,7 +130,15 @@ export const SpecialCardAnimation = ({
       </animated.div>
 
       {showAnimContent && (
-        <animated.div style={{ ...fadeWrapperProps, zIndex: 3 }}>
+        <animated.div
+          style={{
+            ...fadeWrapperProps,
+            zIndex: 3,
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+          }}
+        >
           {animation ? (
             animation
           ) : (
