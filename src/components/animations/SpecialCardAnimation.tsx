@@ -140,7 +140,17 @@ export const SpecialCardAnimation = ({
           }}
         >
           {animation ? (
-            animation
+            <animated.div
+              style={{
+                ...bgProps,
+                zIndex: 3,
+                position: "absolute",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              {animation}
+            </animated.div>
           ) : (
             <>
               <animated.img
