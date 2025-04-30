@@ -1,0 +1,10 @@
+{
+  "round": {
+    "name": "Rodada {{round}}"
+  },
+  "rage": {
+    "name": "Rodada de rage {{round}}",
+    "power": "Poder: {{power}}"
+  },
+  "go": "Ir"
+}

@@ -15,6 +15,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import { getCardUniqueId } from "../utils/getCardUniqueId";
 import { FullScreenCardContainer } from "./FullScreenCardContainer";
+import { GameStateEnum } from "../dojo/typescript/custom";
 
 export const OpenLootBox = () => {
   const navigate = useNavigate();
@@ -38,9 +39,9 @@ export const OpenLootBox = () => {
   useEffect(() => {
     let timeoutId: any;
 
-    if (game?.state === "AT_SHOP") {
+    if (game?.state === GameStateEnum.Store) {
       timeoutId = setTimeout(() => {
-        if (game?.state === "AT_SHOP") {
+        if (game?.state === GameStateEnum.Store) {
           navigate("/redirect/store", { state: { lastTabIndex: 1 } });
         }
       }, 3000);
