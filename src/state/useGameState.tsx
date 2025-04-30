@@ -20,7 +20,7 @@ import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
-import { PowerUp } from "../types/PowerUp";
+import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
