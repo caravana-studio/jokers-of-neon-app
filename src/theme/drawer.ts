@@ -1,4 +1,4 @@
-import { modalAnatomy as parts } from "@chakra-ui/anatomy";
+import { drawerAnatomy as parts } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
 import { isMobile } from "react-device-detect";
 
@@ -12,7 +12,7 @@ const baseStyle = definePartsStyle({
   dialog: {
     borderRadius: "0",
     color: "white",
-    bg: `#031c24`,
+    bg: "#031c24",
     marginTop: isMobile ? "5vh" : "20vh",
     width: "70%",
     maxWidth: "1100px",
@@ -45,14 +45,13 @@ const fullscreen = definePartsStyle({
     },
     _active: {
       border: "none",
-    }
-  }
+    },
+  },
 });
 
-
-export const modalTheme = defineMultiStyleConfig({
+export const drawerTheme = defineMultiStyleConfig({
   baseStyle,
   variants: {
-    fullscreen
-  }
+    fullscreen,
+  },
 });

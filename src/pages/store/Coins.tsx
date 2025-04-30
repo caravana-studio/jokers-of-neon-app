@@ -50,7 +50,7 @@ export const Coins = ({ rolling = false }: ICoinsProps) => {
 };
 
 interface MobileCoins {
-  fontSize?: string;
+  fontSize?: string | string[];
   iconSize?: number;
 }
 
@@ -69,8 +69,7 @@ export const MobileCoins: React.FC<MobileCoins> = ({ fontSize, iconSize }) => {
         p={{ base: "5px 5px", sm: "15px 6px" }}
       >
         <Text fontSize={fontSize ?? "18px"} mt={1}>
-          {cash}{" "}
-          <CashSymbol />
+          {cash} <CashSymbol />
         </Text>
       </Flex>
     </Flex>

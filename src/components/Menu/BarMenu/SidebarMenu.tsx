@@ -1,29 +1,29 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Icons } from "../../constants/icons";
-import { useGame } from "../../dojo/queries/useGame";
-import { useCurrentPageName } from "../../hooks/useCurrentPageName";
-import { useSettingsModal } from "../../hooks/useSettingsModal";
-import { ControllerIcon } from "../../icons/ControllerIcon";
-import { AnimatedText } from "../AnimatedText";
-import CachedImage from "../CachedImage";
-import { DiscordLink } from "../DiscordLink";
-import { GameMenu } from "../GameMenu/GameMenu";
-import { BarMenuBtn } from "./BarMenuBtn";
-import { BarMenuComingSoonBtn } from "./BarMenuComingSoonBtn";
+import { Icons } from "../../../constants/icons";
+import { useGame } from "../../../dojo/queries/useGame";
+import { useCurrentPageName } from "../../../hooks/useCurrentPageName";
+import { ControllerIcon } from "../../../icons/ControllerIcon";
+import { AnimatedText } from "../../AnimatedText";
+import CachedImage from "../../CachedImage";
+import { DiscordLink } from "../../DiscordLink";
+import { MenuBtn } from "../Buttons/MenuBtn";
+import { MapMenuBtn } from "../Buttons/MapMenuBtn";
+import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
+import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
+import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
+import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
+import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 
 export const SidebarMenu = () => {
-  const { t } = useTranslation(["game"]);
   const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageName();
 
-  const iconWidth = "50%";
+  const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
-  const { openSettings, Modal } = useSettingsModal();
 
   useEffect(() => {
     setTimeout(() => {
@@ -53,36 +53,12 @@ export const SidebarMenu = () => {
         alignItems={"center"}
       >
         <ControllerIcon width={iconWidth} />
-
-        <BarMenuComingSoonBtn
-          width={iconWidth}
-          icon={Icons.MAP}
-          description={t("game.game-menu.map-btn")}
-        />
-
-        <BarMenuBtn
-          icon={Icons.PODIUM}
-          description={t("game.game-menu.leaderboard-btn")}
-          onClick={() => {
-            navigate("/leaderboard");
-          }}
-          width={iconWidth}
-        />
-        <BarMenuBtn
-          icon={Icons.FILES}
-          description={t("game.game-menu.docs-btn")}
-          onClick={() => {
-            navigate("/docs");
-          }}
-          width={iconWidth}
-        />
-        <BarMenuBtn
-          icon={Icons.SETTINGS}
-          description={t("game.game-menu.settings-btn")}
-          onClick={openSettings}
-          width={iconWidth}
-        />
-        {Modal}
+        <MapMenuBtn width={iconWidth} />
+        <LeaderboardMenuBtn width={iconWidth} />
+        <DocsMenuBtn width={iconWidth} />
+        <MyGamesMenuBtn width={iconWidth} />
+        <SettingsMenuBtn width={iconWidth} />
+        <DiscordLink width={iconWidth} />
       </Flex>
       <Flex
         gap={4}
@@ -117,7 +93,7 @@ export const SidebarMenu = () => {
               {animatedText}
             </Heading>
           </AnimatedText>
-          <BarMenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
+          <MenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
           <Flex
             sx={{
               h: "30px",
@@ -134,8 +110,7 @@ export const SidebarMenu = () => {
             </Text>
           </Flex>
         </Flex>
-        <GameMenu />
-        <DiscordLink width={"100%"} />
+        <LogoutMenuListBtn width={iconWidth} />
       </Flex>
     </Flex>
   );
