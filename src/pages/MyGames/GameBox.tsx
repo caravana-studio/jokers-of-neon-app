@@ -51,30 +51,23 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         px={isSmallScreen ? 1 : 3}
       >
         {/* Game ID Section */}
-        <Flex 
-          w={isSmallScreen ? "35%" : "30%"} 
-          alignItems="center" 
-          gap={1.5}
-        >
-          <CachedImage 
-            src="/logos/jn.png" 
-            height={isSmallScreen ? "15px" : "25px"} 
+        <Flex w={isSmallScreen ? "35%" : "30%"} alignItems="center" gap={1.5}>
+          <CachedImage
+            src="/logos/jn.png"
+            height={isSmallScreen ? "15px" : "25px"}
           />
-          <Text 
-            fontFamily="Orbitron" 
-            fontSize={isSmallScreen ? "13px" : "23px"} 
+          <Text
+            fontFamily="Orbitron"
+            fontSize={isSmallScreen ? "13px" : "23px"}
             fontWeight="bold"
           >
-            {" "}· {game.id}
+            {" "}
+            · {game.id}
           </Text>
         </Flex>
 
         {/* Game Info Section */}
-        <Flex 
-          w={isSmallScreen ? "35%" : "30%"} 
-          flexDirection="column" 
-          mt={1}
-        >
+        <Flex w={isSmallScreen ? "35%" : "30%"} flexDirection="column" mt={1}>
           {game.level && (
             <Flex gap={1}>
               <Text>{t("level-lbl")}:</Text>
@@ -108,24 +101,23 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         )}
 
         {/* Action Button Section */}
-        <Flex 
-          w={isSmallScreen ? "30%" : "20%"} 
-          justifyContent="flex-end"
-        >
+        <Flex w={isSmallScreen ? "30%" : "20%"} justifyContent="flex-end">
           {game.status !== GameStateEnum.GameOver && (
-            <Button
-              size="sm"
-              width={isSmallScreen ? "80px" : "110px"}
-              h={isSmallScreen ? "25px" : undefined}
-              variant="secondarySolid"
-              onClick={handleButtonClick}
-              disabled={isLoading}
-            >
-              {t(
-                game.status === "NOT STARTED" ? "start-btn" : "continue-btn"
-              ).toUpperCase()}
-              {isLoading && <Spinner ml={3} size="sm" />}
-            </Button>
+            <Flex gap={3} alignItems={"center"}>
+              {isLoading && <Spinner size={{ base: "xs", sm: "sm" }} />}
+              <Button
+                size="sm"
+                width={isSmallScreen ? "60px" : "110px"}
+                h={isSmallScreen ? "25px" : undefined}
+                variant="secondarySolid"
+                onClick={handleButtonClick}
+                disabled={isLoading}
+              >
+                {t(
+                  game.status === "NOT STARTED" ? "start-btn" : "continue-btn"
+                ).toUpperCase()}
+              </Button>
+            </Flex>
           )}
         </Flex>
       </Flex>
