@@ -1,31 +1,33 @@
+import { GameStateEnum } from "../dojo/typescript/custom";
+
 type RedirectTo = string | ((params: Record<string, any>) => string);
 type MatchPath = string | string[] | RegExp;
 
 interface RedirectRule {
   matchPath: MatchPath;
-  gameState: string;
+  gameState: GameStateEnum;
   redirectTo: RedirectTo;
 }
 
 export const redirectConfig: RedirectRule[] = [
   {
     matchPath: /^\/(?!manage).*$/, 
-    gameState: "OPEN_BLISTER_PACK",
+    gameState: GameStateEnum.Lootbox,
     redirectTo: "/loot-box-cards-selection",
   },
   {
     matchPath: ["/open-loot-box", "/loot-box-cards-selection"],
-    gameState: "IN_STORE",
-    redirectTo: "/store",
+    gameState: GameStateEnum.Store,
+    redirectTo: "/redirect/store",
   },
   {
     matchPath: "*",
-    gameState: "FINISHED",
+    gameState: GameStateEnum.GameOver,
     redirectTo: (params) => `/gameover/${params.gameId}`,
   },
   {
     matchPath: "*",
-    gameState: "IN_GAME",
+    gameState: GameStateEnum.Round,
     redirectTo: "/demo",
   }
 ];
