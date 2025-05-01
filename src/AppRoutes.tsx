@@ -14,7 +14,6 @@ import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
-import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
@@ -25,6 +24,7 @@ import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { MapPage } from "./pages/Map/MapPage";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
+import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 
 export const AppRoutes = () => {
   const location = useLocation();
