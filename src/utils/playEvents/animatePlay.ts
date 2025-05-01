@@ -4,7 +4,6 @@ import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
 import { changeCardNeon } from "../cardTransformation/changeCardNeon";
 import { changeCardSuit } from "../cardTransformation/changeCardSuit";
-import { handleAchievementPush } from "../pushAchievements";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {
@@ -38,7 +37,6 @@ interface AnimatePlayConfig {
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
-  achievementSound: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -73,7 +71,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimateSecondChanceCard,
     setCardTransformationLock,
     setIsRageRound,
-    achievementSound,
   } = config;
 
   if (!playEvents) return;
@@ -298,7 +295,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     });
   };
 
-  const handleGameEnd = async () => {
+  const handleGameEnd = () => {
     if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);

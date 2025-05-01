@@ -360,7 +360,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimateSecondChanceCard,
             setCardTransformationLock,
             setIsRageRound,
-            achievementSound,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -602,10 +601,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onSellSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
     const promise = sellSpecialCard(gameId, cardIdx)
-      .then(async ({ success, achievementEvent }) => {
-        if (achievementEvent) {
-          await handleAchievementPush(achievementEvent, achievementSound);
-        }
+      .then(async ({ success }) => {
         return success;
       })
       .catch(() => {
@@ -646,7 +642,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!lockRedirection) {
       if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === GameStateEnum.Store && location.pathname === "/demo") {
+      } else if (
+        game?.state === GameStateEnum.Store &&
+        location.pathname === "/demo"
+      ) {
         console.log("redirecting to store");
         navigate("/store");
       }

@@ -6,7 +6,6 @@ import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
 import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
-import { FaTrophy } from "react-icons/fa";
 import theme from "../theme/theme.ts";
 import i18n from "../i18n.ts";
 
@@ -95,52 +94,6 @@ export const showTransactionToast = (
   );
 };
 
-//   achievementNames.forEach((achievementName, index) => {
-//     toast.custom(
-//       () => (
-//         <Box
-//           display="flex"
-//           alignItems="center"
-//           bg="black"
-//           borderRadius="12px"
-//           p="10px"
-//           px="20px"
-//           boxShadow={`0px 0px 10px 1px ${white}`}
-//           maxW="300px"
-//           color="white"
-//           gap="10px"
-//           ml="20px"
-//           mb={`${index * 80}px`} // stack each toast lower by 80px
-//         >
-//           <Image
-//             src="/logos/trophy.png"
-//             alt="Trophy Icon"
-//             boxSize={isMobile ? "16px" : "20px"}
-//             color={white}
-//           />
-//           <Box>
-//             <Text
-//               fontSize={isMobile ? "10px" : "12px"}
-//               color={violet}
-//               fontWeight="bold"
-//               fontFamily="Sonara"
-//               textTransform="uppercase"
-//             >
-//               {i18n.t(`title`, { ns: "achievements" })}
-//             </Text>
-//             <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-//               {achievementName}
-//             </Text>
-//           </Box>
-//         </Box>
-//       ),
-//       {
-//         position: isMobile ? "top-left" : "bottom-left",
-//         duration: 7000,
-//       }
-//     );
-//   });
-// };
 export const showAchievementToast = (achievementNames: string[]): void => {
   toast.custom(
     (t) => (

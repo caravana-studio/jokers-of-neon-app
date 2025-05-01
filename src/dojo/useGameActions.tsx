@@ -67,6 +67,9 @@ export const useGameActions = () => {
           3
         );
         console.log("Game " + gameId + " created");
+
+        await handleAchievements(tx.events, achievementSound);
+
         return {
           gameId,
           hand: getCardsFromEvents(events),
@@ -106,6 +109,7 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         return getPlayEvents(tx.events);
       }
       return;
@@ -134,6 +138,7 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         return {
           success: true,
           cards: getCardsFromEvents(tx.events),
@@ -169,12 +174,11 @@ export const useGameActions = () => {
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
-      let achievementEvent;
       if (tx.isSuccess()) {
-        achievementEvent = getAchievementCompleteEvent(tx.events);
+        await handleAchievements(tx.events, achievementSound);
       }
 
-      return { success, achievementEvent };
+      return { success };
     } catch (e) {
       console.log(e);
       failedTransactionToast();
@@ -247,6 +251,9 @@ export const useGameActions = () => {
           getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3) ||
           getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 2, 0);
         console.log("Game " + gameId + " minted");
+
+        await handleAchievements(tx.events, achievementSound);
+
         return gameId;
       } else {
         console.error("Error minting game:", tx);

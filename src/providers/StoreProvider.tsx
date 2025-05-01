@@ -24,8 +24,6 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
-import { handleAchievementPush } from "../utils/pushAchievements.ts";
-import { useSettings } from "./SettingsProvider.tsx";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -130,8 +128,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     shopId,
   } = useShopState();
 
-  const { sfxVolume } = useSettings();
-
   const { gameId, addPowerUp } = useGameContext();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
@@ -139,7 +135,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: buyPackSound } = useAudio(buyPackSfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
-  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const {
     buyCard: dojoBuyCard,

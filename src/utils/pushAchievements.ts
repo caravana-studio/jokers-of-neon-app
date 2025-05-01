@@ -1,7 +1,5 @@
 import { AchievementCompleted } from "../types/ScoreData";
 import { PushActionsPayload, pushActions } from "./pushActions";
-import { showAchievementToast } from "./transactionNotifications";
-import i18n from "i18next";
 
 export const handleAchievementPush = async (
   achievementEvents: AchievementCompleted[],
@@ -15,13 +13,6 @@ export const handleAchievementPush = async (
       address: achievementEvents[0].player,
     },
   ];
-
-  achievementSound();
-  const achievementNames = achievementEvents.map((achievement) =>
-    i18n.t(`data.${achievement.achievementId}`, { ns: "achievements" })
-  );
-
-  showAchievementToast(achievementNames);
 
   try {
     const promises = payloads.map((payload) => pushActions(payload));

@@ -12,8 +12,6 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
-import { AchievementCompleted } from "../types/ScoreData";
 import { handleAchievements } from "../utils/handleAchievements";
 import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
@@ -48,6 +46,7 @@ export const useShopActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         const event = tx.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -125,6 +124,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         const event = tx.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -164,6 +164,10 @@ export const useShopActions = () => {
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
@@ -361,6 +365,10 @@ export const useShopActions = () => {
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
