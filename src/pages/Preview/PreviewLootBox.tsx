@@ -44,7 +44,7 @@ export const PreviewLootBox = () => {
   const buyButton = (
     <Button
       onClick={() => {
-        navigate("/open-loot-box", {
+        navigate("/redirect/open-loot-box", {
           state: { pack: pack },
         });
       }}

@@ -11,6 +11,7 @@ import { isMobile } from "react-device-detect";
 import { useGame } from "../../../dojo/queries/useGame";
 import { useAudio } from "../../../hooks/useAudio";
 import { openPackSfx } from "../../../constants/sfx";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
 
 export const OpenLootBox = () => {
   const { state } = useLocation();
@@ -42,13 +43,13 @@ export const OpenLootBox = () => {
   };
 
   useEffect(() => {
-    if (game && game?.state !== "OPEN_BLISTER_PACK") {
+    if (game && game?.state !== GameStateEnum.Lootbox) {
       setIsBuying(true);
       buyPack(pack)
         .then((response) => {
           if (response) {
             // setLockRedirection(true);
-            navigate("/open-loot-box", {
+            navigate("/redirect/open-loot-box", {
               state: { pack: pack },
             });
           } else {
