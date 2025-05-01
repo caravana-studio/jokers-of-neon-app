@@ -94,12 +94,12 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       button={t("continue-btn")}
       onClick={() => {
         // stopNextLevelSound();
-        navigate("/redirect/store");
+        navigate("/redirect/map");
       }}
     >
       <Heading color="lightViolet" size="s">
         {" "}
-        {t("final-score", { score: round?.player_score })}{" "}
+        {t("final-score", { score: round?.current_score })}{" "}
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />

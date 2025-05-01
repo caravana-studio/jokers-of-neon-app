@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Heading,
-  Text
-} from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +7,7 @@ import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GAME_ID } from "../../constants/localStorage.ts";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
@@ -44,7 +38,7 @@ export const MyGames = () => {
     useGameContext();
 
   const filteredGames = games.filter((game) => {
-    return showFinishedGames ? true : game.status !== "FINISHED";
+    return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
   });
 
   useEffect(() => {

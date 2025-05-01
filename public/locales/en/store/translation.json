@@ -121,12 +121,31 @@
     }
   },
   "config": {
-      "0": {"name": "" },
-      "1": {"name": "Deck" },
-      "2": {"name": "Global" },
-      "3": {"name": "Specials" },
-      "4": {"name": "Level ups" },
-      "5": {"name": "Modifiers" },
-      "6": {"name": "Mix" }
+    "shop": "Shop",
+    "0": { "name": "" },
+    "1": {
+      "name": "Deck",
+      "content": "{{traditionals}} traditional or neon cards, 3 modifiers, burn a card from your deck"
+    },
+    "2": {
+      "name": "Global",
+      "content": "{{specials}} special cards, {{powerups}} power-ups"
+    },
+    "3": {
+      "name": "Specials",
+      "content": "{{specials}} special cards, {{lootboxes}} loot-boxes"
+    },
+    "4": {
+      "name": "Level ups",
+      "content": "{{levelups}} level ups, {{specials}} special cards"
+    },
+    "5": {
+      "name": "Modifiers",
+      "content": "{{modofiers}} modifiers, {{lootboxes}} loot-boxes"
+    },
+    "6": {
+      "name": "Mix",
+      "content": "{{lootboxes}} loot-boxes, {{powerups}} power-ups, {{levelups}} level ups"
+    }
   }
 }

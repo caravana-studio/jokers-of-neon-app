@@ -5,13 +5,14 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DeckPageContent } from "./DeckPageContent";
 import { DeckPageContentMobile } from "./DeckPageContent.mobile";
 import { useGame } from "../../dojo/queries/useGame";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const DeckPage = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   const location = useLocation();
   const game = useGame();
-  const inStore = game?.state === "AT_SHOP";
+  const inStore = game?.state == GameStateEnum.Store;
   const burn = location.state?.burn ?? false;
 
   return (

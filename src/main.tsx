@@ -30,6 +30,7 @@ const I18N_NAMESPACES = [
   "intermediate-screens",
   "plays",
   "achievements",
+  "map",
 ];
 
 async function init() {

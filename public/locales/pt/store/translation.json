@@ -121,12 +121,31 @@
     }
   },
   "config": {
-      "0": {"name": "" },
-      "1": {"name": "Baralho" },
-      "2": {"name": "Global" },
-      "3": {"name": "Especiais" },
-      "4": {"name": "Upgrades de nível" },
-      "5": {"name": "Modificadoras" },
-      "6": {"name": "Mistura" }
+    "shop": "Loja",
+    "0": { "name": "" },
+    "1": {
+      "name": "Baralho",
+      "content": "{{traditionals}} cartas tradicionais ou neon, {{modifiers}} modificadores, queimar uma carta do seu baralho"
+    },
+    "2": {
+      "name": "Global",
+      "content": "{{specials}} cartas especiais, {{powerups}} power-ups"
+    },
+    "3": {
+      "name": "Especiais",
+      "content": "{{specials}} cartas especiais, {{lootboxes}} caixas"
+    },
+    "4": {
+      "name": "Upgrades de nível",
+      "content": "{{levelups}} upgrades de nível, {{specials}} cartas especiais"
+    },
+    "5": {
+      "name": "Modificadoras",
+      "content": "{{modofiers}} modificadores, {{lootboxes}} caixas"
+    },
+    "6": {
+      "name": "Mix",
+      "content": "{{lootboxes}} caixas, {{powerups}} power-ups, {{levelups}} upgrades de nível"
+    }
   }
 }

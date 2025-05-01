@@ -29,10 +29,10 @@
         "selling": "Vendendo..."
       }
     },
-    "level-points": {
-      "level": "Nível",
+    "round-points": {
+      "round": "Rodada",
       "target-score": "Pontuação",
-      "score": "Pontuação {{score}} para passar o nível {{level}}"
+      "score": "Pontuação {{score}} para passar a rodada {{round}}"
     },
     "score": "Sua pontuação:",
     "score-total": "Pontuação Total",

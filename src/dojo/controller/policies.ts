@@ -1,114 +1,79 @@
 import { getContractByName } from "@dojoengine/core";
 import manifest from "../../manifest.json";
+import { setupWorld } from "../typescript/contracts.gen";
 
-const DOJO_NAMESPACE =
-  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
-const game_system_contract_address = getContractByName(
-  manifest,
-  DOJO_NAMESPACE,
-  "game_system"
-)?.address;
+interface Method {
+  name: string;
+  entrypoint: string;
+}
 
-const shop_system_contract_address = getContractByName(
-  manifest,
-  DOJO_NAMESPACE,
-  "shop_system"
-)?.address;
+interface ContractPolicy {
+  methods: Method[];
+}
 
-const rage_system_contract_address = getContractByName(
-  manifest,
-  DOJO_NAMESPACE,
-  "rage_system"
-)?.address;
+interface Policies {
+  contracts: Record<string, ContractPolicy>;
+}
 
-const action_system_contract_address = getContractByName(
-  manifest,
-  DOJO_NAMESPACE,
-  "action_system"
-)?.address;
-
-export const policies = {
-  contracts: {
-    [game_system_contract_address]: {
-      methods: [
-        {
-          name: "Create game",
-          entrypoint: "create_game",
-        },
-        {
-          name: "Mint game",
-          entrypoint: "mint",
-        },
-        {
-          name: "Start game",
-          entrypoint: "start_game",
-        },
-      ],
-    },
-    [action_system_contract_address]: {
-      methods: [
-        {
-          name: "Play",
-          entrypoint: "play",
-        },
-        {
-          name: "Discard",
-          entrypoint: "discard",
-        },
-        {
-          name: "Change modifier card",
-          entrypoint: "change_modifier_card",
-        },
-      ],
-    },
-    [shop_system_contract_address]: {
-      methods: [
-        {
-          name: "Skip shop",
-          entrypoint: "skip_shop",
-        },
-        {
-          name: "Buy card",
-          entrypoint: "buy_card_item",
-        },
-        {
-          name: "Level up poker hand",
-          entrypoint: "buy_poker_hand_item",
-        },
-        {
-          name: "Buy loot box",
-          entrypoint: "buy_blister_pack_item",
-        },
-        {
-          name: "Burn item",
-          entrypoint: "buy_burn_item",
-        },
-        {
-          name: "Buy power-up",
-          entrypoint: "buy_power_up_item",
-        },
-        {
-          name: "Buy special card",
-          entrypoint: "buy_special_card_item",
-        },
-        {
-          name: "Select cards from loot box",
-          entrypoint: "select_cards_from_blister",
-        },
-        {
-          name: "Unlock special card slot",
-          entrypoint: "buy_slot_special_card_item",
-        },
-        {
-          name: "Reroll",
-          entrypoint: "reroll",
-        },
-        {
-          name: "Sell special card",
-          entrypoint: "sell_special_card",
-        },
-      ],
-    },
-  },
+const formatEntrypoint = (entrypoint: string): string => {
+  return entrypoint
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 };
+
+const generatePolicies = (): Policies => {
+  const mockProvider = {
+    execute: () => Promise.resolve({}),
+    call: () => Promise.resolve({})
+  };
+  
+  const world = setupWorld(mockProvider as any);
+  
+  const policiesContracts: Record<string, ContractPolicy> = {};
+  
+  Object.entries(world).forEach(([systemName, systemObj]) => {
+    const contractAddress = getContractByName(
+      manifest,
+      DOJO_NAMESPACE,
+      systemName
+    )?.address;
+    
+    if (!contractAddress) {
+      console.warn(`Contract address not found for ${systemName}`);
+      return;
+    }
+    
+    const methods: string[] = [];
+    
+    Object.entries(systemObj as Record<string, unknown>).forEach(([methodName, methodValue]) => {
+      if (!methodName.startsWith('build') && typeof methodValue === 'function') {
+        if (!methodName.startsWith('get')) {
+          let entrypoint = methodName;
+          if (/[A-Z]/.test(entrypoint)) {
+            entrypoint = entrypoint.replace(/([A-Z])/g, '_$1').toLowerCase();
+            if (entrypoint.startsWith('_')) {
+              entrypoint = entrypoint.substring(1);
+            }
+          }
+          methods.push(entrypoint);
+        }
+      }
+    });
+    
+    if (methods.length > 0) {
+      policiesContracts[contractAddress] = {
+        methods: methods.map(method => ({
+          name: formatEntrypoint(method),
+          entrypoint: method
+        }))
+      };
+    }
+  });
+  
+  return { contracts: policiesContracts };
+};
+
+export const policies = generatePolicies();
