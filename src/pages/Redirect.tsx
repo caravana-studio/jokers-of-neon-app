@@ -35,8 +35,11 @@ export const Redirect = () => {
       navigate("/map");
     } else if (state === GameStateEnum.Store && page === "store") {
       navigate("/store", { state: { lastTabIndex: lastTabIndex } });
-    } else if (state === GameStateEnum.Lootbox && page === "open-loot-box") {
-      navigate("/open-loot-box");
+    } else if (
+      state === GameStateEnum.Lootbox &&
+      page === "loot-box-cards-selection"
+    ) {
+      navigate("/loot-box-cards-selection");
     } else if (page === "state" && state) {
       navigate(stateToPageMap[state as keyof typeof stateToPageMap] ?? "/", {
         replace: true,

@@ -16,9 +16,9 @@ export const redirectConfig: RedirectRule[] = [
     redirectTo: "/loot-box-cards-selection",
   },
   {
-    matchPath: ["/open-loot-box", "/loot-box-cards-selection"],
+    matchPath: ["/loot-box-cards-selection"],
     gameState: GameStateEnum.Store,
-    redirectTo: "/redirect/store",
+    redirectTo: "/store",
   },
   {
     matchPath: "*",

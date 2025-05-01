@@ -19,6 +19,7 @@ export const OpenLootBox = () => {
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
+  const [canTransition, setCanTransition] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
   const { play: openPackSound } = useAudio(openPackSfx, 0.5);
   const game = useGame();
@@ -31,16 +32,23 @@ export const OpenLootBox = () => {
   useRedirectByGameState();
 
   if (!pack) {
+    navigate(-1);
     return <p>LootBox not found.</p>;
   }
 
   const openAnimationCallBack = () => {
     setTimeout(() => {
-      transitionTo("/loot-box-cards-selection", {
-        state: { pack: pack },
-      });
+      setCanTransition(true);
     }, 150);
   };
+
+  useEffect(() => {
+    if (canTransition && !isBuying) {
+      transitionTo("/redirect/loot-box-cards-selection", {
+        state: { pack: pack },
+      });
+    }
+  }, [canTransition, isBuying]);
 
   useEffect(() => {
     if (game && game?.state !== GameStateEnum.Lootbox) {
@@ -48,10 +56,6 @@ export const OpenLootBox = () => {
       buyPack(pack)
         .then((response) => {
           if (response) {
-            // setLockRedirection(true);
-            navigate("/redirect/open-loot-box", {
-              state: { pack: pack },
-            });
           } else {
             navigate(-1);
           }
