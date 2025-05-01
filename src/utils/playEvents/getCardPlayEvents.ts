@@ -1,4 +1,4 @@
-import { EventTypeEnum } from "../../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
 import { getEventKey } from "../getEventKey";

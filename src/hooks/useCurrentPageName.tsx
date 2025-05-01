@@ -1,9 +1,9 @@
-import { useLocation } from "react-router-dom";
-import { useGameContext } from "../providers/GameProvider";
-import { useGame } from "../dojo/queries/useGame";
 import { useEffect, useState } from "react";
-import { LAST_PAGE } from "../constants/localStorage";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { LAST_PAGE } from "../constants/localStorage";
+import { useGameContext } from "../providers/GameProvider";
+import { useStore } from "../providers/StoreProvider";
 
 interface Page {
   name: string;
@@ -12,10 +12,8 @@ interface Page {
 
 export const useCurrentPageName = (): Page | null => {
   const location = useLocation();
-  const game = useGame();
-  const { isRageRound } = useGameContext();
-  const level = game?.level ?? 0;
-  const shopConfigId = game?.shop_config_id ?? 0;
+  const { isRageRound, nodeRound } = useGameContext();
+  const { shopId } = useStore();
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });
   const { t: tShop } = useTranslation(["store"]);
 
@@ -27,8 +25,9 @@ export const useCurrentPageName = (): Page | null => {
   const pageMap: Record<string, string | (() => string)> = {
     "/gameover": tGame("game-menu.pages.gameover"),
     "/open-loot-box": tGame("game-menu.pages.open-loot-box"),
+    "/map": tGame("game-menu.pages.map"),
     "/store": () => {
-      const shopName = tShop(`config.${shopConfigId}.name`, {
+      const shopName = tShop(`config.${shopId}.name`, {
         defaultValue: "",
       });
       return tGame("game-menu.pages.store", { shopName });
@@ -38,7 +37,7 @@ export const useCurrentPageName = (): Page | null => {
         roundType: isRageRound
           ? tGame("game-menu.pages.rage-round")
           : tGame("game-menu.pages.round"),
-        level,
+        level: nodeRound,
       }),
   };
 
@@ -60,7 +59,7 @@ export const useCurrentPageName = (): Page | null => {
       setCurrentPage(newPage);
       localStorage.setItem(LAST_PAGE, JSON.stringify(newPage));
     }
-  }, [pageName, location.pathname, level]);
+  }, [pageName, location.pathname, nodeRound]);
 
   return currentPage;
 };

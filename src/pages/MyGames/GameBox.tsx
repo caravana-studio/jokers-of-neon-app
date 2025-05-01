@@ -7,6 +7,7 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const GameBox = ({ game }: { game: GameSummary }) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -43,7 +44,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
       p={2}
       width="100%"
       height="60px"
-      opacity={game.status === "FINISHED" ? 0.6 : 1}
+      opacity={game.status === GameStateEnum.GameOver ? 0.6 : 1}
     >
       <Flex
         fontWeight="bold"
@@ -79,7 +80,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
           )}
         </Flex>
         <Flex w="30%" justifyContent="flex-end">
-          {game.status !== "FINISHED" && (
+          {game.status !== GameStateEnum.GameOver && (
             <Button
               size="sm"
               width="60px"
@@ -104,7 +105,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
       p={2}
       width="100%"
       height="70px"
-      opacity={game.status === "FINISHED" ? 0.6 : 1}
+      opacity={game.status === GameStateEnum.GameOver ? 0.6 : 1}
     >
       <Flex
         fontWeight="bold"
@@ -144,7 +145,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
           )}
         </Flex>
         <Flex w="20%" justifyContent="flex-end">
-          {game.status !== "FINISHED" && (
+          {game.status !== GameStateEnum.GameOver && (
             <Button
               size="sm"
               width="110px"

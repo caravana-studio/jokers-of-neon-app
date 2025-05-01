@@ -6,38 +6,36 @@ import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
-import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { PowerUp } from "../../types/Powerup/PowerUp";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
+const DECK_SHOP_CONFIG_ID = 1;
+const GLOBAL_SHOP_CONFIG_ID = 2;
+const SPECIALS_SHOP_CONFIG_ID = 3;
+const LEVEL_UPS_SHOP_CONFIG_ID = 4;
+const MODIFIERS_SHOP_CONFIG_ID = 5;
+const MIX_SHOP_CONFIG_ID = 6;
+
+export const SHOP_ID_MAP = {
+  [DECK_SHOP_CONFIG_ID]: "deck",
+  [GLOBAL_SHOP_CONFIG_ID]: "global",
+  [SPECIALS_SHOP_CONFIG_ID]: "specials",
+  [LEVEL_UPS_SHOP_CONFIG_ID]: "level-ups",
+  [MODIFIERS_SHOP_CONFIG_ID]: "modifiers",
+  [MIX_SHOP_CONFIG_ID]: "mix",
+};
 export const DynamicStorePage = () => {
-  const DECK_SHOP_CONFIG_ID = 1;
-  const GLOBAL_SHOP_CONFIG_ID = 2;
-  const SPECIALS_SHOP_CONFIG_ID = 3;
-  const LEVEL_UPS_SHOP_CONFIG_ID = 4;
-  const MODIFIERS_SHOP_CONFIG_ID = 5;
-  const MIX_SHOP_CONFIG_ID = 6;
-
-  const SHOP_ID_MAP = {
-    [DECK_SHOP_CONFIG_ID]: "deck",
-    [GLOBAL_SHOP_CONFIG_ID]: "global",
-    [SPECIALS_SHOP_CONFIG_ID]: "specials",
-    [LEVEL_UPS_SHOP_CONFIG_ID]: "level-ups",
-    [MODIFIERS_SHOP_CONFIG_ID]: "modifiers",
-    [MIX_SHOP_CONFIG_ID]: "mix",
-  };
-
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
-  const game = useGame();
-  const shopId: number = game?.shop_config_id ?? DECK_SHOP_CONFIG_ID;
+
+  const { shopId } = useStore();
+
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );
@@ -47,18 +45,10 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const {
-    setDestroyedSpecialCardId,
-    onShopSkip,
-    setHand,
-    gameId,
-    setPowerUps,
-    maxPowerUpSlots,
-  } = useGameContext();
-
+  const { onShopSkip, gameId } = useGameContext();
   const { skipShop } = useShopActions();
+  const { setLoading } = useStore();
 
-  const { locked, setLoading } = useStore();
   useRedirectByGameState();
 
   const handleNextLevelClick = () => {
@@ -66,17 +56,7 @@ export const DynamicStorePage = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        setHand(response.cards);
-
-        const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
-
-        response.destroyedSpecialCard &&
-          setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/redirect/demo");
+        navigate("/redirect/map");
       } else {
         setLoading(false);
       }

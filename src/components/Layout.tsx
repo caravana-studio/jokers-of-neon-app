@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { SidebarMenu } from "./BarMenu/SidebarMenu";
-import { hiddenBarMenu } from "./BarMenu/BarMenuConfig";
+import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
+import { hiddenBarMenu } from "./Menu/BarMenu/BarMenuConfig";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const sidebarHidden = hiddenBarMenu();

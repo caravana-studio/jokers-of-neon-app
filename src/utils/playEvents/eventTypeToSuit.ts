@@ -1,4 +1,4 @@
-import { EventTypeEnum } from "../../dojo/typescript/models.gen";
+import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 
 export const eventTypeToSuit = (eventType: EventTypeEnum) => {

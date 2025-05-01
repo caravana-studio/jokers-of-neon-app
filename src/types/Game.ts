@@ -1,4 +1,5 @@
 import { BigNumberish } from "starknet";
+import { GameStateEnum } from "../dojo/typescript/custom";
 
 export interface IGame {
   cash: number;
@@ -15,5 +16,5 @@ export interface IGame {
   player_name: BigNumberish;
   player_score: number;
   round: number;
-  state: 'IN_GAME' | 'AT_SHOP' | 'FINISHED' | 'OPEN_BLISTER_PACK';
+  state: GameStateEnum;
 }
