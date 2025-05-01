@@ -1,5 +1,6 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
+import CachedImage from "../CachedImage";
 
 interface FlipCardProps {
   children: React.ReactNode;
@@ -41,7 +42,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
       transform="rotateY(180deg)"
       sx={{ backfaceVisibility: "hidden" }}
     >
-      <Image
+      <CachedImage
         src={backImage}
         h="100%"
         w="100%"
