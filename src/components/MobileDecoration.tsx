@@ -1,17 +1,52 @@
+import { Flex } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import CachedImage from "./CachedImage";
 
-export const MobileDecoration = () => {
+interface MobileDecorationProps {
+  fadeToBlack?: boolean;
+}
+
+export const MobileDecoration = ({
+  fadeToBlack = false,
+}: MobileDecorationProps) => {
   const { isRageRound } = useGameContext();
   return (
     <>
+      {fadeToBlack && (
+        <Flex
+          position="absolute"
+          bottom={0}
+          w="100%"
+          height={{ base: "90px", sm: "150px" }}
+          background="linear-gradient(to top, 
+    black 0%, 
+    black 40%, 
+    transparent 100%);"
+          zIndex={1}
+          pointerEvents="none"
+        />
+      )}
+      {fadeToBlack && (
+        <Flex
+          position="absolute"
+          top={0}
+          w="100%"
+          height={{ base: "60px", sm: "150px" }}
+          background="linear-gradient(to bottom, 
+    black 0%, 
+    black 40%, 
+    transparent 100%);"
+          zIndex={1}
+          pointerEvents="none"
+        />
+      )}
       <CachedImage
         src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
         width="100%"
         maxHeight="70px"
         position="fixed"
         top={1}
-        zIndex={0}
+        zIndex={2}
       />
       <CachedImage
         src={`/borders/bottom${isRageRound ? "-rage" : ""}.png`}
@@ -19,7 +54,7 @@ export const MobileDecoration = () => {
         maxHeight="70px"
         position="fixed"
         bottom={1}
-        zIndex={0}
+        zIndex={2}
       />
     </>
   );

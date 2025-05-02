@@ -1,47 +1,13 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useShopActions } from "../../dojo/useShopActions";
-import { useGameContext } from "../../providers/GameProvider";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useMap } from "../../providers/MapProvider";
-import { NodeType } from "./types";
 
 export const NodeDetailsMobileButton = () => {
-  const { selectedNodeData, reachableNodes } = useMap();
-  const navigate = useNavigate();
-  const { t } = useTranslation("map");
-  const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
-
-  const handleGoClick = () => {
-    selectedNodeData &&
-      advanceNode(gameId, selectedNodeData.id).then((response) => {
-        if (response) {
-          switch (selectedNodeData?.nodeType) {
-            case NodeType.RAGE:
-              navigate("/redirect/demo");
-              break;
-            case NodeType.ROUND:
-              navigate("/redirect/demo");
-              break;
-            case NodeType.STORE:
-              navigate("/redirect/store");
-              break;
-            default:
-              break;
-          }
-        }
-      });
-  };
-
-  const isReachable = reachableNodes.includes(
-    selectedNodeData?.id?.toString() ?? ""
-  );
+  const { selectedNodeData } = useMap();
 
   return (
     <Flex
       position="absolute"
-      bottom={4}
+      top={'30px'}
       right={4}
       zIndex={100}
       width="70%"
@@ -61,11 +27,6 @@ export const NodeDetailsMobileButton = () => {
           </Text>
         )}
       </Flex>
-      {isReachable && (
-        <Button w="50px" size="md" onClick={handleGoClick}>
-          {t("go")}
-        </Button>
-      )}
     </Flex>
   );
 };
