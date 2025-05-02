@@ -1,6 +1,12 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-import { buyPackSfx, buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
+import {
+  achievementSfx,
+  buyPackSfx,
+  buySfx,
+  levelUpSfx,
+  rerollSfx,
+} from "../constants/sfx.ts";
 import {
   EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
@@ -166,20 +172,24 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
     stateBuyCard(card);
-    const promise = dojoBuyCard(gameId, card.idx, getCardType(card));
-    promise
-      .then((response) => {
-        if (!response) {
+
+    const promise = dojoBuyCard(gameId, card.idx, getCardType(card))
+      .then(async ({ success }) => {
+        if (!success) {
           stateRollbackBuyCard(card);
         }
+
         fetchShopItems();
+        return success;
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+        return false;
       })
       .finally(() => {
         setLocked(false);
       });
+
     return promise;
   };
 
@@ -209,14 +219,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const burnCard = (card: Card): Promise<boolean> => {
     buySound();
     setLocked(true);
-    const promise = dojoBurnCard(gameId, card.card_id ?? 0);
-    promise
-      .then(() => {
+
+    const promise = dojoBurnCard(gameId, card.card_id ?? 0)
+      .then(async ({ success }) => {
         fetchShopItems();
+        return success;
       })
+      .catch(() => false)
       .finally(() => {
         setLocked(false);
       });
+
     return promise;
   };
 
@@ -227,42 +240,54 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
     stateBuyCard(card);
-    const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal);
-    promise
-      .then((response) => {
-        if (!response) {
+
+    const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal)
+      .then(async ({ success }) => {
+        if (!success) {
           stateRollbackBuyCard(card);
         }
         fetchShopItems();
+        return success;
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+        return false;
       })
       .finally(() => {
         setLocked(false);
       });
+
     return promise;
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
     buyPackSound();
-    const promise = dojoBuyPack(gameId, Number(pack.idx));
     buyBlisterPack(Number(pack.idx));
-    promise
-      .then((response) => {
-        if (!response) {
+    const promise = dojoBuyPack(gameId, Number(pack.idx))
+      .then(async ({ success }) => {
+        if (!success) {
           rollbackBuyBlisterPack(Number(pack.idx));
         }
         fetchShopItems();
+
+        return success;
       })
       .catch(() => {
         rollbackBuyBlisterPack(Number(pack.idx));
+        return false;
       });
     return promise;
   };
 
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
-    return dojoSelectCardsFromPack(gameId, cardIndices);
+    const promise = dojoSelectCardsFromPack(gameId, cardIndices)
+      .then(async ({ success }) => {
+        return success;
+      })
+      .catch(() => {
+        return false;
+      });
+    return promise;
   };
 
   const reroll = () => {
@@ -288,15 +313,17 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     levelUpHandSound();
     setLocked(true);
     buyPokerHand(item.idx);
-    const promise = dojoLevelUpHand(gameId, item.idx);
-    promise
-      .then((response) => {
-        if (!response) {
+    const promise = dojoLevelUpHand(gameId, item.idx)
+      .then(async ({ success }) => {
+        if (!success) {
           rollbackBuyPokerHand(item.idx);
         }
+
+        return success;
       })
       .catch(() => {
         rollbackBuyPokerHand(item.idx);
+        return false;
       })
       .finally(() => {
         setLocked(false);
@@ -304,17 +331,22 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
-  const buySpecialSlot = () => {
+  const buySpecialSlot = (): Promise<boolean> => {
     setLocked(true);
     buySlotSpecialCard();
-    const promise = dojoBuySpecialSlot(gameId);
-    promise
+
+    const promise = dojoBuySpecialSlot(gameId)
+      .then(async ({ success }) => {
+        return success;
+      })
       .catch(() => {
         rollbackBuySlotSpecialCard();
+        return false;
       })
       .finally(() => {
         setLocked(false);
       });
+
     return promise;
   };
 

@@ -1,22 +1,22 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useConnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
-import { DiscordLink, PositionedDiscordLink } from "../components/DiscordLink";
+import { PositionedDiscordLink } from "../components/DiscordLink";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
 
 import { RemoveScroll } from "react-remove-scroll";
+import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { MobileDecoration } from "../components/MobileDecoration";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
