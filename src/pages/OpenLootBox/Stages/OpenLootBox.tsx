@@ -29,6 +29,7 @@ export const OpenLootBox = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "open-lootbox",
   });
+
   useRedirectByGameState();
 
   if (!pack) {

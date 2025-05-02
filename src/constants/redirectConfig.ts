@@ -11,12 +11,12 @@ interface RedirectRule {
 
 export const redirectConfig: RedirectRule[] = [
   {
-    matchPath: /^\/(?!manage).*$/, 
+    matchPath: /^\/(?!manage$|open-loot-box$|redirect\/open-loot-box$).*$/, // any except /manage and /open-loot-box
     gameState: GameStateEnum.Lootbox,
     redirectTo: "/loot-box-cards-selection",
   },
   {
-    matchPath: ["/loot-box-cards-selection"],
+    matchPath: ["/loot-box-cards-selection", "/demo", "/map", "/^\/redirect\/.+$/"],
     gameState: GameStateEnum.Store,
     redirectTo: "/store",
   },
@@ -26,8 +26,19 @@ export const redirectConfig: RedirectRule[] = [
     redirectTo: (params) => `/gameover/${params.gameId}`,
   },
   {
-    matchPath: "*",
+    matchPath: /^\/(?!map).*$/,
     gameState: GameStateEnum.Round,
     redirectTo: "/demo",
-  }
+  },
+  {
+    matchPath: /^\/(?!map).*$/,
+    gameState: GameStateEnum.Rage,
+    redirectTo: "/demo",
+  },
+  {
+    matchPath: "*",
+    gameState: GameStateEnum.Map,
+    redirectTo: "/map",
+  },
+  
 ];
