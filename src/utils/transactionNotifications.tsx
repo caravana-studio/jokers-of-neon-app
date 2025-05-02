@@ -1,15 +1,12 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Spinner, Tooltip, Text, Image, Flex } from "@chakra-ui/react";
+import { Box, Flex, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
-import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
-import { getEnvString } from "./getEnvValue.ts";
-import theme from "../theme/theme.ts";
 import i18n from "../i18n.ts";
-
-const { white, violet } = theme.colors;
+import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST, VIOLET_LIGHT } from "../theme/colors.tsx";
+import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -115,7 +112,7 @@ export const showAchievementToast = (achievementNames: string[]): void => {
             borderRadius="12px"
             p="10px"
             px="20px"
-            boxShadow={`0px 0px 10px 1px ${white}`}
+            boxShadow={`0px 0px 10px 1px white`}
             maxW="300px"
             color="white"
             gap="10px"
@@ -124,12 +121,12 @@ export const showAchievementToast = (achievementNames: string[]): void => {
               src="/logos/trophy.png"
               alt="Trophy Icon"
               boxSize={isMobile ? "16px" : "20px"}
-              color={white}
+              color='white'
             />
             <Box>
               <Text
                 fontSize={isMobile ? "10px" : "12px"}
-                color={violet}
+                color={VIOLET_LIGHT}
                 fontWeight="bold"
                 fontFamily="Sonara"
                 textTransform="uppercase"
