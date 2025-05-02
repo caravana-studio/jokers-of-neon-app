@@ -23,5 +23,7 @@ export enum DojoEvents {
     MODIFIER_CARD_NEON = "ModifierCardNeonEvent",
     SPECIAL_NEON_CARD = "SpecialNeonCardEvent",
     CARD_PLAY = "CardPlayEvent",
+
+    ACHIEVEMENT_COMPLETE = "AchievementCompletedEvent",
   }
   

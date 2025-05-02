@@ -35,7 +35,7 @@ interface AnimatePlayConfig {
   replaceCards: (cards: Card[]) => void;
   handsLeft: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
-  setCardTransformationLock: (locked: boolean) =>  void;
+  setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
 }
 
@@ -70,7 +70,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     handsLeft,
     setAnimateSecondChanceCard,
     setCardTransformationLock,
-    setIsRageRound
+    setIsRageRound,
   } = config;
 
   if (!playEvents) return;
