@@ -2,13 +2,6 @@ import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import {
-  achievementSfx,
-  buyPackSfx,
-  buySfx,
-  levelUpSfx,
-  rerollSfx,
-} from "../constants/sfx.ts";
-import {
   EMPTY_BURN_ITEM,
   EMPTY_SPECIAL_SLOT_ITEM,
 } from "../dojo/queries/getShopItems.ts";
