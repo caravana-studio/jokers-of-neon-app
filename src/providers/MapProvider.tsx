@@ -12,6 +12,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
+import { BLUE } from "../theme/colors";
 import { getRageNodeData } from "../utils/getRageNodeData";
 
 export interface SelectedNodeData {
@@ -110,11 +111,12 @@ export const MapProvider = ({ children }: MapProviderProps) => {
           target: childId.toString(),
           type: "straight",
           style: {
+            stroke: (node.visited && targetNode?.visited) ? BLUE : "#fff",
             opacity:
               (node.visited && targetNode?.visited) ||
               childId === Number(currentNode?.id ?? 0)
                 ? 1
-                : 0.3,
+                : 0.2,
           },
         });
       });

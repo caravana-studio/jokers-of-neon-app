@@ -9,7 +9,7 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
-import { VIOLET } from "../../../theme/colors";
+import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { NodeType } from "../types";
 
@@ -61,7 +61,11 @@ const StoreNode = ({ data }: any) => {
         style={{
           opacity: reachable || data.visited || data.current ? 1 : 0.5,
           background:
-            reachable || data.current ? VIOLET : "rgba(255,255,255,0.1)",
+            data.current || data.visited
+              ? BLUE
+              : reachable
+                ? VIOLET
+                : "rgba(255,255,255,0.1)",
           padding: 10,
           borderRadius: "100%",
           width: 50,
@@ -72,7 +76,8 @@ const StoreNode = ({ data }: any) => {
           fontSize: 24,
           color: "white",
           border: "1px solid #fff",
-          transform: selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
+          transform:
+            selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
           boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
