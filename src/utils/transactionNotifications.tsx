@@ -1,10 +1,16 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Spinner, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
-import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST } from "../theme/colors.tsx";
+import i18n from "../i18n.ts";
+import {
+  ERROR_TOAST,
+  LOADING_TOAST,
+  SUCCESS_TOAST,
+  VIOLET_LIGHT,
+} from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
@@ -86,6 +92,63 @@ export const showTransactionToast = (
     />,
     {
       ...TOAST_COMMON_OPTIONS,
+    }
+  );
+};
+
+export const showAchievementToast = (achievementNames: string[]): void => {
+  toast.custom(
+    (t) => (
+      <Flex
+        direction="column"
+        gap="12px" // space between each toast
+        position="absolute"
+        left={isMobile ? "8px" : "26px"}
+        bottom={isMobile ? "undefined" : "16px"}
+        zIndex={10000}
+        w={"300px"}
+      >
+        {achievementNames.map((achievementName, index) => (
+          <Box
+            key={index}
+            display="flex"
+            alignItems="center"
+            bg="black"
+            borderRadius="12px"
+            p="10px"
+            px="20px"
+            boxShadow={`0px 0px 10px 1px white`}
+            maxW="300px"
+            color="white"
+            gap="10px"
+          >
+            <Image
+              src="/logos/trophy.png"
+              alt="Trophy Icon"
+              boxSize={isMobile ? "16px" : "20px"}
+              color="white"
+            />
+            <Box>
+              <Text
+                fontSize={isMobile ? "10px" : "12px"}
+                color={VIOLET_LIGHT}
+                fontWeight="bold"
+                fontFamily="Sonara"
+                textTransform="uppercase"
+              >
+                {i18n.t(`title`, { ns: "achievements" })}
+              </Text>
+              <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
+                {achievementName}
+              </Text>
+            </Box>
+          </Box>
+        ))}
+      </Flex>
+    ),
+    {
+      position: isMobile ? "top-left" : "bottom-left",
+      duration: 7000,
     }
   );
 };
