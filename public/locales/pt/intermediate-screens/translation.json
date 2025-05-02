@@ -47,8 +47,7 @@
   },
   "rewards-details": {
     "labels": {
-      "title-1": "Nível",
-      "title-2": "completado!",
+      "title": "Rodada {{round}} completada!",
       "base": "base",
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes restantes",
