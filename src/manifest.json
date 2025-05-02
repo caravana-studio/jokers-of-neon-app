@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x619ec786d4e2643cc46dba26acbbb3c51652fe7cb03d2367e0a483b80a9a206",
-      "class_hash": "0x419af6ad7afff9b4c7298b4fa9cfa842ad6cb2836e3935937cf33cd08450d05",
+      "address": "0x13c92d757659527b884cc77f4fc5c32089f9fcce4adc081e6403d22fba04761",
+      "class_hash": "0x55c4dc20ea0930230a344a5663059dfccbdbd44cb023d8d2c51a240eb8d92b1",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x168dccc6e440d44ccb905454cc8714b5484d03b72daa9d612b127fe2430ee44",
-      "class_hash": "0x7595c4b41a8b0054a6948c6c59b7e1e4e03e359f8910156de61247dc26163f8",
+      "address": "0x74d5e163a7caaf93f3b6d45088b8a11760d9c5f528669b4e077ef82d501ae1c",
+      "class_hash": "0x928c71b18c9b188c3fe9db1daf0be43d5ea3a555c0cc29e715e9df18ff3da6",
       "abi": [
         {
           "type": "impl",
@@ -1733,6 +1733,18 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::felt252>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "surrender",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
                 }
               ],
               "outputs": [],
@@ -2610,6 +2622,7 @@
       "systems": [
         "dojo_init",
         "start_game",
+        "surrender",
         "upgrade",
         "mint",
         "emit_metadata_update",
@@ -2623,8 +2636,8 @@
       ]
     },
     {
-      "address": "0x3a5654c3ebce0a0f300b487afd83928d659bbd9c921b781466eb9e6336c7c45",
-      "class_hash": "0x2e99f27b3da168a06624c81160d388855807249aa641543296e7776c97a1a25",
+      "address": "0x4878f824d4adcb8f69da650b34da73315272992abd3fa7661fad72ed419a922",
+      "class_hash": "0x601ae69e039923cd629bb14da9cde3094ee79fc2c520b500c1f58fc9d96fcf8",
       "abi": [
         {
           "type": "impl",
@@ -4043,8 +4056,8 @@
       ]
     },
     {
-      "address": "0x70144d567cac4908cb05563b09f74e0dfe882163c58a0773104a0209b0afa52",
-      "class_hash": "0x75f9ea3bf40a72d707cefa63a927627b8276b646ed2258f1d824c9add92c109",
+      "address": "0x77ab925da6c2f9179e800f6a49e9a44e9166e8aad79edf8ba8d51e01c126d9a",
+      "class_hash": "0x12b51b7f021d78987fd915f72492a453b9672ba64e5f89d10025b2331a4bc98",
       "abi": [
         {
           "type": "impl",
@@ -4642,6 +4655,22 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "sell_power_up",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "power_up_index",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -4775,12 +4804,18 @@
         "burn_card",
         "reroll",
         "sell_special_card",
+        "sell_power_up",
         "upgrade"
       ]
     }
   ],
-  "libraries": [],
   "models": [
+    {
+      "members": [],
+      "class_hash": "0x6ac1314d366b4877563740869e31771da45635dc5dadbca0e658617a0926f31",
+      "tag": "jokers_of_neon_core-AchievementsTracker",
+      "selector": "0x1126c16327cc9549ca0ed49bc7dfadda5a1a3c12d3fc2529b0e690b91dcfcd5"
+    },
     {
       "members": [],
       "class_hash": "0x11c477e595e649dc25a76d724511641923af5e06dfeb4b469c959a5b4425909",
@@ -5007,6 +5042,12 @@
   "events": [
     {
       "members": [],
+      "class_hash": "0x7a9ba9a16e906ecd919297ab522c1da7962eb4669120b63febec80eee1abd6b",
+      "tag": "jokers_of_neon_core-AchievementCompletedEvent",
+      "selector": "0x2f32278c48ba859150a441098c61524f72ebb8ee80dbb52ff57725b3b2f7822"
+    },
+    {
+      "members": [],
       "class_hash": "0x3b4bd43b87c0d57a7f5ea3ea41b17d7e4258dff0edf1de573263964251a17e2",
       "tag": "jokers_of_neon_core-CardActivateEvent",
       "selector": "0x3762d25725f2e231d84f75bb926426fc7d531512a21559f357c184f9487c5b4"
@@ -5107,6 +5148,5 @@
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
-  ],
-  "external_contracts": []
+  ]
 }

@@ -19,6 +19,7 @@ import {
   negativeMultiSfx,
   pointsSfx,
   preselectedCardSfx,
+  achievementSfx,
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
@@ -45,6 +46,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { handleAchievementPush } from "../utils/pushAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -172,6 +174,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
@@ -597,9 +600,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onSellSpecialCard = (cardIdx: number) => {
     setPreSelectionLocked(true);
-    return sellSpecialCard(gameId, cardIdx).finally(() => {
-      setPreSelectionLocked(false);
-    });
+    const promise = sellSpecialCard(gameId, cardIdx)
+      .then(async ({ success }) => {
+        return success;
+      })
+      .catch(() => {
+        return false;
+      })
+      .finally(() => {
+        setPreSelectionLocked(false);
+      });
+
+    return promise;
   };
 
   const checkOrCreateGame = async () => {
@@ -630,7 +642,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (!lockRedirection) {
       if (game?.state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === GameStateEnum.Store && location.pathname === "/demo") {
+      } else if (
+        game?.state === GameStateEnum.Store &&
+        location.pathname === "/demo"
+      ) {
         console.log("redirecting to store");
         navigate("/store");
       }

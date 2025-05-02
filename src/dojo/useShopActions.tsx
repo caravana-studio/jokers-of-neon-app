@@ -12,6 +12,10 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
+import { handleAchievements } from "../utils/handleAchievements";
+import { useAudio } from "../hooks/useAudio";
+import { useSettings } from "../providers/SettingsProvider";
+import { achievementSfx } from "../constants/sfx";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -26,6 +30,9 @@ export const useShopActions = () => {
   const { setDestroyedSpecialCardId, setHand, setPowerUps, maxPowerUpSlots } =
     useGameContext();
 
+  const { sfxVolume } = useSettings();
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
+
   const skipShop = async (gameId: number) => {
     try {
       showTransactionToast();
@@ -39,6 +46,7 @@ export const useShopActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         const event = tx.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -86,10 +94,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -109,6 +124,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
         const event = tx.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
@@ -149,6 +165,10 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
       console.log(e);
@@ -171,10 +191,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -198,10 +225,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -217,10 +251,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -240,10 +281,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -263,10 +311,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -286,10 +341,17 @@ export const useShopActions = () => {
         retryInterval: 100,
       });
 
-      return updateTransactionToast(transaction_hash, tx.isSuccess());
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
+
+      return { success };
     } catch (e) {
       console.log(e);
-      return failedTransactionToast();
+      failedTransactionToast();
+      return { success: false };
     }
   };
 
@@ -303,6 +365,10 @@ export const useShopActions = () => {
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
       });
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.events, achievementSound);
+      }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
     } catch (e) {
