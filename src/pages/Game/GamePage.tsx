@@ -15,6 +15,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 
 export const GamePage = () => {
   const {
@@ -33,7 +34,8 @@ export const GamePage = () => {
     lockRedirection,
   } = useGameContext();
 
-  const { animateSecondChanceCard } = useCardAnimations();
+  const { animateSecondChanceCard, animateSpecialCardDefault } =
+    useCardAnimations();
 
   const rageCards = useRageCards();
   const navigate = useNavigate();
@@ -73,6 +75,13 @@ export const GamePage = () => {
       {!skipRageAnimation && <RageRoundAnimation />}
       <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
+      {animateSpecialCardDefault && (
+        <SpecialCardAnimation
+          specialId={animateSpecialCardDefault.specialId}
+          bgPath={animateSpecialCardDefault.bgPath}
+          animatedImgPath={animateSpecialCardDefault.animatedImgPath}
+        />
+      )}
       {isSmallScreen ? (
         <CardHighlightProvider>
           <MobileGameContent />
