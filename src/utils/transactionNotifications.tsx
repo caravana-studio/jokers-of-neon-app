@@ -5,7 +5,12 @@ import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
 import i18n from "../i18n.ts";
-import { ERROR_TOAST, LOADING_TOAST, SUCCESS_TOAST, VIOLET_LIGHT } from "../theme/colors.tsx";
+import {
+  ERROR_TOAST,
+  LOADING_TOAST,
+  SUCCESS_TOAST,
+  VIOLET_LIGHT,
+} from "../theme/colors.tsx";
 import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
@@ -98,8 +103,8 @@ export const showAchievementToast = (achievementNames: string[]): void => {
         direction="column"
         gap="12px" // space between each toast
         position="absolute"
-        left={isMobile ? "8px" : "16px"}
-        bottom="16px"
+        left={isMobile ? "8px" : "26px"}
+        bottom={isMobile ? "undefined" : "16px"}
         zIndex={10000}
         w={"300px"}
       >
@@ -121,7 +126,7 @@ export const showAchievementToast = (achievementNames: string[]): void => {
               src="/logos/trophy.png"
               alt="Trophy Icon"
               boxSize={isMobile ? "16px" : "20px"}
-              color='white'
+              color="white"
             />
             <Box>
               <Text
