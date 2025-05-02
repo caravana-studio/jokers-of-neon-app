@@ -1,7 +1,6 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Loading } from "../components/Loading";
-import { useGame } from "../dojo/queries/useGame";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useRedirectByGameState } from "../hooks/useRedirectByGameState";
 
