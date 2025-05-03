@@ -15,15 +15,15 @@ export const useRedirectByGameState = (lockRedirection: boolean = false, params:
     {
       const currentPath = location.pathname;
 
-      const matchedRule = redirectConfig.find(({ matchPath, gameState: requiredState }) => {
+      const matchedRule = redirectConfig.find(({ originPaths, gameState: requiredState }) => {
         let pathMatches = false;
       
-        if (matchPath instanceof RegExp) {
-          pathMatches = matchPath.test(currentPath);
-        } else if (Array.isArray(matchPath)) {
-          pathMatches = matchPath.includes(currentPath);
+        if (originPaths instanceof RegExp) {
+          pathMatches = originPaths.test(currentPath);
+        } else if (Array.isArray(originPaths)) {
+          pathMatches = originPaths.includes(currentPath);
         } else {
-          pathMatches = matchPath === "*" || matchPath === currentPath;
+          pathMatches = originPaths === "*" || originPaths === currentPath;
         }
       
         return pathMatches && requiredState === game?.state;

@@ -3,42 +3,51 @@ import { GameStateEnum } from "../dojo/typescript/custom";
 type RedirectTo = string | ((params: Record<string, any>) => string);
 type MatchPath = string | string[] | RegExp;
 
-interface RedirectRule {
-  matchPath: MatchPath;
+export interface RedirectRule {
+  originPaths: MatchPath;
   gameState: GameStateEnum;
   redirectTo: RedirectTo;
 }
 
 export const redirectConfig: RedirectRule[] = [
   {
-    matchPath: /^\/(?!manage$|open-loot-box$|redirect\/open-loot-box$).*$/, // any except /manage and /open-loot-box
+    originPaths: /^\/(?!manage$|open-loot-box$).*$/, // any except /manage and /open-loot-box
     gameState: GameStateEnum.Lootbox,
     redirectTo: "/loot-box-cards-selection",
   },
   {
-    matchPath: ["/loot-box-cards-selection", "/demo", "/map", "/^\/redirect\/.+$/"],
+    originPaths: ["/loot-box-cards-selection", "/demo", "/map"],
     gameState: GameStateEnum.Store,
     redirectTo: "/store",
   },
   {
-    matchPath: "*",
+    originPaths: "*",
     gameState: GameStateEnum.GameOver,
     redirectTo: (params) => `/gameover/${params.gameId}`,
   },
   {
-    matchPath: /^\/(?!map).*$/,
+    originPaths: /^\/(?!map).*$/,
     gameState: GameStateEnum.Round,
     redirectTo: "/demo",
   },
   {
-    matchPath: /^\/(?!map).*$/,
+    originPaths: /^\/(?!map).*$/,
     gameState: GameStateEnum.Rage,
     redirectTo: "/demo",
   },
   {
-    matchPath: "*",
+    originPaths: "*",
     gameState: GameStateEnum.Map,
     redirectTo: "/map",
   },
   
 ];
+
+export const stateToPageMap = {
+  [GameStateEnum.GameOver]: "/gameover",
+  [GameStateEnum.Round]: "/demo",
+  [GameStateEnum.Rage]: "/demo",
+  [GameStateEnum.Map]: "/map",
+  [GameStateEnum.Store]: "/store",
+  [GameStateEnum.Lootbox]: "/loot-box-cards-selection",
+};
