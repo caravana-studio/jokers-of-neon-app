@@ -6,9 +6,6 @@ import {
 } from "react-router-dom";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Loading } from "../components/Loading";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { useRedirectByGameState } from "../hooks/useRedirectByGameState";
-import { GameStateEnum } from "../dojo/typescript/custom";
 import { useGame } from "../dojo/queries/useGame";
 import { useEffect } from "react";
 import { redirectConfig, stateToPageMap } from "../constants/redirectConfig";
