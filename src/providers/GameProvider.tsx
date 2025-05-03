@@ -632,7 +632,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setGameLoading(false);
           console.log("Game found (2), no need to create a new one");
         }
-      }, 2000);
+      }, 5000);
     } else {
       setGameLoading(false);
       console.log("Game found, no need to create a new one");
