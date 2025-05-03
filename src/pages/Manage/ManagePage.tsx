@@ -35,7 +35,7 @@ export const ManagePage = () => {
       lineHeight={1.6}
       fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       onClick={() => {
-        navigate(-1);
+        navigate("/store");
       }}
     >
       {t("power-ups.go-back")}

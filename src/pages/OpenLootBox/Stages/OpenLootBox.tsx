@@ -33,7 +33,7 @@ export const OpenLootBox = () => {
   useRedirectByGameState();
 
   if (!pack) {
-    navigate(-1);
+    navigate("/store");
     return <p>LootBox not found.</p>;
   }
 
@@ -58,11 +58,11 @@ export const OpenLootBox = () => {
         .then((response) => {
           if (response) {
           } else {
-            navigate(-1);
+            navigate("/store");
           }
         })
         .catch(() => {
-          navigate(-1);
+          navigate("/store");
         })
         .finally(() => {
           setIsBuying(false);
