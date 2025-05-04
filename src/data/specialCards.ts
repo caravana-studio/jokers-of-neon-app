@@ -64,4 +64,4 @@ export const SPECIALS_RARITY: Record<number, RARITY> = {
   379: RARITY.A,
 };
 
-export const SPECIALS_CUMULATIVE = [329, 330, 355, 357]
+export const SPECIALS_CUMULATIVE = [329, 330, 354, 355, 357]

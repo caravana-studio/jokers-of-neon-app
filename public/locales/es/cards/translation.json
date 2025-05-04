@@ -241,7 +241,7 @@
     },
     "354": {
       "name": "Omitir Bonus",
-      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta)."
+      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente +{{points}} puntos."
     },
     "355": {
       "name": "Recompensas Quemadas",

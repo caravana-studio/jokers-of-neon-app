@@ -677,7 +677,7 @@
     },
     "354": {
       "name": "Skip Bonus",
-      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card)."
+      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points."
     },
     "355": {
       "name": "Burning Rewards",

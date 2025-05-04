@@ -241,7 +241,7 @@
     },
     "354": {
       "name": "Bônus de Pular",
-      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta)."
+      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). Actualmente +{{points}} pontos."
     },
     "355": {
       "name": "Recompensas em Chamas",
