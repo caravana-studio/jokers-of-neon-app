@@ -2,8 +2,14 @@ import ReactFlow, { Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import EmojiNode from "./nodes/EmojiNode";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { MobileDecoration } from "../../components/MobileDecoration";
+import { useShopActions } from "../../dojo/useShopActions";
+import { useGameContext } from "../../providers/GameProvider";
 import { useMap } from "../../providers/MapProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
@@ -21,9 +27,13 @@ export const Map = () => {
     fitViewToFullMap,
     layoutReady,
     selectedNodeData,
+    reachableNodes,
   } = useMap();
 
   const { isSmallScreen } = useResponsiveValues();
+  const { advanceNode } = useShopActions();
+  const { gameId } = useGameContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -42,8 +52,34 @@ export const Map = () => {
     }
   }, [layoutReady, nodes]);
 
+  const isReachable = reachableNodes.includes(
+    selectedNodeData?.id?.toString() ?? ""
+  );
+
+  const handleGoClick = () => {
+    selectedNodeData &&
+      advanceNode(gameId, selectedNodeData.id).then((response) => {
+        if (response) {
+          switch (selectedNodeData?.nodeType) {
+            case NodeType.RAGE:
+              navigate("/redirect/demo");
+              break;
+            case NodeType.ROUND:
+              navigate("/redirect/demo");
+              break;
+            case NodeType.STORE:
+              navigate("/redirect/store");
+              break;
+            default:
+              break;
+          }
+        }
+      });
+  };
+
   return (
     <div style={{ height: "100vh", width: "100vw", zIndex: 10 }}>
+      <MobileDecoration fadeToBlack />
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -59,11 +95,35 @@ export const Map = () => {
         nodesConnectable={false}
         edgesFocusable={false}
       >
-        <Controls
-          showInteractive={false}
-          onFitView={() => fitViewToCurrentNode()}
-        />
+        {!isSmallScreen && (
+          <Controls
+            style={{ marginBottom: "100px" }}
+            showInteractive={false}
+            onFitView={() => fitViewToCurrentNode()}
+          />
+        )}
       </ReactFlow>
+      {isSmallScreen && (
+        <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
+          <MobileBottomBar
+            firstButton={undefined}
+            secondButton={
+              isReachable && (
+                <Button
+                  minWidth={"100px"}
+                  size={"xs"}
+                  lineHeight={1.6}
+                  fontSize={10}
+                  onClick={handleGoClick}
+                >
+                  {t("go")}
+                </Button>
+              )
+            }
+            hideDeckButton
+          />
+        </Flex>
+      )}
       {isSmallScreen && selectedNodeData && <NodeDetailsMobileButton />}
     </div>
   );

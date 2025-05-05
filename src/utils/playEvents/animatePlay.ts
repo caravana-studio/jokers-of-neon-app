@@ -37,6 +37,8 @@ interface AnimatePlayConfig {
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
+  specialCards: Card[];
+  setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -71,6 +73,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimateSecondChanceCard,
     setCardTransformationLock,
     setIsRageRound,
+    specialCards,
+    setAnimateSpecialCardDefault,
   } = config;
 
   if (!playEvents) return;
@@ -296,7 +300,19 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   };
 
   const handleGameEnd = () => {
-    if (playEvents.gameOver) {
+    if (playEvents.cardActivateEvent) {
+      const specialCardInHand =
+        specialCards[playEvents.cardActivateEvent.special_id];
+      if (specialCardInHand.card_id == 323) {
+        setAnimateSecondChanceCard(true);
+      } else {
+        setAnimateSpecialCardDefault({
+          specialId: specialCardInHand.card_id,
+          bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
+          animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
+        });
+      }
+    } else if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);
         setLockRedirection(false);
@@ -312,8 +328,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         navigate("/rewards");
       }, 1000);
       setPreSelectionLocked(true);
-    } else if (playEvents.secondChanceEvent) {
-      setAnimateSecondChanceCard(true);
     } else {
       setLockedCash(undefined);
       playEvents.cards && replaceCards(playEvents.cards);

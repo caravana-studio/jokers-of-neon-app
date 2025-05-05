@@ -9,6 +9,7 @@ import {
   specialScoreEventFilter,
 } from "../scoreEventFilter";
 import { suitOrNeonEventFilter } from "../suitOrNeonEventFilter";
+import { getCardActivateEvent } from "./getCardActivateEvent";
 import { getCardPlayEvents } from "./getCardPlayEvents";
 import { getDetailEarnedEvent } from "./getDetailEarnedEvent";
 import { getHandEvent } from "./getHandEvent";
@@ -43,6 +44,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     specialCardPlayScoreEvents: cardPlayEvents
       .filter(scoreEventFilter)
       .filter(specialScoreEventFilter),
+    cardActivateEvent: getCardActivateEvent(events),
   };
 
   console.log(playEvents);

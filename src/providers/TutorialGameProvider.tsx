@@ -254,6 +254,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setAnimateSecondChanceCard: emptyFn,
       setCardTransformationLock: emptyFn,
       setIsRageRound: emptyFn,
+      specialCards: emptyFn as any,
+      setAnimateSpecialCardDefault: emptyFn as any,
     });
     setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);

@@ -181,8 +181,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     animationSpeed
   );
 
-  const { setAnimatedCard, setAnimateSecondChanceCard, setAnimatedPowerUp } =
-    useCardAnimations();
+  const {
+    setAnimatedCard,
+    setAnimateSecondChanceCard,
+    setAnimatedPowerUp,
+    setanimateSpecialCardDefault,
+  } = useCardAnimations();
 
   const {
     gameId,
@@ -360,6 +364,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimateSecondChanceCard,
             setCardTransformationLock,
             setIsRageRound,
+            specialCards,
+            setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -626,7 +632,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setGameLoading(false);
           console.log("Game found (2), no need to create a new one");
         }
-      }, 2000);
+      }, 5000);
     } else {
       setGameLoading(false);
       console.log("Game found, no need to create a new one");

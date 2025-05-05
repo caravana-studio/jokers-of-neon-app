@@ -8,7 +8,7 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
-import { VIOLET } from "../../../theme/colors";
+import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { NodeType } from "../types";
 
@@ -31,7 +31,11 @@ const RoundNode = ({ data }: any) => {
         style={{
           opacity: reachable || data.visited || data.current ? 1 : 0.5,
           background:
-            reachable || data.current ? VIOLET : "rgba(255,255,255,0.1)",
+            data.current || data.visited
+              ? BLUE
+              : reachable
+                ? VIOLET
+                : "rgba(255,255,255,0.1)",
           padding: 10,
           borderRadius: 10,
           width: 50,
