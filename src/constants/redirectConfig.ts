@@ -16,7 +16,7 @@ export const redirectConfig: RedirectRule[] = [
     redirectTo: "/loot-box-cards-selection",
   },
   {
-    originPaths: ["/loot-box-cards-selection", "/demo", "/map"],
+    originPaths: ["/loot-box-cards-selection", "/demo"],
     gameState: GameStateEnum.Store,
     redirectTo: "/store",
   },
