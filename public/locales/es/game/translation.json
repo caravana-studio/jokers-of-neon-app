@@ -34,7 +34,7 @@
       "target-score": "Puntos",
       "score": "Suma {{score}} para superar la ronda {{round}}"
     },
-    "score": "Tu puntaje:",
+    "score": "Puntaje:",
     "score-total": "Puntaje total",
     "multi-points": {
       "points": "Puntos",
