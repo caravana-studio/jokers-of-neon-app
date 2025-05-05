@@ -141,11 +141,11 @@
     },
     "329": {
       "name": "Sacrifício Especial",
-      "description": "Ganhe +1 multi (acumulativo) para cada carta especial vendida."
+      "description": "Ganhe +1 multi (acumulativo) para cada carta especial vendida. Actualmente +{{multi}} multi."
     },
     "330": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe +3 multi (acumulativo) para cada Rage derrotada."
+      "description": "Ganhe +3 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atalho",
@@ -241,11 +241,11 @@
     },
     "354": {
       "name": "Bônus de Pular",
-      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta)."
+      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). Actualmente +{{points}} pontos."
     },
     "355": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe +25 pontos (acumulativos) para cada carta queimar do seu baralho."
+      "description": "Ganhe +25 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
     },
     "356": {
       "name": "Guardião de Slot",

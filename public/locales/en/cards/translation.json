@@ -577,11 +577,11 @@
     },
     "329": {
       "name": "Special Sacrifice",
-      "description": "Gain +1 multi (stacking) for every special card sold."
+      "description": "Gain +1 multi (stacking) for every special card sold. Currently +{{multi}} multi."
     },
     "330": {
       "name": "Rage Breaker",
-      "description": "Gain +3 multi (stacking) for each Rage defeated."
+      "description": "Gain +3 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
     },
     "331": {
       "name": "Shortcut",
@@ -677,11 +677,11 @@
     },
     "354": {
       "name": "Skip Bonus",
-      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card)."
+      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points."
     },
     "355": {
       "name": "Burning Rewards",
-      "description": "Gain +25 points (stacking) for each card burned from your deck."
+      "description": "Gain +25 points (stacking) for each card burned from your deck. Currently +{{points}} points."
     },
     "356": {
       "name": "Slot Saver",

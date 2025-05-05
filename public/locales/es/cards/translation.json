@@ -141,11 +141,11 @@
     },
     "329": {
       "name": "Sacrificio Especial",
-      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida."
+      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida. Actualmente +{{multi}} multi."
     },
     "330": {
       "name": "Rompedor de Rages",
-      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada."
+      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atajo",
@@ -241,11 +241,11 @@
     },
     "354": {
       "name": "Omitir Bonus",
-      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta)."
+      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente +{{points}} puntos."
     },
     "355": {
-      "name": "Recompensas Ardientes",
-      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo."
+      "name": "Recompensas Quemadas",
+      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
     },
     "356": {
       "name": "Guardián de Slots",
