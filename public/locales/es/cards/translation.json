@@ -213,19 +213,19 @@
     },
     "347": {
       "name": "Dado de Corazones",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de corazones"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de corazones"
     },
     "348": {
       "name": "Dado de Tréboles",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de tréboles"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de tréboles"
     },
     "349": {
       "name": "Dado de Diamantes",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de diamantes"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de diamantes"
     },
     "350": {
       "name": "Dado de Picas",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de picas"
     },
     "351": {
       "name": "Multiplicador Especial",
