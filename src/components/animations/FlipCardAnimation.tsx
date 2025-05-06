@@ -12,7 +12,7 @@ interface FlipCardProps {
 
 export const FlipCard: React.FC<FlipCardProps> = ({
   children,
-  flipped = false,
+  flipped = true,
   width,
   height,
   flipSpeed,
@@ -54,7 +54,11 @@ export const FlipCard: React.FC<FlipCardProps> = ({
   );
 
   return (
-    <Box p={0} sx={{ perspective: "1000px" }} display="inline-block">
+    <Box
+      sx={{ perspective: "1000px" }}
+      display="inline-block"
+      overflow="visible"
+    >
       <Box
         w={`${width}px`}
         h={`${height}px`}
@@ -65,9 +69,6 @@ export const FlipCard: React.FC<FlipCardProps> = ({
           transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
         }}
       >
-        <Box visibility="hidden" position="absolute">
-          {children}
-        </Box>
         {front}
         {back}
       </Box>
