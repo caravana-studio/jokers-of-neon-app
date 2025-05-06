@@ -33,6 +33,7 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -117,7 +118,16 @@ export const MobileGameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        navigate("/demo");
+        if (game) {
+          switch (game.state) {
+            case GameStateEnum.Store:
+              return navigate("/store");
+            case GameStateEnum.Map:
+              return navigate("/map");
+            default:
+              return navigate("/demo");
+          }
+        }
       }
     };
   };
