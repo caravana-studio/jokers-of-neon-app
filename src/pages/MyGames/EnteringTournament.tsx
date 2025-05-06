@@ -6,7 +6,8 @@ import AudioPlayer from "../../components/AudioPlayer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useUsername } from "../../dojo/utils/useUsername";
-import CreatingGameProgressBar from "./CreatingGameProgressBar";
+import { LoadingProgress } from "../../types/LoadingProgress";
+import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
 const tournamentId = stringTournamentId && Number(stringTournamentId);
@@ -33,7 +34,7 @@ export const EnteringTournament = () => {
 
   const username = useUsername();
 
-  const headingStages = tournamentId
+  const headingStages: LoadingProgress[] = tournamentId
     ? [
         {
           text: t("create-game.stage-1", { tournamentId }),
@@ -83,7 +84,7 @@ export const EnteringTournament = () => {
           alignItems="center"
           zIndex={2}
         >
-          <CreatingGameProgressBar
+          <SimulatedLoadingBar
             headingStages={headingStages}
             duration={tournamentId ? 10000 : 1000}
           />
