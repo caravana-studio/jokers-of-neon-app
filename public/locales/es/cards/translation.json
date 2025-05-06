@@ -141,11 +141,11 @@
     },
     "329": {
       "name": "Sacrificio Especial",
-      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida."
+      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida. Actualmente +{{multi}} multi."
     },
     "330": {
       "name": "Rompedor de Rages",
-      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada."
+      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atajo",
@@ -213,19 +213,19 @@
     },
     "347": {
       "name": "Dado de Corazones",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de corazones"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de corazones"
     },
     "348": {
       "name": "Dado de Tréboles",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de tréboles"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de tréboles"
     },
     "349": {
       "name": "Dado de Diamantes",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de diamantes"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de diamantes"
     },
     "350": {
       "name": "Dado de Picas",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de picas"
     },
     "351": {
       "name": "Multiplicador Especial",
@@ -241,11 +241,11 @@
     },
     "354": {
       "name": "Omitir Bonus",
-      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta)."
+      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente +{{points}} puntos."
     },
     "355": {
-      "name": "Recompensas Ardientes",
-      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo."
+      "name": "Recompensas Quemadas",
+      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
     },
     "356": {
       "name": "Guardián de Slots",
