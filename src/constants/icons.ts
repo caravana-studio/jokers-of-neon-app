@@ -16,6 +16,7 @@ import SettingsIcon from "../assets/MenuIcons/settings.png";
 import CartridgeIcon from "../assets/MenuIcons/cartridge.png";
 import LogoutIcon from "../assets/MenuIcons/logout.png";
 import DiscordIcon from "../assets/MenuIcons/discord.png";
+import TutorialIcon from "../assets/MenuIcons/tutorial.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -36,6 +37,7 @@ export const Icons = {
   CARTRIDGE: CartridgeIcon,
   LOGOUT: LogoutIcon,
   DISCORD: DiscordIcon,
+  TUTORIAL: TutorialIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;

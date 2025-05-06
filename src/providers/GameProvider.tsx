@@ -284,7 +284,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
             resetLevel();
-            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
             setHand(hand);
             setGameId(newGameId);
             clearPreSelection();
@@ -295,6 +294,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
+
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           } else {
             setError(true);
           }

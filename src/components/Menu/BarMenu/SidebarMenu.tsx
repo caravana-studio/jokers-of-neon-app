@@ -15,6 +15,7 @@ import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
+import { TutorialBtn } from "../Buttons/TutorialBtn";
 
 export const SidebarMenu = () => {
   const game = useGame();
@@ -59,6 +60,7 @@ export const SidebarMenu = () => {
         <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
         <DiscordLink width={iconWidth} />
+        <TutorialBtn width={iconWidth} />
       </Flex>
       <Flex
         gap={4}
