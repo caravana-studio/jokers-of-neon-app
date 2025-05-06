@@ -16,6 +16,7 @@ import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
+import { useCardData } from "../../providers/CardDataProvider";
 
 export const GamePage = () => {
   const {
@@ -32,7 +33,10 @@ export const GamePage = () => {
     roundRewards,
     gameId,
     lockRedirection,
+    modId,
   } = useGameContext();
+
+  const { refetchSpecialCardsData } = useCardData();
 
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
@@ -55,6 +59,7 @@ export const GamePage = () => {
     setLockedCash(undefined);
     setIsRageRound(rageCards && rageCards.length > 0);
     setRageCards(rageCards);
+    refetchSpecialCardsData(modId, gameId);
   }, []);
 
   useEffect(() => {
