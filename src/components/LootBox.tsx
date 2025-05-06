@@ -9,6 +9,7 @@ export interface LootBoxRef {
 interface LootBoxProps {
   boxId: number;
   onOpenAnimationStart?: () => void;
+  onOpenAnimationEnd?: () => void;
   onClick?: () => void;
   width?: number;
   height?: number;
@@ -19,6 +20,7 @@ interface LootBoxProps {
   hoverAnimation?: string;
   price?: number;
   discountPrice?: number;
+  freezeOnLastFrame?: boolean;
 }
 
 export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
@@ -26,6 +28,7 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
     {
       boxId,
       onOpenAnimationStart,
+      onOpenAnimationEnd,
       width = 1200,
       height = 1500,
       xOffset = -650,
@@ -36,6 +39,7 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
       price,
       discountPrice,
       onClick,
+      freezeOnLastFrame,
     },
     ref
   ) => {
@@ -61,10 +65,12 @@ export const LootBox = forwardRef<LootBoxRef, LootBoxProps>(
         xOffset={xOffset}
         scale={scale}
         onOpenAnimationStart={onOpenAnimationStart}
+        onOpenAnimationEnd={onOpenAnimationEnd}
         isPurchased={isPurchased}
         price={price}
         discountPrice={discountPrice}
         onClick={onClick}
+        freezeOnLastFrame={freezeOnLastFrame}
       />
     );
   }

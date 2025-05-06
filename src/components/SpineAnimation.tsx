@@ -27,10 +27,12 @@ interface SpineAnimationProps {
   yOffset?: number;
   scale?: number;
   onOpenAnimationStart?: () => void;
+  onOpenAnimationEnd?: () => void;
   isPurchased?: boolean;
   price?: number;
   discountPrice?: number;
   home?: boolean;
+  freezeOnLastFrame?: boolean;
 }
 
 export interface SpineAnimationRef {
@@ -54,10 +56,12 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
       yOffset = -150,
       scale = 1,
       onOpenAnimationStart,
+      onOpenAnimationEnd,
       isPurchased,
       price,
       discountPrice,
       home = false,
+      freezeOnLastFrame,
     },
     ref
   ) => {
@@ -90,6 +94,17 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
             setTimeout(() => {
               onOpenAnimationStart();
             }, 2);
+          }
+
+          if (freezeOnLastFrame) {
+            const durationMs = 600;
+            setTimeout(() => {
+              track.timeScale = 0;
+
+              onOpenAnimationEnd?.();
+              setLockRedirection(false);
+              setIsAnimationRunning(false);
+            }, durationMs);
           }
         }
       },

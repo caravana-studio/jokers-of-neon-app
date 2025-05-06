@@ -19,12 +19,11 @@ export const OpenLootBox = () => {
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
-  const [canTransition, setCanTransition] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
   const { play: openPackSound } = useAudio(openPackSfx, 0.5);
   const game = useGame();
   const { transitionTo } = usePageTransitions();
-  const { buyPack } = useStore();
+  const { buyPack, lockRedirection } = useStore();
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "open-lootbox",
@@ -38,18 +37,10 @@ export const OpenLootBox = () => {
   }
 
   const openAnimationCallBack = () => {
-    setTimeout(() => {
-      setCanTransition(true);
-    }, 150);
+    transitionTo("/redirect/loot-box-cards-selection", {
+      state: { pack: pack },
+    });
   };
-
-  useEffect(() => {
-    if (canTransition && !isBuying) {
-      transitionTo("/redirect/loot-box-cards-selection", {
-        state: { pack: pack },
-      });
-    }
-  }, [canTransition, isBuying]);
 
   useEffect(() => {
     if (game && game?.state !== GameStateEnum.Lootbox) {
@@ -109,7 +100,8 @@ export const OpenLootBox = () => {
             <LootBox
               ref={lootBoxRef}
               boxId={pack.blister_pack_id}
-              onOpenAnimationStart={openAnimationCallBack}
+              onOpenAnimationEnd={openAnimationCallBack}
+              freezeOnLastFrame
             />
           </Flex>
           <Flex

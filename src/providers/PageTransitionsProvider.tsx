@@ -43,32 +43,34 @@ export const PageTransitionsProvider = ({
   }, [isTransitioning]);
 
   const transitionTo = async (page: string, state?: NavigateOptions) => {
-    setTimeout(() => {
-      navigate(page, state ?? {});
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 500);
-    }, 500);
+    setIsTransitioning(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    navigate(page, state ?? {});
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    setIsTransitioning(false);
   };
 
   return (
     <PageTransitionsContext.Provider value={{ transitionTo }}>
       {children}
-      {overlayVisible && (
-        <MotionBox
-          position="fixed"
-          top="0"
-          left="0"
-          width="100vw"
-          height="100vh"
-          backgroundColor={bgColor}
-          zIndex="9999"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isTransitioning ? 1 : 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
-      )}
+      <MotionBox
+        key="page-transition-overlay"
+        position="fixed"
+        top="0"
+        left="0"
+        width="100vw"
+        height="100vh"
+        backgroundColor={bgColor}
+        zIndex="9999"
+        pointerEvents="none"
+        style={{ opacity: 0 }}
+        animate={{ opacity: isTransitioning ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      />
     </PageTransitionsContext.Provider>
   );
 };
