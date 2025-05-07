@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x12769b646a8518f4a93096cf61a83b3c15271445bcb4b350883dc0254204e74",
-      "class_hash": "0x217f9af6659c3b0f7e6058e050e4aa0bb8ee40ed50eaffcc21fb269153a74",
+      "address": "0x70f7d7392b20dd977d1172c50b221f7347cae14700d4982c1bdbf66a136bdd7",
+      "class_hash": "0x492f743ed581d65ac0fa4981a836dbbe5733b3b20d51afa16124397ccc3c4eb",
       "abi": [
         {
           "type": "impl",
@@ -2636,8 +2636,8 @@
       ]
     },
     {
-      "address": "0x4a18cf2b952a45316800300c58c112081b198fa3fc1db7c56432f74f5630d0f",
-      "class_hash": "0x45dec0c4972894c2066c50a806fe2feaffae14ddc76ce80ac8363f2a860d43",
+      "address": "0x1c85c5f026a579f8e0eef55e6ef6cf80acc2d8b88248b8142ad4d6963c4aa20",
+      "class_hash": "0x240bbaa2ba962858ee0ff78f75cbedea8ceae84b59a0358ad0f8a3de2e8d446",
       "abi": [
         {
           "type": "impl",
@@ -3222,8 +3222,8 @@
       ]
     },
     {
-      "address": "0x52b046540f09bd2962c5730bd95577c541e11b470ce2e6099b6b547879b5f81",
-      "class_hash": "0x6ab0e8cf6f7ced7d29625eeaf6b6c421b8cc73b2bd2ec3ed0b84d0172847dd7",
+      "address": "0xe9f7e4afb3fd6890b417109f144277d107dca54eb1666648247d8985650e03",
+      "class_hash": "0x356d4017ec0c7af48bed720fdf35a6c45118aad0edbefe55e155c4b2f7f8a18",
       "abi": [
         {
           "type": "impl",
@@ -4056,8 +4056,8 @@
       ]
     },
     {
-      "address": "0x419035516513789454bd4e0a6574290694e82b8bc5b7e492a8215fbb7fdfb26",
-      "class_hash": "0x45b5e7a71b50307ef6fd05c779f4353e47f4e9f27267e008988fa5317e23364",
+      "address": "0x7450bdd0670406094296ed72181619ea23698bed27b8fe440398928eea8a55a",
+      "class_hash": "0x4df0c4d777bdce8a12d8e6178833c0ef2e478930ee065211b29c51af81cd036",
       "abi": [
         {
           "type": "impl",
@@ -4809,7 +4809,6 @@
       ]
     }
   ],
-  "libraries": [],
   "models": [
     {
       "members": [],
@@ -5149,6 +5148,5 @@
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
-  ],
-  "external_contracts": []
+  ]
 }
