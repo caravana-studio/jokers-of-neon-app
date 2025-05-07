@@ -131,6 +131,10 @@
       "name": "Sinergia de neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
+    "326": {
+      "name": "Doctrina de neón",
+      "description": "Convierte dos cartas jugadas en cartas de neón."
+    },
     "327": {
       "name": "Blackjack",
       "description": "Logra exactamente 21 con tus cartas jugadas para obtener +21 multi."
@@ -269,19 +273,55 @@
     },
     "361": {
       "name": "Los Dos Importan",
-      "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
+      "description": "Obtén +30 puntos por cada 2 que tengas en tu mano."
+    },
+    "362": {
+      "name": "Mano de modificadores",
+      "description": "Obtén +5 de multi por cada carta modificadora que tengas en tu mano."
+    },
+    "363": {
+      "name": "Piromano",
+      "description": "Obtén un 50% de descuento al quemar cartas."
+    },
+    "364": {
+      "name": "Multiplicador de Cuadrados",
+      "description": "+4 multi por cada 4 cartas en tu mano."
     },
     "365": {
       "name": "Jackpot",
       "description": "Obtén +30 puntos por cada Jota que tengas en tu mano."
     },
+    "366": {
+      "name": "Ciclo del dinero",
+      "description": "Gana un 50% más de recompensas después de cada nivel."
+    },
+    "367": {
+      "name": "Cazador de especiales",
+      "description": "Se duplica la probabilidad de encontrar cartas especiales de categoria A y S en la tienda."
+    },
+    "368": {
+      "name": "La Verdad del Rey",
+      "description": "Cada Rey jugado tiene 1 en 2 de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 1 en 4 de probabilidad de dar 100 puntos."
+    },
     "369": {
       "name": "Aritmomanía",
       "description": "Si la suma de las cartas jugadas es par, ganas +7 multi. Si es impar, ganas +100 puntos."
     },
+    "370": {
+      "name": "Negro y Rojo",
+      "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan +1 multi."
+    },
+    "371": {
+      "name": "Joker sin valor",
+      "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas obtienen +1 multi."
+    },
     "372": {
       "name": "Escalera Ascendente",
       "description": "Gana +10 puntos acumulativos por cada escalera jugada. Actualmente tienes +{{points}} puntos."
+    },
+    "373": {
+      "name": "Relatividad",
+      "description": "Convierte cualquier escalera en una escalera de 10 a As (la escalera más alta posible)."
     },
     "374": {
       "name": "Impulso de Comodines",
@@ -294,7 +334,7 @@
     "380": {
       "name": "Fortuna de la Reina",
       "description": "Por cada reina de tu jugada tienes 1 en 2 chances de ganar +150 monedas."
-    },
+    }
   },
   "power-ups": {
     "800": {
@@ -789,7 +829,7 @@
     },
     "406": {
       "name": "Mano Disminuida",
-      "description": "Tu mano tendrà 2 cartas menos durante este nivel"
+      "description": "Tu mano tendrá 2 cartas menos durante este nivel"
     },
     "407": {
       "name": "Cero Desperdicio",
@@ -838,6 +878,14 @@
     "418": {
       "name": "Maldición Perpetua",
       "description": "Silencia una carta aleatoria en cada mano jugada"
+    },
+    "420": {
+      "name": "Doble problema",
+      "description": "Debes hacer el doble de puntos en esta ronda"
+    },
+    "421": {
+      "name": "Traicionando a los Débiles",
+      "description": "Las cartas con valor menor o igual a 5 no puntuaran durante este nivel"
     }
   },
   "lootBoxes": {
