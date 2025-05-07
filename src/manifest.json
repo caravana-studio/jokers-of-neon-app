@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x70f7d7392b20dd977d1172c50b221f7347cae14700d4982c1bdbf66a136bdd7",
-      "class_hash": "0x492f743ed581d65ac0fa4981a836dbbe5733b3b20d51afa16124397ccc3c4eb",
+      "address": "0x41f5c08cbce60621853e74443bd2aacb493eb38f2c0b0acb9a6f09e80621493",
+      "class_hash": "0xbfe4b7191d58681c5503c89e20746f6e32f1394187322417bdb4884c54d921",
       "abi": [
         {
           "type": "impl",
@@ -3222,8 +3222,8 @@
       ]
     },
     {
-      "address": "0xe9f7e4afb3fd6890b417109f144277d107dca54eb1666648247d8985650e03",
-      "class_hash": "0x356d4017ec0c7af48bed720fdf35a6c45118aad0edbefe55e155c4b2f7f8a18",
+      "address": "0x27a6df1bafc34fb8320bd01e06bc6b42df085efbf4701e96af2f430bc5e815a",
+      "class_hash": "0x532560234b05161db8a0874cb5dcaa44c3ed72995921687fac794ae73bc2150",
       "abi": [
         {
           "type": "impl",
@@ -3378,7 +3378,7 @@
                 },
                 {
                   "name": "game_id",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u64"
                 },
                 {
                   "name": "special_card_id",
@@ -4809,6 +4809,7 @@
       ]
     }
   ],
+  "libraries": [],
   "models": [
     {
       "members": [],
@@ -5054,7 +5055,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x781522671e84e8981b319919bd31e0e68cf4821310250f0fa9b881386e63100",
+      "class_hash": "0x6457c65b99f380fa879ed0a941e12895600b0c8c0674fc3afb2aa8bdcce9a13",
       "tag": "jokers_of_neon_core-CardPlayEvent",
       "selector": "0x7c0be4b31d3ebfb1687ab83341e208e0f176a0d6d45d317699a8b77e5753cdf"
     },
@@ -5148,5 +5149,6 @@
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
-  ]
+  ],
+  "external_contracts": []
 }
