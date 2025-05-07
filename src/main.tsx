@@ -20,6 +20,11 @@ import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import customTheme from "./theme/theme";
+import {
+  LoadingProgress,
+  LoadingScreenHandle,
+} from "./types/LoadingProgress.ts";
+import { createRef } from "react";
 
 const I18N_NAMESPACES = [
   "game",
@@ -32,6 +37,15 @@ const I18N_NAMESPACES = [
   "achievements",
   "map",
 ];
+
+const loadingSteps: LoadingProgress[] = [
+  { text: "Setting up game", showAt: 0 },
+  { text: "Loading translations", showAt: 1 },
+  { text: "Preloading assets", showAt: 2 },
+  { text: "Starting app", showAt: 4 },
+];
+
+const progressBarRef = createRef<LoadingScreenHandle>();
 
 async function init() {
   const rootElement = document.getElementById("root");
@@ -74,9 +88,12 @@ async function init() {
           root.render(
             <ChakraBaseProvider theme={theme}>
               <LoadingScreen
+                steps={loadingSteps}
+                ref={progressBarRef}
                 showPresentation={true}
                 onPresentationEnd={() => {
                   window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                  progressBarRef.current?.nextStep();
                   resolve();
                 }}
                 canFadeOut={canFadeOut}
@@ -94,15 +111,23 @@ async function init() {
 
   registerServiceWorker();
 
-  const i18nPromise = await i18n.loadNamespaces(I18N_NAMESPACES);
+  const i18nPromise = i18n.loadNamespaces(I18N_NAMESPACES).then(() => {
+    progressBarRef.current?.nextStep();
+  });
+
   const imagesPromise = Promise.all([
     preloadImages(),
     preloadSpineAnimations(),
     preloadVideos(),
-  ]);
+  ]).then(() => {
+    progressBarRef.current?.nextStep();
+  });
 
   try {
-    const setupPromise = setup(dojoConfig);
+    const setupPromise = setup(dojoConfig).then((result) => {
+      progressBarRef.current?.nextStep();
+      return result;
+    });
 
     const [setupResult] = await Promise.all([
       setupPromise,
