@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x13c92d757659527b884cc77f4fc5c32089f9fcce4adc081e6403d22fba04761",
-      "class_hash": "0x55c4dc20ea0930230a344a5663059dfccbdbd44cb023d8d2c51a240eb8d92b1",
+      "address": "0x328e2d92c8af3b48e51c836c965588c1124dd8c5d4ba4912fc9e7bb2d999eaf",
+      "class_hash": "0x723cea79f47e45c886869c8dce23c8852393818790d5331b07267bbfedb1cfa",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x74d5e163a7caaf93f3b6d45088b8a11760d9c5f528669b4e077ef82d501ae1c",
-      "class_hash": "0x928c71b18c9b188c3fe9db1daf0be43d5ea3a555c0cc29e715e9df18ff3da6",
+      "address": "0x38850c1807cac7e45e8b7e1c1aa27092417a16ce90487e4aea3d4c8e70ca216",
+      "class_hash": "0x41e90683f7243df09c831fd00d18a43337458feedc74cea6758ed173f1da26a",
       "abi": [
         {
           "type": "impl",
@@ -2636,8 +2636,8 @@
       ]
     },
     {
-      "address": "0x4878f824d4adcb8f69da650b34da73315272992abd3fa7661fad72ed419a922",
-      "class_hash": "0x601ae69e039923cd629bb14da9cde3094ee79fc2c520b500c1f58fc9d96fcf8",
+      "address": "0xed5f3aec3268c4edc4745caa5530a57cc96de7d084494be35ddfc6242fbf13",
+      "class_hash": "0x4b9b95bbf2fc301c5bc877d8f5e0609cc057d8dfe7a000181c2cd6874cc7770",
       "abi": [
         {
           "type": "impl",
@@ -3222,8 +3222,8 @@
       ]
     },
     {
-      "address": "0x52b046540f09bd2962c5730bd95577c541e11b470ce2e6099b6b547879b5f81",
-      "class_hash": "0x6ab0e8cf6f7ced7d29625eeaf6b6c421b8cc73b2bd2ec3ed0b84d0172847dd7",
+      "address": "0xe9f7e4afb3fd6890b417109f144277d107dca54eb1666648247d8985650e03",
+      "class_hash": "0x356d4017ec0c7af48bed720fdf35a6c45118aad0edbefe55e155c4b2f7f8a18",
       "abi": [
         {
           "type": "impl",
@@ -4056,8 +4056,8 @@
       ]
     },
     {
-      "address": "0x77ab925da6c2f9179e800f6a49e9a44e9166e8aad79edf8ba8d51e01c126d9a",
-      "class_hash": "0x12b51b7f021d78987fd915f72492a453b9672ba64e5f89d10025b2331a4bc98",
+      "address": "0x7450bdd0670406094296ed72181619ea23698bed27b8fe440398928eea8a55a",
+      "class_hash": "0x4df0c4d777bdce8a12d8e6178833c0ef2e478930ee065211b29c51af81cd036",
       "abi": [
         {
           "type": "impl",
@@ -4809,6 +4809,7 @@
       ]
     }
   ],
+  "libraries": [],
   "models": [
     {
       "members": [],
@@ -5148,5 +5149,6 @@
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
-  ]
+  ],
+  "external_contracts": []
 }

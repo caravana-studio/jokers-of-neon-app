@@ -271,6 +271,18 @@
       "name": "Os Dois Contam",
       "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
     },
+    "365": {
+      "name": "Jackpot",
+      "description": "Ganhe +30 pontos para cada Valete na sua mão."
+    },
+    "369": {
+      "name": "Aritmomania",
+      "description": "Se a soma das cartas jogadas for par, ganhe +7 de multi. Se for ímpar, ganhe +100 pontos."
+    },
+    "372": {
+      "name": "Escada Ascendente",
+      "description": "Ganhe +10 pontos acumulativos para cada sequência jogada. Atualmente com +{{points}} pontos."
+    },
     "374": {
       "name": "Impulso de Curingas",
       "description": "Cada curinga concede +100 pontos."
@@ -278,6 +290,10 @@
     "379": {
       "name": "Arco-íris",
       "description": "Ganhe +200 pontos e +5 multi se sua jogada incluir todos os quatro naipes."
+    },
+    "380": {
+      "name": "Fortuna da Rainha",
+      "description": "Cada rainha na sua jogada tem 1 em 2 chances de conceder +150 moedas."
     }
   },
   "power-ups": {

@@ -613,7 +613,7 @@
     },
     "338": {
       "name": "Extra draws",
-      "description": "Adds 2 hands"
+      "description": "Adds 2 plays"
     },
     "339": {
       "name": "Scaling factor",
@@ -707,6 +707,18 @@
       "name": "Twos Matter",
       "description": "Gain +30 points for every 2 held in your hand."
     },
+    "365": {
+      "name": "Jackpot",
+      "description": "Gain +30 points for every Jack held in your hand."
+    },
+    "369": {
+      "name": "Arithmomania",
+      "description": "If the sum of the cards you played is even, gain +7 multi. If it's odd, gain +100 points."
+    },
+    "372": {
+      "name": "Rising Ladder",
+      "description": "Gain +10 cumulative points for every straight played. Currently at +{{points}} points."
+    },
     "374": {
       "name": "Wildcard Booster",
       "description": "Each Wildcard grants +100 points."
@@ -714,6 +726,10 @@
     "379": {
       "name": "Rainbow",
       "description": "Gain +200 points and +5 multi if your play includes all four suits."
+    },
+    "380": {
+      "name": "Queens Fortune",
+      "description": "Scoring queens have 1 in 2 chance of giving +150 cash."
     }
   },
   "power-ups": {

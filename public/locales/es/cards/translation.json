@@ -271,6 +271,18 @@
       "name": "Los Dos Importan",
       "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
     },
+    "365": {
+      "name": "Jackpot",
+      "description": "Obtén +30 puntos por cada Jota que tengas en tu mano."
+    },
+    "369": {
+      "name": "Aritmomanía",
+      "description": "Si la suma de las cartas jugadas es par, ganas +7 multi. Si es impar, ganas +100 puntos."
+    },
+    "372": {
+      "name": "Escalera Ascendente",
+      "description": "Gana +10 puntos acumulativos por cada escalera jugada. Actualmente tienes +{{points}} puntos."
+    },
     "374": {
       "name": "Impulso de Comodines",
       "description": "Cada comodín otorga +100 puntos."
@@ -278,7 +290,11 @@
     "379": {
       "name": "Arcoíris",
       "description": "Obtén +200 puntos y +5 multi si tu jugada incluye los cuatro palos."
-    }
+    },
+    "380": {
+      "name": "Fortuna de la Reina",
+      "description": "Por cada reina de tu jugada tienes 1 en 2 chances de ganar +150 monedas."
+    },
   },
   "power-ups": {
     "800": {
