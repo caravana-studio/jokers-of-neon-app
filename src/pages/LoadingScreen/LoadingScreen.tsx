@@ -79,7 +79,7 @@ export const LoadingScreen = forwardRef<
               <div>error loading game</div>
             ) : (
               <Flex
-                width={"100%"}
+                width={"80%"}
                 flexDirection={"column"}
                 gap={4}
                 justifyContent={"center"}
