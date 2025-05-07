@@ -4,7 +4,7 @@ import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
 import { useGameContext } from "../providers/GameProvider";
 import { snakeToCamel } from "../utils/snakeToCamel";
-
+import { hardcodedLeadersv19 } from "./hardcodedLeadersv19";
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
 const DOJO_NAMESPACE =
@@ -31,7 +31,7 @@ export const LEADERBOARD_QUERY = gql`
   }
 `;
 
-interface GameEdge {
+export interface GameEdge {
   node: {
     player_score: number;
     level: number;
@@ -78,7 +78,16 @@ export const useGetLeaderboard = (gameId?: number) => {
   );
   const { data } = queryResponse;
 
-  const dojoLeaders = data?.[QUERY_FIELD_NAME]?.edges
+  const fullData = {
+    jokersOfNeonCoreGameModels: {
+      edges: [
+        ...(data?.jokersOfNeonCoreGameModels?.edges ?? []),
+        ...hardcodedLeadersv19,
+      ],
+    },
+  };
+
+  const dojoLeaders = fullData.jokersOfNeonCoreGameModels.edges
     ?.filter((edge) => edge.node.player_score > 0)
     .sort((a, b) => {
       if (a.node.level !== b.node.level) {
