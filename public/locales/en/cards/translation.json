@@ -834,6 +834,10 @@
     "418": {
       "name": "Perpetual Curse",
       "description": "Silence a random card in each hand played"
+    },
+    "421": {
+      "name": "Betraying the Weak",
+      "description": "Cards with a value of 5 or less will not score during this level"
     }
   },
   "lootBoxes": {

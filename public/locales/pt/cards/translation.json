@@ -834,6 +834,10 @@
     "418": {
       "name": "Maldição Perpétua",
       "description": "Silencie uma carta aleatória em cada mão jogada"
+    },
+    "421": {
+      "name": "Traindo os Fracos",
+      "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
     }
   },
   "lootBoxes": {

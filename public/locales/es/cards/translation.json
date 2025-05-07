@@ -785,7 +785,7 @@
     },
     "406": {
       "name": "Mano Disminuida",
-      "description": "Tu mano tendrà 2 cartas menos durante este nivel"
+      "description": "Tu mano tendrá 2 cartas menos durante este nivel"
     },
     "407": {
       "name": "Cero Desperdicio",
@@ -834,6 +834,10 @@
     "418": {
       "name": "Maldición Perpetua",
       "description": "Silencia una carta aleatoria en cada mano jugada"
+    },
+    "421": {
+      "name": "Traicionando a los Débiles",
+      "description": "Las cartas con valor menor o igual a 5 no puntuaran durante este nivel"
     }
   },
   "lootBoxes": {
