@@ -42,7 +42,7 @@ export const LeaderBoardPage = () => {
             mt={8}
             width="100%"
             onClick={() => {
-              navigate("/demo");
+              navigate(-1);
             }}
           >
             {t("btn.returnLeaderboard-btn")}

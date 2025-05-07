@@ -25,7 +25,7 @@ export const BackToGameBtn = () => {
             : navigate("/demo", {
                 state: { skipRageAnimation: true },
               });
-        } else navigate("/demo");
+        } else navigate(-1);
       }}
     >
       {t("game.deck.btns.back").toUpperCase()}

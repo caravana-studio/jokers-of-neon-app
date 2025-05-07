@@ -17,13 +17,14 @@ export const Redirect = () => {
   const { page, gameId } = useParams();
   const location = useLocation();
   const lastTabIndex = location.state?.lastTabIndex ?? 0;
-  const navOptions: NavigateOptions = {
-    state: { lastTabIndex },
-  };
 
   useEffect(() => {
     if (!game || !page || !game.state) return;
 
+    const navOptions: NavigateOptions = {
+      state: { lastTabIndex },
+      replace: false,
+    };
     let desiredPath;
 
     if (page === "state") {
