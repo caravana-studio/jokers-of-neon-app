@@ -16,11 +16,13 @@ import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
+import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
 
 export const SidebarMenu = () => {
   const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageName();
+  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const iconWidth = "20px";
 
@@ -60,7 +62,7 @@ export const SidebarMenu = () => {
         <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
         <DiscordLink width={iconWidth} />
-        <TutorialBtn width={iconWidth} />
+        {!hideTutorialFF && <TutorialBtn width={iconWidth} />}
       </Flex>
       <Flex
         gap={4}

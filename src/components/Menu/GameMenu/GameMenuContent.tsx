@@ -28,6 +28,7 @@ import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { useRef } from "react";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
+import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -43,6 +44,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
   const game = useGame();
 
   const touchStartX = useRef(0);
+  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -105,7 +107,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           <DocsMenuBtn width={iconWidth} label />
           <SettingsMenuBtn width={iconWidth} label />
           <DiscordLink width={iconWidth} label />
-          <TutorialBtn width={iconWidth} label />
+          {!hideTutorialFF && <TutorialBtn width={iconWidth} label />}
         </DrawerBody>
 
         <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>
