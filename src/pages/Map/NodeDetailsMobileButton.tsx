@@ -8,9 +8,9 @@ export const NodeDetailsMobileButton = () => {
     <Flex
       position="absolute"
       top={'30px'}
-      right={4}
+      right={3}
       zIndex={100}
-      width="70%"
+      width="250px"
       backgroundColor="black"
       borderRadius="15px"
       padding="7px 20px"
