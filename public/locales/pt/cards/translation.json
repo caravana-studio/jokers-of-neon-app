@@ -271,6 +271,18 @@
       "name": "Os Dois Contam",
       "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
     },
+    "364": {
+      "name": "Multiplicador de Quadrados",
+      "description": "+4 multi por cada 4 cartas em sua mão."
+    },
+    "368": {
+      "name": "A Verdade do Rei",
+      "description": "Cada Rei jogado tem 1 em 2 de chance de dar 100 de ouro. Cada carta Rei em sua mão tem 1 em 4 de chance de dar 100 pontos."
+    },
+    "370": {
+      "name": "Preto e Vermelho",
+      "description": "As cartas de Coração e Diamantes dão pontos duplos. As cartas de Três e Quatro dão +1 multi."
+    },
     "374": {
       "name": "Impulso de Curingas",
       "description": "Cada curinga concede +100 pontos."

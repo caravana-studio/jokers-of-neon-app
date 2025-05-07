@@ -707,6 +707,18 @@
       "name": "Twos Matter",
       "description": "Gain +30 points for every 2 held in your hand."
     },
+    "364": {
+      "name": "Quad Multiplier",
+      "description": "+4 multi for every 4 card held in your hand."
+    },
+    "368": {
+      "name": "King's Faith",
+      "description": "Each King played has 1 in 2 chances of giving 100 cash. Every King held in hand has 1 in 4 chances of scoring 100 points."
+    },
+    "370": {
+      "name": "Black and Red",
+      "description": "Heart and Diamond suited cards add double points. Club and Spade suited cards add +1 multi."
+    },
     "374": {
       "name": "Wildcard Booster",
       "description": "Each Wildcard grants +100 points."

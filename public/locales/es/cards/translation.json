@@ -271,6 +271,18 @@
       "name": "Los Dos Importan",
       "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
     },
+    "364": {
+      "name": "Multiplicador de Cuadrados",
+      "description": "+4 multi por cada 4 cartas en tu mano."
+    },
+    "368": {
+      "name": "La Verdad del Rey",
+      "description": "Cada Rey jugado tiene 1 en 2 de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 1 en 4 de probabilidad de dar 100 puntos."
+    },
+    "370": {
+      "name": "Negro y Rojo",
+      "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan +1 multi."
+    },
     "374": {
       "name": "Impulso de Comodines",
       "description": "Cada comodín otorga +100 puntos."
