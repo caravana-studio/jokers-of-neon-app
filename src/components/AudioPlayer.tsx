@@ -26,7 +26,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       sx={{
         position: "fixed",
         bottom: isSmallScreen ? "25px" : "70px",
-        left: isSmallScreen ? "15px" : "50px",
+        left: isSmallScreen ? "15px" : "45px",
         zIndex: 1000,
         ...sx,
       }}

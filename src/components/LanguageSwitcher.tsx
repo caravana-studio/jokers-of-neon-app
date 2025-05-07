@@ -21,7 +21,7 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <Box transform={isSmallScreen ? "scale(0.7)": ""} zIndex={999} position="absolute" left={isSmallScreen ? "15px" : "90px"} top={isSmallScreen ? "15px" : "40px"}>
+    <Box transform={isSmallScreen ? "scale(0.7)": ""} zIndex={999} position="absolute" left={isSmallScreen ? "15px" : "45px"} top={isSmallScreen ? "15px" : "40px"}>
       <Menu>
         <MenuButton as={Button} p={"0 !important"} width={"auto"}>
           <Flex width={"25px"} m={"0 auto"}>
