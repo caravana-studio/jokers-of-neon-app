@@ -178,11 +178,11 @@ export const AppRoutes = () => {
       <Route
         path="/map"
         element={
-          //   <StoreProvider>
-          <AnimatedPage>
-            <MapPage />
-          </AnimatedPage>
-          //   </StoreProvider>
+          <StoreProvider>
+            <AnimatedPage>
+              <MapPage />
+            </AnimatedPage>
+          </StoreProvider>
         }
       />
       <Route
