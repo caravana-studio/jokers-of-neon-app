@@ -26,7 +26,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
       left={0}
       w="100%"
       h="100%"
-      sx={{ backfaceVisibility: "hidden" }}
+      sx={{ backfaceVisibility: "hidden", transform: "rotateY(0deg)" }}
     >
       {children}
     </Box>
