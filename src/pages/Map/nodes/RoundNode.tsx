@@ -49,7 +49,7 @@ const RoundNode = ({ data }: any) => {
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
+          boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
         }}
         onClick={() => {
           isSmallScreen &&
@@ -70,7 +70,7 @@ const RoundNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={"/map/icons/cards.png"} alt="round" />
+        <CachedImage src={"/map/icons/round/round.png"} alt="round" />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

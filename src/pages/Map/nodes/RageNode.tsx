@@ -35,13 +35,12 @@ const RageNode = ({ data }: any) => {
       <Box
         style={{
           opacity: reachable || data.visited || data.current ? 1 : 0.5,
-          background:
+/*           background:
             data.current || data.visited
               ? BLUE
               : reachable
                 ? VIOLET
-                : "rgba(255,255,255,0.1)",
-          padding: 10,
+                : "rgba(255,255,255,0.1)", */
           width: data.last ? 120 : 70,
           height: data.last ? 120 : 70,
           display: "flex",
@@ -49,7 +48,6 @@ const RageNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 36,
           color: "white",
-          border: "1px solid white",
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
@@ -77,8 +75,8 @@ const RageNode = ({ data }: any) => {
         <CachedImage
           src={
             data.last
-              ? "/map/icons/rage-final.png"
-              : "/map/icons/rage-normal.png"
+              ? `/map/icons/rage/final-${stateInMap && reachable ? "violet" : "blue"}.png`
+              : `/map/icons/rage/intermediate-${stateInMap && reachable ? "violet" : "blue"}.png`
           }
           alt="rage"
         />

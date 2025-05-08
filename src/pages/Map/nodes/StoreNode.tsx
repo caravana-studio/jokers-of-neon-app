@@ -66,7 +66,7 @@ const StoreNode = ({ data }: any) => {
               : reachable
                 ? VIOLET
                 : "rgba(255,255,255,0.1)",
-          padding: 10,
+          
           borderRadius: "100%",
           width: 50,
           height: 50,
@@ -79,7 +79,7 @@ const StoreNode = ({ data }: any) => {
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
+          boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
         }}
         onClick={() => {
           isSmallScreen &&
@@ -101,7 +101,7 @@ const StoreNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={"/map/icons/shop.png"} alt="shop" />
+        <CachedImage w="100%" src={`/map/icons/rewards/${data.shopId}.png`} alt="shop" />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
