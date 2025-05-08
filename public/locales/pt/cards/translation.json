@@ -131,6 +131,10 @@
       "name": "Sinergia de neon",
       "description": "Se mais de 50% das cartas jogadas são neon, todas as outras cartas são convertidas em neon"
     },
+    "326": {
+      "name": "Doutrina de néon",
+      "description": "Converta duas cartas jogadas em cartas de néon."
+    },
     "327": {
       "name": "Blackjack",
       "description": "Atinge exatamente 21 com as cartas jogadas para ganhar +21 multi."
@@ -271,6 +275,54 @@
       "name": "Os Dois Contam",
       "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
     },
+    "362": {
+      "name": "Mão de modificadores",
+      "description": "Ganhe +5 de multi para cada carta modificadora na sua mão."
+    },
+    "363": {
+      "name": "Piromaníaco",
+      "description": "Obtenha 50% de desconto ao queimar cartas."
+    },
+    "364": {
+      "name": "Multiplicador de Quadrados",
+      "description": "+4 multi por cada 4 cartas em sua mão."
+    },
+    "365": {
+      "name": "Jackpot",
+      "description": "Ganhe +30 pontos para cada Valete na sua mão."
+    },
+    "366": {
+      "name": "Ciclo de dinheiro",
+      "description": "Receba 50% mais recompensas após cada nível."
+    },
+    "367": {
+      "name": "Caçador de especiais",
+      "description": "Dobra a probabilidade de encontrar cartas especiais A e S na loja."
+    },
+    "368": {
+      "name": "A Verdade do Rei",
+      "description": "Cada Rei jogado tem 1 em 2 de chance de dar 100 de ouro. Cada carta Rei em sua mão tem 1 em 4 de chance de dar 100 pontos."
+    },
+    "369": {
+      "name": "Aritmomania",
+      "description": "Se a soma das cartas jogadas for par, ganhe +7 de multi. Se for ímpar, ganhe +100 pontos."
+    },
+    "370": {
+      "name": "Preto e Vermelho",
+      "description": "As cartas de Coração e Diamantes dão pontos duplos. As cartas de Três e Quatro dão +1 multi."
+    },
+    "371": {
+      "name": "Joker inúteis",
+      "description": "Os Joker não geram pontos nem multiplicador. Todas as outras cartas recebem +1 multi."
+    },
+    "372": {
+      "name": "Escada Ascendente",
+      "description": "Ganhe +10 pontos acumulativos para cada sequência jogada. Atualmente com +{{points}} pontos."
+    },
+    "373": {
+      "name": "Relatividade",
+      "description": "Converte qualquer sequência em uma sequência de 10 a Ás (a mais alta possível)."
+    },
     "374": {
       "name": "Impulso de Curingas",
       "description": "Cada curinga concede +100 pontos."
@@ -278,6 +330,10 @@
     "379": {
       "name": "Arco-íris",
       "description": "Ganhe +200 pontos e +5 multi se sua jogada incluir todos os quatro naipes."
+    },
+    "380": {
+      "name": "Fortuna da Rainha",
+      "description": "Cada rainha na sua jogada tem 1 em 2 chances de conceder +150 moedas."
     }
   },
   "power-ups": {
@@ -822,6 +878,14 @@
     "418": {
       "name": "Maldição Perpétua",
       "description": "Silencie uma carta aleatória em cada mão jogada"
+    },
+    "420": {
+      "name": "Problema Duplo",
+      "description": "Você precisa fazer o dobro de pontos nesta rodada"
+    },
+    "421": {
+      "name": "Traindo os Fracos",
+      "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
     }
   },
   "lootBoxes": {
