@@ -141,7 +141,7 @@
     },
     "328": {
       "name": "Jogo Eficiente",
-      "description": "Ganhe +15 multi e +50 pontos ao jogar 3 ou menos cartas."
+      "description": "Ganhe +10 multi e +50 pontos ao jogar 3 ou menos cartas."
     },
     "329": {
       "name": "Sacrifício Especial",
@@ -149,7 +149,7 @@
     },
     "330": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe +3 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Ganhe +2 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atalho",
