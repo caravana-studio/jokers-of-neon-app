@@ -2,440 +2,440 @@
   "activated": "Activated",
   "traditionalCards": {
     "0": {
-        "name": "2 of Clubs",
-        "description": "Scores +2 points"
+      "name": "2 of Clubs",
+      "description": "Scores +2 points"
     },
     "1": {
-        "name": "3 of Clubs",
-        "description": "Scores +3 points"
+      "name": "3 of Clubs",
+      "description": "Scores +3 points"
     },
     "2": {
-        "name": "4 of Clubs",
-        "description": "Scores +4 points"
+      "name": "4 of Clubs",
+      "description": "Scores +4 points"
     },
     "3": {
-        "name": "5 of Clubs",
-        "description": "Scores +5 points"
+      "name": "5 of Clubs",
+      "description": "Scores +5 points"
     },
     "4": {
-        "name": "6 of Clubs",
-        "description": "Scores +6 points"
+      "name": "6 of Clubs",
+      "description": "Scores +6 points"
     },
     "5": {
-        "name": "7 of Clubs",
-        "description": "Scores +7 points"
+      "name": "7 of Clubs",
+      "description": "Scores +7 points"
     },
     "6": {
-        "name": "8 of Clubs",
-        "description": "Scores +8 points"
+      "name": "8 of Clubs",
+      "description": "Scores +8 points"
     },
     "7": {
-        "name": "9 of Clubs",
-        "description": "Scores +9 points"
+      "name": "9 of Clubs",
+      "description": "Scores +9 points"
     },
     "8": {
-        "name": "10 of Clubs",
-        "description": "Scores +10 points"
+      "name": "10 of Clubs",
+      "description": "Scores +10 points"
     },
     "9": {
-        "name": "Jack of Clubs",
-        "description": "Scores +10 points"
+      "name": "Jack of Clubs",
+      "description": "Scores +10 points"
     },
     "10": {
-        "name": "Queen of Clubs",
-        "description": "Scores +10 points"
+      "name": "Queen of Clubs",
+      "description": "Scores +10 points"
     },
     "11": {
-        "name": "King of Clubs",
-        "description": "Scores +10 points"
+      "name": "King of Clubs",
+      "description": "Scores +10 points"
     },
     "12": {
-        "name": "Ace of Clubs",
-        "description": "Scores +11 points"
+      "name": "Ace of Clubs",
+      "description": "Scores +11 points"
     },
     "13": {
-        "name": "2 of Diamonds",
-        "description": "Scores +2 points"
+      "name": "2 of Diamonds",
+      "description": "Scores +2 points"
     },
     "14": {
-        "name": "3 of Diamonds",
-        "description": "Scores +3 points"
+      "name": "3 of Diamonds",
+      "description": "Scores +3 points"
     },
     "15": {
-        "name": "4 of Diamonds",
-        "description": "Scores +4 points"
+      "name": "4 of Diamonds",
+      "description": "Scores +4 points"
     },
     "16": {
-        "name": "5 of Diamonds",
-        "description": "Scores +5 points"
+      "name": "5 of Diamonds",
+      "description": "Scores +5 points"
     },
     "17": {
-        "name": "6 of Diamonds",
-        "description": "Scores +6 points"
+      "name": "6 of Diamonds",
+      "description": "Scores +6 points"
     },
     "18": {
-        "name": "7 of Diamonds",
-        "description": "Scores +7 points"
+      "name": "7 of Diamonds",
+      "description": "Scores +7 points"
     },
     "19": {
-        "name": "8 of Diamonds",
-        "description": "Scores +8 points"
+      "name": "8 of Diamonds",
+      "description": "Scores +8 points"
     },
     "20": {
-        "name": "9 of Diamonds",
-        "description": "Scores +9 points"
+      "name": "9 of Diamonds",
+      "description": "Scores +9 points"
     },
     "21": {
-        "name": "10 of Diamonds",
-        "description": "Scores +10 points"
+      "name": "10 of Diamonds",
+      "description": "Scores +10 points"
     },
     "22": {
-        "name": "Jack of Diamonds",
-        "description": "Scores +10 points"
+      "name": "Jack of Diamonds",
+      "description": "Scores +10 points"
     },
     "23": {
-        "name": "Queen of Diamonds",
-        "description": "Scores +10 points"
+      "name": "Queen of Diamonds",
+      "description": "Scores +10 points"
     },
     "24": {
-        "name": "King of Diamonds",
-        "description": "Scores +10 points"
+      "name": "King of Diamonds",
+      "description": "Scores +10 points"
     },
     "25": {
-        "name": "Ace of Diamonds",
-        "description": "Scores +11 points"
+      "name": "Ace of Diamonds",
+      "description": "Scores +11 points"
     },
     "26": {
-        "name": "2 of Hearts",
-        "description": "Scores +2 points"
+      "name": "2 of Hearts",
+      "description": "Scores +2 points"
     },
     "27": {
-        "name": "3 of Hearts",
-        "description": "Scores +3 points"
+      "name": "3 of Hearts",
+      "description": "Scores +3 points"
     },
     "28": {
-        "name": "4 of Hearts",
-        "description": "Scores +4 points"
+      "name": "4 of Hearts",
+      "description": "Scores +4 points"
     },
     "29": {
-        "name": "5 of Hearts",
-        "description": "Scores +5 points"
+      "name": "5 of Hearts",
+      "description": "Scores +5 points"
     },
     "30": {
-        "name": "6 of Hearts",
-        "description": "Scores +6 points"
+      "name": "6 of Hearts",
+      "description": "Scores +6 points"
     },
     "31": {
-        "name": "7 of Hearts",
-        "description": "Scores +7 points"
+      "name": "7 of Hearts",
+      "description": "Scores +7 points"
     },
     "32": {
-        "name": "8 of Hearts",
-        "description": "Scores +8 points"
+      "name": "8 of Hearts",
+      "description": "Scores +8 points"
     },
     "33": {
-        "name": "9 of Hearts",
-        "description": "Scores +9 points"
+      "name": "9 of Hearts",
+      "description": "Scores +9 points"
     },
     "34": {
-        "name": "10 of Hearts",
-        "description": "Scores +10 points"
+      "name": "10 of Hearts",
+      "description": "Scores +10 points"
     },
     "35": {
-        "name": "Jack of Hearts",
-        "description": "Scores +10 points"
+      "name": "Jack of Hearts",
+      "description": "Scores +10 points"
     },
     "36": {
-        "name": "Queen of Hearts",
-        "description": "Scores +10 points"
+      "name": "Queen of Hearts",
+      "description": "Scores +10 points"
     },
     "37": {
-        "name": "King of Hearts",
-        "description": "Scores +10 points"
+      "name": "King of Hearts",
+      "description": "Scores +10 points"
     },
     "38": {
-        "name": "Ace of Hearts",
-        "description": "Scores +11 points"
+      "name": "Ace of Hearts",
+      "description": "Scores +11 points"
     },
     "39": {
-        "name": "2 of Spades",
-        "description": "Scores +2 points"
+      "name": "2 of Spades",
+      "description": "Scores +2 points"
     },
     "40": {
-        "name": "3 of Spades",
-        "description": "Scores +3 points"
+      "name": "3 of Spades",
+      "description": "Scores +3 points"
     },
     "41": {
-        "name": "4 of Spades",
-        "description": "Scores +4 points"
+      "name": "4 of Spades",
+      "description": "Scores +4 points"
     },
     "42": {
-        "name": "5 of Spades",
-        "description": "Scores +5 points"
+      "name": "5 of Spades",
+      "description": "Scores +5 points"
     },
     "43": {
-        "name": "6 of Spades",
-        "description": "Scores +6 points"
+      "name": "6 of Spades",
+      "description": "Scores +6 points"
     },
     "44": {
-        "name": "7 of Spades",
-        "description": "Scores +7 points"
+      "name": "7 of Spades",
+      "description": "Scores +7 points"
     },
     "45": {
-        "name": "8 of Spades",
-        "description": "Scores +8 points"
+      "name": "8 of Spades",
+      "description": "Scores +8 points"
     },
     "46": {
-        "name": "9 of Spades",
-        "description": "Scores +9 points"
+      "name": "9 of Spades",
+      "description": "Scores +9 points"
     },
     "47": {
-        "name": "10 of Spades",
-        "description": "Scores +10 points"
+      "name": "10 of Spades",
+      "description": "Scores +10 points"
     },
     "48": {
-        "name": "Jack of Spades",
-        "description": "Scores +10 points"
+      "name": "Jack of Spades",
+      "description": "Scores +10 points"
     },
     "49": {
-        "name": "Queen of Spades",
-        "description": "Scores +10 points"
+      "name": "Queen of Spades",
+      "description": "Scores +10 points"
     },
     "50": {
-        "name": "King of Spades",
-        "description": "Scores +10 points"
+      "name": "King of Spades",
+      "description": "Scores +10 points"
     },
     "51": {
-        "name": "Ace of Spades",
-        "description": "Scores +11 points"
+      "name": "Ace of Spades",
+      "description": "Scores +11 points"
     },
     "52": {
-        "name": "Joker",
-        "description": "Wildcard that substitutes any traditional card. +100 points and +1 multi"
+      "name": "Joker",
+      "description": "Wildcard that substitutes any traditional card. +100 points and +1 multi"
     },
     "53": {
-        "name": "Wilcard",
-        "description": "Substitutes any traditional card"
+      "name": "Wilcard",
+      "description": "Substitutes any traditional card"
     }
-    },
+  },
   "neonCards": {
-        "200": {
-          "name": "2 of neon Clubs",
-          "description": "Scores +4 points and +1 multi"
-        },
-        "201": {
-          "name": "3 of neon Clubs",
-          "description": "Scores +6 points and +1 multi"
-        },
-        "202": {
-          "name": "4 of neon Clubs",
-          "description": "Scores +8 points and +1 multi"
-        },
-        "203": {
-          "name": "5 of neon Clubs",
-          "description": "Scores +10 points and +1 multi"
-        },
-        "204": {
-          "name": "6 of neon Clubs",
-          "description": "Scores +12 points and +1 multi"
-        },
-        "205": {
-          "name": "7 of neon Clubs",
-          "description": "Scores +14 points and +1 multi"
-        },
-        "206": {
-          "name": "8 of neon Clubs",
-          "description": "Scores +16 points and +1 multi"
-        },
-        "207": {
-          "name": "9 of neon Clubs",
-          "description": "Scores +18 points and +1 multi"
-        },
-        "208": {
-          "name": "10 of neon Clubs",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "209": {
-          "name": "Jack of neon Clubs",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "210": {
-          "name": "Queen of neon Clubs",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "211": {
-          "name": "King of neon Clubs",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "212": {
-          "name": "Ace of neon Clubs",
-          "description": "Scores +22 points and +1 multi"
-        },
-        "213": {
-          "name": "2 of neon Diamonds",
-          "description": "Scores +4 points and +1 multi"
-        },
-        "214": {
-          "name": "3 of neon Diamonds",
-          "description": "Scores +6 points and +1 multi"
-        },
-        "215": {
-          "name": "4 of neon Diamonds",
-          "description": "Scores +8 points and +1 multi"
-        },
-        "216": {
-          "name": "5 of neon Diamonds",
-          "description": "Scores +10 points and +1 multi"
-        },
-        "217": {
-          "name": "6 of neon Diamonds",
-          "description": "Scores +12 points and +1 multi"
-        },
-        "218": {
-          "name": "7 of neon Diamonds",
-          "description": "Scores +14 points and +1 multi"
-        },
-        "219": {
-          "name": "8 of neon Diamonds",
-          "description": "Scores +16 points and +1 multi"
-        },
-        "220": {
-          "name": "9 of neon Diamonds",
-          "description": "Scores +18 points and +1 multi"
-        },
-        "221": {
-          "name": "10 of neon Diamonds",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "222": {
-          "name": "Jack of neon Diamonds",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "223": {
-          "name": "Queen of neon Diamonds",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "224": {
-          "name": "King of neon Diamonds",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "225": {
-          "name": "Ace of neon Diamonds",
-          "description": "Scores +22 points and +1 multi"
-        },
-        "226": {
-          "name": "2 of neon Hearts",
-          "description": "Scores +4 points and +1 multi"
-        },
-        "227": {
-          "name": "3 of neon Hearts",
-          "description": "Scores +6 points and +1 multi"
-        },
-        "228": {
-          "name": "4 of neon Hearts",
-          "description": "Scores +8 points and +1 multi"
-        },
-        "229": {
-          "name": "5 of neon Hearts",
-          "description": "Scores +10 points and +1 multi"
-        },
-        "230": {
-          "name": "6 of neon Hearts",
-          "description": "Scores +12 points and +1 multi"
-        },
-        "231": {
-          "name": "7 of neon Hearts",
-          "description": "Scores +14 points and +1 multi"
-        },
-        "232": {
-          "name": "8 of neon Hearts",
-          "description": "Scores +16 points and +1 multi"
-        },
-        "233": {
-          "name": "9 of neon Hearts",
-          "description": "Scores +18 points and +1 multi"
-        },
-        "234": {
-          "name": "10 of neon Hearts",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "235": {
-          "name": "Jack of neon Hearts",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "236": {
-          "name": "Queen of neon Hearts",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "237": {
-          "name": "King of neon Hearts",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "238": {
-          "name": "Ace of neon Hearts",
-          "description": "Scores +22 points and +1 multi"
-        },
-        "239": {
-          "name": "2 of neon Spades",
-          "description": "Scores +4 points and +1 multi"
-        },
-        "240": {
-          "name": "3 of neon Spades",
-          "description": "Scores +6 points and +1 multi"
-        },
-        "241": {
-          "name": "4 of neon Spades",
-          "description": "Scores +8 points and +1 multi"
-        },
-        "242": {
-          "name": "5 of neon Spades",
-          "description": "Scores +10 points and +1 multi"
-        },
-        "243": {
-          "name": "6 of neon Spades",
-          "description": "Scores +12 points and +1 multi"
-        },
-        "244": {
-          "name": "7 of neon Spades",
-          "description": "Scores +14 points and +1 multi"
-        },
-        "245": {
-          "name": "8 of neon Spades",
-          "description": "Scores +16 points and +1 multi"
-        },
-        "246": {
-          "name": "9 of neon Spades",
-          "description": "Scores +18 points and +1 multi"
-        },
-        "247": {
-          "name": "10 of neon Spades",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "248": {
-          "name": "Jack of neon Spades",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "249": {
-          "name": "Queen of neon Spades",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "250": {
-          "name": "King of neon Spades",
-          "description": "Scores +20 points and +1 multi"
-        },
-        "251": {
-          "name": "Ace of neon Spades",
-          "description": "Scores +22 points and +1 multi"
-        },
-        "252": {
-          "name": "Joker of Neon",
-          "description": "Substitutes any traditional card. +200 points and +2 multi"
-      },
-      "253": {
-        "name": "Wildcard of Neon",
-        "description": "Substitutes any neon card"
-    }
+    "200": {
+      "name": "2 of neon Clubs",
+      "description": "Scores +4 points and +1 multi"
     },
+    "201": {
+      "name": "3 of neon Clubs",
+      "description": "Scores +6 points and +1 multi"
+    },
+    "202": {
+      "name": "4 of neon Clubs",
+      "description": "Scores +8 points and +1 multi"
+    },
+    "203": {
+      "name": "5 of neon Clubs",
+      "description": "Scores +10 points and +1 multi"
+    },
+    "204": {
+      "name": "6 of neon Clubs",
+      "description": "Scores +12 points and +1 multi"
+    },
+    "205": {
+      "name": "7 of neon Clubs",
+      "description": "Scores +14 points and +1 multi"
+    },
+    "206": {
+      "name": "8 of neon Clubs",
+      "description": "Scores +16 points and +1 multi"
+    },
+    "207": {
+      "name": "9 of neon Clubs",
+      "description": "Scores +18 points and +1 multi"
+    },
+    "208": {
+      "name": "10 of neon Clubs",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "209": {
+      "name": "Jack of neon Clubs",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "210": {
+      "name": "Queen of neon Clubs",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "211": {
+      "name": "King of neon Clubs",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "212": {
+      "name": "Ace of neon Clubs",
+      "description": "Scores +22 points and +1 multi"
+    },
+    "213": {
+      "name": "2 of neon Diamonds",
+      "description": "Scores +4 points and +1 multi"
+    },
+    "214": {
+      "name": "3 of neon Diamonds",
+      "description": "Scores +6 points and +1 multi"
+    },
+    "215": {
+      "name": "4 of neon Diamonds",
+      "description": "Scores +8 points and +1 multi"
+    },
+    "216": {
+      "name": "5 of neon Diamonds",
+      "description": "Scores +10 points and +1 multi"
+    },
+    "217": {
+      "name": "6 of neon Diamonds",
+      "description": "Scores +12 points and +1 multi"
+    },
+    "218": {
+      "name": "7 of neon Diamonds",
+      "description": "Scores +14 points and +1 multi"
+    },
+    "219": {
+      "name": "8 of neon Diamonds",
+      "description": "Scores +16 points and +1 multi"
+    },
+    "220": {
+      "name": "9 of neon Diamonds",
+      "description": "Scores +18 points and +1 multi"
+    },
+    "221": {
+      "name": "10 of neon Diamonds",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "222": {
+      "name": "Jack of neon Diamonds",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "223": {
+      "name": "Queen of neon Diamonds",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "224": {
+      "name": "King of neon Diamonds",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "225": {
+      "name": "Ace of neon Diamonds",
+      "description": "Scores +22 points and +1 multi"
+    },
+    "226": {
+      "name": "2 of neon Hearts",
+      "description": "Scores +4 points and +1 multi"
+    },
+    "227": {
+      "name": "3 of neon Hearts",
+      "description": "Scores +6 points and +1 multi"
+    },
+    "228": {
+      "name": "4 of neon Hearts",
+      "description": "Scores +8 points and +1 multi"
+    },
+    "229": {
+      "name": "5 of neon Hearts",
+      "description": "Scores +10 points and +1 multi"
+    },
+    "230": {
+      "name": "6 of neon Hearts",
+      "description": "Scores +12 points and +1 multi"
+    },
+    "231": {
+      "name": "7 of neon Hearts",
+      "description": "Scores +14 points and +1 multi"
+    },
+    "232": {
+      "name": "8 of neon Hearts",
+      "description": "Scores +16 points and +1 multi"
+    },
+    "233": {
+      "name": "9 of neon Hearts",
+      "description": "Scores +18 points and +1 multi"
+    },
+    "234": {
+      "name": "10 of neon Hearts",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "235": {
+      "name": "Jack of neon Hearts",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "236": {
+      "name": "Queen of neon Hearts",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "237": {
+      "name": "King of neon Hearts",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "238": {
+      "name": "Ace of neon Hearts",
+      "description": "Scores +22 points and +1 multi"
+    },
+    "239": {
+      "name": "2 of neon Spades",
+      "description": "Scores +4 points and +1 multi"
+    },
+    "240": {
+      "name": "3 of neon Spades",
+      "description": "Scores +6 points and +1 multi"
+    },
+    "241": {
+      "name": "4 of neon Spades",
+      "description": "Scores +8 points and +1 multi"
+    },
+    "242": {
+      "name": "5 of neon Spades",
+      "description": "Scores +10 points and +1 multi"
+    },
+    "243": {
+      "name": "6 of neon Spades",
+      "description": "Scores +12 points and +1 multi"
+    },
+    "244": {
+      "name": "7 of neon Spades",
+      "description": "Scores +14 points and +1 multi"
+    },
+    "245": {
+      "name": "8 of neon Spades",
+      "description": "Scores +16 points and +1 multi"
+    },
+    "246": {
+      "name": "9 of neon Spades",
+      "description": "Scores +18 points and +1 multi"
+    },
+    "247": {
+      "name": "10 of neon Spades",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "248": {
+      "name": "Jack of neon Spades",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "249": {
+      "name": "Queen of neon Spades",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "250": {
+      "name": "King of neon Spades",
+      "description": "Scores +20 points and +1 multi"
+    },
+    "251": {
+      "name": "Ace of neon Spades",
+      "description": "Scores +22 points and +1 multi"
+    },
+    "252": {
+      "name": "Joker of Neon",
+      "description": "Substitutes any traditional card. +200 points and +2 multi"
+    },
+    "253": {
+      "name": "Wildcard of Neon",
+      "description": "Substitutes any neon card"
+    }
+  },
   "modifiers": {
     "608": {
       "name": "Change to Clubs",
@@ -545,7 +545,7 @@
     },
     "320": {
       "name": "Initial advantage",
-      "description": "The first played hand scoress +100 points and +10 multi"
+      "description": "The first played hand scores +100 points and +10 multi"
     },
     "321": {
       "name": "Lucky hand",
@@ -566,6 +566,10 @@
     "325": {
       "name": "Neon synergy",
       "description": "If more than 50% of the played cards are neon, all the other cards get converted to neon"
+    },
+    "326": {
+      "name": "Neon Doctrine",
+      "description": "Convert two played cards into neon cards."
     },
     "327": {
       "name": "Blackjack",
@@ -613,7 +617,7 @@
     },
     "338": {
       "name": "Extra draws",
-      "description": "Adds 2 hands"
+      "description": "Adds 2 plays"
     },
     "339": {
       "name": "Scaling factor",
@@ -677,7 +681,7 @@
     },
     "354": {
       "name": "Skip Bonus",
-      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card)."
+      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points."
     },
     "355": {
       "name": "Burning Rewards",
@@ -707,17 +711,53 @@
       "name": "Twos Matter",
       "description": "Gain +30 points for every 2 held in your hand."
     },
+    "362": {
+      "name": "Hand of modifiers",
+      "description": "Gain +5 multi for each modifier card held in your hand."
+    },
+    "363": {
+      "name": "Pyromaniac",
+      "description": "50% discount on burn cards."
+    },
     "364": {
       "name": "Quad Multiplier",
       "description": "+4 multi for every 4 card held in your hand."
+    },
+    "365": {
+      "name": "Jackpot",
+      "description": "Gain +30 points for every Jack held in your hand."
+    },
+    "366": {
+      "name": "Cash loop",
+      "description": "Earn +50% rewards after each level."
+    },
+    "367": {
+      "name": "Specials Hunter",
+      "description": "Double the probability on finding A and S specials cards on the store."
     },
     "368": {
       "name": "King's Faith",
       "description": "Each King played has 1 in 2 chances of giving 100 cash. Every King held in hand has 1 in 4 chances of scoring 100 points."
     },
+    "369": {
+      "name": "Arithmomania",
+      "description": "If the sum of the cards you played is even, gain +7 multi. If it's odd, gain +100 points."
+    },
     "370": {
       "name": "Black and Red",
       "description": "Heart and Diamond suited cards add double points. Club and Spade suited cards add +1 multi."
+    },
+    "371": {
+      "name": "Worthless Jokers",
+      "description": "Jokers score 0 points and multi. Every other card scores +1 multi."
+    },
+    "372": {
+      "name": "Rising Ladder",
+      "description": "Gain +10 cumulative points for every straight played. Currently at +{{points}} points."
+    },
+    "373": {
+      "name": "Relativity",
+      "description": "Converts any straight into a 10-Ace straight (the higher possible straight)."
     },
     "374": {
       "name": "Wildcard Booster",
@@ -726,6 +766,10 @@
     "379": {
       "name": "Rainbow",
       "description": "Gain +200 points and +5 multi if your play includes all four suits."
+    },
+    "380": {
+      "name": "Queens Fortune",
+      "description": "Scoring queens have 1 in 2 chance of giving +150 cash."
     }
   },
   "power-ups": {
@@ -834,6 +878,10 @@
     "418": {
       "name": "Perpetual Curse",
       "description": "Silence a random card in each hand played"
+    },
+    "420": {
+      "name": "Double Trouble",
+      "description": "You have to make double points in this round"
     },
     "421": {
       "name": "Betraying the Weak",

@@ -3,7 +3,7 @@ import { POWER_UP_KEYS } from "../data/powerups";
 import { SPECIALS_RARITY } from "../data/specialCards";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 
-export const CACHE_IMAGE = "big-image-cache";
+export const CACHE_IMAGE = "big-image-cache-2";
 export const CACHE_VIDEO = "background-video-cache";
 
 export const getDefaultImageUrls = async (): Promise<string[]> => {

@@ -1,4 +1,5 @@
 import { Box, Tooltip } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
@@ -8,7 +9,6 @@ import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
-import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { NodeType } from "../types";
 
@@ -26,6 +26,7 @@ const RageNode = ({ data }: any) => {
 
   const stateInMap = game?.state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Tooltip
@@ -33,15 +34,15 @@ const RageNode = ({ data }: any) => {
       placement="right"
     >
       <Box
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
-          opacity: reachable || data.visited || data.current ? 1 : 0.5,
-          background:
+          /*           background:
             data.current || data.visited
               ? BLUE
               : reachable
                 ? VIOLET
-                : "rgba(255,255,255,0.1)",
-          padding: 10,
+                : "rgba(255,255,255,0.1)", */
           width: data.last ? 120 : 70,
           height: data.last ? 120 : 70,
           display: "flex",
@@ -49,11 +50,12 @@ const RageNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 36,
           color: "white",
-          border: "1px solid white",
+          transition: "all 0.2s ease-in-out",
           transform:
-            selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
+            selectedNodeData?.id === data.id || isHovered || data.current
+              ? "scale(1.2)"
+              : "scale(1)",
           cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
         }}
         onClick={() => {
           isSmallScreen &&
@@ -75,11 +77,7 @@ const RageNode = ({ data }: any) => {
         }}
       >
         <CachedImage
-          src={
-            data.last
-              ? "/map/icons/rage-final.png"
-              : "/map/icons/rage-normal.png"
-          }
+          src={`/map/icons/rage/${data.last ? "final" : "intermediate"}-${stateInMap && reachable ? "violet" : data.visited || data.current ? "blue" : "off"}${data.current || (isHovered && (data.visited || reachable)) ? "-bordered" : ""}.png`}
           alt="rage"
         />
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />

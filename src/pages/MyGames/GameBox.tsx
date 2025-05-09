@@ -22,7 +22,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
 
   const handleButtonClick = async () => {
     setIsLoading(true);
-    if (game.status === "NOT STARTED") {
+    if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
       setGameId(game.id);
@@ -114,7 +114,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
                 disabled={isLoading}
               >
                 {t(
-                  game.status === "NOT STARTED" ? "start-btn" : "continue-btn"
+                  game.status === GameStateEnum.NotStarted ? "start-btn" : "continue-btn"
                 ).toUpperCase()}
               </Button>
             </Flex>

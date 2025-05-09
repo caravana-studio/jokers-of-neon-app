@@ -12,6 +12,7 @@ import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useMap } from "../../providers/MapProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { MobileCoins } from "../store/Coins";
 import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
 import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
@@ -78,8 +79,17 @@ export const Map = () => {
   };
 
   return (
-    <div style={{ height: "100vh", width: "100vw", zIndex: 10 }}>
+    <div style={{ height: "100%", width: "100%", zIndex: 10 }}>
       <MobileDecoration fadeToBlack />
+      {isSmallScreen ? (
+        <Flex position="absolute" top={"20px"} left={4} zIndex={1000}>
+          <MobileCoins fontSize={"15px"} iconSize={19} />
+        </Flex>
+      ) : (
+        <Flex position="absolute" bottom={"55px"} right={'10px'} zIndex={1000}>
+          <MobileCoins fontSize={"18px"} iconSize={23} />
+        </Flex>
+      )}
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -88,6 +98,7 @@ export const Map = () => {
           [NodeType.RAGE]: RageNode,
           [NodeType.STORE]: RewardNode,
           [NodeType.ROUND]: RoundNode,
+          [NodeType.CHALLENGE]: RoundNode,
         }}
         panOnScroll={false}
         zoomOnScroll={true}

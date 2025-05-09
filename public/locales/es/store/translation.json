@@ -141,7 +141,7 @@
     },
     "5": {
       "name": "Modificadoras",
-      "content": "{{modofiers}} modificadores, {{lootboxes}} cajas"
+      "content": "{{modifiers}} modificadores, {{lootboxes}} cajas"
     },
     "6": {
       "name": "Mix",

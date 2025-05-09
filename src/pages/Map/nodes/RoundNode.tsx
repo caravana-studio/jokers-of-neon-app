@@ -29,13 +29,12 @@ const RoundNode = ({ data }: any) => {
     <Tooltip label={t("name", { round: data.round })} placement="right">
       <Box
         style={{
-          opacity: reachable || data.visited || data.current ? 1 : 0.5,
           background:
             data.current || data.visited
               ? BLUE
               : reachable
                 ? VIOLET
-                : "rgba(255,255,255,0.1)",
+                : "transparent",
           padding: 10,
           borderRadius: 10,
           width: 50,
@@ -45,11 +44,19 @@ const RoundNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 24,
           color: "white",
-          border: "1px solid white",
+          cursor: stateInMap && reachable ? "pointer" : "default",
+          boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+        }}
+        sx={{
+          transition: "all 0.2s ease-in-out",
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
-          cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
+          border: "1px solid",
+          borderColor: reachable || data.visited || data.current ? "transparent" : "rgba(255,255,255,0.3)",
+          "&:hover": {
+            borderColor: reachable || data.visited || data.current ? "white" : "rgba(255,255,255,0.3)",
+            transform: "scale(1.2)",
+          },
         }}
         onClick={() => {
           isSmallScreen &&
@@ -70,7 +77,7 @@ const RoundNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={"/map/icons/cards.png"} alt="round" />
+        <CachedImage src={`/map/icons/round/round${reachable || data.visited || data.current ? "" : "-off"}.png`} alt="round" />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

@@ -22,9 +22,9 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
     case 3:
       return { specials: 3, lootboxes: 2 };
     case 4:
-      return { levelups: 3, specials: 2 };
+      return { levelups: 3, specials: 3 };
     case 5:
-      return { modofiers: 4, lootboxes: 2 };
+      return { modifiers: 4, lootboxes: 2 };
     case 6:
       return { lootboxes: 2, powerups: 2, levelups: 2 };
     default:
@@ -59,14 +59,13 @@ const StoreNode = ({ data }: any) => {
     <Tooltip label={description} placement="right">
       <Box
         style={{
-          opacity: reachable || data.visited || data.current ? 1 : 0.5,
           background:
             data.current || data.visited
               ? BLUE
               : reachable
                 ? VIOLET
-                : "rgba(255,255,255,0.1)",
-          padding: 10,
+                : "transparent",
+
           borderRadius: "100%",
           width: 50,
           height: 50,
@@ -75,11 +74,19 @@ const StoreNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 24,
           color: "white",
-          border: "1px solid #fff",
+          cursor: stateInMap && reachable ? "pointer" : "default",
+          boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+        }}
+        sx={{
+          transition: "all 0.2s ease-in-out",
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
-          cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
+          border: "1px solid",
+          borderColor: "transparent",
+          "&:hover": {
+            borderColor: reachable || data.visited || data.current ? "white" : "transparent",
+            transform: "scale(1.2)",
+          },
         }}
         onClick={() => {
           isSmallScreen &&
@@ -101,7 +108,11 @@ const StoreNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={"/map/icons/shop.png"} alt="shop" />
+        <CachedImage
+          w="100%"
+          src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
+          alt="shop"
+        />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

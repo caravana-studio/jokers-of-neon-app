@@ -131,6 +131,10 @@
       "name": "Sinergia de neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
+    "326": {
+      "name": "Doctrina de neón",
+      "description": "Convierte dos cartas jugadas en cartas de neón."
+    },
     "327": {
       "name": "Blackjack",
       "description": "Logra exactamente 21 con tus cartas jugadas para obtener +21 multi."
@@ -213,19 +217,19 @@
     },
     "347": {
       "name": "Dado de Corazones",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de corazones"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de corazones"
     },
     "348": {
       "name": "Dado de Tréboles",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de tréboles"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de tréboles"
     },
     "349": {
       "name": "Dado de Diamantes",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de diamantes"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de diamantes"
     },
     "350": {
       "name": "Dado de Picas",
-      "description": "Lanza un número entre -2 y 6 para el multi por cada carta de picas"
+      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de picas"
     },
     "351": {
       "name": "Multiplicador Especial",
@@ -241,7 +245,7 @@
     },
     "354": {
       "name": "Omitir Bonus",
-      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta)."
+      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente +{{points}} puntos."
     },
     "355": {
       "name": "Recompensas Quemadas",
@@ -269,7 +273,55 @@
     },
     "361": {
       "name": "Los Dos Importan",
-      "description": "Obtén +30 puntos por cada 2 que tengas en la mano."
+      "description": "Obtén +30 puntos por cada 2 que tengas en tu mano."
+    },
+    "362": {
+      "name": "Mano de modificadores",
+      "description": "Obtén +5 de multi por cada carta modificadora que tengas en tu mano."
+    },
+    "363": {
+      "name": "Piromano",
+      "description": "Obtén un 50% de descuento al quemar cartas."
+    },
+    "364": {
+      "name": "Multiplicador de Cuadrados",
+      "description": "+4 multi por cada 4 cartas en tu mano."
+    },
+    "365": {
+      "name": "Jackpot",
+      "description": "Obtén +30 puntos por cada Jota que tengas en tu mano."
+    },
+    "366": {
+      "name": "Ciclo del dinero",
+      "description": "Gana un 50% más de recompensas después de cada nivel."
+    },
+    "367": {
+      "name": "Cazador de especiales",
+      "description": "Se duplica la probabilidad de encontrar cartas especiales de categoria A y S en la tienda."
+    },
+    "368": {
+      "name": "La Verdad del Rey",
+      "description": "Cada Rey jugado tiene 1 en 2 de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 1 en 4 de probabilidad de dar 100 puntos."
+    },
+    "369": {
+      "name": "Aritmomanía",
+      "description": "Si la suma de las cartas jugadas es par, ganas +7 multi. Si es impar, ganas +100 puntos."
+    },
+    "370": {
+      "name": "Negro y Rojo",
+      "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan +1 multi."
+    },
+    "371": {
+      "name": "Joker sin valor",
+      "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas obtienen +1 multi."
+    },
+    "372": {
+      "name": "Escalera Ascendente",
+      "description": "Gana +10 puntos acumulativos por cada escalera jugada. Actualmente tienes +{{points}} puntos."
+    },
+    "373": {
+      "name": "Relatividad",
+      "description": "Convierte cualquier escalera en una escalera de 10 a As (la escalera más alta posible)."
     },
     "364": {
       "name": "Multiplicador de Cuadrados",
@@ -290,6 +342,10 @@
     "379": {
       "name": "Arcoíris",
       "description": "Obtén +200 puntos y +5 multi si tu jugada incluye los cuatro palos."
+    },
+    "380": {
+      "name": "Fortuna de la Reina",
+      "description": "Por cada reina de tu jugada tienes 1 en 2 chances de ganar +150 monedas."
     }
   },
   "power-ups": {
@@ -834,6 +890,10 @@
     "418": {
       "name": "Maldición Perpetua",
       "description": "Silencia una carta aleatoria en cada mano jugada"
+    },
+    "420": {
+      "name": "Doble problema",
+      "description": "Debes hacer el doble de puntos en esta ronda"
     },
     "421": {
       "name": "Traicionando a los Débiles",
