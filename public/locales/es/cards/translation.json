@@ -141,7 +141,7 @@
     },
     "328": {
       "name": "Juego Eficiente",
-      "description": "Gana +15 multi y +50 puntos al jugar 3 o menos cartas."
+      "description": "Gana +10 multi y +50 puntos al jugar 3 o menos cartas."
     },
     "329": {
       "name": "Sacrificio Especial",
@@ -149,7 +149,7 @@
     },
     "330": {
       "name": "Rompedor de Rages",
-      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Obtén +2 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atajo",

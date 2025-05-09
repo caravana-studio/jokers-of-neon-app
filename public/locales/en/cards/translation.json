@@ -577,7 +577,7 @@
     },
     "328": {
       "name": "Efficient Play",
-      "description": "Earn +15 multi and +50 points when playing 3 or fewer cards."
+      "description": "Earn +10 multi and +50 points when playing 3 or fewer cards."
     },
     "329": {
       "name": "Special Sacrifice",
@@ -585,7 +585,7 @@
     },
     "330": {
       "name": "Rage Breaker",
-      "description": "Gain +3 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
+      "description": "Gain +2 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
     },
     "331": {
       "name": "Shortcut",
