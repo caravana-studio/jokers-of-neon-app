@@ -1,14 +1,11 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { getNode } from "../dojo/queries/getNode";
 import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
-import { useDojo } from "../dojo/useDojo";
+import { useGameContext } from "../providers/GameProvider";
 import { isTutorial } from "../utils/isTutorial";
 import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
-import { useGameContext } from "../providers/GameProvider";
 
 export const LevelPoints = () => {
   const inTutorial = isTutorial();
@@ -17,6 +14,8 @@ export const LevelPoints = () => {
   const { t } = useTranslation(["game"]);
 
   const { nodeRound } = useGameContext();
+  const game = useGame();
+  const level = game?.level ?? 0;
 
   return (
     <Box className="store-tutorial-step-1">
@@ -26,6 +25,8 @@ export const LevelPoints = () => {
             {t("game.round-points.round")}
           </Heading>
           <Heading size={{ base: "s", md: "m" }} sx={{ color: "white" }}>
+            {t("game.round-points.level", { level: level })}
+            <span style={{ marginLeft: "10px", marginRight: "10px" }}>|</span>
             {nodeRound}
           </Heading>
         </PointBox>
@@ -65,7 +66,10 @@ export const MobileLevelPoints = () => {
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
-          {t("game.round-points.score", { score: targetScore, round: nodeRound })}
+          {t("game.round-points.score", {
+            score: targetScore,
+            round: nodeRound,
+          })}
         </Text>
         <Score />
       </Flex>
