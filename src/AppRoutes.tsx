@@ -25,12 +25,14 @@ import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { MapPage } from "./pages/Map/MapPage";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
+import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 
 export const AppRoutes = () => {
   const location = useLocation();
 
   return (
     <Routes location={location} key={location.pathname}>
+      <Route path="/play/:gameId" element={<BudokanEndpoint />} />
       <Route
         path="/"
         element={
