@@ -3,6 +3,21 @@ import manifest from "../../manifest.json";
 import { setupWorld } from "../typescript/contracts.gen";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const VRF_PROVIDER_ADDRESS = import.meta.env.VITE_VRF_PROVIDER_ADDRESS || "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f";
+
+const VRF_POLICY = {
+  vrf: {
+    name: "VRF",
+    description: "Cartridge VRF Provider",
+    contract_address: VRF_PROVIDER_ADDRESS,
+    methods: [
+      {
+        entrypoint: "request_random",
+        description: "Request a random number",
+      },
+    ],
+  },
+};
 
 interface Method {
   name: string;
@@ -72,6 +87,14 @@ const generatePolicies = (): Policies => {
       };
     }
   });
+
+  // Add VRF policy
+  policiesContracts[VRF_POLICY.vrf.contract_address] = {
+    methods: VRF_POLICY.vrf.methods.map(method => ({
+      name: formatEntrypoint(method.entrypoint),
+      entrypoint: method.entrypoint
+    }))
+  };
   
   return { contracts: policiesContracts };
 };
