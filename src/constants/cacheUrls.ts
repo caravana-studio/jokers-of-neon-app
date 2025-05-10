@@ -92,6 +92,36 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
   imageUrls.push("icon.png");
   imageUrls.push("loader.gif");
 
+  // map
+  // - rage
+  imageUrls.push("map/icons/rage/final-blue-bordered.png");
+  imageUrls.push("map/icons/rage/final-blue.png");
+  imageUrls.push("map/icons/rage/final-off.png");
+  imageUrls.push("map/icons/rage/final-violet-bordered.png");
+  imageUrls.push("map/icons/rage/final-violet.png");
+  imageUrls.push("map/icons/rage/intermediate-blue-bordered.png");
+  imageUrls.push("map/icons/rage/intermediate-blue.png");
+  imageUrls.push("map/icons/rage/intermediate-off.png");
+  imageUrls.push("map/icons/rage/intermediate-violet-bordered.png");
+  imageUrls.push("map/icons/rage/intermediate-violet.png");
+  // - rewards
+  imageUrls.push("map/icons/rewards/1-off.png");
+  imageUrls.push("map/icons/rewards/1.png");
+  imageUrls.push("map/icons/rewards/2-off.png");
+  imageUrls.push("map/icons/rewards/2.png");
+  imageUrls.push("map/icons/rewards/3-off.png");
+  imageUrls.push("map/icons/rewards/3.png");
+  imageUrls.push("map/icons/rewards/4-off.png");
+  imageUrls.push("map/icons/rewards/4.png");
+  imageUrls.push("map/icons/rewards/5-off.png");
+  imageUrls.push("map/icons/rewards/5.png");
+  imageUrls.push("map/icons/rewards/6-off.png");
+  imageUrls.push("map/icons/rewards/6.png");
+  // - round
+  imageUrls.push("map/icons/round/round.png");
+  imageUrls.push("map/icons/round/round-off.png");
+
+
   return imageUrls;
 };
 
@@ -100,4 +130,5 @@ export const VIDEO_URLS = [
   "/bg/store-bg.mp4",
   "/bg/game-bg.mp4",
   "/bg/rage-bg.mp4",
+  "/bg/map-bg.mp4",
 ];
