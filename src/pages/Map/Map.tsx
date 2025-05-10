@@ -98,6 +98,7 @@ export const Map = () => {
           [NodeType.RAGE]: RageNode,
           [NodeType.STORE]: RewardNode,
           [NodeType.ROUND]: RoundNode,
+          [NodeType.CHALLENGE]: RoundNode,
         }}
         panOnScroll={false}
         zoomOnScroll={true}

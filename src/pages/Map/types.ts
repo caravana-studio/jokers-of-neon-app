@@ -3,7 +3,8 @@ export enum NodeType {
     RAGE = "RAGE",
     REWARD = "REWARD",
     ROUND = "ROUND",
-    STORE = "STORE"
+    STORE = "STORE",
+    CHALLENGE = "CHALLENGE",
 }
 
 export interface NodeData {
