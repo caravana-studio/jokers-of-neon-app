@@ -9,7 +9,7 @@ export const LevelBox = () => {
     keyPrefix: "game.compact-round-data",
   });
   const game = useGame();
-  const { isRageRound } = useGameContext();
+  const { isRageRound, nodeRound } = useGameContext();
   const level = game?.level ?? 0;
   return (
     <Center>
@@ -27,7 +27,7 @@ export const LevelBox = () => {
             color="white"
             fontWeight="bold"
           >
-            {t("round", { round: level })}
+            {t("level-round", { level: level, round: nodeRound })}
           </Heading>
         </Box>
       </Box>
