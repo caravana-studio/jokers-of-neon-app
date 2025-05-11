@@ -75,7 +75,7 @@ export const MobilePreselectedCardsSection = () => {
           background={"url(grid.png)"}
           backgroundSize={"contain"}
           ref={boxRef}
-          gap={2}
+          gap={[4, 8]}
         >
           {preSelectedCards.map((idx) => {
             const card = hand.find((c) => c.idx === idx);
