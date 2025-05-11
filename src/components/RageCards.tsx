@@ -12,11 +12,19 @@ export const RageCards = () => {
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const { highlightCard } = useCardHighlight();
 
+  const cardWidth = CARD_WIDTH * cardScale;
+  const cardHeight = CARD_HEIGHT * cardScale;
+  const visibleCards = rageCards.length;
+  const maxVisibleCards = 5;
+  const totalSpacing = (maxVisibleCards - 2) * 16;
+  const containerWidth = cardWidth * maxVisibleCards + totalSpacing;
+
   return (
-    <Box width={"100%"}>
+    <Box w={`${containerWidth}px`} pr={visibleCards >= 9 ? "7%" : 4}>
       <Flex
         width={"100%"}
         alignItems={"center"}
+        justifyContent={"flex-start"}
         gap={{ base: "8px", sm: "14px" }}
       >
         {!rageCards.length && (
@@ -24,34 +32,29 @@ export const RageCards = () => {
             {t("no-cards")}
           </Text>
         )}
-        {rageCards && rageCards.length > 0 && (
+        {rageCards.length > 0 && (
           <SimpleGrid
-            columns={5}
+            columns={visibleCards}
             position="relative"
-            width={"100%"}
+            width={visibleCards > 5 ? "97%" : "max-content"}
             alignItems={isSmallScreen ? "center" : "inherit"}
-            columnGap={2}
+            columnGap={3}
             pb={isSmallScreen ? 0 : 4}
           >
-            {rageCards.map((card, index) => {
-              return (
-                <Box
-                  position="relative"
-                  height={`100%`}
-                  width={`${CARD_WIDTH * cardScale}px`}
-                  onClick={() => {
-                    isSmallScreen && highlightCard(card);
-                  }}
-                  key={index}
-                >
-                  <CardImage3D
-                    card={card}
-                    small
-                    height={`${CARD_HEIGHT * cardScale}`}
-                  />
-                </Box>
-              );
-            })}
+            {rageCards.map((card, index) => (
+              <Box
+                key={index}
+                width={`${cardWidth}px`}
+                onClick={() => isSmallScreen && highlightCard(card)}
+              >
+                <CardImage3D
+                  card={card}
+                  height={`${cardHeight}px`}
+                  width={"auto"}
+                  small
+                />
+              </Box>
+            ))}
           </SimpleGrid>
         )}
       </Flex>

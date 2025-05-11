@@ -15,6 +15,7 @@ interface ICardImage3DProps {
   small?: boolean;
   hideTooltip?: boolean;
   height?: string;
+  width?: string;
   layerCount?: number;
 }
 
@@ -32,6 +33,7 @@ export const CardImage3D = ({
   small = false,
   hideTooltip = false,
   height,
+  width = "100%",
   layerCount = 4,
 }: ICardImage3DProps) => {
   const cid = card.card_id ?? 0;
@@ -66,7 +68,7 @@ export const CardImage3D = ({
       position={"absolute"}
       borderRadius={borderRadius}
       src={`/Cards/${cid}.png`}
-      width={"100%"}
+      width={width}
       height={calculatedHeight}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
@@ -78,7 +80,7 @@ export const CardImage3D = ({
       position={"absolute"}
       borderRadius={borderRadius}
       src={`/Cards/3d/${cid}-l0.png`}
-      width={"100%"}
+      width={width}
       height={calculatedHeight}
       zIndex={-1}
       pointerEvents={isSmallScreen ? "none" : "all"}
@@ -95,7 +97,7 @@ export const CardImage3D = ({
         position="absolute"
         borderRadius={borderRadius}
         src={`/Cards/3d/${cid}-l${index}.png`}
-        width="100%"
+        width={width}
         height={calculatedHeight}
         pointerEvents="none"
         transform={`scale(${scale}) translateZ(${translateZ}px)`}
@@ -131,7 +133,7 @@ export const CardImage3D = ({
         src={`/Cards/empty.png`}
         pointerEvents="none"
         alt={`empty`}
-        width={"100%"}
+        width={width}
         height={calculatedHeight}
       />
 
