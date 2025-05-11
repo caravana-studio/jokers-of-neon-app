@@ -18,4 +18,5 @@ export enum GameStateEnum {
 	Store = "Store",
 	Lootbox = "Lootbox",
 	GameOver = "GameOver",
+	NotStarted = "NotStarted",
 }

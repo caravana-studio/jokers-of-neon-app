@@ -24,12 +24,19 @@ import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { MapPage } from "./pages/Map/MapPage";
+import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 
 export const AppRoutes = () => {
   const location = useLocation();
 
   return (
     <Routes location={location} key={location.pathname}>
+      <Route
+        path="/play/:gameId"
+        element={
+            <BudokanEndpoint />
+        }
+      />      
       <Route
         path="/"
         element={

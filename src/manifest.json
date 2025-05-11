@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x13c92d757659527b884cc77f4fc5c32089f9fcce4adc081e6403d22fba04761",
-      "class_hash": "0x55c4dc20ea0930230a344a5663059dfccbdbd44cb023d8d2c51a240eb8d92b1",
+      "address": "0x41f5c08cbce60621853e74443bd2aacb493eb38f2c0b0acb9a6f09e80621493",
+      "class_hash": "0x5044325d52c0e227e3256241985f87febef6c79cd5a6d7be69012211ddfb893",
       "abi": [
         {
           "type": "impl",
@@ -1562,8 +1562,8 @@
       ]
     },
     {
-      "address": "0x74d5e163a7caaf93f3b6d45088b8a11760d9c5f528669b4e077ef82d501ae1c",
-      "class_hash": "0x928c71b18c9b188c3fe9db1daf0be43d5ea3a555c0cc29e715e9df18ff3da6",
+      "address": "0x38850c1807cac7e45e8b7e1c1aa27092417a16ce90487e4aea3d4c8e70ca216",
+      "class_hash": "0x41e90683f7243df09c831fd00d18a43337458feedc74cea6758ed173f1da26a",
       "abi": [
         {
           "type": "impl",
@@ -2636,8 +2636,8 @@
       ]
     },
     {
-      "address": "0x4878f824d4adcb8f69da650b34da73315272992abd3fa7661fad72ed419a922",
-      "class_hash": "0x601ae69e039923cd629bb14da9cde3094ee79fc2c520b500c1f58fc9d96fcf8",
+      "address": "0x1c85c5f026a579f8e0eef55e6ef6cf80acc2d8b88248b8142ad4d6963c4aa20",
+      "class_hash": "0x64a8e7e276180a55a650fc1ccbbc3b295dd476a07b32f2dc1cf5fef880e8e17",
       "abi": [
         {
           "type": "impl",
@@ -3222,8 +3222,8 @@
       ]
     },
     {
-      "address": "0x52b046540f09bd2962c5730bd95577c541e11b470ce2e6099b6b547879b5f81",
-      "class_hash": "0x6ab0e8cf6f7ced7d29625eeaf6b6c421b8cc73b2bd2ec3ed0b84d0172847dd7",
+      "address": "0x27a6df1bafc34fb8320bd01e06bc6b42df085efbf4701e96af2f430bc5e815a",
+      "class_hash": "0x532560234b05161db8a0874cb5dcaa44c3ed72995921687fac794ae73bc2150",
       "abi": [
         {
           "type": "impl",
@@ -3378,7 +3378,7 @@
                 },
                 {
                   "name": "game_id",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u64"
                 },
                 {
                   "name": "special_card_id",
@@ -4056,8 +4056,8 @@
       ]
     },
     {
-      "address": "0x77ab925da6c2f9179e800f6a49e9a44e9166e8aad79edf8ba8d51e01c126d9a",
-      "class_hash": "0x12b51b7f021d78987fd915f72492a453b9672ba64e5f89d10025b2331a4bc98",
+      "address": "0x7450bdd0670406094296ed72181619ea23698bed27b8fe440398928eea8a55a",
+      "class_hash": "0x7cdf4a21b1377f6d349139a93fee162125959adeafe945f0a2588dbb3bc548b",
       "abi": [
         {
           "type": "impl",
@@ -4809,6 +4809,7 @@
       ]
     }
   ],
+  "libraries": [],
   "models": [
     {
       "members": [],
@@ -5054,7 +5055,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x781522671e84e8981b319919bd31e0e68cf4821310250f0fa9b881386e63100",
+      "class_hash": "0x6457c65b99f380fa879ed0a941e12895600b0c8c0674fc3afb2aa8bdcce9a13",
       "tag": "jokers_of_neon_core-CardPlayEvent",
       "selector": "0x7c0be4b31d3ebfb1687ab83341e208e0f176a0d6d45d317699a8b77e5753cdf"
     },
@@ -5148,5 +5149,6 @@
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
-  ]
+  ],
+  "external_contracts": []
 }
