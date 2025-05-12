@@ -15,6 +15,7 @@ import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
 import { useGame } from "../../dojo/queries/useGame";
+import { PriceBox } from "../../components/PriceBox";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -51,7 +52,7 @@ export const DynamicStorePage = () => {
 
   const { skipShop } = useShopActions();
 
-  const { setLoading } = useStore();
+  const { setLoading, specialSlotItem } = useStore();
 
   const handleNextLevelClick = () => {
     setLoading(true);
@@ -163,18 +164,26 @@ export const DynamicStorePage = () => {
                         <DefaultInfo title={col.id} />
                       </Flex>
                       {col.id === "specials" && slotsLen != maxSpecialCards && (
-                        <Button
-                          size="xs"
-                          fontSize={{ base: "9px", sm: "12px" }}
-                          px={{ base: 3, sm: 6 }}
-                          borderRadius={7}
-                          boxShadow={`0 0 10px 5px ${BLUE}`}
-                          onClick={() => {
-                            navigate("/preview/slot");
-                          }}
-                        >
-                          {t("unlock-slot")}
-                        </Button>
+                        <Flex gap={isSmallScreen ? 2 : 8}>
+                          <PriceBox
+                            price={specialSlotItem?.cost ?? 0}
+                            purchased={false}
+                            discountPrice={specialSlotItem?.discount_cost}
+                            absolutePosition={false}
+                          />
+                          <Button
+                            size="xs"
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            px={{ base: 3, sm: 6 }}
+                            borderRadius={7}
+                            boxShadow={`0 0 10px 5px ${BLUE}`}
+                            onClick={() => {
+                              navigate("/preview/slot");
+                            }}
+                          >
+                            {t("unlock-slot")}
+                          </Button>
+                        </Flex>
                       )}
                     </Flex>
                     {getComponent(col.id, col.doubleRow ?? false)}
