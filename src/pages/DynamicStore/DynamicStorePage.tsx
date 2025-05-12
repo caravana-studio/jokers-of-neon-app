@@ -14,6 +14,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useGame } from "../../dojo/queries/useGame";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -44,7 +45,9 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const { onShopSkip, gameId } = useGameContext();
+  const { onShopSkip, gameId, maxSpecialCards } = useGameContext();
+  const game = useGame();
+  const slotsLen = game?.special_slots;
 
   const { skipShop } = useShopActions();
 
@@ -159,7 +162,7 @@ export const DynamicStorePage = () => {
                         </Heading>
                         <DefaultInfo title={col.id} />
                       </Flex>
-                      {col.id === "specials" && (
+                      {col.id === "specials" && slotsLen != maxSpecialCards && (
                         <Button
                           size="xs"
                           fontSize={{ base: "9px", sm: "12px" }}
