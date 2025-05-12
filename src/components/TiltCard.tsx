@@ -114,7 +114,7 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && !onDeck && (
+              {isSilent && (
                 <>
                   <Box
                     position="absolute"
@@ -122,7 +122,7 @@ export const TiltCard = ({
                     left={0}
                     w="100%"
                     h="100%"
-                    backgroundColor="rgba(0,0,0,0.3)"
+                    backgroundColor={onDeck ? "" : "rgba(0,0,0,0.3)"}
                     backgroundImage={'url("/broken.png")'}
                     backgroundSize="cover"
                     borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
