@@ -15,6 +15,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
+import { signedHexToNumber } from "../utils/signedHexToNumber";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -27,11 +28,25 @@ export const GameOver = () => {
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
-  const actualPlayer = fullLeaderboard?.find((player) => player.id === gameId);
-  const { t } = useTranslation(["intermediate-screens"]);
-  const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
+  const actualPlayer = fullLeaderboard?.find(
+    (player) => signedHexToNumber(player.id.toString()) === gameId
+  );
+
+  const currentPlayerName = fullLeaderboard?.find(
+    (player) => signedHexToNumber(player.id.toString()) === gameId
+  )?.player_name;
+
+  const currentLeader = fullLeaderboard
+    ?.filter((player) => player.player_name === currentPlayerName)
+    ?.sort((a, b) => {
+      if (a.level !== b.level) {
+        return b.level - a.level;
+      }
+      return b.player_score - a.player_score;
+    })[0];
 
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation(["intermediate-screens"]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,14 +54,14 @@ export const GameOver = () => {
 
   if (currentLeader?.position != undefined) {
     congratulationsMsj =
-      actualPlayer?.position === 1
+      currentLeader?.position === 1
         ? t("game-over.table.gameOver-leader-msj")
         : currentLeader?.position > 1 && currentLeader?.position <= 5
           ? t("game-over.table.gameOver-top5-msj")
           : "";
   }
 
-  const position = currentLeader?.position ?? 100;
+  const bestPosition = currentLeader?.position ?? 100;
 
   useEffect(() => {
     looseSound();
@@ -55,10 +70,10 @@ export const GameOver = () => {
   }, []);
 
   useEffect(() => {
-    if (position <= 10) {
-      runConfettiAnimation(position <= 3 ? 300 : 100);
+    if (bestPosition <= 10) {
+      runConfettiAnimation(bestPosition <= 3 ? 300 : 100);
     }
-  }, [position]);
+  }, [bestPosition]);
 
   const onStartGameClick = () => {
     setIsLoading(true);

@@ -16,6 +16,7 @@ import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnable
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
+import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -36,10 +37,27 @@ interface LeaderboardProps {
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
-  const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
-  const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
-  const currentLeaderIsInReducedLeaderboard = !!leaderboard?.find(
-    (leader) => leader.id === gameId
+  const leaderboard = fullLeaderboard?.slice(0, lines);
+
+  const currentGameEntry = fullLeaderboard?.find(
+    (leader) => signedHexToNumber(leader.id.toString()) === gameId
+  );
+
+  const currentPlayerName = currentGameEntry?.player_name;
+
+  const allEntriesForCurrentPlayer = fullLeaderboard?.filter(
+    (leader) => leader.player_name === currentPlayerName
+  );
+
+  const currentLeader = allEntriesForCurrentPlayer?.sort((a, b) => {
+    if (a.level !== b.level) {
+      return b.level - a.level;
+    }
+    return b.player_score - a.player_score;
+  })[0];
+
+  const currentLeaderIsInReducedLeaderboard = leaderboard?.some(
+    (leader) => signedHexToNumber(leader.id.toString()) === gameId
   );
 
   const tournamentEnabled = useFeatureFlagEnabled(
