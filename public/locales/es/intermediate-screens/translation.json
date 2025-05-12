@@ -1,4 +1,7 @@
 {
+  "map": {
+    "level": "NIVEL"
+  },
   "my-games": {
     "title": "Mis juegos",
     "go-back": "Volver",
