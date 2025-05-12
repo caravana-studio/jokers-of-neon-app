@@ -82,7 +82,7 @@ const StoreNode = ({ data }: any) => {
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           border: "1px solid",
-          borderColor: "transparent",
+          borderColor: selectedNodeData?.id === data.id ? "white" : "transparent",
           "&:hover": {
             borderColor: reachable || data.visited || data.current ? "white" : "transparent",
             transform: "scale(1.2)",

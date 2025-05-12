@@ -52,9 +52,17 @@ const RoundNode = ({ data }: any) => {
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
           border: "1px solid",
-          borderColor: reachable || data.visited || data.current ? "transparent" : "rgba(255,255,255,0.3)",
+          borderColor:
+            selectedNodeData?.id === data.id
+              ? "white"
+              : reachable || data.visited || data.current
+                ? "transparent"
+                : "rgba(255,255,255,0.3)",
           "&:hover": {
-            borderColor: reachable || data.visited || data.current ? "white" : "rgba(255,255,255,0.3)",
+            borderColor:
+              reachable || data.visited || data.current
+                ? "white"
+                : "rgba(255,255,255,0.3)",
             transform: "scale(1.2)",
           },
         }}
@@ -77,7 +85,10 @@ const RoundNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={`/map/icons/round/round${reachable || data.visited || data.current ? "" : "-off"}.png`} alt="round" />
+        <CachedImage
+          src={`/map/icons/round/round${reachable || data.visited || data.current ? "" : "-off"}.png`}
+          alt="round"
+        />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle
