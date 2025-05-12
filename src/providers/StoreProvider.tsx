@@ -337,6 +337,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
     const promise = dojoBuySpecialSlot(gameId)
       .then(async ({ success }) => {
+        fetchShopItems();
         return success;
       })
       .catch(() => {
