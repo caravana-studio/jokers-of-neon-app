@@ -32,19 +32,6 @@ export const GameOver = () => {
     (player) => signedHexToNumber(player.id.toString()) === gameId
   );
 
-  const currentPlayerName = fullLeaderboard?.find(
-    (player) => signedHexToNumber(player.id.toString()) === gameId
-  )?.player_name;
-
-  const currentLeader = fullLeaderboard
-    ?.filter((player) => player.player_name === currentPlayerName)
-    ?.sort((a, b) => {
-      if (a.level !== b.level) {
-        return b.level - a.level;
-      }
-      return b.player_score - a.player_score;
-    })[0];
-
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation(["intermediate-screens"]);
 
@@ -52,16 +39,16 @@ export const GameOver = () => {
 
   let congratulationsMsj = "";
 
-  if (currentLeader?.position != undefined) {
+  if (actualPlayer?.position != undefined) {
     congratulationsMsj =
-      currentLeader?.position === 1
+      actualPlayer?.position === 1
         ? t("game-over.table.gameOver-leader-msj")
-        : currentLeader?.position > 1 && currentLeader?.position <= 5
+        : actualPlayer?.position > 1 && actualPlayer?.position <= 5
           ? t("game-over.table.gameOver-top5-msj")
           : "";
   }
 
-  const bestPosition = currentLeader?.position ?? 100;
+  const position = actualPlayer?.position ?? 100;
 
   useEffect(() => {
     looseSound();
@@ -70,10 +57,10 @@ export const GameOver = () => {
   }, []);
 
   useEffect(() => {
-    if (bestPosition <= 10) {
-      runConfettiAnimation(bestPosition <= 3 ? 300 : 100);
+    if (position <= 10) {
+      runConfettiAnimation(position <= 3 ? 300 : 100);
     }
-  }, [bestPosition]);
+  }, [position]);
 
   const onStartGameClick = () => {
     setIsLoading(true);
@@ -85,7 +72,7 @@ export const GameOver = () => {
 
   const onShareClick = () => {
     window.open(
-      `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20%40jokers_of_neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${currentLeader?.position ?? 0}%0A%F0%9F%94%A5%20Level%3A%20${currentLeader?.level ?? 0}%0A%0AJoin%20me%20and%20test%20the%20early%20access%20version%0A${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8
+      `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20%40jokers_of_neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position ?? 0}%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level ?? 0}%0A%0AJoin%20me%20and%20test%20the%20early%20access%20version%0A${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8
 `,
       "_blank"
     );

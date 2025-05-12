@@ -39,24 +39,11 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
   const leaderboard = fullLeaderboard?.slice(0, lines);
 
-  const currentGameEntry = fullLeaderboard?.find(
-    (leader) => signedHexToNumber(leader.id.toString()) === gameId
+  const actualPlayer = fullLeaderboard?.find(
+    (player) => signedHexToNumber(player.id.toString()) === gameId
   );
 
-  const currentPlayerName = currentGameEntry?.player_name;
-
-  const allEntriesForCurrentPlayer = fullLeaderboard?.filter(
-    (leader) => leader.player_name === currentPlayerName
-  );
-
-  const currentLeader = allEntriesForCurrentPlayer?.sort((a, b) => {
-    if (a.level !== b.level) {
-      return b.level - a.level;
-    }
-    return b.player_score - a.player_score;
-  })[0];
-
-  const currentLeaderIsInReducedLeaderboard = leaderboard?.some(
+  const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
     (leader) => signedHexToNumber(leader.id.toString()) === gameId
   );
 
@@ -131,7 +118,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
             <Tbody>
               {leaderboard
                 .filter((_, index) => {
-                  const limit = !currentLeaderIsInReducedLeaderboard
+                  const limit = !currentPlayerIsInReducedLeaderboard
                     ? lines - 1
                     : lines;
                   return index < limit;
@@ -172,7 +159,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     )}
                   </Tr>
                 ))}
-              {currentLeader && !currentLeaderIsInReducedLeaderboard && (
+              {actualPlayer && !currentPlayerIsInReducedLeaderboard && (
                 <>
                   <Tr>
                     <Td>...</Td>
@@ -181,17 +168,17 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     <Td>...</Td>
                   </Tr>
                   <Tr sx={CURRENT_LEADER_STYLES}>
-                    <Td>{currentLeader.position}</Td>
-                    <Td>{currentLeader.player_name}</Td>
+                    <Td>{actualPlayer.position}</Td>
+                    <Td>{actualPlayer.player_name}</Td>
                     <Td isNumeric>
-                      <RollingNumber n={currentLeader.player_score} />
+                      <RollingNumber n={actualPlayer.player_score} />
                     </Td>
                     <Td>
-                      <RollingNumber n={currentLeader.level} />
+                      <RollingNumber n={actualPlayer.level} />
                     </Td>
                     {tournamentEnabled && (
                       <Td>
-                        <RollingNumber n={currentLeader.prize} /> USDC
+                        <RollingNumber n={actualPlayer.prize} /> USDC
                       </Td>
                     )}
                   </Tr>
