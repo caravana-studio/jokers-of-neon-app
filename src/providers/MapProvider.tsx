@@ -15,6 +15,7 @@ import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { BLUE } from "../theme/colors";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface SelectedNodeData {
   id: number;
@@ -48,6 +49,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const [selectedNodeData, setSelectedNodeData] = useState<
     SelectedNodeData | undefined
   >();
+
+  const { isSmallScreen } = useResponsiveValues();
 
   const currentNode = useMemo(
     () => nodes.find((n) => n.data?.current) ?? nodes[0],
@@ -162,6 +165,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       ],
       padding: 0.1,
       duration: 600,
+      maxZoom: isSmallScreen ? 0.7 : 1.2,
     });
   };
 
