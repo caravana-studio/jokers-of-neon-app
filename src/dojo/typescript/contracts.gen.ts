@@ -1,5 +1,6 @@
-import { DojoProvider, DojoCall } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
+import { DojoCall, DojoProvider } from "@dojoengine/core";
+import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption } from "starknet";
+import { getVrfTx } from "../vrfTx";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
@@ -893,9 +894,10 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_startGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playerName: BigNumberish, seed: CairoOption<BigNumberish>) => {
 		try {
+			console.log('vrf tx', getVrfTx("game_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_startGame_calldata(gameId, playerName, seed),
+				[getVrfTx("game_system", snAccount), build_game_system_startGame_calldata(gameId, playerName, seed)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {

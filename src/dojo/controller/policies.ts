@@ -1,9 +1,10 @@
 import { getContractByName } from "@dojoengine/core";
 import manifest from "../../manifest.json";
 import { setupWorld } from "../typescript/contracts.gen";
+import { VRF_PROVIDER_ADDRESS } from "./constants";
 
-const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
-const VRF_PROVIDER_ADDRESS = import.meta.env.VITE_VRF_PROVIDER_ADDRESS || "0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f";
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
 
 const VRF_POLICY = {
   vrf: {
@@ -34,68 +35,73 @@ interface Policies {
 
 const formatEntrypoint = (entrypoint: string): string => {
   return entrypoint
-    .split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 };
 
 const generatePolicies = (): Policies => {
   const mockProvider = {
     execute: () => Promise.resolve({}),
-    call: () => Promise.resolve({})
+    call: () => Promise.resolve({}),
   };
-  
+
   const world = setupWorld(mockProvider as any);
-  
+
   const policiesContracts: Record<string, ContractPolicy> = {};
-  
+
   Object.entries(world).forEach(([systemName, systemObj]) => {
     const contractAddress = getContractByName(
       manifest,
       DOJO_NAMESPACE,
       systemName
     )?.address;
-    
+
     if (!contractAddress) {
       console.warn(`Contract address not found for ${systemName}`);
       return;
     }
-    
+
     const methods: string[] = [];
-    
-    Object.entries(systemObj as Record<string, unknown>).forEach(([methodName, methodValue]) => {
-      if (!methodName.startsWith('build') && typeof methodValue === 'function') {
-        if (!methodName.startsWith('get')) {
-          let entrypoint = methodName;
-          if (/[A-Z]/.test(entrypoint)) {
-            entrypoint = entrypoint.replace(/([A-Z])/g, '_$1').toLowerCase();
-            if (entrypoint.startsWith('_')) {
-              entrypoint = entrypoint.substring(1);
+
+    Object.entries(systemObj as Record<string, unknown>).forEach(
+      ([methodName, methodValue]) => {
+        if (
+          !methodName.startsWith("build") &&
+          typeof methodValue === "function"
+        ) {
+          if (!methodName.startsWith("get")) {
+            let entrypoint = methodName;
+            if (/[A-Z]/.test(entrypoint)) {
+              entrypoint = entrypoint.replace(/([A-Z])/g, "_$1").toLowerCase();
+              if (entrypoint.startsWith("_")) {
+                entrypoint = entrypoint.substring(1);
+              }
             }
+            methods.push(entrypoint);
           }
-          methods.push(entrypoint);
         }
       }
-    });
-    
+    );
+
     if (methods.length > 0) {
       policiesContracts[contractAddress] = {
-        methods: methods.map(method => ({
+        methods: methods.map((method) => ({
           name: formatEntrypoint(method),
-          entrypoint: method
-        }))
+          entrypoint: method,
+        })),
       };
     }
   });
 
   // Add VRF policy
   policiesContracts[VRF_POLICY.vrf.contract_address] = {
-    methods: VRF_POLICY.vrf.methods.map(method => ({
+    methods: VRF_POLICY.vrf.methods.map((method) => ({
       name: formatEntrypoint(method.entrypoint),
-      entrypoint: method.entrypoint
-    }))
+      entrypoint: method.entrypoint,
+    })),
   };
-  
+
   return { contracts: policiesContracts };
 };
 
