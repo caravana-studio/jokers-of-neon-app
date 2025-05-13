@@ -42,8 +42,12 @@ export const MyGames = () => {
     return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
   });
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   const handleCreateGame = async () => {
-    await prepareNewGame({ setGameId, resetLevel, setHand, refetch });
+    prepareNewGame({ setGameId, resetLevel, setHand });
     executeCreateGame();
     navigate("/entering-tournament");
   };
