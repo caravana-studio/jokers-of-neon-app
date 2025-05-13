@@ -10,6 +10,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
 const RoundNode = ({ data }: any) => {
@@ -25,8 +26,15 @@ const RoundNode = ({ data }: any) => {
   const stateInMap = game?.state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
+  const title = t("name", { round: data.round })
+
   return (
-    <Tooltip label={t("name", { round: data.round })} placement="right">
+    <Tooltip
+      label={<TooltipContent title={title} />}
+      placement="right"
+      boxShadow={"0px 0px 15px 0px #fff, 0px 0px 5px 0px #fff inset"}
+      w="1100px"
+    >
       <Box
         style={{
           background:
@@ -70,8 +78,7 @@ const RoundNode = ({ data }: any) => {
           isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
-              title: t("name", { round: data.round }),
-              // content: t("description", { round: data.round }),
+              title: title,
               nodeType: NodeType.ROUND,
             });
           if (data.current && !stateInMap) {

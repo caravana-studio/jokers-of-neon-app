@@ -10,6 +10,7 @@ import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
 const RageNode = ({ data }: any) => {
@@ -28,9 +29,14 @@ const RageNode = ({ data }: any) => {
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
   const [isHovered, setIsHovered] = useState(false);
 
+  const title = `${t("name", { round: data.rageData.round })} - ${t(data.last ? "final" : "intermediate")}`;
+  const content = `${t("power", { power: data.rageData.power })}`;
+
   return (
     <Tooltip
-      label={`${t("name", { round: data.rageData.round })} ${t("power", { power: data.rageData.power })}`}
+      label={<TooltipContent title={title} content={content} />}
+      boxShadow={"0px 0px 15px 0px #fff, 0px 0px 5px 0px #fff inset"}
+      w="1100px"
       placement="right"
     >
       <Box
@@ -61,8 +67,8 @@ const RageNode = ({ data }: any) => {
           isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
-              title: t("name", { round: data.rageData.round }),
-              content: t("power", { power: data.rageData.power }),
+              title,
+              content,
               nodeType: NodeType.RAGE,
             });
           if (data.current && !stateInMap) {
