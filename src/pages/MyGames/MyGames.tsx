@@ -13,6 +13,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
+import { prepareNewGame } from "../../utils/prepareNewGame.ts";
 
 export interface GameSummary {
   id: number;
@@ -41,15 +42,8 @@ export const MyGames = () => {
     return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
   });
 
-  useEffect(() => {
-    setGameId(0);
-    localStorage.removeItem(GAME_ID);
-    resetLevel();
-    setHand([]);
-    refetch();
-  }, []);
-
   const handleCreateGame = async () => {
+    await prepareNewGame({ setGameId, resetLevel, setHand, refetch });
     executeCreateGame();
     navigate("/entering-tournament");
   };
@@ -123,7 +117,7 @@ export const MyGames = () => {
           <Button
             width="46%"
             onClick={() => {
-              navigate("/");
+              navigate(-1);
             }}
           >
             {t("go-back")}

@@ -8,6 +8,8 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
+import { prepareNewGame } from "../../utils/prepareNewGame.ts";
+import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 
 export const GameBox = ({ game }: { game: GameSummary }) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -19,9 +21,12 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { refetch } = useGetMyGames();
+  const { resetLevel, setHand } = useGameContext();
 
   const handleButtonClick = async () => {
     setIsLoading(true);
+    await prepareNewGame({ setGameId, resetLevel, setHand, refetch });
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
@@ -114,7 +119,9 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
                 disabled={isLoading}
               >
                 {t(
-                  game.status === GameStateEnum.NotStarted ? "start-btn" : "continue-btn"
+                  game.status === GameStateEnum.NotStarted
+                    ? "start-btn"
+                    : "continue-btn"
                 ).toUpperCase()}
               </Button>
             </Flex>
