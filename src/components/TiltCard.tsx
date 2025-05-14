@@ -4,7 +4,8 @@ import Tilt from "react-parallax-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
-  MODIFIERS_OFFSET,
+  MODIFIERS_OFFSET_X,
+  MODIFIERS_OFFSET_Y,
   TILT_OPTIONS,
 } from "../constants/visualProps";
 
@@ -72,6 +73,22 @@ export const TiltCard = ({
   const { getCardData } = useCardData();
 
   const { name, description } = getCardData(modifiedCard.card_id ?? 0);
+
+  const getModifierOffset = (index: number) => {
+    if (isMobile) {
+      return {
+        top: [`${MODIFIERS_OFFSET_Y[0]}px`, `${MODIFIERS_OFFSET_Y[1]}px`],
+        left: [
+          `${MODIFIERS_OFFSET_X[0] * (index + 1)}px`,
+          `${MODIFIERS_OFFSET_X[1] * (index + 1)}px`,
+        ],
+      };
+    }
+    return {
+      top: `${MODIFIERS_OFFSET_Y[0]}px`,
+      left: `${MODIFIERS_OFFSET_X[0] * (index + 1)}px`,
+    };
+  };
 
   const tiltCardComponent = (
     <Box
@@ -170,13 +187,14 @@ export const TiltCard = ({
       </Box>
       {card.modifiers?.map((c, index) => {
         const { name, description } = getCardData(c.card_id ?? 0);
+        const { top, left } = getModifierOffset(index);
         return (
           <Box
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              top: `-${MODIFIERS_OFFSET}px`,
-              left: `-${MODIFIERS_OFFSET * (index + 1)}px`,
+              top,
+              left,
               position: "absolute",
             }}
           >
