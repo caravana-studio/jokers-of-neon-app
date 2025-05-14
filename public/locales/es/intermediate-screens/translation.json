@@ -81,5 +81,9 @@
   "power-ups": {
     "title": "Power-ups",
     "go-back": "Atrás"
+  },
+  "open-lootbox": {
+    "click-open": "Haz clic para abrir",
+    "tap-open": "Toca para abrir"
   }
 }

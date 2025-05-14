@@ -2,13 +2,13 @@ import { Flex, Tooltip } from "@chakra-ui/react";
 import { useRef } from "react";
 import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import SpineAnimation from "../../../components/SpineAnimation";
 import { animationsData } from "../../../constants/spineAnimations";
 import { useCardData } from "../../../providers/CardDataProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
 import { RerollingAnimation } from "../../store/StoreElements/RerollingAnimation";
+import { LootBox } from "../../../components/LootBox";
 
 export const LootBoxComponent = () => {
   const { packs } = useStore();
@@ -54,17 +54,17 @@ export const LootBoxComponent = () => {
               >
                 <SpineContainer>
                   <RerollingAnimation>
-                    <SpineAnimation
-                      jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
-                      atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
+                    <LootBox
+                      boxId={pack.blister_pack_id}
+                      width={500}
+                      height={1500}
+                      xOffset={-250}
                       initialAnimation={
                         isMobile
                           ? animationsData.loopAnimation
                           : animationsData.initialAnimation
                       }
-                      xOffset={-250}
                       hoverAnimation={animationsData.hoverAnimation}
-                      loopAnimation={animationsData.loopAnimation}
                       isPurchased={pack.purchased.valueOf()}
                       price={card.price}
                       discountPrice={pack.discount_cost.valueOf()}

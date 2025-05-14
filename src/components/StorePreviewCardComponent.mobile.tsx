@@ -122,7 +122,7 @@ export const StorePreviewCardComponentMobile = ({
               size={"xs"}
               onClick={() => {
                 sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
-                navigate(-1);
+                navigate("/store");
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"
