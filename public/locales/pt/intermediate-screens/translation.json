@@ -16,6 +16,11 @@
       "stage-3": "Transferindo token de jogo para sua conta",
       "stage-4": "Misturando cartas",
       "stage-5": "Jogo começando"
+    },
+    "load-game": {
+      "stage-1": "Preparando seu jogo...",
+      "stage-2": "Sincronizando o estado do jogo...",
+      "stage-3": "Quase pronto..."
     }
   },
   "game-over": {

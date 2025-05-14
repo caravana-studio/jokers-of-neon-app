@@ -9,10 +9,6 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 import { LoadingProgress } from "../../types/LoadingProgress.ts";
-import {
-  createGameSteps,
-  loadGameSteps,
-} from "../../constants/loadingSteps.ts";
 
 export const GameBox = ({
   game,
@@ -35,17 +31,18 @@ export const GameBox = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleButtonClick = async () => {
-    const loadingSteps: LoadingProgress[] =
-      game.status === GameStateEnum.NotStarted
-        ? createGameSteps
-        : loadGameSteps;
+    const loadGameSteps = [
+      { text: t("load-game.stage-1"), showAt: 0 },
+      { text: t("load-game.stage-2"), showAt: 1 },
+      { text: t("load-game.stage-3"), showAt: 2 },
+    ];
 
     setIsLoading(true);
-    onLoadingStart(loadingSteps);
+    onLoadingStart(loadGameSteps);
 
     if (game.status === GameStateEnum.NotStarted) {
-      await loadingRef.current?.nextStep();
       executeCreateGame(game.id);
+      navigate("/entering-tournament");
     } else {
       await loadingRef.current?.nextStep();
       setGameId(game.id);

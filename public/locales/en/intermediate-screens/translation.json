@@ -16,6 +16,11 @@
       "stage-3": "Minting game token to your account",
       "stage-4": "Shuffling cards",
       "stage-5": "Game starting"
+    },
+    "load-game": {
+      "stage-1": "Preparing your game...",
+      "stage-2": "Syncing game state...",
+      "stage-3": "Almost ready..."
     }
   },
   "game-over": {
