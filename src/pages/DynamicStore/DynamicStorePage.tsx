@@ -14,6 +14,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -45,10 +46,10 @@ export const DynamicStorePage = () => {
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
   const { onShopSkip, gameId } = useGameContext();
-
   const { skipShop } = useShopActions();
-
   const { setLoading } = useStore();
+
+  useRedirectByGameState();
 
   const handleNextLevelClick = () => {
     setLoading(true);

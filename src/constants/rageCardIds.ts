@@ -1,4 +1,5 @@
 export const rageCardIds = {
   STRATEGIC_QUARTET: 409,
   BROKEN_FIGURES: 412,
+  BETRAYING_THE_WEAK: 421,
 };
