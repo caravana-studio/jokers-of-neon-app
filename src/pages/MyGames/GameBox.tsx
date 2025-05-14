@@ -33,8 +33,6 @@ export const GameBox = ({
   const { isSmallScreen } = useResponsiveValues();
 
   const [isLoading, setIsLoading] = useState(false);
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleButtonClick = async () => {
     const loadingSteps: LoadingProgress[] =
