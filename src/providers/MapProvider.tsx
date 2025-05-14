@@ -9,12 +9,13 @@ import {
 import { Edge, Node, useReactFlow } from "reactflow";
 import { getMap } from "../dojo/queries/getMap";
 import { useGame } from "../dojo/queries/useGame";
+import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { BLUE } from "../theme/colors";
 import { getRageNodeData } from "../utils/getRageNodeData";
-import { GameStateEnum } from "../dojo/typescript/custom";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface SelectedNodeData {
   id: number;
@@ -49,6 +50,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     SelectedNodeData | undefined
   >();
 
+  const { isSmallScreen } = useResponsiveValues();
+
   const currentNode = useMemo(
     () => nodes.find((n) => n.data?.current) ?? nodes[0],
     [nodes]
@@ -71,7 +74,6 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const game = useGame();
 
   const stateInMap = game?.state === GameStateEnum.Map;
-
 
   useEffect(() => {
     getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
@@ -114,6 +116,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
       const isReachable = targetNode?.id === currentNode.id;
 
+      const visibleLine =
+        (sourceNode?.data?.visited && targetNode?.data?.visited) ||
+        (isReachable && stateInMap);
       return {
         ...edge,
         style: {
@@ -121,11 +126,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
             sourceNode?.data?.visited && targetNode?.data?.visited
               ? BLUE
               : "#fff",
-          opacity:
-            (sourceNode?.data?.visited && targetNode?.data?.visited) ||
-            (isReachable && stateInMap)
-              ? 1
-              : 0.2,
+          strokeDasharray: visibleLine ? "unset" : "5 5",
+          opacity: visibleLine ? 1 : 0.3,
         },
       };
     });
@@ -163,6 +165,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       ],
       padding: 0.1,
       duration: 600,
+      maxZoom: isSmallScreen ? 0.7 : 1.2,
     });
   };
 

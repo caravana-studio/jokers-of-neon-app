@@ -7,22 +7,22 @@ export const NodeDetailsMobileButton = () => {
   return (
     <Flex
       position="absolute"
-      top={'30px'}
-      right={3}
+      bottom={'80px'}
+      left={5}
       zIndex={100}
-      width="250px"
+      width="280px"
       backgroundColor="black"
-      borderRadius="15px"
+      borderRadius="10px"
       padding="7px 20px"
       gap={1}
       justifyContent={"space-between"}
       alignItems={"center"}
-      boxShadow={"0px 0px 10px 0px #fff"}
+      boxShadow={"0px 0px 10px 0px #fff, 0px 0px 5px 0px #fff inset"}
     >
       <Flex flexDirection="column" gap={1}>
-        <Heading size="sm">{selectedNodeData?.title}</Heading>
+        <Heading fontSize="12px">{selectedNodeData?.title}</Heading>
         {selectedNodeData?.content && (
-          <Text fontSize="13px" lineHeight={1.2}>
+          <Text color="lightViolet" fontSize="14px" lineHeight={1.2}>
             {selectedNodeData.content}
           </Text>
         )}
