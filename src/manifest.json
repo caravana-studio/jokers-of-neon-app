@@ -1554,12 +1554,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-action_system",
       "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
-      "systems": [
-        "play",
-        "discard",
-        "change_modifier_card",
-        "upgrade"
-      ]
+      "systems": ["play", "discard", "change_modifier_card", "upgrade"]
     },
     {
       "address": "0x4ab6038bb4c87887b4822979db840bb14096974bce4bf280feadd2765b9c7a0",
@@ -2996,11 +2991,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-map_system",
       "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
-      "systems": [
-        "create_map_level",
-        "advance_node",
-        "upgrade"
-      ]
+      "systems": ["create_map_level", "advance_node", "upgrade"]
     },
     {
       "address": "0x4664e43a5777277881df51f188c768751c050f01d5bf4ca5dc6404fc771d8c4",
@@ -3216,10 +3207,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mod_manager_registrator",
       "selector": "0x35dc115221c595aae7133e2906beda16eeae471719d28d07fa516e50f33eebe",
-      "systems": [
-        "register_managers",
-        "upgrade"
-      ]
+      "systems": ["register_managers", "upgrade"]
     },
     {
       "address": "0x6ec600cdc2b31eed5e1d1c928114b69a19ead19352347f730db7e34c97f3441",
@@ -3555,9 +3543,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mods_info_system",
       "selector": "0x49501e11d21a12c5803e098cfd1a2eed9799540d9e069dac3a244e8e6df0de",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x16635c51e17a258983c2300b1cb864af2b1680904205322d968c8d29b5a64a3",
@@ -3838,9 +3824,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-poker_hand_system",
       "selector": "0x123bcd8c0fe47fdb578a63f6f56f43a8e917c7a2df94b19d59da961a41354c3",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x6458196f28677da55b13c7aa6d5a57f706636a3a9cebfaba411b896d8bc6df9",
@@ -4049,11 +4033,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-rage_system",
       "selector": "0x6f3f6a9f3bb61155624b3570aae217aca824fee9a1b7c18101dbfc4df322b2e",
-      "systems": [
-        "calculate",
-        "reset",
-        "upgrade"
-      ]
+      "systems": ["calculate", "reset", "upgrade"]
     },
     {
       "address": "0x68ab6314c6ab0f5ea7f6483fffcca33e7fe3faa8506f4c65e82483690ca7edc",
