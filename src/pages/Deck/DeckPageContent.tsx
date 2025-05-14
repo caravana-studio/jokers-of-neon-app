@@ -33,8 +33,9 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   };
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(() => navigate("/store"));
+    burnCard(card).then(()=> navigate(-1));
     setCardToBurn(undefined);
+    
   };
 
   const effectiveCost: number =

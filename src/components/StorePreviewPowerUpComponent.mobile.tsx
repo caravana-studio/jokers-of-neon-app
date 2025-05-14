@@ -91,7 +91,7 @@ export const StorePreviewPowerUpComponentMobile = ({
               size={"xs"}
               onClick={() => {
                 sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
-                navigate("/store");
+                navigate(-1);
               }}
               lineHeight={1.6}
               variant="outlinePrimaryGlow"

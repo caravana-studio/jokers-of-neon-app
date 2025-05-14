@@ -9,7 +9,6 @@ import { PositionedGameDeck } from "../../components/PositionedGameDeck";
 import { PriceBox } from "../../components/PriceBox";
 import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
@@ -52,8 +51,6 @@ export const DynamicStorePage = () => {
   const slotsLen = game?.special_slots;
 
   const { skipShop } = useShopActions();
-
-  useRedirectByGameState();
 
   const handleNextLevelClick = () => {
     setLoading(true);

@@ -85,7 +85,7 @@ const PreviewCardLayout = () => {
           // setLockRedirection(true);
         } else {
           buyCard(card);
-          navigate("/store");
+          navigate(-1);
         }
       }}
       isDisabled={

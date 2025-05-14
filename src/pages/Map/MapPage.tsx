@@ -8,7 +8,6 @@ import { MapProvider } from "../../providers/MapProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Legend } from "./Legend";
 import { Map } from "./Map";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
 export const MapPage = () => {
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "map" });
@@ -16,7 +15,6 @@ export const MapPage = () => {
   const level = game?.level ?? 0;
   const { isSmallScreen } = useResponsiveValues();
 
-  useRedirectByGameState();
   return (
     <DelayedLoading ms={600}>
       <Flex

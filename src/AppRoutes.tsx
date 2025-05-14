@@ -14,6 +14,7 @@ import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { OpenLootBox } from "./pages/OpenLootBox";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
@@ -23,8 +24,6 @@ import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { MapPage } from "./pages/Map/MapPage";
-import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
-import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 
 export const AppRoutes = () => {
@@ -32,7 +31,12 @@ export const AppRoutes = () => {
 
   return (
     <Routes location={location} key={location.pathname}>
-      <Route path="/play/:gameId" element={<BudokanEndpoint />} />
+      <Route
+        path="/play/:gameId"
+        element={
+            <BudokanEndpoint />
+        }
+      />      
       <Route
         path="/"
         element={
@@ -148,16 +152,6 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-      <Route
-        path="/loot-box-cards-selection"
-        element={
-          <StoreProvider>
-            <AnimatedPage>
-              <OpenLootBoxCardSelection />
-            </AnimatedPage>
-          </StoreProvider>
-        }
-      />
       <Route path="/play" element={<Navigate to="/" />} />
       <Route
         path="/plays"
@@ -180,11 +174,11 @@ export const AppRoutes = () => {
       <Route
         path="/map"
         element={
-          <StoreProvider>
+        //   <StoreProvider>
             <AnimatedPage>
               <MapPage />
             </AnimatedPage>
-          </StoreProvider>
+        //   </StoreProvider>
         }
       />
       <Route

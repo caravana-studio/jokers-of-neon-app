@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
@@ -7,21 +7,28 @@ import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
+import SpineAnimation, {
+  SpineAnimationRef,
+} from "../../components/SpineAnimation.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
+import { animationsData } from "../../constants/spineAnimations.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
+import { usePageTransitions } from "../../providers/PageTransitionsProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
-import { LootBox, LootBoxRef } from "../../components/LootBox.tsx";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+
   const { card, pack } = state || {};
+
   const { isSmallScreen } = useResponsiveValues();
+
+  const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
   if (!card) {
@@ -29,26 +36,43 @@ export const PreviewLootBox = () => {
   }
 
   const game = useGame();
-  const { locked } = useStore();
+  const { buyPack, locked } = useStore();
   const { getLootBoxData } = useCardData();
 
   const cash = game?.cash ?? 0;
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
-  const lootBoxRef = useRef<LootBoxRef>(null);
-  useRedirectByGameState();
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
 
   const notEnoughCash =
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
+  const { transitionTo } = usePageTransitions();
+
+  const openAnimationCallBack = () => {
+    setTimeout(() => {
+      transitionTo("/open-loot-box");
+    }, 200);
+  };
+
   const buyButton = (
     <Button
       onClick={() => {
-        navigate("/open-loot-box", {
-          state: { pack: pack },
-        });
+        setBuyDisabled(true);
+        spineAnimationRef.current?.playOpenBoxAnimation();
+        buyPack(pack)
+          .then((response) => {
+            if (response) {
+              // setLockRedirection(true);
+            } else {
+              setBuyDisabled(false);
+            }
+          })
+          .catch(() => {
+            setBuyDisabled(false);
+          });
       }}
-      isDisabled={notEnoughCash || locked}
+      isDisabled={notEnoughCash || locked || buyDisabled}
       variant={{ base: "solid", sm: "outlinePrimaryGlow" }}
       height={{ base: "30px", sm: "100%" }}
       minWidth={"100px"}
@@ -77,7 +101,21 @@ export const PreviewLootBox = () => {
     />
   );
 
-  const spineAnim = <LootBox ref={lootBoxRef} boxId={pack.blister_pack_id} />;
+  const spineAnim = (
+    <SpineAnimation
+      ref={spineAnimationRef}
+      jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+      atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
+      initialAnimation={animationsData.loopAnimation}
+      loopAnimation={animationsData.loopAnimation}
+      openBoxAnimation={animationsData.openBoxAnimation}
+      width={1200}
+      height={1500}
+      xOffset={-650}
+      scale={1}
+      onOpenAnimationStart={openAnimationCallBack}
+    />
+  );
 
   return isSmallScreen ? (
     <>

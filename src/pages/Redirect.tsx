@@ -1,53 +1,48 @@
-import {
-  NavigateOptions,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Loading } from "../components/Loading";
 import { useGame } from "../dojo/queries/useGame";
-import { useEffect } from "react";
-import { redirectConfig, stateToPageMap } from "../constants/redirectConfig";
+import { GameStateEnum } from "../dojo/typescript/custom";
+import { getLSGameId } from "../dojo/utils/getLSGameId";
+
+const stateToPageMap = {
+  [GameStateEnum.GameOver]: "/gameover",
+  [GameStateEnum.Round]: "/demo",
+  [GameStateEnum.Rage]: "/demo",
+  [GameStateEnum.Map]: "/map",
+  [GameStateEnum.Store]: "/store",
+  [GameStateEnum.Lootbox]: "/open-loot-box",
+};
 
 export const Redirect = () => {
   const game = useGame();
   const state = game?.state;
   const navigate = useNavigate();
-  const { page, gameId } = useParams();
+  const { page } = useParams();
   const location = useLocation();
   const lastTabIndex = location.state?.lastTabIndex ?? 0;
 
   useEffect(() => {
-    if (!game || !page || !game.state) return;
-
-    const navOptions: NavigateOptions = {
-      state: { lastTabIndex },
-      replace: false,
-    };
-    let desiredPath;
-
-    if (page === "state") {
-      desiredPath = stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
-      navOptions.replace = true;
-    } else desiredPath = `/${page}`;
-
-    if (gameId) desiredPath += `/${gameId}`;
-
-    // redirectTo === desiredPath && match game state
-    const matchedRule = redirectConfig.find(({ redirectTo, gameState }) => {
-      const resolvedPath =
-        typeof redirectTo === "function"
-          ? redirectTo({ gameId: gameId })
-          : redirectTo;
-
-      return resolvedPath === desiredPath && gameState === game.state;
-    });
-
-    if (matchedRule) {
-      navigate(desiredPath, navOptions);
+    if (state === "GameOver") {
+      navigate(`/gameover/${getLSGameId()}`);
+    } else if (
+      (state === GameStateEnum.Round || state === GameStateEnum.Rage) &&
+      page === "demo"
+    ) {
+      navigate("/demo");
+    } else if (state === GameStateEnum.Map && page === "map") {
+      navigate("/map");
+    } else if (state === GameStateEnum.Store && page === "store") {
+      navigate("/store", { state: { lastTabIndex: lastTabIndex } });
+    } else if (state === GameStateEnum.Lootbox && page === "open-loot-box") {
+      navigate("/open-loot-box");
+    } else if (page === "state" && state) {
+      navigate(stateToPageMap[state as keyof typeof stateToPageMap] ?? "/", {
+        replace: true,
+      });
     }
-  }, [game, page, location.state, navigate]);
+  }, [state, page, navigate]);
 
   return (
     <>

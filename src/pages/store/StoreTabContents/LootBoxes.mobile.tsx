@@ -3,6 +3,10 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
 import { PriceBox } from "../../../components/PriceBox";
+import SpineAnimation, {
+  SpineAnimationRef,
+} from "../../../components/SpineAnimation";
+import { animationsData } from "../../../constants/spineAnimations";
 import { useGame } from "../../../dojo/queries/useGame";
 import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
 import { useCardData } from "../../../providers/CardDataProvider";
@@ -10,7 +14,6 @@ import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { LootBox, LootBoxRef } from "../../../components/LootBox";
 
 export const LootBoxesMobile = () => {
   const { packs } = useStore();
@@ -60,7 +63,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     card_id: Number(pack.blister_pack_id),
   };
 
-  const lootBoxRef = useRef<LootBoxRef>(null);
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const notEnoughCash =
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
@@ -75,7 +78,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
     () => () => {
       setBuyDisabled(true);
       setIsAnimationRunning(true);
-      lootBoxRef.current?.openBox();
+      spineAnimationRef.current?.playOpenBoxAnimation();
       buyPack(pack)
         .then((response) => {
           if (response) {
@@ -118,13 +121,15 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
           justifyContent="center"
         >
           <Flex key={`pack-${pack.blister_pack_id}`} w="100%" h="100%" pl={2}>
-            <LootBox
-              ref={lootBoxRef}
-              boxId={pack.blister_pack_id}
-              width={500}
-              height={1500}
-              xOffset={-270}
+            <SpineAnimation
+              ref={spineAnimationRef}
+              jsonUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.json`}
+              atlasUrl={`/spine-animations/loot_box_${pack.blister_pack_id}.atlas`}
+              initialAnimation={animationsData.loopAnimation}
+              loopAnimation={animationsData.loopAnimation}
+              openBoxAnimation={animationsData.openBoxAnimation}
               isPurchased={pack.purchased.valueOf() && !isAnimationRunning}
+              xOffset={-270}
               onOpenAnimationStart={openAnimationCallBack}
             />
           </Flex>

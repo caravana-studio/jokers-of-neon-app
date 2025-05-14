@@ -15,7 +15,6 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { useCardData } from "../../providers/CardDataProvider";
 
@@ -28,6 +27,7 @@ export const GamePage = () => {
   const {
     checkOrCreateGame,
     setLockedCash,
+    isRageRound,
     setIsRageRound,
     setRageCards,
     roundRewards,
@@ -42,6 +42,8 @@ export const GamePage = () => {
     useCardAnimations();
 
   const rageCards = useRageCards();
+  const navigate = useNavigate();
+  const game = useGame();
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
@@ -60,9 +62,18 @@ export const GamePage = () => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  useRedirectByGameState(!(!lockRedirection && !roundRewards), {
-    gameId: gameId,
-  });
+  useEffect(() => {
+    // if roundRewards is true, we don't want to redirect user
+    if (!roundRewards && !lockRedirection) {
+      if (game?.state === GameStateEnum.GameOver) {
+        navigate(`/gameover/${gameId}`);
+      } else if (game?.state === GameStateEnum.Store) {
+        navigate("/store");
+      } else if (game?.state === GameStateEnum.Lootbox) {
+        navigate("/open-loot-box");
+      }
+    }
+  }, [game?.state, roundRewards]);
 
   return (
     <>

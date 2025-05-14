@@ -1,8 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+
 import { useEffect } from "react";
 import { RARITY, RarityLabels } from "../constants/rarity";
+import { animationsData } from "../constants/spineAnimations";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
 import { useCardData } from "../providers/CardDataProvider";
@@ -16,7 +18,7 @@ import { ConfirmationModal } from "./ConfirmationModal";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { PriceBox } from "./PriceBox";
-import { LootBox } from "./LootBox";
+import SpineAnimation, { SpineAnimationRef } from "./SpineAnimation";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -53,6 +55,7 @@ export const MobileCardHighlight = ({
   const [loading, setLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const { t } = useTranslation(["game", "docs"]);
+  const spineAnimationRef = useRef<SpineAnimationRef>(null);
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   const discard =
@@ -164,7 +167,18 @@ export const MobileCardHighlight = ({
         {!animation ? (
           <CardImage3D card={card} hideTooltip small={false} />
         ) : (
-          <LootBox boxId={card.card_id ?? 0} />
+          <SpineAnimation
+            ref={spineAnimationRef}
+            jsonUrl={animation.jsonUrl}
+            atlasUrl={animation.atlasUrl}
+            initialAnimation={animationsData.loopAnimation}
+            loopAnimation={animationsData.loopAnimation}
+            openBoxAnimation={animationsData.openBoxAnimation}
+            width={1200}
+            height={1500}
+            xOffset={-650}
+            scale={1}
+          />
         )}
       </Flex>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>

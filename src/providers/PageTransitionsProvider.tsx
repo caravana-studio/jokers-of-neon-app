@@ -5,12 +5,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import { NavigateOptions, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MotionBox } from "../components/MotionBox";
 import { useSettings } from "./SettingsProvider";
 
 interface IPageTransitionsContext {
-  transitionTo: (page: string, state?: NavigateOptions) => void;
+  transitionTo: (page: string) => void;
 }
 
 interface PageTransitionsProviderProps extends PropsWithChildren {
@@ -42,35 +42,34 @@ export const PageTransitionsProvider = ({
     }
   }, [isTransitioning]);
 
-  const transitionTo = async (page: string, state?: NavigateOptions) => {
+  const transitionTo = async (page: string) => {
     setIsTransitioning(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    navigate(page, state ?? {});
-
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    setIsTransitioning(false);
+    setTimeout(() => {
+      navigate(page);
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 500);
+    }, 500);
   };
 
   return (
     <PageTransitionsContext.Provider value={{ transitionTo }}>
       {children}
-      <MotionBox
-        key="page-transition-overlay"
-        position="fixed"
-        top="0"
-        left="0"
-        width="100vw"
-        height="100vh"
-        backgroundColor={bgColor}
-        zIndex="9999"
-        pointerEvents="none"
-        style={{ opacity: 0 }}
-        animate={{ opacity: isTransitioning ? 1 : 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      />
+      {overlayVisible && (
+        <MotionBox
+          position="fixed"
+          top="0"
+          left="0"
+          width="100vw"
+          height="100vh"
+          backgroundColor={bgColor}
+          zIndex="9999"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isTransitioning ? 1 : 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        />
+      )}
     </PageTransitionsContext.Provider>
   );
 };

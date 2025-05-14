@@ -47,7 +47,7 @@ export const TabPattern = ({
     onSwipedRight: () => {
       if (!highlightedCard) {
         if (tabIndex === 0 && !disableGoBack) {
-          navigate("/store");
+          navigate(-1);
         } else if (tabIndex > 0) {
           setSwipeDirection("right");
           setTabIndex(tabIndex - 1);
@@ -103,6 +103,7 @@ export const TabPattern = ({
         overflow="hidden"
         flexDir={"column"}
       >
+        
         <AnimatePresence mode="wait">
           <motion.div
             key={tabIndex}
