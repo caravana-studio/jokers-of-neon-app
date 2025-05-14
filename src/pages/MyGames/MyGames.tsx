@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
@@ -13,6 +13,11 @@ import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
+import {
+  IntermediateLoadingScreen,
+  IntermediateLoadingScreenRef,
+} from "../LoadingScreen/IntermediateLoadingScreen.tsx";
+import { LoadingProgress } from "../../types/LoadingProgress.ts";
 
 export interface GameSummary {
   id: number;
@@ -40,6 +45,15 @@ export const MyGames = () => {
   const filteredGames = games.filter((game) => {
     return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
   });
+
+  const loadingBarRef = useRef<IntermediateLoadingScreenRef>(null);
+  const [loadingSteps, setLoadingSteps] = useState<LoadingProgress[]>([]);
+  const [isGameLoading, setIsGameLoading] = useState(false);
+
+  const onLoadingGameStart = (steps: LoadingProgress[]) => {
+    setIsGameLoading(true);
+    setLoadingSteps(steps);
+  };
 
   useEffect(() => {
     setGameId(0);
@@ -105,7 +119,14 @@ export const MyGames = () => {
             <Flex flexDirection="column" gap={3} w="100%">
               {isLoading && <Loading />}
               {filteredGames.map((game) => {
-                return <GameBox key={game.id} game={game} />;
+                return (
+                  <GameBox
+                    key={game.id}
+                    game={game}
+                    loadingRef={loadingBarRef}
+                    onLoadingStart={onLoadingGameStart}
+                  />
+                );
               })}
               {filteredGames.length === 0 && !isLoading && (
                 <Text size="lg" textAlign="center">
@@ -137,6 +158,9 @@ export const MyGames = () => {
           </Button>
         </Flex>
       </Flex>
+      {isGameLoading && (
+        <IntermediateLoadingScreen ref={loadingBarRef} steps={loadingSteps} />
+      )}
     </>
   );
 };

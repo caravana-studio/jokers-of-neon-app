@@ -1,4 +1,4 @@
-import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -8,25 +8,54 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
+import { LoadingProgress } from "../../types/LoadingProgress.ts";
 
-export const GameBox = ({ game }: { game: GameSummary }) => {
+export const GameBox = ({
+  game,
+  onLoadingStart,
+  loadingRef,
+}: {
+  game: GameSummary;
+  onLoadingStart: (steps: LoadingProgress[]) => void;
+  loadingRef: any;
+}) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
 
   const { syncCall } = useDojo();
   const { executeCreateGame, setGameId } = useGameContext();
-  const { isSmallScreen } = useResponsiveValues();
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { isSmallScreen } = useResponsiveValues();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleButtonClick = async () => {
+    const loadingSteps: LoadingProgress[] =
+      game.status === GameStateEnum.NotStarted
+        ? [{ text: "Creating game...", showAt: 0 }]
+        : [
+            { text: "Preparing your game...", showAt: 0 },
+            { text: "Syncing game state...", showAt: 1 },
+            { text: "Almost ready...", showAt: 2 },
+          ];
+
     setIsLoading(true);
+    onLoadingStart(loadingSteps);
+
     if (game.status === GameStateEnum.NotStarted) {
+      await loadingRef.current?.nextStep();
       executeCreateGame(game.id);
     } else {
+      await loadingRef.current?.nextStep();
       setGameId(game.id);
+
+      await loadingRef.current?.nextStep();
       await syncCall();
+
+      await loadingRef.current?.nextStep();
       navigate(`/redirect/state`);
     }
   };
@@ -104,7 +133,6 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         <Flex w={isSmallScreen ? "30%" : "20%"} justifyContent="flex-end">
           {game.status !== GameStateEnum.GameOver && (
             <Flex gap={3} alignItems={"center"}>
-              {isLoading && <Spinner size={{ base: "xs", sm: "sm" }} />}
               <Button
                 size="sm"
                 width={isSmallScreen ? "60px" : "110px"}
@@ -114,7 +142,9 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
                 disabled={isLoading}
               >
                 {t(
-                  game.status === GameStateEnum.NotStarted ? "start-btn" : "continue-btn"
+                  game.status === GameStateEnum.NotStarted
+                    ? "start-btn"
+                    : "continue-btn"
                 ).toUpperCase()}
               </Button>
             </Flex>
