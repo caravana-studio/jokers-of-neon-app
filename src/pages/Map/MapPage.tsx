@@ -3,8 +3,10 @@ import { ReactFlowProvider } from "reactflow";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MapProvider } from "../../providers/MapProvider";
 import { Map } from "./Map";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
 export const MapPage = () => {
+  useRedirectByGameState();
   return (
     <DelayedLoading ms={600}>
       <Flex

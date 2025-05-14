@@ -33,7 +33,7 @@ export const PreviewSlot = () => {
     <Button
       onClick={() => {
         buySpecialSlot();
-        navigate(-1);
+        navigate("/store");
       }}
       isDisabled={notEnoughCash || locked || buyDisabled}
       variant="outlinePrimaryGlow"
