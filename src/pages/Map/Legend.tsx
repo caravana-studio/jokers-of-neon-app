@@ -81,7 +81,7 @@ export const Legend = () => {
             mb={2}
             py={4}
             px={4}
-            width="220px"
+            width="200px"
             borderRadius="20px"
             bg="black"
             zIndex={10}
