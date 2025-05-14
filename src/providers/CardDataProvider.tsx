@@ -20,6 +20,7 @@ import {
 import { useDojo } from "../dojo/useDojo.tsx";
 import { CardTypes } from "../enums/cardTypes.ts";
 import { CardData } from "../types/CardData.ts";
+import { RAGES_RARITY } from "../data/rageCards.ts";
 
 interface CardDataContextType {
   getCardData: (id: number) => CardData;
@@ -76,10 +77,12 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     const isModifier = cardId >= 600 && cardId < 700;
 
     if (isRage) {
+      const rarity = RAGES_RARITY[cardId];
       return {
         name: t(`rageCards.${cardId}.name`),
         description: t(`rageCards.${cardId}.description`),
         type: CardTypes.RAGE,
+        rarity,
       };
     } else if (isSpecial) {
       const rarity = SPECIALS_RARITY[cardId];

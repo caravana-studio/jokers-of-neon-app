@@ -1,5 +1,6 @@
 import { MODIFIERS_RARITY } from "../data/modifiers";
 import { POWER_UP_KEYS } from "../data/powerups";
+import { RAGES_RARITY } from "../data/rageCards";
 import { SPECIALS_RARITY } from "../data/specialCards";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 
@@ -30,6 +31,16 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
     imageUrls.push(`Cards/3d/${key}-l0.png`);
     imageUrls.push(`Cards/3d/${key}-l1.png`);
     imageUrls.push(`Cards/3d/${key}-l2.png`);
+    imageUrls.push(`Cards/3d/${key}-l3.png`);
+  });
+
+  // Rage cards
+  Object.keys(RAGES_RARITY).forEach((key) => {
+    imageUrls.push(`Cards/${key}.png`);
+    imageUrls.push(`Cards/3d/${key}-l0.png`);
+    imageUrls.push(`Cards/3d/${key}-l1.png`);
+    imageUrls.push(`Cards/3d/${key}-l2.png`);
+    imageUrls.push(`Cards/3d/${key}-l3.png`);
   });
 
   // Backgrounds
