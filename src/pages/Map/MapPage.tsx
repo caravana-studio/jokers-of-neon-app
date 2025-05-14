@@ -5,12 +5,15 @@ import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { useGame } from "../../dojo/queries/useGame";
 import { MapProvider } from "../../providers/MapProvider";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Legend } from "./Legend";
 import { Map } from "./Map";
 
 export const MapPage = () => {
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "map" });
   const game = useGame();
   const level = game?.level ?? 0;
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <DelayedLoading ms={600}>
@@ -60,6 +63,11 @@ export const MapPage = () => {
           </Flex>
         </Flex>
       </Flex>
+      {!isSmallScreen && (
+        <Flex position="absolute" bottom="65px" right="15px" zIndex={10}>
+          <Legend />
+        </Flex>
+      )}
     </DelayedLoading>
   );
 };

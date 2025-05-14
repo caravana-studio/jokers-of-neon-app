@@ -8,5 +8,27 @@
     "intermediate": "Intermedia",
     "final": "Final"
   },
-  "go": "Ir"
+  "go": "Ir",
+  "legend": {
+    "title": "Leyenda",
+    "nodes": {
+      "round": {
+        "title": "Ronda normal"
+      },
+      "rage": {
+        "intermediate": "Intermedia",
+        "final": "Final",
+        "title": "Ronda de rage"
+      },
+      "shop": {
+        "title": "Tienda",
+        "deck": "Mazo",
+        "global": "Global",
+        "specials": "Especiales",
+        "level-ups": "Subidas de nivel",
+        "modifiers": "Modificadores",
+        "mix": "Mezcla"
+      }
+    }
+  }
 }
