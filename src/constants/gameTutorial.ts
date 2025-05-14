@@ -112,12 +112,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-1",
@@ -137,12 +140,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".game-tutorial-step-3",
@@ -178,12 +184,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-3",
@@ -203,12 +212,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".game-tutorial-step-6",
@@ -267,12 +279,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-1",
@@ -292,12 +307,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     // power ups
     {
@@ -385,12 +403,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-3",
@@ -410,12 +431,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-4",
@@ -435,12 +459,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-5",
@@ -460,12 +487,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-6",
@@ -485,12 +515,15 @@ const loadTutorialTranslations = async () => {
       spotlightClicks: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-          width: "100%",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".hand-element-7",
@@ -501,11 +534,15 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       spotlightPadding: 0,
       offset: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
     },
     {
       target: ".game-tutorial-intro",

@@ -18,15 +18,15 @@ export const Login = () => {
   const { t } = useTranslation(["intermediate-screens"]);
 
   const redirectToGame = () => {
-    navigate("/my-games");
+    navigate("/my-games", { replace: true });
   };
 
-  const loggedInUser = useUsername()
+  const loggedInUser = useUsername();
 
   useEffect(() => {
     // if user is logged in, redirect to game
     if (loggedInUser) {
-      console.log('redirecting to game', loggedInUser)
+      console.log("redirecting to game", loggedInUser);
       redirectToGame();
     }
   }, [loggedInUser]);

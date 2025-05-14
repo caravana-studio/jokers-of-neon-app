@@ -9,6 +9,8 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 import { LoadingProgress } from "../../types/LoadingProgress.ts";
+import { prepareNewGame } from "../../utils/prepareNewGame.ts";
+import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 
 export const GameBox = ({
   game,
@@ -27,8 +29,8 @@ export const GameBox = ({
   const { executeCreateGame, setGameId } = useGameContext();
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
-
   const [isLoading, setIsLoading] = useState(false);
+  const { resetLevel, setHand } = useGameContext();
 
   const handleButtonClick = async () => {
     const loadGameSteps = [
@@ -39,6 +41,8 @@ export const GameBox = ({
 
     setIsLoading(true);
     onLoadingStart(loadGameSteps);
+
+    prepareNewGame({ setGameId, resetLevel, setHand });
 
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
