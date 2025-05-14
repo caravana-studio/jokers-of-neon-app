@@ -1,66 +1,65 @@
 import { ChevronUpIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
-import i18next from "i18next";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { MotionBox } from "../../components/MotionBox";
 import { BLUE_LIGHT } from "../../theme/colors";
 
-const tNodes = (key: string) => {
-  return i18next.t(`legend.nodes.${key}`, { ns: "map" });
-};
-
-const nodes = [
-  {
-    title: tNodes("round.title"),
-    icon: "/map/icons/round/round-off.png",
-  },
-  {
-    title: tNodes("rage.title"),
-    icon: "/map/icons/rage/final-off.png",
-    description: tNodes("rage.final"),
-  },
-  {
-    title: tNodes("rage.title"),
-    icon: "/map/icons/rage/intermediate-off.png",
-    description: tNodes("rage.intermediate"),
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.deck"),
-    icon: "/map/icons/rewards/1-off.png",
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.global"),
-    icon: "/map/icons/rewards/2-off.png",
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.specials"),
-    icon: "/map/icons/rewards/3-off.png",
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.level-ups"),
-    icon: "/map/icons/rewards/4-off.png",
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.modifiers"),
-    icon: "/map/icons/rewards/5-off.png",
-  },
-  {
-    title: tNodes("shop.title"),
-    description: tNodes("shop.mix"),
-    icon: "/map/icons/rewards/6-off.png",
-  },
-];
-
 export const Legend = () => {
   const { t } = useTranslation("map", { keyPrefix: "legend" });
   const { isOpen, onToggle } = useDisclosure();
+
+  const nodes = useMemo(
+    () => [
+      {
+        title: t("nodes.round.title"),
+        icon: "/map/icons/round/round-legend.png",
+      },
+      {
+        title: t("nodes.rage.title"),
+        icon: "/map/icons/rage/final-off.png",
+        description: t("nodes.rage.final"),
+      },
+      {
+        title: t("nodes.rage.title"),
+        icon: "/map/icons/rage/intermediate-off.png",
+        description: t("nodes.rage.intermediate"),
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.deck"),
+        icon: "/map/icons/rewards/1-off.png",
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.global"),
+        icon: "/map/icons/rewards/2-off.png",
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.specials"),
+        icon: "/map/icons/rewards/3-off.png",
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.level-ups"),
+        icon: "/map/icons/rewards/4-off.png",
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.modifiers"),
+        icon: "/map/icons/rewards/5-off.png",
+      },
+      {
+        title: t("nodes.shop.title"),
+        description: t("nodes.shop.mix"),
+        icon: "/map/icons/rewards/6-off.png",
+      },
+    ],
+    [t]
+  );
 
   return (
     <Box position="relative">
