@@ -37,6 +37,7 @@ export enum BackgroundType {
   Game = "game",
   Store = "store",
   Rage = "rage",
+  Map = "map",
 }
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
@@ -75,6 +76,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   },
   home: {
     bg: BackgroundType.Home,
+  },
+  map: {
+    bg: BackgroundType.Map,
   },
 };
 

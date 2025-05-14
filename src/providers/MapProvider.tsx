@@ -14,6 +14,7 @@ import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { BLUE } from "../theme/colors";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { GameStateEnum } from "../dojo/typescript/custom";
 
 export interface SelectedNodeData {
   id: number;
@@ -68,6 +69,10 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const reactFlowInstance = useReactFlow();
 
   const game = useGame();
+
+  const stateInMap = game?.state === GameStateEnum.Map;
+
+
   useEffect(() => {
     getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
       const transformedNodes = dataNodes.map((node) => ({
@@ -100,23 +105,46 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     });
   }, []);
 
-  const calculateEdges = (nodes: NodeData[]) => {
+  useEffect(() => {
+    if (!currentNode || edges.length === 0) return;
+
+    const updatedEdges = edges.map((edge) => {
+      const sourceNode = nodes.find((n) => n.id === edge.source);
+      const targetNode = nodes.find((n) => n.id === edge.target);
+
+      const isReachable = targetNode?.id === currentNode.id;
+
+      return {
+        ...edge,
+        style: {
+          stroke:
+            sourceNode?.data?.visited && targetNode?.data?.visited
+              ? BLUE
+              : "#fff",
+          opacity:
+            (sourceNode?.data?.visited && targetNode?.data?.visited) ||
+            (isReachable && stateInMap)
+              ? 1
+              : 0.2,
+        },
+      };
+    });
+
+    setEdges(updatedEdges);
+  }, [currentNode, nodes]);
+
+  const calculateEdges = (nodes: NodeData[]): Edge[] => {
     const edges: Edge[] = [];
     nodes.forEach((node) => {
       node.children.forEach((childId) => {
-        const targetNode = nodes.find((n) => n.id === childId);
         edges.push({
           id: node.id + "-" + childId,
           source: node.id.toString(),
           target: childId.toString(),
           type: "straight",
           style: {
-            stroke: (node.visited && targetNode?.visited) ? BLUE : "#fff",
-            opacity:
-              (node.visited && targetNode?.visited) ||
-              childId === Number(currentNode?.id ?? 0)
-                ? 1
-                : 0.2,
+            stroke: "#fff",
+            opacity: 0.2,
           },
         });
       });
