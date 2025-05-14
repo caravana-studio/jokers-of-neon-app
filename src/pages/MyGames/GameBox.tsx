@@ -9,6 +9,10 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 import { LoadingProgress } from "../../types/LoadingProgress.ts";
+import {
+  createGameSteps,
+  loadGameSteps,
+} from "../../constants/loadingSteps.ts";
 
 export const GameBox = ({
   game,
@@ -35,12 +39,8 @@ export const GameBox = ({
   const handleButtonClick = async () => {
     const loadingSteps: LoadingProgress[] =
       game.status === GameStateEnum.NotStarted
-        ? [{ text: "Creating game...", showAt: 0 }]
-        : [
-            { text: "Preparing your game...", showAt: 0 },
-            { text: "Syncing game state...", showAt: 1 },
-            { text: "Almost ready...", showAt: 2 },
-          ];
+        ? createGameSteps
+        : loadGameSteps;
 
     setIsLoading(true);
     onLoadingStart(loadingSteps);
