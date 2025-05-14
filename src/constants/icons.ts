@@ -17,6 +17,8 @@ import CartridgeIcon from "../assets/MenuIcons/cartridge.png";
 import LogoutIcon from "../assets/MenuIcons/logout.png";
 import DiscordIcon from "../assets/MenuIcons/discord.png";
 import TutorialIcon from "../assets/MenuIcons/tutorial.png";
+import BoxIcon from "../assets/MenuIcons/box.png";
+import GameoverIcon from "../assets/MenuIcons/gameover.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -38,6 +40,17 @@ export const Icons = {
   LOGOUT: LogoutIcon,
   DISCORD: DiscordIcon,
   TUTORIAL: TutorialIcon,
+  STORE_DECK: "/map/icons/rewards/1.png",
+  STORE_GLOBAL: "/map/icons/rewards/2.png",
+  STORE_SPECIALS: "/map/icons/rewards/3.png",
+  STORE_LEVELUPS: "/map/icons/rewards/4.png",
+  STORE_MODIFIERS: "/map/icons/rewards/5.png",
+  STORE_MIX: "/map/icons/rewards/6.png",
+  ROUND: "/map/icons/round/round.png",
+  RAGE_INTERMEDIATE: "/map/icons/rage/intermediate-off.png",
+  RAGE_FINAL: "/map/icons/rage/final-off.png",
+  LOOTBOX: BoxIcon,
+  GAMEOVER: GameoverIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
