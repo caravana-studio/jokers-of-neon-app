@@ -25,6 +25,8 @@ import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
+import { useGame } from "../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -69,6 +71,7 @@ export const TiltCard = ({
   const isSilent = useIsSilent(modifiedCard);
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
+  const game = useGame();
 
   const { getCardData } = useCardData();
 
@@ -131,7 +134,7 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && (
+              {isSilent && game?.state === GameStateEnum.Rage && (
                 <>
                   <Box
                     position="absolute"
