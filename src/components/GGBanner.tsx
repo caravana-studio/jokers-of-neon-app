@@ -1,13 +1,15 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Trans, useTranslation } from "react-i18next";
 import CachedImage from "./CachedImage";
 
 export const GGBanner = () => {
+  const { t } = useTranslation("game", { keyPrefix: "gg-banner" });
   return (
     <Flex
       flexDir="column"
       position="absolute"
-      bottom={{ base: "undefined", sm: "70px" }}
-      top={{ base: "30px", sm: "undefined" }}
+      bottom={{ base: "unset", sm: "70px" }}
+      top={{ base: "30px", sm: "unset" }}
       right={{ base: "10px", sm: "20px" }}
       width={{ base: "80%", sm: "400px" }}
       backgroundColor="rgba(0,0,0,0.5)"
@@ -24,19 +26,21 @@ export const GGBanner = () => {
           height={{ base: "15px", sm: "22px" }}
         />
         <Heading variant="italic" fontSize={{ base: "12px", sm: "18px" }}>
-          GG Event active
+          {t('title')}
         </Heading>
       </Flex>
       <Text>
-        Click{" "}
-        <Link
-          href="https://www.gg.xyz/game/851964?skip=0&take=6"
-          isExternal
-          color="blueLight"
-        >
-          here
-        </Link>{" "}
-        to join the GG tournament and win exclusive rewards!
+        <Trans
+          t={t}
+          i18nKey="description"
+          components={[
+            <Link
+              href="https://www.gg.xyz/game/851964?skip=0&take=6"
+              isExternal
+              color="blueLight"
+            />,
+          ]}
+        />
       </Text>
     </Flex>
   );
