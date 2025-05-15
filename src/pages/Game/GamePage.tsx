@@ -15,7 +15,9 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
+import { useCardData } from "../../providers/CardDataProvider";
 
 export const GamePage = () => {
   const {
@@ -26,20 +28,20 @@ export const GamePage = () => {
   const {
     checkOrCreateGame,
     setLockedCash,
-    isRageRound,
     setIsRageRound,
     setRageCards,
     roundRewards,
     gameId,
     lockRedirection,
+    modId,
   } = useGameContext();
+
+  const { refetchSpecialCardsData } = useCardData();
 
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
 
   const rageCards = useRageCards();
-  const navigate = useNavigate();
-  const game = useGame();
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
@@ -55,20 +57,12 @@ export const GamePage = () => {
     setLockedCash(undefined);
     setIsRageRound(rageCards && rageCards.length > 0);
     setRageCards(rageCards);
+    refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  useEffect(() => {
-    // if roundRewards is true, we don't want to redirect user
-    if (!roundRewards && !lockRedirection) {
-      if (game?.state === GameStateEnum.GameOver) {
-        navigate(`/gameover/${gameId}`);
-      } else if (game?.state === GameStateEnum.Store) {
-        navigate("/store");
-      } else if (game?.state === GameStateEnum.Lootbox) {
-        navigate("/open-loot-box");
-      }
-    }
-  }, [game?.state, roundRewards]);
+  useRedirectByGameState(!(!lockRedirection && !roundRewards), {
+    gameId: gameId,
+  });
 
   return (
     <>

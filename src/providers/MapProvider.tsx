@@ -9,11 +9,13 @@ import {
 import { Edge, Node, useReactFlow } from "reactflow";
 import { getMap } from "../dojo/queries/getMap";
 import { useGame } from "../dojo/queries/useGame";
+import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
 import { BLUE } from "../theme/colors";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface SelectedNodeData {
   id: number;
@@ -48,6 +50,8 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     SelectedNodeData | undefined
   >();
 
+  const { isSmallScreen } = useResponsiveValues();
+
   const currentNode = useMemo(
     () => nodes.find((n) => n.data?.current) ?? nodes[0],
     [nodes]
@@ -68,6 +72,9 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const reactFlowInstance = useReactFlow();
 
   const game = useGame();
+
+  const stateInMap = game?.state === GameStateEnum.Map;
+
   useEffect(() => {
     getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
       const transformedNodes = dataNodes.map((node) => ({
@@ -100,23 +107,46 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     });
   }, []);
 
-  const calculateEdges = (nodes: NodeData[]) => {
+  useEffect(() => {
+    if (!currentNode || edges.length === 0) return;
+
+    const updatedEdges = edges.map((edge) => {
+      const sourceNode = nodes.find((n) => n.id === edge.source);
+      const targetNode = nodes.find((n) => n.id === edge.target);
+
+      const isReachable = targetNode?.id === currentNode.id;
+
+      const visibleLine =
+        (sourceNode?.data?.visited && targetNode?.data?.visited) ||
+        (isReachable && stateInMap);
+      return {
+        ...edge,
+        style: {
+          stroke:
+            sourceNode?.data?.visited && targetNode?.data?.visited
+              ? BLUE
+              : "#fff",
+          strokeDasharray: visibleLine ? "unset" : "5 5",
+          opacity: visibleLine ? 1 : 0.3,
+        },
+      };
+    });
+
+    setEdges(updatedEdges);
+  }, [currentNode, nodes]);
+
+  const calculateEdges = (nodes: NodeData[]): Edge[] => {
     const edges: Edge[] = [];
     nodes.forEach((node) => {
       node.children.forEach((childId) => {
-        const targetNode = nodes.find((n) => n.id === childId);
         edges.push({
           id: node.id + "-" + childId,
           source: node.id.toString(),
           target: childId.toString(),
           type: "straight",
           style: {
-            stroke: (node.visited && targetNode?.visited) ? BLUE : "#fff",
-            opacity:
-              (node.visited && targetNode?.visited) ||
-              childId === Number(currentNode?.id ?? 0)
-                ? 1
-                : 0.2,
+            stroke: "#fff",
+            opacity: 0.2,
           },
         });
       });
@@ -135,6 +165,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
       ],
       padding: 0.1,
       duration: 600,
+      maxZoom: isSmallScreen ? 0.7 : 1.2,
     });
   };
 

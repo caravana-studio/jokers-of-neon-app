@@ -37,6 +37,7 @@ export enum BackgroundType {
   Game = "game",
   Store = "store",
   Rage = "rage",
+  Map = "map",
 }
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
@@ -75,6 +76,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   },
   home: {
     bg: BackgroundType.Home,
+  },
+  map: {
+    bg: BackgroundType.Map,
   },
 };
 
@@ -157,11 +161,13 @@ export const Background = ({ children }: PropsWithChildren) => {
 
 interface BackgroundDecorationProps {
   hidelogo?: boolean;
+  contentHeight?: any;
 }
 
 export const BackgroundDecoration = ({
   children,
   hidelogo = false,
+  contentHeight = { base: "80%", sm: "60%" },
 }: PropsWithChildren<BackgroundDecorationProps>) => {
   const { isSmallScreen } = useResponsiveValues();
   return (
@@ -199,7 +205,7 @@ export const BackgroundDecoration = ({
       )}
       <Box
         sx={{
-          height: { base: "80%", sm: "60%" },
+          height: contentHeight,
           width: "100%",
           display: "flex",
           alignItems: "center",

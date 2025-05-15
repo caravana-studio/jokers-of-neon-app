@@ -13,13 +13,13 @@ import {
 } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds.ts";
 import {
+  achievementSfx,
   cashSfx,
   discardSfx,
   multiSfx,
   negativeMultiSfx,
   pointsSfx,
   preselectedCardSfx,
-  achievementSfx,
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { useRound } from "../dojo/queries/useRound.tsx";
@@ -46,7 +46,6 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { handleAchievementPush } from "../utils/pushAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -247,6 +246,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setIsRageRound(false);
     showSpecials();
     resetPowerUps();
+    refetchSpecialCardsData(modId, gameId);
   };
 
   const toggleSortBy = () => {
@@ -284,7 +284,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
             resetLevel();
-            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
             setHand(hand);
             setGameId(newGameId);
             clearPreSelection();
@@ -295,6 +294,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
+
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           } else {
             setError(true);
           }
@@ -632,7 +633,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           setGameLoading(false);
           console.log("Game found (2), no need to create a new one");
         }
-      }, 2000);
+      }, 5000);
     } else {
       setGameLoading(false);
       console.log("Game found, no need to create a new one");

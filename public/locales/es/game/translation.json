@@ -10,7 +10,7 @@
     "compact-round-data": {
       "my-score": "Puntaje",
       "target": "Objetivo",
-      "round": "Ronda {{round}}"
+      "level-round": "N{{level}} Ronda {{round}}"
     },
     "card-types": {
       "Common": "Tradicional",
@@ -30,11 +30,12 @@
       }
     },
     "round-points": {
+      "level": "N{{level}}",
       "round": "Ronda",
       "target-score": "Puntos",
       "score": "Suma {{score}} para superar la ronda {{round}}"
     },
-    "score": "Tu puntaje:",
+    "score": "Puntaje:",
     "score-total": "Puntaje total",
     "multi-points": {
       "points": "Puntos",

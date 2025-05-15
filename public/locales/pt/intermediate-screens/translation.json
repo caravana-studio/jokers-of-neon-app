@@ -1,4 +1,7 @@
 {
+  "map": {
+    "level": "NÍVEL"
+  },
   "my-games": {
     "title": "Meus jogos",
     "go-back": "Voltar",
@@ -77,5 +80,9 @@
   "power-ups": {
     "title": "Power-ups",
     "go-back": "Voltar"
+  },
+  "open-lootbox": {
+    "click-open": "Clique para abrir",
+    "tap-open": "Toque para abrir"
   }
 }

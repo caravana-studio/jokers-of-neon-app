@@ -39,7 +39,7 @@ export const DeckPageContentMobile = ({
   const { cash, burnCard, burnItem } = useStore();
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(() => navigate(-1));
+    burnCard(card).then(() => navigate("/store"));
   };
 
   const effectiveCost: number =

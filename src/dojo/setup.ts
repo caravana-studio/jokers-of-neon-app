@@ -72,22 +72,18 @@ export async function setup({ ...config }: DojoConfig) {
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
 
-    const keysClause: torii.KeysClause = {
-      keys: [gameID, undefined],
-      pattern_matching: "FixedLen",
-      models: componentNames,
+    const memberGame: torii.MemberClause = {
+      model: `${DOJO_NAMESPACE}-Game`,
+      member: "id",
+      operator: "Eq",
+      value: { Primitive: { U64: Number(gameID) || 0 } },
     };
 
-    const keysGame: torii.KeysClause = {
-      keys: [gameID],
-      pattern_matching: "FixedLen",
-      models: [`${DOJO_NAMESPACE}-Game`],
-    };
-
-    const keysCard: torii.KeysClause = {
-      keys: [gameID, undefined, undefined],
-      pattern_matching: "FixedLen",
-      models: [`${DOJO_NAMESPACE}-Card`],
+    const memberDeckCard: torii.MemberClause = {
+      model: `${DOJO_NAMESPACE}-DeckCard`,
+      member: "game_id",
+      operator: "Eq",
+      value: { Primitive: { U64: Number(gameID) || 0 } },
     };
 
     const keysMod: torii.KeysClause = {
@@ -97,16 +93,16 @@ export async function setup({ ...config }: DojoConfig) {
     };
 
     const query: torii.Query = {
-      limit: 10000,
+      limit: 1000,
       offset: 0,
       clause: {
         Composite: {
           operator: "Or",
           clauses: [
-            { Keys: keysClause },
-            { Keys: keysGame },
-            { Keys: keysCard },
-            { Keys: keysMod },
+            {
+              Member: memberGame,
+            },
+            { Member: memberDeckCard },
           ],
         },
       },
@@ -130,29 +126,8 @@ export async function setup({ ...config }: DojoConfig) {
       const timeTaken = endTime - startTime;
       // Log for load time
       console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
-    } else {
-      const query: torii.Query = {
-        limit: 10000,
-        offset: 0,
-        clause: {
-          Composite: {
-            operator: "Or",
-            clauses: [{ Keys: keysMod }],
-          },
-        },
-        order_by: [],
-        dont_include_hashed_keys: false,
-        entity_models: [],
-        entity_updated_after: 0,
-      };
-      await getEntities(toriiClient, contractComponents as any, query);
-      sync = await syncEntities(
-        toriiClient,
-        contractComponents as any,
-        [],
-        false
-      );
     }
+    // TODO: Get the mod entities
   }
 
   // setup world

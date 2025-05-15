@@ -97,30 +97,30 @@ export const showTransactionToast = (
 };
 
 export const showAchievementToast = (achievementNames: string[]): void => {
-  toast.custom(
-    (t) => (
-      <Flex
-        direction="column"
-        gap="12px" // space between each toast
-        position="absolute"
-        left={isMobile ? "8px" : "26px"}
-        bottom={isMobile ? "undefined" : "16px"}
-        zIndex={10000}
-        w={"300px"}
-      >
-        {achievementNames.map((achievementName, index) => (
+  const basePosition = isMobile ? "top-left" : "bottom-left";
+  const leftPosition = isMobile ? "8px" : "26px";
+  const marginTop = isMobile ? 80 : 60;
+
+  achievementNames.forEach((achievementName, index) => {
+    setTimeout(() => {
+      toast.custom(
+        (t) => (
           <Box
-            key={index}
             display="flex"
             alignItems="center"
             bg="black"
             borderRadius="12px"
             p="10px"
+            pl={isMobile ? "8px" : "80px"}
             px="20px"
             boxShadow={`0px 0px 10px 1px white`}
             maxW="300px"
             color="white"
             gap="10px"
+            style={{ marginTop: index > 0 ? `${index * marginTop}px` : "0" }}
+            onClick={() => {
+              toast.dismiss(t);
+            }}
           >
             <Image
               src="/logos/trophy.png"
@@ -143,14 +143,15 @@ export const showAchievementToast = (achievementNames: string[]): void => {
               </Text>
             </Box>
           </Box>
-        ))}
-      </Flex>
-    ),
-    {
-      position: isMobile ? "top-left" : "bottom-left",
-      duration: 7000,
-    }
-  );
+        ),
+        {
+          position: basePosition,
+          style: { position: "absolute", left: leftPosition, margin: 0 },
+          duration: 7000,
+        }
+      );
+    }, index * 200);
+  });
 };
 
 const openTx = function (transaction_hash: string): void {

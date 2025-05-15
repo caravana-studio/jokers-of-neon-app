@@ -1,11 +1,11 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
+import { GameStateEnum } from "../dojo/typescript/custom";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import { useUsername } from "../dojo/utils/useUsername";
 import graphQLClient from "../graphQLClient";
-import { useGameContext } from "../providers/GameProvider";
-import { snakeToCamel } from "../utils/snakeToCamel";
 import { GameSummary } from "../pages/MyGames/MyGames";
+import { snakeToCamel } from "../utils/snakeToCamel";
 
 const translateGameState = (state: string) => {
   return state.replace(/_/g, " ");
@@ -133,7 +133,7 @@ export const useGetMyGames = () => {
         id: token.id,
         level: matchingGame.level,
         // Use the game's status if available, otherwise "NOT STARTED"
-        status: matchingGame.state ? translateGameState(matchingGame.state) : "NOT STARTED",
+        status: matchingGame.state ? translateGameState(matchingGame.state) : GameStateEnum.NotStarted,
         points: matchingGame.player_score,
       };
     }
@@ -141,7 +141,7 @@ export const useGetMyGames = () => {
     // Return token with default "NOT STARTED" status if no matching game data
     return {
       id: token.id,
-      status: "NOT STARTED"
+      status: GameStateEnum.NotStarted
     };
   });
 

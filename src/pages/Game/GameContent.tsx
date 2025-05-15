@@ -28,6 +28,7 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -103,7 +104,16 @@ export const GameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        navigate("/demo");
+        if (game) {
+          switch (game.state) {
+            case GameStateEnum.Store:
+              return navigate("/store");
+            case GameStateEnum.Map:
+              return navigate("/map");
+            default:
+              return navigate("/demo");
+          }
+        }
       }
     };
   };
@@ -204,7 +214,7 @@ export const GameContent = () => {
             top={0}
             zIndex={0}
           />
-          <Box sx={{ height: "100%", width: "100%" }} px={"70px"}>
+          <Box sx={{ height: "100%", width: "100%" }} px={"40px"}>
             <Box sx={{ height: "30%", width: "100%" }} pt={"60px"}>
               <TopSection
                 onTutorialCardClick={() => {

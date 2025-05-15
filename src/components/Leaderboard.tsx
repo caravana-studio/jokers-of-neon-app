@@ -16,6 +16,7 @@ import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnable
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors.tsx";
 import { RollingNumber } from "./RollingNumber";
+import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -36,10 +37,14 @@ interface LeaderboardProps {
 export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
-  const leaderboard = fullLeaderboard?.filter((_, index) => index < lines);
-  const currentLeader = fullLeaderboard?.find((leader) => leader.id === gameId);
-  const currentLeaderIsInReducedLeaderboard = !!leaderboard?.find(
-    (leader) => leader.id === gameId
+  const leaderboard = fullLeaderboard?.slice(0, lines);
+
+  const actualPlayer = fullLeaderboard?.find(
+    (player) => signedHexToNumber(player.id.toString()) === gameId
+  );
+
+  const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
+    (leader) => signedHexToNumber(leader.id.toString()) === gameId
   );
 
   const tournamentEnabled = useFeatureFlagEnabled(
@@ -113,7 +118,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
             <Tbody>
               {leaderboard
                 .filter((_, index) => {
-                  const limit = !currentLeaderIsInReducedLeaderboard
+                  const limit = !currentPlayerIsInReducedLeaderboard
                     ? lines - 1
                     : lines;
                   return index < limit;
@@ -154,7 +159,7 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     )}
                   </Tr>
                 ))}
-              {currentLeader && !currentLeaderIsInReducedLeaderboard && (
+              {actualPlayer && !currentPlayerIsInReducedLeaderboard && (
                 <>
                   <Tr>
                     <Td>...</Td>
@@ -163,17 +168,17 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     <Td>...</Td>
                   </Tr>
                   <Tr sx={CURRENT_LEADER_STYLES}>
-                    <Td>{currentLeader.position}</Td>
-                    <Td>{currentLeader.player_name}</Td>
+                    <Td>{actualPlayer.position}</Td>
+                    <Td>{actualPlayer.player_name}</Td>
                     <Td isNumeric>
-                      <RollingNumber n={currentLeader.player_score} />
+                      <RollingNumber n={actualPlayer.player_score} />
                     </Td>
                     <Td>
-                      <RollingNumber n={currentLeader.level} />
+                      <RollingNumber n={actualPlayer.level} />
                     </Td>
                     {tournamentEnabled && (
                       <Td>
-                        <RollingNumber n={currentLeader.prize} /> USDC
+                        <RollingNumber n={actualPlayer.prize} /> USDC
                       </Td>
                     )}
                   </Tr>

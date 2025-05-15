@@ -5,8 +5,8 @@ const elk = new ELK();
 const layoutOptions = {
   "elk.algorithm": "layered",
   "elk.direction": "DOWN",
-  "elk.spacing.nodeNode": "60",
-  "elk.layered.spacing.nodeNodeBetweenLayers": "80",
+  "elk.spacing.nodeNode": "80",
+  "elk.layered.spacing.nodeNodeBetweenLayers": "60",
   // "elk.layered.edgeRouting": "ORTHOGONAL",
   "elk.layered.nodeAlignment.default": "CENTER", 
   // "elk.layered.cycleBreaking.strategy": "DFS", 

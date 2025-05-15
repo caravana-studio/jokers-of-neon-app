@@ -48,7 +48,7 @@ export const PlaysLayout = () => {
             variant="solid"
             onClick={() =>
               isTutorial
-                ? navigate(-1)
+                ? navigate("/demo")
                 : navigate("/demo", { state: { skipRageAnimation: true } })
             }
           >

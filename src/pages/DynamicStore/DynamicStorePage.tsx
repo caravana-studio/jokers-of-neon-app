@@ -6,7 +6,10 @@ import { DefaultInfo } from "../../components/Info/DefaultInfo";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
+import { PriceBox } from "../../components/PriceBox";
+import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
@@ -33,7 +36,7 @@ export const SHOP_ID_MAP = {
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
-  const { shopId } = useStore();
+  const { shopId, setLoading, specialSlotItem } = useStore();
 
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
@@ -44,11 +47,13 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const { onShopSkip, gameId } = useGameContext();
+  const { onShopSkip, gameId, maxSpecialCards } = useGameContext();
+  const game = useGame();
+  const slotsLen = game?.special_slots;
 
   const { skipShop } = useShopActions();
 
-  const { setLoading } = useStore();
+  useRedirectByGameState();
 
   const handleNextLevelClick = () => {
     setLoading(true);
@@ -159,19 +164,27 @@ export const DynamicStorePage = () => {
                         </Heading>
                         <DefaultInfo title={col.id} />
                       </Flex>
-                      {col.id === "specials" && (
-                        <Button
-                          size="xs"
-                          fontSize={{ base: "9px", sm: "12px" }}
-                          px={{ base: 3, sm: 6 }}
-                          borderRadius={7}
-                          boxShadow={`0 0 10px 5px ${BLUE}`}
-                          onClick={() => {
-                            navigate("/preview/slot");
-                          }}
-                        >
-                          {t("unlock-slot")}
-                        </Button>
+                      {col.id === "specials" && slotsLen != maxSpecialCards && (
+                        <Flex gap={isSmallScreen ? 2 : 8}>
+                          <PriceBox
+                            price={specialSlotItem?.cost ?? 0}
+                            purchased={false}
+                            discountPrice={specialSlotItem?.discount_cost}
+                            absolutePosition={false}
+                          />
+                          <Button
+                            size="xs"
+                            fontSize={{ base: "9px", sm: "12px" }}
+                            px={{ base: 3, sm: 6 }}
+                            borderRadius={7}
+                            boxShadow={`0 0 10px 5px ${BLUE}`}
+                            onClick={() => {
+                              navigate("/preview/slot");
+                            }}
+                          >
+                            {t("unlock-slot")}
+                          </Button>
+                        </Flex>
                       )}
                     </Flex>
                     {getComponent(col.id, col.doubleRow ?? false)}
