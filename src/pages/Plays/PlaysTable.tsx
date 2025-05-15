@@ -42,7 +42,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const cash = game?.cash ?? 0;
   const { t } = useTranslation(["store"]);
 
-  const { pokerHandItems, locked, levelUpPlay } = useStore();
+  const { pokerHandItems, locked, levelUpPlay, rerolling } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const {
@@ -53,12 +53,10 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   } = useDojo();
 
   useEffect(() => {
-    if (client && account && plays?.length == 0) {
-      getPlayerPokerHands(client, gameId).then((plays: any) => {
-        plays && setPlays(plays);
-      });
-    }
-  }, [client, account, gameId, plays]);
+    getPlayerPokerHands(client, gameId).then((plays: any) => {
+      plays && setPlays(plays);
+    });
+  }, [client, account, gameId, pokerHandItems]);
 
   useEffect(() => {
     if (plays.length > 0) {
