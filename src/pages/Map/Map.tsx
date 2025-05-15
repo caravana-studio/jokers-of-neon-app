@@ -82,12 +82,12 @@ export const Map = () => {
     <div style={{ height: "100%", width: "100%", zIndex: 10 }}>
       <MobileDecoration fadeToBlack />
       {isSmallScreen ? (
-        <Flex position="absolute" top={"20px"} left={4} zIndex={1000}>
+        <Flex position="absolute" top={"10px"} left={5} zIndex={1000}>
           <MobileCoins fontSize={"15px"} iconSize={19} />
         </Flex>
       ) : (
-        <Flex position="absolute" bottom={"55px"} right={'10px'} zIndex={1000}>
-          <MobileCoins fontSize={"18px"} iconSize={23} />
+        <Flex position="absolute" top={"17px"} left={'55px'} zIndex={1000}>
+          <MobileCoins fontSize={"20px"} iconSize={24} />
         </Flex>
       )}
       <ReactFlow
