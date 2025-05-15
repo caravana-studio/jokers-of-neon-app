@@ -57,7 +57,7 @@ export const SPECIALS_RARITY: Record<number, RARITY> = {
   348: RARITY.B,
   349: RARITY.B,
   350: RARITY.B,
-  351: RARITY.C,
+  351: RARITY.B,
   352: RARITY.C,
   355: RARITY.S,
   356: RARITY.C,
