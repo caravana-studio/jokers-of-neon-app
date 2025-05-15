@@ -112,14 +112,14 @@ export const useGameState = () => {
   const [nodeRound, setNodeRound] = useState<number>(0);
 
   useEffect(() => {
-    getNode(client, game?.id ?? 0, game?.current_node_id ?? 0).then((data) =>{
+    getNode(client, game?.id ?? 0, game?.current_node_id ?? 0).then((data) => {
       if ((round?.rages?.length ?? 0) > 0) {
         const rageRoundData = getRageNodeData(data);
         setNodeRound(rageRoundData.round);
       } else {
-        setNodeRound(data)}
+        setNodeRound(data);
       }
-    );
+    });
   }, [game?.id, game?.current_node_id, round?.rages]);
 
   useEffect(() => {
@@ -132,7 +132,6 @@ export const useGameState = () => {
     [sortBySuit]
   );
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
-
 
   const [modId, setModId] = useState<string>(
     game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
@@ -168,7 +167,7 @@ export const useGameState = () => {
         if (plays != undefined) setPlays(plays);
       });
     }
-  }, [client, account, gameId, game?.level]);
+  }, [client, account, gameId, game?.level, game?.current_node_id]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
