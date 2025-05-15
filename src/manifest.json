@@ -4036,8 +4036,8 @@
       "systems": ["calculate", "reset", "upgrade"]
     },
     {
-      "address": "0x68ab6314c6ab0f5ea7f6483fffcca33e7fe3faa8506f4c65e82483690ca7edc",
-      "class_hash": "0x5c73a544e6535b57fb1169b2da4edc905fc22c47a6eccd22a5921a418354613",
+      "address": "0x1a378a8bbf8f3132bebabc140f8f98c1be7a7af75cdd768a6e3338c486cd963",
+      "class_hash": "0x29e0790aeff1e0f4425db599912faef302821ea2eab23fabf0ba7e56b58fe2e",
       "abi": [
         {
           "type": "impl",
