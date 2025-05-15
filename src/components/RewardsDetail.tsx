@@ -49,16 +49,9 @@ interface RewardsDetailProps {
 
 export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   if (!roundRewards) return null;
-  // const {play: playNextLevelSound, stop: stopNextLevelSound} = useAudio(nextLevelSfx, 0.4);
-
-  // useEffect(() => {
-  //   if (roundRewards) {
-  //     playNextLevelSound();
-  //   }
-  // }, [roundRewards, playNextLevelSound]);
 
   const {
-    level,
+    roundNumber,
     round_defeat,
     level_bonus,
     hands_left,
@@ -90,10 +83,9 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   return (
     <PinkBox
-      title={`${t("title-1")} ${level} ${t("title-2")}`}
+      title={`${t("title", { round: roundNumber })}`}
       button={t("continue-btn")}
       onClick={() => {
-        // stopNextLevelSound();
         navigate("/redirect/map");
       }}
     >

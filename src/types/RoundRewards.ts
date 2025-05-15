@@ -1,5 +1,5 @@
 export interface RoundRewards {
-  level: number;
+  roundNumber: number;
   round_defeat: number;
   level_bonus: number;
   hands_left: number;
