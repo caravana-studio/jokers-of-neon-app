@@ -7,6 +7,7 @@ export const SPECIALS_PRICE: Record<RARITY, number> = {
   [RARITY.B]: 1750,
   [RARITY.A]: 3500,
   [RARITY.S]: 5000,
+  [RARITY.SS]: 7000,
 };
 
 export const SPECIALS_RARITY: Record<number, RARITY> = {
@@ -21,7 +22,7 @@ export const SPECIALS_RARITY: Record<number, RARITY> = {
   308: RARITY.B,
   309: RARITY.B,
   310: RARITY.S,
-  311: RARITY.A,
+  311: RARITY.S,
   312: RARITY.A,
   313: RARITY.B,
   314: RARITY.A,
@@ -60,7 +61,7 @@ export const SPECIALS_RARITY: Record<number, RARITY> = {
   352: RARITY.C,
   355: RARITY.S,
   356: RARITY.C,
-  357: RARITY.A,
+  357: RARITY.S,
   360: RARITY.B,
   361: RARITY.C,
   362: RARITY.C,
