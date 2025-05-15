@@ -685,7 +685,7 @@
     },
     "355": {
       "name": "Burning Rewards",
-      "description": "Gain +25 points (stacking) for each card burned from your deck. Currently +{{points}} points."
+      "description": "Gain +15 points (stacking) for each card burned from your deck. Currently +{{points}} points."
     },
     "356": {
       "name": "Slot Saver",
