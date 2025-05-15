@@ -8,8 +8,6 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
-import { prepareNewGame } from "../../utils/prepareNewGame.ts";
-import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 
 export const GameBox = ({ game }: { game: GameSummary }) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -17,15 +15,14 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
   });
 
   const { syncCall } = useDojo();
-  const { executeCreateGame, setGameId } = useGameContext();
+  const { executeCreateGame, setGameId, prepareNewGame } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { resetLevel, setHand } = useGameContext();
 
   const handleButtonClick = async () => {
     setIsLoading(true);
-    prepareNewGame({ setGameId, resetLevel, setHand });
+    prepareNewGame();
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
