@@ -1,4 +1,8 @@
 {
+  "gg-banner": {
+    "title": "GG Event active",
+    "description": "Click <0>here</0> to join the GG tournament and win exclusive rewards!"
+  },
   "controller": "Controller account",
   "error": {
     "labels": {

@@ -249,7 +249,7 @@
     },
     "355": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe +25 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
+      "description": "Ganhe +15 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
     },
     "356": {
       "name": "Guardião de Slot",
