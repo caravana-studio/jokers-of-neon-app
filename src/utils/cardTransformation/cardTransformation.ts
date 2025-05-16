@@ -1,3 +1,4 @@
+import { rageCardIds } from "../../constants/rageCardIds";
 import { MODIFIERS_SUIT_CHANGING } from "../../data/modifiers";
 import { SPECIAL_CARDS_BLOCKS_SUIT_CHANGE } from "../../data/specialCards";
 import { useCardData } from "../../providers/CardDataProvider";
@@ -6,12 +7,15 @@ import { Card } from "../../types/Card";
 import { transformCardByModifierId } from "./modifierTransformation";
 
 export const useTransformedCard = (card: Card): Card => {
-  const { specialCards, cardTransformationLock } = useGameContext();
+  const { specialCards, cardTransformationLock, rageCards } = useGameContext();
   const { getCardData } = useCardData();
 
   if ((card.modifiers?.length ?? 0) > 0) {
     const modifierCard = card.modifiers![0];
 
+    if (rageCards.some((rageCard) => rageCard.card_id === rageCardIds.BROKEN_MODIFIERS))
+        return card;
+      
     const isBlocked =
       specialCards.some((specialCard) =>
         SPECIAL_CARDS_BLOCKS_SUIT_CHANGE.includes(specialCard.card_id ?? -1)

@@ -27,6 +27,7 @@ import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { BrokenCard } from "./BrokenCard.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -69,6 +70,7 @@ export const TiltCard = ({
   const modifiedCard = useTransformedCard(card);
 
   const isSilent = useIsSilent(modifiedCard);
+  const isModifierSilent = useIsSilent(card);
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
   const game = useGame();
@@ -134,22 +136,10 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && game?.state === GameStateEnum.Rage && (
-                <>
-                  <Box
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    w="100%"
-                    h="100%"
-                    backgroundColor={onDeck ? "" : "rgba(0,0,0,0.3)"}
-                    backgroundImage={'url("/broken.png")'}
-                    backgroundSize="cover"
-                    borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                    pointerEvents="none"
-                  />
-                </>
-              )}
+              {(isSilent || isModifierSilent) &&
+                game?.state === GameStateEnum.Rage && (
+                  <BrokenCard onDeck={onDeck} isPack={isPack} />
+                )}
               {used && (
                 <>
                   <Box
@@ -220,6 +210,7 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
+                  <BrokenCard onDeck={onDeck} isPack={isPack} />
                 </Tooltip>
               </AnimatedCard>
             </Tilt>
