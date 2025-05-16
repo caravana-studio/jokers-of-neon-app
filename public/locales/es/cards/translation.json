@@ -249,7 +249,7 @@
     },
     "355": {
       "name": "Recompensas Quemadas",
-      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
+      "description": "Gana +15 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
     },
     "356": {
       "name": "Guardián de Slots",

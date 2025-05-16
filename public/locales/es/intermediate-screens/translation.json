@@ -50,8 +50,7 @@
   },
   "rewards-details": {
     "labels": {
-      "title-1": "Nivel",
-      "title-2": "superado!",
+      "title": "Ronda {{round}} superada!",
       "base": "base",
       "level-bonus": "Bonus del nivel",
       "discards-left": "{{discards}} Descartes restantes",
