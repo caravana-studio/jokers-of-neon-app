@@ -26,6 +26,7 @@ import { MapPage } from "./pages/Map/MapPage";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
+import { GG } from "./pages/GG";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -40,7 +41,12 @@ export const AppRoutes = () => {
             <Home />
           </AnimatedPage>
         }
-      />
+        />
+        <Route
+        path="/gg"
+        element={
+          <GG />
+        } />
       <Route
         path="/mods"
         element={
