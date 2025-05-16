@@ -25,29 +25,29 @@ export const useCurrentHand = (sortBy: SortBy) => {
   const game = useGame();
   const [sortedCards, setSortedCards] = useState<Card[]>([]);
 
+  const loadCurrentHand = () => {
+    const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+    const currentHand = getComponentValue(CurrentHand, entityId);
+
+    if (game?.id === undefined || game?.id === null) return; // <-- fix: no return value
+
+    const dojoCards = currentHand?.cards ?? [];
+
+    const cards: Card[] = dojoCards.map((card: any, index: number) => {
+      const card_id = card.value;
+      return {
+        card_id,
+        img: `${card_id}.png`,
+        isModifier: card_id >= 600 && card_id <= 700,
+        idx: index,
+        id: index.toString(),
+      };
+    });
+
+    setSortedCards(sortCards(cards, sortBy));
+  };
+  
   useEffect(() => {
-    const loadCurrentHand = () => {
-      const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
-      const currentHand = getComponentValue(CurrentHand, entityId);
-
-      if (game?.id === undefined || game?.id === null) return; // <-- fix: no return value
-
-      const dojoCards = currentHand?.cards ?? [];
-
-      const cards: Card[] = dojoCards.map((card: any, index: number) => {
-        const card_id = card.value;
-        return {
-          card_id,
-          img: `${card_id}.png`,
-          isModifier: card_id >= 600 && card_id <= 700,
-          idx: index,
-          id: index.toString(),
-        };
-      });
-
-      setSortedCards(sortCards(cards, sortBy));
-    };
-
     loadCurrentHand();
 
     if (sortedCards.length === 0) {
