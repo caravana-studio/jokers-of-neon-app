@@ -196,9 +196,9 @@ export const useGameState = () => {
     }
   }, [dojoHand]);
 
-  useEffect(() => {
-    setHand([]);
-  }, [gameId]);
+  // useEffect(() => {
+  //   setHand([]);
+  // }, [gameId]);
 
   useEffect(() => {
     if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
