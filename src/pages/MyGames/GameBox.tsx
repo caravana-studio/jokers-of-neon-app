@@ -22,7 +22,8 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
 
   const handleButtonClick = async () => {
     setIsLoading(true);
-    prepareNewGame();
+    prepareNewGame(game.id);
+
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {

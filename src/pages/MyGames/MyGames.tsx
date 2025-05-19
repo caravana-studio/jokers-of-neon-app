@@ -41,7 +41,6 @@ export const MyGames = () => {
 
   useEffect(() => {
     refetch();
-    localStorage.removeItem("GAME_ID");
   }, []);
 
   const handleCreateGame = async () => {

@@ -119,7 +119,7 @@ export interface IGameContext {
   playerScore: number;
   cardTransformationLock: boolean;
   nodeRound: number;
-  prepareNewGame: () => void;
+  prepareNewGame: (gameId?: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -250,9 +250,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   };
 
-  const prepareNewGame = () => {
+  const prepareNewGame = (newGameId?: number) => {
     resetLevel();
-    setHand([]);
+
+    const isNewGame = newGameId && newGameId !== gameId;
+
+    if (!newGameId || isNewGame) {
+      localStorage.removeItem("GAME_ID");
+      setHand([]);
+    }
   };
 
   const toggleSortBy = () => {
