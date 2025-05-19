@@ -16,6 +16,7 @@ export interface PlayEvents {
   cardPlayScoreEvents?: CardPlayEvent[];
   specialCardPlayScoreEvents?: CardPlayEvent[];
   cardActivateEvent?: CardActivateEvent;
+  acumulativeEvents?: CardPlayEvent[];
 }
 
 export interface CardPlayEvent {

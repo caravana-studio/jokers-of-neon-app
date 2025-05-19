@@ -1,6 +1,7 @@
 import { DojoEvents } from "../../enums/dojoEvents";
 import { DojoEvent } from "../../types/DojoEvent";
 import { PlayEvents } from "../../types/ScoreData";
+import { acumEventFilter } from "../acumEventFilter";
 import { getCardsFromEvents } from "../getCardsFromEvents";
 import { getEventKey } from "../getEventKey";
 import {
@@ -45,6 +46,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       .filter(scoreEventFilter)
       .filter(specialScoreEventFilter),
     cardActivateEvent: getCardActivateEvent(events),
+    acumulativeEvents: cardPlayEvents.filter(acumEventFilter),
   };
 
   console.log(playEvents);
