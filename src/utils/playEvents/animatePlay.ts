@@ -14,6 +14,7 @@ interface AnimatePlayConfig {
   setAnimatedPowerUp: (powerUp: any) => void;
   pointsSound: () => void;
   multiSound: () => void;
+  acumSound: () => void;
   negativeMultiSound: () => void;
   cashSound: () => void;
   setPoints: (points: number | ((prev: number) => number)) => void;
@@ -50,6 +51,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimatedPowerUp,
     pointsSound,
     multiSound,
+    acumSound,
     negativeMultiSound,
     cashSound,
     setPoints,
@@ -299,6 +301,39 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     });
   };
 
+  const handleAccumulativeCards = () => {
+    playEvents.acumulativeEvents?.forEach((event, index) => {
+      const isPoints = event.eventType === EventTypeEnum.AcumPoint;
+      const isMulti = event.eventType === EventTypeEnum.AcumMulti;
+      const special_idx = event.specials[0]?.idx;
+      const quantity = event.specials[0]?.quantity;
+
+      setTimeout(() => {
+        if (isPoints) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            points: quantity,
+            isAccumulative: true,
+            animationIndex: 700 + index,
+          });
+          setPoints((prev) => prev + quantity);
+        } else if (isMulti) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            multi: quantity,
+            isAccumulative: true,
+            animationIndex: 800 + index,
+          });
+          setMulti((prev) => prev + quantity);
+        } 
+      }, playAnimationDuration * index);
+    });
+  };
+
   const handleGameEnd = () => {
     if (playEvents.cardActivateEvent) {
       const specialCardInHand =
@@ -368,6 +403,17 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       durations.cardPlayChange +
       durations.specialCardPlayScore +
       durations.cardPlayScore
+  );
+
+  setTimeout(
+    () => {
+      handleAccumulativeCards();
+    },
+    durations.neonPlay +
+      durations.cardPlayChange +
+      durations.specialCardPlayScore +
+      durations.cardPlayScore + 
+      durations.powerUps
   );
 
   setTimeout(() => {

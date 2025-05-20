@@ -38,6 +38,7 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       (event) => event.keys[1] === SECOND_CHANCE_EVENT_KEY
     ),
     powerUpEvents: getPowerUpEvents(events),
+    acumulativeEvents: cardPlayEvents.filter(acumEventFilter),
     cardPlayChangeEvents: cardPlayEvents.filter(suitOrNeonEventFilter),
     cardPlayScoreEvents: cardPlayEvents
       .filter(scoreEventFilter)
@@ -46,7 +47,6 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       .filter(scoreEventFilter)
       .filter(specialScoreEventFilter),
     cardActivateEvent: getCardActivateEvent(events),
-    acumulativeEvents: cardPlayEvents.filter(acumEventFilter),
   };
 
   console.log(playEvents);

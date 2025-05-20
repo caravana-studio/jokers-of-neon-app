@@ -42,6 +42,10 @@ export const AnimatedCard = ({
   );
 
   const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
+  const isAccumulative = useMemo(
+    () => animatedCard?.isAccumulative,
+    [animatedCard?.isAccumulative]
+  );
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
@@ -98,6 +102,17 @@ export const AnimatedCard = ({
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
+      const accumBoxShadowOuter = isSmallScreen ? 20 : 40;
+      const accumBoxShadowInner = isSmallScreen ? 12 : 25;
+      const defaultBoxShadowOuter = isSmallScreen ? 10 : 20;
+      const defaultBoxShadowInner = isSmallScreen ? 6 : 12;
+      const boxShadowOuter = isAccumulative
+        ? accumBoxShadowOuter
+        : defaultBoxShadowOuter;
+      const boxShadowInner = isAccumulative
+        ? accumBoxShadowInner
+        : defaultBoxShadowInner;
+
       cardApi.start({
         from: {
           transform: "scale(1)",
@@ -106,8 +121,8 @@ export const AnimatedCard = ({
         },
         to: {
           transform: "scale(1.1)",
-          boxShadow: `0px 0px ${isSmallScreen ? 10 : 20}px ${isSmallScreen ? 6 : 12}px  ${animateColor}`,
-          border: `2px solid ${animateColor}`,
+          boxShadow: `0px 0px ${boxShadowOuter}px ${boxShadowInner}px  ${animateColor}`,
+          border: `${isAccumulative ? 4 : 2}px solid ${animateColor}`,
         },
         onRest: () =>
           cardApi.start({
@@ -135,7 +150,15 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [points, multi, suit, animatedCardIdxArray, animationIndex, isNeon]);
+  }, [
+    points,
+    multi,
+    suit,
+    animatedCardIdxArray,
+    animationIndex,
+    isNeon,
+    isAccumulative,
+  ]);
 
   useEffect(() => {
     if (played) {
