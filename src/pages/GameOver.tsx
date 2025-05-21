@@ -131,31 +131,16 @@ export const GameOver = () => {
         {isSmallScreen && (
           <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
             <MobileBottomBar
-              firstButton={
-                <Button
-                  w={"100%"}
-                  h={"28px"}
-                  fontSize={"10px"}
-                  onClick={onShareClick}
-                >
-                  {t("game-over.btn.gameOver-share-btn")}
-                  <Flex sx={{ ml: 1.5 }}>
-                    <FontAwesomeIcon fontSize={10} icon={faXTwitter} />
-                  </Flex>
-                </Button>
-              }
-              secondButton={
-                <Button
-                  w={"100%"}
-                  h={"28px"}
-                  fontSize={"10px"}
-                  isDisabled={isLoading}
-                  variant="secondarySolid"
-                  onClick={onStartGameClick}
-                >
-                  {t("game-over.btn.gameOver-newGame-btn")}
-                </Button>
-              }
+              firstButton={{
+                onClick: onShareClick,
+                label: t("game-over.btn.gameOver-share-btn"),
+                icon: <FontAwesomeIcon fontSize={10} icon={faXTwitter} />,
+              }}
+              secondButton={{
+                onClick: onStartGameClick,
+                label: t("game-over.btn.gameOver-newGame-btn"),
+                disabled: isLoading,
+              }}
               hideDeckButton
             />
           </Flex>

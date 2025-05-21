@@ -4,18 +4,18 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo.tsx";
+import { LootBox, LootBoxRef } from "../../components/LootBox.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
-import { LootBox, LootBoxRef } from "../../components/LootBox.tsx";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
@@ -41,13 +41,14 @@ export const PreviewLootBox = () => {
     !card.price ||
     (pack.discount_cost ? cash < pack.discount_cost : cash < card.price);
 
+  const onBuyClick = () => {
+    navigate("/open-loot-box", {
+      state: { pack: pack },
+    });
+  };
   const buyButton = (
     <Button
-      onClick={() => {
-        navigate("/open-loot-box", {
-          state: { pack: pack },
-        });
-      }}
+      onClick={onBuyClick}
       isDisabled={notEnoughCash || locked}
       variant={{ base: "solid", sm: "outlinePrimaryGlow" }}
       height={{ base: "30px", sm: "100%" }}
@@ -147,22 +148,18 @@ export const PreviewLootBox = () => {
 
         <MobileBottomBar
           hideDeckButton
-          firstButton={
-            <Button
-              size={"xs"}
-              onClick={() => {
-                navigate("/redirect/store");
-              }}
-              lineHeight={1.6}
-              variant={{ base: "secondarySolid", sm: "outlinePrimaryGlow" }}
-              fontSize={10}
-              minWidth={"100px"}
-              height={["30px", "32px"]}
-            >
-              {t("labels.close").toUpperCase()}
-            </Button>
-          }
-          secondButton={tooltipButton}
+          firstButton={{
+            onClick: () => {
+              navigate("/redirect/store");
+            },
+            label: t("labels.close").toUpperCase(),
+          }}
+          secondButton={{
+            onClick: onBuyClick,
+            label: t("labels.buy"),
+            disabled: notEnoughCash || locked,
+            disabledText: t("tooltip.no-coins"),
+          }}
         />
       </Flex>
     </>

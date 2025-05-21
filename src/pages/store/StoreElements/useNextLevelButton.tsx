@@ -1,5 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useGame } from "../../../dojo/queries/useGame";
@@ -8,11 +7,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
 
-interface NextLevelButtonProps {
-  isSmallScreen: boolean;
-}
-
-const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
+export const useNextLevelButton = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 
@@ -52,21 +47,26 @@ const NextLevelButton: React.FC<NextLevelButtonProps> = ({ isSmallScreen }) => {
     });
   };
 
-  return (
-    <Button
-      className="game-tutorial-step-7"
-      my={isSmallScreen ? 0 : { base: 0, md: 6 }}
-      minWidth={"100px"}
-      size={isSmallScreen ? "xs" : "md"}
-      onClick={handleNextLevelClick}
-      isDisabled={locked}
-      lineHeight={1.6}
-      variant="secondarySolid"
-      fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-    >
-      {t("store.labels.next-level").toUpperCase()}
-    </Button>
-  );
+  return {
+    nextLevelButton: (
+      <Button
+        className="game-tutorial-step-7"
+        my={{ base: 0, md: 6 }}
+        minWidth={"100px"}
+        size={"md"}
+        onClick={handleNextLevelClick}
+        isDisabled={locked}
+        lineHeight={1.6}
+        variant="secondarySolid"
+        fontSize={[10, 10, 10, 14, 14]}
+      >
+        {t("store.labels.next-level").toUpperCase()}
+      </Button>
+    ),
+    nextLevelButtonProps: {
+      onClick: handleNextLevelClick,
+      disabled: locked,
+      label: t("store.labels.next-level").toUpperCase(),
+    },
+  };
 };
-
-export default NextLevelButton;
