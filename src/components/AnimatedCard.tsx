@@ -1,10 +1,13 @@
 import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
+import { ParticlesAnimation } from "./animations/ParticlesAnimation";
+import { VFX_TRIANGLE_MULTI, VFX_TRIANGLE_POINTS } from "../constants/vfx";
+import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -96,22 +99,20 @@ export const AnimatedCard = ({
     config: { tension: 300, friction: 20 },
   }));
 
+  const [showParticles, setShowParticles] = useState<string | null>(null);
+  console.log(showParticles);
+
   useEffect(() => {
-    if (
+    if (isAccumulative && animatedCardIdxArray?.includes(idx)) {
+      const vfx = multi ? VFX_TRIANGLE_MULTI : VFX_TRIANGLE_POINTS;
+      setShowParticles(vfx);
+    } else if (
       (points || multi || suit || cash || isNeon) &&
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
-      const accumBoxShadowOuter = isSmallScreen ? 20 : 40;
-      const accumBoxShadowInner = isSmallScreen ? 12 : 25;
-      const defaultBoxShadowOuter = isSmallScreen ? 10 : 20;
-      const defaultBoxShadowInner = isSmallScreen ? 6 : 12;
-      const boxShadowOuter = isAccumulative
-        ? accumBoxShadowOuter
-        : defaultBoxShadowOuter;
-      const boxShadowInner = isAccumulative
-        ? accumBoxShadowInner
-        : defaultBoxShadowInner;
+      const boxShadowOuter = isSmallScreen ? 10 : 20;
+      const boxShadowInner = isSmallScreen ? 6 : 12;
 
       cardApi.start({
         from: {
@@ -122,7 +123,7 @@ export const AnimatedCard = ({
         to: {
           transform: "scale(1.1)",
           boxShadow: `0px 0px ${boxShadowOuter}px ${boxShadowInner}px  ${animateColor}`,
-          border: `${isAccumulative ? 4 : 2}px solid ${animateColor}`,
+          border: `2px solid ${animateColor}`,
         },
         onRest: () =>
           cardApi.start({
@@ -187,7 +188,23 @@ export const AnimatedCard = ({
 
   if (!scale) scale = cardScale;
 
-  return (
+  return showParticles == null ? (
+    <FadingParticleAnimation
+      width={CARD_WIDTH * cardScale}
+      height={CARD_HEIGHT * cardScale}
+      spriteSrc={VFX_TRIANGLE_MULTI}
+      particleSize={30 * cardScale}
+      amount={isSmallScreen ? 20 : 30}
+      delayRange={0.3}
+      minHeight={10}
+      active={true}
+      spreadOffset={0.4 * cardScale}
+      xOffset={isSmallScreen ? -15 : -10}
+      yOffset={-12}
+    >
+      {children}
+    </FadingParticleAnimation>
+  ) : (
     <animated.div
       style={{
         position: "relative",
