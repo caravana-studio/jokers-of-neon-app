@@ -12,6 +12,7 @@ import { redirectConfig, stateToPageMap } from "../constants/redirectConfig";
 
 export const Redirect = () => {
   const game = useGame();
+  console.log(game);
   const state = game?.state;
   const navigate = useNavigate();
   const { page, gameId } = useParams();
@@ -25,7 +26,7 @@ export const Redirect = () => {
       state: { lastTabIndex },
       replace: false,
     };
-    let desiredPath;
+    let desiredPath: any;
 
     if (page === "state") {
       desiredPath = stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";

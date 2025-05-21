@@ -11,6 +11,8 @@ import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
 
+import type { ToriiClient } from "@dojoengine/torii-client";
+
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -18,33 +20,45 @@ const DOJO_NAMESPACE =
 let sync: any;
 
 const getEntities = async <S extends Schema>(
-  client: torii.ToriiClient,
+  client: ToriiClient,
   components: Component<S, Metadata, undefined>[],
   query: torii.Query,
   limit: number = 100
 ) => {
-  let cursor = 0;
+  let cursor = undefined;
   let continueFetching = true;
+  let attempts = 0;
 
   while (continueFetching) {
-    query.offset = cursor;
+    query.pagination.cursor = cursor;
 
     const fetchedEntities = await client.getEntities(query);
 
-    setEntities(fetchedEntities, components);
+    if (fetchedEntities.items.length === 0) {
+      console.log("retry: ", fetchedEntities.items);
+      if (attempts < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
+      }
+      console.log("try: ", attempts);
+      attempts++;
+
+      continue;
+    }
+
+    setEntities(fetchedEntities.items, components);
+    console.log(fetchedEntities.items);
 
     if (Object.keys(fetchedEntities).length < limit) {
       continueFetching = false;
     } else {
-      cursor += limit;
+      cursor = fetchedEntities.next_cursor;
     }
   }
 };
 
 export async function setup({ ...config }: DojoConfig) {
   // torii client
-  const toriiClient = await torii.createClient({
-    // rpcUrl: config.rpcUrl,
+  const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
     relayUrl: "",
     worldAddress: config.manifest.world.address || "",
@@ -92,35 +106,35 @@ export async function setup({ ...config }: DojoConfig) {
       models: [`${DOJO_NAMESPACE}-GameMod`],
     };
 
-    const query: torii.Query = {
-      limit: 1000,
-      offset: 0,
-      clause: {
-        Composite: {
-          operator: "Or",
-          clauses: [
-            {
-              Member: memberGame,
-            },
-            { Member: memberDeckCard },
-          ],
-        },
+    const clause: torii.Clause = {
+      Composite: {
+        operator: "Or",
+        clauses: [
+          {
+            Member: memberGame,
+          },
+          { Member: memberDeckCard },
+        ],
       },
-      order_by: [],
-      dont_include_hashed_keys: false,
-      entity_models: [],
-      entity_updated_after: 0,
+    };
+
+    const query: torii.Query = {
+      pagination: {
+        limit: 1000,
+        direction: "Forward",
+        order_by: [],
+        cursor: undefined,
+      },
+      clause: clause,
+      no_hashed_keys: false,
+      models: [],
+      historical: false,
     };
 
     if (gameID) {
       const startTime = performance.now();
-      await getEntities(toriiClient, contractComponents as any, query);
-      sync = await syncEntities(
-        toriiClient,
-        contractComponents as any,
-        [],
-        false
-      );
+      await getEntities(toriiClient, contractComponents as any, query, 1000);
+      sync = await syncEntities(toriiClient, contractComponents as any, clause);
 
       const endTime = performance.now();
       const timeTaken = endTime - startTime;

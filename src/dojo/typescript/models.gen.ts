@@ -1,6 +1,6 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
-import { CairoCustomEnum, CairoOption, CairoOptionVariant } from 'starknet';
+import { CairoCustomEnum, CairoOption, CairoOptionVariant, BigNumberish } from 'starknet';
 
 // Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistrator` struct
 export interface ModManagerRegistrator {
@@ -144,6 +144,7 @@ export interface Game {
 	special_slots: number;
 	cash: number;
 	available_rerolls: number;
+	seed: number;
 }
 
 // Type definition for `jokers_of_neon_lib::models::status::game::game::GameValue` struct
@@ -1245,6 +1246,7 @@ export const schema: SchemaType = {
 			special_slots: 0,
 			cash: 0,
 			available_rerolls: 0,
+			seed: 0,
 		},
 		GameValue: {
 			mod_id: 0,
