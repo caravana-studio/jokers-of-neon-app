@@ -1,7 +1,7 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { setEntities, syncEntities } from "@dojoengine/state";
+import { getSyncEntities, setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
 import { GAME_ID } from "../constants/localStorage";
@@ -12,6 +12,7 @@ import { defineContractComponents } from "./typescript/defineContractComponents"
 import { world } from "./world";
 
 import type { ToriiClient } from "@dojoengine/torii-client";
+import { KeysClause } from "@dojoengine/sdk";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
@@ -170,6 +171,15 @@ export async function setup({ ...config }: DojoConfig) {
     console.error(e);
   }
 
+  // const sync = await getSyncEntities(
+  //   toriiClient,
+  //   contractComponents as any,
+  //   KeysClause([], [], "VariableLen").build(),
+  //   [],
+  //   [],
+  //   3000,
+  //   true
+  // );
   await syncEntitiesForGameID();
 
   return {
