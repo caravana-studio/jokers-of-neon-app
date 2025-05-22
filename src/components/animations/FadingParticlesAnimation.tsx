@@ -17,6 +17,7 @@ interface FadingParticleAnimationProps {
   spreadOffset?: number;
   xOffset?: number;
   yOffset?: number;
+  loop?: boolean;
 }
 
 export const FadingParticleAnimation = ({
@@ -34,6 +35,7 @@ export const FadingParticleAnimation = ({
   spreadOffset = 0.6,
   xOffset = 0,
   yOffset = 0,
+  loop = false,
 }: FadingParticleAnimationProps) => {
   return (
     <Box
@@ -80,7 +82,7 @@ export const FadingParticleAnimation = ({
                   ? {
                       y: [-height * 0.1, endY],
                       x: [0, (Math.random() - 0.5) * 20],
-                      opacity: [0, 0.5, 1, 0.5, 0],
+                      opacity: loop ? [0, 0.5, 1, 0.5, 0] : [0, 1, 0],
                     }
                   : {
                       opacity: 0,
@@ -88,8 +90,8 @@ export const FadingParticleAnimation = ({
               }
               transition={{
                 duration,
-                repeat: Infinity,
-                repeatDelay,
+                repeat: loop ? Infinity : 0,
+                repeatDelay: loop ? repeatDelay : 0,
                 ease: "easeInOut",
                 delay,
               }}
