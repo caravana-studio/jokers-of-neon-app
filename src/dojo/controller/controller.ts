@@ -1,6 +1,7 @@
 import ControllerConnector from "@cartridge/connector/controller";
 import { ControllerOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
+import { policies } from "./policies";
 
 const CHAIN = import.meta.env.VITE_SLOT_INSTANCE || import.meta.env.VITE_CHAIN || "jokers-of-neon";
 
@@ -33,6 +34,7 @@ const controllerOptions: ControllerOptions = {
   defaultChainId,
   preset: "jokers-of-neon",
   namespace: DOJO_NAMESPACE,
+  policies,
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
