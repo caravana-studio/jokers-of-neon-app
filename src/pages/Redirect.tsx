@@ -12,7 +12,6 @@ import { redirectConfig, stateToPageMap } from "../constants/redirectConfig";
 
 export const Redirect = () => {
   const game = useGame();
-  console.log(game);
   const state = game?.state;
   const navigate = useNavigate();
   const { page, gameId } = useParams();

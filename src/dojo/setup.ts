@@ -36,18 +36,18 @@ const getEntities = async <S extends Schema>(
     const fetchedEntities = await client.getEntities(query);
 
     if (fetchedEntities.items.length === 0) {
-      console.log("retry: ", fetchedEntities.items);
+      console.log("No entities found retrying...");
+
       if (attempts < 3) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
-      }
-      console.log("try: ", attempts);
+      } else return;
+
       attempts++;
 
       continue;
     }
 
     setEntities(fetchedEntities.items, components);
-    console.log(fetchedEntities.items);
 
     if (Object.keys(fetchedEntities).length < limit) {
       continueFetching = false;
@@ -138,7 +138,8 @@ export async function setup({ ...config }: DojoConfig) {
       sync = await syncEntities(
         toriiClient,
         contractComponents as any,
-        KeysClause([], [], "VariableLen").build()
+        KeysClause([], [], "VariableLen").build(),
+        false
       );
 
       const endTime = performance.now();
