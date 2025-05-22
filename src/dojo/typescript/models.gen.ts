@@ -1,6 +1,6 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
-import { CairoCustomEnum, CairoOption, CairoOptionVariant, BigNumberish } from 'starknet';
+import { CairoCustomEnum, CairoOption, CairoOptionVariant } from 'starknet';
 
 // Type definition for `jokers_of_neon_core::systems::mod_manager_registrator::ModManagerRegistrator` struct
 export interface ModManagerRegistrator {

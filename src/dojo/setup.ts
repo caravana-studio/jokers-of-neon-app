@@ -1,7 +1,7 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { getSyncEntities, setEntities, syncEntities } from "@dojoengine/state";
+import { setEntities, syncEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
 import { Account, ArraySignatureType } from "starknet";
 import { GAME_ID } from "../constants/localStorage";
@@ -38,7 +38,7 @@ const getEntities = async <S extends Schema>(
     if (fetchedEntities.items.length === 0) {
       console.log("No entities found retrying...");
 
-      if (attempts < 3) {
+      if (attempts < 5) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
       } else return;
 
@@ -176,15 +176,6 @@ export async function setup({ ...config }: DojoConfig) {
     console.error(e);
   }
 
-  // const sync = await getSyncEntities(
-  //   toriiClient,
-  //   contractComponents as any,
-  //   KeysClause([], [], "VariableLen").build(),
-  //   [],
-  //   [],
-  //   3000,
-  //   true
-  // );
   await syncEntitiesForGameID();
 
   return {
