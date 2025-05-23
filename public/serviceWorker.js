@@ -8,19 +8,12 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) =>
         cache.match(event.request).then((cachedResponse) => {
-          console.log("Request");
-          console.log(url);
-          console.log(cachedResponse);
           if (cachedResponse) {
-            console.log("Cache");
-            console.log(cachedResponse);
             return cachedResponse;
           }
 
           return fetch(event.request).then((networkResponse) => {
             if (networkResponse.ok) {
-              console.log("networkResponse");
-              console.log(networkResponse);
               cache.put(event.request, networkResponse.clone());
             }
             return networkResponse;
