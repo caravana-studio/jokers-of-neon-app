@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import {
+  acumSfx,
   discardSfx,
   multiSfx,
   pointsSfx,
@@ -65,6 +66,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const { play: discardSound } = useAudio(discardSfx, 4);
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
+  const { play: acumSound } = useAudio(acumSfx);
   const [remainingPlaysTutorial, setRemainingPlaysTutorial] = useState(5);
 
   const {
@@ -231,6 +233,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setAnimatedPowerUp,
       pointsSound,
       multiSound,
+      acumSound,
       negativeMultiSound: emptyFn,
       cashSound: emptyFn,
       setPoints,
