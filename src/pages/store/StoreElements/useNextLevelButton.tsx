@@ -40,7 +40,7 @@ export const useNextLevelButton = () => {
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/redirect/demo");
+        navigate("/redirect/map");
       } else {
         setLoading(false);
       }
