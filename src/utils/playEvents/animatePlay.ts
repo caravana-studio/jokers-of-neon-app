@@ -100,12 +100,12 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     specialCardPlayScore: calculateDuration(
       playEvents.specialCardPlayScoreEvents
     ),
+    accumDuration: playEvents.acumulativeEvents ? 2500 : 0,
   };
 
-  const ALL_CARDS_DURATION = Object.values(durations).reduce(
-    (a, b) => a + b,
-    500
-  );
+  const ALL_CARDS_DURATION = Object.entries(durations)
+  .filter(([key]) => key !== "accumDuration")
+  .reduce((total, [, value]) => total + value, 500);
 
   const handleNeonPlay = () => {
     if (!playEvents.neonPlayEvent) return;
@@ -405,17 +405,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       durations.cardPlayScore
   );
 
-  setTimeout(
-    () => {
-      handleAccumulativeCards();
-    },
-    durations.neonPlay +
-      durations.cardPlayChange +
-      durations.specialCardPlayScore +
-      durations.cardPlayScore + 
-      durations.powerUps
-  );
-
   setTimeout(() => {
     setPlayAnimation(true);
   }, ALL_CARDS_DURATION);
@@ -433,7 +422,15 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayIsNeon(false);
     setLockedSpecialCards([]);
 
-    handleGameEnd();
-    setCardTransformationLock(false);
+    handleAccumulativeCards();
+    
+    setTimeout(
+    () => {
+      handleGameEnd();
+      setCardTransformationLock(false);
+    },
+    durations.accumDuration
+  );
+    
   }, ALL_CARDS_DURATION + 500);
 };

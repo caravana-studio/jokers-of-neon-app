@@ -59,8 +59,8 @@ export const PatternParticleAnimation = forwardRef<
     const horizontalOffset = (width - gridWidth) / 2;
 
     const startAnimation = async () => {
-      await fadeControls.set({ opacity: 1 });
-      await controls.set({ y: 0 });
+      fadeControls.set({ opacity: 1 });
+      controls.set({ y: 0 });
 
       controls.start({
         y: -gridHeight,
@@ -81,7 +81,7 @@ export const PatternParticleAnimation = forwardRef<
       });
 
       controls.stop();
-      await controls.set({ y: 0 });
+      controls.set({ y: 0 });
     };
 
     const stopAnimation = () => {
