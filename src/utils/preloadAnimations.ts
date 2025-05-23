@@ -15,8 +15,19 @@ export const preloadSpineAnimations = async (
       `${basePath}loot_box_${id}.atlas`,
     ]);
 
+    const logoUrls = [
+      `${basePath}/logo/JokerLogo.json`,
+      `${basePath}/logo/JokerLogo.atlas`,
+    ];
+    const phoenixUrls = [
+      `${basePath}/phoenix/phoenix.json`,
+      `${basePath}/phoenix/phoenix.atlas`,
+    ];
+
+    const spineUrls = [...animationUrls, ...logoUrls, ...phoenixUrls];
+
     // Preload each animation URL
-    const cachePromises = animationUrls.map(async (url) => {
+    const cachePromises = spineUrls.map(async (url) => {
       const cachedResponse = await cache.match(url);
       if (!cachedResponse) {
         // If not in cache, fetch and add to cache
