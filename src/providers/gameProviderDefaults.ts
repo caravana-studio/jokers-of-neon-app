@@ -76,4 +76,5 @@ export const gameProviderDefaults: IGameContext = {
   resetLevel: () => {},
   cardTransformationLock: false,
   nodeRound: 0,
+  prepareNewGame: () => {},
 };

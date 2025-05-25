@@ -119,6 +119,7 @@ export interface IGameContext {
   playerScore: number;
   cardTransformationLock: boolean;
   nodeRound: number;
+  prepareNewGame: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -247,6 +248,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     refetchSpecialCardsData(modId, gameId);
+  };
+
+  const prepareNewGame = () => {
+    resetLevel();
+    setHand([]);
   };
 
   const toggleSortBy = () => {
@@ -695,6 +701,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discards,
         powerUpIsPreselected,
         resetLevel,
+        prepareNewGame,
       }}
     >
       {children}

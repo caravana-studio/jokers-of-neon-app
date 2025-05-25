@@ -1,11 +1,11 @@
-import { useComponentValue } from "@dojoengine/react";
 import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { SortBy } from "../../enums/sortBy";
 import { Card } from "../../types/Card";
 import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
-import { getLSGameId } from "../utils/getLSGameId";
+import { useEffect, useState } from "react";
+import { useGame } from "./useGame";
 
 export const getCard = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
@@ -22,24 +22,42 @@ export const useCurrentHand = (sortBy: SortBy) => {
     },
   } = useDojo();
 
-  const gameId = getLSGameId();
-  const entityId = getEntityIdFromKeys([BigInt(gameId ?? 0)]) as Entity;
-  const currentHand = useComponentValue(CurrentHand, entityId);
-  if (gameId === undefined || gameId === null) return [];
+  const game = useGame();
+  const [sortedCards, setSortedCards] = useState<Card[]>([]);
 
-  const dojoCards = currentHand?.cards ?? [];
+  const loadCurrentHand = () => {
+    const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+    const currentHand = getComponentValue(CurrentHand, entityId);
 
-  const cards: Card[] = dojoCards.map((card: any, index: number) => {
-    const card_id = card.value;
-    return {
-      card_id,
-      img: `${card_id}.png`,
-      isModifier: card_id >= 600 && card_id <= 700,
-      idx: index,
-      id: index.toString(),
-    };
-  });
+    if (game?.id === undefined || game?.id === null) return; // <-- fix: no return value
 
-  const sortedCards = sortCards(cards, sortBy);
+    const dojoCards = currentHand?.cards ?? [];
+
+    const cards: Card[] = dojoCards.map((card: any, index: number) => {
+      const card_id = card.value;
+      return {
+        card_id,
+        img: `${card_id}.png`,
+        isModifier: card_id >= 600 && card_id <= 700,
+        idx: index,
+        id: index.toString(),
+      };
+    });
+
+    setSortedCards(sortCards(cards, sortBy));
+  };
+  
+  useEffect(() => {
+    loadCurrentHand();
+
+    if (sortedCards.length === 0) {
+      const retryTimeout = setTimeout(() => {
+        loadCurrentHand();
+      }, 1000);
+
+      return () => clearTimeout(retryTimeout);
+    }
+  }, [game?.id]);
+
   return sortedCards;
 };

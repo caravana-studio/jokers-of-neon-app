@@ -6,14 +6,12 @@ import AudioPlayer from "../../components/AudioPlayer.tsx";
 import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
-import { GAME_ID } from "../../constants/localStorage.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
-import { prepareNewGame } from "../../utils/prepareNewGame.ts";
 
 export interface GameSummary {
   id: number;
@@ -35,8 +33,7 @@ export const MyGames = () => {
 
   const [showFinishedGames, setShowFinishedGames] = useState(false);
 
-  const { setGameId, resetLevel, setHand, executeCreateGame } =
-    useGameContext();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
 
   const filteredGames = games.filter((game) => {
     return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
@@ -44,10 +41,11 @@ export const MyGames = () => {
 
   useEffect(() => {
     refetch();
+    localStorage.removeItem("GAME_ID");
   }, []);
 
   const handleCreateGame = async () => {
-    prepareNewGame({ setGameId, resetLevel, setHand });
+    prepareNewGame();
     executeCreateGame();
     navigate("/entering-tournament");
   };
