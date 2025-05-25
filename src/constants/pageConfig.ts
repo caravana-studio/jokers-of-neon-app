@@ -37,18 +37,10 @@ export const getPageConfig = (
     }),
   },
     {
-      path: "/gameover/:gameId",
-      getPageInfo: ({ tGame, match }) => ({
-        name: tGame("game-menu.pages.gameover"),
-        icon: Icons.GAMEOVER,
-        url: match.pathname,
-      }),
-    },
-    {
       path: "/open-loot-box",
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.open-loot-box"),
-        icon: Icons.LOOTBOX,
+        icon: Icons.STORE,
         url: match.pathname,
       }),
     },
@@ -56,7 +48,7 @@ export const getPageConfig = (
       path: "/map",
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.map"),
-        icon: Icons.MAP,
+        icon: Icons.MAP_SIMPLE,
         url: match.pathname,
       }),
     },
@@ -66,7 +58,7 @@ export const getPageConfig = (
         name: tGame("game-menu.pages.store", {
           shopName: tShop(`config.${shopId}.name`, { defaultValue: "" }),
         }),
-        icon: getShopIcon(shopId),
+        icon: Icons.STORE,
         url: match.pathname,
       }),
     },
@@ -80,9 +72,7 @@ export const getPageConfig = (
           level: nodeRound,
         }),
         icon: isRageRound
-          ? isNodeLast
-            ? Icons.RAGE_FINAL
-            : Icons.RAGE_INTERMEDIATE
+          ? Icons.RAGE
           : Icons.ROUND,
         url: match.pathname,
       }),
@@ -100,16 +90,4 @@ export const getPageConfig = (
   }
 
   return null;
-};
-
-const getShopIcon = (shopId: string): string | FC<SVGProps<ReactSVGElement>> => {
-  const iconMap: Record<string, string | FC<SVGProps<ReactSVGElement>>> = {
-    "1": Icons.STORE_DECK,
-    "2": Icons.STORE_GLOBAL,
-    "3": Icons.STORE_SPECIALS,
-    "4": Icons.STORE_LEVELUPS,
-    "5": Icons.STORE_MODIFIERS,
-    "6": Icons.STORE_MIX,
-  };
-  return iconMap[shopId] ?? Icons.CIRCLE;
 };
