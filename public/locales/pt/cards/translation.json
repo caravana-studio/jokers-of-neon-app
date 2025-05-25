@@ -137,7 +137,7 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Atinge exatamente 21 com as cartas jogadas para ganhar +21 multi."
+      "description": "Atinge exatamente 21 pontos com as cartas jogadas para ganhar +21 multi."
     },
     "328": {
       "name": "Jogo Eficiente",
@@ -253,7 +253,7 @@
     },
     "356": {
       "name": "Guardião de Slot",
-      "description": "Ganhe +50 pontos para cada Slot desbloqueado, mas vazio."
+      "description": "Ganhe +100 pontos para cada Slot desbloqueado, mas vazio."
     },
     "357": {
       "name": "Apostadores de Alto Nível",
