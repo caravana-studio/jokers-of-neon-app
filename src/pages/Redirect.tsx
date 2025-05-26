@@ -25,7 +25,7 @@ export const Redirect = () => {
       state: { lastTabIndex },
       replace: false,
     };
-    let desiredPath;
+    let desiredPath: any;
 
     if (page === "state") {
       desiredPath = stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
