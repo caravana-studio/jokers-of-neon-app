@@ -573,7 +573,7 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Hit exactly 21 with your played cards to gain +21 multi."
+      "description": "Hit exactly 21 points with your played cards to gain +21 multi."
     },
     "328": {
       "name": "Efficient Play",
@@ -689,7 +689,7 @@
     },
     "356": {
       "name": "Slot Saver",
-      "description": "Earn +50 points for each unlocked but empty card slot."
+      "description": "Earn +100 points for each unlocked but empty card slot."
     },
     "357": {
       "name": "High Rollers",
