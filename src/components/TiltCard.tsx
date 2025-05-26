@@ -68,9 +68,8 @@ export const TiltCard = ({
       : CARD_WIDTH;
 
   const modifiedCard = useTransformedCard(card);
-
   const isSilent = useIsSilent(modifiedCard);
-  const isModifierSilent = useIsSilent(card);
+
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
   const game = useGame();
@@ -136,10 +135,9 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {(isSilent || isModifierSilent) &&
-                game?.state === GameStateEnum.Rage && (
-                  <BrokenCard onDeck={onDeck} isPack={isPack} />
-                )}
+              {isSilent && game?.state === GameStateEnum.Rage && (
+                <BrokenCard onDeck={onDeck} isPack={isPack} />
+              )}
               {used && (
                 <>
                   <Box
@@ -181,6 +179,8 @@ export const TiltCard = ({
       {card.modifiers?.map((c, index) => {
         const { name, description } = getCardData(c.card_id ?? 0);
         const { top, left } = getModifierOffset(index);
+        const isModifierSilent = useIsSilent(c);
+
         return (
           <Box
             key={c.id}
@@ -210,7 +210,9 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
-                  <BrokenCard onDeck={onDeck} isPack={isPack} />
+                  {isModifierSilent && game?.state === GameStateEnum.Rage && (
+                    <BrokenCard onDeck={onDeck} isPack={isPack} />
+                  )}
                 </Tooltip>
               </AnimatedCard>
             </Tilt>

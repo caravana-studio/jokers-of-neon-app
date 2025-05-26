@@ -37,7 +37,7 @@ export const useTransformedCard = (card: Card): Card => {
         ...card,
         card_id: transformedCardId,
         img: `${transformedCardId}.png`,
-        suit: getCardData(transformedCardId.card_id ?? 0).suit,
+        suit: getCardData(transformedCardId).suit,
       };
     }
   }
