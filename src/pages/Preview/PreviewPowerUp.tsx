@@ -90,7 +90,6 @@ export const PreviewPowerUp = () => {
   );
 
   const props = {
-    buyButton: tooltipButton,
     image: image,
     title: name,
     description: description,
@@ -102,9 +101,15 @@ export const PreviewPowerUp = () => {
   return isSmallScreen ? (
     <StorePreviewPowerUpComponentMobile
       {...props}
+      buyButton={{
+        onClick: onBuyButtonClick,
+        label: t("labels.buy").toUpperCase(),
+        disabled: notEnoughCash || noSpace,
+        disabledText: buttonMessage,
+      }}
       cardType={t("labels.power-up")}
     />
   ) : (
-    <StorePreviewComponent {...props} />
+    <StorePreviewComponent {...props} buyButton={tooltipButton} />
   );
 };

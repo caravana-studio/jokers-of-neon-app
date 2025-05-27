@@ -2,7 +2,7 @@ import ReactFlow, { Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import EmojiNode from "./nodes/EmojiNode";
 
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -117,19 +117,14 @@ export const Map = () => {
       {isSmallScreen && (
         <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
           <MobileBottomBar
-            firstButton={undefined}
+            firstButton={
+              isReachable ? {
+                onClick: handleGoClick,
+                label: t("go"),
+              } : undefined
+            }
             secondButton={
-              isReachable && (
-                <Button
-                  minWidth={"100px"}
-                  size={"xs"}
-                  lineHeight={1.6}
-                  fontSize={10}
-                  onClick={handleGoClick}
-                >
-                  {t("go")}
-                </Button>
-              )
+              undefined
             }
             hideDeckButton
           />

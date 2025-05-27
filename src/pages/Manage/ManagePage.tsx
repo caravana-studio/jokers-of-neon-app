@@ -59,7 +59,12 @@ export const ManagePage = () => {
           discardedCards={discardedCards}
           preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
-          goBackButton={goBackButton}
+          goBackButton={{
+            onClick: () => {
+              navigate(-1);
+            },
+            label: t("power-ups.go-back"),
+          }}
         />
       ) : (
         <ManagePageContent

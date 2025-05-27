@@ -2,22 +2,24 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { BurnComponent } from "../DynamicStore/storeComponents/ BurnComponent.tsx";
+import { PowerUpsComponent } from "../DynamicStore/storeComponents/PowerUpsComponent.tsx";
 import { Coins } from "./Coins.tsx";
 import { LootBoxes } from "./LootBoxes.tsx";
 import { SpecialSlotItem } from "./SpecialSlotItem.tsx";
 import { StoreCardsRow } from "./StoreCardsRow.tsx";
 import LevelUpTable from "./StoreElements/LevelUpTable.tsx";
 import SpecialsButton from "./StoreElements/ManageButton.tsx";
-import NextLevelButton from "./StoreElements/NextLevelButton.tsx";
+import { useNextLevelButton } from "./StoreElements/useNextLevelButton.tsx";
 import RerollButton from "./StoreElements/RerollButton.tsx";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation.tsx";
 import SeeFullDeckButton from "./StoreElements/SeeFullDeckButton.tsx";
-import { PowerUpsComponent } from "../DynamicStore/storeComponents/PowerUpsComponent.tsx";
 
 export const StoreContent = () => {
   const { specialCards, commonCards, modifierCards, powerUps } = useStore();
 
   const { t } = useTranslation(["store"]);
+
+  const { nextLevelButton } = useNextLevelButton();
 
   return (
     <>
@@ -106,7 +108,7 @@ export const StoreContent = () => {
             pr={"2%"}
           >
             <>
-              <NextLevelButton isSmallScreen={false} />
+              {nextLevelButton}
               <Flex flexDirection={"row"} gap={10}>
                 <RerollingAnimation>
                   <SpecialSlotItem />

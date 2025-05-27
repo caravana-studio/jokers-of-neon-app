@@ -155,7 +155,14 @@ const PreviewCard = () => {
       title={name}
       description={description}
       cardType={cardType}
-      buyButton={tooltipButton}
+      buyButton={{
+        onClick: onBuyClick,
+        label: t("labels.buy").toUpperCase(),
+        disabled: notEnoughCash || noSpaceForSpecialCards,
+        disabledText: noSpaceForSpecialCards
+          ? t("tooltip.no-space")
+          : t("tooltip.no-coins"),
+      }}
       duration={duration}
       onDurationChange={onDurationChange}
       tab={0}
