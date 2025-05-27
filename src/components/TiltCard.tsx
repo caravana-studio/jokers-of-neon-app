@@ -27,6 +27,7 @@ import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { BrokenCard } from "./BrokenCard.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -67,8 +68,8 @@ export const TiltCard = ({
       : CARD_WIDTH;
 
   const modifiedCard = useTransformedCard(card);
-
   const isSilent = useIsSilent(modifiedCard);
+
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
   const game = useGame();
@@ -135,20 +136,7 @@ export const TiltCard = ({
               />
 
               {isSilent && game?.state === GameStateEnum.Rage && (
-                <>
-                  <Box
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    w="100%"
-                    h="100%"
-                    backgroundColor={onDeck ? "" : "rgba(0,0,0,0.3)"}
-                    backgroundImage={'url("/broken.png")'}
-                    backgroundSize="cover"
-                    borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                    pointerEvents="none"
-                  />
-                </>
+                <BrokenCard onDeck={onDeck} isPack={isPack} />
               )}
               {used && (
                 <>
@@ -191,6 +179,8 @@ export const TiltCard = ({
       {card.modifiers?.map((c, index) => {
         const { name, description } = getCardData(c.card_id ?? 0);
         const { top, left } = getModifierOffset(index);
+        const isModifierSilent = useIsSilent(c);
+
         return (
           <Box
             key={c.id}
@@ -220,6 +210,9 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
+                  {isModifierSilent && game?.state === GameStateEnum.Rage && (
+                    <BrokenCard onDeck={onDeck} isPack={isPack} />
+                  )}
                 </Tooltip>
               </AnimatedCard>
             </Tilt>

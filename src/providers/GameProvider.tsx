@@ -297,6 +297,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             console.log(`game ${newGameId} created`);
 
             await syncCall();
+            console.log("ready to play");
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
