@@ -12,8 +12,11 @@ export interface ManagePageContentProps {
   discardedCards: Card[];
   preselectedCard?: Card;
   onCardClick: (card: Card) => void;
-  goBackButton: ReactNode;
   onTabChange?: (index: number) => void;
+}
+
+interface ManageContentDesktopProps extends ManagePageContentProps {
+  goBackButton: ReactNode;
 }
 
 export const ManagePageContent = ({
@@ -21,7 +24,7 @@ export const ManagePageContent = ({
   preselectedCard,
   onCardClick,
   goBackButton,
-}: ManagePageContentProps) => {
+}: ManageContentDesktopProps) => {
   return (
     <BackgroundDecoration hidelogo>
       <Flex

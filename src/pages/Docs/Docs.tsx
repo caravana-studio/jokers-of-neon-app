@@ -1,14 +1,16 @@
 import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { BackToGameBtn } from "../../components/BackToGameBtn";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
+import {
+  useBackToGameButton
+} from "../../components/useBackToGameButton";
+import { MODIFIERS_RARITY } from "../../data/modifiers";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useGameState } from "../../state/useGameState";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { DocsCardsRow } from "./DocsCardsRow";
-import { MODIFIERS_RARITY } from "../../data/modifiers";
 
 interface DocsProps {
   lastIndexTab: number;
@@ -19,7 +21,7 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
 
   const { modCardsConfig } = useGameState();
   const { isSmallScreen } = useResponsiveValues();
-  const goBackBtn = <BackToGameBtn />;
+  const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
   return (
     <DelayedLoading>
@@ -27,10 +29,10 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
         lastIndexTab={lastIndexTab}
         bottomBar={
           !isSmallScreen ? (
-            <Flex mb={"80px"}>{goBackBtn}</Flex>
+            <Flex mb={"80px"}>{backToGameButton}</Flex>
           ) : (
             <MobileBottomBar
-              secondButton={goBackBtn}
+              secondButton={backToGameButtonProps}
               firstButton={undefined}
               hideDeckButton
             />

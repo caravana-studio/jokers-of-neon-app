@@ -1,24 +1,23 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
 import { Duration } from "../enums/duration";
 import { MobileCoins } from "../pages/store/Coins";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
 import { DurationSwitcher } from "./DurationSwitcher";
-import { MobileBottomBar } from "./MobileBottomBar";
+import { BarButtonProps, MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
-import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
 
 interface StorePreviewCardComponentMobileProps {
   card: Card;
   title: string;
   description: string;
   cardType: string;
-  buyButton: ReactNode;
+  buyButton: BarButtonProps;
   duration?: Duration;
   onDurationChange?: (duration: Duration) => void;
   tab?: number;
@@ -117,22 +116,13 @@ export const StorePreviewCardComponentMobile = ({
         )}
         <MobileBottomBar
           hideDeckButton
-          firstButton={
-            <Button
-              size={"xs"}
-              onClick={() => {
-                sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
-                navigate("/store");
-              }}
-              lineHeight={1.6}
-              variant="outlinePrimaryGlow"
-              fontSize={10}
-              minWidth={"100px"}
-              height={["30px", "32px"]}
-            >
-              {t("store.preview-card.labels.close").toUpperCase()}
-            </Button>
-          }
+          firstButton={{
+            onClick: () => {
+              sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
+              navigate("/store");
+            },
+            label: t("store.preview-card.labels.close").toUpperCase(),
+          }}
           secondButton={buyButton}
         />
       </Flex>
