@@ -8,6 +8,7 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { LoadingProgress } from "../../types/LoadingProgress";
 import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
+import { useGameContext } from "../../providers/GameProvider";
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
 const tournamentId = stringTournamentId && Number(stringTournamentId);
@@ -17,14 +18,17 @@ export const EnteringTournament = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
+  const { gameLoading } = useGameContext();
 
   const navigate = useNavigate();
 
   // Auto-navigation logic
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log("default navigation to my-games");
-      navigate("/my-games");
+      if (!gameLoading) {
+        console.log("default navigation to my-games");
+        navigate("/my-games");
+      }
     }, TIMEOUT_DURATION);
 
     return () => {
