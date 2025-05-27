@@ -16,12 +16,12 @@ export const preloadSpineAnimations = async (
     ]);
 
     const logoUrls = [
-      `${basePath}/logo/JokerLogo.json`,
-      `${basePath}/logo/JokerLogo.atlas`,
+      `${basePath}logo/JokerLogo.json`,
+      `${basePath}logo/JokerLogo.atlas`,
     ];
     const phoenixUrls = [
-      `${basePath}/phoenix/phoenix.json`,
-      `${basePath}/phoenix/phoenix.atlas`,
+      `${basePath}phoenix/phoenix.json`,
+      `${basePath}phoenix/phoenix.atlas`,
     ];
 
     const spineUrls = [...animationUrls, ...logoUrls, ...phoenixUrls];
