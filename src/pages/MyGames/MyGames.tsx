@@ -84,7 +84,7 @@ export const MyGames = () => {
           display="grid"
           px={[4, 8]}
           py={isSmallScreen ? 0 : 4}
-          width={{ base: "90%", sm: "900px" }}
+          width={{ base: "90%", sm: "70%", md: "900px" }}
           height=" 50%"
           maxHeight="500px"
           overflowY="auto"
