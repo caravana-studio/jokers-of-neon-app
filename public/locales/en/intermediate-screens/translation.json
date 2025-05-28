@@ -9,7 +9,13 @@
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
-    "surrender-btn": "surrender",
+    "surrender": { 
+      "action": "Surrender",
+      "confirmation-modal": {
+        "title": "Surrender",
+        "description": "Are you sure you want to surrender the game #{{gameId}}? There is no way to undo this action."
+      }
+    },
     "level-lbl": "Level",
     "status-lbl": "Status",
     "points-lbl": "points",

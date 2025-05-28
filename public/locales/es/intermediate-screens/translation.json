@@ -9,7 +9,13 @@
     "show-finished-games": "Mostrar juegos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
-    "surrender-btn": "rendirse",
+    "surrender": {
+      "action": "Rendirse",
+      "confirmation-modal": {
+        "title": "Rendirse",
+        "description": "¿Estás seguro de que quieres rendirte en el juego #{{gameId}}? Esta acción no se puede deshacer."
+      }
+    },
     "level-lbl": "Nivel",
     "status-lbl": "Estado",
     "points-lbl": "puntos",

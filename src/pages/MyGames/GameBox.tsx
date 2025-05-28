@@ -1,4 +1,4 @@
-import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
+import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
 
 export const GameBox = ({
   game,
@@ -25,6 +26,7 @@ export const GameBox = ({
     useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpened, setIsModalOpened] = useState(false);
   const navigate = useNavigate();
 
   const handleContinueButtonClick = async () => {
@@ -47,6 +49,7 @@ export const GameBox = ({
     } catch {
     } finally {
       setIsLoading(false);
+      setIsModalOpened(false);
     }
   };
 
@@ -142,16 +145,27 @@ export const GameBox = ({
                     : "continue-btn"
                 ).toUpperCase()}
               </Button>
-              <Button
-                size="sm"
-                width={isSmallScreen ? "60px" : "110px"}
-                h={isSmallScreen ? "25px" : undefined}
-                variant="solid"
-                onClick={handleSurrenderButtonClick}
-                disabled={isLoading}
-              >
-                {t("surrender-btn").toUpperCase()}
-              </Button>
+              <Tooltip label={t("surrender.action")}>
+                <Button
+                  size="xs"
+                  width={"auto"}
+                  h={isSmallScreen ? "25px" : undefined}
+                  variant="solid"
+                  onClick={() => setIsModalOpened(true)}
+                  disabled={isLoading}
+                >
+                  X
+                </Button>
+              </Tooltip>
+              <ConfirmationModal
+                isOpen={isModalOpened}
+                close={() => setIsModalOpened(false)}
+                title={t("surrender.confirmation-modal.title")}
+                description={t("surrender.confirmation-modal.description", {
+                  gameId: game.id,
+                })}
+                onConfirm={handleSurrenderButtonClick}
+              />
             </Flex>
           )}
         </Flex>

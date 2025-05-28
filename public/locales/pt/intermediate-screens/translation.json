@@ -9,7 +9,13 @@
     "show-finished-games": "Mostrar jogos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
-    "surrender-btn": "desistir",
+    "surrender": {
+      "action": "Desistir",
+      "confirmation-modal": {
+        "title": "Desistir",
+        "description": "Tem certeza de que deseja desistir do jogo #{{gameId}}? Esta ação não pode ser desfeita."
+      }
+    },
     "level-lbl": "Nível",
     "status-lbl": "Estado",
     "points-lbl": "pontos",
