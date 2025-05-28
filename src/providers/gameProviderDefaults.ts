@@ -77,5 +77,5 @@ export const gameProviderDefaults: IGameContext = {
   cardTransformationLock: false,
   nodeRound: 0,
   prepareNewGame: () => {},
-  surrenderGame: (_) => new Promise((resolve) => resolve({ gameId: 0})),
+  surrenderGame: (_) => {},
 };

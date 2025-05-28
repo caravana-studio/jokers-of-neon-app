@@ -120,15 +120,7 @@ export interface IGameContext {
   cardTransformationLock: boolean;
   nodeRound: number;
   prepareNewGame: () => void;
-  surrenderGame: (gameId: number) => Promise<
-    | {
-        gameId: number;
-        hand: never[];
-      }
-    | {
-        gameId: number;
-      }
-  >;
+  surrenderGame: (gameId: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
