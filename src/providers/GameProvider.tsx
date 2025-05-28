@@ -120,6 +120,15 @@ export interface IGameContext {
   cardTransformationLock: boolean;
   nodeRound: number;
   prepareNewGame: () => void;
+  surrenderGame: (gameId: number) => Promise<
+    | {
+        gameId: number;
+        hand: never[];
+      }
+    | {
+        gameId: number;
+      }
+  >;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -162,6 +171,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     changeModifierCard,
     sellSpecialCard,
     mintGame,
+    surrenderGame,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -690,6 +700,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectCard,
     unPreSelectCard,
     togglePreselectedPowerUp,
+    surrenderGame,
   };
 
   return (
