@@ -42,7 +42,7 @@ export const GameBox = ({
   const handleSurrenderButtonClick = async () => {
     setIsLoading(true);
     try {
-      surrenderGame;
+      surrenderGame(game.id);
       onSurrendered?.(game.id);
     } catch {
     } finally {
