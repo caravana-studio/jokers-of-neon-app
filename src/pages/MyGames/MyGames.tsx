@@ -35,9 +35,19 @@ export const MyGames = () => {
 
   const { prepareNewGame, executeCreateGame } = useGameContext();
 
+  const [surrenderedIds, setSurrenderedIds] = useState<number[]>([]);
+
   const filteredGames = games.filter((game) => {
-    return showFinishedGames ? true : game.status !== GameStateEnum.GameOver;
+    const notSurrendered = !surrenderedIds.includes(game.id);
+    const shouldShow = showFinishedGames
+      ? true
+      : game.status !== GameStateEnum.GameOver;
+    return notSurrendered && shouldShow;
   });
+
+  const handleSurrendered = (gameId: number) => {
+    setSurrenderedIds((prev) => [...prev, gameId]);
+  };
 
   useEffect(() => {
     refetch();
@@ -100,9 +110,14 @@ export const MyGames = () => {
             )}
             <Flex flexDirection="column" gap={3} w="100%">
               {isLoading && <Loading />}
-              {filteredGames.map((game) => {
-                return <GameBox key={game.id} game={game} />;
-              })}
+              {filteredGames.map((game) => (
+                <GameBox
+                  key={game.id}
+                  game={game}
+                  onSurrendered={() => handleSurrendered(game.id)}
+                />
+              ))}
+
               {filteredGames.length === 0 && !isLoading && (
                 <Text size="lg" textAlign="center">
                   {t("no-games")}

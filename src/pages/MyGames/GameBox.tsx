@@ -9,7 +9,13 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 
-export const GameBox = ({ game }: { game: GameSummary }) => {
+export const GameBox = ({
+  game,
+  onSurrendered,
+}: {
+  game: GameSummary;
+  onSurrendered?: (gameId: number) => void;
+}) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
@@ -37,6 +43,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
     setIsLoading(true);
     try {
       surrenderGame;
+      onSurrendered?.(game.id);
     } catch {
     } finally {
       setIsLoading(false);
