@@ -41,6 +41,15 @@ export const useIsSilent = (card: Card) => {
 
   const { suit: idSuit, card: rank } = getCardData(card.card_id ?? 0);
   const suit = card.suit ?? idSuit;
+
+  if (
+    card.isModifier &&
+    rageCards.some(
+      (rageCard) => rageCard.card_id === rageCardIds.BROKEN_MODIFIERS
+    )
+  )
+    return true;
+
   const isSilent = rageCards.some((rageCard) => {
     return (
       getSilentTarget(rageCard.card_id!) === suit ||

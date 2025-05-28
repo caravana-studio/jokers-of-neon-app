@@ -10,12 +10,13 @@ import theme from "../theme/theme";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { DurationSwitcher } from "./DurationSwitcher.tsx";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo.tsx";
+import { BarButtonProps } from "./MobileBottomBar.tsx";
+import { ReactNode } from "react";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
 
 export interface IStorePreviewComponent {
-  buyButton: JSX.Element;
   image: JSX.Element;
   title: string;
   description: string;
@@ -32,6 +33,10 @@ export interface IStorePreviewComponent {
   duration?: Duration;
   onDurationChange?: (duration: Duration) => void;
   tab?: number;
+}
+
+interface IStorePreviewComponentDesktop extends IStorePreviewComponent {
+  buyButton: ReactNode;
 }
 
 export const StorePreviewComponent = ({
@@ -51,7 +56,7 @@ export const StorePreviewComponent = ({
   temporalDiscountPrice,
   duration,
   onDurationChange,
-}: IStorePreviewComponent) => {
+}: IStorePreviewComponentDesktop) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["store"]);
 

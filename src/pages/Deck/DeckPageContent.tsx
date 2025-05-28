@@ -1,13 +1,13 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { CashSymbol } from "../../components/CashSymbol";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
-import { BackToGameBtn } from "../../components/BackToGameBtn";
-import { useNavigate } from "react-router-dom";
 
 interface DeckPageContentProps {
   state: {
@@ -21,6 +21,8 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const { cash, burnCard, burnItem } = useStore();
   const navigate = useNavigate();
+
+  const { backToGameButton } = useBackToGameButton();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem.purchased) {
@@ -59,7 +61,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
         onCardSelect={handleCardSelect}
       />
       <Flex gap={6}>
-        <BackToGameBtn />
+        {backToGameButton}
         {state.burn && (
           <Button
             minWidth={"100px"}
