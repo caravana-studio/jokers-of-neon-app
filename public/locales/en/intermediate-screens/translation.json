@@ -9,6 +9,7 @@
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
+    "surrender-btn": "surrender",
     "level-lbl": "Level",
     "status-lbl": "Status",
     "points-lbl": "points",
