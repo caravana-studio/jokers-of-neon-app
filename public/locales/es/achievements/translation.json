@@ -30,6 +30,11 @@
     "sell-1": "Vende 3 cartas especiales",
     "slot-1": "Compra todas los slots",
     "straight-flush-1": "Juega una escalera de color",
-    "neon-play-1": "Juega una mano neon"
+    "neon-play-1": "Juega una mano neon",
+    "level_daily_easy": "Alcanza el nivel 2",
+    "level_daily_medium": "Alcanza el nivel 3",
+    "level_daily_hard": "Alcanza el nivel 5",
+    "score_daily_hard": "Consigue 500000 puntos totales en una partida",
+    "special_daily_medium": "Usa la carta Fénix"
   }
 }
