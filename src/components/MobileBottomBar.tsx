@@ -72,6 +72,7 @@ export const MobileBottomBar = ({
       mb={8}
       mt={3}
       justifyContent={"space-between"}
+      alignItems={"center"}
       zIndex={1000}
     >
       <GameMenuBtn
