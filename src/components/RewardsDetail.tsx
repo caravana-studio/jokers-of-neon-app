@@ -6,13 +6,6 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { useDojo } from "../dojo/useDojo.tsx";
-import { handeDailyGameAchievements } from "../utils/handleAchievements.ts";
-import { useAudio } from "../hooks/useAudio.tsx";
-import { achievementSfx } from "../constants/sfx.ts";
-import { useSettings } from "../providers/SettingsProvider.tsx";
-import { useEffect } from "react";
 
 interface RewardItemProps {
   label: string;
@@ -87,26 +80,6 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   const navigate = useNavigate();
   const round = useRound();
-  const game = useGame();
-  const {
-    setup: {
-      account: { account },
-    },
-  } = useDojo();
-  const { sfxVolume } = useSettings();
-  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
-
-  // TODO: POP UP SHOWING EVERY TIME in level 2, 3 and 5
-
-  useEffect(() => {
-    console.log(game?.current_node_id);
-    handeDailyGameAchievements(
-      game?.level ?? 0,
-      game?.player_score ?? 0,
-      achievementSound,
-      account.address ?? ""
-    );
-  }, []);
 
   return (
     <PinkBox

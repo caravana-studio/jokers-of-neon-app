@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -46,6 +47,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { checkDailyAchievement } from "../utils/handleAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -151,6 +153,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     setup: {
       clientComponents: { Game },
+      account: { account },
     },
     syncCall,
   } = useDojo();
@@ -176,10 +179,36 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
+  const triggeredAchievementsRef = useRef<Set<string>>(new Set());
+
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
     animationSpeed
   );
+
+  useEffect(() => {
+    if (!game?.player_score || !account.address) return;
+
+    checkDailyAchievement(
+      "score",
+      game.player_score,
+      account.address,
+      achievementSound,
+      triggeredAchievementsRef
+    );
+  }, [game?.player_score]);
+
+  useEffect(() => {
+    if (!game?.level || !account.address) return;
+
+    checkDailyAchievement(
+      "level",
+      game.level,
+      account.address,
+      achievementSound,
+      triggeredAchievementsRef
+    );
+  }, [game?.level]);
 
   const {
     setAnimatedCard,

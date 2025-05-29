@@ -3,6 +3,10 @@ import { getAchievementCompleteEvent } from "./playEvents/getAchievementComplete
 import { handleAchievementPush } from "./pushAchievements";
 import i18n from "i18next";
 import { showAchievementToast } from "./transactionNotifications";
+import {
+  AchievementType,
+  DAILY_ACHIEVEMENTS,
+} from "./achievements/achievements";
 
 export const handleAchievements = async (
   events: DojoEvent[],
@@ -22,34 +26,27 @@ export const handleAchievements = async (
   }
 };
 
-export const handeDailyGameAchievements = async (
-  level: number,
-  score: number,
+export const checkDailyAchievement = async (
+  type: AchievementType,
+  value: number,
+  playerAddress: string,
   achievementSound: () => void,
-  playerAddress: string
-) => {
-  let achievementId = "";
-  if (level === 2) {
-    achievementId = "level_daily_easy";
-  } else if (level === 3) {
-    achievementId = "level_daily_medium";
-  } else if (level === 5) {
-    achievementId = "level_daily_hard";
-  }
+  triggeredAchievementsRef: React.MutableRefObject<Set<string>>
+): Promise<void> => {
+  const achievements = DAILY_ACHIEVEMENTS[type];
 
-  if (score >= 500000) {
-    achievementId = "score_daily_hard";
-  }
+  for (const { id, threshold } of achievements) {
+    if (value >= threshold && !triggeredAchievementsRef.current.has(id)) {
+      triggeredAchievementsRef.current.add(id);
 
-  if (achievementId !== "") {
-    console.log("DAILY ACHIEVEMENT", achievementId);
-    showAchievementToast([
-      i18n.t(`data.${achievementId}`, { ns: "achievements" }),
-    ]);
+      showAchievementToast([i18n.t(`data.${id}`, { ns: "achievements" })]);
 
-    await handleAchievementPush(
-      [{ player: playerAddress, achievementId: achievementId }],
-      achievementSound
-    );
+      await handleAchievementPush(
+        [{ player: playerAddress, achievementId: id }],
+        achievementSound
+      );
+
+      break;
+    }
   }
 };
