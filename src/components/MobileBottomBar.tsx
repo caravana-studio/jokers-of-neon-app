@@ -60,9 +60,13 @@ export const MobileBottomBar = ({
   const navigate = useNavigate();
 
   const uniqueButton =
-    firstButton && !secondButton
+    (firstButton || firstButtonReactNode) &&
+    !secondButton &&
+    !secondButtonReactNode
       ? firstButton
-      : secondButton && !firstButton
+      : (secondButton || secondButtonReactNode) &&
+          !firstButton &&
+          !firstButtonReactNode
         ? secondButton
         : undefined;
   return (
