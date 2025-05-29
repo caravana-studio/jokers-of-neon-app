@@ -1,36 +1,29 @@
+import {
+  SPINE_BASE_PATH,
+  getSpineBoxFiles,
+  getSpineLogoPaths,
+  getSpinePhoenixPaths,
+} from "../constants/spineConstants";
 import { BOXES_RARITY } from "../data/lootBoxes";
 
 const CACHE_NAME = "spine-assets";
 
 export const preloadSpineAnimations = async (
-  basePath: string = "/spine-animations/"
+  basePath: string = SPINE_BASE_PATH
 ): Promise<void> => {
   const ids = Object.keys(BOXES_RARITY).map(Number);
   try {
     const cache = await caches.open(CACHE_NAME);
 
-    // Generate URLs for JSON and atlas files
-    const animationUrls = ids.flatMap((id) => [
-      `${basePath}loot_box_${id}.json`,
-      `${basePath}loot_box_${id}.atlas`,
-    ]);
-
-    const logoUrls = [
-      `${basePath}logo/JokerLogo.json`,
-      `${basePath}logo/JokerLogo.atlas`,
-    ];
-    const phoenixUrls = [
-      `${basePath}phoenix/phoenix.json`,
-      `${basePath}phoenix/phoenix.atlas`,
+    const spineUrls = [
+      ...getSpineBoxFiles(ids, basePath),
+      ...getSpineLogoPaths(basePath),
+      ...getSpinePhoenixPaths(basePath),
     ];
 
-    const spineUrls = [...animationUrls, ...logoUrls, ...phoenixUrls];
-
-    // Preload each animation URL
     const cachePromises = spineUrls.map(async (url) => {
       const cachedResponse = await cache.match(url);
       if (!cachedResponse) {
-        // If not in cache, fetch and add to cache
         const response = await fetch(url, { cache: "reload" });
         if (response.ok) {
           await cache.put(url, response.clone());

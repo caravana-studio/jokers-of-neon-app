@@ -1,9 +1,9 @@
 import {
   CACHE_IMAGE,
   CACHE_VIDEO,
-  VIDEO_URLS,
   getDefaultImageUrls,
 } from "../constants/cacheUrls";
+import { VIDEO_URLS } from "../constants/videoConstants";
 
 const preloadMedia = async (cacheName: string, urls: string[]) => {
   try {
