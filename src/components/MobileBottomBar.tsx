@@ -1,10 +1,10 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, ButtonProps, Flex, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
 
-export interface BarButtonProps {
+export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   label: ReactNode;
@@ -23,13 +23,14 @@ interface MobileBottomBarProps {
   navigateState?: {};
 }
 
-const BarButton = ({
+export const BarButton = ({
   onClick,
   disabled,
   label,
   disabledText,
   icon,
   variant = "solid",
+  ...buttonProps
 }: BarButtonProps) => {
   return disabled && disabledText ? (
     <Text fontSize={10}>{disabledText}</Text>
@@ -41,6 +42,7 @@ const BarButton = ({
       fontSize={"10px"}
       onClick={onClick}
       disabled={disabled}
+      {...buttonProps}
     >
       {label}
       {icon && <Flex sx={{ ml: 1.5 }}>{icon}</Flex>}
