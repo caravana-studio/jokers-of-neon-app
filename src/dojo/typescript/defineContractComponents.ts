@@ -381,6 +381,7 @@ export function defineContractComponents(world: World) {
           special_slots: RecsType.Number,
           cash: RecsType.Number,
           available_rerolls: RecsType.Number,
+          seed: RecsType.Number,
         },
         {
           metadata: {
@@ -401,6 +402,7 @@ export function defineContractComponents(world: World) {
               "u32",
               "u32",
               "u32",
+              "u32"
             ],
             customTypes: [],
           },

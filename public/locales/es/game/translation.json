@@ -97,7 +97,7 @@
       "pages": {
         "gameover": "Fin del juego",
         "open-loot-box": "Abrir caja",
-        "store": "Recompensas - {{shopName}}",
+        "store": "Tienda - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Ronda Rage",
         "round": "Ronda"

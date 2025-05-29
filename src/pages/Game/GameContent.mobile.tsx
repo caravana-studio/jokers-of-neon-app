@@ -289,7 +289,7 @@ export const MobileGameContent = () => {
               />
             </Box>
             <MobileBottomBar
-              firstButton={
+              firstButtonReactNode={
                 <DiscardButton
                   highlight={run}
                   onTutorialCardClick={() => {
@@ -300,7 +300,7 @@ export const MobileGameContent = () => {
                   }}
                 />
               }
-              secondButton={
+              secondButtonReactNode={
                 <PlayButton
                   highlight={run}
                   onTutorialCardClick={() => {

@@ -1,7 +1,6 @@
 import ControllerConnector from "@cartridge/connector/controller";
 import { ControllerOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
-import { policies } from "./policies";
 
 const CHAIN = import.meta.env.VITE_SLOT_INSTANCE || import.meta.env.VITE_CHAIN || "jokers-of-neon";
 
@@ -30,11 +29,10 @@ const isDev = import.meta.env.VITE_DEV === "true";
 const RPC_URL = import.meta.env.VITE_RPC_URL || "http://localhost:5050";
 
 const controllerOptions: ControllerOptions = {
-  policies,
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
-  namespace: DOJO_NAMESPACE,
   preset: "jokers-of-neon",
+  namespace: DOJO_NAMESPACE,
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {

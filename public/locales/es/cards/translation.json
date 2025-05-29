@@ -137,7 +137,7 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Logra exactamente 21 con tus cartas jugadas para obtener +21 multi."
+      "description": "Logra exactamente 21 puntos con tus cartas jugadas para obtener +21 multi."
     },
     "328": {
       "name": "Juego Eficiente",
@@ -253,7 +253,7 @@
     },
     "356": {
       "name": "Guardián de Slots",
-      "description": "Gana +50 puntos por cada Slot desbloqueado pero vacío."
+      "description": "Gana +100 puntos por cada Slot desbloqueado pero vacío."
     },
     "357": {
       "name": "Gran apostador",
@@ -285,7 +285,7 @@
     },
     "364": {
       "name": "Multiplicador de Cuadrados",
-      "description": "+4 multi por cada 4 cartas en tu mano."
+      "description": "+4 multi por cada 4 que tengas en tu mano."
     },
     "365": {
       "name": "Jackpot",
