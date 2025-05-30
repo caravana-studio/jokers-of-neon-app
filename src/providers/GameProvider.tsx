@@ -46,6 +46,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { retryCachedAchievements } from "../utils/retryCachedAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -671,6 +672,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     // start with redirection unlocked
     setLockRedirection(false);
     refetchSpecialCardsData(modId, gameId);
+  }, []);
+
+  useEffect(() => {
+    retryCachedAchievements();
   }, []);
 
   const actions = {
