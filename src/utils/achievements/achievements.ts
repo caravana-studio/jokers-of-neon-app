@@ -1,16 +1,16 @@
-export type AchievementType = "score" | "level" | "specials";
+export type AchievementType = "score" | "level" | "special";
 
 export interface DailyAchievement {
   id: string;
-  threshold: number;
+  value: number;
 }
 
 export const DAILY_ACHIEVEMENTS: Record<AchievementType, DailyAchievement[]> = {
-  score: [{ id: "score_daily_hard", threshold: 500000 }],
+  score: [{ id: "score_daily_hard", value: 500000 }],
   level: [
-    { id: "level_daily_easy", threshold: 2 },
-    { id: "level_daily_medium", threshold: 3 },
-    { id: "level_daily_hard", threshold: 5 },
+    { id: "level_daily_easy", value: 2 },
+    { id: "level_daily_medium", value: 3 },
+    { id: "level_daily_hard", value: 5 },
   ],
-  specials: [{ id: "special_daily_medium", threshold: 405 }],
+  special: [{ id: "special_daily_medium", value: 323 }],
 };

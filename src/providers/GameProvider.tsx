@@ -277,6 +277,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     refetchSpecialCardsData(modId, gameId);
+    triggeredAchievementsRef.current.clear();
   };
 
   const prepareNewGame = () => {
@@ -369,6 +370,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
+          if (response.cardActivateEvent) {
+            const specialCardInHand =
+              specialCards[response.cardActivateEvent.special_id];
+
+            checkDailyAchievement(
+              "special",
+              specialCardInHand.card_id ?? 0,
+              account.address,
+              achievementSound,
+              triggeredAchievementsRef
+            );
+          }
+
           animatePlay({
             playEvents: response,
             playAnimationDuration,
@@ -403,6 +417,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             specialCards,
             setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
           });
+
           refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);

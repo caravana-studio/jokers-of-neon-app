@@ -28,15 +28,16 @@ export const handleAchievements = async (
 
 export const checkDailyAchievement = async (
   type: AchievementType,
-  value: number,
+  dataValue: number,
   playerAddress: string,
   achievementSound: () => void,
   triggeredAchievementsRef: React.MutableRefObject<Set<string>>
 ): Promise<void> => {
   const achievements = DAILY_ACHIEVEMENTS[type];
 
-  for (const { id, threshold } of achievements) {
-    if (value >= threshold && !triggeredAchievementsRef.current.has(id)) {
+  for (const { id, value } of achievements) {
+    const res = type === "special" ? dataValue === value : dataValue >= value;
+    if (res && !triggeredAchievementsRef.current.has(id)) {
       triggeredAchievementsRef.current.add(id);
 
       showAchievementToast([i18n.t(`data.${id}`, { ns: "achievements" })]);
