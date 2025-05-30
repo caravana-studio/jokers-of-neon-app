@@ -19,6 +19,7 @@ interface ConfirmationModalProps {
   title: string;
   description: string;
   onConfirm: () => void;
+  isOpen?: boolean;
 }
 
 export const ConfirmationModal = ({
@@ -26,10 +27,11 @@ export const ConfirmationModal = ({
   title,
   description,
   onConfirm,
+  isOpen = true,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
   return (
-    <Modal isOpen={true} onClose={close}>
+    <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
