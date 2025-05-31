@@ -24,6 +24,7 @@ export const ChooseCardsButton: React.FC<ChooseCardsButtonProps> = ({
     <>
       <BarButton
         mx={{ base: 6, md: 0 }}
+        width={"auto"}
         fontSize={12}
         isDisabled={disabled}
         variant={disabled ? "defaultOutline" : "solid"}

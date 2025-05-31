@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
+import React from "react";
 
 export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
@@ -61,16 +62,20 @@ export const MobileBottomBar = ({
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
 
+  const uniqueFirstButton = firstButton ?? firstButtonReactNode;
+  const uniqueSecondButton = secondButton ?? secondButtonReactNode;
+
   const uniqueButton =
     (firstButton || firstButtonReactNode) &&
     !secondButton &&
     !secondButtonReactNode
-      ? firstButton
+      ? uniqueFirstButton
       : (secondButton || secondButtonReactNode) &&
           !firstButton &&
           !firstButtonReactNode
-        ? secondButton
+        ? uniqueSecondButton
         : undefined;
+
   return (
     <Flex
       width="98%"
@@ -94,7 +99,11 @@ export const MobileBottomBar = ({
       />
       {uniqueButton ? (
         <Box w="40%">
-          <BarButton {...uniqueButton} />
+          {React.isValidElement(uniqueButton) ? (
+            uniqueButton
+          ) : (
+            <BarButton {...(uniqueButton as BarButtonProps)} />
+          )}
         </Box>
       ) : (
         <>

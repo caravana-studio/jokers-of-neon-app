@@ -65,11 +65,17 @@ export const OpenLootBoxCardSelection = () => {
       {cards.length > 0 ? (
         <Flex
           height={"100%"}
+          width={isSmallScreen ? "100%" : "auto"}
           justifyContent={isSmallScreen ? "space-between" : "center"}
           flexDirection="column"
           gap={4}
         >
-          <Flex flexDirection={"column"} gap={4}>
+          <Flex
+            flexDirection={"column"}
+            gap={4}
+            justifyContent={"center"}
+            height={isSmallScreen ? "100%" : "auto"}
+          >
             <Flex
               flexDirection={isSmallScreen ? "column" : "row"}
               justifyContent="space-between"
