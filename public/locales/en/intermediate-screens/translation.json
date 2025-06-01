@@ -85,11 +85,13 @@
     "community-mods": "Community mods"
   },
   "power-ups": {
-    "title": "Power-ups",
-    "go-back": "Go back"
+    "title": "Power-ups"
   },
   "open-lootbox": {
     "click-open": "Click to open",
     "tap-open": "Tap to open"
+  },
+  "common": {
+    "go-back-btn": "Go back"
   }
 }

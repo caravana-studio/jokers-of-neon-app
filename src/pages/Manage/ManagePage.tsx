@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { SellButton } from "./SellButton";
+import { GoBackButton } from "../../components/GoBackButton";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -27,20 +27,6 @@ export const ManagePage = () => {
   const handleCardClick = (card: Card) => {
     highlightCard(card);
   };
-
-  const goBackButton = (
-    <Button
-      minWidth={"100px"}
-      size={isSmallScreen ? "xs" : "md"}
-      lineHeight={1.6}
-      fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
-      onClick={() => {
-        navigate(-1);
-      }}
-    >
-      {t("power-ups.go-back")}
-    </Button>
-  );
 
   const sellButton = (
     <SellButton
@@ -59,19 +45,14 @@ export const ManagePage = () => {
           discardedCards={discardedCards}
           preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
-          goBackButton={{
-            onClick: () => {
-              navigate(-1);
-            },
-            label: t("power-ups.go-back"),
-          }}
+          goBackButton={<GoBackButton />}
         />
       ) : (
         <ManagePageContent
           discardedCards={discardedCards}
           preselectedCard={highlightedCard}
           onCardClick={handleCardClick}
-          goBackButton={goBackButton}
+          goBackButton={<GoBackButton />}
         />
       )}
       {confirmationModalOpen && (
