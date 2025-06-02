@@ -42,7 +42,7 @@ const loadingSteps: LoadingProgress[] = [
   { text: "Setting up game", showAt: 0 },
   { text: "Loading translations", showAt: 1 },
   { text: "Preloading assets", showAt: 2 },
-  { text: "Starting app", showAt: 4 },
+  { text: "Loading game", showAt: 4 },
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
