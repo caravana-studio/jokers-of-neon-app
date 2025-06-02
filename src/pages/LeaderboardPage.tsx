@@ -5,10 +5,14 @@ import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
 import { Leaderboard } from "../components/Leaderboard";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import { MobileBottomBar } from "../components/MobileBottomBar";
+import { GoBackButton } from "../components/GoBackButton";
 
 export const LeaderBoardPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
+  const { isSmallScreen } = useResponsiveValues();
 
   const tournamentEnabled = useFeatureFlagEnabled(
     "global",
@@ -16,10 +20,11 @@ export const LeaderBoardPage = () => {
   );
 
   return (
-    <BackgroundDecoration>
+    <BackgroundDecoration contentHeight={"85%"}>
       <Flex
         height="100%"
-        justifyContent="center"
+        width="100%"
+        justifyContent="space-between"
         flexDirection="column"
         alignItems="center"
         gap={4}
@@ -38,16 +43,14 @@ export const LeaderBoardPage = () => {
           )}
 
           <Leaderboard />
-          <Button
-            mt={8}
-            width="100%"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            {t("btn.returnLeaderboard-btn")}
-          </Button>
+          {!isSmallScreen && <GoBackButton mt={8} width={"100%"} />}
         </Box>
+        {isSmallScreen && (
+          <MobileBottomBar
+            hideDeckButton
+            secondButtonReactNode={<GoBackButton />}
+          />
+        )}
       </Flex>
     </BackgroundDecoration>
   );

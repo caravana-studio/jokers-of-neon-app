@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, ButtonProps, Flex, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
+import React from "react";
 
-export interface BarButtonProps {
+export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   label: ReactNode;
@@ -23,13 +24,14 @@ interface MobileBottomBarProps {
   navigateState?: {};
 }
 
-const BarButton = ({
+export const BarButton = ({
   onClick,
   disabled,
   label,
   disabledText,
   icon,
   variant = "solid",
+  ...buttonProps
 }: BarButtonProps) => {
   return disabled && disabledText ? (
     <Text fontSize={10}>{disabledText}</Text>
@@ -41,6 +43,7 @@ const BarButton = ({
       fontSize={"10px"}
       onClick={onClick}
       disabled={disabled}
+      {...buttonProps}
     >
       {label}
       {icon && <Flex sx={{ ml: 1.5 }}>{icon}</Flex>}
@@ -59,12 +62,20 @@ export const MobileBottomBar = ({
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
 
+  const uniqueFirstButton = firstButton ?? firstButtonReactNode;
+  const uniqueSecondButton = secondButton ?? secondButtonReactNode;
+
   const uniqueButton =
-    firstButton && !secondButton
-      ? firstButton
-      : secondButton && !firstButton
-        ? secondButton
+    (firstButton || firstButtonReactNode) &&
+    !secondButton &&
+    !secondButtonReactNode
+      ? uniqueFirstButton
+      : (secondButton || secondButtonReactNode) &&
+          !firstButton &&
+          !firstButtonReactNode
+        ? uniqueSecondButton
         : undefined;
+
   return (
     <Flex
       width="98%"
@@ -72,6 +83,7 @@ export const MobileBottomBar = ({
       mb={8}
       mt={3}
       justifyContent={"space-between"}
+      alignItems={"center"}
       zIndex={1000}
     >
       <GameMenuBtn
@@ -87,7 +99,11 @@ export const MobileBottomBar = ({
       />
       {uniqueButton ? (
         <Box w="40%">
-          <BarButton {...uniqueButton} />
+          {React.isValidElement(uniqueButton) ? (
+            uniqueButton
+          ) : (
+            <BarButton {...(uniqueButton as BarButtonProps)} />
+          )}
         </Box>
       ) : (
         <>
