@@ -189,17 +189,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     animationSpeed
   );
 
-  useEffect(() => {
-    if (!ggAchievementsFF || !game?.player_score || !account.address) return;
+  // useEffect(() => {
+  //   if (!ggAchievementsFF || !game?.player_score || !account.address) return;
 
-    checkDailyAchievement(
-      "score",
-      game.player_score,
-      account.address,
-      achievementSound,
-      triggeredAchievementsRef
-    );
-  }, [game?.player_score]);
+  //   checkDailyAchievement(
+  //     "score",
+  //     game.player_score,
+  //     account.address,
+  //     achievementSound,
+  //     triggeredAchievementsRef
+  //   );
+  // }, [game?.player_score]);
 
   useEffect(() => {
     if (!ggAchievementsFF || !game?.level || !account.address) return;
@@ -374,18 +374,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
-          if (response.cardActivateEvent && ggAchievementsFF) {
-            const specialCardInHand =
-              specialCards[response.cardActivateEvent.special_id];
+          // if (response.cardActivateEvent && ggAchievementsFF) {
+          //   const specialCardInHand =
+          //     specialCards[response.cardActivateEvent.special_id];
 
-            checkDailyAchievement(
-              "special",
-              specialCardInHand.card_id ?? 0,
-              account.address,
-              achievementSound,
-              triggeredAchievementsRef
-            );
-          }
+          //   checkDailyAchievement(
+          //     "special",
+          //     specialCardInHand.card_id ?? 0,
+          //     account.address,
+          //     achievementSound,
+          //     triggeredAchievementsRef
+          //   );
+          // }
 
           animatePlay({
             playEvents: response,
