@@ -141,6 +141,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
+  const ggAchievementsFF = useFeatureFlagEnabled("global", "gg");
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
@@ -189,7 +190,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   );
 
   useEffect(() => {
-    if (!game?.player_score || !account.address) return;
+    if (!ggAchievementsFF || !game?.player_score || !account.address) return;
 
     checkDailyAchievement(
       "score",
@@ -201,7 +202,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [game?.player_score]);
 
   useEffect(() => {
-    if (!game?.level || !account.address) return;
+    if (!ggAchievementsFF || !game?.level || !account.address) return;
 
     checkDailyAchievement(
       "level",
@@ -372,7 +373,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
-          if (response.cardActivateEvent) {
+          if (response.cardActivateEvent && ggAchievementsFF) {
             const specialCardInHand =
               specialCards[response.cardActivateEvent.special_id];
 
