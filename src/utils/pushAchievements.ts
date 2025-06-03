@@ -1,9 +1,9 @@
 import { AchievementCompleted } from "../types/ScoreData";
+import { addCachedPush } from "./achievementRetryCache";
 import { PushActionsPayload, pushActions } from "./pushActions";
 
 export const handleAchievementPush = async (
-  achievementEvents: AchievementCompleted[],
-  achievementSound: () => void
+  achievementEvents: AchievementCompleted[]
 ) => {
   const payloads: PushActionsPayload[] = [
     {
@@ -19,6 +19,23 @@ export const handleAchievementPush = async (
     console.log(payloads);
     await Promise.all(promises).then((responses) => {
       console.log(responses);
+
+      responses.forEach((response) => {
+        if (response.status === 200) {
+          console.log("action pushed", response.statusText);
+        } else {
+          console.error(
+            "Failed to push actions, saving for retry, error: ",
+            response.statusText
+          );
+          for (const achievement of achievementEvents) {
+            addCachedPush({
+              achievementId: achievement.achievementId,
+              player: achievement.player,
+            });
+          }
+        }
+      });
     });
   } catch (error) {
     console.error("Failed to push actions", error);

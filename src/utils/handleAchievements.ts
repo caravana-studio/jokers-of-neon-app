@@ -22,7 +22,7 @@ export const handleAchievements = async (
 
     showAchievementToast(achievementNames);
 
-    await handleAchievementPush(achievementEvent, achievementSound);
+    await handleAchievementPush(achievementEvent);
   }
 };
 
