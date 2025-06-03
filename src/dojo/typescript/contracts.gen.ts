@@ -243,9 +243,11 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
 		try {
+			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_changeModifierCard_calldata(gameId, modifierIndex),
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_changeModifierCard_calldata(gameId, modifierIndex)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -285,9 +287,11 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		try {
+			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -620,9 +624,11 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
+			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -662,9 +668,11 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_system_reroll = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
+			console.log('vrf tx', getVrfTx("shop_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_reroll_calldata(gameId),
+				[getVrfTx("shop_system", snAccount), 
+				build_shop_system_reroll_calldata(gameId)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
