@@ -39,13 +39,12 @@ export const checkDailyAchievement = async (
     const res = type === "special" ? dataValue === value : dataValue >= value;
     if (res && !triggeredAchievementsRef.current.has(id)) {
       triggeredAchievementsRef.current.add(id);
-
+      achievementSound();
       showAchievementToast([i18n.t(`data.${id}`, { ns: "achievements" })]);
 
-      await handleAchievementPush(
-        [{ player: playerAddress, achievementId: id }],
-        achievementSound
-      );
+      await handleAchievementPush([
+        { player: playerAddress, achievementId: id },
+      ]);
 
       break;
     }
