@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -46,6 +47,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { checkDailyAchievement } from "../utils/handleAchievements.ts";
 import { retryCachedAchievements } from "../utils/retryCachedAchievements.ts";
 
 export interface IGameContext {
@@ -140,6 +142,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
+  const ggAchievementsFF = useFeatureFlagEnabled("global", "gg");
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
@@ -153,6 +156,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     setup: {
       clientComponents: { Game },
+      account: { account },
     },
     syncCall,
   } = useDojo();
@@ -179,10 +183,36 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
+  const triggeredAchievementsRef = useRef<Set<string>>(new Set());
+
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
     animationSpeed
   );
+
+  // useEffect(() => {
+  //   if (!ggAchievementsFF || !game?.player_score || !account.address) return;
+
+  //   checkDailyAchievement(
+  //     "score",
+  //     game.player_score,
+  //     account.address,
+  //     achievementSound,
+  //     triggeredAchievementsRef
+  //   );
+  // }, [game?.player_score]);
+
+  useEffect(() => {
+    if (!ggAchievementsFF || !game?.level || !account.address) return;
+
+    checkDailyAchievement(
+      "level",
+      game.level,
+      account.address,
+      achievementSound,
+      triggeredAchievementsRef
+    );
+  }, [game?.level]);
 
   const {
     setAnimatedCard,
@@ -251,9 +281,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     refetchSpecialCardsData(modId, gameId);
+    triggeredAchievementsRef.current.clear();
   };
 
   const prepareNewGame = () => {
+    localStorage.removeItem("GAME_ID");
     resetLevel();
     setHand([]);
   };
@@ -343,6 +375,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
+          // if (response.cardActivateEvent && ggAchievementsFF) {
+          //   const specialCardInHand =
+          //     specialCards[response.cardActivateEvent.special_id];
+
+          //   checkDailyAchievement(
+          //     "special",
+          //     specialCardInHand.card_id ?? 0,
+          //     account.address,
+          //     achievementSound,
+          //     triggeredAchievementsRef
+          //   );
+          // }
+
           animatePlay({
             playEvents: response,
             playAnimationDuration,
@@ -377,6 +422,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             specialCards,
             setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
           });
+
           refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);

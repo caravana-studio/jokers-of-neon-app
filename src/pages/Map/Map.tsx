@@ -18,6 +18,7 @@ import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -35,6 +36,7 @@ export const Map = () => {
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
   const navigate = useNavigate();
+  const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -86,7 +88,7 @@ export const Map = () => {
           <MobileCoins fontSize={"15px"} iconSize={19} />
         </Flex>
       ) : (
-        <Flex position="absolute" top={"17px"} left={'55px'} zIndex={1000}>
+        <Flex position="absolute" top={"17px"} left={"55px"} zIndex={1000}>
           <MobileCoins fontSize={"20px"} iconSize={24} />
         </Flex>
       )}
@@ -114,22 +116,31 @@ export const Map = () => {
           />
         )}
       </ReactFlow>
-      {isSmallScreen && (
-        <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
+
+      <Flex
+        position="absolute"
+        bottom={isSmallScreen ? 0 : "65px"}
+        w="100%"
+        zIndex={1000}
+      >
+        {isSmallScreen ? (
           <MobileBottomBar
             firstButton={
-              isReachable ? {
-                onClick: handleGoClick,
-                label: t("go"),
-              } : undefined
+              isReachable
+                ? {
+                    onClick: handleGoClick,
+                    label: t("go"),
+                  }
+                : undefined
             }
-            secondButton={
-              undefined
-            }
+            secondButton={backToGameButtonProps}
             hideDeckButton
           />
-        </Flex>
-      )}
+        ) : (
+          <Flex margin={"0 auto"}>{backToGameButton}</Flex>
+        )}
+      </Flex>
+
       {isSmallScreen && selectedNodeData && <NodeDetailsMobileButton />}
     </div>
   );

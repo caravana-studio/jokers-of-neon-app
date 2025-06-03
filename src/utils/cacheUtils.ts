@@ -1,9 +1,9 @@
 import {
   CACHE_IMAGE,
   CACHE_VIDEO,
-  VIDEO_URLS,
   getDefaultImageUrls,
 } from "../constants/cacheUrls";
+import { VIDEO_URLS } from "../constants/videoConstants";
 
 const preloadMedia = async (cacheName: string, urls: string[]) => {
   try {
@@ -73,7 +73,7 @@ export const getImageFromCache = async (url: string): Promise<Blob | null> => {
 export const getVideoFromCache = async (
   url: string
 ): Promise<string | null> => {
-  const blob = await getBlobFromCache(url, CACHE_IMAGE);
+  const blob = await getBlobFromCache(url, CACHE_VIDEO);
   if (blob) {
     return URL.createObjectURL(blob);
   }
