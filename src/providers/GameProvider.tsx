@@ -46,6 +46,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { retryCachedAchievements } from "../utils/retryCachedAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -120,6 +121,7 @@ export interface IGameContext {
   cardTransformationLock: boolean;
   nodeRound: number;
   prepareNewGame: () => void;
+  surrenderGame: (gameId: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -162,6 +164,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     changeModifierCard,
     sellSpecialCard,
     mintGame,
+    surrenderGame,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -297,7 +300,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             console.log(`game ${newGameId} created`);
 
             await syncCall();
-            console.log("ready to play");
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
@@ -672,6 +674,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
+  useEffect(() => {
+    retryCachedAchievements();
+  }, []);
+
   const actions = {
     setPreSelectedCards,
     play: onPlayClick,
@@ -691,6 +697,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectCard,
     unPreSelectCard,
     togglePreselectedPowerUp,
+    surrenderGame,
   };
 
   return (
