@@ -284,6 +284,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const prepareNewGame = () => {
+    localStorage.removeItem("GAME_ID");
     resetLevel();
     setHand([]);
   };

@@ -9,6 +9,7 @@ import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
 import { ChooseCardsButton } from "../ChooseCardsButton";
 import { useCardsSelection } from "../../../hooks/useCardsSelection";
 import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
+import { MobileBottomBar } from "../../../components/MobileBottomBar";
 
 export const OpenLootBoxCardSelection = () => {
   const {
@@ -56,46 +57,56 @@ export const OpenLootBoxCardSelection = () => {
       );
     }
 
-    return continueButton;
+    return !isSmallScreen ? continueButton : null;
   };
 
   return (
-    <BackgroundDecoration>
+    <BackgroundDecoration contentHeight={isSmallScreen ? "85%" : "60%"}>
       {cards.length > 0 ? (
         <Flex
           height={"100%"}
-          justifyContent="center"
+          width={isSmallScreen ? "100%" : "auto"}
+          justifyContent={isSmallScreen ? "space-between" : "center"}
           flexDirection="column"
           gap={4}
         >
           <Flex
-            flexDirection={isSmallScreen ? "column" : "row"}
-            justifyContent="space-between"
-            alignItems="center"
-            mx={2}
-            opacity={animationRunning ? 0 : 1}
-            transition="opacity 0.3s ease"
-            gap={isSmallScreen ? 2 : 8}
+            flexDirection={"column"}
+            gap={4}
+            justifyContent={"center"}
+            height={isSmallScreen ? "100%" : "auto"}
           >
-            <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
-            <Checkbox
-              color="white"
-              isChecked={!!allSelected}
-              onChange={(e) => {
-                !e.target.checked ? setCardsToKeep([]) : setCardsToKeep(cards);
-              }}
+            <Flex
+              flexDirection={isSmallScreen ? "column" : "row"}
+              justifyContent="space-between"
+              alignItems="center"
+              mx={2}
+              opacity={animationRunning ? 0 : 1}
+              transition="opacity 0.3s ease"
+              gap={isSmallScreen ? 2 : 8}
             >
-              {t("store.packs.select-all-lbl").toUpperCase()}
-            </Checkbox>
+              <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
+              <Checkbox
+                color="white"
+                isChecked={!!allSelected}
+                onChange={(e) => {
+                  !e.target.checked
+                    ? setCardsToKeep([])
+                    : setCardsToKeep(cards);
+                }}
+              >
+                {t("store.packs.select-all-lbl").toUpperCase()}
+              </Checkbox>
+            </Flex>
+            <FlipCardGrid
+              cards={cards}
+              cardsToKeep={cardsToKeep}
+              flippedStates={flippedStates}
+              animationRunning={animationRunning}
+              onCardToggle={onCardToggle}
+              onGridClick={skipFlipping}
+            />
           </Flex>
-          <FlipCardGrid
-            cards={cards}
-            cardsToKeep={cardsToKeep}
-            flippedStates={flippedStates}
-            animationRunning={animationRunning}
-            onCardToggle={onCardToggle}
-            onGridClick={skipFlipping}
-          />
           <Flex
             flexDirection={isSmallScreen ? "column" : "row"}
             justifyContent="space-between"
@@ -109,6 +120,12 @@ export const OpenLootBoxCardSelection = () => {
             )}
             {renderContinueButton()}
           </Flex>
+          {isSmallScreen && (
+            <MobileBottomBar
+              secondButtonReactNode={continueButton}
+              hideDeckButton
+            />
+          )}
         </Flex>
       ) : (
         <Loading />
