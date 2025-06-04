@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { AchievementCompleted } from "../types/ScoreData";
 import { handleAchievementPush } from "../utils/pushAchievements";
 
-const controllerAccount = "0x0419D649F349f191dED9aE98F63627082D2D3BB6888aF8fB7CD387Ff54a054fC";
+const controllerAccount = "0x0247393f2b4F3915fD5eD5ACd704248CBD119709AE89A4787497D7157F4553b0";
 //   "0x010CC45E3ff2203e63797a8E4DeE0b7f1edcd3D2dd9157C9a5aDc642A04cf263";
 const achievementIds = [
   // "score-1",
@@ -35,7 +35,10 @@ const achievementIds = [
     // "sell-1",
     // "slot-1",
     // "straight-flush-1",
-    "neon-play-1",
+    // "neon-play-1",
+    // "level_daily_easy",
+    "level_daily_medium",
+    // "level_daily_hard",
 ];
 
 const achievementEvents: AchievementCompleted[] = achievementIds.map(
