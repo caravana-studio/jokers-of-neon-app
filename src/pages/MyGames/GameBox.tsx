@@ -9,6 +9,7 @@ import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
 import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
+import { formatNumber } from "../../utils/formatNumber.ts";
 
 export const GameBox = ({
   game,
@@ -102,7 +103,7 @@ export const GameBox = ({
           </Flex>
           {isSmallScreen && game.points !== undefined && (
             <Flex gap={1}>
-              <Text color="lightViolet">{game.points?.toLocaleString()}</Text>
+              <Text color="lightViolet">{formatNumber(game.points)}</Text>
               <Text>points</Text>
             </Flex>
           )}
