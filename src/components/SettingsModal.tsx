@@ -128,7 +128,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Slider
                 min={0}
                 max={1}
-                step={0.25}
+                step={0.01}
                 value={sfxVolume}
                 onChange={(value) => setSfxVolume(value)}
                 isDisabled={!sfxOn}
@@ -157,7 +157,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
               <Slider
                 min={0}
                 max={0.4}
-                step={0.1}
+                step={0.01}
                 value={musicVolume}
                 isDisabled={!isPlaying}
                 onChange={(value) => setMusicVolume(value)}
