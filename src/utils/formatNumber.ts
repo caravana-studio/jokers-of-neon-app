@@ -10,7 +10,11 @@ export const formatNumber = (n: number): string => {
   for (const unit of units) {
     if (n >= unit.value) {
       const reduced = n / unit.value;
-      return `${reduced.toFixed(1)}${unit.suffix}`;
+      const formatted = reduced.toFixed(1);
+      const cleaned = formatted.endsWith(".0")
+        ? formatted.slice(0, -2)
+        : formatted;
+      return `${cleaned}${unit.suffix}`;
     }
   }
 
