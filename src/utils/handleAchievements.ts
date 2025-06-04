@@ -36,7 +36,7 @@ export const checkDailyAchievement = async (
   const achievements = DAILY_ACHIEVEMENTS[type];
 
   for (const { id, value } of achievements) {
-    const res = type === "special" ? dataValue === value : dataValue >= value;
+    const res = type === "score" ? dataValue >= value : dataValue === value;
     if (res && !triggeredAchievementsRef.current.has(id)) {
       triggeredAchievementsRef.current.add(id);
       achievementSound();
