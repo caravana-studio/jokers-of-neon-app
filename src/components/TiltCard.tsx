@@ -28,6 +28,7 @@ import { TemporalBadge } from "./TemporalBadge.tsx";
 import { useGame } from "../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { BrokenCard } from "./BrokenCard.tsx";
+import { CardTooltip } from "./CardTooltip.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -76,7 +77,6 @@ export const TiltCard = ({
 
   const { getCardData } = useCardData();
 
-  const { name, description } = getCardData(modifiedCard.card_id ?? 0);
 
   const getModifierOffset = (index: number) => {
     if (isMobile) {
@@ -110,11 +110,7 @@ export const TiltCard = ({
         }}
       >
         <ConditionalTilt cardId={card.card_id ?? 0}>
-          <Tooltip
-            hasArrow
-            label={getTooltip(name, description)}
-            closeOnPointerDown
-          >
+          <CardTooltip card={card}>
             <Box
               onClick={(e) => {
                 e.stopPropagation();
@@ -154,7 +150,7 @@ export const TiltCard = ({
                 </>
               )}
             </Box>
-          </Tooltip>
+          </CardTooltip>
 
           {!onDeck && card.price && (
             <PriceBox
