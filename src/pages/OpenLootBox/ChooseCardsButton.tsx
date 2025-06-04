@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { BarButton } from "../../components/MobileBottomBar";
 
 interface ChooseCardsButtonProps {
   disabled: boolean;
@@ -21,13 +22,15 @@ export const ChooseCardsButton: React.FC<ChooseCardsButtonProps> = ({
 
   return (
     <>
-      <Button
+      <BarButton
         mx={{ base: 6, md: 0 }}
+        width={"auto"}
         fontSize={12}
         isDisabled={disabled}
         variant={disabled ? "defaultOutline" : "solid"}
         opacity={opacity}
         transition="opacity 0.3s ease"
+        label={t("store.packs.continue-btn")}
         onClick={() => {
           if (cardsToKeep === 0) {
             setConfirmationModalOpen(true);
@@ -35,9 +38,7 @@ export const ChooseCardsButton: React.FC<ChooseCardsButtonProps> = ({
             onConfirm();
           }
         }}
-      >
-        {t("store.packs.continue-btn")}
-      </Button>
+      />
 
       {confirmationModalOpen && (
         <ConfirmationModal

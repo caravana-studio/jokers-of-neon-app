@@ -22,6 +22,7 @@ const COMBINED_QUERY = gql`
  query ($playerName: String) {
    tokens: ${TOKEN_FIELD_NAME}(
      where: { player_nameEQ: $playerName }
+     first: 10000
    ) {
      edges {
        node {

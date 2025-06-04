@@ -9,6 +9,13 @@
     "show-finished-games": "Mostrar juegos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
+    "surrender": {
+      "action": "Rendirse",
+      "confirmation-modal": {
+        "title": "Rendirse",
+        "description": "¿Estás seguro de que quieres rendirte en el juego #{{gameId}}? Esta acción no se puede deshacer."
+      }
+    },
     "level-lbl": "Nivel",
     "status-lbl": "Estado",
     "points-lbl": "puntos",
@@ -78,11 +85,13 @@
     "community-mods": "Mods de la comunidad"
   },
   "power-ups": {
-    "title": "Power-ups",
-    "go-back": "Atrás"
+    "title": "Power-ups"
   },
   "open-lootbox": {
     "click-open": "Haz clic para abrir",
     "tap-open": "Toca para abrir"
+  },
+  "common": {
+    "go-back-btn": "Atrás"
   }
 }
