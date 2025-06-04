@@ -137,11 +137,11 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Atinge exatamente 21 com as cartas jogadas para ganhar +21 multi."
+      "description": "Atinge exatamente 21 pontos com as cartas jogadas para ganhar +21 multi."
     },
     "328": {
       "name": "Jogo Eficiente",
-      "description": "Ganhe +15 multi e +50 pontos ao jogar 3 ou menos cartas."
+      "description": "Ganhe +10 multi e +50 pontos ao jogar 3 ou menos cartas."
     },
     "329": {
       "name": "Sacrifício Especial",
@@ -149,7 +149,7 @@
     },
     "330": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe +3 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Ganhe +2 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atalho",
@@ -249,11 +249,11 @@
     },
     "355": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe +25 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
+      "description": "Ganhe +15 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
     },
     "356": {
       "name": "Guardião de Slot",
-      "description": "Ganhe +50 pontos para cada Slot desbloqueado, mas vazio."
+      "description": "Ganhe +100 pontos para cada Slot desbloqueado, mas vazio."
     },
     "357": {
       "name": "Apostadores de Alto Nível",

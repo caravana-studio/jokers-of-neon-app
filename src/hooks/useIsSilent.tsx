@@ -26,17 +26,37 @@ const isFigure = (rank: Cards) => {
   return rank === Cards.JACK || rank === Cards.QUEEN || rank === Cards.KING;
 };
 
+const isWeak = (rank: Cards) => {
+  return (
+    rank === Cards.TWO ||
+    rank === Cards.THREE ||
+    rank === Cards.FOUR ||
+    rank === Cards.FIVE
+  );
+};
+
 export const useIsSilent = (card: Card) => {
   const { isRageRound, rageCards } = useGameContext();
   const { getCardData } = useCardData();
 
   const { suit: idSuit, card: rank } = getCardData(card.card_id ?? 0);
   const suit = card.suit ?? idSuit;
+
+  if (
+    card.isModifier &&
+    rageCards.some(
+      (rageCard) => rageCard.card_id === rageCardIds.BROKEN_MODIFIERS
+    )
+  )
+    return true;
+
   const isSilent = rageCards.some((rageCard) => {
     return (
       getSilentTarget(rageCard.card_id!) === suit ||
       (rageCard.card_id === rageCardIds.BROKEN_FIGURES &&
-        isFigure(rank ?? Cards.ACE))
+        isFigure(rank ?? Cards.ACE)) ||
+      (rageCard.card_id === rageCardIds.BETRAYING_THE_WEAK &&
+        isWeak(rank ?? Cards.ACE))
     );
   });
   return isRageRound && isSilent;

@@ -137,11 +137,11 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Logra exactamente 21 con tus cartas jugadas para obtener +21 multi."
+      "description": "Logra exactamente 21 puntos con tus cartas jugadas para obtener +21 multi."
     },
     "328": {
       "name": "Juego Eficiente",
-      "description": "Gana +15 multi y +50 puntos al jugar 3 o menos cartas."
+      "description": "Gana +10 multi y +50 puntos al jugar 3 o menos cartas."
     },
     "329": {
       "name": "Sacrificio Especial",
@@ -149,7 +149,7 @@
     },
     "330": {
       "name": "Rompedor de Rages",
-      "description": "Obtén +3 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Obtén +2 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
     },
     "331": {
       "name": "Atajo",
@@ -249,11 +249,11 @@
     },
     "355": {
       "name": "Recompensas Quemadas",
-      "description": "Gana +25 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
+      "description": "Gana +15 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
     },
     "356": {
       "name": "Guardián de Slots",
-      "description": "Gana +50 puntos por cada Slot desbloqueado pero vacío."
+      "description": "Gana +100 puntos por cada Slot desbloqueado pero vacío."
     },
     "357": {
       "name": "Gran apostador",
@@ -285,7 +285,7 @@
     },
     "364": {
       "name": "Multiplicador de Cuadrados",
-      "description": "+4 multi por cada 4 cartas en tu mano."
+      "description": "+4 multi por cada 4 que tengas en tu mano."
     },
     "365": {
       "name": "Jackpot",

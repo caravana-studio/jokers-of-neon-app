@@ -1,5 +1,4 @@
 import { Box, Tooltip } from "@chakra-ui/react";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
@@ -11,6 +10,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
 
 const getStoreItemsBasedOnShopId = (shopId: number) => {
@@ -46,27 +46,32 @@ const StoreNode = ({ data }: any) => {
   const stateInMap = game?.state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
-  const description = useMemo(
-    () =>
-      `${t(`${data.shopId}.name`)}: 
-        ${t(
-          `${data.shopId}.content`,
-          getStoreItemsBasedOnShopId(data.shopId)
-        )}`,
-    [data.shopId]
-  );
+  const title = t(`${data.shopId}.name`)
+  const content = t(
+    `${data.shopId}.content`,
+    getStoreItemsBasedOnShopId(data.shopId)
+  )
   return (
-    <Tooltip label={description} placement="right">
+    <Tooltip
+      label={
+        <TooltipContent
+          title={title}
+          content={content}
+        />
+      }
+      boxShadow={"0px 0px 15px 0px #fff, 0px 0px 5px 0px #fff inset"}
+      w="1100px"
+      placement="right"
+    >
       <Box
         style={{
-          opacity: reachable || data.visited || data.current ? 1 : 0.5,
           background:
             data.current || data.visited
               ? BLUE
               : reachable
                 ? VIOLET
-                : "rgba(255,255,255,0.1)",
-          padding: 10,
+                : "transparent",
+
           borderRadius: "100%",
           width: 50,
           height: 50,
@@ -75,18 +80,30 @@ const StoreNode = ({ data }: any) => {
           justifyContent: "center",
           fontSize: 24,
           color: "white",
-          border: "1px solid #fff",
+          cursor: stateInMap && reachable ? "pointer" : "default",
+          boxShadow: data.current ? `0px 0px 18px 6px ${BLUE}` : "none",
+        }}
+        sx={{
+          transition: "all 0.2s ease-in-out",
           transform:
             selectedNodeData?.id === data.id ? "scale(1.2)" : "scale(1)",
-          cursor: stateInMap && reachable ? "pointer" : "default",
-          boxShadow: data.current ? "0px 0px 15px 12px #fff" : "none",
+          border: "1px solid",
+          borderColor:
+            selectedNodeData?.id === data.id ? "white" : "transparent",
+          "&:hover": {
+            borderColor:
+              reachable || data.visited || data.current
+                ? "white"
+                : "transparent",
+            transform: "scale(1.2)",
+          },
         }}
         onClick={() => {
           isSmallScreen &&
             setSelectedNodeData({
               id: data.id,
-              title: t("shop"),
-              content: description,
+              title: title,
+              content: content,
               nodeType: NodeType.STORE,
             });
 
@@ -101,7 +118,11 @@ const StoreNode = ({ data }: any) => {
           }
         }}
       >
-        <CachedImage src={"/map/icons/shop.png"} alt="shop" />
+        <CachedImage
+          w="100%"
+          src={`/map/icons/rewards/${data.shopId}${reachable || data.visited || data.current ? "" : "-off"}.png`}
+          alt="shop"
+        />
 
         <Handle type="target" position={Position.Top} style={{ opacity: 0 }} />
         <Handle

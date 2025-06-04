@@ -1,4 +1,4 @@
-import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -8,26 +8,48 @@ import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameSummary } from "./MyGames.tsx";
+import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
 
-export const GameBox = ({ game }: { game: GameSummary }) => {
+export const GameBox = ({
+  game,
+  onSurrendered,
+}: {
+  game: GameSummary;
+  onSurrendered?: (gameId: number) => void;
+}) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
 
   const { syncCall } = useDojo();
-  const { executeCreateGame, setGameId } = useGameContext();
+  const { executeCreateGame, setGameId, prepareNewGame, surrenderGame } =
+    useGameContext();
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpened, setIsModalOpened] = useState(false);
   const navigate = useNavigate();
 
-  const handleButtonClick = async () => {
+  const handleContinueButtonClick = async () => {
     setIsLoading(true);
+    prepareNewGame();
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
       setGameId(game.id);
       await syncCall();
       navigate(`/redirect/state`);
+    }
+  };
+
+  const handleSurrenderButtonClick = async () => {
+    setIsLoading(true);
+    try {
+      surrenderGame(game.id);
+      onSurrendered?.(game.id);
+    } catch {
+    } finally {
+      setIsLoading(false);
+      setIsModalOpened(false);
     }
   };
 
@@ -51,7 +73,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         px={isSmallScreen ? 1 : 3}
       >
         {/* Game ID Section */}
-        <Flex w={isSmallScreen ? "35%" : "30%"} alignItems="center" gap={1.5}>
+        <Flex alignItems="center" gap={1.5}>
           <CachedImage
             src="/logos/jn.png"
             height={isSmallScreen ? "15px" : "25px"}
@@ -67,7 +89,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         </Flex>
 
         {/* Game Info Section */}
-        <Flex w={isSmallScreen ? "35%" : "30%"} flexDirection="column" mt={1}>
+        <Flex flexDirection="column" mt={1}>
           {game.level && (
             <Flex gap={1}>
               <Text>{t("level-lbl")}:</Text>
@@ -88,7 +110,7 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
 
         {/* Points Section - Desktop Only */}
         {!isSmallScreen && (
-          <Flex w="20%">
+          <Flex>
             {game.points !== undefined && (
               <Flex gap={1}>
                 <Text fontSize="lg" color="lightViolet">
@@ -101,22 +123,49 @@ export const GameBox = ({ game }: { game: GameSummary }) => {
         )}
 
         {/* Action Button Section */}
-        <Flex w={isSmallScreen ? "30%" : "20%"} justifyContent="flex-end">
+        <Flex w={isSmallScreen ? "35%" : "25%"} justifyContent="flex-end">
           {game.status !== GameStateEnum.GameOver && (
-            <Flex gap={3} alignItems={"center"}>
-              {isLoading && <Spinner size={{ base: "xs", sm: "sm" }} />}
+            <Flex gap={4} alignItems={"center"}>
+              <Spinner
+                size={{ base: "xs", sm: "sm" }}
+                visibility={isLoading ? "visible" : "hidden"}
+                px={2}
+              />
               <Button
                 size="sm"
                 width={isSmallScreen ? "60px" : "110px"}
                 h={isSmallScreen ? "25px" : undefined}
                 variant="secondarySolid"
-                onClick={handleButtonClick}
+                onClick={handleContinueButtonClick}
                 disabled={isLoading}
               >
                 {t(
-                  game.status === GameStateEnum.NotStarted ? "start-btn" : "continue-btn"
+                  game.status === GameStateEnum.NotStarted
+                    ? "start-btn"
+                    : "continue-btn"
                 ).toUpperCase()}
               </Button>
+              <Tooltip label={t("surrender.action")}>
+                <Button
+                  size="xs"
+                  width={"auto"}
+                  h={isSmallScreen ? "25px" : undefined}
+                  variant="solid"
+                  onClick={() => setIsModalOpened(true)}
+                  disabled={isLoading}
+                >
+                  X
+                </Button>
+              </Tooltip>
+              <ConfirmationModal
+                isOpen={isModalOpened}
+                close={() => setIsModalOpened(false)}
+                title={t("surrender.confirmation-modal.title")}
+                description={t("surrender.confirmation-modal.description", {
+                  gameId: game.id,
+                })}
+                onConfirm={handleSurrenderButtonClick}
+              />
             </Flex>
           )}
         </Flex>

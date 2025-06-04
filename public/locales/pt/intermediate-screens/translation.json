@@ -1,4 +1,7 @@
 {
+  "map": {
+    "level": "NÍVEL"
+  },
   "my-games": {
     "title": "Meus jogos",
     "go-back": "Voltar",
@@ -6,6 +9,13 @@
     "show-finished-games": "Mostrar jogos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
+    "surrender": {
+      "action": "Desistir",
+      "confirmation-modal": {
+        "title": "Desistir",
+        "description": "Tem certeza de que deseja desistir do jogo #{{gameId}}? Esta ação não pode ser desfeita."
+      }
+    },
     "level-lbl": "Nível",
     "status-lbl": "Estado",
     "points-lbl": "pontos",
@@ -47,8 +57,7 @@
   },
   "rewards-details": {
     "labels": {
-      "title-1": "Nível",
-      "title-2": "completado!",
+      "title": "Rodada {{round}} completada!",
       "base": "base",
       "level-bonus": "Bônus de nível",
       "discards-left": "{{discards}} Descartes restantes",
@@ -76,7 +85,13 @@
     "community-mods": "Mods da comunidade"
   },
   "power-ups": {
-    "title": "Power-ups",
-    "go-back": "Voltar"
+    "title": "Power-ups"
+  },
+  "open-lootbox": {
+    "click-open": "Clique para abrir",
+    "tap-open": "Toque para abrir"
+  },
+  "common": {
+    "go-back-btn": "Voltar"
   }
 }

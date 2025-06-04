@@ -1,4 +1,8 @@
 {
+  "gg-banner": {
+    "title": "GG Event active",
+    "description": "Click <0>here</0> to join the GG tournament and win exclusive rewards!"
+  },
   "controller": "Controller account",
   "error": {
     "labels": {
@@ -10,7 +14,7 @@
     "compact-round-data": {
       "my-score": "My score",
       "target": "Target",
-      "round": "Round {{round}}"
+      "level-round": "L{{level}} Round {{round}}"
     },
     "card-types": {
       "Common": "Traditional",
@@ -30,6 +34,7 @@
       }
     },
     "round-points": {
+      "level": "L{{level}}",
       "round": "Round",
       "target-score": "Score",
       "score": "Score {{score}} to clear round {{round}}"
@@ -92,7 +97,7 @@
       "pages": {
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
-        "store": "Rewards - {{shopName}}",
+        "store": "Shop - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rage Round",
         "round": "Round",

@@ -7,6 +7,7 @@ import { StorePreviewComponent } from "../../components/StorePreviewComponent.ts
 import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
+import { StorePreviewSlotComponentMobile } from "../../components/StorePreviewSlotComponent.mobile.tsx";
 
 export const PreviewSlot = () => {
   const navigate = useNavigate();
@@ -29,12 +30,14 @@ export const PreviewSlot = () => {
       ? cash < Number(specialSlotItem?.discount_cost ?? 0)
       : cash < Number(price));
 
+  const handleBuyClick = async () => {
+    await buySpecialSlot();
+    navigate(-1);
+  };
+
   const buyButton = (
     <Button
-      onClick={() => {
-        buySpecialSlot();
-        navigate(-1);
-      }}
+      onClick={handleBuyClick}
       isDisabled={notEnoughCash || locked || buyDisabled}
       variant="outlinePrimaryGlow"
       height={{ base: "40px", sm: "100%" }}
@@ -59,7 +62,31 @@ export const PreviewSlot = () => {
       width={imgSize}
     />
   );
-  return (
+
+  const props = {
+    image: image,
+    title: t("slot-title"),
+    description: t("slot-description"),
+    price: Number(price),
+    discountPrice: Number(specialSlotItem?.discount_cost ?? 0),
+  };
+
+  return isSmallScreen ? (
+    <StorePreviewSlotComponentMobile
+      {...props}
+      buyButton={{
+        onClick: handleBuyClick,
+        label: t("labels.buy").toUpperCase(),
+        disabled: notEnoughCash || locked || buyDisabled,
+        disabledText: notEnoughCash ? t("tooltip.no-coins") : "",
+      }}
+      image={image}
+      title={t("slot-title")}
+      description={t("slot-description")}
+      price={Number(price)}
+      discountPrice={Number(specialSlotItem?.discount_cost ?? 0)}
+    />
+  ) : (
     <StorePreviewComponent
       buyButton={tooltipButton}
       image={image}

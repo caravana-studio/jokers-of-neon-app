@@ -1,10 +1,34 @@
 {
-    "round": {
-        "name": "Round {{round}}"
-    },
-    "rage": {
-        "name": "Rage round {{round}}",
-        "power": "Power: {{power}}"
-    },
-    "go": "Go"
+  "round": {
+    "name": "Normal round {{round}}"
+  },
+  "rage": {
+    "name": "Rage round {{round}}",
+    "power": "Power: {{power}}",
+    "intermediate": "Intermediate",
+    "final": "Final"
+  },
+  "go": "Go",
+  "legend": {
+    "title": "Legend",
+    "nodes": {
+      "round": {
+        "title": "Normal round"
+      },
+      "rage": {
+        "intermediate": "Intermediate",
+        "final": "Final",
+        "title": "Rage round"
+      },
+      "shop": {
+        "title": "Shop",
+        "deck": "Deck",
+        "global": "Global",
+        "specials": "Specials",
+        "level-ups": "Level ups",
+        "modifiers": "Modifiers",
+        "mix": "Mix"
+      }
+    }
+  }
 }

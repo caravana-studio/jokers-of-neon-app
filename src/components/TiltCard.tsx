@@ -4,7 +4,8 @@ import Tilt from "react-parallax-tilt";
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
-  MODIFIERS_OFFSET,
+  MODIFIERS_OFFSET_X,
+  MODIFIERS_OFFSET_Y,
   TILT_OPTIONS,
 } from "../constants/visualProps";
 
@@ -24,6 +25,9 @@ import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
+import { useGame } from "../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { BrokenCard } from "./BrokenCard.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -64,14 +68,31 @@ export const TiltCard = ({
       : CARD_WIDTH;
 
   const modifiedCard = useTransformedCard(card);
-
   const isSilent = useIsSilent(modifiedCard);
+
   const { t } = useTranslation(["store"]);
   const { isClassic } = useGameContext();
+  const game = useGame();
 
   const { getCardData } = useCardData();
 
   const { name, description } = getCardData(modifiedCard.card_id ?? 0);
+
+  const getModifierOffset = (index: number) => {
+    if (isMobile) {
+      return {
+        top: [`${MODIFIERS_OFFSET_Y[0]}px`, `${MODIFIERS_OFFSET_Y[1]}px`],
+        left: [
+          `${MODIFIERS_OFFSET_X[0] * (index + 1)}px`,
+          `${MODIFIERS_OFFSET_X[1] * (index + 1)}px`,
+        ],
+      };
+    }
+    return {
+      top: `${MODIFIERS_OFFSET_Y[0]}px`,
+      left: `${MODIFIERS_OFFSET_X[0] * (index + 1)}px`,
+    };
+  };
 
   const tiltCardComponent = (
     <Box
@@ -114,21 +135,8 @@ export const TiltCard = ({
                 className={className}
               />
 
-              {isSilent && !onDeck && (
-                <>
-                  <Box
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    w="100%"
-                    h="100%"
-                    backgroundColor="rgba(0,0,0,0.3)"
-                    backgroundImage={'url("/broken.png")'}
-                    backgroundSize="cover"
-                    borderRadius={isPack ? {} : { base: "5px", sm: "8px" }}
-                    pointerEvents="none"
-                  />
-                </>
+              {isSilent && game?.state === GameStateEnum.Rage && (
+                <BrokenCard onDeck={onDeck} isPack={isPack} />
               )}
               {used && (
                 <>
@@ -170,13 +178,16 @@ export const TiltCard = ({
       </Box>
       {card.modifiers?.map((c, index) => {
         const { name, description } = getCardData(c.card_id ?? 0);
+        const { top, left } = getModifierOffset(index);
+        const isModifierSilent = useIsSilent(c);
+
         return (
           <Box
             key={c.id}
             sx={{
               zIndex: 5 - index,
-              top: `-${MODIFIERS_OFFSET}px`,
-              left: `-${MODIFIERS_OFFSET * (index + 1)}px`,
+              top,
+              left,
               position: "absolute",
             }}
           >
@@ -199,6 +210,9 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
+                  {isModifierSilent && game?.state === GameStateEnum.Rage && (
+                    <BrokenCard onDeck={onDeck} isPack={isPack} />
+                  )}
                 </Tooltip>
               </AnimatedCard>
             </Tilt>

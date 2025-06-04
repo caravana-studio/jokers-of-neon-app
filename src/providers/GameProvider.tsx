@@ -119,6 +119,8 @@ export interface IGameContext {
   playerScore: number;
   cardTransformationLock: boolean;
   nodeRound: number;
+  prepareNewGame: () => void;
+  surrenderGame: (gameId: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -161,6 +163,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     changeModifierCard,
     sellSpecialCard,
     mintGame,
+    surrenderGame,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -249,6 +252,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   };
 
+  const prepareNewGame = () => {
+    localStorage.removeItem("GAME_ID");
+    resetLevel();
+    setHand([]);
+  };
+
   const toggleSortBy = () => {
     if (sortBySuit) {
       localStorage.removeItem(SORT_BY_SUIT);
@@ -284,7 +293,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
             resetLevel();
-            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
             setHand(hand);
             setGameId(newGameId);
             clearPreSelection();
@@ -295,6 +303,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
+
+            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           } else {
             setError(true);
           }
@@ -683,6 +693,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectCard,
     unPreSelectCard,
     togglePreselectedPowerUp,
+    surrenderGame,
   };
 
   return (
@@ -694,6 +705,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         discards,
         powerUpIsPreselected,
         resetLevel,
+        prepareNewGame,
       }}
     >
       {children}

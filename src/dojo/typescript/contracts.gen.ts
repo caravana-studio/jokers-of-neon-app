@@ -1003,6 +1003,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_surrender_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "surrender",
+			calldata: [gameId],
+		};
+	};
+
+	const game_system_surrender = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_surrender_calldata(gameId),
+				"jokers_of_neon_core",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1053,6 +1074,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildStartGameCalldata: build_game_system_startGame_calldata,
 			supportsInterface: game_system_supportsInterface,
 			buildSupportsInterfaceCalldata: build_game_system_supportsInterface_calldata,
+			surrender: game_system_surrender,
+			buildSurrenderCalldata: build_game_system_surrender_calldata,
 			symbol: game_system_symbol,
 			buildSymbolCalldata: build_game_system_symbol_calldata,
 			tokenUri: game_system_tokenUri,

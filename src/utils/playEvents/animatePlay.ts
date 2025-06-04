@@ -322,7 +322,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       setTimeout(() => {
         setRoundRewards({
           ...playEvents.detailEarned!,
-          level: level,
+          roundNumber: level,
         });
         setIsRageRound(false);
         navigate("/rewards");

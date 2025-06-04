@@ -1,16 +1,16 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BackToGameBtn } from "../../components/BackToGameBtn";
+import { useNavigate } from "react-router-dom";
 import { CashSymbol } from "../../components/CashSymbol";
+import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
-import { useNavigate } from "react-router-dom";
-import { DeckPreviewTable } from "../../components/DeckPreview/DeckPreviewTable";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -39,7 +39,7 @@ export const DeckPageContentMobile = ({
   const { cash, burnCard, burnItem } = useStore();
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(() => navigate(-1));
+    burnCard(card).then(() => navigate("/store"));
   };
 
   const effectiveCost: number =
@@ -47,31 +47,31 @@ export const DeckPageContentMobile = ({
       ? Number(burnItem.discount_cost)
       : Number(burnItem.cost);
 
+  const { backToGameButtonProps } = useBackToGameButton();
+
   const bottomBar = (
     <MobileBottomBar
       firstButton={
-        state.burn ? (
-          <Button
-            size="xs"
-            fontSize={10}
-            isDisabled={
-              cardToBurn === undefined ||
-              cash < effectiveCost ||
-              burnItem.purchased
+        state.burn
+          ? {
+              onClick: () => {
+                if (cardToBurn) handleBurnCard(cardToBurn);
+              },
+              label: (
+                <>
+                  {t("btns.burn").toUpperCase()}
+                  {" " + effectiveCost}
+                  <CashSymbol />
+                </>
+              ),
+              disabled:
+                cardToBurn === undefined ||
+                cash < effectiveCost ||
+                burnItem.purchased,
             }
-            onClick={() => {
-              if (cardToBurn) handleBurnCard(cardToBurn);
-            }}
-          >
-            {t("btns.burn").toUpperCase()}
-            {" " + effectiveCost}
-            <CashSymbol />
-          </Button>
-        ) : (
-          <></>
-        )
+          : undefined
       }
-      secondButton={<BackToGameBtn />}
+      secondButton={backToGameButtonProps}
       hideDeckButton
     />
   );

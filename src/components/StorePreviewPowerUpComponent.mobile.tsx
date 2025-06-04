@@ -3,11 +3,15 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MobileCoins } from "../pages/store/Coins";
 import { colorizeText } from "../utils/getTooltip";
-import { MobileBottomBar } from "./MobileBottomBar";
+import { BarButtonProps, MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
 import { IStorePreviewComponent } from "./StorePreviewComponent";
 import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
+
+interface IStorePreviewComponentMobile extends IStorePreviewComponent {
+  buyButton: BarButtonProps;
+}
 
 export const StorePreviewPowerUpComponentMobile = ({
   image,
@@ -18,7 +22,7 @@ export const StorePreviewPowerUpComponentMobile = ({
   discountPrice,
   buyButton,
   tab,
-}: IStorePreviewComponent) => {
+}: IStorePreviewComponentMobile) => {
   const navigate = useNavigate();
 
   const { t } = useTranslation(["store"]);
@@ -87,20 +91,13 @@ export const StorePreviewPowerUpComponentMobile = ({
         <MobileBottomBar
           hideDeckButton
           firstButton={
-            <Button
-              size={"xs"}
-              onClick={() => {
+            {
+              onClick: () => {
                 sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
-                navigate(-1);
-              }}
-              lineHeight={1.6}
-              variant="outlinePrimaryGlow"
-              fontSize={10}
-              minWidth={"100px"}
-              height={["30px", "32px"]}
-            >
-              {t("store.preview-card.labels.close").toUpperCase()}
-            </Button>
+                navigate("/store");
+              },
+              label: t("store.preview-card.labels.close").toUpperCase(),
+            }
           }
           secondButton={buyButton}
         />

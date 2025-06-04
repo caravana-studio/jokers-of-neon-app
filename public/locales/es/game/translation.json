@@ -1,4 +1,8 @@
 {
+  "gg-banner": {
+    "title": "Evento GG activo",
+    "description": "Haz clic <0>aquí</0> para unirte al torneo GG y ganar recompensas exclusivas!"
+  },
   "controller": "Cuenta de controller",
   "error": {
     "labels": {
@@ -10,7 +14,7 @@
     "compact-round-data": {
       "my-score": "Puntaje",
       "target": "Objetivo",
-      "round": "Ronda {{round}}"
+      "level-round": "N{{level}} Ronda {{round}}"
     },
     "card-types": {
       "Common": "Tradicional",
@@ -30,6 +34,7 @@
       }
     },
     "round-points": {
+      "level": "N{{level}}",
       "round": "Ronda",
       "target-score": "Puntos",
       "score": "Suma {{score}} para superar la ronda {{round}}"
@@ -92,7 +97,7 @@
       "pages": {
         "gameover": "Fin del juego",
         "open-loot-box": "Abrir caja",
-        "store": "Recompensas - {{shopName}}",
+        "store": "Tienda - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Ronda Rage",
         "round": "Ronda"

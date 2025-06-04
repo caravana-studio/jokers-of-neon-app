@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
 import { useGame } from "../../../dojo/queries/useGame";
-import { useCurrentPageName } from "../../../hooks/useCurrentPageName";
 import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
@@ -15,11 +14,15 @@ import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
+import { TutorialBtn } from "../Buttons/TutorialBtn";
+import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
+import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 
 export const SidebarMenu = () => {
   const game = useGame();
   const navigate = useNavigate();
-  const page = useCurrentPageName();
+  const page = useCurrentPageInfo();
+  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const iconWidth = "20px";
 
@@ -59,6 +62,7 @@ export const SidebarMenu = () => {
         <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
         <DiscordLink width={iconWidth} />
+        {!hideTutorialFF && <TutorialBtn width={iconWidth} />}
       </Flex>
       <Flex
         gap={4}
@@ -93,7 +97,11 @@ export const SidebarMenu = () => {
               {animatedText}
             </Heading>
           </AnimatedText>
-          <MenuBtn icon={Icons.CIRCLE} description={""} width={iconWidth} />
+          <MenuBtn
+            icon={page?.icon ?? Icons.CIRCLE}
+            description={""}
+            width={iconWidth}
+          />
           <Flex
             sx={{
               h: "30px",

@@ -1,4 +1,7 @@
 {
+  "map": {
+    "level": "LEVEL"
+  },
   "my-games": {
     "title": "My Games",
     "go-back": "Go back",
@@ -6,6 +9,13 @@
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
+    "surrender": { 
+      "action": "Surrender",
+      "confirmation-modal": {
+        "title": "Surrender",
+        "description": "Are you sure you want to surrender the game #{{gameId}}? There is no way to undo this action."
+      }
+    },
     "level-lbl": "Level",
     "status-lbl": "Status",
     "points-lbl": "points",
@@ -47,8 +57,7 @@
   },
   "rewards-details": {
     "labels": {
-      "title-1": "Level",
-      "title-2": "completed!",
+      "title": "Round {{round}} completed!",
       "base": "base",
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
@@ -76,7 +85,13 @@
     "community-mods": "Community mods"
   },
   "power-ups": {
-    "title": "Power-ups",
-    "go-back": "Go back"
+    "title": "Power-ups"
+  },
+  "open-lootbox": {
+    "click-open": "Click to open",
+    "tap-open": "Tap to open"
+  },
+  "common": {
+    "go-back-btn": "Go back"
   }
 }

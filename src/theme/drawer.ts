@@ -28,7 +28,7 @@ const fullscreen = definePartsStyle({
   dialog: {
     w: "100vw",
     maxW: "100vw",
-    h: "100vh",
+    h: "100%",
     borderRadius: "0",
     margin: 0,
     bg: "rgba(0, 0, 0, .5)",

@@ -1,11 +1,19 @@
 import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
+import {
+  BarButtonProps,
+  MobileBottomBar,
+} from "../../components/MobileBottomBar";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { ManagePageContentProps } from "./ManagePageContent";
 import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
 import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
+import { ReactNode } from "react";
+
+interface ManageContentMobileProps extends ManagePageContentProps {
+  goBackButton: ReactNode;
+}
 
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
@@ -14,7 +22,7 @@ export const ManagePageContentMobile = ({
   onCardClick,
   goBackButton,
   onTabChange,
-}: ManagePageContentProps) => {
+}: ManageContentMobileProps) => {
   const { t } = useTranslation("intermediate-screens");
 
   return (
@@ -24,7 +32,7 @@ export const ManagePageContentMobile = ({
       bottomBar={
         <MobileBottomBar
           firstButton={undefined}
-          secondButton={goBackButton}
+          secondButtonReactNode={goBackButton}
           hideDeckButton
         />
       }

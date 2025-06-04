@@ -2,7 +2,7 @@ import ReactFlow, { Controls } from "reactflow";
 import "reactflow/dist/style.css";
 import EmojiNode from "./nodes/EmojiNode";
 
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -35,6 +36,7 @@ export const Map = () => {
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
   const navigate = useNavigate();
+  const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -82,12 +84,12 @@ export const Map = () => {
     <div style={{ height: "100%", width: "100%", zIndex: 10 }}>
       <MobileDecoration fadeToBlack />
       {isSmallScreen ? (
-        <Flex position="absolute" top={"20px"} left={4} zIndex={1000}>
+        <Flex position="absolute" top={"10px"} left={5} zIndex={1000}>
           <MobileCoins fontSize={"15px"} iconSize={19} />
         </Flex>
       ) : (
-        <Flex position="absolute" bottom={"55px"} right={'10px'} zIndex={1000}>
-          <MobileCoins fontSize={"18px"} iconSize={23} />
+        <Flex position="absolute" top={"17px"} left={"55px"} zIndex={1000}>
+          <MobileCoins fontSize={"20px"} iconSize={24} />
         </Flex>
       )}
       <ReactFlow
@@ -98,6 +100,7 @@ export const Map = () => {
           [NodeType.RAGE]: RageNode,
           [NodeType.STORE]: RewardNode,
           [NodeType.ROUND]: RoundNode,
+          [NodeType.CHALLENGE]: RoundNode,
         }}
         panOnScroll={false}
         zoomOnScroll={true}
@@ -113,27 +116,31 @@ export const Map = () => {
           />
         )}
       </ReactFlow>
-      {isSmallScreen && (
-        <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
+
+      <Flex
+        position="absolute"
+        bottom={isSmallScreen ? 0 : "65px"}
+        w="100%"
+        zIndex={1000}
+      >
+        {isSmallScreen ? (
           <MobileBottomBar
-            firstButton={undefined}
-            secondButton={
-              isReachable && (
-                <Button
-                  minWidth={"100px"}
-                  size={"xs"}
-                  lineHeight={1.6}
-                  fontSize={10}
-                  onClick={handleGoClick}
-                >
-                  {t("go")}
-                </Button>
-              )
+            firstButton={
+              isReachable
+                ? {
+                    onClick: handleGoClick,
+                    label: t("go"),
+                  }
+                : undefined
             }
+            secondButton={backToGameButtonProps}
             hideDeckButton
           />
-        </Flex>
-      )}
+        ) : (
+          <Flex margin={"0 auto"}>{backToGameButton}</Flex>
+        )}
+      </Flex>
+
       {isSmallScreen && selectedNodeData && <NodeDetailsMobileButton />}
     </div>
   );

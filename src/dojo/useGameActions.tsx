@@ -84,6 +84,37 @@ export const useGameActions = () => {
     }
   };
 
+  const surrenderGame = async (gameId: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.surrender(
+        account,
+        BigInt(gameId)
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Surrendering...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        console.log("Surrender Game " + gameId);
+        return {
+          gameId,
+        };
+      } else {
+        console.error("Error surrendering game:", tx);
+        return createGameEmptyResponse;
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return createGameEmptyResponse;
+    }
+  };
+
   const discard = async (
     gameId: number,
     cards: number[],
@@ -272,5 +303,6 @@ export const useGameActions = () => {
     sellSpecialCard,
     play,
     mintGame,
+    surrenderGame,
   };
 };

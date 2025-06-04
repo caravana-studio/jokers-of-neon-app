@@ -573,11 +573,11 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Hit exactly 21 with your played cards to gain +21 multi."
+      "description": "Hit exactly 21 points with your played cards to gain +21 multi."
     },
     "328": {
       "name": "Efficient Play",
-      "description": "Earn +15 multi and +50 points when playing 3 or fewer cards."
+      "description": "Earn +10 multi and +50 points when playing 3 or fewer cards."
     },
     "329": {
       "name": "Special Sacrifice",
@@ -585,7 +585,7 @@
     },
     "330": {
       "name": "Rage Breaker",
-      "description": "Gain +3 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
+      "description": "Gain +2 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
     },
     "331": {
       "name": "Shortcut",
@@ -685,11 +685,11 @@
     },
     "355": {
       "name": "Burning Rewards",
-      "description": "Gain +25 points (stacking) for each card burned from your deck. Currently +{{points}} points."
+      "description": "Gain +15 points (stacking) for each card burned from your deck. Currently +{{points}} points."
     },
     "356": {
       "name": "Slot Saver",
-      "description": "Earn +50 points for each unlocked but empty card slot."
+      "description": "Earn +100 points for each unlocked but empty card slot."
     },
     "357": {
       "name": "High Rollers",
