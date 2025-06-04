@@ -76,11 +76,11 @@ export const GameBox = ({
         <Flex alignItems="center" gap={1.5}>
           <CachedImage
             src="/logos/jn.png"
-            height={isSmallScreen ? "15px" : "25px"}
+            height={isSmallScreen ? "13px" : "25px"}
           />
           <Text
             fontFamily="Orbitron"
-            fontSize={isSmallScreen ? "13px" : "23px"}
+            fontSize={isSmallScreen ? "11px" : "23px"}
             fontWeight="bold"
           >
             {" "}
@@ -89,7 +89,7 @@ export const GameBox = ({
         </Flex>
 
         {/* Game Info Section */}
-        <Flex flexDirection="column" mt={1}>
+        <Flex flexDirection="column" mt={1} pr={2}>
           {game.level && (
             <Flex gap={1}>
               <Text>{t("level-lbl")}:</Text>
@@ -131,32 +131,37 @@ export const GameBox = ({
                 visibility={isLoading ? "visible" : "hidden"}
                 px={2}
               />
-              <Button
-                size="sm"
-                width={isSmallScreen ? "60px" : "110px"}
-                h={isSmallScreen ? "25px" : undefined}
-                variant="secondarySolid"
-                onClick={handleContinueButtonClick}
-                disabled={isLoading}
-              >
-                {t(
-                  game.status === GameStateEnum.NotStarted
-                    ? "start-btn"
-                    : "continue-btn"
-                ).toUpperCase()}
-              </Button>
-              <Tooltip label={t("surrender.action")}>
-                <Button
-                  size="xs"
-                  width={"auto"}
-                  h={isSmallScreen ? "25px" : undefined}
-                  variant="solid"
-                  onClick={() => setIsModalOpened(true)}
-                  disabled={isLoading}
-                >
-                  X
-                </Button>
-              </Tooltip>
+              {!isLoading && (
+                <>
+                  <Button
+                    size="sm"
+                    width={isSmallScreen ? "60px" : "110px"}
+                    h={isSmallScreen ? "25px" : undefined}
+                    variant="secondarySolid"
+                    onClick={handleContinueButtonClick}
+                    disabled={isLoading}
+                  >
+                    {t(
+                      game.status === GameStateEnum.NotStarted
+                        ? "start-btn"
+                        : "continue-btn"
+                    ).toUpperCase()}
+                  </Button>
+
+                  <Tooltip label={t("surrender.action")}>
+                    <Button
+                      size="xs"
+                      width={"auto"}
+                      h={isSmallScreen ? "25px" : undefined}
+                      variant="solid"
+                      onClick={() => setIsModalOpened(true)}
+                      disabled={isLoading}
+                    >
+                      X
+                    </Button>
+                  </Tooltip>
+                </>
+              )}
               <ConfirmationModal
                 isOpen={isModalOpened}
                 close={() => setIsModalOpened(false)}
