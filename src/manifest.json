@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x7059f05dd4c499022a93e2eb794f3004991e186f8b4a097927b0ee4e63a6e47",
-      "class_hash": "0x68f465a83e3a6346dd04f99ed502caa56dc65c900445ac134deb7d9a96dd780",
+      "address": "0x40b4816af5389b8b2f614c5e1f3c2da2c9fc73383dba2cd9b4b2b1b84152316",
+      "class_hash": "0x51ab831e5993633b7f75d43adfc67cf9ce2df0567bb9b1733bb85b1cd820cb1",
       "abi": [
         {
           "type": "impl",
@@ -1578,8 +1578,8 @@
       ]
     },
     {
-      "address": "0x1b76abeff716b081df3ff493e9dd5ebc789bedb5e057d1f823de3d05db74681",
-      "class_hash": "0x3e2f4638828370c34ada12d11ba655570ff282fd859d3e14e1d3381fbb2c664",
+      "address": "0x15aaf89b9469484cc464c4aab0a2ca24b53c76695388b945fc6d7d4e79681",
+      "class_hash": "0x362d1119964e28a30b523361983b6a49c70453f87e3e4a8f4b4c1a7c87abefe",
       "abi": [
         {
           "type": "impl",
@@ -2652,8 +2652,8 @@
       ]
     },
     {
-      "address": "0x1c2f43cef612962a3ebbe85ddf350b89cbf808b6e400e18580b0a7366c95cd1",
-      "class_hash": "0x1b0f7c228e26c17cf3ba16a2850fd8cbc312803d6d34eec9a982452468169e2",
+      "address": "0x6f068a899cbb745169657fe2d472c1514ff313edf02808b50d7c413133a5894",
+      "class_hash": "0x6369bd329c4ddc3cbafb147bc472dee53f76f0b619fb8fbaeacc432351020ad",
       "abi": [
         {
           "type": "impl",
@@ -3859,221 +3859,8 @@
       ]
     },
     {
-      "address": "0x59039c06c19f36179f311e19227647648cd55b788208c6707e6e25fadf9a1f4",
-      "class_hash": "0x5b4f010fcc018f4b54af4e8a3a62b55be4ed186cfa2151108e8915657eb10cf",
-      "abi": [
-        {
-          "type": "impl",
-          "name": "rage_system__ContractImpl",
-          "interface_name": "dojo::contract::interface::IContract"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::interface::IContract",
-          "items": []
-        },
-        {
-          "type": "impl",
-          "name": "rage_system__DeployedContractImpl",
-          "interface_name": "dojo::meta::interface::IDeployedResource"
-        },
-        {
-          "type": "struct",
-          "name": "core::byte_array::ByteArray",
-          "members": [
-            {
-              "name": "data",
-              "type": "core::array::Array::<core::bytes_31::bytes31>"
-            },
-            {
-              "name": "pending_word",
-              "type": "core::felt252"
-            },
-            {
-              "name": "pending_word_len",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::meta::interface::IDeployedResource",
-          "items": [
-            {
-              "type": "function",
-              "name": "dojo_name",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::byte_array::ByteArray"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "RageImpl",
-          "interface_name": "jokers_of_neon_core::systems::rage_system::IRageSystem"
-        },
-        {
-          "type": "interface",
-          "name": "jokers_of_neon_core::systems::rage_system::IRageSystem",
-          "items": [
-            {
-              "type": "function",
-              "name": "calculate",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u64"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "reset",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u64"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "function",
-          "name": "dojo_init",
-          "inputs": [],
-          "outputs": [],
-          "state_mutability": "view"
-        },
-        {
-          "type": "impl",
-          "name": "WorldProviderImpl",
-          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
-        },
-        {
-          "type": "struct",
-          "name": "dojo::world::iworld::IWorldDispatcher",
-          "members": [
-            {
-              "name": "contract_address",
-              "type": "core::starknet::contract_address::ContractAddress"
-            }
-          ]
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::world_provider::IWorldProvider",
-          "items": [
-            {
-              "type": "function",
-              "name": "world_dispatcher",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "dojo::world::iworld::IWorldDispatcher"
-                }
-              ],
-              "state_mutability": "view"
-            }
-          ]
-        },
-        {
-          "type": "impl",
-          "name": "UpgradeableImpl",
-          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
-        },
-        {
-          "type": "interface",
-          "name": "dojo::contract::components::upgradeable::IUpgradeable",
-          "items": [
-            {
-              "type": "function",
-              "name": "upgrade",
-              "inputs": [
-                {
-                  "name": "new_class_hash",
-                  "type": "core::starknet::class_hash::ClassHash"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            }
-          ]
-        },
-        {
-          "type": "constructor",
-          "name": "constructor",
-          "inputs": []
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-          "kind": "struct",
-          "members": [
-            {
-              "name": "class_hash",
-              "type": "core::starknet::class_hash::ClassHash",
-              "kind": "data"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "Upgraded",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
-              "kind": "nested"
-            }
-          ]
-        },
-        {
-          "type": "event",
-          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-          "kind": "enum",
-          "variants": []
-        },
-        {
-          "type": "event",
-          "name": "jokers_of_neon_core::systems::rage_system::rage_system::Event",
-          "kind": "enum",
-          "variants": [
-            {
-              "name": "UpgradeableEvent",
-              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
-              "kind": "nested"
-            },
-            {
-              "name": "WorldProviderEvent",
-              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
-              "kind": "nested"
-            }
-          ]
-        }
-      ],
-      "init_calldata": [],
-      "tag": "jokers_of_neon_core-rage_system",
-      "selector": "0x6f3f6a9f3bb61155624b3570aae217aca824fee9a1b7c18101dbfc4df322b2e",
-      "systems": [
-        "calculate",
-        "reset",
-        "upgrade"
-      ]
-    },
-    {
-      "address": "0x4be11037798b27fc8dd8c0312e98da79f62d3ee6d6461d27b3fe692fac26d22",
-      "class_hash": "0x70f4c4a3bb22f77bbf723e4d7d3d5a08f4930f7e40d03097ff31224c7d88bdf",
+      "address": "0x5284f8b14309b46b4c125e58e7ff87d347c20d8738ee7cab28ed1b380947bc5",
+      "class_hash": "0x31165f8004b5a5a614cf3c3fa4e186bcb88fee439130a2a5d1cd867d22c2074",
       "abi": [
         {
           "type": "impl",
@@ -4877,7 +4664,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1f73c09848ee6d75deedb2dbbecf2c375450f1b3086b8326c4c499648e0725c",
+      "class_hash": "0x1ae0179e7f909e75ddff13698f67d7e1642c258ef68316877c4011a1bafabb6",
       "tag": "jokers_of_neon_core-Game",
       "selector": "0x471153aaeb9b649e2e3a7709bcbe22e2f1c574e092379a6c5938fefe4f1f305"
     },
@@ -4988,6 +4775,12 @@
       "class_hash": "0x76375fd883220419e393659b5b41146b42a3cc322cd55b3bb6b43d3cf4ba804",
       "tag": "jokers_of_neon_core-RageRound",
       "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
+    },
+    {
+      "members": [],
+      "class_hash": "0x28bcfc7f5e84c91f904ed17737414a9e8ee0836db219a1a18652dca89574cc1",
+      "tag": "jokers_of_neon_core-Random",
+      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],
