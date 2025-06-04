@@ -243,7 +243,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
 		try {
-			console.log('vrf tx', getVrfTx("action_system", snAccount))
+			console.log('vrf tx ', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
 				[getVrfTx("action_system", snAccount), 
