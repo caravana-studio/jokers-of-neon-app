@@ -24,7 +24,8 @@ const getEntities = async <S extends Schema>(
   client: ToriiClient,
   components: Component<S, Metadata, undefined>[],
   query: torii.Query,
-  limit: number = 100
+  limit: number = 100,
+  retry: boolean = true
 ) => {
   let cursor = undefined;
   let continueFetching = true;
@@ -34,8 +35,9 @@ const getEntities = async <S extends Schema>(
     query.pagination.cursor = cursor;
 
     const fetchedEntities = await client.getEntities(query);
+    console.log(fetchedEntities);
 
-    if (fetchedEntities.items.length === 0) {
+    if (fetchedEntities.items.length === 0 && retry) {
       console.log("No entities found retrying...");
 
       if (attempts < 5) {
@@ -101,6 +103,13 @@ export async function setup({ ...config }: DojoConfig) {
       value: { Primitive: { U64: Number(gameID) || 0 } },
     };
 
+    const memberSpecialCards: torii.MemberClause = {
+      model: `${DOJO_NAMESPACE}-CurrentSpecialCards`,
+      member: "game_id",
+      operator: "Eq",
+      value: { Primitive: { U64: Number(gameID) || 0 } },
+    };
+
     const keysMod: torii.KeysClause = {
       keys: [undefined],
       pattern_matching: "FixedLen",
@@ -122,11 +131,42 @@ export async function setup({ ...config }: DojoConfig) {
     const query: torii.Query = {
       pagination: {
         limit: 1000,
-        direction: "Forward",
+        direction: "Backward",
         order_by: [],
         cursor: undefined,
       },
-      clause: clause,
+      clause: { Member: memberGame },
+      // clause: clause,
+      no_hashed_keys: false,
+      models: [],
+      historical: false,
+    };
+
+    const query1: torii.Query = {
+      pagination: {
+        limit: 1000,
+        direction: "Backward",
+        order_by: [],
+        cursor: undefined,
+      },
+      clause: {
+        Member: memberDeckCard,
+      },
+      no_hashed_keys: false,
+      models: [],
+      historical: false,
+    };
+
+    const query2: torii.Query = {
+      pagination: {
+        limit: 1000,
+        direction: "Backward",
+        order_by: [],
+        cursor: undefined,
+      },
+      clause: {
+        Member: memberSpecialCards,
+      },
       no_hashed_keys: false,
       models: [],
       historical: false,
@@ -135,13 +175,21 @@ export async function setup({ ...config }: DojoConfig) {
     if (gameID) {
       const startTime = performance.now();
       await getEntities(toriiClient, contractComponents as any, query, 1000);
+      await getEntities(toriiClient, contractComponents as any, query1, 1000);
+      await getEntities(
+        toriiClient,
+        contractComponents as any,
+        query2,
+        1000,
+        false
+      );
+
       sync = await syncEntities(
         toriiClient,
         contractComponents as any,
         KeysClause([], [], "VariableLen").build(),
         false
       );
-
       const endTime = performance.now();
       const timeTaken = endTime - startTime;
       // Log for load time
