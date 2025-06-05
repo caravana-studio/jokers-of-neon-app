@@ -59,7 +59,7 @@ export const CardTooltip = ({ card, children }: ICardTooltipProps) => {
               <Divider />
               <Flex gap={2} height={"30px"} alignItems={"center"}>
                 <Text fontSize="15px" lineHeight={2} height={"22px"}>
-                  {t("by")}:
+                  {t("by")}
                 </Text>
                 <Text
                   fontSize="15px"
