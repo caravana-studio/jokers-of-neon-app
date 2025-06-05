@@ -4,7 +4,6 @@ import { useDojo } from "../dojo/DojoContext";
 import { getGGQuestsCompleted } from "../dojo/queries/getGGQuestsCompleted";
 import { AchievementCompleted } from "../types/ScoreData";
 import CachedImage from "./CachedImage";
-import { handleAchievementPush } from "../utils/pushAchievements";
 
 export const GGBanner = () => {
   const { t } = useTranslation("game", { keyPrefix: "gg-banner" });
@@ -16,7 +15,7 @@ export const GGBanner = () => {
   const syncQuests = () => {
     console.log("syncing quests for user " + account?.address);
     getGGQuestsCompleted(client, account?.address).then((response) => {
-      console.log('ids: ', response);
+      console.log("ids: ", response);
       const achievementEvents: AchievementCompleted[] = response.map(
         (achievementId: string) => ({
           player: account?.address,
@@ -52,22 +51,29 @@ export const GGBanner = () => {
             {t("title")}
           </Heading>
         </Flex>
-        <Text>
-          <Trans
-            t={t}
-            i18nKey="description"
-            components={[
-              <Link
-                href="https://www.gg.xyz/game/851964?skip=0&take=6"
-                isExternal
-                color="blueLight"
-              />,
-            ]}
-          />
-        </Text>
-        <Button size="sm" mb={2} onClick={syncQuests}>
-          Sync quests
-        </Button>
+        <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
+          <Text>
+            <Trans
+              t={t}
+              i18nKey="description"
+              components={[
+                <Link
+                  href="https://www.gg.xyz/game/851964?skip=0&take=6"
+                  isExternal
+                  color="blueLight"
+                />,
+              ]}
+            />
+          </Text>
+          <Button
+            size={{ base: "xs", sm: "sm" }}
+            fontSize={{ base: "9px !important", sm: "13px !important" }}
+            mb={2}
+            onClick={syncQuests}
+          >
+            Sync
+          </Button>
+        </Flex>
       </Flex>
     </Flex>
   );
