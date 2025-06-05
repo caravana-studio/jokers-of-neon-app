@@ -1,4 +1,4 @@
-import { Box, SystemStyleObject, Tooltip } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
 import Tilt from "react-parallax-tilt";
 import {
@@ -11,6 +11,8 @@ import {
 
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { useGame } from "../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { useCardData } from "../providers/CardDataProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -18,17 +20,14 @@ import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { Card } from "../types/Card";
 import { useTransformedCard } from "../utils/cardTransformation/cardTransformation.ts";
-import { getTooltip } from "../utils/getTooltip.tsx";
 import { AnimatedCard } from "./AnimatedCard";
+import { BrokenCard } from "./BrokenCard.tsx";
 import CachedImage from "./CachedImage.tsx";
+import { CardTooltip } from "./CardTooltip.tsx";
 import { DraggableCard } from "./DraggableCard";
 import { PriceBox } from "./PriceBox.tsx";
 import { PurchasedLbl } from "./PurchasedLbl.tsx";
 import { TemporalBadge } from "./TemporalBadge.tsx";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { BrokenCard } from "./BrokenCard.tsx";
-import { CardTooltip } from "./CardTooltip.tsx";
 
 interface ICardProps {
   sx?: SystemStyleObject;
@@ -76,7 +75,6 @@ export const TiltCard = ({
   const game = useGame();
 
   const { getCardData } = useCardData();
-
 
   const getModifierOffset = (index: number) => {
     if (isMobile) {
@@ -189,12 +187,7 @@ export const TiltCard = ({
           >
             <Tilt {...TILT_OPTIONS}>
               <AnimatedCard idx={c.idx}>
-                <Tooltip
-                  hasArrow
-                  label={getTooltip(name, description)}
-                  placement="top"
-                  closeOnPointerDown
-                >
+                <CardTooltip card={c}>
                   <CachedImage
                     sx={{ maxWidth: "unset" }}
                     src={`/Cards/${c.img}`}
@@ -209,7 +202,7 @@ export const TiltCard = ({
                   {isModifierSilent && game?.state === GameStateEnum.Rage && (
                     <BrokenCard onDeck={onDeck} isPack={isPack} />
                   )}
-                </Tooltip>
+                </CardTooltip>
               </AnimatedCard>
             </Tilt>
           </Box>
