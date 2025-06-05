@@ -1,9 +1,31 @@
-import { Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDojo } from "../dojo/DojoContext";
+import { getGGQuestsCompleted } from "../dojo/queries/getGGQuestsCompleted";
+import { AchievementCompleted } from "../types/ScoreData";
 import CachedImage from "./CachedImage";
+import { handleAchievementPush } from "../utils/pushAchievements";
 
 export const GGBanner = () => {
   const { t } = useTranslation("game", { keyPrefix: "gg-banner" });
+  const {
+    setup: { client },
+    account: { account },
+  } = useDojo();
+
+  const syncQuests = () => {
+    console.log("syncing quests for user " + account?.address);
+    getGGQuestsCompleted(client, account?.address).then((response) => {
+      console.log('ids: ', response);
+      const achievementEvents: AchievementCompleted[] = response.map(
+        (achievementId: string) => ({
+          player: account?.address,
+          achievementId,
+        })
+      );
+      // handleAchievementPush(achievementEvents, () => {})
+    });
+  };
   return (
     <Flex
       flexDir="column"
@@ -20,28 +42,33 @@ export const GGBanner = () => {
       boxShadow="0px 0px 5px 0px #fff, 0px 0px 5px 0px #fff inset"
       gap={2}
     >
-      <Flex gap={3} alignItems="center">
-        <CachedImage
-          src="/logos/gg.png"
-          height={{ base: "15px", sm: "22px" }}
-        />
-        <Heading variant="italic" fontSize={{ base: "12px", sm: "18px" }}>
-          {t('title')}
-        </Heading>
+      <Flex flexDir="column" gap={4}>
+        <Flex gap={3} alignItems="center">
+          <CachedImage
+            src="/logos/gg.png"
+            height={{ base: "15px", sm: "22px" }}
+          />
+          <Heading variant="italic" fontSize={{ base: "12px", sm: "18px" }}>
+            {t("title")}
+          </Heading>
+        </Flex>
+        <Text>
+          <Trans
+            t={t}
+            i18nKey="description"
+            components={[
+              <Link
+                href="https://www.gg.xyz/game/851964?skip=0&take=6"
+                isExternal
+                color="blueLight"
+              />,
+            ]}
+          />
+        </Text>
+        <Button size="sm" mb={2} onClick={syncQuests}>
+          Sync quests
+        </Button>
       </Flex>
-      <Text>
-        <Trans
-          t={t}
-          i18nKey="description"
-          components={[
-            <Link
-              href="https://www.gg.xyz/game/851964?skip=0&take=6"
-              isExternal
-              color="blueLight"
-            />,
-          ]}
-        />
-      </Text>
     </Flex>
   );
 };
