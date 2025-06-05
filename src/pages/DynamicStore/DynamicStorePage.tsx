@@ -14,6 +14,7 @@ import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
@@ -52,6 +53,8 @@ export const DynamicStorePage = () => {
   const slotsLen = game?.special_slots;
 
   const { skipShop } = useShopActions();
+
+  const { nextLevelButton, nextLevelButtonProps } = useNextLevelButton();
 
   useRedirectByGameState();
 
@@ -208,8 +211,13 @@ export const DynamicStorePage = () => {
         </Flex>
         {isSmallScreen && (
           <MobileBottomBar
-            firstButton={manageItemsButton}
-            secondButton={nextButton}
+            firstButton={{
+              onClick: () => {
+                navigate("/manage");
+              },
+              label: t("manage-items"),
+            }}
+            secondButton={nextLevelButtonProps}
           />
         )}
         {!isSmallScreen && <PositionedGameDeck inStore />}

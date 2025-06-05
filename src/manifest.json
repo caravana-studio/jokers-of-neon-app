@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x55f8c500f5e67d33e91985c9d9d81917fb1de61a9fd16471a6fff04ec965bd7",
-      "class_hash": "0x8a8f70031959814ec1df972149428cd5a47f0c6f6d5e7759789db787d61748",
+      "address": "0x7059f05dd4c499022a93e2eb794f3004991e186f8b4a097927b0ee4e63a6e47",
+      "class_hash": "0x68f465a83e3a6346dd04f99ed502caa56dc65c900445ac134deb7d9a96dd780",
       "abi": [
         {
           "type": "impl",
@@ -1570,11 +1570,16 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-action_system",
       "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
-      "systems": ["play", "discard", "change_modifier_card", "upgrade"]
+      "systems": [
+        "play",
+        "discard",
+        "change_modifier_card",
+        "upgrade"
+      ]
     },
     {
-      "address": "0xee36cf446fb58d5b0b2bf8f0ffca701e797e4da4feabc70e2682481b7d021b",
-      "class_hash": "0x188a2fe2cc763914233bd8b45cae38558c06b4a17bd73bcf45ec54563da4831",
+      "address": "0x1b76abeff716b081df3ff493e9dd5ebc789bedb5e057d1f823de3d05db74681",
+      "class_hash": "0x3e2f4638828370c34ada12d11ba655570ff282fd859d3e14e1d3381fbb2c664",
       "abi": [
         {
           "type": "impl",
@@ -2647,8 +2652,8 @@
       ]
     },
     {
-      "address": "0x6493cf7249f2d34993ac4599b2cde0a641dff797ebc65124b08dd59b59bcd1",
-      "class_hash": "0x7c15c0f6384d20cea659cf397ad364bae46500e290e482d6adacca95bfbbdc8",
+      "address": "0x1c2f43cef612962a3ebbe85ddf350b89cbf808b6e400e18580b0a7366c95cd1",
+      "class_hash": "0x1b0f7c228e26c17cf3ba16a2850fd8cbc312803d6d34eec9a982452468169e2",
       "abi": [
         {
           "type": "impl",
@@ -3007,7 +3012,11 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-map_system",
       "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
-      "systems": ["create_map_level", "advance_node", "upgrade"]
+      "systems": [
+        "create_map_level",
+        "advance_node",
+        "upgrade"
+      ]
     },
     {
       "address": "0x314f9f7b522da766916ccadfe37eaf158810e321419992054c66a72b580574b",
@@ -3223,7 +3232,10 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mod_manager_registrator",
       "selector": "0x35dc115221c595aae7133e2906beda16eeae471719d28d07fa516e50f33eebe",
-      "systems": ["register_managers", "upgrade"]
+      "systems": [
+        "register_managers",
+        "upgrade"
+      ]
     },
     {
       "address": "0x137ccf31779d87b3773b4ddcacb992ab174f586d5810d8f97b06ca1a3fecf75",
@@ -3559,7 +3571,9 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mods_info_system",
       "selector": "0x49501e11d21a12c5803e098cfd1a2eed9799540d9e069dac3a244e8e6df0de",
-      "systems": ["upgrade"]
+      "systems": [
+        "upgrade"
+      ]
     },
     {
       "address": "0x5da4ed49ff6add3037d8a7ae1feb3f3539a6a5d2c59148be418e987c90b66a7",
@@ -3840,7 +3854,9 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-poker_hand_system",
       "selector": "0x123bcd8c0fe47fdb578a63f6f56f43a8e917c7a2df94b19d59da961a41354c3",
-      "systems": ["upgrade"]
+      "systems": [
+        "upgrade"
+      ]
     },
     {
       "address": "0x59039c06c19f36179f311e19227647648cd55b788208c6707e6e25fadf9a1f4",
@@ -4049,11 +4065,15 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-rage_system",
       "selector": "0x6f3f6a9f3bb61155624b3570aae217aca824fee9a1b7c18101dbfc4df322b2e",
-      "systems": ["calculate", "reset", "upgrade"]
+      "systems": [
+        "calculate",
+        "reset",
+        "upgrade"
+      ]
     },
     {
-      "address": "0x1848180bc584eed43b0da40f05385bbc5dbd787139e47edca2516b9fd6a4985",
-      "class_hash": "0xc4a27cc301de581c2332b72ad33985c41fac93f695217030903c1685e0c838",
+      "address": "0x4be11037798b27fc8dd8c0312e98da79f62d3ee6d6461d27b3fe692fac26d22",
+      "class_hash": "0x70f4c4a3bb22f77bbf723e4d7d3d5a08f4930f7e40d03097ff31224c7d88bdf",
       "abi": [
         {
           "type": "impl",

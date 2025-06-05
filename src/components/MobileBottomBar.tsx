@@ -1,25 +1,81 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, ButtonProps, Flex, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
+import React from "react";
+
+export interface BarButtonProps extends ButtonProps {
+  onClick: () => void;
+  disabled?: boolean;
+  label: ReactNode;
+  disabledText?: string;
+  icon?: ReactNode;
+  variant?: string;
+}
 
 interface MobileBottomBarProps {
-  firstButton: ReactNode;
-  secondButton: ReactNode;
+  firstButton?: BarButtonProps;
+  secondButton?: BarButtonProps;
+  firstButtonReactNode?: ReactNode;
+  secondButtonReactNode?: ReactNode;
   setRun?: (run: boolean) => void;
   hideDeckButton?: boolean;
   navigateState?: {};
 }
 
+export const BarButton = ({
+  onClick,
+  disabled,
+  label,
+  disabledText,
+  icon,
+  variant = "solid",
+  ...buttonProps
+}: BarButtonProps) => {
+  return disabled && disabledText ? (
+    <Text fontSize={10}>{disabledText}</Text>
+  ) : (
+    <Button
+      variant={variant}
+      w={"100%"}
+      h={"28px"}
+      fontSize={"10px"}
+      onClick={onClick}
+      disabled={disabled}
+      {...buttonProps}
+    >
+      {label}
+      {icon && <Flex sx={{ ml: 1.5 }}>{icon}</Flex>}
+    </Button>
+  );
+};
+
 export const MobileBottomBar = ({
   firstButton,
+  firstButtonReactNode,
   secondButton,
+  secondButtonReactNode,
   setRun,
   hideDeckButton,
   navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
+
+  const uniqueFirstButton = firstButton ?? firstButtonReactNode;
+  const uniqueSecondButton = secondButton ?? secondButtonReactNode;
+
+  const uniqueButton =
+    (firstButton || firstButtonReactNode) &&
+    !secondButton &&
+    !secondButtonReactNode
+      ? uniqueFirstButton
+      : (secondButton || secondButtonReactNode) &&
+          !firstButton &&
+          !firstButtonReactNode
+        ? uniqueSecondButton
+        : undefined;
+
   return (
     <Flex
       width="98%"
@@ -27,6 +83,7 @@ export const MobileBottomBar = ({
       mb={8}
       mt={3}
       justifyContent={"space-between"}
+      alignItems={"center"}
       zIndex={1000}
     >
       <GameMenuBtn
@@ -40,8 +97,32 @@ export const MobileBottomBar = ({
               }
         }
       />
-      <Box w="30%">{firstButton}</Box>
-      <Box w="30%">{secondButton}</Box>
+      {uniqueButton ? (
+        <Box w="40%">
+          {React.isValidElement(uniqueButton) ? (
+            uniqueButton
+          ) : (
+            <BarButton {...(uniqueButton as BarButtonProps)} />
+          )}
+        </Box>
+      ) : (
+        <>
+          <Box w="30%">
+            {firstButton ? (
+              <BarButton {...firstButton} />
+            ) : (
+              firstButtonReactNode
+            )}
+          </Box>
+          <Box w="30%">
+            {secondButton ? (
+              <BarButton {...secondButton} variant="secondarySolid" />
+            ) : (
+              secondButtonReactNode
+            )}
+          </Box>
+        </>
+      )}
       <Flex
         height={["30px", "45px"]}
         justifyContent="center"

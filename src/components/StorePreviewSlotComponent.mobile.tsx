@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MobileCoins } from "../pages/store/Coins";
@@ -13,11 +13,10 @@ interface IStorePreviewComponentMobile extends IStorePreviewComponent {
   buyButton: BarButtonProps;
 }
 
-export const StorePreviewPowerUpComponentMobile = ({
+export const StorePreviewSlotComponentMobile = ({
   image,
   title,
   description,
-  cardType,
   price,
   discountPrice,
   buyButton,
@@ -60,24 +59,20 @@ export const StorePreviewPowerUpComponentMobile = ({
             >
               {title}
             </Heading>
-            {cardType && (
-              <Text size="l" textTransform="lowercase" fontWeight={600}>
-                - {cardType} -
-              </Text>
-            )}
           </Box>
           <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
             {colorizeText(description)}
           </Text>
         </Flex>
-        <Box
+        <Flex
           w={"60%"}
           sx={{
             zIndex: 1,
           }}
+          justifyContent={"center"}
         >
           {image}
-        </Box>
+        </Flex>
 
         <PriceBox
           absolutePosition={false}
@@ -90,15 +85,13 @@ export const StorePreviewPowerUpComponentMobile = ({
 
         <MobileBottomBar
           hideDeckButton
-          firstButton={
-            {
-              onClick: () => {
-                sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
-                navigate("/store");
-              },
-              label: t("store.preview-card.labels.close").toUpperCase(),
-            }
-          }
+          firstButton={{
+            onClick: () => {
+              sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));
+              navigate("/store");
+            },
+            label: t("store.preview-card.labels.close").toUpperCase(),
+          }}
           secondButton={buyButton}
         />
       </Flex>

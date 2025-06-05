@@ -1,4 +1,5 @@
 import { FC, SVGProps, ReactSVGElement } from "react";
+import CachedImage from "./CachedImage";
 
 interface IconComponentProps {
   icon: string | FC<SVGProps<ReactSVGElement>>;
@@ -14,7 +15,7 @@ export const IconComponent: FC<IconComponentProps> = ({
   const Icon = icon;
 
   return typeof icon === "string" ? (
-    <img src={icon} width={width} height={height} />
+    <CachedImage src={icon} width={width} height={height} />
   ) : (
     <Icon width={width} height={height} fill="white" />
   );

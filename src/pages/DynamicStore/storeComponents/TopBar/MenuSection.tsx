@@ -2,10 +2,10 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { MenuBtn } from "../../../../components/Menu/Buttons/MenuBtn";
 import { Icons } from "../../../../constants/icons";
 import { useNavigate } from "react-router-dom";
-import { useCurrentPageName } from "../../../../hooks/useCurrentPageName";
+import { useCurrentPageInfo } from "../../../../hooks/useCurrentPageInfo";
 
 export const MenuSection = () => {
-  const page = useCurrentPageName();
+  const page = useCurrentPageInfo();
   const navigate = useNavigate();
 
   return (
@@ -21,7 +21,11 @@ export const MenuSection = () => {
           flex={1}
           gap={2}
         >
-          <MenuBtn icon={Icons.CIRCLE} description={""} width={"12px"} />
+          <MenuBtn
+            icon={page?.icon ?? Icons.CIRCLE}
+            description={""}
+            width={"12px"}
+          />
           <Heading
             variant="italic"
             as="div"
