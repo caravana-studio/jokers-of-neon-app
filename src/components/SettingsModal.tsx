@@ -35,6 +35,8 @@ import {
   lootboxTransitionLabels,
 } from "../constants/settingsLabels";
 import { useSettings } from "../providers/SettingsProvider";
+import { useGame } from "../dojo/queries/useGame";
+import CachedImage from "./CachedImage";
 
 interface SettingsModalProps {
   close?: () => void;
@@ -53,6 +55,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   } = useSettings();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
   const { isSmallScreen } = useResponsiveValues();
+  const game = useGame();
 
   const { t, i18n } = useTranslation(["game"], { keyPrefix: "settings-modal" });
   const { t: tGeneral } = useTranslation(["game"]);
@@ -227,7 +230,14 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             </Flex>
           </Flex>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter justifyContent={"space-between"}>
+          <Flex gap={2} alignItems={"center"}>
+            <CachedImage src="/logos/jn.png" height="15px" />
+            <Text fontFamily="Orbitron" fontSize="15px" fontWeight="500">
+              {" "}
+              · {game?.id}
+            </Text>
+          </Flex>
           <Button
             variant="secondarySolid"
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
