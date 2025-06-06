@@ -280,12 +280,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     refetchSpecialCardsData(modId, gameId);
-    triggeredAchievementsRef.current.clear();
   };
 
   const prepareNewGame = () => {
     localStorage.removeItem("GAME_ID");
     resetLevel();
+    triggeredAchievementsRef.current.clear();
     setHand([]);
   };
 
