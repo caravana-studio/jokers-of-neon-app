@@ -902,10 +902,18 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_startGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playerName: BigNumberish, seed: CairoOption<BigNumberish>) => {
 		try {
-			console.log('vrf tx', getVrfTx("game_system", snAccount))
+			const customVrfTx = {
+        contractAddress: '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f',
+        entrypoint: "request_random",
+        calldata: CallData.compile({
+          caller: '0x4a8a784f9a26778045750f68571036f002b780ce6ce77ff2253c9f8f3a3f215',
+          source: { type: 0, address: snAccount.address },
+        }),
+      }
+			console.log('custom vrf tx', customVrfTx)
 			return await provider.execute(
 				snAccount as any,
-				[getVrfTx("game_system", snAccount), build_game_system_startGame_calldata(gameId, playerName, seed)],
+				[customVrfTx, build_game_system_startGame_calldata(gameId, playerName, seed)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
