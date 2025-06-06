@@ -3,6 +3,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDojo } from "../dojo/DojoContext";
 import { getGGQuestsCompleted } from "../dojo/queries/getGGQuestsCompleted";
 import { AchievementCompleted } from "../types/ScoreData";
+import { handleAchievementPush } from "../utils/pushAchievements";
 import CachedImage from "./CachedImage";
 
 export const GGBanner = () => {
@@ -15,14 +16,16 @@ export const GGBanner = () => {
   const syncQuests = () => {
     console.log("syncing quests for user " + account?.address);
     getGGQuestsCompleted(client, account?.address).then((response) => {
-      console.log("ids: ", response);
+      console.log("quests to sync: ", response);
       const achievementEvents: AchievementCompleted[] = response.map(
         (achievementId: string) => ({
           player: account?.address,
           achievementId,
         })
       );
-      // handleAchievementPush(achievementEvents, () => {})
+      handleAchievementPush(achievementEvents, () => {}).then(()=> {
+        console.log("achievements pushed");
+      })
     });
   };
   return (

@@ -1,12 +1,17 @@
+import { BigNumberish, shortString } from "starknet";
 
-export const getGGQuestsCompleted = async (client: any, playerAddress: string) => {
+export const getGGQuestsCompleted = async (
+  client: any,
+  playerAddress: string
+) => {
   try {
-    let tx_result = await client.gg_sync_system.getQuestsCompleted(playerAddress);
-    console.log(tx_result);
-    //TODO convert to array
-    return tx_result
+    let tx_result =
+      await client.gg_sync_system.getQuestsCompleted(playerAddress);
+    return tx_result.map((questId: BigNumberish) =>
+      shortString.decodeShortString(questId.toString())
+    );
   } catch (e) {
-    console.log(e);
+    console.log("Error getting GG Quests Completed", e);
   }
-  return []; 
+  return [];
 };
