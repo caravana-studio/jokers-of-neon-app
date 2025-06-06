@@ -1,11 +1,9 @@
-import Rox, { Flag } from 'rox-browser'
+import Rox, { Flag } from "rox-browser";
 
-export const VALID_NAMESPACES = [
-  'global',
-] as const
+export const VALID_NAMESPACES = ["global"] as const;
 
 interface FlagValue {
-  [key: string]: Rox.Flag
+  [key: string]: Rox.Flag;
 }
 
 export interface IContainer {
@@ -18,5 +16,6 @@ export const namespaceFlags: IContainer = {
     showMods: new Flag(false),
     tournamentEnabled: new Flag(false),
     hideTutorial: new Flag(false),
+    gg: new Flag(false),
   },
-}
+};

@@ -30,6 +30,11 @@
     "sell-1": "Sell 3 special cards",
     "slot-1": "Buy all the slots",
     "straight-flush-1": "Play a straight flush",
-    "neon-play-1": "Play a neon hand"
+    "neon-play-1": "Play a neon hand",
+    "level_daily_easy": "Reach level 2",
+    "level_daily_medium": "Reach level 3",
+    "level_daily_hard": "Reach level 5",
+    "score_daily_hard": "Score 500000 total points in a run",
+    "special_daily_medium": "Use the Phoenix card"
   }
 }
