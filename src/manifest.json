@@ -1328,7 +1328,7 @@
   },
   "contracts": [
     {
-      "address": "0x52cb1092ba81f9cb3762a08413e3aaf1c25a9469c18d0e2ee7f5d8e6a87c032",
+      "address": "0x7059f05dd4c499022a93e2eb794f3004991e186f8b4a097927b0ee4e63a6e47",
       "class_hash": "0x198e535ac88ea5131631f6b9c5c8ae5ac1ac5b910fdc918f23d4499d27ff2ea",
       "abi": [
         {
@@ -1570,12 +1570,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-action_system",
       "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
-      "systems": [
-        "play",
-        "discard",
-        "change_modifier_card",
-        "upgrade"
-      ]
+      "systems": ["play", "discard", "change_modifier_card", "upgrade"]
     },
     {
       "address": "0x1b2bcc4c6fcdb7637df02ac264f27878b0d4d2c53d698bc066f556ac7593213",
@@ -1978,13 +1973,11 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-calculate_hand_system",
       "selector": "0x5307c3761a682f72c51464d564aee350472ec731896ff3813ce61c5a9ba01b1",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
-      "address": "0x88ce36c012e8a356cabc3199a2de9e362b8289e694a89e0ee8aadc84af3dd4",
-      "class_hash": "0x514d717ace7b165a4d019b620c64d0f9c4ec81fd55dc7de117201a04ef66118",
+      "address": "0x1b76abeff716b081df3ff493e9dd5ebc789bedb5e057d1f823de3d05db74681",
+      "class_hash": "0x7550693aaf44adf83fba3e26e62974f9081c9dd584f74797702cae8d68cce90",
       "abi": [
         {
           "type": "impl",
@@ -2136,6 +2129,164 @@
           ]
         },
         {
+          "type": "enum",
+          "name": "jokers_of_neon_lib::models::status::game::game::GameState",
+          "variants": [
+            {
+              "name": "Round",
+              "type": "()"
+            },
+            {
+              "name": "Rage",
+              "type": "()"
+            },
+            {
+              "name": "Reward",
+              "type": "()"
+            },
+            {
+              "name": "Challenge",
+              "type": "()"
+            },
+            {
+              "name": "Map",
+              "type": "()"
+            },
+            {
+              "name": "Store",
+              "type": "()"
+            },
+            {
+              "name": "Lootbox",
+              "type": "()"
+            },
+            {
+              "name": "GameOver",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::game::game::Game",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "mod_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "state",
+              "type": "jokers_of_neon_lib::models::status::game::game::GameState"
+            },
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "player_name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "current_node_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "hand_len",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "plays",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "current_specials_len",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "special_slots",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cash",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "available_rerolls",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "seed",
+              "type": "core::felt252"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::round::round::Round",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "current_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "target_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "remaining_plays",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "remaining_discards",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "rages",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::integer::u32, core::bool)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::integer::u32, core::bool)>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::game_system::IGameSystem",
           "items": [
@@ -2170,6 +2321,70 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_game_data",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(jokers_of_neon_lib::models::status::game::game::Game, jokers_of_neon_lib::models::status::round::round::Round)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_special_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_hand_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_deck_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<(core::integer::u32, core::bool)>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -3255,12 +3470,10 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-gg_sync_system",
       "selector": "0x563c73afe3167a1cf88d0cdc5c69a8d22fa0768571904df6ea91c0e90ce7dd5",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
-      "address": "0x7e44c7266384c016df076d4820893eee8046a643842b84d2405eef2a057f1d5",
+      "address": "0x1c2f43cef612962a3ebbe85ddf350b89cbf808b6e400e18580b0a7366c95cd1",
       "class_hash": "0x2dedee5bc352498823a9479f881a8f8b03744aa1c8063b3a7da2e81c6133cc3",
       "abi": [
         {
@@ -3732,11 +3945,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-map_system",
       "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
-      "systems": [
-        "create_map_level",
-        "advance_node",
-        "upgrade"
-      ]
+      "systems": ["create_map_level", "advance_node", "upgrade"]
     },
     {
       "address": "0x314f9f7b522da766916ccadfe37eaf158810e321419992054c66a72b580574b",
@@ -3952,10 +4161,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mod_manager_registrator",
       "selector": "0x35dc115221c595aae7133e2906beda16eeae471719d28d07fa516e50f33eebe",
-      "systems": [
-        "register_managers",
-        "upgrade"
-      ]
+      "systems": ["register_managers", "upgrade"]
     },
     {
       "address": "0x137ccf31779d87b3773b4ddcacb992ab174f586d5810d8f97b06ca1a3fecf75",
@@ -4291,9 +4497,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-mods_info_system",
       "selector": "0x49501e11d21a12c5803e098cfd1a2eed9799540d9e069dac3a244e8e6df0de",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x5da4ed49ff6add3037d8a7ae1feb3f3539a6a5d2c59148be418e987c90b66a7",
@@ -4574,9 +4778,7 @@
       "init_calldata": [],
       "tag": "jokers_of_neon_core-poker_hand_system",
       "selector": "0x123bcd8c0fe47fdb578a63f6f56f43a8e917c7a2df94b19d59da961a41354c3",
-      "systems": [
-        "upgrade"
-      ]
+      "systems": ["upgrade"]
     },
     {
       "address": "0x4be11037798b27fc8dd8c0312e98da79f62d3ee6d6461d27b3fe692fac26d22",
