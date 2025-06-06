@@ -23,7 +23,7 @@ export const GGBanner = () => {
           achievementId,
         })
       );
-      handleAchievementPush(achievementEvents, () => {}).then(()=> {
+      handleAchievementPush(achievementEvents).then(()=> {
         console.log("achievements pushed");
       })
     });
