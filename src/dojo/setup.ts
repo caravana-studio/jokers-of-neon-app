@@ -20,6 +20,8 @@ const DOJO_NAMESPACE =
 
 let sync: any;
 
+const hiddenRoutes = ["/", "/login", "/mods"];
+
 const getEntities = async <S extends Schema>(
   client: ToriiClient,
   components: Component<S, Metadata, undefined>[],
@@ -88,6 +90,7 @@ export async function setup({ ...config }: DojoConfig) {
 
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
+    const canLoadEntities = !hiddenRoutes.includes(window.location.pathname);
 
     const memberGame: torii.MemberClause = {
       model: `${DOJO_NAMESPACE}-Game`,
@@ -128,7 +131,7 @@ export async function setup({ ...config }: DojoConfig) {
       },
     };
 
-    const query: torii.Query = {
+    const gameQuery: torii.Query = {
       pagination: {
         limit: 1000,
         direction: "Backward",
@@ -142,7 +145,7 @@ export async function setup({ ...config }: DojoConfig) {
       historical: false,
     };
 
-    const query1: torii.Query = {
+    const deckQuery: torii.Query = {
       pagination: {
         limit: 1000,
         direction: "Backward",
@@ -157,7 +160,7 @@ export async function setup({ ...config }: DojoConfig) {
       historical: false,
     };
 
-    const query2: torii.Query = {
+    const specialsQuery: torii.Query = {
       pagination: {
         limit: 1000,
         direction: "Backward",
@@ -172,14 +175,24 @@ export async function setup({ ...config }: DojoConfig) {
       historical: false,
     };
 
-    if (gameID) {
+    if (gameID && canLoadEntities) {
       const startTime = performance.now();
-      await getEntities(toriiClient, contractComponents as any, query, 1000);
-      await getEntities(toriiClient, contractComponents as any, query1, 1000);
       await getEntities(
         toriiClient,
         contractComponents as any,
-        query2,
+        gameQuery,
+        1000
+      );
+      await getEntities(
+        toriiClient,
+        contractComponents as any,
+        deckQuery,
+        1000
+      );
+      await getEntities(
+        toriiClient,
+        contractComponents as any,
+        specialsQuery,
         1000,
         false
       );
