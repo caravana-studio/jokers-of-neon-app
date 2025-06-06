@@ -1,5 +1,5 @@
 import { DojoCall, DojoProvider } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption } from "starknet";
+import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption, CallData } from "starknet";
 import { getVrfTx } from "../vrfTx";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
