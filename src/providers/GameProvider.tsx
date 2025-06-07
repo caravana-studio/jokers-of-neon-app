@@ -76,6 +76,7 @@ export interface IGameContext {
   toggleSortBy: () => void;
   onShopSkip: () => void;
   sellSpecialCard: (cardIdx: number) => Promise<boolean>;
+  sellPowerup: (powerupIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
   restartGame: () => void;
   preSelectionLocked: boolean;
@@ -162,6 +163,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard,
     changeModifierCard,
     sellSpecialCard,
+    sellPowerup,
     mintGame,
     surrenderGame,
   } = useGameActions();
@@ -630,6 +632,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
+  const onSellPowerup = (powerupIdx: number) => {
+    const promise = sellPowerup(gameId, powerupIdx)
+      .then(async ({ success }) => {
+        return success;
+      })
+      .catch(() => {
+        return false;
+      });
+
+    return promise;
+  };
+
   const checkOrCreateGame = async () => {
     console.log("checking game exists", gameId);
 
@@ -694,6 +708,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
+    sellPowerup: onSellPowerup,
   };
 
   return (

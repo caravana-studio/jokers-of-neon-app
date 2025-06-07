@@ -34,6 +34,7 @@ export const gameProviderDefaults: IGameContext = {
   toggleSortBy: () => {},
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
+  sellPowerup: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   restartGame: () => {},
   preSelectionLocked: false,

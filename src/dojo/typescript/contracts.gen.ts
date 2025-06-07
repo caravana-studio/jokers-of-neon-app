@@ -786,6 +786,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_shop_system_sellPowerUp_calldata = (gameId: BigNumberish, powerUpIndex: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "sell_power_up",
+			calldata: [gameId, powerUpIndex],
+		};
+	};
+
+	const shop_system_sellPowerUp = async (snAccount: Account | AccountInterface, gameId: BigNumberish, powerUpIndex: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_shop_system_sellPowerUp_calldata(gameId, powerUpIndex),
+				"jokers_of_neon_core",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_shop_system_sellSpecialCard_calldata = (gameId: BigNumberish, specialCardIndex: BigNumberish): DojoCall => {
 		return {
 			contractName: "shop_system",
@@ -1096,6 +1117,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildRerollCalldata: build_shop_system_reroll_calldata,
 			selectCardsFromLootBox: shop_system_selectCardsFromLootBox,
 			buildSelectCardsFromLootBoxCalldata: build_shop_system_selectCardsFromLootBox_calldata,
+			sellPowerUp: shop_system_sellPowerUp,
+			buildSellPowerUpCalldata: build_shop_system_sellPowerUp_calldata,
 			sellSpecialCard: shop_system_sellSpecialCard,
 			buildSellSpecialCardCalldata: build_shop_system_sellSpecialCard_calldata,
 			skipShop: shop_system_skipShop,
