@@ -20,7 +20,7 @@ const DOJO_NAMESPACE =
 
 let sync: any;
 
-const hiddenRoutes = ["/", "/login", "/mods"];
+const hiddenRoutes = ["/", "/login", "/mods", "mygames"];
 
 const getEntities = async <S extends Schema>(
   client: ToriiClient,
@@ -37,7 +37,6 @@ const getEntities = async <S extends Schema>(
     query.pagination.cursor = cursor;
 
     const fetchedEntities = await client.getEntities(query);
-    console.log(fetchedEntities);
 
     if (fetchedEntities.items.length === 0 && retry) {
       console.log("No entities found retrying...");
@@ -91,123 +90,62 @@ export async function setup({ ...config }: DojoConfig) {
   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
     const canLoadEntities = !hiddenRoutes.includes(window.location.pathname);
+    const parsedGameID = Number(gameID) || 0;
 
-    const memberGame: torii.MemberClause = {
-      model: `${DOJO_NAMESPACE}-Game`,
-      member: "id",
+    if (!gameID || !canLoadEntities) return;
+
+    const modelsToFetch = [
+      "Game",
+      "DeckCard",
+      "CurrentSpecialCards",
+      "BlisterPackResult",
+    ];
+
+    const modelsToNotRetry = ["CurrentSpecialCards", "BlisterPackResult"];
+
+    const buildMemberClause = (model: string): torii.MemberClause => ({
+      model: `${DOJO_NAMESPACE}-${model}`,
+      member: model === "Game" ? "id" : "game_id",
       operator: "Eq",
-      value: { Primitive: { U64: Number(gameID) || 0 } },
-    };
+      value: { Primitive: { U64: parsedGameID } },
+    });
 
-    const memberDeckCard: torii.MemberClause = {
-      model: `${DOJO_NAMESPACE}-DeckCard`,
-      member: "game_id",
-      operator: "Eq",
-      value: { Primitive: { U64: Number(gameID) || 0 } },
-    };
-
-    const memberSpecialCards: torii.MemberClause = {
-      model: `${DOJO_NAMESPACE}-CurrentSpecialCards`,
-      member: "game_id",
-      operator: "Eq",
-      value: { Primitive: { U64: Number(gameID) || 0 } },
-    };
-
-    const keysMod: torii.KeysClause = {
-      keys: [undefined],
-      pattern_matching: "FixedLen",
-      models: [`${DOJO_NAMESPACE}-GameMod`],
-    };
-
-    const clause: torii.Clause = {
-      Composite: {
-        operator: "Or",
-        clauses: [
-          {
-            Member: memberGame,
-          },
-          { Member: memberDeckCard },
-        ],
-      },
-    };
-
-    const gameQuery: torii.Query = {
+    const buildQuery = (model: string): torii.Query => ({
       pagination: {
         limit: 1000,
         direction: "Backward",
         order_by: [],
         cursor: undefined,
       },
-      clause: { Member: memberGame },
-      // clause: clause,
+      clause: { Member: buildMemberClause(model) },
       no_hashed_keys: false,
       models: [],
       historical: false,
-    };
+    });
 
-    const deckQuery: torii.Query = {
-      pagination: {
-        limit: 1000,
-        direction: "Backward",
-        order_by: [],
-        cursor: undefined,
-      },
-      clause: {
-        Member: memberDeckCard,
-      },
-      no_hashed_keys: false,
-      models: [],
-      historical: false,
-    };
+    const startTime = performance.now();
 
-    const specialsQuery: torii.Query = {
-      pagination: {
-        limit: 1000,
-        direction: "Backward",
-        order_by: [],
-        cursor: undefined,
-      },
-      clause: {
-        Member: memberSpecialCards,
-      },
-      no_hashed_keys: false,
-      models: [],
-      historical: false,
-    };
-
-    if (gameID && canLoadEntities) {
-      const startTime = performance.now();
+    for (const model of modelsToFetch) {
+      const query = buildQuery(model);
       await getEntities(
         toriiClient,
         contractComponents as any,
-        gameQuery,
-        1000
-      );
-      await getEntities(
-        toriiClient,
-        contractComponents as any,
-        deckQuery,
-        1000
-      );
-      await getEntities(
-        toriiClient,
-        contractComponents as any,
-        specialsQuery,
+        query,
         1000,
-        false
+        !modelsToNotRetry.includes(model)
       );
-
-      sync = await syncEntities(
-        toriiClient,
-        contractComponents as any,
-        KeysClause([], [], "VariableLen").build(),
-        false
-      );
-      const endTime = performance.now();
-      const timeTaken = endTime - startTime;
-      // Log for load time
-      console.log(`getSyncEntities took ${timeTaken.toFixed(2)} milliseconds`);
     }
+
+    sync = await syncEntities(
+      toriiClient,
+      contractComponents as any,
+      KeysClause([], [], "VariableLen").build(),
+      false
+    );
+
+    const endTime = performance.now();
+    console.log(`getSyncEntities took ${(endTime - startTime).toFixed(2)} ms`);
+
     // TODO: Get the mod entities
   }
 
