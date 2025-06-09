@@ -48,6 +48,7 @@ import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { checkDailyAchievement } from "../utils/handleAchievements.ts";
+import { PlayEvents } from "../types/ScoreData.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -188,18 +189,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     game?.level ?? 0,
     animationSpeed
   );
-
-  useEffect(() => {
-    if (!ggAchievementsFF || !game?.player_score || !account.address) return;
-
-    checkDailyAchievement(
-      "score",
-      game.player_score,
-      account.address,
-      achievementSound,
-      triggeredAchievementsRef
-    );
-  }, [game?.player_score]);
 
   useEffect(() => {
     if (!ggAchievementsFF || !game?.level || !account.address) return;
@@ -364,6 +353,32 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .filter((card) => card.card_id !== 9999);
     setHand(newHand);
   };
+
+  const triggerDailyEvents = (playeEvents: PlayEvents) => {
+    if (playeEvents.cardActivateEvent) {
+      const specialCardInHand =
+        specialCards[playeEvents.cardActivateEvent.special_id];
+
+      checkDailyAchievement(
+        "special",
+        specialCardInHand.card_id ?? 0,
+        account.address,
+        achievementSound,
+        triggeredAchievementsRef
+      );
+    }
+
+    if (playeEvents.gameOver) {
+      checkDailyAchievement(
+        "score",
+        game?.player_score ?? 0,
+        account.address,
+        achievementSound,
+        triggeredAchievementsRef
+      );
+    }
+  };
+
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
@@ -374,17 +389,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
-          if (response.cardActivateEvent && ggAchievementsFF) {
-            const specialCardInHand =
-              specialCards[response.cardActivateEvent.special_id];
-
-            checkDailyAchievement(
-              "special",
-              specialCardInHand.card_id ?? 0,
-              account.address,
-              achievementSound,
-              triggeredAchievementsRef
-            );
+          if (ggAchievementsFF) {
+            triggerDailyEvents(response);
           }
 
           animatePlay({
