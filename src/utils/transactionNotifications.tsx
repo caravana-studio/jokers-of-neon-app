@@ -15,14 +15,17 @@ import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
-  position: "top-left",
+  position: "top-right",
   closeButton: false,
   dismissible: true,
   style: {
+    maxWidth: "unset",
     padding: 0,
     backgroundColor: "transparent",
     boxShadow: "none",
-    left: "12px",
+    marginRight: "4px",
+    right: "12px",
+    left: "unset",
     width: "30px",
   },
   duration: 1750,
@@ -42,7 +45,7 @@ const CircularToast = ({
   onClickFn,
 }: CircularToastProps) => (
   <Tooltip
-    placement="right"
+    placement="end"
     label={description}
     closeOnPointerDown
     color="white"
