@@ -113,11 +113,7 @@ export const OpenLootBoxCardSelection = () => {
             mt={4}
             gap={4}
           >
-            {currentSpecialCardsLength > 0 ? (
-              <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
-            ) : (
-              <Box />
-            )}
+            <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
             {renderContinueButton()}
           </Flex>
           {isSmallScreen && (
