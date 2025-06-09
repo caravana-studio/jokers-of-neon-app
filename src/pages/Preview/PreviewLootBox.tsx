@@ -138,7 +138,7 @@ export const PreviewLootBox = () => {
             <PriceBox
               absolutePosition={false}
               price={card.price ?? 0}
-              discountPrice={card.discount_cost}
+              discountPrice={pack.discount_cost}
               purchased={false}
               fontSize={18}
               discountFontSize={12}
