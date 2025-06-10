@@ -6,7 +6,6 @@ import { RARITY, RarityLabels } from "../constants/rarity";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
 import { useCardData } from "../providers/CardDataProvider";
-import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
@@ -17,6 +16,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { PriceBox } from "./PriceBox";
 import { LootBox } from "./LootBox";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 
 interface MobileCardHighlightProps {
   card: Card;

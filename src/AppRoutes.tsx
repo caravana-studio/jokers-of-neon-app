@@ -19,13 +19,14 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SelectMod } from "./pages/SelectMod";
-import { CardHighlightProvider } from "./providers/CardHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { MapPage } from "./pages/Map/MapPage";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
+import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
+import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -202,9 +203,11 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <CardHighlightProvider>
-              <AnimatedPage>
-                <ManagePage />
-              </AnimatedPage>
+              <PowerupHighlightProvider>
+                <AnimatedPage>
+                  <ManagePage />
+                </AnimatedPage>
+              </PowerupHighlightProvider>
             </CardHighlightProvider>
           </StoreProvider>
         }

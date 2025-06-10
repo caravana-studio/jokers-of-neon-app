@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, useTheme } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
@@ -7,12 +7,21 @@ import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 
-export const Powerups = () => {
+interface PowerupsProps {
+  preselectedPowerUp?: PowerUp;
+  onPowerupClick?: (powerUp: PowerUp) => void;
+}
+
+export const Powerups: React.FC<PowerupsProps> = ({
+  preselectedPowerUp,
+  onPowerupClick,
+}) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
   });
 
   const { isSmallScreen } = useResponsiveValues();
+  const { colors } = useTheme();
 
   const { powerUps, maxPowerUpSlots } = useGameContext();
   const [totalPowerUps, setTotalPowerups] = useState<(PowerUp | null)[]>([]);
@@ -53,14 +62,30 @@ export const Powerups = () => {
                   width={120}
                   key={index}
                   isActive
+                  inStore
+                  hideTooltip
                   containerSx={{
                     backgroundColor: "transparent",
-                    borderColor: "white",
+                    borderColor: preselectedPowerUp
+                      ? preselectedPowerUp?.idx === powerUp?.idx
+                        ? `${colors.blueLight}`
+                        : "white"
+                      : "white",
+                    boxShadow: preselectedPowerUp
+                      ? preselectedPowerUp?.idx === powerUp?.idx
+                        ? `0px 0px 15px 12px ${colors.blue}`
+                        : "none"
+                      : "none",
                     borderRadius: "20px",
                     transform: "scale(1.1)",
                     marginTop: 2,
                     marginBottom: 2,
                   }}
+                  onClick={
+                    powerUp && onPowerupClick
+                      ? () => onPowerupClick(powerUp)
+                      : undefined
+                  }
                 />
               );
             })}

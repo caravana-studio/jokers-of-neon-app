@@ -6,12 +6,15 @@ import { Powerups } from "./TabContents/Powerups";
 import { SpecialCards } from "./TabContents/SpecialCards";
 import { Coins } from "../store/Coins";
 import { StoreTopBar } from "../DynamicStore/storeComponents/TopBar/StoreTopBar";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 
 export interface ManagePageContentProps {
   lastIndexTab?: number;
   discardedCards: Card[];
   preselectedCard?: Card;
+  preselectedPowerup?: PowerUp;
   onCardClick: (card: Card) => void;
+  onPowerupClick: (powerup: PowerUp) => void;
   onTabChange?: (index: number) => void;
 }
 
@@ -22,7 +25,9 @@ interface ManageContentDesktopProps extends ManagePageContentProps {
 export const ManagePageContent = ({
   discardedCards,
   preselectedCard,
+  preselectedPowerup,
   onCardClick,
+  onPowerupClick,
   goBackButton,
 }: ManageContentDesktopProps) => {
   return (
@@ -44,7 +49,10 @@ export const ManagePageContent = ({
             preselectedCard={preselectedCard}
             onCardClick={onCardClick}
           />
-          <Powerups />
+          <Powerups
+            preselectedPowerUp={preselectedPowerup}
+            onPowerupClick={onPowerupClick}
+          />
         </Flex>
         <Flex mt={[0, 0, 0, 4]}>{goBackButton}</Flex>
       </Flex>

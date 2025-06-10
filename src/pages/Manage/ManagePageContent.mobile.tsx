@@ -19,7 +19,9 @@ export const ManagePageContentMobile = ({
   lastIndexTab = 0,
   discardedCards,
   preselectedCard,
+  preselectedPowerup,
   onCardClick,
+  onPowerupClick,
   goBackButton,
   onTabChange,
 }: ManageContentMobileProps) => {
@@ -50,7 +52,10 @@ export const ManagePageContentMobile = ({
         </Flex>
       </Tab>
       <Tab title={t("power-ups.title")}>
-        <Powerups />
+        <Powerups
+          preselectedPowerUp={preselectedPowerup}
+          onPowerupClick={onPowerupClick}
+        />
       </Tab>
     </TabPattern>
   );

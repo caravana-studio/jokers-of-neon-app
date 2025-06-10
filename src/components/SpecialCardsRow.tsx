@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
-import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
@@ -13,6 +12,7 @@ import { CashSymbol } from "./CashSymbol.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const SpecialCardsRow = () => {
   const [discardedCards, setDiscardedCards] = useState<string[]>([]);
@@ -33,7 +33,7 @@ export const SpecialCardsRow = () => {
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
 
-  const { highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const game = useGame();
   const unlockedSpecialSlots = game?.special_slots ?? 1;

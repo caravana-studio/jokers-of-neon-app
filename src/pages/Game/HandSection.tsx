@@ -19,11 +19,11 @@ import { TiltCard } from "../../components/TiltCard";
 import { HAND_SECTION_ID } from "../../constants/general";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useRound } from "../../dojo/queries/useRound";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
@@ -40,7 +40,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
     remainingPlaysTutorial,
   } = useGameContext();
 
-  const { highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);
 

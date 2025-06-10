@@ -20,6 +20,7 @@ interface PowerUpProps {
   inStore?: boolean;
   containerSx?: SystemStyleObject;
   isActive?: boolean;
+  hideTooltip?: boolean;
 }
 export const PowerUpComponent = ({
   powerUp,
@@ -28,6 +29,7 @@ export const PowerUpComponent = ({
   width,
   containerSx,
   isActive,
+  hideTooltip = true,
 }: PowerUpProps) => {
   const { powerUpIsPreselected } = useGameContext();
   const calculatedIsActive =
@@ -44,6 +46,55 @@ export const PowerUpComponent = ({
 
   const [startParticles, setStartParticles] = useState(false);
 
+  const powerUpContent = powerUp ? (
+    <Flex
+      justifyContent="center"
+      position="relative"
+      width={`${width}px`}
+      borderRadius={"22%"}
+      background={"black"}
+      transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
+      transition="all 0.2s ease-in-out"
+      cursor={purchased ? "not-allowed" : "pointer"}
+      opacity={purchased ? 0.3 : 1}
+      onClick={onClick}
+    >
+      {price && (
+        <PriceBox
+          price={Number(price)}
+          purchased={Boolean(purchased)}
+          isPowerUp={!inStore}
+          fontSize={isSmallScreen ? 12 : 16}
+          discountFontSize={isSmallScreen ? 10 : 12}
+          discountPrice={Number(discount_cost)}
+        />
+      )}
+      <PurchasedLbl
+        purchased={purchased ?? false}
+        topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
+        fontSize={isSmallScreen ? 6 : 11 * cardScale}
+      />
+      <HighlightAnimation
+        start={calculatedIsActive}
+        onAnimationComplete={() => {
+          setStartParticles(true);
+        }}
+        shadowColor={powerupStyle?.shadowColor}
+        shadowLightColor={powerupStyle?.shadowLightColor}
+        borderRadius={`${isSmallScreen ? "10px" : "14px"}`}
+      >
+        <CachedImage
+          opacity={inStore || calculatedIsActive ? 1 : 0.6}
+          borderRadius={"18%"}
+          cursor="pointer"
+          height={`${100}%`}
+          width={`${100}%`}
+          src={powerUp.img}
+        />
+      </HighlightAnimation>
+    </Flex>
+  ) : null;
+
   return powerUp ? (
     <FadingParticleAnimation
       width={isSmallScreen ? 120 : 190}
@@ -58,54 +109,15 @@ export const PowerUpComponent = ({
       spreadOffset={0.3}
     >
       <AnimatedPowerUp idx={powerUp.idx}>
-        <Tooltip label={description && colorizeText(description)}>
-          <Flex
-            justifyContent="center"
-            position="relative"
-            width={`${width}px`}
-            borderRadius={"22%"}
-            background={"black"}
-            transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
-            transition="all 0.2s ease-in-out"
-            cursor={purchased ? "not-allowed" : "pointer"}
-            opacity={purchased ? 0.3 : 1}
-            onClick={onClick}
-          >
-            {price && (
-              <PriceBox
-                price={Number(price)}
-                purchased={Boolean(purchased)}
-                isPowerUp={!inStore}
-                fontSize={isSmallScreen ? 12 : 16}
-                discountFontSize={isSmallScreen ? 10 : 12}
-                discountPrice={Number(discount_cost)}
-              />
-            )}
-            <PurchasedLbl
-              purchased={purchased ?? false}
-              topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
-              fontSize={isSmallScreen ? 6 : 11 * cardScale}
-            />
-            <HighlightAnimation
-              start={calculatedIsActive}
-              onAnimationComplete={() => {
-                setStartParticles(true);
-              }}
-              shadowColor={powerupStyle?.shadowColor}
-              shadowLightColor={powerupStyle?.shadowLightColor}
-              borderRadius={`${isSmallScreen ? "10px" : "14px"}`}
-            >
-              <CachedImage
-                opacity={inStore || calculatedIsActive ? 1 : 0.6}
-                borderRadius={"18%"}
-                cursor="pointer"
-                height={`${100}%`}
-                width={`${100}%`}
-                src={powerUp.img}
-              />
-            </HighlightAnimation>
-          </Flex>
-        </Tooltip>
+        <>
+          {hideTooltip ? (
+            powerUpContent
+          ) : (
+            <Tooltip label={description && colorizeText(description)}>
+              {powerUpContent}
+            </Tooltip>
+          )}
+        </>
       </AnimatedPowerUp>
     </FadingParticleAnimation>
   ) : (

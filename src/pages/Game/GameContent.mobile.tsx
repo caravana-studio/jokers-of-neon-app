@@ -24,7 +24,6 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
@@ -34,6 +33,7 @@ import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -50,7 +50,7 @@ export const MobileGameContent = () => {
     maxPowerUpSlots,
   } = useGameContext();
 
-  const { highlightedCard } = useCardHighlight();
+  const { highlightedItem: highlightedCard } = useCardHighlight();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

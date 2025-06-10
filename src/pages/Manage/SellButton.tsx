@@ -2,9 +2,10 @@ import { Button } from "@chakra-ui/react";
 import { Card } from "../../types/Card";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { useTranslation } from "react-i18next";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 
 interface SellButtonProps {
-  preselectedCard: Card | undefined;
+  preselectedCard: Card | PowerUp | undefined;
   onClick?: Function;
 }
 

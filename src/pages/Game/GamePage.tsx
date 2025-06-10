@@ -9,7 +9,6 @@ import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
-import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
@@ -18,6 +17,7 @@ import { RageRoundAnimation } from "./RageRoundAnimation";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { useCardData } from "../../providers/CardDataProvider";
+import { CardHighlightProvider } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const GamePage = () => {
   const {

@@ -10,3 +10,4 @@ export const getPowerUpData = (id: number) => {
     description: i18n.t(`power-ups.${id}.description`, { ns }),
   };
 };
+
