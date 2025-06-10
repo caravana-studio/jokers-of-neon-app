@@ -1006,7 +1006,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount as any,
 				build_game_system_surrender_calldata(gameId),
-				"jokers_of_neon_core",
+				DOJO_NAMESPACE,
 			);
 		} catch (error) {
 			console.error(error);
@@ -1014,7 +1014,30 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const gg_sync_system_getQuestsCompleted = async (playerAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_gg_sync_system_getQuestsCompleted_calldata(playerAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+
+
+	const build_gg_sync_system_getQuestsCompleted_calldata = (playerAddress: string): DojoCall => {
+		return {
+			contractName: "gg_sync_system",
+			entrypoint: "get_quests_completed",
+			calldata: [playerAddress],
+		};
+	};
+
 	return {
+		gg_sync_system: {
+			getQuestsCompleted: gg_sync_system_getQuestsCompleted,
+			buildGetQuestsCompletedCalldata: build_gg_sync_system_getQuestsCompleted_calldata,
+		},
 		map_system: {
 			advanceNode: map_system_advanceNode,
 			buildAdvanceNodeCalldata: build_map_system_advanceNode_calldata,

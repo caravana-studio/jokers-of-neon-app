@@ -49,6 +49,7 @@ import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 import { checkDailyAchievement } from "../utils/handleAchievements.ts";
 import { PlayEvents } from "../types/ScoreData.ts";
+import { retryCachedAchievements } from "../utils/retryCachedAchievements.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -265,6 +266,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
     triggeredAchievementsRef.current.clear();
     setHand([]);
+    triggeredAchievementsRef.current.clear();
   };
 
   const toggleSortBy = () => {
@@ -712,6 +714,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     // start with redirection unlocked
     setLockRedirection(false);
     refetchSpecialCardsData(modId, gameId);
+  }, []);
+
+  useEffect(() => {
+    retryCachedAchievements();
   }, []);
 
   const actions = {

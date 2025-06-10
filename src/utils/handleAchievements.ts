@@ -22,7 +22,7 @@ export const handleAchievements = async (
 
     showAchievementToast(achievementNames);
 
-    await handleAchievementPush(achievementEvent, achievementSound);
+    await handleAchievementPush(achievementEvent);
   }
 };
 
@@ -39,13 +39,12 @@ export const checkDailyAchievement = async (
     const res = type === "score" ? dataValue >= value : dataValue === value;
     if (res && !triggeredAchievementsRef.current.has(id)) {
       triggeredAchievementsRef.current.add(id);
-
+      achievementSound();
       showAchievementToast([i18n.t(`data.${id}`, { ns: "achievements" })]);
 
-      await handleAchievementPush(
-        [{ player: playerAddress, achievementId: id }],
-        achievementSound
-      );
+      await handleAchievementPush([
+        { player: playerAddress, achievementId: id },
+      ]);
 
       break;
     }
