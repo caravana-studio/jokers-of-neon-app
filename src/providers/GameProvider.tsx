@@ -124,6 +124,7 @@ export interface IGameContext {
   nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
+  triggeredAchievementsRef: React.MutableRefObject<Set<string>>;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -189,18 +190,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     game?.level ?? 0,
     animationSpeed
   );
-
-  useEffect(() => {
-    if (!ggAchievementsFF || !game?.level || !account.address) return;
-
-    checkDailyAchievement(
-      "level",
-      game.level,
-      account.address,
-      achievementSound,
-      triggeredAchievementsRef
-    );
-  }, [game?.level]);
 
   const {
     setAnimatedCard,
@@ -757,6 +746,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         powerUpIsPreselected,
         resetLevel,
         prepareNewGame,
+        triggeredAchievementsRef,
       }}
     >
       {children}

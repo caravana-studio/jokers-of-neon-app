@@ -6,6 +6,13 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
+import { checkDailyAchievement } from "../utils/handleAchievements.ts";
+import { useDojo } from "../dojo/useDojo.tsx";
+import { useAudio } from "../hooks/useAudio.tsx";
+import { useSettings } from "../providers/SettingsProvider.tsx";
+import { achievementSfx } from "../constants/sfx.ts";
+import { useGameContext } from "../providers/GameProvider.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -61,6 +68,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     rage_card_defeated,
     rage_card_defeated_cash,
     total,
+    level_passed,
   } = roundRewards;
 
   const { t } = useTranslation("intermediate-screens", {
@@ -80,6 +88,27 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   const navigate = useNavigate();
   const round = useRound();
+  const ggAchievementsFF = useFeatureFlagEnabled("global", "gg");
+  const {
+    setup: {
+      account: { account },
+    },
+  } = useDojo();
+  const { sfxVolume } = useSettings();
+  const { triggeredAchievementsRef } = useGameContext();
+  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
+
+  if (level_passed != 0) {
+    if (!ggAchievementsFF || !account.address) return;
+
+    checkDailyAchievement(
+      "level",
+      level_passed + 1,
+      account.address,
+      achievementSound,
+      triggeredAchievementsRef
+    );
+  }
 
   return (
     <PinkBox
