@@ -14,6 +14,7 @@ import { PowerUp } from "../../types/Powerup/PowerUp";
 import { MobilePowerupHighlight } from "../../components/MobilePowerupHighlight";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { usePowerupHighlight } from "../../providers/HighlightProvider/PowerupHighlightProvider";
+import { getPowerUpData } from "../../data/powerups";
 
 export const ManagePage = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export const ManagePage = () => {
     <SellButton
       preselectedCard={highlightedSpecialCard as Card}
       onClick={() => setSpecialConfirmationModalOpen(true)}
+      price={highlightedSpecialCard?.selling_price ?? 0}
     />
   );
 
@@ -62,6 +64,9 @@ export const ManagePage = () => {
     <SellButton
       preselectedCard={highlightedPowerup as PowerUp}
       onClick={() => setPowerupConfirmationModalOpen(true)}
+      price={
+        getPowerUpData(highlightedPowerup?.power_up_id ?? 0)?.selling_price ?? 0
+      }
     />
   );
 
@@ -125,7 +130,9 @@ export const ManagePage = () => {
           close={() => setPowerupConfirmationModalOpen(false)}
           title={t("power-ups.confirmation-modal.title")}
           description={t("power-ups.confirmation-modal.description", {
-            price: highlightedPowerup?.selling_price ?? 0,
+            price:
+              getPowerUpData(highlightedPowerup?.power_up_id ?? 0)
+                ?.selling_price ?? 0,
           })}
           onConfirm={() => {
             setPowerupConfirmationModalOpen(false);

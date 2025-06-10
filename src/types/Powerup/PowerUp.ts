@@ -4,5 +4,4 @@ import { PowerupStyle } from "./PowerupStyle";
 export interface PowerUp extends PowerUpItem {
   img: string;
   style?: PowerupStyle;
-  selling_price?: number;
 }

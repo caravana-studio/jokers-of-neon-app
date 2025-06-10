@@ -24,8 +24,9 @@ export const MobilePowerupHighlight = ({
 }: MobilePowerupHighlightProps) => {
   const { onClose } = usePowerupHighlight();
 
-  const getDataFn = getPowerUpData;
-  const { name, description } = getDataFn(powerup.power_up_id ?? 0);
+  const { name, description, selling_price } = getPowerUpData(
+    powerup.power_up_id ?? 0
+  );
 
   const { sellPowerup } = useGameContext();
   const [loading, setLoading] = useState(false);
@@ -57,7 +58,7 @@ export const MobilePowerupHighlight = ({
         <Box ml={1} />
         <CashSymbol />
         <Box ml={1} />
-        {powerup.selling_price}
+        {selling_price}
       </>
     );
   };
@@ -97,7 +98,7 @@ export const MobilePowerupHighlight = ({
           description={tIntermediateScreen(
             "power-ups.confirmation-modal.description",
             {
-              price: powerup.selling_price,
+              price: selling_price,
             }
           )}
           onConfirm={() => {
