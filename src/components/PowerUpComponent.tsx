@@ -29,7 +29,7 @@ export const PowerUpComponent = ({
   width,
   containerSx,
   isActive,
-  hideTooltip = true,
+  hideTooltip = false,
 }: PowerUpProps) => {
   const { powerUpIsPreselected } = useGameContext();
   const calculatedIsActive =

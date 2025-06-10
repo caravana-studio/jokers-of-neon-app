@@ -127,7 +127,7 @@ export const MobilePowerupHighlight = ({
         transform={`scale(${scale})`}
         transition="all 0.5s ease"
       >
-        <PowerUpComponent powerUp={powerup} width={240} />
+        <PowerUpComponent isActive hideTooltip powerUp={powerup} width={240} />
       </Flex>
       <Text textAlign="center" size="xl" fontSize={"17px"} width={"65%"}>
         {colorizeText(description)}

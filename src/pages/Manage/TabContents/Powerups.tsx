@@ -62,8 +62,6 @@ export const Powerups: React.FC<PowerupsProps> = ({
                   width={120}
                   key={index}
                   isActive
-                  inStore
-                  hideTooltip
                   containerSx={{
                     backgroundColor: "transparent",
                     borderColor: preselectedPowerUp
