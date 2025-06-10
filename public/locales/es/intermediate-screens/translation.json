@@ -85,7 +85,11 @@
     "community-mods": "Mods de la comunidad"
   },
   "power-ups": {
-    "title": "Power-ups"
+    "title": "Power-ups",
+     "confirmation-modal": {
+      "title": "Vender powerup",
+      "description": "Estás seguro de que quieres vender este Power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
+    }
   },
   "open-lootbox": {
     "click-open": "Haz clic para abrir",
