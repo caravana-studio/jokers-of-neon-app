@@ -87,6 +87,7 @@ export const ManagePage = () => {
       {isSmallScreen ? (
         <ManagePageContentMobile
           discardedCards={discardedCards}
+          discardedPowerups={discardedPowerups}
           preselectedCard={highlightedSpecialCard as Card}
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}
@@ -96,6 +97,7 @@ export const ManagePage = () => {
       ) : (
         <ManagePageContent
           discardedCards={discardedCards}
+          discardedPowerups={discardedPowerups}
           preselectedCard={highlightedSpecialCard as Card}
           preselectedPowerup={highlightedPowerup as PowerUp | undefined}
           onCardClick={handleCardClick}

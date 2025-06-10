@@ -11,6 +11,7 @@ import { PowerUp } from "../../types/Powerup/PowerUp";
 export interface ManagePageContentProps {
   lastIndexTab?: number;
   discardedCards: Card[];
+  discardedPowerups?: PowerUp[];
   preselectedCard?: Card;
   preselectedPowerup?: PowerUp;
   onCardClick: (card: Card) => void;
@@ -24,6 +25,7 @@ interface ManageContentDesktopProps extends ManagePageContentProps {
 
 export const ManagePageContent = ({
   discardedCards,
+  discardedPowerups,
   preselectedCard,
   preselectedPowerup,
   onCardClick,
@@ -52,6 +54,7 @@ export const ManagePageContent = ({
           <Powerups
             preselectedPowerUp={preselectedPowerup}
             onPowerupClick={onPowerupClick}
+            discardedPowerups={discardedPowerups}
           />
         </Flex>
         <Flex mt={[0, 0, 0, 4]}>{goBackButton}</Flex>

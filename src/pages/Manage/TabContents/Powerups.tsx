@@ -10,11 +10,13 @@ import { FullScreenCardContainer } from "../../FullScreenCardContainer";
 interface PowerupsProps {
   preselectedPowerUp?: PowerUp;
   onPowerupClick?: (powerUp: PowerUp) => void;
+  discardedPowerups?: PowerUp[];
 }
 
 export const Powerups: React.FC<PowerupsProps> = ({
   preselectedPowerUp,
   onPowerupClick,
+  discardedPowerups,
 }) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "power-ups",
@@ -56,9 +58,13 @@ export const Powerups: React.FC<PowerupsProps> = ({
           )}
           <FullScreenCardContainer>
             {totalPowerUps.map((powerUp, index) => {
+              const isDiscarded = discardedPowerups
+                ?.map((p) => p?.idx)
+                .includes(powerUp?.idx!);
+
               return (
                 <PowerUpComponent
-                  powerUp={powerUp}
+                  powerUp={isDiscarded ? null : powerUp}
                   width={120}
                   key={index}
                   isActive
