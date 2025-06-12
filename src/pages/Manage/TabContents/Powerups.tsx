@@ -58,9 +58,9 @@ export const Powerups: React.FC<PowerupsProps> = ({
           )}
           <FullScreenCardContainer>
             {totalPowerUps.map((powerUp, index) => {
-              const isDiscarded = discardedPowerups
-                ?.map((p) => p?.power_up_id)
-                .includes(powerUp?.power_up_id!);
+              const isDiscarded =
+                !!powerUp &&
+                discardedPowerups?.some((p) => p?.idx === powerUp.idx);
 
               return (
                 <PowerUpComponent
