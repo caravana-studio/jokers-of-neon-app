@@ -46,6 +46,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { useGameView } from "../dojo/queries/useGameView.ts";
 
 export interface IGameContext {
   gameId: number;
@@ -79,14 +80,11 @@ export interface IGameContext {
   checkOrCreateGame: () => void;
   restartGame: () => void;
   preSelectionLocked: boolean;
-  score: number;
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
   isRageRound: boolean;
   setIsRageRound: (isRageRound: boolean) => void;
-  cash: number;
-  setLockedCash: (cash: number | undefined) => void;
   rageCards: Card[];
   setRageCards: (rageCards: Card[]) => void;
   discards: number;
@@ -116,7 +114,6 @@ export interface IGameContext {
   isClassic: boolean;
   setGameId: (gameId: number) => void;
   resetLevel: () => void;
-  playerScore: number;
   cardTransformationLock: boolean;
   nodeRound: number;
   prepareNewGame: () => void;
@@ -137,6 +134,7 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
+  const { refetchGameView } = useGameView();
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
@@ -176,7 +174,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
-  const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(
     game?.level ?? 0,
@@ -215,12 +212,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
-    setLockedScore,
-    score,
-    playerScore,
-    setLockedPlayerScore,
-    cash,
-    setLockedCash,
     isRageRound,
     setIsRageRound,
     rageCards,
@@ -337,9 +328,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
     setLockedSpecialCards(specialCards);
-    setLockedScore(score);
-    setLockedPlayerScore(playerScore);
-    setLockedCash(cash);
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
@@ -358,10 +346,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setHand,
             setPlayAnimation,
             setPreSelectionLocked,
-            setLockedScore,
-            setLockedPlayerScore,
             setLockedSpecialCards,
-            setLockedCash,
             clearPreSelection,
             removePowerUp,
             preselectedPowerUps,
@@ -376,6 +361,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setIsRageRound,
             specialCards,
             setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
+            refetchGameView,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {

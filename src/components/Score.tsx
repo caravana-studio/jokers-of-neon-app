@@ -2,10 +2,12 @@ import { Heading } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import { RollingNumber } from "./RollingNumber";
 import { useTranslation } from "react-i18next";
+import { useGameView } from "../dojo/queries/useGameView";
+import { useRound } from "../dojo/queries/useRound";
 
 export const Score = () => {
-  const { score } = useGameContext();
   const { t } = useTranslation(["game"]);
+  const round = useRound();
 
   return (
     <Heading
@@ -16,7 +18,7 @@ export const Score = () => {
       whiteSpace="nowrap"
       className="game-tutorial-step-7"
     >
-      {t("game.score")} <RollingNumber className="italic" n={score} />
+      {t("game.score")} <RollingNumber className="italic" n={round.current_score} />
     </Heading>
   );
 };

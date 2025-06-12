@@ -6,13 +6,12 @@ import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getNode } from "../dojo/queries/getNode";
 import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
-import { useGame } from "../dojo/queries/useGame";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
+import { useGameView } from "../dojo/queries/useGameView";
 import {
   getModRageCardsId,
   getModSpecialCardsId,
 } from "../dojo/queries/useModCardsId";
-import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
 import { decodeString } from "../dojo/utils/decodeString";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
@@ -25,8 +24,10 @@ import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
-import { sortCards } from "../utils/sortCards";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { sortCards } from "../utils/sortCards";
+import { useGame } from "../dojo/queries/useGame";
+import { useRound } from "../dojo/queries/useRound";
 
 export const useGameState = () => {
   const {
@@ -58,11 +59,7 @@ export const useGameState = () => {
   const [sortBySuit, setSortBySuit] = useState(
     !!localStorage.getItem(SORT_BY_SUIT)
   );
-  const [lockedScore, setLockedScore] = useState<number | undefined>(undefined);
-  const [lockedPlayerScore, setLockedPlayerScore] = useState<
-    number | undefined
-  >(undefined);
-  const [lockedCash, setLockedCash] = useState<number | undefined>(undefined);
+
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
   const [rageCards, setRageCards] = useState<Card[]>([]);
@@ -80,6 +77,11 @@ export const useGameState = () => {
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
 
   const [cardTransformationLock, setCardTransformationLock] = useState(false);
+
+
+  const game = useGame();
+  console.log('game', game)
+  const round = useRound();
 
   const fetchGameConfig = async () => {
     if (game?.mod_id) {
@@ -106,9 +108,6 @@ export const useGameState = () => {
     }
   };
 
-  const game = useGame();
-  const round = useRound();
-
   const [nodeRound, setNodeRound] = useState<number>(0);
 
   useEffect(() => {
@@ -134,7 +133,7 @@ export const useGameState = () => {
   const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
 
   const [modId, setModId] = useState<string>(
-    game?.mod_id ? decodeString(game?.mod_id ?? "") : CLASSIC_MOD_ID
+    game?.mod_id ?? CLASSIC_MOD_ID
   );
 
   const isClassic = modId === CLASSIC_MOD_ID;
@@ -174,14 +173,6 @@ export const useGameState = () => {
   const specialCards =
     lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
-  const lsUser = localStorage.getItem(LOGGED_USER);
-
-  const dojoScore = round?.current_score ?? 0;
-  const dojoCash = game?.cash ?? 0;
-
-  const score = lockedScore ?? dojoScore;
-  const playerScore = lockedPlayerScore ?? game?.player_score ?? 0;
-  const cash = lockedCash || lockedCash === 0 ? lockedCash : dojoCash;
 
   const resetMultiPoints = () => {
     setPoints(0);
@@ -279,8 +270,6 @@ export const useGameState = () => {
     setRoundRewards,
     sortBySuit,
     setSortBySuit,
-    score,
-    playerScore,
     apiHand: dojoHand,
     plays,
     sortBy,
@@ -289,12 +278,8 @@ export const useGameState = () => {
     setPlayIsNeon,
     specialCards,
     setLockedSpecialCards,
-    setLockedScore,
-    setLockedPlayerScore,
     isRageRound,
     setIsRageRound,
-    cash,
-    setLockedCash,
     rageCards,
     setRageCards,
     destroyedSpecialCardId,

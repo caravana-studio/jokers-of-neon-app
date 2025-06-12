@@ -1,25 +1,24 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useGameView } from "../../dojo/queries/useGameView";
 import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { RollingNumber } from "../RollingNumber";
+import { ScoreTotal } from "../ScoreTotal";
 import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
-import { isTutorial } from "../../utils/isTutorial";
-import { ScoreTotal } from "../ScoreTotal";
 
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
 
-  const inTutorial = isTutorial();
-
-  const { score, points, multi } = useGameContext();
-
+  const { points, multi } = useGameContext();
+  
   const round = useRound();
+  const score = round.current_score;
   const target = round?.target_score ?? 0;
 
   return (
