@@ -155,6 +155,7 @@ export const useGameState = () => {
   };
 
   const addPowerUp = (powerUp: PowerUp) => {
+    if (powerUps.map((p) => p?.idx).includes(powerUp.idx)) return;
     setPowerUps((prev) => {
       const newPowerUps = [...prev, powerUp];
       return newPowerUps;
@@ -197,7 +198,15 @@ export const useGameState = () => {
   }, [dojoHand]);
 
   useEffect(() => {
-    if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
+    const nullCountDojoPowerUps =
+      dojoPowerUps?.filter((item) => item === null).length ?? 0;
+    const nullCountPowerUps =
+      powerUps?.filter((item) => item === null).length ?? 0;
+
+    if (
+      (dojoPowerUps?.length > 0 && powerUps.length === 0) ||
+      nullCountDojoPowerUps != nullCountPowerUps
+    ) {
       setPowerUps(dojoPowerUps);
     }
   }, [dojoPowerUps]);

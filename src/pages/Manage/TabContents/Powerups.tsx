@@ -39,7 +39,7 @@ export const Powerups: React.FC<PowerupsProps> = ({
     }
 
     setTotalPowerups(totalPowerupSlots);
-  }, [powerUps, powerUps.length, maxPowerUpSlots]);
+  }, [powerUps, maxPowerUpSlots]);
 
   return (
     <>
@@ -60,7 +60,11 @@ export const Powerups: React.FC<PowerupsProps> = ({
             {totalPowerUps.map((powerUp, index) => {
               const isDiscarded =
                 !!powerUp &&
-                discardedPowerups?.some((p) => p?.idx === powerUp.idx);
+                discardedPowerups?.some(
+                  (p) =>
+                    p?.idx === powerUp.idx &&
+                    p?.power_up_id === powerUp.power_up_id
+                );
 
               return (
                 <PowerUpComponent
