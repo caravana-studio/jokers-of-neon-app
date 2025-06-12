@@ -26,6 +26,8 @@ export const OpenLootBoxCardSelection = () => {
   const { flippedStates, animationRunning, skipFlipping } =
     useCardsFlipAnimation(cards.length, 1000);
 
+  const specialCardCount = cards.filter((card) => card.isSpecial).length;
+
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
 
@@ -53,7 +55,9 @@ export const OpenLootBoxCardSelection = () => {
       }
 
       return (
-        <Tooltip label={t("store.packs.error-lbl")}>{continueButton}</Tooltip>
+        <Tooltip label={t("store.packs.error-lbl")} zIndex={10}>
+          <Box display="inline-block">{continueButton}</Box>
+        </Tooltip>
       );
     }
 
@@ -113,7 +117,12 @@ export const OpenLootBoxCardSelection = () => {
             mt={4}
             gap={4}
           >
-            <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
+            {specialCardCount > 0 ? (
+              <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
+            ) : (
+              <Box />
+            )}
+
             {renderContinueButton()}
           </Flex>
           {isSmallScreen && (
