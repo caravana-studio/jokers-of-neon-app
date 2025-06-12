@@ -133,7 +133,7 @@ export const PreviewLootBox = () => {
             flexGrow={1}
             flexDirection="column"
           >
-            <Flex w="80%" h="80%">
+            <Flex w="100%" h="100%">
               {spineAnim}
             </Flex>
             <Flex mt={-6}>
