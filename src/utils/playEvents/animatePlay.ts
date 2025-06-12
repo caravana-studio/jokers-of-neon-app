@@ -21,10 +21,7 @@ interface AnimatePlayConfig {
   setHand: (hand: Card[] | ((prev: Card[]) => Card[])) => void;
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
-  setLockedScore: (score: number | undefined) => void;
-  setLockedPlayerScore: (playerScore: number | undefined) => void;
   setLockedSpecialCards: (cards: Card[]) => void;
-  setLockedCash: (cash: number | undefined) => void;
   clearPreSelection: () => void;
   removePowerUp: (idx: number) => void;
   preselectedPowerUps: number[];
@@ -39,6 +36,7 @@ interface AnimatePlayConfig {
   setIsRageRound: (isRageRound: boolean) => void;
   specialCards: Card[];
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
+  refetchGameView: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -57,10 +55,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setHand,
     setPlayAnimation,
     setPreSelectionLocked,
-    setLockedScore,
-    setLockedPlayerScore,
     setLockedSpecialCards,
-    setLockedCash,
     clearPreSelection,
     removePowerUp,
     preselectedPowerUps,
@@ -75,6 +70,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setIsRageRound,
     specialCards,
     setAnimateSpecialCardDefault,
+    refetchGameView,
   } = config;
 
   if (!playEvents) return;
@@ -329,7 +325,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       }, 1000);
       setPreSelectionLocked(true);
     } else {
-      setLockedCash(undefined);
       playEvents.cards && replaceCards(playEvents.cards);
       setRoundRewards(undefined);
       setLockRedirection(false);
@@ -378,14 +373,15 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     // Reset state
     setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
-    setLockedScore(undefined);
-    setLockedPlayerScore(undefined);
+
     setPlayAnimation(false);
     preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
     handsLeft > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
     setLockedSpecialCards([]);
+
+    refetchGameView();
 
     handleGameEnd();
     setCardTransformationLock(false);

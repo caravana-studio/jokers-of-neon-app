@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
 import CoinIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useGameContext } from "../../providers/GameProvider";
+import { useGameView } from "../../dojo/queries/useGameView";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useGame } from "../../dojo/queries/useGame";
 
 const getPxBasedOnDigits = (num: number) => {
   const basePx = 100;
@@ -24,9 +24,10 @@ interface CoinsProps {
 }
 
 export const Coins = ({ rolling = false }: CoinsProps) => {
-  const { cash } = useGameContext();
-  const { t } = useTranslation(["game"]);
   const { isSmallScreen } = useResponsiveValues();
+
+  const game = useGame()
+  const cash = game.cash;
 
   return (
     <Flex
