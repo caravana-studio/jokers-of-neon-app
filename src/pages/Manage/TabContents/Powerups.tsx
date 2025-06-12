@@ -39,7 +39,7 @@ export const Powerups: React.FC<PowerupsProps> = ({
     }
 
     setTotalPowerups(totalPowerupSlots);
-  }, [powerUps, maxPowerUpSlots]);
+  }, [powerUps, powerUps.length, maxPowerUpSlots]);
 
   return (
     <>
