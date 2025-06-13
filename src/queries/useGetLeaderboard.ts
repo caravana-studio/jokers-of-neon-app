@@ -5,6 +5,8 @@ import graphQLClient from "../graphQLClient";
 import { useGameContext } from "../providers/GameProvider";
 import { snakeToCamel } from "../utils/snakeToCamel";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
+import { getNode } from "../dojo/queries/getNode";
+import { useDojo } from "../dojo/useDojo";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
@@ -26,6 +28,7 @@ export const LEADERBOARD_QUERY = gql`
           level
           player_name
           id
+          current_node_id
         }
       }
     }
@@ -38,6 +41,7 @@ interface GameEdge {
     level: number;
     player_name: string;
     id: number;
+    current_node_id: number;
   };
 }
 
@@ -62,90 +66,121 @@ const getPrize = (position: number): number => {
 export const CURRENT_LEADER_NAME_KEY = "current_leader_name";
 
 const fetchGraphQLData = async (
-  modId: string
-): Promise<LeaderboardResponse> => {
-  console.log("modId", modId);
-  console.log("modId eb", encodeString(modId));
-  return await graphQLClient.request(LEADERBOARD_QUERY, {
+  modId: string,
+  client: any,
+  gameId?: number
+): Promise<{
+  leaderboard: {
+    id: number;
+    player_name: string;
+    player_score: number;
+    level: number;
+    round: number;
+    position: number;
+    prize: number;
+  }[];
+}> => {
+  const rawData: any = await graphQLClient.request(LEADERBOARD_QUERY, {
     modId: encodeString(modId),
   });
-};
 
-export const useGetLeaderboard = (gameId?: number) => {
-  const { modId } = useGameContext();
-  const queryResponse = useQuery<LeaderboardResponse>(
-    [LEADERBOARD_QUERY_KEY, modId, gameId],
-    () => fetchGraphQLData(modId)
+  const leaderboardMap = new Map<
+    string,
+    {
+      id: number;
+      player_name: string;
+      player_score: number;
+      level: number;
+      round: number;
+    }
+  >();
+
+  let currentGameEntry: {
+    id: number;
+    player_name: string;
+    player_score: number;
+    level: number;
+    round: number;
+  } | null = null;
+
+  const edges = rawData?.[QUERY_FIELD_NAME]?.edges ?? [];
+
+  const processed = await Promise.all(
+    edges
+      .filter((edge: any) => edge.node.player_score > 0)
+      .map(async (edge: any) => {
+        const decodedName = decodeString(edge.node.player_name ?? "");
+        const playerId = signedHexToNumber(edge.node.id.toString());
+
+        const round = await getNode(
+          client,
+          edge.node.id ?? 0,
+          edge.node.current_node_id ?? 0
+        );
+
+        const entry = {
+          id: edge.node.id,
+          player_name: decodedName,
+          player_score: edge.node.player_score,
+          level: edge.node.level,
+          round,
+        };
+
+        return { decodedName, playerId, entry };
+      })
   );
-  
-  const { data } = queryResponse;
 
- const leaderboardMap = new Map<
-  string,
-  { id: number; player_name: string; player_score: number; level: number }
->();
-let currentGameEntry: {
-  id: number;
-  player_name: string;
-  player_score: number;
-  level: number;
-} | null = null;
-
-data?.[QUERY_FIELD_NAME]?.edges
-  ?.filter((edge) => edge.node.player_score > 0)
-  .forEach((edge) => {
-    const decodedName = decodeString(edge.node.player_name ?? "");
-    const playerId = signedHexToNumber(edge.node.id.toString());
-
-    const entry = {
-      id: edge.node.id,
-      player_name: decodedName,
-      player_score: edge.node.player_score,
-      level: edge.node.level,
-    };
-
+  for (const { decodedName, playerId, entry } of processed) {
     if (playerId === gameId) {
       currentGameEntry = entry;
     }
 
-    if (!leaderboardMap.has(decodedName)) {
+    const existing = leaderboardMap.get(decodedName);
+    if (
+      !existing ||
+      entry.level > existing.level ||
+      (entry.level === existing.level &&
+        entry.player_score > existing.player_score)
+    ) {
       leaderboardMap.set(decodedName, entry);
-    } else {
-      const existing = leaderboardMap.get(decodedName)!;
-      if (
-        entry.level > existing.level ||
-        (entry.level === existing.level &&
-          entry.player_score > existing.player_score)
-      ) {
-        leaderboardMap.set(decodedName, entry);
-      }
     }
+  }
+
+  const leaderboardArray = Array.from(leaderboardMap.values());
+
+  if (
+    currentGameEntry &&
+    !leaderboardArray.some((entry) => entry.id === currentGameEntry?.id)
+  ) {
+    leaderboardArray.push(currentGameEntry);
+  }
+
+  const sortedLeaderboard = leaderboardArray.sort((a, b) => {
+    if (a.level !== b.level) return b.level - a.level;
+    return b.player_score - a.player_score;
   });
 
-const leaderboardArray = Array.from(leaderboardMap.values());
+  const leaderboard = sortedLeaderboard.map((leader, index) => ({
+    ...leader,
+    position: index + 1,
+    prize: getPrize(index + 1),
+  }));
 
-if (
-  currentGameEntry &&
-  !leaderboardArray.some((entry) => entry.id === currentGameEntry!.id)
-) {
-  leaderboardArray.push(currentGameEntry);
-}
+  return { leaderboard };
+};
 
-const sortedLeaderboard = leaderboardArray.sort((a, b) => {
-  if (a.level !== b.level) {
-    return b.level - a.level;
-  }
-  return b.player_score - a.player_score;
-});
+export const useGetLeaderboard = (gameId?: number) => {
+  const { modId } = useGameContext();
+  const {
+    setup: { client },
+  } = useDojo();
 
-const leaderboard = sortedLeaderboard.map((leader, index) => ({
-  ...leader,
-  position: index + 1,
-  prize: getPrize(index + 1),
-}));
+  const queryResponse = useQuery([LEADERBOARD_QUERY_KEY, modId, gameId], () =>
+    fetchGraphQLData(modId, client, gameId)
+  );
 
   return {
     ...queryResponse,
-    data: leaderboard,
+    data: queryResponse.data?.leaderboard ?? [],
   };
 };

@@ -94,6 +94,11 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                     "leaderboard.table-head.level-leaderboard-head"
                   ).toUpperCase()}
                 </Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.round-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
 
                 {tournamentEnabled && (
                   <Td>
@@ -142,6 +147,13 @@ export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
                         <RollingNumber n={leader.level} />
                       ) : (
                         leader.level
+                      )}
+                    </Td>
+                    <Td>
+                      {gameId === leader.id ? (
+                        <RollingNumber n={leader.round} />
+                      ) : (
+                        leader.round
                       )}
                     </Td>
                     {tournamentEnabled && (
