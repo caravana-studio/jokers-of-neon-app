@@ -9,7 +9,7 @@
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
-    "surrender": { 
+    "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
         "title": "Surrender",
@@ -17,6 +17,7 @@
       }
     },
     "level-lbl": "Level",
+    "round-lbl": "Round",
     "status-lbl": "Status",
     "points-lbl": "points",
     "no-games": "You don't have any games. Start a new one!",
