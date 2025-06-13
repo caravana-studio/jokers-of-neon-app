@@ -2,7 +2,6 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
-import { useGame } from "../../../dojo/queries/useGame";
 import { ControllerIcon } from "../../../icons/ControllerIcon";
 import { AnimatedText } from "../../AnimatedText";
 import CachedImage from "../../CachedImage";
@@ -19,7 +18,6 @@ import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlag
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 
 export const SidebarMenu = () => {
-  const game = useGame();
   const navigate = useNavigate();
   const page = useCurrentPageInfo();
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
@@ -104,18 +102,12 @@ export const SidebarMenu = () => {
           />
           <Flex
             sx={{
-              h: "30px",
               w: "80px",
               transform: "rotate(-90deg)",
               alignItems: "center",
-              mt: 8,
             }}
           >
             <CachedImage src="/logos/jn.png" height="15px" />
-            <Text fontFamily="Orbitron" fontSize="15px" fontWeight="500">
-              {" "}
-              · {game?.id}
-            </Text>
           </Flex>
         </Flex>
         <LogoutMenuListBtn width={iconWidth} />
