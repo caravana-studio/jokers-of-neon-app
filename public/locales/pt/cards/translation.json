@@ -258,7 +258,7 @@
     },
     "357": {
       "name": "Apostadores de Alto Nível",
-      "description": "1 em 2 chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada. Actualmente +{{multi}} multi."
+      "description": "50% de chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada. Actualmente +{{multi}} multi."
     },
     "358": {
       "name": "Roleta de Naipes",
@@ -302,7 +302,7 @@
     },
     "368": {
       "name": "A Verdade do Rei",
-      "description": "Cada Rei jogado tem 1 em 2 de chance de dar 100 de ouro. Cada carta Rei em sua mão tem 1 em 4 de chance de dar 100 pontos."
+      "description": "Cada Rei jogado tem 50% de chance de dar 100 de ouro. Cada carta Rei em sua mão tem 25% de chance de dar 100 pontos."
     },
     "369": {
       "name": "Aritmomania",
@@ -334,7 +334,7 @@
     },
     "380": {
       "name": "Fortuna da Rainha",
-      "description": "Cada rainha na sua jogada tem 1 em 2 chances de conceder +150 moedas."
+      "description": "Cada rainha na sua jogada tem 50% de chances de conceder +150 moedas."
     }
   },
   "power-ups": {

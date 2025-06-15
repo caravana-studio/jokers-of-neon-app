@@ -258,7 +258,7 @@
     },
     "357": {
       "name": "Gran apostador",
-      "description": "1 de 2 posibilidades de ganar +1 multi (acumulativo) por cada Carta Alta jugada. Actualmente +{{multi}} multi."
+      "description": "50% de posibilidades de ganar +1 multi (acumulativo) por cada Carta Alta jugada. Actualmente +{{multi}} multi."
     },
     "358": {
       "name": "Ruleta de Palos",
@@ -302,7 +302,7 @@
     },
     "368": {
       "name": "La Verdad del Rey",
-      "description": "Cada Rey jugado tiene 1 en 2 de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 1 en 4 de probabilidad de dar 100 puntos."
+      "description": "Cada Rey jugado tiene 50% de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 25% de probabilidad de dar 100 puntos."
     },
     "369": {
       "name": "Aritmomanía",
@@ -334,7 +334,7 @@
     },
     "380": {
       "name": "Fortuna de la Reina",
-      "description": "Por cada reina de tu jugada tienes 1 en 2 chances de ganar +150 monedas."
+      "description": "Por cada reina de tu jugada tienes 50% de probabilidad de ganar +150 monedas."
     }
   },
   "power-ups": {

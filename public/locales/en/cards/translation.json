@@ -694,7 +694,7 @@
     },
     "357": {
       "name": "High Rollers",
-      "description": "1 in 2 chances to gain +1 multi (stacking) for each High Card played. Currently +{{multi}} multi."
+      "description": "50% of chances to gain +1 multi (stacking) for each High Card played. Currently +{{multi}} multi."
     },
     "358": {
       "name": "Suit Roulette",
@@ -738,7 +738,7 @@
     },
     "368": {
       "name": "King's Faith",
-      "description": "Each King played has 1 in 2 chances of giving 100 cash. Every King held in hand has 1 in 4 chances of scoring 100 points."
+      "description": "Each King played has 50% of chances of giving 100 cash. Every King held in hand has 25% of chances of scoring 100 points."
     },
     "369": {
       "name": "Arithmomania",
@@ -770,7 +770,7 @@
     },
     "380": {
       "name": "Queens Fortune",
-      "description": "Scoring queens have 1 in 2 chance of giving +150 cash."
+      "description": "Scoring queens have 50% of chance of giving +150 cash."
     }
   },
   "power-ups": {
