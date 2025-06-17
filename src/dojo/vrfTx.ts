@@ -15,17 +15,6 @@ export const getVrfTx = (contractName: string, account: AccountInterface) => {
       contractName
     )?.address;
 
-  console.log('vrf calldata', (
-      {
-        contractAddress: VRF_PROVIDER_ADDRESS,
-        entrypoint: "request_random",
-        calldata: CallData.compile({
-          caller: contractAddress,
-          source: { type: 0, address: account.address },
-        }),
-      }
-    ));
-
     return (
       {
         contractAddress: VRF_PROVIDER_ADDRESS,
