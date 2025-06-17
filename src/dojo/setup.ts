@@ -20,7 +20,7 @@ const DOJO_NAMESPACE =
 
 let sync: any;
 
-const hiddenRoutes = ["/", "/login", "/mods", "/my-games"];
+const hiddenRoutes = ["/", "/login", "/mods"];
 
 const getEntities = async <S extends Schema>(
   client: ToriiClient,
