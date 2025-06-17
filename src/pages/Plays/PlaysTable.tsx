@@ -17,11 +17,11 @@ import { useTranslation } from "react-i18next";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
-import { useGame } from "../../dojo/queries/useGame";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { BLUE, GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import theme from "../../theme/theme";
@@ -38,8 +38,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
   const { t } = useTranslation(["store"]);
 
   const { pokerHandItems, locked, levelUpPlay, rerolling } = useStore();

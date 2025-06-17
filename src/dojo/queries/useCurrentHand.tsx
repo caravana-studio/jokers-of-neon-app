@@ -1,11 +1,11 @@
 import { Component, Entity, getComponentValue } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useEffect, useState } from "react";
 import { SortBy } from "../../enums/sortBy";
+import { useGameStore } from "../../state/useGameStore";
 import { Card } from "../../types/Card";
 import { sortCards } from "../../utils/sortCards";
 import { useDojo } from "../useDojo";
-import { useEffect, useState } from "react";
-import { useGame } from "./useGame";
 
 export const getCard = (gameId: number, index: number, entity: Component) => {
   const entityId = getEntityIdFromKeys([
@@ -22,14 +22,14 @@ export const useCurrentHand = (sortBy: SortBy) => {
     },
   } = useDojo();
 
-  const game = useGame();
+  const { id } = useGameStore();
   const [sortedCards, setSortedCards] = useState<Card[]>([]);
 
   const loadCurrentHand = () => {
-    const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+    const entityId = getEntityIdFromKeys([BigInt(id ?? 0)]) as Entity;
     const currentHand = getComponentValue(CurrentHand, entityId);
 
-    if (game?.id === undefined || game?.id === null) return; // <-- fix: no return value
+    if (id === undefined || id === null) return; // <-- fix: no return value
 
     const dojoCards = currentHand?.cards ?? [];
 
@@ -46,7 +46,7 @@ export const useCurrentHand = (sortBy: SortBy) => {
 
     setSortedCards(sortCards(cards, sortBy));
   };
-  
+
   useEffect(() => {
     loadCurrentHand();
 
@@ -57,7 +57,7 @@ export const useCurrentHand = (sortBy: SortBy) => {
 
       return () => clearTimeout(retryTimeout);
     }
-  }, [game?.id]);
+  }, [id]);
 
   return sortedCards;
 };

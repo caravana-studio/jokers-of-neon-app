@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreContent } from "./StoreContent";
@@ -20,12 +19,12 @@ import {
 import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
   const { gameId, setIsRageRound } = useGameContext();
-  const game = useGame();
-  const state = game?.state;
+  const { state } = useGameStore();
   const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
@@ -38,31 +37,28 @@ export const Store = () => {
 
   useEffect(() => {
     if (!lockRedirection) {
-      if (game?.state === GameStateEnum.GameOver) {
+      if (state === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
-      } else if (game?.state === GameStateEnum.Round || game?.state === GameStateEnum.Rage) {
+      } else if (
+        state === GameStateEnum.Round ||
+        state === GameStateEnum.Rage
+      ) {
         navigate("/demo");
-      } else if (game?.state === GameStateEnum.Lootbox) {
+      } else if (state === GameStateEnum.Lootbox) {
         navigate("/open-loot-box");
       }
     }
-  }, [game?.state, lockRedirection]);
+  }, [state, lockRedirection]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (state ===GameStateEnum.GameOver) {
+    if (state === GameStateEnum.GameOver) {
       navigate(`/gameover/${gameId}`);
     } else if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
       navigate("/demo");
     }
   }, [state]);
-
-  useEffect(() => {
-    if (!game) {
-      navigate("/");
-    }
-  }, []);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);

@@ -26,7 +26,7 @@ export const SpecialCardAnimation = ({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigate("/redirect/map");
+      navigate("/map");
       setAnimateSecondChanceCard(false);
     }, 4000);
 

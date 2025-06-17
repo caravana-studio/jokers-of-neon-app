@@ -8,9 +8,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useGameContext } from "../../providers/GameProvider";
 import { useMap } from "../../providers/MapProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
 import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
@@ -18,9 +21,6 @@ import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
-import { useBackToGameButton } from "../../components/useBackToGameButton";
-import { useGame } from "../../dojo/queries/useGame";
-import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -37,9 +37,9 @@ export const Map = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
+  const { state } = useGameStore();
   const navigate = useNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
-  const game = useGame();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -68,13 +68,13 @@ export const Map = () => {
         if (response) {
           switch (selectedNodeData?.nodeType) {
             case NodeType.RAGE:
-              navigate("/redirect/demo");
+              navigate("/demo");
               break;
             case NodeType.ROUND:
-              navigate("/redirect/demo");
+              navigate("/demo");
               break;
             case NodeType.STORE:
-              navigate("/redirect/store");
+              navigate("/store");
               break;
             default:
               break;
@@ -137,14 +137,12 @@ export const Map = () => {
                 : undefined
             }
             secondButton={
-              game?.state !== GameStateEnum.Map
-                ? backToGameButtonProps
-                : undefined
+              state !== GameStateEnum.Map ? backToGameButtonProps : undefined
             }
             hideDeckButton
           />
         ) : (
-          game?.state !== GameStateEnum.Map && (
+          state !== GameStateEnum.Map && (
             <Flex margin={"0 auto"}>{backToGameButton}</Flex>
           )
         )}

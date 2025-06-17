@@ -3,6 +3,7 @@ import { Component, Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "../useDojo.tsx";
 import { useGame } from "./useGame.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 const getSellingPrice = (specialCard: any) => {
   let price;
@@ -48,12 +49,9 @@ export const useCurrentSpecialCards = () => {
       clientComponents: { CurrentSpecialCards },
     },
   } = useDojo();
-  const game = useGame();
-
-  const gameId = game?.id ?? 0;
+  const {id: gameId, specialsLength} = useGameStore();
 
   const specialCardsMaxLength = 7;
-  const len_current_special_cards = game?.current_specials_len ?? 0;
 
   const specialCardsIds = Array.from(
     { length: specialCardsMaxLength },
@@ -62,5 +60,5 @@ export const useCurrentSpecialCards = () => {
   return specialCardsIds
     .map((index) => useSpecialCard(gameId, index, CurrentSpecialCards))
     .filter((card) => !!card)
-    .slice(0, len_current_special_cards);
+    .slice(0, specialsLength);
 };

@@ -14,7 +14,7 @@ export const RewardsPage = () => {
   }, []);
 
   if (!roundRewards) {
-    navigate("/redirect/map");
+    navigate("/map");
   }
 
   return (

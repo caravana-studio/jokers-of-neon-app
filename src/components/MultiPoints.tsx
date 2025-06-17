@@ -1,11 +1,11 @@
 import { Box, Heading, useTheme } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { useGameContext } from "../providers/GameProvider";
-import { RollingNumber } from "./RollingNumber";
 import { useTranslation } from "react-i18next";
+import { useGameStore } from "../state/useGameStore";
+import { RollingNumber } from "./RollingNumber";
 
 export const MultiPoints = () => {
-  const { points, multi } = useGameContext();
+  const { points, multi } = useGameStore();
   const { t } = useTranslation(["game"]);
 
   return (

@@ -23,26 +23,24 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const {
-    hand,
-    preSelectedCards,
-    gameLoading,
-    error,
-    executeCreateGame,
-    addModifier,
-    preSelectCard,
-    unPreSelectCard,
-  } = useGameContext();
-  const { isRageRound } = useGameContext();
+  const { gameLoading, error, executeCreateGame, addModifier, isRageRound } =
+    useGameContext();
+
+  const { preSelectCard, unPreSelectCard, preSelectedCards, hand } =
+    useCurrentHandStore();
+
+  const { state } = useGameStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -105,7 +103,7 @@ export const GameContent = () => {
       if (type === "tour:end") {
         setRunCallback(false);
         if (game) {
-          switch (game.state) {
+          switch (state) {
             case GameStateEnum.Store:
               return navigate("/store");
             case GameStateEnum.Map:

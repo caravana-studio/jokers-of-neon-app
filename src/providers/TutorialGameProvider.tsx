@@ -251,7 +251,10 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setIsRageRound: emptyFn,
       specialCards: emptyFn as any,
       setAnimateSpecialCardDefault: emptyFn as any,
-      refetchGameView: emptyFn,
+      addCash: emptyFn,
+      setCurrentScore: emptyFn,
+      addMulti: emptyFn,
+      addPoints: emptyFn,
     });
     setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);
@@ -274,8 +277,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   context.preSelectedCards = preSelectedCards;
   context.preSelectedPlay = preSelectedPlay;
-  context.points = points;
-  context.multi = multi;
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
   context.discards = discards;

@@ -21,21 +21,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { useTranslation } from "react-i18next";
-import { NEON_PINK } from "../theme/colors";
-import { useAudioPlayer } from "../providers/AudioPlayerProvider";
-import AudioPlayer from "./AudioPlayer";
-import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { Speed } from "../enums/settings";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { MdArrowDropDown, MdGraphicEq } from "react-icons/md";
 import { languageMap } from "../constants/language";
 import {
   animationSpeedLabels,
   lootboxTransitionLabels,
 } from "../constants/settingsLabels";
+import { Speed } from "../enums/settings";
+import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import { useSettings } from "../providers/SettingsProvider";
-import { useGame } from "../dojo/queries/useGame";
+import { useGameStore } from "../state/useGameStore";
+import { NEON_PINK } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import AudioPlayer from "./AudioPlayer";
 import CachedImage from "./CachedImage";
 
 interface SettingsModalProps {
@@ -55,7 +55,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
   } = useSettings();
   const { musicVolume, setMusicVolume, isPlaying } = useAudioPlayer();
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
+  const { id } = useGameStore();
 
   const { t, i18n } = useTranslation(["game"], { keyPrefix: "settings-modal" });
   const { t: tGeneral } = useTranslation(["game"]);
@@ -235,7 +235,7 @@ export const SettingsModal = ({ close }: SettingsModalProps) => {
             <CachedImage src="/logos/jn.png" height="15px" />
             <Text fontFamily="Orbitron" fontSize="15px" fontWeight="500">
               {" "}
-              · {game?.id}
+              · {id}
             </Text>
           </Flex>
           <Button

@@ -2,9 +2,9 @@ import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
 import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { AnimatedCard } from "./AnimatedCard.tsx";
@@ -35,13 +35,12 @@ export const SpecialCardsRow = () => {
 
   const { highlightCard } = useCardHighlight();
 
-  const game = useGame();
-  const unlockedSpecialSlots = game?.special_slots ?? 1;
+  const { specialSlots } = useGameStore();
 
   const lockedSlots =
-    unlockedSpecialSlots === maxSpecialCards
+    specialSlots === maxSpecialCards
       ? 0
-      : Math.max(0, 5 - unlockedSpecialSlots);
+      : Math.max(0, 5 - specialSlots);
 
   const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
 

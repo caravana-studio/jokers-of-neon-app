@@ -4,6 +4,7 @@ import { LockedSlotProps } from "./LockedSlot.tsx";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 export const StoreLockedSlot = (props: LockedSlotProps) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -13,8 +14,8 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
   const navigate = useNavigate();
   const { specialSlotItem, locked } = useStore();
   const price = specialSlotItem?.cost ?? 0;
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+
+  const { cash } = useGameStore()
 
   const notEnoughCash =
     !price ||

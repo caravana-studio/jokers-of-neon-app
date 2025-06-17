@@ -5,7 +5,6 @@ import {
   EMPTY_SPECIAL_SLOT_ITEM,
   getShopItems,
 } from "../dojo/queries/getShopItems";
-import { useGame } from "../dojo/queries/useGame";
 import {
   BlisterPackItem,
   BurnItem,
@@ -15,6 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp";
+import { useGameStore } from "./useGameStore";
 
 export interface RerollInformation {
   rerollCost: number;
@@ -166,9 +166,7 @@ export const useShopState = () => {
     increaseCash(Number(specialSlotItem?.cost ?? 0));
   };
 
-  const game = useGame();
-  const gameId = game?.id ?? 0;
-  const currentNodeId = game?.current_node_id;
+  const { id: gameId, round: currentNodeId } = useGameStore();
 
   const [shopId, setShopId] = useState<number>(0);
 

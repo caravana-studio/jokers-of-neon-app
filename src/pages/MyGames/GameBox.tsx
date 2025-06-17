@@ -38,7 +38,7 @@ export const GameBox = ({
     } else {
       setGameId(game.id);
       await syncCall();
-      navigate(`/redirect/state`);
+      navigate(`/redirect`);
     }
   };
 

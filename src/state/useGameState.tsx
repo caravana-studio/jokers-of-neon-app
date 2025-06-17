@@ -1,22 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { CLASSIC_MOD_ID } from "../constants/general";
-import { GAME_ID, LOGGED_USER, SORT_BY_SUIT } from "../constants/localStorage";
+import { GAME_ID } from "../constants/localStorage";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getNode } from "../dojo/queries/getNode";
-import { useCurrentHand } from "../dojo/queries/useCurrentHand";
 import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
-import { useGameView } from "../dojo/queries/useGameView";
 import {
   getModRageCardsId,
   getModSpecialCardsId,
 } from "../dojo/queries/useModCardsId";
+import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
-import { decodeString } from "../dojo/utils/decodeString";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
-import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
@@ -25,9 +22,8 @@ import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { getRageNodeData } from "../utils/getRageNodeData";
-import { sortCards } from "../utils/sortCards";
-import { useGame } from "../dojo/queries/useGame";
-import { useRound } from "../dojo/queries/useRound";
+import { useCurrentHandStore } from "./useCurrentHandStore";
+import { useGameStore } from "./useGameStore";
 
 export const useGameState = () => {
   const {
@@ -39,16 +35,21 @@ export const useGameState = () => {
 
   const [gameId, setGameId] = useState<number>(getLSGameId());
 
-  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
+  const {
+    setPoints,
+    setMulti,
+    resetMultiPoints,
+    round: currentNodeId,
+    rageCards,
+  } = useGameStore();
+
+  const { setPreSelectedPlay, preSelectedCards } = useCurrentHandStore();
   const [playIsNeon, setPlayIsNeon] = useState(false);
-  const [points, setPoints] = useState(0);
-  const [multi, setMulti] = useState(0);
   const [gameLoading, setGameLoading] = useState(true);
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [discardAnimation, setDiscardAnimation] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
-  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
   const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
     [key: number]: number[];
   }>({});
@@ -56,13 +57,9 @@ export const useGameState = () => {
   const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
     undefined
   );
-  const [sortBySuit, setSortBySuit] = useState(
-    !!localStorage.getItem(SORT_BY_SUIT)
-  );
 
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [isRageRound, setIsRageRound] = useState(false);
-  const [rageCards, setRageCards] = useState<Card[]>([]);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
@@ -78,14 +75,12 @@ export const useGameState = () => {
 
   const [cardTransformationLock, setCardTransformationLock] = useState(false);
 
-
-  const game = useGame();
-  console.log('game', game)
+  const { modId, level } = useGameStore();
   const round = useRound();
 
   const fetchGameConfig = async () => {
-    if (game?.mod_id) {
-      const gameConfig = await getGameConfig(client, game.mod_id);
+    if (modId) {
+      const gameConfig = await getGameConfig(client, modId);
       if (gameConfig) {
         setMaxSpecialCards(gameConfig.maxSpecialCards);
         setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
@@ -94,9 +89,9 @@ export const useGameState = () => {
   };
 
   const fetchCardsConfig = async () => {
-    if (game?.mod_id) {
-      const modSpecialCards = await getModSpecialCardsId(client, game.mod_id);
-      const modRageCards = await getModRageCardsId(client, game.mod_id);
+    if (modId) {
+      const modSpecialCards = await getModSpecialCardsId(client, modId);
+      const modRageCards = await getModRageCardsId(client, modId);
 
       if (modSpecialCards) {
         const modCardsConfig: ModCardsConfig = {
@@ -111,34 +106,22 @@ export const useGameState = () => {
   const [nodeRound, setNodeRound] = useState<number>(0);
 
   useEffect(() => {
-    getNode(client, game?.id ?? 0, game?.current_node_id ?? 0).then((data) => {
-      if ((round?.rages?.length ?? 0) > 0) {
+    getNode(client, gameId ?? 0, currentNodeId ?? 0).then((data) => {
+      if ((rageCards.length ?? 0) > 0) {
         const rageRoundData = getRageNodeData(data);
         setNodeRound(rageRoundData.round);
       } else {
         setNodeRound(data);
       }
     });
-  }, [game?.id, game?.current_node_id, round?.rages]);
+  }, [gameId, currentNodeId, rageCards]);
 
   useEffect(() => {
     fetchGameConfig();
     fetchCardsConfig();
-  }, [game?.mod_id]);
-
-  const sortBy: SortBy = useMemo(
-    () => (sortBySuit ? SortBy.SUIT : SortBy.RANK),
-    [sortBySuit]
-  );
-  const sortedHand = useMemo(() => sortCards(hand, sortBy), [hand, sortBy]);
-
-  const [modId, setModId] = useState<string>(
-    game?.mod_id ?? CLASSIC_MOD_ID
-  );
+  }, [modId]);
 
   const isClassic = modId === CLASSIC_MOD_ID;
-
-  const dojoHand = useCurrentHand(sortBy);
 
   const dojoPowerUps = useGamePowerUps();
 
@@ -166,27 +149,14 @@ export const useGameState = () => {
         if (plays != undefined) setPlays(plays);
       });
     }
-  }, [client, account, gameId, game?.level, game?.current_node_id]);
+  }, [client, account, gameId, level, currentNodeId]);
 
   const dojoSpecialCards = useCurrentSpecialCards();
 
   const specialCards =
     lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
 
-
-  const resetMultiPoints = () => {
-    setPoints(0);
-    setMulti(0);
-  };
-
   //effects
-
-  useEffect(() => {
-    if (dojoHand?.length > 0 && hand.length === 0) {
-      setHand(dojoHand);
-    }
-  }, [dojoHand]);
-
   useEffect(() => {
     if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
       setPowerUps(dojoPowerUps);
@@ -244,12 +214,6 @@ export const useGameState = () => {
   return {
     gameId,
     setGameId: lsSetGameId,
-    preSelectedPlay,
-    setPreSelectedPlay,
-    points,
-    setPoints,
-    multi,
-    setMulti,
     gameLoading,
     setGameLoading,
     preSelectionLocked,
@@ -260,28 +224,17 @@ export const useGameState = () => {
     setPlayAnimation,
     error,
     setError,
-    preSelectedCards,
-    setPreSelectedCards,
     preSelectedModifiers,
     setPreSelectedModifiers,
-    hand,
-    setHand,
     roundRewards,
     setRoundRewards,
-    sortBySuit,
-    setSortBySuit,
-    apiHand: dojoHand,
     plays,
-    sortBy,
-    sortedHand,
     playIsNeon,
     setPlayIsNeon,
     specialCards,
     setLockedSpecialCards,
     isRageRound,
     setIsRageRound,
-    rageCards,
-    setRageCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
     levelUpHand,
@@ -297,8 +250,6 @@ export const useGameState = () => {
     resetPowerUps,
     setPowerUps,
     addPowerUp,
-    modId,
-    setModId,
     maxSpecialCards,
     maxPowerUpSlots,
     isClassic,

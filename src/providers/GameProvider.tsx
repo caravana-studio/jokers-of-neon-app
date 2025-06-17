@@ -6,14 +6,8 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { GAME_ID, SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
-  GAME_ID,
-  SKIP_IN_GAME_TUTORIAL,
-  SORT_BY_SUIT,
-} from "../constants/localStorage";
-import { rageCardIds } from "../constants/rageCardIds.ts";
-import {
-  achievementSfx,
   cashSfx,
   discardSfx,
   multiSfx,
@@ -22,20 +16,17 @@ import {
   preselectedCardSfx,
 } from "../constants/sfx.ts";
 import { useGame } from "../dojo/queries/useGame.tsx";
-import { useRound } from "../dojo/queries/useRound.tsx";
 import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
-import { gameExists } from "../dojo/utils/getGame.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
-import { Plays } from "../enums/plays";
-import { SortBy } from "../enums/sortBy.ts";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
-import { useDiscards } from "../state/useDiscards.tsx";
+import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useGameState } from "../state/useGameState.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { RoundRewards } from "../types/RoundRewards.ts";
@@ -46,22 +37,12 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
-import { useGameView } from "../dojo/queries/useGameView.ts";
 
 export interface IGameContext {
   gameId: number;
-  preSelectedPlay: Plays;
-  points: number;
-  multi: number;
   executeCreateGame: (gameId?: number) => void;
   gameLoading: boolean;
-  preSelectedCards: number[];
-  setPreSelectedCards: (cards: number[]) => void;
   play: () => void;
-  hand: Card[];
-  setHand: (cards: Card[]) => void;
-  getModifiers: (preSelectedCardIndex: number) => Card[];
-  togglePreselected: (cardIndex: number) => void;
   discardAnimation: boolean;
   playAnimation: boolean;
   discard: () => void;
@@ -70,16 +51,12 @@ export interface IGameContext {
   ) => Promise<{ success: boolean; cards: Card[] }>;
   error: boolean;
   clearPreSelection: () => void;
-  preSelectedModifiers: { [key: number]: number[] };
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
-  sortBy: SortBy;
-  toggleSortBy: () => void;
   onShopSkip: () => void;
   sellSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
   restartGame: () => void;
-  preSelectionLocked: boolean;
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
@@ -87,9 +64,6 @@ export interface IGameContext {
   setIsRageRound: (isRageRound: boolean) => void;
   rageCards: Card[];
   setRageCards: (rageCards: Card[]) => void;
-  discards: number;
-  preSelectCard: (cardIndex: number) => void;
-  unPreSelectCard: (cardIndex: number) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
@@ -134,23 +108,43 @@ export const useGameContext = () => {
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
-  const { refetchGameView } = useGameView();
+
+  const {
+    refetchGameStore,
+    addCash,
+    setCurrentScore,
+    resetMultiPoints,
+    setMulti,
+    setPoints,
+    addPoints,
+    addMulti,
+    remainingPlays,
+    discard: stateDiscard,
+    rollbackDiscard,
+    level,
+    state: gameState
+  } = useGameStore();
+
+  const {
+    hand,
+    replaceCards,
+    refetchCurrentHandStore,
+    preSelectedCards,
+    preSelectedModifiers,
+    clearPreSelection,
+  } = useCurrentHandStore();
+
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const showTutorial =
     !localStorage.getItem(SKIP_IN_GAME_TUTORIAL) && !hideTutorialFF;
 
-  const round = useRound();
-  const handsLeft = round?.remaining_plays ?? 0;
-
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
   const {
-    setup: {
-      clientComponents: { Game },
-    },
+    setup: { client },
     syncCall,
   } = useDojo();
 
@@ -164,21 +158,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     surrenderGame,
   } = useGameActions();
 
-  const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
   const { sfxVolume, animationSpeed } = useSettings();
 
   const game = useGame();
-  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
-  const playAnimationDuration = getPlayAnimationDuration(
-    game?.level ?? 0,
-    animationSpeed
-  );
+  const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
   const {
     setAnimatedCard,
@@ -190,16 +180,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     gameId,
     setGameId,
-    preSelectedCards,
-    setPreSelectedCards,
-    hand,
-    setHand,
-    points,
-    setPoints,
-    multi,
-    setMulti,
     setRoundRewards,
-    preSelectedModifiers,
     setPreSelectedModifiers,
     preSelectionLocked,
     setPreSelectionLocked,
@@ -207,8 +188,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setDiscardAnimation,
     setPlayAnimation,
     setError,
-    sortBySuit,
-    setSortBySuit,
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
@@ -228,12 +207,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setCardTransformationLock,
   } = state;
 
-  const maxPreSelectedCards = rageCards?.find(
-    (card) => card.card_id === rageCardIds.STRATEGIC_QUARTET
-  )
-    ? 4
-    : 5;
-
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
@@ -246,17 +219,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const prepareNewGame = () => {
     localStorage.removeItem("GAME_ID");
     resetLevel();
-    setHand([]);
-  };
-
-  const toggleSortBy = () => {
-    if (sortBySuit) {
-      localStorage.removeItem(SORT_BY_SUIT);
-      setSortBySuit(false);
-    } else {
-      setSortBySuit(true);
-      localStorage.setItem(SORT_BY_SUIT, "true");
-    }
   };
 
   const username = useUsername();
@@ -284,7 +246,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
             resetLevel();
-            setHand(hand);
+            replaceCards(hand);
             setGameId(newGameId);
             clearPreSelection();
             localStorage.setItem(GAME_ID, newGameId.toString());
@@ -310,20 +272,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const replaceCards = (cards: Card[]) => {
-    const newHand = hand
-      ?.map((card) => {
-        const newCard = cards.find((c) => c.idx === card.idx);
-        if (newCard) {
-          return newCard;
-        } else {
-          return card;
-        }
-      })
-      // filter out null cards (represented by card_id 9999)
-      .filter((card) => card.card_id !== 9999);
-    setHand(newHand);
-  };
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
@@ -343,7 +291,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             cashSound,
             setPoints,
             setMulti,
-            setHand,
+            // TODO: remove this,
+            setHand: () => {},
             setPlayAnimation,
             setPreSelectionLocked,
             setLockedSpecialCards,
@@ -355,13 +304,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setLockRedirection,
             setRoundRewards,
             replaceCards,
-            handsLeft,
+            remainingPlays,
             setAnimateSecondChanceCard,
             setCardTransformationLock,
             setIsRageRound,
             specialCards,
             setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
-            refetchGameView,
+            addCash,
+            setCurrentScore,
+            addPoints,
+            addMulti,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -375,64 +327,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       });
   };
 
-  const clearPreSelection = () => {
-    if (!preSelectionLocked && handsLeft > 0) {
-      resetMultiPoints();
-      setPreSelectedCards([]);
-      setPreSelectedModifiers({});
-      setPreselectedPowerUps([]);
-    }
-  };
-
-  const resetMultiPoints = () => {
-    setPoints(0);
-    setMulti(0);
-  };
-
-  const getModifiers = (preSelectedCardIndex: number) => {
-    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
-    return (
-      modifierIndexes?.map((modifierIdx) => {
-        return hand.find((c) => c.idx === modifierIdx)!;
-      }) ?? []
-    );
-  };
-
-  const cardIsPreselected = (cardIndex: number) => {
-    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
-  };
-
   const powerUpIsPreselected = (powerUpId: number) => {
     return preselectedPowerUps.filter((idx) => idx === powerUpId).length > 0;
-  };
-
-  const unPreSelectCard = (cardIndex: number) => {
-    setPreSelectedModifiers((prev) => {
-      return {
-        ...prev,
-        [cardIndex]: [],
-      };
-    });
-    setPreSelectedCards((prev) => {
-      return prev.filter((idx) => cardIndex !== idx);
-    });
   };
 
   const unPreSelectPowerUp = (powerUpIdx: number) => {
     setPreselectedPowerUps((prev) => {
       return prev.filter((idx) => powerUpIdx !== idx);
     });
-  };
-
-  const preSelectCard = (cardIndex: number) => {
-    if (
-      !preSelectedCards.includes(cardIndex) &&
-      preSelectedCards.length < maxPreSelectedCards
-    ) {
-      setPreSelectedCards((prev) => {
-        return [...prev, cardIndex];
-      });
-    }
   };
 
   const preSelectPowerUp = (powerUpIdx: number) => {
@@ -443,20 +345,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const togglePreselected = (cardIndex: number) => {
-    if (!preSelectionLocked && handsLeft > 0) {
-      if (cardIsPreselected(cardIndex)) {
-        unPreSelectCard(cardIndex);
-        preselectCardSound();
-      } else if (preSelectedCards.length < 5) {
-        preSelectCard(cardIndex);
-        preselectCardSound();
-      }
-    }
-  };
-
   const togglePreselectedPowerUp = (powerUpIdx: number) => {
-    if (!preSelectionLocked && handsLeft > 0) {
+    if (!preSelectionLocked && remainingPlays > 0) {
       if (powerUpIsPreselected(powerUpIdx)) {
         unPreSelectPowerUp(powerUpIdx);
         preselectCardSound();
@@ -554,7 +444,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       }
       return card;
     });
-    setHand(newHand);
+    replaceCards(newHand);
     const rollback = () => {
       // rollback, remove discarded boolean from all cards
       const newHand = hand?.map((card) => {
@@ -563,7 +453,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           discarded: false,
         };
       });
-      setHand(newHand);
+      replaceCards(newHand);
     };
     const discardPromise = changeModifierCard(gameId, cardIdx);
     discardPromise
@@ -620,15 +510,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     console.log("checking game exists", gameId);
 
     clearPreSelection();
-    if (!gameId || gameId === 0 || !gameExists(Game, gameId, modId)) {
-      setTimeout(() => {
-        if (!gameExists(Game, gameId, modId)) {
-          executeCreateGame();
-        } else {
-          setGameLoading(false);
-          console.log("Game found (2), no need to create a new one");
-        }
-      }, 5000);
+    if (!gameId || gameId === 0 /* || !gameExists(Game, gameId, modId) */) {
+      executeCreateGame();
     } else {
       setGameLoading(false);
       console.log("Game found, no need to create a new one");
@@ -642,17 +525,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (!lockRedirection) {
-      if (game?.state === GameStateEnum.GameOver) {
+      if (gameState === GameStateEnum.GameOver) {
         navigate(`/gameover/${gameId}`);
       } else if (
-        game?.state === GameStateEnum.Store &&
+        gameState === GameStateEnum.Store &&
         location.pathname === "/demo"
       ) {
         console.log("redirecting to store");
         navigate("/store");
       }
     }
-  }, [game?.state, lockRedirection]);
+  }, [gameState, lockRedirection]);
 
   useEffect(() => {
     // start with redirection unlocked
@@ -660,24 +543,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
+  useEffect(() => {
+    if (client && gameId) {
+      refetchGameStore(client, gameId);
+      refetchCurrentHandStore(client, gameId);
+    }
+  }, [client, gameId]);
+
   const actions = {
-    setPreSelectedCards,
     play: onPlayClick,
-    setHand,
-    getModifiers,
-    togglePreselected,
     discard: onDiscardClick,
     changeModifierCard: onChangeModifierCard,
     clearPreSelection,
     addModifier,
-    toggleSortBy,
     onShopSkip,
     sellSpecialCard: onSellSpecialCard,
     checkOrCreateGame,
     restartGame: cleanGameId,
     executeCreateGame,
-    preSelectCard,
-    unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
   };
@@ -688,7 +571,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         ...state,
         ...actions,
         lockRedirection,
-        discards,
         powerUpIsPreselected,
         resetLevel,
         prepareNewGame,

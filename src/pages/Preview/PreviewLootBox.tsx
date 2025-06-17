@@ -9,10 +9,10 @@ import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
@@ -28,11 +28,10 @@ export const PreviewLootBox = () => {
     return <p>Card not found.</p>;
   }
 
-  const game = useGame();
   const { locked } = useStore();
   const { getLootBoxData } = useCardData();
 
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
   useRedirectByGameState();
@@ -150,7 +149,7 @@ export const PreviewLootBox = () => {
           hideDeckButton
           firstButton={{
             onClick: () => {
-              navigate("/redirect/store");
+              navigate("/store");
             },
             label: t("labels.close").toUpperCase(),
           }}

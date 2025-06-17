@@ -1,7 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useRound } from "../dojo/queries/useRound.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
@@ -79,19 +79,19 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   }
 
   const navigate = useNavigate();
-  const round = useRound();
+  const { totalScore } = useGameStore();
 
   return (
     <PinkBox
       title={`${t("title", { round: roundNumber })}`}
       button={t("continue-btn")}
       onClick={() => {
-        navigate("/redirect/map");
+        navigate("/map");
       }}
     >
       <Heading color="lightViolet" size="s">
         {" "}
-        {t("final-score", { score: round?.current_score })}{" "}
+        {t("final-score", { score: totalScore })}{" "}
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />

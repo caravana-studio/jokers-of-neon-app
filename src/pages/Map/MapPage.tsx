@@ -3,17 +3,16 @@ import { useTranslation } from "react-i18next";
 import { ReactFlowProvider } from "reactflow";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { useGame } from "../../dojo/queries/useGame";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { MapProvider } from "../../providers/MapProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Legend } from "./Legend";
 import { Map } from "./Map";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 
 export const MapPage = () => {
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "map" });
-  const game = useGame();
-  const level = game?.level ?? 0;
+  const { level } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
 
   useRedirectByGameState();

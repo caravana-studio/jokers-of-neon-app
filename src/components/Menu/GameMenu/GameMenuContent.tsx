@@ -29,6 +29,7 @@ import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { useRef } from "react";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
+import { useGameStore } from "../../../state/useGameStore";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
 }) => {
   const iconWidth = "26px";
   const fontSize = "18px";
-  const game = useGame();
+  const {id} = useGameStore();
 
   const touchStartX = useRef(0);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
@@ -79,7 +80,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
             <CachedImage src="/logos/jn.png" width="58px" />
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
-              · {game?.id}
+              · {id}
             </Text>
           </Flex>
           <DrawerCloseButton

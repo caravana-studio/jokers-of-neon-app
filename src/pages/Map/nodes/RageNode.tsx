@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
-import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { BLUE } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
@@ -24,9 +24,9 @@ const RageNode = ({ data }: any) => {
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
-  const game = useGame();
+  const { state } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
   const [isHovered, setIsHovered] = useState(false);
 
@@ -67,11 +67,11 @@ const RageNode = ({ data }: any) => {
               nodeType: NodeType.RAGE,
             });
           if (data.current && !stateInMap) {
-            navigate("/redirect/demo");
+            navigate("/demo");
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
-                navigate("/redirect/demo");
+                navigate("/demo");
               }
             });
           }

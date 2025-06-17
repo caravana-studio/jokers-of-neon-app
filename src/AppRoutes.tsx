@@ -127,7 +127,7 @@ export const AppRoutes = () => {
         }
       />
 
-      <Route path="/redirect/:page" element={<Redirect />} />
+      <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"
         element={

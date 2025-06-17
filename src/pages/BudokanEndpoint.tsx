@@ -16,7 +16,7 @@ export const BudokanEndpoint = () => {
 
   const syncAndRedirect = async () => {
     await syncCall();
-    navigate(`/redirect/state`);
+    navigate(`/redirect`);
   };
 
   useEffect(() => {

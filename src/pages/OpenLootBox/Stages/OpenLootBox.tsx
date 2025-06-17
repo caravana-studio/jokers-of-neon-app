@@ -1,27 +1,27 @@
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../../components/Background";
-import { Flex } from "@chakra-ui/react";
 import { LootBox, LootBoxRef } from "../../../components/LootBox";
-import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
-import { useStore } from "../../../providers/StoreProvider";
-import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
-import { isMobile } from "react-device-detect";
-import { useGame } from "../../../dojo/queries/useGame";
-import { useAudio } from "../../../hooks/useAudio";
 import { openPackSfx } from "../../../constants/sfx";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { useAudio } from "../../../hooks/useAudio";
+import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
+import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
+import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
 
 export const OpenLootBox = () => {
-  const { state } = useLocation();
-  const { pack } = state || {};
+  const { state: locationState } = useLocation();
+  const { pack } = locationState || {};
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
   const { play: openPackSound } = useAudio(openPackSfx, 0.5);
-  const game = useGame();
+  const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
   const { buyPack, lockRedirection } = useStore();
   const navigate = useNavigate();
@@ -37,13 +37,13 @@ export const OpenLootBox = () => {
   }
 
   const openAnimationCallBack = () => {
-    transitionTo("/redirect/loot-box-cards-selection", {
+    transitionTo("loot-box-cards-selection", {
       state: { pack: pack },
     });
   };
 
   useEffect(() => {
-    if (game && game?.state !== GameStateEnum.Lootbox) {
+    if (state !== GameStateEnum.Lootbox) {
       setIsBuying(true);
       buyPack(pack)
         .then((response) => {

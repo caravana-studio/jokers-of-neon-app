@@ -1,21 +1,22 @@
 import { CairoCustomEnum } from "starknet";
+import { achievementSfx } from "../constants/sfx";
 import { DojoEvents } from "../enums/dojoEvents";
+import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
+import { useSettings } from "../providers/SettingsProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
+import { handleAchievements } from "../utils/handleAchievements";
 import {
   failedTransactionToast,
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { handleAchievements } from "../utils/handleAchievements";
-import { useAudio } from "../hooks/useAudio";
-import { useSettings } from "../providers/SettingsProvider";
-import { achievementSfx } from "../constants/sfx";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -27,7 +28,9 @@ export const useShopActions = () => {
     account: { account },
   } = useDojo();
 
-  const { setDestroyedSpecialCardId, setHand, setPowerUps, maxPowerUpSlots } =
+  const { replaceCards: setHand } = useCurrentHandStore();
+
+  const { setDestroyedSpecialCardId, setPowerUps, maxPowerUpSlots } =
     useGameContext();
 
   const { sfxVolume } = useSettings();

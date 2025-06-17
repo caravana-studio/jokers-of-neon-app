@@ -5,10 +5,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CardImage3D } from "../../components/CardImage3D.tsx";
 import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCardComponent.mobile.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { Duration } from "../../enums/duration.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
@@ -24,7 +24,6 @@ const PreviewCard = () => {
   });
 
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   if (!card) {
@@ -36,10 +35,8 @@ const PreviewCard = () => {
 
   const { getCardData } = useCardData();
 
-  const cash = game?.cash ?? 0;
+  const { cash, specialSlots, specialsLength } = useGameStore();
   const { name, description } = getCardData(card.card_id ?? 0);
-  const specialMaxLength = game?.special_slots ?? 0;
-  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash =
     (duration === Duration.PERMANENT &&
@@ -54,16 +51,16 @@ const PreviewCard = () => {
           : cash < card.temporary_price)));
 
   const noSpaceForSpecialCards =
-    card.isSpecial && specialLength >= specialMaxLength;
+    card.isSpecial && specialsLength >= specialSlots;
 
   const onBuyClick = () => {
     if (card.isSpecial) {
       buySpecialCardItem(card, duration === Duration.TEMPORAL).then(() =>
-        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
+        navigate("/store", { state: { lastTabIndex: 0 } })
       );
     } else {
       buyCard(card).then(() =>
-        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
+        navigate("/store", { state: { lastTabIndex: 0 } })
       );
     }
   };

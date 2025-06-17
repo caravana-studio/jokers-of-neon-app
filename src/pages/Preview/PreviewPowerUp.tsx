@@ -6,9 +6,9 @@ import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { StorePreviewPowerUpComponentMobile } from "../../components/StorePreviewPowerUpComponent.mobile.tsx";
 import { getPowerUpData } from "../../data/powerups.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewPowerUp = () => {
@@ -22,10 +22,9 @@ export const PreviewPowerUp = () => {
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
-  const game = useGame();
   const { buyPowerUp, locked } = useStore();
   const { powerUps, maxPowerUpSlots } = useGameContext();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
 
   const powerUpData = getPowerUpData(powerUp.power_up_id);
 
@@ -43,7 +42,7 @@ export const PreviewPowerUp = () => {
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
     buyPowerUp(powerUp).then(() =>
-      navigate("/redirect/store", { state: { lastTabIndex: 2 } })
+      navigate("/store", { state: { lastTabIndex: 2 } })
     );
   };
   const buyButton = isSmallScreen ? (

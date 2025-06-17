@@ -1,11 +1,12 @@
+import { useGameStore } from "../../state/useGameStore";
 import { useRound } from "./useRound";
 
 export const useRageCards = () => {
-  const round = useRound();
-  if (!round || !round.rages || round.rages.length === 0) {
+  const { rageCards } = useGameStore();
+  if (rageCards || rageCards.length === 0) {
     return [];
   }
-  const dojoRageCards = round.rages.map((c: any, index: number) => {
+  const dojoRageCards = rageCards.map((c: any, index: number) => {
     const card_id = c && (c as any).value;
     return {
       card_id,

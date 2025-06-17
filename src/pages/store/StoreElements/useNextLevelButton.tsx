@@ -5,6 +5,7 @@ import { useGame } from "../../../dojo/queries/useGame";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
 
 export const useNextLevelButton = () => {
@@ -14,11 +15,12 @@ export const useNextLevelButton = () => {
   const {
     setDestroyedSpecialCardId,
     onShopSkip,
-    setHand,
     gameId,
     setPowerUps,
     maxPowerUpSlots,
   } = useGameContext();
+
+  const { replaceCards } = useCurrentHandStore();
   const { skipShop } = useShopActions();
 
   const game = useGame();
@@ -30,7 +32,7 @@ export const useNextLevelButton = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        setHand(response.cards);
+        replaceCards(response.cards);
 
         const powerUps: (PowerUp | null)[] = response.powerUps;
         while (powerUps.length < maxPowerUpSlots) {
@@ -40,7 +42,7 @@ export const useNextLevelButton = () => {
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/redirect/map");
+        navigate("/map");
       } else {
         setLoading(false);
       }

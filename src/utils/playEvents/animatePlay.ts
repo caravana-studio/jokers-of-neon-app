@@ -16,8 +16,10 @@ interface AnimatePlayConfig {
   multiSound: () => void;
   negativeMultiSound: () => void;
   cashSound: () => void;
-  setPoints: (points: number | ((prev: number) => number)) => void;
-  setMulti: (multi: number | ((prev: number) => number)) => void;
+  setPoints: (points: number) => void;
+  setMulti: (multi: number) => void;
+  addPoints: (points: number) => void;
+  addMulti: (multi: number) => void;
   setHand: (hand: Card[] | ((prev: Card[]) => Card[])) => void;
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
@@ -30,13 +32,14 @@ interface AnimatePlayConfig {
   setLockRedirection: (locked: boolean) => void;
   setRoundRewards: (rewards: any) => void;
   replaceCards: (cards: Card[]) => void;
-  handsLeft: number;
+  remainingPlays: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
   setIsRageRound: (isRageRound: boolean) => void;
   specialCards: Card[];
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
-  refetchGameView: () => void;
+  addCash: (cash: number) => void;
+  setCurrentScore: (score: number) => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -64,13 +67,16 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setLockRedirection,
     setRoundRewards,
     replaceCards,
-    handsLeft,
+    remainingPlays,
     setAnimateSecondChanceCard,
     setCardTransformationLock,
     setIsRageRound,
     specialCards,
     setAnimateSpecialCardDefault,
-    refetchGameView,
+    addCash,
+    setCurrentScore,
+    addMulti,
+    addPoints,
   } = config;
 
   if (!playEvents) return;
@@ -197,7 +203,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             points: quantity,
             animationIndex: 300 + index,
           });
-          setPoints((prev) => prev + quantity);
+          addPoints(quantity);
         } else if (isMulti) {
           multiSound();
           setAnimatedCard({
@@ -206,9 +212,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             multi: quantity,
             animationIndex: 300 + index,
           });
-          setMulti((prev) => prev + quantity);
+          addMulti(quantity);
         } else if (isCash) {
           cashSound();
+          addCash(quantity);
           setAnimatedCard({
             special_idx,
             idx: [],
@@ -239,7 +246,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
                 points: quantity,
                 animationIndex: 400 + index,
               });
-              setPoints((prev) => prev + quantity);
+              addPoints(quantity);
             } else if (isMulti) {
               quantity > 0 ? multiSound() : negativeMultiSound();
               setAnimatedCard({
@@ -248,9 +255,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
                 multi: quantity,
                 animationIndex: 400 + index,
               });
-              setMulti((prev) => prev + quantity);
+              addMulti(quantity);
             } else if (isCash) {
               cashSound();
+              addCash(quantity);
               setAnimatedCard({
                 special_idx,
                 idx: [idx],
@@ -284,12 +292,12 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
         if (points) {
           pointsSound();
-          setPoints((prev) => prev + points);
+          addPoints(points);
         }
 
         if (multi) {
           multiSound();
-          setMulti((prev) => prev + multi);
+          addMulti(multi);
         }
       }, playAnimationDuration * index);
     });
@@ -377,11 +385,11 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayAnimation(false);
     preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
-    handsLeft > 0 && setPreSelectionLocked(false);
+    remainingPlays > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
     setLockedSpecialCards([]);
 
-    refetchGameView();
+    setCurrentScore(playEvents.score)
 
     handleGameEnd();
     setCardTransformationLock(false);

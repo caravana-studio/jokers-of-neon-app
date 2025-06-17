@@ -1,25 +1,12 @@
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { Plays } from "../enums/plays";
-import { SortBy } from "../enums/sortBy";
 import { IGameContext } from "./GameProvider";
 
 export const gameProviderDefaults: IGameContext = {
   gameId: getLSGameId(),
-  preSelectedPlay: Plays.NONE,
-  points: 0,
-  multi: 0,
   executeCreateGame: () => {},
   gameLoading: false,
-  preSelectedCards: [],
-  setPreSelectedCards: (_) => {},
   play: () => {},
-  hand: [],
-  setHand: (_) => {},
-  getModifiers: (_) => {
-    return [];
-  },
-  togglePreselected: (_) => {},
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
@@ -27,16 +14,12 @@ export const gameProviderDefaults: IGameContext = {
     new Promise((resolve) => resolve({ success: false, cards: [] })),
   error: false,
   clearPreSelection: () => {},
-  preSelectedModifiers: {},
   addModifier: (_, __) => {},
   roundRewards: undefined,
-  sortBy: SortBy.RANK,
-  toggleSortBy: () => {},
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   restartGame: () => {},
-  preSelectionLocked: false,
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
@@ -44,9 +27,6 @@ export const gameProviderDefaults: IGameContext = {
   setIsRageRound: (_) => {},
   rageCards: [],
   setRageCards: (_) => {},
-  discards: 0,
-  preSelectCard: (_) => {},
-  unPreSelectCard: (_) => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
   levelUpHand: undefined,

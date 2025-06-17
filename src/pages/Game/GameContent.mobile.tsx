@@ -24,8 +24,10 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { useGame } from "../../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -33,22 +35,23 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
   const {
-    hand,
-    preSelectedCards,
     gameLoading,
     error,
     executeCreateGame,
     addModifier,
-    preSelectCard,
-    unPreSelectCard,
     isRageRound,
     maxPowerUpSlots,
   } = useGameContext();
+
+  const { preSelectCard, unPreSelectCard, preSelectedCards, hand } =
+    useCurrentHandStore();
+
+  const { state } = useGameStore();
 
   const { highlightedCard } = useCardHighlight();
 
@@ -119,7 +122,7 @@ export const MobileGameContent = () => {
       if (type === "tour:end") {
         setRunCallback(false);
         if (game) {
-          switch (game.state) {
+          switch (state) {
             case GameStateEnum.Store:
               return navigate("/store");
             case GameStateEnum.Map:

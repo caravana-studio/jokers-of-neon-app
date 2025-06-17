@@ -41,7 +41,7 @@ const PreviewCardLayout = () => {
     setIsOpenAnimationRunning(false);
     setLockRedirection(false);
     close();
-    navigate("/redirect/open-pack");
+    navigate("open-pack");
   }; */
 
   const { getCardData } = useCardData();

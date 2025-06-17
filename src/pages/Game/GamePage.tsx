@@ -4,8 +4,6 @@ import { useLocation } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
-import { getGameView } from "../../dojo/queries/getGameView";
-import { getHandCards } from "../../dojo/queries/getHandCards";
 import { useRageCards } from "../../dojo/queries/useRageCards";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
@@ -58,7 +56,6 @@ export const GamePage = () => {
     setRageCards(rageCards);
     refetchSpecialCardsData(modId, gameId);
 
-    getHandCards(client, gameId);
   }, []);
 
   useRedirectByGameState(!(!lockRedirection && !roundRewards), {

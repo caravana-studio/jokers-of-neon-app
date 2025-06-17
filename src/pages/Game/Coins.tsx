@@ -2,9 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import CoinIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useGameView } from "../../dojo/queries/useGameView";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { useGame } from "../../dojo/queries/useGame";
 
 const getPxBasedOnDigits = (num: number) => {
   const basePx = 100;
@@ -26,8 +25,7 @@ interface CoinsProps {
 export const Coins = ({ rolling = false }: CoinsProps) => {
   const { isSmallScreen } = useResponsiveValues();
 
-  const game = useGame()
-  const cash = game.cash;
+  const { cash } = useGameStore();
 
   return (
     <Flex

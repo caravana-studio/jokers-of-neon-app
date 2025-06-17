@@ -1,8 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGame } from "../../dojo/queries/useGame";
-import { useRound } from "../../dojo/queries/useRound";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { isTutorial } from "../../utils/isTutorial";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
@@ -15,13 +15,13 @@ export const PlayButton = ({
   highlight = false,
   onTutorialCardClick,
 }: PlayButtonProps) => {
-  const { preSelectedCards, play, preSelectionLocked, remainingPlaysTutorial } =
-    useGameContext();
+  const { play, remainingPlaysTutorial } = useGameContext();
 
-  const round = useRound();
-  const game = useGame();
+  const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
+
+  const { play: statePlay, totalPlays, remainingPlays } = useGameStore();
   const handsLeft = !isTutorial()
-    ? round?.remaining_plays ?? 0
+    ? remainingPlays
     : remainingPlaysTutorial ?? 0;
 
   const cantPlay =
@@ -39,6 +39,7 @@ export const PlayButton = ({
         onClick={(e) => {
           e.stopPropagation();
           if (onTutorialCardClick) onTutorialCardClick();
+          statePlay();
           play();
         }}
         sx={{
@@ -59,7 +60,7 @@ export const PlayButton = ({
       <PlayDiscardIndicators
         disabled={cantPlay}
         type="play"
-        total={game?.plays ?? 5}
+        total={totalPlays ?? 5}
         active={handsLeft}
       />
     </Flex>

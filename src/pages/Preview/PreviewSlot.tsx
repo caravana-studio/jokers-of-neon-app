@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
-import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { StorePreviewSlotComponentMobile } from "../../components/StorePreviewSlotComponent.mobile.tsx";
+import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewSlot = () => {
   const navigate = useNavigate();
@@ -18,9 +18,8 @@ export const PreviewSlot = () => {
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
-  const game = useGame();
   const { buySpecialSlot, locked } = useStore();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
 
   const imgSize = isSmallScreen ? "120px" : "auto";
 

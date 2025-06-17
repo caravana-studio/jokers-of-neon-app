@@ -6,6 +6,7 @@ import { useDojo } from "../useDojo";
 import { useGame } from "./useGame";
 import { useGameContext } from "../../providers/GameProvider";
 import { powerupStyles } from "../../constants/powerupStyles";
+import { useGameStore } from "../../state/useGameStore";
 
 export const getPowerUp = (
   power_up_id: number,
@@ -34,18 +35,17 @@ export const useGamePowerUps = () => {
 
   const { maxPowerUpSlots } = useGameContext();
 
-  const game = useGame();
+  const { id} = useGameStore();
 
-  const entityId = getEntityIdFromKeys([BigInt(game?.id ?? 0)]) as Entity;
+  const entityId = getEntityIdFromKeys([BigInt(id ?? 0)]) as Entity;
   const gamePowerUp = useComponentValue(GamePowerUp, entityId);
-  if (!game) return [];
 
   const dojoPowerUps = gamePowerUp?.power_ups ?? [];
 
   const powerUps: (PowerUp | null)[] = dojoPowerUps
     .map((powerUp: any, index: number) => {
       const power_up_id = powerUp.value;
-      return getPowerUp(power_up_id, index, game?.id ?? 0);
+      return getPowerUp(power_up_id, index, id ?? 0);
     })
     .filter((powerUp: any) => powerUp.power_up_id !== 9999);
 
