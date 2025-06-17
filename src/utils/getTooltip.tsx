@@ -8,45 +8,52 @@ export const t = (key: string) => {
 };
 
 export const colorizeText = (inputText: string) => {
-  if (!inputText) {
-    return "";
+  if (!inputText) return "";
+
+  // Match patterns like ^violet(+2 multi)^
+  const regex = /\^(\w+)\((.+?)\)\^/g;
+
+  const elements: (string | JSX.Element)[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(inputText)) !== null) {
+    const [fullMatch, colorKey, content] = match;
+    const index = match.index;
+
+    // Push the text before the match
+    if (lastIndex < index) {
+      elements.push(inputText.slice(lastIndex, index));
+    }
+
+    // Choose color
+    const colorMap: Record<string, string> = {
+      violet: VIOLET_LIGHT,
+      blue: BLUE_LIGHT,
+      // Add more colors if needed
+    };
+
+    elements.push(
+      <span
+        key={index}
+        style={{
+          fontWeight: "bold",
+          color: colorMap[colorKey] || "inherit",
+        }}
+      >
+        {content}
+      </span>
+    );
+
+    lastIndex = index + fullMatch.length;
   }
-  const pointsTranslation = t("points");
-  const escapedPointsTranslation = pointsTranslation.replace(
-    /[.*+?^${}()|[\]\\]/g,
-    "\\$&"
-  );
-  const parts = inputText.split(
-    new RegExp(`((?:\\+\\d+\\s*(?:${escapedPointsTranslation}|multi))+)`, "g")
-  );
 
-  return parts.map((part, index) => {
-    const pointsRegex = new RegExp(`^\\+\\d+\\s*(${pointsTranslation})?`);
+  // Push the remaining text after the last match
+  if (lastIndex < inputText.length) {
+    elements.push(inputText.slice(lastIndex));
+  }
 
-    if (/^\+\d+\s*multi/.test(part)) {
-      return (
-        <span
-          key={index}
-          style={{ fontWeight: "bold", color: `${VIOLET_LIGHT}` }}
-        >
-          {part}
-        </span>
-      );
-    }
-
-    if (pointsRegex.test(part)) {
-      return (
-        <span
-          key={index}
-          style={{ fontWeight: "bold", color: `${BLUE_LIGHT}` }}
-        >
-          {part}
-        </span>
-      );
-    }
-
-    return part;
-  });
+  return elements;
 };
 
 export const getTooltip = (name: string, description: string) => {
