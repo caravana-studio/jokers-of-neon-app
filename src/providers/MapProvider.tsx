@@ -77,23 +77,32 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   useEffect(() => {
     getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
-      const transformedNodes = dataNodes.map((node) => ({
-        id: node.id.toString(),
-        type: node.nodeType ?? NodeType.NONE,
-        position: { x: 0, y: 0 },
-        data: {
-          visited: node.visited,
-          id: node.id,
-          current: node.current,
-          shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
-          round: node.nodeType === NodeType.ROUND ? node.data : undefined,
-          last: node.last,
-          rageData:
-            node.nodeType === NodeType.RAGE
-              ? getRageNodeData(node.data)
-              : undefined,
-        },
-      }));
+      const transformedNodes = dataNodes.map((node, index) => {
+        const isFirstNode = index === 0;
+        const shouldBeFinalRage = isFirstNode && (game?.level ?? 1) >= 2;
+
+        const nodeType = shouldBeFinalRage
+          ? NodeType.RAGE
+          : node.nodeType ?? NodeType.NONE;
+
+        return {
+          id: node.id.toString(),
+          type: nodeType,
+          position: { x: 0, y: 0 },
+          data: {
+            visited: node.visited,
+            id: node.id,
+            current: node.current,
+            shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
+            round: node.nodeType === NodeType.ROUND ? node.data : undefined,
+            last: shouldBeFinalRage ? true : node.last,
+            rageData:
+              nodeType === NodeType.RAGE
+                ? getRageNodeData(node.data)
+                : undefined,
+          },
+        };
+      });
 
       const calculatedEdges = calculateEdges(dataNodes);
 

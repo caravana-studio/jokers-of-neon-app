@@ -1,13 +1,9 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useState
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BOXES_PRICE, BOXES_RARITY } from "../data/lootBoxes.ts";
 import { MODIFIERS_PRICE, MODIFIERS_RARITY } from "../data/modifiers.ts";
 import {
+  SPECIALS_CREATORS,
   SPECIALS_CUMULATIVE,
   SPECIALS_PRICE,
   SPECIALS_RARITY,
@@ -87,6 +83,7 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     } else if (isSpecial) {
       const rarity = SPECIALS_RARITY[cardId];
       const price = SPECIALS_PRICE[rarity];
+      const creator = SPECIALS_CREATORS[cardId];
       const cardData = cumulativeCardsData[cardId];
       return {
         name: t(`specials.${cardId}.name`),
@@ -98,6 +95,7 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
         rarity,
         price,
         type: CardTypes.SPECIAL,
+        creator,
       };
     } else if (isModifier) {
       const rarity = MODIFIERS_RARITY[cardId];
