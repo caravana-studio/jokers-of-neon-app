@@ -2,7 +2,10 @@ import ControllerConnector from "@cartridge/connector/controller";
 import { ControllerOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
 
-const CHAIN = import.meta.env.VITE_SLOT_INSTANCE || import.meta.env.VITE_CHAIN || "jokers-of-neon";
+const CHAIN =
+  import.meta.env.VITE_SLOT_INSTANCE ||
+  import.meta.env.VITE_CHAIN ||
+  "jokers-of-neon";
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -32,7 +35,7 @@ const controllerOptions: ControllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
   preset: "jokers-of-neon",
-  namespace: DOJO_NAMESPACE,
+  namespace: DOJO_NAMESPACE
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
