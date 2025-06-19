@@ -36,6 +36,7 @@ export const Home = () => {
   }, []);
 
   const enableMods = useFeatureFlagEnabled("global", "showMods");
+  const ggAchievementsFF = useFeatureFlagEnabled("global", "gg");
 
   useEffect(() => {
     if (account?.account && playButtonClicked) {
@@ -113,7 +114,7 @@ export const Home = () => {
           </Flex>
         </Flex>
         <PoweredBy />
-        <GGBanner />
+        {ggAchievementsFF && <GGBanner />}
       </Flex>
       <PositionedDiscordLink />
     </>
