@@ -550,7 +550,7 @@
     },
     "321": {
       "name": "Lucky hand",
-      "description": "Adds +50 cash for every Diamond suited card played"
+      "description": "Adds ^yellow(+50 cash)^ for every Diamond suited card played"
     },
     "322": {
       "name": "Discard mastery",
@@ -594,7 +594,7 @@
     },
     "332": {
       "name": "Lucky Payday",
-      "description": "Get extra 500 cash for every Joker in hand at the end of the round"
+      "description": "Get extra ^yellow(+500 cash)^ for every Joker in hand at the end of the round"
     },
     "333": {
       "name": "Mirror effect",
@@ -610,7 +610,7 @@
     },
     "336": {
       "name": "Joker's drop",
-      "description": "Get 500 cash every time you discard a Joker"
+      "description": "Get ^yellow(+500 cash)^ every time you discard a Joker"
     },
     "337": {
       "name": "Extra drops",
@@ -694,7 +694,7 @@
     },
     "357": {
       "name": "High Rollers",
-      "description": "50% of chances to gain ^violet(+1 multi)^ (stacking) for each High Card played. Currently ^violet(+{{multi}} multi)^."
+      "description": "Each High Card played has a 50% chance to gain ^violet(+1 multi)^ (stacking). Currently ^violet(+{{multi}} multi)^."
     },
     "358": {
       "name": "Suit Roulette",
@@ -738,7 +738,7 @@
     },
     "368": {
       "name": "King's Faith",
-      "description": "Each King played has 50% of chances of giving 100 cash. Every King held in hand has 25% of chances of scoring ^blue(+100 points)^."
+      "description": "Each King played has 50% of chances of giving ^yellow(+100 cash)^. Every King held in hand has 25% of chances of scoring ^blue(+100 points)^."
     },
     "369": {
       "name": "Arithmomania",
@@ -770,7 +770,7 @@
     },
     "380": {
       "name": "Queens Fortune",
-      "description": "Scoring queens have 50% of chance of giving +150 cash."
+      "description": "Each Queen that scores has a 50% chance to grant ^yellow(+150 cash)^."
     }
   },
   "power-ups": {

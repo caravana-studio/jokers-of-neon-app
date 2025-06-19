@@ -1,5 +1,4 @@
-import { BLUE_LIGHT, VIOLET_LIGHT } from "../theme/colors";
-import { Card } from "../types/Card";
+import { BLUE_LIGHT, VIOLET_LIGHT, DIAMONDS } from "../theme/colors";
 
 import i18n from "i18next";
 
@@ -10,7 +9,6 @@ export const t = (key: string) => {
 export const colorizeText = (inputText: string) => {
   if (!inputText) return "";
 
-  // Match patterns like ^violet(+2 multi)^
   const regex = /\^(\w+)\((.+?)\)\^/g;
 
   const elements: (string | JSX.Element)[] = [];
@@ -21,16 +19,14 @@ export const colorizeText = (inputText: string) => {
     const [fullMatch, colorKey, content] = match;
     const index = match.index;
 
-    // Push the text before the match
     if (lastIndex < index) {
       elements.push(inputText.slice(lastIndex, index));
     }
 
-    // Choose color
     const colorMap: Record<string, string> = {
       violet: VIOLET_LIGHT,
       blue: BLUE_LIGHT,
-      // Add more colors if needed
+      yellow: DIAMONDS,
     };
 
     elements.push(

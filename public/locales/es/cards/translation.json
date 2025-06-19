@@ -114,7 +114,7 @@
     },
     "321": {
       "name": "Mano de la suerte",
-      "description": "Obtén 50 monedas por cada carta de diamantes que juegues"
+      "description": "Obtén ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
     },
     "322": {
       "name": "Maestría en descartes",
@@ -158,7 +158,7 @@
     },
     "332": {
       "name": "Día de suerte",
-      "description": "Obtén +500 monedas extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
+      "description": "Obtén ^yellow(+500 monedas)^ extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
     },
     "333": {
       "name": "Efecto espejo",
@@ -174,7 +174,7 @@
     },
     "336": {
       "name": "Caída del Joker",
-      "description": "Obtén +500 monedas cada vez que descartes un Joker"
+      "description": "Obtén ^yellow(+500 monedas)^ cada vez que descartes un Joker"
     },
     "337": {
       "name": "Descartes extra",
@@ -258,7 +258,7 @@
     },
     "357": {
       "name": "Gran apostador",
-      "description": "50% de posibilidades de ganar ^violet(+1 multi)^ (acumulativo) por cada Carta Alta jugada. ^violet(Actualmente +{{multi}} multi)^."
+      "description": "Cada Carta Alta jugada tiene 50% de posibilidades de ganar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
     },
     "358": {
       "name": "Ruleta de Palos",
@@ -302,7 +302,7 @@
     },
     "368": {
       "name": "La Verdad del Rey",
-      "description": "Cada Rey jugado tiene 50% de probabilidad de dar +100 de oro. Cada carta Rey en tu mano tiene 25% de probabilidad de dar ^blue(+100 puntos)^."
+      "description": "Cada Rey jugado tiene 50% de probabilidad de dar ^yellow(+100 de monedas)^. Cada carta Rey en tu mano tiene 25% de probabilidad de dar ^blue(+100 puntos)^."
     },
     "369": {
       "name": "Aritmomanía",
@@ -334,7 +334,7 @@
     },
     "380": {
       "name": "Fortuna de la Reina",
-      "description": "Por cada reina de tu jugada tienes 50% de probabilidad de ganar +150 monedas."
+      "description": "Cada reina jugada tiene 50% de probabilidad de ganar ^yellow(+150 monedas)^."
     }
   },
   "power-ups": {
