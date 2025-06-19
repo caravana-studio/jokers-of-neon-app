@@ -1,4 +1,4 @@
-import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
+import { CARD_HEIGHT } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { CardContainerWithBorder } from "./CardContainerWithBorder.tsx";
@@ -10,13 +10,11 @@ export const SpecialCards = () => {
   const { specialSwitcherOn } = useGameContext();
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 20 : 40;
-  const cardWidth = CARD_WIDTH * cardScale;
 
   return (
     <CardContainerWithBorder
-      maxWidth={isSmallScreen ? "95%" : "100%"}
-      minWidth={`${cardWidth * 5 + (isSmallScreen ? 32 : 49)}px`}
-      width={"auto"}
+      minWidth="unset"
+      width={isSmallScreen ? "98%" : "90%"}
       height={`${CARD_HEIGHT * cardScale + heightOffset}px`}
     >
       {specialSwitcherOn ? <SpecialCardsRow /> : <RageCards />}
