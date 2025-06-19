@@ -3,7 +3,7 @@ import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption, 
 import { getVrfTx } from "../vrfTx";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
-const isDev = import.meta.env.VITE_DEV === "true";
+const disableVrf = import.meta.env.VITE_DISABLE_VRF === "true";
 
 export function setupWorld(provider: DojoProvider) {
 
@@ -247,7 +247,7 @@ export function setupWorld(provider: DojoProvider) {
 			console.log('vrf tx ', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				isDev ? build_action_system_changeModifierCard_calldata(gameId, modifierIndex) : 
+				disableVrf ? build_action_system_changeModifierCard_calldata(gameId, modifierIndex) : 
 				[getVrfTx("action_system", snAccount), 
 				build_action_system_changeModifierCard_calldata(gameId, modifierIndex)],
 				DOJO_NAMESPACE,
@@ -292,7 +292,7 @@ export function setupWorld(provider: DojoProvider) {
 			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				isDev ? build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes) :
+				disableVrf ? build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes) :
 				[getVrfTx("action_system", snAccount), 
 				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes)],
 				DOJO_NAMESPACE,
@@ -630,7 +630,7 @@ export function setupWorld(provider: DojoProvider) {
 			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				isDev ? build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes) :
+				disableVrf ? build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes) :
 				[getVrfTx("action_system", snAccount), 
 				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes)],
 				DOJO_NAMESPACE,
@@ -675,7 +675,7 @@ export function setupWorld(provider: DojoProvider) {
 			console.log('vrf tx', getVrfTx("shop_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				isDev ? build_shop_system_reroll_calldata(gameId) :
+				disableVrf ? build_shop_system_reroll_calldata(gameId) :
 				[getVrfTx("shop_system", snAccount), 
 				build_shop_system_reroll_calldata(gameId)],
 				DOJO_NAMESPACE,
@@ -909,7 +909,7 @@ export function setupWorld(provider: DojoProvider) {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				isDev ? build_game_system_startGame_calldata(gameId, playerName, seed) :
+				disableVrf ? build_game_system_startGame_calldata(gameId, playerName, seed) :
 				[getVrfTx("game_system", snAccount),  build_game_system_startGame_calldata(gameId, playerName, seed)],
 				DOJO_NAMESPACE,
 			);
