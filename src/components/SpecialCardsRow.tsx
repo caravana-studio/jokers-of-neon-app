@@ -19,11 +19,10 @@ export const SpecialCardsRow = () => {
   const {
     sellSpecialCard,
     roundRewards,
-    isRageRound,
     specialCards: cards,
     maxSpecialCards,
-    isClassic,
   } = useGameContext();
+  const { isRageRound, isClassic } = useGameStore();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
@@ -38,9 +37,7 @@ export const SpecialCardsRow = () => {
   const { specialSlots } = useGameStore();
 
   const lockedSlots =
-    specialSlots === maxSpecialCards
-      ? 0
-      : Math.max(0, 5 - specialSlots);
+    specialSlots === maxSpecialCards ? 0 : Math.max(0, 5 - specialSlots);
 
   const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
 

@@ -1,13 +1,12 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Component, Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useDojo } from "../useDojo.tsx";
-import { useGame } from "./useGame.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useDojo } from "../useDojo.tsx";
 
 const getSellingPrice = (specialCard: any) => {
   let price;
-  
+
   if (specialCard.is_temporary && specialCard.remaining) {
     price = (specialCard.selling_price / 3) * specialCard.remaining;
   } else {
@@ -49,7 +48,7 @@ export const useCurrentSpecialCards = () => {
       clientComponents: { CurrentSpecialCards },
     },
   } = useDojo();
-  const {id: gameId, specialsLength} = useGameStore();
+  const { id: gameId, specialsLength } = useGameStore();
 
   const specialCardsMaxLength = 7;
 

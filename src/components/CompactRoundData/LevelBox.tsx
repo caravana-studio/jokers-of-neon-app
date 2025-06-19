@@ -8,7 +8,8 @@ export const LevelBox = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
-  const { isRageRound, nodeRound } = useGameContext();
+  const { nodeRound } = useGameContext();
+  const { isRageRound } = useGameStore();
   const { level } = useGameStore();
   return (
     <Center>

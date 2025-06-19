@@ -11,13 +11,11 @@ import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
 
 import { RemoveScroll } from "react-remove-scroll";
+import { GGBanner } from "../components/GGBanner";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
-import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { GGBanner } from "../components/GGBanner";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -28,12 +26,7 @@ export const Home = () => {
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
-  const { setModId } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
-
-  useEffect(() => {
-    setModId(CLASSIC_MOD_ID);
-  }, []);
 
   const enableMods = useFeatureFlagEnabled("global", "showMods");
 

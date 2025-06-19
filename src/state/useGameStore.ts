@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { getGameView } from "../dojo/queries/getGameView";
+import { getRageCards } from "../dojo/queries/getRageCards";
 import { GameStateEnum } from "../dojo/typescript/custom";
+import { Card } from "../types/Card";
+import { CLASSIC_MOD_ID } from "../constants/general";
 
 type GameStore = {
   id: number;
@@ -19,10 +22,11 @@ type GameStore = {
   state: GameStateEnum;
   specialSlots: number;
   specialsLength: number;
-  // TODO: update this
-  rageCards: any[];
+  rageCards: Card[];
   availableRerolls: number;
   modId: string;
+  isClassic: boolean;
+  isRageRound: boolean;
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   play: () => void;
   discard: () => void;
@@ -53,13 +57,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   state: GameStateEnum.NotStarted,
   specialSlots: 1,
   rageCards: [],
+  isRageRound: false,
   availableRerolls: 0,
   specialsLength: 0,
   modId: "jokers_of_neon_classic",
+  isClassic: true,
 
   refetchGameStore: async (client, gameId) => {
     console.log("refetchint game store");
     const { round, game } = await getGameView(client, gameId);
+    const rageCards = getRageCards(round.rages);
     set({
       id: gameId,
       totalDiscards: game.discards,
@@ -72,10 +79,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       targetScore: round.target_score,
       state: game.state,
       specialSlots: game.special_slots,
-      rageCards: round.rages,
+      rageCards,
+      isRageRound: rageCards.length > 0,
       availableRerolls: game.available_rerolls,
       specialsLength: game.current_specials_len,
       modId: game.mod_id,
+      isClassic: game.mod_id === CLASSIC_MOD_ID,
     });
   },
 

@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { BaseLockedSlot } from "./BaseLockedSlot.tsx";
-import { LockedSlotProps } from "./LockedSlot.tsx";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../providers/StoreProvider.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { BaseLockedSlot } from "./BaseLockedSlot.tsx";
+import { LockedSlotProps } from "./LockedSlot.tsx";
 
 export const StoreLockedSlot = (props: LockedSlotProps) => {
   const { t } = useTranslation("intermediate-screens", {
@@ -15,7 +14,7 @@ export const StoreLockedSlot = (props: LockedSlotProps) => {
   const { specialSlotItem, locked } = useStore();
   const price = specialSlotItem?.cost ?? 0;
 
-  const { cash } = useGameStore()
+  const { cash } = useGameStore();
 
   const notEnoughCash =
     !price ||

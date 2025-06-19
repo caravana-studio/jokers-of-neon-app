@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x52cb1092ba81f9cb3762a08413e3aaf1c25a9469c18d0e2ee7f5d8e6a87c032",
-      "class_hash": "0x198e535ac88ea5131631f6b9c5c8ae5ac1ac5b910fdc918f23d4499d27ff2ea",
+      "address": "0x11bbbcf99670f874b836025f7726704a77d5ae45d30945e4f95d52a7e4ebbde",
+      "class_hash": "0x1b2676e8ecabad73a64f710e7a97c239eea946fcbf1072aaa8eea73d093233a",
       "abi": [
         {
           "type": "impl",
@@ -1983,8 +1983,8 @@
       ]
     },
     {
-      "address": "0x2fdfeadf0c23399da62db9d801cf11c9283ae0b83770b61a21c16e0a6c8d1bc",
-      "class_hash": "0x7550693aaf44adf83fba3e26e62974f9081c9dd584f74797702cae8d68cce90",
+      "address": "0x1b18851cd7dfd646e62c59772cd193bfd2371ab671ad073e8751af319d75bdb",
+      "class_hash": "0x627a3709e73f986a9909579203846c46d8c829f102f01b5ba28888ee10759fa",
       "abi": [
         {
           "type": "impl",
@@ -2123,11 +2123,11 @@
         },
         {
           "type": "enum",
-          "name": "core::option::Option::<core::felt252>",
+          "name": "core::option::Option::<core::integer::u128>",
           "variants": [
             {
               "name": "Some",
-              "type": "core::felt252"
+              "type": "core::integer::u128"
             },
             {
               "name": "None",
@@ -2239,7 +2239,7 @@
             },
             {
               "name": "seed",
-              "type": "core::felt252"
+              "type": "core::integer::u128"
             }
           ]
         },
@@ -2311,7 +2311,7 @@
                 },
                 {
                   "name": "seed",
-                  "type": "core::option::Option::<core::felt252>"
+                  "type": "core::option::Option::<core::integer::u128>"
                 }
               ],
               "outputs": [],
@@ -3482,8 +3482,8 @@
       ]
     },
     {
-      "address": "0x7e44c7266384c016df076d4820893eee8046a643842b84d2405eef2a057f1d5",
-      "class_hash": "0x2dedee5bc352498823a9479f881a8f8b03744aa1c8063b3a7da2e81c6133cc3",
+      "address": "0x8f4d4d91ad3f04b49633704f68a8c28ca826e906d82251d0177faecd741a17",
+      "class_hash": "0x86c7634a34408e69f88a59d0c78931e37664b536bbd1f76f76049b90643ee5",
       "abi": [
         {
           "type": "impl",
@@ -3644,7 +3644,7 @@
             },
             {
               "name": "seed",
-              "type": "core::felt252"
+              "type": "core::integer::u128"
             }
           ]
         },
@@ -4801,8 +4801,8 @@
       ]
     },
     {
-      "address": "0x4be11037798b27fc8dd8c0312e98da79f62d3ee6d6461d27b3fe692fac26d22",
-      "class_hash": "0x70f4c4a3bb22f77bbf723e4d7d3d5a08f4930f7e40d03097ff31224c7d88bdf",
+      "address": "0x6dfddf186ada3d0435aa94c651bcd55602f44d9f8b37f3daeb9160b1cedbbb2",
+      "class_hash": "0x7e577f20c57fda2d42a31bacdf4589d40f3bfe8fde989d50087d36978c0492e",
       "abi": [
         {
           "type": "impl",
@@ -5606,7 +5606,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1f73c09848ee6d75deedb2dbbecf2c375450f1b3086b8326c4c499648e0725c",
+      "class_hash": "0x1ae0179e7f909e75ddff13698f67d7e1642c258ef68316877c4011a1bafabb6",
       "tag": "jokers_of_neon_core-Game",
       "selector": "0x471153aaeb9b649e2e3a7709bcbe22e2f1c574e092379a6c5938fefe4f1f305"
     },
@@ -5717,6 +5717,12 @@
       "class_hash": "0x76375fd883220419e393659b5b41146b42a3cc322cd55b3bb6b43d3cf4ba804",
       "tag": "jokers_of_neon_core-RageRound",
       "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
+    },
+    {
+      "members": [],
+      "class_hash": "0x28bcfc7f5e84c91f904ed17737414a9e8ee0836db219a1a18652dca89574cc1",
+      "tag": "jokers_of_neon_core-Random",
+      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],
@@ -5866,7 +5872,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x759fbe1365fe0c6087742b1298abdd2b0b9e23c206759087ba87b856d3ac5c3",
+      "class_hash": "0x2837b8a702ab398ea6b442f432d801d99542761fece14356b1e8717a034336a",
       "tag": "jokers_of_neon_core-PlayWinGameEvent",
       "selector": "0xd119c9da5a2d4aa2e71dad4aa1c378e5a8ccf7bb8c3396adf285c6c26c6b8"
     },

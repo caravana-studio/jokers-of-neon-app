@@ -23,11 +23,11 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -35,7 +35,6 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { useGameStore } from "../../state/useGameStore.ts";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -121,15 +120,13 @@ export const MobileGameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        if (game) {
-          switch (state) {
-            case GameStateEnum.Store:
-              return navigate("/store");
-            case GameStateEnum.Map:
-              return navigate("/map");
-            default:
-              return navigate("/demo");
-          }
+        switch (state) {
+          case GameStateEnum.Store:
+            return navigate("/store");
+          case GameStateEnum.Map:
+            return navigate("/map");
+          default:
+            return navigate("/demo");
         }
       }
     };
@@ -158,8 +155,6 @@ export const MobileGameContent = () => {
       unPreSelectCard(draggedCard);
     }
   };
-
-  const game = useGame();
 
   if (error) {
     return (

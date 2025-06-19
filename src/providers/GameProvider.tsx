@@ -15,7 +15,6 @@ import {
   pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
 import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useGameActions } from "../dojo/useGameActions.tsx";
@@ -60,10 +59,6 @@ export interface IGameContext {
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
-  isRageRound: boolean;
-  setIsRageRound: (isRageRound: boolean) => void;
-  rageCards: Card[];
-  setRageCards: (rageCards: Card[]) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
@@ -80,12 +75,9 @@ export interface IGameContext {
   powerUpIsPreselected: (powerUpId: number) => boolean;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   addPowerUp: (powerUp: PowerUp) => void;
-  modId: string;
-  setModId: (modId: string) => void;
   remainingPlaysTutorial?: number;
   maxSpecialCards: number;
   maxPowerUpSlots: number;
-  isClassic: boolean;
   setGameId: (gameId: number) => void;
   resetLevel: () => void;
   cardTransformationLock: boolean;
@@ -122,7 +114,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard: stateDiscard,
     rollbackDiscard,
     level,
-    state: gameState
+    modId,
+    state: gameState,
+    isClassic
   } = useGameStore();
 
   const {
@@ -160,7 +154,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { sfxVolume, animationSpeed } = useSettings();
 
-  const game = useGame();
   const { play: discardSound } = useAudio(discardSfx, sfxVolume);
   const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
@@ -191,9 +184,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayIsNeon,
     setLockedSpecialCards,
     specialCards,
-    isRageRound,
-    setIsRageRound,
-    rageCards,
     showSpecials,
     showRages,
     preselectedPowerUps,
@@ -201,8 +191,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreselectedPowerUps,
     removePowerUp,
     resetPowerUps,
-    modId,
-    isClassic,
     cardTransformationLock,
     setCardTransformationLock,
   } = state;
@@ -210,7 +198,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const resetLevel = () => {
     setRoundRewards(undefined);
     setPreSelectionLocked(false);
-    setIsRageRound(false);
     showSpecials();
     resetPowerUps();
     refetchSpecialCardsData(modId, gameId);
@@ -228,7 +215,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const executeCreateGame = async (providedGameId?: number) => {
     setError(false);
     setGameLoading(true);
-    setIsRageRound(false);
     let gameId = providedGameId;
     if (username) {
       try {
@@ -307,7 +293,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             remainingPlays,
             setAnimateSecondChanceCard,
             setCardTransformationLock,
-            setIsRageRound,
             specialCards,
             setAnimateSpecialCardDefault: setanimateSpecialCardDefault,
             addCash,
@@ -520,7 +505,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const cleanGameId = () => {
     setGameId(0);
-    setIsRageRound(false);
   };
 
   useEffect(() => {

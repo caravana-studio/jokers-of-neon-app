@@ -10,7 +10,6 @@ import {
   getModRageCardsId,
   getModSpecialCardsId,
 } from "../dojo/queries/useModCardsId";
-import { useRound } from "../dojo/queries/useRound";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
@@ -59,7 +58,6 @@ export const useGameState = () => {
   );
 
   const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
-  const [isRageRound, setIsRageRound] = useState(false);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
@@ -76,7 +74,6 @@ export const useGameState = () => {
   const [cardTransformationLock, setCardTransformationLock] = useState(false);
 
   const { modId, level } = useGameStore();
-  const round = useRound();
 
   const fetchGameConfig = async () => {
     if (modId) {
@@ -121,7 +118,6 @@ export const useGameState = () => {
     fetchCardsConfig();
   }, [modId]);
 
-  const isClassic = modId === CLASSIC_MOD_ID;
 
   const dojoPowerUps = useGamePowerUps();
 
@@ -233,8 +229,6 @@ export const useGameState = () => {
     setPlayIsNeon,
     specialCards,
     setLockedSpecialCards,
-    isRageRound,
-    setIsRageRound,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
     levelUpHand,
@@ -252,7 +246,6 @@ export const useGameState = () => {
     addPowerUp,
     maxSpecialCards,
     maxPowerUpSlots,
-    isClassic,
     modCardsConfig,
     cardTransformationLock,
     setCardTransformationLock,

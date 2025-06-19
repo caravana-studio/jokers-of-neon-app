@@ -1,7 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useGame } from "../../../dojo/queries/useGame";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
@@ -22,8 +21,6 @@ export const useNextLevelButton = () => {
 
   const { replaceCards } = useCurrentHandStore();
   const { skipShop } = useShopActions();
-
-  const game = useGame();
 
   const { locked, setLoading } = useStore();
 

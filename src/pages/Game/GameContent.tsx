@@ -22,7 +22,6 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
@@ -34,13 +33,12 @@ import { TopSection } from "./TopSection.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const { gameLoading, error, executeCreateGame, addModifier, isRageRound } =
+  const { gameLoading, error, executeCreateGame, addModifier } =
     useGameContext();
 
+  const { isRageRound, state } = useGameStore();
   const { preSelectCard, unPreSelectCard, preSelectedCards, hand } =
     useCurrentHandStore();
-
-  const { state } = useGameStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -102,23 +100,19 @@ export const GameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        if (game) {
-          switch (state) {
-            case GameStateEnum.Store:
-              return navigate("/store");
-            case GameStateEnum.Map:
-              return navigate("/map");
-            default:
-              return navigate("/demo");
-          }
+        switch (state) {
+          case GameStateEnum.Store:
+            return navigate("/store");
+          case GameStateEnum.Map:
+            return navigate("/map");
+          default:
+            return navigate("/demo");
         }
       }
     };
   };
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
-
-  const game = useGame();
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
@@ -168,7 +162,7 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading || (!game && !isTutorial)) {
+  if (gameLoading || !isTutorial) {
     return <Loading />;
   }
 

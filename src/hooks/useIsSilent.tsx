@@ -2,7 +2,7 @@ import { rageCardIds } from "../constants/rageCardIds";
 import { Cards } from "../enums/cards";
 import { Suits } from "../enums/suits";
 import { useCardData } from "../providers/CardDataProvider";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { Card } from "../types/Card";
 
 const getSilentTarget = (cardId: number) => {
@@ -36,7 +36,7 @@ const isWeak = (rank: Cards) => {
 };
 
 export const useIsSilent = (card: Card) => {
-  const { isRageRound, rageCards } = useGameContext();
+  const { isRageRound, rageCards } = useGameStore();
   const { getCardData } = useCardData();
 
   const { suit: idSuit, card: rank } = getCardData(card.card_id ?? 0);

@@ -1,12 +1,11 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { powerupStyles } from "../../constants/powerupStyles";
+import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { PowerUp } from "../../types/Powerup/PowerUp";
 import { useDojo } from "../useDojo";
-import { useGame } from "./useGame";
-import { useGameContext } from "../../providers/GameProvider";
-import { powerupStyles } from "../../constants/powerupStyles";
-import { useGameStore } from "../../state/useGameStore";
 
 export const getPowerUp = (
   power_up_id: number,
@@ -35,7 +34,7 @@ export const useGamePowerUps = () => {
 
   const { maxPowerUpSlots } = useGameContext();
 
-  const { id} = useGameStore();
+  const { id } = useGameStore();
 
   const entityId = getEntityIdFromKeys([BigInt(id ?? 0)]) as Entity;
   const gamePowerUp = useComponentValue(GamePowerUp, entityId);

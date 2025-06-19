@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
-import { useRageCards } from "../../dojo/queries/useRageCards";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
@@ -12,6 +11,7 @@ import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useCardData } from "../../providers/CardDataProvider";
 import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
@@ -19,27 +19,18 @@ import { RageRoundAnimation } from "./RageRoundAnimation";
 
 export const GamePage = () => {
   const {
-    setup: { client },
     setup: { masterAccount },
     account: { account },
   } = useDojo();
   const username = useUsername();
-  const {
-    checkOrCreateGame,
-    setIsRageRound,
-    setRageCards,
-    roundRewards,
-    gameId,
-    lockRedirection,
-    modId,
-  } = useGameContext();
+  const { checkOrCreateGame, roundRewards, gameId, lockRedirection } =
+    useGameContext();
 
   const { refetchSpecialCardsData } = useCardData();
 
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
 
-  const rageCards = useRageCards();
   const { state } = useLocation();
 
   const skipRageAnimation = state?.skipRageAnimation;
@@ -51,11 +42,10 @@ export const GamePage = () => {
     }
   }, [account, username]);
 
-  useEffect(() => {
-    setIsRageRound(rageCards && rageCards.length > 0);
-    setRageCards(rageCards);
-    refetchSpecialCardsData(modId, gameId);
+  const { modId } = useGameStore();
 
+  useEffect(() => {
+    refetchSpecialCardsData(modId, gameId);
   }, []);
 
   useRedirectByGameState(!(!lockRedirection && !roundRewards), {

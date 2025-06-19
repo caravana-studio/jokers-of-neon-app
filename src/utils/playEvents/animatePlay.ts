@@ -35,7 +35,6 @@ interface AnimatePlayConfig {
   remainingPlays: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
-  setIsRageRound: (isRageRound: boolean) => void;
   specialCards: Card[];
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
   addCash: (cash: number) => void;
@@ -70,7 +69,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     remainingPlays,
     setAnimateSecondChanceCard,
     setCardTransformationLock,
-    setIsRageRound,
     specialCards,
     setAnimateSpecialCardDefault,
     addCash,
@@ -328,7 +326,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
           ...playEvents.detailEarned!,
           roundNumber: level,
         });
-        setIsRageRound(false);
         navigate("/rewards");
       }, 1000);
       setPreSelectionLocked(true);
@@ -389,7 +386,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayIsNeon(false);
     setLockedSpecialCards([]);
 
-    setCurrentScore(playEvents.score)
+    setCurrentScore(playEvents.score);
 
     handleGameEnd();
     setCardTransformationLock(false);

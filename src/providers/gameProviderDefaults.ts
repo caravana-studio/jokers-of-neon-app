@@ -1,4 +1,3 @@
-import { CLASSIC_MOD_ID } from "../constants/general";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { IGameContext } from "./GameProvider";
 
@@ -23,10 +22,6 @@ export const gameProviderDefaults: IGameContext = {
   lockRedirection: false,
   specialCards: [],
   playIsNeon: false,
-  isRageRound: false,
-  setIsRageRound: (_) => {},
-  rageCards: [],
-  setRageCards: (_) => {},
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},
   levelUpHand: undefined,
@@ -43,11 +38,8 @@ export const gameProviderDefaults: IGameContext = {
   powerUpIsPreselected: (_) => false,
   setPowerUps: (_) => {},
   addPowerUp: (_) => {},
-  modId: CLASSIC_MOD_ID,
-  setModId: (_) => {},
   maxSpecialCards: 7,
   maxPowerUpSlots: 4,
-  isClassic: true,
   setGameId: (_) => {},
   resetLevel: () => {},
   cardTransformationLock: false,

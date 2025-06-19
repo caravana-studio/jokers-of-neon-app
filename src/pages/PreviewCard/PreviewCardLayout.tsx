@@ -14,7 +14,6 @@ import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import theme from "../../theme/theme.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
@@ -22,6 +21,7 @@ import { Coins } from "../store/Coins.tsx";
 
 import { useTranslation } from "react-i18next";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -45,21 +45,18 @@ const PreviewCardLayout = () => {
   }; */
 
   const { getCardData } = useCardData();
-  const game = useGame();
+  const { cash, specialSlots, specialsLength } = useGameStore();
   const { buyCard, buyPack, locked, setLockRedirection } = useStore();
 
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card.card_id ?? 0);
-  const specialMaxLength = game?.special_slots ?? 0;
-  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
-    card.isSpecial && specialLength >= specialMaxLength;
+    card.isSpecial && specialsLength >= specialSlots;
 
   const fontTitleSize = ["s", "s", "l"];
   const fontSize = ["md", "md", "xl"];
