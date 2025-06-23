@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useIsSilent } from "../hooks/useIsSilent.tsx";
 import { useCardData } from "../providers/CardDataProvider.tsx";
-import { useGameContext } from "../providers/GameProvider.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
@@ -71,8 +70,7 @@ export const TiltCard = ({
   const isSilent = useIsSilent(modifiedCard);
 
   const { t } = useTranslation(["store"]);
-  const { isClassic } = useGameContext();
-  const { state } = useGameStore();
+  const { state, isClassic } = useGameStore();
 
   const { getCardData } = useCardData();
 

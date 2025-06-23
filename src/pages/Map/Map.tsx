@@ -36,8 +36,7 @@ export const Map = () => {
 
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
-  const { state } = useGameStore();
+  const { state, id: gameId } = useGameStore();
   const navigate = useNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 

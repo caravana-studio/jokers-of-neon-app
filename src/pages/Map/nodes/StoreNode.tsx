@@ -105,7 +105,10 @@ const StoreNode = ({ data }: any) => {
           if (data.current && !stateInMap) {
             navigate("/store");
           } else if (stateInMap && reachable && !isSmallScreen) {
+            console.log('gameId', gameId)
+            console.log('data.id', data.id)
             advanceNode(gameId, data.id).then((response) => {
+              console.log('response', response)
               if (response) {
                 navigate("/store");
               }

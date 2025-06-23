@@ -1,14 +1,13 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  PropsWithChildren,
-} from "react";
 import { Howl } from "howler";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
-import { useGameContext } from "./GameProvider.tsx";
-
+import { useGameStore } from "../state/useGameStore.ts";
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -29,16 +28,16 @@ interface AudioPlayerProviderProps extends PropsWithChildren {
 export const AudioPlayerProvider = ({
   children,
   baseSongPath,
-  rageSongPath
+  rageSongPath,
 }: AudioPlayerProviderProps) => {
   const [sound, setSound] = useState<Howl | undefined>(undefined);
-  
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
   const [musicVolume, setMusicVolume] = useState(0.2);
-  const { isRageRound } = useGameContext();
+  const { isRageRound } = useGameStore();
 
   useEffect(() => {
     if (sound) {
@@ -52,8 +51,7 @@ export const AudioPlayerProvider = ({
       volume: musicVolume,
     });
 
-    if(sound)
-      sound.stop();
+    if (sound) sound.stop();
 
     setSound(newSound);
 

@@ -40,10 +40,10 @@ export const SelectMod = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
 
-  const { setModId } = useGameContext();
+  // const { setModId } = useGameContext();
 
   useEffect(() => {
-    setModId(CLASSIC_MOD_ID);
+    // setModId(CLASSIC_MOD_ID);
   }, []);
 
   const mods = useGameMods();
@@ -139,7 +139,7 @@ interface IModBoxProps {
 const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens", { keyPrefix: "mods" });
-  const { setModId } = useGameContext();
+  // const { setModId } = useGameContext();
 
   const [loading, setLoading] = useState(!isOfficial);
 
@@ -200,7 +200,7 @@ const ModBox = ({ mod, isOfficial = false }: IModBoxProps) => {
           if (mod.url) {
             window.location.href = mod.url;
           } else {
-            setModId(mod.id);
+            // setModId(mod.id);
             navigate(`/login`);
           }
         }}

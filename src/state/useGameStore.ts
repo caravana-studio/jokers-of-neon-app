@@ -1,9 +1,10 @@
 import { create } from "zustand";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { GAME_ID } from "../constants/localStorage";
 import { getGameView } from "../dojo/queries/getGameView";
 import { getRageCards } from "../dojo/queries/getRageCards";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
-import { CLASSIC_MOD_ID } from "../constants/general";
 
 type GameStore = {
   id: number;
@@ -28,6 +29,8 @@ type GameStore = {
   isClassic: boolean;
   isRageRound: boolean;
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
+  setGameId: (client: any, gameId: number) => void;
+  removeGameId: () => void;
   play: () => void;
   discard: () => void;
   rollbackDiscard: () => void;
@@ -38,10 +41,36 @@ type GameStore = {
   addMulti: (multi: number) => void;
   setMulti: (multi: number) => void;
   resetMultiPoints: () => void;
+  resetRage: () => void;
+};
+
+const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
+  console.log("refetchint game store");
+  const { round, game } = await getGameView(client, gameId);
+  const rageCards = getRageCards(round.rages);
+  set({
+    id: gameId,
+    totalDiscards: game.discards,
+    totalPlays: game.plays,
+    remainingPlays: round.remaining_plays,
+    remainingDiscards: round.remaining_discards,
+    cash: game.cash,
+    level: game.level,
+    round: game.current_node_id,
+    targetScore: round.target_score,
+    state: game.state,
+    specialSlots: game.special_slots,
+    rageCards,
+    isRageRound: rageCards.length > 0,
+    availableRerolls: game.available_rerolls,
+    specialsLength: game.current_specials_len,
+    modId: game.mod_id,
+    isClassic: game.mod_id === CLASSIC_MOD_ID,
+  });
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
-  id: 0,
+  id: Number(localStorage.getItem(GAME_ID)) ?? 0,
   totalDiscards: 0,
   totalPlays: 0,
   remainingPlays: 0,
@@ -64,28 +93,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   isClassic: true,
 
   refetchGameStore: async (client, gameId) => {
-    console.log("refetchint game store");
-    const { round, game } = await getGameView(client, gameId);
-    const rageCards = getRageCards(round.rages);
-    set({
-      id: gameId,
-      totalDiscards: game.discards,
-      totalPlays: game.plays,
-      remainingPlays: round.remaining_plays,
-      remainingDiscards: round.remaining_discards,
-      cash: game.cash,
-      level: game.level,
-      round: game.current_node_id,
-      targetScore: round.target_score,
-      state: game.state,
-      specialSlots: game.special_slots,
-      rageCards,
-      isRageRound: rageCards.length > 0,
-      availableRerolls: game.available_rerolls,
-      specialsLength: game.current_specials_len,
-      modId: game.mod_id,
-      isClassic: game.mod_id === CLASSIC_MOD_ID,
-    });
+    doRefetchGameStore(client, gameId, set);
+  },
+
+  setGameId: (client, gameId) => {
+    set({ id: gameId });
+    localStorage.setItem(GAME_ID, gameId.toString());
+    doRefetchGameStore(client, gameId, set);
+  },
+
+  removeGameId: () => {
+    localStorage.removeItem(GAME_ID);
+    set({ id: 0 });
   },
 
   play: () => {
@@ -131,5 +150,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   resetMultiPoints: () => {
     set({ points: 0 });
     set({ multi: 0 });
+  },
+
+  resetRage: () => {
+    set({ isRageRound: false, rageCards: [] });
   },
 }));

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { SORT_BY_SUIT } from "../constants/localStorage";
 import { getHandCards } from "../dojo/queries/getHandCards";
+import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
 import { sortCards } from "../utils/sortCards";
-import { Plays } from "../enums/plays";
 
 type CurrentHandStore = {
   hand: Card[];
@@ -33,7 +33,7 @@ type CurrentHandStore = {
     ? 4
     : 5;
  */
-const MAX_PRESELECTED_CARDS = 5
+const MAX_PRESELECTED_CARDS = 5;
 
 export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   hand: [],
@@ -55,7 +55,8 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   },
 
   replaceCards: (cards: Card[]) => {
-    set({ hand: cards });
+    const { sortBy } = get();
+    set({ hand: sortCards(cards, sortBy) });
   },
 
   toggleSortBy: () => {
@@ -84,15 +85,24 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
 
   preSelectCard: (cardIndex: number) => {
     const { preSelectedCards } = get();
-    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < MAX_PRESELECTED_CARDS) {
+    if (
+      !preSelectedCards.includes(cardIndex) &&
+      preSelectedCards.length < MAX_PRESELECTED_CARDS
+    ) {
       set({
         preSelectedCards: [...preSelectedCards, cardIndex],
       });
-    } 
+    }
   },
 
   togglePreselected: (cardIndex: number) => {
-    const { preSelectedCards, preSelectionLocked, cardIsPreselected, unPreSelectCard, preSelectCard } = get();
+    const {
+      preSelectedCards,
+      preSelectionLocked,
+      cardIsPreselected,
+      unPreSelectCard,
+      preSelectCard,
+    } = get();
     if (!preSelectionLocked) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
@@ -105,7 +115,7 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
     return false;
   },
 
-   cardIsPreselected: (cardIndex: number) => {
+  cardIsPreselected: (cardIndex: number) => {
     return get().preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
   },
 
@@ -124,8 +134,10 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   },
 
   clearPreSelection: () => {
-    set({ preSelectedCards: [], preSelectedModifiers: {}, preSelectedPlay: Plays.NONE });
+    set({
+      preSelectedCards: [],
+      preSelectedModifiers: {},
+      preSelectedPlay: Plays.NONE,
+    });
   },
-
-  
 }));

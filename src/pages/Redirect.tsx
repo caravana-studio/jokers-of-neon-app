@@ -6,11 +6,14 @@ import { useGameStore } from "../state/useGameStore";
 
 export const Redirect = () => {
   const { state } = useGameStore();
-
   const navigate = useNavigate();
+
+  console.log("state", state);
 
   const desiredPath =
     stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
+
+    console.log("desiredPath", desiredPath);
 
   navigate(desiredPath);
 

@@ -35,7 +35,7 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+// import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   gameId: number;
@@ -55,7 +55,6 @@ export interface IGameContext {
   onShopSkip: () => void;
   sellSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
-  restartGame: () => void;
   lockRedirection: boolean;
   specialCards: Card[];
   playIsNeon: boolean;
@@ -78,7 +77,6 @@ export interface IGameContext {
   remainingPlaysTutorial?: number;
   maxSpecialCards: number;
   maxPowerUpSlots: number;
-  setGameId: (gameId: number) => void;
   resetLevel: () => void;
   cardTransformationLock: boolean;
   nodeRound: number;
@@ -94,7 +92,7 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 export const useGameContext = () => {
   const location = useLocation();
   const inTutorial = location.pathname === "/tutorial";
-  const context = inTutorial ? mockTutorialGameContext : GameContext;
+  const context = /* inTutorial ? mockTutorialGameContext : */ GameContext;
   return useContext(context);
 };
 
@@ -116,7 +114,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     level,
     modId,
     state: gameState,
-    isClassic
+    isClassic,
+    setGameId
   } = useGameStore();
 
   const {
@@ -172,7 +171,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     gameId,
-    setGameId,
     setRoundRewards,
     setPreSelectedModifiers,
     preSelectionLocked,
@@ -231,11 +229,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         createGame(gameId!, username).then(async (response) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
+            setGameId(client, newGameId);
             resetLevel();
             replaceCards(hand);
-            setGameId(newGameId);
             clearPreSelection();
-            localStorage.setItem(GAME_ID, newGameId.toString());
+            
             console.log(`game ${newGameId} created`);
 
             await syncCall();
@@ -503,10 +501,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const cleanGameId = () => {
-    setGameId(0);
-  };
-
   useEffect(() => {
     if (!lockRedirection) {
       if (gameState === GameStateEnum.GameOver) {
@@ -543,7 +537,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     onShopSkip,
     sellSpecialCard: onSellSpecialCard,
     checkOrCreateGame,
-    restartGame: cleanGameId,
     executeCreateGame,
     togglePreselectedPowerUp,
     surrenderGame,

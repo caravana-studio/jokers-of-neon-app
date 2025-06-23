@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { CLASSIC_MOD_ID } from "../constants/general";
-import { GAME_ID } from "../constants/localStorage";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getNode } from "../dojo/queries/getNode";
@@ -11,7 +9,6 @@ import {
   getModSpecialCardsId,
 } from "../dojo/queries/useModCardsId";
 import { useDojo } from "../dojo/useDojo";
-import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { Plays } from "../enums/plays";
 import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
@@ -32,9 +29,8 @@ export const useGameState = () => {
     },
   } = useDojo();
 
-  const [gameId, setGameId] = useState<number>(getLSGameId());
-
   const {
+    id: gameId,
     setPoints,
     setMulti,
     resetMultiPoints,
@@ -42,7 +38,7 @@ export const useGameState = () => {
     rageCards,
   } = useGameStore();
 
-  const { setPreSelectedPlay, preSelectedCards } = useCurrentHandStore();
+  const { setPreSelectedPlay, preSelectedCards, hand } = useCurrentHandStore();
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [gameLoading, setGameLoading] = useState(true);
   const [preSelectionLocked, setPreSelectionLocked] = useState(false);
@@ -52,7 +48,6 @@ export const useGameState = () => {
   const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
     [key: number]: number[];
   }>({});
-  const [hand, setHand] = useState<Card[]>([]);
   const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
     undefined
   );
@@ -118,7 +113,6 @@ export const useGameState = () => {
     fetchCardsConfig();
   }, [modId]);
 
-
   const dojoPowerUps = useGamePowerUps();
 
   const removePowerUp = (idx: number) => {
@@ -171,6 +165,7 @@ export const useGameState = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
+      console.log("preselectedCards", preSelectedCards);
       let play = checkHand(
         hand,
         preSelectedCards,
@@ -202,14 +197,8 @@ export const useGameState = () => {
     setPreselectedPowerUps([]);
   };
 
-  const lsSetGameId = (gameId: number) => {
-    localStorage.setItem(GAME_ID, gameId.toString());
-    setGameId(gameId);
-  };
-
   return {
     gameId,
-    setGameId: lsSetGameId,
     gameLoading,
     setGameLoading,
     preSelectionLocked,

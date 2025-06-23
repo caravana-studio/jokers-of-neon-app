@@ -63,7 +63,7 @@ export const DynamicStorePage = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        navigate("map");
+        navigate("/map");
       } else {
         setLoading(false);
       }

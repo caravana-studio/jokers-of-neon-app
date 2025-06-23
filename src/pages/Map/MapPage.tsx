@@ -16,6 +16,7 @@ export const MapPage = () => {
   const { isSmallScreen } = useResponsiveValues();
 
   useRedirectByGameState();
+  
   return (
     <DelayedLoading ms={600}>
       <Flex

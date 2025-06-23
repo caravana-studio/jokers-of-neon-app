@@ -94,6 +94,7 @@ export const getGameView = async (
     let tx_result: any = await client.game_system.getGameData(gameId);
 
     console.log("game data", tx_result);
+    console.log("got state", getState(tx_result["0"]?.state?.variant));
     return {
       game: {
         id: gameId,
@@ -111,7 +112,7 @@ export const getGameView = async (
         cash: Number(tx_result["0"].cash),
         available_rerolls: Number(tx_result["0"].available_rerolls),
         seed: Number(tx_result["0"].seed),
-        state: getState(tx_result["0"].state),
+        state: getState(tx_result["0"]?.state?.variant),
       },
       round: {
         game_id: gameId,
@@ -119,13 +120,7 @@ export const getGameView = async (
         target_score: Number(tx_result["1"].target_score),
         remaining_plays: Number(tx_result["1"].remaining_plays),
         remaining_discards: Number(tx_result["1"].remaining_discards),
-        rages: [] /* tx_result["1"].rages.map((rage: any) => ({
-          id: Number(rage.id),
-          isActive: rage.is_active,
-          currentProbability: Number(rage.current_probability),
-          activeRageIds: rage.active_rage_ids.map((id: any) => Number(id)),
-          lastActiveLevel: Number(rage.last_active_level),
-        })), */,
+        rages: tx_result["1"].rages.map((id: BigInt) => Number(id)),
       },
     };
   } catch (e) {

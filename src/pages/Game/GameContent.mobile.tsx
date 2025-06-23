@@ -43,7 +43,6 @@ export const MobileGameContent = () => {
     error,
     executeCreateGame,
     addModifier,
-    isRageRound,
     maxPowerUpSlots,
   } = useGameContext();
 

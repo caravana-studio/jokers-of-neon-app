@@ -23,8 +23,7 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const { gameId, setIsRageRound } = useGameContext();
-  const { state } = useGameStore();
+  const { state, resetRage, id: gameId } = useGameStore();
   const { lockRedirection, loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
@@ -32,33 +31,8 @@ export const Store = () => {
     Number(sessionStorage.getItem(STORE_LAST_TAB_INDEX)) ?? 0;
 
   useEffect(() => {
-    setIsRageRound(false);
+    resetRage();
   }, []);
-
-  useEffect(() => {
-    if (!lockRedirection) {
-      if (state === GameStateEnum.GameOver) {
-        navigate(`/gameover/${gameId}`);
-      } else if (
-        state === GameStateEnum.Round ||
-        state === GameStateEnum.Rage
-      ) {
-        navigate("/demo");
-      } else if (state === GameStateEnum.Lootbox) {
-        navigate("/open-loot-box");
-      }
-    }
-  }, [state, lockRedirection]);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (state === GameStateEnum.GameOver) {
-      navigate(`/gameover/${gameId}`);
-    } else if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
-      navigate("/demo");
-    }
-  }, [state]);
 
   useEffect(() => {
     const showTutorial = !localStorage.getItem(SKIP_TUTORIAL_STORE);

@@ -28,7 +28,7 @@ export const Home = () => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
 
-  const enableMods = useFeatureFlagEnabled("global", "showMods");
+  const enableMods = false// useFeatureFlagEnabled("global", "showMods");
 
   useEffect(() => {
     if (account?.account && playButtonClicked) {

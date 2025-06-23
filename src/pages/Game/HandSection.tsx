@@ -44,8 +44,6 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const { remainingPlays } = useGameStore();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
-  console.log("hand", hand);
-
   const { highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);

@@ -5,19 +5,18 @@ import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
+import { useGameStore } from "../state/useGameStore";
 
 export const BudokanEndpoint = () => {
   const { gameId } = useParams();
   const { data: games, isLoading, error } = useGetMyGames();
 
-  const { syncCall } = useDojo();
-  const { executeCreateGame, setGameId } = useGameContext();
+  const {
+    setup: { client },
+  } = useDojo();
+  const { executeCreateGame } = useGameContext();
+  const { setGameId } = useGameStore();
   const navigate = useNavigate();
-
-  const syncAndRedirect = async () => {
-    await syncCall();
-    navigate(`/redirect`);
-  };
 
   useEffect(() => {
     if (!gameId) {
@@ -34,8 +33,8 @@ export const BudokanEndpoint = () => {
           navigate("/entering-tournament");
           executeCreateGame(game.id);
         } else {
-          setGameId(game.id);
-          syncAndRedirect();
+          setGameId(client, game.id);
+          navigate(`/redirect`);
         }
       } else {
         console.error(`Game ${gameId} not found`);

@@ -60,7 +60,7 @@ export const SidebarMenu = () => {
         <MyGamesMenuBtn width={iconWidth} />
         <SettingsMenuBtn width={iconWidth} />
         <DiscordLink width={iconWidth} />
-        {!hideTutorialFF && <TutorialBtn width={iconWidth} />}
+        {/* {!hideTutorialFF && <TutorialBtn width={iconWidth} />} */}
       </Flex>
       <Flex
         gap={4}

@@ -17,11 +17,7 @@ export const DiscardButton = ({
   const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
   const { discard } = useGameContext();
 
-  const {
-    discard: stateDiscard,
-    totalDiscards,
-    remainingDiscards,
-  } = useGameStore();
+  const { totalDiscards, remainingDiscards } = useGameStore();
 
   const cantDiscard =
     !highlight &&
@@ -39,7 +35,6 @@ export const DiscardButton = ({
         onClick={() => {
           if (onTutorialCardClick) onTutorialCardClick();
           discard();
-          stateDiscard();
         }}
         sx={{
           _disabled: {

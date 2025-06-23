@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+/* import React, { createContext, useEffect, useState } from "react";
 import {
   discardSfx,
   multiSfx,
@@ -248,7 +248,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       handsLeft: 1,
       setAnimateSecondChanceCard: emptyFn,
       setCardTransformationLock: emptyFn,
-      setIsRageRound: emptyFn,
       specialCards: emptyFn as any,
       setAnimateSpecialCardDefault: emptyFn as any,
       addCash: emptyFn,
@@ -304,3 +303,4 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default TutorialGameProvider;
+ */
