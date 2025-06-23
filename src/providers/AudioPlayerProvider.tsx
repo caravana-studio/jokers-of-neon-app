@@ -8,7 +8,7 @@ import React, {
 import { Howl } from "howler";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useGameContext } from "./GameProvider.tsx";
-
+import { useLocation } from "react-router-dom";
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -24,21 +24,30 @@ const AudioPlayerContext = createContext<AudioPlayerContextProps | undefined>(
 interface AudioPlayerProviderProps extends PropsWithChildren {
   baseSongPath: string;
   rageSongPath: string;
+  introSongPath: string;
 }
 
 export const AudioPlayerProvider = ({
   children,
   baseSongPath,
-  rageSongPath
+  rageSongPath,
+  introSongPath,
 }: AudioPlayerProviderProps) => {
   const [sound, setSound] = useState<Howl | undefined>(undefined);
-  
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
+
+  const location = useLocation();
+  const [isInMenu, setIsInMenu] = useState(location.pathname === "/");
   const [musicVolume, setMusicVolume] = useState(0.2);
   const { isRageRound } = useGameContext();
+
+  useEffect(() => {
+    setIsInMenu(location.pathname === "/");
+  }, [location.pathname]);
 
   useEffect(() => {
     if (sound) {
@@ -47,13 +56,14 @@ export const AudioPlayerProvider = ({
     }
 
     const newSound = new Howl({
-      src: [isRageRound ? rageSongPath : baseSongPath],
+      src: [
+        isInMenu ? introSongPath : isRageRound ? rageSongPath : baseSongPath,
+      ],
       loop: true,
       volume: musicVolume,
     });
 
-    if(sound)
-      sound.stop();
+    if (sound) sound.stop();
 
     setSound(newSound);
 
@@ -66,7 +76,7 @@ export const AudioPlayerProvider = ({
       newSound.stop();
       newSound.unload();
     };
-  }, [isRageRound, baseSongPath, rageSongPath]);
+  }, [isRageRound, baseSongPath, rageSongPath, isInMenu]);
 
   useEffect(() => {
     if (sound) {
