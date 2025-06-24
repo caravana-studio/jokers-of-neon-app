@@ -18,3 +18,6 @@ export const SFX_ON = "SFX_ON";
 export const SKIP_PRESENTATION = "hasSeenPresentation";
 export const STORE_LAST_TAB_INDEX = "STORE_LAST_TAB_INDEX";
 export const LAST_PAGE = "LAST_PAGE";
+export const LOCAL_APP_VERSION = "APP_VERSION";
+export const LOCAL_IMAGE_VERSION = "IMAGE_CACHE_VERSION";
+export const LOCAL_VIDEO_VERSION = "VIDEO_CACHE_VERSION";

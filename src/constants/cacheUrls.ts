@@ -5,8 +5,11 @@ import { SPECIALS_RARITY } from "../data/specialCards";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { ALL_GLOBS, STATIC_IMAGE_URLS } from "./imageConstants";
 
-export const CACHE_IMAGE = "big-image-cache-2";
-export const CACHE_VIDEO = "background-video-cache";
+const IMAGE_VERSION = import.meta.env.VITE_IMAGE_VERSION;
+const VIDEO_VERSION = import.meta.env.VITE_VIDEO_VERSION;
+
+export const CACHE_IMAGE_NAME = `big-image-cache-${IMAGE_VERSION}`;
+export const CACHE_VIDEO_NAME = `background-video-cache-${VIDEO_VERSION}`;
 
 export const getDefaultImageUrls = async (): Promise<string[]> => {
   const imageUrls: string[] = [...STATIC_IMAGE_URLS];
