@@ -14,6 +14,7 @@ import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
+import { LOCAL_APP_VERSION_CHANGE } from "../constants/localStorage";
 
 interface DojoAccount {
   create: () => void;
@@ -165,6 +166,7 @@ const DojoContextProvider = ({
   });
 
   const { connect, connectors } = useConnect();
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
   const { isConnected, isConnecting } = useAccount();
 
   const [accountsInitialized, setAccountsInitialized] = useState(false);
@@ -173,6 +175,7 @@ const DojoContextProvider = ({
     try {
       console.log("Attempting to connect wallet...");
       await connect({ connector: connectors[0] });
+      localStorage.setItem(LOCAL_APP_VERSION_CHANGE, "false");
       console.log("Wallet connected successfully.");
     } catch (error) {
       console.error("Failed to connect wallet:", error);
@@ -227,7 +230,11 @@ const DojoContextProvider = ({
         <PreThemeLoadingPage>
           <img width="60%" src="logos/logo.png" alt="logo" />
           {!isConnected && (
-            <button style={{ color: "white" }} className="login-button" onClick={connectWallet}>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={connectWallet}
+            >
               LOGIN
             </button>
           )}
@@ -239,6 +246,26 @@ const DojoContextProvider = ({
       // Connected but controllerAccount is not set yet
       return <LoadingScreen />;
     }
+  }
+
+  if (localAppVersion === `true`) {
+    connectors.forEach((connector) => {
+      connector.disconnect();
+    });
+
+    return (
+      <PreThemeLoadingPage>
+        <img width="60%" src="logos/logo.png" alt="logo" />
+
+        <button
+          style={{ color: "white" }}
+          className="login-button"
+          onClick={connectWallet}
+        >
+          LOGIN
+        </button>
+      </PreThemeLoadingPage>
+    );
   }
 
   // Once account is set, render the children

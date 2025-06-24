@@ -1,3 +1,4 @@
+import { useConnect } from "@starknet-react/core";
 import {
   CACHE_IMAGE_NAME,
   CACHE_VIDEO_NAME,
@@ -5,6 +6,7 @@ import {
 } from "../constants/cacheUrls";
 import {
   LOCAL_APP_VERSION,
+  LOCAL_APP_VERSION_CHANGE,
   LOCAL_IMAGE_VERSION,
   LOCAL_VIDEO_VERSION,
 } from "../constants/localStorage";
@@ -93,7 +95,6 @@ export const checkAndUpdateCacheVersions = async () => {
   const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION);
   const localImageVersion = localStorage.getItem(LOCAL_IMAGE_VERSION);
   const localVideoVersion = localStorage.getItem(LOCAL_VIDEO_VERSION);
-
   const cacheNames = await caches.keys();
 
   if (localImageVersion !== IMAGE_ENV_VERSION) {
@@ -113,8 +114,12 @@ export const checkAndUpdateCacheVersions = async () => {
   }
 
   if (localAppVersion !== APP_ENV_VERSION) {
-    localStorage.clear();
+    // localStorage.clear();
+    // TODO: DELETE THE NECESSARY ITEMS FROM THE CACHE
     localStorage.setItem(LOCAL_APP_VERSION, APP_ENV_VERSION);
+    if (localAppVersion) {
+      localStorage.setItem(LOCAL_APP_VERSION_CHANGE, "true");
+    }
   }
 };
 
@@ -124,7 +129,6 @@ const deleteMatchingCaches = async (
 ) => {
   for (const name of cacheNames) {
     if (name === cacheName) {
-      console.log(name);
       await caches.delete(name);
     }
   }
