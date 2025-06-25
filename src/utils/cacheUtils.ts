@@ -9,6 +9,12 @@ import {
   LOCAL_APP_VERSION_CHANGE,
   LOCAL_IMAGE_VERSION,
   LOCAL_VIDEO_VERSION,
+  GAME_ID,
+  SKIP_TUTORIAL,
+  SFX_ON,
+  SOUND_OFF,
+  LOGGED_USER,
+  SETTINGS_ANIMATION_SPEED,
 } from "../constants/localStorage";
 import { VIDEO_URLS } from "../constants/videoConstants";
 
@@ -114,8 +120,13 @@ export const checkAndUpdateCacheVersions = async () => {
   }
 
   if (localAppVersion !== APP_ENV_VERSION) {
-    // localStorage.clear();
-    // TODO: DELETE THE NECESSARY ITEMS FROM THE CACHE
+    localStorage.removeItem(GAME_ID);
+    localStorage.removeItem(SKIP_TUTORIAL);
+    localStorage.removeItem(SFX_ON);
+    localStorage.removeItem(SOUND_OFF);
+    localStorage.removeItem(LOGGED_USER);
+    localStorage.removeItem(SETTINGS_ANIMATION_SPEED);
+
     localStorage.setItem(LOCAL_APP_VERSION, APP_ENV_VERSION);
     if (localAppVersion) {
       localStorage.setItem(LOCAL_APP_VERSION_CHANGE, "true");

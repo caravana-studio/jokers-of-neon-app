@@ -1,6 +1,6 @@
 import ControllerConnector from "@cartridge/connector/controller";
 import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
   ReactNode,
   createContext,
@@ -15,6 +15,7 @@ import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
 import { LOCAL_APP_VERSION_CHANGE } from "../constants/localStorage";
+import { useNavigate } from "react-router-dom";
 
 interface DojoAccount {
   create: () => void;
@@ -79,20 +80,33 @@ const useRpcProvider = () => {
 
 const useControllerAccount = () => {
   const { account, connector, isConnected } = useAccount();
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
+  const { connectors } = useConnect();
+  const { disconnect } = useDisconnect();
 
   useEffect(() => {
-    if (account) {
+    if (localAppVersion === "true") {
+      connectors.forEach((connector) => {
+        connector.disconnect();
+      });
+
+      disconnect();
+    }
+  }, [localAppVersion]);
+
+  useEffect(() => {
+    if (account && localAppVersion === "false") {
       useAccountStore.getState().setAccount(account);
     }
-  }, [account, isConnected]);
+  }, [account, isConnected, localAppVersion]);
 
   useEffect(() => {
-    if (connector) {
+    if (connector && localAppVersion === "false") {
       useAccountStore
         .getState()
         .setConnector(connector as unknown as ControllerConnector);
     }
-  }, [connector, isConnected]);
+  }, [connector, isConnected, localAppVersion]);
 
   return account;
 };
@@ -101,6 +115,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
   const currentValue = useContext(DojoContext);
   if (currentValue) throw new Error("DojoProvider can only be used once");
 
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
   const rpcProvider = useRpcProvider();
   const masterAccount = useMasterAccount(rpcProvider);
   const controllerAccount = useControllerAccount();
@@ -121,7 +136,9 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
       <DojoContextProvider
         value={value}
         masterAccount={masterAccount}
-        controllerAccount={controllerAccount!}
+        controllerAccount={
+          localAppVersion === "true" ? null : controllerAccount!
+        }
       >
         {children}
       </DojoContextProvider>
@@ -242,30 +259,30 @@ const DojoContextProvider = ({
       );
     }
 
+    if (localAppVersion === `true`) {
+      connectors.forEach((connector) => {
+        connector.disconnect();
+      });
+
+      return (
+        <PreThemeLoadingPage>
+          <img width="60%" src="logos/logo.png" alt="logo" />
+
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={connectWallet}
+          >
+            LOGIN
+          </button>
+        </PreThemeLoadingPage>
+      );
+    }
+
     if (!controllerAccount && isConnected) {
       // Connected but controllerAccount is not set yet
       return <LoadingScreen />;
     }
-  }
-
-  if (localAppVersion === `true`) {
-    connectors.forEach((connector) => {
-      connector.disconnect();
-    });
-
-    return (
-      <PreThemeLoadingPage>
-        <img width="60%" src="logos/logo.png" alt="logo" />
-
-        <button
-          style={{ color: "white" }}
-          className="login-button"
-          onClick={connectWallet}
-        >
-          LOGIN
-        </button>
-      </PreThemeLoadingPage>
-    );
   }
 
   // Once account is set, render the children
