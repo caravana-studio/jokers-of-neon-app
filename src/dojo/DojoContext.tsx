@@ -83,9 +83,10 @@ const useControllerAccount = () => {
   const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
   const { connectors } = useConnect();
   const { disconnect } = useDisconnect();
+  const isDev = import.meta.env.VITE_DEV === "true";
 
   useEffect(() => {
-    if (localAppVersion === "true") {
+    if (localAppVersion === "true" && !isDev) {
       connectors.forEach((connector) => {
         connector.disconnect();
       });
