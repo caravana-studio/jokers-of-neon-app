@@ -12,6 +12,7 @@ import { DurationSwitcher } from "./DurationSwitcher.tsx";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo.tsx";
 import { BarButtonProps } from "./MobileBottomBar.tsx";
 import { ReactNode } from "react";
+import { colorizeText } from "../utils/getTooltip.tsx";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -174,8 +175,8 @@ export const StorePreviewComponent = ({
                 >
                   {t("store.preview-card.title.description")}
                 </Text>
-                <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                  {description}
+                <Text fontSize={{ base: "md", sm: "xl" }}>
+                  {colorizeText(description)}
                 </Text>
                 {extraDescription && (
                   <Text
