@@ -30,19 +30,19 @@
   "specials": {
     "300": {
       "name": "Corazones Multiplicados",
-      "description": "Añade +2 multi a cada carta de corazones jugada"
+      "description": "Añade ^violet(+2 multi)^ a cada carta de corazones jugada"
     },
     "301": {
       "name": "Tréboles Multiplicados",
-      "description": "Añade +2 multi a cada carta de tréboles jugada"
+      "description": "Añade ^violet(+2 multi)^ a cada carta de tréboles jugada"
     },
     "302": {
       "name": "Diamantes Multiplicados",
-      "description": "Añade +2 multi a cada carta de diamantes jugada"
+      "description": "Añade ^violet(+2 multi)^ a cada carta de diamantes jugada"
     },
     "303": {
       "name": "Picas Multiplicadas",
-      "description": "Añade +2 multi a cada carta de picas jugada"
+      "description": "Añade ^violet(+2 multi)^ a cada carta de picas jugada"
     },
     "304": {
       "name": "Potenciador de Par",
@@ -78,11 +78,11 @@
     },
     "312": {
       "name": "Potenciador de Figuras",
-      "description": "Todas las FIGURAS jugadas suman +50 puntos"
+      "description": "Todas las FIGURAS jugadas suman ^blue(+50 puntos)^"
     },
     "313": {
       "name": "Ases Multiplicados",
-      "description": "Añade +5 multi a cada AS jugado"
+      "description": "Añade ^violet(+5 multi)^ a cada AS jugado"
     },
     "314": {
       "name": "El Amor está en el Aire",
@@ -98,11 +98,11 @@
     },
     "317": {
       "name": "Suerte 7",
-      "description": "Todas las cartas 7 suman +77 puntos"
+      "description": "Todas las cartas 7 suman ^blue(+77 puntos)^"
     },
     "318": {
       "name": "Bono Neon",
-      "description": "Las cartas Neon suman +20 puntos. Ademas, se sube dos niveles a la jugada si es de Neon"
+      "description": "Las cartas Neon suman ^blue(+20 puntos)^. Ademas, se sube dos niveles a la jugada si es de Neon"
     },
     "319": {
       "name": "Fecha Límite",
@@ -110,15 +110,15 @@
     },
     "320": {
       "name": "Ventaja Inicial",
-      "description": "La primera mano jugada suma +100 puntos y +10 multi"
+      "description": "La primera mano jugada suma ^blue(+100 puntos)^ y ^violet(+10 multi)^"
     },
     "321": {
       "name": "Mano de la suerte",
-      "description": "Obtén 50 monedas por cada carta de diamantes que juegues"
+      "description": "Obtén ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
     },
     "322": {
       "name": "Maestría en descartes",
-      "description": "Si no te quedan descartes cada mano jugada suma +10 multi"
+      "description": "Si no te quedan descartes cada mano jugada suma ^violet(+10 multi)^"
     },
     "323": {
       "name": "Segunda oportunidad",
@@ -138,27 +138,27 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Logra exactamente 21 puntos con tus cartas jugadas para obtener +21 multi."
+      "description": "Logra exactamente ^blue(21 puntos)^ con tus cartas jugadas para obtener ^violet(+21 multi)^."
     },
     "328": {
       "name": "Juego Eficiente",
-      "description": "Gana +10 multi y +50 puntos al jugar 3 o menos cartas."
+      "description": "Gana ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
     },
     "329": {
       "name": "Sacrificio Especial",
-      "description": "Obtén +1 multi (acumulativo) por cada carta especial vendida. Actualmente +{{multi}} multi."
+      "description": "Obtén ^violet(+1 multi)^ (acumulativo) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
     },
     "330": {
       "name": "Rompedor de Rages",
-      "description": "Obtén +2 multi (acumulativo) por cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Obtén ^violet(+2 multi)^ (acumulativo) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "331": {
       "name": "Atajo",
-      "description": ":os puntos necesarios para superar el nivel se reducen en un 20%"
+      "description": "Los puntos necesarios para superar el nivel se reducen en un 20%"
     },
     "332": {
       "name": "Día de suerte",
-      "description": "Obtén 500 monedas extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
+      "description": "Obtén ^yellow(+500 monedas)^ extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
     },
     "333": {
       "name": "Efecto espejo",
@@ -174,7 +174,7 @@
     },
     "336": {
       "name": "Caída del Joker",
-      "description": "Obtén 500 monedas cada vez que descartes un Joker"
+      "description": "Obtén ^yellow(+500 monedas)^ cada vez que descartes un Joker"
     },
     "337": {
       "name": "Descartes extra",
@@ -218,27 +218,27 @@
     },
     "347": {
       "name": "Dado de Corazones",
-      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de corazones"
+      "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de corazones"
     },
     "348": {
       "name": "Dado de Tréboles",
-      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de tréboles"
+      "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de tréboles"
     },
     "349": {
       "name": "Dado de Diamantes",
-      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de diamantes"
+      "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de diamantes"
     },
     "350": {
       "name": "Dado de Picas",
-      "description": "Añade un valor de multi aleatorio entre -2 y 6 por cada carta de picas"
+      "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de picas"
     },
     "351": {
       "name": "Multiplicador Especial",
-      "description": "Obtén +3 multi por cada carta especial que poseas."
+      "description": "Obtén ^violet(+3 multi)^ por cada carta especial que poseas."
     },
     "352": {
       "name": "Coleccionista",
-      "description": "Gana +1 puntos por cada carta en tu mazo."
+      "description": "Gana ^blue(+1 puntos)^ por cada carta en tu mazo."
     },
     "353": {
       "name": "Reinicio de Rage",
@@ -246,39 +246,39 @@
     },
     "354": {
       "name": "Omitir Bonus",
-      "description": "Gana +25 puntos (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). Actualmente +{{points}} puntos."
+      "description": "Gana ^blue(+25 puntos)^ (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). ^blue(Actualmente +{{points}} puntos)^."
     },
     "355": {
       "name": "Recompensas Quemadas",
-      "description": "Gana +15 puntos (acumulativos) por cada carta quemada de tu mazo. Actualmente +{{points}} puntos."
+      "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
     },
     "356": {
       "name": "Guardián de Slots",
-      "description": "Gana +100 puntos por cada Slot desbloqueado pero vacío."
+      "description": "Gana ^blue(+100 puntos)^ por cada Slot desbloqueado pero vacío."
     },
     "357": {
       "name": "Gran apostador",
-      "description": "1 de 2 posibilidades de ganar +1 multi (acumulativo) por cada Carta Alta jugada. Actualmente +{{multi}} multi."
+      "description": "Cada Carta Alta jugada tiene 50% de posibilidades de ganar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
     },
     "358": {
       "name": "Ruleta de Palos",
-      "description": "Obtén +5 multi por cada carta que coincida con un palo aleatorio. El palo cambia cada ronda."
+      "description": "Obtén ^violet(+5 multi)^ por cada carta que coincida con un palo aleatorio. El palo cambia cada ronda."
     },
     "359": {
       "name": "Guardián de Tréboles",
-      "description": "Gana +10 puntos por cada carta de Trébol en tu mazo."
+      "description": "Gana ^blue(+10 puntos)^ por cada carta de Trébol en tu mazo."
     },
     "360": {
       "name": "Trío de Picas",
-      "description": "Si tu mano tiene al menos 3 cartas de Picas, gana +100 puntos y +3 multi."
+      "description": "Si tu mano tiene al menos 3 cartas de Picas, gana ^blue(+100 puntos)^ y ^violet(+3 multi)^."
     },
     "361": {
       "name": "Los Dos Importan",
-      "description": "Obtén +30 puntos por cada 2 que tengas en tu mano."
+      "description": "Obtén ^blue(+30 puntos)^ por cada 2 que tengas en tu mano."
     },
     "362": {
       "name": "Mano de modificadores",
-      "description": "Obtén +5 de multi por cada carta modificadora que tengas en tu mano."
+      "description": "Obtén ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
     },
     "363": {
       "name": "Piromano",
@@ -286,11 +286,11 @@
     },
     "364": {
       "name": "Multiplicador de Cuadrados",
-      "description": "+4 multi por cada 4 que tengas en tu mano."
+      "description": "^violet(+4 multi)^ por cada 4 que tengas en tu mano."
     },
     "365": {
       "name": "Jackpot",
-      "description": "Obtén +30 puntos por cada Jota que tengas en tu mano."
+      "description": "Obtén ^blue(+30 puntos)^ por cada Jota que tengas en tu mano."
     },
     "366": {
       "name": "Ciclo del dinero",
@@ -302,23 +302,23 @@
     },
     "368": {
       "name": "La Verdad del Rey",
-      "description": "Cada Rey jugado tiene 1 en 2 de probabilidad de dar 100 de oro. Cada carta Rey en tu mano tiene 1 en 4 de probabilidad de dar 100 puntos."
+      "description": "Cada Rey jugado tiene 50% de probabilidad de dar ^yellow(+100 de monedas)^. Cada carta Rey en tu mano tiene 25% de probabilidad de dar ^blue(+100 puntos)^."
     },
     "369": {
       "name": "Aritmomanía",
-      "description": "Si la suma de las cartas jugadas es par, ganas +7 multi. Si es impar, ganas +100 puntos."
+      "description": "Si la suma de las cartas jugadas es par, ganas  ^violet(+7 multi)^. Si es impar, ganas ^blue(+100 puntos)^."
     },
     "370": {
       "name": "Negro y Rojo",
-      "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan +1 multi."
+      "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan ^violet(+1 multi)^."
     },
     "371": {
       "name": "Joker sin valor",
-      "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas obtienen +1 multi."
+      "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas obtienen ^violet(+1 multi)^."
     },
     "372": {
       "name": "Escalera Ascendente",
-      "description": "Gana +10 puntos acumulativos por cada escalera jugada. Actualmente tienes +{{points}} puntos."
+      "description": "Gana ^blue(+10 puntos)^ acumulativos por cada escalera jugada. ^blue(Actualmente tienes +{{points}} puntos)^."
     },
     "373": {
       "name": "Relatividad",
@@ -326,263 +326,263 @@
     },
     "374": {
       "name": "Impulso de Comodines",
-      "description": "Cada comodín otorga +100 puntos."
+      "description": "Cada comodín otorga ^blue(+100 puntos)^."
     },
     "379": {
       "name": "Arcoíris",
-      "description": "Obtén +200 puntos y +5 multi si tu jugada incluye los cuatro palos."
+      "description": "Obtén ^blue(+200 puntos)^ y ^violet(+5 multi)^ si tu jugada incluye los cuatro palos."
     },
     "380": {
       "name": "Fortuna de la Reina",
-      "description": "Por cada reina de tu jugada tienes 1 en 2 chances de ganar +150 monedas."
+      "description": "Cada reina jugada tiene 50% de probabilidad de ganar ^yellow(+150 monedas)^."
     }
   },
   "power-ups": {
     "800": {
       "name": "+25 Puntos",
-      "description": "Suma +25 puntos"
+      "description": "Suma ^blue(+25 puntos)^"
     },
     "801": {
       "name": "+50 Puntos",
-      "description": "Suma +50 puntos"
+      "description": "Suma ^blue(+50 puntos)^"
     },
     "802": {
       "name": "+75 Puntos",
-      "description": "Suma +75 puntos"
+      "description": "Suma ^blue(+75 puntos)^"
     },
     "803": {
       "name": "+100 Puntos",
-      "description": "Suma +100 puntos"
+      "description": "Suma ^blue(+100 puntos)^"
     },
     "804": {
       "name": "+3 multi",
-      "description": "Añade +3 multi"
+      "description": "Añade ^violet(+3 multi)^"
     },
     "805": {
       "name": "+5 multi",
-      "description": "Añade +5 multi"
+      "description": "Añade ^violet(+5 multi)^"
     },
     "806": {
       "name": "+7 multi",
-      "description": "Añade +7 multi"
+      "description": "Añade ^violet(+7 multi)^"
     },
     "807": {
       "name": "+10 multi",
-      "description": "Añade +10 multi"
+      "description": "Añade ^violet(+10 multi)^"
     }
   },
   "neonCards": {
     "200": {
       "name": "2 de Tréboles de neón",
-      "description": "Suma +4 puntos y +1 multi"
+      "description": "Suma ^blue(+4 puntos)^ y ^violet(+1 multi)^"
     },
     "201": {
       "name": "3 de Tréboles de neón",
-      "description": "Suma +6 puntos y +1 multi"
+      "description": "Suma ^blue(+6 puntos)^ y ^violet(+1 multi)^"
     },
     "202": {
       "name": "4 de Tréboles de neón",
-      "description": "Suma +8 puntos y +1 multi"
+      "description": "Suma ^blue(+8 puntos)^ y ^violet(+1 multi)^"
     },
     "203": {
       "name": "5 de Tréboles de neón",
-      "description": "Suma +10 puntos y +1 multi"
+      "description": "Suma ^blue(+10 puntos)^ y ^violet(+1 multi)^"
     },
     "204": {
       "name": "6 de Tréboles de neón",
-      "description": "Suma +12 puntos y +1 multi"
+      "description": "Suma ^blue(+12 puntos)^ y ^violet(+1 multi)^"
     },
     "205": {
       "name": "7 de Tréboles de neón",
-      "description": "Suma +14 puntos y +1 multi"
+      "description": "Suma ^blue(+14 puntos)^ y ^violet(+1 multi)^"
     },
     "206": {
       "name": "8 de Tréboles de neón",
-      "description": "Suma +16 puntos y +1 multi"
+      "description": "Suma ^blue(+16 puntos)^ y ^violet(+1 multi)^"
     },
     "207": {
       "name": "9 de Tréboles de neón",
-      "description": "Suma +18 puntos y +1 multi"
+      "description": "Suma ^blue(+18 puntos)^ y ^violet(+1 multi)^"
     },
     "208": {
       "name": "10 de Tréboles de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "209": {
       "name": "Jota de Tréboles de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "210": {
       "name": "Reina de Tréboles de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "211": {
       "name": "Rey de Tréboles de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "212": {
       "name": "As de Tréboles de neón",
-      "description": "Suma +22 puntos y +1 multi"
+      "description": "Suma ^blue(+22 puntos)^ y ^violet(+1 multi)^"
     },
     "213": {
       "name": "2 de Diamantes de neón",
-      "description": "Suma +4 puntos y +1 multi"
+      "description": "Suma ^blue(+4 puntos)^ y ^violet(+1 multi)^"
     },
     "214": {
       "name": "3 de Diamantes de neón",
-      "description": "Suma +6 puntos y +1 multi"
+      "description": "Suma ^blue(+6 puntos)^ y ^violet(+1 multi)^"
     },
     "215": {
       "name": "4 de Diamantes de neón",
-      "description": "Suma +8 puntos y +1 multi"
+      "description": "Suma ^blue(+8 puntos)^ y ^violet(+1 multi)^"
     },
     "216": {
       "name": "5 de Diamantes de neón",
-      "description": "Suma +10 puntos y +1 multi"
+      "description": "Suma ^blue(+10 puntos)^ y ^violet(+1 multi)^"
     },
     "217": {
       "name": "6 de Diamantes de neón",
-      "description": "Suma +12 puntos y +1 multi"
+      "description": "Suma ^blue(+12 puntos)^ y ^violet(+1 multi)^"
     },
     "218": {
       "name": "7 de Diamantes de neón",
-      "description": "Suma +14 puntos y +1 multi"
+      "description": "Suma ^blue(+14 puntos)^ y ^violet(+1 multi)^"
     },
     "219": {
       "name": "8 de Diamantes de neón",
-      "description": "Suma +16 puntos y +1 multi"
+      "description": "Suma ^blue(+16 puntos)^ y ^violet(+1 multi)^"
     },
     "220": {
       "name": "9 de Diamantes de neón",
-      "description": "Suma +18 puntos y +1 multi"
+      "description": "Suma ^blue(+18 puntos)^ y ^violet(+1 multi)^"
     },
     "221": {
       "name": "10 de Diamantes de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "222": {
       "name": "Jota de Diamantes de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "223": {
       "name": "Reina de Diamantes de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "224": {
       "name": "Rey de Diamantes de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "225": {
       "name": "As de Diamantes de neón",
-      "description": "Suma +22 puntos y +1 multi"
+      "description": "Suma ^blue(+22 puntos)^ y ^violet(+1 multi)^"
     },
     "226": {
       "name": "2 de Corazones de neón",
-      "description": "Suma +4 puntos y +1 multi"
+      "description": "Suma ^blue(+4 puntos)^ y ^violet(+1 multi)^"
     },
     "227": {
       "name": "3 de Corazones de neón",
-      "description": "Suma +6 puntos y +1 multi"
+      "description": "Suma ^blue(+6 puntos)^ y ^violet(+1 multi)^"
     },
     "228": {
       "name": "4 de Corazones de neón",
-      "description": "Suma +8 puntos y +1 multi"
+      "description": "Suma ^blue(+8 puntos)^ y ^violet(+1 multi)^"
     },
     "229": {
       "name": "5 de Corazones de neón",
-      "description": "Suma +10 puntos y +1 multi"
+      "description": "Suma ^blue(+10 puntos)^ y ^violet(+1 multi)^"
     },
     "230": {
       "name": "6 de Corazones de neón",
-      "description": "Suma +12 puntos y +1 multi"
+      "description": "Suma ^blue(+12 puntos)^ y ^violet(+1 multi)^"
     },
     "231": {
       "name": "7 de Corazones de neón",
-      "description": "Suma +14 puntos y +1 multi"
+      "description": "Suma ^blue(+14 puntos)^ y ^violet(+1 multi)^"
     },
     "232": {
       "name": "8 de Corazones de neón",
-      "description": "Suma +16 puntos y +1 multi"
+      "description": "Suma ^blue(+16 puntos)^ y ^violet(+1 multi)^"
     },
     "233": {
       "name": "9 de Corazones de neón",
-      "description": "Suma +18 puntos y +1 multi"
+      "description": "Suma ^blue(+18 puntos)^ y ^violet(+1 multi)^"
     },
     "234": {
       "name": "10 de Corazones de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "235": {
       "name": "Jota de Corazones de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "236": {
       "name": "Reina de Corazones de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "237": {
       "name": "Rey de Corazones de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "238": {
       "name": "As de Corazones de neón",
-      "description": "Suma +22 puntos y +1 multi"
+      "description": "Suma ^blue(+22 puntos)^ y ^violet(+1 multi)^"
     },
     "239": {
       "name": "2 de Picas de neón",
-      "description": "Suma +4 puntos y +1 multi"
+      "description": "Suma ^blue(+4 puntos)^ y ^violet(+1 multi)^"
     },
     "240": {
       "name": "3 de Picas de neón",
-      "description": "Suma +6 puntos y +1 multi"
+      "description": "Suma ^blue(+6 puntos)^ y ^violet(+1 multi)^"
     },
     "241": {
       "name": "4 de Picas de neón",
-      "description": "Suma +8 puntos y +1 multi"
+      "description": "Suma ^blue(+8 puntos)^ y ^violet(+1 multi)^"
     },
     "242": {
       "name": "5 de Picas de neón",
-      "description": "Suma +10 puntos y +1 multi"
+      "description": "Suma ^blue(+10 puntos)^ y ^violet(+1 multi)^"
     },
     "243": {
       "name": "6 de Picas de neón",
-      "description": "Suma +12 puntos y +1 multi"
+      "description": "Suma ^blue(+12 puntos)^ y ^violet(+1 multi)^"
     },
     "244": {
       "name": "7 de Picas de neón",
-      "description": "Suma +14 puntos y +1 multi"
+      "description": "Suma ^blue(+14 puntos)^ y ^violet(+1 multi)^"
     },
     "245": {
       "name": "8 de Picas de neón",
-      "description": "Suma +16 puntos y +1 multi"
+      "description": "Suma ^blue(+16 puntos)^ y ^violet(+1 multi)^"
     },
     "246": {
       "name": "9 de Picas de neón",
-      "description": "Suma +19 puntos y +1 multi"
+      "description": "Suma ^blue(+18 puntos)^ y ^violet(+1 multi)^"
     },
     "247": {
       "name": "10 de Picas de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "248": {
       "name": "Jota de Picas de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "249": {
       "name": "Reina de Picas de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "250": {
       "name": "Rey de Picas de neón",
-      "description": "Suma +20 puntos y +1 multi"
+      "description": "Suma ^blue(+20 puntos)^ y ^violet(+1 multi)^"
     },
     "251": {
       "name": "As de Picas de neón",
-      "description": "Suma +22 puntos y +1 multi"
+      "description": "Suma ^blue(+22 puntos)^ y ^violet(+1 multi)^"
     },
     "252": {
       "name": "Joker de Neón",
-      "description": "Sustituye cualquier carta tradicional. +200 puntos y +2 multi"
+      "description": "Sustituye cualquier carta tradicional. ^blue(+200 puntos)^ y ^violet(+2 multi)^"
     },
     "253": {
       "name": "Comodín de Neón",
@@ -592,215 +592,215 @@
   "traditionalCards": {
     "0": {
       "name": "2 de Tréboles",
-      "description": "Suma +2 puntos"
+      "description": "Suma ^blue(+2 puntos)^"
     },
     "1": {
       "name": "3 de Tréboles",
-      "description": "Suma +3 puntos"
+      "description": "Suma ^blue(+3 puntos)^"
     },
     "2": {
       "name": "4 de Tréboles",
-      "description": "Suma +4 puntos"
+      "description": "Suma ^blue(+4 puntos)^"
     },
     "3": {
       "name": "5 de Tréboles",
-      "description": "Suma +5 puntos"
+      "description": "Suma ^blue(+5 puntos)^"
     },
     "4": {
       "name": "6 de Tréboles",
-      "description": "Suma +6 puntos"
+      "description": "Suma ^blue(+6 puntos)^"
     },
     "5": {
       "name": "7 de Tréboles",
-      "description": "Suma +7 puntos"
+      "description": "Suma ^blue(+7 puntos)^"
     },
     "6": {
       "name": "8 de Tréboles",
-      "description": "Suma +8 puntos"
+      "description": "Suma ^blue(+8 puntos)^"
     },
     "7": {
       "name": "9 de Tréboles",
-      "description": "Suma +9 puntos"
+      "description": "Suma ^blue(+9 puntos)^"
     },
     "8": {
       "name": "10 de Tréboles",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "9": {
       "name": "Jota de Tréboles",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "10": {
       "name": "Reina de Tréboles",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "11": {
       "name": "Rey de Tréboles",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "12": {
       "name": "As de Tréboles",
-      "description": "Suma +11 puntos"
+      "description": "Suma ^blue(+11 puntos)^"
     },
     "13": {
       "name": "2 de Diamantes",
-      "description": "Suma +2 puntos"
+      "description": "Suma ^blue(+2 puntos)^"
     },
     "14": {
       "name": "3 de Diamantes",
-      "description": "Suma +3 puntos"
+      "description": "Suma ^blue(+3 puntos)^"
     },
     "15": {
       "name": "4 de Diamantes",
-      "description": "Suma +4 puntos"
+      "description": "Suma ^blue(+4 puntos)^"
     },
     "16": {
       "name": "5 de Diamantes",
-      "description": "Suma +5 puntos"
+      "description": "Suma ^blue(+5 puntos)^"
     },
     "17": {
       "name": "6 de Diamantes",
-      "description": "Suma +6 puntos"
+      "description": "Suma ^blue(+6 puntos)^"
     },
     "18": {
       "name": "7 de Diamantes",
-      "description": "Suma +7 puntos"
+      "description": "Suma ^blue(+7 puntos)^"
     },
     "19": {
       "name": "8 de Diamantes",
-      "description": "Suma +8 puntos"
+      "description": "Suma ^blue(+8 puntos)^"
     },
     "20": {
       "name": "9 de Diamantes",
-      "description": "Suma +9 puntos"
+      "description": "Suma ^blue(+9 puntos)^"
     },
     "21": {
       "name": "10 de Diamantes",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "22": {
       "name": "Jota de Diamantes",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "23": {
       "name": "Reina de Diamantes",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "24": {
       "name": "Rey de Diamantes",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "25": {
       "name": "As de Diamantes",
-      "description": "Suma +11 puntos"
+      "description": "Suma ^blue(+11 puntos)^"
     },
     "26": {
       "name": "2 de Corazones",
-      "description": "Suma +2 puntos"
+      "description": "Suma ^blue(+2 puntos)^"
     },
     "27": {
       "name": "3 de Corazones",
-      "description": "Suma +3 puntos"
+      "description": "Suma ^blue(+3 puntos)^"
     },
     "28": {
       "name": "4 de Corazones",
-      "description": "Suma +4 puntos"
+      "description": "Suma ^blue(+4 puntos)^"
     },
     "29": {
       "name": "5 de Corazones",
-      "description": "Suma +5 puntos"
+      "description": "Suma ^blue(+5 puntos)^"
     },
     "30": {
       "name": "6 de Corazones",
-      "description": "Suma +6 puntos"
+      "description": "Suma ^blue(+6 puntos)^"
     },
     "31": {
       "name": "7 de Corazones",
-      "description": "Suma +7 puntos"
+      "description": "Suma ^blue(+7 puntos)^"
     },
     "32": {
       "name": "8 de Corazones",
-      "description": "Suma +8 puntos"
+      "description": "Suma ^blue(+8 puntos)^"
     },
     "33": {
       "name": "9 de Corazones",
-      "description": "Suma +9 puntos"
+      "description": "Suma ^blue(+9 puntos)^"
     },
     "34": {
       "name": "10 de Corazones",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "35": {
       "name": "Jota de Corazones",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "36": {
       "name": "Reina de Corazones",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "37": {
       "name": "Rey de Corazones",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "38": {
       "name": "As de Corazones",
-      "description": "Suma +11 puntos"
+      "description": "Suma ^blue(+11 puntos)^"
     },
     "39": {
       "name": "2 de Picas",
-      "description": "Suma +2 puntos"
+      "description": "Suma ^blue(+2 puntos)^"
     },
     "40": {
       "name": "3 de Picas",
-      "description": "Suma +3 puntos"
+      "description": "Suma ^blue(+3 puntos)^"
     },
     "41": {
       "name": "4 de Picas",
-      "description": "Suma +4 puntos"
+      "description": "Suma ^blue(+4 puntos)^"
     },
     "42": {
       "name": "5 de Picas",
-      "description": "Suma +5 puntos"
+      "description": "Suma ^blue(+5 puntos)^"
     },
     "43": {
       "name": "6 de Picas",
-      "description": "Suma +6 puntos"
+      "description": "Suma ^blue(+6 puntos)^"
     },
     "44": {
       "name": "7 de Picas",
-      "description": "Suma +7 puntos"
+      "description": "Suma ^blue(+7 puntos)^"
     },
     "45": {
       "name": "8 de Picas",
-      "description": "Suma +8 puntos"
+      "description": "Suma ^blue(+8 puntos)^"
     },
     "46": {
       "name": "9 de Picas",
-      "description": "Suma +9 puntos"
+      "description": "Suma ^blue(+9 puntos)^"
     },
     "47": {
       "name": "10 de Picas",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "48": {
       "name": "Jota de Picas",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "49": {
       "name": "Reina de Picas",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "50": {
       "name": "Rey de Picas",
-      "description": "Suma +10 puntos"
+      "description": "Suma ^blue(+10 puntos)^"
     },
     "51": {
       "name": "As de Picas",
-      "description": "Suma +11 puntos"
+      "description": "Suma ^blue(+11 puntos)^"
     },
     "52": {
       "name": "Joker",
-      "description": "Joker que sustituye cualquier carta tradicional. +100 puntos y +1 multi"
+      "description": "Joker que sustituye cualquier carta tradicional. ^blue(+100 puntos)^ y ^violet(+1 multi)^"
     },
     "53": {
       "name": "Comodín",
