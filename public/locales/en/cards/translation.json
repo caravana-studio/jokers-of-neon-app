@@ -738,7 +738,7 @@
     },
     "368": {
       "name": "King's Faith",
-      "description": "Each King played has 50% of chances of giving ^yellow(+100 cash)^. Every King held in hand has 25% of chances of scoring ^blue(+100 points)^."
+      "description": "Each King played has a 50% of chance to grant ^yellow(+100 cash)^. Each King held in hand has a 25% chance to score ^blue(+100 points)^."
     },
     "369": {
       "name": "Arithmomania",
