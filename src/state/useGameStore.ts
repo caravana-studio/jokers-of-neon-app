@@ -66,6 +66,8 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     specialsLength: game.current_specials_len,
     modId: game.mod_id,
     isClassic: game.mod_id === CLASSIC_MOD_ID,
+    totalScore: game.player_score,
+    currentScore: round.current_score,
   });
 };
 
