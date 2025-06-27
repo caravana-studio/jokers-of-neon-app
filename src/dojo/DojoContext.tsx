@@ -14,10 +14,8 @@ import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { Icons } from "../constants/icons";
-import { IconComponent } from "../components/IconComponent";
-import CachedImage from "../components/CachedImage";
 
 interface DojoAccount {
   create: () => void;
@@ -33,6 +31,7 @@ interface DojoAccount {
 interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
   account: DojoAccount;
+  useBurnerAcc: boolean;
 }
 
 export interface DojoResult {
@@ -171,7 +170,10 @@ const DojoContextProvider = ({
   const { connect, connectors } = useConnect();
   const { isConnected, isConnecting } = useAccount();
 
-  const [accountsInitialized, setAccountsInitialized] = useState(false);
+  const [controllerAccountInitialized, setControllerAccountInitialized] =
+    useState(false);
+  const [burnerAccountInitialized, setBurnerAccountInitialized] =
+    useState(false);
 
   const connectWallet = async () => {
     try {
@@ -183,90 +185,108 @@ const DojoContextProvider = ({
     }
   };
 
-  // Determine which account to use based on environment
-  //const isDev = import.meta.env.VITE_DEV === "true";
-  //const accountToUse = isDev ? burnerAccount : controllerAccount;
-  const accountToUse = controllerAccount;
+  // Determine which account to use
+  const [useBurner, setUseBurner] = useState<boolean | null>(null);
+  const [accountToUse, setAccountToUse] = useState(() => {
+    if (useBurner === null) return null;
+    return useBurner ? burnerAccount : controllerAccount;
+  });
 
   useEffect(() => {
-    // if (isDev) {
-    //   if (burnerAccount) {
-    //     console.log("Setting account from burner hook:", burnerAccount);
-    //     useAccountStore.getState().setAccount(burnerAccount);
-    //     setAccountsInitialized(true);
-    //   } else {
-    //     console.log("Burner account is null in development.");
-    //   }
-    // } else {
-    if (controllerAccount) {
-      console.log("Setting account from controllerAccount:", controllerAccount);
-      useAccountStore.getState().setAccount(controllerAccount);
-      setAccountsInitialized(true);
-    } else {
-      console.log("ControllerAccount is null in production or not connected.");
-      setAccountsInitialized(true);
+    setAccountToUse(() => {
+      if (useBurner === null) return null;
+      return useBurner ? burnerAccount : controllerAccount;
+    });
+  }, [useBurner]);
+
+  useEffect(() => {
+    if (useBurner === false && controllerAccountInitialized) {
+      connectWallet();
     }
-    // }
-  }, [controllerAccount, burnerAccount]);
+  }, [controllerAccountInitialized]);
 
-  if (!accountsInitialized) {
-    return <LoadingScreen />;
-  }
+  useEffect(() => {
+    if (useBurner != null) {
+      if (useBurner === true) {
+        if (burnerAccount) {
+          console.log("Setting account from burner hook:", burnerAccount);
+          useAccountStore.getState().setAccount(burnerAccount);
+          setBurnerAccountInitialized(true);
+        } else {
+          console.log("Burner account is null in development.");
+        }
+      } else {
+        if (controllerAccount) {
+          console.log(
+            "Setting account from controllerAccount:",
+            controllerAccount
+          );
+          useAccountStore.getState().setAccount(controllerAccount);
+          setControllerAccountInitialized(true);
+        } else {
+          console.log(
+            "ControllerAccount is null in production or not connected."
+          );
+          setControllerAccountInitialized(true);
+        }
+      }
+    }
+  }, [controllerAccount, burnerAccount, useBurner]);
 
-  // Handle Loading Screen
-  // if (isDev) {
-  //   if (!burnerAccount) {
-  //     return <LoadingScreen />;
-  //   }
-  // } else {
-  if (isConnecting) {
-    return <LoadingScreen />;
-  }
-  if (!isConnected && !isConnecting && !controllerAccount) {
+  if (
+    useBurner === null ||
+    (useBurner === false && !isConnected && !isConnecting && !controllerAccount)
+  ) {
     return (
       <PreThemeLoadingPage>
         <img width="60%" src="logos/logo.png" alt="logo" />
-        {!isConnected && (
-          <Flex flexDirection={"column"} gap={16}>
-            <button
-              style={{ color: "white" }}
-              className="login-button"
-              onClick={connectWallet}
+        <Flex flexDirection={"column"} gap={16}>
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={() => {
+              setUseBurner(false);
+              setAccountToUse(controllerAccount);
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexGrow: 0,
+              }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexGrow: 0,
-                }}
-              >
-                <div>LOGIN </div>
-                <img
-                  src={Icons.CARTRIDGE}
-                  width={"24px"}
-                  style={{ marginLeft: "8px" }}
-                />
-              </div>
-            </button>
-            <button
-              style={{ color: "white" }}
-              className="login-button"
-              onClick={() => {}}
-            >
-              PLAY AS GUEST
-            </button>
-          </Flex>
-        )}
+              <div>LOGIN </div>
+              <img
+                src={Icons.CARTRIDGE}
+                width={"24px"}
+                style={{ marginLeft: "8px" }}
+              />
+            </div>
+          </button>
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={() => {
+              setUseBurner(true);
+              setAccountToUse(burnerAccount);
+            }}
+          >
+            PLAY AS GUEST
+          </button>
+        </Flex>
       </PreThemeLoadingPage>
     );
+  } else if (useBurner === true) {
+    if (!(burnerAccountInitialized && burnerAccount)) {
+      return <LoadingScreen />;
+    }
+  } else if (useBurner === false) {
+    if (!(controllerAccountInitialized && controllerAccount && isConnected)) {
+      return <LoadingScreen />;
+    }
   }
-
-  if (!controllerAccount && isConnected) {
-    // Connected but controllerAccount is not set yet
-    return <LoadingScreen />;
-  }
-  // }
 
   // Once account is set, render the children
   return (
@@ -274,6 +294,7 @@ const DojoContextProvider = ({
       value={{
         ...value,
         masterAccount,
+        useBurnerAcc: useBurner || false,
         account: {
           create,
           list,

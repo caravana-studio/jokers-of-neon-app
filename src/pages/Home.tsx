@@ -18,13 +18,13 @@ import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnable
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { GGBanner } from "../components/GGBanner";
-
-const isDev = import.meta.env.VITE_DEV === "true";
+import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useUsername } from "../dojo/utils/useUsername";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const { connect, connectors } = useConnect();
-  const { account } = useDojo();
+  const { account, setup } = useDojo();
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
@@ -42,6 +42,20 @@ export const Home = () => {
       navigate(enableMods ? "/mods" : "/my-games");
     }
   }, [account, playButtonClicked]);
+
+  const loggedInUser = useUsername();
+
+  const redirectToGame = () => {
+    //TODO: create game and change to /demo
+    navigate("/my-games", { replace: true });
+  };
+
+  useEffect(() => {
+    if (loggedInUser) {
+      console.log("redirecting to game", loggedInUser);
+      redirectToGame();
+    }
+  }, [loggedInUser]);
 
   return (
     <>
@@ -99,12 +113,20 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                // if (isDev) {
-                //   navigate(enableMods ? "/mods" : "/login");
-                // } else {
-                setPlayButtonClicked(true);
-                connect({ connector: connectors[0] });
-                // }
+                if (setup.useBurnerAcc) {
+                  console.log("Setting up guest account");
+                  console.log(setup.useBurnerAcc);
+                  const gameIdLength = 10000; //TODO
+                  const username = `joker_guest_${gameIdLength + 1}`;
+
+                  console.log("username: ", username);
+                  localStorage.removeItem(GAME_ID);
+                  localStorage.setItem(LOGGED_USER, username);
+                  redirectToGame();
+                } else {
+                  setPlayButtonClicked(true);
+                  connect({ connector: connectors[0] });
+                }
               }}
               minW={["150px", "300px"]}
             >
