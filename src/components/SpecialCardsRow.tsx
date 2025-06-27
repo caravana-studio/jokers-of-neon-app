@@ -19,10 +19,9 @@ export const SpecialCardsRow = () => {
   const {
     sellSpecialCard,
     roundRewards,
-    specialCards: cards,
     maxSpecialCards,
   } = useGameContext();
-  const { isRageRound, isClassic } = useGameStore();
+  const { isRageRound, isClassic, specialCards: cards } = useGameStore();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);

@@ -3,6 +3,7 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
 import { getGameView } from "../dojo/queries/getGameView";
 import { getRageCards } from "../dojo/queries/getRageCards";
+import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
 
@@ -24,6 +25,7 @@ type GameStore = {
   specialSlots: number;
   specialsLength: number;
   rageCards: Card[];
+  specialCards: Card[];
   availableRerolls: number;
   modId: string;
   isClassic: boolean;
@@ -48,6 +50,7 @@ type GameStore = {
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
   console.log("refetchint game store");
   const { round, game } = await getGameView(client, gameId);
+  const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
   set({
     id: gameId,
@@ -69,6 +72,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     isClassic: game.mod_id === CLASSIC_MOD_ID,
     totalScore: game.player_score,
     currentScore: round.current_score,
+    specialCards,
   });
 };
 
@@ -89,6 +93,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   state: GameStateEnum.NotStarted,
   specialSlots: 1,
   rageCards: [],
+  specialCards: [],
   isRageRound: false,
   availableRerolls: 0,
   specialsLength: 0,

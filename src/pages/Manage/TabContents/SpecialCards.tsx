@@ -40,9 +40,9 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
     keyPrefix: "special-cards",
   });
 
-  const { specialCards, maxSpecialCards } = useGameContext();
+  const { maxSpecialCards } = useGameContext();
   const { getCardData } = useCardData();
-  const { specialSlots } = useGameStore();
+  const { specialSlots, specialCards } = useGameStore();
 
   const freeUnlockedSlots = specialSlots - specialCards.length;
   const lockedSlots =

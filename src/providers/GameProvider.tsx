@@ -56,7 +56,6 @@ export interface IGameContext {
   sellSpecialCard: (cardIdx: number) => Promise<boolean>;
   checkOrCreateGame: () => void;
   lockRedirection: boolean;
-  specialCards: Card[];
   playIsNeon: boolean;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
@@ -115,7 +114,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     modId,
     state: gameState,
     isClassic,
-    setGameId
+    setGameId,
+    specialCards
   } = useGameStore();
 
   const {
@@ -180,8 +180,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayAnimation,
     setError,
     setPlayIsNeon,
-    setLockedSpecialCards,
-    specialCards,
     showSpecials,
     showRages,
     preselectedPowerUps,
@@ -259,7 +257,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
-    setLockedSpecialCards(specialCards);
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
@@ -279,7 +276,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setHand: () => {},
             setPlayAnimation,
             setPreSelectionLocked,
-            setLockedSpecialCards,
             clearPreSelection,
             removePowerUp,
             preselectedPowerUps,

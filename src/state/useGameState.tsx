@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getNode } from "../dojo/queries/getNode";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import {
   getModRageCardsId,
@@ -68,7 +67,7 @@ export const useGameState = () => {
 
   const [cardTransformationLock, setCardTransformationLock] = useState(false);
 
-  const { modId, level } = useGameStore();
+  const { modId, level, specialCards } = useGameStore();
 
   const fetchGameConfig = async () => {
     if (modId) {
@@ -141,11 +140,6 @@ export const useGameState = () => {
     }
   }, [client, account, gameId, level, currentNodeId]);
 
-  const dojoSpecialCards = useCurrentSpecialCards();
-
-  const specialCards =
-    lockedSpecialCards.length > 0 ? lockedSpecialCards : dojoSpecialCards;
-
   //effects
   useEffect(() => {
     if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
@@ -216,8 +210,6 @@ export const useGameState = () => {
     plays,
     playIsNeon,
     setPlayIsNeon,
-    specialCards,
-    setLockedSpecialCards,
     destroyedSpecialCardId,
     setDestroyedSpecialCardId,
     levelUpHand,

@@ -1,21 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useBlisterPackResult } from "../dojo/queries/useBlisterPackResult";
-import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
+import { GameStateEnum } from "../dojo/typescript/custom";
 import { useStore } from "../providers/StoreProvider";
 import { useGameStore } from "../state/useGameStore";
 import { Card } from "../types/Card";
 import { useCustomNavigate } from "./useCustomNavigate";
-import { GameStateEnum } from "../dojo/typescript/custom";
 
 export const useCardsSelection = () => {
   const navigate = useCustomNavigate();
-  const { specialSlots } = useGameStore();
+  const { specialSlots, specialCards: currentSpecialCards } = useGameStore();
   const maxSpecialCards = specialSlots ?? 0;
   const blisterPackResult = useBlisterPackResult();
   const [cards, setCards] = useState<Card[]>([]);
   const [cardsToKeep, setCardsToKeep] = useState<Card[]>([]);
-  const currentSpecialCards = useCurrentSpecialCards();
   const currentSpecialCardsLength = currentSpecialCards?.length ?? 0;
   const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
   const chooseDisabled =

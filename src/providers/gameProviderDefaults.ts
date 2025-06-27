@@ -19,7 +19,6 @@ export const gameProviderDefaults: IGameContext = {
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   lockRedirection: false,
-  specialCards: [],
   playIsNeon: false,
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: () => {},

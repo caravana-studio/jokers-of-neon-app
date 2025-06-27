@@ -8,9 +8,9 @@ import { Card } from "../../types/Card";
 import { transformCardByModifierId } from "./modifierTransformation";
 
 export const useTransformedCard = (card: Card): Card => {
-  const { specialCards, cardTransformationLock } = useGameContext();
+  const { cardTransformationLock } = useGameContext();
   const { getCardData } = useCardData();
-  const { rageCards } = useGameStore();
+  const { rageCards, specialCards } = useGameStore();
 
   if ((card.modifiers?.length ?? 0) > 0) {
     const modifierCard = card.modifiers![0];

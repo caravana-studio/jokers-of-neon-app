@@ -23,7 +23,6 @@ interface AnimatePlayConfig {
   setHand: (hand: Card[] | ((prev: Card[]) => Card[])) => void;
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
-  setLockedSpecialCards: (cards: Card[]) => void;
   clearPreSelection: () => void;
   removePowerUp: (idx: number) => void;
   preselectedPowerUps: number[];
@@ -57,7 +56,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setHand,
     setPlayAnimation,
     setPreSelectionLocked,
-    setLockedSpecialCards,
     clearPreSelection,
     removePowerUp,
     preselectedPowerUps,
@@ -384,7 +382,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     clearPreSelection();
     remainingPlays > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
-    setLockedSpecialCards([]);
 
     setCurrentScore(playEvents.score);
 
