@@ -14,6 +14,10 @@ import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
+import { Button, Flex } from "@chakra-ui/react";
+import { Icons } from "../constants/icons";
+import { IconComponent } from "../components/IconComponent";
+import CachedImage from "../components/CachedImage";
 
 interface DojoAccount {
   create: () => void;
@@ -180,66 +184,89 @@ const DojoContextProvider = ({
   };
 
   // Determine which account to use based on environment
-  const isDev = import.meta.env.VITE_DEV === "true";
-  const accountToUse = isDev ? burnerAccount : controllerAccount;
+  //const isDev = import.meta.env.VITE_DEV === "true";
+  //const accountToUse = isDev ? burnerAccount : controllerAccount;
+  const accountToUse = controllerAccount;
 
   useEffect(() => {
-    if (isDev) {
-      if (burnerAccount) {
-        console.log("Setting account from burner hook:", burnerAccount);
-        useAccountStore.getState().setAccount(burnerAccount);
-        setAccountsInitialized(true);
-      } else {
-        console.log("Burner account is null in development.");
-      }
+    // if (isDev) {
+    //   if (burnerAccount) {
+    //     console.log("Setting account from burner hook:", burnerAccount);
+    //     useAccountStore.getState().setAccount(burnerAccount);
+    //     setAccountsInitialized(true);
+    //   } else {
+    //     console.log("Burner account is null in development.");
+    //   }
+    // } else {
+    if (controllerAccount) {
+      console.log("Setting account from controllerAccount:", controllerAccount);
+      useAccountStore.getState().setAccount(controllerAccount);
+      setAccountsInitialized(true);
     } else {
-      if (controllerAccount) {
-        console.log(
-          "Setting account from controllerAccount:",
-          controllerAccount
-        );
-        useAccountStore.getState().setAccount(controllerAccount);
-        setAccountsInitialized(true);
-      } else {
-        console.log(
-          "ControllerAccount is null in production or not connected."
-        );
-        setAccountsInitialized(true);
-      }
+      console.log("ControllerAccount is null in production or not connected.");
+      setAccountsInitialized(true);
     }
-  }, [isDev, controllerAccount, burnerAccount]);
+    // }
+  }, [controllerAccount, burnerAccount]);
 
   if (!accountsInitialized) {
     return <LoadingScreen />;
   }
 
   // Handle Loading Screen
-  if (isDev) {
-    if (!burnerAccount) {
-      return <LoadingScreen />;
-    }
-  } else {
-    if (isConnecting) {
-      return <LoadingScreen />;
-    }
-    if (!isConnected && !isConnecting && !controllerAccount) {
-      return (
-        <PreThemeLoadingPage>
-          <img width="60%" src="logos/logo.png" alt="logo" />
-          {!isConnected && (
-            <button style={{ color: "white" }} className="login-button" onClick={connectWallet}>
-              LOGIN
-            </button>
-          )}
-        </PreThemeLoadingPage>
-      );
-    }
-
-    if (!controllerAccount && isConnected) {
-      // Connected but controllerAccount is not set yet
-      return <LoadingScreen />;
-    }
+  // if (isDev) {
+  //   if (!burnerAccount) {
+  //     return <LoadingScreen />;
+  //   }
+  // } else {
+  if (isConnecting) {
+    return <LoadingScreen />;
   }
+  if (!isConnected && !isConnecting && !controllerAccount) {
+    return (
+      <PreThemeLoadingPage>
+        <img width="60%" src="logos/logo.png" alt="logo" />
+        {!isConnected && (
+          <Flex flexDirection={"column"} gap={16}>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={connectWallet}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexGrow: 0,
+                }}
+              >
+                <div>LOGIN </div>
+                <img
+                  src={Icons.CARTRIDGE}
+                  width={"24px"}
+                  style={{ marginLeft: "8px" }}
+                />
+              </div>
+            </button>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={() => {}}
+            >
+              PLAY AS GUEST
+            </button>
+          </Flex>
+        )}
+      </PreThemeLoadingPage>
+    );
+  }
+
+  if (!controllerAccount && isConnected) {
+    // Connected but controllerAccount is not set yet
+    return <LoadingScreen />;
+  }
+  // }
 
   // Once account is set, render the children
   return (

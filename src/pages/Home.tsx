@@ -99,12 +99,12 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (isDev) {
-                  navigate(enableMods ? "/mods" : "/login");
-                } else {
-                  setPlayButtonClicked(true);
-                  connect({ connector: connectors[0] });
-                }
+                // if (isDev) {
+                //   navigate(enableMods ? "/mods" : "/login");
+                // } else {
+                setPlayButtonClicked(true);
+                connect({ connector: connectors[0] });
+                // }
               }}
               minW={["150px", "300px"]}
             >
