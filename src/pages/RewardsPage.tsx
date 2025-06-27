@@ -4,17 +4,19 @@ import { RewardsDetail } from "../components/RewardsDetail";
 import { useGameContext } from "../providers/GameProvider";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 import { BackgroundDecoration } from "../components/Background";
+import { useCustomNavigate } from "../hooks/useCustomNavigate";
+import { GameStateEnum } from "../dojo/typescript/custom";
 
 export const RewardsPage = () => {
   const { roundRewards } = useGameContext();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   useEffect(() => {
     runConfettiAnimation();
   }, []);
 
   if (!roundRewards) {
-    navigate("/map");
+    navigate(GameStateEnum.Map);
   }
 
   return (

@@ -42,6 +42,7 @@ type GameStore = {
   setMulti: (multi: number) => void;
   resetMultiPoints: () => void;
   resetRage: () => void;
+  setState: (state: GameStateEnum) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -156,5 +157,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   resetRage: () => {
     set({ isRageRound: false, rageCards: [] });
+  },
+
+  setState: (state: GameStateEnum) => {
+    set({ state });
   },
 }));

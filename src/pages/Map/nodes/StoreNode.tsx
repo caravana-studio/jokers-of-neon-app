@@ -1,10 +1,10 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
@@ -36,7 +36,7 @@ const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
@@ -103,14 +103,14 @@ const StoreNode = ({ data }: any) => {
             });
 
           if (data.current && !stateInMap) {
-            navigate("/store");
+            navigate(GameStateEnum.Store);
           } else if (stateInMap && reachable && !isSmallScreen) {
-            console.log('gameId', gameId)
-            console.log('data.id', data.id)
+            console.log("gameId", gameId);
+            console.log("data.id", data.id);
             advanceNode(gameId, data.id).then((response) => {
-              console.log('response', response)
+              console.log("response", response);
               if (response) {
-                navigate("/store");
+                navigate(GameStateEnum.Store);
               }
             });
           }

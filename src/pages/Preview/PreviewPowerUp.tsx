@@ -1,11 +1,13 @@
 import { Button, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { StorePreviewPowerUpComponentMobile } from "../../components/StorePreviewPowerUpComponent.mobile.tsx";
 import { getPowerUpData } from "../../data/powerups.ts";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
@@ -13,7 +15,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewPowerUp = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -41,9 +43,7 @@ export const PreviewPowerUp = () => {
 
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
-    buyPowerUp(powerUp).then(() =>
-      navigate("/store", { state: { lastTabIndex: 2 } })
-    );
+    buyPowerUp(powerUp).then(() => navigate(GameStateEnum.Store));
   };
   const buyButton = isSmallScreen ? (
     <Button

@@ -5,9 +5,11 @@ import { useCurrentSpecialCards } from "../dojo/queries/useCurrentSpecialCards";
 import { useStore } from "../providers/StoreProvider";
 import { useGameStore } from "../state/useGameStore";
 import { Card } from "../types/Card";
+import { useCustomNavigate } from "./useCustomNavigate";
+import { GameStateEnum } from "../dojo/typescript/custom";
 
 export const useCardsSelection = () => {
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { specialSlots } = useGameStore();
   const maxSpecialCards = specialSlots ?? 0;
   const blisterPackResult = useBlisterPackResult();
@@ -44,7 +46,7 @@ export const useCardsSelection = () => {
   const confirmSelectCards = () => {
     selectCardsFromPack(cardsToKeep.map((c) => c.idx));
     setCards([]);
-    navigate("/store", { state: { lastTabIndex: 1 } });
+    navigate(GameStateEnum.Store);
   };
 
   return {

@@ -42,5 +42,5 @@ export const useRedirectByGameState = (
         navigate(finalPath, navigateOptions);
       }
     }
-  }, [lockRedirection, state, navigate, location.pathname]);
+  }, [lockRedirection, navigate, location.pathname]);
 };

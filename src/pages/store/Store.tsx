@@ -1,6 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
@@ -18,7 +16,6 @@ import {
 
 import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 

@@ -6,9 +6,11 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
 
 export const useNextLevelButton = () => {
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { t } = useTranslation(["store"]);
 
   const {
@@ -39,7 +41,7 @@ export const useNextLevelButton = () => {
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/map");
+        navigate(GameStateEnum.Map);
       } else {
         setLoading(false);
       }

@@ -1,16 +1,17 @@
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
 import { StorePreviewSlotComponentMobile } from "../../components/StorePreviewSlotComponent.mobile.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewSlot = () => {
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { specialSlotItem } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
@@ -31,7 +32,7 @@ export const PreviewSlot = () => {
 
   const handleBuyClick = async () => {
     await buySpecialSlot();
-    navigate(-1);
+    navigate(GameStateEnum.Store);
   };
 
   const buyButton = (

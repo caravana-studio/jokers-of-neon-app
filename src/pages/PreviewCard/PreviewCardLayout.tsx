@@ -22,6 +22,8 @@ import { Coins } from "../store/Coins.tsx";
 import { useTranslation } from "react-i18next";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -29,6 +31,7 @@ const { white, neonGreen } = theme.colors;
 const PreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   const { card, isPack, pack } = state || {};
 
@@ -82,7 +85,7 @@ const PreviewCardLayout = () => {
           // setLockRedirection(true);
         } else {
           buyCard(card);
-          navigate("/store");
+          customNavigate(GameStateEnum.Store);
         }
       }}
       isDisabled={

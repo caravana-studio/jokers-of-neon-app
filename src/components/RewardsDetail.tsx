@@ -1,6 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
@@ -78,7 +79,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     labels.push(t("rage", { cards: rage_card_defeated }));
   }
 
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { totalScore } = useGameStore();
 
   return (
@@ -86,7 +87,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       title={`${t("title", { round: roundNumber })}`}
       button={t("continue-btn")}
       onClick={() => {
-        navigate("/map");
+        navigate(GameStateEnum.Map);
       }}
     >
       <Heading color="lightViolet" size="s">

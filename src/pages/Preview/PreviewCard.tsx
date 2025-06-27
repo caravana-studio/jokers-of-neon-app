@@ -1,11 +1,13 @@
 import { Button, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { CardImage3D } from "../../components/CardImage3D.tsx";
 import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCardComponent.mobile.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { Duration } from "../../enums/duration.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
@@ -14,7 +16,7 @@ import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 
 const PreviewCard = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const { card } = state || {};
 
@@ -56,12 +58,10 @@ const PreviewCard = () => {
   const onBuyClick = () => {
     if (card.isSpecial) {
       buySpecialCardItem(card, duration === Duration.TEMPORAL).then(() =>
-        navigate("/store", { state: { lastTabIndex: 0 } })
+        navigate(GameStateEnum.Store)
       );
     } else {
-      buyCard(card).then(() =>
-        navigate("/store", { state: { lastTabIndex: 0 } })
-      );
+      buyCard(card).then(() => navigate(GameStateEnum.Store));
     }
   };
 

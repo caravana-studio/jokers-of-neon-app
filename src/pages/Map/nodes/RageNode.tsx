@@ -1,11 +1,11 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
@@ -19,7 +19,7 @@ const RageNode = ({ data }: any) => {
 
   const { advanceNode } = useShopActions();
   const { gameId } = useGameContext();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
@@ -67,11 +67,11 @@ const RageNode = ({ data }: any) => {
               nodeType: NodeType.RAGE,
             });
           if (data.current && !stateInMap) {
-            navigate("/demo");
+            navigate(GameStateEnum.Rage);
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
-                navigate("/demo");
+                navigate(GameStateEnum.Rage);
               }
             });
           }

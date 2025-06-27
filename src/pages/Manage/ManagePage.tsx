@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { GoBackButton } from "../../components/GoBackButton";
+import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
-import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { SellButton } from "./SellButton";
-import { GoBackButton } from "../../components/GoBackButton";
 
 export const ManagePage = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens");
 
   const { isSmallScreen } = useResponsiveValues();

@@ -16,6 +16,7 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
@@ -31,10 +32,9 @@ export const PreviewLootBox = () => {
   const { locked } = useStore();
   const { getLootBoxData } = useCardData();
 
-  const { cash } = useGameStore();
+  const { cash, setState } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
-  useRedirectByGameState();
 
   const notEnoughCash =
     !card.price ||
@@ -44,6 +44,7 @@ export const PreviewLootBox = () => {
     navigate("/open-loot-box", {
       state: { pack: pack },
     });
+    setState(GameStateEnum.Lootbox)
   };
   const buyButton = (
     <Button

@@ -5,13 +5,12 @@ import EmojiNode from "./nodes/EmojiNode";
 import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useShopActions } from "../../dojo/useShopActions";
-import { useGameContext } from "../../providers/GameProvider";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -37,7 +36,7 @@ export const Map = () => {
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
   const { state, id: gameId } = useGameStore();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
   useEffect(() => {
@@ -67,13 +66,13 @@ export const Map = () => {
         if (response) {
           switch (selectedNodeData?.nodeType) {
             case NodeType.RAGE:
-              navigate("/demo");
+              navigate(GameStateEnum.Rage);
               break;
             case NodeType.ROUND:
-              navigate("/demo");
+              navigate(GameStateEnum.Round);
               break;
             case NodeType.STORE:
-              navigate("/store");
+              navigate(GameStateEnum.Store);
               break;
             default:
               break;

@@ -18,6 +18,8 @@ import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -48,6 +50,7 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate()
   const { onShopSkip, gameId, maxSpecialCards } = useGameContext();
   const { specialSlots } = useGameStore();
   const slotsLen = specialSlots;
@@ -63,7 +66,7 @@ export const DynamicStorePage = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        navigate("/map");
+        customNavigate(GameStateEnum.Map);
       } else {
         setLoading(false);
       }
