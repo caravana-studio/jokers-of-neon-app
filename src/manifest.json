@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x5f37a6a8fe6c00cd471c57bbbffdd1cce1f7b9c8f72d17096849fda7827887b",
-      "class_hash": "0x4c107a87e63d450fcdc1c8de1ee284c8c3aa3dfcd95cabf34ddb2181d8dda99",
+      "address": "0x77b74e239a6b28a3968f1bbe0c2a51ed1ea8a262bc6c471207695d5de35446e",
+      "class_hash": "0x40d5e10c9164388b68087f2eef154ed31920d4715bdecaf9bd4dacbb3c1477d",
       "abi": [
         {
           "type": "impl",
@@ -1429,6 +1429,22 @@
                 {
                   "name": "played_modifiers_indexes",
                   "type": "core::array::Array::<core::integer::u32>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "change_modifier_card",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "modifier_index",
+                  "type": "core::integer::u32"
                 }
               ],
               "outputs": [],
@@ -1552,12 +1568,12 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-action_system",
-      "selector": "0x5ede18437ba7bb3012f8f4677cbda9f9d22666ff7f2e40f47f1726e3e8360a1",
-      "systems": ["play", "discard", "upgrade"]
+      "tag": "jokers_of_neon_core-action_system",
+      "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
+      "systems": ["play", "discard", "change_modifier_card", "upgrade"]
     },
     {
-      "address": "0x19429623b0014f82be3ebdbbe84f758e07091e59f5741a7ab322ff66375d1bd",
+      "address": "0x1b2bcc4c6fcdb7637df02ac264f27878b0d4d2c53d698bc066f556ac7593213",
       "class_hash": "0x6ad3b014f0f6cb8001a09d6bce70199ea6ebb9fd5b08f497690cc0b2e4908f5",
       "abi": [
         {
@@ -1955,13 +1971,13 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-calculate_hand_system",
-      "selector": "0x643aa63af01348db5dbccb61f58bf21c0b19927dc70c4e09a08c9d3168ef40b",
+      "tag": "jokers_of_neon_core-calculate_hand_system",
+      "selector": "0x5307c3761a682f72c51464d564aee350472ec731896ff3813ce61c5a9ba01b1",
       "systems": ["upgrade"]
     },
     {
-      "address": "0x6c3ebe25752e2b0a8163da8a4f3440c83493925c71274424695edbe5d0fdf",
-      "class_hash": "0x7923895581e6ef9b6cda3b4350d0726179d4cf7c15a54ba8fef093b6ded4621",
+      "address": "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6",
+      "class_hash": "0x4120b56ed661299e0669902f147c0dba78e878b6bb6c343945e7bb1fe717b34",
       "abi": [
         {
           "type": "impl",
@@ -2113,6 +2129,164 @@
           ]
         },
         {
+          "type": "enum",
+          "name": "jokers_of_neon_lib::models::status::game::game::GameState",
+          "variants": [
+            {
+              "name": "Round",
+              "type": "()"
+            },
+            {
+              "name": "Rage",
+              "type": "()"
+            },
+            {
+              "name": "Reward",
+              "type": "()"
+            },
+            {
+              "name": "Challenge",
+              "type": "()"
+            },
+            {
+              "name": "Map",
+              "type": "()"
+            },
+            {
+              "name": "Store",
+              "type": "()"
+            },
+            {
+              "name": "Lootbox",
+              "type": "()"
+            },
+            {
+              "name": "GameOver",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::game::game::Game",
+          "members": [
+            {
+              "name": "id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "mod_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "state",
+              "type": "jokers_of_neon_lib::models::status::game::game::GameState"
+            },
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "player_name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "player_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "current_node_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "hand_len",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "plays",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "discards",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "current_specials_len",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "special_slots",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cash",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "available_rerolls",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "seed",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::round::round::Round",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "current_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "target_score",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "remaining_plays",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "remaining_discards",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "rages",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::integer::u32, core::bool)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::integer::u32, core::bool)>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::game_system::IGameSystem",
           "items": [
@@ -2147,6 +2321,70 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_game_data",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(jokers_of_neon_lib::models::status::game::game::Game, jokers_of_neon_lib::models::status::round::round::Round)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_special_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_hand_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_deck_cards",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<(core::integer::u32, core::bool)>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -3015,8 +3253,8 @@
       "init_calldata": [
         "0x6677fe62ee39c7b07401f754138502bab7fac99d2d3c5d37df7d1c6fab10819"
       ],
-      "tag": "jon_core_sepolia-game_system",
-      "selector": "0x439025db13e366271f3361aad6accea9c4e066cfb71d62041c399a4091758d3",
+      "tag": "jokers_of_neon_core-game_system",
+      "selector": "0x102c03c5c4e784fdf2f7007866d5fe26033d7c371533dbaa7b1375dd616093d",
       "systems": [
         "dojo_init",
         "start_game",
@@ -3034,8 +3272,209 @@
       ]
     },
     {
-      "address": "0x693664c2564a7ac89c4290bf2e793fe684ac601d1535a1e7034d41f211b5acc",
-      "class_hash": "0x7e74092fb38912f9498c3f87b46670a73b2171fcd4f6be4ce0f5797052f8a84",
+      "address": "0x3a064c382ce3a9f2c6e5efeeb24045192d32eab4b3c508799a1b1295eb83a6d",
+      "class_hash": "0x79f2127cfb07641bd4ba8ddf09fa20a7ff3ff3a4a983d4d3b4f9643a1e8138f",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "gg_sync_system__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "gg_sync_system__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "GGSyncImpl",
+          "interface_name": "jokers_of_neon_core::systems::gg_sync_system::IGGSyncSystem"
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::gg_sync_system::IGGSyncSystem",
+          "items": [
+            {
+              "type": "function",
+              "name": "get_quests_completed",
+              "inputs": [
+                {
+                  "name": "player_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<core::felt252>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::gg_sync_system::gg_sync_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-gg_sync_system",
+      "selector": "0x563c73afe3167a1cf88d0cdc5c69a8d22fa0768571904df6ea91c0e90ce7dd5",
+      "systems": ["upgrade"]
+    },
+    {
+      "address": "0x8f4d4d91ad3f04b49633704f68a8c28ca826e906d82251d0177faecd741a17",
+      "class_hash": "0x86c7634a34408e69f88a59d0c78931e37664b536bbd1f76f76049b90643ee5",
       "abi": [
         {
           "type": "impl",
@@ -3504,13 +3943,13 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-map_system",
-      "selector": "0x6c01c81ee5484dce285a3eecad3393ad0bc3627150dd64d0c66068dbad290be",
+      "tag": "jokers_of_neon_core-map_system",
+      "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
       "systems": ["create_map_level", "advance_node", "upgrade"]
     },
     {
-      "address": "0x63784c9ac11aaba5f8ecbe0d411b9e0db55c0c56e6103752f821716b9b5479c",
-      "class_hash": "0x42ce0e39ffd9328dd263382423c1090e0a548e45b37e39b74a2a8a6c7a5a1e9",
+      "address": "0x314f9f7b522da766916ccadfe37eaf158810e321419992054c66a72b580574b",
+      "class_hash": "0x5607e480224372b740b6c92e2bf16d203fe4fe22cd0c10ad295580a8be34d03",
       "abi": [
         {
           "type": "impl",
@@ -3720,13 +4159,13 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-mod_manager_registrator",
-      "selector": "0x65f00d55c18d87f3761c3a5f8bf0b85d5bd3dd0c2e4b23f93d44dd10ac756d7",
+      "tag": "jokers_of_neon_core-mod_manager_registrator",
+      "selector": "0x35dc115221c595aae7133e2906beda16eeae471719d28d07fa516e50f33eebe",
       "systems": ["register_managers", "upgrade"]
     },
     {
-      "address": "0x3ce12efa5a38f374a074a6135cb5007954b58834c96461840fadd6873178cc2",
-      "class_hash": "0x15c10d69b53cbe67710943f1f9392283378281a1bb64f296ee37c099959a6ab",
+      "address": "0x137ccf31779d87b3773b4ddcacb992ab174f586d5810d8f97b06ca1a3fecf75",
+      "class_hash": "0x100c02c26ec376035ca23901f78b82d7a0b11543a6905abf011f993d72ab2c6",
       "abi": [
         {
           "type": "impl",
@@ -4056,13 +4495,13 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-mods_info_system",
-      "selector": "0x29a720dbb801c9cc8483f1932f6d12d2f495ccf4927d0740d269aa74658559f",
+      "tag": "jokers_of_neon_core-mods_info_system",
+      "selector": "0x49501e11d21a12c5803e098cfd1a2eed9799540d9e069dac3a244e8e6df0de",
       "systems": ["upgrade"]
     },
     {
-      "address": "0x62a3ce6207211d4b3cc9988ea23946b26cb1b0d91409b403112e98e4b600a51",
-      "class_hash": "0x4596b55930f27b15f1162f902ad4fd5bb08f05acb6b7a30b4c4e4ea7e75ae4",
+      "address": "0x5da4ed49ff6add3037d8a7ae1feb3f3539a6a5d2c59148be418e987c90b66a7",
+      "class_hash": "0x276a0eb56072ad26c9559e600d43ba5c57689e528f7d099dca0c3904566ba62",
       "abi": [
         {
           "type": "impl",
@@ -4337,13 +4776,13 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-poker_hand_system",
-      "selector": "0x3336d49b664298a82575c5f51eb23207bd28a44e77a8918641cd2c04e3ab479",
+      "tag": "jokers_of_neon_core-poker_hand_system",
+      "selector": "0x123bcd8c0fe47fdb578a63f6f56f43a8e917c7a2df94b19d59da961a41354c3",
       "systems": ["upgrade"]
     },
     {
-      "address": "0x681fc5f0ef73157e4b559f9274f247fedd6c9081b6cb09fa2115967789a40e",
-      "class_hash": "0x7e1a01bc4484f12a21c634fe970b458a591ba949f35a43ff0b14a36c2e46503",
+      "address": "0x2acbb005e85d5abbe6cdb8aea92dd3e26983f272ea38537e1cc9219012e0f32",
+      "class_hash": "0x7bda535b48adf1f6425667e5632e738a62b4c6b8fae6cdf71187c3e051f5a42",
       "abi": [
         {
           "type": "impl",
@@ -5076,8 +5515,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_sepolia-shop_system",
-      "selector": "0x6babc5ebf5d36bfc5377b98fccad56b8837ea3e8b01c4cf77416e1a90e6df42",
+      "tag": "jokers_of_neon_core-shop_system",
+      "selector": "0x566e6f8c02e3fb42edc0ebbd5ec94a99e5ed8f43e5f614c342316c5b74e3770",
       "systems": [
         "skip_shop",
         "buy_card",
@@ -5100,346 +5539,346 @@
     {
       "members": [],
       "class_hash": "0x60fb5455fa451e5f87578f33d54d3aca12a9c1047d7fa152a31c8bffbad533b",
-      "tag": "jon_core_sepolia-AchievementsTracker",
-      "selector": "0x6970b78015c3b788c407b520ffc677d3c0ad31990e3826508c802c137a0c2ac"
+      "tag": "jokers_of_neon_core-AchievementsTracker",
+      "selector": "0x1126c16327cc9549ca0ed49bc7dfadda5a1a3c12d3fc2529b0e690b91dcfcd5"
     },
     {
       "members": [],
       "class_hash": "0x434ff127b99b5390bbc5827b6254b1022bfb5b5aab69ae4c0387551cc04eba",
-      "tag": "jon_core_sepolia-BlisterPackItem",
-      "selector": "0x249463018268df6396e3253f0bb30da09e188c8b24a682cd0405a4004bd25f"
+      "tag": "jokers_of_neon_core-BlisterPackItem",
+      "selector": "0xd4cb1577d65a00a09ff54b2cceaa026ca30020a3719cfe51a24eeec16bc0df"
     },
     {
       "members": [],
       "class_hash": "0x258ba244527edfcfc457ec8a52b892dcdcbd2515bb3fc50c90601248ffaeda5",
-      "tag": "jon_core_sepolia-BlisterPackResult",
-      "selector": "0x1c473fb91ee4b2d34ff0b7341a15e881fecda21b7b180266b2d448458393cd"
+      "tag": "jokers_of_neon_core-BlisterPackResult",
+      "selector": "0x6ada0ccff04f86a10688d1f95236b41c81c27fe471af845f8ea3d77e855f349"
     },
     {
       "members": [],
       "class_hash": "0x5d23a7f5ec8d28f39b6fec41c85313fadda28edb431022ca9f83f41dfb932c8",
-      "tag": "jon_core_sepolia-BurnItem",
-      "selector": "0x68d666605e244ffdd4e72f86d5371b4e15e0070bf14feaa6381a0605b70c7dd"
+      "tag": "jokers_of_neon_core-BurnItem",
+      "selector": "0x32a47a62b665552278df4b4f0815f4c896480f9c2b3e36fcb820666385e26"
     },
     {
       "members": [],
       "class_hash": "0x3f3a92ed4de90625454f71a9ab6033f06f526f699c051d96a576d82632333c6",
-      "tag": "jon_core_sepolia-CardItem",
-      "selector": "0x4833ae9460ef7b79225c8dd59efba06120950fb9fe3216252311f89b757d220"
+      "tag": "jokers_of_neon_core-CardItem",
+      "selector": "0x393deeb6cf29a0990d94e174f2f673d979f1fc60e516add1e9e27405dec9f7d"
     },
     {
       "members": [],
       "class_hash": "0x72a3ec2b2205e85ae979b4e1ae9f55f2b69b64630d6a2be500d5c346ec6d84a",
-      "tag": "jon_core_sepolia-CurrentHand",
-      "selector": "0x26c8f8a02f40e616e189c8d3edd120fa0216f878dfb73f9c4ca920107376df8"
+      "tag": "jokers_of_neon_core-CurrentHand",
+      "selector": "0x59c81aefa73878b98ec052c79f971d12fc4576e40e10fbe1157cd451b523bb9"
     },
     {
       "members": [],
       "class_hash": "0x716b3416a6831c4a100f24aad0b432f566765c88790753d093c38cfa997eebb",
-      "tag": "jon_core_sepolia-CurrentSpecialCards",
-      "selector": "0x5ca094402cee41f13fb9fd5bc28fe859863693c341200bc9b66651990c0460c"
+      "tag": "jokers_of_neon_core-CurrentSpecialCards",
+      "selector": "0x35678cb58474d5ff5990c93776654873a59fc016ebcebc3298a72536efffe26"
     },
     {
       "members": [],
       "class_hash": "0x1940b61023f07697d7100bda9799bb5f9d59db7a99c2a7f3c33e5706f7be92c",
-      "tag": "jon_core_sepolia-DeckCard",
-      "selector": "0x7bd6f3a27cf3770179ac63f47d4b64799a5c69ea0e263bc5c553f2cab1e91b6"
+      "tag": "jokers_of_neon_core-DeckCard",
+      "selector": "0x74f6c6197d0f960ad97ee174d7f977adce2895d38b5e333d5847da9fb5b718e"
     },
     {
       "members": [],
       "class_hash": "0x1ae0179e7f909e75ddff13698f67d7e1642c258ef68316877c4011a1bafabb6",
-      "tag": "jon_core_sepolia-Game",
-      "selector": "0x60df98455045a888f80a16b6be10ba837224b0f774d81cb41049df4915455f8"
+      "tag": "jokers_of_neon_core-Game",
+      "selector": "0x471153aaeb9b649e2e3a7709bcbe22e2f1c574e092379a6c5938fefe4f1f305"
     },
     {
       "members": [],
       "class_hash": "0x4c9aa5cf3f03bd208fcfc809bbefd59074e319870fd54e699df593d2df01b4d",
-      "tag": "jon_core_sepolia-GameCounter",
-      "selector": "0x3e44c3fc461788f2858c1a24f2c83346256c113ca07d2c5ffda0973cda95efd"
+      "tag": "jokers_of_neon_core-GameCounter",
+      "selector": "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac"
     },
     {
       "members": [],
       "class_hash": "0x3947a007cb00ee3e6cc0450b269d0c15dbf9e9482517888fd27794387dee7fb",
-      "tag": "jon_core_sepolia-GameDeck",
-      "selector": "0x2437c213ae1db228bae86205dfe78e40f0d707fd8364f7e13a02a66b5c3bb47"
+      "tag": "jokers_of_neon_core-GameDeck",
+      "selector": "0x2c1b73ae8f28acd04972288fd7fef20b6685b2be7a5b2b548c49b5a6a43df83"
     },
     {
       "members": [],
       "class_hash": "0x2184a8d33905eed66c3a80bd753a579aadd0b8dd0652f9f513dc7f1949f53c4",
-      "tag": "jon_core_sepolia-GameMetadata",
-      "selector": "0x2a77bbda73c1a2674a7e6230747e5fabe21148266a1fdcc9c9ee4684b5db4de"
+      "tag": "jokers_of_neon_core-GameMetadata",
+      "selector": "0x58e710954210ad8f1e5d03efa29b89e64e5183d8c1d1c8e65d527047956b4f3"
     },
     {
       "members": [],
       "class_hash": "0x61a4e41eee914461030e8be3a38f35012bb2e7d01f8364433a2d4a089cb998f",
-      "tag": "jon_core_sepolia-GamePowerUp",
-      "selector": "0x6fa4fc2a2a8356a2e133ba37aa589b6c85fca98d3fcace028931fea22d1f046"
+      "tag": "jokers_of_neon_core-GamePowerUp",
+      "selector": "0x1fd2d30f1e5ab1dfc1b982bc9c6b9de97e6c39f846abdf833fad756d1692949"
     },
     {
       "members": [],
       "class_hash": "0x62e5ffeb40aa84c1a6f9f0865305bd3d32df3880ab244952b1fdd3b13280ef5",
-      "tag": "jon_core_sepolia-GameTracker",
-      "selector": "0x4b71db8f6d5cde442bdb12dcfe31d4bbc6d8f65638155163404fcddbb5ae06c"
+      "tag": "jokers_of_neon_core-GameTracker",
+      "selector": "0x79881852a68773df960ad77f943df621daa2dd5b5d6e7ed6674d2218adf3d74"
     },
     {
       "members": [],
       "class_hash": "0x7f8bf17351d6c451c244d16d75c8b8d2f1c879bddcc46deccd2918b730464dd",
-      "tag": "jon_core_sepolia-LevelMap",
-      "selector": "0x4dc77ef2b529b2a52ac4b804455025ad893a8c93307b25ee2ae7383cc7882d1"
+      "tag": "jokers_of_neon_core-LevelMap",
+      "selector": "0x53fa22025b6c88c7aa8386b1f8d044c0ef54fc319fb748b518eada4b4b49016"
     },
     {
       "members": [],
       "class_hash": "0x19554fa0958305a8760bf8b4825847fe0dfa1d57df16d5944353307989366e0",
-      "tag": "jon_core_sepolia-ModConfig",
-      "selector": "0x4cde4aa78cfac4302259d8f3aa0b7b2c83b2656b3cbcc0ad0d5ba4e292d1f4c"
+      "tag": "jokers_of_neon_core-ModConfig",
+      "selector": "0x21afac236d4cc991cdb932d942d61f396d50d8cbf8d2b5dd8c6a3929321d40d"
     },
     {
       "members": [],
       "class_hash": "0x39ea00595eff45ab4ca51e970c27fef26f968c0ce2c1e88935e7f375c213f27",
-      "tag": "jon_core_sepolia-ModManagerRegistrator",
-      "selector": "0x480ae71dc0a71af3f94c0b949e80c27bacdc3c37cc6df2037f2116f8c4b4273"
+      "tag": "jokers_of_neon_core-ModManagerRegistrator",
+      "selector": "0x31811c7e34ff975352a7f672a94553d0d4f5a483abfbb3e0ce7fec64fb6d574"
     },
     {
       "members": [],
       "class_hash": "0x646bdc40e8ebb9f72dbcb8c1d5560b60a5c82130ee80d2d005ba9d5a840e6a4",
-      "tag": "jon_core_sepolia-ModTracker",
-      "selector": "0x15f5013033eadcf76eb4b933077d28dcaaee1018124068014e8bf26c1c4cebe"
+      "tag": "jokers_of_neon_core-ModTracker",
+      "selector": "0x742369ffdbc5634bfce0a000def0dfc00eb4c0da119e30cb6ec01aa8587e2fa"
     },
     {
       "members": [],
       "class_hash": "0x651e329715ec974727137956f7a6edd8dfdee9f722cfd037da23950047d14e4",
-      "tag": "jon_core_sepolia-Node",
-      "selector": "0x5cdae542f3837efcc36c51177953df039a6ea20d323a67c167a38a26e06ee95"
+      "tag": "jokers_of_neon_core-Node",
+      "selector": "0x7172de7f6c370d7590c97f7237f7c066deee99bf3ebf5cc51d0d25d51a88968"
     },
     {
       "members": [],
       "class_hash": "0x579ec96a839d33099a05a2334ca30824d1c5b8586888acabab15866771708b9",
-      "tag": "jon_core_sepolia-NodeChilds",
-      "selector": "0x71f9a78284d0d481142ddf3275495739470cdb85992cb2455df6d9441535c61"
+      "tag": "jokers_of_neon_core-NodeChilds",
+      "selector": "0x6a84bf9d3f9b3d37cac542f8aa47bca9020f08c4bddb88f18da7bd828722e8b"
     },
     {
       "members": [],
       "class_hash": "0x5953d4563297c0b7a2dfb6f6f76470ba31efceb024909e05fab7147012d7855",
-      "tag": "jon_core_sepolia-PlayerLevelPokerHand",
-      "selector": "0x22318b0cf3f7d4b623682b9aee6d3c71c6a8da8cf9f10d2125fb7c79a68207"
+      "tag": "jokers_of_neon_core-PlayerLevelPokerHand",
+      "selector": "0x2a50fcb041e683428ffafceb4a9086c7bbd7308aab00f7271539d22fa572137"
     },
     {
       "members": [],
       "class_hash": "0x4c886bba62aa8e5fabb36fb32cb2b87850faf2853c406ecc3aa7a2016212515",
-      "tag": "jon_core_sepolia-PokerHandItem",
-      "selector": "0x7bab7e49248441dd3b11f2f5ad22dc3b2f8682a0ba210858d082aa32ee219e5"
+      "tag": "jokers_of_neon_core-PokerHandItem",
+      "selector": "0x4bdccd8cf4b5600728b179de510c434c506189a7c10700646b75b319f815080"
     },
     {
       "members": [],
       "class_hash": "0x47743ee33de81047a6b82a10a553185b7970ad501fd9a59c5d091ba5f8bda8e",
-      "tag": "jon_core_sepolia-PokerHandTracker",
-      "selector": "0x26b15110cc2caeb5924d085f50d5af3cfca15083431cc42303880ba2e5af21c"
+      "tag": "jokers_of_neon_core-PokerHandTracker",
+      "selector": "0x1b7dd37b0c5527db904bbf23c7293010bba00a2752174f888210ed07910a3a4"
     },
     {
       "members": [],
       "class_hash": "0x481e2b5188ce65b4accba4ad491b7cf14561a1e508bc5fb4f22980cd68974fe",
-      "tag": "jon_core_sepolia-PowerUpItem",
-      "selector": "0x17f200231bfa1dfd3d32074008dc9057f2a363dd48b3aa600be85a45e981aa"
+      "tag": "jokers_of_neon_core-PowerUpItem",
+      "selector": "0x308e2250542d99be4c7b27d447d43cebefb8b631dc885d04e49da211fb1ad93"
     },
     {
       "members": [],
       "class_hash": "0x64acdfb412b08e799192351b71773967f6095bf24786d02520577ecfe28ad0e",
-      "tag": "jon_core_sepolia-PurchaseTracker",
-      "selector": "0xbfb6ec9fbf73ec4cccbc82ac093efd5aa6df317ddb1bae88a5328a49cdb22b"
+      "tag": "jokers_of_neon_core-PurchaseTracker",
+      "selector": "0x2c1b2a1c84a968e8ce35c0a24216833d33c0ed5e1306b42d78e35b4d61e0bd1"
     },
     {
       "members": [],
       "class_hash": "0x4b3805d86197e250b3ec203a3bb013da7f22d2f4feb7228c3057c27589f9dd8",
-      "tag": "jon_core_sepolia-RageData",
-      "selector": "0x5e4a6801d9627d2e9a5552b941219f6d481881afaa8f4613e5ba80a8d9b662"
+      "tag": "jokers_of_neon_core-RageData",
+      "selector": "0x52e8137cf57d4b31a60ba6c88e9682d17cd11ebb62aa1fced2a79af13dca77c"
     },
     {
       "members": [],
       "class_hash": "0x76375fd883220419e393659b5b41146b42a3cc322cd55b3bb6b43d3cf4ba804",
-      "tag": "jon_core_sepolia-RageRound",
-      "selector": "0x6c3f3d7b686d09740bcf94221c71d929a6d30fdcc5f1a1302ff579d1e5769f4"
+      "tag": "jokers_of_neon_core-RageRound",
+      "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
     },
     {
       "members": [],
       "class_hash": "0x28bcfc7f5e84c91f904ed17737414a9e8ee0836db219a1a18652dca89574cc1",
-      "tag": "jon_core_sepolia-Random",
-      "selector": "0x5c00a2a479d151f289cd4293518a3eb97897fd0ea6b9417282186a60cfb430e"
+      "tag": "jokers_of_neon_core-Random",
+      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],
       "class_hash": "0x29ce3a4dd4e187041079f397b8db5d8e744763051803a5ae8b1cf415788e287",
-      "tag": "jon_core_sepolia-Round",
-      "selector": "0x3da2a0dff3d6d5f571f647d577e02509b1979e9d7d96d41a837c146601116de"
+      "tag": "jokers_of_neon_core-Round",
+      "selector": "0x1304ad1ae17e8b0f85d8510d686cf5dbea793768859012000ab2cbd7552405e"
     },
     {
       "members": [],
       "class_hash": "0x7538cc093e191e767f1caf8ea3f1c4818e319db41d8f760e48753cb2e420156",
-      "tag": "jon_core_sepolia-Score",
-      "selector": "0x592b3dd2e30434978288766216a7ed90e2c605fb27052b0ee40c8ff58fb5951"
+      "tag": "jokers_of_neon_core-Score",
+      "selector": "0x3536b119404f02a98df720d4149509478a4398c388dfdba609b90c0c1ec81c0"
     },
     {
       "members": [],
       "class_hash": "0x1209baf4f84faefa02c38ae721ddc691755ff4ea5993861fa22d822c913ab5b",
-      "tag": "jon_core_sepolia-Settings",
-      "selector": "0xf4253c7efc46013f26c72851742d241c279dc7cf0fec0081c92957dc1bc5db"
+      "tag": "jokers_of_neon_core-Settings",
+      "selector": "0xf61253af50d739a3cab4db17572e7644de23cd7874b50eea5faa3583dfaae7"
     },
     {
       "members": [],
       "class_hash": "0x4e0c7a60762ca47580e47d2d2dcb27dd5ad33262075cb9b126d670e97c67837",
-      "tag": "jon_core_sepolia-SettingsCounter",
-      "selector": "0x5a4ada3390eaf413937ef53e23bd11fcc9210930e17b0a61d6533a5853762d8"
+      "tag": "jokers_of_neon_core-SettingsCounter",
+      "selector": "0x44af94546ddad37d15ef1ae9e39709641dfbfbdaa1bb1d7f0d18d79bcefe41f"
     },
     {
       "members": [],
       "class_hash": "0x5a1e9671225dd42b4085d3fb27a7543ee87f0cb687514002e7b4d9fa77c78a1",
-      "tag": "jon_core_sepolia-SettingsDetails",
-      "selector": "0x7fc1bfc1c9cd2a83255f7ffa83166801ce967d2cbef21347a31a7cc65bbfd88"
+      "tag": "jokers_of_neon_core-SettingsDetails",
+      "selector": "0x9c9f202feab79207692d97d3ea4802b871140b1243946be1532e2f99309311"
     },
     {
       "members": [],
       "class_hash": "0x67a5de88b0ffef00f8116ac6a325b272437c5a686bf3730ef334a6950d4535d",
-      "tag": "jon_core_sepolia-SlotSpecialCardsItem",
-      "selector": "0x55452aba092c73f55f53f59b16dce208f898b9b3f6941ae4f208d10124a22d5"
+      "tag": "jokers_of_neon_core-SlotSpecialCardsItem",
+      "selector": "0x53e54eda0d708016b4afcef37fb3cab30f906c72811206bac13f3fba44272da"
     },
     {
       "members": [],
       "class_hash": "0x5ace805289568f70fe2edeca888d0987328bc242406a7411c7919e8aae00433",
-      "tag": "jon_core_sepolia-SpecialCardItem",
-      "selector": "0x51b24971c1d5521cbf668ccb82de811d2de77ea1a20001237d714b86a5ec02e"
+      "tag": "jokers_of_neon_core-SpecialCardItem",
+      "selector": "0x2e73669fae30dd461e660b72505362249845a358a473242d16f580eba6a9571"
     },
     {
       "members": [],
       "class_hash": "0x33a2aa09c6398602b7c4d6a248dfaa0d50fed88c075511c877674574a229ffa",
-      "tag": "jon_core_sepolia-SpecialData",
-      "selector": "0x248ccea2fcb9c3d50fb25cf1bd82d24460fa6f2d25cca4d28c12cdfe9895b09"
+      "tag": "jokers_of_neon_core-SpecialData",
+      "selector": "0x883c5361a9cb8a078a21b56fd5ec503405cf9a1eb1a414ed2398f25060cfba"
     },
     {
       "members": [],
       "class_hash": "0x214e62683020649ae9a32a12fccf2822102c9e7e559cc5588deebd4646682bb",
-      "tag": "jon_core_sepolia-StageTracker",
-      "selector": "0x2f669e32985635d4e4034c03ddba680c74c2091f36bc9a887874518742bc141"
+      "tag": "jokers_of_neon_core-StageTracker",
+      "selector": "0x389c47e25bc27e8d7d18c91304689e4858742e056263b2451cdc5e8f817522a"
     },
     {
       "members": [],
       "class_hash": "0x336f9d3953c032d579de6675aa25e2903ea50708399ca5ec3312ee3480e7cca",
-      "tag": "jon_core_sepolia-TokenMetadata",
-      "selector": "0x55f568857f680d83b0f9a0ed265b0ff4ad2f1845adf552fbdec7b75cd6f7e5c"
+      "tag": "jokers_of_neon_core-TokenMetadata",
+      "selector": "0x300539e1179459930e9bec66b2a57c0ed7e3f383c9c9b65199a95b1d7f88f96"
     },
     {
       "members": [],
       "class_hash": "0x4d5056448296e4ed8435c9d0288c05bfd77f13e250c27e655e216278c680a8c",
-      "tag": "jon_core_sepolia-TraveledNodes",
-      "selector": "0x59a943f07ab63a8c8537b79bb9edfd3a288fa505406c4dee5598c28b210e052"
+      "tag": "jokers_of_neon_core-TraveledNodes",
+      "selector": "0x636d25a8f53c22d7ac1a099a1a1088f77656a7fa265a397a87f66f6d351c957"
     }
   ],
   "events": [
     {
       "members": [],
       "class_hash": "0x40671e60384c35a909b698541f6f3e28d619c51242344bc08bbad2d49d8de3b",
-      "tag": "jon_core_sepolia-AchievementCompletedEvent",
-      "selector": "0x24d8651b22e7075957918f263f4422b4a6895662af5646026ba2e9199a5b4c2"
+      "tag": "jokers_of_neon_core-AchievementCompletedEvent",
+      "selector": "0x2f32278c48ba859150a441098c61524f72ebb8ee80dbb52ff57725b3b2f7822"
     },
     {
       "members": [],
       "class_hash": "0x123fd49192ae48b9ad47e0c6c97d3c4e32e6993544624e16dbc4906849d5281",
-      "tag": "jon_core_sepolia-CardActivateEvent",
-      "selector": "0x48eeb5b84c2a152cbb9b36be706a10138551f8a310d24fc785b2b265aa02751"
+      "tag": "jokers_of_neon_core-CardActivateEvent",
+      "selector": "0x3762d25725f2e231d84f75bb926426fc7d531512a21559f357c184f9487c5b4"
     },
     {
       "members": [],
       "class_hash": "0x64a94f56f1127267cca99bc7a4ee296f4e4005b66e7effe6c1af2a05fb8e145",
-      "tag": "jon_core_sepolia-CardPlayEvent",
-      "selector": "0x41c21d89e50f1342038608a5bcbfa1378f240015c7b8fe93aea84cb4633604a"
+      "tag": "jokers_of_neon_core-CardPlayEvent",
+      "selector": "0x7c0be4b31d3ebfb1687ab83341e208e0f176a0d6d45d317699a8b77e5753cdf"
     },
     {
       "members": [],
       "class_hash": "0x7bc84caa700b980abfc316bac0925494e9cfde3717269ba7e70d742931b8ac4",
-      "tag": "jon_core_sepolia-CardScoreEvent",
-      "selector": "0x929e3d9201a0817cadc94284995f357c3c4213eb4568984b4916d547805b66"
+      "tag": "jokers_of_neon_core-CardScoreEvent",
+      "selector": "0x4b21cf1c12ff74439ef8f5df2a87e4ed4c3b8ffc693d077dd8ce2069d94a9d6"
     },
     {
       "members": [],
       "class_hash": "0x69776432e75584250ebf04d920acba0e031f9485d8637e7d23d8d07f426f05b",
-      "tag": "jon_core_sepolia-CreateGameEvent",
-      "selector": "0x63dc36ca59583487700465c98c792c1ece89c317e5e93f731bedabf6b59f8ad"
+      "tag": "jokers_of_neon_core-CreateGameEvent",
+      "selector": "0x77d482c020a1da5919739f7c6f654fc5ff9cec3b1ba15ceb3bb79e5fc64022"
     },
     {
       "members": [],
       "class_hash": "0x4bc03c2872147988feb87930555c775443f0ee27574a07379435eacf6e70fa8",
-      "tag": "jon_core_sepolia-CurrentHandEvent",
-      "selector": "0x15c4ba0ca6c8b490a7101c1e39b39254bd878189b4411c69fa686f3ca64d54d"
+      "tag": "jokers_of_neon_core-CurrentHandEvent",
+      "selector": "0x1aefec97e2ad20e102d9bd5b9f76ad665e0896c612ce856a9f157ffeb3e6b1f"
     },
     {
       "members": [],
       "class_hash": "0x8dc39e7e0106dd193612909d0252fb887b0ae44b814c7c23e2a431a500e4e2",
-      "tag": "jon_core_sepolia-DetailEarnedEvent",
-      "selector": "0x6fd5b2c313ec9aafcdbf11b2220f677034f16cc40b1e95bd0295ff758fb1c65"
+      "tag": "jokers_of_neon_core-DetailEarnedEvent",
+      "selector": "0x19b2d7a7521745b98fb7f302823ffdf3bf8006634aa73105f7a51b8da5f8de7"
     },
     {
       "members": [],
       "class_hash": "0x6397d180e03e91d3173c5ea2ce337d7d29663661bf060ad80e0384d27bb185a",
-      "tag": "jon_core_sepolia-GameEvent",
-      "selector": "0x13ae897870271a8c66708d91adc95cc1953d61222adf06bacf2aeb2d8ce200b"
+      "tag": "jokers_of_neon_core-GameEvent",
+      "selector": "0x5d20b0691dde4d2b3ffbf0e1115fed0be5b8027884883f2740c6cb4cd362848"
     },
     {
       "members": [],
       "class_hash": "0x7019bfcb2fb5bed405200b011015d49d7141c6ad26fc016f7170fbc21ea58c7",
-      "tag": "jon_core_sepolia-GamePowerUpEvent",
-      "selector": "0x2f448c089fe52898d9694300922c3345d22667f852adb826ea27dbeceef57"
+      "tag": "jokers_of_neon_core-GamePowerUpEvent",
+      "selector": "0x3a8d4d88197b260ebdfbbbb3de2b8ab5e900209bcd208195fb85b9f8ebac613"
     },
     {
       "members": [],
       "class_hash": "0x3602bdb66c9034c37d76b0010e3db7d199a769756edef3f88a561e3d27f338a",
-      "tag": "jon_core_sepolia-ModifierCardSuitEvent",
-      "selector": "0x6f3780ebd598f87727afc1fbd6fcc00493f497883361b7e073e359492493abc"
+      "tag": "jokers_of_neon_core-ModifierCardSuitEvent",
+      "selector": "0x381a432f0d2cea123727d94fe0fe65effb10f30ac10d318680f8ef6798f8511"
     },
     {
       "members": [],
       "class_hash": "0x563e2ec6bc561435a1dc7c017edd07acc3bbef0965b8cb378423f0b0f8bdd70",
-      "tag": "jon_core_sepolia-ModifierNeonCardEvent",
-      "selector": "0x480f7b4cad8471f85e6b81368aa5c236bf50593da5eb8507bcca4d0ae3f33bb"
+      "tag": "jokers_of_neon_core-ModifierNeonCardEvent",
+      "selector": "0x346856b0f2407ee20028b5643c5e82fb915afc7a0203baecd49a7be26d1282e"
     },
     {
       "members": [],
       "class_hash": "0x37a357c479b995a27950d9e09bc5385c20c6f01a2149ed57784b9ce81cd1c80",
-      "tag": "jon_core_sepolia-ModifierWildCardEvent",
-      "selector": "0x3fe1429cec9b8e6181842cbe6949211f51e7eb498cef4bb7e6f97cf3cbe334d"
+      "tag": "jokers_of_neon_core-ModifierWildCardEvent",
+      "selector": "0x60a40f7c5f1166c5feed3e803e5a9a4e797c4d578e49c3a678b99db593736e0"
     },
     {
       "members": [],
       "class_hash": "0x26d37ddcf372c5e317fde1083567ed816089d4d0295abe969f329e30e3682be",
-      "tag": "jon_core_sepolia-PlayGameOverEvent",
-      "selector": "0x7e9830425bd69339f30cb4ac3c05f33edb6e405e1227c30835a18459a80829"
+      "tag": "jokers_of_neon_core-PlayGameOverEvent",
+      "selector": "0x4216912970d6c7b879503e7b69c1dc578d3b86e35bb3edcdd9e477a5ac9e702"
     },
     {
       "members": [],
-      "class_hash": "0x759fbe1365fe0c6087742b1298abdd2b0b9e23c206759087ba87b856d3ac5c3",
-      "tag": "jon_core_sepolia-PlayWinGameEvent",
-      "selector": "0x73c5ae6871aff2bc25805f12f0f16146a76890a5ebf786cb05a2a14f627c344"
+      "class_hash": "0x2837b8a702ab398ea6b442f432d801d99542761fece14356b1e8717a034336a",
+      "tag": "jokers_of_neon_core-PlayWinGameEvent",
+      "selector": "0xd119c9da5a2d4aa2e71dad4aa1c378e5a8ccf7bb8c3396adf285c6c26c6b8"
     },
     {
       "members": [],
       "class_hash": "0x598794690e426721220a1274b5fdb5822729f74f267f0f6368402eb050f8b65",
-      "tag": "jon_core_sepolia-PowerUpEvent",
-      "selector": "0x3df0e728a799b3a9aa9ad882e49c3ab987fa547d56c9c6c91592cfa3c3830c4"
+      "tag": "jokers_of_neon_core-PowerUpEvent",
+      "selector": "0x3551c718911060f276085413594f2122e26a67599c3c225a16bb9de3b9fabf5"
     },
     {
       "members": [],
       "class_hash": "0x75ce27b5ca2055df938343ea8f555e897cd074f19e34ae8f1a8d5910cb14d17",
-      "tag": "jon_core_sepolia-RoundScoreEvent",
-      "selector": "0x1920aaff445d666660fb09d21cdabf0062a6b20052f9ad57df5014ddbe99c40"
+      "tag": "jokers_of_neon_core-RoundScoreEvent",
+      "selector": "0x58ddb180a3356ec8a3ba8b8d3a27ea4542efacfa37647bbea9e097f9e4b8672"
     },
     {
       "members": [],
       "class_hash": "0x6fede2561a93b4808a6a00e19457a94d616e7ee53fc952f75af58da9bae45f5",
-      "tag": "jon_core_sepolia-TrophyCreation",
-      "selector": "0x440da41ad75df0b6f99db332c6f805ed99eb07a7381ea9fabffc1a9f66e70f0"
+      "tag": "jokers_of_neon_core-TrophyCreation",
+      "selector": "0x755abea9e75fbf35fbb4f1be02da784239e268a1a2358c9de58c7f8b06b93ce"
     },
     {
       "members": [],
       "class_hash": "0x3d60f68ff66df399a5efc60c6aacda487ced739897ddcea54270b7c147206d",
-      "tag": "jon_core_sepolia-TrophyProgression",
-      "selector": "0x5ddac143e27a6b00d7b05fda58820e3fd32eeed482a7d813dae0c39201dab46"
+      "tag": "jokers_of_neon_core-TrophyProgression",
+      "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
   ],
   "external_contracts": []
