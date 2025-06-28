@@ -35,6 +35,7 @@ const getSpecialCards = (specialIds: BigInt[]) => {
       id: card_id?.toString(),
       idx: index ?? 0,
       img: `${card_id}.png`,
+      // TODO: add temporary and selling price
       //temporary: specialCard?.is_temporary,
       //remaining: specialCard?.remaining,
       //selling_price: getSellingPrice(specialCard),

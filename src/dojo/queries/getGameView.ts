@@ -94,7 +94,6 @@ export const getGameView = async (
     let tx_result: any = await client.game_system.getGameData(gameId);
 
     console.log("game data", tx_result);
-    console.log("got state", getState(tx_result["0"]?.state?.variant));
     return {
       game: {
         id: gameId,
