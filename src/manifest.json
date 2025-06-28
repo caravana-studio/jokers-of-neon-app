@@ -1329,7 +1329,7 @@
   "contracts": [
     {
       "address": "0x77b74e239a6b28a3968f1bbe0c2a51ed1ea8a262bc6c471207695d5de35446e",
-      "class_hash": "0x40d5e10c9164388b68087f2eef154ed31920d4715bdecaf9bd4dacbb3c1477d",
+      "class_hash": "0x6e6c15fd5c93cb778de3d0ae63526254f4f7e613f72585de9e04ec558dfedce",
       "abi": [
         {
           "type": "impl",
@@ -1977,7 +1977,7 @@
     },
     {
       "address": "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6",
-      "class_hash": "0x4120b56ed661299e0669902f147c0dba78e878b6bb6c343945e7bb1fe717b34",
+      "class_hash": "0x55bce5b48743db565c503d548113498f37e06950f9164858fd373c3c28fc538",
       "abi": [
         {
           "type": "impl",
@@ -2305,6 +2305,26 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::integer::u128>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transfer_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "new_owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "new_player_name",
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3258,6 +3278,7 @@
       "systems": [
         "dojo_init",
         "start_game",
+        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
@@ -3474,7 +3495,7 @@
     },
     {
       "address": "0x8f4d4d91ad3f04b49633704f68a8c28ca826e906d82251d0177faecd741a17",
-      "class_hash": "0x86c7634a34408e69f88a59d0c78931e37664b536bbd1f76f76049b90643ee5",
+      "class_hash": "0x417f568b9872e35cd7cc19a54d7819a7f5d54b4a1b1b5f7a1aef0b3e9fb66b1",
       "abi": [
         {
           "type": "impl",
