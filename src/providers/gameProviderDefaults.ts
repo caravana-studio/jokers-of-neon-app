@@ -78,5 +78,5 @@ export const gameProviderDefaults: IGameContext = {
   nodeRound: 0,
   prepareNewGame: () => {},
   surrenderGame: (_) => {},
-  tranferNewGame: () => {},
+  transferNewGame: () => {},
 };
