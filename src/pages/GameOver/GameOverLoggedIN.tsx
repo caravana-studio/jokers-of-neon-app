@@ -28,6 +28,7 @@ export const GameOverLoggedIn = () => {
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
+
   const actualPlayer = fullLeaderboard?.find(
     (player) => signedHexToNumber(player.id.toString()) === gameId
   );
@@ -101,7 +102,7 @@ export const GameOverLoggedIn = () => {
           <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
             {congratulationsMsj}
           </Text>
-          <Leaderboard gameId={gameId} lines={4} />
+          <Leaderboard gameId={gameId} lines={4} filterLoggedInPlayers />
           {isSmallScreen ? (
             <Flex h="70px" />
           ) : (

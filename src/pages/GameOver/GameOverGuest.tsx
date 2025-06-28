@@ -94,12 +94,13 @@ export const GameOverGuest = () => {
       {isSmallScreen && <MobileDecoration />}
       <Flex
         height="100%"
-        justifyContent="space-around"
+        flexDirection={{ base: "column", sm: "row" }}
+        justifyContent={{ base: "center", sm: "space-around" }}
         alignItems="center"
-        gap={16}
+        gap={{ base: 4, sm: 16 }}
         zIndex={1}
       >
-        <Flex flexDirection="column" width="50%">
+        <Flex flexDirection="column" width={{ base: "100%", sm: "70%" }}>
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"
@@ -140,8 +141,8 @@ export const GameOverGuest = () => {
         </Flex>
         <Flex
           flexDirection={"column"}
-          width="50%"
-          gap={8}
+          width={{ base: "100%", sm: "30%" }}
+          gap={{ base: 4, sm: 8 }}
           justifyContent={"center"}
           alignItems={"center"}
         >
@@ -155,7 +156,7 @@ export const GameOverGuest = () => {
               onClick={() => {}}
               alignItems={"center"}
             >
-              <Flex gap={4}>
+              <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
                 LOGIN{" "}
                 <IconComponent
                   icon={Icons.CARTRIDGE}

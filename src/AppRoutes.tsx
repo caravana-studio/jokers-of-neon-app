@@ -7,7 +7,6 @@ import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
-import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
@@ -26,6 +25,7 @@ import { MapPage } from "./pages/Map/MapPage";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
+import { GameOver } from "./pages/GameOver/GameOver";
 
 export const AppRoutes = () => {
   const location = useLocation();
