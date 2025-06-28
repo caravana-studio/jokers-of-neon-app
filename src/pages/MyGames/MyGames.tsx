@@ -20,6 +20,7 @@ export interface GameSummary {
   level?: number;
   status: string;
   points?: number;
+  currentNodeId?: number;
 }
 
 export const MyGames = () => {

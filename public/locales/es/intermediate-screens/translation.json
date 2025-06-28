@@ -17,6 +17,7 @@
       }
     },
     "level-lbl": "Nivel",
+    "round-lbl": "Ronda",
     "status-lbl": "Estado",
     "points-lbl": "puntos",
     "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",

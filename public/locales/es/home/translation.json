@@ -1,33 +1,34 @@
 {
-    "home": {
-        "slogan": "CONSTRUYE TU MAZO, DOMINA EL JUEGO",
-        "btn": {
-            "leaderboard-btn": "Ver leaderboard",
-            "playDemo-btn": "Jugar",
-            "start": "Comenzar"
-        },
-        "join-discord": "¡Únete a nuestro Discord!"
+  "home": {
+    "slogan": "CONSTRUYE TU MAZO, DOMINA EL JUEGO",
+    "btn": {
+      "leaderboard-btn": "Ver leaderboard",
+      "playDemo-btn": "Jugar",
+      "start": "Comenzar"
     },
-    "leaderboard": {
-        "title": "Tabla de posiciones",
-        "btn": {
-            "returnLeaderboard-btn": "Volver"
-        },
-        "table-head": {
-            "position-leaderboard-head": "Puesto",
-            "username-leaderboard-head": "Nombre",
-            "score-leaderboard-head": "Puntos",
-            "level-leaderboard-head": "Nivel"
-        }
+    "join-discord": "¡Únete a nuestro Discord!"
+  },
+  "leaderboard": {
+    "title": "Tabla de posiciones",
+    "btn": {
+      "returnLeaderboard-btn": "Volver"
     },
-    "tournament": {
-        "table-head": {
-            "prize-leaderboard-head": "Premio",
-            "tournament-tooltip": "Los premios serán distribuidos a los mejores 10 jugadores al final del torneo"
-        },
-        "labels": {
-            "days-countdown-tournament": "días",
-            "label-countdown-tournament": "para la finalización del torneo"
-        }
+    "table-head": {
+      "position-leaderboard-head": "Puesto",
+      "username-leaderboard-head": "Nombre",
+      "score-leaderboard-head": "Puntos",
+      "level-leaderboard-head": "Nivel",
+      "round-leaderboard-head": "Ronda"
     }
+  },
+  "tournament": {
+    "table-head": {
+      "prize-leaderboard-head": "Premio",
+      "tournament-tooltip": "Los premios serán distribuidos a los mejores 10 jugadores al final del torneo"
+    },
+    "labels": {
+      "days-countdown-tournament": "días",
+      "label-countdown-tournament": "para la finalización del torneo"
+    }
+  }
 }
