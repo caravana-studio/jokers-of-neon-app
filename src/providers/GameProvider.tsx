@@ -268,14 +268,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const username = useUsername();
+  const usernameLS = useUsername();
 
   const { enterTournament } = useTournaments();
 
   const executeCreateGame = async (
     providedGameId?: number,
-    username?: string
+    usernameParameter?: string
   ) => {
+    const username = usernameParameter || usernameLS;
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);
