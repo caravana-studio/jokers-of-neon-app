@@ -52,7 +52,7 @@ export interface IGameContext {
   preSelectedPlay: Plays;
   points: number;
   multi: number;
-  executeCreateGame: (gameId?: number) => void;
+  executeCreateGame: (gameId?: number, username?: string) => void;
   gameLoading: boolean;
   preSelectedCards: number[];
   setPreSelectedCards: (cards: number[]) => void;
@@ -272,7 +272,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { enterTournament } = useTournaments();
 
-  const executeCreateGame = async (providedGameId?: number) => {
+  const executeCreateGame = async (
+    providedGameId?: number,
+    username?: string
+  ) => {
     setError(false);
     setGameLoading(true);
     setIsRageRound(false);

@@ -26,6 +26,7 @@ import { LoadingScreen } from "./LoadingScreen/LoadingScreen";
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const { connect, connectors } = useConnect();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
   const { account, setup } = useDojo();
 
   const navigate = useNavigate();
@@ -47,19 +48,25 @@ export const Home = () => {
 
   const loggedInUser = useUsername();
 
-  const redirectToGame = () => {
-    //TODO: create game and change to /demo
-    navigate("/my-games", { replace: true });
+  const handleCreateGame = async () => {
+    if (loggedInUser) {
+      prepareNewGame();
+      executeCreateGame(undefined, loggedInUser);
+      navigate("/entering-tournament");
+    }
   };
 
   useEffect(() => {
     if (loggedInUser) {
-      console.log("redirecting to game", loggedInUser);
-      redirectToGame();
+      if (playButtonClicked) {
+        handleCreateGame();
+      } else {
+        navigate("/my-games", { replace: true });
+      }
     }
   }, [loggedInUser]);
 
-  const { lastGameId, isLoading, error } = useGetLastGameId();
+  const { lastGameId, isLoading } = useGetLastGameId();
 
   if (isLoading) return <LoadingScreen />;
 
@@ -120,16 +127,12 @@ export const Home = () => {
               variant="secondarySolid"
               onClick={() => {
                 if (setup.useBurnerAcc && lastGameId) {
-                  console.log("Setting up guest account");
-                  console.log(setup.useBurnerAcc);
-                  console.log("lastGameId: ", lastGameId);
-
                   const username = `joker_guest_${lastGameId + 1}`;
-
                   console.log("username: ", username);
+
                   localStorage.removeItem(GAME_ID);
                   localStorage.setItem(LOGGED_USER, username);
-                  redirectToGame();
+                  setPlayButtonClicked(true);
                 } else {
                   setPlayButtonClicked(true);
                   connect({ connector: connectors[0] });
