@@ -3,23 +3,25 @@ import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
-import { BackgroundDecoration } from "../components/Background";
-import { Leaderboard } from "../components/Leaderboard";
-import { MobileBottomBar } from "../components/MobileBottomBar";
-import { MobileDecoration } from "../components/MobileDecoration";
-import { GAME_ID } from "../constants/localStorage";
-import { looseSfx } from "../constants/sfx";
-import { useAudio } from "../hooks/useAudio";
-import { useGameContext } from "../providers/GameProvider";
-import { useGetLeaderboard } from "../queries/useGetLeaderboard";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { runConfettiAnimation } from "../utils/runConfettiAnimation";
-import { signedHexToNumber } from "../utils/signedHexToNumber";
+import { useNavigate, useParams } from "react-router-dom";
+import { BackgroundDecoration } from "../../components/Background";
+import { Leaderboard } from "../../components/Leaderboard";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { MobileDecoration } from "../../components/MobileDecoration";
+import { GAME_ID } from "../../constants/localStorage";
+import { looseSfx } from "../../constants/sfx";
+import { useAudio } from "../../hooks/useAudio";
+import { useGameContext } from "../../providers/GameProvider";
+import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
+import { signedHexToNumber } from "../../utils/signedHexToNumber";
+import { IconComponent } from "../../components/IconComponent";
+import { Icons } from "../../constants/icons";
 
 const GAME_URL = "https://jokersofneon.com";
 
-export const GameOver = () => {
+export const GameOverGuest = () => {
   const params = useParams();
 
   const gameId = Number(params.gameId);
@@ -34,6 +36,7 @@ export const GameOver = () => {
 
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation(["intermediate-screens"]);
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,18 +81,25 @@ export const GameOver = () => {
     );
   };
 
+  const formatPosition = (position: number | undefined) => {
+    if (!position) return "N/A";
+    if (position === 1) return "1st";
+    if (position === 2) return "2nd";
+    if (position === 3) return "3rd";
+    return `${position}th`;
+  };
+
   return (
     <BackgroundDecoration>
       {isSmallScreen && <MobileDecoration />}
       <Flex
         height="100%"
-        justifyContent="center"
-        flexDirection="column"
+        justifyContent="space-around"
         alignItems="center"
-        gap={4}
+        gap={16}
         zIndex={1}
       >
-        <Flex flexDirection="column" width="100%">
+        <Flex flexDirection="column" width="50%">
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"
@@ -127,6 +137,41 @@ export const GameOver = () => {
               </Button>
             </Flex>
           )}
+        </Flex>
+        <Flex
+          flexDirection={"column"}
+          width="50%"
+          gap={8}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Text>
+            You are on the {formatPosition(actualPlayer?.position)} position, do
+            you want to keep this?
+          </Text>
+          <Flex gap={4}>
+            <Button
+              variant="secondarySolid"
+              onClick={() => {}}
+              alignItems={"center"}
+            >
+              <Flex gap={4}>
+                LOGIN{" "}
+                <IconComponent
+                  icon={Icons.CARTRIDGE}
+                  width={"20px"}
+                  height={"20px"}
+                ></IconComponent>
+              </Flex>
+            </Button>
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              SKIP
+            </Button>
+          </Flex>
         </Flex>
         {isSmallScreen && (
           <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
