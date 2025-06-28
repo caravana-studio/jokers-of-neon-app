@@ -180,6 +180,7 @@ const DojoContextProvider = ({
       console.log("Attempting to connect wallet...");
       await connect({ connector: connectors[0] });
       console.log("Wallet connected successfully.");
+      setAccountToUse(controllerAccount);
     } catch (error) {
       console.error("Failed to connect wallet:", error);
     }
@@ -204,6 +205,12 @@ const DojoContextProvider = ({
       connectWallet();
     }
   }, [controllerAccountInitialized]);
+
+  useEffect(() => {
+    if (!accountToUse && controllerAccount) {
+      setAccountToUse(controllerAccount);
+    }
+  }, [controllerAccount]);
 
   useEffect(() => {
     if (useBurner != null) {
@@ -245,8 +252,8 @@ const DojoContextProvider = ({
             style={{ color: "white" }}
             className="login-button"
             onClick={() => {
-              setUseBurner(false);
               setAccountToUse(controllerAccount);
+              setUseBurner(false);
             }}
           >
             <div
@@ -286,6 +293,10 @@ const DojoContextProvider = ({
     if (!(controllerAccountInitialized && controllerAccount && isConnected)) {
       return <LoadingScreen />;
     }
+  }
+
+  if (!accountToUse) {
+    return <LoadingScreen />;
   }
 
   // Once account is set, render the children
