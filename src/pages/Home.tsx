@@ -20,6 +20,8 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { GGBanner } from "../components/GGBanner";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useGetLastGameId } from "../queries/useGetLastGameId";
+import { LoadingScreen } from "./LoadingScreen/LoadingScreen";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
@@ -56,6 +58,10 @@ export const Home = () => {
       redirectToGame();
     }
   }, [loggedInUser]);
+
+  const { lastGameId, isLoading, error } = useGetLastGameId();
+
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <>
@@ -113,11 +119,12 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (setup.useBurnerAcc) {
+                if (setup.useBurnerAcc && lastGameId) {
                   console.log("Setting up guest account");
                   console.log(setup.useBurnerAcc);
-                  const gameIdLength = 10000; //TODO
-                  const username = `joker_guest_${gameIdLength + 1}`;
+                  console.log("lastGameId: ", lastGameId);
+
+                  const username = `joker_guest_${lastGameId + 1}`;
 
                   console.log("username: ", username);
                   localStorage.removeItem(GAME_ID);
