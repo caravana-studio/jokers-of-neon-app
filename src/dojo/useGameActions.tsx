@@ -115,6 +115,29 @@ export const useGameActions = () => {
     }
   };
 
+  const transferGame = async (gameId: number, username: string) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.transferGame(
+        account,
+        BigInt(gameId),
+        account.address,
+        username
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Surrendering...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+    }
+  };
+
   const discard = async (
     gameId: number,
     cards: number[],
@@ -304,5 +327,6 @@ export const useGameActions = () => {
     play,
     mintGame,
     surrenderGame,
+    transferGame,
   };
 };

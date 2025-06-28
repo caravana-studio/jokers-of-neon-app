@@ -121,6 +121,7 @@ export interface IGameContext {
   nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
+  transferNewGame: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -164,6 +165,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sellSpecialCard,
     mintGame,
     surrenderGame,
+    transferGame,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -271,6 +273,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const usernameLS = useUsername();
 
   const { enterTournament } = useTournaments();
+
+  const OnTransferGame = async () => {
+    await transferGame(gameId, usernameLS ?? "");
+  };
 
   const executeCreateGame = async (
     providedGameId?: number,
@@ -698,6 +704,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
+    transferNewGame: OnTransferGame,
   };
 
   return (

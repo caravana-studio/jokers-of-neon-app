@@ -617,6 +617,28 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_transferGame_calldata = (gameId: BigNumberish, newOwner: string, newPlayerName: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "transfer_game",
+			calldata: [gameId, newOwner, newPlayerName],
+		};
+	};
+
+	const game_system_transferGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, newOwner: string, newPlayerName: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_transferGame_calldata(gameId, newOwner, newPlayerName),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+
 	const build_action_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "action_system",
@@ -1089,6 +1111,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildTokenMetadataCalldata: build_game_system_tokenMetadata_calldata,
 			transferFrom: game_system_transferFrom,
 			buildTransferFromCalldata: build_game_system_transferFrom_calldata,
+			transferGame: game_system_transferGame,
+			buildTransferGameCalldata: build_game_system_transferGame_calldata,
 		},
 		shop_system: {
 			burnCard: shop_system_burnCard,
