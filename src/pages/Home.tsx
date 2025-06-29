@@ -17,7 +17,6 @@ import { CLASSIC_MOD_ID } from "../constants/general";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { GGBanner } from "../components/GGBanner";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -113,7 +112,6 @@ export const Home = () => {
           </Flex>
         </Flex>
         <PoweredBy />
-        <GGBanner />
       </Flex>
       <PositionedDiscordLink />
     </>
