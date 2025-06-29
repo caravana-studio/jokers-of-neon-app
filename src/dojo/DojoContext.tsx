@@ -22,7 +22,7 @@ interface DojoAccount {
   list: () => any[];
   get: (id: string) => any;
   select: (id: string) => void;
-  account: Account; // | AccountInterface;
+  account: Account | AccountInterface;
   isDeploying: boolean;
   clear: () => void;
   accountDisplay: string;
@@ -48,19 +48,6 @@ export function displayAddress(string: string) {
 
 export const DojoContext = createContext<DojoContextType | null>(null);
 
-/* const requiredEnvs = ["VITE_MASTER_ADDRESS", "VITE_MASTER_PRIVATE_KEY", "VITE_PUBLIC_ACCOUNT_CLASS_HASH"];
-
-for (const env of requiredEnvs) {
-  if (!import.meta.env[env]) {
-    throw new Error(`Environment variable ${env} is not set!`);
-  }
-} */
-
-type DojoProviderProps = {
-  children: ReactNode;
-  value: SetupResult;
-};
-
 const useMasterAccount = (rpcProvider: RpcProvider) => {
   const masterAddress = import.meta.env.VITE_MASTER_ADDRESS;
   const privateKey = import.meta.env.VITE_MASTER_PRIVATE_KEY;
@@ -80,24 +67,9 @@ const useRpcProvider = () => {
   );
 };
 
-const useControllerAccount = () => {
-  const { account, connector, isConnected } = useAccount();
-
-  useEffect(() => {
-    if (account) {
-      useAccountStore.getState().setAccount(account);
-    }
-  }, [account, isConnected]);
-
-  useEffect(() => {
-    if (connector) {
-      useAccountStore
-        .getState()
-        .setConnector(connector as unknown as ControllerConnector);
-    }
-  }, [connector, isConnected]);
-
-  return account;
+type DojoProviderProps = {
+  children: ReactNode;
+  value: SetupResult;
 };
 
 export const DojoProvider = ({ children, value }: DojoProviderProps) => {
@@ -106,7 +78,6 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
 
   const rpcProvider = useRpcProvider();
   const masterAccount = useMasterAccount(rpcProvider);
-  const controllerAccount = useControllerAccount();
 
   return (
     <BurnerProvider
@@ -121,11 +92,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
           "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
     >
-      <DojoContextProvider
-        value={value}
-        masterAccount={masterAccount}
-        controllerAccount={controllerAccount!}
-      >
+      <DojoContextProvider value={value} masterAccount={masterAccount}>
         {children}
       </DojoContextProvider>
     </BurnerProvider>
@@ -144,17 +111,24 @@ export const useDojo = (): DojoResult => {
   };
 };
 
+type ConnectionStatus =
+  | "selecting"
+  | "connecting_burner"
+  | "connecting_controller";
+
 const DojoContextProvider = ({
   children,
   value,
   masterAccount,
-  controllerAccount,
-}: DojoProviderProps & {
+}: Omit<DojoProviderProps, "controllerAccount"> & {
   masterAccount: Account;
-  controllerAccount: AccountInterface | null;
 }) => {
-  const currentValue = useContext(DojoContext);
-  if (currentValue) throw new Error("DojoProvider can only be used once");
+  const { connect, connectors } = useConnect();
+  const {
+    account: controllerAccount,
+    isConnected,
+    isConnecting,
+  } = useAccount();
 
   const {
     create,
@@ -168,167 +142,105 @@ const DojoContextProvider = ({
     burnerManager: value.burnerManager,
   });
 
-  const { connect, connectors } = useConnect();
-  const { isConnected, isConnecting } = useAccount();
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>("selecting");
+  const [finalAccount, setFinalAccount] = useState<
+    Account | AccountInterface | null
+  >(null);
 
-  const [controllerAccountInitialized, setControllerAccountInitialized] =
-    useState(false);
-  const [burnerAccountInitialized, setBurnerAccountInitialized] =
-    useState(false);
+  const [accountType, setAccountType] = useState<
+    "burner" | "controller" | null
+  >(null);
 
-  const connectWallet = async () => {
-    try {
-      console.log("Attempting to connect wallet...");
-      await connect({ connector: connectors[0] });
-      console.log("Wallet connected successfully.");
-      setAccountToUse(controllerAccount);
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
+  useEffect(() => {
+    if (
+      connectionStatus === "connecting_controller" &&
+      !isConnected &&
+      !isConnecting
+    ) {
+      console.log("Initiating controller connection...");
+      connect({ connector: connectors[0] });
     }
-  };
+  }, [connectionStatus, isConnected, isConnecting, connect, connectors]);
 
-  const waitForControllerReady = () => {
-    return new Promise<void>((resolve) => {
-      const interval = setInterval(() => {
-        const accReady =
-          controllerAccountInitialized && controllerAccount && isConnected;
-        if (accReady) {
-          clearInterval(interval);
-          resolve();
-        }
-      }, 100);
-    });
-  };
+  useEffect(() => {
+    if (finalAccount) return;
+
+    if (
+      connectionStatus === "connecting_controller" &&
+      isConnected &&
+      controllerAccount
+    ) {
+      console.log("Controller is connected. Finalizing state...");
+      useAccountStore.getState().setAccount(controllerAccount);
+      setAccountType("controller");
+      setFinalAccount(controllerAccount);
+    } else if (connectionStatus === "connecting_burner" && burnerAccount) {
+      console.log("Burner is ready. Finalizing state...");
+      useAccountStore.getState().setAccount(burnerAccount);
+      setAccountType("burner");
+      setFinalAccount(burnerAccount);
+    }
+  }, [
+    connectionStatus,
+    isConnected,
+    controllerAccount,
+    burnerAccount,
+    finalAccount,
+  ]);
 
   const switchToController = async () => {
-    setUseBurner(false);
-    await waitForControllerReady();
+    console.log("Switching to controller requested.");
+    setConnectionStatus("connecting_controller");
   };
 
-  // Determine which account to use
-  const [useBurner, setUseBurner] = useState<boolean | null>(null);
-  const [accountToUse, setAccountToUse] = useState(() => {
-    if (useBurner === null) return null;
-    return useBurner ? burnerAccount : controllerAccount;
-  });
-
-  useEffect(() => {
-    setAccountToUse(() => {
-      if (useBurner === null) return null;
-      return useBurner ? burnerAccount : controllerAccount;
-    });
-  }, [useBurner]);
-
-  useEffect(() => {
-    if (useBurner === false && controllerAccountInitialized) {
-      connectWallet();
-      setAccountToUse(controllerAccount);
-    }
-  }, [controllerAccountInitialized]);
-
-  useEffect(() => {
-    if (!accountToUse && controllerAccount) {
-      setAccountToUse(controllerAccount);
-    }
-  }, [controllerAccount]);
-
-  useEffect(() => {
-    if (useBurner != null) {
-      if (useBurner === true) {
-        if (burnerAccount) {
-          console.log("Setting account from burner hook:", burnerAccount);
-          useAccountStore.getState().setAccount(burnerAccount);
-          setBurnerAccountInitialized(true);
-        } else {
-          console.log("Burner account is null in development.");
-        }
-      } else {
-        if (controllerAccount) {
-          console.log(
-            "Setting account from controllerAccount:",
-            controllerAccount
-          );
-          useAccountStore.getState().setAccount(controllerAccount);
-          setControllerAccountInitialized(true);
-          setAccountToUse(controllerAccount);
-        } else {
-          console.log(
-            "ControllerAccount is null in production or not connected."
-          );
-          setControllerAccountInitialized(true);
-        }
-      }
-    }
-  }, [controllerAccount, burnerAccount, useBurner]);
-
-  if (
-    useBurner === null ||
-    (useBurner === false && !isConnected && !isConnecting && !controllerAccount)
-  ) {
-    return (
-      <PreThemeLoadingPage>
-        <img width="60%" src="logos/logo.png" alt="logo" />
-        <Flex flexDirection={"column"} gap={16}>
-          <button
-            style={{ color: "white" }}
-            className="login-button"
-            onClick={() => {
-              setAccountToUse(controllerAccount);
-              setUseBurner(false);
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexGrow: 0,
-              }}
+  if (!finalAccount) {
+    if (connectionStatus === "selecting") {
+      return (
+        <PreThemeLoadingPage>
+          <img width="60%" src="logos/logo.png" alt="logo" />
+          <Flex flexDirection={"column"} gap={16}>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={() => setConnectionStatus("connecting_controller")}
             >
-              <div>LOGIN </div>
-              <img
-                src={Icons.CARTRIDGE}
-                width={"24px"}
-                style={{ marginLeft: "8px" }}
-              />
-            </div>
-          </button>
-          <button
-            style={{ color: "white" }}
-            className="login-button"
-            onClick={() => {
-              setUseBurner(true);
-              setAccountToUse(burnerAccount);
-            }}
-          >
-            PLAY AS GUEST
-          </button>
-        </Flex>
-      </PreThemeLoadingPage>
-    );
-  } else if (useBurner === true) {
-    if (!(burnerAccountInitialized && burnerAccount)) {
-      return <LoadingScreen />;
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexGrow: 0,
+                }}
+              >
+                <div>LOGIN </div>
+                <img
+                  src={Icons.CARTRIDGE}
+                  width={"24px"}
+                  style={{ marginLeft: "8px" }}
+                />
+              </div>
+            </button>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={() => setConnectionStatus("connecting_burner")}
+            >
+              PLAY AS GUEST
+            </button>
+          </Flex>
+        </PreThemeLoadingPage>
+      );
     }
-  } else if (useBurner === false) {
-    if (!(controllerAccountInitialized && controllerAccount && isConnected)) {
-      console.log("not ready to use controller account");
-      return <LoadingScreen />;
-    }
-  }
-
-  if (!accountToUse) {
-    console.log("No account to use, waiting for initialization...");
     return <LoadingScreen />;
   }
 
-  // Once account is set, render the children
   return (
     <DojoContext.Provider
       value={{
         ...value,
         masterAccount,
-        useBurnerAcc: useBurner || false,
+        useBurnerAcc: accountType === "burner",
         switchToController: switchToController,
         account: {
           create,
@@ -336,10 +248,10 @@ const DojoContextProvider = ({
           get,
           select,
           clear,
-          account: accountToUse as Account, // | AccountInterface,
+          account: finalAccount as Account,
           isDeploying,
           accountDisplay: displayAddress(
-            (accountToUse as Account | AccountInterface)?.address || ""
+            (finalAccount as Account | AccountInterface)?.address || ""
           ),
         },
       }}
