@@ -17,6 +17,7 @@ import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
 import { Flex } from "@chakra-ui/react";
 import { Icons } from "../constants/icons";
+import { controller } from "./controller/controller";
 
 interface DojoAccount {
   create: () => void;
@@ -29,11 +30,18 @@ interface DojoAccount {
   accountDisplay: string;
 }
 
+interface SwitchSuccessPayload {
+  username: string;
+  account: AccountInterface;
+}
+
 interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
   account: DojoAccount;
   useBurnerAcc: boolean;
-  switchToController: () => void;
+  switchToController: (
+    onSuccess?: (payload: SwitchSuccessPayload) => void
+  ) => void;
   accountType: "burner" | "controller" | null;
 }
 
@@ -154,6 +162,10 @@ const DojoContextProvider = ({
     "burner" | "controller" | null
   >(null);
 
+  const onSuccessCallback = useRef<
+    ((payload: SwitchSuccessPayload) => void) | null
+  >(null);
+
   const connectWallet = async () => {
     try {
       console.log("Attempting to connect wallet...");
@@ -176,7 +188,8 @@ const DojoContextProvider = ({
   }, [connectionStatus, isConnected, isConnecting, connect, connectors]);
 
   useEffect(() => {
-    if (finalAccount === controllerAccount) return;
+    if (finalAccount === controllerAccount && controllerAccount !== null)
+      return;
 
     if (
       connectionStatus === "connecting_controller" &&
@@ -187,6 +200,22 @@ const DojoContextProvider = ({
       useAccountStore.getState().setAccount(controllerAccount);
       setAccountType("controller");
       setFinalAccount(controllerAccount);
+
+      if (controller) {
+        controller.username()?.then((newUsername) => {
+          if (newUsername && onSuccessCallback.current) {
+            console.log(
+              `Executing success callback with username: ${newUsername}`
+            );
+
+            onSuccessCallback.current({
+              username: newUsername,
+              account: controllerAccount,
+            });
+            onSuccessCallback.current = null;
+          }
+        });
+      }
     } else if (
       connectionStatus === "connecting_burner" &&
       burnerAccount &&
@@ -205,13 +234,29 @@ const DojoContextProvider = ({
     finalAccount,
   ]);
 
-  const switchToController = (): void => {
-    if (accountType === "controller") {
+  const switchToController = (
+    onSuccess?: (payload: SwitchSuccessPayload) => void
+  ): void => {
+    if (accountType === "controller" && finalAccount) {
       console.log("Already connected with controller.");
+      if (controller) {
+        controller.username()?.then((username) => {
+          if (username) {
+            onSuccess?.({
+              username,
+              account: finalAccount,
+            });
+          }
+        });
+      }
       return;
     }
 
     console.log("Switching to controller requested...");
+
+    if (onSuccess) {
+      onSuccessCallback.current = onSuccess;
+    }
 
     setConnectionStatus("connecting_controller");
   };

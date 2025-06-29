@@ -18,24 +18,20 @@ import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
 import { signedHexToNumber } from "../../utils/signedHexToNumber";
 import { IconComponent } from "../../components/IconComponent";
 import { Icons } from "../../constants/icons";
-import { useDojo } from "../../dojo/DojoContext"; // Import useDojo
 
 const GAME_URL = "https://jokersofneon.com";
 
 export const GameOverGuest = () => {
   const params = useParams();
+
   const gameId = Number(params.gameId);
 
-  // MODIFICATION: Get the new split functions from the context
   const {
     restartGame,
+    setIsRageRound,
     executeCreateGame,
-    initiateControllerSwitch,
-    executeGameTransfer,
+    initiateTransferFlow,
   } = useGameContext();
-
-  // MODIFICATION: Get dojo setup to listen for connection status changes
-  const { setup: dojoSetup } = useDojo();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
@@ -49,19 +45,8 @@ export const GameOverGuest = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // MODIFICATION: Add local state to control the UI flow
-  const [isControllerConnected, setIsControllerConnected] = useState(false);
-
-  // MODIFICATION: Listen for changes in the dojo context's accountType
-  useEffect(() => {
-    if (dojoSetup.accountType === "controller") {
-      console.log("Controller connected, updating UI.");
-      setIsControllerConnected(true);
-    }
-  }, [dojoSetup.accountType]);
-
-  // ... (congratulationsMsj, position, other effects, etc. are unchanged) ...
   let congratulationsMsj = "";
+
   if (actualPlayer?.position != undefined) {
     congratulationsMsj =
       actualPlayer?.position === 1
@@ -70,11 +55,15 @@ export const GameOverGuest = () => {
           ? t("game-over.table.gameOver-top5-msj")
           : "";
   }
+
   const position = actualPlayer?.position ?? 100;
+
   useEffect(() => {
     looseSound();
     localStorage.removeItem(GAME_ID);
+    setIsRageRound(false);
   }, []);
+
   useEffect(() => {
     if (position <= 10) {
       runConfettiAnimation(position <= 3 ? 300 : 100);
@@ -88,6 +77,7 @@ export const GameOverGuest = () => {
     stopLooseSound();
     executeCreateGame();
   };
+
   const onShareClick = () => {
     window.open(
       `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20%40jokers_of_neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position ?? 0}%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level ?? 0}%0A%0AJoin%20me%20and%20test%20the%20early%20access%20version%0A${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8
@@ -95,6 +85,7 @@ export const GameOverGuest = () => {
       "_blank"
     );
   };
+
   const formatPosition = (position: number | undefined) => {
     if (!position) return "N/A";
     if (position === 1) return "1st";
@@ -164,17 +155,12 @@ export const GameOverGuest = () => {
             You are on the {formatPosition(actualPlayer?.position)} position, do
             you want to keep this?
           </Text>
-
-          {/* MODIFICATION: Conditionally render buttons based on connection state */}
-
-          <Button variant="secondarySolid" onClick={executeGameTransfer}>
-            TRANSFER GAME
-          </Button>
-
           <Flex gap={4}>
             <Button
               variant="secondarySolid"
-              onClick={initiateControllerSwitch} // Call the new function
+              onClick={() => {
+                initiateTransferFlow();
+              }}
               alignItems={"center"}
             >
               <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
@@ -183,7 +169,7 @@ export const GameOverGuest = () => {
                   icon={Icons.CARTRIDGE}
                   width={"20px"}
                   height={"20px"}
-                />
+                ></IconComponent>
               </Flex>
             </Button>
             <Button
@@ -197,7 +183,19 @@ export const GameOverGuest = () => {
         </Flex>
         {isSmallScreen && (
           <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
-            {/* ... MobileBottomBar ... */}
+            <MobileBottomBar
+              firstButton={{
+                onClick: onShareClick,
+                label: t("game-over.btn.gameOver-share-btn"),
+                icon: <FontAwesomeIcon fontSize={10} icon={faXTwitter} />,
+              }}
+              secondButton={{
+                onClick: onStartGameClick,
+                label: t("game-over.btn.gameOver-newGame-btn"),
+                disabled: isLoading,
+              }}
+              hideDeckButton
+            />
           </Flex>
         )}
       </Flex>

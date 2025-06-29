@@ -46,6 +46,8 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { ac } from "vitest/dist/chunks/reporters.nr4dxCkA.js";
+import { AccountInterface } from "starknet";
 
 export interface IGameContext {
   gameId: number;
@@ -121,8 +123,7 @@ export interface IGameContext {
   nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
-  executeGameTransfer: () => void;
-  initiateControllerSwitch: () => void;
+  initiateTransferFlow: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -278,29 +279,33 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { enterTournament } = useTournaments();
 
-  const initiateControllerSwitch = () => {
-    console.log("GameProvider: Initiating controller switch.");
-    switchToController();
+  const initiateTransferFlow = () => {
+    console.log("GameProvider: Initiating transfer flow...");
+    // The callback now expects a payload object with all the fresh data.
+    switchToController(async (payload) => {
+      // We now call executeGameTransfer with the fresh data from the callback payload.
+      await executeGameTransfer(payload.account, payload.username);
+    });
   };
 
-  const executeGameTransfer = async () => {
-    // We can add a guard here to ensure the account is the controller
-    console.log("GID ", gameId);
-    console.log("Acct:", accountType);
-    if (accountType !== "controller" || !gameId) {
-      console.error(
-        "Attempted to transfer game without a connected controller or gameId."
-      );
+  const executeGameTransfer = async (
+    account: AccountInterface,
+    newUsername: string
+  ) => {
+    if (!gameId) {
+      console.error("Guard failed: Attempted to transfer game with no gameId.");
       return;
     }
 
-    console.log(`GameProvider: Executing transfer for game ${gameId}`);
+    console.log(
+      `GameProvider: Executing transfer for game ${gameId} to user ${newUsername} with account ${account.address}`
+    );
+    console.log(account);
+
     try {
-      // Since the controller is now connected, these calls should use the correct account.
       await approve(gameId);
-      await transferGame(gameId, usernameLS ?? "");
+      await transferGame(account, gameId, newUsername ?? "");
       console.log("Game transfer successful.");
-      // Potentially navigate the user to a success screen or their games list.
     } catch (error) {
       console.error("Failed to transfer game:", error);
     }
@@ -732,8 +737,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
-    executeGameTransfer,
-    initiateControllerSwitch,
+    initiateTransferFlow,
   };
 
   return (
