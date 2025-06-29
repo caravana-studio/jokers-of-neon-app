@@ -155,6 +155,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       clientComponents: { Game },
     },
     syncCall,
+    switchToController,
   } = useDojo();
 
   const {
@@ -166,6 +167,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     mintGame,
     surrenderGame,
     transferGame,
+    approve,
   } = useGameActions();
 
   const { discards, discard: stateDiscard, rollbackDiscard } = useDiscards();
@@ -275,7 +277,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { enterTournament } = useTournaments();
 
   const OnTransferGame = async () => {
-    await transferGame(gameId, usernameLS ?? "");
+    await switchToController();
+    console.log("switched");
+    // await approve(gameId);
+    // await transferGame(gameId, usernameLS ?? "");
   };
 
   const executeCreateGame = async (

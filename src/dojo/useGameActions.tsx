@@ -125,7 +125,31 @@ export const useGameActions = () => {
         username
       );
       const transaction_hash = response?.transaction_hash ?? "";
-      showTransactionToast(transaction_hash, "Surrendering...");
+      showTransactionToast(transaction_hash, "Saving...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+    }
+  };
+
+  const approve = async (gameId: number) => {
+    try {
+      showTransactionToast();
+      const gameSystem =
+        "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6";
+      const response = await client.game_system.approve(
+        account,
+        gameSystem,
+        gameId
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Approving...");
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
@@ -328,5 +352,6 @@ export const useGameActions = () => {
     mintGame,
     surrenderGame,
     transferGame,
+    approve,
   };
 };

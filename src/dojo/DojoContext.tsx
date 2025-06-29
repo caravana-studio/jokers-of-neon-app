@@ -32,6 +32,7 @@ interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
   account: DojoAccount;
   useBurnerAcc: boolean;
+  switchToController: () => Promise<void>;
 }
 
 export interface DojoResult {
@@ -186,6 +187,24 @@ const DojoContextProvider = ({
     }
   };
 
+  const waitForControllerReady = () => {
+    return new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        const accReady =
+          controllerAccountInitialized && controllerAccount && isConnected;
+        if (accReady) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  };
+
+  const switchToController = async () => {
+    setUseBurner(false);
+    await waitForControllerReady();
+  };
+
   // Determine which account to use
   const [useBurner, setUseBurner] = useState<boolean | null>(null);
   const [accountToUse, setAccountToUse] = useState(() => {
@@ -203,6 +222,7 @@ const DojoContextProvider = ({
   useEffect(() => {
     if (useBurner === false && controllerAccountInitialized) {
       connectWallet();
+      setAccountToUse(controllerAccount);
     }
   }, [controllerAccountInitialized]);
 
@@ -230,6 +250,7 @@ const DojoContextProvider = ({
           );
           useAccountStore.getState().setAccount(controllerAccount);
           setControllerAccountInitialized(true);
+          setAccountToUse(controllerAccount);
         } else {
           console.log(
             "ControllerAccount is null in production or not connected."
@@ -291,11 +312,13 @@ const DojoContextProvider = ({
     }
   } else if (useBurner === false) {
     if (!(controllerAccountInitialized && controllerAccount && isConnected)) {
+      console.log("not ready to use controller account");
       return <LoadingScreen />;
     }
   }
 
   if (!accountToUse) {
+    console.log("No account to use, waiting for initialization...");
     return <LoadingScreen />;
   }
 
@@ -306,6 +329,7 @@ const DojoContextProvider = ({
         ...value,
         masterAccount,
         useBurnerAcc: useBurner || false,
+        switchToController: switchToController,
         account: {
           create,
           list,

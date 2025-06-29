@@ -26,7 +26,8 @@ export const GameOverGuest = () => {
 
   const gameId = Number(params.gameId);
 
-  const { restartGame, setIsRageRound, executeCreateGame } = useGameContext();
+  const { restartGame, setIsRageRound, executeCreateGame, transferNewGame } =
+    useGameContext();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
@@ -153,7 +154,9 @@ export const GameOverGuest = () => {
           <Flex gap={4}>
             <Button
               variant="secondarySolid"
-              onClick={() => {}}
+              onClick={() => {
+                transferNewGame();
+              }}
               alignItems={"center"}
             >
               <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
