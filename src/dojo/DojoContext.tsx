@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
@@ -32,7 +33,8 @@ interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
   account: DojoAccount;
   useBurnerAcc: boolean;
-  switchToController: () => Promise<void>;
+  switchToController: () => void;
+  accountType: "burner" | "controller" | null;
 }
 
 export interface DojoResult {
@@ -152,6 +154,16 @@ const DojoContextProvider = ({
     "burner" | "controller" | null
   >(null);
 
+  const connectWallet = async () => {
+    try {
+      console.log("Attempting to connect wallet...");
+      await connect({ connector: connectors[0] });
+      console.log("Wallet connected successfully.");
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+    }
+  };
+
   useEffect(() => {
     if (
       connectionStatus === "connecting_controller" &&
@@ -159,12 +171,12 @@ const DojoContextProvider = ({
       !isConnecting
     ) {
       console.log("Initiating controller connection...");
-      connect({ connector: connectors[0] });
+      connectWallet();
     }
   }, [connectionStatus, isConnected, isConnecting, connect, connectors]);
 
   useEffect(() => {
-    if (finalAccount) return;
+    if (finalAccount === controllerAccount) return;
 
     if (
       connectionStatus === "connecting_controller" &&
@@ -175,7 +187,11 @@ const DojoContextProvider = ({
       useAccountStore.getState().setAccount(controllerAccount);
       setAccountType("controller");
       setFinalAccount(controllerAccount);
-    } else if (connectionStatus === "connecting_burner" && burnerAccount) {
+    } else if (
+      connectionStatus === "connecting_burner" &&
+      burnerAccount &&
+      !finalAccount
+    ) {
       console.log("Burner is ready. Finalizing state...");
       useAccountStore.getState().setAccount(burnerAccount);
       setAccountType("burner");
@@ -189,49 +205,56 @@ const DojoContextProvider = ({
     finalAccount,
   ]);
 
-  const switchToController = async () => {
-    console.log("Switching to controller requested.");
+  const switchToController = (): void => {
+    if (accountType === "controller") {
+      console.log("Already connected with controller.");
+      return;
+    }
+
+    console.log("Switching to controller requested...");
+
     setConnectionStatus("connecting_controller");
   };
 
+  if (connectionStatus === "selecting") {
+    return (
+      <PreThemeLoadingPage>
+        <img width="60%" src="logos/logo.png" alt="logo" />
+        <Flex flexDirection={"column"} gap={16}>
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={() => setConnectionStatus("connecting_controller")}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexGrow: 0,
+              }}
+            >
+              <div>LOGIN </div>
+              <img
+                src={Icons.CARTRIDGE}
+                width={"24px"}
+                style={{ marginLeft: "8px" }}
+              />
+            </div>
+          </button>
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={() => setConnectionStatus("connecting_burner")}
+          >
+            PLAY AS GUEST
+          </button>
+        </Flex>
+      </PreThemeLoadingPage>
+    );
+  }
+
   if (!finalAccount) {
-    if (connectionStatus === "selecting") {
-      return (
-        <PreThemeLoadingPage>
-          <img width="60%" src="logos/logo.png" alt="logo" />
-          <Flex flexDirection={"column"} gap={16}>
-            <button
-              style={{ color: "white" }}
-              className="login-button"
-              onClick={() => setConnectionStatus("connecting_controller")}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexGrow: 0,
-                }}
-              >
-                <div>LOGIN </div>
-                <img
-                  src={Icons.CARTRIDGE}
-                  width={"24px"}
-                  style={{ marginLeft: "8px" }}
-                />
-              </div>
-            </button>
-            <button
-              style={{ color: "white" }}
-              className="login-button"
-              onClick={() => setConnectionStatus("connecting_burner")}
-            >
-              PLAY AS GUEST
-            </button>
-          </Flex>
-        </PreThemeLoadingPage>
-      );
-    }
     return <LoadingScreen />;
   }
 
@@ -242,6 +265,7 @@ const DojoContextProvider = ({
         masterAccount,
         useBurnerAcc: accountType === "burner",
         switchToController: switchToController,
+        accountType: accountType,
         account: {
           create,
           list,

@@ -121,7 +121,8 @@ export interface IGameContext {
   nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
-  transferNewGame: () => void;
+  executeGameTransfer: () => void;
+  initiateControllerSwitch: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -156,6 +157,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     },
     syncCall,
     switchToController,
+    accountType,
   } = useDojo();
 
   const {
@@ -276,11 +278,32 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { enterTournament } = useTournaments();
 
-  const OnTransferGame = async () => {
-    await switchToController();
-    console.log("switched");
-    // await approve(gameId);
-    // await transferGame(gameId, usernameLS ?? "");
+  const initiateControllerSwitch = () => {
+    console.log("GameProvider: Initiating controller switch.");
+    switchToController();
+  };
+
+  const executeGameTransfer = async () => {
+    // We can add a guard here to ensure the account is the controller
+    console.log("GID ", gameId);
+    console.log("Acct:", accountType);
+    if (accountType !== "controller" || !gameId) {
+      console.error(
+        "Attempted to transfer game without a connected controller or gameId."
+      );
+      return;
+    }
+
+    console.log(`GameProvider: Executing transfer for game ${gameId}`);
+    try {
+      // Since the controller is now connected, these calls should use the correct account.
+      await approve(gameId);
+      await transferGame(gameId, usernameLS ?? "");
+      console.log("Game transfer successful.");
+      // Potentially navigate the user to a success screen or their games list.
+    } catch (error) {
+      console.error("Failed to transfer game:", error);
+    }
   };
 
   const executeCreateGame = async (
@@ -709,7 +732,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
-    transferNewGame: OnTransferGame,
+    executeGameTransfer,
+    initiateControllerSwitch,
   };
 
   return (
