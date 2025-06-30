@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GAME_ID, SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
+import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   cashSfx,
   discardSfx,
@@ -115,7 +115,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     state: gameState,
     isClassic,
     setGameId,
-    specialCards
+    specialCards,
+    resetRage
   } = useGameStore();
 
   const {
@@ -293,6 +294,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setCurrentScore,
             addPoints,
             addMulti,
+            resetRage
           });
           refetchSpecialCardsData(modId, gameId);
         } else {

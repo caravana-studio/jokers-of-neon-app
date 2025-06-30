@@ -1,17 +1,5 @@
 import { Card } from "../../types/Card";
 
-const getSellingPrice = (specialCard: any) => {
-  let price;
-
-  if (specialCard.is_temporary && specialCard.remaining) {
-    price = (specialCard.selling_price / 3) * specialCard.remaining;
-  } else {
-    price = specialCard.selling_price;
-  }
-
-  return Math.round(price / 50) * 50;
-};
-
 export const getSpecialCardsView = async (
   client: any,
   gameId: number
@@ -27,18 +15,27 @@ export const getSpecialCardsView = async (
   }
 };
 
-const getSpecialCards = (specialIds: BigInt[]) => {
-  return specialIds.map((card_id: BigInt, index: number) => {
+interface SpecialCardDojo {
+  effect_card_id: BigInt;
+  game_id: BigInt;
+  idx: BigInt;
+  is_temporary: boolean;
+  remaining: BigInt;
+  selling_price: BigInt;
+}
+
+const getSpecialCards = (specialCards: SpecialCardDojo[]) => {
+  return specialCards.map((card: SpecialCardDojo, index: number) => {
+    const card_id = Number(card.effect_card_id);
     return {
-      card_id: Number(card_id),
+      card_id,
       isSpecial: true,
       id: card_id?.toString(),
       idx: index ?? 0,
       img: `${card_id}.png`,
-      // TODO: add temporary and selling price
-      //temporary: specialCard?.is_temporary,
-      //remaining: specialCard?.remaining,
-      //selling_price: getSellingPrice(specialCard),
+      temporary: card?.is_temporary,
+      remaining: Number(card?.remaining),
+      selling_price: Number(card?.selling_price),
     };
   });
 };

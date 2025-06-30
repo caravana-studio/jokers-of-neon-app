@@ -38,6 +38,7 @@ interface AnimatePlayConfig {
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
   addCash: (cash: number) => void;
   setCurrentScore: (score: number) => void;
+  resetRage: () => void
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -73,6 +74,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setCurrentScore,
     addMulti,
     addPoints,
+    resetRage
   } = config;
 
   if (!playEvents) return;
@@ -318,6 +320,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         setLockRedirection(false);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
+      resetRage()
       const { level } = playEvents.levelPassed;
       setTimeout(() => {
         setRoundRewards({
