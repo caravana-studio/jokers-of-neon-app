@@ -18,6 +18,7 @@ import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
 import { signedHexToNumber } from "../../utils/signedHexToNumber";
 import { IconComponent } from "../../components/IconComponent";
 import { Icons } from "../../constants/icons";
+import { useLogout } from "../../hooks/useLogout";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -28,6 +29,7 @@ export const GameOverGuest = () => {
 
   const { restartGame, setIsRageRound, executeCreateGame, transferNewGame } =
     useGameContext();
+  const { handleLogout } = useLogout();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
@@ -114,31 +116,7 @@ export const GameOverGuest = () => {
             {congratulationsMsj}
           </Text>
           <Leaderboard gameId={gameId} lines={4} />
-          {isSmallScreen ? (
-            <Flex h="70px" />
-          ) : (
-            <Flex mt={16} justifyContent={"space-between"} gap={4}>
-              <Button
-                width={"50%"}
-                variant="solid"
-                onClick={onShareClick}
-                data-size="large"
-              >
-                {t("game-over.btn.gameOver-share-btn")}
-                <Flex sx={{ ml: 2.5 }}>
-                  <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
-                </Flex>
-              </Button>
-              <Button
-                width={"50%"}
-                variant="secondarySolid"
-                isDisabled={isLoading}
-                onClick={onStartGameClick}
-              >
-                {t("game-over.btn.gameOver-newGame-btn")}
-              </Button>
-            </Flex>
-          )}
+          {isSmallScreen && <Flex h="70px" />}
         </Flex>
         <Flex
           flexDirection={"column"}
@@ -168,32 +146,9 @@ export const GameOverGuest = () => {
                 ></IconComponent>
               </Flex>
             </Button>
-            <Button
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              SKIP
-            </Button>
+            <Button onClick={handleLogout}>SKIP</Button>
           </Flex>
         </Flex>
-        {isSmallScreen && (
-          <Flex position="absolute" bottom={0} w="100%" zIndex={1000}>
-            <MobileBottomBar
-              firstButton={{
-                onClick: onShareClick,
-                label: t("game-over.btn.gameOver-share-btn"),
-                icon: <FontAwesomeIcon fontSize={10} icon={faXTwitter} />,
-              }}
-              secondButton={{
-                onClick: onStartGameClick,
-                label: t("game-over.btn.gameOver-newGame-btn"),
-                disabled: isLoading,
-              }}
-              hideDeckButton
-            />
-          </Flex>
-        )}
       </Flex>
     </BackgroundDecoration>
   );
