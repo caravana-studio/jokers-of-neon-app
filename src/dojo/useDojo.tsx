@@ -11,5 +11,6 @@ export const useDojo = () => {
     account: context.account,
     syncCall: context.syncCallback,
     switchToController: context.switchToController,
+    accountType: context.accountType,
   };
 };

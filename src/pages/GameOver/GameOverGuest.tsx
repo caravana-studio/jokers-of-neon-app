@@ -26,9 +26,12 @@ export const GameOverGuest = () => {
   const params = useParams();
 
   const gameId = Number(params.gameId);
-
-  const { restartGame, setIsRageRound, executeCreateGame, transferNewGame } =
-    useGameContext();
+  const {
+    restartGame,
+    setIsRageRound,
+    executeCreateGame,
+    initiateTransferFlow,
+  } = useGameContext();
   const { handleLogout } = useLogout();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
@@ -133,7 +136,7 @@ export const GameOverGuest = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                transferNewGame();
+                initiateTransferFlow();
               }}
               alignItems={"center"}
             >

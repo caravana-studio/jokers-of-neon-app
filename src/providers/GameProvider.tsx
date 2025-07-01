@@ -46,6 +46,8 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
+import { ac } from "vitest/dist/chunks/reporters.nr4dxCkA.js";
+import { AccountInterface } from "starknet";
 
 export interface IGameContext {
   gameId: number;
@@ -121,7 +123,7 @@ export interface IGameContext {
   nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
-  transferNewGame: () => void;
+  initiateTransferFlow: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -156,6 +158,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     },
     syncCall,
     switchToController,
+    accountType,
   } = useDojo();
 
   const {
@@ -276,11 +279,36 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { enterTournament } = useTournaments();
 
-  const OnTransferGame = async () => {
-    await switchToController();
-    console.log("switched");
-    // await approve(gameId);
-    // await transferGame(gameId, usernameLS ?? "");
+  const initiateTransferFlow = () => {
+    console.log("GameProvider: Initiating transfer flow...");
+    // The callback now expects a payload object with all the fresh data.
+    switchToController(async (payload) => {
+      // We now call executeGameTransfer with the fresh data from the callback payload.
+      await executeGameTransfer(payload.account, payload.username);
+    });
+  };
+
+  const executeGameTransfer = async (
+    account: AccountInterface,
+    newUsername: string
+  ) => {
+    if (!gameId) {
+      console.error("Guard failed: Attempted to transfer game with no gameId.");
+      return;
+    }
+
+    console.log(
+      `GameProvider: Executing transfer for game ${gameId} to user ${newUsername} with account ${account.address}`
+    );
+    console.log(account);
+
+    try {
+      await approve(gameId);
+      await transferGame(account, gameId, newUsername ?? "");
+      console.log("Game transfer successful.");
+    } catch (error) {
+      console.error("Failed to transfer game:", error);
+    }
   };
 
   const executeCreateGame = async (
@@ -709,7 +737,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     unPreSelectCard,
     togglePreselectedPowerUp,
     surrenderGame,
-    transferNewGame: OnTransferGame,
+    initiateTransferFlow,
   };
 
   return (

@@ -14,7 +14,7 @@ export const useUsername = () => {
         setUsername(username);
       });
     }
-  }, [controller, setup?.useBurnerAcc]);
+  }, [controller, setup?.useBurnerAcc, setup.accountType]);
 
   return isUsingBurner ? window.localStorage.getItem(LOGGED_USER) : username;
 };
