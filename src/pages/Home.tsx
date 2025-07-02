@@ -68,8 +68,6 @@ export const Home = () => {
 
   const { lastGameId, isLoading } = useGetLastGameId();
 
-  if (isLoading) return <LoadingScreen />;
-
   return (
     <>
       <MobileDecoration />
