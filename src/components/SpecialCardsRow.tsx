@@ -59,7 +59,7 @@ export const SpecialCardsRow = () => {
     const card = cards.find((c) => c.idx === cardToDiscardIdx);
     if (card) {
       setHoveredButton(null);
-      sellSpecialCard(cardToDiscardIdx!).then((response) => {
+      card && sellSpecialCard(card).then((response) => {
         if (response) {
           setDiscardedCards((prev) => [...prev, card.id]);
         }

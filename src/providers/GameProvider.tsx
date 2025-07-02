@@ -53,7 +53,7 @@ export interface IGameContext {
   addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
   onShopSkip: () => void;
-  sellSpecialCard: (cardIdx: number) => Promise<boolean>;
+  sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   lockRedirection: boolean;
   playIsNeon: boolean;
@@ -471,10 +471,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
   };
 
-  const onSellSpecialCard = (cardIdx: number) => {
+  const onSellSpecialCard = (card: Card) => {
     setPreSelectionLocked(true);
-    const promise = sellSpecialCard(gameId, cardIdx)
+    const promise = sellSpecialCard(gameId, card.idx)
       .then(async ({ success }) => {
+        addCash(card.selling_price ?? 0);
         return success;
       })
       .catch(() => {

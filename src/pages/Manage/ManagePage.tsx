@@ -64,7 +64,7 @@ export const ManagePage = () => {
             setConfirmationModalOpen(false);
             onClose();
             highlightedCard &&
-              sellSpecialCard(highlightedCard.idx).then((response) => {
+              sellSpecialCard(highlightedCard).then((response) => {
                 if (response) {
                   setDiscardedCards((prev) => [...prev, highlightedCard]);
                 }
