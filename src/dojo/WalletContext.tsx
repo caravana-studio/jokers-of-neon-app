@@ -15,6 +15,7 @@ import { controller } from "./controller/controller";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { Icons } from "../constants/icons";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
+import { useDisconnect } from "@starknet-react/core";
 
 type ConnectionStatus =
   | "selecting"
@@ -32,6 +33,7 @@ interface WalletContextType {
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
+  logout: () => void;
   isLoadingWallet: boolean;
   burnerAccount: Account | AccountInterface | null;
   controllerAccount: AccountInterface | null | undefined;
@@ -57,7 +59,17 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isConnecting: isControllerConnecting,
   } = useAccount();
 
-  const { account: burnerAccount } = useBurnerManager({
+  const { disconnect } = useDisconnect();
+
+  const {
+    create,
+    list,
+    get,
+    select,
+    account: burnerAccount,
+    isDeploying,
+    clear,
+  } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
 
@@ -102,6 +114,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     controllerAccount,
     burnerAccount,
   ]);
+
+  const logout = () => {
+    disconnect();
+    // setFinalAccount(null);
+    setAccountType(null);
+    setConnectionStatus("selecting");
+  };
 
   const switchToController = (
     onSuccess?: (payload: SwitchSuccessPayload) => void
@@ -170,7 +189,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           <button
             style={{ color: "white" }}
             className="login-button"
-            onClick={() => setConnectionStatus("connecting_burner")}
+            onClick={() => {
+              setConnectionStatus("connecting_burner");
+            }}
           >
             PLAY AS GUEST
           </button>
@@ -178,16 +199,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       </PreThemeLoadingPage>
     );
   } else if (!finalAccount && accountType !== null) {
-    console.log("loading screen from wallet context");
     return <LoadingScreen />;
   }
 
   const isLoadingWallet =
     (connectionStatus === "connecting_controller" &&
       (isControllerConnected === false || controllerAccount === undefined)) ||
-    (connectionStatus === "connecting_burner" && !burnerAccount);
-
-  console.log("isloadingwallet passed.: ", isLoadingWallet);
+    (connectionStatus === "connecting_burner" &&
+      (!burnerAccount || isDeploying));
 
   return (
     <WalletContext.Provider
@@ -201,6 +220,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         isControllerConnected,
         isControllerConnecting,
         onSuccessCallback,
+        logout,
       }}
     >
       {children}

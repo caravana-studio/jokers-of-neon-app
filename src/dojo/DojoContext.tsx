@@ -37,6 +37,7 @@ interface DojoContextType extends SetupResult {
   switchToController: (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ) => void;
+  logout: () => void;
   accountType: "burner" | "controller" | null;
 }
 
@@ -134,6 +135,7 @@ const DojoContextProvider = ({
     burnerAccount,
     isControllerConnected,
     onSuccessCallback,
+    logout,
   } = useWallet();
 
   const { create, list, get, select, isDeploying, clear } = useBurnerManager({
@@ -177,7 +179,6 @@ const DojoContextProvider = ({
   ]);
 
   if (!finalAccount) {
-    console.log("!finalAccount. loading. from dojocontext");
     return <LoadingScreen />;
   }
 
@@ -188,6 +189,7 @@ const DojoContextProvider = ({
         masterAccount,
         useBurnerAcc: accountType === "burner",
         switchToController: switchToController,
+        logout: logout,
         accountType: accountType,
         account: {
           create,
