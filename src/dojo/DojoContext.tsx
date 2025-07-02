@@ -248,6 +248,9 @@ const DojoContextProvider = ({
     }
 
     setConnectionStatus("connecting_controller");
+    if (!isConnected && !isConnecting) {
+      connectWallet();
+    }
   };
 
   if (accountType === null) {
