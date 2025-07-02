@@ -19,7 +19,7 @@ export const PlayButton = ({
 
   const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
 
-  const { play: statePlay, totalPlays, remainingPlays } = useGameStore();
+  const {totalPlays, remainingPlays } = useGameStore();
   const handsLeft = !isTutorial()
     ? remainingPlays
     : remainingPlaysTutorial ?? 0;
@@ -39,7 +39,6 @@ export const PlayButton = ({
         onClick={(e) => {
           e.stopPropagation();
           if (onTutorialCardClick) onTutorialCardClick();
-          statePlay();
           play();
         }}
         sx={{

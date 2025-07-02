@@ -109,6 +109,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     addMulti,
     remainingPlays,
     discard: stateDiscard,
+    play: statePlay,
+    rollbackPlay,
     rollbackDiscard,
     level,
     modId,
@@ -116,7 +118,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     isClassic,
     setGameId,
     specialCards,
-    resetRage
+    resetRage,
+    removeSpecialCard,
   } = useGameStore();
 
   const {
@@ -232,7 +235,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             resetLevel();
             replaceCards(hand);
             clearPreSelection();
-            
+
             console.log(`game ${newGameId} created`);
 
             await syncCall();
@@ -258,6 +261,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
+    statePlay();
     play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
       .then((response) => {
         if (response) {
@@ -294,7 +298,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setCurrentScore,
             addPoints,
             addMulti,
-            resetRage
+            resetRage,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -303,6 +307,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         }
       })
       .catch(() => {
+        rollbackPlay();
         setLockRedirection(false);
         setPreSelectionLocked(false);
       });
@@ -473,12 +478,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onSellSpecialCard = (card: Card) => {
     setPreSelectionLocked(true);
+    addCash(card.selling_price ?? 0);
+    card.card_id && removeSpecialCard(card.card_id);
     const promise = sellSpecialCard(gameId, card.idx)
       .then(async ({ success }) => {
-        addCash(card.selling_price ?? 0);
         return success;
       })
       .catch(() => {
+        refetchGameStore(client, gameId);
         return false;
       })
       .finally(() => {

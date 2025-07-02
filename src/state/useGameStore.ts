@@ -36,6 +36,7 @@ type GameStore = {
   play: () => void;
   discard: () => void;
   rollbackDiscard: () => void;
+  rollbackPlay: () => void;
   addCash: (cash: number) => void;
   setCurrentScore: (score: number) => void;
   addPoints: (points: number) => void;
@@ -45,6 +46,7 @@ type GameStore = {
   resetMultiPoints: () => void;
   resetRage: () => void;
   setState: (state: GameStateEnum) => void;
+  removeSpecialCard: (cardId: number) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -131,6 +133,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ remainingDiscards: remainingDiscards + 1 });
   },
 
+  rollbackPlay: () => {
+    const { remainingPlays } = get();
+    set({ remainingPlays: remainingPlays + 1 });
+  },
+
   addCash: (cash: number) => {
     set({ cash: cash + cash });
   },
@@ -166,5 +173,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setState: (state: GameStateEnum) => {
     set({ state });
+  },
+
+  removeSpecialCard: (cardId: number) => {
+    set((state) => {
+      const newState = { ...state };
+      newState.specialCards = newState.specialCards.filter(
+        (card) => card.card_id !== cardId
+      );
+      return newState;
+    });
   },
 }));
