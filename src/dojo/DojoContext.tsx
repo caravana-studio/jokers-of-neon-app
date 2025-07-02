@@ -177,17 +177,6 @@ const DojoContextProvider = ({
   };
 
   useEffect(() => {
-    if (
-      connectionStatus === "connecting_controller" &&
-      !isConnected &&
-      !isConnecting
-    ) {
-      console.log("Initiating controller connection...");
-      connectWallet();
-    }
-  }, [connectionStatus, isConnected, isConnecting, connect, connectors]);
-
-  useEffect(() => {
     if (finalAccount === controllerAccount && controllerAccount !== null)
       return;
 
@@ -261,7 +250,7 @@ const DojoContextProvider = ({
     setConnectionStatus("connecting_controller");
   };
 
-  if (connectionStatus === "selecting") {
+  if (accountType === null) {
     return (
       <PreThemeLoadingPage>
         <img width="60%" src="logos/logo.png" alt="logo" />
@@ -269,7 +258,13 @@ const DojoContextProvider = ({
           <button
             style={{ color: "white" }}
             className="login-button"
-            onClick={() => setConnectionStatus("connecting_controller")}
+            onClick={() => {
+              setConnectionStatus("connecting_controller");
+
+              if (!isConnected && !isConnecting) {
+                connectWallet();
+              }
+            }}
           >
             <div
               style={{
@@ -297,9 +292,7 @@ const DojoContextProvider = ({
         </Flex>
       </PreThemeLoadingPage>
     );
-  }
-
-  if (!finalAccount) {
+  } else if (!finalAccount && accountType !== null) {
     return <LoadingScreen />;
   }
 
