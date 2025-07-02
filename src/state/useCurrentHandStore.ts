@@ -23,6 +23,7 @@ type CurrentHandStore = {
   cardIsPreselected: (cardIndex: number) => boolean;
   getModifiers: (preSelectedCardIndex: number) => Card[];
   clearPreSelection: () => void;
+  setPreSelectionLocked: (locked: boolean) => void;
 };
 
 //TODO
@@ -139,5 +140,9 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
       preSelectedModifiers: {},
       preSelectedPlay: Plays.NONE,
     });
+  },
+
+  setPreSelectionLocked: (locked: boolean) => {
+    set({ preSelectionLocked: locked });
   },
 }));

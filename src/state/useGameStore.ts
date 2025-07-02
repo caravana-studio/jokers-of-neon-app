@@ -138,8 +138,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ remainingPlays: remainingPlays + 1 });
   },
 
-  addCash: (cash: number) => {
-    set({ cash: cash + cash });
+  addCash: (cashToAdd: number) => {
+    const { cash: currentCash } = get();
+    set({ cash: currentCash + cashToAdd });
   },
 
   setCurrentScore: (score: number) => {

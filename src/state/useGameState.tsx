@@ -40,7 +40,6 @@ export const useGameState = () => {
   const { setPreSelectedPlay, preSelectedCards, hand } = useCurrentHandStore();
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [gameLoading, setGameLoading] = useState(true);
-  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
   const [discardAnimation, setDiscardAnimation] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
@@ -51,7 +50,6 @@ export const useGameState = () => {
     undefined
   );
 
-  const [lockedSpecialCards, setLockedSpecialCards] = useState<Card[]>([]);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
     useState<number>();
@@ -195,8 +193,6 @@ export const useGameState = () => {
     gameId,
     gameLoading,
     setGameLoading,
-    preSelectionLocked,
-    setPreSelectionLocked,
     discardAnimation,
     setDiscardAnimation,
     playAnimation,
