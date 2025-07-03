@@ -185,7 +185,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     return (
       <PreThemeLoadingPage>
         <img width="60%" src="logos/logo.png" alt="logo" />
-        <Flex flexDirection={"column"} gap={16}>
+        <Flex flexDirection={"row"} gap={'30px'}>
           <button
             style={{ color: "white" }}
             className="login-button"
@@ -217,7 +217,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           </button>
           <button
             style={{ color: "white" }}
-            className="login-button"
+            className="login-button secondary"
             onClick={() => {
               setConnectionStatus("connecting_burner");
             }}
