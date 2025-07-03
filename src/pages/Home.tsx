@@ -14,14 +14,12 @@ import { RemoveScroll } from "react-remove-scroll";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { CLASSIC_MOD_ID } from "../constants/general";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
-import { useGameContext } from "../providers/GameProvider";
-import { useResponsiveValues } from "../theme/responsiveSettings";
-import { GGBanner } from "../components/GGBanner";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { useGameContext } from "../providers/GameProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
-import { LoadingScreen } from "./LoadingScreen/LoadingScreen";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
@@ -143,7 +141,6 @@ export const Home = () => {
           </Flex>
         </Flex>
         <PoweredBy />
-        <GGBanner />
       </Flex>
       <PositionedDiscordLink />
     </>
