@@ -1,24 +1,21 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundDecoration } from "../../components/Background";
+import { IconComponent } from "../../components/IconComponent";
 import { Leaderboard } from "../../components/Leaderboard";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { Icons } from "../../constants/icons";
 import { GAME_ID } from "../../constants/localStorage";
 import { looseSfx } from "../../constants/sfx";
 import { useAudio } from "../../hooks/useAudio";
+import { useLogout } from "../../hooks/useLogout";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
 import { signedHexToNumber } from "../../utils/signedHexToNumber";
-import { IconComponent } from "../../components/IconComponent";
-import { Icons } from "../../constants/icons";
-import { useLogout } from "../../hooks/useLogout";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -87,14 +84,6 @@ export const GameOverGuest = () => {
     );
   };
 
-  const formatPosition = (position: number | undefined) => {
-    if (!position) return "N/A";
-    if (position === 1) return "1st";
-    if (position === 2) return "2nd";
-    if (position === 3) return "3rd";
-    return `${position}th`;
-  };
-
   return (
     <BackgroundDecoration>
       {isSmallScreen && <MobileDecoration />}
@@ -129,8 +118,9 @@ export const GameOverGuest = () => {
           alignItems={"center"}
         >
           <Text>
-            You are on the {formatPosition(actualPlayer?.position)} position, do
-            you want to keep this?
+            {t("game-over.current-position", {
+              position: actualPlayer?.position,
+            })}
           </Text>
           <Flex gap={4}>
             <Button
@@ -141,7 +131,7 @@ export const GameOverGuest = () => {
               alignItems={"center"}
             >
               <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
-                LOGIN{" "}
+                {t("game-over.login")}{" "}
                 <IconComponent
                   icon={Icons.CARTRIDGE}
                   width={"20px"}
@@ -149,7 +139,7 @@ export const GameOverGuest = () => {
                 ></IconComponent>
               </Flex>
             </Button>
-            <Button onClick={handleLogout}>SKIP</Button>
+            <Button onClick={handleLogout}>{t("skip")}</Button>
           </Flex>
         </Flex>
       </Flex>
