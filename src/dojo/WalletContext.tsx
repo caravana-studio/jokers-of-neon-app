@@ -1,21 +1,21 @@
+import { Flex } from "@chakra-ui/react";
+import { useBurnerManager } from "@dojoengine/create-burner";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useRef,
   useState,
-  ReactNode,
 } from "react";
 import { Account, AccountInterface } from "starknet";
-import { useConnect, useAccount } from "@starknet-react/core";
-import { useBurnerManager } from "@dojoengine/create-burner";
-import { Flex } from "@chakra-ui/react";
-import { SetupResult } from "./setup";
-import { controller } from "./controller/controller";
-import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { Icons } from "../constants/icons";
+import { ACCOUNT_TYPE } from "../constants/localStorage";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
-import { useDisconnect } from "@starknet-react/core";
+import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
+import { controller } from "./controller/controller";
+import { SetupResult } from "./setup";
 
 type ConnectionStatus =
   | "selecting"
@@ -73,14 +73,25 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     burnerManager: value.burnerManager,
   });
 
+  console.log("burner account", burnerAccount);
+  console.log("is burner deploying", isDeploying);
+  console.log("controller account", controllerAccount);
+  console.log("is controller connected", isControllerConnected);
+  console.log("is controller connecting", isControllerConnecting);
+
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("selecting");
   const [finalAccount, setFinalAccount] = useState<
     Account | AccountInterface | null
   >(null);
+
+  const lsAccountType = (localStorage.getItem(ACCOUNT_TYPE) ?? null) as
+    | "burner"
+    | "controller"
+    | null;
   const [accountType, setAccountType] = useState<
     "burner" | "controller" | null
-  >(null);
+  >(lsAccountType);
 
   const onSuccessCallback = useRef<
     ((payload: SwitchSuccessPayload) => void) | null
@@ -103,9 +114,11 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       controllerAccount
     ) {
       setAccountType("controller");
+      localStorage.setItem(ACCOUNT_TYPE, "controller");
       setFinalAccount(controllerAccount);
     } else if (connectionStatus === "connecting_burner" && burnerAccount) {
       setAccountType("burner");
+      localStorage.setItem(ACCOUNT_TYPE, "burner");
       setFinalAccount(burnerAccount);
     }
   }, [
@@ -115,10 +128,24 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     burnerAccount,
   ]);
 
+  useEffect(() => {
+    console.log("account type", accountType, "final account", finalAccount);
+    if (accountType && !finalAccount) {
+      console.log("setting final account");
+      if (accountType === "burner") {
+        console.log("setting burner account");
+        setFinalAccount(burnerAccount);
+      } else {
+        connectWallet();
+        controllerAccount && setFinalAccount(controllerAccount);
+      }
+    }
+  }, [accountType, finalAccount, burnerAccount]);
+
   const logout = () => {
     disconnect();
-    // setFinalAccount(null);
     setAccountType(null);
+    localStorage.removeItem(ACCOUNT_TYPE);
     setConnectionStatus("selecting");
   };
 
@@ -151,6 +178,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       connectWallet();
     }
   };
+
+  console.log("account type", accountType);
 
   if (accountType === null) {
     return (
