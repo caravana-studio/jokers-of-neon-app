@@ -140,7 +140,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         controllerAccount && setFinalAccount(controllerAccount);
       }
     }
-  }, [accountType, finalAccount, burnerAccount]);
+  }, [accountType, finalAccount, burnerAccount, controllerAccount]);
 
   const logout = () => {
     disconnect();
