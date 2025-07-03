@@ -25,7 +25,7 @@ const defaultChainId =
   CHAIN === "mainnet" || CHAIN === "sepolia"
     ? getChainId(CHAIN)
     : shortString.encodeShortString(
-        `WP_${CHAIN.toUpperCase().replace("-", "_")}`
+        `WP_${CHAIN.toUpperCase().replaceAll("-", "_")}`
       );
 
 const isDev = import.meta.env.VITE_DEV === "true";
@@ -37,7 +37,7 @@ const controllerOptions: ControllerOptions = {
   defaultChainId,
   preset: "jokers-of-neon",
   namespace: DOJO_NAMESPACE,
-  policies
+  policies,
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
