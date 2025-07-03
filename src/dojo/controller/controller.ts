@@ -40,6 +40,8 @@ const controllerOptions: ControllerOptions = {
   policies,
 };
 
+console.log('policies', policies)
+
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
   controllerOptions.slot = CHAIN;
 }
