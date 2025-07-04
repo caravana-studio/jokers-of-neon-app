@@ -11,12 +11,11 @@ import {
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
 
-import { getModifiersForContract } from "./utils/getModifiersForContract";
-import { getAchievementCompleteEvent } from "../utils/playEvents/getAchievementCompleteEvent";
-import { handleAchievements } from "../utils/handleAchievements";
+import { achievementSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useSettings } from "../providers/SettingsProvider";
-import { achievementSfx } from "../constants/sfx";
+import { handleAchievements } from "../utils/handleAchievements";
+import { getModifiersForContract } from "./utils/getModifiersForContract";
 
 const createGameEmptyResponse = {
   gameId: 0,

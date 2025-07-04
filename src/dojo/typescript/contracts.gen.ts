@@ -1,7 +1,9 @@
-import { DojoProvider, DojoCall } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
+import { DojoCall, DojoProvider } from "@dojoengine/core";
+import { Account, AccountInterface, BigNumberish, CairoCustomEnum, CairoOption, CallData } from "starknet";
+import { getVrfTx } from "../vrfTx";
 
 const DOJO_NAMESPACE = import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+const disableVrf = import.meta.env.VITE_DISABLE_VRF === "true";
 
 export function setupWorld(provider: DojoProvider) {
 
@@ -242,9 +244,12 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_changeModifierCard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, modifierIndex: BigNumberish) => {
 		try {
+			console.log('vrf tx ', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_changeModifierCard_calldata(gameId, modifierIndex),
+				disableVrf ? build_action_system_changeModifierCard_calldata(gameId, modifierIndex) : 
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_changeModifierCard_calldata(gameId, modifierIndex)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -284,9 +289,12 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_discard = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>) => {
 		try {
+			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes),
+				disableVrf ? build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes) :
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_discard_calldata(gameId, playedCardsIndexes, playedModifiersIndexes)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -619,9 +627,12 @@ export function setupWorld(provider: DojoProvider) {
 
 	const action_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
+			console.log('vrf tx', getVrfTx("action_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes),
+				disableVrf ? build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes) :
+				[getVrfTx("action_system", snAccount), 
+				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -661,9 +672,12 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_system_reroll = async (snAccount: Account | AccountInterface, gameId: BigNumberish) => {
 		try {
+			console.log('vrf tx', getVrfTx("shop_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				build_shop_system_reroll_calldata(gameId),
+				disableVrf ? build_shop_system_reroll_calldata(gameId) :
+				[getVrfTx("shop_system", snAccount), 
+				build_shop_system_reroll_calldata(gameId)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -916,7 +930,8 @@ export function setupWorld(provider: DojoProvider) {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_game_system_startGame_calldata(gameId, playerName, seed),
+				disableVrf ? build_game_system_startGame_calldata(gameId, playerName, seed) :
+				[getVrfTx("game_system", snAccount),  build_game_system_startGame_calldata(gameId, playerName, seed)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
