@@ -27,7 +27,6 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useGameState } from "../state/useGameState.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
-import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
@@ -48,8 +47,6 @@ export interface IGameContext {
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   lockRedirection: boolean;
-  levelUpHand: LevelUpPlayEvent | undefined;
-  setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
   specialSwitcherOn: boolean;
   toggleSpecialSwitcher: () => void;
   showRages: () => void;

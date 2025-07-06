@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 
 type AnimationStore = {
   playAnimation: boolean;
@@ -7,6 +8,8 @@ type AnimationStore = {
   setDiscardAnimation: (playing: boolean) => void;
   destroyedSpecialCardId: number | undefined;
   setDestroyedSpecialCardId: (id: number | undefined) => void;
+  levelUpHand: LevelUpPlayEvent | undefined;
+  setLevelUpHand: (event: LevelUpPlayEvent | undefined) => void;
 };
 
 export const useAnimationStore = create<AnimationStore>((set, get) => ({
@@ -21,5 +24,9 @@ export const useAnimationStore = create<AnimationStore>((set, get) => ({
   destroyedSpecialCardId: undefined,
   setDestroyedSpecialCardId: (id: number | undefined) => {
     set({ destroyedSpecialCardId: id });
+  },
+  levelUpHand: undefined,
+  setLevelUpHand: (event: LevelUpPlayEvent | undefined) => {
+    set({ levelUpHand: event });
   },
 }));

@@ -37,8 +37,6 @@ export const useGameState = () => {
 
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 
-  const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
-
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
 
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
@@ -130,8 +128,6 @@ export const useGameState = () => {
   return {
     gameId,
     plays,
-    levelUpHand,
-    setLevelUpHand,
     specialSwitcherOn,
     toggleSpecialSwitcher,
     showRages,

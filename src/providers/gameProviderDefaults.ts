@@ -13,8 +13,6 @@ export const gameProviderDefaults: IGameContext = {
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   lockRedirection: false,
-  levelUpHand: undefined,
-  setLevelUpHand: () => {},
   specialSwitcherOn: true,
   toggleSpecialSwitcher: () => {},
   showRages: () => {},
