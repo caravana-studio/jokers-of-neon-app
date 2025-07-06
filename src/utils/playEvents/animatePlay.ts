@@ -348,11 +348,11 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   setTimeout(() => {
     setPlayAnimation(true);
+    setAnimatedCard(undefined);
   }, ALL_CARDS_DURATION);
   
   setTimeout(() => {
     // Reset state
-    setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
     unPreSelectAllPowerUps();
     refetchPowerUps();
