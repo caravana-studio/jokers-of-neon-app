@@ -4,7 +4,10 @@ import { rageCardIds } from "../constants/rageCardIds";
 import { getHandCards } from "../dojo/queries/getHandCards";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
+import { Suits } from "../enums/suits";
 import { Card } from "../types/Card";
+import { changeCardNeon } from "../utils/cardTransformation/changeCardNeon";
+import { changeCardSuit } from "../utils/cardTransformation/changeCardSuit";
 import { sortCards } from "../utils/sortCards";
 
 type CurrentHandStore = {
@@ -27,6 +30,8 @@ type CurrentHandStore = {
   clearPreSelection: () => void;
   setPreSelectionLocked: (locked: boolean) => void;
   syncMaxPreSelectedCards: (rageCards: Card[]) => void;
+  changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
+  changeCardsNeon: (cardIndexes: number[]) => void;
 };
 
 const MAX_PRESELECTED_CARDS = 5;
@@ -147,5 +152,39 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
       (card) => card.card_id === rageCardIds.STRATEGIC_QUARTET
     );
     set({ maxPreSelectedCards: hasStrategicQuartet ? 4 : 5 });
+  },
+
+  changeCardsSuit: (cardIndexes: number[], suit: Suits) => {
+    set((state) => {
+      const newHand = state.hand.map((card) => {
+        if (cardIndexes.includes(card.idx) && card.suit !== Suits.WILDCARD) {
+          return {
+            ...card,
+            card_id: changeCardSuit(card.card_id!, suit),
+            img: `${changeCardSuit(card.card_id!, suit)}.png`,
+            suit,
+          };
+        }
+        return card;
+      });
+      return { hand: newHand };
+    });
+  },
+
+  changeCardsNeon: (cardIndexes: number[]) => {
+    set((state) => {
+      const newHand = state.hand.map((card) => {
+        if (cardIndexes.includes(card.idx)) {
+          return {
+            ...card,
+            card_id: changeCardNeon(card.card_id!),
+            img: `${changeCardNeon(card.card_id!)}.png`,
+            isNeon: true,
+          };
+        }
+        return card;
+      });
+      return { hand: newHand };
+    });
   },
 }));

@@ -126,6 +126,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectionLocked,
     setPreSelectionLocked,
     syncMaxPreSelectedCards,
+    changeCardsSuit,
+    changeCardsNeon,
   } = useCurrentHandStore();
 
   const [lockRedirection, setLockRedirection] = useState(false);
@@ -271,8 +273,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             cashSound,
             setPoints,
             setMulti,
-            // TODO: remove this,
-            setHand: () => {},
+            changeCardsSuit,
+            changeCardsNeon,
             setPlayAnimation,
             setPreSelectionLocked,
             clearPreSelection,

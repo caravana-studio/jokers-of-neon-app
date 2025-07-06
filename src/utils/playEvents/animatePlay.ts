@@ -2,8 +2,6 @@ import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
-import { changeCardNeon } from "../cardTransformation/changeCardNeon";
-import { changeCardSuit } from "../cardTransformation/changeCardSuit";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {
@@ -20,7 +18,8 @@ interface AnimatePlayConfig {
   setMulti: (multi: number) => void;
   addPoints: (points: number) => void;
   addMulti: (multi: number) => void;
-  setHand: (hand: Card[] | ((prev: Card[]) => Card[])) => void;
+  changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
+  changeCardsNeon: (cardIndexes: number[]) => void;
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   clearPreSelection: () => void;
@@ -55,7 +54,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     cashSound,
     setPoints,
     setMulti,
-    setHand,
+    changeCardsNeon,
+    changeCardsSuit,
     setPlayAnimation,
     setPreSelectionLocked,
     clearPreSelection,
@@ -143,20 +143,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
               idx: handIndexes,
               animationIndex: 200 + index,
             });
-            setHand((prev) => {
-              const updatedHand = prev?.map((card) =>
-                handIndexes.includes(card.idx)
-                  ? {
-                      ...card,
-                      card_id: changeCardNeon(card.card_id!),
-                      img: `${changeCardNeon(card.card_id!)}.png`,
-                      isNeon: true,
-                    }
-                  : card
-              );
-              resolve();
-              return updatedHand;
-            });
+            changeCardsNeon(handIndexes);
           } else {
             setAnimatedCard({
               suit,
@@ -165,20 +152,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
               animationIndex: 200 + index,
             });
             suit &&
-              setHand((prev) => {
-                const updatedHand = prev?.map((card) =>
-                  handIndexes.includes(card.idx) && card.suit !== Suits.WILDCARD
-                    ? {
-                        ...card,
-                        card_id: changeCardSuit(card.card_id!, suit),
-                        img: `${changeCardSuit(card.card_id!, suit)}.png`,
-                        suit,
-                      }
-                    : card
-                );
-                resolve();
-                return updatedHand;
-              });
+              changeCardsSuit(handIndexes, suit);
           }
         }, playAnimationDuration * index);
       });
