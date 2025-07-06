@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { SORT_BY_SUIT } from "../constants/localStorage";
 import { rageCardIds } from "../constants/rageCardIds";
 import { getHandCards } from "../dojo/queries/getHandCards";
-import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
@@ -46,7 +45,6 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
 
     const { sortBy } = get();
     const hand = await getHandCards(client, gameId, sortBy);
-    const powerups = await getPowerUps(client, gameId);
     set({
       hand,
     });
