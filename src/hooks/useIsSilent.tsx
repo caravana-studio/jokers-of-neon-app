@@ -61,3 +61,12 @@ export const useIsSilent = (card: Card) => {
   });
   return isRageRound && isSilent;
 };
+
+export const isModifierSilent = (card: Card, rageCards: Card[]) => {
+  return (
+    card.isModifier &&
+    rageCards.some(
+      (rageCard) => rageCard.card_id === rageCardIds.BROKEN_MODIFIERS
+    )
+  );
+};

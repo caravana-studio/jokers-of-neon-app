@@ -12,8 +12,7 @@ import {
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { useIsSilent } from "../hooks/useIsSilent.tsx";
-import { useCardData } from "../providers/CardDataProvider.tsx";
+import { isModifierSilent, useIsSilent } from "../hooks/useIsSilent.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
@@ -72,7 +71,7 @@ export const TiltCard = ({
   const { t } = useTranslation(["store"]);
   const { state, isClassic } = useGameStore();
 
-  const { getCardData } = useCardData();
+  const { rageCards } = useGameStore();
 
   const getModifierOffset = (index: number) => {
     if (isMobile) {
@@ -169,9 +168,8 @@ export const TiltCard = ({
         </ConditionalTilt>
       </Box>
       {card.modifiers?.map((c, index) => {
-        const { name, description } = getCardData(c.card_id ?? 0);
         const { top, left } = getModifierOffset(index);
-        const isModifierSilent = useIsSilent(c);
+        const isSilent = isModifierSilent(c, rageCards);
 
         return (
           <Box
@@ -197,7 +195,7 @@ export const TiltCard = ({
                       onClick?.();
                     }}
                   />
-                  {isModifierSilent && state === GameStateEnum.Rage && (
+                  {isSilent && state === GameStateEnum.Rage && (
                     <BrokenCard onDeck={onDeck} isPack={isPack} />
                   )}
                 </CardTooltip>

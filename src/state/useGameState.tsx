@@ -33,15 +33,12 @@ export const useGameState = () => {
     rageCards,
   } = useGameStore();
 
-  const { setPreSelectedPlay, preSelectedCards, hand } = useCurrentHandStore();
+  const { setPreSelectedPlay, preSelectedCards, hand, preSelectedModifiers } = useCurrentHandStore();
   const [playIsNeon, setPlayIsNeon] = useState(false);
   const [gameLoading, setGameLoading] = useState(true);
   const [discardAnimation, setDiscardAnimation] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
   const [error, setError] = useState(false);
-  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
-    [key: number]: number[];
-  }>({});
   const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
     undefined
   );
@@ -149,8 +146,6 @@ export const useGameState = () => {
     setPlayAnimation,
     error,
     setError,
-    preSelectedModifiers,
-    setPreSelectedModifiers,
     roundRewards,
     setRoundRewards,
     plays,

@@ -12,8 +12,7 @@ import {
   discardSfx,
   multiSfx,
   negativeMultiSfx,
-  pointsSfx,
-  preselectedCardSfx,
+  pointsSfx
 } from "../constants/sfx.ts";
 import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
@@ -49,7 +48,6 @@ export interface IGameContext {
   ) => Promise<{ success: boolean; cards: Card[] }>;
   error: boolean;
   clearPreSelection: () => void;
-  addModifier: (cardIdx: number, modifierIdx: number) => void;
   roundRewards: RoundRewards | undefined;
   onShopSkip: () => void;
   sellSpecialCard: (card: Card) => Promise<boolean>;
@@ -161,7 +159,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
-  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
 
@@ -175,15 +172,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const {
     gameId,
     setRoundRewards,
-    setPreSelectedModifiers,
     setGameLoading,
     setDiscardAnimation,
     setPlayAnimation,
     setError,
     setPlayIsNeon,
     showSpecials,
-    showRages,
-    cardTransformationLock,
     setCardTransformationLock,
   } = state;
 
@@ -433,19 +427,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     return discardPromise;
   };
 
-  const addModifier = (cardIdx: number, modifierIdx: number) => {
-    const modifiers = preSelectedModifiers[cardIdx] ?? [];
-    if (modifiers.length < 1) {
-      const newModifiers = [...modifiers, modifierIdx];
-      setPreSelectedModifiers((prev) => {
-        return {
-          ...prev,
-          [cardIdx]: newModifiers,
-        };
-      });
-    }
-  };
-
   const onShopSkip = () => {
     resetLevel();
   };
@@ -518,7 +499,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard: onDiscardClick,
     changeModifierCard: onChangeModifierCard,
     clearPreSelection,
-    addModifier,
     onShopSkip,
     sellSpecialCard: onSellSpecialCard,
     checkOrCreateGame,

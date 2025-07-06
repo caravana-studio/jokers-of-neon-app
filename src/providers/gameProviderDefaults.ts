@@ -13,7 +13,6 @@ export const gameProviderDefaults: IGameContext = {
     new Promise((resolve) => resolve({ success: false, cards: [] })),
   error: false,
   clearPreSelection: () => {},
-  addModifier: (_, __) => {},
   roundRewards: undefined,
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),

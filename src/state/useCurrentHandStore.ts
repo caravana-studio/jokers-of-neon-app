@@ -32,6 +32,7 @@ type CurrentHandStore = {
   syncMaxPreSelectedCards: (rageCards: Card[]) => void;
   changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
   changeCardsNeon: (cardIndexes: number[]) => void;
+  addModifier: (cardIdx: number, modifierIdx: number) => void;
 };
 
 const MAX_PRESELECTED_CARDS = 5;
@@ -186,5 +187,22 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
       });
       return { hand: newHand };
     });
+  },
+
+  addModifier: (cardIdx: number, modifierIdx: number) => {
+    const { preSelectedModifiers } = get();
+    const modifiers = preSelectedModifiers[cardIdx] ?? [];
+
+    if (modifiers.length < 1) {
+      const newModifiers = [...modifiers, modifierIdx];
+      set((state) => {
+        return {
+          preSelectedModifiers: {
+            ...state.preSelectedModifiers,
+            [cardIdx]: newModifiers,
+          },
+        };
+      });
+    }
   },
 }));

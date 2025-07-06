@@ -42,10 +42,9 @@ export const MobileGameContent = () => {
     gameLoading,
     error,
     executeCreateGame,
-    addModifier,
   } = useGameContext();
 
-  const { preSelectCard, unPreSelectCard, preSelectedCards, hand } =
+  const { preSelectCard, unPreSelectCard, preSelectedCards, hand, addModifier } =
     useCurrentHandStore();
 
   const { state, maxPowerUpSlots } = useGameStore();
