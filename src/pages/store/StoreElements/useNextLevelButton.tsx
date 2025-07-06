@@ -5,19 +5,20 @@ import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useAnimationStore } from "../../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { useGameStore } from "../../../state/useGameStore";
-import { PowerUp } from "../../../types/Powerup/PowerUp";
 
 export const useNextLevelButton = () => {
   const navigate = useCustomNavigate();
   const { t } = useTranslation(["store"]);
 
-  const { setDestroyedSpecialCardId, onShopSkip } = useGameContext();
-  const { id: gameId, maxPowerUpSlots, setPowerUps } = useGameStore();
+  const { onShopSkip } = useGameContext();
+  const { id: gameId, setPowerUps } = useGameStore();
 
   const { replaceCards } = useCurrentHandStore();
   const { skipShop } = useShopActions();
+  const { setDestroyedSpecialCardId } = useAnimationStore();
 
   const { locked, setLoading } = useStore();
 

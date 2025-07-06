@@ -12,7 +12,7 @@ import {
   discardSfx,
   multiSfx,
   negativeMultiSfx,
-  pointsSfx
+  pointsSfx,
 } from "../constants/sfx.ts";
 import { EventTypeEnum, GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
@@ -22,11 +22,11 @@ import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnable
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
+import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useGameState } from "../state/useGameState.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
-import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
@@ -39,8 +39,6 @@ export interface IGameContext {
   gameId: number;
   executeCreateGame: (gameId?: number) => void;
   play: () => void;
-  discardAnimation: boolean;
-  playAnimation: boolean;
   discard: () => void;
   changeModifierCard: (
     cardIdx: number
@@ -50,9 +48,6 @@ export interface IGameContext {
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   lockRedirection: boolean;
-  playIsNeon: boolean;
-  destroyedSpecialCardId: number | undefined;
-  setDestroyedSpecialCardId: (id: number | undefined) => void;
   levelUpHand: LevelUpPlayEvent | undefined;
   setLevelUpHand: (levelUpPlay: LevelUpPlayEvent | undefined) => void;
   specialSwitcherOn: boolean;
@@ -121,12 +116,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectedCards,
     preSelectedModifiers,
     clearPreSelection,
-    preSelectionLocked,
     setPreSelectionLocked,
     syncMaxPreSelectedCards,
     changeCardsSuit,
     changeCardsNeon,
+    setPlayIsNeon,
   } = useCurrentHandStore();
+
+  const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
 
   const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
@@ -169,14 +166,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setanimateSpecialCardDefault,
   } = useCardAnimations();
 
-  const {
-    gameId,
-    setDiscardAnimation,
-    setPlayAnimation,
-    setPlayIsNeon,
-    showSpecials,
-    setCardTransformationLock,
-  } = state;
+  const { gameId, showSpecials, setCardTransformationLock } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);

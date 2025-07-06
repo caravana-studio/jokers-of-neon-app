@@ -4,6 +4,7 @@ import { animated, useSpring } from "react-spring";
 import CachedImage from "../../components/CachedImage";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useAnimationStore } from "../../state/useAnimationStore";
 import { useGameStore } from "../../state/useGameStore";
 
 export const RageRoundAnimation = () => {
@@ -11,12 +12,10 @@ export const RageRoundAnimation = () => {
   const [showAnimationText, setShowAnimationText] = useState(false);
   const [phase, setPhase] = useState(1);
 
-  const {
-    destroyedSpecialCardId,
-    setDestroyedSpecialCardId,
-    showRages,
-    showSpecials,
-  } = useGameContext();
+  const { showRages, showSpecials } = useGameContext();
+
+  const { destroyedSpecialCardId, setDestroyedSpecialCardId } =
+    useAnimationStore();
 
   const { isRageRound, rageCards } = useGameStore();
 

@@ -5,8 +5,6 @@ export const gameProviderDefaults: IGameContext = {
   gameId: getLSGameId(),
   executeCreateGame: () => {},
   play: () => {},
-  discardAnimation: false,
-  playAnimation: false,
   discard: () => {},
   changeModifierCard: () =>
     new Promise((resolve) => resolve({ success: false, cards: [] })),
@@ -15,9 +13,6 @@ export const gameProviderDefaults: IGameContext = {
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   lockRedirection: false,
-  playIsNeon: false,
-  destroyedSpecialCardId: undefined,
-  setDestroyedSpecialCardId: () => {},
   levelUpHand: undefined,
   setLevelUpHand: () => {},
   specialSwitcherOn: true,

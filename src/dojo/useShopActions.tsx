@@ -18,6 +18,7 @@ import {
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
 import { useGameStore } from "../state/useGameStore";
+import { useAnimationStore } from "../state/useAnimationStore";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -32,7 +33,7 @@ export const useShopActions = () => {
   const { replaceCards: setHand } = useCurrentHandStore();
 
   const { setDestroyedSpecialCardId } =
-    useGameContext();
+    useAnimationStore();
 
   const { maxPowerUpSlots, setPowerUps } = useGameStore();
 

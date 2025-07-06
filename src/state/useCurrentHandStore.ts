@@ -18,6 +18,8 @@ type CurrentHandStore = {
   preSelectionLocked: boolean;
   preSelectedPlay: Plays;
   maxPreSelectedCards: number;
+  playIsNeon: boolean;
+
   setPreSelectedPlay: (plays: Plays) => void;
   refetchCurrentHandStore: (client: any, gameId: number) => Promise<void>;
   replaceCards: (cards: Card[]) => void;
@@ -33,6 +35,7 @@ type CurrentHandStore = {
   changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
   changeCardsNeon: (cardIndexes: number[]) => void;
   addModifier: (cardIdx: number, modifierIdx: number) => void;
+  setPlayIsNeon: (isNeon: boolean) => void;
 };
 
 const MAX_PRESELECTED_CARDS = 5;
@@ -46,6 +49,8 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   sortBy:
     localStorage.getItem(SORT_BY_SUIT) === "true" ? SortBy.SUIT : SortBy.RANK,
   maxPreSelectedCards: MAX_PRESELECTED_CARDS,
+  playIsNeon: false,
+
   refetchCurrentHandStore: async (client, gameId) => {
     console.log("refetchint current hand store");
 
@@ -204,5 +209,9 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
         };
       });
     }
+  },
+
+  setPlayIsNeon: (isNeon: boolean) => {
+    set({ playIsNeon: isNeon });
   },
 }));

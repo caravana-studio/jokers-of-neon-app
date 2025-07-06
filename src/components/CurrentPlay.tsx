@@ -2,12 +2,10 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { PLAYS } from "../constants/plays";
 import { Plays } from "../enums/plays";
-import { useGameContext } from "../providers/GameProvider";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
 
 export const CurrentPlay = () => {
-  const { playIsNeon } = useGameContext();
-  const { preSelectedPlay } = useCurrentHandStore();
+  const { preSelectedPlay, playIsNeon } = useCurrentHandStore();
   const { t } = useTranslation(["game"]);
 
   return (

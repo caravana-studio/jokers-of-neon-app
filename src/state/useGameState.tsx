@@ -34,13 +34,9 @@ export const useGameState = () => {
 
   const { setPreSelectedPlay, preSelectedCards, hand, preSelectedModifiers } =
     useCurrentHandStore();
-  const [playIsNeon, setPlayIsNeon] = useState(false);
-  const [discardAnimation, setDiscardAnimation] = useState(false);
-  const [playAnimation, setPlayAnimation] = useState(false);
 
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
-  const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
-    useState<number>();
+
   const [levelUpHand, setLevelUpHand] = useState<LevelUpPlayEvent>();
 
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
@@ -133,15 +129,7 @@ export const useGameState = () => {
 
   return {
     gameId,
-    discardAnimation,
-    setDiscardAnimation,
-    playAnimation,
-    setPlayAnimation,
     plays,
-    playIsNeon,
-    setPlayIsNeon,
-    destroyedSpecialCardId,
-    setDestroyedSpecialCardId,
     levelUpHand,
     setLevelUpHand,
     specialSwitcherOn,
