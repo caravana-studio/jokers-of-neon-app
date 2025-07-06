@@ -238,7 +238,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setPreSelectionLocked,
       setLockedSpecialCards: emptyFn,
       clearPreSelection,
-      removePowerUp: emptyFn,
       preselectedPowerUps,
       navigate: emptyFn,
       gameId: 0,

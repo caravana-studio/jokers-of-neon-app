@@ -43,13 +43,12 @@ export const MobileGameContent = () => {
     error,
     executeCreateGame,
     addModifier,
-    maxPowerUpSlots,
   } = useGameContext();
 
   const { preSelectCard, unPreSelectCard, preSelectedCards, hand } =
     useCurrentHandStore();
 
-  const { state } = useGameStore();
+  const { state, maxPowerUpSlots } = useGameStore();
 
   const { highlightedCard } = useCardHighlight();
 

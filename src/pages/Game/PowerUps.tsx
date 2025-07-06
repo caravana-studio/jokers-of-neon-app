@@ -1,19 +1,26 @@
 import { Flex } from "@chakra-ui/react";
 import { PowerUpComponent } from "../../components/PowerUpComponent";
+import { preselectedCardSfx } from "../../constants/sfx";
+import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useGameStore } from "../../state/useGameStore";
 
 interface PowerUpsProps {
   onTutorialCardClick?: () => void;
 }
 
 export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
-  const { powerUps, togglePreselectedPowerUp } = useGameContext();
+  const { powerUps, togglePreselectedPowerUp } = useGameStore();
   const { preSelectionLocked } = useCurrentHandStore();
   const { isSmallScreen } = useResponsiveValues();
   const width = isSmallScreen ? 60 : 93;
   const componentWidth = isSmallScreen ? width - 4 : width - 10;
+  const { sfxVolume } = useSettings();
+
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
   return (
     <Flex
@@ -29,7 +36,8 @@ export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
             powerUp={powerUp}
             onClick={() => {
               if (powerUp) {
-                togglePreselectedPowerUp(powerUp.idx);
+                const result = togglePreselectedPowerUp(powerUp.idx);
+                result && preselectCardSound();
               }
               if (onTutorialCardClick) onTutorialCardClick();
             }}

@@ -30,7 +30,7 @@ export const PowerUpComponent = ({
   containerSx,
   isActive,
 }: PowerUpProps) => {
-  const { powerUpIsPreselected } = useGameContext();
+  const { powerUpIsPreselected } = useGameStore();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
   const price = inStore && powerUp?.cost;
@@ -46,18 +46,7 @@ export const PowerUpComponent = ({
   const [startParticles, setStartParticles] = useState(false);
 
   return powerUp ? (
-    <FadingParticleAnimation
-      width={isSmallScreen ? 120 : 190}
-      height={isSmallScreen ? 35 : 70}
-      spriteSrc={powerupStyle?.vfx ?? ""}
-      particleSize={5}
-      amount={isSmallScreen ? 300 : 500}
-      delayRange={3}
-      minHeight={5}
-      backward
-      active={(calculatedIsActive ?? false) && startParticles}
-      spreadOffset={0.3}
-    >
+
       <AnimatedPowerUp idx={powerUp.idx}>
         <Tooltip label={description && colorizeText(description)}>
           <Flex
@@ -108,7 +97,6 @@ export const PowerUpComponent = ({
           </Flex>
         </Tooltip>
       </AnimatedPowerUp>
-    </FadingParticleAnimation>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );

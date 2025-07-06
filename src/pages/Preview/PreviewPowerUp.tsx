@@ -8,7 +8,6 @@ import { StorePreviewPowerUpComponentMobile } from "../../components/StorePrevie
 import { getPowerUpData } from "../../data/powerups.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
@@ -24,9 +23,8 @@ export const PreviewPowerUp = () => {
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
-  const { buyPowerUp, locked } = useStore();
-  const { powerUps, maxPowerUpSlots } = useGameContext();
-  const { cash } = useGameStore();
+  const { buyPowerUp, locked, powerUps } = useStore();
+  const { cash, maxPowerUpSlots } = useGameStore();
 
   const powerUpData = getPowerUpData(powerUp.power_up_id);
 

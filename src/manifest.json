@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x77b74e239a6b28a3968f1bbe0c2a51ed1ea8a262bc6c471207695d5de35446e",
-      "class_hash": "0x40d5e10c9164388b68087f2eef154ed31920d4715bdecaf9bd4dacbb3c1477d",
+      "address": "0x3536e3aca51b270f708d455814bdbea445c36223dff3f6c259bc20b3f6210b5",
+      "class_hash": "0x38a9d492d2c5f65d1f881b937fa341746445f6b175462b5180a90a0e3e5ac63",
       "abi": [
         {
           "type": "impl",
@@ -1983,8 +1983,8 @@
       ]
     },
     {
-      "address": "0x69bc6cd6672ceeb1203a2581f48413e419bde5f38aca1129a29865daa5d7122",
-      "class_hash": "0x7c4c70e17a351d907bb6176ecc847a6bba29202ca35cc3e2f72275f759f9186",
+      "address": "0x60036a84ed1d73df1aa4aa4d8f85c57fd5c3230ca27a2c5135f0a01b8a974b",
+      "class_hash": "0x17520b40ec7ed863f21113bc0a1b3975f69f9862d2556bf0c09a93e84c11f7c",
       "abi": [
         {
           "type": "impl",
@@ -2429,6 +2429,22 @@
               "outputs": [
                 {
                   "type": "core::array::Span::<(core::integer::u32, core::bool)>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_power_ups",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
                 }
               ],
               "state_mutability": "view"

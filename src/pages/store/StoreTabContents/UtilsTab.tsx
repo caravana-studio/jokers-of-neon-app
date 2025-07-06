@@ -18,9 +18,8 @@ export const UtilsTab = () => {
   const navigate = useNavigate();
 
   const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
-  const { maxSpecialCards } = useGameContext();
 
-  const { cash, specialSlots } = useGameStore();
+  const { cash, specialSlots, maxSpecialCards } = useGameStore();
 
   const visible = specialSlots < maxSpecialCards;
 

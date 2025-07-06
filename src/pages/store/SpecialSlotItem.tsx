@@ -16,11 +16,10 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
   const navigate = useNavigate();
-  const { maxSpecialCards } = useGameContext();
 
   const { specialSlotItem } = useStore();
 
-  const { specialSlots } = useGameStore();
+  const { specialSlots, maxSpecialCards } = useGameStore();
   const visible = specialSlots < maxSpecialCards;
 
   const price = specialSlotItem?.cost;

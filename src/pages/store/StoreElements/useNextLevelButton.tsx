@@ -1,25 +1,20 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
+import { useGameStore } from "../../../state/useGameStore";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
-import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
-import { GameStateEnum } from "../../../dojo/typescript/custom";
 
 export const useNextLevelButton = () => {
   const navigate = useCustomNavigate();
   const { t } = useTranslation(["store"]);
 
-  const {
-    setDestroyedSpecialCardId,
-    onShopSkip,
-    gameId,
-    setPowerUps,
-    maxPowerUpSlots,
-  } = useGameContext();
+  const { setDestroyedSpecialCardId, onShopSkip } = useGameContext();
+  const { id: gameId, maxPowerUpSlots, setPowerUps } = useGameStore();
 
   const { replaceCards } = useCurrentHandStore();
   const { skipShop } = useShopActions();
@@ -32,12 +27,7 @@ export const useNextLevelButton = () => {
     skipShop(gameId).then((response): void => {
       if (response.success) {
         replaceCards(response.cards);
-
-        const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
+        setPowerUps(response.powerUps);
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);

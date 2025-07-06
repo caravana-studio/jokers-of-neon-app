@@ -18,6 +18,7 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 import { useGameContext } from "./GameProvider";
+import { useGameStore } from "../state/useGameStore.ts";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -122,7 +123,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     shopId,
   } = useShopState();
 
-  const { gameId, addPowerUp } = useGameContext();
+  const { id: gameId, addPowerUp } = useGameStore();
   const [locked, setLocked] = useState(false);
   const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);

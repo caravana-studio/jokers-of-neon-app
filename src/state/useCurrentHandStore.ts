@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { SORT_BY_SUIT } from "../constants/localStorage";
+import { rageCardIds } from "../constants/rageCardIds";
 import { getHandCards } from "../dojo/queries/getHandCards";
+import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { Plays } from "../enums/plays";
 import { SortBy } from "../enums/sortBy";
 import { Card } from "../types/Card";
@@ -13,6 +15,7 @@ type CurrentHandStore = {
   preSelectedModifiers: { [key: number]: number[] };
   preSelectionLocked: boolean;
   preSelectedPlay: Plays;
+  maxPreSelectedCards: number;
   setPreSelectedPlay: (plays: Plays) => void;
   refetchCurrentHandStore: (client: any, gameId: number) => Promise<void>;
   replaceCards: (cards: Card[]) => void;
@@ -24,16 +27,9 @@ type CurrentHandStore = {
   getModifiers: (preSelectedCardIndex: number) => Card[];
   clearPreSelection: () => void;
   setPreSelectionLocked: (locked: boolean) => void;
+  syncMaxPreSelectedCards: (rageCards: Card[]) => void;
 };
 
-//TODO
-/* 
-  const maxPreSelectedCards = rageCards?.find(
-    (card) => card.card_id === rageCardIds.STRATEGIC_QUARTET
-  )
-    ? 4
-    : 5;
- */
 const MAX_PRESELECTED_CARDS = 5;
 
 export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
@@ -44,15 +40,17 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   preSelectedPlay: Plays.NONE,
   sortBy:
     localStorage.getItem(SORT_BY_SUIT) === "true" ? SortBy.SUIT : SortBy.RANK,
-
+  maxPreSelectedCards: MAX_PRESELECTED_CARDS,
   refetchCurrentHandStore: async (client, gameId) => {
     console.log("refetchint current hand store");
 
     const { sortBy } = get();
     const hand = await getHandCards(client, gameId, sortBy);
+    const powerups = await getPowerUps(client, gameId);
     set({
       hand,
     });
+    set({ maxPreSelectedCards: MAX_PRESELECTED_CARDS });
   },
 
   replaceCards: (cards: Card[]) => {
@@ -144,5 +142,12 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
 
   setPreSelectionLocked: (locked: boolean) => {
     set({ preSelectionLocked: locked });
+  },
+
+  syncMaxPreSelectedCards: (rageCards: Card[]) => {
+    const hasStrategicQuartet = rageCards.some(
+      (card) => card.card_id === rageCardIds.STRATEGIC_QUARTET
+    );
+    set({ maxPreSelectedCards: hasStrategicQuartet ? 4 : 5 });
   },
 }));

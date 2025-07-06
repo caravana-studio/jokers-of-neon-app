@@ -17,6 +17,7 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
+import { useGameStore } from "../state/useGameStore";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -30,8 +31,10 @@ export const useShopActions = () => {
 
   const { replaceCards: setHand } = useCurrentHandStore();
 
-  const { setDestroyedSpecialCardId, setPowerUps, maxPowerUpSlots } =
+  const { setDestroyedSpecialCardId } =
     useGameContext();
+
+  const { maxPowerUpSlots, setPowerUps } = useGameStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -134,14 +137,8 @@ export const useShopActions = () => {
         const cards = getCardsFromEvents(tx.events);
         const destroyedSpecialCard = event && getNumberValueFromEvent(event, 3);
         const responsePowerUps = getPowerUpsFromEvents(tx.events);
-
         setHand(cards);
-
-        const powerUps: (PowerUp | null)[] = responsePowerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
+        setPowerUps(responsePowerUps);
 
         destroyedSpecialCard && setDestroyedSpecialCardId(destroyedSpecialCard);
       }

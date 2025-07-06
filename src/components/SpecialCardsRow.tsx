@@ -15,8 +15,8 @@ import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
 
 export const SpecialCardsRow = () => {
-  const { sellSpecialCard, maxSpecialCards } = useGameContext();
-  const { isRageRound, isClassic, specialCards: cards } = useGameStore();
+  const { sellSpecialCard } = useGameContext();
+  const { isRageRound, isClassic, specialCards: cards, maxSpecialCards } = useGameStore();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);

@@ -24,8 +24,8 @@ interface AnimatePlayConfig {
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
   clearPreSelection: () => void;
-  removePowerUp: (idx: number) => void;
-  preselectedPowerUps: number[];
+  refetchPowerUps: () => void;
+  preSelectedPowerUps: number[];
   navigate: (path: string) => void;
   gameId: number;
   setLockRedirection: (locked: boolean) => void;
@@ -38,7 +38,8 @@ interface AnimatePlayConfig {
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
   addCash: (cash: number) => void;
   setCurrentScore: (score: number) => void;
-  resetRage: () => void
+  resetRage: () => void;
+  unPreSelectAllPowerUps: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -58,8 +59,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setPlayAnimation,
     setPreSelectionLocked,
     clearPreSelection,
-    removePowerUp,
-    preselectedPowerUps,
+    refetchPowerUps,
     navigate,
     gameId,
     setLockRedirection,
@@ -74,7 +74,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setCurrentScore,
     addMulti,
     addPoints,
-    resetRage
+    resetRage,
+    unPreSelectAllPowerUps,
   } = config;
 
   if (!playEvents) return;
@@ -320,7 +321,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         setLockRedirection(false);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
-      resetRage()
+      resetRage();
       const { level } = playEvents.levelPassed;
       setTimeout(() => {
         setRoundRewards({
@@ -374,14 +375,15 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   setTimeout(() => {
     setPlayAnimation(true);
   }, ALL_CARDS_DURATION);
-
+  
   setTimeout(() => {
     // Reset state
     setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
+    unPreSelectAllPowerUps();
+    refetchPowerUps();
 
     setPlayAnimation(false);
-    preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
     remainingPlays > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);

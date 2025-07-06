@@ -27,7 +27,6 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useGameState } from "../state/useGameState.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
-import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent.ts";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -65,17 +64,7 @@ export interface IGameContext {
   toggleSpecialSwitcher: () => void;
   showRages: () => void;
   showSpecials: () => void;
-  powerUps: (PowerUp | null)[];
-  removePowerUp: (power_up_id: number) => void;
-  preselectedPowerUps: number[];
-  setPreselectedPowerUps: (powerUps: number[]) => void;
-  togglePreselectedPowerUp: (powerUpId: number) => void;
-  powerUpIsPreselected: (powerUpId: number) => boolean;
-  setPowerUps: (powerUps: (PowerUp | null)[]) => void;
-  addPowerUp: (powerUp: PowerUp) => void;
   remainingPlaysTutorial?: number;
-  maxSpecialCards: number;
-  maxPowerUpSlots: number;
   resetLevel: () => void;
   cardTransformationLock: boolean;
   nodeRound: number;
@@ -120,6 +109,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     specialCards,
     resetRage,
     removeSpecialCard,
+    rageCards,
+    resetPowerUps,
+    preSelectedPowerUps,
+    refetchPowerUps: doRefetchPowerUps,
+    unPreSelectAllPowerUps,
   } = useGameStore();
 
   const {
@@ -131,6 +125,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     clearPreSelection,
     preSelectionLocked,
     setPreSelectionLocked,
+    syncMaxPreSelectedCards,
   } = useCurrentHandStore();
 
   const [lockRedirection, setLockRedirection] = useState(false);
@@ -186,11 +181,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPlayIsNeon,
     showSpecials,
     showRages,
-    preselectedPowerUps,
-    powerUps,
-    setPreselectedPowerUps,
-    removePowerUp,
-    resetPowerUps,
     cardTransformationLock,
     setCardTransformationLock,
   } = state;
@@ -258,11 +248,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const refetchPowerUps = () => {
+    doRefetchPowerUps(client, gameId);
+  };
+
   const onPlayClick = () => {
     setPreSelectionLocked(true);
     setLockRedirection(true);
     statePlay();
-    play(gameId, preSelectedCards, preSelectedModifiers, preselectedPowerUps)
+    play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps)
       .then((response) => {
         if (response) {
           animatePlay({
@@ -282,8 +276,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPlayAnimation,
             setPreSelectionLocked,
             clearPreSelection,
-            removePowerUp,
-            preselectedPowerUps,
+            refetchPowerUps,
+            preSelectedPowerUps,
             navigate,
             gameId,
             setLockRedirection,
@@ -299,6 +293,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             addPoints,
             addMulti,
             resetRage,
+            unPreSelectAllPowerUps,
           });
           refetchSpecialCardsData(modId, gameId);
         } else {
@@ -311,36 +306,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         setLockRedirection(false);
         setPreSelectionLocked(false);
       });
-  };
-
-  const powerUpIsPreselected = (powerUpId: number) => {
-    return preselectedPowerUps.filter((idx) => idx === powerUpId).length > 0;
-  };
-
-  const unPreSelectPowerUp = (powerUpIdx: number) => {
-    setPreselectedPowerUps((prev) => {
-      return prev.filter((idx) => powerUpIdx !== idx);
-    });
-  };
-
-  const preSelectPowerUp = (powerUpIdx: number) => {
-    if (!preselectedPowerUps.includes(powerUpIdx)) {
-      setPreselectedPowerUps((prev) => {
-        return [...prev, powerUpIdx];
-      });
-    }
-  };
-
-  const togglePreselectedPowerUp = (powerUpIdx: number) => {
-    if (!preSelectionLocked && remainingPlays > 0) {
-      if (powerUpIsPreselected(powerUpIdx)) {
-        unPreSelectPowerUp(powerUpIdx);
-        preselectCardSound();
-      } else if (preselectedPowerUps.length < 5) {
-        preSelectPowerUp(powerUpIdx);
-        preselectCardSound();
-      }
-    }
   };
 
   const onDiscardClick = () => {
@@ -534,10 +499,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
+  const refetchAll = async () => {
+    await refetchCurrentHandStore(client, gameId);
+    await refetchGameStore(client, gameId);
+    syncMaxPreSelectedCards(rageCards);
+  };
+
   useEffect(() => {
     if (client && gameId) {
-      refetchGameStore(client, gameId);
-      refetchCurrentHandStore(client, gameId);
+      refetchAll();
     }
   }, [client, gameId]);
 
@@ -551,7 +521,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sellSpecialCard: onSellSpecialCard,
     checkOrCreateGame,
     executeCreateGame,
-    togglePreselectedPowerUp,
     surrenderGame,
   };
 
@@ -561,7 +530,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         ...state,
         ...actions,
         lockRedirection,
-        powerUpIsPreselected,
         resetLevel,
         prepareNewGame,
       }}

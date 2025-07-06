@@ -1082,6 +1082,23 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+		const build_game_system_getPowerUps_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "get_power_ups",
+			calldata: [gameId],
+		};
+	};
+
+	const game_system_getPowerUps = async (gameId: BigNumberish) => {
+		try {
+			return await provider.call("jokers_of_neon_core", build_game_system_getPowerUps_calldata(gameId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1150,6 +1167,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetHandCardsCalldata: build_game_system_getHandCards_calldata,
 			getSpecialCards: game_system_getSpecialCards,
 			buildGetSpecialCardsCalldata: build_game_system_getSpecialCards_calldata,
+			getPowerUps: game_system_getPowerUps,
+			buildGetPowerUpsCalldata: build_game_system_getPowerUps_calldata,
 		},
 		shop_system: {
 			burnCard: shop_system_burnCard,

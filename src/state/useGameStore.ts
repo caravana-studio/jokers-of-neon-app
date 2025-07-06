@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
+import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getGameView } from "../dojo/queries/getGameView";
+import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
 import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
+import { PowerUp } from "../types/Powerup/PowerUp";
 
 type GameStore = {
   id: number;
@@ -30,6 +33,10 @@ type GameStore = {
   modId: string;
   isClassic: boolean;
   isRageRound: boolean;
+  maxSpecialCards: number;
+  maxPowerUpSlots: number;
+  powerUps: (PowerUp | null)[];
+  preSelectedPowerUps: number[];
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (client: any, gameId: number) => void;
   removeGameId: () => void;
@@ -47,6 +54,15 @@ type GameStore = {
   resetRage: () => void;
   setState: (state: GameStateEnum) => void;
   removeSpecialCard: (cardId: number) => void;
+  preSelectPowerUp: (powerUpIdx: number) => void;
+  unPreSelectPowerUp: (powerUpIdx: number) => void;
+  togglePreselectedPowerUp: (powerUpIdx: number) => boolean;
+  powerUpIsPreselected: (powerUpIdx: number) => boolean;
+  resetPowerUps: () => void;
+  addPowerUp: (powerUp: PowerUp) => void;
+  setPowerUps: (powerUps: (PowerUp | null)[]) => void;
+  refetchPowerUps: (client: any, gameId: number) => Promise<void>;
+  unPreSelectAllPowerUps: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -54,6 +70,13 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
   const { round, game } = await getGameView(client, gameId);
   const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
+  const powerUps = await getPowerUps(client, gameId);
+  console.log("powerUps", powerUps);
+  const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
+    client,
+    game.mod_id
+  );
+
   set({
     id: gameId,
     totalDiscards: game.discards,
@@ -75,6 +98,9 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     totalScore: game.player_score,
     currentScore: round.current_score,
     specialCards,
+    maxSpecialCards,
+    maxPowerUpSlots,
+    powerUps,
   });
 };
 
@@ -101,6 +127,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   specialsLength: 0,
   modId: "jokers_of_neon_classic",
   isClassic: true,
+  maxSpecialCards: 7,
+  maxPowerUpSlots: 4,
+  powerUps: [],
+  preSelectedPowerUps: [],
 
   refetchGameStore: async (client, gameId) => {
     doRefetchGameStore(client, gameId, set);
@@ -184,5 +214,70 @@ export const useGameStore = create<GameStore>((set, get) => ({
       );
       return newState;
     });
+  },
+
+  preSelectPowerUp: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+    set({ preSelectedPowerUps: [...preSelectedPowerUps, powerUpIdx] });
+  },
+  unPreSelectPowerUp: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+    set({
+      preSelectedPowerUps: preSelectedPowerUps.filter(
+        (idx) => idx !== powerUpIdx
+      ),
+    });
+  },
+
+  togglePreselectedPowerUp: (powerUpIdx: number): boolean => {
+    const {
+      preSelectedPowerUps,
+      remainingPlays,
+      unPreSelectPowerUp,
+      preSelectPowerUp,
+      maxPowerUpSlots,
+    } = get();
+    if (remainingPlays > 0) {
+      if (preSelectedPowerUps.includes(powerUpIdx)) {
+        unPreSelectPowerUp(powerUpIdx);
+        return true;
+      } else if (preSelectedPowerUps.length < maxPowerUpSlots) {
+        preSelectPowerUp(powerUpIdx);
+        return true;
+      }
+    }
+    return false;
+  },
+
+  powerUpIsPreselected: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+
+    return preSelectedPowerUps.filter((idx) => idx === powerUpIdx).length > 0;
+  },
+
+  resetPowerUps: () => {
+    set({ powerUps: [] });
+    set({ preSelectedPowerUps: [] });
+  },
+
+  unPreSelectAllPowerUps: () => {
+    set({ preSelectedPowerUps: [] });
+  },
+
+  addPowerUp: (powerUp: PowerUp) => {
+    set((state) => {
+      const newPowerUps = [...state.powerUps];
+      newPowerUps[powerUp.idx] = powerUp;
+      return { powerUps: newPowerUps };
+    });
+  },
+
+  setPowerUps: (powerUps: (PowerUp | null)[]) => {
+    set({ powerUps });
+  },
+
+  refetchPowerUps: async (client: any, gameId: number) => {
+    const powerUps = await getPowerUps(client, gameId);
+    set({ powerUps });
   },
 }));

@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
-import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getNode } from "../dojo/queries/getNode";
-import { useGamePowerUps } from "../dojo/queries/useGamePowerUps";
 import {
   getModRageCardsId,
   getModSpecialCardsId,
 } from "../dojo/queries/useModCardsId";
 import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
-import { Card } from "../types/Card";
 import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
-import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
@@ -57,25 +53,11 @@ export const useGameState = () => {
 
   const [specialSwitcherOn, setSpecialSwitcherOn] = useState(true);
 
-  const [powerUps, setPowerUps] = useState<(PowerUp | null)[]>([]);
-  const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
-  const [maxSpecialCards, setMaxSpecialCards] = useState(0);
-  const [maxPowerUpSlots, setMaxPowerUpSlots] = useState(0);
   const [modCardsConfig, setModCardsConfig] = useState<ModCardsConfig>();
 
   const [cardTransformationLock, setCardTransformationLock] = useState(false);
 
   const { modId, level, specialCards } = useGameStore();
-
-  const fetchGameConfig = async () => {
-    if (modId) {
-      const gameConfig = await getGameConfig(client, modId);
-      if (gameConfig) {
-        setMaxSpecialCards(gameConfig.maxSpecialCards);
-        setMaxPowerUpSlots(gameConfig.maxPowerUpSlots);
-      }
-    }
-  };
 
   const fetchCardsConfig = async () => {
     if (modId) {
@@ -106,29 +88,8 @@ export const useGameState = () => {
   }, [gameId, currentNodeId, rageCards]);
 
   useEffect(() => {
-    fetchGameConfig();
     fetchCardsConfig();
   }, [modId]);
-
-  const dojoPowerUps = useGamePowerUps();
-
-  const removePowerUp = (idx: number) => {
-    setPowerUps((prev) => {
-      const newPowerUps = [
-        ...prev.filter((powerUp: PowerUp | null) => powerUp?.idx !== idx),
-        null,
-      ];
-
-      return newPowerUps;
-    });
-  };
-
-  const addPowerUp = (powerUp: PowerUp) => {
-    setPowerUps((prev) => {
-      const newPowerUps = [...prev, powerUp];
-      return newPowerUps;
-    });
-  };
 
   useEffect(() => {
     if (client && account) {
@@ -139,12 +100,6 @@ export const useGameState = () => {
   }, [client, account, gameId, level, currentNodeId]);
 
   //effects
-  useEffect(() => {
-    if (dojoPowerUps?.length > 0 && powerUps.length === 0) {
-      setPowerUps(dojoPowerUps);
-    }
-  }, [dojoPowerUps]);
-
   const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
     const multi =
@@ -184,11 +139,6 @@ export const useGameState = () => {
     setSpecialSwitcherOn(true);
   };
 
-  const resetPowerUps = () => {
-    setPowerUps([null, null, null, null]);
-    setPreselectedPowerUps([]);
-  };
-
   return {
     gameId,
     gameLoading,
@@ -214,15 +164,6 @@ export const useGameState = () => {
     toggleSpecialSwitcher,
     showRages,
     showSpecials,
-    powerUps,
-    removePowerUp,
-    preselectedPowerUps,
-    setPreselectedPowerUps,
-    resetPowerUps,
-    setPowerUps,
-    addPowerUp,
-    maxSpecialCards,
-    maxPowerUpSlots,
     modCardsConfig,
     cardTransformationLock,
     setCardTransformationLock,
