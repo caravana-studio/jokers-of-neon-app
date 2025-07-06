@@ -38,7 +38,6 @@ import { useSettings } from "./SettingsProvider.tsx";
 export interface IGameContext {
   gameId: number;
   executeCreateGame: (gameId?: number) => void;
-  gameLoading: boolean;
   play: () => void;
   discardAnimation: boolean;
   playAnimation: boolean;
@@ -46,9 +45,7 @@ export interface IGameContext {
   changeModifierCard: (
     cardIdx: number
   ) => Promise<{ success: boolean; cards: Card[] }>;
-  error: boolean;
   clearPreSelection: () => void;
-  roundRewards: RoundRewards | undefined;
   onShopSkip: () => void;
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
@@ -112,6 +109,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     preSelectedPowerUps,
     refetchPowerUps: doRefetchPowerUps,
     unPreSelectAllPowerUps,
+    setRoundRewards,
+    setGameLoading,
+    setGameError,
   } = useGameStore();
 
   const {
@@ -171,11 +171,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const {
     gameId,
-    setRoundRewards,
-    setGameLoading,
     setDiscardAnimation,
     setPlayAnimation,
-    setError,
     setPlayIsNeon,
     showSpecials,
     setCardTransformationLock,
@@ -199,7 +196,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { enterTournament } = useTournaments();
 
   const executeCreateGame = async (providedGameId?: number) => {
-    setError(false);
+    setGameError(false);
     setGameLoading(true);
     let gameId = providedGameId;
     if (username) {
@@ -231,16 +228,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
             navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
           } else {
-            setError(true);
+            setGameError(true);
           }
         });
       } catch (error) {
         console.error("Error registering user in tournament", error);
-        setError(true);
+        setGameError(true);
       }
     } else {
       console.error("No username");
-      setError(true);
+      setGameError(true);
     }
   };
 

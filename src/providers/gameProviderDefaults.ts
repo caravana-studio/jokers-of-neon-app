@@ -4,16 +4,13 @@ import { IGameContext } from "./GameProvider";
 export const gameProviderDefaults: IGameContext = {
   gameId: getLSGameId(),
   executeCreateGame: () => {},
-  gameLoading: false,
   play: () => {},
   discardAnimation: false,
   playAnimation: false,
   discard: () => {},
   changeModifierCard: () =>
     new Promise((resolve) => resolve({ success: false, cards: [] })),
-  error: false,
   clearPreSelection: () => {},
-  roundRewards: undefined,
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},

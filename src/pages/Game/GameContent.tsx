@@ -33,10 +33,10 @@ import { TopSection } from "./TopSection.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const { gameLoading, error, executeCreateGame } =
+  const { executeCreateGame } =
     useGameContext();
 
-  const { isRageRound, state } = useGameStore();
+  const { isRageRound, state, gameLoading, gameError: error } = useGameStore();
   const { preSelectCard, unPreSelectCard, preSelectedCards, hand, addModifier } =
     useCurrentHandStore();
 

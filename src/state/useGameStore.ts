@@ -9,6 +9,7 @@ import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
 import { PowerUp } from "../types/Powerup/PowerUp";
+import { RoundRewards } from "../types/RoundRewards";
 
 type GameStore = {
   id: number;
@@ -37,6 +38,10 @@ type GameStore = {
   maxPowerUpSlots: number;
   powerUps: (PowerUp | null)[];
   preSelectedPowerUps: number[];
+  roundRewards: RoundRewards | undefined;
+  gameLoading: boolean;
+  gameError: boolean;
+
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (client: any, gameId: number) => void;
   removeGameId: () => void;
@@ -63,6 +68,9 @@ type GameStore = {
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   refetchPowerUps: (client: any, gameId: number) => Promise<void>;
   unPreSelectAllPowerUps: () => void;
+  setRoundRewards: (rewards: RoundRewards | undefined) => void;
+  setGameLoading: (loading: boolean) => void;
+  setGameError: (error: boolean) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -131,6 +139,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   maxPowerUpSlots: 4,
   powerUps: [],
   preSelectedPowerUps: [],
+  gameLoading: true,
+  gameError: false,
+  roundRewards: undefined,
 
   refetchGameStore: async (client, gameId) => {
     doRefetchGameStore(client, gameId, set);
@@ -279,5 +290,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   refetchPowerUps: async (client: any, gameId: number) => {
     const powerUps = await getPowerUps(client, gameId);
     set({ powerUps });
+  },
+
+  setGameLoading: (loading: boolean) => {
+    set({ gameLoading: loading });
+  },
+
+  setGameError: (error: boolean) => {
+    set({ gameError: error });
+  },
+
+  setRoundRewards: (rewards: RoundRewards | undefined) => {
+    set({ roundRewards: rewards });
   },
 }));

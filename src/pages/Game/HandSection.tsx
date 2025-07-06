@@ -34,14 +34,14 @@ interface HandSectionProps {
 }
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
-  const { changeModifierCard, roundRewards, remainingPlaysTutorial } =
+  const { changeModifierCard, remainingPlaysTutorial } =
     useGameContext();
 
   const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
     useCurrentHandStore();
   const { sfxVolume } = useSettings();
 
-  const { remainingPlays } = useGameStore();
+  const { remainingPlays, roundRewards } = useGameStore();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
   const { highlightCard } = useCardHighlight();

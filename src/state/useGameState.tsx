@@ -9,7 +9,6 @@ import { useDojo } from "../dojo/useDojo";
 import { Plays } from "../enums/plays";
 import { LevelPokerHand } from "../types/LevelPokerHand";
 import { ModCardsConfig } from "../types/ModConfig";
-import { RoundRewards } from "../types/RoundRewards";
 import { checkHand } from "../utils/checkHand";
 import { LevelUpPlayEvent } from "../utils/discardEvents/getLevelUpPlayEvent";
 import { getRageNodeData } from "../utils/getRageNodeData";
@@ -33,15 +32,11 @@ export const useGameState = () => {
     rageCards,
   } = useGameStore();
 
-  const { setPreSelectedPlay, preSelectedCards, hand, preSelectedModifiers } = useCurrentHandStore();
+  const { setPreSelectedPlay, preSelectedCards, hand, preSelectedModifiers } =
+    useCurrentHandStore();
   const [playIsNeon, setPlayIsNeon] = useState(false);
-  const [gameLoading, setGameLoading] = useState(true);
   const [discardAnimation, setDiscardAnimation] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
-  const [error, setError] = useState(false);
-  const [roundRewards, setRoundRewards] = useState<RoundRewards | undefined>(
-    undefined
-  );
 
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [destroyedSpecialCardId, setDestroyedSpecialCardId] =
@@ -138,16 +133,10 @@ export const useGameState = () => {
 
   return {
     gameId,
-    gameLoading,
-    setGameLoading,
     discardAnimation,
     setDiscardAnimation,
     playAnimation,
     setPlayAnimation,
-    error,
-    setError,
-    roundRewards,
-    setRoundRewards,
     plays,
     playIsNeon,
     setPlayIsNeon,

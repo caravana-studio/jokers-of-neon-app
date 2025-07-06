@@ -23,8 +23,8 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = useUsername();
-  const { checkOrCreateGame, roundRewards, gameId, lockRedirection } =
-    useGameContext();
+  const { checkOrCreateGame, gameId, lockRedirection } = useGameContext();
+  const { roundRewards, modId } = useGameStore();
 
   const { refetchSpecialCardsData } = useCardData();
 
@@ -41,8 +41,6 @@ export const GamePage = () => {
       checkOrCreateGame();
     }
   }, [account, username]);
-
-  const { modId } = useGameStore();
 
   useEffect(() => {
     refetchSpecialCardsData(modId, gameId);
