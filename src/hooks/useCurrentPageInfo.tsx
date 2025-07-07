@@ -10,8 +10,7 @@ import { useGameStore } from "../state/useGameStore";
 
 export const useCurrentPageInfo = (): PageInfo | null => {
   const location = useLocation();
-  const { nodeRound } = useGameContext();
-  const { isRageRound } = useGameStore();
+  const { isRageRound, nodeRound } = useGameStore();
   const { currentNode } = useMap();
   const { shopId } = useStore();
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });

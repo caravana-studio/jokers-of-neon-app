@@ -23,8 +23,8 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = useUsername();
-  const { checkOrCreateGame, gameId, lockRedirection } = useGameContext();
-  const { roundRewards, modId } = useGameStore();
+  const { checkOrCreateGame, lockRedirection } = useGameContext();
+  const { roundRewards, modId, id: gameId } = useGameStore();
 
   const { refetchSpecialCardsData } = useCardData();
 

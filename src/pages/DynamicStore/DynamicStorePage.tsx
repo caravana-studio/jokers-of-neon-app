@@ -51,8 +51,8 @@ export const DynamicStorePage = () => {
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate()
-  const { onShopSkip, gameId } = useGameContext();
-  const { specialSlots, maxSpecialCards } = useGameStore();
+  const { onShopSkip } = useGameContext();
+  const { specialSlots, maxSpecialCards, id: gameId } = useGameStore();
   const slotsLen = specialSlots;
 
   const { skipShop } = useShopActions();

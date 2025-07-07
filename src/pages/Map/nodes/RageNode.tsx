@@ -6,7 +6,6 @@ import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
-import { useGameContext } from "../../../providers/GameProvider";
 import { useMap } from "../../../providers/MapProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { BLUE } from "../../../theme/colors";
@@ -18,7 +17,7 @@ const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
 
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
+  const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();

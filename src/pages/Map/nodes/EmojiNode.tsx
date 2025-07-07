@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
-import { useGameContext } from "../../../providers/GameProvider";
 import { useGameStore } from "../../../state/useGameStore";
 
 const EmojiNode = ({ data }: any) => {
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
   const navigate = useNavigate();
 
-  const { state } = useGameStore();
+  const { state, id: gameId } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
 

@@ -24,7 +24,6 @@ import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
-import { useGameState } from "../state/useGameState.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -35,7 +34,6 @@ import { useSettings } from "./SettingsProvider.tsx";
 // import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
-  gameId: number;
   executeCreateGame: (gameId?: number) => void;
   play: () => void;
   discard: () => void;
@@ -47,14 +45,8 @@ export interface IGameContext {
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   lockRedirection: boolean;
-  specialSwitcherOn: boolean;
-  toggleSpecialSwitcher: () => void;
-  showRages: () => void;
-  showSpecials: () => void;
   remainingPlaysTutorial?: number;
   resetLevel: () => void;
-  cardTransformationLock: boolean;
-  nodeRound: number;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
 }
@@ -72,8 +64,6 @@ export const useGameContext = () => {
 };
 
 export const GameProvider = ({ children }: PropsWithChildren) => {
-  const state = useGameState();
-
   const {
     refetchGameStore,
     addCash,
@@ -104,6 +94,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setRoundRewards,
     setGameLoading,
     setGameError,
+    showSpecials,
+    id: gameId,
   } = useGameStore();
 
   const {
@@ -118,6 +110,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     changeCardsSuit,
     changeCardsNeon,
     setPlayIsNeon,
+    setCardTransformationLock,
   } = useCurrentHandStore();
 
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
@@ -162,8 +155,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setAnimatedPowerUp,
     setanimateSpecialCardDefault,
   } = useCardAnimations();
-
-  const { gameId, showSpecials, setCardTransformationLock } = state;
 
   const resetLevel = () => {
     setRoundRewards(undefined);
@@ -493,7 +484,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   return (
     <GameContext.Provider
       value={{
-        ...state,
         ...actions,
         lockRedirection,
         resetLevel,

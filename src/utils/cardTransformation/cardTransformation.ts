@@ -3,12 +3,13 @@ import { MODIFIERS_SUIT_CHANGING } from "../../data/modifiers";
 import { SPECIAL_CARDS_BLOCKS_SUIT_CHANGE } from "../../data/specialCards";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useGameStore } from "../../state/useGameStore";
 import { Card } from "../../types/Card";
 import { transformCardByModifierId } from "./modifierTransformation";
 
 export const useTransformedCard = (card: Card): Card => {
-  const { cardTransformationLock } = useGameContext();
+  const { cardTransformationLock } = useCurrentHandStore();
   const { getCardData } = useCardData();
   const { rageCards, specialCards } = useGameStore();
 

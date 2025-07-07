@@ -12,7 +12,7 @@ export const RageRoundAnimation = () => {
   const [showAnimationText, setShowAnimationText] = useState(false);
   const [phase, setPhase] = useState(1);
 
-  const { showRages, showSpecials } = useGameContext();
+  const { showRages, showSpecials } = useGameStore();
 
   const { destroyedSpecialCardId, setDestroyedSpecialCardId } =
     useAnimationStore();

@@ -34,7 +34,7 @@ interface PlaysTableProps {
 const { blue, white, purple, violet } = theme.colors;
 
 export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
-  const { gameId } = useGameContext();
+  const { id: gameId } = useGameStore();
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
 

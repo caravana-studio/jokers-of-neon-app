@@ -1,15 +1,21 @@
 import { create } from "zustand";
 import { CLASSIC_MOD_ID } from "../constants/general";
 import { GAME_ID } from "../constants/localStorage";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { fetchCardsConfig } from "../dojo/queries/getCardsConfig";
 import { getGameConfig } from "../dojo/queries/getGameConfig";
 import { getGameView } from "../dojo/queries/getGameView";
+import { getNode } from "../dojo/queries/getNode";
 import { getPowerUps } from "../dojo/queries/getPowerUps";
 import { getRageCards } from "../dojo/queries/getRageCards";
 import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { Card } from "../types/Card";
+import { LevelPokerHand } from "../types/LevelPokerHand";
+import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 type GameStore = {
   id: number;
@@ -41,6 +47,10 @@ type GameStore = {
   roundRewards: RoundRewards | undefined;
   gameLoading: boolean;
   gameError: boolean;
+  modCardsConfig: ModCardsConfig | undefined;
+  specialSwitcherOn: boolean;
+  plays: LevelPokerHand[];
+  nodeRound: number;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
   setGameId: (client: any, gameId: number) => void;
@@ -71,6 +81,10 @@ type GameStore = {
   setRoundRewards: (rewards: RoundRewards | undefined) => void;
   setGameLoading: (loading: boolean) => void;
   setGameError: (error: boolean) => void;
+  toggleSpecialSwitcher: () => void;
+  showRages: () => void;
+  showSpecials: () => void;
+  refetchPlays: (client: any, gameId: number) => Promise<void>;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -79,11 +93,26 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
   const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
   const powerUps = await getPowerUps(client, gameId);
-  console.log("powerUps", powerUps);
   const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
     client,
     game.mod_id
   );
+
+  const modCardsConfig = await fetchCardsConfig(client, game.mod_id);
+
+  const plays = await getPlayerPokerHands(client, gameId);
+
+  const nodeRoundData = await getNode(
+    client,
+    gameId ?? 0,
+    game.current_node_id ?? 0
+  );
+  if (rageCards.length > 0) {
+    const rageRoundData = getRageNodeData(nodeRoundData);
+    set({ nodeRound: rageRoundData.round });
+  } else {
+    set({ nodeRound: nodeRoundData });
+  }
 
   set({
     id: gameId,
@@ -109,6 +138,8 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     maxSpecialCards,
     maxPowerUpSlots,
     powerUps,
+    modCardsConfig,
+    plays,
   });
 };
 
@@ -142,6 +173,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   gameLoading: true,
   gameError: false,
   roundRewards: undefined,
+  modCardsConfig: undefined,
+  specialSwitcherOn: true,
+  plays: [],
+  nodeRound: 0,
 
   refetchGameStore: async (client, gameId) => {
     doRefetchGameStore(client, gameId, set);
@@ -302,5 +337,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setRoundRewards: (rewards: RoundRewards | undefined) => {
     set({ roundRewards: rewards });
+  },
+
+  toggleSpecialSwitcher: () => {
+    set((state) => ({ specialSwitcherOn: !state.specialSwitcherOn }));
+  },
+
+  showRages: () => {
+    set({ specialSwitcherOn: false });
+  },
+
+  showSpecials: () => {
+    set({ specialSwitcherOn: true });
+  },
+
+  refetchPlays: async (client, gameId) => {
+    const plays = await getPlayerPokerHands(client, gameId);
+    plays && set({ plays: plays as LevelPokerHand[] });
   },
 }));
