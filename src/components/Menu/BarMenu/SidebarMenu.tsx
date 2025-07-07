@@ -13,7 +13,6 @@ import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
-import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 
