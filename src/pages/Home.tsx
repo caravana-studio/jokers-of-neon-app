@@ -11,10 +11,8 @@ import { PoweredBy } from "../components/PoweredBy";
 import { useDojo } from "../dojo/useDojo";
 
 import { RemoveScroll } from "react-remove-scroll";
-import { GGBanner } from "../components/GGBanner";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 const isDev = import.meta.env.VITE_DEV === "true";
@@ -28,7 +26,7 @@ export const Home = () => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
 
-  const enableMods = false// useFeatureFlagEnabled("global", "showMods");
+  const enableMods = false; // useFeatureFlagEnabled("global", "showMods");
 
   useEffect(() => {
     if (account?.account && playButtonClicked) {
