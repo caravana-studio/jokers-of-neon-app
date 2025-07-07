@@ -36,7 +36,7 @@ export const LootBoxesMobile = () => {
 };
 
 const PackView = ({ pack }: { pack: BlisterPackItem }) => {
-  const { buyPack, locked, setLockRedirection } = useStore();
+  const { buyPack, locked } = useStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
   const { cash } = useGameStore();
@@ -77,9 +77,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
       lootBoxRef.current?.openBox();
       buyPack(pack)
         .then((response) => {
-          if (response) {
-            setLockRedirection(true);
-          } else {
+          if (!response) {
             setBuyDisabled(false);
             setIsAnimationRunning(false);
           }

@@ -5,7 +5,6 @@ import { GameStateEnum } from "../dojo/typescript/custom";
 import { useGameStore } from "../state/useGameStore";
 
 export const useRedirectByGameState = (
-  lockRedirection: boolean = false,
   params: Record<string, any> = {},
   navigateOptions: NavigateOptions = {}
 ) => {
@@ -14,7 +13,6 @@ export const useRedirectByGameState = (
   const { state } = useGameStore();
 
   useEffect(() => {
-    if (lockRedirection) return;
 
     if (state !== GameStateEnum.NotStarted) {
       const currentPath = location.pathname;
@@ -42,5 +40,5 @@ export const useRedirectByGameState = (
         navigate(finalPath, navigateOptions);
       }
     }
-  }, [lockRedirection, navigate, location.pathname]);
+  }, [navigate, location.pathname]);
 };

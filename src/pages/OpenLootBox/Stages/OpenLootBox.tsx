@@ -23,7 +23,7 @@ export const OpenLootBox = () => {
   const { play: openPackSound } = useAudio(openPackSfx, 0.5);
   const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
-  const { buyPack, lockRedirection } = useStore();
+  const { buyPack } = useStore();
   const navigate = useCustomNavigate();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "open-lootbox",

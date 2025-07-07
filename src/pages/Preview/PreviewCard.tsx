@@ -32,7 +32,7 @@ const PreviewCard = () => {
     return <p>Card not found.</p>;
   }
 
-  const { buyCard, buySpecialCardItem, locked, setLockRedirection } =
+  const { buyCard, buySpecialCardItem, locked } =
     useStore();
 
   const { getCardData } = useCardData();

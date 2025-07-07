@@ -42,14 +42,13 @@ const PreviewCardLayout = () => {
 
   /*   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
-    setLockRedirection(false);
     close();
     navigate("open-pack");
   }; */
 
   const { getCardData } = useCardData();
   const { cash, specialSlots, specialsLength } = useGameStore();
-  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
+  const { buyCard, buyPack, locked } = useStore();
 
   if (!card) {
     return <p>Card not found.</p>;
@@ -81,8 +80,6 @@ const PreviewCardLayout = () => {
             .catch(() => {
               setBuyDisabled(false);
             });
-          // setIsOpenAnimationRunning(true);
-          // setLockRedirection(true);
         } else {
           buyCard(card);
           customNavigate(GameStateEnum.Store);

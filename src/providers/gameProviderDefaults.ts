@@ -10,7 +10,6 @@ export const gameProviderDefaults: IGameContext = {
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
-  lockRedirection: false,
   resetLevel: () => {},
   prepareNewGame: () => {},
   surrenderGame: (_) => {},

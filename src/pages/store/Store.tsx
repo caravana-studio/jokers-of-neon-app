@@ -21,7 +21,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
   const { state, resetRage, id: gameId } = useGameStore();
-  const { lockRedirection, loading, setRun, run } = useStore();
+  const { loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const lastTabIndex =

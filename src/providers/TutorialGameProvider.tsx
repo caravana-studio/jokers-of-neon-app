@@ -241,7 +241,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       preselectedPowerUps,
       navigate: emptyFn,
       gameId: 0,
-      setLockRedirection: emptyFn,
       setRoundRewards: emptyFn,
       replaceCards,
       handsLeft: 1,

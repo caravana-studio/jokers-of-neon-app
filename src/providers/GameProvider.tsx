@@ -2,8 +2,7 @@ import {
   PropsWithChildren,
   createContext,
   useContext,
-  useEffect,
-  useState,
+  useEffect
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
@@ -31,7 +30,6 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-// import { mockTutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number) => void;
@@ -44,7 +42,6 @@ export interface IGameContext {
   onShopSkip: () => void;
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
-  lockRedirection: boolean;
   remainingPlaysTutorial?: number;
   resetLevel: () => void;
   prepareNewGame: () => void;
@@ -68,7 +65,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchGameStore,
     addCash,
     setCurrentScore,
-    resetMultiPoints,
     setMulti,
     setPoints,
     addPoints,
@@ -115,7 +111,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
 
-  const [lockRedirection, setLockRedirection] = useState(false);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const showTutorial =
@@ -225,7 +220,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const onPlayClick = () => {
     setPreSelectionLocked(true);
-    setLockRedirection(true);
     statePlay();
     play(gameId, preSelectedCards, preSelectedModifiers, preSelectedPowerUps)
       .then((response) => {
@@ -251,7 +245,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             preSelectedPowerUps,
             navigate,
             gameId,
-            setLockRedirection,
             setRoundRewards,
             replaceCards,
             remainingPlays,
@@ -274,7 +267,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       })
       .catch(() => {
         rollbackPlay();
-        setLockRedirection(false);
         setPreSelectionLocked(false);
       });
   };
@@ -438,22 +430,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    if (!lockRedirection) {
-      if (gameState === GameStateEnum.GameOver) {
-        navigate(`/gameover/${gameId}`);
-      } else if (
-        gameState === GameStateEnum.Store &&
-        location.pathname === "/demo"
-      ) {
-        console.log("redirecting to store");
-        navigate("/store");
-      }
+    if (gameState === GameStateEnum.GameOver) {
+      navigate(`/gameover/${gameId}`);
+    } else if (
+      gameState === GameStateEnum.Store &&
+      location.pathname === "/demo"
+    ) {
+      console.log("redirecting to store");
+      navigate("/store");
     }
-  }, [gameState, lockRedirection]);
+  }, [gameState]);
 
   useEffect(() => {
-    // start with redirection unlocked
-    setLockRedirection(false);
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
@@ -485,7 +473,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     <GameContext.Provider
       value={{
         ...actions,
-        lockRedirection,
         resetLevel,
         prepareNewGame,
       }}

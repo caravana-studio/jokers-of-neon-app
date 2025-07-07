@@ -27,7 +27,6 @@ interface AnimatePlayConfig {
   preSelectedPowerUps: number[];
   navigate: (path: string) => void;
   gameId: number;
-  setLockRedirection: (locked: boolean) => void;
   setRoundRewards: (rewards: any) => void;
   replaceCards: (cards: Card[]) => void;
   remainingPlays: number;
@@ -62,7 +61,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     refetchPowerUps,
     navigate,
     gameId,
-    setLockRedirection,
     setRoundRewards,
     replaceCards,
     remainingPlays,
@@ -292,7 +290,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     } else if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);
-        setLockRedirection(false);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
       resetRage();
@@ -308,7 +305,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     } else {
       playEvents.cards && replaceCards(playEvents.cards);
       setRoundRewards(undefined);
-      setLockRedirection(false);
     }
   };
 

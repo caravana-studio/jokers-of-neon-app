@@ -23,7 +23,7 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = useUsername();
-  const { checkOrCreateGame, lockRedirection } = useGameContext();
+  const { checkOrCreateGame } = useGameContext();
   const { roundRewards, modId, id: gameId } = useGameStore();
 
   const { refetchSpecialCardsData } = useCardData();
@@ -46,9 +46,7 @@ export const GamePage = () => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  useRedirectByGameState(!(!lockRedirection && !roundRewards), {
-    gameId: gameId,
-  });
+  useRedirectByGameState();
 
   return (
     <>

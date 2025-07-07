@@ -8,6 +8,7 @@ import {
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import {
   RerollInformation,
   ShopItems,
@@ -17,8 +18,6 @@ import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
-import { useGameContext } from "./GameProvider";
-import { useGameStore } from "../state/useGameStore.ts";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -28,8 +27,6 @@ interface IStoreContext extends ShopItems {
   reroll: () => Promise<boolean>;
   locked: boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
-  lockRedirection: boolean;
-  setLockRedirection: (lock: boolean) => void;
   buySpecialSlot: () => Promise<boolean>;
   rerollInformation: RerollInformation;
   cash: number;
@@ -63,8 +60,6 @@ const StoreContext = createContext<IStoreContext>({
     return new Promise((resolve) => resolve(false));
   },
   locked: false,
-  lockRedirection: false,
-  setLockRedirection: (_) => {},
   buySpecialSlot: () => new Promise((resolve) => resolve(false)),
   specialCards: [],
   modifierCards: [],
@@ -125,7 +120,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
   const { id: gameId, addPowerUp } = useGameStore();
   const [locked, setLocked] = useState(false);
-  const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
@@ -354,8 +348,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         locked,
         buyPack,
         selectCardsFromPack,
-        lockRedirection,
-        setLockRedirection,
         buySpecialSlot,
         specialCards: shopItems.specialCards,
         modifierCards: shopItems.modifierCards,

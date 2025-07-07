@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { SpinePlayer, SpinePlayerConfig } from "@esotericsoftware/spine-player";
 import {
   forwardRef,
@@ -9,7 +9,6 @@ import {
 } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../providers/StoreProvider";
 import { PriceBox } from "./PriceBox";
 import { PurchasedLbl } from "./PurchasedLbl";
 
@@ -69,7 +68,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const playerRef = useRef<SpinePlayer | null>(null);
     const [isHovered, setIsHovered] = useState(false);
     const [playerReady, setPlayerReady] = useState(false);
-    const { setLockRedirection } = useStore();
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
     const [isAnimationRunning, setIsAnimationRunning] = useState(false);
@@ -102,7 +100,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
               track.timeScale = 0;
 
               onOpenAnimationEnd?.();
-              setLockRedirection(false);
               setIsAnimationRunning(false);
             }, durationMs);
           }
@@ -138,7 +135,6 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
                     entry.animation &&
                     entry.animation.name.includes(openBoxAnimation)
                   ) {
-                    setLockRedirection(false);
                     setIsAnimationRunning(false);
                   }
                 },
