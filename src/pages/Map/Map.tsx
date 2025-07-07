@@ -127,7 +127,7 @@ export const Map = () => {
         {isSmallScreen ? (
           <MobileBottomBar
             firstButton={
-              isReachable
+              isReachable && game?.state === GameStateEnum.Map
                 ? {
                     onClick: handleGoClick,
                     label: t("go"),

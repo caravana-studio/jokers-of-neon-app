@@ -17,6 +17,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 
 export const PreviewLootBox = () => {
   const { state } = useLocation();
@@ -82,86 +83,88 @@ export const PreviewLootBox = () => {
 
   return isSmallScreen ? (
     <>
-      <MobileDecoration />
-      <Flex
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        pt={4}
-        w="100%"
-        h="100%"
-        textAlign="center"
-      >
-        <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
-          <MobileCoins />
-        </Flex>
+      <DelayedLoading>
+        <MobileDecoration />
         <Flex
-          gap={1}
-          flexDir="column"
-          w="100%"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            zIndex: 1,
-          }}
-        >
-          <Box>
-            <Heading
-              fontWeight={500}
-              size="l"
-              letterSpacing={1.3}
-              textTransform="unset"
-            >
-              {name}
-            </Heading>
-          </Box>
-          <Text textAlign="center" size="xl" fontSize={"15px"} width={"90%"}>
-            {colorizeText(description)}
-          </Text>
-          {details && (
-            <Flex zIndex={2} mt={2} gap={2}>
-              <LootBoxRateInfo name={name} details={details} />
-            </Flex>
-          )}
-        </Flex>
-        <Flex
-          justifyContent={"center"}
-          alignItems={"center"}
-          alignSelf={"center"}
-          flexGrow={1}
           flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+          pt={4}
+          w="100%"
+          h="100%"
+          textAlign="center"
         >
-          <Flex w="100%" h="100%">
-            {spineAnim}
+          <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
+            <MobileCoins />
           </Flex>
-          <Flex mt={-6}>
-            <PriceBox
-              absolutePosition={false}
-              price={card.price ?? 0}
-              discountPrice={card.discount_cost}
-              purchased={false}
-              fontSize={18}
-              discountFontSize={12}
-            />
+          <Flex
+            gap={1}
+            flexDir="column"
+            w="100%"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              zIndex: 1,
+            }}
+          >
+            <Box>
+              <Heading
+                fontWeight={500}
+                size="l"
+                letterSpacing={1.3}
+                textTransform="unset"
+              >
+                {name}
+              </Heading>
+            </Box>
+            <Text textAlign="center" size="xl" fontSize={"15px"} width={"90%"}>
+              {colorizeText(description)}
+            </Text>
+            {details && (
+              <Flex zIndex={2} mt={2} gap={2}>
+                <LootBoxRateInfo name={name} details={details} />
+              </Flex>
+            )}
           </Flex>
-        </Flex>
+          <Flex
+            justifyContent={"center"}
+            alignItems={"center"}
+            alignSelf={"center"}
+            flexGrow={1}
+            flexDirection="column"
+          >
+            <Flex w="100%" h="100%">
+              {spineAnim}
+            </Flex>
+            <Flex mt={-6}>
+              <PriceBox
+                absolutePosition={false}
+                price={card.price ?? 0}
+                discountPrice={pack.discount_cost}
+                purchased={false}
+                fontSize={18}
+                discountFontSize={12}
+              />
+            </Flex>
+          </Flex>
 
-        <MobileBottomBar
-          hideDeckButton
-          firstButton={{
-            onClick: () => {
-              navigate("/store");
-            },
-            label: t("labels.close").toUpperCase(),
-          }}
-          secondButton={{
-            onClick: onBuyClick,
-            label: t("labels.buy"),
-            disabled: notEnoughCash || locked,
-            disabledText: t("tooltip.no-coins"),
-          }}
-        />
-      </Flex>
+          <MobileBottomBar
+            hideDeckButton
+            firstButton={{
+              onClick: () => {
+                navigate("/store");
+              },
+              label: t("labels.close").toUpperCase(),
+            }}
+            secondButton={{
+              onClick: onBuyClick,
+              label: t("labels.buy"),
+              disabled: notEnoughCash || locked,
+              disabledText: t("tooltip.no-coins"),
+            }}
+          />
+        </Flex>
+      </DelayedLoading>
     </>
   ) : (
     <StorePreviewComponent

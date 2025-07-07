@@ -293,11 +293,11 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
       resetRage();
-      const { level } = playEvents.levelPassed;
       setTimeout(() => {
         setRoundRewards({
           ...playEvents.detailEarned!,
-          roundNumber: level,
+          level_passed: playEvents.levelPassed?.level_passed,
+          roundNumber: playEvents.levelPassed?.round,
         });
         navigate("/rewards");
       }, 1000);

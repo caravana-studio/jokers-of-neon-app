@@ -106,7 +106,6 @@ export const Home = () => {
           </Flex>
         </Flex>
         <PoweredBy />
-        <GGBanner />
       </Flex>
       <PositionedDiscordLink />
     </>

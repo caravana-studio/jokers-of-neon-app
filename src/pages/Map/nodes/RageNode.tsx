@@ -43,8 +43,8 @@ const RageNode = ({ data }: any) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          width: data.last ? 120 : 70,
-          height: data.last ? 120 : 70,
+          width: data.last ? (!data.visited ? 120 : 50) : 70,
+          height: data.last ? (!data.visited ? 120 : 50) : 70,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { useLocation } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
@@ -33,7 +33,8 @@ export const GamePage = () => {
 
   const { state } = useLocation();
 
-  const skipRageAnimation = state?.skipRageAnimation;
+  const skipRageAnimationRef = useRef(state?.skipRageAnimation ?? false);
+
   const { isSmallScreen } = useResponsiveValues();
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export const GamePage = () => {
 
   return (
     <>
-      {!skipRageAnimation && <RageRoundAnimation />}
+      {!skipRageAnimationRef.current && <RageRoundAnimation />}
       <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
       {animateSpecialCardDefault && (
