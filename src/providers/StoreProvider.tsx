@@ -9,11 +9,7 @@ import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import {
-  RerollInformation,
-  ShopItems,
-  useShopState,
-} from "../state/useShopState.ts";
+import { ShopItems, useShopState } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
@@ -28,7 +24,6 @@ interface IStoreContext extends ShopItems {
   locked: boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
   buySpecialSlot: () => Promise<boolean>;
-  rerollInformation: RerollInformation;
   cash: number;
   run: boolean;
   setRun: (run: boolean) => void;
@@ -69,10 +64,6 @@ const StoreContext = createContext<IStoreContext>({
   powerUps: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
   burnItem: EMPTY_BURN_ITEM,
-  rerollInformation: {
-    rerollCost: 100,
-    rerollExecuted: true,
-  },
   cash: 0,
   run: false,
   setRun: (_) => {},
@@ -93,7 +84,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const {
     shopItems,
     fetchShopItems,
-    rerollInformation,
     cash,
     buySpecialCard,
     buyModifierCard,
@@ -118,7 +108,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     shopId,
   } = useShopState();
 
-  const { id: gameId, addPowerUp } = useGameStore();
+  const {
+    id: gameId,
+    addPowerUp,
+    reroll: stateReroll,
+    rollbackReroll,
+  } = useGameStore();
   const [locked, setLocked] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
@@ -282,6 +277,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     rerollSound();
     setLocked(true);
     const promise = storeReroll(gameId);
+    stateReroll();
     promise
       .then(() => {
         fetchShopItems().finally(() => {
@@ -289,6 +285,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
             setRerolling(false);
           }, 200);
         });
+      })
+      .catch(() => {
+        rollbackReroll();
       })
       .finally(() => {
         setLocked(false);
@@ -357,7 +356,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,
         powerUps: shopItems.powerUps,
-        rerollInformation,
         cash,
         run,
         setRun,

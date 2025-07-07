@@ -59,6 +59,8 @@ type GameStore = {
   discard: () => void;
   rollbackDiscard: () => void;
   rollbackPlay: () => void;
+  reroll: () => void;
+  rollbackReroll: () => void;
   addCash: (cash: number) => void;
   setCurrentScore: (score: number) => void;
   addPoints: (points: number) => void;
@@ -202,6 +204,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { remainingDiscards } = get();
     if (remainingDiscards > 0)
       set({ remainingDiscards: remainingDiscards - 1 });
+  },
+
+  reroll: () => {
+    const { availableRerolls } = get();
+    set({ availableRerolls: availableRerolls - 1 });
+  },
+
+  rollbackReroll: () => {
+    const { availableRerolls } = get();
+    set({ availableRerolls: availableRerolls + 1 });
   },
 
   rollbackDiscard: () => {

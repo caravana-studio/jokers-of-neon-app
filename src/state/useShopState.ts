@@ -16,11 +16,6 @@ import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { useGameStore } from "./useGameStore";
 
-export interface RerollInformation {
-  rerollCost: number;
-  rerollExecuted: boolean;
-}
-
 export interface ShopItems {
   specialCards: Card[];
   modifierCards: Card[];
@@ -65,13 +60,6 @@ export const useShopState = () => {
     EMPTY_SPECIAL_SLOT_ITEM
   );
   const [burnItem, setBurnItem] = useState<BurnItem>(EMPTY_BURN_ITEM);
-
-  const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
-    {
-      rerollCost: 100,
-      rerollExecuted: true,
-    }
-  );
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
 
@@ -181,6 +169,7 @@ export const useShopState = () => {
 
   const fetchShopItems = async () => {
     const shopItems = await getShopItems(client, gameId);
+    console.log("shopItems", shopItems);
     setLoading(false);
     if (shopItems) {
       setSpecialCards(shopItems.specialCards);
@@ -189,7 +178,6 @@ export const useShopState = () => {
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
       setSpecialSlotItem({ ...shopItems.specialSlotItem });
-      setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
       setBurnItem({ ...shopItems.burnItem });
       setPowerUps(shopItems.powerUpItems);
@@ -214,7 +202,6 @@ export const useShopState = () => {
   return {
     shopItems,
     fetchShopItems,
-    rerollInformation,
     cash,
     buySpecialCard,
     buyModifierCard,
