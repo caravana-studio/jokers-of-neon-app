@@ -11,7 +11,7 @@ import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
 
-import type { ToriiClient } from "@dojoengine/torii-client";
+import type { Message, ToriiClient } from "@dojoengine/torii-client";
 import { KeysClause } from "@dojoengine/sdk";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
@@ -64,7 +64,7 @@ export async function setup({ ...config }: DojoConfig) {
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
-    relayUrl: "",
+    // relayUrl: "",
     worldAddress: config.manifest.world.address || "",
   });
 
@@ -183,7 +183,8 @@ export async function setup({ ...config }: DojoConfig) {
     contractComponents,
     systemCalls: createSystemCalls({ client }, clientComponents, world),
     publish: (typedData: string, signature: ArraySignatureType) => {
-      toriiClient.publishMessage(typedData, signature);
+      const msj: Message = { message: typedData, signature };
+      toriiClient.publishMessage(msj);
     },
     config,
     dojoProvider,
