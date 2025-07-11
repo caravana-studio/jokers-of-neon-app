@@ -1,148 +1,54 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { BackgroundDecoration } from "../../components/Background";
+import { Flex, Button } from "@chakra-ui/react";
+import { GameOverContent } from "./GameOverContent";
 import { IconComponent } from "../../components/IconComponent";
-import { Leaderboard } from "../../components/Leaderboard";
-import { MobileDecoration } from "../../components/MobileDecoration";
 import { Icons } from "../../constants/icons";
-import { GAME_ID } from "../../constants/localStorage";
-import { looseSfx } from "../../constants/sfx";
-import { useAudio } from "../../hooks/useAudio";
+import { useGameOver } from "../../hooks/useGameOver";
 import { useLogout } from "../../hooks/useLogout";
 import { useGameContext } from "../../providers/GameProvider";
-import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
-import { signedHexToNumber } from "../../utils/signedHexToNumber";
-
-const GAME_URL = "https://jokersofneon.com";
 
 export const GameOverGuest = () => {
-  const params = useParams();
-
-  const gameId = Number(params.gameId);
   const {
-    restartGame,
-    setIsRageRound,
-    executeCreateGame,
-    initiateTransferFlow,
-  } = useGameContext();
+    gameId,
+    congratulationsMsj,
+    actualPlayer,
+    t,
+    onShareClick,
+    onStartGameClick,
+    isLoading,
+  } = useGameOver();
+  const { initiateTransferFlow } = useGameContext();
   const { handleLogout } = useLogout();
 
-  const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
-  const actualPlayer = fullLeaderboard?.find(
-    (player) => signedHexToNumber(player.id.toString()) === gameId
-  );
-
-  const { isSmallScreen } = useResponsiveValues();
-  const { t } = useTranslation(["intermediate-screens"]);
-  const navigate = useNavigate();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  let congratulationsMsj = "";
-
-  if (actualPlayer?.position != undefined) {
-    congratulationsMsj =
-      actualPlayer?.position === 1
-        ? t("game-over.table.gameOver-leader-msj")
-        : actualPlayer?.position > 1 && actualPlayer?.position <= 5
-          ? t("game-over.table.gameOver-top5-msj")
-          : "";
-  }
-
-  const position = actualPlayer?.position ?? 100;
-
-  useEffect(() => {
-    looseSound();
-    localStorage.removeItem(GAME_ID);
-    setIsRageRound(false);
-  }, []);
-
-  useEffect(() => {
-    if (position <= 10) {
-      runConfettiAnimation(position <= 3 ? 300 : 100);
-    }
-  }, [position]);
-
-  const onStartGameClick = () => {
-    setIsLoading(true);
-    localStorage.removeItem(GAME_ID);
-    restartGame();
-    stopLooseSound();
-    executeCreateGame();
-  };
-
-  const onShareClick = () => {
-    window.open(
-      `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20%40jokers_of_neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position ?? 0}%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level ?? 0}%0A%0AJoin%20me%20and%20test%20the%20early%20access%20version%0A${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8
-`,
-      "_blank"
-    );
-  };
-
   return (
-    <BackgroundDecoration>
-      {isSmallScreen && <MobileDecoration />}
-      <Flex
-        height="100%"
-        flexDirection={{ base: "column", sm: "row" }}
-        justifyContent={{ base: "center", sm: "space-around" }}
-        alignItems="center"
-        gap={{ base: 4, sm: 16 }}
-        zIndex={1}
-      >
-        <Flex flexDirection="column" width={{ base: "100%", sm: "70%" }}>
-          <Heading
-            size={{ base: "sm", sm: "md" }}
-            variant="italic"
-            textAlign={"center"}
-            mb={{ base: 0, sm: 3 }}
+    <GameOverContent
+      gameId={gameId}
+      congratulationsMsj={congratulationsMsj}
+      actualPlayerPosition={actualPlayer?.position}
+      t={t}
+      onShareClick={onShareClick}
+      onStartGameClick={onStartGameClick}
+      isLoading={isLoading}
+      mainActionButtons={
+        <Flex gap={4}>
+          <Button
+            variant="secondarySolid"
+            onClick={() => {
+              initiateTransferFlow();
+            }}
+            alignItems={"center"}
           >
-            {t("game-over.gameOver-msj")}
-          </Heading>
-          <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
-            {congratulationsMsj}
-          </Text>
-          <Leaderboard gameId={gameId} lines={4} />
-          {isSmallScreen && <Flex h="70px" />}
+            <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
+              {t("game-over.login")}{" "}
+              <IconComponent
+                icon={Icons.CARTRIDGE}
+                width={"20px"}
+                height={"20px"}
+              ></IconComponent>
+            </Flex>
+          </Button>
+          <Button onClick={handleLogout}>{t("skip")}</Button>
         </Flex>
-        <Flex
-          flexDirection={"column"}
-          width={{ base: "100%", sm: "30%" }}
-          gap={{ base: 4, sm: 8 }}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <Text>
-            {t("game-over.current-position", {
-              position: actualPlayer?.position,
-            })}
-          </Text>
-          <Flex gap={4}>
-            <Button
-              variant="secondarySolid"
-              onClick={() => {
-                initiateTransferFlow();
-              }}
-              alignItems={"center"}
-            >
-              <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
-                {t("game-over.login")}{" "}
-                <IconComponent
-                  icon={Icons.CARTRIDGE}
-                  width={"20px"}
-                  height={"20px"}
-                ></IconComponent>
-              </Flex>
-            </Button>
-            <Button onClick={handleLogout}>{t("skip")}</Button>
-          </Flex>
-        </Flex>
-      </Flex>
-    </BackgroundDecoration>
+      }
+    />
   );
 };
