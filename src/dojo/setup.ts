@@ -11,8 +11,8 @@ import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
 
-import type { ToriiClient } from "@dojoengine/torii-client";
 import { KeysClause } from "@dojoengine/sdk";
+import type { ToriiClient } from "@dojoengine/torii-client";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
@@ -61,6 +61,8 @@ const getEntities = async <S extends Schema>(
 };
 
 export async function setup({ ...config }: DojoConfig) {
+
+  console.log('DOJO_NAMESPACE', DOJO_NAMESPACE)
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
@@ -152,6 +154,13 @@ export async function setup({ ...config }: DojoConfig) {
   // setup world
   const client = await setupWorld(dojoProvider);
 
+  console.log('config.rpcUrl', config.rpcUrl);
+  console.log('config.masterAddress', config.masterAddress);
+  console.log('config.masterPrivateKey', config.masterPrivateKey);
+  console.log('config.accountClassHash', config.accountClassHash);
+  console.log('config.feeTokenAddress', config.feeTokenAddress);
+  console.log('rpcProvider', dojoProvider.provider)
+
   // create burner manager
   const burnerManager = new BurnerManager({
     masterAccount: new Account(
@@ -166,12 +175,16 @@ export async function setup({ ...config }: DojoConfig) {
     feeTokenAddress: config.feeTokenAddress,
   });
 
+  console.log('burnerManager', burnerManager);
+
   try {
     await burnerManager.init();
+    console.log('burnerManager.list()', burnerManager.list());
     if (burnerManager.list().length === 0) {
       await burnerManager.create();
     }
   } catch (e) {
+    console.log('error initializing burnerManager');
     console.error(e);
   }
 

@@ -13,26 +13,26 @@ export const getDefaultImageUrls = async (): Promise<string[]> => {
 
   // Suit cards
   Object.keys(CARDS_SUIT_DATA).forEach((key) => {
-    imageUrls.push(`Cards/${key}.png`);
-    imageUrls.push(`Cards/mobile/${key}.png`);
+    imageUrls.push(`/Cards/${key}.png`);
+    imageUrls.push(`/Cards/mobile/${key}.png`);
   });
 
   // Modifier cards
   Object.keys(MODIFIERS_RARITY).forEach((key) => {
-    imageUrls.push(`Cards/${key}.png`);
+    imageUrls.push(`/Cards/${key}.png`);
   });
 
   // Power-ups
   POWER_UP_KEYS.forEach((key) => {
-    imageUrls.push(`powerups/${key}.png`);
+    imageUrls.push(`/powerups/${key}.png`);
   });
 
   // Special & Rage cards
   [SPECIALS_RARITY, RAGES_RARITY].forEach((rarityGroup) => {
     Object.keys(rarityGroup).forEach((key) => {
-      imageUrls.push(`Cards/${key}.png`);
+      imageUrls.push(`/Cards/${key}.png`);
       for (let level = 0; level <= 3; level++) {
-        imageUrls.push(`Cards/3d/${key}-l${level}.png`);
+        imageUrls.push(`/Cards/3d/${key}-l${level}.png`);
       }
     });
   });
