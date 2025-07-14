@@ -18,11 +18,11 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
     case 1:
       return { traditionals: 5, modifiers: 3 };
     case 2:
-      return { specials: 3, powerups: 2 };
+      return { specials: 2, powerups: 2 };
     case 3:
       return { specials: 3, lootboxes: 2 };
     case 4:
-      return { levelups: 3, specials: 3 };
+      return { levelups: 3, specials: 2 };
     case 5:
       return { modifiers: 4, lootboxes: 2 };
     case 6:

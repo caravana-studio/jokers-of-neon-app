@@ -125,7 +125,7 @@
     "0": { "name": "" },
     "1": {
       "name": "Deck",
-      "content": "{{traditionals}} traditional or neon cards, 3 modifiers, burn a card from your deck"
+      "content": "{{traditionals}} traditional or neon cards, {{modifiers}} modifiers, burn a card from your deck"
     },
     "2": {
       "name": "Global",
