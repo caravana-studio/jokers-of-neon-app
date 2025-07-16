@@ -4,11 +4,13 @@ import React, {
   useEffect,
   useContext,
   PropsWithChildren,
+  useRef,
 } from "react";
 import { Howl } from "howler";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useGameContext } from "./GameProvider.tsx";
 import { useLocation } from "react-router-dom";
+import { usePrevious } from "../hooks/usePrevious.tsx";
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -34,86 +36,117 @@ export const AudioPlayerProvider = ({
   introSongPath,
 }: AudioPlayerProviderProps) => {
   const [sound, setSound] = useState<Howl | undefined>(undefined);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameWithSound, setGameWithSound] = useState(
     !localStorage.getItem(SOUND_OFF)
   );
+  const [musicVolume, setMusicVolume] = useState(0.2);
+
+  const [currentActiveSongPath, setCurrentActiveSongPath] = useState<
+    string | null
+  >(null);
 
   const location = useLocation();
-  const [isInMenu, setIsInMenu] = useState(location.pathname === "/");
-  const [musicVolume, setMusicVolume] = useState(0.2);
   const { isRageRound } = useGameContext();
 
-  useEffect(() => {
-    setIsInMenu(location.pathname === "/");
-  }, [location.pathname]);
+  const prevLocationPath = usePrevious(location.pathname);
+
+  const isHomeOrLoginRoute =
+    location.pathname === "/" || location.pathname === "/login";
+  const isMyGamesRoute = location.pathname === "/my-games";
+  const isDemoRoute = location.pathname === "/demo";
 
   useEffect(() => {
-    if (sound) {
-      sound.stop();
-      sound.unload();
+    let newActiveSongPath: string;
+
+    if (isHomeOrLoginRoute) {
+      newActiveSongPath = introSongPath;
+    } else if (isMyGamesRoute) {
+      const navigatedFromHomeOrLogin =
+        prevLocationPath === "/" || prevLocationPath === "/login";
+
+      if (navigatedFromHomeOrLogin) {
+        newActiveSongPath = introSongPath;
+      } else {
+        newActiveSongPath = isRageRound ? rageSongPath : baseSongPath;
+      }
+    } else if (isDemoRoute) {
+      newActiveSongPath = isRageRound ? rageSongPath : baseSongPath;
+    } else {
+      newActiveSongPath = baseSongPath;
     }
 
-    const newSound = new Howl({
-      src: [
-        isInMenu ? introSongPath : isRageRound ? rageSongPath : baseSongPath,
-      ],
-      loop: true,
-      volume: musicVolume,
-    });
+    if (newActiveSongPath !== currentActiveSongPath) {
+      setCurrentActiveSongPath(newActiveSongPath);
+    }
+  }, [
+    location.pathname,
+    prevLocationPath,
+    isRageRound,
+    introSongPath,
+    baseSongPath,
+    rageSongPath,
+    currentActiveSongPath,
+  ]);
 
-    if (sound) sound.stop();
+  useEffect(() => {
+    const currentHowlSource = sound ? (sound as any)._src[0] : null;
 
-    setSound(newSound);
+    let activeSoundInstance: Howl | undefined = sound;
 
-    if (gameWithSound) {
-      newSound.play();
-      setIsPlaying(true);
+    if (
+      currentActiveSongPath === null ||
+      currentActiveSongPath !== currentHowlSource ||
+      !sound
+    ) {
+      if (sound) {
+        sound.stop();
+        sound.unload();
+      }
+
+      if (currentActiveSongPath === null) {
+        activeSoundInstance = undefined;
+      } else {
+        const newSound = new Howl({
+          src: [currentActiveSongPath],
+          loop: true,
+          volume: musicVolume,
+        });
+        activeSoundInstance = newSound;
+      }
+
+      setSound(activeSoundInstance);
+    } else {
+      activeSoundInstance = sound;
+    }
+
+    if (activeSoundInstance) {
+      if (gameWithSound) {
+        if (!activeSoundInstance.playing()) {
+          activeSoundInstance.play();
+        }
+        setIsPlaying(true);
+      } else {
+        activeSoundInstance.stop();
+        setIsPlaying(false);
+      }
+    } else {
+      setIsPlaying(false);
     }
 
     return () => {
-      newSound.stop();
-      newSound.unload();
+      if (activeSoundInstance) {
+        activeSoundInstance.stop();
+        activeSoundInstance.unload();
+      }
     };
-  }, [isRageRound, baseSongPath, rageSongPath, isInMenu]);
-
-  useEffect(() => {
-    if (sound) {
-      if (gameWithSound) {
-        sound.play();
-        setIsPlaying(true);
-      }
-    }
-  }, [sound]);
-
-  useEffect(() => {
-    if (sound) {
-      if (gameWithSound) {
-        sound.play();
-        setIsPlaying(true);
-      } else {
-        sound.stop();
-        setIsPlaying(false);
-      }
-    }
-  }, [gameWithSound]);
+  }, [currentActiveSongPath, gameWithSound, musicVolume]);
 
   useEffect(() => {
     if (sound) {
       sound.volume(musicVolume);
     }
   }, [musicVolume, sound]);
-
-  const toggleSound = () => {
-    if (gameWithSound) {
-      localStorage.setItem(SOUND_OFF, "true");
-      setGameWithSound(false);
-    } else {
-      localStorage.removeItem(SOUND_OFF);
-      setGameWithSound(true);
-    }
-  };
 
   useEffect(() => {
     const savedVolume = localStorage.getItem(SETTINGS_MUSIC_VOLUME);
@@ -125,6 +158,16 @@ export const AudioPlayerProvider = ({
   useEffect(() => {
     localStorage.setItem(SETTINGS_MUSIC_VOLUME, JSON.stringify(musicVolume));
   }, [musicVolume]);
+
+  const toggleSound = () => {
+    if (gameWithSound) {
+      localStorage.setItem(SOUND_OFF, "true");
+      setGameWithSound(false);
+    } else {
+      localStorage.removeItem(SOUND_OFF);
+      setGameWithSound(true);
+    }
+  };
 
   return (
     <AudioPlayerContext.Provider
