@@ -1,19 +1,19 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useGame } from "../dojo/queries/useGame";
 import { GameStateEnum } from "../dojo/typescript/custom";
+import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const useBackToGameButton = () => {
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
+  const { state } = useGameStore();
 
   const onClick = () => {
-    if (game) {
-      game.state === GameStateEnum.Store
+    if (state !== GameStateEnum.NotStarted) {
+      state === GameStateEnum.Store
         ? navigate("/store", { state: { lastTabIndex: 2 } })
         : navigate("/demo", {
             state: { skipRageAnimation: true },

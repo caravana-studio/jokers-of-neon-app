@@ -1,7 +1,7 @@
 import { Image, ImageProps } from "@chakra-ui/react";
 import { forwardRef, useEffect, useState } from "react";
 import { SUPPORTED_EXTENSIONS } from "../constants/general";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { getImageFromCache } from "../utils/cacheUtils";
 
 interface CachedImageProps extends Omit<ImageProps, "src"> {
@@ -37,7 +37,7 @@ export const findValidImagePath = async (
 const CachedImage = forwardRef<HTMLImageElement, CachedImageProps>(
   ({ src, alt, ...props }, ref) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const { modId, isClassic } = useGameContext();
+    const { modId, isClassic } = useGameStore();
     const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
     const modAwareSrc = !isClassic ? baseUrl + src : src;
 

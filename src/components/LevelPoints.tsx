@@ -1,21 +1,15 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGame } from "../dojo/queries/useGame";
-import { useRound } from "../dojo/queries/useRound";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { isTutorial } from "../utils/isTutorial";
 import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
   const inTutorial = isTutorial();
-  const round = useRound();
-  const targetScore = inTutorial ? 300 : round?.target_score ?? 0;
+  const { level, round, targetScore: gameTargetScore } = useGameStore();
+  const targetScore = inTutorial ? 300 : gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
-
-  const { nodeRound } = useGameContext();
-  const game = useGame();
-  const level = game?.level ?? 0;
 
   return (
     <Box className="store-tutorial-step-1">
@@ -27,7 +21,7 @@ export const LevelPoints = () => {
           <Heading size={{ base: "s", md: "m" }} sx={{ color: "white" }}>
             {t("game.round-points.level", { level: level })}
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>|</span>
-            {nodeRound}
+            {round}
           </Heading>
         </PointBox>
         <PointBox type="points">
@@ -40,17 +34,16 @@ export const LevelPoints = () => {
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
-        {t("game.round-points.score", { score: targetScore, round: nodeRound })}
+        {t("game.round-points.score", { score: targetScore, round })}
       </Text>
     </Box>
   );
 };
 
 export const MobileLevelPoints = () => {
-  const game = useGame();
-  const round = useRound();
-  const { nodeRound } = useGameContext();
-  const targetScore = round?.target_score ?? 0;
+  const inTutorial = isTutorial();
+  const { round, targetScore: gameTargetScore } = useGameStore();
+  const targetScore = inTutorial ? 300 : gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (
@@ -62,13 +55,13 @@ export const MobileLevelPoints = () => {
         height={10}
         alignItems="center"
       >
-        <Heading fontSize={21}>{nodeRound}</Heading>
+        <Heading fontSize={21}>{round}</Heading>
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
           {t("game.round-points.score", {
             score: targetScore,
-            round: nodeRound,
+            round,
           })}
         </Text>
         <Score />

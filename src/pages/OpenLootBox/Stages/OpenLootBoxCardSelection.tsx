@@ -31,8 +31,6 @@ export const OpenLootBoxCardSelection = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
 
-  useRedirectByGameState();
-
   const continueButton = (
     <ChooseCardsButton
       disabled={chooseDisabled}

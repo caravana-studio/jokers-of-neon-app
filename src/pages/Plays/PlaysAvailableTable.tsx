@@ -25,6 +25,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { LevelPokerHand } from "../../types/LevelPokerHand";
+import { useGameStore } from "../../state/useGameStore";
 
 const { blueLight, blue, violet } = theme.colors;
 
@@ -41,7 +42,7 @@ interface PlaysAvailableTableProps {
 export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
   maxHeight,
 }) => {
-  const { gameId } = useGameContext();
+  const { id: gameId } = useGameStore();
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [playsExampleIndex, setPlaysExampleIndex] = useState(0);
   const { t } = useTranslation(["game"]);

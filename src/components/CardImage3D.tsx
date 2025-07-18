@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { TILT_OPTIONS } from "../constants/visualProps";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { Card } from "../types/Card";
 import CachedImage from "./CachedImage";
@@ -53,7 +53,7 @@ export const CardImage3D = ({
   const borderRadius = small ? { base: "5px", sm: "8px" } : "20px";
 
   const { isSmallScreen } = useResponsiveValues();
-  const { isClassic } = useGameContext();
+  const { isClassic } = useGameStore();
 
   const showPlain = (isSmallScreen && small) || !isClassic;
 
