@@ -1,4 +1,4 @@
-import { getPowerUp } from "../dojo/queries/useGamePowerUps";
+import { getPowerUp } from "../dojo/queries/getPowerUps";
 import { DojoEvents } from "../enums/dojoEvents";
 import { DojoEvent } from "../types/DojoEvent";
 import { PowerUp } from "../types/Powerup/PowerUp";

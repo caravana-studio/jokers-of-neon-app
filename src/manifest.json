@@ -2432,6 +2432,22 @@
                 }
               ],
               "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_power_ups",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -5757,6 +5773,12 @@
       "class_hash": "0x76375fd883220419e393659b5b41146b42a3cc322cd55b3bb6b43d3cf4ba804",
       "tag": "jokers_of_neon_core-RageRound",
       "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
+    },
+    {
+      "members": [],
+      "class_hash": "0x28bcfc7f5e84c91f904ed17737414a9e8ee0836db219a1a18652dca89574cc1",
+      "tag": "jokers_of_neon_core-Random",
+      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],

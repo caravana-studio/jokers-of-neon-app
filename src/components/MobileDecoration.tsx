@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import CachedImage from "./CachedImage";
 
 interface MobileDecorationProps {
@@ -9,7 +9,7 @@ interface MobileDecorationProps {
 export const MobileDecoration = ({
   fadeToBlack = false,
 }: MobileDecorationProps) => {
-  const { isRageRound } = useGameContext();
+  const { isRageRound } = useGameStore();
   return (
     <>
       {fadeToBlack && (

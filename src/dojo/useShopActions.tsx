@@ -1,21 +1,24 @@
 import { CairoCustomEnum } from "starknet";
+import { achievementSfx } from "../constants/sfx";
 import { DojoEvents } from "../enums/dojoEvents";
+import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
+import { useSettings } from "../providers/SettingsProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
+import { handleAchievements } from "../utils/handleAchievements";
 import {
   failedTransactionToast,
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { handleAchievements } from "../utils/handleAchievements";
-import { useAudio } from "../hooks/useAudio";
-import { useSettings } from "../providers/SettingsProvider";
-import { achievementSfx } from "../constants/sfx";
+import { useGameStore } from "../state/useGameStore";
+import { useAnimationStore } from "../state/useAnimationStore";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -27,8 +30,12 @@ export const useShopActions = () => {
     account: { account },
   } = useDojo();
 
-  const { setDestroyedSpecialCardId, setHand, setPowerUps, maxPowerUpSlots } =
-    useGameContext();
+  const { replaceCards: setHand } = useCurrentHandStore();
+
+  const { setDestroyedSpecialCardId } =
+    useAnimationStore();
+
+  const { maxPowerUpSlots, setPowerUps } = useGameStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -133,12 +140,7 @@ export const useShopActions = () => {
         const responsePowerUps = getPowerUpsFromEvents(tx.value.events);
 
         setHand(cards);
-
-        const powerUps: (PowerUp | null)[] = responsePowerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
+        setPowerUps(responsePowerUps);
 
         destroyedSpecialCard && setDestroyedSpecialCardId(destroyedSpecialCard);
       }

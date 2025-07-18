@@ -2,9 +2,9 @@ import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
-import { useGameContext } from "../providers/GameProvider";
-import { snakeToCamel } from "../utils/snakeToCamel";
+import { useGameStore } from "../state/useGameStore";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
+import { snakeToCamel } from "../utils/snakeToCamel";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
 
@@ -72,77 +72,77 @@ const fetchGraphQLData = async (
 };
 
 export const useGetLeaderboard = (gameId?: number) => {
-  const { modId } = useGameContext();
+  const { modId } = useGameStore();
   const queryResponse = useQuery<LeaderboardResponse>(
     [LEADERBOARD_QUERY_KEY, modId, gameId],
     () => fetchGraphQLData(modId)
   );
-  
+
   const { data } = queryResponse;
 
- const leaderboardMap = new Map<
-  string,
-  { id: number; player_name: string; player_score: number; level: number }
->();
-let currentGameEntry: {
-  id: number;
-  player_name: string;
-  player_score: number;
-  level: number;
-} | null = null;
+  const leaderboardMap = new Map<
+    string,
+    { id: number; player_name: string; player_score: number; level: number }
+  >();
+  let currentGameEntry: {
+    id: number;
+    player_name: string;
+    player_score: number;
+    level: number;
+  } | null = null;
 
-data?.[QUERY_FIELD_NAME]?.edges
-  ?.filter((edge) => edge.node.player_score > 0)
-  .forEach((edge) => {
-    const decodedName = decodeString(edge.node.player_name ?? "");
-    const playerId = signedHexToNumber(edge.node.id.toString());
+  data?.[QUERY_FIELD_NAME]?.edges
+    ?.filter((edge) => edge.node.player_score > 0)
+    .forEach((edge) => {
+      const decodedName = decodeString(edge.node.player_name ?? "");
+      const playerId = signedHexToNumber(edge.node.id.toString());
 
-    const entry = {
-      id: edge.node.id,
-      player_name: decodedName,
-      player_score: edge.node.player_score,
-      level: edge.node.level,
-    };
+      const entry = {
+        id: edge.node.id,
+        player_name: decodedName,
+        player_score: edge.node.player_score,
+        level: edge.node.level,
+      };
 
-    if (playerId === gameId) {
-      currentGameEntry = entry;
-    }
-
-    if (!leaderboardMap.has(decodedName)) {
-      leaderboardMap.set(decodedName, entry);
-    } else {
-      const existing = leaderboardMap.get(decodedName)!;
-      if (
-        entry.level > existing.level ||
-        (entry.level === existing.level &&
-          entry.player_score > existing.player_score)
-      ) {
-        leaderboardMap.set(decodedName, entry);
+      if (playerId === gameId) {
+        currentGameEntry = entry;
       }
+
+      if (!leaderboardMap.has(decodedName)) {
+        leaderboardMap.set(decodedName, entry);
+      } else {
+        const existing = leaderboardMap.get(decodedName)!;
+        if (
+          entry.level > existing.level ||
+          (entry.level === existing.level &&
+            entry.player_score > existing.player_score)
+        ) {
+          leaderboardMap.set(decodedName, entry);
+        }
+      }
+    });
+
+  const leaderboardArray = Array.from(leaderboardMap.values());
+
+  if (
+    currentGameEntry &&
+    !leaderboardArray.some((entry) => entry.id === currentGameEntry!.id)
+  ) {
+    leaderboardArray.push(currentGameEntry);
+  }
+
+  const sortedLeaderboard = leaderboardArray.sort((a, b) => {
+    if (a.level !== b.level) {
+      return b.level - a.level;
     }
+    return b.player_score - a.player_score;
   });
 
-const leaderboardArray = Array.from(leaderboardMap.values());
-
-if (
-  currentGameEntry &&
-  !leaderboardArray.some((entry) => entry.id === currentGameEntry!.id)
-) {
-  leaderboardArray.push(currentGameEntry);
-}
-
-const sortedLeaderboard = leaderboardArray.sort((a, b) => {
-  if (a.level !== b.level) {
-    return b.level - a.level;
-  }
-  return b.player_score - a.player_score;
-});
-
-const leaderboard = sortedLeaderboard.map((leader, index) => ({
-  ...leader,
-  position: index + 1,
-  prize: getPrize(index + 1),
-}));
+  const leaderboard = sortedLeaderboard.map((leader, index) => ({
+    ...leader,
+    position: index + 1,
+    prize: getPrize(index + 1),
+  }));
 
   return {
     ...queryResponse,

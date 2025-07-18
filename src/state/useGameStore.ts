@@ -1,0 +1,370 @@
+import { create } from "zustand";
+import { CLASSIC_MOD_ID } from "../constants/general";
+import { GAME_ID } from "../constants/localStorage";
+import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { fetchCardsConfig } from "../dojo/queries/getCardsConfig";
+import { getGameConfig } from "../dojo/queries/getGameConfig";
+import { getGameView } from "../dojo/queries/getGameView";
+import { getNode } from "../dojo/queries/getNode";
+import { getPowerUps } from "../dojo/queries/getPowerUps";
+import { getRageCards } from "../dojo/queries/getRageCards";
+import { getSpecialCardsView } from "../dojo/queries/getSpecialCardsView";
+import { GameStateEnum } from "../dojo/typescript/custom";
+import { Card } from "../types/Card";
+import { LevelPokerHand } from "../types/LevelPokerHand";
+import { ModCardsConfig } from "../types/ModConfig";
+import { PowerUp } from "../types/Powerup/PowerUp";
+import { RoundRewards } from "../types/RoundRewards";
+import { getRageNodeData } from "../utils/getRageNodeData";
+
+type GameStore = {
+  id: number;
+  totalPlays: number;
+  totalDiscards: number;
+  remainingPlays: number;
+  remainingDiscards: number;
+  cash: number;
+  totalScore: number;
+  currentScore: number;
+  points: number;
+  multi: number;
+  level: number;
+  round: number;
+  targetScore: number;
+  state: GameStateEnum;
+  specialSlots: number;
+  specialsLength: number;
+  rageCards: Card[];
+  specialCards: Card[];
+  availableRerolls: number;
+  modId: string;
+  isClassic: boolean;
+  isRageRound: boolean;
+  maxSpecialCards: number;
+  maxPowerUpSlots: number;
+  powerUps: (PowerUp | null)[];
+  preSelectedPowerUps: number[];
+  roundRewards: RoundRewards | undefined;
+  gameLoading: boolean;
+  gameError: boolean;
+  modCardsConfig: ModCardsConfig | undefined;
+  specialSwitcherOn: boolean;
+  plays: LevelPokerHand[];
+  nodeRound: number;
+
+  refetchGameStore: (client: any, gameId: number) => Promise<void>;
+  setGameId: (client: any, gameId: number) => void;
+  removeGameId: () => void;
+  play: () => void;
+  discard: () => void;
+  rollbackDiscard: () => void;
+  rollbackPlay: () => void;
+  reroll: () => void;
+  rollbackReroll: () => void;
+  addCash: (cash: number) => void;
+  setCurrentScore: (score: number) => void;
+  addPoints: (points: number) => void;
+  setPoints: (points: number) => void;
+  addMulti: (multi: number) => void;
+  setMulti: (multi: number) => void;
+  resetMultiPoints: () => void;
+  resetRage: () => void;
+  setState: (state: GameStateEnum) => void;
+  removeSpecialCard: (cardId: number) => void;
+  preSelectPowerUp: (powerUpIdx: number) => void;
+  unPreSelectPowerUp: (powerUpIdx: number) => void;
+  togglePreselectedPowerUp: (powerUpIdx: number) => boolean;
+  powerUpIsPreselected: (powerUpIdx: number) => boolean;
+  resetPowerUps: () => void;
+  addPowerUp: (powerUp: PowerUp) => void;
+  setPowerUps: (powerUps: (PowerUp | null)[]) => void;
+  refetchPowerUps: (client: any, gameId: number) => Promise<void>;
+  unPreSelectAllPowerUps: () => void;
+  setRoundRewards: (rewards: RoundRewards | undefined) => void;
+  setGameLoading: (loading: boolean) => void;
+  setGameError: (error: boolean) => void;
+  toggleSpecialSwitcher: () => void;
+  showRages: () => void;
+  showSpecials: () => void;
+  refetchPlays: (client: any, gameId: number) => Promise<void>;
+};
+
+const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
+  console.log("refetchint game store");
+  const { round, game } = await getGameView(client, gameId);
+  const specialCards = await getSpecialCardsView(client, gameId);
+  const rageCards = getRageCards(round.rages);
+  const powerUps = await getPowerUps(client, gameId);
+  const { maxPowerUpSlots, maxSpecialCards } = await getGameConfig(
+    client,
+    game.mod_id
+  );
+
+  const modCardsConfig = await fetchCardsConfig(client, game.mod_id);
+
+  const plays = await getPlayerPokerHands(client, gameId);
+
+  const nodeRoundData = await getNode(
+    client,
+    gameId ?? 0,
+    game.current_node_id ?? 0
+  );
+  if (rageCards.length > 0) {
+    const rageRoundData = getRageNodeData(nodeRoundData);
+    set({ nodeRound: rageRoundData.round });
+  } else {
+    set({ nodeRound: nodeRoundData });
+  }
+
+  set({
+    id: gameId,
+    totalDiscards: game.discards,
+    totalPlays: game.plays,
+    remainingPlays: round.remaining_plays,
+    remainingDiscards: round.remaining_discards,
+    cash: game.cash,
+    level: game.level,
+    round: game.current_node_id,
+    targetScore: round.target_score,
+    state: game.state,
+    specialSlots: game.special_slots,
+    rageCards,
+    isRageRound: rageCards.length > 0,
+    availableRerolls: game.available_rerolls,
+    specialsLength: game.current_specials_len,
+    modId: game.mod_id,
+    isClassic: game.mod_id === CLASSIC_MOD_ID,
+    totalScore: game.player_score,
+    currentScore: round.current_score,
+    specialCards,
+    maxSpecialCards,
+    maxPowerUpSlots,
+    powerUps,
+    modCardsConfig,
+    plays,
+  });
+};
+
+export const useGameStore = create<GameStore>((set, get) => ({
+  id: Number(localStorage.getItem(GAME_ID)) ?? 0,
+  totalDiscards: 0,
+  totalPlays: 0,
+  remainingPlays: 0,
+  remainingDiscards: 0,
+  cash: 0,
+  totalScore: 0,
+  currentScore: 0,
+  points: 0,
+  multi: 0,
+  level: 0,
+  round: 0,
+  targetScore: 0,
+  state: GameStateEnum.NotStarted,
+  specialSlots: 1,
+  rageCards: [],
+  specialCards: [],
+  isRageRound: false,
+  availableRerolls: 0,
+  specialsLength: 0,
+  modId: "jokers_of_neon_classic",
+  isClassic: true,
+  maxSpecialCards: 7,
+  maxPowerUpSlots: 4,
+  powerUps: [],
+  preSelectedPowerUps: [],
+  gameLoading: true,
+  gameError: false,
+  roundRewards: undefined,
+  modCardsConfig: undefined,
+  specialSwitcherOn: true,
+  plays: [],
+  nodeRound: 0,
+
+  refetchGameStore: async (client, gameId) => {
+    doRefetchGameStore(client, gameId, set);
+  },
+
+  setGameId: (client, gameId) => {
+    set({ id: gameId });
+    localStorage.setItem(GAME_ID, gameId.toString());
+    doRefetchGameStore(client, gameId, set);
+  },
+
+  removeGameId: () => {
+    localStorage.removeItem(GAME_ID);
+    set({ id: 0 });
+  },
+
+  play: () => {
+    const { remainingPlays } = get();
+    if (remainingPlays > 0) set({ remainingPlays: remainingPlays - 1 });
+  },
+
+  discard: () => {
+    const { remainingDiscards } = get();
+    if (remainingDiscards > 0)
+      set({ remainingDiscards: remainingDiscards - 1 });
+  },
+
+  reroll: () => {
+    const { availableRerolls } = get();
+    set({ availableRerolls: availableRerolls - 1 });
+  },
+
+  rollbackReroll: () => {
+    const { availableRerolls } = get();
+    set({ availableRerolls: availableRerolls + 1 });
+  },
+
+  rollbackDiscard: () => {
+    const { remainingDiscards } = get();
+    set({ remainingDiscards: remainingDiscards + 1 });
+  },
+
+  rollbackPlay: () => {
+    const { remainingPlays } = get();
+    set({ remainingPlays: remainingPlays + 1 });
+  },
+
+  addCash: (cashToAdd: number) => {
+    const { cash: currentCash } = get();
+    set({ cash: currentCash + cashToAdd });
+  },
+
+  setCurrentScore: (score: number) => {
+    set({ currentScore: score });
+  },
+
+  setPoints: (points: number) => {
+    set({ points: points });
+  },
+
+  addPoints: (points: number) => {
+    set({ points: points + points });
+  },
+
+  addMulti: (multi: number) => {
+    set({ multi: multi + multi });
+  },
+
+  setMulti: (multi: number) => {
+    set({ multi: multi });
+  },
+
+  resetMultiPoints: () => {
+    set({ points: 0 });
+    set({ multi: 0 });
+  },
+
+  resetRage: () => {
+    set({ isRageRound: false, rageCards: [] });
+  },
+
+  setState: (state: GameStateEnum) => {
+    set({ state });
+  },
+
+  removeSpecialCard: (cardId: number) => {
+    set((state) => {
+      const newState = { ...state };
+      newState.specialCards = newState.specialCards.filter(
+        (card) => card.card_id !== cardId
+      );
+      return newState;
+    });
+  },
+
+  preSelectPowerUp: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+    set({ preSelectedPowerUps: [...preSelectedPowerUps, powerUpIdx] });
+  },
+  unPreSelectPowerUp: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+    set({
+      preSelectedPowerUps: preSelectedPowerUps.filter(
+        (idx) => idx !== powerUpIdx
+      ),
+    });
+  },
+
+  togglePreselectedPowerUp: (powerUpIdx: number): boolean => {
+    const {
+      preSelectedPowerUps,
+      remainingPlays,
+      unPreSelectPowerUp,
+      preSelectPowerUp,
+      maxPowerUpSlots,
+    } = get();
+    if (remainingPlays > 0) {
+      if (preSelectedPowerUps.includes(powerUpIdx)) {
+        unPreSelectPowerUp(powerUpIdx);
+        return true;
+      } else if (preSelectedPowerUps.length < maxPowerUpSlots) {
+        preSelectPowerUp(powerUpIdx);
+        return true;
+      }
+    }
+    return false;
+  },
+
+  powerUpIsPreselected: (powerUpIdx: number) => {
+    const { preSelectedPowerUps } = get();
+
+    return preSelectedPowerUps.filter((idx) => idx === powerUpIdx).length > 0;
+  },
+
+  resetPowerUps: () => {
+    set({ powerUps: [] });
+    set({ preSelectedPowerUps: [] });
+  },
+
+  unPreSelectAllPowerUps: () => {
+    set({ preSelectedPowerUps: [] });
+  },
+
+  addPowerUp: (powerUp: PowerUp) => {
+    set((state) => {
+      const newPowerUps = [...state.powerUps];
+      newPowerUps[powerUp.idx] = powerUp;
+      return { powerUps: newPowerUps };
+    });
+  },
+
+  setPowerUps: (powerUps: (PowerUp | null)[]) => {
+    set({ powerUps });
+  },
+
+  refetchPowerUps: async (client: any, gameId: number) => {
+    const powerUps = await getPowerUps(client, gameId);
+    set({ powerUps });
+  },
+
+  setGameLoading: (loading: boolean) => {
+    set({ gameLoading: loading });
+  },
+
+  setGameError: (error: boolean) => {
+    set({ gameError: error });
+  },
+
+  setRoundRewards: (rewards: RoundRewards | undefined) => {
+    set({ roundRewards: rewards });
+  },
+
+  toggleSpecialSwitcher: () => {
+    set((state) => ({ specialSwitcherOn: !state.specialSwitcherOn }));
+  },
+
+  showRages: () => {
+    set({ specialSwitcherOn: false });
+  },
+
+  showSpecials: () => {
+    set({ specialSwitcherOn: true });
+  },
+
+  refetchPlays: async (client, gameId) => {
+    const plays = await getPlayerPokerHands(client, gameId);
+    plays && set({ plays: plays as LevelPokerHand[] });
+  },
+}));

@@ -8,19 +8,16 @@ import { TiltCard } from "../../components/TiltCard.tsx";
 import { PRESELECTED_CARD_SECTION_ID } from "../../constants/general.ts";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps.ts";
 import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useAnimationStore } from "../../state/useAnimationStore.ts";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card.ts";
 
 export const MobilePreselectedCardsSection = () => {
-  const {
-    preSelectedCards,
-    hand,
-    getModifiers,
-    togglePreselected,
-    discardAnimation,
-    playAnimation,
-  } = useGameContext();
+  const { discardAnimation, playAnimation } = useAnimationStore();
+
+  const { preSelectedCards, hand, getModifiers, togglePreselected } =
+    useCurrentHandStore();
 
   const { highlightCard } = useCardHighlight();
 

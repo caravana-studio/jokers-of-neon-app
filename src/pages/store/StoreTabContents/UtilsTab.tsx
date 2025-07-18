@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
-import { useGame } from "../../../dojo/queries/useGame";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 import { BurnComponent } from "../../DynamicStore/storeComponents/ BurnComponent";
@@ -18,12 +18,10 @@ export const UtilsTab = () => {
   const navigate = useNavigate();
 
   const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
-  const { maxSpecialCards } = useGameContext();
 
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash, specialSlots, maxSpecialCards } = useGameStore();
 
-  const visible = (game?.special_slots ?? 1) < maxSpecialCards;
+  const visible = specialSlots < maxSpecialCards;
 
   const notEnoughCashSlot =
     !specialSlotItem.cost ||

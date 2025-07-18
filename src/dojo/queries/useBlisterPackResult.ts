@@ -2,10 +2,10 @@ import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useMemo } from "react";
+import { useGameStore } from "../../state/useGameStore";
 import { Card } from "../../types/Card";
 import { useDojo } from "../useDojo";
 import { getCardFromCardId } from "../utils/getCardFromCardId";
-import { useGame } from "./useGame";
 
 const sort = (a: Card, b: Card) => {
   return (a.card_id ?? 0) - (b.card_id ?? 0);
@@ -24,8 +24,7 @@ export const useBlisterPackResult = () => {
     },
   } = useDojo();
 
-  const game = useGame();
-  const gameId = game?.id ?? 0;
+  const { id: gameId } = useGameStore();
 
   const entityId = getEntityIdFromKeys([BigInt(gameId)]) as Entity;
 
