@@ -19,7 +19,7 @@ export const useLootBoxStore = create<LootBoxStore>((set, get) => ({
 
   fetchLootBoxResult: async (client, gameId) => {
     const result = await getLootBoxResult(client, gameId);
-    set({ result });
+    set({ result, cardsToKeep: result });
   },
 
   toggleCard: (card: Card) => {
