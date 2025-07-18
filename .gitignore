@@ -424,6 +424,6 @@ yarn-error.log*
 .env
 .env.prod
 
-
+# capacitor
 /android
 /ios
