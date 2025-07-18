@@ -1983,8 +1983,8 @@
       ]
     },
     {
-      "address": "0x5ffe1c1bc1dd1a78fd46bebab10b8d055e9de7640aaa77d46478c2e2ce3693c",
-      "class_hash": "0x391465cc1e315bc4f528ddbf757184ef60380e39d339fb488fda4415c87caf6",
+      "address": "0x6e93c14386ff6cc302fe7f46dc20b608a0c7ec577e12bf9be6f92e24a1cfd10",
+      "class_hash": "0x7ca3a8df9daa11046a8e27cb0f01b179ec2cbacb7c1ee8c485b3329e9efb4e3",
       "abi": [
         {
           "type": "impl",
@@ -4857,8 +4857,8 @@
       ]
     },
     {
-      "address": "0x6ae57801b225155b296d011145a25542c0522e7f12397874cafb39189d3145",
-      "class_hash": "0x365faa32b9d5207104386f480f1e126412979bddcea748dcfab141373d09e18",
+      "address": "0x2fb44e4fc6ba96da51b430b49945a4446093076ef6ab496a859fa6caefe2af1",
+      "class_hash": "0xb848e3e5f0db7a074c563796214fea1f4822254f30b6edae7d18d0aab41fb5",
       "abi": [
         {
           "type": "impl",
@@ -5266,6 +5266,34 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "cards_picked",
+              "type": "core::bool"
+            },
+            {
+              "name": "cards",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::shop_system::IShopSystem",
           "items": [
@@ -5472,6 +5500,38 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_loot_box_result",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_cards_in_deck",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -5773,12 +5833,6 @@
       "class_hash": "0x76375fd883220419e393659b5b41146b42a3cc322cd55b3bb6b43d3cf4ba804",
       "tag": "jokers_of_neon_core-RageRound",
       "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
-    },
-    {
-      "members": [],
-      "class_hash": "0x28bcfc7f5e84c91f904ed17737414a9e8ee0836db219a1a18652dca89574cc1",
-      "tag": "jokers_of_neon_core-Random",
-      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],
