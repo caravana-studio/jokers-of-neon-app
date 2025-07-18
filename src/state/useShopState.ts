@@ -5,7 +5,6 @@ import {
   EMPTY_SPECIAL_SLOT_ITEM,
   getShopItems,
 } from "../dojo/queries/getShopItems";
-import { useGame } from "../dojo/queries/useGame";
 import {
   BlisterPackItem,
   BurnItem,
@@ -15,11 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp";
-
-export interface RerollInformation {
-  rerollCost: number;
-  rerollExecuted: boolean;
-}
+import { useGameStore } from "./useGameStore";
 
 export interface ShopItems {
   specialCards: Card[];
@@ -65,13 +60,6 @@ export const useShopState = () => {
     EMPTY_SPECIAL_SLOT_ITEM
   );
   const [burnItem, setBurnItem] = useState<BurnItem>(EMPTY_BURN_ITEM);
-
-  const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
-    {
-      rerollCost: 100,
-      rerollExecuted: true,
-    }
-  );
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
 
@@ -166,9 +154,7 @@ export const useShopState = () => {
     increaseCash(Number(specialSlotItem?.cost ?? 0));
   };
 
-  const game = useGame();
-  const gameId = game?.id ?? 0;
-  const currentNodeId = game?.current_node_id;
+  const { id: gameId, round: currentNodeId } = useGameStore();
 
   const [shopId, setShopId] = useState<number>(0);
 
@@ -183,6 +169,7 @@ export const useShopState = () => {
 
   const fetchShopItems = async () => {
     const shopItems = await getShopItems(client, gameId);
+    console.log("shopItems", shopItems);
     setLoading(false);
     if (shopItems) {
       setSpecialCards(shopItems.specialCards);
@@ -191,7 +178,6 @@ export const useShopState = () => {
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
       setSpecialSlotItem({ ...shopItems.specialSlotItem });
-      setRerollInformation(shopItems.rerollInformation);
       setCash(shopItems.cash);
       setBurnItem({ ...shopItems.burnItem });
       setPowerUps(shopItems.powerUpItems);
@@ -216,7 +202,6 @@ export const useShopState = () => {
   return {
     shopItems,
     fetchShopItems,
-    rerollInformation,
     cash,
     buySpecialCard,
     buyModifierCard,

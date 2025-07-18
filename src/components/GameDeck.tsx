@@ -6,6 +6,7 @@ import { useDeck } from "../dojo/queries/useDeck.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import CachedImage from "./CachedImage.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 
 interface GameDeckProps {
   inStore?: boolean;
@@ -17,7 +18,7 @@ export const GameDeck = ({ inStore = false }: GameDeckProps) => {
   const { t } = useTranslation(["game"]);
 
   const { cardScale } = useResponsiveValues();
-  const { isClassic } = useGameContext();
+  const { isClassic } = useGameStore();
 
   const cardWidth = CARD_WIDTH * cardScale;
 

@@ -1,12 +1,11 @@
 import { Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useGameStore } from "../state/useGameStore";
 import { RollingNumber } from "./RollingNumber";
-import { useGameContext } from "../providers/GameProvider";
 
 export const ScoreTotal = () => {
-  const game = useGameContext();
   const { t } = useTranslation(["game"]);
-
+  const { totalScore } = useGameStore();
   return (
     <Text
       size="s"
@@ -14,7 +13,7 @@ export const ScoreTotal = () => {
       textAlign={["right", "center"]}
       whiteSpace="nowrap"
     >
-      {t("game.score-total")}: <RollingNumber n={game.playerScore} />
+      {t("game.score-total")}: <RollingNumber n={totalScore} />
     </Text>
   );
 };

@@ -1,9 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import CachedImage from "../../../../components/CachedImage";
 import { DefaultInfo } from "../../../../components/Info/DefaultInfo";
-import { useGame } from "../../../../dojo/queries/useGame";
+import { useGameStore } from "../../../../state/useGameStore";
 import { useResponsiveValues } from "../../../../theme/responsiveSettings";
-import { MobileCoins } from "../../../store/Coins";
 import RerollButton from "../../../store/StoreElements/RerollButton";
 import { RerollIndicators } from "./RerollIndicators";
 
@@ -13,8 +12,7 @@ interface RerollSectionProps {
 
 export const RerollSection: React.FC<RerollSectionProps> = ({ hideReroll }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
-  const availableRerolls = Number(game?.available_rerolls ?? 0);
+  const { availableRerolls } = useGameStore();
 
   return (
     <Flex justifyContent={"space-between"} alignItems={"center"}>

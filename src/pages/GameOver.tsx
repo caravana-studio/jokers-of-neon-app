@@ -13,6 +13,7 @@ import { looseSfx } from "../constants/sfx";
 import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
@@ -24,7 +25,9 @@ export const GameOver = () => {
 
   const gameId = Number(params.gameId);
 
-  const { restartGame, setIsRageRound, executeCreateGame } = useGameContext();
+  const { executeCreateGame } = useGameContext();
+
+  const { removeGameId, resetRage } = useGameStore();
 
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
@@ -53,7 +56,7 @@ export const GameOver = () => {
   useEffect(() => {
     looseSound();
     localStorage.removeItem(GAME_ID);
-    setIsRageRound(false);
+    resetRage();
   }, []);
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export const GameOver = () => {
   const onStartGameClick = () => {
     setIsLoading(true);
     localStorage.removeItem(GAME_ID);
-    restartGame();
+    removeGameId();
     stopLooseSound();
     executeCreateGame();
   };

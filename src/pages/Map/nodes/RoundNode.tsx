@@ -1,13 +1,12 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
-import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
-import { useGameContext } from "../../../providers/GameProvider";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
@@ -16,17 +15,17 @@ import { NodeType } from "../types";
 const RoundNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "round" });
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
-  const navigate = useNavigate();
+  const { id: gameId } = useGameStore();
+  const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
+  const { state } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
-  const title = t("name", { round: data.round })
+  const title = t("name", { round: data.round });
 
   return (
     <Tooltip
@@ -82,11 +81,11 @@ const RoundNode = ({ data }: any) => {
               nodeType: NodeType.ROUND,
             });
           if (data.current && !stateInMap) {
-            navigate("/redirect/demo");
+            navigate(GameStateEnum.Round);
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
-                navigate("/redirect/demo");
+                navigate(GameStateEnum.Round);
               }
             });
           }

@@ -1,13 +1,13 @@
 import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { SortBy as SortByEnum } from "../enums/sortBy.ts";
-import { useGameContext } from "../providers/GameProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import CachedImage from "./CachedImage.tsx";
 import { CardContainerSwitcher } from "./CardContainerWithBorder.tsx";
 
 export const SortBy = () => {
-  const { sortBy } = useGameContext();
+  const { sortBy } = useCurrentHandStore();
   const { t } = useTranslation(["game"]);
 
   return (
@@ -41,7 +41,7 @@ export const SortBy = () => {
 const SortByContainer = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslation(["game"]);
 
-  const { toggleSortBy } = useGameContext();
+  const { toggleSortBy } = useCurrentHandStore();
 
   const { isSmallScreen } = useResponsiveValues();
   return isSmallScreen ? (

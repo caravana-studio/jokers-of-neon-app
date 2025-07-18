@@ -7,13 +7,14 @@ import { SpecialCards } from "../../components/SpecialCards.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { ScoreTotal } from "../../components/ScoreTotal.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 interface TopSectionProps {
   onTutorialCardClick?: () => void;
 }
 
 export const TopSection = ({ onTutorialCardClick }: TopSectionProps) => {
-  const { maxPowerUpSlots } = useGameContext();
+  const { maxPowerUpSlots } = useGameStore();
   return (
     <Flex flexDir="column">
       <Flex
