@@ -9,4 +9,5 @@ export interface RoundRewards {
   rage_card_defeated: number;
   rage_card_defeated_cash: number;
   total: number;
+  level_passed: number;
 }

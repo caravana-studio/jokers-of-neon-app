@@ -83,6 +83,8 @@ export const MyGames = () => {
         alignItems="center"
         height="100%"
         width="100%"
+        pt={[8, 12]}
+        pb={[0, 4]}
       >
         <Flex
           flexDirection={"column"}

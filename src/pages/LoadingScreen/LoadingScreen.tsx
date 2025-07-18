@@ -60,6 +60,12 @@ export const LoadingScreen = forwardRef<
       }
     }, [canFadeOut]);
 
+    useEffect(() => {
+      if (!showPresentation) {
+        onPresentationEnd();
+      }
+    }, []);
+
     const handleAnimationEnd = () => {
       setSkipAnimation(true);
       setVisibleSpinner(true);

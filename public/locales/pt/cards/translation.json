@@ -1,5 +1,6 @@
 {
   "activated": "Activado",
+  "by": "por",
   "modifiers": {
     "608": {
       "name": "Mudar para Paus",
@@ -29,19 +30,19 @@
   "specials": {
     "300": {
       "name": "Copas Multiplicadas",
-      "description": "Adiciona +2 ao multiplicador para cada carta de Copas jogada"
+      "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Copas jogada"
     },
     "301": {
       "name": "Paus Multiplicadas",
-      "description": "Adiciona +2 ao multiplicador para cada carta de Paus jogada"
+      "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Paus jogada"
     },
     "302": {
       "name": "Ouros Multiplicadas",
-      "description": "Adiciona +2 ao multiplicador para cada carta de Ouros jogada"
+      "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Ouros jogada"
     },
     "303": {
       "name": "Espadas Multiplicadas",
-      "description": "Adiciona +2 ao multiplicador para cada carta de Espadas jogada"
+      "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Espadas jogada"
     },
     "304": {
       "name": "Impulsionador de Par",
@@ -77,11 +78,11 @@
     },
     "312": {
       "name": "Impulsionador de Figuras",
-      "description": "Todas as cartas de FIGURAS jogadas ganham +50 pontos"
+      "description": "Todas as cartas de FIGURAS jogadas ganham ^blue(+50 pontos)^"
     },
     "313": {
       "name": "Ases Multiplicados",
-      "description": "Adiciona +5 ao multiplicador para cada carta de Ás jogada"
+      "description": "Adiciona ^violet(+5 ao multiplicador)^ para cada carta de Ás jogada"
     },
     "314": {
       "name": "O amor está no ar",
@@ -97,11 +98,11 @@
     },
     "317": {
       "name": "Número da sorte 7",
-      "description": "Todos os 7s ganham +77 pontos"
+      "description": "Todos os 7s ganham ^blue(+77 pontos)^"
     },
     "318": {
       "name": "Bônus Neon",
-      "description": "Todas as cartas Neon ganham +20 pontos. As jogadas Neon são níveladas em 2 níveis adicionais."
+      "description": "Todas as cartas Neon ganham ^blue(+20 pontos)^. As jogadas Neon são níveladas em 2 níveis adicionais."
     },
     "319": {
       "name": "Prazo final",
@@ -109,15 +110,15 @@
     },
     "320": {
       "name": "Vantagem inicial",
-      "description": "A primeira mão jogada ganha +100 pontos e +10 no multiplicador"
+      "description": "A primeira mão jogada ganha ^blue(+100 pontos)^ e ^violet(+10 no multiplicador)^"
     },
     "321": {
       "name": "Mão da sorte",
-      "description": "Adiciona 50 moedas para cada carta de ouros que for jogada"
+      "description": "Adiciona ^yellow(+50 moedas)^ para cada carta de ouros que for jogada"
     },
     "322": {
       "name": "Maestria em descarte",
-      "description": "Adiciona +10 ao multiplicador se não houver descartes restantes"
+      "description": "Adiciona ^violet(+10 ao multiplicador)^ se não houver descartes restantes"
     },
     "323": {
       "name": "Segunda chance",
@@ -137,19 +138,19 @@
     },
     "327": {
       "name": "Blackjack",
-      "description": "Atinge exatamente 21 pontos com as cartas jogadas para ganhar +21 multi."
+      "description": "Atinge exatamente ^blue(21 pontos)^ com as cartas jogadas para ganhar ^violet(+21 multi)^."
     },
     "328": {
       "name": "Jogo Eficiente",
-      "description": "Ganhe +10 multi e +50 pontos ao jogar 3 ou menos cartas."
+      "description": "Ganhe ^violet(+10 multi)^ e ^blue(+50 pontos)^ ao jogar 3 ou menos cartas."
     },
     "329": {
       "name": "Sacrifício Especial",
-      "description": "Ganhe +1 multi (acumulativo) para cada carta especial vendida. Actualmente +{{multi}} multi."
+      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
     },
     "330": {
       "name": "Quebrador de Rage",
-      "description": "Ganhe +2 multi (acumulativo) para cada Rage derrotada. Actualmente +{{multi}} multi."
+      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
     "331": {
       "name": "Atalho",
@@ -157,7 +158,7 @@
     },
     "332": {
       "name": "Dia de Sorte",
-      "description": "Receba 500 moedas extras para cada Joker na mão no final da rodada"
+      "description": "Receba ^yellow(+500 moedas)^ extras para cada Joker na mão no final da rodada"
     },
     "333": {
       "name": "Efeito Espelho",
@@ -173,7 +174,7 @@
     },
     "336": {
       "name": "Queda do Joker",
-      "description": "Receba 500 moedas toda vez que descartar um Joker"
+      "description": "Receba ^yellow(+500 moedas)^ toda vez que descartar um Joker"
     },
     "337": {
       "name": "Descartes Extras",
@@ -217,27 +218,27 @@
     },
     "347": {
       "name": "Dado de Copas",
-      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Copas."
+      "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Copas."
     },
     "348": {
       "name": "Dado de Paus",
-      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Paus."
+      "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Paus."
     },
     "349": {
       "name": "Dado de Ouros",
-      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Ouros."
+      "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Ouros."
     },
     "350": {
       "name": "Dado de Espadas",
-      "description": "Lança um número entre -2 e 6 para adicionar ao multiplicador para cada carta jogada do naipe de Espadas."
+      "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Espadas."
     },
     "351": {
       "name": "Multiplicador Especial",
-      "description": "Ganhe +3 multi para cada carta especial que possuir."
+      "description": "Ganhe ^violet(+3 multi)^ para cada carta especial que possuir."
     },
     "352": {
       "name": "Colecionador",
-      "description": "Ganhe +1 pontos para cada carta no seu baralho."
+      "description": "Ganhe ^blue(+1 pontos)^ para cada carta no seu baralho."
     },
     "353": {
       "name": "Reinício da Rage",
@@ -245,39 +246,39 @@
     },
     "354": {
       "name": "Bônus de Pular",
-      "description": "Ganhe +25 pontos (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). Actualmente +{{points}} pontos."
+      "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). ^blue(Actualmente +{{points}} pontos)^."
     },
     "355": {
       "name": "Recompensas em Chamas",
-      "description": "Ganhe +15 pontos (acumulativos) para cada carta queimar do seu baralho. Actualmente +{{points}} pontos."
+      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
     },
     "356": {
       "name": "Guardião de Slot",
-      "description": "Ganhe +100 pontos para cada Slot desbloqueado, mas vazio."
+      "description": "Ganhe ^blue(+100 pontos)^ para cada Slot desbloqueado, mas vazio."
     },
     "357": {
       "name": "Apostadores de Alto Nível",
-      "description": "1 em 2 chances de ganhar +1 multi (acumulativo) para cada Carta Alta jogada. Actualmente +{{multi}} multi."
+      "description": "Cada Carta Alta jogada 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
     },
     "358": {
       "name": "Roleta de Naipes",
-      "description": "Ganhe +5 multi para cada carta que corresponda a um naipe aleatório. O naipe muda a cada rodada."
+      "description": "Ganhe ^violet(+5 multi)^ para cada carta que corresponda a um naipe aleatório. O naipe muda a cada rodada."
     },
     "359": {
       "name": "Guardião dos Paus",
-      "description": "Ganhe +10 pontos para cada carta de Paus no seu baralho."
+      "description": "Ganhe ^blue(+10 pontos)^ para cada carta de Paus no seu baralho."
     },
     "360": {
       "name": "Trio de Espadas",
-      "description": "Se sua mão tiver pelo menos 3 cartas de Espadas, ganhe +100 pontos e +3 multi."
+      "description": "Se sua mão tiver pelo menos 3 cartas de Espadas, ganhe ^blue(+100 pontos)^ e ^violet(+3 multi)^."
     },
     "361": {
       "name": "Os Dois Contam",
-      "description": "Ganhe +30 pontos para cada 2 que você tiver na mão."
+      "description": "Ganhe ^blue(+30 pontos)^ para cada 2 que você tiver na mão."
     },
     "362": {
       "name": "Mão de modificadores",
-      "description": "Ganhe +5 de multi para cada carta modificadora na sua mão."
+      "description": "Ganhe ^violet(+5 multi)^ para cada carta modificadora na sua mão."
     },
     "363": {
       "name": "Piromaníaco",
@@ -285,11 +286,11 @@
     },
     "364": {
       "name": "Multiplicador de Quadrados",
-      "description": "+4 multi por cada 4 cartas em sua mão."
+      "description": "^violet(+4 multi)^ por cada 4 cartas em sua mão."
     },
     "365": {
       "name": "Jackpot",
-      "description": "Ganhe +30 pontos para cada Valete na sua mão."
+      "description": "Ganhe ^blue(+30 pontos)^ para cada Valete na sua mão."
     },
     "366": {
       "name": "Ciclo de dinheiro",
@@ -301,23 +302,23 @@
     },
     "368": {
       "name": "A Verdade do Rei",
-      "description": "Cada Rei jogado tem 1 em 2 de chance de dar 100 de ouro. Cada carta Rei em sua mão tem 1 em 4 de chance de dar 100 pontos."
+      "description": "Cada Rei jogado tem 50% de chance de dar ^yellow(+100 de moedas)^. Cada carta Rei em sua mão tem 25% de chance de dar ^blue(+100 pontos)^."
     },
     "369": {
       "name": "Aritmomania",
-      "description": "Se a soma das cartas jogadas for par, ganhe +7 de multi. Se for ímpar, ganhe +100 pontos."
+      "description": "Se a soma das cartas jogadas for par, ganhe ^violet(+7 multi)^. Se for ímpar, ganhe ^blue(+100 pontos)^."
     },
     "370": {
       "name": "Preto e Vermelho",
-      "description": "As cartas de Coração e Diamantes dão pontos duplos. As cartas de Três e Quatro dão +1 multi."
+      "description": "As cartas de Coração e Diamantes dão pontos duplos. As cartas de Três e Quatro dão ^violet(+1 multi)^."
     },
     "371": {
       "name": "Joker inúteis",
-      "description": "Os Joker não geram pontos nem multiplicador. Todas as outras cartas recebem +1 multi."
+      "description": "Os Joker não geram pontos nem multiplicador. Todas as outras cartas recebem ^violet(+1 multi)^."
     },
     "372": {
       "name": "Escada Ascendente",
-      "description": "Ganhe +10 pontos acumulativos para cada sequência jogada. Atualmente com +{{points}} pontos."
+      "description": "Ganhe ^blue(+10 pontos)^ acumulativos para cada sequência jogada. ^blue(Atualmente com +{{points}} pontos)^."
     },
     "373": {
       "name": "Relatividade",
@@ -325,263 +326,263 @@
     },
     "374": {
       "name": "Impulso de Curingas",
-      "description": "Cada curinga concede +100 pontos."
+      "description": "Cada curinga concede ^blue(+100 pontos)^."
     },
     "379": {
       "name": "Arco-íris",
-      "description": "Ganhe +200 pontos e +5 multi se sua jogada incluir todos os quatro naipes."
+      "description": "Ganhe ^blue(+200 pontos)^ e ^violet(+5 multi)^ se sua jogada incluir todos os quatro naipes."
     },
     "380": {
       "name": "Fortuna da Rainha",
-      "description": "Cada rainha na sua jogada tem 1 em 2 chances de conceder +150 moedas."
+      "description": "Cada rainha jogada tem 50% de chances de conceder ^yellow(+150 moedas)^."
     }
   },
   "power-ups": {
     "800": {
       "name": "+25 Pontos",
-      "description": "Pontuação adicional de +25"
+      "description": "Pontuação adicional de  ^blue(+25 pontos)^"
     },
     "801": {
       "name": "+50 Pontos",
-      "description": "Pontuação adicional de +50"
+      "description": "Pontuação adicional de  ^blue(+50 pontos)^"
     },
     "802": {
       "name": "+75 Pontos",
-      "description": "Pontuação adicional de +75"
+      "description": "Pontuação adicional de  ^blue(+75 pontos)^"
     },
     "803": {
-      "name": "+100 Pontos",
-      "description": "Pontuação adicional de +100"
+      "name": "+100 Pontos)",
+      "description": "Pontuação adicional de  ^blue(+100 pontos)^"
     },
     "804": {
       "name": "+3 multi",
-      "description": "Adiciona +3 ao multi"
+      "description": "Adiciona ^violet(+3 multi)^"
     },
     "805": {
       "name": "+5 multi",
-      "description": "Adiciona +5 ao multi"
+      "description": "Adiciona ^violet(+5 multi)^"
     },
     "806": {
       "name": "+7 multi",
-      "description": "Adiciona +7 ao multi"
+      "description": "Adiciona ^violet(+7 multi)^"
     },
     "807": {
       "name": "+10 multi",
-      "description": "Adiciona +10 ao multi"
+      "description": "Adiciona ^violet(+10 multi)^"
     }
   },
   "neonCards": {
     "200": {
       "name": "2 de neon Paus",
-      "description": "Ganha +4 pontos e +1 multi"
+      "description": "Ganha ^blue(+4 pontos)^ e ^violet(+1 multi)^"
     },
     "201": {
       "name": "3 de neon Paus",
-      "description": "Ganha +6 pontos e +1 multi"
+      "description": "Ganha ^blue(+6 pontos)^ e ^violet(+1 multi)^"
     },
     "202": {
       "name": "4 de neon Paus",
-      "description": "Ganha +8 pontos e +1 multi"
+      "description": "Ganha ^blue(+8 pontos)^ e ^violet(+1 multi)^"
     },
     "203": {
       "name": "5 de neon Paus",
-      "description": "Ganha +10 pontos e +1 multi"
+      "description": "Ganha ^blue(+10 pontos)^ e ^violet(+1 multi)^"
     },
     "204": {
       "name": "6 de neon Paus",
-      "description": "Ganha +12 pontos e +1 multi"
+      "description": "Ganha ^blue(+12 pontos)^ e ^violet(+1 multi)^"
     },
     "205": {
       "name": "7 de neon Paus",
-      "description": "Ganha +14 pontos e +1 multi"
+      "description": "Ganha ^blue(+14 pontos)^ e ^violet(+1 multi)^"
     },
     "206": {
       "name": "8 de neon Paus",
-      "description": "Ganha +16 pontos e +1 multi"
+      "description": "Ganha ^blue(+16 pontos)^ e ^violet(+1 multi)^"
     },
     "207": {
       "name": "9 de neon Paus",
-      "description": "Ganha +18 pontos e +1 multi"
+      "description": "Ganha ^blue(+18 pontos)^ e ^violet(+1 multi)^"
     },
     "208": {
       "name": "10 de neon Paus",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "209": {
       "name": "Valete de neon Paus",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "210": {
       "name": "Rainha de neon Paus",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "211": {
       "name": "Rei de neon Paus",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "212": {
       "name": "Ás de neon Paus",
-      "description": "Ganha +22 pontos e +1 multi"
+      "description": "Ganha ^blue(+22 pontos)^ e ^violet(+1 multi)^"
     },
     "213": {
       "name": "2 de neon Ouros",
-      "description": "Ganha +4 pontos e +1 multi"
+      "description": "Ganha ^blue(+4 pontos)^ e ^violet(+1 multi)^"
     },
     "214": {
       "name": "3 de neon Ouros",
-      "description": "Ganha +6 pontos e +1 multi"
+      "description": "Ganha ^blue(+6 pontos)^ e ^violet(+1 multi)^"
     },
     "215": {
       "name": "4 de neon Ouros",
-      "description": "Ganha +8 pontos e +1 multi"
+      "description": "Ganha ^blue(+8 pontos)^ e ^violet(+1 multi)^"
     },
     "216": {
       "name": "5 de neon Ouros",
-      "description": "Ganha +10 pontos e +1 multi"
+      "description": "Ganha ^blue(+10 pontos)^ e ^violet(+1 multi)^"
     },
     "217": {
       "name": "6 de neon Ouros",
-      "description": "Ganha +12 pontos e +1 multi"
+      "description": "Ganha ^blue(+12 pontos)^ e ^violet(+1 multi)^"
     },
     "218": {
       "name": "7 de neon Ouros",
-      "description": "Ganha +14 pontos e +1 multi"
+      "description": "Ganha ^blue(+14 pontos)^ e ^violet(+1 multi)^"
     },
     "219": {
       "name": "8 de neon Ouros",
-      "description": "Ganha +16 pontos e +1 multi"
+      "description": "Ganha ^blue(+16 pontos)^ e ^violet(+1 multi)^"
     },
     "220": {
       "name": "9 de neon Ouros",
-      "description": "Ganha +18 pontos e +1 multi"
+      "description": "Ganha ^blue(+18 pontos)^ e ^violet(+1 multi)^"
     },
     "221": {
       "name": "10 de neon Ouros",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "222": {
       "name": "Valete de neon Ouros",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "223": {
       "name": "Rainha de neon Ouros",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "224": {
       "name": "Rei de neon Ouros",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "225": {
       "name": "Ás de neon Ouros",
-      "description": "Ganha +22 pontos e +1 multi"
+      "description": "Ganha ^blue(+22 pontos)^ e ^violet(+1 multi)^"
     },
     "226": {
       "name": "2 de neon Copas",
-      "description": "Ganha +4 pontos e +1 multi"
+      "description": "Ganha ^blue(+4 pontos)^ e ^violet(+1 multi)^"
     },
     "227": {
       "name": "3 de neon Copas",
-      "description": "Ganha +6 pontos e +1 multi"
+      "description": "Ganha ^blue(+6 pontos)^ e ^violet(+1 multi)^"
     },
     "228": {
       "name": "4 de neon Copas",
-      "description": "Ganha +8 pontos e +1 multi"
+      "description": "Ganha ^blue(+8 pontos)^ e ^violet(+1 multi)^"
     },
     "229": {
       "name": "5 de neon Copas",
-      "description": "Ganha +10 pontos e +1 multi"
+      "description": "Ganha ^blue(+10 pontos)^ e ^violet(+1 multi)^"
     },
     "230": {
       "name": "6 de neon Copas",
-      "description": "Ganha +12 pontos e +1 multi"
+      "description": "Ganha ^blue(+12 pontos)^ e ^violet(+1 multi)^"
     },
     "231": {
       "name": "7 de neon Copas",
-      "description": "Ganha +14 pontos e +1 multi"
+      "description": "Ganha ^blue(+14 pontos)^ e ^violet(+1 multi)^"
     },
     "232": {
       "name": "8 de neon Copas",
-      "description": "Ganha +16 pontos e +1 multi"
+      "description": "Ganha ^blue(+16 pontos)^ e ^violet(+1 multi)^"
     },
     "233": {
       "name": "9 de neon Copas",
-      "description": "Ganha +18 pontos e +1 multi"
+      "description": "Ganha ^blue(+18 pontos)^ e ^violet(+1 multi)^"
     },
     "234": {
       "name": "10 de neon Copas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "235": {
       "name": "Valete de neon Copas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "236": {
       "name": "Rainha de neon Copas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "237": {
       "name": "Rei de neon Copas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "238": {
       "name": "Ás de neon Copas",
-      "description": "Ganha +22 pontos e +1 multi"
+      "description": "Ganha ^blue(+22 pontos)^ e ^violet(+1 multi)^"
     },
     "239": {
       "name": "2 de neon Espadas",
-      "description": "Ganha +4 pontos e +1 multi"
+      "description": "Ganha ^blue(+4 pontos)^ e ^violet(+1 multi)^"
     },
     "240": {
       "name": "3 de neon Espadas",
-      "description": "Ganha +6 pontos e +1 multi"
+      "description": "Ganha ^blue(+6 pontos)^ e ^violet(+1 multi)^"
     },
     "241": {
       "name": "4 de neon Espadas",
-      "description": "Ganha +8 pontos e +1 multi"
+      "description": "Ganha ^blue(+8 pontos)^ e ^violet(+1 multi)^"
     },
     "242": {
       "name": "5 de neon Espadas",
-      "description": "Ganha +10 pontos e +1 multi"
+      "description": "Ganha ^blue(+10 pontos)^ e ^violet(+1 multi)^"
     },
     "243": {
       "name": "6 de neon Espadas",
-      "description": "Ganha +12 pontos e +1 multi"
+      "description": "Ganha ^blue(+12 pontos)^ e ^violet(+1 multi)^"
     },
     "244": {
       "name": "7 de neon Espadas",
-      "description": "Ganha +14 pontos e +1 multi"
+      "description": "Ganha ^blue(+14 pontos)^ e ^violet(+1 multi)^"
     },
     "245": {
       "name": "8 de neon Espadas",
-      "description": "Ganha +16 pontos e +1 multi"
+      "description": "Ganha ^blue(+16 pontos)^ e ^violet(+1 multi)^"
     },
     "246": {
       "name": "9 de neon Espadas",
-      "description": "Ganha +18 pontos e +1 multi"
+      "description": "Ganha ^blue(+18 pontos)^ e ^violet(+1 multi)^"
     },
     "247": {
       "name": "10 de neon Espadas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "248": {
       "name": "Valete de neon Espadas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "249": {
       "name": "Rainha de neon Espadas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "250": {
       "name": "Rei de neon Espadas",
-      "description": "Ganha +20 pontos e +1 multi"
+      "description": "Ganha ^blue(+20 pontos)^ e ^violet(+1 multi)^"
     },
     "251": {
       "name": "Ás de neon Espadas",
-      "description": "Ganha +22 pontos e +1 multi"
+      "description": "Ganha ^blue(+22 pontos)^ e ^violet(+1 multi)^"
     },
     "252": {
       "name": "Joker Neon",
-      "description": "Substitui qualquer carta tradicional. +200 pontos e +2 multi"
+      "description": "Substitui qualquer carta tradicional. ^blue(+200 pontos)^ e ^violet(+2 multi)^"
     },
     "253": {
       "name": "Coringa Neon",
@@ -591,215 +592,215 @@
   "traditionalCards": {
     "0": {
       "name": "2 de Paus",
-      "description": "Pontua +2 pontos"
+      "description": "Pontua ^blue(+2 pontos)^"
     },
     "1": {
       "name": "3 de Paus",
-      "description": "Pontua +3 pontos"
+      "description": "Pontua ^blue(+3 pontos)^"
     },
     "2": {
       "name": "4 de Paus",
-      "description": "Pontua +4 pontos"
+      "description": "Pontua ^blue(+4 pontos)^"
     },
     "3": {
       "name": "5 de Paus",
-      "description": "Pontua +5 pontos"
+      "description": "Pontua ^blue(+5 pontos)^"
     },
     "4": {
       "name": "6 de Paus",
-      "description": "Pontua +6 pontos"
+      "description": "Pontua ^blue(+6 pontos)^"
     },
     "5": {
       "name": "7 de Paus",
-      "description": "Pontua +7 pontos"
+      "description": "Pontua ^blue(+7 pontos)^"
     },
     "6": {
       "name": "8 de Paus",
-      "description": "Pontua +8 pontos"
+      "description": "Pontua ^blue(+8 pontos)^"
     },
     "7": {
       "name": "9 de Paus",
-      "description": "Pontua +9 pontos"
+      "description": "Pontua ^blue(+9 pontos)^"
     },
     "8": {
       "name": "10 de Paus",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "9": {
       "name": "Valete de Paus",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "10": {
       "name": "Dama de Paus",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "11": {
       "name": "Rei de Paus",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "12": {
       "name": "Ás de Paus",
-      "description": "Pontua +11 pontos"
+      "description": "Pontua ^blue(+11 pontos)^"
     },
     "13": {
       "name": "2 de Ouros",
-      "description": "Pontua +2 pontos"
+      "description": "Pontua ^blue(+2 pontos)^"
     },
     "14": {
       "name": "3 de Ouros",
-      "description": "Pontua +3 pontos"
+      "description": "Pontua ^blue(+3 pontos)^"
     },
     "15": {
       "name": "4 de Ouros",
-      "description": "Pontua +4 pontos"
+      "description": "Pontua ^blue(+4 pontos)^"
     },
     "16": {
       "name": "5 de Ouros",
-      "description": "Pontua +5 pontos"
+      "description": "Pontua ^blue(+5 pontos)^"
     },
     "17": {
       "name": "6 de Ouros",
-      "description": "Pontua +6 pontos"
+      "description": "Pontua ^blue(+6 pontos)^"
     },
     "18": {
       "name": "7 de Ouros",
-      "description": "Pontua +7 pontos"
+      "description": "Pontua ^blue(+7 pontos)^"
     },
     "19": {
       "name": "8 de Ouros",
-      "description": "Pontua +8 pontos"
+      "description": "Pontua ^blue(+8 pontos)^"
     },
     "20": {
       "name": "9 de Ouros",
-      "description": "Pontua +9 pontos"
+      "description": "Pontua ^blue(+9 pontos)^"
     },
     "21": {
       "name": "10 de Ouros",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "22": {
       "name": "Valete de Ouros",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "23": {
       "name": "Dama de Ouros",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "24": {
       "name": "Rei de Ouros",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "25": {
       "name": "Ás de Ouros",
-      "description": "Pontua +11 pontos"
+      "description": "Pontua ^blue(+11 pontos)^"
     },
     "26": {
       "name": "2 de Copas",
-      "description": "Pontua +2 pontos"
+      "description": "Pontua ^blue(+2 pontos)^"
     },
     "27": {
       "name": "3 de Copas",
-      "description": "Pontua +3 pontos"
+      "description": "Pontua ^blue(+3 pontos)^"
     },
     "28": {
       "name": "4 de Copas",
-      "description": "Pontua +4 pontos"
+      "description": "Pontua ^blue(+4 pontos)^"
     },
     "29": {
       "name": "5 de Copas",
-      "description": "Pontua +5 pontos"
+      "description": "Pontua ^blue(+5 pontos)^"
     },
     "30": {
       "name": "6 de Copas",
-      "description": "Pontua +6 pontos"
+      "description": "Pontua ^blue(+6 pontos)^"
     },
     "31": {
       "name": "7 de Copas",
-      "description": "Pontua +7 pontos"
+      "description": "Pontua ^blue(+7 pontos)^"
     },
     "32": {
       "name": "8 de Copas",
-      "description": "Pontua +8 pontos"
+      "description": "Pontua ^blue(+8 pontos)^"
     },
     "33": {
       "name": "9 de Copas",
-      "description": "Pontua +9 pontos"
+      "description": "Pontua ^blue(+9 pontos)^"
     },
     "34": {
       "name": "10 de Copas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "35": {
       "name": "Valete de Copas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "36": {
       "name": "Dama de Copas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "37": {
       "name": "Rei de Copas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "38": {
       "name": "Ás de Copas",
-      "description": "Pontua +11 pontos"
+      "description": "Pontua ^blue(+11 pontos)^"
     },
     "39": {
       "name": "2 de Espadas",
-      "description": "Pontua +2 pontos"
+      "description": "Pontua ^blue(+2 pontos)^"
     },
     "40": {
       "name": "3 de Espadas",
-      "description": "Pontua +3 pontos"
+      "description": "Pontua ^blue(+3 pontos)^"
     },
     "41": {
       "name": "4 de Espadas",
-      "description": "Pontua +4 pontos"
+      "description": "Pontua ^blue(+4 pontos)^"
     },
     "42": {
       "name": "5 de Espadas",
-      "description": "Pontua +5 pontos"
+      "description": "Pontua ^blue(+5 pontos)^"
     },
     "43": {
       "name": "6 de Espadas",
-      "description": "Pontua +6 pontos"
+      "description": "Pontua ^blue(+6 pontos)^"
     },
     "44": {
       "name": "7 de Espadas",
-      "description": "Pontua +7 pontos"
+      "description": "Pontua ^blue(+7 pontos)^"
     },
     "45": {
       "name": "8 de Espadas",
-      "description": "Pontua +8 pontos"
+      "description": "Pontua ^blue(+8 pontos)^"
     },
     "46": {
       "name": "9 de Espadas",
-      "description": "Pontua +9 pontos"
+      "description": "Pontua ^blue(+9 pontos)^"
     },
     "47": {
       "name": "10 de Espadas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "48": {
       "name": "Valete de Espadas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "49": {
       "name": "Dama de Espadas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "50": {
       "name": "Rei de Espadas",
-      "description": "Pontua +10 pontos"
+      "description": "Pontua ^blue(+10 pontos)^"
     },
     "51": {
       "name": "Ás de Espadas",
-      "description": "Pontua +11 pontos"
+      "description": "Pontua ^blue(+11 pontos)^"
     },
     "52": {
       "name": "Joker",
-      "description": "Substitui qualquer carta tradicional. +100 pontos e +1 multi"
+      "description": "Substitui qualquer carta tradicional. ^blue(+100 pontos)^ e ^violet(+1 multi)^"
     },
     "53": {
       "name": "Coringa",

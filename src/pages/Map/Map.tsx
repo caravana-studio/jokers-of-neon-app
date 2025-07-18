@@ -19,6 +19,8 @@ import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
+import { useGame } from "../../dojo/queries/useGame";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -37,6 +39,7 @@ export const Map = () => {
   const { gameId } = useGameContext();
   const navigate = useNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
+  const game = useGame();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -126,18 +129,24 @@ export const Map = () => {
         {isSmallScreen ? (
           <MobileBottomBar
             firstButton={
-              isReachable
+              isReachable && game?.state === GameStateEnum.Map
                 ? {
                     onClick: handleGoClick,
                     label: t("go"),
                   }
                 : undefined
             }
-            secondButton={backToGameButtonProps}
+            secondButton={
+              game?.state !== GameStateEnum.Map
+                ? backToGameButtonProps
+                : undefined
+            }
             hideDeckButton
           />
         ) : (
-          <Flex margin={"0 auto"}>{backToGameButton}</Flex>
+          game?.state !== GameStateEnum.Map && (
+            <Flex margin={"0 auto"}>{backToGameButton}</Flex>
+          )
         )}
       </Flex>
 

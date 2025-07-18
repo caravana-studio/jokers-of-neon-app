@@ -13,7 +13,11 @@ export const getLevelPassedEvent = (
     (event) => event.keys[1] === PLAY_WIN_GAME_EVENT_KEY
   );
   if (!levelPassedEvent) return undefined;
+
   const level = getNumberValueFromEvent(levelPassedEvent, 4) ?? 0;
-  const score = getNumberValueFromEvent(levelPassedEvent, 5) ?? 0;
-  return { level, score };
+  const player_score = getNumberValueFromEvent(levelPassedEvent, 5) ?? 0;
+  const round = getNumberValueFromEvent(levelPassedEvent, 6) ?? 0;
+  const level_passed = getNumberValueFromEvent(levelPassedEvent, 7) ?? 0;
+
+  return { level, player_score, round, level_passed };
 };

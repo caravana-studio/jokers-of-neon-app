@@ -16,4 +16,5 @@ export interface CardData {
     price?: number;
     animation?: SpineAnimationInfo;
     temporaryPrice?: number;
+    creator?: string;
 }

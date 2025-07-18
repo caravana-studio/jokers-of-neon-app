@@ -42,7 +42,7 @@ const loadingSteps: LoadingProgress[] = [
   { text: "Setting up game", showAt: 0 },
   { text: "Loading translations", showAt: 1 },
   { text: "Preloading assets", showAt: 2 },
-  { text: "Starting app", showAt: 4 },
+  { text: "Loading game", showAt: 4 },
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
@@ -81,33 +81,31 @@ async function init() {
     );
   };
 
-  const presentationPromise = shouldSkipPresentation
-    ? Promise.resolve()
-    : new Promise<void>((resolve) => {
-        const updateLoadingScreen = (canFadeOut: boolean) => {
-          root.render(
-            <ChakraBaseProvider theme={theme}>
-              <LoadingScreen
-                steps={loadingSteps}
-                ref={progressBarRef}
-                showPresentation={true}
-                onPresentationEnd={() => {
-                  window.localStorage.setItem(SKIP_PRESENTATION, "true");
-                  progressBarRef.current?.nextStep();
-                  resolve();
-                }}
-                canFadeOut={canFadeOut}
-              />
-            </ChakraBaseProvider>
-          );
-        };
+  const presentationPromise = new Promise<void>((resolve) => {
+    const updateLoadingScreen = (canFadeOut: boolean) => {
+      root.render(
+        <ChakraBaseProvider theme={theme}>
+          <LoadingScreen
+            steps={loadingSteps}
+            ref={progressBarRef}
+            showPresentation={!shouldSkipPresentation}
+            onPresentationEnd={() => {
+              window.localStorage.setItem(SKIP_PRESENTATION, "true");
+              progressBarRef.current?.nextStep();
+              resolve();
+            }}
+            canFadeOut={canFadeOut}
+          />
+        </ChakraBaseProvider>
+      );
+    };
 
-        setCanFadeOut = (value: boolean) => {
-          updateLoadingScreen(value);
-        };
+    setCanFadeOut = (value: boolean) => {
+      updateLoadingScreen(value);
+    };
 
-        updateLoadingScreen(false);
-      });
+    updateLoadingScreen(false);
+  });
 
   registerServiceWorker();
 

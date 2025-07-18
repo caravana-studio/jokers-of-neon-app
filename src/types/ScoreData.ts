@@ -32,7 +32,9 @@ export interface CardPlayEventValue {
 
 export interface LevelPassedEvent {
   level: number;
-  score: number;
+  player_score: number;
+  round: number;
+  level_passed: number;
 }
 
 export interface LevelEvent {

@@ -1,7 +1,6 @@
+import i18n from "i18next";
 import { DojoEvent } from "../types/DojoEvent";
 import { getAchievementCompleteEvent } from "./playEvents/getAchievementCompleteEvent";
-import { handleAchievementPush } from "./pushAchievements";
-import i18n from "i18next";
 import { showAchievementToast } from "./transactionNotifications";
 
 export const handleAchievements = async (
@@ -18,6 +17,7 @@ export const handleAchievements = async (
 
     showAchievementToast(achievementNames);
 
-    await handleAchievementPush(achievementEvent, achievementSound);
+    // ONLY FOR GG CAMPAIGN
+    //await handleAchievementPush(achievementEvent, achievementSound);
   }
 };
