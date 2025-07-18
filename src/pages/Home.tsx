@@ -1,7 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useConnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
@@ -66,10 +65,11 @@ export const Home = () => {
 
           <Flex
             w={"100%"}
+            h={"100%"}
             justifyContent="center"
             minH={isSmallScreen ? "unset" : "40vh"}
             flexGrow={1}
-            maxWidth={isMobile ? "70%" : "50%"}
+            maxWidth={isSmallScreen ? "70%" : "50%"}
           >
             <Flex h={"100%"} w="100%" justifyContent={"center"} pl={2}>
               <SpineAnimation
@@ -77,7 +77,7 @@ export const Home = () => {
                 atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
                 initialAnimation={"animation"}
                 loopAnimation={"animation"}
-                scale={2.8}
+                scale={2.4}
                 yOffset={-800}
               />
             </Flex>
