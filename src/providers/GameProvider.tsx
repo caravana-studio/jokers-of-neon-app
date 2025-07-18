@@ -194,12 +194,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
             console.log(`game ${newGameId} created`);
 
-            await syncCall();
             setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
 
-            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
+            navigate("/demo");
           } else {
             setGameError(true);
           }
