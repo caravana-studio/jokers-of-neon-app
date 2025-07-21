@@ -121,7 +121,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const {
     setup: { client },
-    syncCall,
   } = useDojo();
 
   const {
