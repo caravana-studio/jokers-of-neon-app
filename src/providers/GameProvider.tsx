@@ -30,6 +30,7 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { useDeckStore } from "../state/useDeckStore.ts";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number) => void;
@@ -109,7 +110,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setCardTransformationLock,
   } = useCurrentHandStore();
 
+  const { fetchDeck } = useDeckStore();
+
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+
+  const { getCardData } = useCardData();
 
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
@@ -189,6 +194,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setGameId(client, newGameId);
             resetLevel();
             replaceCards(hand);
+            fetchDeck(client, newGameId, getCardData);
             clearPreSelection();
 
             console.log(`game ${newGameId} created`);
@@ -257,6 +263,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             resetRage,
             unPreSelectAllPowerUps,
           });
+          fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);
@@ -339,6 +346,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedCard(undefined);
             setDiscardAnimation(false);
             replaceCards(response.cards);
+            fetchDeck(client, gameId, getCardData);
             refetchSpecialCardsData(modId, gameId);
           }, ALL_CARDS_DURATION + 300);
         } else {
@@ -379,6 +387,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
+          fetchDeck(client, gameId, getCardData);
         } else {
           rollback();
         }
