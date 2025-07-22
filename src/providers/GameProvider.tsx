@@ -30,6 +30,7 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number) => void;
@@ -119,6 +120,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const {
     setup: { client },
   } = useDojo();
@@ -197,7 +199,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
 
-            navigate("/demo");
+            customNavigate(GameStateEnum.Round)
           } else {
             setGameError(true);
           }
