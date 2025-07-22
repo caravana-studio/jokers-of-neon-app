@@ -103,6 +103,8 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     accumDuration: playEvents.acumulativeEvents? playEvents.acumulativeEvents.length * 500 : 0,
   };
 
+  const playDuration = 500;
+
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
     (a, b) => a + b,
     500
@@ -389,17 +391,12 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   );
 
   setTimeout(
-    () => handleAccumulativeCards(),
-    durations.neonPlay + durations.cardPlayChange + durations.specialCardPlayScore
-  );
-
-  setTimeout(
     () => {
       handleCardPlayScoreEvents();
     },
     durations.neonPlay +
       durations.cardPlayChange +
-      durations.specialCardPlayScore + durations.accumDuration
+      durations.specialCardPlayScore
   );
 
   setTimeout(
@@ -414,7 +411,12 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   setTimeout(() => {
     setPlayAnimation(true);
-  }, ALL_CARDS_DURATION);
+  }, ALL_CARDS_DURATION - durations.accumDuration);
+
+  setTimeout(
+    () => handleAccumulativeCards(),
+    ALL_CARDS_DURATION - durations.accumDuration + playDuration
+  );
 
   setTimeout(() => {
     // Reset state
@@ -434,8 +436,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
       handleGameEnd();
       setCardTransformationLock(false);
     },
-    durations.accumDuration
   );
     
-  }, ALL_CARDS_DURATION + 500);
+  }, ALL_CARDS_DURATION + playDuration);
 };
