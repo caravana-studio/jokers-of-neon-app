@@ -100,12 +100,13 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     specialCardPlayScore: calculateDuration(
       playEvents.specialCardPlayScoreEvents
     ),
-    accumDuration: playEvents.acumulativeEvents ? 2500 : 0,
+    accumDuration: playEvents.acumulativeEvents? playEvents.acumulativeEvents.length * 500 : 0,
   };
 
-  const ALL_CARDS_DURATION = Object.entries(durations)
-  .filter(([key]) => key !== "accumDuration")
-  .reduce((total, [, value]) => total + value, 500);
+  const ALL_CARDS_DURATION = Object.values(durations).reduce(
+    (a, b) => a + b,
+    500
+  );
 
   const handleNeonPlay = () => {
     if (!playEvents.neonPlayEvent) return;
@@ -388,12 +389,17 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   );
 
   setTimeout(
+    () => handleAccumulativeCards(),
+    durations.neonPlay + durations.cardPlayChange + durations.specialCardPlayScore
+  );
+
+  setTimeout(
     () => {
       handleCardPlayScoreEvents();
     },
     durations.neonPlay +
       durations.cardPlayChange +
-      durations.specialCardPlayScore
+      durations.specialCardPlayScore + durations.accumDuration
   );
 
   setTimeout(
@@ -422,8 +428,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     handsLeft > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
     setLockedSpecialCards([]);
-
-    handleAccumulativeCards();
     
     setTimeout(
     () => {

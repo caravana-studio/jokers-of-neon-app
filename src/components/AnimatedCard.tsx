@@ -1,15 +1,10 @@
 import { Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { animated, useSpring } from "react-spring";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CashSymbol } from "./CashSymbol";
-import { VFX_TRIANGLE_MULTI, VFX_TRIANGLE_POINTS } from "../constants/vfx";
-import {
-  PatternParticleAnimation,
-  PatternParticleAnimationRef,
-} from "./animations/PatternParticlesAnimation";
 
 export interface IAnimatedCardProps {
   children: JSX.Element;
@@ -47,10 +42,6 @@ export const AnimatedCard = ({
   );
 
   const isNeon = useMemo(() => animatedCard?.isNeon, [animatedCard?.isNeon]);
-  const isAccumulative = useMemo(
-    () => animatedCard?.isAccumulative,
-    [animatedCard?.isAccumulative]
-  );
   const animationIndex = useMemo(
     () => animatedCard?.animationIndex,
     [animatedCard?.animationIndex]
@@ -101,22 +92,12 @@ export const AnimatedCard = ({
     config: { tension: 300, friction: 20 },
   }));
 
-  const [vfxSrc, setVfxSrc] = useState<string>("");
-  const vfxRef = useRef<PatternParticleAnimationRef>(null);
-
   useEffect(() => {
-    if (isAccumulative && animatedCardIdxArray?.includes(idx)) {
-      const vfx = multi ? VFX_TRIANGLE_MULTI : VFX_TRIANGLE_POINTS;
-      setVfxSrc(vfx);
-      vfxRef.current?.play();
-    } else if (
+    if (
       (points || multi || suit || cash || isNeon) &&
       animatedCardIdxArray?.includes(idx)
     ) {
       const animateColor = getColor();
-      const boxShadowOuter = isSmallScreen ? 10 : 20;
-      const boxShadowInner = isSmallScreen ? 6 : 12;
-
       cardApi.start({
         from: {
           transform: "scale(1)",
@@ -125,7 +106,7 @@ export const AnimatedCard = ({
         },
         to: {
           transform: "scale(1.1)",
-          boxShadow: `0px 0px ${boxShadowOuter}px ${boxShadowInner}px  ${animateColor}`,
+          boxShadow: `0px 0px ${isSmallScreen ? 10 : 20}px ${isSmallScreen ? 6 : 12}px  ${animateColor}`,
           border: `2px solid ${animateColor}`,
         },
         onRest: () =>
@@ -154,15 +135,7 @@ export const AnimatedCard = ({
         ],
       });
     }
-  }, [
-    points,
-    multi,
-    suit,
-    animatedCardIdxArray,
-    animationIndex,
-    isNeon,
-    isAccumulative,
-  ]);
+  }, [points, multi, suit, animatedCardIdxArray, animationIndex, isNeon]);
 
   useEffect(() => {
     if (played) {
@@ -192,59 +165,48 @@ export const AnimatedCard = ({
   if (!scale) scale = cardScale;
 
   return (
-    <PatternParticleAnimation
-      width={CARD_WIDTH * cardScale}
-      height={CARD_HEIGHT * cardScale}
-      spriteSrc={vfxSrc}
-      particleSize={30 * cardScale}
-      duration={3}
-      speed={3}
-      bottomOffset={1}
-      ref={vfxRef}
+    <animated.div
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: `${(CARD_WIDTH + (isSmallScreen ? 12 : 8)) * scale}px`,
+        height: `${(CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * scale}px`,
+        borderRadius: cardBorderRadius,
+        zIndex: 10,
+        ...cardSprings,
+      }}
     >
-      <animated.div
-        style={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: `${(CARD_WIDTH + (isSmallScreen ? 12 : 8)) * scale}px`,
-          height: `${(CARD_HEIGHT + (isSmallScreen ? 12 : 8)) * scale}px`,
-          borderRadius: cardBorderRadius,
-          zIndex: 10,
-          ...cardSprings,
-        }}
-      >
-        {!!(points || multi || cash) &&
-          // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
-          (!(isSpecial && animatedCard?.idx?.length) || cash) &&
-          animatedCardIdxArray?.includes(idx) && (
-            <animated.div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                ...pointsSprings,
-                zIndex: 99,
+      {!!(points || multi || cash) &&
+        // this will avoid showing the points and multi if the card is a special and we are already animating the traditional card
+        (!(isSpecial && animatedCard?.idx?.length) || cash) &&
+        animatedCardIdxArray?.includes(idx) && (
+          <animated.div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              ...pointsSprings,
+              zIndex: 99,
+            }}
+          >
+            <Heading
+              color={getColor()}
+              mb={[4, 6]}
+              fontSize={[12, 24]}
+              sx={{
+                textShadow: `0 0 5px  ${getColor()}`,
               }}
+              zIndex={99}
             >
-              <Heading
-                color={getColor()}
-                mb={[4, 6]}
-                fontSize={[12, 24]}
-                sx={{
-                  textShadow: `0 0 5px  ${getColor()}`,
-                }}
-                zIndex={99}
-              >
-                {!negative && (isSpecial || !cash) && "+"}
-                {points || multi || (isSpecial && cash)}
-                {isSpecial && cash && <CashSymbol />}
-              </Heading>
-            </animated.div>
-          )}
-        {children}
-      </animated.div>
-    </PatternParticleAnimation>
+              {!negative && (isSpecial || !cash) && "+"}
+              {points || multi || (isSpecial && cash)}
+              {isSpecial && cash && <CashSymbol />}
+            </Heading>
+          </animated.div>
+        )}
+      {children}
+    </animated.div>
   );
 };
