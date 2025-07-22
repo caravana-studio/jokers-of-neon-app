@@ -19,8 +19,6 @@ export const GoBackButton: React.FC<GoBackButtonProps> = ({
     <Button
       minWidth={"100px"}
       size={isSmallScreen ? "xs" : "md"}
-      lineHeight={1.6}
-      fontSize={isSmallScreen ? 10 : [10, 10, 10, 14, 14]}
       onClick={() => {
         navigate(-1);
       }}

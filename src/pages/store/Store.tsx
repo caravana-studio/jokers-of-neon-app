@@ -1,7 +1,4 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { StoreContent } from "./StoreContent";
 import { StoreContentMobile } from "./StoreContent.mobile";
@@ -19,49 +16,19 @@ import {
 
 import { RemoveScroll } from "react-remove-scroll";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const Store = () => {
-  const { gameId, setIsRageRound } = useGameContext();
-  const game = useGame();
-  const state = game?.state;
-  const { lockRedirection, loading, setRun, run } = useStore();
+  const { state, resetRage, id: gameId } = useGameStore();
+  const { loading, setRun, run } = useStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const lastTabIndex =
     Number(sessionStorage.getItem(STORE_LAST_TAB_INDEX)) ?? 0;
 
   useEffect(() => {
-    setIsRageRound(false);
-  }, []);
-
-  useEffect(() => {
-    if (!lockRedirection) {
-      if (game?.state === GameStateEnum.GameOver) {
-        navigate(`/gameover/${gameId}`);
-      } else if (game?.state === GameStateEnum.Round || game?.state === GameStateEnum.Rage) {
-        navigate("/demo");
-      } else if (game?.state === GameStateEnum.Lootbox) {
-        navigate("/open-loot-box");
-      }
-    }
-  }, [game?.state, lockRedirection]);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (state ===GameStateEnum.GameOver) {
-      navigate(`/gameover/${gameId}`);
-    } else if (state === GameStateEnum.Round || state === GameStateEnum.Rage) {
-      navigate("/demo");
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (!game) {
-      navigate("/");
-    }
+    resetRage();
   }, []);
 
   useEffect(() => {

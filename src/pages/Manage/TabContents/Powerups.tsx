@@ -6,6 +6,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
+import { useGameStore } from "../../../state/useGameStore";
 
 export const Powerups = () => {
   const { t } = useTranslation("intermediate-screens", {
@@ -14,7 +15,7 @@ export const Powerups = () => {
 
   const { isSmallScreen } = useResponsiveValues();
 
-  const { powerUps, maxPowerUpSlots } = useGameContext();
+  const { maxPowerUpSlots, powerUps } = useGameStore();
   const [totalPowerUps, setTotalPowerups] = useState<(PowerUp | null)[]>([]);
 
   useEffect(() => {
@@ -52,7 +53,6 @@ export const Powerups = () => {
                   powerUp={powerUp}
                   width={120}
                   key={index}
-                  isActive
                   containerSx={{
                     backgroundColor: "transparent",
                     borderColor: "white",

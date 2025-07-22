@@ -1,5 +1,5 @@
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { GameLockedSlot } from "./GameLockedSlot.tsx";
 import { StoreLockedSlot } from "./StoreLockedSlot.tsx";
 
@@ -10,9 +10,9 @@ export interface LockedSlotProps {
 }
 
 export const LockedSlot = (props: LockedSlotProps) => {
-  const game = useGame();
+  const { state } = useGameStore();
 
-  return game?.state === GameStateEnum.Round || game?.state === GameStateEnum.Rage ? (
+  return state === GameStateEnum.Round || state === GameStateEnum.Rage ? (
     <GameLockedSlot {...props} />
   ) : (
     <StoreLockedSlot {...props} />

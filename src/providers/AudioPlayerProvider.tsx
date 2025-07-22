@@ -1,16 +1,15 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  PropsWithChildren,
-  useRef,
-} from "react";
 import { Howl } from "howler";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
-import { useGameContext } from "./GameProvider.tsx";
 import { useLocation } from "react-router-dom";
 import { usePrevious } from "../hooks/usePrevious.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 
 interface AudioPlayerContextProps {
   isPlaying: boolean;
@@ -47,7 +46,7 @@ export const AudioPlayerProvider = ({
   >(null);
 
   const location = useLocation();
-  const { isRageRound } = useGameContext();
+  const { isRageRound } = useGameStore();
 
   const prevLocationPath = usePrevious(location.pathname);
 

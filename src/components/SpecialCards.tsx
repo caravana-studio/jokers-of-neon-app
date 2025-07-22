@@ -1,5 +1,5 @@
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGameContext } from "../providers/GameProvider.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { CardContainerWithBorder } from "./CardContainerWithBorder.tsx";
 import { RageCards } from "./RageCards.tsx";
@@ -7,7 +7,7 @@ import { SpecialCardsRow } from "./SpecialCardsRow.tsx";
 import { SpecialRageSwitcher } from "./SpecialRageSwitcher.tsx";
 
 export const SpecialCards = () => {
-  const { specialSwitcherOn } = useGameContext();
+  const { specialSwitcherOn } = useGameStore();
   const { isSmallScreen, cardScale } = useResponsiveValues();
   const heightOffset = isSmallScreen ? 20 : 40;
   const cardWidth = CARD_WIDTH * cardScale;

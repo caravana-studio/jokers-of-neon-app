@@ -1,27 +1,56 @@
 import { Box, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BackgroundDecoration } from "../../../components/Background";
 import { Loading } from "../../../components/Loading";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
-import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
-import { FlipCardGrid } from "../FlipCardGrid";
-import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
-import { ChooseCardsButton } from "../ChooseCardsButton";
-import { useCardsSelection } from "../../../hooks/useCardsSelection";
-import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 import { MobileBottomBar } from "../../../components/MobileBottomBar";
+import { useDojo } from "../../../dojo/DojoContext";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
+import { useLootBoxStore } from "../../../state/useLootBoxResult";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
+import { ChooseCardsButton } from "../ChooseCardsButton";
+import { FlipCardGrid } from "../FlipCardGrid";
+import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 
 export const OpenLootBoxCardSelection = () => {
   const {
-    cards,
+    setup: { client },
+  } = useDojo();
+  const navigate = useCustomNavigate();
+
+  const {
+    fetchLootBoxResult,
+    result: cards,
     cardsToKeep,
-    chooseDisabled,
-    currentSpecialCardsLength,
-    allSelected,
-    setCardsToKeep,
-    onCardToggle,
-    confirmSelectCards,
-  } = useCardsSelection();
+    toggleCard,
+    reset,
+    selectAll,
+    selectNone,
+  } = useLootBoxStore();
+  
+  const {
+    id: gameId,
+    specialSlots,
+    specialCards: currentSpecialCards,
+  } = useGameStore();
+  const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
+  const maxSpecialCards = specialSlots ?? 0;
+  const currentSpecialCardsLength = currentSpecialCards?.length ?? 0;
+
+  useEffect(() => {
+    fetchLootBoxResult(client, gameId);
+  }, []);
+  const { selectCardsFromPack } = useStore();
+
+  const confirmSelectCards = () => {
+    selectCardsFromPack(cardsToKeep.map((c) => c.idx));
+    reset();
+    navigate(GameStateEnum.Store);
+  };
 
   const { flippedStates, animationRunning, skipFlipping } =
     useCardsFlipAnimation(cards.length, 1000);
@@ -31,7 +60,9 @@ export const OpenLootBoxCardSelection = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
 
-  useRedirectByGameState();
+  const chooseDisabled =
+    specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;
+  const allSelected = cardsToKeep.length === cards.length;
 
   const continueButton = (
     <ChooseCardsButton
@@ -94,9 +125,7 @@ export const OpenLootBoxCardSelection = () => {
                 color="white"
                 isChecked={!!allSelected}
                 onChange={(e) => {
-                  !e.target.checked
-                    ? setCardsToKeep([])
-                    : setCardsToKeep(cards);
+                  !e.target.checked ? selectNone() : selectAll();
                 }}
               >
                 {t("store.packs.select-all-lbl").toUpperCase()}
@@ -107,7 +136,7 @@ export const OpenLootBoxCardSelection = () => {
               cardsToKeep={cardsToKeep}
               flippedStates={flippedStates}
               animationRunning={animationRunning}
-              onCardToggle={onCardToggle}
+              onCardToggle={toggleCard}
               onGridClick={skipFlipping}
             />
           </Flex>
