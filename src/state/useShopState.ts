@@ -80,10 +80,10 @@ export const useShopState = () => {
   ) => {
     setFn((prev) =>
       prev.map((item) => {
-        if (item.idx === idx) {
+        /*         if (item.idx === idx) {
           const cost = item.price ?? item.cost_discount ?? item.cost;
           cost && removeCash(cost);
-        }
+        } */
         return item.idx === idx ? { ...item, purchased: true } : item;
       })
     );
@@ -115,13 +115,17 @@ export const useShopState = () => {
     buyItem(idx, setCommonCards);
   };
   const buyPokerHand = (idx: number) => {
+    const item = pokerHandItems.find((item) => item.idx === idx);
+    if (item) {
+      const cost = item.cost ?? item.discount_cost ?? item.cost;
+      cost && removeCash(cost);
+    }
     buyItem(idx, setPokerHandItems);
   };
   const buyBlisterPack = (idx: number) => {
     buyItem(idx, setBlisterPackItems);
   };
   const buySlotSpecialCard = () => {
-    removeCash(Number(specialSlotItem?.cost ?? 0));
     setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
     addSpecialSlot();
   };
@@ -151,7 +155,6 @@ export const useShopState = () => {
   };
   const rollbackBuySlotSpecialCard = () => {
     setSpecialSlotItem((prev) => ({ ...prev, purchased: false }));
-    addCash(Number(specialSlotItem?.cost ?? 0));
     removeSpecialSlot();
   };
 
