@@ -184,10 +184,6 @@ export const useShopState = () => {
     }
   };
 
-  useEffect(() => {
-    fetchShopItems();
-  }, []);
-
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
     modifierCards: modifierCards.sort(sortByCardId),
