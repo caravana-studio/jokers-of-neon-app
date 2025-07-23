@@ -415,7 +415,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   setTimeout(
     () => handleAccumulativeCards(),
-    ALL_CARDS_DURATION - durations.accumDuration + playDuration
+    ALL_CARDS_DURATION - durations.accumDuration + (durations.accumDuration > 0 ? playDuration : 0)
   );
 
   setTimeout(() => {
