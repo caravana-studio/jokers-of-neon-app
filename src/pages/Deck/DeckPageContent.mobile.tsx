@@ -11,6 +11,7 @@ import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
+import { useShopStore } from "../../state/useShopStore";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -36,7 +37,8 @@ export const DeckPageContentMobile = ({
     }
   };
 
-  const { cash, burnCard, burnItem } = useStore();
+  const { burnCard, burnItem } = useStore();
+  const { cash } = useShopStore();
 
   const handleBurnCard = (card: Card) => {
     burnCard(card).then(() => navigate("/store"));

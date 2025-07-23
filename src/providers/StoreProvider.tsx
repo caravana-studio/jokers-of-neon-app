@@ -1,38 +1,30 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import {
-  EMPTY_BURN_ITEM,
-  EMPTY_SPECIAL_SLOT_ITEM,
-} from "../dojo/queries/getShopItems.ts";
-import { BlisterPackItem } from "../dojo/typescript/models.gen";
+  BlisterPackItem
+} from "../dojo/typescript/models.gen";
+import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
-import { ShopItems, useShopState } from "../state/useShopState.ts";
+import { useShopStore } from "../state/useShopStore.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
 
-interface IStoreContext extends ShopItems {
+interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
   buySpecialCardItem: (card: Card, isTemporal: boolean) => Promise<boolean>;
   buyPack: (pack: BlisterPackItem) => Promise<boolean>;
   levelUpPlay: (item: PokerHandItem) => Promise<boolean>;
   reroll: () => Promise<boolean>;
-  locked: boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
   buySpecialSlot: () => Promise<boolean>;
-  cash: number;
-  run: boolean;
-  setRun: (run: boolean) => void;
-  loading: boolean;
   setLoading: (loading: boolean) => void;
   burnCard: (card: Card) => Promise<boolean>;
   buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
-  rerolling: boolean;
-  shopId: number;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -54,20 +46,7 @@ const StoreContext = createContext<IStoreContext>({
   reroll: () => {
     return new Promise((resolve) => resolve(false));
   },
-  locked: false,
   buySpecialSlot: () => new Promise((resolve) => resolve(false)),
-  specialCards: [],
-  modifierCards: [],
-  commonCards: [],
-  pokerHandItems: [],
-  packs: [],
-  powerUps: [],
-  specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
-  burnItem: EMPTY_BURN_ITEM,
-  cash: 0,
-  run: false,
-  setRun: (_) => {},
-  loading: true,
   setLoading: (_) => {},
   burnCard: (_) => {
     return new Promise((resolve) => resolve(false));
@@ -75,16 +54,12 @@ const StoreContext = createContext<IStoreContext>({
   buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
-  rerolling: false,
-  shopId: 0,
 });
 export const useStore = () => useContext(StoreContext);
 
 export const StoreProvider = ({ children }: PropsWithChildren) => {
   const {
-    shopItems,
-    fetchShopItems,
-    cash,
+    refetchShopStore,
     buySpecialCard,
     buyModifierCard,
     buyCommonCard,
@@ -99,14 +74,14 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     rollbackBuyBlisterPack,
     rollbackBuySlotSpecialCard,
     rollbackBuyPowerUp,
-    run,
-    setRun,
-    loading,
     setLoading,
-    rerolling,
     setRerolling,
-    shopId,
-  } = useShopState();
+    setLocked,
+  } = useShopStore();
+
+  const {
+    setup: { client },
+  } = useDojo();
 
   const {
     id: gameId,
@@ -114,7 +89,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     reroll: stateReroll,
     rollbackReroll,
   } = useGameStore();
-  const [locked, setLocked] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
@@ -130,6 +104,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     burnCard: dojoBurnCard,
     buyPowerUp: dojoBuyPowerUp,
   } = useShopActions();
+
+  const fetchShopItems = async () => {
+    await refetchShopStore(client, gameId);
+  };
 
   const stateBuyCard = (card: Card) => {
     if (card.isSpecial) {
@@ -344,27 +322,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         buySpecialCardItem,
         levelUpPlay,
         reroll,
-        locked,
         buyPack,
         selectCardsFromPack,
         buySpecialSlot,
-        specialCards: shopItems.specialCards,
-        modifierCards: shopItems.modifierCards,
-        commonCards: shopItems.commonCards,
-        pokerHandItems: shopItems.pokerHandItems,
-        packs: shopItems.packs,
-        specialSlotItem: shopItems.specialSlotItem,
-        burnItem: shopItems.burnItem,
-        powerUps: shopItems.powerUps,
-        cash,
-        run,
-        setRun,
-        loading,
         setLoading,
         burnCard,
         buyPowerUp,
-        rerolling,
-        shopId,
       }}
     >
       {children}
