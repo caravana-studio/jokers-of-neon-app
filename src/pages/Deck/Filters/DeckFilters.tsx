@@ -1,13 +1,12 @@
 import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useDeck } from "../../../dojo/queries/useDeck";
 import { Cards } from "../../../enums/cards";
 import { Suits } from "../../../enums/suits";
 import { useDeckFilters } from "../../../providers/DeckFilterProvider";
+import { useDeckStore } from "../../../state/useDeckStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { Card } from "../../../types/Card";
 import { FilterButton } from "./FilterButton";
-import { Icons } from "../../../constants/icons";
 
 const filterBySuit = (suit: Suits) => (card: Card) => card.suit === suit;
 
@@ -18,7 +17,7 @@ interface DeckFiltersProps {
 export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const { filterButtonsState, updateFilters } = useDeckFilters();
-  const deck = useDeck();
+  const deck = useDeckStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const noNeonCards = !deck?.fullDeckCards.some((card) => card.isNeon);
