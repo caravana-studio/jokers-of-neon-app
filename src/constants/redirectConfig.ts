@@ -53,4 +53,5 @@ export const stateToPageMap: Record<GameStateEnum, string> = {
     [GameStateEnum.Lootbox]: "/loot-box-cards-selection",
     [GameStateEnum.GameOver]: "/gameover",
     [GameStateEnum.NotStarted]: "/",
+    [GameStateEnum.NotSet]: "/",
 };
