@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { useDojo } from "../../../dojo/useDojo";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
@@ -17,11 +18,15 @@ const RageNode = ({ data }: any) => {
   const { t } = useTranslation("map", { keyPrefix: "rage" });
 
   const { advanceNode } = useShopActions();
-  const { id: gameId } = useGameStore();
+  const { id: gameId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
+
+  const {
+    setup: { client },
+  } = useDojo();
 
   const { state } = useGameStore();
 
@@ -31,6 +36,11 @@ const RageNode = ({ data }: any) => {
 
   const title = `${t("name", { round: data.rageData.round })} - ${t(data.last ? "final" : "intermediate")}`;
   const content = `${t("power", { power: data.rageData.power })}`;
+
+  const refetchAndNavigate = async () => {
+    await refetchGameStore(client, gameId);
+    navigate(GameStateEnum.Rage);
+  };
 
   return (
     <Tooltip
@@ -70,7 +80,7 @@ const RageNode = ({ data }: any) => {
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
-                navigate(GameStateEnum.Rage);
+                refetchAndNavigate();
               }
             });
           }

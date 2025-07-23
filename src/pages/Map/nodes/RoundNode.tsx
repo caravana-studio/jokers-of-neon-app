@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { useDojo } from "../../../dojo/useDojo";
 import { useShopActions } from "../../../dojo/useShopActions";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
@@ -18,14 +19,23 @@ const RoundNode = ({ data }: any) => {
   const { id: gameId } = useGameStore();
   const navigate = useCustomNavigate();
 
+    const {
+      setup: { client },
+    } = useDojo();
+
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
-  const { state } = useGameStore();
+  const { state, refetchGameStore } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
   const title = t("name", { round: data.round });
+
+  const refetchAndNavigate = async () => {
+    await refetchGameStore(client, gameId);
+    navigate(GameStateEnum.Round);
+  };
 
   return (
     <Tooltip
@@ -85,7 +95,7 @@ const RoundNode = ({ data }: any) => {
           } else if (stateInMap && reachable && !isSmallScreen) {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
-                navigate(GameStateEnum.Round);
+                refetchAndNavigate();
               }
             });
           }

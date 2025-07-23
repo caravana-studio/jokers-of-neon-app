@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import {
@@ -336,6 +342,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
 
     return promise;
   };
+
+  useEffect(() => {
+    fetchShopItems();
+  }, []);
 
   return (
     <StoreContext.Provider

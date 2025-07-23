@@ -152,6 +152,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const resetLevel = () => {
     setRoundRewards(undefined);
+    resetRage();
     setPreSelectionLocked(false);
     showSpecials();
     resetPowerUps();
@@ -258,6 +259,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             unPreSelectAllPowerUps,
           });
           refetchSpecialCardsData(modId, gameId);
+          if (response.levelPassed && response.detailEarned) {
+            addCash(response.detailEarned.total)
+          }
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
