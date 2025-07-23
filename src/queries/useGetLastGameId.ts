@@ -48,7 +48,7 @@ export const useGetLastGameId = () => {
   const lastGameId = data?.[QUERY_FIELD_NAME]?.edges?.[0]?.node?.id;
 
   return {
-    lastGameId: lastGameId ? parseInt(lastGameId, 16) : undefined,
+    lastGameId: lastGameId ? parseInt(lastGameId, 16) : 0,
     isLoading,
     error,
     refetch,
