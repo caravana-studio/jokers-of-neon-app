@@ -15,7 +15,7 @@ export const useGameOver = () => {
   const params = useParams();
   const gameId = Number(params.gameId);
 
-  const { restartGame, setIsRageRound, executeCreateGame } = useGameContext();
+  const { executeCreateGame } = useGameContext();
   const { play: looseSound, stop: stopLooseSound } = useAudio(looseSfx);
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
 
@@ -41,11 +41,10 @@ export const useGameOver = () => {
   useEffect(() => {
     looseSound();
     localStorage.removeItem(GAME_ID);
-    setIsRageRound(false);
     return () => {
       stopLooseSound(); // Cleanup sound on unmount
     };
-  }, [looseSound, setIsRageRound, stopLooseSound]);
+  }, [looseSound, stopLooseSound]);
 
   useEffect(() => {
     if (position <= 10) {
@@ -56,7 +55,6 @@ export const useGameOver = () => {
   const onStartGameClick = () => {
     setIsLoading(true);
     localStorage.removeItem(GAME_ID);
-    restartGame();
     stopLooseSound();
     executeCreateGame();
   };
