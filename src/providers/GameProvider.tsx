@@ -1,9 +1,4 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect
-} from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
@@ -19,10 +14,12 @@ import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
+import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -30,7 +27,6 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-import { useDeckStore } from "../state/useDeckStore.ts";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number) => void;
@@ -124,6 +120,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const {
     setup: { client },
   } = useDojo();
@@ -203,7 +200,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
 
-            navigate("/demo");
+            customNavigate(GameStateEnum.Round);
           } else {
             setGameError(true);
           }
