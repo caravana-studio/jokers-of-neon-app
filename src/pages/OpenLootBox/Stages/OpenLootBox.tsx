@@ -1,66 +1,61 @@
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
-import { BackgroundDecoration } from "../../../components/Background";
 import { Flex } from "@chakra-ui/react";
-import { LootBox, LootBoxRef } from "../../../components/LootBox";
-import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
-import { useStore } from "../../../providers/StoreProvider";
-import { useRedirectByGameState } from "../../../hooks/useRedirectByGameState";
+import { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { useGame } from "../../../dojo/queries/useGame";
-import { useAudio } from "../../../hooks/useAudio";
+import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { BackgroundDecoration } from "../../../components/Background";
+import { LootBox, LootBoxRef } from "../../../components/LootBox";
 import { openPackSfx } from "../../../constants/sfx";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
+import { useAudio } from "../../../hooks/useAudio";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
+import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
 
 export const OpenLootBox = () => {
-  const { state } = useLocation();
-  const { pack } = state || {};
+  const { state: locationState } = useLocation();
+  const { pack } = locationState || {};
   const [openDisabled, setOpenDisabled] = useState(false);
   const [openTextVisible, setOpenTextVisible] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const lootBoxRef = useRef<LootBoxRef>(null);
   const { play: openPackSound } = useAudio(openPackSfx, 0.5);
-  const game = useGame();
+  const { state } = useGameStore();
   const { transitionTo } = usePageTransitions();
-  const { buyPack, lockRedirection } = useStore();
-  const navigate = useNavigate();
+  const { buyPack } = useStore();
+  const navigate = useCustomNavigate();
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "open-lootbox",
   });
 
-  useRedirectByGameState();
-
   if (!pack) {
-    navigate("/store");
+    console.error("no pack!!");
+    navigate(GameStateEnum.Store);
     return <p>LootBox not found.</p>;
   }
 
   const openAnimationCallBack = () => {
-    transitionTo("/redirect/loot-box-cards-selection", {
+    transitionTo("loot-box-cards-selection", {
       state: { pack: pack },
     });
   };
 
   useEffect(() => {
-    if (game && game?.state !== GameStateEnum.Lootbox) {
-      setIsBuying(true);
-      buyPack(pack)
-        .then((response) => {
-          if (response) {
-          } else {
-            navigate("/store");
-          }
-        })
-        .catch(() => {
-          navigate("/store");
-        })
-        .finally(() => {
-          setIsBuying(false);
-        });
-    }
-
-    return () => {};
+    setIsBuying(true);
+    buyPack(pack)
+      .then((response) => {
+        if (response) {
+        } else {
+          navigate(GameStateEnum.Lootbox);
+        }
+      })
+      .catch(() => {
+        navigate(GameStateEnum.Store);
+      })
+      .finally(() => {
+        setIsBuying(false);
+      });
   }, []);
 
   useEffect(() => {

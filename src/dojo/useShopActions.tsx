@@ -1,21 +1,24 @@
 import { CairoCustomEnum } from "starknet";
+import { achievementSfx } from "../constants/sfx";
 import { DojoEvents } from "../enums/dojoEvents";
+import { useAudio } from "../hooks/useAudio";
 import { useGameContext } from "../providers/GameProvider";
+import { useSettings } from "../providers/SettingsProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
 import { getPowerUpsFromEvents } from "../utils/getPowerUpsFromEvents";
+import { handleAchievements } from "../utils/handleAchievements";
 import {
   failedTransactionToast,
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { handleAchievements } from "../utils/handleAchievements";
-import { useAudio } from "../hooks/useAudio";
-import { useSettings } from "../providers/SettingsProvider";
-import { achievementSfx } from "../constants/sfx";
+import { useGameStore } from "../state/useGameStore";
+import { useAnimationStore } from "../state/useAnimationStore";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -27,8 +30,12 @@ export const useShopActions = () => {
     account: { account },
   } = useDojo();
 
-  const { setDestroyedSpecialCardId, setHand, setPowerUps, maxPowerUpSlots } =
-    useGameContext();
+  const { replaceCards: setHand } = useCurrentHandStore();
+
+  const { setDestroyedSpecialCardId } =
+    useAnimationStore();
+
+  const { maxPowerUpSlots, setPowerUps } = useGameStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -46,15 +53,15 @@ export const useShopActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
-        const event = tx.events.find(
+        await handleAchievements(tx.value.events, achievementSound);
+        const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
         return {
           success: true,
-          cards: getCardsFromEvents(tx.events),
+          cards: getCardsFromEvents(tx.value.events),
           destroyedSpecialCard: event && getNumberValueFromEvent(event, 3),
-          powerUps: getPowerUpsFromEvents(tx.events),
+          powerUps: getPowerUpsFromEvents(tx.value.events),
         };
       } else {
         return {
@@ -97,7 +104,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -124,21 +131,16 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
-        const event = tx.events.find(
+        await handleAchievements(tx.value.events, achievementSound);
+        const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
-        const cards = getCardsFromEvents(tx.events);
+        const cards = getCardsFromEvents(tx.value.events);
         const destroyedSpecialCard = event && getNumberValueFromEvent(event, 3);
-        const responsePowerUps = getPowerUpsFromEvents(tx.events);
+        const responsePowerUps = getPowerUpsFromEvents(tx.value.events);
 
         setHand(cards);
-
-        const powerUps: (PowerUp | null)[] = responsePowerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
+        setPowerUps(responsePowerUps);
 
         destroyedSpecialCard && setDestroyedSpecialCardId(destroyedSpecialCard);
       }
@@ -166,7 +168,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -194,7 +196,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -228,7 +230,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -254,7 +256,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -284,7 +286,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -314,7 +316,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -344,7 +346,7 @@ export const useShopActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -367,7 +369,7 @@ export const useShopActions = () => {
       });
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return updateTransactionToast(transaction_hash, tx.isSuccess());

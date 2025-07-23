@@ -60,7 +60,7 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        const events = tx.events;
+        const events = tx.value.events;
         console.log(
           "events",
           events.filter((event) => event.keys[1] === CREATE_GAME_EVENT_KEY)
@@ -72,7 +72,7 @@ export const useGameActions = () => {
         );
         console.log("Game " + gameId + " created");
 
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
 
         return {
           gameId,
@@ -213,8 +213,8 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
-        return getPlayEvents(tx.events);
+        await handleAchievements(tx.value.events, achievementSound);
+        return getPlayEvents(tx.value.events);
       }
       return;
     } catch (e) {
@@ -242,10 +242,10 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
         return {
           success: true,
-          cards: getCardsFromEvents(tx.events),
+          cards: getCardsFromEvents(tx.value.events),
         };
       } else {
         return {
@@ -279,7 +279,7 @@ export const useGameActions = () => {
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
 
       if (tx.isSuccess()) {
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
       }
 
       return { success };
@@ -317,9 +317,9 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        const events = tx.events;
+        const events = tx.value.events;
 
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
         return getPlayEvents(events);
       }
       return;
@@ -350,13 +350,13 @@ export const useGameActions = () => {
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
       if (tx.isSuccess()) {
-        const events = tx.events;
+        const events = tx.value.events;
         const gameId =
           getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 3) ||
           getNumberValueFromEvents(events, MINT_GAME_EVENT_KEY, 2, 0);
         console.log("Game " + gameId + " minted");
 
-        await handleAchievements(tx.events, achievementSound);
+        await handleAchievements(tx.value.events, achievementSound);
 
         return gameId;
       } else {

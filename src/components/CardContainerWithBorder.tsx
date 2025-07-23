@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useGameContext } from "../providers/GameProvider.tsx";
 import { GREY_LINE } from "../theme/colors.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 
 export const CardContainerWithBorder = ({
   width = "100%",
@@ -46,7 +47,7 @@ export const CardContainerSwitcher = ({
   children: ReactNode;
   onClick?: () => void;
 }) => {
-  const { isRageRound, isClassic } = useGameContext();
+  const { isRageRound, isClassic } = useGameStore();
   return (
     <Flex
       border={`1px solid ${GREY_LINE}`}

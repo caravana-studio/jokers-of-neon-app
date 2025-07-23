@@ -1,7 +1,7 @@
 {
   "world": {
-    "class_hash": "0x4c60dc46a8ca8bb47675b7b914053cef769afbf0e340523187336b72bd71d1f",
-    "address": "0x3277623fa3b1b4b46ab97571882b20b292412939b24715a03430df0acf961ff",
+    "class_hash": "0x7746f30d2b8494780387ed469797ecb5c62c7b6f49f4939a5e60e0f7ae5f99e",
+    "address": "0x5d151da3085badd054db02d2c0891dcdc6a98538ea0e86edea0e45ea70df72d",
     "seed": "jokers_of_neon_core",
     "name": "jokers_of_neon_core",
     "entrypoints": [
@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x77b74e239a6b28a3968f1bbe0c2a51ed1ea8a262bc6c471207695d5de35446e",
-      "class_hash": "0x6e6c15fd5c93cb778de3d0ae63526254f4f7e613f72585de9e04ec558dfedce",
+      "address": "0x39452680b34b071aab99733c2f5d004f3c0eb9675a1c565605dc7acd2ceee6d",
+      "class_hash": "0x26661c4bb5abb45010bc35ec693a4deda06ea85093736235c409ebe71a74751",
       "abi": [
         {
           "type": "impl",
@@ -1573,7 +1573,7 @@
       "systems": ["play", "discard", "change_modifier_card", "upgrade"]
     },
     {
-      "address": "0x1b2bcc4c6fcdb7637df02ac264f27878b0d4d2c53d698bc066f556ac7593213",
+      "address": "0x116545861ba2bc7c2fa0f8d1224925b91cbede84fd08f09b98651b61da9a82e",
       "class_hash": "0x6ad3b014f0f6cb8001a09d6bce70199ea6ebb9fd5b08f497690cc0b2e4908f5",
       "abi": [
         {
@@ -1976,8 +1976,8 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6",
-      "class_hash": "0x55bce5b48743db565c503d548113498f37e06950f9164858fd373c3c28fc538",
+      "address": "0x5ffe1c1bc1dd1a78fd46bebab10b8d055e9de7640aaa77d46478c2e2ce3693c",
+      "class_hash": "0x7ca3a8df9daa11046a8e27cb0f01b179ec2cbacb7c1ee8c485b3329e9efb4e3",
       "abi": [
         {
           "type": "impl",
@@ -2278,6 +2278,46 @@
         },
         {
           "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "idx",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "effect_card_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "is_temporary",
+              "type": "core::bool"
+            },
+            {
+              "name": "remaining",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "selling_price",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "core::array::Span::<(core::integer::u32, core::bool)>",
           "members": [
             {
@@ -2305,26 +2345,6 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::integer::u128>"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "transfer_game",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u64"
-                },
-                {
-                  "name": "new_owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "new_player_name",
-                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -2369,7 +2389,7 @@
               ],
               "outputs": [
                 {
-                  "type": "core::array::Span::<core::integer::u32>"
+                  "type": "core::array::Span::<jokers_of_neon_lib::models::status::game::game::CurrentSpecialCards>"
                 }
               ],
               "state_mutability": "view"
@@ -2402,6 +2422,22 @@
               "outputs": [
                 {
                   "type": "core::array::Span::<(core::integer::u32, core::bool)>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_power_ups",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
                 }
               ],
               "state_mutability": "view"
@@ -3278,7 +3314,6 @@
       "systems": [
         "dojo_init",
         "start_game",
-        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
@@ -3293,7 +3328,7 @@
       ]
     },
     {
-      "address": "0x3a064c382ce3a9f2c6e5efeeb24045192d32eab4b3c508799a1b1295eb83a6d",
+      "address": "0x3d090ab8e57d053d89c5b2336cd0c62856f53b19fe078e3c645140949d4aa7a",
       "class_hash": "0x79f2127cfb07641bd4ba8ddf09fa20a7ff3ff3a4a983d4d3b4f9643a1e8138f",
       "abi": [
         {
@@ -3494,7 +3529,7 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x8f4d4d91ad3f04b49633704f68a8c28ca826e906d82251d0177faecd741a17",
+      "address": "0x17a95f7b6356f459f8066b6a4f707e9b0c00a18d91585665a59a479489f4e94",
       "class_hash": "0x417f568b9872e35cd7cc19a54d7819a7f5d54b4a1b1b5f7a1aef0b3e9fb66b1",
       "abi": [
         {
@@ -3969,7 +4004,7 @@
       "systems": ["create_map_level", "advance_node", "upgrade"]
     },
     {
-      "address": "0x314f9f7b522da766916ccadfe37eaf158810e321419992054c66a72b580574b",
+      "address": "0x604ea255260bda2815a4feb171f501ce1855fab74be883f562177ecb7988672",
       "class_hash": "0x5607e480224372b740b6c92e2bf16d203fe4fe22cd0c10ad295580a8be34d03",
       "abi": [
         {
@@ -4185,7 +4220,7 @@
       "systems": ["register_managers", "upgrade"]
     },
     {
-      "address": "0x137ccf31779d87b3773b4ddcacb992ab174f586d5810d8f97b06ca1a3fecf75",
+      "address": "0x1c6088ccd487d67da1b0a6c960a83eb34e5d402397a6f7c0f89c305a1d6fec5",
       "class_hash": "0x100c02c26ec376035ca23901f78b82d7a0b11543a6905abf011f993d72ab2c6",
       "abi": [
         {
@@ -4521,7 +4556,7 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x5da4ed49ff6add3037d8a7ae1feb3f3539a6a5d2c59148be418e987c90b66a7",
+      "address": "0x5de5ebc09f9b9f72c7491021562b9e845f0ecdea0027a39f061c3c90dbc3a1f",
       "class_hash": "0x276a0eb56072ad26c9559e600d43ba5c57689e528f7d099dca0c3904566ba62",
       "abi": [
         {
@@ -4802,8 +4837,8 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x2acbb005e85d5abbe6cdb8aea92dd3e26983f272ea38537e1cc9219012e0f32",
-      "class_hash": "0x7bda535b48adf1f6425667e5632e738a62b4c6b8fae6cdf71187c3e051f5a42",
+      "address": "0x6ae57801b225155b296d011145a25542c0522e7f12397874cafb39189d3145",
+      "class_hash": "0xb848e3e5f0db7a074c563796214fea1f4822254f30b6edae7d18d0aab41fb5",
       "abi": [
         {
           "type": "impl",
@@ -5211,6 +5246,34 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "cards_picked",
+              "type": "core::bool"
+            },
+            {
+              "name": "cards",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::shop_system::IShopSystem",
           "items": [
@@ -5417,6 +5480,38 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_loot_box_result",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_cards_in_deck",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -5891,13 +5986,13 @@
     },
     {
       "members": [],
-      "class_hash": "0x6fede2561a93b4808a6a00e19457a94d616e7ee53fc952f75af58da9bae45f5",
+      "class_hash": "0x702d5440a155e0704b268f8d6dbf74cb8ae09b164064fe3b4f896cf725dcac7",
       "tag": "jokers_of_neon_core-TrophyCreation",
       "selector": "0x755abea9e75fbf35fbb4f1be02da784239e268a1a2358c9de58c7f8b06b93ce"
     },
     {
       "members": [],
-      "class_hash": "0x3d60f68ff66df399a5efc60c6aacda487ced739897ddcea54270b7c147206d",
+      "class_hash": "0x113e43bc604068a5811205b126a3e318b21e5c72746138efa6fb40277067f00",
       "tag": "jokers_of_neon_core-TrophyProgression",
       "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }

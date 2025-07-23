@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
@@ -86,7 +86,7 @@ export const Background = ({ children }: PropsWithChildren) => {
   const { isSmallScreen } = useResponsiveValues();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>("none");
 
-  const { isClassic, modId, isRageRound } = useGameContext();
+  const { isRageRound, modId, isClassic } = useGameStore();
   const baseUrl = import.meta.env.VITE_MOD_URL + modId + "/resources";
 
   const location = useLocation();

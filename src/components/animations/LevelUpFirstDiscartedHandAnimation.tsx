@@ -1,4 +1,4 @@
-import { 
+import {
   Box,
   Flex,
   Heading,
@@ -8,14 +8,12 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { animated, config, useSpring } from "react-spring";
-import { useGameContext } from "../../providers/GameProvider";
-import { PLAYS } from "../../constants/plays";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
-import theme from "../../theme/theme";
 import { ArrowRight } from "lucide-react";
-import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { animated, config, useSpring } from "react-spring";
+import { PLAYS } from "../../constants/plays";
+import { useAnimationStore } from "../../state/useAnimationStore";
 import {
   BLUE,
   BLUE_LIGHT,
@@ -25,13 +23,15 @@ import {
   VIOLET,
   VIOLET_LIGHT,
 } from "../../theme/colors";
-import { useTranslation } from "react-i18next";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import theme from "../../theme/theme";
+import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
 
 export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
   const [showAnimationText, setShowAnimationText] = useState(false);
   const [showNewDataText, setNewDataText] = useState(false);
-  const { levelUpHand, setLevelUpHand } = useGameContext();
+  const { levelUpHand, setLevelUpHand } = useAnimationStore();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
 

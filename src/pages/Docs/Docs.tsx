@@ -2,15 +2,13 @@ import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
-import {
-  useBackToGameButton
-} from "../../components/useBackToGameButton";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { MODIFIERS_RARITY } from "../../data/modifiers";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
-import { useGameState } from "../../state/useGameState";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DocsBoxesRow } from "./DocsBoxesRow";
 import { DocsCardsRow } from "./DocsCardsRow";
+import { useGameStore } from "../../state/useGameStore";
 
 interface DocsProps {
   lastIndexTab: number;
@@ -19,7 +17,7 @@ interface DocsProps {
 export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
   const { t } = useTranslation(["docs"]);
 
-  const { modCardsConfig } = useGameState();
+  const { modCardsConfig } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 

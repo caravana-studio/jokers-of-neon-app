@@ -21,12 +21,16 @@ const getChainId = (chain: string) => {
   }
 };
 
+export const getSlotChainId = (slot: string) => {
+  return shortString.encodeShortString(
+    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
+  );
+};
+
 const defaultChainId =
   CHAIN === "mainnet" || CHAIN === "sepolia"
     ? getChainId(CHAIN)
-    : shortString.encodeShortString(
-        `WP_${CHAIN.toUpperCase().replaceAll("-", "_")}`
-      );
+    : getSlotChainId(CHAIN);
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
