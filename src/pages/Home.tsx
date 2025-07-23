@@ -14,9 +14,9 @@ import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
-
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const Home = () => {
@@ -116,7 +116,7 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (setup.useBurnerAcc && lastGameId) {
+                if (setup.useBurnerAcc && lastGameId != undefined) {
                   const username = `joker_guest_${lastGameId + 1}`;
                   console.log("username: ", username);
 
