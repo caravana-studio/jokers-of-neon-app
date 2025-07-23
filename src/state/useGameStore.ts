@@ -91,6 +91,8 @@ type GameStore = {
   showSpecials: () => void;
   refetchPlays: (client: any, gameId: number) => Promise<void>;
   setRound: (round: number) => void;
+  addSpecialSlot: () => void;
+  removeSpecialSlot: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -388,5 +390,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setRound: (round: number) => {
     set({ round });
+  },
+
+  addSpecialSlot: () => {
+    set((state) => ({
+      specialSlots: state.specialSlots + 1,
+    }));
+  },
+
+  removeSpecialSlot: () => {
+    set((state) => ({
+      specialSlots: state.specialSlots - 1,
+    }));
   },
 }));

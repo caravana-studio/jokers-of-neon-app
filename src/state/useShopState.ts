@@ -63,7 +63,14 @@ export const useShopState = () => {
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
 
-  const { cash, addCash, removeCash, setCash } = useGameStore();
+  const {
+    cash,
+    addCash,
+    removeCash,
+    setCash,
+    addSpecialSlot,
+    removeSpecialSlot,
+  } = useGameStore();
 
   const [rerolling, setRerolling] = useState(false);
 
@@ -116,6 +123,7 @@ export const useShopState = () => {
   const buySlotSpecialCard = () => {
     removeCash(Number(specialSlotItem?.cost ?? 0));
     setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
+    addSpecialSlot();
   };
 
   const buyPowerUp = (idx: number) => {
@@ -144,6 +152,7 @@ export const useShopState = () => {
   const rollbackBuySlotSpecialCard = () => {
     setSpecialSlotItem((prev) => ({ ...prev, purchased: false }));
     addCash(Number(specialSlotItem?.cost ?? 0));
+    removeSpecialSlot();
   };
 
   const { id: gameId, round: currentNodeId } = useGameStore();
