@@ -1,9 +1,4 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect
-} from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
@@ -19,10 +14,12 @@ import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
+import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -30,7 +27,6 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number) => void;
@@ -110,7 +106,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setCardTransformationLock,
   } = useCurrentHandStore();
 
+  const { fetchDeck } = useDeckStore();
+
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+
+  const { getCardData } = useCardData();
 
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
@@ -191,6 +191,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setGameId(client, newGameId);
             resetLevel();
             replaceCards(hand);
+            fetchDeck(client, newGameId, getCardData);
             clearPreSelection();
 
             console.log(`game ${newGameId} created`);
@@ -199,7 +200,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
 
-            customNavigate(GameStateEnum.Round)
+            customNavigate(GameStateEnum.Round);
           } else {
             setGameError(true);
           }
@@ -259,6 +260,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             resetRage,
             unPreSelectAllPowerUps,
           });
+          fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
         } else {
           setPreSelectionLocked(false);
@@ -341,6 +343,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedCard(undefined);
             setDiscardAnimation(false);
             replaceCards(response.cards);
+            fetchDeck(client, gameId, getCardData);
             refetchSpecialCardsData(modId, gameId);
           }, ALL_CARDS_DURATION + 300);
         } else {
@@ -381,6 +384,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
+          fetchDeck(client, gameId, getCardData);
         } else {
           rollback();
         }

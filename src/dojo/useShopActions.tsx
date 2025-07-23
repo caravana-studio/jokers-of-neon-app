@@ -19,6 +19,8 @@ import {
 import { useDojo } from "./useDojo";
 import { useGameStore } from "../state/useGameStore";
 import { useAnimationStore } from "../state/useAnimationStore";
+import { useDeckStore } from "../state/useDeckStore";
+import { useCardData } from "../providers/CardDataProvider";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -31,6 +33,9 @@ export const useShopActions = () => {
   } = useDojo();
 
   const { replaceCards: setHand } = useCurrentHandStore();
+
+  const { fetchDeck } = useDeckStore();
+  const { getCardData } = useCardData();
 
   const { setDestroyedSpecialCardId } =
     useAnimationStore();
@@ -141,6 +146,7 @@ export const useShopActions = () => {
 
         setHand(cards);
         setPowerUps(responsePowerUps);
+        fetchDeck(client, gameId, getCardData);
 
         destroyedSpecialCard && setDestroyedSpecialCardId(destroyedSpecialCard);
       }
