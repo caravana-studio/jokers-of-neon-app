@@ -80,7 +80,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   }
 
   const navigate = useCustomNavigate();
-  const { totalScore } = useGameStore();
+  const { currentScore } = useGameStore();
 
   return (
     <PinkBox
@@ -92,7 +92,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     >
       <Heading color="lightViolet" size="s">
         {" "}
-        {t("final-score", { score: totalScore })}{" "}
+        {t("final-score", { score: currentScore })}{" "}
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />
