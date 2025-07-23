@@ -1,8 +1,10 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { useDojo } from "../dojo/useDojo";
-import { useGameStore } from "../state/useGameStore";
 import { GameStateEnum } from "../dojo/typescript/custom";
+import { useDojo } from "../dojo/useDojo";
+import { useCardData } from "../providers/CardDataProvider";
+import { useDeckStore } from "../state/useDeckStore";
+import { useGameStore } from "../state/useGameStore";
 
 export const GameStoreLoader = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,6 +12,9 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
     setup: { client },
   } = useDojo();
   const { refetchGameStore, id: gameId, state } = useGameStore();
+
+  const { fetchDeck } = useDeckStore();
+  const { getCardData } = useCardData();
 
   useEffect(() => {
     if (client && gameId) {
@@ -20,6 +25,7 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
       } else {
         setIsLoading(false);
       }
+      fetchDeck(client, gameId, getCardData);
     }
   }, [client, gameId]);
 
