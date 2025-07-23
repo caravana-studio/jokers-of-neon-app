@@ -89,6 +89,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameError,
     showSpecials,
     id: gameId,
+    resetSpecials,
+    setState
   } = useGameStore();
 
   const {
@@ -158,7 +160,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(false);
     showSpecials();
     resetPowerUps();
+    resetSpecials();
     refetchSpecialCardsData(modId, gameId);
+    setState(GameStateEnum.NotSet);
   };
 
   const prepareNewGame = () => {
@@ -172,6 +176,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const executeCreateGame = async (providedGameId?: number) => {
     setGameError(false);
+    resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
     if (username) {
@@ -190,18 +195,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           const { gameId: newGameId, hand } = response;
           if (newGameId) {
             setGameId(client, newGameId);
-            resetLevel();
             replaceCards(hand);
             fetchDeck(client, newGameId, getCardData);
             clearPreSelection();
 
             console.log(`game ${newGameId} created`);
 
-            setGameLoading(false);
             setPreSelectionLocked(false);
             setRoundRewards(undefined);
 
-            customNavigate(GameStateEnum.Round);
+            navigate('/demo')
           } else {
             setGameError(true);
           }
