@@ -9,13 +9,14 @@ import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 
 export const PreviewLootBox = () => {
@@ -29,14 +30,12 @@ export const PreviewLootBox = () => {
     return <p>Card not found.</p>;
   }
 
-  const game = useGame();
   const { locked } = useStore();
   const { getLootBoxData } = useCardData();
 
-  const cash = game?.cash ?? 0;
+  const { cash, setState, removeCash } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
-  useRedirectByGameState();
 
   const notEnoughCash =
     !card.price ||
@@ -46,6 +45,8 @@ export const PreviewLootBox = () => {
     navigate("/open-loot-box", {
       state: { pack: pack },
     });
+    setState(GameStateEnum.Lootbox)
+    removeCash(pack.discount_cost > 0 ? pack.discount_cost : pack.cost)
   };
   const buyButton = (
     <Button
@@ -152,7 +153,7 @@ export const PreviewLootBox = () => {
             hideDeckButton
             firstButton={{
               onClick: () => {
-                navigate("/redirect/store");
+                navigate("/store");
               },
               label: t("labels.close").toUpperCase(),
             }}

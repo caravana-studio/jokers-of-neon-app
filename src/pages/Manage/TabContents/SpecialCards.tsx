@@ -14,9 +14,9 @@ import { LockedSlot } from "../../../components/LockedSlot/LockedSlot";
 import { TemporalBadge } from "../../../components/TemporalBadge";
 import { UnlockedSlot } from "../../../components/UnlockedSlot";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../../constants/visualProps";
-import { useGame } from "../../../dojo/queries/useGame";
 import { useCardData } from "../../../providers/CardDataProvider";
 import { useGameContext } from "../../../providers/GameProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getTooltip } from "../../../utils/getTooltip";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
@@ -40,17 +40,12 @@ export const SpecialCards: React.FC<SpecialCardsProps> = ({
     keyPrefix: "special-cards",
   });
 
-  const game = useGame();
-  const { specialCards, maxSpecialCards } = useGameContext();
   const { getCardData } = useCardData();
+  const { specialSlots, specialCards, maxSpecialCards } = useGameStore();
 
-  const unlockedSpecialSlots = game?.special_slots ?? 1;
-
-  const freeUnlockedSlots = unlockedSpecialSlots - specialCards.length;
+  const freeUnlockedSlots = specialSlots - specialCards.length;
   const lockedSlots =
-    unlockedSpecialSlots === maxSpecialCards
-      ? 0
-      : Math.max(1, 5 - unlockedSpecialSlots);
+    specialSlots === maxSpecialCards ? 0 : Math.max(1, 5 - specialSlots);
 
   const { isSmallScreen, cardScale } = useResponsiveValues();
 

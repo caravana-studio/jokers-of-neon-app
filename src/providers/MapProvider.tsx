@@ -8,14 +8,14 @@ import {
 } from "react";
 import { Edge, Node, useReactFlow } from "reactflow";
 import { getMap } from "../dojo/queries/getMap";
-import { useGame } from "../dojo/queries/useGame";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
+import { useGameStore } from "../state/useGameStore";
 import { BLUE } from "../theme/colors";
-import { getRageNodeData } from "../utils/getRageNodeData";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 export interface SelectedNodeData {
   id: number;
@@ -71,15 +71,15 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   const reactFlowInstance = useReactFlow();
 
-  const game = useGame();
+  const { state, level, id } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
 
   useEffect(() => {
-    getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
+    getMap(client, id, level).then((dataNodes) => {
       const transformedNodes = dataNodes.map((node, index) => {
         const isFirstNode = index === 0;
-        const shouldBeFinalRage = isFirstNode && (game?.level ?? 1) >= 2;
+        const shouldBeFinalRage = isFirstNode && (level) >= 2;
 
         const nodeType = shouldBeFinalRage
           ? NodeType.RAGE

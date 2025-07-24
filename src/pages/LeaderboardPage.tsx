@@ -1,16 +1,14 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
+import { GoBackButton } from "../components/GoBackButton";
 import { Leaderboard } from "../components/Leaderboard";
+import { MobileBottomBar } from "../components/MobileBottomBar";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { MobileBottomBar } from "../components/MobileBottomBar";
-import { GoBackButton } from "../components/GoBackButton";
 
 export const LeaderBoardPage = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
 

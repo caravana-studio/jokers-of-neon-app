@@ -1,24 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
-import { SellButton } from "./SellButton";
 import { GoBackButton } from "../../components/GoBackButton";
 import { PowerUp } from "../../types/Powerup/PowerUp";
 import { MobilePowerupHighlight } from "../../components/MobilePowerupHighlight";
 import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { usePowerupHighlight } from "../../providers/HighlightProvider/PowerupHighlightProvider";
 import { getPowerUpData } from "../../data/powerups";
+import { SellButton } from "./SellButton";
 
 export const ManagePage = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation("intermediate-screens");
+
+  const {
+    setup: { client },
+  } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -48,9 +52,17 @@ export const ManagePage = () => {
     highlightSpecialCard(card);
   };
 
+  const { refetchGameStore, id: gameId } = useGameStore();
+
   const handlePowerupClick = (powerup: PowerUp) => {
     highlightPowerup(powerup);
   };
+
+  useEffect(() => {
+    if (client && gameId) {
+      refetchGameStore(client, gameId);
+    }
+  }, [client, gameId]);
 
   const sellSpecialButton = (
     <SellButton
@@ -116,7 +128,7 @@ export const ManagePage = () => {
             setSpecialConfirmationModalOpen(false);
             onCloseSpecial();
             highlightedSpecialCard &&
-              sellSpecialCard(highlightedSpecialCard.idx).then((response) => {
+              sellSpecialCard(highlightedSpecialCard).then((response) => {
                 if (response) {
                   setDiscardedCards((prev) => [
                     ...prev,
@@ -143,6 +155,7 @@ export const ManagePage = () => {
               sellPowerup(highlightedPowerup.idx).then((response) => {
                 if (response) {
                   setDiscardedPowerups((prev) => [...prev, highlightedPowerup]);
+                  refetchGameStore(client, gameId);
                 }
               });
           }}

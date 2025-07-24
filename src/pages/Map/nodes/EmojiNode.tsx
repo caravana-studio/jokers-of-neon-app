@@ -1,19 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
-import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
-import { useGameContext } from "../../../providers/GameProvider";
+import { useGameStore } from "../../../state/useGameStore";
 
 const EmojiNode = ({ data }: any) => {
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
   const navigate = useNavigate();
 
-  const game = useGame();
+  const { state, id: gameId } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
 
   return (
     <Box

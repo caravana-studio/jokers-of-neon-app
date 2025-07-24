@@ -1,6 +1,8 @@
 import { Box, Flex, SystemStyleObject, Tooltip } from "@chakra-ui/react";
+import { useState } from "react";
 import { getPowerUpData } from "../data/powerups";
 import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { PowerUp } from "../types/Powerup/PowerUp";
@@ -8,10 +10,9 @@ import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
-import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 import { PurchasedLbl } from "./PurchasedLbl";
+import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 import { HighlightAnimation } from "./animations/HighlightAnimation";
-import { useState } from "react";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -31,7 +32,7 @@ export const PowerUpComponent = ({
   isActive,
   hideTooltip = false,
 }: PowerUpProps) => {
-  const { powerUpIsPreselected } = useGameContext();
+  const { powerUpIsPreselected } = useGameStore();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
   const price = inStore && powerUp?.cost;
@@ -96,18 +97,7 @@ export const PowerUpComponent = ({
   ) : null;
 
   return powerUp ? (
-    <FadingParticleAnimation
-      width={isSmallScreen ? 120 : 190}
-      height={isSmallScreen ? 35 : 70}
-      spriteSrc={powerupStyle?.vfx ?? ""}
-      particleSize={5}
-      amount={isSmallScreen ? 300 : 500}
-      delayRange={3}
-      minHeight={5}
-      backward
-      active={(calculatedIsActive ?? false) && startParticles}
-      spreadOffset={0.3}
-    >
+
       <AnimatedPowerUp idx={powerUp.idx}>
         <>
           {hideTooltip ? (
@@ -119,7 +109,6 @@ export const PowerUpComponent = ({
           )}
         </>
       </AnimatedPowerUp>
-    </FadingParticleAnimation>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );
@@ -133,7 +122,7 @@ const EmptyPowerUp = ({
   containerSx?: SystemStyleObject;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const { isRageRound, isClassic } = useGameContext();
+  const { isRageRound, isClassic } = useGameStore();
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}

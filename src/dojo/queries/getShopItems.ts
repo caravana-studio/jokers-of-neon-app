@@ -25,8 +25,7 @@ const BLISTER_PACKS_IDX = 3;
 const POWERUPS_IDX = 4;
 const SLOTS_IDX = 5;
 const BURN_IDX = 6;
-const REROLL_IDX = 7;
-const CASH_IDX = 8;
+const CASH_IDX = 7;
 
 const getCard = (txCard: any) => {
   const idx = parseInt(txCard.idx);
@@ -131,11 +130,6 @@ export const getShopItems = async (client: any, gameId: number) => {
         discount_cost: parseInt(tx_result[BURN_IDX].discount_cost),
       };
 
-      const rerollInformation = {
-        rerollCost: parseInt(tx_result[REROLL_IDX].cost),
-        rerollExecuted: tx_result[REROLL_IDX].purchased,
-      };
-
       const powerUpItems = tx_result[POWERUPS_IDX].map((txPowerUp: any) => {
         return getPowerUp(txPowerUp);
       });
@@ -147,7 +141,6 @@ export const getShopItems = async (client: any, gameId: number) => {
         pokerHandItems,
         packs,
         specialSlotItem,
-        rerollInformation,
         cash: parseInt(tx_result[CASH_IDX]),
         burnItem,
         powerUpItems,
@@ -162,10 +155,6 @@ export const getShopItems = async (client: any, gameId: number) => {
       pokerHandItems: [],
       packs: [],
       specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
-      rerollInformation: {
-        rerollCost: 100,
-        rerollExecuted: true,
-      },
       cash: 0,
       burnItem: EMPTY_BURN_ITEM,
       powerUpItems: [],

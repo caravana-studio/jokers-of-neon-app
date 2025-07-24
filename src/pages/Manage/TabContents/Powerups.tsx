@@ -6,6 +6,7 @@ import { useGameContext } from "../../../providers/GameProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { PowerUp } from "../../../types/Powerup/PowerUp";
 import { FullScreenCardContainer } from "../../FullScreenCardContainer";
+import { useGameStore } from "../../../state/useGameStore";
 
 interface PowerupsProps {
   preselectedPowerUp?: PowerUp;
@@ -25,7 +26,7 @@ export const Powerups: React.FC<PowerupsProps> = ({
   const { isSmallScreen } = useResponsiveValues();
   const { colors } = useTheme();
 
-  const { powerUps, maxPowerUpSlots } = useGameContext();
+  const { maxPowerUpSlots, powerUps } = useGameStore();
   const [totalPowerUps, setTotalPowerups] = useState<(PowerUp | null)[]>([]);
 
   useEffect(() => {
@@ -71,7 +72,6 @@ export const Powerups: React.FC<PowerupsProps> = ({
                   powerUp={isDiscarded ? null : powerUp}
                   width={120}
                   key={index}
-                  isActive
                   containerSx={{
                     backgroundColor: "transparent",
                     borderColor: preselectedPowerUp

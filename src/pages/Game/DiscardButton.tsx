@@ -1,7 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGame } from "../../dojo/queries/useGame";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface DiscardButtonProps {
@@ -13,18 +14,19 @@ export const DiscardButton = ({
   highlight = false,
   onTutorialCardClick,
 }: DiscardButtonProps) => {
-  const { preSelectedCards, discard, preSelectionLocked, discards } =
-    useGameContext();
+  const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
+  const { discard } = useGameContext();
+
+  const { totalDiscards, remainingDiscards } = useGameStore();
 
   const cantDiscard =
     !highlight &&
     (preSelectionLocked ||
       preSelectedCards?.length === 0 ||
-      !discards ||
-      discards === 0);
+      !remainingDiscards ||
+      remainingDiscards === 0);
 
   const { t } = useTranslation(["game"]);
-  const game = useGame();
 
   return (
     <Flex flexDir="column" w="100%" gap={[3, 4]}>
@@ -52,8 +54,8 @@ export const DiscardButton = ({
       <PlayDiscardIndicators
         disabled={cantDiscard}
         type="discard"
-        total={game?.discards ?? 5}
-        active={discards}
+        total={totalDiscards ?? 5}
+        active={remainingDiscards}
       />
     </Flex>
   );

@@ -1,16 +1,16 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiRefreshCw } from "react-icons/fi";
-import { useGame } from "../../../dojo/queries/useGame";
 import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
 const RerollButton = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
   const { locked, reroll } = useStore();
-  const game = useGame();
-  const rerolled = game?.available_rerolls === 0;
+  const { availableRerolls } = useGameStore();
+  const rerolled = availableRerolls === 0;
   const rerollDisabled = locked || rerolled;
 
   return (

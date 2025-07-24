@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
 import { RARITY, RarityLabels } from "../constants/rarity";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
@@ -14,9 +13,9 @@ import { CashSymbol } from "./CashSymbol";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
-import { PriceBox } from "./PriceBox";
 import { LootBox } from "./LootBox";
 import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
+import { PriceBox } from "./PriceBox";
 
 interface MobileCardHighlightProps {
   card: Card;
@@ -55,9 +54,6 @@ export const MobileCardHighlight = ({
   const { t } = useTranslation(["game", "docs"]);
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
-  const discard =
-    type === CardTypes.MODIFIER ? changeModifierCard : sellSpecialCard;
-
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (type === CardTypes.MODIFIER) {
@@ -69,7 +65,11 @@ export const MobileCardHighlight = ({
 
   const handleDiscard = () => {
     setLoading(true);
-    discard(card.idx).then((response) => {
+    const discardPromise =
+      type === CardTypes.MODIFIER
+        ? changeModifierCard(card.idx)
+        : sellSpecialCard(card);
+    discardPromise.then((response) => {
       if (response) {
         onClose();
       }
