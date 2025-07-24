@@ -1,6 +1,6 @@
 import ControllerConnector from "@cartridge/connector/controller";
 import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
-import { useAccount, useConnect } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
   ReactNode,
   createContext,
@@ -14,6 +14,8 @@ import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
+import { LOCAL_APP_VERSION_CHANGE } from "../constants/localStorage";
+import { useNavigate } from "react-router-dom";
 
 interface DojoAccount {
   create: () => void;
@@ -78,20 +80,34 @@ const useRpcProvider = () => {
 
 const useControllerAccount = () => {
   const { account, connector, isConnected } = useAccount();
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
+  const { connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+  const isDev = import.meta.env.VITE_DEV === "true";
 
   useEffect(() => {
-    if (account) {
+    if (localAppVersion === "true" && !isDev) {
+      connectors.forEach((connector) => {
+        connector.disconnect();
+      });
+
+      disconnect();
+    }
+  }, [localAppVersion]);
+
+  useEffect(() => {
+    if (account && localAppVersion === "false") {
       useAccountStore.getState().setAccount(account);
     }
-  }, [account, isConnected]);
+  }, [account, isConnected, localAppVersion]);
 
   useEffect(() => {
-    if (connector) {
+    if (connector && localAppVersion === "false") {
       useAccountStore
         .getState()
         .setConnector(connector as unknown as ControllerConnector);
     }
-  }, [connector, isConnected]);
+  }, [connector, isConnected, localAppVersion]);
 
   return account;
 };
@@ -100,6 +116,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
   const currentValue = useContext(DojoContext);
   if (currentValue) throw new Error("DojoProvider can only be used once");
 
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
   const rpcProvider = useRpcProvider();
   const masterAccount = useMasterAccount(rpcProvider);
   const controllerAccount = useControllerAccount();
@@ -120,7 +137,9 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
       <DojoContextProvider
         value={value}
         masterAccount={masterAccount}
-        controllerAccount={controllerAccount!}
+        controllerAccount={
+          localAppVersion === "true" ? null : controllerAccount!
+        }
       >
         {children}
       </DojoContextProvider>
@@ -165,6 +184,7 @@ const DojoContextProvider = ({
   });
 
   const { connect, connectors } = useConnect();
+  const localAppVersion = localStorage.getItem(LOCAL_APP_VERSION_CHANGE);
   const { isConnected, isConnecting } = useAccount();
 
   const [accountsInitialized, setAccountsInitialized] = useState(false);
@@ -173,6 +193,7 @@ const DojoContextProvider = ({
     try {
       console.log("Attempting to connect wallet...");
       await connect({ connector: connectors[0] });
+      localStorage.setItem(LOCAL_APP_VERSION_CHANGE, "false");
       console.log("Wallet connected successfully.");
     } catch (error) {
       console.error("Failed to connect wallet:", error);
@@ -227,10 +248,34 @@ const DojoContextProvider = ({
         <PreThemeLoadingPage>
           <img width="60%" src="logos/logo.png" alt="logo" />
           {!isConnected && (
-            <button style={{ color: "white" }} className="login-button" onClick={connectWallet}>
+            <button
+              style={{ color: "white" }}
+              className="login-button"
+              onClick={connectWallet}
+            >
               LOGIN
             </button>
           )}
+        </PreThemeLoadingPage>
+      );
+    }
+
+    if (localAppVersion === `true`) {
+      connectors.forEach((connector) => {
+        connector.disconnect();
+      });
+
+      return (
+        <PreThemeLoadingPage>
+          <img width="60%" src="logos/logo.png" alt="logo" />
+
+          <button
+            style={{ color: "white" }}
+            className="login-button"
+            onClick={connectWallet}
+          >
+            LOGIN
+          </button>
         </PreThemeLoadingPage>
       );
     }

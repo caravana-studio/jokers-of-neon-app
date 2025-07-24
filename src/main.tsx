@@ -15,7 +15,11 @@ import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import {
+  checkAndUpdateCacheVersions,
+  preloadImages,
+  preloadVideos,
+} from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
@@ -114,6 +118,7 @@ async function init() {
   });
 
   const imagesPromise = Promise.all([
+    checkAndUpdateCacheVersions(),
     preloadImages(),
     preloadSpineAnimations(),
     preloadVideos(),
