@@ -63,17 +63,16 @@ export const useShopState = () => {
 
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
 
-  const [cash, setCash] = useState(0);
+  const {
+    cash,
+    addCash,
+    removeCash,
+    setCash,
+    addSpecialSlot,
+    removeSpecialSlot,
+  } = useGameStore();
 
   const [rerolling, setRerolling] = useState(false);
-
-  const decreaseCash = (amount: number) => {
-    setCash(cash - amount);
-  };
-
-  const increaseCash = (amount: number) => {
-    setCash(cash + amount);
-  };
 
   const buyItem = (
     idx: number,
@@ -81,10 +80,10 @@ export const useShopState = () => {
   ) => {
     setFn((prev) =>
       prev.map((item) => {
-        if (item.idx === idx) {
+        /*         if (item.idx === idx) {
           const cost = item.price ?? item.cost_discount ?? item.cost;
-          cost && decreaseCash(cost);
-        }
+          cost && removeCash(cost);
+        } */
         return item.idx === idx ? { ...item, purchased: true } : item;
       })
     );
@@ -98,7 +97,7 @@ export const useShopState = () => {
       prev.map((item) => {
         if (item.idx === idx && item.purchased) {
           const cost = item.price ?? item.cost_discount ?? item.cost;
-          cost && increaseCash(cost);
+          cost && addCash(cost);
           return { ...item, purchased: false };
         }
         return item;
@@ -116,14 +115,19 @@ export const useShopState = () => {
     buyItem(idx, setCommonCards);
   };
   const buyPokerHand = (idx: number) => {
+    const item = pokerHandItems.find((item) => item.idx === idx);
+    if (item) {
+      const cost = item.cost ?? item.discount_cost ?? item.cost;
+      cost && removeCash(cost);
+    }
     buyItem(idx, setPokerHandItems);
   };
   const buyBlisterPack = (idx: number) => {
     buyItem(idx, setBlisterPackItems);
   };
   const buySlotSpecialCard = () => {
-    decreaseCash(Number(specialSlotItem?.cost ?? 0));
     setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
+    addSpecialSlot();
   };
 
   const buyPowerUp = (idx: number) => {
@@ -151,7 +155,7 @@ export const useShopState = () => {
   };
   const rollbackBuySlotSpecialCard = () => {
     setSpecialSlotItem((prev) => ({ ...prev, purchased: false }));
-    increaseCash(Number(specialSlotItem?.cost ?? 0));
+    removeSpecialSlot();
   };
 
   const { id: gameId, round: currentNodeId } = useGameStore();
@@ -178,7 +182,7 @@ export const useShopState = () => {
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
       setSpecialSlotItem({ ...shopItems.specialSlotItem });
-      setCash(shopItems.cash);
+      Number(shopItems.cash) && setCash(Number(shopItems.cash));
       setBurnItem({ ...shopItems.burnItem });
       setPowerUps(shopItems.powerUpItems);
     }
