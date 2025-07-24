@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
 import {
@@ -8,16 +14,12 @@ import {
 import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
-import {
-  RerollInformation,
-  ShopItems,
-  useShopState,
-} from "../state/useShopState.ts";
+import { useGameStore } from "../state/useGameStore.ts";
+import { ShopItems, useShopState } from "../state/useShopState.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
 import { getCardType } from "../utils/getCardType";
-import { useGameContext } from "./GameProvider";
 
 interface IStoreContext extends ShopItems {
   buyCard: (card: Card) => Promise<boolean>;
@@ -27,10 +29,7 @@ interface IStoreContext extends ShopItems {
   reroll: () => Promise<boolean>;
   locked: boolean;
   selectCardsFromPack: (cardIndices: number[]) => Promise<boolean>;
-  lockRedirection: boolean;
-  setLockRedirection: (lock: boolean) => void;
   buySpecialSlot: () => Promise<boolean>;
-  rerollInformation: RerollInformation;
   cash: number;
   run: boolean;
   setRun: (run: boolean) => void;
@@ -62,8 +61,6 @@ const StoreContext = createContext<IStoreContext>({
     return new Promise((resolve) => resolve(false));
   },
   locked: false,
-  lockRedirection: false,
-  setLockRedirection: (_) => {},
   buySpecialSlot: () => new Promise((resolve) => resolve(false)),
   specialCards: [],
   modifierCards: [],
@@ -73,10 +70,6 @@ const StoreContext = createContext<IStoreContext>({
   powerUps: [],
   specialSlotItem: EMPTY_SPECIAL_SLOT_ITEM,
   burnItem: EMPTY_BURN_ITEM,
-  rerollInformation: {
-    rerollCost: 100,
-    rerollExecuted: true,
-  },
   cash: 0,
   run: false,
   setRun: (_) => {},
@@ -97,7 +90,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const {
     shopItems,
     fetchShopItems,
-    rerollInformation,
     cash,
     buySpecialCard,
     buyModifierCard,
@@ -122,9 +114,13 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     shopId,
   } = useShopState();
 
-  const { gameId, addPowerUp } = useGameContext();
+  const {
+    id: gameId,
+    addPowerUp,
+    reroll: stateReroll,
+    rollbackReroll,
+  } = useGameStore();
   const [locked, setLocked] = useState(false);
-  const [lockRedirection, setLockRedirection] = useState(false);
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
@@ -287,6 +283,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     rerollSound();
     setLocked(true);
     const promise = storeReroll(gameId);
+    stateReroll();
     promise
       .then(() => {
         fetchShopItems().finally(() => {
@@ -294,6 +291,9 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
             setRerolling(false);
           }, 200);
         });
+      })
+      .catch(() => {
+        rollbackReroll();
       })
       .finally(() => {
         setLocked(false);
@@ -343,6 +343,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
+  useEffect(() => {
+    fetchShopItems();
+  }, []);
+
   return (
     <StoreContext.Provider
       value={{
@@ -353,8 +357,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         locked,
         buyPack,
         selectCardsFromPack,
-        lockRedirection,
-        setLockRedirection,
         buySpecialSlot,
         specialCards: shopItems.specialCards,
         modifierCards: shopItems.modifierCards,
@@ -364,7 +366,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,
         powerUps: shopItems.powerUps,
-        rerollInformation,
         cash,
         run,
         setRun,

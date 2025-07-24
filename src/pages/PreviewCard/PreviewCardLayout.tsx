@@ -14,7 +14,6 @@ import CachedImage from "../../components/CachedImage.tsx";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { CARD_WIDTH } from "../../constants/visualProps.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import theme from "../../theme/theme.ts";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
@@ -22,6 +21,9 @@ import { Coins } from "../store/Coins.tsx";
 
 import { useTranslation } from "react-i18next";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -29,6 +31,7 @@ const { white, neonGreen } = theme.colors;
 const PreviewCardLayout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   const { card, isPack, pack } = state || {};
 
@@ -39,27 +42,23 @@ const PreviewCardLayout = () => {
 
   /*   const handleAnimationEnd = () => {
     setIsOpenAnimationRunning(false);
-    setLockRedirection(false);
     close();
-    navigate("/redirect/open-pack");
+    navigate("open-pack");
   }; */
 
   const { getCardData } = useCardData();
-  const game = useGame();
-  const { buyCard, buyPack, locked, setLockRedirection } = useStore();
+  const { cash, specialSlots, specialsLength } = useGameStore();
+  const { buyCard, buyPack, locked } = useStore();
 
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const cash = game?.cash ?? 0;
   const { name, description, details } = getCardData(card.card_id ?? 0);
-  const specialMaxLength = game?.special_slots ?? 0;
-  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
-    card.isSpecial && specialLength >= specialMaxLength;
+    card.isSpecial && specialsLength >= specialSlots;
 
   const fontTitleSize = ["s", "s", "l"];
   const fontSize = ["md", "md", "xl"];
@@ -81,11 +80,9 @@ const PreviewCardLayout = () => {
             .catch(() => {
               setBuyDisabled(false);
             });
-          // setIsOpenAnimationRunning(true);
-          // setLockRedirection(true);
         } else {
           buyCard(card);
-          navigate("/store");
+          customNavigate(GameStateEnum.Store);
         }
       }}
       isDisabled={

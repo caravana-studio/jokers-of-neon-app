@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useGameContext } from "../providers/GameProvider";
 import CachedImage from "./CachedImage";
 import { CardContainerSwitcher } from "./CardContainerWithBorder";
+import { useGameStore } from "../state/useGameStore";
 
 export const SpecialRageSwitcher = () => {
   const { t } = useTranslation(["game"]);
 
-  const { specialSwitcherOn, toggleSpecialSwitcher } = useGameContext();
+  const { specialSwitcherOn, toggleSpecialSwitcher } = useGameStore();
   return (
     <CardContainerSwitcher onClick={() => toggleSpecialSwitcher()}>
       <Tooltip placement="right" label={t("specials-box.specials-tooltip")}>

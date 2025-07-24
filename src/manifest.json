@@ -1,7 +1,7 @@
 {
   "world": {
-    "class_hash": "0x4c60dc46a8ca8bb47675b7b914053cef769afbf0e340523187336b72bd71d1f",
-    "address": "0x3277623fa3b1b4b46ab97571882b20b292412939b24715a03430df0acf961ff",
+    "class_hash": "0x7746f30d2b8494780387ed469797ecb5c62c7b6f49f4939a5e60e0f7ae5f99e",
+    "address": "0x5d151da3085badd054db02d2c0891dcdc6a98538ea0e86edea0e45ea70df72d",
     "seed": "jokers_of_neon_core",
     "name": "jokers_of_neon_core",
     "entrypoints": [
@@ -5250,6 +5250,34 @@
           ]
         },
         {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "cards_picked",
+              "type": "core::bool"
+            },
+            {
+              "name": "cards",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "jokers_of_neon_core::systems::shop_system::IShopSystem",
           "items": [
@@ -5456,6 +5484,38 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_loot_box_result",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::status::shop::shop::BlisterPackResult"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_cards_in_deck",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },

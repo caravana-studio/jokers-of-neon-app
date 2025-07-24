@@ -11,8 +11,8 @@ import { setupWorld } from "./typescript/contracts.gen";
 import { defineContractComponents } from "./typescript/defineContractComponents";
 import { world } from "./world";
 
+import type { Message, ToriiClient } from "@dojoengine/torii-client";
 import { KeysClause } from "@dojoengine/sdk";
-import type { ToriiClient } from "@dojoengine/torii-client";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
@@ -66,7 +66,7 @@ export async function setup({ ...config }: DojoConfig) {
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
-    relayUrl: "",
+    // relayUrl: "",
     worldAddress: config.manifest.world.address || "",
   });
 
@@ -89,7 +89,7 @@ export async function setup({ ...config }: DojoConfig) {
     componentNames.push(name);
   });
 
-  async function syncEntitiesForGameID() {
+/*   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
     const canLoadEntities = !hiddenRoutes.includes(window.location.pathname);
     const parsedGameID = Number(gameID) || 0;
@@ -149,7 +149,7 @@ export async function setup({ ...config }: DojoConfig) {
     console.log(`getSyncEntities took ${(endTime - startTime).toFixed(2)} ms`);
 
     // TODO: Get the mod entities
-  }
+  } */
 
   // setup world
   const client = await setupWorld(dojoProvider);
@@ -188,7 +188,7 @@ export async function setup({ ...config }: DojoConfig) {
     console.error(e);
   }
 
-  await syncEntitiesForGameID();
+  // await syncEntitiesForGameID();
 
   return {
     client,
@@ -196,13 +196,13 @@ export async function setup({ ...config }: DojoConfig) {
     contractComponents,
     systemCalls: createSystemCalls({ client }, clientComponents, world),
     publish: (typedData: string, signature: ArraySignatureType) => {
-      toriiClient.publishMessage(typedData, signature);
+      const msj: Message = { message: typedData, signature };
+      toriiClient.publishMessage(msj);
     },
     config,
     dojoProvider,
     burnerManager,
     toriiClient,
     sync,
-    syncCallback: async () => await syncEntitiesForGameID(),
   };
 }

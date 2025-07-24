@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
+import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { GameSummary } from "./MyGames.tsx";
-import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
 import { formatNumber } from "../../utils/formatNumber.ts";
+import { GameSummary } from "./MyGames.tsx";
 
 export const GameBox = ({
   game,
@@ -22,9 +23,13 @@ export const GameBox = ({
     keyPrefix: "my-games",
   });
 
-  const { syncCall } = useDojo();
-  const { executeCreateGame, setGameId, prepareNewGame, surrenderGame } =
+  const {
+    setup: { client },
+  } = useDojo();
+
+  const { executeCreateGame, prepareNewGame, surrenderGame } =
     useGameContext();
+  const { setGameId } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -36,9 +41,8 @@ export const GameBox = ({
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
-      setGameId(game.id);
-      await syncCall();
-      navigate(`/redirect/state`);
+      setGameId(client, game.id);
+      navigate(`/redirect`);
     }
   };
 
