@@ -7,17 +7,19 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
 import { PriceBox } from "../../components/PriceBox";
-import { useGame } from "../../dojo/queries/useGame";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
 import { storesConfig } from "./storesConfig";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 
 const DECK_SHOP_CONFIG_ID = 1;
 const GLOBAL_SHOP_CONFIG_ID = 2;
@@ -48,9 +50,10 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const { onShopSkip, gameId, maxSpecialCards } = useGameContext();
-  const game = useGame();
-  const slotsLen = game?.special_slots;
+  const customNavigate = useCustomNavigate()
+  const { onShopSkip } = useGameContext();
+  const { specialSlots, maxSpecialCards, id: gameId } = useGameStore();
+  const slotsLen = specialSlots;
 
   const { skipShop } = useShopActions();
 
@@ -63,7 +66,7 @@ export const DynamicStorePage = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        navigate("/redirect/map");
+        customNavigate(GameStateEnum.Map);
       } else {
         setLoading(false);
       }

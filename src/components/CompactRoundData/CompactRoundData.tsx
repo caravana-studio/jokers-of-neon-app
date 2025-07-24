@@ -1,26 +1,19 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useRound } from "../../dojo/queries/useRound";
-import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { RollingNumber } from "../RollingNumber";
+import { ScoreTotal } from "../ScoreTotal";
 import { LevelBox } from "./LevelBox";
 import { NumberBox } from "./NumberBox";
 import { ProgressBar } from "./ProgressBar";
-import { isTutorial } from "../../utils/isTutorial";
-import { ScoreTotal } from "../ScoreTotal";
 
 export const CompactRoundData = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "game.compact-round-data",
   });
 
-  const inTutorial = isTutorial();
-
-  const { score, points, multi } = useGameContext();
-
-  const round = useRound();
-  const target = round?.target_score ?? 0;
+  const { points, multi, currentScore, targetScore } = useGameStore();
 
   return (
     <Flex
@@ -50,7 +43,7 @@ export const CompactRoundData = () => {
               variant="italic"
               width="50px"
             >
-              <RollingNumber n={score} />
+              <RollingNumber n={currentScore} />
             </Heading>
           </Box>
 
@@ -73,11 +66,11 @@ export const CompactRoundData = () => {
               mt={-1}
               variant="italic"
             >
-              <RollingNumber n={target} />
+              <RollingNumber n={targetScore} />
             </Heading>
           </Box>
         </Flex>
-        <ProgressBar progress={(score / target) * 100} />
+        <ProgressBar progress={(currentScore / targetScore) * 100} />
         <ScoreTotal />
       </Box>
     </Flex>

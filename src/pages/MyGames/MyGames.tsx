@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
+import { GoBackButton } from "../../components/GoBackButton.tsx";
 import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
@@ -12,8 +14,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
-import { GoBackButton } from "../../components/GoBackButton.tsx";
-import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 
 export interface GameSummary {
   id: number;
@@ -43,6 +44,9 @@ export const MyGames = () => {
     return localStorage.getItem("GAME_ID") === null;
   });
 
+  const { resetLevel  } = useGameContext();
+  const { removeGameId } = useGameStore();
+
   const filteredGames = games.filter((game) => {
     const notSurrendered = !surrenderedIds.includes(game.id);
     const shouldShow = showFinishedGames
@@ -58,12 +62,14 @@ export const MyGames = () => {
       localStorage.removeItem("GAME_ID");
       setIsBackDisabled(true);
     }
-
+    
     setSurrenderedIds((prev) => [...prev, gameId]);
   };
 
   useEffect(() => {
     refetch();
+    resetLevel();
+    removeGameId()
   }, []);
 
   const handleCreateGame = async () => {

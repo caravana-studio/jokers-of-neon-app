@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
 import { MenuBtn } from "./MenuBtn";
-import { useGame } from "../../../dojo/queries/useGame";
 
 export const DocsMenuBtn = ({
   width,
@@ -13,7 +12,6 @@ export const DocsMenuBtn = ({
 }) => {
   const { t } = useTranslation("game");
   const navigate = useNavigate();
-  const game = useGame();
 
   return (
     <MenuBtn

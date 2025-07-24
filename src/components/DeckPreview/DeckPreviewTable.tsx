@@ -1,21 +1,18 @@
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Flex,
-  Text,
-  useTheme,
   Box,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr
 } from "@chakra-ui/react";
+import { Suits } from "../../enums/suits";
+import { GREY_MEDIUM } from "../../theme/colors";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { getTableData } from "./DeckPreviewTableUtils";
 import { PreviewTableColumnHeader } from "./PreviewTableColumnHeader";
 import { PreviewTableRowHeader } from "./PreviewTableRowHeader";
-import { GREY_MEDIUM } from "../../theme/colors";
-import { Suits } from "../../enums/suits";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const DeckPreviewTable = () => {
   const tableData = getTableData();

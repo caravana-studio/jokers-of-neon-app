@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+/* import React, { createContext, useEffect, useState } from "react";
 import {
   discardSfx,
   multiSfx,
@@ -34,8 +34,6 @@ export const mockTutorialGameContext = createContext<IGameContext>({
   ...gameProviderDefaults,
   gameId: 1,
   hand: HAND_1,
-  score: 600,
-  cash: 1000,
   discards: 1,
   powerUps: [m5, p25],
 });
@@ -238,24 +236,22 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       setHand,
       setPlayAnimation,
       setPreSelectionLocked,
-      setLockedScore: emptyFn,
-      setLockedPlayerScore: emptyFn,
       setLockedSpecialCards: emptyFn,
-      setLockedCash: emptyFn,
       clearPreSelection,
-      removePowerUp: emptyFn,
       preselectedPowerUps,
       navigate: emptyFn,
       gameId: 0,
-      setLockRedirection: emptyFn,
       setRoundRewards: emptyFn,
       replaceCards,
       handsLeft: 1,
       setAnimateSecondChanceCard: emptyFn,
       setCardTransformationLock: emptyFn,
-      setIsRageRound: emptyFn,
       specialCards: emptyFn as any,
       setAnimateSpecialCardDefault: emptyFn as any,
+      addCash: emptyFn,
+      setCurrentScore: emptyFn,
+      addMulti: emptyFn,
+      addPoints: emptyFn,
     });
     setScore(events[indexEvent].score);
     setIndexEvent(indexEvent + 1);
@@ -278,9 +274,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   context.preSelectedCards = preSelectedCards;
   context.preSelectedPlay = preSelectedPlay;
-  context.points = points;
-  context.multi = multi;
-  context.score = score;
   context.specialCards = [MultipliedClubs];
   context.preSelectedModifiers = preSelectedModifiers;
   context.discards = discards;
@@ -308,3 +301,4 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default TutorialGameProvider;
+ */

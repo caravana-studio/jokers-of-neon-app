@@ -1,6 +1,7 @@
 import ControllerConnector from "@cartridge/connector/controller";
 import { ControllerOptions } from "@cartridge/controller";
 import { constants, shortString } from "starknet";
+import { policies } from "./policies";
 
 const CHAIN =
   import.meta.env.VITE_SLOT_INSTANCE ||
@@ -20,12 +21,16 @@ const getChainId = (chain: string) => {
   }
 };
 
+export const getSlotChainId = (slot: string) => {
+  return shortString.encodeShortString(
+    `WP_${slot.toUpperCase().replaceAll("-", "_")}`
+  );
+};
+
 const defaultChainId =
   CHAIN === "mainnet" || CHAIN === "sepolia"
     ? getChainId(CHAIN)
-    : shortString.encodeShortString(
-        `WP_${CHAIN.toUpperCase().replace("-", "_")}`
-      );
+    : getSlotChainId(CHAIN);
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -35,7 +40,8 @@ const controllerOptions: ControllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
   preset: "jokers-of-neon",
-  namespace: DOJO_NAMESPACE
+  namespace: DOJO_NAMESPACE,
+  policies,
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
