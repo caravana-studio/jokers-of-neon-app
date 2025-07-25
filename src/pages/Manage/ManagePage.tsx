@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { GoBackButton } from "../../components/GoBackButton";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
+import { useDojo } from "../../dojo/useDojo";
 import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
@@ -14,6 +16,10 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
+
+  const {
+    setup: { client },
+  } = useDojo();
 
   const { isSmallScreen } = useResponsiveValues();
 
@@ -26,6 +32,14 @@ export const ManagePage = () => {
   const handleCardClick = (card: Card) => {
     highlightCard(card);
   };
+
+  const { refetchGameStore, id: gameId } = useGameStore();
+
+  useEffect(() => {
+    if (client && gameId) {
+      refetchGameStore(client, gameId);
+    }
+  }, [client, gameId]);
 
   const sellButton = (
     <SellButton

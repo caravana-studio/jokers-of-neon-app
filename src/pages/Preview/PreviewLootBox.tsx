@@ -33,7 +33,7 @@ export const PreviewLootBox = () => {
   const { locked } = useStore();
   const { getLootBoxData } = useCardData();
 
-  const { cash, setState } = useGameStore();
+  const { cash, setState, removeCash } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
 
@@ -46,6 +46,7 @@ export const PreviewLootBox = () => {
       state: { pack: pack },
     });
     setState(GameStateEnum.Lootbox)
+    removeCash(pack.discount_cost > 0 ? pack.discount_cost : pack.cost)
   };
   const buyButton = (
     <Button

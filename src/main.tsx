@@ -25,6 +25,7 @@ import {
   LoadingScreenHandle,
 } from "./types/LoadingProgress.ts";
 import { createRef } from "react";
+import { WalletProvider } from "./dojo/WalletContext.tsx";
 
 const I18N_NAMESPACES = [
   "game",
@@ -66,16 +67,18 @@ async function init() {
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
-          <DojoProvider value={setupResult}>
-            <BrowserRouter>
-              <QueryClientProvider client={queryClient}>
-                <Toaster />
-                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                  <App />
-                </I18nextProvider>
-              </QueryClientProvider>
-            </BrowserRouter>
-          </DojoProvider>
+          <WalletProvider value={setupResult}>
+            <DojoProvider value={setupResult}>
+              <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
+                  <Toaster />
+                  <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                    <App />
+                  </I18nextProvider>
+                </QueryClientProvider>
+              </BrowserRouter>
+            </DojoProvider>
+          </WalletProvider>
         </StarknetProvider>
       </FadeInOut>
     );

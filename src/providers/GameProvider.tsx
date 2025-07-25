@@ -27,9 +27,11 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { ac } from "vitest/dist/chunks/reporters.nr4dxCkA.js";
+import { AccountInterface } from "starknet";
 
 export interface IGameContext {
-  executeCreateGame: (gameId?: number) => void;
+  executeCreateGame: (gameId?: number, username?: string) => void;
   play: () => void;
   discard: () => void;
   changeModifierCard: (
@@ -43,6 +45,7 @@ export interface IGameContext {
   resetLevel: () => void;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
+  initiateTransferFlow: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -89,6 +92,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameError,
     showSpecials,
     id: gameId,
+    resetSpecials,
+    setState,
   } = useGameStore();
 
   const {
@@ -122,6 +127,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const customNavigate = useCustomNavigate();
   const {
+    setup: {
+      clientComponents: { Game },
+    },
+    switchToController,
+    accountType,
     setup: { client },
   } = useDojo();
 
@@ -133,6 +143,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     sellSpecialCard,
     mintGame,
     surrenderGame,
+    transferGame,
+    approve,
   } = useGameActions();
 
   const { sfxVolume, animationSpeed } = useSettings();
@@ -158,7 +170,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setPreSelectionLocked(false);
     showSpecials();
     resetPowerUps();
+    resetSpecials();
     refetchSpecialCardsData(modId, gameId);
+    setState(GameStateEnum.NotSet);
   };
 
   const prepareNewGame = () => {
@@ -166,12 +180,49 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
   };
 
-  const username = useUsername();
+  const usernameLS = useUsername();
 
   const { enterTournament } = useTournaments();
 
-  const executeCreateGame = async (providedGameId?: number) => {
+  const initiateTransferFlow = () => {
+    console.log("GameProvider: Initiating transfer flow...");
+    // The callback now expects a payload object with all the fresh data.
+    switchToController(async (payload) => {
+      // We now call executeGameTransfer with the fresh data from the callback payload.
+      await executeGameTransfer(payload.account, payload.username);
+    });
+  };
+
+  const executeGameTransfer = async (
+    account: AccountInterface,
+    newUsername: string
+  ) => {
+    if (!gameId) {
+      console.error("Guard failed: Attempted to transfer game with no gameId.");
+      return;
+    }
+
+    console.log(
+      `GameProvider: Executing transfer for game ${gameId} to user ${newUsername} with account ${account.address}`
+    );
+    console.log(account);
+
+    try {
+      await approve(gameId);
+      await transferGame(account, gameId, newUsername ?? "");
+      console.log("Game transfer successful.");
+    } catch (error) {
+      console.error("Failed to transfer game:", error);
+    }
+  };
+
+  const executeCreateGame = async (
+    providedGameId?: number,
+    usernameParameter?: string
+  ) => {
+    const username = usernameParameter || usernameLS;
     setGameError(false);
+    resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
     if (username) {
@@ -185,34 +236,47 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             gameId = await mintGame(username);
           }
         }
-        console.log("Creating game...");
-        createGame(gameId!, username).then(async (response) => {
-          const { gameId: newGameId, hand } = response;
-          if (newGameId) {
-            setGameId(client, newGameId);
-            resetLevel();
-            replaceCards(hand);
-            fetchDeck(client, newGameId, getCardData);
-            clearPreSelection();
+        if (gameId) {
+          console.log("Creating game...", gameId);
+          createGame(gameId!, username)
+            .then(async (response) => {
+              const { gameId: newGameId, hand } = response;
+              if (newGameId) {
+                setGameId(client, newGameId);
+                replaceCards(hand);
+                fetchDeck(client, newGameId, getCardData);
+                clearPreSelection();
 
-            console.log(`game ${newGameId} created`);
+                console.log(`game ${newGameId} created`);
 
-            setGameLoading(false);
-            setPreSelectionLocked(false);
-            setRoundRewards(undefined);
+                setPreSelectionLocked(false);
+                setRoundRewards(undefined);
 
-            customNavigate(GameStateEnum.Round);
-          } else {
-            setGameError(true);
-          }
-        });
+                navigate("/demo");
+              } else {
+                setGameError(true);
+                navigate("/my-games");
+              }
+            })
+            .catch((error) => {
+              console.error("Error creating game", error);
+              setGameError(true);
+              navigate("/my-games");
+            });
+        } else {
+          console.error("No gameId");
+          setGameError(true);
+          navigate("/my-games");
+        }
       } catch (error) {
         console.error("Error registering user in tournament", error);
         setGameError(true);
+        navigate("/my-games");
       }
     } else {
       console.error("No username");
       setGameError(true);
+      navigate("/my-games");
     }
   };
 
@@ -264,7 +328,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
           if (response.levelPassed && response.detailEarned) {
-            addCash(response.detailEarned.total)
+            addCash(response.detailEarned.total);
           }
         } else {
           setPreSelectionLocked(false);
@@ -475,6 +539,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     checkOrCreateGame,
     executeCreateGame,
     surrenderGame,
+    initiateTransferFlow,
   };
 
   return (
