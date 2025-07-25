@@ -10,6 +10,7 @@ import { Card } from "../../types/Card";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { SellButton } from "./SellButton";
+import { DelayedLoading } from "../../components/DelayedLoading";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
@@ -34,7 +35,7 @@ export const ManagePage = () => {
   );
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       {highlightedCard && (
         <MobileCardHighlight card={highlightedCard} customBtn={sellButton} />
       )}
@@ -72,6 +73,6 @@ export const ManagePage = () => {
           }}
         />
       )}
-    </>
+    </DelayedLoading>
   );
 };

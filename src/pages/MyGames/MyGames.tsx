@@ -14,6 +14,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
 import { GoBackButton } from "../../components/GoBackButton.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 
 export interface GameSummary {
   id: number;
@@ -73,7 +74,7 @@ export const MyGames = () => {
   };
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <LanguageSwitcher />
       {!isSmallScreen && <AudioPlayer />}
@@ -185,6 +186,6 @@ export const MyGames = () => {
           </Flex>
         )}
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

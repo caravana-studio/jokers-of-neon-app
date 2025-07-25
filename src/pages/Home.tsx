@@ -13,6 +13,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { DelayedLoading } from "../components/DelayedLoading";
 
 const isDev = import.meta.env.VITE_DEV === "true";
 
@@ -34,7 +35,7 @@ export const Home = () => {
   }, [account, playButtonClicked]);
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <RemoveScroll>
         <></>
@@ -106,6 +107,6 @@ export const Home = () => {
         <PoweredBy />
       </Flex>
       <PositionedDiscordLink />
-    </>
+    </DelayedLoading>
   );
 };

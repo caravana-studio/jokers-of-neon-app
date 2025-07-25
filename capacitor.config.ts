@@ -4,10 +4,10 @@ const config: CapacitorConfig = {
   appId: "com.jokersofneon.play",
   appName: "jokers-of-neon",
   webDir: "dist",
-  server: {
-    url: "http://10.0.2.2:5173",
+/*   server: {
+    url: "http://localhost:5173",
     cleartext: true,
-  },
+  }, */
 };
 
 export default config;

@@ -38,14 +38,22 @@ import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
+  const { executeCreateGame } = useGameContext();
+
   const {
-    executeCreateGame,
-  } = useGameContext();
+    preSelectCard,
+    unPreSelectCard,
+    preSelectedCards,
+    hand,
+    addModifier,
+  } = useCurrentHandStore();
 
-  const { preSelectCard, unPreSelectCard, preSelectedCards, hand, addModifier } =
-    useCurrentHandStore();
-
-  const { state, maxPowerUpSlots, gameLoading, gameError: error } = useGameStore();
+  const {
+    state,
+    maxPowerUpSlots,
+    gameLoading,
+    gameError: error,
+  } = useGameStore();
 
   const { highlightedCard } = useCardHighlight();
 
