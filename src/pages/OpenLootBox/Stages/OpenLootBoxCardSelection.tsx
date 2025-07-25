@@ -10,7 +10,7 @@ import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
-import { useLootBoxStore } from "../../../state/useLootBoxResult";
+import { useLootBoxStore } from "../../../state/useLootBoxStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { ChooseCardsButton } from "../ChooseCardsButton";
 import { FlipCardGrid } from "../FlipCardGrid";

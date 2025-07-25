@@ -1976,8 +1976,8 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x5ffe1c1bc1dd1a78fd46bebab10b8d055e9de7640aaa77d46478c2e2ce3693c",
-      "class_hash": "0x7ca3a8df9daa11046a8e27cb0f01b179ec2cbacb7c1ee8c485b3329e9efb4e3",
+      "address": "0x38d76727caab27e59b5692e5da0cb990c2ccfbf5a9d9cc43c837d24fa78c241",
+      "class_hash": "0x4fb3153062fbe566d741bcdcc7931e9a60760062689ea9220ae4030407b687a",
       "abi": [
         {
           "type": "impl",
@@ -2345,6 +2345,26 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::integer::u128>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transfer_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "new_owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "new_player_name",
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3314,6 +3334,7 @@
       "systems": [
         "dojo_init",
         "start_game",
+        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
@@ -3529,8 +3550,8 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x17a95f7b6356f459f8066b6a4f707e9b0c00a18d91585665a59a479489f4e94",
-      "class_hash": "0x417f568b9872e35cd7cc19a54d7819a7f5d54b4a1b1b5f7a1aef0b3e9fb66b1",
+      "address": "0x20373e3b0753d838658ff11f1ff4c68c4ed672fb243c3c349e32b50f6b99124",
+      "class_hash": "0x2ffd56742ae3276549efd077e016e8d3eb608f7d3e5726a26c93e3226c93270",
       "abi": [
         {
           "type": "impl",
@@ -4556,6 +4577,217 @@
       "systems": ["upgrade"]
     },
     {
+      "address": "0x1d6344878db5c5f3e49732b6dc65a1b6dbbdb65fa00de4e489569bfc4d02602",
+      "class_hash": "0x7adb55fb3fe5a17ee2adc318a7bedd3f5eb800992b7cf5a1f4cb9ac67c14abe",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "nft_manager__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "nft_manager__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "NFTManagerImpl",
+          "interface_name": "jokers_of_neon_core::systems::nft_manager::INFTManager"
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::nft_manager::INFTManager",
+          "items": [
+            {
+              "type": "function",
+              "name": "register_address_nft",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_address_nft",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::nft_manager::nft_manager::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-nft_manager",
+      "selector": "0x3e7d29a5fff630a02d8909ebe6bcff99fcfa50b229001fe705503a74575af67",
+      "systems": [
+        "register_address_nft",
+        "upgrade"
+      ]
+    },
+    {
       "address": "0x5de5ebc09f9b9f72c7491021562b9e845f0ecdea0027a39f061c3c90dbc3a1f",
       "class_hash": "0x276a0eb56072ad26c9559e600d43ba5c57689e528f7d099dca0c3904566ba62",
       "abi": [
@@ -4837,8 +5069,8 @@
       "systems": ["upgrade"]
     },
     {
-      "address": "0x6ae57801b225155b296d011145a25542c0522e7f12397874cafb39189d3145",
-      "class_hash": "0xb848e3e5f0db7a074c563796214fea1f4822254f30b6edae7d18d0aab41fb5",
+      "address": "0x7573590ebeeeb1374a8a5e7e3672eb7719c69844244a07a7efb8e7681b449b5",
+      "class_hash": "0x6ab4d9d86b4178bc15a1ce8285e8976fe2921a725fa09e0fccb4a1725d9738b",
       "abi": [
         {
           "type": "impl",
@@ -5759,6 +5991,12 @@
       "class_hash": "0x646bdc40e8ebb9f72dbcb8c1d5560b60a5c82130ee80d2d005ba9d5a840e6a4",
       "tag": "jokers_of_neon_core-ModTracker",
       "selector": "0x742369ffdbc5634bfce0a000def0dfc00eb4c0da119e30cb6ec01aa8587e2fa"
+    },
+    {
+      "members": [],
+      "class_hash": "0x7d25e6cbe0b026b543c05aaa53a36ab256d944d43114ba9ebae72658ac17b2a",
+      "tag": "jokers_of_neon_core-NFTManager",
+      "selector": "0x5d16d84c446d3351d3b6dd439cbc7b36435f288e444503eaa85dc74ee0a3960"
     },
     {
       "members": [],

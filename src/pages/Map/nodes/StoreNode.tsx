@@ -40,7 +40,7 @@ const StoreNode = ({ data }: any) => {
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
-  const { state } = useGameStore();
+  const { state, setRound } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
@@ -110,6 +110,7 @@ const StoreNode = ({ data }: any) => {
               console.log("response", response);
               if (response) {
                 navigate(GameStateEnum.Store);
+                setRound(data.id);
               }
             });
           }

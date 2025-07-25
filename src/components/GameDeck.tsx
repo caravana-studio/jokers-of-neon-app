@@ -2,27 +2,26 @@ import { Flex, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CARD_WIDTH } from "../constants/visualProps.ts";
-import { useDeck } from "../dojo/queries/useDeck.tsx";
-import { useGameContext } from "../providers/GameProvider.tsx";
+import { useDeckStore } from "../state/useDeckStore.ts";
+import { useGameStore } from "../state/useGameStore.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import CachedImage from "./CachedImage.tsx";
-import { useGameStore } from "../state/useGameStore.ts";
 
 interface GameDeckProps {
   inStore?: boolean;
 }
 
 export const GameDeck = ({ inStore = false }: GameDeckProps) => {
-  const deck = useDeck();
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
 
   const { cardScale } = useResponsiveValues();
   const { isClassic } = useGameStore();
+  const { size, currentLength } = useDeckStore();
 
   const cardWidth = CARD_WIDTH * cardScale;
 
-  const ratio = (deck?.currentLength ?? 1) / (deck?.size ?? 1);
+  const ratio = (currentLength ?? 1) / (size ?? 1);
 
   const deckImg = () => {
     if (!isClassic) {
@@ -48,7 +47,7 @@ export const GameDeck = ({ inStore = false }: GameDeckProps) => {
       >
         {!inStore && (
           <Text size="s" mr={2}>
-            {`${deck?.currentLength}/${deck?.size}`}
+            {`${currentLength}/${size}`}
           </Text>
         )}
         <CachedImage

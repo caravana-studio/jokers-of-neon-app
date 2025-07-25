@@ -25,8 +25,7 @@ const BLISTER_PACKS_IDX = 3;
 const POWERUPS_IDX = 4;
 const SLOTS_IDX = 5;
 const BURN_IDX = 6;
-const REROLL_IDX = 7;
-const CASH_IDX = 8;
+const CASH_IDX = 7;
 
 const getCard = (txCard: any) => {
   const idx = parseInt(txCard.idx);

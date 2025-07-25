@@ -14,10 +14,12 @@ import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
+import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -90,6 +92,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameError,
     showSpecials,
     id: gameId,
+    resetSpecials,
+    setState,
   } = useGameStore();
 
   const {
@@ -107,7 +111,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setCardTransformationLock,
   } = useCurrentHandStore();
 
+  const { fetchDeck } = useDeckStore();
+
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+
+  const { getCardData } = useCardData();
 
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
@@ -117,6 +125,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const {
     setup: {
       clientComponents: { Game },
@@ -157,10 +166,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const resetLevel = () => {
     setRoundRewards(undefined);
+    resetRage();
     setPreSelectionLocked(false);
     showSpecials();
     resetPowerUps();
+    resetSpecials();
     refetchSpecialCardsData(modId, gameId);
+    setState(GameStateEnum.NotSet);
   };
 
   const prepareNewGame = () => {
@@ -210,6 +222,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   ) => {
     const username = usernameParameter || usernameLS;
     setGameError(false);
+    resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
     if (username) {
@@ -223,33 +236,47 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             gameId = await mintGame(username);
           }
         }
-        console.log("Creating game...");
-        createGame(gameId!, username).then(async (response) => {
-          const { gameId: newGameId, hand } = response;
-          if (newGameId) {
-            setGameId(client, newGameId);
-            resetLevel();
-            replaceCards(hand);
-            clearPreSelection();
+        if (gameId) {
+          console.log("Creating game...", gameId);
+          createGame(gameId!, username)
+            .then(async (response) => {
+              const { gameId: newGameId, hand } = response;
+              if (newGameId) {
+                setGameId(client, newGameId);
+                replaceCards(hand);
+                fetchDeck(client, newGameId, getCardData);
+                clearPreSelection();
 
-            console.log(`game ${newGameId} created`);
+                console.log(`game ${newGameId} created`);
 
-            setGameLoading(false);
-            setPreSelectionLocked(false);
-            setRoundRewards(undefined);
+                setPreSelectionLocked(false);
+                setRoundRewards(undefined);
 
-            navigate("/demo");
-          } else {
-            setGameError(true);
-          }
-        });
+                navigate("/demo");
+              } else {
+                setGameError(true);
+                navigate("/my-games");
+              }
+            })
+            .catch((error) => {
+              console.error("Error creating game", error);
+              setGameError(true);
+              navigate("/my-games");
+            });
+        } else {
+          console.error("No gameId");
+          setGameError(true);
+          navigate("/my-games");
+        }
       } catch (error) {
         console.error("Error registering user in tournament", error);
         setGameError(true);
+        navigate("/my-games");
       }
     } else {
       console.error("No username");
       setGameError(true);
+      navigate("/my-games");
     }
   };
 
@@ -298,7 +325,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             resetRage,
             unPreSelectAllPowerUps,
           });
+          fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
+          if (response.levelPassed && response.detailEarned) {
+            addCash(response.detailEarned.total);
+          }
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -380,6 +411,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedCard(undefined);
             setDiscardAnimation(false);
             replaceCards(response.cards);
+            fetchDeck(client, gameId, getCardData);
             refetchSpecialCardsData(modId, gameId);
           }, ALL_CARDS_DURATION + 300);
         } else {
@@ -420,6 +452,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
+          fetchDeck(client, gameId, getCardData);
         } else {
           rollback();
         }
