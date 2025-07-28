@@ -7,7 +7,8 @@ import { StoreProvider } from "../providers/StoreProvider";
 import { hiddenBarMenu } from "./Menu/BarMenu/BarMenuConfig";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 
-const isCapacitor = Capacitor.isNativePlatform();
+const platform = Capacitor.getPlatform();
+const needsPadding = platform === "ios";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const sidebarHidden = hiddenBarMenu();
@@ -18,8 +19,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <Flex
             width={"100%"}
             height={"100%"}
-            pt={isCapacitor ? "50px" : "0px"}
-            pb={isCapacitor ? "20px" : "0px"}
+            pt={needsPadding ? "50px" : "0px"}
+            pb={needsPadding ? "20px" : "0px"}
           >
             {!sidebarHidden && <SidebarMenu />}
             <Flex zIndex={2} flexGrow={1} height="100%">
