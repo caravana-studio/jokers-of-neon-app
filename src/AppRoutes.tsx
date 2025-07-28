@@ -8,7 +8,6 @@ import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
-import { GameOver } from "./pages/GameOver";
 import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
@@ -22,10 +21,10 @@ import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
-import { SelectMod } from "./pages/SelectMod";
-import { StoreProvider } from "./providers/StoreProvider";
-import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
+import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
+import { StoreProvider } from "./providers/StoreProvider";
+import { GameOver } from "./pages/GameOver/GameOver";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
 export const AppRoutes = () => {

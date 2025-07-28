@@ -29,6 +29,9 @@
     }
   },
   "game-over": {
+    "current-position": "You are in position number {{position}}, do you want to keep it?",
+    "login": "Login",
+    "skip": "Skip",
     "gameOver-msj": "GAME OVER",
     "table": {
       "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",

@@ -14,4 +14,5 @@ export const gameProviderDefaults: IGameContext = {
   resetLevel: () => {},
   prepareNewGame: () => {},
   surrenderGame: (_) => {},
+  initiateTransferFlow: () => {},
 };

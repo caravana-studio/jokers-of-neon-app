@@ -9,5 +9,9 @@ export const useDojo = () => {
   return {
     setup: context,
     account: context.account,
+    // syncCall: context.syncCallback,
+    switchToController: context.switchToController,
+    accountType: context.accountType,
+    logout: context.logout,
   };
 };

@@ -29,6 +29,9 @@
     }
   },
   "game-over": {
+    "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",
+    "login": "Login",
+    "skip": "Saltar",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
       "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en el leaderboard!",

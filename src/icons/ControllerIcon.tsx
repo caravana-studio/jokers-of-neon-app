@@ -1,10 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import { useTranslation } from "react-i18next";
-import { useResponsiveValues } from "../theme/responsiveSettings";
+import { connectControllerCommand } from "../commands/connectController";
 import { MenuBtn } from "../components/Menu/Buttons/MenuBtn";
 import { Icons } from "../constants/icons";
-import { connectControllerCommand } from "../commands/connectController";
+import { useDojo } from "../dojo/useDojo";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const ControllerIcon = ({
   width,
@@ -15,6 +16,10 @@ export const ControllerIcon = ({
 }) => {
   const { t } = useTranslation("game");
   const { connector } = useAccount();
+
+  const { setup } = useDojo();
+
+  if (setup.useBurnerAcc) return null;
 
   return (
     <MenuBtn

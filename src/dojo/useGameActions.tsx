@@ -1,4 +1,9 @@
-import { CairoOption, CairoOptionVariant, shortString } from "starknet";
+import {
+  AccountInterface,
+  CairoOption,
+  CairoOptionVariant,
+  shortString,
+} from "starknet";
 import { DojoEvents } from "../enums/dojoEvents";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
@@ -112,6 +117,75 @@ export const useGameActions = () => {
       failedTransactionToast();
       console.log(e);
       return createGameEmptyResponse;
+    }
+  };
+
+  const transferGame = async (
+    new_account: AccountInterface,
+    gameId: number,
+    username: string
+  ) => {
+    try {
+      showTransactionToast();
+
+      const formattedAddress =
+        "0x" + new_account.address.substring(2).padStart(64, "0");
+
+      console.log("Account from transferGame tx ", formattedAddress);
+      const response = await client.game_system.transferGame(
+        account,
+        BigInt(gameId),
+        formattedAddress,
+        username
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Saving...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      if (tx.isSuccess()) {
+        console.log("Success in transfer " + gameId);
+      } else {
+        console.error("Error transfer game:", tx);
+      }
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+    }
+  };
+
+  const approve = async (gameId: number) => {
+    try {
+      showTransactionToast();
+      const gameSystem =
+        "0x58b99b49cc26fcfe3ef65dffdb75f5c31f1e281567ed98618b815363bd203b6";
+
+      const response = await client.game_system.approve(
+        account,
+        gameSystem,
+        gameId
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Approving...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      if (tx.isSuccess()) {
+        console.log("Success in approve " + gameId);
+      } else {
+        console.error("Error approve game:", tx);
+      }
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
     }
   };
 
@@ -332,5 +406,7 @@ export const useGameActions = () => {
     play,
     mintGame,
     surrenderGame,
+    transferGame,
+    approve,
   };
 };
