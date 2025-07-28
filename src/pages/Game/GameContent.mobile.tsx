@@ -23,8 +23,6 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
-import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
@@ -35,19 +33,28 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
+  const { executeCreateGame } = useGameContext();
+
+  const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
-    executeCreateGame,
-  } = useGameContext();
+    preSelectCard,
+    unPreSelectCard,
+    preSelectedCards,
+    hand,
+    addModifier,
+  } = useCurrentHandStore();
 
-  const { preSelectCard, unPreSelectCard, preSelectedCards, hand, addModifier } =
-    useCurrentHandStore();
-
-  const { state, maxPowerUpSlots, gameLoading, gameError: error } = useGameStore();
-
-  const { highlightedCard } = useCardHighlight();
+  const {
+    state,
+    maxPowerUpSlots,
+    gameLoading,
+    gameError: error,
+  } = useGameStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

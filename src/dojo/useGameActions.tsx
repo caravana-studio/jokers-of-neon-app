@@ -290,6 +290,33 @@ export const useGameActions = () => {
     }
   };
 
+  const sellPowerup = async (gameId: number, powerupIdx: number) => {
+    try {
+      const response = await client.shop_system.sellPowerUp(
+        account,
+        gameId,
+        powerupIdx
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      const success = updateTransactionToast(transaction_hash, tx.isSuccess());
+
+      if (tx.isSuccess()) {
+        await handleAchievements(tx.value.events, achievementSound);
+      }
+
+      return { success };
+    } catch (e) {
+      console.log(e);
+      failedTransactionToast();
+      return { success: false };
+    }
+  };
+
   const play = async (
     gameId: number,
     cards: number[],
@@ -375,6 +402,7 @@ export const useGameActions = () => {
     discard,
     changeModifierCard,
     sellSpecialCard,
+    sellPowerup,
     play,
     mintGame,
     surrenderGame,

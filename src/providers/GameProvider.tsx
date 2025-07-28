@@ -39,6 +39,7 @@ export interface IGameContext {
   ) => Promise<{ success: boolean; cards: Card[] }>;
   clearPreSelection: () => void;
   onShopSkip: () => void;
+  sellPowerup: (powerupIdx: number) => Promise<boolean>;
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   remainingPlaysTutorial?: number;
@@ -141,6 +142,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard,
     changeModifierCard,
     sellSpecialCard,
+    sellPowerup,
     mintGame,
     surrenderGame,
     transferGame,
@@ -489,6 +491,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     return promise;
   };
 
+  const onSellPowerup = (powerupIdx: number) => {
+    const promise = sellPowerup(gameId, powerupIdx)
+      .then(async ({ success }) => {
+        return success;
+      })
+      .catch(() => {
+        return false;
+      });
+
+    return promise;
+  };
+
   const checkOrCreateGame = async () => {
     console.log("checking game exists", gameId);
 
@@ -539,6 +553,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     checkOrCreateGame,
     executeCreateGame,
     surrenderGame,
+    sellPowerup: onSellPowerup,
     initiateTransferFlow,
   };
 

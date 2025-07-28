@@ -5,7 +5,6 @@ import { RARITY, RarityLabels } from "../constants/rarity";
 import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
 import { useCardData } from "../providers/CardDataProvider";
-import { useCardHighlight } from "../providers/CardHighlightProvider";
 import { useGameContext } from "../providers/GameProvider";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
@@ -15,6 +14,7 @@ import { ConfirmationModal } from "./ConfirmationModal";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { LootBox } from "./LootBox";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PriceBox } from "./PriceBox";
 
 interface MobileCardHighlightProps {
@@ -65,7 +65,10 @@ export const MobileCardHighlight = ({
 
   const handleDiscard = () => {
     setLoading(true);
-    const discardPromise = type === CardTypes.MODIFIER ? changeModifierCard(card.idx) : sellSpecialCard(card);
+    const discardPromise =
+      type === CardTypes.MODIFIER
+        ? changeModifierCard(card.idx)
+        : sellSpecialCard(card);
     discardPromise.then((response) => {
       if (response) {
         onClose();

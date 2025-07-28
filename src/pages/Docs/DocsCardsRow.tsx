@@ -1,17 +1,19 @@
 import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { getSortedDocCardsData } from "./Utils/DocsUtils";
 import { TiltCard } from "../../components/TiltCard";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { isMobile } from "react-device-detect";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { useCardData } from "../../providers/CardDataProvider";
+import { Card } from "../../types/Card";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
-    const { getCardData } = useCardData();
-  
+  const { getCardData } = useCardData();
+
   const docCards = getSortedDocCardsData(cardIds, getCardData);
-  const { highlightCard, highlightedCard } = useCardHighlight();
+  const { highlightItem: highlightCard, highlightedItem: highlightedCard } =
+    useCardHighlight();
   const { isSmallScreen } = useResponsiveValues();
 
   const customCardScale = useBreakpointValue(
@@ -28,7 +30,7 @@ export const DocsCardsRow = ({ cardIds }: { cardIds: number[] }) => {
   return (
     <>
       {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard} showExtraInfo />
+        <MobileCardHighlight card={highlightedCard as Card} showExtraInfo />
       )}
 
       <Flex
