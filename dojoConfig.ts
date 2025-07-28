@@ -15,7 +15,6 @@ export const dojoConfig = createDojoConfig({
   manifest,
   rpcUrl,
   toriiUrl,
-  relayUrl,
   masterAddress,
   masterPrivateKey,
 });

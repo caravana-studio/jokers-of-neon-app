@@ -7,28 +7,21 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { useGame } from "../../../dojo/queries/useGame";
-import CachedImage from "../../CachedImage";
-import { ControllerIcon } from "../../../icons/ControllerIcon";
-import { DiscordLink } from "../../DiscordLink";
-import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
-import { MapMenuBtn } from "../Buttons/MapMenuBtn";
-import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
-import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
-import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
-import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
 import { useRef } from "react";
-import { TutorialBtn } from "../Buttons/TutorialBtn";
 import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
+import { ControllerIcon } from "../../../icons/ControllerIcon";
+import { useGameStore } from "../../../state/useGameStore";
+import CachedImage from "../../CachedImage";
+import { DiscordLink } from "../../DiscordLink";
+import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
+import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
+import { LogoutMenuBtn } from "../Buttons/Logout/LogoutMenuBtn";
+import { MapMenuBtn } from "../Buttons/MapMenuBtn";
+import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
+import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
+import { TutorialBtn } from "../Buttons/TutorialBtn";
 
 interface GameMenuContentProps {
   isOpen: boolean;
@@ -41,7 +34,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
 }) => {
   const iconWidth = "26px";
   const fontSize = "18px";
-  const game = useGame();
+  const { id } = useGameStore();
 
   const touchStartX = useRef(0);
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
@@ -79,7 +72,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
             <CachedImage src="/logos/jn.png" width="58px" />
             <Text fontFamily="Orbitron" fontSize={fontSize} fontWeight="100">
               {" "}
-              · {game?.id}
+              · {id}
             </Text>
           </Flex>
           <DrawerCloseButton
@@ -107,7 +100,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           <DocsMenuBtn width={iconWidth} label />
           <SettingsMenuBtn width={iconWidth} label />
           <DiscordLink width={iconWidth} label />
-          {!hideTutorialFF && <TutorialBtn width={iconWidth} label />}
+          {/* {!hideTutorialFF && <TutorialBtn width={iconWidth} label />} */}
         </DrawerBody>
 
         <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>

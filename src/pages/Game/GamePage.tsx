@@ -1,23 +1,21 @@
 import { useEffect, useRef } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
-import { useGame } from "../../dojo/queries/useGame";
-import { useRageCards } from "../../dojo/queries/useRageCards";
-import { GameStateEnum } from "../../dojo/typescript/custom";
+import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
+import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
-import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
-import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
 import { useCardData } from "../../providers/CardDataProvider";
+import { CardHighlightProvider } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const GamePage = () => {
   const {
@@ -25,23 +23,14 @@ export const GamePage = () => {
     account: { account },
   } = useDojo();
   const username = useUsername();
-  const {
-    checkOrCreateGame,
-    setLockedCash,
-    setIsRageRound,
-    setRageCards,
-    roundRewards,
-    gameId,
-    lockRedirection,
-    modId,
-  } = useGameContext();
+  const { checkOrCreateGame } = useGameContext();
+  const { roundRewards, modId, id: gameId } = useGameStore();
 
   const { refetchSpecialCardsData } = useCardData();
 
   const { animateSecondChanceCard, animateSpecialCardDefault } =
     useCardAnimations();
 
-  const rageCards = useRageCards();
   const { state } = useLocation();
 
   const skipRageAnimationRef = useRef(state?.skipRageAnimation ?? false);
@@ -55,15 +44,10 @@ export const GamePage = () => {
   }, [account, username]);
 
   useEffect(() => {
-    setLockedCash(undefined);
-    setIsRageRound(rageCards && rageCards.length > 0);
-    setRageCards(rageCards);
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  useRedirectByGameState(!(!lockRedirection && !roundRewards), {
-    gameId: gameId,
-  });
+  useRedirectByGameState();
 
   return (
     <>

@@ -2,15 +2,18 @@ import { Button } from "@chakra-ui/react";
 import { Card } from "../../types/Card";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { useTranslation } from "react-i18next";
+import { PowerUp } from "../../types/Powerup/PowerUp";
 
 interface SellButtonProps {
-  preselectedCard: Card | undefined;
+  preselectedCard: Card | PowerUp | undefined;
   onClick?: Function;
+  price: number;
 }
 
 export const SellButton: React.FC<SellButtonProps> = ({
   preselectedCard,
   onClick,
+  price,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("intermediate-screens");
@@ -32,8 +35,8 @@ export const SellButton: React.FC<SellButtonProps> = ({
           : undefined
       }
     >
-      {preselectedCard?.selling_price
-        ? t("special-cards.sell-for", { price: preselectedCard.selling_price })
+      {price
+        ? t("special-cards.sell-for", { price: price })
         : t("special-cards.sell")}
     </Button>
   );

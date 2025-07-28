@@ -24,4 +24,5 @@ export enum GameStateEnum {
 	Lootbox = "Lootbox",
 	GameOver = "GameOver",
 	NotStarted = "NotStarted",
+	NotSet = "NotSet",
 }

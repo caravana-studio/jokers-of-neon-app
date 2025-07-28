@@ -5,7 +5,6 @@ import {
   EMPTY_SPECIAL_SLOT_ITEM,
   getShopItems,
 } from "../dojo/queries/getShopItems";
-import { useGame } from "../dojo/queries/useGame";
 import {
   BlisterPackItem,
   BurnItem,
@@ -15,11 +14,7 @@ import { useDojo } from "../dojo/useDojo";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp";
-
-export interface RerollInformation {
-  rerollCost: number;
-  rerollExecuted: boolean;
-}
+import { useGameStore } from "./useGameStore";
 
 export interface ShopItems {
   specialCards: Card[];
@@ -66,26 +61,18 @@ export const useShopState = () => {
   );
   const [burnItem, setBurnItem] = useState<BurnItem>(EMPTY_BURN_ITEM);
 
-  const [rerollInformation, setRerollInformation] = useState<RerollInformation>(
-    {
-      rerollCost: 100,
-      rerollExecuted: true,
-    }
-  );
-
   const [powerUps, setPowerUps] = useState<PowerUp[]>([]);
 
-  const [cash, setCash] = useState(0);
+  const {
+    cash,
+    addCash,
+    removeCash,
+    setCash,
+    addSpecialSlot,
+    removeSpecialSlot,
+  } = useGameStore();
 
   const [rerolling, setRerolling] = useState(false);
-
-  const decreaseCash = (amount: number) => {
-    setCash(cash - amount);
-  };
-
-  const increaseCash = (amount: number) => {
-    setCash(cash + amount);
-  };
 
   const buyItem = (
     idx: number,
@@ -93,10 +80,10 @@ export const useShopState = () => {
   ) => {
     setFn((prev) =>
       prev.map((item) => {
-        if (item.idx === idx) {
+        /*         if (item.idx === idx) {
           const cost = item.price ?? item.cost_discount ?? item.cost;
-          cost && decreaseCash(cost);
-        }
+          cost && removeCash(cost);
+        } */
         return item.idx === idx ? { ...item, purchased: true } : item;
       })
     );
@@ -110,7 +97,7 @@ export const useShopState = () => {
       prev.map((item) => {
         if (item.idx === idx && item.purchased) {
           const cost = item.price ?? item.cost_discount ?? item.cost;
-          cost && increaseCash(cost);
+          cost && addCash(cost);
           return { ...item, purchased: false };
         }
         return item;
@@ -128,14 +115,19 @@ export const useShopState = () => {
     buyItem(idx, setCommonCards);
   };
   const buyPokerHand = (idx: number) => {
+    const item = pokerHandItems.find((item) => item.idx === idx);
+    if (item) {
+      const cost = item.cost ?? item.discount_cost ?? item.cost;
+      cost && removeCash(cost);
+    }
     buyItem(idx, setPokerHandItems);
   };
   const buyBlisterPack = (idx: number) => {
     buyItem(idx, setBlisterPackItems);
   };
   const buySlotSpecialCard = () => {
-    decreaseCash(Number(specialSlotItem?.cost ?? 0));
     setSpecialSlotItem((prev) => ({ ...prev, purchased: true }));
+    addSpecialSlot();
   };
 
   const buyPowerUp = (idx: number) => {
@@ -163,12 +155,10 @@ export const useShopState = () => {
   };
   const rollbackBuySlotSpecialCard = () => {
     setSpecialSlotItem((prev) => ({ ...prev, purchased: false }));
-    increaseCash(Number(specialSlotItem?.cost ?? 0));
+    removeSpecialSlot();
   };
 
-  const game = useGame();
-  const gameId = game?.id ?? 0;
-  const currentNodeId = game?.current_node_id;
+  const { id: gameId, round: currentNodeId } = useGameStore();
 
   const [shopId, setShopId] = useState<number>(0);
 
@@ -183,6 +173,7 @@ export const useShopState = () => {
 
   const fetchShopItems = async () => {
     const shopItems = await getShopItems(client, gameId);
+    console.log("shopItems", shopItems);
     setLoading(false);
     if (shopItems) {
       setSpecialCards(shopItems.specialCards);
@@ -191,16 +182,11 @@ export const useShopState = () => {
       setPokerHandItems(shopItems.pokerHandItems);
       setBlisterPackItems(shopItems.packs);
       setSpecialSlotItem({ ...shopItems.specialSlotItem });
-      setRerollInformation(shopItems.rerollInformation);
-      setCash(shopItems.cash);
+      Number(shopItems.cash) && setCash(Number(shopItems.cash));
       setBurnItem({ ...shopItems.burnItem });
       setPowerUps(shopItems.powerUpItems);
     }
   };
-
-  useEffect(() => {
-    fetchShopItems();
-  }, []);
 
   const shopItems: ShopItems = {
     specialCards: specialCards.sort(sortByCardId),
@@ -216,7 +202,6 @@ export const useShopState = () => {
   return {
     shopItems,
     fetchShopItems,
-    rerollInformation,
     cash,
     buySpecialCard,
     buyModifierCard,

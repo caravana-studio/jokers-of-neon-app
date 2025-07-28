@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useUsername } from "../../dojo/utils/useUsername";
+import { useGameStore } from "../../state/useGameStore";
 import { LoadingProgress } from "../../types/LoadingProgress";
-import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
-import { useGameContext } from "../../providers/GameProvider";
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
 const tournamentId = stringTournamentId && Number(stringTournamentId);
@@ -18,7 +18,7 @@ export const EnteringTournament = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
-  const { gameLoading } = useGameContext();
+  const { gameLoading } = useGameStore();
 
   const navigate = useNavigate();
 

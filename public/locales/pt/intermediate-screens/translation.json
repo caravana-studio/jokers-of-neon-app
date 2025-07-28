@@ -29,6 +29,9 @@
     }
   },
   "game-over": {
+    "current-position": "Você está na posição número {{position}}, deseja mantê-lo?",
+    "login": "Login",
+    "skip": "Pular",
     "gameOver-msj": "FIM DE JOGO",
     "table": {
       "gameOver-leader-msj": "Parabéns! Você é o melhor jogador da classificação!",
@@ -85,7 +88,11 @@
     "community-mods": "Mods da comunidade"
   },
   "power-ups": {
-    "title": "Power-ups"
+    "title": "Power-ups",
+    "confirmation-modal": {
+      "title": "Vender powerup",
+      "description": "Tem certeza de que deseja vender este Power-up por ¢{{price}}? Não há como desfazer esta ação."
+    }
   },
   "open-lootbox": {
     "click-open": "Clique para abrir",

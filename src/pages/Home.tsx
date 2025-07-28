@@ -12,34 +12,52 @@ import { useDojo } from "../dojo/useDojo";
 import { RemoveScroll } from "react-remove-scroll";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { CLASSIC_MOD_ID } from "../constants/general";
+import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useUsername } from "../dojo/utils/useUsername";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
+import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-
-const isDev = import.meta.env.VITE_DEV === "true";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const { connect, connectors } = useConnect();
-  const { account } = useDojo();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
+  const { account, setup } = useDojo();
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
-  const { setModId } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
 
-  useEffect(() => {
-    setModId(CLASSIC_MOD_ID);
-  }, []);
-
-  const enableMods = useFeatureFlagEnabled("global", "showMods");
+  const enableMods = false; // useFeatureFlagEnabled("global", "showMods");
 
   useEffect(() => {
     if (account?.account && playButtonClicked) {
       navigate(enableMods ? "/mods" : "/my-games");
     }
   }, [account, playButtonClicked]);
+
+  const loggedInUser = useUsername();
+
+  const handleCreateGame = async () => {
+    if (loggedInUser) {
+      prepareNewGame();
+      executeCreateGame(undefined, loggedInUser);
+      navigate("/entering-tournament");
+    }
+  };
+
+  useEffect(() => {
+    if (loggedInUser) {
+      if (playButtonClicked) {
+        handleCreateGame();
+      } else {
+        navigate("/my-games", { replace: true });
+      }
+    }
+  }, [loggedInUser]);
+
+  const { lastGameId, isLoading } = useGetLastGameId();
 
   return (
     <>
@@ -98,8 +116,13 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (isDev) {
-                  navigate(enableMods ? "/mods" : "/login");
+                if (setup.useBurnerAcc && lastGameId != undefined) {
+                  const username = `joker_guest_${lastGameId + 1}`;
+                  console.log("username: ", username);
+
+                  localStorage.removeItem(GAME_ID);
+                  localStorage.setItem(LOGGED_USER, username);
+                  setPlayButtonClicked(true);
                 } else {
                   setPlayButtonClicked(true);
                   connect({ connector: connectors[0] });

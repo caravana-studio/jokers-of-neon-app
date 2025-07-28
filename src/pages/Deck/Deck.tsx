@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useDeck } from "../../dojo/queries/useDeck";
 import { useDeckFilters } from "../../providers/DeckFilterProvider";
+import { useDeckStore } from "../../state/useDeckStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Card } from "../../types/Card";
 import { DeckCardsGrid } from "./DeckCardsGrid";
@@ -16,7 +16,7 @@ interface DeckProps {
 
 export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
-  const deck = useDeck();
+  const deck = useDeckStore();
   const { filterButtonsState } = useDeckFilters();
 
   const fullDeck = preprocessCards(deck?.fullDeckCards ?? []);

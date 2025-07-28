@@ -1,27 +1,24 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useGame } from "../../../dojo/queries/useGame";
+import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
-import { PowerUp } from "../../../types/Powerup/PowerUp";
+import { useAnimationStore } from "../../../state/useAnimationStore";
+import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
+import { useGameStore } from "../../../state/useGameStore";
 
 export const useNextLevelButton = () => {
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { t } = useTranslation(["store"]);
 
-  const {
-    setDestroyedSpecialCardId,
-    onShopSkip,
-    setHand,
-    gameId,
-    setPowerUps,
-    maxPowerUpSlots,
-  } = useGameContext();
-  const { skipShop } = useShopActions();
+  const { onShopSkip } = useGameContext();
+  const { id: gameId, setPowerUps } = useGameStore();
 
-  const game = useGame();
+  const { replaceCards } = useCurrentHandStore();
+  const { skipShop } = useShopActions();
+  const { setDestroyedSpecialCardId } = useAnimationStore();
 
   const { locked, setLoading } = useStore();
 
@@ -30,17 +27,12 @@ export const useNextLevelButton = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        setHand(response.cards);
-
-        const powerUps: (PowerUp | null)[] = response.powerUps;
-        while (powerUps.length < maxPowerUpSlots) {
-          powerUps.push(null);
-        }
-        setPowerUps(powerUps);
+        replaceCards(response.cards);
+        setPowerUps(response.powerUps);
 
         response.destroyedSpecialCard &&
           setDestroyedSpecialCardId(response.destroyedSpecialCard);
-        navigate("/redirect/map");
+        navigate(GameStateEnum.Map);
       } else {
         setLoading(false);
       }

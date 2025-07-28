@@ -1,10 +1,9 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
-import { useGame } from "../dojo/queries/useGame.tsx";
-import { useCardHighlight } from "../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../providers/GameProvider.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
@@ -13,17 +12,16 @@ import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
 import { AnimatedParticleCard } from "./AnimatedParticleCard.tsx";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const SpecialCardsRow = () => {
-  const [discardedCards, setDiscardedCards] = useState<string[]>([]);
+  const { sellSpecialCard } = useGameContext();
   const {
-    sellSpecialCard,
-    roundRewards,
     isRageRound,
+    isClassic,
     specialCards: cards,
     maxSpecialCards,
-    isClassic,
-  } = useGameContext();
+  } = useGameStore();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
@@ -33,15 +31,12 @@ export const SpecialCardsRow = () => {
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
 
-  const { highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard } = useCardHighlight();
 
-  const game = useGame();
-  const unlockedSpecialSlots = game?.special_slots ?? 1;
+  const { specialSlots } = useGameStore();
 
   const lockedSlots =
-    unlockedSpecialSlots === maxSpecialCards
-      ? 0
-      : Math.max(0, 5 - unlockedSpecialSlots);
+    specialSlots === maxSpecialCards ? 0 : Math.max(0, 5 - specialSlots);
 
   const freeUnlockedSlots = Math.max(0, 5 - cards.length - lockedSlots);
 
@@ -49,26 +44,11 @@ export const SpecialCardsRow = () => {
 
   const cardToDiscard = cards.find((c) => c.idx === cardToDiscardIdx);
 
-  useEffect(() => {
-    if (roundRewards) {
-      setDiscardedCards((prev) => [
-        ...prev,
-        ...cards
-          .filter((card) => card.temporary && card.remaining === 1)
-          .map((card) => card.id),
-      ]);
-    }
-  }, [roundRewards, cards]);
-
   const handleDiscard = () => {
     const card = cards.find((c) => c.idx === cardToDiscardIdx);
     if (card) {
       setHoveredButton(null);
-      sellSpecialCard(cardToDiscardIdx!).then((response) => {
-        if (response) {
-          setDiscardedCards((prev) => [...prev, card.id]);
-        }
-      });
+      card && sellSpecialCard(card);
       setCardToDiscardIdx(null);
     }
   };
@@ -91,7 +71,6 @@ export const SpecialCardsRow = () => {
         pb={isSmallScreen ? 0 : 4}
       >
         {cards.map((card) => {
-          const isDiscarded = discardedCards.includes(card.id);
           return (
             <Flex
               className="special-cards-step-1"
@@ -107,65 +86,59 @@ export const SpecialCardsRow = () => {
                 setHoveredButton(null);
               }}
             >
-              {!isDiscarded && (
-                <AnimatedParticleCard
-                  idx={card.idx}
-                  isSpecial={!!card.isSpecial}
-                  scale={cardScale}
-                >
-                  <Box position="relative">
-                    <Flex
-                      position={"absolute"}
-                      zIndex={7}
-                      bottom="5px"
-                      left="5px"
-                      borderRadius={"10px"}
-                      background={"violet"}
-                    >
-                      {hoveredCard === card.idx && (
-                        <Button
-                          height={8}
-                          fontSize="8px"
-                          px={"16px"}
-                          size={isSmallScreen ? "xs" : "md"}
-                          borderRadius={"10px"}
-                          variant={"discardSecondarySolid"}
-                          display="flex"
-                          gap={4}
-                          onMouseEnter={() => setHoveredButton(card.idx)}
-                          onClick={() => {
-                            setCardToDiscardIdx(card.idx);
-                          }}
-                        >
-                          <Text fontSize="10px">X</Text>
-                          {hoveredButton === card.idx && (
-                            <>
-                              <Text fontSize="10px">
-                                {t(
-                                  "game.special-cards.remove-special-cards-label"
-                                )}
-                                <CashSymbol /> {card.selling_price}
-                              </Text>
-                            </>
-                          )}
-                        </Button>
-                      )}
-                    </Flex>
-                    <Box
-                      width={`${cardWidth}px`}
-                      onClick={() => {
-                        isSmallScreen && highlightCard(card);
-                      }}
-                    >
-                      <CardImage3D
-                        card={card}
-                        height={`${cardHeight}px`}
-                        small
-                      />
-                    </Box>
+              <AnimatedParticleCard
+                idx={card.idx}
+                isSpecial={!!card.isSpecial}
+                scale={cardScale}
+              >
+                <Box position="relative">
+                  <Flex
+                    position={"absolute"}
+                    zIndex={7}
+                    bottom="5px"
+                    left="5px"
+                    borderRadius={"10px"}
+                    background={"violet"}
+                  >
+                    {hoveredCard === card.idx && (
+                      <Button
+                        height={8}
+                        fontSize="8px"
+                        px={"16px"}
+                        size={isSmallScreen ? "xs" : "md"}
+                        borderRadius={"10px"}
+                        variant={"discardSecondarySolid"}
+                        display="flex"
+                        gap={4}
+                        onMouseEnter={() => setHoveredButton(card.idx)}
+                        onClick={() => {
+                          setCardToDiscardIdx(card.idx);
+                        }}
+                      >
+                        <Text fontSize="10px">X</Text>
+                        {hoveredButton === card.idx && (
+                          <>
+                            <Text fontSize="10px">
+                              {t(
+                                "game.special-cards.remove-special-cards-label"
+                              )}
+                              <CashSymbol /> {card.selling_price}
+                            </Text>
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </Flex>
+                  <Box
+                    width={`${cardWidth}px`}
+                    onClick={() => {
+                      isSmallScreen && highlightCard(card);
+                    }}
+                  >
+                    <CardImage3D card={card} height={`${cardHeight}px`} small />
                   </Box>
-                </AnimatedParticleCard>
-              )}
+                </Box>
+              </AnimatedParticleCard>
             </Flex>
           );
         })}

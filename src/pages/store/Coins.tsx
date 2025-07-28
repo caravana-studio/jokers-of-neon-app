@@ -4,15 +4,15 @@ import { useTranslation } from "react-i18next";
 import CoinsIcon from "../../assets/coins.svg?component";
 import { CashSymbol } from "../../components/CashSymbol";
 import { RollingNumber } from "../../components/RollingNumber";
-import { useGame } from "../../dojo/queries/useGame";
+import { useGameStore } from "../../state/useGameStore";
 
 interface ICoinsProps {
   rolling?: boolean;
 }
 
 export const Coins = ({ rolling = false }: ICoinsProps) => {
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
+
   const { t } = useTranslation(["store"]);
 
   return (
@@ -55,8 +55,8 @@ interface MobileCoins {
 }
 
 export const MobileCoins: React.FC<MobileCoins> = ({ fontSize, iconSize }) => {
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
+
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
       <CoinsIcon height={iconSize ?? 25} />

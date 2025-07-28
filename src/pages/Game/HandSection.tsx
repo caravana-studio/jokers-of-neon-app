@@ -17,36 +17,38 @@ import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { HAND_SECTION_ID } from "../../constants/general";
+import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useRound } from "../../dojo/queries/useRound";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
+import { useSettings } from "../../providers/SettingsProvider";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
 }
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
-  const {
-    hand,
-    preSelectedCards,
-    togglePreselected,
-    changeModifierCard,
-    preSelectedModifiers,
-    roundRewards,
-    remainingPlaysTutorial,
-  } = useGameContext();
+  const { changeModifierCard, remainingPlaysTutorial } = useGameContext();
 
-  const { highlightCard } = useCardHighlight();
+  const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
+    useCurrentHandStore();
+  const { sfxVolume } = useSettings();
+
+  const { remainingPlays, roundRewards } = useGameStore();
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);
 
-  const round = useRound();
   const handsLeft = !isTutorial()
-    ? round?.remaining_plays ?? 0
+    ? remainingPlays
     : remainingPlaysTutorial ?? 0;
 
   const { activeNode } = useDndContext();
@@ -194,7 +196,10 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                         onClick={() => {
                           if (onTutorialCardClick) onTutorialCardClick();
                           if (!card.isModifier) {
-                            togglePreselected(card.idx);
+                            const preselected = togglePreselected(card.idx);
+                            if (preselected) {
+                              preselectCardSound();
+                            }
                           } else {
                             highlightCard(card);
                           }

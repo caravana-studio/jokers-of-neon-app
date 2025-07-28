@@ -2,7 +2,8 @@ import { Heading } from "@chakra-ui/react";
 import { animated, easings, useSpring } from "@react-spring/web";
 import { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { GameStateEnum } from "../../dojo/typescript/custom";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 
 interface SpecialCardAnimationProps {
@@ -20,13 +21,13 @@ export const SpecialCardAnimation = ({
 }: SpecialCardAnimationProps) => {
   const { t } = useTranslation("cards");
   const { setAnimateSecondChanceCard } = useCardAnimations();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const [showAnimContent, setShowAnimContent] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigate("/redirect/map");
+      navigate(GameStateEnum.Map);
       setAnimateSecondChanceCard(false);
     }, 4000);
 
