@@ -256,11 +256,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addPoints: (points: number) => {
-    set({ points: points + points });
+    const { points: currentPoints } = get();
+    set({ points: currentPoints + points });
   },
 
   addMulti: (multi: number) => {
-    set({ multi: multi + multi });
+    const { multi: currentMulti } = get();
+    set({ multi: currentMulti + multi });
   },
 
   setMulti: (multi: number) => {
