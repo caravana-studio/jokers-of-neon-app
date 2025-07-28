@@ -100,7 +100,7 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           <DocsMenuBtn width={iconWidth} label />
           <SettingsMenuBtn width={iconWidth} label />
           <DiscordLink width={iconWidth} label />
-          {!hideTutorialFF && <TutorialBtn width={iconWidth} label />}
+          {/* {!hideTutorialFF && <TutorialBtn width={iconWidth} label />} */}
         </DrawerBody>
 
         <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>
