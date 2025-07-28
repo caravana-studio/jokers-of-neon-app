@@ -18,8 +18,11 @@ interface ManageContentMobileProps extends ManagePageContentProps {
 export const ManagePageContentMobile = ({
   lastIndexTab = 0,
   discardedCards,
+  discardedPowerups,
   preselectedCard,
+  preselectedPowerup,
   onCardClick,
+  onPowerupClick,
   goBackButton,
   onTabChange,
 }: ManageContentMobileProps) => {
@@ -50,7 +53,11 @@ export const ManagePageContentMobile = ({
         </Flex>
       </Tab>
       <Tab title={t("power-ups.title")}>
-        <Powerups />
+        <Powerups
+          preselectedPowerUp={preselectedPowerup}
+          onPowerupClick={onPowerupClick}
+          discardedPowerups={discardedPowerups}
+        />
       </Tab>
     </TabPattern>
   );

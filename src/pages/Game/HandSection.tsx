@@ -20,7 +20,6 @@ import { HAND_SECTION_ID } from "../../constants/general";
 import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useSettings } from "../../providers/SettingsProvider";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
@@ -28,14 +27,14 @@ import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
 }
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
-  const { changeModifierCard, remainingPlaysTutorial } =
-    useGameContext();
+  const { changeModifierCard, remainingPlaysTutorial } = useGameContext();
 
   const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
     useCurrentHandStore();
@@ -44,7 +43,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   const { remainingPlays, roundRewards } = useGameStore();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
 
-  const { highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);
 

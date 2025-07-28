@@ -3,28 +3,27 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
+import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
-import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { MapPage } from "./pages/Map/MapPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
+import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
-import { SelectMod } from "./pages/SelectMod";
-import { CardHighlightProvider } from "./providers/CardHighlightProvider";
+import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
+import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import { MapPage } from "./pages/Map/MapPage";
-import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
-import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
-import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { GameOver } from "./pages/GameOver/GameOver";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
@@ -219,11 +218,13 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <CardHighlightProvider>
-              <AnimatedPage>
-                <GameStoreLoader>
-                  <ManagePage />
-                </GameStoreLoader>
-              </AnimatedPage>
+              <PowerupHighlightProvider>
+                <AnimatedPage>
+                  <GameStoreLoader>
+                    <ManagePage />
+                  </GameStoreLoader>
+                </AnimatedPage>
+              </PowerupHighlightProvider>
             </CardHighlightProvider>
           </StoreProvider>
         }

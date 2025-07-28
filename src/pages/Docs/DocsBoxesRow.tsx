@@ -3,18 +3,24 @@ import { useRef } from "react";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { BOXES_RARITY } from "../../data/lootBoxes";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
 import { LootBox, LootBoxRef } from "../../components/LootBox";
+import { Card } from "../../types/Card";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const DocsBoxesRow = () => {
   const boxes = Object.keys(BOXES_RARITY).map(Number);
-  const { highlightCard, highlightedCard } = useCardHighlight();
+  const { highlightItem: highlightCard, highlightedItem: highlightedCard } =
+    useCardHighlight();
   const lootBoxRef = useRef<LootBoxRef>(null);
 
   return (
     <>
       {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard} isPack showExtraInfo />
+        <MobileCardHighlight
+          card={highlightedCard as Card}
+          isPack
+          showExtraInfo
+        />
       )}
 
       <DelayedLoading>

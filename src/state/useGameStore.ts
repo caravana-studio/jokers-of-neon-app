@@ -344,6 +344,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addPowerUp: (powerUp: PowerUp) => {
     set((state) => {
+      if (state.powerUps.map((p) => p?.idx).includes(powerUp.idx)) return {};
       const newPowerUps = [...state.powerUps];
       newPowerUps[powerUp.idx] = powerUp;
       return { powerUps: newPowerUps };
