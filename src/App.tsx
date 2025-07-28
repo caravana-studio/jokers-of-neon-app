@@ -32,7 +32,8 @@ function App() {
                   <PageTransitionsProvider>
                     <InformationPopUpProvider>
                       <AudioPlayerProvider
-                        baseSongPath={"/music/new-track.mp3"}
+                        introSongPath={"/music/intro-track.mp3"}
+                        baseSongPath={"/music/game-track.mp3"}
                         rageSongPath={"/music/rage_soundtrack.mp3"}
                       >
                         <Background>
