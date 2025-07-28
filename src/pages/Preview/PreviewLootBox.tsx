@@ -9,7 +9,6 @@ import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
