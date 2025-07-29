@@ -17,6 +17,7 @@ interface GameOverContentProps {
   leaderboardFilterLoggedInPlayers?: boolean;
   bottomContent?: React.ReactNode;
   mainActionButtons?: React.ReactNode;
+  loggedIn?: boolean;
 }
 
 export const GameOverContent: React.FC<GameOverContentProps> = ({
@@ -30,6 +31,7 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
   leaderboardFilterLoggedInPlayers = false,
   bottomContent,
   mainActionButtons,
+  loggedIn,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
 
@@ -38,13 +40,17 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
       {isSmallScreen && <MobileDecoration />}
       <Flex
         height="100%"
-        flexDirection={{ base: "column", sm: "row" }}
+        flexDirection={{ base: "column", sm: loggedIn ? "column" : "row" }}
         justifyContent={{ base: "center", sm: "space-around" }}
         alignItems="center"
-        gap={{ base: 4, sm: 16 }}
+        flexWrap={"wrap"}
         zIndex={1}
+        w={loggedIn ? "70%" : { base: "70%", sm: "100%" }}
       >
-        <Flex flexDirection="column" width={{ base: "100%", sm: "70%" }}>
+        <Flex
+          flexDirection="column"
+          width={{ base: "100%", sm: loggedIn ? "70%" : "50%" }}
+        >
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"
@@ -65,12 +71,12 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
         </Flex>
         <Flex
           flexDirection={"column"}
-          width={{ base: "100%", sm: "30%" }}
+          width={{ base: "100%", sm: loggedIn ? "30%" : "auto" }}
           gap={{ base: 4, sm: 8 }}
           justifyContent={"center"}
           alignItems={"center"}
         >
-          {actualPlayerPosition !== undefined && (
+          {actualPlayerPosition !== undefined && !loggedIn && (
             <Text>
               {t("game-over.current-position", {
                 position: actualPlayerPosition,
