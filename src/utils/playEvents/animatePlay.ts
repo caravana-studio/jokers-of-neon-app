@@ -12,6 +12,7 @@ interface AnimatePlayConfig {
   setAnimatedPowerUp: (powerUp: any) => void;
   pointsSound: () => void;
   multiSound: () => void;
+  acumSound: () => void;
   negativeMultiSound: () => void;
   cashSound: () => void;
   setPoints: (points: number) => void;
@@ -49,6 +50,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimatedPowerUp,
     pointsSound,
     multiSound,
+    acumSound,
     negativeMultiSound,
     cashSound,
     setPoints,
@@ -97,7 +99,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     specialCardPlayScore: calculateDuration(
       playEvents.specialCardPlayScoreEvents
     ),
+    accumDuration: playEvents.acumulativeEvents? playEvents.acumulativeEvents.length * 500 : 0,
   };
+
+  const playDuration = 500;
 
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
     (a, b) => a + b,
@@ -274,6 +279,39 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     });
   };
 
+  const handleAccumulativeCards = () => {
+    playEvents.acumulativeEvents?.forEach((event, index) => {
+      const isPoints = event.eventType === EventTypeEnum.AcumPoint;
+      const isMulti = event.eventType === EventTypeEnum.AcumMulti;
+      const special_idx = event.specials[0]?.idx;
+      const quantity = event.specials[0]?.quantity ?? 0;
+
+      setTimeout(() => {
+        if (isPoints) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            points: quantity,
+            isAccumulative: true,
+            animationIndex: 700 + index,
+          });
+          addPoints(quantity);
+        } else if (isMulti) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            multi: quantity,
+            isAccumulative: true,
+            animationIndex: 800 + index,
+          });
+          addMulti(quantity);
+        } 
+      }, playAnimationDuration * index);
+    });
+  };
+
   const handleGameEnd = () => {
     if (playEvents.cardActivateEvent) {
       const specialCardInHand =
@@ -345,8 +383,13 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   setTimeout(() => {
     setPlayAnimation(true);
     setAnimatedCard(undefined);
-  }, ALL_CARDS_DURATION);
-  
+  }, ALL_CARDS_DURATION - durations.accumDuration);
+
+  setTimeout(
+    () => handleAccumulativeCards(),
+    ALL_CARDS_DURATION - durations.accumDuration + (durations.accumDuration > 0 ? playDuration : 0)
+  );
+
   setTimeout(() => {
     // Reset state
     setAnimatedPowerUp(undefined);
@@ -362,5 +405,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
     handleGameEnd();
     setCardTransformationLock(false);
-  }, ALL_CARDS_DURATION + 500);
+
+  }, ALL_CARDS_DURATION + playDuration);
+
 };

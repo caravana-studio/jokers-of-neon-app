@@ -7,6 +7,11 @@ export enum EventTypeEnum {
 	Neon,
 	Spade,
 	Heart,
+	Joker,
+	Wild,
+	AcumCash,
+	AcumPoint,
+	AcumMulti,
   }
 
 export enum GameStateEnum {
