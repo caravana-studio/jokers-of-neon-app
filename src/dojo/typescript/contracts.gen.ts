@@ -426,17 +426,17 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_map_system_getLevelMap_calldata = (gameId: BigNumberish, level: BigNumberish): DojoCall => {
+	const build_map_system_getLevelMap_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
 			contractName: "map_system",
 			entrypoint: "get_level_map",
-			calldata: [gameId, level],
+			calldata: [gameId],
 		};
 	};
 
-	const map_system_getLevelMap = async (gameId: BigNumberish, level: BigNumberish) => {
+	const map_system_getLevelMap = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_map_system_getLevelMap_calldata(gameId, level));
+			return await provider.call(DOJO_NAMESPACE, build_map_system_getLevelMap_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
