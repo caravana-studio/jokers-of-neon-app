@@ -1,4 +1,3 @@
-import { Flex, Button } from "@chakra-ui/react";
 import { GameOverContent } from "./GameOverContent";
 import { IconComponent } from "../../components/IconComponent";
 import { Icons } from "../../constants/icons";
@@ -28,27 +27,25 @@ export const GameOverGuest = () => {
       onShareClick={onShareClick}
       onStartGameClick={onStartGameClick}
       isLoading={isLoading}
-      mainActionButtons={
-        <Flex gap={4}>
-          <Button
-            variant="secondarySolid"
-            onClick={() => {
-              initiateTransferFlow();
-            }}
-            alignItems={"center"}
-          >
-            <Flex gap={2} justifyContent={"center"} alignItems={"center"}>
-              {t("game-over.login")}{" "}
-              <IconComponent
-                icon={Icons.CARTRIDGE}
-                width={"20px"}
-                height={"20px"}
-              ></IconComponent>
-            </Flex>
-          </Button>
-          <Button onClick={handleLogout}>{t("skip")}</Button>
-        </Flex>
-      }
+      firstButton={{
+        onClick: () => {
+          initiateTransferFlow();
+        },
+        label: t("game-over.login").toUpperCase(),
+        icon: (
+          <IconComponent
+            width={"12px"}
+            icon={Icons.CARTRIDGE}
+            height={"12px"}
+          />
+        ),
+      }}
+      secondButton={{
+        onClick: () => {
+          handleLogout();
+        },
+        label: t("skip").toUpperCase(),
+      }}
     />
   );
 };
