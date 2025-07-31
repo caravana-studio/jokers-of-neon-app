@@ -1,9 +1,7 @@
 import { PropsWithChildren, createContext, useContext } from "react";
 
 import { buySfx, levelUpSfx, rerollSfx } from "../constants/sfx.ts";
-import {
-  BlisterPackItem
-} from "../dojo/typescript/models.gen";
+import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
@@ -222,18 +220,18 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    buyBlisterPack(Number(pack.idx));
+    // buyBlisterPack(Number(pack.idx));
     const promise = dojoBuyPack(gameId, Number(pack.idx))
       .then(async ({ success }) => {
-        if (!success) {
+        /*         if (!success) {
           rollbackBuyBlisterPack(Number(pack.idx));
-        }
+        } */
         fetchShopItems();
 
         return success;
       })
       .catch(() => {
-        rollbackBuyBlisterPack(Number(pack.idx));
+        // rollbackBuyBlisterPack(Number(pack.idx));
         return false;
       });
     return promise;

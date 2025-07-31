@@ -9,13 +9,13 @@ import { useUsername } from "../../dojo/utils/useUsername";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useCardAnimations } from "../../providers/CardAnimationsProvider";
 import { useCardData } from "../../providers/CardDataProvider";
-import { CardHighlightProvider } from "../../providers/CardHighlightProvider";
 import { useGameContext } from "../../providers/GameProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { GameContent } from "./GameContent";
 import { MobileGameContent } from "./GameContent.mobile";
 import { RageRoundAnimation } from "./RageRoundAnimation";
+import { CardHighlightProvider } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const GamePage = () => {
   const {

@@ -1,15 +1,11 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect
-} from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   cashSfx,
   discardSfx,
   multiSfx,
+  acumSfx,
   negativeMultiSfx,
   pointsSfx,
 } from "../constants/sfx.ts";
@@ -19,10 +15,12 @@ import { useGameActions } from "../dojo/useGameActions.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled.ts";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { useTournaments } from "../hooks/useTournaments.tsx";
 import { useCardAnimations } from "../providers/CardAnimationsProvider";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
+import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { Card } from "../types/Card";
 import { getPlayAnimationDuration } from "../utils/getPlayAnimationDuration.ts";
@@ -30,9 +28,10 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { AccountInterface } from "starknet";
 
 export interface IGameContext {
-  executeCreateGame: (gameId?: number) => void;
+  executeCreateGame: (gameId?: number, username?: string) => void;
   play: () => void;
   discard: () => void;
   changeModifierCard: (
@@ -40,12 +39,14 @@ export interface IGameContext {
   ) => Promise<{ success: boolean; cards: Card[] }>;
   clearPreSelection: () => void;
   onShopSkip: () => void;
+  sellPowerup: (powerupIdx: number) => Promise<boolean>;
   sellSpecialCard: (card: Card) => Promise<boolean>;
   checkOrCreateGame: () => void;
   remainingPlaysTutorial?: number;
   resetLevel: () => void;
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
+  initiateTransferFlow: () => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -92,6 +93,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setGameError,
     showSpecials,
     id: gameId,
+    resetSpecials,
+    setState,
   } = useGameStore();
 
   const {
@@ -109,7 +112,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     setCardTransformationLock,
   } = useCurrentHandStore();
 
+  const { fetchDeck } = useDeckStore();
+
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
+
+  const { getCardData } = useCardData();
 
   const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
@@ -119,9 +126,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { refetchSpecialCardsData } = useCardData();
 
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const {
+    setup: {
+      clientComponents: { Game },
+    },
+    switchToController,
+    accountType,
     setup: { client },
-    syncCall,
   } = useDojo();
 
   const {
@@ -130,8 +142,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     discard,
     changeModifierCard,
     sellSpecialCard,
+    sellPowerup,
     mintGame,
     surrenderGame,
+    transferGame,
+    approve,
   } = useGameActions();
 
   const { sfxVolume, animationSpeed } = useSettings();
@@ -140,6 +155,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: acumSound } = useAudio(acumSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
@@ -153,10 +169,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const resetLevel = () => {
     setRoundRewards(undefined);
+    resetRage();
     setPreSelectionLocked(false);
     showSpecials();
     resetPowerUps();
+    resetSpecials();
     refetchSpecialCardsData(modId, gameId);
+    setState(GameStateEnum.NotSet);
   };
 
   const prepareNewGame = () => {
@@ -164,12 +183,49 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
   };
 
-  const username = useUsername();
+  const usernameLS = useUsername();
 
   const { enterTournament } = useTournaments();
 
-  const executeCreateGame = async (providedGameId?: number) => {
+  const initiateTransferFlow = () => {
+    console.log("GameProvider: Initiating transfer flow...");
+    // The callback now expects a payload object with all the fresh data.
+    switchToController(async (payload) => {
+      // We now call executeGameTransfer with the fresh data from the callback payload.
+      await executeGameTransfer(payload.account, payload.username);
+    });
+  };
+
+  const executeGameTransfer = async (
+    account: AccountInterface,
+    newUsername: string
+  ) => {
+    if (!gameId) {
+      console.error("Guard failed: Attempted to transfer game with no gameId.");
+      return;
+    }
+
+    console.log(
+      `GameProvider: Executing transfer for game ${gameId} to user ${newUsername} with account ${account.address}`
+    );
+    console.log(account);
+
+    try {
+      await approve(gameId);
+      await transferGame(account, gameId, newUsername ?? "");
+      console.log("Game transfer successful.");
+    } catch (error) {
+      console.error("Failed to transfer game:", error);
+    }
+  };
+
+  const executeCreateGame = async (
+    providedGameId?: number,
+    usernameParameter?: string
+  ) => {
+    const username = usernameParameter || usernameLS;
     setGameError(false);
+    resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
     if (username) {
@@ -183,34 +239,47 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             gameId = await mintGame(username);
           }
         }
-        console.log("Creating game...");
-        createGame(gameId!, username).then(async (response) => {
-          const { gameId: newGameId, hand } = response;
-          if (newGameId) {
-            setGameId(client, newGameId);
-            resetLevel();
-            replaceCards(hand);
-            clearPreSelection();
+        if (gameId) {
+          console.log("Creating game...", gameId);
+          createGame(gameId!, username)
+            .then(async (response) => {
+              const { gameId: newGameId, hand } = response;
+              if (newGameId) {
+                setGameId(client, newGameId);
+                replaceCards(hand);
+                fetchDeck(client, newGameId, getCardData);
+                clearPreSelection();
 
-            console.log(`game ${newGameId} created`);
+                console.log(`game ${newGameId} created`);
 
-            await syncCall();
-            setGameLoading(false);
-            setPreSelectionLocked(false);
-            setRoundRewards(undefined);
+                setPreSelectionLocked(false);
+                setRoundRewards(undefined);
 
-            navigate(isClassic && showTutorial ? "/tutorial" : "/demo");
-          } else {
-            setGameError(true);
-          }
-        });
+                navigate("/demo");
+              } else {
+                setGameError(true);
+                navigate("/my-games");
+              }
+            })
+            .catch((error) => {
+              console.error("Error creating game", error);
+              setGameError(true);
+              navigate("/my-games");
+            });
+        } else {
+          console.error("No gameId");
+          setGameError(true);
+          navigate("/my-games");
+        }
       } catch (error) {
         console.error("Error registering user in tournament", error);
         setGameError(true);
+        navigate("/my-games");
       }
     } else {
       console.error("No username");
       setGameError(true);
+      navigate("/my-games");
     }
   };
 
@@ -232,6 +301,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedPowerUp,
             pointsSound,
             multiSound,
+            acumSound,
             negativeMultiSound,
             cashSound,
             setPoints,
@@ -259,7 +329,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             resetRage,
             unPreSelectAllPowerUps,
           });
+          fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
+          if (response.levelPassed && response.detailEarned) {
+            addCash(response.detailEarned.total);
+          }
         } else {
           setPreSelectionLocked(false);
           clearPreSelection();
@@ -341,6 +415,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedCard(undefined);
             setDiscardAnimation(false);
             replaceCards(response.cards);
+            fetchDeck(client, gameId, getCardData);
             refetchSpecialCardsData(modId, gameId);
           }, ALL_CARDS_DURATION + 300);
         } else {
@@ -381,6 +456,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       .then((response): void => {
         if (response.success) {
           replaceCards(response.cards);
+          fetchDeck(client, gameId, getCardData);
         } else {
           rollback();
         }
@@ -412,6 +488,18 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       })
       .finally(() => {
         setPreSelectionLocked(false);
+      });
+
+    return promise;
+  };
+
+  const onSellPowerup = (powerupIdx: number) => {
+    const promise = sellPowerup(gameId, powerupIdx)
+      .then(async ({ success }) => {
+        return success;
+      })
+      .catch(() => {
+        return false;
       });
 
     return promise;
@@ -467,6 +555,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     checkOrCreateGame,
     executeCreateGame,
     surrenderGame,
+    sellPowerup: onSellPowerup,
+    initiateTransferFlow,
   };
 
   return (

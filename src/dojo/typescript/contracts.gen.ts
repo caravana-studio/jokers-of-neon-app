@@ -617,6 +617,28 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_system_transferGame_calldata = (gameId: BigNumberish, newOwner: string, newPlayerName: BigNumberish): DojoCall => {
+		return {
+			contractName: "game_system",
+			entrypoint: "transfer_game",
+			calldata: [gameId, newOwner, newPlayerName],
+		};
+	};
+
+	const game_system_transferGame = async (snAccount: Account | AccountInterface, gameId: BigNumberish, newOwner: string, newPlayerName: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_system_transferGame_calldata(gameId, newOwner, newPlayerName),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+
 	const build_action_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
 			contractName: "action_system",
@@ -793,6 +815,27 @@ export function setupWorld(provider: DojoProvider) {
 				snAccount as any,
 				build_shop_system_selectCardsFromLootBox_calldata(gameId, cardsIndex),
 				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_sellPowerUp_calldata = (gameId: BigNumberish, powerUpIndex: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "sell_power_up",
+			calldata: [gameId, powerUpIndex],
+		};
+	};
+
+	const shop_system_sellPowerUp = async (snAccount: Account | AccountInterface, gameId: BigNumberish, powerUpIndex: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_shop_system_sellPowerUp_calldata(gameId, powerUpIndex),
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
@@ -1021,7 +1064,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount as any,
 				build_game_system_surrender_calldata(gameId),
-				"jokers_of_neon_core",
+				DOJO_NAMESPACE,
 			);
 		} catch (error) {
 			console.error(error);
@@ -1039,7 +1082,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getDeckCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon_core", build_game_system_getDeckCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getDeckCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1056,7 +1099,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getGameData = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon_core", build_game_system_getGameData_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getGameData_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1073,7 +1116,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getHandCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon_core", build_game_system_getHandCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getHandCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1090,7 +1133,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getSpecialCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon_core", build_game_system_getSpecialCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getSpecialCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1107,7 +1150,41 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getPowerUps = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call("jokers_of_neon_core", build_game_system_getPowerUps_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_system_getPowerUps_calldata(gameId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+		const build_shop_system_getCardsInDeck_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "get_cards_in_deck",
+			calldata: [gameId],
+		};
+	};
+
+	const shop_system_getCardsInDeck = async (gameId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_shop_system_getCardsInDeck_calldata(gameId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_shop_system_getLootBoxResult_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "shop_system",
+			entrypoint: "get_loot_box_result",
+			calldata: [gameId],
+		};
+	};
+
+	const shop_system_getLootBoxResult = async (gameId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_shop_system_getLootBoxResult_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1174,6 +1251,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildTokenMetadataCalldata: build_game_system_tokenMetadata_calldata,
 			transferFrom: game_system_transferFrom,
 			buildTransferFromCalldata: build_game_system_transferFrom_calldata,
+			transferGame: game_system_transferGame,
+			buildTransferGameCalldata: build_game_system_transferGame_calldata,
 			getDeckCards: game_system_getDeckCards,
 			buildGetDeckCardsCalldata: build_game_system_getDeckCards_calldata,
 			getGameData: game_system_getGameData,
@@ -1206,10 +1285,16 @@ export function setupWorld(provider: DojoProvider) {
 			buildRerollCalldata: build_shop_system_reroll_calldata,
 			selectCardsFromLootBox: shop_system_selectCardsFromLootBox,
 			buildSelectCardsFromLootBoxCalldata: build_shop_system_selectCardsFromLootBox_calldata,
+			sellPowerUp: shop_system_sellPowerUp,
+			buildSellPowerUpCalldata: build_shop_system_sellPowerUp_calldata,
 			sellSpecialCard: shop_system_sellSpecialCard,
 			buildSellSpecialCardCalldata: build_shop_system_sellSpecialCard_calldata,
 			skipShop: shop_system_skipShop,
 			buildSkipShopCalldata: build_shop_system_skipShop_calldata,
+			getCardsInDeck: shop_system_getCardsInDeck,
+			buildGetCardsInDeckCalldata: build_shop_system_getCardsInDeck_calldata,
+			getLootBoxResult: shop_system_getLootBoxResult,
+			buildGetLootBoxResultCalldata: build_shop_system_getLootBoxResult_calldata,
 		},
 		rage_system: {
 			calculate: rage_system_calculate,

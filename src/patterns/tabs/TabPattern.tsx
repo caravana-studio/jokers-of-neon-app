@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { MobileDecoration } from "../../components/MobileDecoration";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 interface TabProps {
   title: string;
@@ -30,7 +30,7 @@ export const TabPattern = ({
 }: TabPatternProps) => {
   const [tabIndex, setTabIndex] = useState(lastIndexTab);
   const navigate = useNavigate();
-  const { highlightedCard } = useCardHighlight();
+  const { highlightedItem: highlightedCard } = useCardHighlight();
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right">(
     "left"
   );

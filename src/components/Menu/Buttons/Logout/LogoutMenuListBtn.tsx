@@ -4,11 +4,15 @@ import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { IconComponent } from "../../../IconComponent";
 import { useUsername } from "../../../../dojo/utils/useUsername";
 import { useLogout } from "../../../../hooks/useLogout";
+import { useDojo } from "../../../../dojo/DojoContext";
 
 export const LogoutMenuListBtn = ({ width }: { width: string }) => {
   const { t } = useTranslation("game");
   const username = useUsername();
   const { handleLogout } = useLogout();
+  const { setup } = useDojo();
+
+  if (setup.useBurnerAcc) return null;
 
   return (
     <Menu placement="right">

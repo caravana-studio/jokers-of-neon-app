@@ -9,6 +9,7 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { GameStateEnum } from "../../dojo/typescript/custom";
+import { useDojo } from "../../dojo/useDojo";
 import { useShopActions } from "../../dojo/useShopActions";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
@@ -33,9 +34,13 @@ export const Map = () => {
     reachableNodes,
   } = useMap();
 
+  const {
+    setup: { client },
+  } = useDojo();
+
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
-  const { state, id: gameId } = useGameStore();
+  const { state, id: gameId, setRound, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
@@ -60,19 +65,25 @@ export const Map = () => {
     selectedNodeData?.id?.toString() ?? ""
   );
 
+  const refetchAndNavigate = async (state: GameStateEnum) => {
+    await refetchGameStore(client, gameId);
+    navigate(state);
+  };
+
   const handleGoClick = () => {
     selectedNodeData &&
       advanceNode(gameId, selectedNodeData.id).then((response) => {
         if (response) {
           switch (selectedNodeData?.nodeType) {
             case NodeType.RAGE:
-              navigate(GameStateEnum.Rage);
+              refetchAndNavigate(GameStateEnum.Rage);
               break;
             case NodeType.ROUND:
-              navigate(GameStateEnum.Round);
+              refetchAndNavigate(GameStateEnum.Round);
               break;
             case NodeType.STORE:
               navigate(GameStateEnum.Store);
+              setRound(selectedNodeData.id);
               break;
             default:
               break;

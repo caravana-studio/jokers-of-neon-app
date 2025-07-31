@@ -29,6 +29,9 @@
     }
   },
   "game-over": {
+    "current-position": "You are in position number {{position}}, do you want to keep it?",
+    "login": "Login",
+    "skip": "Skip",
     "gameOver-msj": "GAME OVER",
     "table": {
       "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
@@ -85,7 +88,11 @@
     "community-mods": "Community mods"
   },
   "power-ups": {
-    "title": "Power-ups"
+    "title": "Power-ups",
+    "confirmation-modal": {
+      "title": "Sell powerup",
+      "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
+    }
   },
   "open-lootbox": {
     "click-open": "Click to open",

@@ -1,7 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useConnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../components/AudioPlayer";
@@ -13,14 +12,17 @@ import { useDojo } from "../dojo/useDojo";
 import { RemoveScroll } from "react-remove-scroll";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
+import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useUsername } from "../dojo/utils/useUsername";
+import { useGameContext } from "../providers/GameProvider";
+import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-
-const isDev = import.meta.env.VITE_DEV === "true";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
   const { connect, connectors } = useConnect();
-  const { account } = useDojo();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
+  const { account, setup } = useDojo();
 
   const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
@@ -33,6 +35,28 @@ export const Home = () => {
       navigate(enableMods ? "/mods" : "/my-games");
     }
   }, [account, playButtonClicked]);
+
+  const loggedInUser = useUsername();
+
+  const handleCreateGame = async () => {
+    if (loggedInUser) {
+      prepareNewGame();
+      executeCreateGame(undefined);
+      navigate("/entering-tournament");
+    }
+  };
+
+  useEffect(() => {
+    if (loggedInUser) {
+      if (playButtonClicked) {
+        handleCreateGame();
+      } else {
+        navigate("/my-games", { replace: true });
+      }
+    }
+  }, [loggedInUser]);
+
+  const { lastGameId, isLoading } = useGetLastGameId();
 
   return (
     <>
@@ -66,10 +90,11 @@ export const Home = () => {
 
           <Flex
             w={"100%"}
+            h={"100%"}
             justifyContent="center"
             minH={isSmallScreen ? "unset" : "40vh"}
             flexGrow={1}
-            maxWidth={isMobile ? "70%" : "50%"}
+            maxWidth={isSmallScreen ? "70%" : "50%"}
           >
             <Flex h={"100%"} w="100%" justifyContent={"center"} pl={2}>
               <SpineAnimation
@@ -77,7 +102,7 @@ export const Home = () => {
                 atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
                 initialAnimation={"animation"}
                 loopAnimation={"animation"}
-                scale={2.8}
+                scale={2.4}
                 yOffset={-800}
               />
             </Flex>
@@ -90,8 +115,13 @@ export const Home = () => {
             <Button
               variant="secondarySolid"
               onClick={() => {
-                if (isDev) {
-                  navigate(enableMods ? "/mods" : "/login");
+                if (setup.useBurnerAcc && lastGameId != undefined) {
+                  const username = `joker_guest_${lastGameId + 1}`;
+                  console.log("username: ", username);
+
+                  localStorage.removeItem(GAME_ID);
+                  localStorage.setItem(LOGGED_USER, username);
+                  setPlayButtonClicked(true);
                 } else {
                   setPlayButtonClicked(true);
                   connect({ connector: connectors[0] });

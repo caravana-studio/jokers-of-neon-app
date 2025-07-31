@@ -71,6 +71,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
     const openAnimationSpeed = 0.3;
     const { t } = useTranslation(["store"]);
     const [isAnimationRunning, setIsAnimationRunning] = useState(false);
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     const fontSize = isMobile
       ? 15
@@ -109,6 +110,15 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
         setIsAnimationRunning(true);
       },
     }));
+
+    useEffect(() => {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     useEffect(() => {
       if (containerRef.current && !playerRef.current) {
@@ -159,7 +169,7 @@ const SpineAnimation = forwardRef<SpineAnimationRef, SpineAnimationProps>(
           playerRef.current = null; // reset after disposal
         }
       };
-    }, [jsonUrl, atlasUrl]);
+    }, [jsonUrl, atlasUrl, screenWidth]);
 
     // Handle hover state
     useEffect(() => {

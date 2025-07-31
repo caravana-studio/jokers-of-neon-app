@@ -9,8 +9,10 @@ export const gameProviderDefaults: IGameContext = {
   clearPreSelection: () => {},
   onShopSkip: () => {},
   sellSpecialCard: () => new Promise((resolve) => resolve(false)),
+  sellPowerup: () => new Promise((resolve) => resolve(false)),
   checkOrCreateGame: () => {},
   resetLevel: () => {},
   prepareNewGame: () => {},
   surrenderGame: (_) => {},
+  initiateTransferFlow: () => {},
 };

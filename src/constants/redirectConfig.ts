@@ -40,17 +40,17 @@ export const redirectConfig: RedirectRule[] = [
     gameState: GameStateEnum.Map,
     redirectTo: "/map",
   },
-  
 ];
 
 export const stateToPageMap: Record<GameStateEnum, string> = {
-    [GameStateEnum.Round]: "/demo",
-    [GameStateEnum.Rage]: "/demo",
-    [GameStateEnum.Reward]: "/store",
-    [GameStateEnum.Challenge]: "/demo",
-    [GameStateEnum.Map]: "/map",
-    [GameStateEnum.Store]: "/store",
-    [GameStateEnum.Lootbox]: "/loot-box-cards-selection",
-    [GameStateEnum.GameOver]: "/gameover",
-    [GameStateEnum.NotStarted]: "/",
+  [GameStateEnum.Round]: "/demo",
+  [GameStateEnum.Rage]: "/demo",
+  [GameStateEnum.Reward]: "/store",
+  [GameStateEnum.Challenge]: "/demo",
+  [GameStateEnum.Map]: "/map",
+  [GameStateEnum.Store]: "/store",
+  [GameStateEnum.Lootbox]: "/loot-box-cards-selection",
+  [GameStateEnum.GameOver]: "/gameover",
+  [GameStateEnum.NotStarted]: "/",
+  [GameStateEnum.NotSet]: "/",
 };

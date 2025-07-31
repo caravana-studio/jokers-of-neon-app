@@ -61,7 +61,9 @@ type GameStore = {
   rollbackPlay: () => void;
   reroll: () => void;
   rollbackReroll: () => void;
+  setCash: (cash: number) => void;
   addCash: (cash: number) => void;
+  removeCash: (cash: number) => void;
   setCurrentScore: (score: number) => void;
   addPoints: (points: number) => void;
   setPoints: (points: number) => void;
@@ -69,6 +71,7 @@ type GameStore = {
   setMulti: (multi: number) => void;
   resetMultiPoints: () => void;
   resetRage: () => void;
+  resetSpecials: () => void;
   setState: (state: GameStateEnum) => void;
   removeSpecialCard: (cardId: number) => void;
   preSelectPowerUp: (powerUpIdx: number) => void;
@@ -87,6 +90,9 @@ type GameStore = {
   showRages: () => void;
   showSpecials: () => void;
   refetchPlays: (client: any, gameId: number) => Promise<void>;
+  setRound: (round: number) => void;
+  addSpecialSlot: () => void;
+  removeSpecialSlot: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -159,7 +165,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   level: 0,
   round: 0,
   targetScore: 0,
-  state: GameStateEnum.NotStarted,
+  state: GameStateEnum.NotSet,
   specialSlots: 1,
   rageCards: [],
   specialCards: [],
@@ -181,7 +187,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   nodeRound: 0,
 
   refetchGameStore: async (client, gameId) => {
-    doRefetchGameStore(client, gameId, set);
+    await doRefetchGameStore(client, gameId, set);
   },
 
   setGameId: (client, gameId) => {
@@ -226,9 +232,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ remainingPlays: remainingPlays + 1 });
   },
 
+  setCash: (cashToSet: number) => {
+    set({ cash: cashToSet });
+  },
+
   addCash: (cashToAdd: number) => {
     const { cash: currentCash } = get();
     set({ cash: currentCash + cashToAdd });
+  },
+
+  removeCash: (cashToRemove: number) => {
+    const { cash: currentCash } = get();
+    set({ cash: currentCash - cashToRemove });
   },
 
   setCurrentScore: (score: number) => {
@@ -240,11 +255,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addPoints: (points: number) => {
-    set({ points: points + points });
+    const { points: currentPoints } = get();
+    set({ points: currentPoints + points });
   },
 
   addMulti: (multi: number) => {
-    set({ multi: multi + multi });
+    const { multi: currentMulti } = get();
+    set({ multi: currentMulti + multi });
   },
 
   setMulti: (multi: number) => {
@@ -258,6 +275,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   resetRage: () => {
     set({ isRageRound: false, rageCards: [] });
+  },
+
+  resetSpecials: () => {
+    set({ specialCards: [] });
   },
 
   setState: (state: GameStateEnum) => {
@@ -324,6 +345,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addPowerUp: (powerUp: PowerUp) => {
     set((state) => {
+      if (state.powerUps.map((p) => p?.idx).includes(powerUp.idx)) return {};
       const newPowerUps = [...state.powerUps];
       newPowerUps[powerUp.idx] = powerUp;
       return { powerUps: newPowerUps };
@@ -366,5 +388,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   refetchPlays: async (client, gameId) => {
     const plays = await getPlayerPokerHands(client, gameId);
     plays && set({ plays: plays as LevelPokerHand[] });
+  },
+
+  setRound: (round: number) => {
+    set({ round });
+  },
+
+  addSpecialSlot: () => {
+    set((state) => ({
+      specialSlots: state.specialSlots + 1,
+    }));
+  },
+
+  removeSpecialSlot: () => {
+    set((state) => ({
+      specialSlots: state.specialSlots - 1,
+    }));
   },
 }));
