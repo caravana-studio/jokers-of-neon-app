@@ -8,6 +8,7 @@ import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { useStore } from "../../providers/StoreProvider";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
+import { useShopStore } from "../../state/useShopStore";
 
 interface DeckPageContentProps {
   state: {
@@ -19,13 +20,14 @@ interface DeckPageContentProps {
 export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
-  const { cash, burnCard, burnItem } = useStore();
+  const { burnCard } = useStore();
+  const { cash, burnItem } = useShopStore();
   const navigate = useNavigate();
 
   const { backToGameButton } = useBackToGameButton();
 
   const handleCardSelect = (card: Card) => {
-    if (!burnItem.purchased) {
+    if (!burnItem?.purchased) {
       if (cardToBurn?.id === card.id) {
         setCardToBurn(undefined);
       } else {
@@ -42,7 +44,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const effectiveCost: number =
     burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem.cost);
+      : Number(burnItem?.cost);
 
   return (
     <Flex
@@ -74,7 +76,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
             isDisabled={
               cardToBurn === undefined ||
               cash < effectiveCost ||
-              burnItem.purchased
+              burnItem?.purchased
             }
           >
             {t("btns.burn").toUpperCase()}

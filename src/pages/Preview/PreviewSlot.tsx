@@ -8,18 +8,19 @@ import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewSlot = () => {
   const navigate = useCustomNavigate();
-  const { specialSlotItem } = useStore();
+  const { specialSlotItem, locked } = useShopStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const price = specialSlotItem?.cost ?? 0;
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
-  const { buySpecialSlot, locked } = useStore();
+  const { buySpecialSlot } = useStore();
   const { cash } = useGameStore();
 
   const imgSize = isSmallScreen ? "120px" : "auto";

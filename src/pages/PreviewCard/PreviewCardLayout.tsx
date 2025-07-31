@@ -20,10 +20,11 @@ import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
 import { Coins } from "../store/Coins.tsx";
 
 import { useTranslation } from "react-i18next";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
-import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 
 const SIZE_MULTIPLIER = 2;
 const { white, neonGreen } = theme.colors;
@@ -48,7 +49,8 @@ const PreviewCardLayout = () => {
 
   const { getCardData } = useCardData();
   const { cash, specialSlots, specialsLength } = useGameStore();
-  const { buyCard, buyPack, locked } = useStore();
+  const { buyCard, buyPack } = useStore();
+  const { locked } = useShopStore();
 
   if (!card) {
     return <p>Card not found.</p>;

@@ -13,6 +13,7 @@ import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 
 const PreviewCard = () => {
   const { state } = useLocation();
@@ -32,8 +33,8 @@ const PreviewCard = () => {
     return <p>Card not found.</p>;
   }
 
-  const { buyCard, buySpecialCardItem, locked } =
-    useStore();
+  const { buyCard, buySpecialCardItem } = useStore();
+  const { locked } = useShopStore();
 
   const { getCardData } = useCardData();
 

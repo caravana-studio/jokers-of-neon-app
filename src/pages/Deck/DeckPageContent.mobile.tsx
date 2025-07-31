@@ -26,9 +26,11 @@ export const DeckPageContentMobile = ({
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const navigate = useNavigate();
+  const { burnCard } = useStore();
+  const { cash, burnItem } = useShopStore();
 
   const handleCardSelect = (card: Card) => {
-    if (!burnItem.purchased) {
+    if (!burnItem?.purchased) {
       if (cardToBurn?.id === card.id) {
         setCardToBurn(undefined);
       } else {
@@ -37,8 +39,6 @@ export const DeckPageContentMobile = ({
     }
   };
 
-  const { burnCard, burnItem } = useStore();
-  const { cash } = useShopStore();
 
   const handleBurnCard = (card: Card) => {
     burnCard(card).then(() => navigate("/store"));
@@ -47,7 +47,7 @@ export const DeckPageContentMobile = ({
   const effectiveCost: number =
     burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem.cost);
+      : Number(burnItem?.cost);
 
   const { backToGameButtonProps } = useBackToGameButton();
 
@@ -69,7 +69,7 @@ export const DeckPageContentMobile = ({
               disabled:
                 cardToBurn === undefined ||
                 cash < effectiveCost ||
-                burnItem.purchased,
+                burnItem?.purchased,
             }
           : undefined
       }

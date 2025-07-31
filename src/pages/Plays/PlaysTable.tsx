@@ -19,9 +19,9 @@ import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { parseHand } from "../../enums/hands.ts";
-import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 import { BLUE, GREY_LINE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import theme from "../../theme/theme";
@@ -41,7 +41,8 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { cash } = useGameStore();
   const { t } = useTranslation(["store"]);
 
-  const { pokerHandItems, locked, levelUpPlay, rerolling } = useStore();
+  const { levelUpPlay } = useStore();
+  const { pokerHandItems, locked } = useShopStore();
   const { isSmallScreen } = useResponsiveValues();
 
   const {

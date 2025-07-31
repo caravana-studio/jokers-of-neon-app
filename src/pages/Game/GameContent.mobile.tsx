@@ -24,8 +24,8 @@ import {
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
-import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";

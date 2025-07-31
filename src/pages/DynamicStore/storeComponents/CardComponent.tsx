@@ -7,6 +7,7 @@ import { useStore } from "../../../providers/StoreProvider";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { getCardUniqueId } from "../../../utils/getCardUniqueId";
 import { RerollingAnimation } from "../../store/StoreElements/RerollingAnimation";
+import { useShopStore } from "../../../state/useShopStore";
 
 interface CardComponentProps {
   id: "traditionals" | "modifiers" | "specials";
@@ -17,7 +18,7 @@ export const CardComponent = ({
   id,
   doubleRow = false,
 }: CardComponentProps) => {
-  const { commonCards, modifierCards, specialCards } = useStore();
+  const { commonCards, modifierCards, specialCards } = useShopStore();
   const flexRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
