@@ -7,6 +7,7 @@ import {
   BarButtonProps,
   MobileBottomBar,
 } from "../../components/MobileBottomBar";
+import { DelayedLoading } from "../../components/DelayedLoading";
 
 interface GameOverContentProps {
   gameId: number;
@@ -35,68 +36,72 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
   const { isSmallScreen } = useResponsiveValues();
 
   return (
-    <BackgroundDecoration contentHeight={"80%"}>
-      <Flex
-        w={"100%"}
-        h={"100%"}
-        px={isSmallScreen ? 0 : 16}
-        flexDirection={"column"}
-        justifyContent={"space-around"}
-      >
-        {isSmallScreen && <MobileDecoration />}
-        <Flex
-          height="100%"
-          flexDirection={{ base: "column", sm: loggedIn ? "column" : "row" }}
-          justifyContent={{ base: "center", sm: "space-around" }}
-          alignItems="center"
-          flexWrap={"wrap"}
-          zIndex={1}
-          // w={loggedIn ? "70%" : { base: "70%", sm: "100%" }}
-          w={"100%"}
-        >
-          <Flex flexDirection="column" width={{ base: "80%", sm: "50%" }}>
-            <Heading
-              size={{ base: "sm", sm: "md" }}
-              variant="italic"
-              textAlign={"center"}
-              mb={{ base: 0, sm: 3 }}
-            >
-              {t("game-over.gameOver-msj")}
-            </Heading>
-            <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
-              {congratulationsMsj}
-            </Text>
-            <Leaderboard
-              gameId={gameId}
-              lines={4}
-              filterLoggedInPlayers={leaderboardFilterLoggedInPlayers}
-            />
-            {isSmallScreen && <Flex h="70px" />}
-          </Flex>
+    <DelayedLoading ms={100}>
+      <Flex w={"100%"} h={"100%"}>
+        <BackgroundDecoration contentHeight={"80%"}>
           <Flex
+            w={"100%"}
+            h={"100%"}
+            px={isSmallScreen ? 0 : 16}
             flexDirection={"column"}
-            width={{ base: "100%", sm: loggedIn ? "30%" : "auto" }}
-            gap={{ base: 4, sm: 8 }}
-            justifyContent={"center"}
-            alignItems={"center"}
+            justifyContent={"space-around"}
           >
-            {actualPlayerPosition !== undefined && !loggedIn && (
-              <Text>
-                {t("game-over.current-position", {
-                  position: actualPlayerPosition,
-                })}
-              </Text>
-            )}
+            {isSmallScreen && <MobileDecoration />}
+            <Flex
+              height="100%"
+              flexDirection={"column"}
+              justifyContent={{ base: "center", sm: "space-around" }}
+              alignItems="center"
+              flexWrap={"wrap"}
+              zIndex={1}
+              w={"100%"}
+            >
+              <Flex flexDirection="column" width={{ base: "80%", sm: "50%" }}>
+                <Heading
+                  size={{ base: "sm", sm: "md" }}
+                  variant="italic"
+                  textAlign={"center"}
+                  mb={{ base: 0, sm: 3 }}
+                >
+                  {t("game-over.gameOver-msj")}
+                </Heading>
+                <Text size={"md"} textAlign={"center"} mb={10} mx={6}>
+                  {congratulationsMsj}
+                </Text>
+                <Leaderboard
+                  gameId={gameId}
+                  lines={4}
+                  filterLoggedInPlayers={leaderboardFilterLoggedInPlayers}
+                />
+                {isSmallScreen && <Flex h="70px" />}
+              </Flex>
+              <Flex
+                flexDirection={"column"}
+                width={{ base: "100%", sm: loggedIn ? "30%" : "auto" }}
+                gap={{ base: 4, sm: 8 }}
+                justifyContent={"center"}
+                alignItems={"center"}
+                pt={{ base: loggedIn ? 0 : 28, sm: 0 }}
+              >
+                {actualPlayerPosition !== undefined && !loggedIn && (
+                  <Text>
+                    {t("game-over.current-position", {
+                      position: actualPlayerPosition,
+                    })}
+                  </Text>
+                )}
+              </Flex>
+            </Flex>
+            <Flex width={{ base: "100%", sm: "80%", md: "60%" }} mx={"auto"}>
+              <MobileBottomBar
+                hideDeckButton
+                firstButton={firstButton}
+                secondButton={secondButton}
+              />
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex width={"100%"}>
-          <MobileBottomBar
-            hideDeckButton
-            firstButton={firstButton}
-            secondButton={secondButton}
-          />
-        </Flex>
+        </BackgroundDecoration>
       </Flex>
-    </BackgroundDecoration>
+    </DelayedLoading>
   );
 };
