@@ -27,12 +27,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Clean up lockfile and node_modules
+      - name: Clean install with legacy peer deps
         run: |
           rm -rf node_modules package-lock.json
-          npm install
-
-      - run: npm ci --legacy-peer-deps
+          npm install --legacy-peer-deps
 
       - name: Build project with increased memory limit
         run: npm run build --if-present
