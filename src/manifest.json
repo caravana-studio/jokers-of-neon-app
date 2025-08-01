@@ -1984,7 +1984,7 @@
     },
     {
       "address": "0x5ffe1c1bc1dd1a78fd46bebab10b8d055e9de7640aaa77d46478c2e2ce3693c",
-      "class_hash": "0x7ca3a8df9daa11046a8e27cb0f01b179ec2cbacb7c1ee8c485b3329e9efb4e3",
+      "class_hash": "0x1b98c935c3fac705e8a98f247b0e94c5ad170127336810e0fa139fcf72e5b91",
       "abi": [
         {
           "type": "impl",
@@ -2352,6 +2352,26 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::integer::u128>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transfer_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "new_owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "new_player_name",
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3321,6 +3341,7 @@
       "systems": [
         "dojo_init",
         "start_game",
+        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
@@ -3539,7 +3560,7 @@
     },
     {
       "address": "0x17a95f7b6356f459f8066b6a4f707e9b0c00a18d91585665a59a479489f4e94",
-      "class_hash": "0x417f568b9872e35cd7cc19a54d7819a7f5d54b4a1b1b5f7a1aef0b3e9fb66b1",
+      "class_hash": "0x29a58ed1b9c69c5c20720460fe01a67cbee7ae4e12aaa0527f9b38d36804d4f",
       "abi": [
         {
           "type": "impl",
@@ -3857,10 +3878,6 @@
                 {
                   "name": "game_id",
                   "type": "core::integer::u64"
-                },
-                {
-                  "name": "level",
-                  "type": "core::integer::u32"
                 }
               ],
               "outputs": [
