@@ -7,6 +7,7 @@ import wasm from "vite-plugin-wasm";
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
+    base: "./",
     plugins: [react(), wasm(), topLevelAwait(), svgx()],
     build: {
       outDir: "dist",

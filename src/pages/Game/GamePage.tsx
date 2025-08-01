@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { LevelUpFirstDiscartedHandAnimation } from "../../components/animations/LevelUpFirstDiscartedHandAnimation";
 import { SecondChanceCardAnimation } from "../../components/animations/SecondChanceCardAnimation";
 import { SpecialCardAnimation } from "../../components/animations/SpecialCardAnimation";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
@@ -50,7 +51,7 @@ export const GamePage = () => {
   useRedirectByGameState();
 
   return (
-    <>
+    <DelayedLoading ms={200}>
       {!skipRageAnimationRef.current && <RageRoundAnimation />}
       <LevelUpFirstDiscartedHandAnimation />
       {animateSecondChanceCard && <SecondChanceCardAnimation />}
@@ -71,6 +72,6 @@ export const GamePage = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-    </>
+    </DelayedLoading>
   );
 };

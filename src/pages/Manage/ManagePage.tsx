@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { GoBackButton } from "../../components/GoBackButton";
 import { MobileCardHighlight } from "../../components/MobileCardHighlight";
 import { MobilePowerupHighlight } from "../../components/MobilePowerupHighlight";
 import { getPowerUpData } from "../../data/powerups";
 import { useDojo } from "../../dojo/useDojo";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { usePowerupHighlight } from "../../providers/HighlightProvider/PowerupHighlightProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -15,7 +17,6 @@ import { PowerUp } from "../../types/Powerup/PowerUp";
 import { ManagePageContent } from "./ManagePageContent";
 import { ManagePageContentMobile } from "./ManagePageContent.mobile";
 import { SellButton } from "./SellButton";
-import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
@@ -77,7 +78,7 @@ export const ManagePage = () => {
   );
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       {highlightedSpecialCard && (
         <MobileCardHighlight
           card={highlightedSpecialCard as Card}
@@ -155,6 +156,6 @@ export const ManagePage = () => {
           }}
         />
       )}
-    </>
+    </DelayedLoading>
   );
 };
