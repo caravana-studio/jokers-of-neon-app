@@ -5,6 +5,7 @@ import {
   cashSfx,
   discardSfx,
   multiSfx,
+  acumSfx,
   negativeMultiSfx,
   pointsSfx,
 } from "../constants/sfx.ts";
@@ -155,6 +156,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: acumSound } = useAudio(acumSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
@@ -300,6 +302,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedPowerUp,
             pointsSound,
             multiSound,
+            acumSound,
             negativeMultiSound,
             cashSound,
             setPoints,
