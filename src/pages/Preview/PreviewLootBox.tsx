@@ -45,7 +45,6 @@ export const PreviewLootBox = () => {
       state: { pack: pack },
     });
     setState(GameStateEnum.Lootbox);
-    removeCash(pack.discount_cost > 0 ? pack.discount_cost : pack.cost);
   };
   const buyButton = (
     <Button
