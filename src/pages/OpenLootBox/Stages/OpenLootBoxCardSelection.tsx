@@ -8,6 +8,7 @@ import { useDojo } from "../../../dojo/DojoContext";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useLootBoxStore } from "../../../state/useLootBoxStore";
@@ -31,7 +32,7 @@ export const OpenLootBoxCardSelection = () => {
     selectAll,
     selectNone,
   } = useLootBoxStore();
-  
+
   const {
     id: gameId,
     specialSlots,
@@ -45,10 +46,22 @@ export const OpenLootBoxCardSelection = () => {
     fetchLootBoxResult(client, gameId);
   }, []);
   const { selectCardsFromPack } = useStore();
+  const { showErrorToast } = useCustomToast();
 
   const confirmSelectCards = () => {
-    selectCardsFromPack(cardsToKeep.map((c) => c.idx));
-    reset();
+    selectCardsFromPack(cardsToKeep.map((c) => c.idx))
+      .then((response) => {
+        if (response) {
+          reset();
+        } else {
+          showErrorToast("Error selecting cards");
+          navigate(GameStateEnum.Lootbox);
+        }
+      })
+      .catch(() => {
+        showErrorToast("Error selecting cards");
+        navigate(GameStateEnum.Lootbox);
+      });
     navigate(GameStateEnum.Store);
   };
 
