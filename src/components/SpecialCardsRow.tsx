@@ -6,12 +6,12 @@ import { useGameContext } from "../providers/GameProvider.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { BACKGROUND_BLUE } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
-import { AnimatedCard } from "./AnimatedCard.tsx";
 import { CardImage3D } from "./CardImage3D.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { ConfirmationModal } from "./ConfirmationModal.tsx";
 import { LockedSlot } from "./LockedSlot/LockedSlot.tsx";
 import { UnlockedSlot } from "./UnlockedSlot.tsx";
+import { AnimatedParticleCard } from "./AnimatedParticleCard.tsx";
 import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 
 export const SpecialCardsRow = () => {
@@ -86,7 +86,7 @@ export const SpecialCardsRow = () => {
                 setHoveredButton(null);
               }}
             >
-              <AnimatedCard
+              <AnimatedParticleCard
                 idx={card.idx}
                 isSpecial={!!card.isSpecial}
                 scale={cardScale}
@@ -138,7 +138,7 @@ export const SpecialCardsRow = () => {
                     <CardImage3D card={card} height={`${cardHeight}px`} small />
                   </Box>
                 </Box>
-              </AnimatedCard>
+              </AnimatedParticleCard>
             </Flex>
           );
         })}
