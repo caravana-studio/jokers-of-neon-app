@@ -170,6 +170,7 @@ export const GameContent = () => {
     <Box
       sx={{
         height: "100%",
+        width: "100%",
       }}
     >
       <Box

@@ -2359,26 +2359,6 @@
             },
             {
               "type": "function",
-              "name": "transfer_game",
-              "inputs": [
-                {
-                  "name": "game_id",
-                  "type": "core::integer::u64"
-                },
-                {
-                  "name": "new_owner",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                },
-                {
-                  "name": "new_player_name",
-                  "type": "core::felt252"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
               "name": "surrender",
               "inputs": [
                 {
@@ -3341,7 +3321,6 @@
       "systems": [
         "dojo_init",
         "start_game",
-        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
