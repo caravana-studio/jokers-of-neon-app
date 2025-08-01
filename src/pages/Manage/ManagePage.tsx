@@ -58,12 +58,6 @@ export const ManagePage = () => {
     highlightPowerup(powerup);
   };
 
-  useEffect(() => {
-    if (client && gameId) {
-      refetchGameStore(client, gameId);
-    }
-  }, [client, gameId]);
-
   const sellSpecialButton = (
     <SellButton
       preselectedCard={highlightedSpecialCard as Card}

@@ -31,8 +31,8 @@ export const PreviewSlot = () => {
       ? cash < Number(specialSlotItem?.discount_cost ?? 0)
       : cash < Number(price));
 
-  const handleBuyClick = async () => {
-    await buySpecialSlot();
+  const handleBuyClick = () => {
+    buySpecialSlot();
     navigate(GameStateEnum.Store);
   };
 

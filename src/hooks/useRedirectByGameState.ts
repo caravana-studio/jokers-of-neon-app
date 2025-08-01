@@ -13,7 +13,7 @@ export const useRedirectByGameState = (
   const { state } = useGameStore();
 
   useEffect(() => {
-
+    console.log("useRedirectByGameState", state);
     if (state !== GameStateEnum.NotStarted) {
       const currentPath = location.pathname;
 

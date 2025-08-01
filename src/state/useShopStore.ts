@@ -18,6 +18,7 @@ const sortByPowerUpId = (a: PowerUp, b: PowerUp) =>
   (Number(a.power_up_id) ?? 0) - (Number(b.power_up_id) ?? 0);
 
 type ShopStore = {
+  loadedItems: boolean;
   specialCards: Card[];
   modifierCards: Card[];
   commonCards: Card[];
@@ -26,7 +27,6 @@ type ShopStore = {
   specialSlotItem: SlotSpecialCardsItem | null;
   burnItem: BurnItem | null;
   powerUps: PowerUp[];
-  cash: number;
   loading: boolean;
   rerolling: boolean;
   locked: boolean;
@@ -35,6 +35,7 @@ type ShopStore = {
   setLoading: (loading: boolean) => void;
   setRerolling: (rerolling: boolean) => void;
   setLocked: (locked: boolean) => void;
+  reset: () => void;
 
   buySpecialCard: (idx: number) => void;
   rollbackBuySpecialCard: (idx: number) => void;
@@ -50,11 +51,9 @@ type ShopStore = {
   rollbackBuyPowerUp: (idx: number) => void;
   buySlotSpecialCard: () => void;
   rollbackBuySlotSpecialCard: () => void;
+  burnCard: () => void;
+  rollbackBurnCard: () => void;
 };
-
-function getCost(item: any): number {
-  return item.price ?? item.cost_discount ?? item.cost ?? 0;
-}
 
 function updateList<T extends { idx: number; purchased?: boolean }>(
   list: T[],
@@ -65,6 +64,7 @@ function updateList<T extends { idx: number; purchased?: boolean }>(
 }
 
 export const useShopStore = create<ShopStore>((set, get) => ({
+  loadedItems: false,
   specialCards: [],
   modifierCards: [],
   commonCards: [],
@@ -73,7 +73,6 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   specialSlotItem: null,
   burnItem: null,
   powerUps: [],
-  cash: 0,
   loading: true,
   rerolling: false,
   locked: false,
@@ -90,20 +89,19 @@ export const useShopStore = create<ShopStore>((set, get) => ({
         specialSlotItem: shopItems.specialSlotItem,
         burnItem: shopItems.burnItem,
         powerUps: shopItems.powerUpItems.sort(sortByPowerUpId),
-        cash: shopItems.cash,
         loading: false,
+        loadedItems: true,
       });
     }
   },
+
+  reset: () => set({ loadedItems: false }),
 
   setRerolling: (rerolling: boolean) => set({ rerolling }),
 
   buySpecialCard: (idx) =>
     set((state) => {
-      const item = state.specialCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         specialCards: updateList(state.specialCards, idx, (i) => ({
           ...i,
           purchased: true,
@@ -113,10 +111,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuySpecialCard: (idx) =>
     set((state) => {
-      const item = state.specialCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         specialCards: updateList(state.specialCards, idx, (i) => ({
           ...i,
           purchased: false,
@@ -126,10 +121,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buyModifierCard: (idx) =>
     set((state) => {
-      const item = state.modifierCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         modifierCards: updateList(state.modifierCards, idx, (i) => ({
           ...i,
           purchased: true,
@@ -139,10 +131,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuyModifierCard: (idx) =>
     set((state) => {
-      const item = state.modifierCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         modifierCards: updateList(state.modifierCards, idx, (i) => ({
           ...i,
           purchased: false,
@@ -152,10 +141,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buyCommonCard: (idx) =>
     set((state) => {
-      const item = state.commonCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         commonCards: updateList(state.commonCards, idx, (i) => ({
           ...i,
           purchased: true,
@@ -165,10 +151,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuyCommonCard: (idx) =>
     set((state) => {
-      const item = state.commonCards.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         commonCards: updateList(state.commonCards, idx, (i) => ({
           ...i,
           purchased: false,
@@ -178,10 +161,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buyPokerHand: (idx) =>
     set((state) => {
-      const item = state.pokerHandItems.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         pokerHandItems: updateList(state.pokerHandItems, idx, (i) => ({
           ...i,
           purchased: true,
@@ -191,10 +171,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuyPokerHand: (idx) =>
     set((state) => {
-      const item = state.pokerHandItems.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         pokerHandItems: updateList(state.pokerHandItems, idx, (i) => ({
           ...i,
           purchased: false,
@@ -204,10 +181,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buyBlisterPack: (idx) =>
     set((state) => {
-      const item = state.packs.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         packs: updateList(state.packs, idx, (i) => ({
           ...i,
           purchased: true,
@@ -217,10 +191,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuyBlisterPack: (idx) =>
     set((state) => {
-      const item = state.packs.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         packs: updateList(state.packs, idx, (i) => ({
           ...i,
           purchased: false,
@@ -230,10 +201,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buyPowerUp: (idx) =>
     set((state) => {
-      const item = state.powerUps.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash - cost,
         powerUps: updateList(state.powerUps, idx, (i) => ({
           ...i,
           purchased: true,
@@ -243,10 +211,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuyPowerUp: (idx) =>
     set((state) => {
-      const item = state.powerUps.find((i) => i.idx === idx);
-      const cost = getCost(item);
       return {
-        cash: state.cash + cost,
         powerUps: updateList(state.powerUps, idx, (i) => ({
           ...i,
           purchased: false,
@@ -256,9 +221,7 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   buySlotSpecialCard: () =>
     set((state) => {
-      const cost = getCost(state.specialSlotItem);
       return {
-        cash: state.cash - cost,
         specialSlotItem: state.specialSlotItem
           ? { ...state.specialSlotItem, purchased: true }
           : null,
@@ -267,14 +230,24 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 
   rollbackBuySlotSpecialCard: () =>
     set((state) => {
-      const cost = getCost(state.specialSlotItem);
       return {
-        cash: state.cash + cost,
         specialSlotItem: state.specialSlotItem
           ? { ...state.specialSlotItem, purchased: false }
           : null,
       };
     }),
+
+  burnCard: () => set((state) => {
+    return {
+      burnItem: state.burnItem ? { ...state.burnItem, purchased: true } : null,
+    }
+  }),
+
+  rollbackBurnCard: () => set((state) => {
+    return {
+      burnItem: state.burnItem ? { ...state.burnItem, purchased: false } : null,
+    }
+  }),
 
   setLocked: (locked: boolean) => set({ locked }),
 

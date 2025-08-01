@@ -3,6 +3,7 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
+import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
@@ -41,7 +42,7 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />
-{/*       <Route
+      {/*       <Route
         path="/mods"
         element={
           <AnimatedPage>
@@ -115,14 +116,16 @@ export const AppRoutes = () => {
           <StoreProvider>
             <AnimatedPage>
               <GameStoreLoader>
-                <DynamicStorePage />
+                <ShopStoreLoader>
+                  <DynamicStorePage />
+                </ShopStoreLoader>
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
       />
 
-{/*       <Route
+      {/*       <Route
         path="/tutorial"
         element={
           <TutorialGameProvider>
@@ -140,7 +143,9 @@ export const AppRoutes = () => {
           <StoreProvider>
             <AnimatedPage>
               <GameStoreLoader>
-                <PreviewPage />
+                <GameStoreLoader>
+                  <PreviewPage />
+                </GameStoreLoader>
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
@@ -221,7 +226,9 @@ export const AppRoutes = () => {
               <PowerupHighlightProvider>
                 <AnimatedPage>
                   <GameStoreLoader>
-                    <ManagePage />
+                    <GameStoreLoader>
+                      <ManagePage />
+                    </GameStoreLoader>
                   </GameStoreLoader>
                 </AnimatedPage>
               </PowerupHighlightProvider>

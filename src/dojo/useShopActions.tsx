@@ -8,6 +8,7 @@ import { useAnimationStore } from "../state/useAnimationStore";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useDeckStore } from "../state/useDeckStore";
 import { useGameStore } from "../state/useGameStore";
+import { useShopStore } from "../state/useShopStore";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
@@ -35,10 +36,11 @@ export const useShopActions = () => {
   const { fetchDeck } = useDeckStore();
   const { getCardData } = useCardData();
 
-  const { setDestroyedSpecialCardId } =
-    useAnimationStore();
+  const { setDestroyedSpecialCardId } = useAnimationStore();
 
-  const { maxPowerUpSlots, setPowerUps } = useGameStore();
+  const { setPowerUps } = useGameStore();
+
+  const { reset } = useShopStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -60,6 +62,7 @@ export const useShopActions = () => {
         const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
+        reset();
         return {
           success: true,
           cards: getCardsFromEvents(tx.value.events),

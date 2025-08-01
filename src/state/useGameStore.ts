@@ -33,7 +33,6 @@ type GameStore = {
   targetScore: number;
   state: GameStateEnum;
   specialSlots: number;
-  specialsLength: number;
   rageCards: Card[];
   specialCards: Card[];
   availableRerolls: number;
@@ -51,9 +50,10 @@ type GameStore = {
   specialSwitcherOn: boolean;
   plays: LevelPokerHand[];
   nodeRound: number;
+  shopId: number;
 
   refetchGameStore: (client: any, gameId: number) => Promise<void>;
-  setGameId: (client: any, gameId: number) => void;
+  setGameId: (gameId: number) => void;
   removeGameId: () => void;
   play: () => void;
   discard: () => void;
@@ -82,6 +82,7 @@ type GameStore = {
   addPowerUp: (powerUp: PowerUp) => void;
   setPowerUps: (powerUps: (PowerUp | null)[]) => void;
   refetchPowerUps: (client: any, gameId: number) => Promise<void>;
+  refetchSpecialCards: (client: any, gameId: number) => Promise<void>;
   unPreSelectAllPowerUps: () => void;
   setRoundRewards: (rewards: RoundRewards | undefined) => void;
   setGameLoading: (loading: boolean) => void;
@@ -93,6 +94,7 @@ type GameStore = {
   setRound: (round: number) => void;
   addSpecialSlot: () => void;
   removeSpecialSlot: () => void;
+  setShopId: (shopId: number) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -137,7 +139,6 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     rageCards,
     isRageRound: rageCards.length > 0,
     availableRerolls: game.available_rerolls,
-    specialsLength: game.current_specials_len,
     modId: game.mod_id,
     isClassic: game.mod_id === CLASSIC_MOD_ID,
     totalScore: game.player_score,
@@ -148,6 +149,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     powerUps,
     modCardsConfig,
     plays,
+    shopId: nodeRoundData,
   });
 };
 
@@ -171,7 +173,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   specialCards: [],
   isRageRound: false,
   availableRerolls: 0,
-  specialsLength: 0,
   modId: "jokers_of_neon_classic",
   isClassic: true,
   maxSpecialCards: 7,
@@ -185,15 +186,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   specialSwitcherOn: true,
   plays: [],
   nodeRound: 0,
+  shopId: 0,
 
   refetchGameStore: async (client, gameId) => {
+    console.log("refetchingGameStore");
     await doRefetchGameStore(client, gameId, set);
   },
 
-  setGameId: (client, gameId) => {
+  refetchSpecialCards: async (client, gameId) => {
+    const specialCards = await getSpecialCardsView(client, gameId);
+    set({
+      specialCards,
+    });
+  },
+
+  setGameId: (gameId) => {
     set({ id: gameId });
     localStorage.setItem(GAME_ID, gameId.toString());
-    doRefetchGameStore(client, gameId, set);
   },
 
   removeGameId: () => {
@@ -238,11 +247,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addCash: (cashToAdd: number) => {
     const { cash: currentCash } = get();
+    console.log("currentCash", currentCash);
+    console.log("cashToAdd", cashToAdd);
+    console.log("new cash", currentCash + cashToAdd);
     set({ cash: currentCash + cashToAdd });
   },
 
   removeCash: (cashToRemove: number) => {
     const { cash: currentCash } = get();
+    console.log("currentCash", currentCash);
+    console.log("cashToRemove", cashToRemove);
+    console.log("new cash", currentCash - cashToRemove);
     set({ cash: currentCash - cashToRemove });
   },
 
@@ -404,5 +419,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       specialSlots: state.specialSlots - 1,
     }));
+  },
+
+  setShopId: (shopId) => {
+    set({ shopId });
   },
 }));

@@ -38,7 +38,7 @@ const PreviewCard = () => {
 
   const { getCardData } = useCardData();
 
-  const { cash, specialSlots, specialsLength } = useGameStore();
+  const { cash, specialSlots, specialCards } = useGameStore();
   const { name, description } = getCardData(card.card_id ?? 0);
 
   const notEnoughCash =
@@ -54,15 +54,14 @@ const PreviewCard = () => {
           : cash < card.temporary_price)));
 
   const noSpaceForSpecialCards =
-    card.isSpecial && specialsLength >= specialSlots;
+    card.isSpecial && specialCards.length >= specialSlots;
 
   const onBuyClick = () => {
+    navigate(GameStateEnum.Store);
     if (card.isSpecial) {
-      buySpecialCardItem(card, duration === Duration.TEMPORAL).then(() =>
-        navigate(GameStateEnum.Store)
-      );
+      buySpecialCardItem(card, duration === Duration.TEMPORAL);
     } else {
-      buyCard(card).then(() => navigate(GameStateEnum.Store));
+      buyCard(card);
     }
   };
 

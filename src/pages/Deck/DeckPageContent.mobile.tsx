@@ -8,10 +8,11 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { Tab, TabPattern } from "../../patterns/tabs/TabPattern";
 import { useStore } from "../../providers/StoreProvider";
+import { useGameStore } from "../../state/useGameStore";
+import { useShopStore } from "../../state/useShopStore";
 import { Card } from "../../types/Card";
 import { PlaysAvailableTable } from "../Plays/PlaysAvailableTable";
 import { Deck } from "./Deck";
-import { useShopStore } from "../../state/useShopStore";
 
 interface DeckPageContentMobileProps {
   state: {
@@ -27,7 +28,8 @@ export const DeckPageContentMobile = ({
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const navigate = useNavigate();
   const { burnCard } = useStore();
-  const { cash, burnItem } = useShopStore();
+  const { burnItem } = useShopStore();
+  const { cash } = useGameStore();
 
   const handleCardSelect = (card: Card) => {
     if (!burnItem?.purchased) {
@@ -39,9 +41,9 @@ export const DeckPageContentMobile = ({
     }
   };
 
-
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(() => navigate("/store"));
+    burnCard(card);
+    navigate("/store");
   };
 
   const effectiveCost: number =

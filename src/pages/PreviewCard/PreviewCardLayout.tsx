@@ -48,7 +48,7 @@ const PreviewCardLayout = () => {
   }; */
 
   const { getCardData } = useCardData();
-  const { cash, specialSlots, specialsLength } = useGameStore();
+  const { cash, specialSlots, specialCards } = useGameStore();
   const { buyCard, buyPack } = useStore();
   const { locked } = useShopStore();
 
@@ -60,7 +60,7 @@ const PreviewCardLayout = () => {
 
   const notEnoughCash = !card.price || cash < card.price;
   const noSpaceForSpecialCards =
-    card.isSpecial && specialsLength >= specialSlots;
+    card.isSpecial && specialCards.length >= specialSlots;
 
   const fontTitleSize = ["s", "s", "l"];
   const fontSize = ["md", "md", "xl"];

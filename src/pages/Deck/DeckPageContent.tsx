@@ -6,9 +6,10 @@ import { CashSymbol } from "../../components/CashSymbol";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useBackToGameButton } from "../../components/useBackToGameButton";
 import { useStore } from "../../providers/StoreProvider";
+import { useGameStore } from "../../state/useGameStore";
+import { useShopStore } from "../../state/useShopStore";
 import { Card } from "../../types/Card";
 import { Deck } from "./Deck";
-import { useShopStore } from "../../state/useShopStore";
 
 interface DeckPageContentProps {
   state: {
@@ -21,8 +22,9 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const [cardToBurn, setCardToBurn] = useState<Card>();
   const { burnCard } = useStore();
-  const { cash, burnItem } = useShopStore();
+  const { burnItem } = useShopStore();
   const navigate = useNavigate();
+  const { cash } = useGameStore();
 
   const { backToGameButton } = useBackToGameButton();
 
@@ -37,7 +39,8 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
   };
 
   const handleBurnCard = (card: Card) => {
-    burnCard(card).then(() => navigate("/store"));
+    burnCard(card);
+    navigate("/store");
     setCardToBurn(undefined);
   };
 

@@ -42,8 +42,7 @@ export const DynamicStorePage = () => {
 
   const { setLoading } = useStore();
   const { specialSlotItem } = useShopStore();
-  const { round: shopId } = useGameStore();
-
+  const { shopId } = useGameStore();
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );

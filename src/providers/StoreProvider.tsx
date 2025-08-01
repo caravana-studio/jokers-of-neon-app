@@ -5,12 +5,14 @@ import { BlisterPackItem } from "../dojo/typescript/models.gen";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { useShopActions } from "../dojo/useShopActions";
 import { useAudio } from "../hooks/useAudio.tsx";
+import { useDeckStore } from "../state/useDeckStore.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 import { useShopStore } from "../state/useShopStore.ts";
 import { Card } from "../types/Card";
 import { PokerHandItem } from "../types/PokerHandItem";
 import { PowerUp } from "../types/Powerup/PowerUp.ts";
-import { getCardType } from "../utils/getCardType";
+import { getCardType } from "../utils/getCardType.ts";
+import { useCardData } from "./CardDataProvider.tsx";
 
 interface IStoreContext {
   buyCard: (card: Card) => Promise<boolean>;
@@ -75,6 +77,10 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLoading,
     setRerolling,
     setLocked,
+    specialSlotItem,
+    burnItem,
+    burnCard: stateBurnCard,
+    rollbackBurnCard,
   } = useShopStore();
 
   const {
@@ -86,7 +92,19 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     addPowerUp,
     reroll: stateReroll,
     rollbackReroll,
+    addCash,
+    removeCash,
+    refetchSpecialCards,
+    refetchPlays,
+    refetchPowerUps,
+    addSpecialSlot,
+    removeSpecialSlot,
   } = useGameStore();
+
+  const { fetchDeck } = useDeckStore();
+
+  const { getCardData } = useCardData();
+
   const { play: levelUpHandSound } = useAudio(levelUpSfx, 0.45);
   const { play: buySound } = useAudio(buySfx, 0.5);
   const { play: rerollSound } = useAudio(rerollSfx, 0.25);
@@ -131,18 +149,25 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
     stateBuyCard(card);
+    const cost = card?.discount_cost ? card.discount_cost : card?.price ?? 0;
+    console.log("removing cash", cost);
+    removeCash(cost);
 
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card))
       .then(async ({ success }) => {
+        console.log("then", success);
         if (!success) {
           stateRollbackBuyCard(card);
+          console.log("no success, adding cash", cost);
+          addCash(cost);
         }
-
-        fetchShopItems();
+        fetchDeck(client, gameId, getCardData);
         return success;
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+        console.log("catch, adding cash", cost);
+        addCash(cost);
         return false;
       })
       .finally(() => {
@@ -156,18 +181,24 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
     stateBuyPowerUp(powerUp.idx);
+    const cost = powerUp?.discount_cost
+      ? powerUp.discount_cost
+      : powerUp?.cost ?? 0;
+    removeCash(cost);
+
     const promise = dojoBuyPowerUp(gameId, powerUp.idx);
     promise
       .then((response) => {
         if (response) {
-          addPowerUp(powerUp);
-          fetchShopItems();
+          refetchPowerUps(client, gameId);
         } else {
           rollbackBuyPowerUp(powerUp.idx);
+          addCash(cost);
         }
       })
       .catch(() => {
         rollbackBuyPowerUp(powerUp.idx);
+        addCash(cost);
       })
       .finally(() => {
         setLocked(false);
@@ -179,12 +210,27 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     buySound();
     setLocked(true);
 
+    const cost = burnItem?.discount_cost
+      ? burnItem.discount_cost
+      : burnItem?.cost ?? 0;
+    removeCash(cost);
+    stateBurnCard();
+
     const promise = dojoBurnCard(gameId, card.card_id ?? 0)
       .then(async ({ success }) => {
-        fetchShopItems();
+        if (success) {
+          fetchDeck(client, gameId, getCardData);
+        } else {
+          rollbackBurnCard();
+          addCash(cost);
+        }
         return success;
       })
-      .catch(() => false)
+      .catch(() => {
+        rollbackBurnCard();
+        addCash(cost);
+        return false;
+      })
       .finally(() => {
         setLocked(false);
       });
@@ -200,16 +246,28 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     stateBuyCard(card);
 
+    const regularCost = card?.discount_cost
+      ? card.discount_cost
+      : card?.price ?? 0;
+    const temporalCost = card?.temporary_discount_cost
+      ? card.temporary_discount_cost
+      : card?.temporary_price ?? 0;
+    const cost = isTemporal ? temporalCost : regularCost;
+    removeCash(cost);
+
     const promise = dojoBuySpecialCard(gameId, card.idx, isTemporal)
       .then(async ({ success }) => {
         if (!success) {
           stateRollbackBuyCard(card);
+          addCash(cost);
+        } else {
+          refetchSpecialCards(client, gameId);
         }
-        fetchShopItems();
         return success;
       })
       .catch(() => {
         stateRollbackBuyCard(card);
+        addCash(cost);
         return false;
       })
       .finally(() => {
@@ -220,18 +278,20 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   };
 
   const buyPack = (pack: BlisterPackItem): Promise<boolean> => {
-    // buyBlisterPack(Number(pack.idx));
+    const cost = pack?.discount_cost ? pack.discount_cost : pack?.cost ?? 0;
+    removeCash(cost);
+    buyBlisterPack(Number(pack.idx));
     const promise = dojoBuyPack(gameId, Number(pack.idx))
       .then(async ({ success }) => {
-        /*         if (!success) {
+        if (!success) {
+          addCash(cost);
           rollbackBuyBlisterPack(Number(pack.idx));
-        } */
-        fetchShopItems();
-
+        }
         return success;
       })
       .catch(() => {
-        // rollbackBuyBlisterPack(Number(pack.idx));
+        addCash(cost);
+        rollbackBuyBlisterPack(Number(pack.idx));
         return false;
       });
     return promise;
@@ -240,6 +300,8 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const selectCardsFromPack = (cardIndices: number[]): Promise<boolean> => {
     const promise = dojoSelectCardsFromPack(gameId, cardIndices)
       .then(async ({ success }) => {
+        refetchSpecialCards(client, gameId);
+        fetchDeck(client, gameId, getCardData);
         return success;
       })
       .catch(() => {
@@ -275,16 +337,22 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     levelUpHandSound();
     setLocked(true);
     buyPokerHand(item.idx);
+    const cost = item?.discount_cost ? item.discount_cost : item?.cost ?? 0;
+    removeCash(cost);
     const promise = dojoLevelUpHand(gameId, item.idx)
       .then(async ({ success }) => {
         if (!success) {
           rollbackBuyPokerHand(item.idx);
+          addCash(cost);
+        } else {
+          refetchPlays(client, gameId);
         }
 
         return success;
       })
       .catch(() => {
         rollbackBuyPokerHand(item.idx);
+        addCash(cost);
         return false;
       })
       .finally(() => {
@@ -296,14 +364,25 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
   const buySpecialSlot = (): Promise<boolean> => {
     setLocked(true);
     buySlotSpecialCard();
-
+    const cost = specialSlotItem?.discount_cost
+      ? specialSlotItem.discount_cost
+      : specialSlotItem?.cost ?? 0;
+    removeCash(cost);
+    addSpecialSlot();
     const promise = dojoBuySpecialSlot(gameId)
       .then(async ({ success }) => {
+        if (!success) {
+          rollbackBuySlotSpecialCard();
+          addCash(cost);
+          removeSpecialSlot();
+        }
         fetchShopItems();
         return success;
       })
       .catch(() => {
         rollbackBuySlotSpecialCard();
+        removeSpecialSlot();
+        addCash(cost);
         return false;
       })
       .finally(() => {

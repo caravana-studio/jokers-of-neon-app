@@ -41,7 +41,7 @@ export const GameBox = ({
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
-      setGameId(client, game.id);
+      setGameId(game.id);
       navigate(`/redirect`);
     }
   };

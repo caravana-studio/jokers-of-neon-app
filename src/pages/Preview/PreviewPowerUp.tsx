@@ -43,7 +43,8 @@ export const PreviewPowerUp = () => {
 
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
-    buyPowerUp(powerUp).then(() => navigate(GameStateEnum.Store));
+    navigate(GameStateEnum.Store)
+    buyPowerUp(powerUp);
   };
   const buyButton = isSmallScreen ? (
     <Button
