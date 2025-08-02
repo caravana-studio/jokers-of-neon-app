@@ -3,6 +3,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { useCardData } from "../providers/CardDataProvider";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useDeckStore } from "../state/useDeckStore";
 import { useGameStore } from "../state/useGameStore";
 
@@ -12,14 +13,19 @@ export const GameStoreLoader = ({ children }: PropsWithChildren) => {
     setup: { client },
   } = useDojo();
   const { refetchGameStore, id: gameId, state } = useGameStore();
-
+  const { refetchCurrentHandStore } = useCurrentHandStore();
   const { fetchDeck } = useDeckStore();
   const { getCardData } = useCardData();
 
   useEffect(() => {
     if (client && gameId) {
       if (state === GameStateEnum.NotSet) {
-        refetchGameStore(client, gameId).then(() => {
+        const allPromises = [
+          refetchCurrentHandStore(client, gameId),
+          refetchGameStore(client, gameId),
+        ];
+
+        Promise.all(allPromises).then(() => {
           setIsLoading(false);
         });
       } else {

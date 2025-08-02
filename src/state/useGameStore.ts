@@ -207,7 +207,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   removeGameId: () => {
     localStorage.removeItem(GAME_ID);
-    set({ id: 0 });
+    set({ id: 0, state: GameStateEnum.NotSet });
   },
 
   play: () => {
