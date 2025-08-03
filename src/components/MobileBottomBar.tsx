@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
 import React from "react";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
@@ -61,6 +62,7 @@ export const MobileBottomBar = ({
   navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
+  const { isSmallScreen } = useResponsiveValues();
 
   const uniqueFirstButton = firstButton ?? firstButtonReactNode;
   const uniqueSecondButton = secondButton ?? secondButtonReactNode;
@@ -82,21 +84,24 @@ export const MobileBottomBar = ({
       mx={4}
       mb={8}
       mt={3}
-      justifyContent={"space-between"}
+      justifyContent={isSmallScreen ? "space-between" : "center "}
+      gap={isSmallScreen ? 0 : 8}
       alignItems={"center"}
       zIndex={1000}
     >
-      <GameMenuBtn
-        showTutorial={
-          setRun
-            ? () => {
-                setRun(true);
-              }
-            : () => {
-                navigate("/tutorial");
-              }
-        }
-      />
+      {isSmallScreen && (
+        <GameMenuBtn
+          showTutorial={
+            setRun
+              ? () => {
+                  setRun(true);
+                }
+              : () => {
+                  navigate("/tutorial");
+                }
+          }
+        />
+      )}
       {uniqueButton ? (
         <Box w="40%">
           {React.isValidElement(uniqueButton) ? (
@@ -123,22 +128,24 @@ export const MobileBottomBar = ({
           </Box>
         </>
       )}
-      <Flex
-        height={["30px", "45px"]}
-        justifyContent="center"
-        alignItems="center"
-        width={["30px", "45px"]}
-        border={hideDeckButton ? "none" : "1px solid white"}
-        borderRadius={["8px", "14px"]}
-        className="game-tutorial-step-9"
-        onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
-      >
-        {hideDeckButton ? (
-          <></>
-        ) : (
-          <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
-        )}
-      </Flex>
+      {isSmallScreen && (
+        <Flex
+          height={["30px", "45px"]}
+          justifyContent="center"
+          alignItems="center"
+          width={["30px", "45px"]}
+          border={hideDeckButton ? "none" : "1px solid white"}
+          borderRadius={["8px", "14px"]}
+          className="game-tutorial-step-9"
+          onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
+        >
+          {hideDeckButton ? (
+            <></>
+          ) : (
+            <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
+          )}
+        </Flex>
+      )}
     </Flex>
   );
 };
