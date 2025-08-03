@@ -1328,8 +1328,8 @@
   },
   "contracts": [
     {
-      "address": "0x50afcd99b52c32268b60b920766c78ee5c1aa715d50921346fa359b1b69c40b",
-      "class_hash": "0x4c47a9b00434cd6f4d5ad7aa4745c82eb0d71dfa207947459b0f781aa4e3dc",
+      "address": "0x39452680b34b071aab99733c2f5d004f3c0eb9675a1c565605dc7acd2ceee6d",
+      "class_hash": "0x26661c4bb5abb45010bc35ec693a4deda06ea85093736235c409ebe71a74751",
       "abi": [
         {
           "type": "impl",
@@ -1983,8 +1983,8 @@
       ]
     },
     {
-      "address": "0x67f4b97ad7c5eed0481e3f2e0c043264981cb3cd3d2a9e83d2215d783cf15b9",
-      "class_hash": "0x48331eacb06d03f9edcbe9aa7eb22e5f438c5b8f8b4e253ce4fbd0bc36767d6",
+      "address": "0x5ffe1c1bc1dd1a78fd46bebab10b8d055e9de7640aaa77d46478c2e2ce3693c",
+      "class_hash": "0x1b98c935c3fac705e8a98f247b0e94c5ad170127336810e0fa139fcf72e5b91",
       "abi": [
         {
           "type": "impl",
@@ -2352,6 +2352,26 @@
                 {
                   "name": "seed",
                   "type": "core::option::Option::<core::integer::u128>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transfer_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "new_owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "new_player_name",
+                  "type": "core::felt252"
                 }
               ],
               "outputs": [],
@@ -3321,6 +3341,7 @@
       "systems": [
         "dojo_init",
         "start_game",
+        "transfer_game",
         "surrender",
         "upgrade",
         "mint",
@@ -3538,8 +3559,8 @@
       ]
     },
     {
-      "address": "0x5d2f36f7f3f3307cd54356594eab093126f9ffb104656f887d4fe3837a9644d",
-      "class_hash": "0x62efebd958c1ff17b8bcfc7803b4eb1ce33344e3725c5009e96aafae9bf4ed9",
+      "address": "0x17a95f7b6356f459f8066b6a4f707e9b0c00a18d91585665a59a479489f4e94",
+      "class_hash": "0x29a58ed1b9c69c5c20720460fe01a67cbee7ae4e12aaa0527f9b38d36804d4f",
       "abi": [
         {
           "type": "impl",
@@ -4853,8 +4874,8 @@
       ]
     },
     {
-      "address": "0xfa0c7d4775493884c655d733168722c67af173953d018c1e491df3feee06bc",
-      "class_hash": "0x4bc5adb0a351b6379feb63ad4ac195eb5e3a8cb09c39e0b2ec657f926a7a445",
+      "address": "0x6ae57801b225155b296d011145a25542c0522e7f12397874cafb39189d3145",
+      "class_hash": "0xb848e3e5f0db7a074c563796214fea1f4822254f30b6edae7d18d0aab41fb5",
       "abi": [
         {
           "type": "impl",
@@ -5748,7 +5769,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2d7c4f200e8ad20c1be01e396830e4b66a49cb364228cc11c9077dad26b628c",
+      "class_hash": "0x62e5ffeb40aa84c1a6f9f0865305bd3d32df3880ab244952b1fdd3b13280ef5",
       "tag": "jokers_of_neon_core-GameTracker",
       "selector": "0x79881852a68773df960ad77f943df621daa2dd5b5d6e7ed6674d2218adf3d74"
     },
@@ -5814,7 +5835,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x1438e0bc41e55626521f2a6a95680bdc54c6483aa014c69aad1fa1099a3d70c",
+      "class_hash": "0x64acdfb412b08e799192351b71773967f6095bf24786d02520577ecfe28ad0e",
       "tag": "jokers_of_neon_core-PurchaseTracker",
       "selector": "0x2c1b2a1c84a968e8ce35c0a24216833d33c0ed5e1306b42d78e35b4d61e0bd1"
     },
@@ -5909,72 +5930,6 @@
       "class_hash": "0x40671e60384c35a909b698541f6f3e28d619c51242344bc08bbad2d49d8de3b",
       "tag": "jokers_of_neon_core-AchievementCompletedEvent",
       "selector": "0x2f32278c48ba859150a441098c61524f72ebb8ee80dbb52ff57725b3b2f7822"
-    },
-    {
-      "members": [],
-      "class_hash": "0x3edec5b64fe0612b6c089370753f9eb4007a5e5728fd37985023445770a203b",
-      "tag": "jokers_of_neon_core-BuyBlisterPackEvent",
-      "selector": "0x15406147b7c9c63d166d74e7fef8cf15d76b8ce3c2932aa68cb3e7ff39b4a86"
-    },
-    {
-      "members": [],
-      "class_hash": "0x6498a5554e82a31b4e628236889f63110ab60b92891349b16dc891871056740",
-      "tag": "jokers_of_neon_core-BuyBlisterPackResultEvent",
-      "selector": "0x781fbdb61895006e9ff848393f7f91574530791ac7bfc7e5f9ecb6403284397"
-    },
-    {
-      "members": [],
-      "class_hash": "0x71e0fea03ff862bbd7dc2968cf4b6670dc83b517d147c457208128e872f080b",
-      "tag": "jokers_of_neon_core-BuyBurnEvent",
-      "selector": "0xe44b5c6bba3aeb3f25e2f9bc7c69eb75c57b426147fb7407bf56d4b766ec5f"
-    },
-    {
-      "members": [],
-      "class_hash": "0x5fd138602a48cbb26266e7202fbd82c3a76ca6bc4d2a0225a4a60f60f755d6e",
-      "tag": "jokers_of_neon_core-BuyLevelUpPokerHandEvent",
-      "selector": "0x4d681fbd92a3e10682880b8cb9e8d24119d8b20063751b758de026d877fc9c0"
-    },
-    {
-      "members": [],
-      "class_hash": "0x6074b3a601802ba2490d69711af1c5c1fb2e4eb1a43bf99b364c92975864a9c",
-      "tag": "jokers_of_neon_core-BuyModifierCardEvent",
-      "selector": "0x5057ecd9e19aaf166f2829b7a5b028781d67dbc14a023f54255c40ecfd38705"
-    },
-    {
-      "members": [],
-      "class_hash": "0x7a4877098ecb8f69d84f718528d11adadf4c662d6f3859f34d78c82495f8809",
-      "tag": "jokers_of_neon_core-BuyPowerUpEvent",
-      "selector": "0x7c0101a475b46dbcfd18641cd60b66e2bc2fbf1487b83a104ef59e81222e524"
-    },
-    {
-      "members": [],
-      "class_hash": "0x7d8f046c4b0864d2de89abffd1fa6484484b853f81fd70a9ddf7e84fc16a26d",
-      "tag": "jokers_of_neon_core-BuyRerollEvent",
-      "selector": "0x179f94faf9c5bf00869e21809f7941e1f091ff16abccfc1c60573531517778"
-    },
-    {
-      "members": [],
-      "class_hash": "0x2094fce3047974bfc7f760900ea5b6e9b03e9d1449ae7f61821cf7564c63958",
-      "tag": "jokers_of_neon_core-BuySlotSpecialCardEvent",
-      "selector": "0x5cc2d5b426078c4a7444f0be4f31636b5c7cb54993a74f41a5152fec4969e13"
-    },
-    {
-      "members": [],
-      "class_hash": "0x4c727aa287874d6ba9b5a7d6895778ad22934315144b651476b3a74c6b69035",
-      "tag": "jokers_of_neon_core-BuySpecialCardEvent",
-      "selector": "0x3f0fe1d0237425c8c4db2bcdff6f6e13a5893448b2aca1150abfd3eac281caf"
-    },
-    {
-      "members": [],
-      "class_hash": "0x1509c8557b1d215bbe0fd82683e28be1bfa322b3fde6c8772e34e8aebd2637b",
-      "tag": "jokers_of_neon_core-BuySpecialCardsSoldEvent",
-      "selector": "0x7eaa7f81746f5cdf27276d4123a3681b4a32b990c5b2cbd518c64b93213f62a"
-    },
-    {
-      "members": [],
-      "class_hash": "0x55205b10243642fc38508f8c5d79238445ee2bbd1dbbd0764af684b17f7dd06",
-      "tag": "jokers_of_neon_core-BuyTraditionalCardEvent",
-      "selector": "0x38f4ef86da0252c24efc1bbc2b8beaa22a259a9daff6dc8a958b8d1128b8f45"
     },
     {
       "members": [],
