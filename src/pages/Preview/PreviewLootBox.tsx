@@ -9,7 +9,6 @@ import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
@@ -132,12 +131,13 @@ export const PreviewLootBox = () => {
             alignItems={"center"}
             alignSelf={"center"}
             flexGrow={1}
+            minH={0}
             flexDirection="column"
           >
-            <Flex w="100%" h="100%">
+            <Flex flexGrow={1} flexShrink={1} minH={0} minW={0}>
               {spineAnim}
             </Flex>
-            <Flex mt={-6}>
+            <Flex transform="translateY(-40px)">
               <PriceBox
                 absolutePosition={false}
                 price={card.price ?? 0}

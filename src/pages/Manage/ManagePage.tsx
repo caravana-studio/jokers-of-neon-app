@@ -16,6 +16,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { usePowerupHighlight } from "../../providers/HighlightProvider/PowerupHighlightProvider";
 import { getPowerUpData } from "../../data/powerups";
 import { SellButton } from "./SellButton";
+import { DelayedLoading } from "../../components/DelayedLoading";
 
 export const ManagePage = () => {
   const { t } = useTranslation("intermediate-screens");
@@ -83,7 +84,7 @@ export const ManagePage = () => {
   );
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       {highlightedSpecialCard && (
         <MobileCardHighlight
           card={highlightedSpecialCard as Card}
@@ -161,6 +162,6 @@ export const ManagePage = () => {
           }}
         />
       )}
-    </>
+    </DelayedLoading>
   );
 };

@@ -11,6 +11,7 @@ import { DurationSwitcher } from "./DurationSwitcher";
 import { BarButtonProps, MobileBottomBar } from "./MobileBottomBar";
 import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
+import { DelayedLoading } from "./DelayedLoading";
 
 interface StorePreviewCardComponentMobileProps {
   card: Card;
@@ -37,7 +38,7 @@ export const StorePreviewCardComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -126,6 +127,6 @@ export const StorePreviewCardComponentMobile = ({
           secondButton={buyButton}
         />
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

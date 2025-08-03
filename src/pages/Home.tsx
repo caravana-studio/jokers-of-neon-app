@@ -18,6 +18,7 @@ import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnable
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { DelayedLoading } from "../components/DelayedLoading";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
@@ -60,7 +61,7 @@ export const Home = () => {
   const { lastGameId, isLoading } = useGetLastGameId();
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <RemoveScroll>
         <></>
@@ -137,6 +138,6 @@ export const Home = () => {
         <PoweredBy />
       </Flex>
       <PositionedDiscordLink />
-    </>
+    </DelayedLoading>
   );
 };
