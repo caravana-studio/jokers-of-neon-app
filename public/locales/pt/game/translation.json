@@ -90,6 +90,7 @@
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
+      "delete-acc-btn": "Excluir conta",
       "pages": {
         "gameover": "Fim do jogo",
         "open-loot-box": "Abrir caixa",

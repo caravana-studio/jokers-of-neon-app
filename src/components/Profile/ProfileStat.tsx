@@ -12,10 +12,22 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
   suffix,
 }) => {
   return (
-    <Flex py={2} px={4} border={"1px"} borderColor={"white"} rounded={"md"}>
-      <Heading mb={2}>{title}</Heading>
+    <Flex
+      py={2}
+      px={4}
+      border={"1px"}
+      borderColor={"white"}
+      rounded={"md"}
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <Heading mb={1}>{title}</Heading>
       <Heading>
-        {value} <Text as="span">{suffix}</Text>
+        {value}{" "}
+        <Text as="span" ml={1}>
+          {suffix}
+        </Text>
       </Heading>
     </Flex>
   );
