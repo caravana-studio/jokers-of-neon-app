@@ -1,13 +1,13 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import useResizeObserver from "@react-hook/resize-observer";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import BurnIcon from "../../../assets/burn.svg?component";
 import { PriceBox } from "../../../components/PriceBox";
-import { useStore } from "../../../providers/StoreProvider";
-import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { PurchasedLbl } from "../../../components/PurchasedLbl";
+import { useShopStore } from "../../../state/useShopStore";
+import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
 interface IBurnItem {}
 
@@ -16,7 +16,7 @@ export const BurnComponent = ({}: IBurnItem) => {
   const { t } = useTranslation("store");
   const navigate = useNavigate();
 
-  const { burnItem } = useStore();
+  const { burnItem } = useShopStore();
 
   const price = burnItem?.cost;
   const purchased = burnItem?.purchased ?? false;

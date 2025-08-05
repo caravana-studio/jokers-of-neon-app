@@ -1,7 +1,6 @@
 import { Box, Flex, SystemStyleObject, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { getPowerUpData } from "../data/powerups";
-import { useGameContext } from "../providers/GameProvider";
 import { useGameStore } from "../state/useGameStore";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -11,7 +10,6 @@ import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
 import { PurchasedLbl } from "./PurchasedLbl";
-import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 import { HighlightAnimation } from "./animations/HighlightAnimation";
 
 interface PowerUpProps {
@@ -97,18 +95,17 @@ export const PowerUpComponent = ({
   ) : null;
 
   return powerUp ? (
-
-      <AnimatedPowerUp idx={powerUp.idx}>
-        <>
-          {hideTooltip ? (
-            powerUpContent
-          ) : (
-            <Tooltip label={description && colorizeText(description)}>
-              {powerUpContent}
-            </Tooltip>
-          )}
-        </>
-      </AnimatedPowerUp>
+    <AnimatedPowerUp idx={powerUp.idx}>
+      <>
+        {hideTooltip ? (
+          powerUpContent
+        ) : (
+          <Tooltip label={description && colorizeText(description)}>
+            {powerUpContent}
+          </Tooltip>
+        )}
+      </>
+    </AnimatedPowerUp>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );

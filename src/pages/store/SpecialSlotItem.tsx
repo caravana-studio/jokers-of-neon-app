@@ -5,9 +5,8 @@ import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
 import { PurchasedLbl } from "../../components/PurchasedLbl";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useGameContext } from "../../providers/GameProvider";
-import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore";
+import { useShopStore } from "../../state/useShopStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ISpecialSlotItem {}
@@ -17,7 +16,7 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
   const navigate = useNavigate();
 
-  const { specialSlotItem } = useStore();
+  const { specialSlotItem } = useShopStore();
 
   const { specialSlots, maxSpecialCards } = useGameStore();
   const visible = specialSlots < maxSpecialCards;

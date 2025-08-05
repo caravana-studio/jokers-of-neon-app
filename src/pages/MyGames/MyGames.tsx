@@ -166,25 +166,16 @@ export const MyGames = () => {
               variant: "secondarySolid",
               label: t("start-game"),
             }}
-            secondButtonReactNode={
-              <GoBackButton
-                visibility={isBackDisabled ? "hidden" : "visible"}
-              />
-            }
           />
         ) : (
           <Flex
-            justifyContent="space-between"
+            justifyContent="center"
             width={{ base: "90%", sm: "600px" }}
             pt={{ base: 10, sm: 14 }}
           >
-            <GoBackButton
-              width="46%"
-              visibility={isBackDisabled ? "hidden" : "visible"}
-            />
             <Button
               onClick={handleCreateGame}
-              width="46%"
+              width="280px"
               variant="secondarySolid"
             >
               {t("start-game")}

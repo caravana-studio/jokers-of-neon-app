@@ -3,11 +3,13 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
+import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
+import { GameOver } from "./pages/GameOver/GameOver";
 import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
@@ -24,7 +26,6 @@ import { RewardsPage } from "./pages/RewardsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import { GameOver } from "./pages/GameOver/GameOver";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
 export const AppRoutes = () => {
@@ -115,7 +116,9 @@ export const AppRoutes = () => {
           <StoreProvider>
             <AnimatedPage>
               <GameStoreLoader>
-                <DynamicStorePage />
+                <ShopStoreLoader>
+                  <DynamicStorePage />
+                </ShopStoreLoader>
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
@@ -140,7 +143,9 @@ export const AppRoutes = () => {
           <StoreProvider>
             <AnimatedPage>
               <GameStoreLoader>
-                <PreviewPage />
+                <GameStoreLoader>
+                  <PreviewPage />
+                </GameStoreLoader>
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
@@ -221,7 +226,9 @@ export const AppRoutes = () => {
               <PowerupHighlightProvider>
                 <AnimatedPage>
                   <GameStoreLoader>
-                    <ManagePage />
+                    <GameStoreLoader>
+                      <ManagePage />
+                    </GameStoreLoader>
                   </GameStoreLoader>
                 </AnimatedPage>
               </PowerupHighlightProvider>

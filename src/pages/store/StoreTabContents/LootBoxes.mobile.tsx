@@ -9,11 +9,12 @@ import { useCardData } from "../../../providers/CardDataProvider";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
+import { useShopStore } from "../../../state/useShopStore";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
 
 export const LootBoxesMobile = () => {
-  const { packs } = useStore();
+  const { packs } = useShopStore();
 
   return (
     <Flex
@@ -36,7 +37,8 @@ export const LootBoxesMobile = () => {
 };
 
 const PackView = ({ pack }: { pack: BlisterPackItem }) => {
-  const { buyPack, locked } = useStore();
+  const { buyPack } = useStore();
+  const { locked } = useShopStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
   const { cash } = useGameStore();

@@ -2,10 +2,13 @@ import { CairoCustomEnum } from "starknet";
 import { achievementSfx } from "../constants/sfx";
 import { DojoEvents } from "../enums/dojoEvents";
 import { useAudio } from "../hooks/useAudio";
-import { useGameContext } from "../providers/GameProvider";
+import { useCardData } from "../providers/CardDataProvider";
 import { useSettings } from "../providers/SettingsProvider";
+import { useAnimationStore } from "../state/useAnimationStore";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
-import { PowerUp } from "../types/Powerup/PowerUp";
+import { useDeckStore } from "../state/useDeckStore";
+import { useGameStore } from "../state/useGameStore";
+import { useShopStore } from "../state/useShopStore";
 import { getCardsFromEvents } from "../utils/getCardsFromEvents";
 import { getEventKey } from "../utils/getEventKey";
 import { getNumberValueFromEvent } from "../utils/getNumberValueFromEvent";
@@ -17,10 +20,6 @@ import {
   updateTransactionToast,
 } from "../utils/transactionNotifications";
 import { useDojo } from "./useDojo";
-import { useGameStore } from "../state/useGameStore";
-import { useAnimationStore } from "../state/useAnimationStore";
-import { useDeckStore } from "../state/useDeckStore";
-import { useCardData } from "../providers/CardDataProvider";
 
 const DESTROYED_SPECIAL_CARD_EVENT_KEY = getEventKey(
   DojoEvents.DESTROYED_SPECIAL_CARD
@@ -37,10 +36,11 @@ export const useShopActions = () => {
   const { fetchDeck } = useDeckStore();
   const { getCardData } = useCardData();
 
-  const { setDestroyedSpecialCardId } =
-    useAnimationStore();
+  const { setDestroyedSpecialCardId } = useAnimationStore();
 
-  const { maxPowerUpSlots, setPowerUps } = useGameStore();
+  const { setPowerUps } = useGameStore();
+
+  const { reset } = useShopStore();
 
   const { sfxVolume } = useSettings();
   const { play: achievementSound } = useAudio(achievementSfx, sfxVolume);
@@ -62,6 +62,7 @@ export const useShopActions = () => {
         const event = tx.value.events.find(
           (event) => event.keys[1] === DESTROYED_SPECIAL_CARD_EVENT_KEY
         );
+        reset();
         return {
           success: true,
           cards: getCardsFromEvents(tx.value.events),

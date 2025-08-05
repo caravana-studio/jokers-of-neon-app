@@ -22,6 +22,7 @@ export interface SelectedNodeData {
   title: string;
   content?: string;
   nodeType: NodeType;
+  shopId?: number;
 }
 
 interface MapContextType {

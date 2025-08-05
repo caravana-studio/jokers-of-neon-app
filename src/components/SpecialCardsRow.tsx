@@ -22,6 +22,7 @@ export const SpecialCardsRow = () => {
     specialCards: cards,
     maxSpecialCards,
   } = useGameStore();
+  
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);

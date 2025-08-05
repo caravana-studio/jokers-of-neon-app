@@ -1,18 +1,25 @@
 import { Box, Checkbox, Flex, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { BackgroundDecoration } from "../../../components/Background";
+import { ConfirmationModal } from "../../../components/ConfirmationModal";
+import { DelayedLoading } from "../../../components/DelayedLoading";
 import { Loading } from "../../../components/Loading";
-import { MobileBottomBar } from "../../../components/MobileBottomBar";
+import {
+  BarButton,
+  MobileBottomBar,
+} from "../../../components/MobileBottomBar";
+import { MobileDecoration } from "../../../components/MobileDecoration";
 import { useDojo } from "../../../dojo/DojoContext";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useCardsFlipAnimation } from "../../../hooks/useCardsFlipAnimation";
 import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
+import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
 import { useLootBoxStore } from "../../../state/useLootBoxStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
-import { ChooseCardsButton } from "../ChooseCardsButton";
 import { FlipCardGrid } from "../FlipCardGrid";
 import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
 
@@ -20,7 +27,9 @@ export const OpenLootBoxCardSelection = () => {
   const {
     setup: { client },
   } = useDojo();
-  const navigate = useCustomNavigate();
+  const customNavigate = useCustomNavigate();
+  const navigate = useNavigate();
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   const {
     fetchLootBoxResult,
@@ -31,7 +40,7 @@ export const OpenLootBoxCardSelection = () => {
     selectAll,
     selectNone,
   } = useLootBoxStore();
-  
+
   const {
     id: gameId,
     specialSlots,
@@ -45,11 +54,23 @@ export const OpenLootBoxCardSelection = () => {
     fetchLootBoxResult(client, gameId);
   }, []);
   const { selectCardsFromPack } = useStore();
+  const { showErrorToast } = useCustomToast();
 
   const confirmSelectCards = () => {
-    selectCardsFromPack(cardsToKeep.map((c) => c.idx));
-    reset();
-    navigate(GameStateEnum.Store);
+    selectCardsFromPack(cardsToKeep.map((c) => c.idx))
+      .then((response) => {
+        if (response) {
+          reset();
+        } else {
+          showErrorToast("Error selecting cards");
+          customNavigate(GameStateEnum.Lootbox);
+        }
+      })
+      .catch(() => {
+        showErrorToast("Error selecting cards");
+        customNavigate(GameStateEnum.Lootbox);
+      });
+    customNavigate(GameStateEnum.Store);
   };
 
   const { flippedStates, animationRunning, skipFlipping } =
@@ -64,12 +85,25 @@ export const OpenLootBoxCardSelection = () => {
     specialCardsToKeep > maxSpecialCards - currentSpecialCardsLength;
   const allSelected = cardsToKeep.length === cards.length;
 
+  const onContinueClick = () => {
+    if (cardsToKeep.length === 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      confirmSelectCards();
+    }
+  };
+
   const continueButton = (
-    <ChooseCardsButton
+    <BarButton
+      mx={{ base: 6, md: 0 }}
+      width={"auto"}
+      fontSize={12}
       disabled={chooseDisabled}
+      variant={chooseDisabled ? "defaultOutline" : "solid"}
       opacity={animationRunning ? 0 : 1}
-      onConfirm={confirmSelectCards}
-      cardsToKeep={cardsToKeep.length}
+      transition="opacity 0.3s ease"
+      label={t("store.packs.continue-btn")}
+      onClick={onContinueClick}
     />
   );
 
@@ -96,74 +130,104 @@ export const OpenLootBoxCardSelection = () => {
   };
 
   return (
-    <BackgroundDecoration contentHeight={isSmallScreen ? "85%" : "60%"}>
-      {cards.length > 0 ? (
-        <Flex
-          height={"100%"}
-          width={isSmallScreen ? "100%" : "auto"}
-          justifyContent={isSmallScreen ? "space-between" : "center"}
-          flexDirection="column"
-          gap={4}
-        >
+    <DelayedLoading ms={50}>
+      {isSmallScreen && <MobileDecoration />}
+      <BackgroundDecoration contentHeight={isSmallScreen ? "85%" : "60%"}>
+        {cards.length > 0 ? (
           <Flex
-            flexDirection={"column"}
+            height={"100%"}
+            width={isSmallScreen ? "100%" : "auto"}
+            justifyContent={isSmallScreen ? "space-between" : "center"}
+            flexDirection="column"
             gap={4}
-            justifyContent={"center"}
-            height={isSmallScreen ? "100%" : "auto"}
           >
+            <Flex
+              flexDirection={"column"}
+              gap={4}
+              justifyContent={"center"}
+              height={isSmallScreen ? "100%" : "auto"}
+            >
+              <Flex
+                flexDirection={isSmallScreen ? "column" : "row"}
+                justifyContent="space-between"
+                alignItems="center"
+                mx={2}
+                opacity={animationRunning ? 0 : 1}
+                transition="opacity 0.3s ease"
+                gap={isSmallScreen ? 2 : 8}
+              >
+                <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
+                <Checkbox
+                  color="white"
+                  isChecked={!!allSelected}
+                  onChange={(e) => {
+                    !e.target.checked ? selectNone() : selectAll();
+                  }}
+                >
+                  {t("store.packs.select-all-lbl").toUpperCase()}
+                </Checkbox>
+              </Flex>
+              <FlipCardGrid
+                cards={cards}
+                cardsToKeep={cardsToKeep}
+                flippedStates={flippedStates}
+                animationRunning={animationRunning}
+                onCardToggle={toggleCard}
+                onGridClick={skipFlipping}
+              />
+            </Flex>
             <Flex
               flexDirection={isSmallScreen ? "column" : "row"}
               justifyContent="space-between"
-              alignItems="center"
-              mx={2}
-              opacity={animationRunning ? 0 : 1}
-              transition="opacity 0.3s ease"
-              gap={isSmallScreen ? 2 : 8}
+              mt={4}
+              gap={4}
             >
-              <Text size="lg">{t("store.packs.cards-select-lbl")}</Text>
-              <Checkbox
-                color="white"
-                isChecked={!!allSelected}
-                onChange={(e) => {
-                  !e.target.checked ? selectNone() : selectAll();
-                }}
-              >
-                {t("store.packs.select-all-lbl").toUpperCase()}
-              </Checkbox>
+              {specialCardCount > 0 && !isSmallScreen ? (
+                <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
+              ) : (
+                <Box />
+              )}
+
+              {renderContinueButton()}
             </Flex>
-            <FlipCardGrid
-              cards={cards}
-              cardsToKeep={cardsToKeep}
-              flippedStates={flippedStates}
-              animationRunning={animationRunning}
-              onCardToggle={toggleCard}
-              onGridClick={skipFlipping}
-            />
-          </Flex>
-          <Flex
-            flexDirection={isSmallScreen ? "column" : "row"}
-            justifyContent="space-between"
-            mt={4}
-            gap={4}
-          >
-            {specialCardCount > 0 ? (
-              <ManageSpecialCardsButton opacity={animationRunning ? 0 : 1} />
-            ) : (
-              <Box />
+            {isSmallScreen && (
+              <MobileBottomBar
+                firstButton={
+                  specialCardCount > 0 && !animationRunning
+                    ? {
+                        onClick: () => {
+                          navigate("/manage");
+                        },
+                        label: t("store.packs.special-cards-btn"),
+                      }
+                    : undefined
+                }
+                secondButton={
+                  !animationRunning
+                    ? {
+                        onClick: onContinueClick,
+                        disabled: chooseDisabled,
+                        label: t("store.packs.continue-btn"),
+                      }
+                    : undefined
+                }
+                hideDeckButton
+              />
             )}
 
-            {renderContinueButton()}
+            {confirmationModalOpen && (
+              <ConfirmationModal
+                close={() => setConfirmationModalOpen(false)}
+                title={t("store.packs.confirmation-modal.head")}
+                description={t("store.packs.confirmation-modal.description")}
+                onConfirm={confirmSelectCards}
+              />
+            )}
           </Flex>
-          {isSmallScreen && (
-            <MobileBottomBar
-              secondButtonReactNode={continueButton}
-              hideDeckButton
-            />
-          )}
-        </Flex>
-      ) : (
-        <Loading />
-      )}
-    </BackgroundDecoration>
+        ) : (
+          <Loading />
+        )}
+      </BackgroundDecoration>
+    </DelayedLoading>
   );
 };

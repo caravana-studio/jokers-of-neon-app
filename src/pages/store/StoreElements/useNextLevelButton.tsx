@@ -8,6 +8,7 @@ import { useStore } from "../../../providers/StoreProvider";
 import { useAnimationStore } from "../../../state/useAnimationStore";
 import { useCurrentHandStore } from "../../../state/useCurrentHandStore";
 import { useGameStore } from "../../../state/useGameStore";
+import { useShopStore } from "../../../state/useShopStore";
 
 export const useNextLevelButton = () => {
   const navigate = useCustomNavigate();
@@ -20,7 +21,8 @@ export const useNextLevelButton = () => {
   const { skipShop } = useShopActions();
   const { setDestroyedSpecialCardId } = useAnimationStore();
 
-  const { locked, setLoading } = useStore();
+  const { setLoading } = useStore();
+  const { locked } = useShopStore();
 
   const handleNextLevelClick = () => {
     setLoading(true);
