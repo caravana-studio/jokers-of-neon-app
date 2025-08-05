@@ -13,19 +13,21 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
 }) => {
   return (
     <Flex
-      py={2}
+      py={1}
       px={4}
       border={"1px"}
       borderColor={"white"}
-      rounded={"md"}
+      rounded={"xl"}
       flexDirection={"column"}
       justifyContent={"center"}
       alignItems={"center"}
+      flexGrow={1}
+      flex={1}
     >
-      <Heading mb={1}>{title}</Heading>
-      <Heading>
+      <Heading fontSize={"10px"}>{title}</Heading>
+      <Heading fontSize={"10px"}>
         {value}{" "}
-        <Text as="span" ml={1}>
+        <Text as="span" ml={1} fontSize={"6px"}>
           {suffix}
         </Text>
       </Heading>

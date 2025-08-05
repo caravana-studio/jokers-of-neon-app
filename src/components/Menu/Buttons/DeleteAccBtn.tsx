@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-=import { Icons } from "../../../constants/icons";
+import { Icons } from "../../../constants/icons";
 import { MenuBtn } from "./MenuBtn";
 
 export const DeleteAccBtn = ({
