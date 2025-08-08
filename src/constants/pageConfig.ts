@@ -1,7 +1,7 @@
-import { matchPath, PathMatch } from "react-router-dom";
 import { TFunction } from "i18next";
+import { FC, ReactSVGElement, SVGProps } from "react";
+import { matchPath, PathMatch } from "react-router-dom";
 import { Icons } from "./icons";
-import { FC, SVGProps, ReactSVGElement } from "react";
 
 export interface PageInfo {
   name: string;
@@ -9,7 +9,8 @@ export interface PageInfo {
   icon: string | FC<SVGProps<ReactSVGElement>>;
 }
 
-interface MatchRequiredOptions extends Omit<Parameters<typeof getPageConfig>[1], "match"> {
+interface MatchRequiredOptions
+  extends Omit<Parameters<typeof getPageConfig>[1], "match"> {
   match: PathMatch<string>;
 }
 
@@ -25,17 +26,17 @@ export const getPageConfig = (
   }
 ): PageInfo | null => {
   const configs: {
-  path: string;
-  getPageInfo: (opts: MatchRequiredOptions) => PageInfo;
-}[] = [
-  {
-    path: "/gameover/:gameId",
-    getPageInfo: ({ tGame, match }) => ({
-      name: tGame("game-menu.pages.gameover"),
-      icon: Icons.GAMEOVER,
-      url: match.pathname,
-    }),
-  },
+    path: string;
+    getPageInfo: (opts: MatchRequiredOptions) => PageInfo;
+  }[] = [
+    {
+      path: "/gameover/:gameId",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.gameover"),
+        icon: Icons.GAMEOVER,
+        url: match.pathname,
+      }),
+    },
     {
       path: "/open-loot-box",
       getPageInfo: ({ tGame, match }) => ({
@@ -71,9 +72,23 @@ export const getPageConfig = (
             : tGame("game-menu.pages.round"),
           level: nodeRound,
         }),
-        icon: isRageRound
-          ? Icons.RAGE
-          : Icons.ROUND,
+        icon: isRageRound ? Icons.RAGE : Icons.ROUND,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/docs",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.docs"),
+        icon: Icons.DOCS,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/my-games",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.my-games"),
+        icon: Icons.JOKER,
         url: match.pathname,
       }),
     },

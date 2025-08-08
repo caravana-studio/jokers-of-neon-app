@@ -1,10 +1,9 @@
 import { Box, Button, ButtonProps, Flex, Text } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
 import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
-import React from "react";
-import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
@@ -23,6 +22,7 @@ interface MobileBottomBarProps {
   setRun?: (run: boolean) => void;
   hideDeckButton?: boolean;
   navigateState?: {};
+  hideMenuButton?: boolean;
 }
 
 export const BarButton = ({
@@ -60,6 +60,7 @@ export const MobileBottomBar = ({
   setRun,
   hideDeckButton,
   navigateState,
+  hideMenuButton = false,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
@@ -89,18 +90,22 @@ export const MobileBottomBar = ({
       alignItems={"center"}
       zIndex={1000}
     >
-      {isSmallScreen && (
-        <GameMenuBtn
-          showTutorial={
-            setRun
-              ? () => {
-                  setRun(true);
-                }
-              : () => {
-                  navigate("/tutorial");
-                }
-          }
-        />
+      {hideMenuButton ? (
+        <Box w="30px" />
+      ) : (
+        isSmallScreen && (
+          <GameMenuBtn
+            showTutorial={
+              setRun
+                ? () => {
+                    setRun(true);
+                  }
+                : () => {
+                    navigate("/tutorial");
+                  }
+            }
+          />
+        )
       )}
       {uniqueButton ? (
         <Box w="40%">

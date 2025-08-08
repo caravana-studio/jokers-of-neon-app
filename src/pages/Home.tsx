@@ -1,63 +1,26 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useConnect } from "@starknet-react/core";
-import { useEffect, useState } from "react";
+import { Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import AudioPlayer from "../components/AudioPlayer";
-import { PositionedDiscordLink } from "../components/DiscordLink";
-import LanguageSwitcher from "../components/LanguageSwitcher";
-import { PoweredBy } from "../components/PoweredBy";
-import { useDojo } from "../dojo/useDojo";
 
 import { RemoveScroll } from "react-remove-scroll";
+import { useNavigate } from "react-router-dom";
+import { DelayedLoading } from "../components/DelayedLoading";
+import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { useUsername } from "../dojo/utils/useUsername";
 import { useGameContext } from "../providers/GameProvider";
-import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { DelayedLoading } from "../components/DelayedLoading";
 
 export const Home = () => {
-  const [playButtonClicked, setPlayButtonClicked] = useState(false);
-  const { connect, connectors } = useConnect();
-  const { prepareNewGame, executeCreateGame } = useGameContext();
-  const { account, setup } = useDojo();
-
-  const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
-
-  const enableMods = false; // useFeatureFlagEnabled("global", "showMods");
-
-  useEffect(() => {
-    if (account?.account && playButtonClicked) {
-      navigate(enableMods ? "/mods" : "/my-games");
-    }
-  }, [account, playButtonClicked]);
-
-  const loggedInUser = useUsername();
+  const navigate = useNavigate();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
 
   const handleCreateGame = async () => {
-    if (loggedInUser) {
-      prepareNewGame();
-      executeCreateGame(undefined);
-      navigate("/entering-tournament");
-    }
+    prepareNewGame();
+    executeCreateGame();
+    navigate("/entering-tournament");
   };
-
-  useEffect(() => {
-    if (loggedInUser) {
-      if (playButtonClicked) {
-        handleCreateGame();
-      } else {
-        navigate("/my-games", { replace: true });
-      }
-    }
-  }, [loggedInUser]);
-
-  const { lastGameId, isLoading } = useGetLastGameId();
 
   return (
     <DelayedLoading ms={100}>
@@ -65,15 +28,14 @@ export const Home = () => {
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      <AudioPlayer />
-      <LanguageSwitcher />
       <Flex
         height="100%"
-        justifyContent="center"
+        justifyContent="space-between"
         flexDirection="column"
         alignItems="center"
         gap={4}
       >
+        <Flex h="90px" />
         <Flex
           flexDirection="column"
           alignItems="center"
@@ -108,35 +70,20 @@ export const Home = () => {
               />
             </Flex>
           </Flex>
-
-          <Flex
-            gap={{ base: 4, sm: 6 }}
-            flexWrap={{ base: "wrap", sm: "nowrap" }}
-          >
-            <Button
-              variant="secondarySolid"
-              onClick={() => {
-                if (setup.useBurnerAcc && lastGameId != undefined) {
-                  const username = `joker_guest_${lastGameId + 1}`;
-                  console.log("username: ", username);
-
-                  localStorage.removeItem(GAME_ID);
-                  localStorage.setItem(LOGGED_USER, username);
-                  setPlayButtonClicked(true);
-                } else {
-                  setPlayButtonClicked(true);
-                  connect({ connector: connectors[0] });
-                }
-              }}
-              minW={["150px", "300px"]}
-            >
-              {t("home.btn.start")}
-            </Button>
-          </Flex>
         </Flex>
-        <PoweredBy />
+        <MobileBottomBar
+          hideDeckButton
+          hideMenuButton
+          firstButton={{
+            label: t("leaderboard.title"),
+            onClick: () => navigate("/leaderboard"),
+          }}
+          secondButton={{
+            label: t('play'),
+            onClick: () => handleCreateGame(),
+          }}
+        />
       </Flex>
-      <PositionedDiscordLink />
     </DelayedLoading>
   );
 };

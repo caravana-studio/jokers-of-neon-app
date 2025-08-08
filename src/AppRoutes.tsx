@@ -15,17 +15,20 @@ import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { MapPage } from "./pages/Map/MapPage";
+import { MyCollectionPage } from "./pages/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
+import { ProfilePage } from "./pages/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
+import { SettingsPage } from "./pages/SettingsPage";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
 export const AppRoutes = () => {
@@ -55,6 +58,30 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <Login />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/my-collection"
+        element={
+          <AnimatedPage>
+            <MyCollectionPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <AnimatedPage>
+            <ProfilePage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
           </AnimatedPage>
         }
       />
@@ -124,7 +151,6 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-
       {/*       <Route
         path="/tutorial"
         element={
@@ -135,7 +161,6 @@ export const AppRoutes = () => {
           </TutorialGameProvider>
         }
       /> */}
-
       <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"

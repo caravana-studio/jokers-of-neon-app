@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
 import { DelayedLoading } from "../../components/DelayedLoading.tsx";
-import { GoBackButton } from "../../components/GoBackButton.tsx";
-import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
@@ -45,7 +43,7 @@ export const MyGames = () => {
     return localStorage.getItem("GAME_ID") === null;
   });
 
-  const { resetLevel  } = useGameContext();
+  const { resetLevel } = useGameContext();
   const { removeGameId } = useGameStore();
 
   const filteredGames = games.filter((game) => {
@@ -63,14 +61,14 @@ export const MyGames = () => {
       localStorage.removeItem("GAME_ID");
       setIsBackDisabled(true);
     }
-    
+
     setSurrenderedIds((prev) => [...prev, gameId]);
   };
 
   useEffect(() => {
     refetch();
     resetLevel();
-    removeGameId()
+    removeGameId();
   }, []);
 
   const handleCreateGame = async () => {
@@ -82,8 +80,6 @@ export const MyGames = () => {
   return (
     <DelayedLoading ms={100}>
       <MobileDecoration />
-      <LanguageSwitcher />
-      {!isSmallScreen && <AudioPlayer />}
       <Flex
         direction="column"
         justifyContent={isSmallScreen ? "space-between" : "center"}
@@ -100,7 +96,7 @@ export const MyGames = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Heading mb={8} zIndex={2} variant="italic" size={"lg"}>
+          <Heading mb={8} zIndex={2} variant="italic" size={"md"}>
             {t("title")}
           </Heading>
           <Box
@@ -159,6 +155,7 @@ export const MyGames = () => {
         {isSmallScreen ? (
           <MobileBottomBar
             hideDeckButton
+            hideMenuButton
             firstButton={{
               onClick: () => {
                 handleCreateGame();
