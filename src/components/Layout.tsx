@@ -8,9 +8,7 @@ import { hiddenBarMenu } from "./Menu/BarMenu/BarMenuConfig";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { BottomMenu } from "./Menu/BottomMenu";
-
-const platform = Capacitor.getPlatform();
-const needsPadding = platform === "ios";
+import { needsPadding } from "../utils/capacitorUtils";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const sidebarHidden = hiddenBarMenu();
@@ -23,15 +21,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             width={"100%"}
             height={"100%"}
             pt={needsPadding ? "50px" : "0px"}
-            pb={needsPadding ? "20px" : "0px"}
+            pb={needsPadding ? "80px" : "50px"}
             flexDirection={"column"}
           >
             {!sidebarHidden && <SidebarMenu />}
-            <Flex zIndex={2} flexGrow={1}>
+            <Flex zIndex={2} flexGrow={1} flexShrink={1} minH={0}>
               {children}
             </Flex>
-            {isSmallScreen && <BottomMenu />}
           </Flex>
+            {isSmallScreen && <BottomMenu />}
         </StoreProvider>
       </MapProvider>
     </ReactFlowProvider>
