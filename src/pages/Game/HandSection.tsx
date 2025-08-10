@@ -21,19 +21,21 @@ import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
 import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 import { useSettings } from "../../providers/SettingsProvider";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
-import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
 }
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
+  useGameContext();
+
   const { changeModifierCard, remainingPlaysTutorial } = useGameContext();
 
   const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =

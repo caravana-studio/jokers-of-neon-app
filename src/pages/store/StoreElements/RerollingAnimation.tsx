@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
 import { MotionBox } from "../../../components/MotionBox";
-import { useStore } from "../../../providers/StoreProvider";
+import { useShopStore } from "../../../state/useShopStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
 export const RerollingAnimation = ({ children }: PropsWithChildren) => {
-  const { rerolling } = useStore();
+  const { rerolling } = useShopStore();
   const { isSmallScreen } = useResponsiveValues();
 
   return (

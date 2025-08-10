@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { GoBackButton } from "../../components/GoBackButton.tsx";
 import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
 import { Loading } from "../../components/Loading.tsx";
@@ -11,10 +12,10 @@ import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
-import { useGameStore } from "../../state/useGameStore.ts";
 
 export interface GameSummary {
   id: number;
@@ -79,7 +80,7 @@ export const MyGames = () => {
   };
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <LanguageSwitcher />
       {!isSmallScreen && <AudioPlayer />}
@@ -165,25 +166,16 @@ export const MyGames = () => {
               variant: "secondarySolid",
               label: t("start-game"),
             }}
-            secondButtonReactNode={
-              <GoBackButton
-                visibility={isBackDisabled ? "hidden" : "visible"}
-              />
-            }
           />
         ) : (
           <Flex
-            justifyContent="space-between"
+            justifyContent="center"
             width={{ base: "90%", sm: "600px" }}
             pt={{ base: 10, sm: 14 }}
           >
-            <GoBackButton
-              width="46%"
-              visibility={isBackDisabled ? "hidden" : "visible"}
-            />
             <Button
               onClick={handleCreateGame}
-              width="46%"
+              width="280px"
               variant="secondarySolid"
             >
               {t("start-game")}
@@ -191,6 +183,6 @@ export const MyGames = () => {
           </Flex>
         )}
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

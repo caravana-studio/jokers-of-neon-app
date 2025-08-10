@@ -1,8 +1,7 @@
-import { useGameContext } from "../providers/GameProvider";
-import { useDojo } from "../dojo/useDojo";
 import { useDisconnect } from "@starknet-react/core";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
+import { useDojo } from "../dojo/useDojo";
 import { useGameStore } from "../state/useGameStore";
 
 export const useLogout = () => {

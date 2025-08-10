@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useStore } from "../../../providers/StoreProvider";
-import { PlaysTable } from "../../Plays/PlaysTable";
 import { isMobile } from "react-device-detect";
+import { useShopStore } from "../../../state/useShopStore";
+import { PlaysTable } from "../../Plays/PlaysTable";
 import { RerollingAnimation } from "./RerollingAnimation";
 
 const LevelUpTable = () => {
-  const { pokerHandItems } = useStore();
+  const { pokerHandItems } = useShopStore();
   return (
     <RerollingAnimation>
       <Box className="game-tutorial-step-2" width={"100%"} height={"100%"}>

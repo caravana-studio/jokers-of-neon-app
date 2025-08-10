@@ -11,3 +11,4 @@ export const rerollSfx = "/music/reroll-store.mp3";
 export const looseSfx = "music/loose.mp3";
 export const negativeMultiSfx = "music/s-negative-multi.mp3";
 export const achievementSfx = "music/achievement-sfx.mp3";
+export const acumSfx = "music/acum-card.mp3";

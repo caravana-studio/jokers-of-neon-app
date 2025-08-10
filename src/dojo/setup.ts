@@ -61,6 +61,8 @@ const getEntities = async <S extends Schema>(
 };
 
 export async function setup({ ...config }: DojoConfig) {
+
+  console.log('DOJO_NAMESPACE', DOJO_NAMESPACE)
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
@@ -172,6 +174,7 @@ export async function setup({ ...config }: DojoConfig) {
       await burnerManager.create();
     }
   } catch (e) {
+    console.log('error initializing burnerManager');
     console.error(e);
   }
 

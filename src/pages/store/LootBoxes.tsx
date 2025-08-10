@@ -3,23 +3,23 @@ import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import SpineAnimation from "../../components/SpineAnimation";
 import { animationsData } from "../../constants/spineAnimations";
-import { useStore } from "../../providers/StoreProvider";
+import { useCardData } from "../../providers/CardDataProvider";
+import { useShopStore } from "../../state/useShopStore";
 import { getTooltip } from "../../utils/getTooltip";
 import { RerollingAnimation } from "./StoreElements/RerollingAnimation";
-import { useCardData } from "../../providers/CardDataProvider";
 
 export const LootBoxes = () => {
   const navigate = useNavigate();
 
   const { getLootBoxData } = useCardData();
-  
-  const { packs } = useStore();
+
+  const { packs } = useShopStore();
   return (
     <Flex
-    className="game-tutorial-step-packs"
-    m={isMobile ? 4 : 0}
-    h="60%"
-    w="100%"
+      className="game-tutorial-step-packs"
+      m={isMobile ? 4 : 0}
+      h="60%"
+      w="100%"
     >
       <Flex flexDirection="row" justifyContent="space-between" w="100%">
         {packs.map((pack) => {

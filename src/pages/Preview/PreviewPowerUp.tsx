@@ -10,6 +10,7 @@ import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 
 export const PreviewPowerUp = () => {
@@ -23,7 +24,8 @@ export const PreviewPowerUp = () => {
   const [buyDisabled, setBuyDisabled] = useState(false);
   const { t } = useTranslation("store", { keyPrefix: "store.preview-card" });
 
-  const { buyPowerUp, locked, powerUps } = useStore();
+  const { buyPowerUp } = useStore();
+  const { locked, powerUps } = useShopStore();
   const { cash, maxPowerUpSlots } = useGameStore();
 
   const powerUpData = getPowerUpData(powerUp.power_up_id);
@@ -41,7 +43,8 @@ export const PreviewPowerUp = () => {
 
   const onBuyButtonClick = () => {
     setBuyDisabled(true);
-    buyPowerUp(powerUp).then(() => navigate(GameStateEnum.Store));
+    navigate(GameStateEnum.Store)
+    buyPowerUp(powerUp);
   };
   const buyButton = isSmallScreen ? (
     <Button

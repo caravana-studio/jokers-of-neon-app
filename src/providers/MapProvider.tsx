@@ -22,6 +22,7 @@ export interface SelectedNodeData {
   title: string;
   content?: string;
   nodeType: NodeType;
+  shopId?: number;
 }
 
 interface MapContextType {
@@ -76,7 +77,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
   const stateInMap = state === GameStateEnum.Map;
 
   useEffect(() => {
-    getMap(client, id, level).then((dataNodes) => {
+    getMap(client, id).then((dataNodes) => {
       const transformedNodes = dataNodes.map((node, index) => {
         const isFirstNode = index === 0;
         const shouldBeFinalRage = isFirstNode && (level) >= 2;
