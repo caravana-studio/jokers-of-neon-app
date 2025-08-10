@@ -40,7 +40,7 @@ const StoreNode = ({ data }: any) => {
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
-  const { state, setRound } = useGameStore();
+  const { state, setShopId } = useGameStore();
 
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
@@ -99,6 +99,7 @@ const StoreNode = ({ data }: any) => {
               title: title,
               content: content,
               nodeType: NodeType.STORE,
+              shopId: data.shopId,
             });
 
           if (data.current && !stateInMap) {
@@ -109,8 +110,8 @@ const StoreNode = ({ data }: any) => {
             advanceNode(gameId, data.id).then((response) => {
               console.log("response", response);
               if (response) {
+                setShopId(data.shopId);
                 navigate(GameStateEnum.Store);
-                setRound(data.id);
               }
             });
           }

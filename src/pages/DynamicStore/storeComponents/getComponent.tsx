@@ -1,5 +1,5 @@
 import LevelUpTable from "../../store/StoreElements/LevelUpTable";
-import { BurnComponent } from "./ BurnComponent";
+import { BurnComponent } from "./BurnComponent";
 import { CardComponent } from "./CardComponent";
 import { LootBoxComponent } from "./LootBoxComponent";
 import { PowerUpsComponent } from "./PowerUpsComponent";

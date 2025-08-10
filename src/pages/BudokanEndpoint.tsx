@@ -33,7 +33,7 @@ export const BudokanEndpoint = () => {
           navigate("/entering-tournament");
           executeCreateGame(game.id);
         } else {
-          setGameId(client, game.id);
+          setGameId(game.id);
           navigate(`/redirect`);
         }
       } else {

@@ -14,10 +14,10 @@ import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useUsername } from "../dojo/utils/useUsername";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { DelayedLoading } from "../components/DelayedLoading";
 
 export const Home = () => {
   const [playButtonClicked, setPlayButtonClicked] = useState(false);
@@ -42,7 +42,7 @@ export const Home = () => {
   const handleCreateGame = async () => {
     if (loggedInUser) {
       prepareNewGame();
-      executeCreateGame(undefined, loggedInUser);
+      executeCreateGame(undefined);
       navigate("/entering-tournament");
     }
   };
@@ -60,7 +60,7 @@ export const Home = () => {
   const { lastGameId, isLoading } = useGetLastGameId();
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <RemoveScroll>
         <></>
@@ -137,6 +137,6 @@ export const Home = () => {
         <PoweredBy />
       </Flex>
       <PositionedDiscordLink />
-    </>
+    </DelayedLoading>
   );
 };

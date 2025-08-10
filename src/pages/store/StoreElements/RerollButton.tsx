@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import { FiRefreshCw } from "react-icons/fi";
 import { useStore } from "../../../providers/StoreProvider";
 import { useGameStore } from "../../../state/useGameStore";
+import { useShopStore } from "../../../state/useShopStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
 const RerollButton = () => {
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();
-  const { locked, reroll } = useStore();
+  const { reroll } = useStore();
+  const { locked } = useShopStore();
   const { availableRerolls } = useGameStore();
   const rerolled = availableRerolls === 0;
   const rerollDisabled = locked || rerolled;

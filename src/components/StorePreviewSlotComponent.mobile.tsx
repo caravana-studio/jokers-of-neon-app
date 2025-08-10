@@ -8,6 +8,7 @@ import { MobileDecoration } from "./MobileDecoration";
 import { PriceBox } from "./PriceBox";
 import { IStorePreviewComponent } from "./StorePreviewComponent";
 import { STORE_LAST_TAB_INDEX } from "../constants/localStorage";
+import { DelayedLoading } from "./DelayedLoading";
 
 interface IStorePreviewComponentMobile extends IStorePreviewComponent {
   buyButton: BarButtonProps;
@@ -26,7 +27,7 @@ export const StorePreviewSlotComponentMobile = ({
 
   const { t } = useTranslation(["store"]);
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <Flex
         flexDirection="column"
@@ -95,6 +96,6 @@ export const StorePreviewSlotComponentMobile = ({
           secondButton={buyButton}
         />
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

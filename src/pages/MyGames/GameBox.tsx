@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
 import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
+import { stateToPageMap } from "../../constants/redirectConfig.ts";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
-import { useDojo } from "../../dojo/useDojo.tsx";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
@@ -23,12 +23,7 @@ export const GameBox = ({
     keyPrefix: "my-games",
   });
 
-  const {
-    setup: { client },
-  } = useDojo();
-
-  const { executeCreateGame, prepareNewGame, surrenderGame } =
-    useGameContext();
+  const { executeCreateGame, prepareNewGame, surrenderGame } = useGameContext();
   const { setGameId } = useGameStore();
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
@@ -41,8 +36,8 @@ export const GameBox = ({
     if (game.status === GameStateEnum.NotStarted) {
       executeCreateGame(game.id);
     } else {
-      setGameId(client, game.id);
-      navigate(`/redirect`);
+      setGameId(game.id);
+      navigate(stateToPageMap[game.status as GameStateEnum]);
     }
   };
 

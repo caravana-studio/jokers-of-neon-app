@@ -6,6 +6,7 @@ import { CardTypes } from "../enums/cardTypes";
 import { Duration } from "../enums/duration";
 import { useCardData } from "../providers/CardDataProvider";
 import { useGameContext } from "../providers/GameProvider";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 import { Card } from "../types/Card";
 import { colorizeText } from "../utils/getTooltip";
 import { CardImage3D } from "./CardImage3D";
@@ -14,7 +15,6 @@ import { ConfirmationModal } from "./ConfirmationModal";
 import { DurationSwitcher } from "./DurationSwitcher";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo";
 import { LootBox } from "./LootBox";
-import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 import { PriceBox } from "./PriceBox";
 
 interface MobileCardHighlightProps {

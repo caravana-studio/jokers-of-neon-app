@@ -5,6 +5,7 @@ import {
   cashSfx,
   discardSfx,
   multiSfx,
+  acumSfx,
   negativeMultiSfx,
   pointsSfx,
 } from "../constants/sfx.ts";
@@ -27,7 +28,6 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
-import { ac } from "vitest/dist/chunks/reporters.nr4dxCkA.js";
 import { AccountInterface } from "starknet";
 
 export interface IGameContext {
@@ -155,6 +155,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const { play: cashSound } = useAudio(cashSfx, sfxVolume);
   const { play: pointsSound } = useAudio(pointsSfx, sfxVolume);
   const { play: multiSound } = useAudio(multiSfx, sfxVolume);
+  const { play: acumSound } = useAudio(acumSfx, sfxVolume);
   const { play: negativeMultiSound } = useAudio(negativeMultiSfx, sfxVolume);
 
   const playAnimationDuration = getPlayAnimationDuration(level, animationSpeed);
@@ -244,7 +245,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             .then(async (response) => {
               const { gameId: newGameId, hand } = response;
               if (newGameId) {
-                setGameId(client, newGameId);
+                setGameId(newGameId);
                 replaceCards(hand);
                 fetchDeck(client, newGameId, getCardData);
                 clearPreSelection();
@@ -253,7 +254,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
                 setPreSelectionLocked(false);
                 setRoundRewards(undefined);
+                setState(GameStateEnum.NotSet)
 
+                console.log('navigating demo')
                 navigate("/demo");
               } else {
                 setGameError(true);
@@ -300,6 +303,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setAnimatedPowerUp,
             pointsSound,
             multiSound,
+            acumSound,
             negativeMultiSound,
             cashSound,
             setPoints,
@@ -531,7 +535,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  const refetchAll = async () => {
+/*   const refetchAll = async () => {
     await refetchCurrentHandStore(client, gameId);
     await refetchGameStore(client, gameId);
     syncMaxPreSelectedCards(rageCards);
@@ -541,7 +545,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     if (client && gameId) {
       refetchAll();
     }
-  }, [client, gameId]);
+  }, [gameId]); */
 
   const actions = {
     play: onPlayClick,

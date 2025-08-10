@@ -14,7 +14,7 @@ export const ManageSpecialCardsButton: React.FC<
 
   return (
     <Button
-      variant="outline"
+      variant="secondarySolid"
       fontSize={12}
       mx={{ base: 6, md: 0 }}
       opacity={opacity}

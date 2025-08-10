@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "../../../providers/StoreProvider";
+import { useShopStore } from "../../../state/useShopStore";
 
 interface ManageButtonProps {
   isSmallScreen: boolean;
@@ -11,7 +11,7 @@ const ManageButton: React.FC<ManageButtonProps> = ({ isSmallScreen }) => {
   const { t } = useTranslation(["store"]);
   const navigate = useNavigate();
 
-  const { specialCards } = useStore();
+  const { specialCards } = useShopStore();
 
   return (
     specialCards.length > 0 && (

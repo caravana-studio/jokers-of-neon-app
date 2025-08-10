@@ -1,8 +1,11 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { BackgroundDecoration } from "../../components/Background";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { Leaderboard } from "../../components/Leaderboard";
+import {
+  BarButtonProps,
+  MobileBottomBar,
+} from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
@@ -15,8 +18,9 @@ interface GameOverContentProps {
   onStartGameClick: () => void;
   isLoading: boolean;
   leaderboardFilterLoggedInPlayers?: boolean;
-  bottomContent?: React.ReactNode;
-  mainActionButtons?: React.ReactNode;
+  firstButton?: BarButtonProps;
+  secondButton?: BarButtonProps;
+  loggedIn?: boolean;
 }
 
 export const GameOverContent: React.FC<GameOverContentProps> = ({
@@ -24,27 +28,34 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
   congratulationsMsj,
   actualPlayerPosition,
   t,
-  onShareClick,
-  onStartGameClick,
-  isLoading,
   leaderboardFilterLoggedInPlayers = false,
-  bottomContent,
-  mainActionButtons,
+  firstButton,
+  secondButton,
+  loggedIn,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
 
-  return (
-    <BackgroundDecoration>
+  const content = (
+    <Flex
+      w={"100%"}
+      h={"100%"}
+      px={isSmallScreen ? 0 : 16}
+      flexDirection={"column"}
+      justifyContent={"space-between"}
+    >
       {isSmallScreen && <MobileDecoration />}
       <Flex
-        height="100%"
-        flexDirection={{ base: "column", sm: "row" }}
-        justifyContent={{ base: "center", sm: "space-around" }}
+        flexGrow={1}
+        minH={0}
+        flexDirection={"column"}
+        justifyContent={{ base: "space-between", sm: "space-around" }}
         alignItems="center"
-        gap={{ base: 4, sm: 16 }}
         zIndex={1}
+        w={"100%"}
+        my={'15px'}
       >
-        <Flex flexDirection="column" width={{ base: "100%", sm: "70%" }}>
+        {isSmallScreen && <Box h="70px" />}
+        <Flex flexDirection="column" width={{ base: "80%", sm: "50%" }}>
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"
@@ -65,45 +76,42 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
         </Flex>
         <Flex
           flexDirection={"column"}
-          width={{ base: "100%", sm: "30%" }}
+          width={{ base: "100%", sm: loggedIn ? "30%" : "auto" }}
           gap={{ base: 4, sm: 8 }}
           justifyContent={"center"}
           alignItems={"center"}
+          pt={{ base: loggedIn ? 0 : 28, sm: 0 }}
         >
-          {actualPlayerPosition !== undefined && (
+          {actualPlayerPosition !== undefined && !loggedIn && (
             <Text>
               {t("game-over.current-position", {
                 position: actualPlayerPosition,
               })}
             </Text>
           )}
-
-          {mainActionButtons || (
-            <Flex gap={4}>
-              <Button
-                width={"50%"}
-                variant="solid"
-                onClick={onShareClick}
-                data-size="large"
-              >
-                {t("game-over.btn.gameOver-share-btn")}
-                <Flex sx={{ ml: 2.5 }}>
-                  <FontAwesomeIcon fontSize={22} icon={faXTwitter} />
-                </Flex>
-              </Button>
-              <Button
-                width={"50%"}
-                variant="secondarySolid"
-                isDisabled={isLoading}
-                onClick={onStartGameClick}
-              >
-                {t("game-over.btn.gameOver-newGame-btn")}
-              </Button>
-            </Flex>
-          )}
-          {bottomContent}
         </Flex>
       </Flex>
-    </BackgroundDecoration>
+      <Flex width={{ base: "100%", sm: "80%", md: "60%" }} mx={"auto"}>
+        <MobileBottomBar
+          hideDeckButton
+          firstButton={firstButton}
+          secondButton={secondButton}
+        />
+      </Flex>
+    </Flex>
+  );
+
+  return (
+    <DelayedLoading ms={100}>
+      <Flex w={"100%"} h={"100%"}>
+        {isSmallScreen ? (
+          content
+        ) : (
+          <BackgroundDecoration contentHeight={"80%"}>
+            {content}
+          </BackgroundDecoration>
+        )}
+      </Flex>
+    </DelayedLoading>
   );
 };

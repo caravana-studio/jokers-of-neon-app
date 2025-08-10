@@ -40,7 +40,7 @@ export const Map = () => {
 
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
-  const { state, id: gameId, setRound, refetchGameStore } = useGameStore();
+  const { state, id: gameId, setShopId, refetchGameStore } = useGameStore();
   const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
 
@@ -83,7 +83,7 @@ export const Map = () => {
               break;
             case NodeType.STORE:
               navigate(GameStateEnum.Store);
-              setRound(selectedNodeData.id);
+              selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
               break;
             default:
               break;
