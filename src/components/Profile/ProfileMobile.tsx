@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { profileMock } from "../../utils/mocks/profileMocks";
 import { MobileDecoration } from "../MobileDecoration";
+import { useDojo } from "../../dojo/DojoContext";
 
 export const ProfileMobile = () => {
   const username = profileMock.username;
@@ -22,10 +23,20 @@ export const ProfileMobile = () => {
 
   const btnWidth = "18px";
 
+  const { setup } = useDojo();
+
   return (
     <>
       <MobileDecoration />
-      <Flex flexDirection={"column"} gap={1} w={"100vw"} height={"100%"} p={8}>
+      <Flex
+        flexDirection={"column"}
+        gap={1}
+        w={{ base: "100%", sm: "70%" }}
+        mx={"auto"}
+        height={"100%"}
+        p={8}
+        justifyContent={"space-evenly"}
+      >
         <ProfileStats
           username={username}
           level={level}
@@ -39,21 +50,30 @@ export const ProfileMobile = () => {
         <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />
 
         <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
-          <Divider borderColor="white" borderWidth="1px" my={2} />
-          <Flex justifyContent={"space-between"}>
-            <LogoutMenuBtn width={btnWidth} label={true} />
-            <FontAwesomeIcon icon={faArrowRight} />
-          </Flex>
+          {!setup.useBurnerAcc && (
+            <>
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+              <Flex justifyContent={"space-between"}>
+                <LogoutMenuBtn width={btnWidth} label={true} />
+                <FontAwesomeIcon icon={faArrowRight} />
+              </Flex>
+            </>
+          )}
+
           <Divider borderColor="white" borderWidth="1px" my={2} />
           <Flex justifyContent={"space-between"}>
             <DeleteAccBtn width={btnWidth} label={true} />
             <FontAwesomeIcon icon={faArrowRight} />
           </Flex>
-          <Divider borderColor="white" borderWidth="1px" my={2} />
-          <Flex justifyContent={"space-between"}>
-            <ControllerIcon width={btnWidth} label={true} />
-            <FontAwesomeIcon icon={faArrowRight} />
-          </Flex>
+          {!setup.useBurnerAcc && (
+            <>
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+              <Flex justifyContent={"space-between"}>
+                <ControllerIcon width={btnWidth} label={true} />
+                <FontAwesomeIcon icon={faArrowRight} />
+              </Flex>
+            </>
+          )}
         </Flex>
       </Flex>
     </>

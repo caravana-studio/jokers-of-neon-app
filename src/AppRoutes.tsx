@@ -25,6 +25,7 @@ import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlig
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import { GameOver } from "./pages/GameOver/GameOver";
+import { ProfileMobile } from "./components/Profile/ProfileMobile";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
 export const AppRoutes = () => {
@@ -229,6 +230,7 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
+      <Route path="/profile" element={<ProfileMobile></ProfileMobile>} />
     </Routes>
   );
 };

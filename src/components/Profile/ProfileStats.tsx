@@ -34,8 +34,8 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       justifyContent={"center"}
     >
       <Flex
-        w={"100px"}
-        height={"100px"}
+        w={"140px"}
+        height={"140px"}
         rounded={"full"}
         backgroundColor={"gray"}
         backgroundImage={{ profilePictureUrl }}

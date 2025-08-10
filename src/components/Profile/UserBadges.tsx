@@ -11,7 +11,13 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
   totalBadges,
 }) => {
   return (
-    <Flex flexDirection={"column"} gap={1} my={2} opacity={0.7}>
+    <Flex
+      flexDirection={"column"}
+      gap={1}
+      my={2}
+      opacity={0.7}
+      justifyContent={"center"}
+    >
       <Heading py={1} fontSize="xs" mr={0.5} mt={-1} variant="italic">
         My Badges{" "}
         <Text as="span" ml={1}>
