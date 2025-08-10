@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { ProfileStat } from "./ProfileStat";
 import { ProgressBar } from "../CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
+import { useTranslation } from "react-i18next";
 
 export interface ProfileStatsProps {
   profilePictureUrl?: string;
@@ -24,6 +25,8 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
   currentXp,
   levelXp,
 }) => {
+  const { t } = useTranslation("game");
+
   return (
     <Flex
       flexDirection={"column"}
@@ -49,7 +52,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
         mb={2}
         fontSize={"xs"}
       >
-        Level {level}
+        {t("game.profile-menu.level")} {level}
       </Flex>
       <Flex
         gap={4}
@@ -57,9 +60,16 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
         justifyContent={"center"}
         width={"100%"}
       >
-        <ProfileStat title={"Streak"} value={streak} suffix="days" />
-        <ProfileStat title={"Games"} value={games} />
-        <ProfileStat title={"Victories"} value={victories} />
+        <ProfileStat
+          title={t("game.profile-menu.streaks")}
+          value={streak}
+          suffix={t("game.profile-menu.days")}
+        />
+        <ProfileStat title={t("game.profile-menu.games")} value={games} />
+        <ProfileStat
+          title={t("game.profile-menu.victories")}
+          value={victories}
+        />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">
@@ -70,7 +80,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               fontWeight="500"
               width={"auto"}
             >
-              My xp
+              {t("game.profile-menu.my-xp")}
             </Text>
             <Heading
               textAlign="right"
@@ -92,7 +102,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               fontWeight="500"
               width={"auto"}
             >
-              Next lvl
+              {t("game.profile-menu.next-level")}
             </Text>
             <Heading
               width={"auto"}

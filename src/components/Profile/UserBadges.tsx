@@ -1,5 +1,6 @@
 import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { UserBadge } from "./UserBadge";
+import { useTranslation } from "react-i18next";
 
 interface UserBadgesProps {
   currentBadges: number;
@@ -10,6 +11,8 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
   currentBadges,
   totalBadges,
 }) => {
+  const { t } = useTranslation("game");
+
   return (
     <Flex
       flexDirection={"column"}
@@ -19,7 +22,7 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
       justifyContent={"center"}
     >
       <Heading py={1} fontSize="xs" mr={0.5} mt={-1} variant="italic">
-        My Badges{" "}
+        {t("game.profile-menu.my-badges")}{" "}
         <Text as="span" ml={1}>
           ({currentBadges}/{totalBadges})
         </Text>
@@ -45,7 +48,7 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
           transform={"translate(-50%, -50%)"}
           variant={"italic"}
         >
-          Coming soon
+          {t("game.profile-menu.coming-soon")}
         </Heading>
       </Flex>
     </Flex>

@@ -102,6 +102,17 @@
       },
       "my-games": "My games"
     },
+    "profile-menu": {
+      "level": "Level",
+      "streaks": "Streaks",
+      "days": "Days",
+      "games": "Games",
+      "victories": "Victories",
+      "next-level": "Next lvl",
+      "my-xp": "My XP",
+      "my-badges": "My badges",
+      "coming-soon": "Coming soon"
+    },
     "plays": {
       "title": "Available plays",
       "go-back-btn": "Go back to game",
