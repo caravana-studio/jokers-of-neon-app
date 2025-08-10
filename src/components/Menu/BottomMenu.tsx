@@ -1,11 +1,13 @@
 import { Flex } from "@chakra-ui/react";
-import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { useGameStore } from "../../state/useGameStore";
 import { needsPadding } from "../../utils/capacitorUtils";
 import { BottomMenuItem } from "./BottomMenuItem";
 import { GameStateEnum } from "../../dojo/typescript/custom";
+import { ConfirmationModal } from "../ConfirmationModal";
+import { useTranslation } from "react-i18next";
 
 
 const mainMenuUrls = [
@@ -42,10 +44,12 @@ const getIcon = (state: GameStateEnum) => {
 }
 
 export const BottomMenu = () => {
+  const { t } = useTranslation("game", { keyPrefix: "bottom-menu"});
   const location = useLocation();
   const url = location.pathname;
   const { state } = useGameStore();
-  console.log('state', state);
+  const [confimrLeaveGameOpen, setConfirmLeaveGameOpen] = useState(false);
+  const navigate = useNavigate();
 
   const mainMenuItems = useMemo(
     () => [
@@ -84,7 +88,7 @@ export const BottomMenu = () => {
   );
 
   const inGameMenuItems = [
-    <BottomMenuItem icon={Icons.BACK} url="/" key="arrow-left" />,
+    <BottomMenuItem icon={Icons.BACK} url="/" key="arrow-left" onClick={() => setConfirmLeaveGameOpen(true)} />,
     <BottomMenuItem
       icon={Icons.LIST}
       url="/docs"
@@ -131,6 +135,16 @@ export const BottomMenu = () => {
       >
         {mainMenuUrls.includes(url) ? mainMenuItems : inGameMenuItems}
       </Flex>
+      {confimrLeaveGameOpen && (
+        <ConfirmationModal
+          close={() => setConfirmLeaveGameOpen(false)}
+          title={t("title")}
+          description={t("description")}
+          onConfirm={() => {
+            navigate("/");
+          }}
+        />
+        )}
       <Flex
         position="absolute"
         zIndex={900}

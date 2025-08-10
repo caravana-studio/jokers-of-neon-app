@@ -1,4 +1,8 @@
 {
+  "bottom-menu": {
+    "title": "Sair do jogo?",
+    "description": "Você não perderá seu progresso."
+  },
   "controller": "Conta de controller",
   "error": {
     "labels": {

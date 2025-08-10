@@ -32,7 +32,7 @@ export const ConfirmationModal = ({
   const { t } = useTranslation(["game"]);
   return (
     <Modal isOpen={isOpen} onClose={close}>
-      <ModalOverlay />
+      <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
       <ModalContent>
         <ModalHeader>
           <Heading size="m" variant="neonWhite">

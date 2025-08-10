@@ -1,4 +1,8 @@
 {
+  "bottom-menu": {
+    "title": "Leave game?",
+    "description": "You will not lose your progress."
+  },
   "controller": "Controller account",
   "error": {
     "labels": {

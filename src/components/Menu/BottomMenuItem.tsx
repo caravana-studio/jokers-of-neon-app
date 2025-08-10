@@ -10,12 +10,14 @@ interface BottomMenuItemProps {
   url: string;
   active?: boolean;
   disabled?: boolean;
+  onClick?: () => void;
 }
 export const BottomMenuItem = ({
   icon,
   url,
   disabled = false,
   active = false,
+  onClick,
 }: BottomMenuItemProps) => {
   return (
     <Link
@@ -28,12 +30,15 @@ export const BottomMenuItem = ({
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
       onClick={
-        disabled
+        disabled || onClick
           ? (e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (onClick && !disabled) {
+                onClick();
+              }
             }
-          : undefined
+            : undefined
       }
     >
       <Flex
