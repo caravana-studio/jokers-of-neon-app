@@ -1,13 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Icons } from "../../constants/icons";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
 import { needsPadding } from "../../utils/capacitorUtils";
-import { BottomMenuItem } from "./BottomMenuItem";
-import { GameStateEnum } from "../../dojo/typescript/custom";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { useTranslation } from "react-i18next";
+import { BottomMenuItem } from "./BottomMenuItem";
 
 
 const mainMenuUrls = [
@@ -142,6 +142,7 @@ export const BottomMenu = () => {
           description={t("description")}
           onConfirm={() => {
             navigate("/");
+            setConfirmLeaveGameOpen(false)
           }}
         />
         )}
