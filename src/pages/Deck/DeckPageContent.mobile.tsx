@@ -51,7 +51,6 @@ export const DeckPageContentMobile = ({
       ? Number(burnItem.discount_cost)
       : Number(burnItem?.cost);
 
-  const { backToGameButtonProps } = useBackToGameButton();
 
   const bottomBar = (
     <MobileBottomBar
@@ -75,8 +74,6 @@ export const DeckPageContentMobile = ({
             }
           : undefined
       }
-      secondButton={backToGameButtonProps}
-      hideDeckButton
     />
   );
 

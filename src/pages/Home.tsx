@@ -72,8 +72,6 @@ export const Home = () => {
           </Flex>
         </Flex>
         <MobileBottomBar
-          hideDeckButton
-          hideMenuButton
           firstButton={{
             label: t("leaderboard.title"),
             onClick: () => navigate("/leaderboard"),

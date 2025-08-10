@@ -24,8 +24,6 @@ export const ProfilePage = () => {
           Coming Soon
         </Heading>
         <MobileBottomBar
-          hideDeckButton
-          hideMenuButton
           firstButton={{
             label: t("game.game-menu.logout-btn"),
             onClick: handleLogout,

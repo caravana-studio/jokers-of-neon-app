@@ -145,10 +145,6 @@ export const Map = () => {
                   }
                 : undefined
             }
-            secondButton={
-              state !== GameStateEnum.Map ? backToGameButtonProps : undefined
-            }
-            hideDeckButton
           />
         ) : (
           state !== GameStateEnum.Map && (

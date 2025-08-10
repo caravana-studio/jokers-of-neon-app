@@ -154,8 +154,6 @@ export const MyGames = () => {
 
         {isSmallScreen ? (
           <MobileBottomBar
-            hideDeckButton
-            hideMenuButton
             firstButton={{
               onClick: () => {
                 handleCreateGame();

@@ -211,7 +211,6 @@ export const OpenLootBoxCardSelection = () => {
                       }
                     : undefined
                 }
-                hideDeckButton
               />
             )}
 

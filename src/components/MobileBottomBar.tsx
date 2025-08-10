@@ -3,7 +3,6 @@ import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
-import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
 
 export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
@@ -20,9 +19,7 @@ interface MobileBottomBarProps {
   firstButtonReactNode?: ReactNode;
   secondButtonReactNode?: ReactNode;
   setRun?: (run: boolean) => void;
-  hideDeckButton?: boolean;
   navigateState?: {};
-  hideMenuButton?: boolean;
 }
 
 export const BarButton = ({
@@ -58,9 +55,7 @@ export const MobileBottomBar = ({
   secondButton,
   secondButtonReactNode,
   setRun,
-  hideDeckButton,
   navigateState,
-  hideMenuButton = false,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
@@ -90,23 +85,8 @@ export const MobileBottomBar = ({
       alignItems={"center"}
       zIndex={1000}
     >
-      {hideMenuButton ? (
-        <Box w="30px" />
-      ) : (
-        isSmallScreen && (
-          <GameMenuBtn
-            showTutorial={
-              setRun
-                ? () => {
-                    setRun(true);
-                  }
-                : () => {
-                    navigate("/tutorial");
-                  }
-            }
-          />
-        )
-      )}
+      <Box w="30px" />
+
       {uniqueButton ? (
         <Box w="40%">
           {React.isValidElement(uniqueButton) ? (
@@ -134,22 +114,7 @@ export const MobileBottomBar = ({
         </>
       )}
       {isSmallScreen && (
-        <Flex
-          height={["30px", "45px"]}
-          justifyContent="center"
-          alignItems="center"
-          width={["30px", "45px"]}
-          border={hideDeckButton ? "none" : "1px solid white"}
-          borderRadius={["8px", "14px"]}
-          className="game-tutorial-step-9"
-          onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
-        >
-          {hideDeckButton ? (
-            <></>
-          ) : (
-            <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
-          )}
-        </Flex>
+        <Box w="30px" />
       )}
     </Flex>
   );

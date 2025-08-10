@@ -149,7 +149,6 @@ export const PreviewLootBox = () => {
           </Flex>
 
           <MobileBottomBar
-            hideDeckButton
             firstButton={{
               onClick: () => {
                 navigate("/store");

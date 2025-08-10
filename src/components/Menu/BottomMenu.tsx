@@ -1,12 +1,123 @@
 import { Flex } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Icons } from "../../constants/icons";
+import { useGameStore } from "../../state/useGameStore";
 import { needsPadding } from "../../utils/capacitorUtils";
 import { BottomMenuItem } from "./BottomMenuItem";
+import { GameStateEnum } from "../../dojo/typescript/custom";
+
+
+const mainMenuUrls = [
+  "/",
+  "/my-collection",
+  "/my-games",
+  "/profile",
+  "/settings",
+  "/leaderboard",
+];
+
+const gameUrls = [
+  "/demo",
+  "/store",
+  "/rewards",
+  "/redirect",
+  "/gameover/:gameId",
+  "/open-loot-box",
+  "/entering-tournament",
+  "/preview/:type",
+  "/loot-box-cards-selection",
+  "/manage"
+]
+
+const getIcon = (state: GameStateEnum) => {
+  switch (state) {
+    case GameStateEnum.Rage:
+      return Icons.RAGE;
+    case GameStateEnum.Round:
+      return Icons.ROUND;
+    default:
+      return Icons.STORE; 
+  }
+}
 
 export const BottomMenu = () => {
   const location = useLocation();
-  const page = location.pathname;
+  const url = location.pathname;
+  const { state } = useGameStore();
+  console.log('state', state);
+
+  const mainMenuItems = useMemo(
+    () => [
+      <BottomMenuItem
+        icon={Icons.HOME}
+        url="/"
+        active={url === "/"}
+        key="home"
+      />,
+      <BottomMenuItem
+        icon={Icons.DOCS}
+        url="/my-collection"
+        active={url === "/my-collection"}
+        key="docs"
+      />,
+      <BottomMenuItem
+        icon={Icons.JOKER}
+        url="/my-games"
+        active={url === "/my-games"}
+        key="joker"
+      />,
+      <BottomMenuItem
+        icon={Icons.PROFILE}
+        url="/profile"
+        active={url === "/profile"}
+        key="profile"
+      />,
+      <BottomMenuItem
+        icon={Icons.SETTINGS}
+        url="/settings"
+        active={url === "/settings"}
+        key="settings"
+      />,
+    ],
+    [url]
+  );
+
+  const inGameMenuItems = [
+    <BottomMenuItem icon={Icons.BACK} url="/" key="arrow-left" />,
+    <BottomMenuItem
+      icon={Icons.LIST}
+      url="/docs"
+      active={url === "/docs"}
+      key="docs"
+    />,
+    <BottomMenuItem
+      icon={Icons.MAP}
+      url="/map"
+      active={url === "/map"}
+      key="map"
+    />,
+    <BottomMenuItem
+      icon={Icons.CLUB}
+      url="/deck"
+      active={url === "/deck"}
+      key="deck"
+    />,
+    <BottomMenuItem
+      icon={getIcon(state)}
+      url="/redirect"
+      disabled={state === GameStateEnum.Map}
+      active={gameUrls.some(gameUrl => {
+        if (gameUrl.includes(":")) {
+          const base = gameUrl.split(":")[0];
+          return url.startsWith(base);
+        }
+        return url === gameUrl;
+      })}
+      key="game"
+    />, 
+  ];
+
   return (
     <>
       <Flex
@@ -18,28 +129,7 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={needsPadding ? "30px" : "0px"}
       >
-        <BottomMenuItem icon={Icons.HOME} url="/" active={page === "/"} />
-        <BottomMenuItem
-          icon={Icons.DOCS}
-          url="/my-collection"
-          active={page === "/my-collection"}
-        />
-        <BottomMenuItem
-          icon={Icons.JOKER}
-          url="/my-games"
-          active={page === "/my-games"}
-        />
-
-        <BottomMenuItem
-          icon={Icons.PROFILE}
-          url="/profile"
-          active={page === "/profile"}
-        />
-        <BottomMenuItem
-          icon={Icons.SETTINGS}
-          url="/settings"
-          active={page === "/settings"}
-        />
+        {mainMenuUrls.includes(url) ? mainMenuItems : inGameMenuItems}
       </Flex>
       <Flex
         position="absolute"

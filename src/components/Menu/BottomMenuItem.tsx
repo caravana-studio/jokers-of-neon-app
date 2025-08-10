@@ -9,15 +9,40 @@ interface BottomMenuItemProps {
   icon: string | FC<SVGProps<ReactSVGElement>>;
   url: string;
   active?: boolean;
+  disabled?: boolean;
 }
 export const BottomMenuItem = ({
   icon,
   url,
+  disabled = false,
   active = false,
 }: BottomMenuItemProps) => {
   return (
-    <Link style={{ height: "100%", width: "100%" }} to={url}>
-      <Flex flex="1" h="100%" align="center" justify="center">
+    <Link
+      style={{
+        height: "100%",
+        width: "100%",
+        cursor: disabled ? "not-allowed" : undefined,
+      }}
+      to={url}
+      aria-disabled={disabled}
+      tabIndex={disabled ? -1 : 0}
+      onClick={
+        disabled
+          ? (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          : undefined
+      }
+    >
+      <Flex
+        flex="1"
+        h="100%"
+        align="center"
+        justify="center"
+        opacity={disabled ? 0.4 : 1}
+      >
         <Flex
           h="100%"
           w="100%"
@@ -25,7 +50,7 @@ export const BottomMenuItem = ({
           alignItems="center"
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
-          <IconComponent icon={icon} width={ICON_SIZE} height={ICON_SIZE} />;
+          <IconComponent icon={icon} width={ICON_SIZE} height={ICON_SIZE} />
         </Flex>
       </Flex>
     </Link>
