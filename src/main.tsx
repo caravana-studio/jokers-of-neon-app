@@ -5,27 +5,27 @@ import { Toaster } from "sonner";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
 
+import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import i18n from "i18next";
+import { createRef } from "react";
 import { I18nextProvider } from "react-i18next";
 import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
+import { WalletProvider } from "./dojo/WalletContext.tsx";
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
-import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
-import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import customTheme from "./theme/theme";
 import {
   LoadingProgress,
   LoadingScreenHandle,
 } from "./types/LoadingProgress.ts";
-import { createRef } from "react";
-import { WalletProvider } from "./dojo/WalletContext.tsx";
+import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
+import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -67,18 +67,18 @@ async function init() {
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
-          <WalletProvider value={setupResult}>
-            <DojoProvider value={setupResult}>
-              <BrowserRouter>
-                <QueryClientProvider client={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <WalletProvider value={setupResult}>
+              <DojoProvider value={setupResult}>
+                <BrowserRouter>
                   <Toaster />
                   <I18nextProvider i18n={localI18n} defaultNS={undefined}>
                     <App />
                   </I18nextProvider>
-                </QueryClientProvider>
-              </BrowserRouter>
-            </DojoProvider>
-          </WalletProvider>
+                </BrowserRouter>
+              </DojoProvider>
+            </WalletProvider>
+          </QueryClientProvider>
         </StarknetProvider>
       </FadeInOut>
     );
