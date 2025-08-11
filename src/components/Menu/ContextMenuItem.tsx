@@ -1,24 +1,25 @@
 import { Flex } from "@chakra-ui/react";
 import { FC, ReactSVGElement, SVGProps } from "react";
 import { Link } from "react-router-dom";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { IconComponent } from "../IconComponent";
 
-const ICON_SIZE = "26px";
-
-interface BottomMenuItemProps {
+interface ContextMenuItemProps {
   icon: string | FC<SVGProps<ReactSVGElement>>;
   url: string;
   active?: boolean;
   disabled?: boolean;
   onClick?: () => void;
 }
-export const BottomMenuItem = ({
+export const ContextMenuItem = ({
   icon,
   url,
   disabled = false,
   active = false,
   onClick,
-}: BottomMenuItemProps) => {
+}: ContextMenuItemProps) => {
+  const { isSmallScreen } = useResponsiveValues();
+  const iconSize = isSmallScreen ? "26px" : "22px";
   return (
     <Link
       style={{
@@ -38,12 +39,13 @@ export const BottomMenuItem = ({
                 onClick();
               }
             }
-            : undefined
+          : undefined
       }
     >
       <Flex
         flex="1"
-        h="100%"
+        h={isSmallScreen ? "100%" : "auto"}
+        w={isSmallScreen ? "auto" : "100%"}
         align="center"
         justify="center"
         opacity={disabled ? 0.4 : 1}
@@ -53,9 +55,10 @@ export const BottomMenuItem = ({
           w="100%"
           justifyContent="center"
           alignItems="center"
+          py={isSmallScreen ? 0 : 2.5}
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
-          <IconComponent icon={icon} width={ICON_SIZE} height={ICON_SIZE} />
+          <IconComponent icon={icon} width={iconSize} height={iconSize} />
         </Flex>
       </Flex>
     </Link>

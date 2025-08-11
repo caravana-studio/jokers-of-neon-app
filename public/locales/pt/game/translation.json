@@ -1,5 +1,5 @@
 {
-  "bottom-menu": {
+  "confirm-modal": {
     "title": "Sair do jogo?",
     "description": "Você não perderá seu progresso."
   },
@@ -100,7 +100,21 @@
         "store": "Loja - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rodada Rage",
-        "round": "Rodada"
+        "round": "Rodada",
+        "map": "Mapa",
+        "my-games": "Meus jogos",
+        "profile": "Perfil",
+        "settings": "Configuração",
+        "my-collection": "Minha coleção",
+        "home": "Início",
+        "docs": "Lista de cartas",
+        "deck": "Minha baralha",
+        "rewards": "Recompensas",
+        "manage": "Gerenciar itens",
+        "preview": "Visualizar item",
+        "loot-box": "Caixa",
+        "loading-game": "Carregando jogo",
+        "plays": "Jogadas disponíveis"
       },
       "my-games": "Meus jogos"
     },

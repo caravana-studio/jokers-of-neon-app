@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
 import { RemoveScroll } from "react-remove-scroll";
@@ -30,6 +30,7 @@ export const Home = () => {
       </RemoveScroll>
       <Flex
         height="100%"
+        width={"100%"}
         justifyContent="space-between"
         flexDirection="column"
         alignItems="center"
@@ -70,17 +71,35 @@ export const Home = () => {
               />
             </Flex>
           </Flex>
+          {!isSmallScreen && (
+            <Flex gap={8}>
+              <Button onClick={() => navigate("/leaderboard")} w="300px">
+                {t("home.btn.leaderboard-btn")}
+              </Button>
+              <Button
+                onClick={() => handleCreateGame()}
+                w="300px"
+                variant="secondarySolid"
+              >
+                {t("play")}
+              </Button>
+            </Flex>
+          )}
         </Flex>
-        <MobileBottomBar
-          firstButton={{
-            label: t("leaderboard.title"),
-            onClick: () => navigate("/leaderboard"),
-          }}
-          secondButton={{
-            label: t('play'),
-            onClick: () => handleCreateGame(),
-          }}
-        />
+        {isSmallScreen ? (
+          <MobileBottomBar
+            firstButton={{
+              label: t("leaderboard.title"),
+              onClick: () => navigate("/leaderboard"),
+            }}
+            secondButton={{
+              label: t("play"),
+              onClick: () => handleCreateGame(),
+            }}
+          />
+        ) : (
+          <Flex h="50px" />
+        )}
       </Flex>
     </DelayedLoading>
   );

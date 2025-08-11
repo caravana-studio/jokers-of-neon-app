@@ -1,5 +1,5 @@
 {
-  "bottom-menu": {
+  "confirm-modal": {
     "title": "¿Salir del juego?",
     "description": "No perderás tu progreso."
   },
@@ -100,7 +100,21 @@
         "store": "Tienda - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Ronda Rage",
-        "round": "Ronda"
+        "round": "Ronda",
+        "map": "Mapa",
+        "my-games": "Mis juegos",
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "my-collection": "Mi colección",
+        "home": "Inicio",
+        "docs": "Lista de cartas",
+        "deck": "Mi mazo",
+        "rewards": "Recompensas",
+        "manage": "Gestionar items",
+        "preview": "Vista previa del item",
+        "loot-box": "Caja",
+        "loading-game": "Cargando juego",
+        "plays": "Jugadas disponibles"
       },
       "my-games": "Mis juegos"
     },

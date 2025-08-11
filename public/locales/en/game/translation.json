@@ -1,5 +1,5 @@
 {
-  "bottom-menu": {
+  "confirm-modal": {
     "title": "Leave game?",
     "description": "You will not lose your progress."
   },
@@ -101,7 +101,20 @@
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rage Round",
         "round": "Round",
-        "map": "Map"
+        "map": "Map",
+        "my-games": "My games",
+        "profile": "Profile",
+        "settings": "Settings",
+        "my-collection": "My collection",
+        "home": "Home",
+        "docs": "Card list",
+        "deck": "My deck",
+        "rewards": "Rewards",
+        "manage": "Manage items",
+        "preview": "Preview item",
+        "loot-box": "Loot Box",
+        "loading-game": "Loading game",
+        "plays": "Available plays"
       },
       "my-games": "My games"
     },

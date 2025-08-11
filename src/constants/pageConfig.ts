@@ -80,7 +80,7 @@ export const getPageConfig = (
       path: "/docs",
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.docs"),
-        icon: Icons.DOCS,
+        icon: Icons.LIST,
         url: match.pathname,
       }),
     },
@@ -89,6 +89,101 @@ export const getPageConfig = (
       getPageInfo: ({ tGame, match }) => ({
         name: tGame("game-menu.pages.my-games"),
         icon: Icons.JOKER,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/profile",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.profile"),
+        icon: Icons.PROFILE,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/settings",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.settings"),
+        icon: Icons.SETTINGS,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/my-collection",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.my-collection"),
+        icon: Icons.DOCS,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/deck",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.deck"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/plays",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.plays"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/rewards",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.rewards"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/manage",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.manage"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/preview",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.preview"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/open-loot-box",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.loot-box"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/loot-box-cards-selection",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.loot-box"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },{
+      path: "/entering-tournament",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.loading-game"),
+        icon: Icons.CLUB,
+        url: match.pathname,
+      }),
+    },
+    {
+      path: "/",
+      getPageInfo: ({ tGame, match }) => ({
+        name: tGame("game-menu.pages.home"),
+        icon: Icons.HOME,
         url: match.pathname,
       }),
     },
