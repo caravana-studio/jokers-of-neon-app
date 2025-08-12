@@ -16,20 +16,18 @@ export const PlaysLayout = () => {
 
   const content = (
     <Flex
-      py={2}
+      py={isSmallScreen ? "30px" : "0px"}
       px={8}
       flexDirection={"column"}
       justifyContent={"center"}
       width={{ base: "100%", sm: "75%", md: "50%" }}
-      margin={"0 auto"}
       height={"100%"}
       sx={{
         zIndex: 1,
       }}
     >
       <Heading
-        mt={{ base: 0, sm: 20, md: 20 }}
-        size={"md"}
+        size={isSmallScreen ? "sm" : "md"}
         variant="italic"
         color="white"
         textAlign={"center"}
@@ -37,7 +35,7 @@ export const PlaysLayout = () => {
       >
         {t("game.plays.title").toUpperCase()}
       </Heading>
-      <PlaysAvailableTable maxHeight={{ base: undefined, lg: "60%" }} />
+      <PlaysAvailableTable />
       {!isSmallScreen && (
         <Button
           className="game-tutorial-step-4"
@@ -66,7 +64,9 @@ export const PlaysLayout = () => {
           {content}
         </>
       ) : (
-        <BackgroundDecoration>{content}</BackgroundDecoration>
+        <BackgroundDecoration contentHeight={"70%"}>
+          {content}
+        </BackgroundDecoration>
       )}
     </DelayedLoading>
   );

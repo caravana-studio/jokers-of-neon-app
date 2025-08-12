@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Divider, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
@@ -15,9 +15,10 @@ export const SidebarMenu = () => {
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
 
-  const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
-    onMoreClick: undefined,
-  });
+  const { mainMenuItems, inGameMenuItems, extraMenuItems } =
+    useContextMenuItems({
+      onMoreClick: undefined,
+    });
 
   useEffect(() => {
     setTimeout(() => {
@@ -52,6 +53,15 @@ export const SidebarMenu = () => {
         ).map((item) => (
           <ContextMenuItem {...item} />
         ))}
+
+        {!mainMenuUrls.includes(window.location.pathname) && (
+          <>
+            <Divider my={3} />
+            {extraMenuItems.map((item) => (
+              <ContextMenuItem {...item} />
+            ))}
+          </>
+        )}
       </Flex>
       <Flex
         gap={4}

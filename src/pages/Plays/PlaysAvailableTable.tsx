@@ -19,29 +19,18 @@ import { PLAYS, PLAYS_DATA } from "../../constants/plays";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
 import { useDojo } from "../../dojo/useDojo";
 import { parseHand } from "../../enums/hands";
-import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { LevelPokerHand } from "../../types/LevelPokerHand";
-import { useGameStore } from "../../state/useGameStore";
 
 const { blueLight, blue, violet } = theme.colors;
 
-interface PlaysAvailableTableProps {
-  maxHeight?: {
-    base?: string;
-    sm?: string;
-    md?: string;
-    lg?: string;
-    xl?: string;
-  };
-}
 
-export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
-  maxHeight,
-}) => {
+
+export const PlaysAvailableTable= () => {
   const { id: gameId } = useGameStore();
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
   const [playsExampleIndex, setPlaysExampleIndex] = useState(0);
@@ -66,7 +55,8 @@ export const PlaysAvailableTable: React.FC<PlaysAvailableTableProps> = ({
     <>
       {plays ? (
         <TableContainer
-          height={maxHeight}
+          height={"100%"}
+          flexGrow={1}
           border={`2px solid ${blueLight}`}
           borderRadius={"25px"}
           boxShadow={`0px 0px 20px 15px ${blue}`}

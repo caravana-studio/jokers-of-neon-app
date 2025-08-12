@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Icons } from "../../constants/icons";
 import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useGameStore } from "../../state/useGameStore";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const mainMenuUrls = [
   "/",
@@ -54,6 +55,8 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const location = useLocation();
   const url = location.pathname;
   const { state } = useGameStore();
+  const { isSmallScreen } = useResponsiveValues();
+
   const mainMenuItems: MenuItem[] = useMemo(
     () => [
       {
@@ -123,14 +126,41 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
       active: url === "/plays",
       key: "plays",
     },
+  ];
+
+  const allInGameMenuItems: MenuItem[] = isSmallScreen
+    ? [
+        ...inGameMenuItems,
+        {
+          icon: Icons.MORE,
+          url: "/settings-game",
+          active: url === "/settings-game",
+          key: "more",
+          onClick: () => onMoreClick?.(),
+        },
+      ]
+    : inGameMenuItems;
+
+  const extraMenuItems: MenuItem[] = [
     {
-      icon: Icons.MORE,
+      icon: Icons.BACK,
+      url: "/",
+      active: false,
+      key: "back",
+    },
+    {
+      icon: Icons.LIST,
+      url: "/docs",
+      active: url === "/docs",
+      key: "docs",
+    },
+    {
+      icon: Icons.SETTINGS,
       url: "/settings-game",
       active: url === "/settings-game",
-      key: "more",
-      onClick: () => onMoreClick?.(),
+      key: "settings",
     },
   ];
 
-  return { mainMenuItems, inGameMenuItems };
+  return { mainMenuItems, inGameMenuItems: allInGameMenuItems, extraMenuItems };
 }

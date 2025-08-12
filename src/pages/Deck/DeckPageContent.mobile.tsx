@@ -60,7 +60,7 @@ export const DeckPageContentMobile = ({
       flexShrink={1}
       minH={0}
     >
-      <Heading mb={1} textAlign={"center"} variant="italic">
+      <Heading mb={1} size="sm" textAlign={"center"} variant="italic">
         {t("title")}
       </Heading>
       <MobileDecoration />
