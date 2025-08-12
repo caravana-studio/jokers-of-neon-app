@@ -90,7 +90,6 @@ export const StorePreviewPowerUpComponentMobile = ({
         />
 
         <MobileBottomBar
-          hideDeckButton
           firstButton={
             {
               onClick: () => {

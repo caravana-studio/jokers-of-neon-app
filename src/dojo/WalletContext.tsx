@@ -11,9 +11,10 @@ import {
 } from "react";
 import { Account, AccountInterface } from "starknet";
 import { Icons } from "../constants/icons";
-import { ACCOUNT_TYPE } from "../constants/localStorage";
+import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
+import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
 
@@ -53,6 +54,8 @@ type WalletProviderProps = {
 
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
+  const { lastGameId, isLoading } = useGetLastGameId();
+  console.log("last game id", lastGameId);
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
@@ -185,7 +188,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     return (
       <PreThemeLoadingPage>
         <img width="60%" src="logos/logo.png" alt="logo" />
-        <Flex flexDirection={"row"} gap={'30px'}>
+        <Flex flexDirection={"row"} gap={"30px"}>
           <button
             style={{ color: "white" }}
             className="login-button"
@@ -218,8 +221,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
           <button
             style={{ color: "white" }}
             className="login-button secondary"
+            disabled={isLoading}
             onClick={() => {
               setConnectionStatus("connecting_burner");
+              const username = `joker_guest_${lastGameId + 1}`;
+              console.log("setting username: ", username);
+
+              localStorage.removeItem(GAME_ID);
+              localStorage.setItem(LOGGED_USER, username);
             }}
           >
             PLAY AS GUEST

@@ -1,17 +1,19 @@
-import { Capacitor } from "@capacitor/core";
 import { Flex } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { ReactFlowProvider } from "reactflow";
 import { MapProvider } from "../providers/MapProvider";
 import { StoreProvider } from "../providers/StoreProvider";
-import { hiddenBarMenu } from "./Menu/BarMenu/BarMenuConfig";
+import { useResponsiveValues } from "../theme/responsiveSettings";
+import { needsPadding } from "../utils/capacitorUtils";
+import { ConfirmationModal } from "./ConfirmationModal";
 import { SidebarMenu } from "./Menu/BarMenu/SidebarMenu";
-
-const platform = Capacitor.getPlatform();
-const needsPadding = platform === "ios";
+import { BottomMenu } from "./Menu/BottomMenu";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const sidebarHidden = hiddenBarMenu();
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <ReactFlowProvider>
       <MapProvider>
@@ -20,13 +22,28 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             width={"100%"}
             height={"100%"}
             pt={needsPadding ? "50px" : "0px"}
-            pb={needsPadding ? "20px" : "0px"}
+            pb={needsPadding ? "80px" : isSmallScreen ? "50px" : "0px"}
+            flexDirection={isSmallScreen ? "column" : "row"}
+            flexGrow={1}
+            minH={0}
           >
-            {!sidebarHidden && <SidebarMenu />}
-            <Flex zIndex={2} flexGrow={1} height="100%">
+            {!isSmallScreen && <SidebarMenu />}
+            <Flex
+              zIndex={2}
+              flexGrow={1}
+              flexShrink={1}
+              minH={0}
+              minW={0}
+              height={"100%"}
+              width={"100%"}
+            >
               {children}
             </Flex>
           </Flex>
+          {isSmallScreen && (
+            <BottomMenu
+            />
+          )}
         </StoreProvider>
       </MapProvider>
     </ReactFlowProvider>

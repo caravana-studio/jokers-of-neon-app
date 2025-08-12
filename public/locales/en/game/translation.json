@@ -1,4 +1,8 @@
 {
+  "confirm-modal": {
+    "title": "Leave game?",
+    "description": "You will not lose your progress."
+  },
   "controller": "Controller account",
   "error": {
     "labels": {
@@ -90,6 +94,7 @@
       "docs-btn": "Card list",
       "leaderboard-btn": "Leaderboard",
       "map-btn": "Map",
+      "back": "Leave game",
       "pages": {
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
@@ -97,7 +102,20 @@
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rage Round",
         "round": "Round",
-        "map": "Map"
+        "map": "Map",
+        "my-games": "My games",
+        "profile": "Profile",
+        "settings": "Settings",
+        "my-collection": "My collection",
+        "home": "Home",
+        "docs": "Card list",
+        "deck": "My deck",
+        "rewards": "Rewards",
+        "manage": "Manage items",
+        "preview": "Preview item",
+        "loot-box": "Loot Box",
+        "loading-game": "Loading game",
+        "plays": "Available plays"
       },
       "my-games": "My games"
     },
@@ -112,7 +130,7 @@
     },
     "deck": {
       "tooltip": "See my deck",
-      "title": "My full deck",
+      "title": "My deck",
       "burn-title": "Select a card to burn",
       "filter-title": "Filter by",
       "suit": {

@@ -85,7 +85,6 @@ export const StorePreviewSlotComponentMobile = ({
         />
 
         <MobileBottomBar
-          hideDeckButton
           firstButton={{
             onClick: () => {
               sessionStorage.setItem(STORE_LAST_TAB_INDEX, String(tab));

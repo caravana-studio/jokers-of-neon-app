@@ -93,7 +93,6 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
       </Flex>
       <Flex width={{ base: "100%", sm: "80%", md: "60%" }} mx={"auto"}>
         <MobileBottomBar
-          hideDeckButton
           firstButton={firstButton}
           secondButton={secondButton}
         />
