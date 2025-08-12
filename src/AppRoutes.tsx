@@ -25,10 +25,10 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
+import { SettingsPage } from "./pages/SettingsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import { SettingsPage } from "./pages/SettingsPage";
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
 export const AppRoutes = () => {
@@ -79,6 +79,14 @@ export const AppRoutes = () => {
       />
       <Route
         path="/settings"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings-game"
         element={
           <AnimatedPage>
             <SettingsPage />

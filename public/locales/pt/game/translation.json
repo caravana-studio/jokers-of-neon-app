@@ -94,6 +94,7 @@
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
+      "back": "Sair do jogo",
       "pages": {
         "gameover": "Fim do jogo",
         "open-loot-box": "Abrir caixa",
@@ -129,7 +130,7 @@
     },
     "deck": {
       "tooltip": "Ver meu baralho",
-      "title": "Meu baralho completo",
+      "title": "Meu baralho",
       "burn-title": "Selecione uma carta para queimar",
       "filter-title": "Filtrar por",
       "suit": {

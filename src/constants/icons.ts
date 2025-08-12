@@ -27,6 +27,7 @@ import ProfileIcon from "../assets/MenuIcons/profile.png";
 import BackIcon from "../assets/MenuIcons/back.png";
 import DeckIcon from "../assets/MenuIcons/deck.png";
 import ListIcon from "../assets/MenuIcons/list.png";
+import MoreIcon from "../assets/MenuIcons/more.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -57,7 +58,8 @@ export const Icons = {
   PROFILE: ProfileIcon,
   BACK: BackIcon,
   DECK: DeckIcon,
-  LIST: ListIcon
+  LIST: ListIcon,
+  MORE: MoreIcon
 } as const;
 
 export type IconType = keyof typeof Icons;

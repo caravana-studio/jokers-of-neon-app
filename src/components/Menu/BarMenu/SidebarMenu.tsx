@@ -7,11 +7,7 @@ import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
 import { ContextMenuItem } from "../ContextMenuItem";
 import { mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
 
-interface SidebarMenuProps {
-  onLeaveGameClick: () => void;
-}
-
-export const SidebarMenu = ({ onLeaveGameClick }: SidebarMenuProps) => {
+export const SidebarMenu = () => {
   const navigate = useNavigate();
   const page = useCurrentPageInfo();
 
@@ -20,7 +16,7 @@ export const SidebarMenu = ({ onLeaveGameClick }: SidebarMenuProps) => {
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
 
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
-    onLeaveGameClick,
+    onMoreClick: undefined,
   });
 
   useEffect(() => {

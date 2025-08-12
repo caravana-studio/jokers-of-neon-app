@@ -1,20 +1,24 @@
 import { Flex } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { needsPadding } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
+import { GameMenuContent } from "./GameMenu/GameMenuContent";
 import { mainMenuUrls, useContextMenuItems } from "./useContextMenuItems";
 
-interface BottomMenuProps {
-  onLeaveGameClick: () => void;
-}
-
-export const BottomMenu = ({ onLeaveGameClick }: BottomMenuProps) => {
+export const BottomMenu = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
-    onLeaveGameClick,
+    onMoreClick: () => setIsMenuOpen(true),
   });
 
   return (
     <>
+      {isMenuOpen && (
+        <GameMenuContent
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+        />
+      )}
       <Flex
         h="50px"
         w="100%"

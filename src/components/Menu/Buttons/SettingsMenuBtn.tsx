@@ -1,28 +1,30 @@
 import { useTranslation } from "react-i18next";
-import { MenuBtn } from "./MenuBtn";
+import { useNavigate } from "react-router-dom";
 import { Icons } from "../../../constants/icons";
-import { useSettingsModal } from "../../../hooks/useSettingsModal";
+import { MenuBtn } from "./MenuBtn";
 
 export const SettingsMenuBtn = ({
   width,
   label,
+  onClose,
 }: {
   width: string;
   label?: boolean;
+  onClose: () => void;
 }) => {
   const { t } = useTranslation("game");
-  const { openSettings, Modal: SettingsModal } = useSettingsModal();
+  const navigate = useNavigate();
 
   return (
-    <>
-      {SettingsModal}
-      <MenuBtn
-        icon={Icons.SETTINGS}
-        label={label ? t("game.game-menu.settings-btn") : undefined}
-        description={t("game.game-menu.settings-btn")}
-        onClick={openSettings}
-        width={width}
-      />
-    </>
+    <MenuBtn
+      icon={Icons.SETTINGS}
+      label={label ? t("game.game-menu.settings-btn") : undefined}
+      description={t("game.game-menu.settings-btn")}
+      onClick={() => {
+        navigate("/settings-game");
+        onClose();
+      }}
+      width={width}
+    />
   );
 };

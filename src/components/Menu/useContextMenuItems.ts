@@ -23,7 +23,7 @@ export const gameUrls = [
   "/entering-tournament",
   "/preview/:type",
   "/loot-box-cards-selection",
-  "/manage"
+  "/manage",
 ];
 
 export const getIcon = (state: GameStateEnum) => {
@@ -37,9 +37,8 @@ export const getIcon = (state: GameStateEnum) => {
   }
 };
 
-
 interface UseBottomMenuItemsProps {
-  onLeaveGameClick: () => void;
+  onMoreClick?: () => void;
 }
 
 interface MenuItem {
@@ -51,7 +50,7 @@ interface MenuItem {
   disabled?: boolean;
 }
 
-export function useContextMenuItems({ onLeaveGameClick }: UseBottomMenuItemsProps) {
+export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
   const location = useLocation();
   const url = location.pathname;
   const { state } = useGameStore();
@@ -93,34 +92,10 @@ export function useContextMenuItems({ onLeaveGameClick }: UseBottomMenuItemsProp
 
   const inGameMenuItems: MenuItem[] = [
     {
-      icon: Icons.BACK,
-      url: "/",
-      key: "arrow-left",
-      onClick: () => onLeaveGameClick(),
-    },
-    {
-      icon: Icons.LIST,
-      url: "/docs",
-      active: url === "/docs",
-      key: "docs",
-    },
-    {
-      icon: Icons.MAP,
-      url: "/map",
-      active: url === "/map",
-      key: "map",
-    },
-    {
-      icon: Icons.CLUB,
-      url: "/deck",
-      active: url === "/deck",
-      key: "deck",
-    },
-    {
       icon: getIcon(state),
       url: "/redirect",
       disabled: state === GameStateEnum.Map,
-      active: gameUrls.some(gameUrl => {
+      active: gameUrls.some((gameUrl) => {
         if (gameUrl.includes(":")) {
           const base = gameUrl.split(":")[0];
           return url.startsWith(base);
@@ -128,6 +103,32 @@ export function useContextMenuItems({ onLeaveGameClick }: UseBottomMenuItemsProp
         return url === gameUrl;
       }),
       key: "game",
+    },
+    {
+      icon: Icons.MAP,
+      url: "/map",
+      active: url === "/map",
+      key: "map",
+    },
+
+    {
+      icon: Icons.DECK,
+      url: "/deck",
+      active: url === "/deck",
+      key: "deck",
+    },
+    {
+      icon: Icons.CLUB,
+      url: "/plays",
+      active: url === "/plays",
+      key: "plays",
+    },
+    {
+      icon: Icons.MORE,
+      url: "/settings-game",
+      active: url === "/settings-game",
+      key: "more",
+      onClick: () => onMoreClick?.(),
     },
   ];
 

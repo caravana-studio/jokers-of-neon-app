@@ -6,9 +6,11 @@ import { MenuBtn } from "./MenuBtn";
 export const DocsMenuBtn = ({
   width,
   label,
+  onClose
 }: {
   width: string;
   label?: boolean;
+  onClose: () => void;
 }) => {
   const { t } = useTranslation("game");
   const navigate = useNavigate();
@@ -16,11 +18,12 @@ export const DocsMenuBtn = ({
   return (
     <MenuBtn
       width={width}
-      icon={Icons.DOCS}
+      icon={Icons.LIST}
       description={t("game.game-menu.docs-btn")}
       label={label ? t("game.game-menu.docs-btn") : undefined}
       onClick={() => {
         navigate("/docs");
+        onClose()
       }}
     />
   );

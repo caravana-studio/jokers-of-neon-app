@@ -13,9 +13,6 @@ import { BottomMenu } from "./Menu/BottomMenu";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const [confirmLeaveGameOpen, setConfirmLeaveGameOpen] = useState(false);
-  const { t } = useTranslation("game", { keyPrefix: "confirm-modal" });
-  const navigate = useNavigate();
 
   return (
     <ReactFlowProvider>
@@ -30,7 +27,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             flexGrow={1}
             minH={0}
           >
-            {!isSmallScreen && <SidebarMenu onLeaveGameClick={() => setConfirmLeaveGameOpen(true)} />}
+            {!isSmallScreen && <SidebarMenu />}
             <Flex
               zIndex={2}
               flexGrow={1}
@@ -45,18 +42,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </Flex>
           {isSmallScreen && (
             <BottomMenu
-              onLeaveGameClick={() => setConfirmLeaveGameOpen(true)}
-            />
-          )}
-          {confirmLeaveGameOpen && (
-            <ConfirmationModal
-              close={() => setConfirmLeaveGameOpen(false)}
-              title={t("title")}
-              description={t("description")}
-              onConfirm={() => {
-                navigate("/");
-                setConfirmLeaveGameOpen(false);
-              }}
             />
           )}
         </StoreProvider>

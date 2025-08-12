@@ -22,10 +22,11 @@ import { MapMenuBtn } from "../Buttons/MapMenuBtn";
 import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
 import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
 import { TutorialBtn } from "../Buttons/TutorialBtn";
+import { BackMenuBtn } from "../Buttons/BackMenuBtn";
 
 interface GameMenuContentProps {
   isOpen: boolean;
-  onClose: Function;
+  onClose: () => void;
 }
 
 export const GameMenuContent: React.FC<GameMenuContentProps> = ({
@@ -93,14 +94,9 @@ export const GameMenuContent: React.FC<GameMenuContentProps> = ({
           fontSize={fontSize}
           gap={5}
         >
-          <ControllerIcon width={iconWidth} label />
-          <MyGamesMenuBtn width={iconWidth} label />
-          <MapMenuBtn width={iconWidth} useLabel />
-          <LeaderboardMenuBtn width={iconWidth} label />
-          <DocsMenuBtn width={iconWidth} label />
-          <SettingsMenuBtn width={iconWidth} label />
-          <DiscordLink width={iconWidth} label />
-          {/* {!hideTutorialFF && <TutorialBtn width={iconWidth} label />} */}
+          <BackMenuBtn width={iconWidth} label onClose={onClose} />
+          <DocsMenuBtn width={iconWidth} label onClose={onClose}  />
+          <SettingsMenuBtn width={iconWidth} label onClose={onClose} />
         </DrawerBody>
 
         <DrawerFooter justifyContent="flex-start" fontSize={fontSize}>

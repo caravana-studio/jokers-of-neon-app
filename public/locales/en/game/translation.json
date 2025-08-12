@@ -94,6 +94,7 @@
       "docs-btn": "Card list",
       "leaderboard-btn": "Leaderboard",
       "map-btn": "Map",
+      "back": "Leave game",
       "pages": {
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
@@ -129,7 +130,7 @@
     },
     "deck": {
       "tooltip": "See my deck",
-      "title": "My full deck",
+      "title": "My deck",
       "burn-title": "Select a card to burn",
       "filter-title": "Filter by",
       "suit": {
