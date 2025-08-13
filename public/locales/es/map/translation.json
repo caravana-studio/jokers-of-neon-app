@@ -3,7 +3,7 @@
     "name": "Ronda normal {{round}}"
   },
   "rage": {
-    "name": "Ronda de rage {{round}}",
+    "name": "Ronda de furia {{round}}",
     "power": "Poder: {{power}}",
     "intermediate": "Intermedia",
     "final": "Final"
@@ -18,7 +18,7 @@
       "rage": {
         "intermediate": "Intermedia",
         "final": "Final",
-        "title": "Ronda de rage"
+        "title": "Ronda de furia"
       },
       "shop": {
         "title": "Tienda",

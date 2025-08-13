@@ -2,7 +2,7 @@
     "home": {
         "slogan": "CONSTRUYE TU MAZO, DOMINA EL JUEGO",
         "btn": {
-            "leaderboard-btn": "Ver leaderboard",
+            "leaderboard-btn": "Ver tabla de posiciones",
             "playDemo-btn": "Jugar",
             "start": "Comenzar"
         },
@@ -20,7 +20,6 @@
             "level-leaderboard-head": "Nivel"
         }
     },
-    "play": "Nuevo juego",
     "tournament": {
         "table-head": {
             "prize-leaderboard-head": "Premio",
@@ -28,7 +27,7 @@
         },
         "labels": {
             "days-countdown-tournament": "días",
-            "label-countdown-tournament": "para la finalización del torneo"
+            "label-countdown-tournament": "para el final del torneo"
         }
     }
 }

@@ -7,8 +7,8 @@
     "go-back": "Volver",
     "start-game": "Iniciar nuevo juego",
     "show-finished-games": "Mostrar juegos terminados",
-    "continue-btn": "continuar",
-    "start-btn": "iniciar",
+    "continue-btn": "Continuar",
+    "start-btn": "Iniciar",
     "surrender": {
       "action": "Rendirse",
       "confirmation-modal": {
@@ -18,7 +18,7 @@
     },
     "level-lbl": "Nivel",
     "status-lbl": "Estado",
-    "points-lbl": "puntos",
+    "points-lbl": "Puntos",
     "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",
     "create-game": {
       "stage-1": "Buscando torneo {{tournamentId}}",
@@ -30,11 +30,11 @@
   },
   "game-over": {
     "current-position": "Estás en la posición número {{position}}, ¿quieres mantenerlo?",
-    "login": "Login",
+    "login": "Iniciar sesión",
     "skip": "Saltar",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
-      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en el leaderboard!",
+      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la tabla de posiciones!",
       "gameOver-top5-msj": "¡Buen trabajo! ¡Estás en el top 5! ¡Sigue así!"
     },
     "btn": {
@@ -60,15 +60,15 @@
   },
   "rewards-details": {
     "labels": {
-      "title": "Ronda {{round}} superada!",
-      "base": "base",
+      "title": "¡Ronda {{round}} superada!",
+      "base": "Base",
       "level-bonus": "Bonus del nivel",
-      "discards-left": "{{discards}} Descartes restantes",
-      "hands-left": "{{hands}} Manos restantes",
-      "rage-cards": "{{cards}} cartas Rage vencidas",
-      "total": "total",
+      "discards-left": "{{discards}} descartes restantes",
+      "hands-left": "{{hands}} manos restantes",
+      "rage-cards": "{{cards}} cartas de furia vencidas",
+      "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
-      "continue-btn": "continuar"
+      "continue-btn": "Continuar"
     }
   },
   "special-cards": {
@@ -90,8 +90,8 @@
   "power-ups": {
     "title": "Power-ups",
      "confirmation-modal": {
-      "title": "Vender powerup",
-      "description": "Estás seguro de que quieres vender este Power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
+      "title": "Vender power-up",
+      "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
   },
   "open-lootbox": {
