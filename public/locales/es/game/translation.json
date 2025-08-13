@@ -95,6 +95,7 @@
       "leaderboard-btn": "Tabla de posiciones",
       "map-btn": "Mapa",
       "back": "Salir del juego",
+      "delete-acc-btn": "Eliminar cuenta",
       "pages": {
         "gameover": "Fin del juego",
         "open-loot-box": "Abrir caja",
@@ -117,7 +118,19 @@
         "loading-game": "Cargando juego",
         "plays": "Jugadas disponibles"
       },
+      
       "my-games": "Mis juegos"
+    },
+    "profile-menu": {
+      "level": "Nivel",
+      "streaks": "Rachas",
+      "days": "Días",
+      "games": "Juegos",
+      "victories": "Victorias",
+      "next-level": "Siguiente nivel",
+      "my-xp": "Mi XP",
+      "my-badges": "Mis Insignias",
+      "coming-soon": "Muy pronto"
     },
     "plays": {
       "title": "Jugadas disponibles",

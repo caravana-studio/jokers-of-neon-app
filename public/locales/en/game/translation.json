@@ -95,6 +95,7 @@
       "leaderboard-btn": "Leaderboard",
       "map-btn": "Map",
       "back": "Leave game",
+      "delete-acc-btn": "Delete account",
       "pages": {
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
@@ -118,6 +119,17 @@
         "plays": "Available plays"
       },
       "my-games": "My games"
+    },
+    "profile-menu": {
+      "level": "Level",
+      "streaks": "Streaks",
+      "days": "Days",
+      "games": "Games",
+      "victories": "Victories",
+      "next-level": "Next lvl",
+      "my-xp": "My XP",
+      "my-badges": "My badges",
+      "coming-soon": "Coming soon"
     },
     "plays": {
       "title": "Available plays",
