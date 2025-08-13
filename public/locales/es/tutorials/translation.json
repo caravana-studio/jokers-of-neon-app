@@ -41,7 +41,7 @@
     },
     "modifiers": {
       "title": "Cartas modificadoras",
-      "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una escalera real de color. ¡Vamos a intentarlo!",
+      "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una escalera real. ¡Vamos a intentarlo!",
       "drag": "Arrastra y suelta el modificador de palo de trébol sobre el 10, luego haz clic en 'Siguiente' para continuar."
     },
     "power-ups": {
