@@ -148,6 +148,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const logout = () => {
     disconnect();
     setAccountType(null);
+    setFinalAccount(null);
     localStorage.removeItem(ACCOUNT_TYPE);
     setConnectionStatus("selecting");
   };

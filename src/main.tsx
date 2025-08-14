@@ -14,6 +14,7 @@ import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import { WalletProvider } from "./dojo/WalletContext.tsx";
+import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx";
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
@@ -68,16 +69,18 @@ async function init() {
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
           <QueryClientProvider client={queryClient}>
-            <WalletProvider value={setupResult}>
-              <DojoProvider value={setupResult}>
-                <BrowserRouter>
-                  <Toaster />
-                  <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                    <App />
-                  </I18nextProvider>
-                </BrowserRouter>
-              </DojoProvider>
-            </WalletProvider>
+            <FeatureFlagProvider>
+              <WalletProvider value={setupResult}>
+                <DojoProvider value={setupResult}>
+                  <BrowserRouter>
+                    <Toaster />
+                    <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                      <App />
+                    </I18nextProvider>
+                  </BrowserRouter>
+                </DojoProvider>
+              </WalletProvider>
+            </FeatureFlagProvider>
           </QueryClientProvider>
         </StarknetProvider>
       </FadeInOut>
