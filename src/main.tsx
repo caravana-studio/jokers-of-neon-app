@@ -26,6 +26,7 @@ import {
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { isNative } from "./utils/capacitorUtils.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -116,13 +117,17 @@ async function init() {
     progressBarRef.current?.nextStep();
   });
 
-  const imagesPromise = Promise.all([
-    preloadImages(),
-    preloadSpineAnimations(),
-    preloadVideos(),
-  ]).then(() => {
-    progressBarRef.current?.nextStep();
-  });
+  const imagesPromise = isNative 
+    ? Promise.resolve().then(() => {
+        progressBarRef.current?.nextStep();
+      })
+    : Promise.all([
+        preloadImages(),
+        preloadSpineAnimations(),
+        preloadVideos(),
+      ]).then(() => {
+        progressBarRef.current?.nextStep();
+      });
 
   try {
     const setupPromise = setup(dojoConfig).then((result) => {
