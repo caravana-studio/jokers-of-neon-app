@@ -6,9 +6,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useLocation } from "react-router-dom";
-import { usePrevious } from "../hooks/usePrevious.tsx";
+import { mainMenuUrls } from "../components/Menu/useContextMenuItems";
+import { SETTINGS_MUSIC_VOLUME, SOUND_OFF } from "../constants/localStorage.ts";
 import { useGameStore } from "../state/useGameStore.ts";
 
 interface AudioPlayerContextProps {
@@ -48,29 +48,15 @@ export const AudioPlayerProvider = ({
   const location = useLocation();
   const { isRageRound } = useGameStore();
 
-  const prevLocationPath = usePrevious(location.pathname);
-
-  const isHomeOrLoginRoute =
-    location.pathname === "/" || location.pathname === "/login";
-  const isMyGamesRoute = location.pathname === "/my-games";
-  const isDemoRoute = location.pathname === "/demo";
+  const isMainMenuRoute = mainMenuUrls.includes(location.pathname);
 
   useEffect(() => {
     let newActiveSongPath: string;
 
-    if (isHomeOrLoginRoute) {
+    if (isMainMenuRoute) {
       newActiveSongPath = introSongPath;
-    } else if (isMyGamesRoute) {
-      const navigatedFromHomeOrLogin =
-        prevLocationPath === "/" || prevLocationPath === "/login";
-
-      if (navigatedFromHomeOrLogin) {
-        newActiveSongPath = introSongPath;
-      } else {
-        newActiveSongPath = isRageRound ? rageSongPath : baseSongPath;
-      }
-    } else if (isDemoRoute) {
-      newActiveSongPath = isRageRound ? rageSongPath : baseSongPath;
+    } else if (isRageRound) {
+      newActiveSongPath = rageSongPath;
     } else {
       newActiveSongPath = baseSongPath;
     }
@@ -80,7 +66,6 @@ export const AudioPlayerProvider = ({
     }
   }, [
     location.pathname,
-    prevLocationPath,
     isRageRound,
     introSongPath,
     baseSongPath,

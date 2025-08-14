@@ -5,8 +5,8 @@ import { Loading } from "../components/Loading";
 import { stateToPageMap } from "../constants/redirectConfig";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
-import { useGameStore } from "../state/useGameStore";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
+import { useGameStore } from "../state/useGameStore";
 
 export const Redirect = () => {
   const { state, refetchGameStore, id: gameId } = useGameStore();
@@ -17,12 +17,15 @@ export const Redirect = () => {
   const {
     setup: { client },
   } = useDojo();
-  const desiredPath =
-    stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
 
-  console.log("desiredPath", desiredPath);
-
-  navigate(desiredPath);
+  useEffect(() => {
+    const desiredPath =
+      stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
+  
+    console.log("desiredPath", desiredPath);
+  
+    navigate(desiredPath);
+  }, [])
 
   useEffect(() => {
     if (!state || state === GameStateEnum.NotSet) {

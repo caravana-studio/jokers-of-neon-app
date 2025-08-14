@@ -15,9 +15,9 @@
     "playableHand": {
       "step-1": "Debes utilizar estas cartas para formar una mano de póker.",
       "step-2": "Si las cartas de tu mano no forman una mano de póker, puedes usar un descarte para obtener nuevas cartas. Vamos a intentarlo.",
-      "pair": "¡Genial! Tenemos un PAR de 7 para jugar, ¡hagámoslo!",
-      "secondPair": "Ahora tenemos un PAR de 5's para jugar, ¡hagámoslo!",
-      "straight": "Mira, ahora tenemos una ESCALERA para jugar, ¡hagámoslo!",
+      "pair": "¡Genial! Tenemos un par de 7 para jugar, ¡hagámoslo!",
+      "secondPair": "Ahora tenemos un par de 5 para jugar, ¡hagámoslo!",
+      "straight": "Mira, ahora tenemos una escalera para jugar, ¡hagámoslo!",
       "plays": "Puedes hacer clic aquí para ver las posibles manos de póker que puedes formar."
     },
     "discardCards": {
@@ -36,17 +36,17 @@
       "content": "¡Buen trabajo! Tu última jugada alcanzó la puntuación objetivo. Ahora, vamos a jugar de verdad. ¡Buena suerte!"
     },
     "specialCards": {
-      "title": "Cartas Especiales",
+      "title": "Cartas especiales",
       "content": "Las cartas especiales son un cambio radical, ya que aplican efectos únicos a las cartas que juegas. Puedes comprarlas en la tienda."
     },
     "modifiers": {
-      "title": "Cartas Modificadoras",
-      "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una ESCALERA REAL DE COLOR. ¡Vamos a intentarlo!",
+      "title": "Cartas modificadoras",
+      "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una escalera real. ¡Vamos a intentarlo!",
       "drag": "Arrastra y suelta el modificador de palo de trébol sobre el 10, luego haz clic en 'Siguiente' para continuar."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "Los power-ups otorgan puntos extra y aumentan tu multipli. Úsalos una vez y luego compra más en la tienda.",
+      "content": "Los power-ups otorgan puntos extra y aumentan tu multiplicador. Úsalos una vez y luego compra más en la tienda.",
       "select": "Selecciona este power-up"
     }
   },
@@ -57,7 +57,7 @@
     },
     "levelUpHands": {
       "title": "Mejora tus manos",
-      "content": "Puedes mejorar tus manos. Cuanto mayor sea el nivel de tus manos de póker, más puntos y multiplicadores obtendrán"
+      "content": "Puedes mejorar tus manos. Cuanto mayor sea el nivel de tus manos de póker, más puntos y multiplicadores obtendrán."
     },
     "buyPacks": {
       "title": "Comprar paquetes",
@@ -69,7 +69,7 @@
     },
     "modifiers": {
       "title": "Modificadores",
-      "content": "Los modificadores son cartas que se agregan a tu mazo y aplican efectos a tus cartas tradicionales, como agregar más puntos o cambiar el palo"
+      "content": "Los modificadores son cartas que se agregan a tu mazo y aplican efectos a tus cartas tradicionales, como agregar más puntos o cambiar el palo."
     },
     "specialCards": {
       "title": "Cartas especiales",
@@ -77,7 +77,7 @@
     },
     "rerollStore": {
       "title": "Actualizar la tienda",
-      "content": "¿No encuentras lo que necesitas? Gasta algunas monedas para actualiza la tienda y ver un nuevo conjunto de cartas y manos para mejorar."
+      "content": "¿No encuentras lo que necesitas? Gasta algunas monedas para actualizar la tienda y ver un nuevo conjunto de cartas y manos para mejorar."
     },
     "nextLevel": {
       "title": "Avanzar al siguiente nivel",

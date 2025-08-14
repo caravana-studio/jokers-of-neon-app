@@ -4,7 +4,7 @@
     "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
     "traditionals": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
-    "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multi.",
+    "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multiplicador.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
     "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
     "burn": "Elimina una carta de tu mazo",
@@ -17,7 +17,7 @@
       "next": "Siguiente",
       "unlock-slot": "Desbloquear espacio",
       "titles": {
-        "traditionals": "Cartas tradicionales y neon",
+        "traditionals": "Cartas tradicionales y neón",
         "modifiers": "Cartas modificadoras",
         "burn": "Quemar carta",
         "level-up-table": "Manos de póker",
@@ -61,7 +61,7 @@
       "hand": "Mano",
       "level": "Nivel",
       "price": "Precio",
-      "points-multi": "Puntos/multi",
+      "points-multi": "Puntos/multiplicador",
       "level-up": "Subir nivel",
       "purchased": "Comprado"
     },
@@ -90,7 +90,7 @@
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
+        "temporal": "Carta temporal. Se destruye después de {{remaining}} niveles.",
         "power-up": "Power-up"
       }
     },
@@ -100,12 +100,12 @@
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
-      "special-cards-btn": "Gestionar items",
+      "special-cards-btn": "Ver mis cartas especiales actuales",
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",
         "description": "No has seleccionado ninguna carta. ¿Estás seguro de que quieres continuar?",
-        "temporal": "Carta temporal. Se destruye despues de {{remaining}} niveles.",
+        "temporal": "Carta temporal. Se destruye después de {{remaining}} niveles.",
         "tooltip": {
           "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
           "no-coins": "Monedas insuficientes"
@@ -125,7 +125,7 @@
     "0": { "name": "" },
     "1": {
       "name": "Mazo",
-      "content": "{{traditionals}} cartas tradicionales o neon, {{modifiers}} modificadores, quemar una carta de tu mazo"
+      "content": "{{traditionals}} cartas tradicionales o neón, {{modifiers}} modificadores, quemar una carta de tu mazo"
     },
     "2": {
       "name": "Global",

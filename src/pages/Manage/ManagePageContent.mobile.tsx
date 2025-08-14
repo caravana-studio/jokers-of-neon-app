@@ -36,7 +36,6 @@ export const ManagePageContentMobile = ({
         <MobileBottomBar
           firstButton={undefined}
           secondButtonReactNode={goBackButton}
-          hideDeckButton
         />
       }
     >

@@ -1,4 +1,8 @@
 {
+  "confirm-modal": {
+    "title": "Sair do jogo?",
+    "description": "Você não perderá seu progresso."
+  },
   "controller": "Conta de controller",
   "error": {
     "labels": {
@@ -91,13 +95,28 @@
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
       "delete-acc-btn": "Excluir conta",
+      "back": "Sair do jogo",
       "pages": {
         "gameover": "Fim do jogo",
         "open-loot-box": "Abrir caixa",
         "store": "Loja - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rodada Rage",
-        "round": "Rodada"
+        "round": "Rodada",
+        "map": "Mapa",
+        "my-games": "Meus jogos",
+        "profile": "Perfil",
+        "settings": "Configuração",
+        "my-collection": "Minha coleção",
+        "home": "Início",
+        "docs": "Lista de cartas",
+        "deck": "Minha baralha",
+        "rewards": "Recompensas",
+        "manage": "Gerenciar itens",
+        "preview": "Visualizar item",
+        "loot-box": "Caixa",
+        "loading-game": "Carregando jogo",
+        "plays": "Jogadas disponíveis"
       },
       "my-games": "Meus jogos"
     },
@@ -123,7 +142,7 @@
     },
     "deck": {
       "tooltip": "Ver meu baralho",
-      "title": "Meu baralho completo",
+      "title": "Meu baralho",
       "burn-title": "Selecione uma carta para queimar",
       "filter-title": "Filtrar por",
       "suit": {
