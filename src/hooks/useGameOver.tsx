@@ -7,7 +7,6 @@ import { useAudio } from "./useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
-import { runConfettiAnimation } from "../utils/runConfettiAnimation";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -46,11 +45,7 @@ export const useGameOver = () => {
     };
   }, [looseSound, stopLooseSound]);
 
-  useEffect(() => {
-    if (position <= 10) {
-      runConfettiAnimation(position <= 3 ? 300 : 100);
-    }
-  }, [position]);
+
 
   const onStartGameClick = () => {
     setIsLoading(true);

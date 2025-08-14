@@ -14,18 +14,9 @@ import { useTranslation } from "react-i18next";
 import { animated, config, useSpring } from "react-spring";
 import { PLAYS } from "../../constants/plays";
 import { useAnimationStore } from "../../state/useAnimationStore";
-import {
-  BLUE,
-  BLUE_LIGHT,
-  NEON_GREEN,
-  NEON_PINK,
-  PASTEL_PINK,
-  VIOLET,
-  VIOLET_LIGHT,
-} from "../../theme/colors";
+
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
-import { runConfettiAnimation } from "../../utils/runConfettiAnimation";
 
 export const LevelUpFirstDiscartedHandAnimation = () => {
   const [showAnimationHeading, setShowAnimationHeading] = useState(false);
@@ -38,24 +29,6 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { t } = useTranslation("game", {
     keyPrefix: "animations.labels",
   });
-
-  const confettiConfig = {
-    startVelocity: 10,
-    spread: 20,
-    ticks: 30,
-    zIndex: 11,
-    colors: [
-      BLUE,
-      BLUE_LIGHT,
-      VIOLET,
-      VIOLET_LIGHT,
-      PASTEL_PINK,
-      NEON_GREEN,
-      "#FFF",
-      NEON_PINK,
-    ],
-    yOffset: 0.5,
-  };
 
   const headingSpring = useSpring({
     from: { x: -1000, opacity: 0 },
@@ -148,8 +121,6 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
       setTimeout(() => {
         setNewDataText(true);
       }, 500);
-
-      runConfettiAnimation(20, confettiConfig, 1000);
 
       const timer = setTimeout(() => {
         setShowAnimationHeading(false);
