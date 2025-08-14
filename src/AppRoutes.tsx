@@ -75,7 +75,7 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <ProfilePage />
+            <ProfileMobile />
           </AnimatedPage>
         }
       />
@@ -271,7 +271,6 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-      <Route path="/profile" element={<ProfileMobile></ProfileMobile>} />
     </Routes>
   );
 };
