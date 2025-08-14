@@ -1,5 +1,5 @@
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Flex, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
@@ -11,6 +11,7 @@ import {
   SUCCESS_TOAST,
   VIOLET_LIGHT,
 } from "../theme/colors.tsx";
+import { needsPadding } from "./capacitorUtils.ts";
 import { getEnvString } from "./getEnvValue.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
@@ -27,6 +28,7 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
     right: "12px",
     left: "unset",
     width: "30px",
+    top: needsPadding ? "50px" : "0px",
   },
   duration: 1750,
 };
@@ -149,7 +151,12 @@ export const showAchievementToast = (achievementNames: string[]): void => {
         ),
         {
           position: basePosition,
-          style: { position: "absolute", left: leftPosition, margin: 0 },
+          style: {
+            position: "absolute",
+            left: leftPosition,
+            margin: 0,
+            top: needsPadding ? "50px" : "0px",
+          },
           duration: 7000,
         }
       );
