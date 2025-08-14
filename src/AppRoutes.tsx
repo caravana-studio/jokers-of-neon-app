@@ -15,7 +15,7 @@ import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { MapPage } from "./pages/Map/MapPage";
-import { MyCollectionPage } from "./pages/MyCollectionPage";
+import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
@@ -65,7 +65,9 @@ export const AppRoutes = () => {
         path="/my-collection"
         element={
           <AnimatedPage>
-            <MyCollectionPage />
+            <CardHighlightProvider>
+              <MyCollectionPage />
+            </CardHighlightProvider>
           </AnimatedPage>
         }
       />
