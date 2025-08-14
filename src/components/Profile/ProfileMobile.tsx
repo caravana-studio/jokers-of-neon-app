@@ -9,6 +9,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { profileMock } from "../../utils/mocks/profileMocks";
 import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
+import { DelayedLoading } from "../DelayedLoading";
 
 export const ProfileMobile = () => {
   const username = profileMock.username;
@@ -26,7 +27,7 @@ export const ProfileMobile = () => {
   const { setup } = useDojo();
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <Flex
         flexDirection={"column"}
@@ -76,6 +77,6 @@ export const ProfileMobile = () => {
           )}
         </Flex>
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };
