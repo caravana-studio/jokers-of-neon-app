@@ -20,6 +20,8 @@
             "level-leaderboard-head": "Nivel"
         }
     },
+    "play": "Nuevo juego",
+    "my-games": "Mis juegos",
     "tournament": {
         "table-head": {
             "prize-leaderboard-head": "Premio",
