@@ -61,9 +61,11 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     discard_left_cash,
     rage_card_defeated,
     rage_card_defeated_cash,
+    rerolls,
     total,
   } = roundRewards;
 
+  console.log("roundRewards", roundRewards);
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
@@ -74,6 +76,10 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     t("hands-left", { hands: hands_left }),
     t("discards-left", { discards: discard_left }),
   ];
+
+  if (rerolls) {
+    labels.push(t("rerolls", { rerolls: rerolls }));
+  }
 
   if (rage_card_defeated && rage_card_defeated_cash) {
     labels.push(t("rage", { cards: rage_card_defeated }));
@@ -98,8 +104,9 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
+      {rerolls > 0 && <RewardItem label={labels[4]} value={rerolls} />}
       {rage_card_defeated_cash > 0 && (
-        <RewardItem label={labels[4]} value={rage_card_defeated_cash} />
+        <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
       )}
 
       <Flex

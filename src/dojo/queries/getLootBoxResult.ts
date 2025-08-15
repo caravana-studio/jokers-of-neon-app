@@ -7,7 +7,7 @@ export const getLootBoxResult = async (
   gameId: number
 ): Promise<any> => {
   try {
-    let tx_result: any = await client.shop_system.getLootBoxResult(gameId);
+    let tx_result: any = await client.shop_views.getLootBoxResult(gameId);
     const cards: Card[] = tx_result.cards.map((card: BigInt, index: number) => {
       const card_id = Number(card);
       return {
