@@ -4,15 +4,14 @@ import { UserBadges } from "./UserBadges";
 import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
 import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
 import { ControllerIcon } from "../../icons/ControllerIcon";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { profileMock } from "../../utils/mocks/profileMocks";
 import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
 import { DelayedLoading } from "../DelayedLoading";
+import { useUsername } from "../../dojo/utils/useUsername";
 
 export const ProfileMobile = () => {
-  const username = profileMock.username;
+  const username = useUsername();
   const level = profileMock.level;
   const streak = profileMock.streak;
   const games = profileMock.games;

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export interface ProfileStatsProps {
   profilePictureUrl?: string;
-  username: string;
+  username: string | null;
   level: number;
   streak: number;
   games: number;
