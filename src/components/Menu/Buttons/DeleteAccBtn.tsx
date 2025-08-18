@@ -5,9 +5,11 @@ import { MenuBtn } from "./MenuBtn";
 export const DeleteAccBtn = ({
   width,
   label,
+  arrowRight,
 }: {
   width: string;
   label?: boolean;
+  arrowRight?: boolean;
 }) => {
   const { t } = useTranslation("game");
 
@@ -18,6 +20,7 @@ export const DeleteAccBtn = ({
       description={t("game.game-menu.delete-acc-btn")}
       label={label ? t("game.game-menu.delete-acc-btn") : undefined}
       onClick={() => {}}
+      arrowRight={arrowRight}
     />
   );
 };
