@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { FC, ReactSVGElement, SVGProps } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { IconComponent } from "../IconComponent";
-import { useTranslation } from "react-i18next";
 
 interface ContextMenuItemProps {
   icon: string | FC<SVGProps<ReactSVGElement>>;
@@ -11,7 +11,7 @@ interface ContextMenuItemProps {
   active?: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  nameKey: string;
+  nameKey?: string;
 }
 export const ContextMenuItem = ({
   icon,
@@ -65,7 +65,7 @@ export const ContextMenuItem = ({
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
           <IconComponent icon={icon} width={iconSize} height={iconSize} />
-          {isSmallScreen && <Text fontSize={9}>{t(nameKey)}</Text>}
+          {(isSmallScreen && nameKey) && <Text fontSize={9}>{t(nameKey)}</Text>}
         </Flex>
       </Flex>
     </Link>
