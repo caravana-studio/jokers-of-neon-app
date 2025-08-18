@@ -388,6 +388,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 setTimeout(() => {
                   if (isCash) {
                     cashSound();
+                    addCash(quantity);
                     setAnimatedCard({
                       special_idx,
                       idx: [idx],
