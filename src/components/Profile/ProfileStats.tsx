@@ -3,6 +3,8 @@ import { ProfileStat } from "./ProfileStat";
 import { ProgressBar } from "../CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
 import { useTranslation } from "react-i18next";
+import { ProfilePicture } from "./ProfilePicture";
+import { ProfilePicturePicker } from "./ProfilePicturePicker";
 
 export interface ProfileStatsProps {
   profilePictureUrl?: string;
@@ -36,13 +38,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <Flex
-        w={"140px"}
-        height={"140px"}
-        rounded={"full"}
-        backgroundColor={"gray"}
-        backgroundImage={{ profilePictureUrl }}
-      />
+      <ProfilePicture profilePictureId={7} />
       <Heading fontSize={"sm"}>{username}</Heading>
       <Flex
         border={"1px"}
@@ -54,6 +50,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       >
         {t("game.profile-menu.level")} {level}
       </Flex>
+      <ProfilePicturePicker />
       <Flex
         gap={4}
         alignItems={"center"}
