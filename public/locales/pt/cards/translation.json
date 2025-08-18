@@ -28,311 +28,311 @@
     }
   },
   "specials": {
-    "300": {
+    "10000": {
       "name": "Copas Multiplicadas",
       "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Copas jogada"
     },
-    "301": {
+    "10001": {
       "name": "Paus Multiplicadas",
       "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Paus jogada"
     },
-    "302": {
+    "10002": {
       "name": "Ouros Multiplicadas",
       "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Ouros jogada"
     },
-    "303": {
+    "10003": {
       "name": "Espadas Multiplicadas",
       "description": "Adiciona ^violet(+2 ao multiplicador)^ para cada carta de Espadas jogada"
     },
-    "304": {
+    "10004": {
       "name": "Impulsionador de Par",
       "description": "Aumenta o nível da mão de PAR em 4 níveis"
     },
-    "305": {
+    "10005": {
       "name": "Impulsionador de Dois Pares",
       "description": "Aumenta o nível da mão de DOIS PARES em 4 níveis"
     },
-    "306": {
+    "10006": {
       "name": "Impulsionador de Sequência",
       "description": "Aumenta o nível da mão de SEQUÊNCIA em 4 níveis"
     },
-    "307": {
+    "10007": {
       "name": "Impulsionador de Flush",
       "description": "Aumenta o nível da mão de FLUSH em 4 níveis"
     },
-    "308": {
+    "10008": {
       "name": "Sequência Fácil",
       "description": "A mão de Sequência pode ser feita com 4 cartas"
     },
-    "309": {
+    "10009": {
       "name": "Flush Fácil",
       "description": "A mão de Flush pode ser feita com 4 cartas"
     },
-    "310": {
+    "10010": {
       "name": "Impulsionador de Joker",
       "description": "Todos os Jokers jogados marcam pontos e multiplicador em dobro"
     },
-    "311": {
+    "10011": {
       "name": "Impulsionador de Power-ups",
       "description": "Todos os Power-ups jogados marcam pontos e multiplicador em dobro"
     },
-    "312": {
+    "10012": {
       "name": "Impulsionador de Figuras",
       "description": "Todas as cartas de FIGURAS jogadas ganham ^blue(+50 pontos)^"
     },
-    "313": {
+    "10013": {
       "name": "Ases Multiplicados",
       "description": "Adiciona ^violet(+5 ao multiplicador)^ para cada carta de Ás jogada"
     },
-    "314": {
+    "10014": {
       "name": "O amor está no ar",
       "description": "Todas as cartas jogadas são consideradas como sendo de Copas"
     },
-    "315": {
+    "10015": {
       "name": "O ladrão de mãos",
       "description": "Adiciona +1 mão e +1 descarte à rodada"
     },
-    "316": {
+    "10016": {
       "name": "Ajuda extra",
       "description": "Aumenta o tamanho da mão em 2"
     },
-    "317": {
+    "10017": {
       "name": "Número da sorte 7",
       "description": "Todos os 7s ganham ^blue(+77 pontos)^"
     },
-    "318": {
+    "10018": {
       "name": "Bônus Neon",
       "description": "Todas as cartas Neon ganham ^blue(+20 pontos)^. As jogadas Neon são níveladas em 2 níveis adicionais."
     },
-    "319": {
+    "10019": {
       "name": "Prazo final",
       "description": "Ao jogar sua última mão, aumenta o nível de jogo 10 vezes"
     },
-    "320": {
+    "10020": {
       "name": "Vantagem inicial",
       "description": "A primeira mão jogada ganha ^blue(+100 pontos)^ e ^violet(+10 no multiplicador)^"
     },
-    "321": {
+    "10021": {
       "name": "Mão da sorte",
       "description": "Adiciona ^yellow(+50 moedas)^ para cada carta de ouros que for jogada"
     },
-    "322": {
+    "10022": {
       "name": "Maestria em descarte",
       "description": "Adiciona ^violet(+10 ao multiplicador)^ se não houver descartes restantes"
     },
-    "323": {
+    "10023": {
       "name": "Segunda chance",
       "description": "Quando você perde, esta carta é destruída, mas você pode continuar jogando"
     },
-    "324": {
+    "10024": {
       "name": "Escudo do guardião",
       "description": "Bloqueia todas as cartas de rage por 1 nível. É destruído depois"
     },
-    "325": {
+    "10025": {
       "name": "Sinergia de neon",
       "description": "Se mais de 50% das cartas jogadas são neon, todas as outras cartas são convertidas em neon"
     },
-    "326": {
+    "10026": {
       "name": "Doutrina de néon",
       "description": "Converta duas cartas jogadas em cartas de néon."
     },
-    "327": {
+    "10027": {
       "name": "Blackjack",
       "description": "Atinge exatamente ^blue(21 pontos)^ com as cartas jogadas para ganhar ^violet(+21 multi)^."
     },
-    "328": {
+    "10028": {
       "name": "Jogo Eficiente",
       "description": "Ganhe ^violet(+10 multi)^ e ^blue(+50 pontos)^ ao jogar 3 ou menos cartas."
     },
-    "329": {
+    "10029": {
       "name": "Sacrifício Especial",
       "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
     },
-    "330": {
+    "10030": {
       "name": "Quebrador de Rage",
       "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
-    "331": {
+    "10031": {
       "name": "Atalho",
       "description": "Reduz os pontos necessários para vencer o nível em 20%"
     },
-    "332": {
+    "10032": {
       "name": "Dia de Sorte",
       "description": "Receba ^yellow(+500 moedas)^ extras para cada Joker na mão no final da rodada"
     },
-    "333": {
+    "10033": {
       "name": "Efeito Espelho",
       "description": "Repete o efeito da carta especial à esquerda"
     },
-    "334": {
+    "10034": {
       "name": "Pacotes em Promoção",
       "description": "Pacotes têm 30% de desconto"
     },
-    "335": {
+    "10035": {
       "name": "Escolhas Bônus",
       "description": "2 opções extras de carta especial na loja"
     },
-    "336": {
+    "10036": {
       "name": "Queda do Joker",
       "description": "Receba ^yellow(+500 moedas)^ toda vez que descartar um Joker"
     },
-    "337": {
+    "10037": {
       "name": "Descartes Extras",
       "description": "Adiciona 2 descartes"
     },
-    "338": {
+    "10038": {
       "name": "Cartas Extras",
       "description": "Adiciona 2 mãos"
     },
-    "339": {
+    "10039": {
       "name": "Fator de Escala",
       "description": "Aprimora todas as suas mãos em 2 níveis"
     },
-    "340": {
+    "10040": {
       "name": "Duques Selvagens",
       "description": "Todos os 2s são considerados jokers"
     },
-    "341": {
+    "10041": {
       "name": "Compra Imortal",
       "description": "A primeira mão descartada é aprimorada"
     },
-    "342": {
+    "10042": {
       "name": "Início Blindado",
       "description": "Protege sua primeira mão jogada de todos os efeitos negativos"
     },
-    "343": {
+    "10043": {
       "name": "Impulsionador de Full House",
       "description": "Aprimora a mão Full House em 4 níveis"
     },
-    "344": {
+    "10044": {
       "name": "Impulsionador de Trinca",
       "description": "Aprimora a mão Trinca em 4 níveis"
     },
-    "345": {
+    "10045": {
       "name": "Impulsionador de Quadra",
       "description": "Aprimora a mão Quadra em 4 níveis"
     },
-    "346": {
+    "10046": {
       "name": "Impulsionador de Quinteto",
       "description": "Aprimora a mão Quinteto em 4 níveis"
     },
-    "347": {
+    "10047": {
       "name": "Dado de Copas",
       "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Copas."
     },
-    "348": {
+    "10048": {
       "name": "Dado de Paus",
       "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Paus."
     },
-    "349": {
+    "10049": {
       "name": "Dado de Ouros",
       "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Ouros."
     },
-    "350": {
+    "10050": {
       "name": "Dado de Espadas",
       "description": "Lança um número entre ^violet(-2)^ e ^violet(6)^ para adicionar ao ^violet(multi)^ para cada carta jogada do naipe de Espadas."
     },
-    "351": {
+    "10051": {
       "name": "Multiplicador Especial",
       "description": "Ganhe ^violet(+3 multi)^ para cada carta especial que possuir."
     },
-    "352": {
+    "10052": {
       "name": "Colecionador",
       "description": "Ganhe ^blue(+1 pontos)^ para cada carta no seu baralho."
     },
-    "353": {
+    "10053": {
       "name": "Reinício da Rage",
       "description": "Permite relançar cartas de Rage uma vez por rodada. Custa 500 por cada Rage na rodada."
     },
-    "354": {
+    "10054": {
       "name": "Bônus de Pular",
       "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). ^blue(Actualmente +{{points}} pontos)^."
     },
-    "355": {
+    "10055": {
       "name": "Recompensas em Chamas",
       "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
     },
-    "356": {
+    "10056": {
       "name": "Guardião de Slot",
       "description": "Ganhe ^blue(+100 pontos)^ para cada Slot desbloqueado, mas vazio."
     },
-    "357": {
+    "10057": {
       "name": "Apostadores de Alto Nível",
       "description": "Cada Carta Alta jogada 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
     },
-    "358": {
+    "10058": {
       "name": "Roleta de Naipes",
       "description": "Ganhe ^violet(+5 multi)^ para cada carta que corresponda a um naipe aleatório. O naipe muda a cada rodada."
     },
-    "359": {
+    "10059": {
       "name": "Guardião dos Paus",
       "description": "Ganhe ^blue(+10 pontos)^ para cada carta de Paus no seu baralho."
     },
-    "360": {
+    "10060": {
       "name": "Trio de Espadas",
       "description": "Se sua mão tiver pelo menos 3 cartas de Espadas, ganhe ^blue(+100 pontos)^ e ^violet(+3 multi)^."
     },
-    "361": {
+    "10061": {
       "name": "Os Dois Contam",
       "description": "Ganhe ^blue(+30 pontos)^ para cada 2 que você tiver na mão."
     },
-    "362": {
+    "10062": {
       "name": "Mão de modificadores",
       "description": "Ganhe ^violet(+5 multi)^ para cada carta modificadora na sua mão."
     },
-    "363": {
+    "10063": {
       "name": "Piromaníaco",
       "description": "Obtenha 50% de desconto ao queimar cartas."
     },
-    "364": {
+    "10064": {
       "name": "Multiplicador de Quadrados",
       "description": "^violet(+4 multi)^ por cada 4 cartas em sua mão."
     },
-    "365": {
+    "10065": {
       "name": "Jackpot",
       "description": "Ganhe ^blue(+30 pontos)^ para cada Valete na sua mão."
     },
-    "366": {
+    "10066": {
       "name": "Ciclo de dinheiro",
       "description": "Receba 50% mais recompensas após cada nível."
     },
-    "367": {
+    "10067": {
       "name": "Caçador de especiais",
       "description": "Dobra a probabilidade de encontrar cartas especiais A e S na loja."
     },
-    "368": {
+    "10068": {
       "name": "A Verdade do Rei",
       "description": "Cada Rei jogado tem 50% de chance de dar ^yellow(+100 de moedas)^. Cada carta Rei em sua mão tem 25% de chance de dar ^blue(+100 pontos)^."
     },
-    "369": {
+    "10069": {
       "name": "Aritmomania",
       "description": "Se a soma das cartas jogadas for par, ganhe ^violet(+7 multi)^. Se for ímpar, ganhe ^blue(+100 pontos)^."
     },
-    "370": {
+    "10070": {
       "name": "Preto e Vermelho",
       "description": "As cartas de Coração e Diamantes dão pontos duplos. As cartas de Três e Quatro dão ^violet(+1 multi)^."
     },
-    "371": {
+    "10071": {
       "name": "Joker inúteis",
       "description": "Os Joker não geram pontos nem multiplicador. Todas as outras cartas recebem ^violet(+1 multi)^."
     },
-    "372": {
+    "10072": {
       "name": "Escada Ascendente",
       "description": "Ganhe ^blue(+10 pontos)^ acumulativos para cada sequência jogada. ^blue(Atualmente com +{{points}} pontos)^."
     },
-    "373": {
+    "10073": {
       "name": "Relatividade",
       "description": "Converte qualquer sequência em uma sequência de 10 a Ás (a mais alta possível)."
     },
-    "374": {
+    "10074": {
       "name": "Impulso de Curingas",
       "description": "Cada curinga concede ^blue(+100 pontos)^."
     },
-    "379": {
+    "10079": {
       "name": "Arco-íris",
       "description": "Ganhe ^blue(+200 pontos)^ e ^violet(+5 multi)^ se sua jogada incluir todos os quatro naipes."
     },
-    "380": {
+    "10080": {
       "name": "Fortuna da Rainha",
       "description": "Cada rainha jogada tem 50% de chances de conceder ^yellow(+150 moedas)^."
     }
@@ -808,83 +808,83 @@
     }
   },
   "rageCards": {
-    "401": {
+    "20001": {
       "name": "Corações Quebradas",
       "description": "Cartas de naipe de coração não pontuarão durante este nível"
     },
-    "402": {
+    "20002": {
       "name": "Paus Quebradas",
       "description": "Cartas de naipe de paus não pontuarão durante este nível"
     },
-    "403": {
+    "20003": {
       "name": "Ouros Quebradas",
       "description": "Cartas de naipe de ouros não pontuarão durante este nível"
     },
-    "404": {
+    "20004": {
       "name": "Espadas Quebradas",
       "description": "Cartas de naipe de espadas não pontuarão durante este nível"
     },
-    "405": {
+    "20005": {
       "name": "Coringas Quebradas",
       "description": "Coringas não pontuarão durante este nível"
     },
-    "406": {
+    "20006": {
       "name": "Apreensão Diminuída",
       "description": "Sua mão será reduzida em 2 cartas durante este nível"
     },
-    "407": {
+    "20007": {
       "name": "Desperdício Zero",
       "description": "Você não terá descartes durante este nível"
     },
-    "408": {
+    "20008": {
       "name": "Sacrifício Inesperado",
       "description": "Uma de suas cartas especiais foi sacrificada"
     },
-    "409": {
+    "20009": {
       "name": "Quarteto Estratégico",
       "description": "Você só pode jogar até 4 cartas durante este nível"
     },
-    "410": {
+    "20010": {
       "name": "Táticas Dinâmicas",
       "description": "A mesma mão não pode ser jogada duas vezes"
     },
-    "411": {
+    "20011": {
       "name": "Troca Balanceada",
       "description": "Uma jogada de pôquer vale o dobro, outra a metade"
     },
-    "412": {
+    "20012": {
       "name": "Figuras Quebradas",
       "description": "As figuras (Valete, Dama e Rei) não pontuarão durante este nível"
     },
-    "413": {
+    "20013": {
       "name": "Modificadores Quebrados",
       "description": "Os modificadores não funcionarão durante este nível"
     },
-    "414": {
+    "20014": {
       "name": "Últimas Palavras",
       "description": "Silencie a carta mais repetida no baralho"
     },
-    "415": {
+    "20015": {
       "name": "Armadilha Gananciosa",
       "description": "Desconte 200 por cada mão jogada e 100 por cada descarte"
     },
-    "416": {
+    "20016": {
       "name": "O Suga-Mãos",
       "description": "2 mãos a menos para jogar"
     },
-    "417": {
+    "20017": {
       "name": "Armadilha da Aranha",
       "description": "As cartas especiais não têm efeito na primeira mão jogada"
     },
-    "418": {
+    "20018": {
       "name": "Maldição Perpétua",
       "description": "Silencie uma carta aleatória em cada mão jogada"
     },
-    "420": {
+    "20020": {
       "name": "Problema Duplo",
       "description": "Você precisa fazer o dobro de pontos nesta rodada"
     },
-    "421": {
+    "20021": {
       "name": "Traindo os Fracos",
       "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
     }
