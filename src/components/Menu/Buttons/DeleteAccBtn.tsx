@@ -19,7 +19,9 @@ export const DeleteAccBtn = ({
       icon={Icons.TUTORIAL}
       description={t("game.game-menu.delete-acc-btn")}
       label={label ? t("game.game-menu.delete-acc-btn") : undefined}
-      onClick={() => {}}
+      onClick={() =>
+        window.open("https://jokersofneon.com/delete-account", "_blank")
+      }
       arrowRight={arrowRight}
     />
   );
