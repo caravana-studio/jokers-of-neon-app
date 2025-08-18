@@ -11,9 +11,9 @@ export const checkHand = (
   specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
 ): Plays => {
-  const specialAllCardsToHearts = specialCards.some((s) => s.card_id === 314);
-  const easyFlush = specialCards.some((s) => s.card_id === 309);
-  const easyStraight = specialCards.some((s) => s.card_id === 308);
+  const specialAllCardsToHearts = specialCards.some((s) => s.card_id === 10014);
+  const easyFlush = specialCards.some((s) => s.card_id === 10009);
+  const easyStraight = specialCards.some((s) => s.card_id === 10008);
 
   const getNewSuit = (modifierCardId?: number) => {
     switch (modifierCardId) {
