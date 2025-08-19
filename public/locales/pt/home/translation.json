@@ -21,6 +21,7 @@
     }
   },
   "play": "Novo jogo",
+  "my-games": "Meus jogos",
   "tournament": {
     "table-head": {
       "prize-leaderboard-head": "Prêmio",

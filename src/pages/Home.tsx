@@ -8,6 +8,7 @@ import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
 import { useGameContext } from "../providers/GameProvider";
+import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 
 export const Home = () => {
@@ -15,6 +16,7 @@ export const Home = () => {
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
+  const { data: games } = useGetMyGames();
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -77,11 +79,13 @@ export const Home = () => {
                 {t("home.btn.leaderboard-btn")}
               </Button>
               <Button
-                onClick={() => handleCreateGame()}
+                onClick={() => {
+                  games.length > 0 ? navigate("/my-games") : handleCreateGame();
+                }}
                 w="300px"
                 variant="secondarySolid"
               >
-                {t("play")}
+                {games.length > 0 ? t("my-games") : t("play")}
               </Button>
             </Flex>
           )}
@@ -93,8 +97,10 @@ export const Home = () => {
               onClick: () => navigate("/leaderboard"),
             }}
             secondButton={{
-              label: t("play"),
-              onClick: () => handleCreateGame(),
+              label: games.length > 0 ? t("my-games") : t("play"),
+              onClick: () => {
+                games.length > 0 ? navigate("/my-games") : handleCreateGame();
+              },
             }}
           />
         ) : (

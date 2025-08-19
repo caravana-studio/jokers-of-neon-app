@@ -1,31 +1,31 @@
 import { Card } from "../../types/Card";
 
 export const EasyFlush: Card = {
-  img: "309.png",
-  id: "309",
-  idx: 309,
-  card_id: 309,
+  img: "10009.png",
+  id: "10009",
+  idx: 10009,
+  card_id: 10009,
   isSpecial: true,
 };
 export const EasyStraight: Card = {
-  img: "308.png",
-  id: "308",
-  idx: 308,
-  card_id: 308,
+  img: "10008.png",
+  id: "10008",
+  idx: 10008,
+  card_id: 10008,
   isSpecial: true,
 };
 export const AllCardsToHearts: Card = {
-  img: "314.png",
-  id: "314",
-  idx: 314,
-  card_id: 314,
+  img: "10014.png",
+  id: "10014",
+  idx: 10014,
+  card_id: 10014,
   isSpecial: true,
 };
 
 export const MultipliedClubs: Card = {
-  img: "301.png",
-  id: "301",
-  idx: 301,
-  card_id: 301,
+  img: "10001.png",
+  id: "10001",
+  idx: 10001,
+  card_id: 10001,
   isSpecial: true,
 };

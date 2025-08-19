@@ -2,8 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AudioPlayer from "../../components/AudioPlayer";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { DelayedLoading } from "../../components/DelayedLoading";
 import { SimulatedLoadingBar } from "../../components/LoadingProgressBar/SimulatedLoadingProgressBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useUsername } from "../../dojo/utils/useUsername";
@@ -76,10 +75,8 @@ export const EnteringTournament = () => {
         },
       ];
   return (
-    <>
+    <DelayedLoading ms={0}>
       <MobileDecoration />
-      <LanguageSwitcher />
-      <AudioPlayer />
       <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
         <Flex
           w={{ base: "90%", sm: "80%", md: "70%" }}
@@ -94,6 +91,6 @@ export const EnteringTournament = () => {
           />
         </Flex>
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };
