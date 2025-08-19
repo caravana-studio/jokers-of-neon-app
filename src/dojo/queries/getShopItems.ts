@@ -33,7 +33,7 @@ const getCard = (txCard: any) => {
   return {
     price: parseInt(txCard.cost),
     isModifier: txCard.card_id >= 600 && txCard.card_id < 700,
-    isSpecial: txCard.card_id >= 300 && txCard.card_id < 400,
+    isSpecial: txCard.card_id >= 10000 && txCard.card_id < 20000,
     id: idx?.toString() ?? "",
     idx,
     card_id,
