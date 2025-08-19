@@ -65,7 +65,6 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     total,
   } = roundRewards;
 
-  console.log("roundRewards", roundRewards);
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "rewards-details.labels",
   });
