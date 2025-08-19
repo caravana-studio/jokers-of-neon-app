@@ -68,8 +68,8 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
   const getCardData = (cardId: number) => {
     const isTraditional = cardId < 100;
     const isNeon = cardId >= 200 && cardId < 300;
-    const isRage = cardId > 400 && cardId < 500;
-    const isSpecial = cardId >= 300 && cardId < 400;
+    const isRage = cardId >= 20000 && cardId < 30000;
+    const isSpecial = cardId >= 10000 && cardId < 20000;
     const isModifier = cardId >= 600 && cardId < 700;
 
     if (isRage) {

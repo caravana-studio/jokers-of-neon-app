@@ -28,311 +28,311 @@
     }
   },
   "specials": {
-    "300": {
+    "10000": {
       "name": "Corazones Multiplicados",
       "description": "Añade ^violet(+2 multi)^ a cada carta de corazones jugada"
     },
-    "301": {
+    "10001": {
       "name": "Tréboles Multiplicados",
       "description": "Añade ^violet(+2 multi)^ a cada carta de tréboles jugada"
     },
-    "302": {
+    "10002": {
       "name": "Diamantes Multiplicados",
       "description": "Añade ^violet(+2 multi)^ a cada carta de diamantes jugada"
     },
-    "303": {
+    "10003": {
       "name": "Picas Multiplicadas",
       "description": "Añade ^violet(+2 multi)^ a cada carta de picas jugada"
     },
-    "304": {
+    "10004": {
       "name": "Potenciador de Par",
       "description": "Mejora PAR en 4 niveles"
     },
-    "305": {
+    "10005": {
       "name": "Potenciador de Doble Par",
       "description": "Mejora DOBLE PAR en 4 niveles"
     },
-    "306": {
+    "10006": {
       "name": "Potenciador de Escalera",
       "description": "Mejora ESCALERA en 4 niveles"
     },
-    "307": {
+    "10007": {
       "name": "Potenciador de Color",
       "description": "Mejora COLOR en 4 niveles"
     },
-    "308": {
+    "10008": {
       "name": "Escalera simplificada",
       "description": "Se necesitan 4 cartas para formar ESCALERA"
     },
-    "309": {
+    "10009": {
       "name": "Color simplificado",
       "description": "Se necesitan 4 cartas para formar COLOR"
     },
-    "310": {
+    "10010": {
       "name": "Potenciador de Joker",
       "description": "Se duplican los puntos y el multi de los Jokers jugados"
     },
-    "311": {
+    "10011": {
       "name": "Potenciador de Power-ups",
       "description": " Se duplican los puntos y el multi de todos los Power-ups jugados"
     },
-    "312": {
+    "10012": {
       "name": "Potenciador de Figuras",
       "description": "Todas las FIGURAS jugadas suman ^blue(+50 puntos)^"
     },
-    "313": {
+    "10013": {
       "name": "Ases Multiplicados",
       "description": "Añade ^violet(+5 multi)^ a cada AS jugado"
     },
-    "314": {
+    "10014": {
       "name": "El Amor está en el Aire",
       "description": "Todas las cartas jugadas se consideran de corazones"
     },
-    "315": {
+    "10015": {
       "name": "El Ladrón de Manos",
       "description": "Agrega +1 jugada y +1 descarte"
     },
-    "316": {
+    "10016": {
       "name": "Ayuda Extra",
       "description": "Aumenta el tamaño de la mano en 2"
     },
-    "317": {
+    "10017": {
       "name": "Suerte 7",
       "description": "Todas las cartas 7 suman ^blue(+77 puntos)^"
     },
-    "318": {
+    "10018": {
       "name": "Bono Neon",
       "description": "Las cartas Neon suman ^blue(+20 puntos)^. Ademas, se sube dos niveles a la jugada si es de Neon"
     },
-    "319": {
+    "10019": {
       "name": "Fecha Límite",
       "description": "La última jugada sube el nivel 10 veces"
     },
-    "320": {
+    "10020": {
       "name": "Ventaja Inicial",
       "description": "La primera mano jugada suma ^blue(+100 puntos)^ y ^violet(+10 multi)^"
     },
-    "321": {
+    "10021": {
       "name": "Mano de la suerte",
       "description": "Obtén ^yellow(+50 monedas)^ por cada carta de diamantes que juegues"
     },
-    "322": {
+    "10022": {
       "name": "Maestría en descartes",
       "description": "Si no te quedan descartes cada mano jugada suma ^violet(+10 multi)^"
     },
-    "323": {
+    "10023": {
       "name": "Segunda oportunidad",
       "description": "Esta carta permite seguir jugando aunque el nivel no se supere. Se destruye al perder"
     },
-    "324": {
+    "10024": {
       "name": "Escudo del guardián",
       "description": "Bloquea todas las cartas de rage por 1 nivel. Se destruye después"
     },
-    "325": {
+    "10025": {
       "name": "Sinergia de neón",
       "description": "Si más del 50% de las cartas jugadas son neón, todas las demás cartas se transforman en neón"
     },
-    "326": {
+    "10026": {
       "name": "Doctrina de neón",
       "description": "Convierte dos cartas jugadas en cartas de neón."
     },
-    "327": {
+    "10027": {
       "name": "Blackjack",
       "description": "Logra exactamente ^blue(21 puntos)^ con tus cartas jugadas para obtener ^violet(+21 multi)^."
     },
-    "328": {
+    "10028": {
       "name": "Juego Eficiente",
       "description": "Gana ^violet(+10 multi)^ y ^blue(+50 puntos)^ al jugar 3 o menos cartas."
     },
-    "329": {
+    "10029": {
       "name": "Sacrificio Especial",
       "description": "Obtén ^violet(+1 multi)^ (acumulativo) por cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
     },
-    "330": {
+    "10030": {
       "name": "Rompedor de Rages",
       "description": "Obtén ^violet(+2 multi)^ (acumulativo) por cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
     },
-    "331": {
+    "10031": {
       "name": "Atajo",
       "description": "Los puntos necesarios para superar el nivel se reducen en un 20%"
     },
-    "332": {
+    "10032": {
       "name": "Día de suerte",
       "description": "Obtén ^yellow(+500 monedas)^ extra por cada Joker que tengas en la mano, sin usar, al final de la ronda"
     },
-    "333": {
+    "10033": {
       "name": "Efecto espejo",
       "description": "Repite el efecto de la carta especial a la izquierda"
     },
-    "334": {
+    "10034": {
       "name": "Cajas en oferta",
       "description": "Las cajas tienen un 30% de descuento"
     },
-    "335": {
+    "10035": {
       "name": "Selecciones extra",
       "description": "2 opciones de carta especial adicionales en la tienda"
     },
-    "336": {
+    "10036": {
       "name": "Caída del Joker",
       "description": "Obtén ^yellow(+500 monedas)^ cada vez que descartes un Joker"
     },
-    "337": {
+    "10037": {
       "name": "Descartes extra",
       "description": "Agrega 2 descartes"
     },
-    "338": {
+    "10038": {
       "name": "Robos extra",
       "description": "Agrega 2 manos"
     },
-    "339": {
+    "10039": {
       "name": "Factor de escala",
       "description": "Mejora todas tus manos en 2 niveles"
     },
-    "340": {
+    "10040": {
       "name": "Doses salvajes",
       "description": "Todos los 2s se consideran comodines"
     },
-    "341": {
+    "10041": {
       "name": "Robo inmortal",
       "description": "Sube de nivel la primer mano descartada"
     },
-    "342": {
+    "10042": {
       "name": "Inicio protegido",
       "description": "Protege tu primera mano jugada de todos los efectos negativos"
     },
-    "343": {
+    "10043": {
       "name": "Potenciador de Full",
       "description": "Mejora FULL en 4 niveles"
     },
-    "344": {
+    "10044": {
       "name": "Potenciador de Trío",
       "description": "Mejora TRÍO en 4 niveles"
     },
-    "345": {
+    "10045": {
       "name": "Potenciador de Póker",
       "description": "Mejora PÓKER en 4 niveles"
     },
-    "346": {
+    "10046": {
       "name": "Potenciador de Repóker",
       "description": "Mejora REPÓKER en 4 niveles"
     },
-    "347": {
+    "10047": {
       "name": "Dado de Corazones",
       "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de corazones"
     },
-    "348": {
+    "10048": {
       "name": "Dado de Tréboles",
       "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de tréboles"
     },
-    "349": {
+    "10049": {
       "name": "Dado de Diamantes",
       "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de diamantes"
     },
-    "350": {
+    "10050": {
       "name": "Dado de Picas",
       "description": "Añade un valor de ^violet(multi)^ aleatorio entre ^violet(-2)^ y ^violet(6)^ por cada carta de picas"
     },
-    "351": {
+    "10051": {
       "name": "Multiplicador Especial",
       "description": "Obtén ^violet(+3 multi)^ por cada carta especial que poseas."
     },
-    "352": {
+    "10052": {
       "name": "Coleccionista",
       "description": "Gana ^blue(+1 puntos)^ por cada carta en tu mazo."
     },
-    "353": {
+    "10053": {
       "name": "Reinicio de Rage",
       "description": "Permite volver a tirar cartas de Rage una vez por ronda. Cuesta 500 por cada carta Rage en la ronda."
     },
-    "354": {
+    "10054": {
       "name": "Omitir Bonus",
       "description": "Gana ^blue(+25 puntos)^ (acumulativos) por cada caja de botín omitida (abierta sin seleccionar una carta). ^blue(Actualmente +{{points}} puntos)^."
     },
-    "355": {
+    "10055": {
       "name": "Recompensas Quemadas",
       "description": "Gana ^blue(+15 puntos)^ (acumulativos) por cada carta quemada de tu mazo. ^blue(Actualmente +{{points}} puntos)^."
     },
-    "356": {
+    "10056": {
       "name": "Guardián de Slots",
       "description": "Gana ^blue(+100 puntos)^ por cada Slot desbloqueado pero vacío."
     },
-    "357": {
+    "10057": {
       "name": "Gran apostador",
       "description": "Cada Carta Alta jugada tiene 50% de posibilidades de ganar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
     },
-    "358": {
+    "10058": {
       "name": "Ruleta de Palos",
       "description": "Obtén ^violet(+5 multi)^ por cada carta que coincida con un palo aleatorio. El palo cambia cada ronda."
     },
-    "359": {
+    "10059": {
       "name": "Guardián de Tréboles",
       "description": "Gana ^blue(+10 puntos)^ por cada carta de Trébol en tu mazo."
     },
-    "360": {
+    "10060": {
       "name": "Trío de Picas",
       "description": "Si tu mano tiene al menos 3 cartas de Picas, gana ^blue(+100 puntos)^ y ^violet(+3 multi)^."
     },
-    "361": {
+    "10061": {
       "name": "Los Dos Importan",
       "description": "Obtén ^blue(+30 puntos)^ por cada 2 que tengas en tu mano."
     },
-    "362": {
+    "10062": {
       "name": "Mano de modificadores",
       "description": "Obtén ^violet(+5 de multi)^ por cada carta modificadora que tengas en tu mano."
     },
-    "363": {
+    "10063": {
       "name": "Piromano",
       "description": "Obtén un 50% de descuento al quemar cartas."
     },
-    "364": {
+    "10064": {
       "name": "Multiplicador de Cuadrados",
       "description": "^violet(+4 multi)^ por cada 4 que tengas en tu mano."
     },
-    "365": {
+    "10065": {
       "name": "Jackpot",
       "description": "Obtén ^blue(+30 puntos)^ por cada Jota que tengas en tu mano."
     },
-    "366": {
+    "10066": {
       "name": "Ciclo del dinero",
       "description": "Gana un 50% más de recompensas después de cada nivel."
     },
-    "367": {
+    "10067": {
       "name": "Cazador de especiales",
       "description": "Se duplica la probabilidad de encontrar cartas especiales de categoria A y S en la tienda."
     },
-    "368": {
+    "10068": {
       "name": "La Verdad del Rey",
       "description": "Cada Rey jugado tiene 50% de probabilidad de dar ^yellow(+100 de monedas)^. Cada carta Rey en tu mano tiene 25% de probabilidad de dar ^blue(+100 puntos)^."
     },
-    "369": {
+    "10069": {
       "name": "Aritmomanía",
       "description": "Si la suma de las cartas jugadas es par, ganas  ^violet(+7 multi)^. Si es impar, ganas ^blue(+100 puntos)^."
     },
-    "370": {
+    "10070": {
       "name": "Negro y Rojo",
       "description": "Las cartas de corazones y diamantes dan doble puntos. Las cartas de tréboles y picas dan ^violet(+1 multi)^."
     },
-    "371": {
+    "10071": {
       "name": "Joker sin valor",
       "description": "Los Jokers no otorgan puntos ni multiplicador. Todas las demás cartas obtienen ^violet(+1 multi)^."
     },
-    "372": {
+    "10072": {
       "name": "Escalera Ascendente",
       "description": "Gana ^blue(+10 puntos)^ acumulativos por cada escalera jugada. ^blue(Actualmente tienes +{{points}} puntos)^."
     },
-    "373": {
+    "10073": {
       "name": "Relatividad",
       "description": "Convierte cualquier escalera en una escalera de 10 a As (la escalera más alta posible)."
     },
-    "374": {
+    "10074": {
       "name": "Impulso de Comodines",
       "description": "Cada comodín otorga ^blue(+100 puntos)^."
     },
-    "379": {
+    "10079": {
       "name": "Arcoíris",
       "description": "Obtén ^blue(+200 puntos)^ y ^violet(+5 multi)^ si tu jugada incluye los cuatro palos."
     },
-    "380": {
+    "10080": {
       "name": "Fortuna de la Reina",
       "description": "Cada reina jugada tiene 50% de probabilidad de ganar ^yellow(+150 monedas)^."
     }
@@ -808,83 +808,83 @@
     }
   },
   "rageCards": {
-    "401": {
+    "20001": {
       "name": "Corazones Rotos",
       "description": "Las cartas del palo de corazones no puntuarán durante este nivel"
     },
-    "402": {
+    "20002": {
       "name": "Tréboles Rotos",
       "description": "Las cartas del palo de tréboles no puntuarán durante este nivel"
     },
-    "403": {
+    "20003": {
       "name": "Diamantes Rotos",
       "description": "Las cartas del palo de diamantes no puntuarán durante este nivel"
     },
-    "404": {
+    "20004": {
       "name": "Picas Rotas",
       "description": "Las cartas del palo de picas no puntuarán durante este nivel"
     },
-    "405": {
+    "20005": {
       "name": "Jokers Rotos",
       "description": "Los Jokers no puntuarán durante este nivel"
     },
-    "406": {
+    "20006": {
       "name": "Mano Disminuida",
       "description": "Tu mano tendrá 2 cartas menos durante este nivel"
     },
-    "407": {
+    "20007": {
       "name": "Cero Desperdicio",
       "description": "No hay descartes durante este nivel"
     },
-    "408": {
+    "20008": {
       "name": "Sacrificio Inesperado",
       "description": "Una de tus cartas especiales fue sacrificada"
     },
-    "409": {
+    "20009": {
       "name": "Cuarteto Estratégico",
       "description": "Solo puedes jugar hasta 4 cartas durante este nivel"
     },
-    "410": {
+    "20010": {
       "name": "Tácticas Dinámicas",
       "description": "La misma mano no se puede jugar dos veces"
     },
-    "411": {
+    "20011": {
       "name": "Intercambio Balanceado",
       "description": "Una jugada vale el doble, otra la mitad"
     },
-    "412": {
+    "20012": {
       "name": "Figuras Rotas",
       "description": "Las figuras (Jota, Reina y Rey) no puntuarán durante este nivel"
     },
-    "413": {
+    "20013": {
       "name": "Modificadores Rotos",
       "description": "Los modificadores no funcionarán durante este nivel"
     },
-    "414": {
+    "20014": {
       "name": "Últimas Palabras",
       "description": "Silencia la carta más repetida del mazo"
     },
-    "415": {
+    "20015": {
       "name": "Trampa Codiciosa",
       "description": "Descuenta 200 monedas por cada mano jugada y 100 monedas por cada descarte"
     },
-    "416": {
+    "20016": {
       "name": "El Ladrón de Manos",
       "description": "2 manos menos para jugar"
     },
-    "417": {
+    "20017": {
       "name": "La Trampa de la Araña",
       "description": "Las cartas especiales no tienen efecto en la primera mano jugada"
     },
-    "418": {
+    "20018": {
       "name": "Maldición Perpetua",
       "description": "Silencia una carta aleatoria en cada mano jugada"
     },
-    "420": {
+    "20020": {
       "name": "Doble problema",
       "description": "Debes hacer el doble de puntos en esta ronda"
     },
-    "421": {
+    "20021": {
       "name": "Traicionando a los Débiles",
       "description": "Las cartas con valor menor o igual a 5 no puntuaran durante este nivel"
     }
