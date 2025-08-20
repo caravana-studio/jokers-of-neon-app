@@ -1,4 +1,4 @@
-/* import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect } from "react";
 import {
   acumSfx,
   discardSfx,
@@ -9,223 +9,98 @@ import {
 import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { Plays } from "../enums/plays";
-import { SortBy } from "../enums/sortBy";
 import { useAudio } from "../hooks/useAudio";
-import { useGameState } from "../state/useGameState";
-import { Card } from "../types/Card";
-import { LevelPokerHand } from "../types/LevelPokerHand.ts";
-import { checkHand } from "../utils/checkHand";
-import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
-import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
-import {
-  EVENT_FLUSH,
-  EVENT_PAIR,
-  EVENT_PAIR_POWER_UPS,
-  HAND_1,
-  HAND_2,
-} from "../utils/mocks/tutorialMocks.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
-import { sortCards } from "../utils/sortCards.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
-import { IGameContext, useGameContext } from "./GameProvider"; // existing imports
+import { IGameContext } from "./GameProvider";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
+import { useTutorialGameStore } from "../state/useTutorialGameStore";
+import { useCurrentHandStore } from "../state/useCurrentHandStore.ts";
+import { useAnimationStore } from "../state/useAnimationStore.ts";
 
-export const mockTutorialGameContext = createContext<IGameContext>({
-  ...gameProviderDefaults,
-  gameId: 1,
-  hand: HAND_1,
-  discards: 1,
-  powerUps: [m5, p25],
-});
+export const TutorialGameContext =
+  createContext<IGameContext>(gameProviderDefaults);
 
 const emptyFn = () => {};
 
-let context: IGameContext;
-
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
-  const [plays, setPlays] = useState<LevelPokerHand[]>([]);
-  const gameID = getLSGameId();
-  const [hand, setHand] = useState<Card[]>([]);
-  const [score, setScore] = useState<number>(0);
-  const [indexEvent, setIndexEvent] = useState<number>(0);
-  const [preSelectedModifiers, setPreSelectedModifiers] = useState<{
-    [key: number]: number[];
-  }>({});
-  const state = useGameState();
-  const [preselectedPowerUps, setPreselectedPowerUps] = useState<number[]>([]);
+  const {
+    hand,
+    discards,
+    powerUps,
+    specialCards,
+    remainingPlaysTutorial,
+    preSelectedCards,
+    preSelectedPlay,
+    preSelectedModifiers,
+    preSelectedPowerUps,
+    points,
+    multi,
+    setPlays,
+    togglePreselected,
+    togglePreselectedPowerUp,
+    addModifier,
+    getModifiers,
+    cardIsPreselected,
+    powerUpIsPreselected,
+    discard: storeDiscard,
+    play: storePlay,
+    clearPreSelection,
+    setHand,
+  } = useTutorialGameStore();
 
-  const { setPlayIsNeon, setPlayAnimation } = state;
-
+  const { setPlayIsNeon } = useCurrentHandStore();
+  const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
   const { setAnimatedCard, setAnimatedPowerUp } = useCardAnimations();
-
-  const playAnimationDuration = Math.max(700 - 1 - 1 * 50, 400);
   const { play: preselectCardSound } = useAudio(preselectedCardSfx);
   const { play: discardSound } = useAudio(discardSfx, 4);
   const { play: pointsSound } = useAudio(pointsSfx);
   const { play: multiSound } = useAudio(multiSfx);
   const { play: acumSound } = useAudio(acumSfx);
-  const [remainingPlaysTutorial, setRemainingPlaysTutorial] = useState(5);
 
   const {
-    setup: {
-      client,
-      account: { account },
-    },
+    setup: { client },
   } = useDojo();
-
-  if (client && account && plays.length == 0) {
-    getPlayerPokerHands(client, gameID).then((plays: any) => {
-      if (plays != undefined) setPlays(plays);
-    });
-  }
-
-  const [preSelectionLocked, setPreSelectionLocked] = useState(false);
-  const [preSelectedCards, setPreSelectedCards] = useState<number[]>([]);
-  const [preSelectedPlay, setPreSelectedPlay] = useState<Plays>(Plays.NONE);
-  const [points, setPoints] = useState(0);
-  const [multi, setMulti] = useState(0);
-  const [discards, setDiscards] = useState(1);
-
-  context = useGameContext();
+  const gameID = getLSGameId();
 
   useEffect(() => {
-    if (preSelectedCards.length > 0) {
-      let play = checkHand(
-        context.hand,
-        preSelectedCards,
-        [],
-        preSelectedModifiers
-      );
-      setPreSelectedPlay(play);
-      if (plays?.length != 0) {
-        setMultiAndPoints(play);
-      }
-    } else {
-      setPreSelectedPlay(Plays.NONE);
-      resetMultiPoints();
-    }
-  }, [preSelectedCards, [preSelectedModifiers]]);
-
-  const resetMultiPoints = () => {
-    setPoints(0);
-    setMulti(0);
-  };
-
-  const setMultiAndPoints = (play: Plays) => {
-    const playerPokerHand = plays[play - 1];
-    const multi =
-      typeof playerPokerHand.multi === "number" ? playerPokerHand.multi : 0;
-    const points =
-      typeof playerPokerHand.points === "number" ? playerPokerHand.points : 0;
-    setMulti(multi);
-    setPoints(points);
-  };
-
-  const getModifiers = (preSelectedCardIndex: number) => {
-    const modifierIndexes = preSelectedModifiers[preSelectedCardIndex];
-
-    return (
-      modifierIndexes?.map((modifierIdx) => {
-        return hand.find((c) => c.idx === modifierIdx)!;
-      }) ?? []
-    );
-  };
-
-  const cardIsPreselected = (cardIndex: number) => {
-    return preSelectedCards.filter((idx) => idx === cardIndex).length > 0;
-  };
-
-  const preSelectCard = (cardIndex: number) => {
-    if (!preSelectedCards.includes(cardIndex) && preSelectedCards.length < 7) {
-      setPreSelectedCards((prev) => {
-        return [...prev, cardIndex];
+    if (client) {
+      getPlayerPokerHands(client, gameID).then((plays: any) => {
+        if (plays !== undefined) {
+          setPlays(plays);
+        }
       });
     }
-  };
-
-  const unPreSelectPowerUp = (powerUpIdx: number) => {
-    setPreselectedPowerUps((prev) => {
-      return prev.filter((idx) => powerUpIdx !== idx);
-    });
-  };
-
-  const powerUpIsPreselected = (powerUpId: number) => {
-    return preselectedPowerUps.filter((idx) => idx === powerUpId).length > 0;
-  };
-
-  const preSelectPowerUp = (powerUpIdx: number) => {
-    if (!preselectedPowerUps.includes(powerUpIdx)) {
-      setPreselectedPowerUps((prev) => {
-        return [...prev, powerUpIdx];
-      });
-    }
-  };
-
-  const togglePreselectedPowerUp = (powerUpIdx: number) => {
-    if (!preSelectionLocked) {
-      if (powerUpIsPreselected(powerUpIdx)) {
-        unPreSelectPowerUp(powerUpIdx);
-        preselectCardSound();
-      } else if (preselectedPowerUps.length < 5) {
-        preSelectPowerUp(powerUpIdx);
-        preselectCardSound();
-      }
-    }
-  };
-
-  const addModifier = (cardIdx: number, modifierIdx: number) => {
-    const modifiers = preSelectedModifiers[cardIdx] ?? [];
-
-    if (modifiers.length < 1) {
-      const newModifiers = [...modifiers, modifierIdx];
-      setPreSelectedModifiers((prev) => {
-        return {
-          ...prev,
-          [cardIdx]: newModifiers,
-        };
-      });
-    }
-  };
-
-  const unPreSelectCard = (cardIndex: number) => {
-    setPreSelectedModifiers((prev) => {
-      return {
-        ...prev,
-        [cardIndex]: [],
-      };
-    });
-
-    setPreSelectedCards((prev) => {
-      return prev.filter((idx) => cardIndex !== idx);
-    });
-  };
-
-  const togglePreselected = (cardIndex: number) => {
-    if (!preSelectionLocked && remainingPlaysTutorial > 0) {
-      if (cardIsPreselected(cardIndex)) {
-        unPreSelectCard(cardIndex);
-        preselectCardSound();
-      } else if (preSelectedCards.length < 5) {
-        preSelectCard(cardIndex);
-        preselectCardSound();
-      }
-    }
-  };
+  }, [client, gameID, setPlays]);
 
   const discard = () => {
-    discardSound();
-    setHand(HAND_2);
-    clearPreSelection();
-    setDiscards(discards - 1);
+    if (discards > 0) {
+      discardSound();
+      storeDiscard();
+    }
   };
 
-  const events = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
-
   const play = () => {
+    const { event } = storePlay();
+    const setPointsInStore = (newPoints: number) =>
+      useTutorialGameStore.setState({ points: newPoints });
+    const setMultiInStore = (newMulti: number) =>
+      useTutorialGameStore.setState({ multi: newMulti });
+    const addPointsInStore = (pointsToAdd: number) =>
+      useTutorialGameStore.setState((state) => ({
+        points: state.points + pointsToAdd,
+      }));
+    const addMultiInStore = (multiToAdd: number) =>
+      useTutorialGameStore.setState((state) => ({
+        multi: state.multi + multiToAdd,
+      }));
+    const setCurrentScoreInStore = (newScore: number) =>
+      useTutorialGameStore.setState({ score: newScore });
+    const addCashInStore = (cashToAdd: number) => {};
+
     animatePlay({
-      playEvents: events[indexEvent],
-      playAnimationDuration,
+      playEvents: event,
+      playAnimationDuration: 400,
       setPlayIsNeon,
       setAnimatedCard,
       setAnimatedPowerUp,
@@ -234,74 +109,84 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       acumSound,
       negativeMultiSound: emptyFn,
       cashSound: emptyFn,
-      setPoints,
-      setMulti,
-      setHand,
+      setPoints: setPointsInStore,
+      setMulti: setMultiInStore,
+      addPoints: addPointsInStore,
+      addMulti: addMultiInStore,
+      setCurrentScore: setCurrentScoreInStore,
+      addCash: addCashInStore,
+      changeCardsSuit: emptyFn,
+      changeCardsNeon: emptyFn,
       setPlayAnimation,
-      setPreSelectionLocked,
-      setLockedSpecialCards: emptyFn,
+      setPreSelectionLocked: (locked) =>
+        useTutorialGameStore.setState({ preSelectionLocked: locked }),
       clearPreSelection,
-      preselectedPowerUps,
+      refetchPowerUps: emptyFn,
+      preSelectedPowerUps,
       navigate: emptyFn,
       gameId: 0,
       setRoundRewards: emptyFn,
-      replaceCards,
-      handsLeft: 1,
+      replaceCards: setHand,
+      remainingPlays: remainingPlaysTutorial,
       setAnimateSecondChanceCard: emptyFn,
       setCardTransformationLock: emptyFn,
-      specialCards: emptyFn as any,
-      setAnimateSpecialCardDefault: emptyFn as any,
-      addCash: emptyFn,
-      setCurrentScore: emptyFn,
-      addMulti: emptyFn,
-      addPoints: emptyFn,
+      specialCards: [],
+      setAnimateSpecialCardDefault: emptyFn,
+      resetRage: emptyFn,
+      unPreSelectAllPowerUps: emptyFn,
     });
-    setScore(events[indexEvent].score);
-    setIndexEvent(indexEvent + 1);
-    setRemainingPlaysTutorial(remainingPlaysTutorial - 1);
   };
 
-  const clearPreSelection = () => {
-    resetMultiPoints();
-    setPreSelectedCards([]);
-    let powerUpLeft = context.powerUps;
-    powerUpLeft = powerUpLeft.filter(
-      (powerUp) => !preselectedPowerUps.includes(powerUp?.idx ?? 0)
-    );
-    context.powerUps = powerUpLeft;
+  const handleTogglePreselected = (cardIndex: number) => {
+    if (togglePreselected(cardIndex)) {
+      preselectCardSound();
+    }
   };
 
-  const replaceCards = (cards: Card[]) => {
-    setHand(sortCards(cards, SortBy.RANK));
+  const handleTogglePreselectedPowerup = (powerUpIdx: number) => {
+    togglePreselectedPowerUp(powerUpIdx);
+    preselectCardSound();
   };
 
-  context.preSelectedCards = preSelectedCards;
-  context.preSelectedPlay = preSelectedPlay;
-  context.specialCards = [MultipliedClubs];
-  context.preSelectedModifiers = preSelectedModifiers;
-  context.discards = discards;
-  context.remainingPlaysTutorial = remainingPlaysTutorial;
-
-  if (hand.length > 0) context.hand = hand;
-
-  const actions = {
-    togglePreselected,
-    discard,
+  const contextValue = {
     play,
-    preSelectCard,
-    unPreSelectCard,
+    discard,
+    clearPreSelection,
+    executeCreateGame: emptyFn,
+    changeModifierCard: async () => ({ success: false, cards: [] }),
+    onShopSkip: emptyFn,
+    sellPowerup: async () => false,
+    sellSpecialCard: async () => false,
+    checkOrCreateGame: emptyFn,
+    resetLevel: emptyFn,
+    prepareNewGame: emptyFn,
+    surrenderGame: emptyFn,
+    initiateTransferFlow: emptyFn,
+
+    hand,
+    discards,
+    powerUps,
+    specialCards,
+    remainingPlaysTutorial,
+    preSelectedCards,
+    preSelectedPlay,
+    preSelectedModifiers,
+    points,
+    multi,
+
+    togglePreselected: handleTogglePreselected,
+    togglePreselectedPowerUp: handleTogglePreselectedPowerup,
     addModifier,
     getModifiers,
+    cardIsPreselected,
     powerUpIsPreselected,
-    togglePreselectedPowerUp,
   };
 
   return (
-    <mockTutorialGameContext.Provider value={{ ...context, ...actions }}>
+    <TutorialGameContext.Provider value={contextValue as any}>
       {children}
-    </mockTutorialGameContext.Provider>
+    </TutorialGameContext.Provider>
   );
 };
 
 export default TutorialGameProvider;
- */

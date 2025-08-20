@@ -29,6 +29,7 @@ import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { AccountInterface } from "starknet";
+import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number, username?: string) => void;
@@ -57,7 +58,7 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 export const useGameContext = () => {
   const location = useLocation();
   const inTutorial = location.pathname === "/tutorial";
-  const context = /* inTutorial ? mockTutorialGameContext : */ GameContext;
+  const context = inTutorial ? TutorialGameContext : GameContext;
   return useContext(context);
 };
 
@@ -254,9 +255,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
                 setPreSelectionLocked(false);
                 setRoundRewards(undefined);
-                setState(GameStateEnum.NotSet)
+                setState(GameStateEnum.NotSet);
 
-                console.log('navigating demo')
+                console.log("navigating demo");
                 navigate("/demo");
               } else {
                 setGameError(true);
@@ -536,7 +537,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-/*   const refetchAll = async () => {
+  /*   const refetchAll = async () => {
     await refetchCurrentHandStore(client, gameId);
     await refetchGameStore(client, gameId);
     syncMaxPreSelectedCards(rageCards);
