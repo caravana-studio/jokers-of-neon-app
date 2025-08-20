@@ -30,7 +30,6 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { useTutorialGameStore } from "../../state/useTutorialGameStore.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -43,7 +42,7 @@ export const GameContent = () => {
     preSelectedCards,
     hand,
     addModifier,
-  } = inTutorial ? useTutorialGameStore() : useCurrentHandStore();
+  } = useCurrentHandStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

@@ -28,7 +28,6 @@ import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
-import { useTutorialGameStore } from "../../state/useTutorialGameStore";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
@@ -36,12 +35,11 @@ interface HandSectionProps {
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   useGameContext();
-  const inTutorial = isTutorial();
 
   const { changeModifierCard, remainingPlaysTutorial } = useGameContext();
 
   const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
-    inTutorial ? useTutorialGameStore() : useCurrentHandStore();
+    useCurrentHandStore();
   const { sfxVolume } = useSettings();
 
   const { remainingPlays, roundRewards } = useGameStore();

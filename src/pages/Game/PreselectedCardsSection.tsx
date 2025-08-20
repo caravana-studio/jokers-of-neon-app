@@ -12,8 +12,6 @@ import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useAnimationStore } from "../../state/useAnimationStore.ts";
-import { useTutorialGameStore } from "../../state/useTutorialGameStore.ts";
-import { isTutorial } from "../../utils/isTutorial.ts";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -25,11 +23,9 @@ export const PreselectedCardsSection = ({
   onTutorialCardClick,
 }: PreselectedCardsProps) => {
   const { discardAnimation, playAnimation } = useAnimationStore();
-  const inTutorial = isTutorial();
 
-  const { preSelectedCards, togglePreselected, hand, getModifiers } = inTutorial
-    ? useTutorialGameStore()
-    : useCurrentHandStore();
+  const { preSelectedCards, togglePreselected, hand, getModifiers } =
+    useCurrentHandStore();
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });
