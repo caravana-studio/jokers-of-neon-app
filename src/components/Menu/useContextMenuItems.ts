@@ -154,7 +154,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
   const extraMenuItems: MenuItem[] = [
     {
-      icon: Icons.BACK,
+      icon: Icons.HOME,
       url: "/",
       active: false,
       key: "back",
