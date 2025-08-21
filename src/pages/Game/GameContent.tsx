@@ -33,7 +33,7 @@ import { TopSection } from "./TopSection.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, resetLevel } = useGameContext();
 
   const { isRageRound, state, gameLoading, gameError: error } = useGameStore();
   const {
@@ -109,8 +109,10 @@ export const GameContent = () => {
             return navigate("/store");
           case GameStateEnum.Map:
             return navigate("/map");
-          default:
+          default: {
+            resetLevel();
             return navigate("/demo");
+          }
         }
       }
     };

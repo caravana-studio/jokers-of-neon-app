@@ -29,6 +29,7 @@ import { MultipliedClubs } from "../utils/mocks/specialCardMocks.ts";
 import { checkHand } from "../utils/checkHand.ts";
 import { Plays } from "../enums/plays.ts";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 
 export const TutorialGameContext =
   createContext<IGameContext>(gameProviderDefaults);
@@ -39,7 +40,14 @@ const TUTORIAL_EVENTS = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [indexEvent, setIndexEvent] = useState(0);
 
-  const { setPlayIsNeon } = useCurrentHandStore();
+  const { setPlayIsNeon, setPreSelectionLocked } = useCurrentHandStore();
+  const {
+    setRoundRewards,
+    showSpecials,
+    resetPowerUps,
+    resetSpecials,
+    setState,
+  } = useGameStore();
   const { setPlayAnimation, setDiscardAnimation } = useAnimationStore();
   const { setAnimatedCard, setAnimatedPowerUp } = useCardAnimations();
   const { play: preselectCardSound } = useAudio(preselectedCardSfx);
@@ -91,6 +99,15 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [client, gameID]);
 
+  const resetLevel = () => {
+    setRoundRewards(undefined);
+    setPreSelectionLocked(false);
+    showSpecials();
+    resetPowerUps();
+    resetSpecials();
+    setState(GameStateEnum.NotSet);
+  };
+
   const discard = () => {
     const { remainingDiscards } = useGameStore.getState();
     if (remainingDiscards > 0) {
@@ -135,7 +152,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
         useCurrentHandStore.getState().clearPreSelection();
         useGameStore.getState().unPreSelectAllPowerUps();
       },
-      refetchPowerUps: emptyFn,
+      refetchPowerUps: () => {
+        if (preSelectedPowerUps && indexEvent === 1) {
+          useGameStore.setState({
+            powerUps: [],
+          });
+        }
+      },
       preSelectedPowerUps,
       navigate: emptyFn,
       gameId: 0,
@@ -159,6 +182,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       useCurrentHandStore.getState().clearPreSelection();
       useGameStore.getState().unPreSelectAllPowerUps();
     },
+    resetLevel,
   };
 
   return (
