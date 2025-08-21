@@ -1,44 +1,49 @@
 {
-    "home":
-    {
-        "slogan":"BUILD YOUR DECK, RULE THE GAME",
-        "btn":
-        {
-            "leaderboard-btn": "See leaderboard",
-            "playDemo-btn": "Play",
-            "start": "Start"
-        },
-        "join-discord": "Join our Discord!"
+  "home": {
+    "slogan": "BUILD YOUR DECK, RULE THE GAME",
+    "btn": {
+      "leaderboard-btn": "See leaderboard",
+      "playDemo-btn": "Play",
+      "start": "Start"
     },
-    "leaderboard":
-    {
-        "title": "Leaderboard",
-        "btn":
-        {
-            "returnLeaderboard-btn": "Go back"
-        },
-        "table-head":
-        {
-            "position-leaderboard-head": "Position",
-            "username-leaderboard-head": "Username",
-            "score-leaderboard-head": "Score",
-            "level-leaderboard-head": "Level"
-        }
-
+    "join-discord": "Join our Discord!"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "btn": {
+      "returnLeaderboard-btn": "Go back"
     },
-    "play": "New game",
-    "my-games": "My games",
-    "tournament":
-    {
-        "table-head":
-        {
-            "prize-leaderboard-head": "Prize",
-            "tournament-tooltip": "Prizes will be distributed to the top 10 players at the end of the tournament"
-        },
-        "labels":
-        {
-            "days-countdown-tournament": "days",
-            "label-countdown-tournament": "for the tournament to finish"
-        }
+    "table-head": {
+      "position-leaderboard-head": "Position",
+      "username-leaderboard-head": "Username",
+      "score-leaderboard-head": "Score",
+      "level-leaderboard-head": "Level"
     }
+  },
+  "play": "New game",
+  "my-games": "My games",
+  "tournament": {
+    "table-head": {
+      "prize-leaderboard-head": "Prize",
+      "tournament-tooltip": "Prizes will be distributed to the top 10 players at the end of the tournament"
+    },
+    "labels": {
+      "days-countdown-tournament": "days",
+      "label-countdown-tournament": "for the tournament to finish"
+    }
+  },
+  "menu": {
+    "home": "Home",
+    "collection": "My Collection",
+    "games": "My Games",
+    "profile": "Profile",
+    "settings": "Settings",
+    "map": "Map",
+    "deck": "Deck",
+    "plays": "Plays",
+    "more": "More",
+    "round": "Round",
+    "rage": "Rage round",
+    "shop": "Shop"
+  }
 }

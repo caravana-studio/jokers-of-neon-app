@@ -32,7 +32,7 @@ export const BottomMenu = () => {
           ? mainMenuItems
           : inGameMenuItems
         ).map((item) => (
-          <ContextMenuItem {...item} />
+          <ContextMenuItem {...item} nameKey={item.key} />
         ))}
       </Flex>
 

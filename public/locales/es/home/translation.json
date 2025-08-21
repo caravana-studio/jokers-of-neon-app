@@ -31,5 +31,19 @@
             "days-countdown-tournament": "días",
             "label-countdown-tournament": "para el final del torneo"
         }
+    },
+    "menu": {
+        "home": "Inicio",
+        "collection": "Mi colección",
+        "games": "Mis juegos",
+        "profile": "Perfil",
+        "settings": "Ajustes",
+        "map": "Mapa",
+        "deck": "Mazo",
+        "plays": "Jugadas",
+        "more": "Más",
+        "round": "Ronda",
+        "rage": "Ronda de furia",
+        "shop": "Tienda"
     }
 }
