@@ -66,6 +66,7 @@
       "discards-left": "{{discards}} Discards left",
       "hands-left": "{{hands}} Hands left",
       "rage": "{{cards}} Rage cards defeated",
+      "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
       "continue-btn": "continue"

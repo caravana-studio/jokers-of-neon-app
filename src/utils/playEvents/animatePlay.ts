@@ -315,15 +315,17 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   const handleGameEnd = () => {
     if (playEvents.cardActivateEvent) {
       const specialCardInHand =
-        specialCards[playEvents.cardActivateEvent.special_id];
-      if (specialCardInHand.card_id == 323) {
-        setAnimateSecondChanceCard(true);
-      } else {
-        setAnimateSpecialCardDefault({
-          specialId: specialCardInHand.card_id,
-          bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
-          animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
-        });
+        specialCards.find(card =>  card.card_id == playEvents.cardActivateEvent?.special_id);
+      if (specialCardInHand) {
+        if (specialCardInHand?.card_id == 10023) {
+          setAnimateSecondChanceCard(true);
+        } else {
+          setAnimateSpecialCardDefault({
+            specialId: specialCardInHand.card_id,
+            bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
+              animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
+          });
+        }
       }
     } else if (playEvents.gameOver) {
       setTimeout(() => {

@@ -8,7 +8,7 @@ export const getHandCards = async (
   sortBy: SortBy
 ): Promise<any> => {
   try {
-    let tx_result: any = await client.game_system.getHandCards(gameId);
+    let tx_result: any = await client.game_views.getHandCards(gameId);
 
     console.log("game cards", tx_result);
 

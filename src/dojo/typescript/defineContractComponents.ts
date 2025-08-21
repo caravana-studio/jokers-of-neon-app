@@ -336,6 +336,7 @@ export function defineContractComponents(world: World) {
           discard_left_cash: RecsType.Number,
           rage_card_defeated: RecsType.Number,
           rage_card_defeated_cash: RecsType.Number,
+          rerolls: RecsType.Number,
           total: RecsType.Number,
         },
         {
@@ -344,6 +345,7 @@ export function defineContractComponents(world: World) {
             name: "DetailEarnedEvent",
             types: [
               "ContractAddress",
+              "u32",
               "u32",
               "u32",
               "u32",

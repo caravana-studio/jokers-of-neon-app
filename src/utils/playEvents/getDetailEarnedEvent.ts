@@ -23,7 +23,8 @@ export const getDetailEarnedEvent = (
     getNumberValueFromEvent(detailEarnedEvent, 10) ?? 0;
   const rage_card_defeated_cash =
     getNumberValueFromEvent(detailEarnedEvent, 11) ?? 0;
-  const total = getNumberValueFromEvent(detailEarnedEvent, 12) ?? 0;
+  const rerolls = getNumberValueFromEvent(detailEarnedEvent, 12) ?? 0;
+  const total = getNumberValueFromEvent(detailEarnedEvent, 13) ?? 0;
 
   return {
     round_defeat,
@@ -34,6 +35,7 @@ export const getDetailEarnedEvent = (
     discard_left_cash,
     rage_card_defeated,
     rage_card_defeated_cash,
+    rerolls,
     total,
   };
 };
