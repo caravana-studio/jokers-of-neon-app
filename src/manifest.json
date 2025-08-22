@@ -2860,8 +2860,8 @@
       ]
     },
     {
-      "address": "0x2255ff5fb700b27655dde5d94675dcadda8e8bde721cd55a0c70653ec43cf07",
-      "class_hash": "0x57b3071af1e38316229fcbcacbcb33ab40126a5216ca1980992cbf56216a62c",
+      "address": "0x70827d40f8d569e23c3dc8faa048be622072abf26334c9aa012e8207ff700cf",
+      "class_hash": "0x1af4ffe238356fbec2a2668e6a1ae35daebf27d6ec611458976767736f0d883",
       "abi": [
         {
           "type": "impl",
@@ -5529,8 +5529,8 @@
       ]
     },
     {
-      "address": "0x45a7a884decc2ebcf3da8acb9523a14b2c941ebaa37f4d1edd39665a5a277a1",
-      "class_hash": "0xbd9582c75bdd8fd597c4aad4b74f0aaa217efff9aecc48603e1e0f354df469",
+      "address": "0x553e600bd47f598e798981c81dffbf38df6c206f857104af572736bfedac82e",
+      "class_hash": "0x1c371ab488054b747f94fed348ab06fa34686029404b1635413bca599cbeb98",
       "abi": [
         {
           "type": "impl",
@@ -9448,8 +9448,8 @@
       ]
     },
     {
-      "address": "0x19569ad5e3562ec9745c8c28b27ce4edf56addfa206ca4f91228f258673e99b",
-      "class_hash": "0x121ee9f98b40f91476f83aaa38b224292eb2aecb92e6efbcbeb226a2e0f889",
+      "address": "0x39ebbb23717360b1db0506bc9cdf8a92deb51a416a902ce5eddb07f705004b2",
+      "class_hash": "0x6539cb7f918bd189adde3159801e70c20e8a53548642f1de691051e482e434a",
       "abi": [
         {
           "type": "impl",
@@ -13155,7 +13155,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2837b8a702ab398ea6b442f432d801d99542761fece14356b1e8717a034336a",
+      "class_hash": "0x3beae5484c939b4467cf1abf8686903ad03bf005b8a6281af36629fd7274b46",
       "tag": "jokers_of_neon_core-PlayWinGameEvent",
       "selector": "0xd119c9da5a2d4aa2e71dad4aa1c378e5a8ccf7bb8c3396adf285c6c26c6b8"
     },

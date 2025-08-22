@@ -49,7 +49,5 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
     cardActivateEvent: getCardActivateEvent(events),
   };
 
-  console.log(playEvents);
-
   return playEvents;
 };
