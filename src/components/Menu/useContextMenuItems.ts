@@ -38,6 +38,17 @@ export const getIcon = (state: GameStateEnum) => {
   }
 };
 
+export const getKey = (state: GameStateEnum) => {
+  switch (state) {
+    case GameStateEnum.Rage:
+      return "rage";
+    case GameStateEnum.Round:
+      return "round";
+    default:
+      return "shop";
+  }
+};
+
 interface UseBottomMenuItemsProps {
   onMoreClick?: () => void;
 }
@@ -69,13 +80,13 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         icon: Icons.DOCS,
         url: "/my-collection",
         active: url === "/my-collection",
-        key: "docs",
+        key: "collection",
       },
       {
         icon: Icons.JOKER,
         url: "/my-games",
         active: url === "/my-games",
-        key: "joker",
+        key: "games",
       },
       {
         icon: Icons.PROFILE,
@@ -105,7 +116,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         }
         return url === gameUrl;
       }),
-      key: "game",
+      key: getKey(state),
     },
     {
       icon: Icons.MAP,
@@ -143,7 +154,7 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
 
   const extraMenuItems: MenuItem[] = [
     {
-      icon: Icons.BACK,
+      icon: Icons.HOME,
       url: "/",
       active: false,
       key: "back",

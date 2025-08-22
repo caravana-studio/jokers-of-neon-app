@@ -511,17 +511,17 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_shop_system_getShopItems_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_shop_views_getShopItems_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "shop_system",
+			contractName: "shop_views",
 			entrypoint: "get_shop_items",
 			calldata: [gameId],
 		};
 	};
 
-	const shop_system_getShopItems = async (gameId: BigNumberish) => {
+	const shop_views_getShopItems = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_shop_system_getShopItems_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_shop_views_getShopItems_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -639,22 +639,22 @@ export function setupWorld(provider: DojoProvider) {
 	};
 
 
-	const build_action_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
+	const build_play_system_play_calldata = (gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>): DojoCall => {
 		return {
-			contractName: "action_system",
+			contractName: "play_system",
 			entrypoint: "play",
 			calldata: [gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes],
 		};
 	};
 
-	const action_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
+	const play_system_play = async (snAccount: Account | AccountInterface, gameId: BigNumberish, playedCardsIndexes: Array<BigNumberish>, playedModifiersIndexes: Array<BigNumberish>, playedPowerUpsIndexes: Array<BigNumberish>) => {
 		try {
-			console.log('vrf tx', getVrfTx("action_system", snAccount))
+			console.log('vrf tx', getVrfTx("play_system", snAccount))
 			return await provider.execute(
 				snAccount as any,
-				disableVrf ? build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes) :
-				[getVrfTx("action_system", snAccount), 
-				build_action_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes)],
+				disableVrf ? build_play_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes) :
+				[getVrfTx("play_system", snAccount), 
+				build_play_system_play_calldata(gameId, playedCardsIndexes, playedModifiersIndexes, playedPowerUpsIndexes)],
 				DOJO_NAMESPACE,
 			);
 		} catch (error) {
@@ -1072,119 +1072,119 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_system_getDeckCards_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_game_views_getDeckCards_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "game_views",
 			entrypoint: "get_deck_cards",
 			calldata: [gameId],
 		};
 	};
 
-	const game_system_getDeckCards = async (gameId: BigNumberish) => {
+	const game_views_getDeckCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getDeckCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_views_getDeckCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_game_system_getGameData_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_game_views_getGameData_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "game_views",
 			entrypoint: "get_game_data",
 			calldata: [gameId],
 		};
 	};
 
-	const game_system_getGameData = async (gameId: BigNumberish) => {
+	const game_views_getGameData = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getGameData_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_views_getGameData_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_game_system_getHandCards_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_game_views_getHandCards_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "game_views",
 			entrypoint: "get_hand_cards",
 			calldata: [gameId],
 		};
 	};
 
-	const game_system_getHandCards = async (gameId: BigNumberish) => {
+	const game_views_getHandCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getHandCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_views_getHandCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_game_system_getSpecialCards_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_game_views_getSpecialCards_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "game_views",
 			entrypoint: "get_special_cards",
 			calldata: [gameId],
 		};
 	};
 
-	const game_system_getSpecialCards = async (gameId: BigNumberish) => {
+	const game_views_getSpecialCards = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getSpecialCards_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_views_getSpecialCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-		const build_game_system_getPowerUps_calldata = (gameId: BigNumberish): DojoCall => {
+		const build_game_views_getPowerUps_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "game_system",
+			contractName: "game_views",
 			entrypoint: "get_power_ups",
 			calldata: [gameId],
 		};
 	};
 
-	const game_system_getPowerUps = async (gameId: BigNumberish) => {
+	const game_views_getPowerUps = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_game_system_getPowerUps_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_game_views_getPowerUps_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-		const build_shop_system_getCardsInDeck_calldata = (gameId: BigNumberish): DojoCall => {
+		const build_shop_views_getCardsInDeck_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "shop_system",
+			contractName: "shop_views",
 			entrypoint: "get_cards_in_deck",
 			calldata: [gameId],
 		};
 	};
 
-	const shop_system_getCardsInDeck = async (gameId: BigNumberish) => {
+	const shop_views_getCardsInDeck = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_shop_system_getCardsInDeck_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_shop_views_getCardsInDeck_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
 		}
 	};
 
-	const build_shop_system_getLootBoxResult_calldata = (gameId: BigNumberish): DojoCall => {
+	const build_shop_views_getLootBoxResult_calldata = (gameId: BigNumberish): DojoCall => {
 		return {
-			contractName: "shop_system",
+			contractName: "shop_views",
 			entrypoint: "get_loot_box_result",
 			calldata: [gameId],
 		};
 	};
 
-	const shop_system_getLootBoxResult = async (gameId: BigNumberish) => {
+	const shop_views_getLootBoxResult = async (gameId: BigNumberish) => {
 		try {
-			return await provider.call(DOJO_NAMESPACE, build_shop_system_getLootBoxResult_calldata(gameId));
+			return await provider.call(DOJO_NAMESPACE, build_shop_views_getLootBoxResult_calldata(gameId));
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -1287,16 +1287,6 @@ export function setupWorld(provider: DojoProvider) {
 			buildTransferFromCalldata: build_game_system_transferFrom_calldata,
 			transferGame: game_system_transferGame,
 			buildTransferGameCalldata: build_game_system_transferGame_calldata,
-			getDeckCards: game_system_getDeckCards,
-			buildGetDeckCardsCalldata: build_game_system_getDeckCards_calldata,
-			getGameData: game_system_getGameData,
-			buildGetGameDataCalldata: build_game_system_getGameData_calldata,
-			getHandCards: game_system_getHandCards,
-			buildGetHandCardsCalldata: build_game_system_getHandCards_calldata,
-			getSpecialCards: game_system_getSpecialCards,
-			buildGetSpecialCardsCalldata: build_game_system_getSpecialCards_calldata,
-			getPowerUps: game_system_getPowerUps,
-			buildGetPowerUpsCalldata: build_game_system_getPowerUps_calldata,
 		},
 		shop_system: {
 			burnCard: shop_system_burnCard,
@@ -1313,8 +1303,6 @@ export function setupWorld(provider: DojoProvider) {
 			buildBuySpecialCardCalldata: build_shop_system_buySpecialCard_calldata,
 			buySpecialSlot: shop_system_buySpecialSlot,
 			buildBuySpecialSlotCalldata: build_shop_system_buySpecialSlot_calldata,
-			getShopItems: shop_system_getShopItems,
-			buildGetShopItemsCalldata: build_shop_system_getShopItems_calldata,
 			reroll: shop_system_reroll,
 			buildRerollCalldata: build_shop_system_reroll_calldata,
 			selectCardsFromLootBox: shop_system_selectCardsFromLootBox,
@@ -1325,10 +1313,6 @@ export function setupWorld(provider: DojoProvider) {
 			buildSellSpecialCardCalldata: build_shop_system_sellSpecialCard_calldata,
 			skipShop: shop_system_skipShop,
 			buildSkipShopCalldata: build_shop_system_skipShop_calldata,
-			getCardsInDeck: shop_system_getCardsInDeck,
-			buildGetCardsInDeckCalldata: build_shop_system_getCardsInDeck_calldata,
-			getLootBoxResult: shop_system_getLootBoxResult,
-			buildGetLootBoxResultCalldata: build_shop_system_getLootBoxResult_calldata,
 		},
 		rage_system: {
 			calculate: rage_system_calculate,
@@ -1341,8 +1325,10 @@ export function setupWorld(provider: DojoProvider) {
 			buildChangeModifierCardCalldata: build_action_system_changeModifierCard_calldata,
 			discard: action_system_discard,
 			buildDiscardCalldata: build_action_system_discard_calldata,
-			play: action_system_play,
-			buildPlayCalldata: build_action_system_play_calldata,
+		},
+		play_system: {
+			play: play_system_play,
+			buildPlayCalldata: build_play_system_play_calldata,
 		},
 		mods_info_system: {
 			getCumulativeInfo: mods_info_system_getCumulativeInfo,
@@ -1371,6 +1357,25 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetUserSpecialCardsCalldata: build_nft_special_cards_views_getUserSpecialCards_calldata,
 			getUserSpecialCardsByCategory: nft_special_cards_views_getUserSpecialCardsByCategory,
 			buildGetUserSpecialCardsByCategoryCalldata: build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata,
+		},
+		game_views: {
+			getDeckCards: game_views_getDeckCards,
+			buildGetDeckCardsCalldata: build_game_views_getDeckCards_calldata,
+			getGameData: game_views_getGameData,
+			buildGetGameDataCalldata: build_game_views_getGameData_calldata,
+			getHandCards: game_views_getHandCards,
+			getSpecialCards: game_views_getSpecialCards,
+			buildGetSpecialCardsCalldata: build_game_views_getSpecialCards_calldata,
+			getPowerUps: game_views_getPowerUps,
+			buildGetPowerUpsCalldata: build_game_views_getPowerUps_calldata,
+		},
+		shop_views: {
+			getShopItems: shop_views_getShopItems,
+			buildGetShopItemsCalldata: build_shop_views_getShopItems_calldata,
+			getCardsInDeck: shop_views_getCardsInDeck,
+			buildGetCardsInDeckCalldata: build_shop_views_getCardsInDeck_calldata,
+			getLootBoxResult: shop_views_getLootBoxResult,
+			buildGetLootBoxResultCalldata: build_shop_views_getLootBoxResult_calldata,
 		},
 	};
 }
