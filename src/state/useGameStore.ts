@@ -95,6 +95,7 @@ type GameStore = {
   addSpecialSlot: () => void;
   removeSpecialSlot: () => void;
   setShopId: (shopId: number) => void;
+  addRerolls: (rerolls: number) => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -423,5 +424,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setShopId: (shopId) => {
     set({ shopId });
+  },
+
+  addRerolls: (rerolls) => {
+    set((state) => ({
+      availableRerolls: state.availableRerolls + rerolls,
+    }));
   },
 }));
