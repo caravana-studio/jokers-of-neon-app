@@ -928,7 +928,7 @@
     "8": {
       "name": "The Lovers loot box",
       "description": "All hearts suited cards, can contain special cards and modifiers.",
-      "details": "55% chance of getting a traditional Heart card\n20% chance of getting Ace of Hearts\n10% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
+      "details": "55% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
     },
     "9": {
       "name": "Special Bet loot box",
