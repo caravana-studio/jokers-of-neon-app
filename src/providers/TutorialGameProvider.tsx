@@ -75,6 +75,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       remainingPlays: 3,
       gameLoading: false,
       preSelectedPowerUps: [],
+      targetScore: 500,
     });
 
     if (client) {

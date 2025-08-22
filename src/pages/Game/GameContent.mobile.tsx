@@ -38,7 +38,7 @@ import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, resetLevel } = useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
@@ -127,8 +127,10 @@ export const MobileGameContent = () => {
             return navigate("/store");
           case GameStateEnum.Map:
             return navigate("/map");
-          default:
+          default: {
+            resetLevel();
             return navigate("/demo");
+          }
         }
       }
     };
