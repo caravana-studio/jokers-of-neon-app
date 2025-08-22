@@ -100,5 +100,14 @@
   },
   "common": {
     "go-back-btn": "Go back"
+  },
+  "my-collection": {
+    "title": "My Collection",
+    "no-collection": "Please login to see your collection",
+    "login": "Login",
+    "collections": {
+      "sx": "Season {{season}}",
+      "c99": "GG Exclusive Collection - v1"
+    }
   }
 }

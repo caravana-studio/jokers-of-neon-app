@@ -1,6 +1,7 @@
 export type UserNft = {
   nftId: string;
   skin: number;
+  quality?: number;
 };
 
 export type NftCards = {
@@ -9,6 +10,6 @@ export type NftCards = {
 };
 
 export type Collection = {
-  id: string;
+  id: number;
   cards: NftCards[];
 };

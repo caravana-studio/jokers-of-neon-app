@@ -20,12 +20,16 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { BLUE } from "../../theme/colors";
 import { Card } from "../../types/Card";
 import { Collection } from "./types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   collection: Collection;
 };
 
 const CollectionGrid: React.FC<Props> = ({ collection }) => {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "my-collection.collections",
+  });
   const [open, setOpen] = useState(true);
   const ownedCount = collection.cards.filter(
     (card) => card.userNfts.length > 0
@@ -47,7 +51,7 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
   const cardHeight = CARD_HEIGHT * (customCardScale ?? 1);
   const cardWith = CARD_WIDTH * (customCardScale ?? 1);
   return (
-    <Box px={6}>
+    <Box px={6} w="100%">
       {highlightedCard && (
         <MobileCardHighlight
           card={highlightedCard as Card}
@@ -56,13 +60,14 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
         />
       )}
       <Flex
+        w="100%"
         align="center"
         cursor="pointer"
         mb={2}
         onClick={() => setOpen((o) => !o)}
       >
         <Heading variant="italic" size="xs">
-          {collection.id.replace(/-/g, " ").toUpperCase()}
+          {collection.id < 25 ? t("sx", { season: collection.id }) : t(`c${collection.id}`) }
         </Heading>
         <Text ml={2} fontSize="8px" color="gray.400">
           ({ownedCount}/{collection.cards.length})
@@ -79,7 +84,7 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
           />
         </Box>
       </Flex>
-      <Collapse in={open} animateOpacity>
+      <Collapse in={open} animateOpacity style={{ width: "100%" }}>
         <Flex alignContent={"center"} w="100%">
           <Flex
             flexDirection="row"
@@ -87,8 +92,9 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
             justifyContent={"center"}
             wrap={"wrap"}
             gap={2}
-            overflow={"auto"}
+            py={2}
             mb={4}
+            w="100%"
           >
             {collection.cards.map((nftCard, index) => {
               const card = getCardFromCardId(nftCard.id, index);
@@ -103,7 +109,7 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
                     <TimesBadge count={nftCard.userNfts.length} />
                   )}
                   <TiltCard
-                    card={{ ...card, price: undefined}}
+                    card={{ ...card, price: undefined }}
                     scale={customCardScale}
                     onClick={() => {
                       highlightCard(card);
@@ -131,7 +137,7 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
                     bg="blackAlpha.300"
                     fontFamily="Orbitron"
                   >
-                    # {card.id}
+                    # {String(card.id).slice(-2)}
                   </Flex>
                 </Flex>
               );

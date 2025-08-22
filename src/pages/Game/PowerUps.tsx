@@ -28,7 +28,7 @@ export const PowerUps = ({ onTutorialCardClick }: PowerUpsProps) => {
       zIndex={preSelectionLocked ? 1 : 2}
       className="game-tutorial-power-up"
     >
-      {powerUps.map((powerUp, index) => {
+      {powerUps?.map((powerUp, index) => {
         return (
           <PowerUpComponent
             key={index}

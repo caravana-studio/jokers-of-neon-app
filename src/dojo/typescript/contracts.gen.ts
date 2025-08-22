@@ -1191,6 +1191,40 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_nft_special_cards_views_getUserSpecialCards_calldata = (userAddress: string): DojoCall => {
+		return {
+			contractName: "nft_special_cards_views",
+			entrypoint: "get_user_special_cards",
+			calldata: [userAddress],
+		};
+	};
+
+	const nft_special_cards_views_getUserSpecialCards = async (userAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCards_calldata(userAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata = (userAddress: string): DojoCall => {
+		return {
+			contractName: "nft_special_cards_views",
+			entrypoint: "get_user_special_cards_by_category",
+			calldata: [userAddress],
+		};
+	};
+
+	const nft_special_cards_views_getUserSpecialCardsByCategory = async (userAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata(userAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1331,6 +1365,12 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetRegisteredManagersCalldata: build_mod_manager_registrator_getRegisteredManagers_calldata,
 			registerManagers: mod_manager_registrator_registerManagers,
 			buildRegisterManagersCalldata: build_mod_manager_registrator_registerManagers_calldata,
+		},
+		nft_special_cards_views: {
+			getUserSpecialCards: nft_special_cards_views_getUserSpecialCards,
+			buildGetUserSpecialCardsCalldata: build_nft_special_cards_views_getUserSpecialCards_calldata,
+			getUserSpecialCardsByCategory: nft_special_cards_views_getUserSpecialCardsByCategory,
+			buildGetUserSpecialCardsByCategoryCalldata: build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata,
 		},
 	};
 }
