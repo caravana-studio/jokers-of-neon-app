@@ -209,7 +209,7 @@ export const GameContent = () => {
 
         <Box
           sx={{ width: "100%", height: "100%" }}
-          className="game-tutorial-intro"
+          // className="game-tutorial-intro"
         >
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
@@ -246,6 +246,7 @@ export const GameContent = () => {
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
+                  className="game-tutorial-intro"
                 >
                   <PreselectedCardsSection
                     isTutorialRunning={run}
