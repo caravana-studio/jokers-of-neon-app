@@ -207,7 +207,10 @@ export const GameContent = () => {
           hideCloseButton
         />
 
-        <Box sx={{ width: "100%", height: "100%" }}>
+        <Box
+          sx={{ width: "100%", height: "100%" }}
+          className="game-tutorial-intro"
+        >
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
@@ -243,7 +246,6 @@ export const GameContent = () => {
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
-                  className="game-tutorial-intro"
                 >
                   <PreselectedCardsSection
                     isTutorialRunning={run}

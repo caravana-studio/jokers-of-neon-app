@@ -5,105 +5,105 @@
       "select-mobile": "Toque ou arraste."
     },
     "intro": {
-      "title": "Bem-vindo ao Jokers of Neon",
-      "content": "Este tutorial oferece uma visão geral das mecânicas principais do jogo."
+      "title": "Boas-vindas ao Jokers of Neon",
+      "content": "Vamos ver o básico do jogo."
     },
     "pointsTarget": {
-      "title": "Como completar um nível?",
-      "content": "Cada nível define uma pontuação que você precisa alcançar jogando mãos de pôquer."
+      "title": "Passando de Nível",
+      "content": "Para passar de nível, atinja a <1>pontuação alvo</1> jogando mãos de pôquer."
     },
     "playableHand": {
-      "step-1": "Você deve usar as cartas da sua mão para formar uma mão de pôquer.",
-      "step-2": "Se as cartas da sua mão não formarem uma mão de pôquer, você pode usar um descarte para obter novas cartas. Vamos tentar isso.",
-      "pair": "Ótimo! Conseguimos um PAR de 7 para jogar, vamos lá!",
-      "secondPair": "Agora temos um PAR de 5's para jogar, vamos lá!",
-      "straight": "Olha, agora conseguimos uma SEQUÊNCIA para jogar, vamos lá!",
-      "plays": "Você pode clicar aqui para ver as possíveis mãos de pôquer que pode formar."
+      "step-1": "Use as cartas da sua <1>mão</1> para fazer a melhor jogada de pôquer.",
+      "step-2": "Nenhuma mão de pôquer? Use um <1>descarte</1> para conseguir novas cartas. Vamos tentar.",
+      "pair": "Ótimo! Um <1>PAR</1> de 7. Vamos jogar!",
+      "secondPair": "Boa! Temos um <1>PAR</1> de 5. Hora de jogar.",
+      "straight": "Olha, uma <1>SEQUÊNCIA</1>! Vamos jogar essa mão.",
+      "plays": "Clique aqui para ver todas as mãos de pôquer que você pode formar."
     },
     "discardCards": {
-      "title": "Descartando",
-      "content": "Agora clique no botão de descarte para trazer novas cartas para sua mão."
+      "title": "Descartar",
+      "content": "Clique no botão de <1>descartar</1> para receber novas cartas."
     },
     "playCards": {
       "title": "Jogar Cartas",
-      "content": "Agora, clique no botão para jogar suas cartas pré-selecionadas."
+      "content": "Aperte o botão <1>jogar</1> para usar as cartas selecionadas."
     },
     "pointsMultiplier": {
       "title": "Pontos e Multiplicador",
-      "content": "Cada mão de poker tem pontos base e um multiplicador que contribuirá para sua pontuação final."
+      "content": "Cada mão de pôquer tem <1>pontos</1> base e um <1>multiplicador</1> que aumentam sua pontuação final."
     },
     "score": {
-      "content": "Ótimo trabalho! Sua última jogada atingiu a pontuação alvo. Agora, vamos jogar de verdade. Boa sorte!"
+      "content": "Bom trabalho! Sua última jogada atingiu a meta de pontos. Agora é pra valer. Boa sorte!"
     },
     "specialCards": {
       "title": "Cartas Especiais",
-      "content": "As cartas especiais mudam o jogo, aplicando efeitos únicos às cartas que você joga. Elas podem ser compradas na loja."
+      "content": "As <1>Cartas Especiais</1> mudam o jogo com efeitos poderosos. Você pode comprá-las na <1>Loja</1>."
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "Oh, você conseguiu um modificador de naipe. Se você aplicá-lo ao 10, obterá um ROYAL FLUSH. Vamos tentar!",
-      "drag": "Arraste e solte o modificador de naipe de paus sobre o 10, depois clique em 'Próximo' para continuar."
+      "content": "Você conseguiu um <1>Modificador de Naipe</1>! Aplique-o no 10 para fazer um <1>ROYAL FLUSH</1>. Vamos tentar.",
+      "drag": "Arraste o modificador de Paus para a carta 10 e clique em 'Próximo'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "Os power-ups concedem pontos extras e aumentam seu multiplicador. Use-os uma vez e depois compre mais na loja.",
-      "select": "Selecione esse power-up"
+      "content": "</1>Power-ups</1> dão pontos e multiplicadores extras. São de uso único, mas você pode comprar mais na <1>Loja</1>.",
+      "select": "Selecione este power-up."
     }
   },
   "storeTutorial": {
     "coins": {
       "title": "Moedas",
-      "content": "Parabéns! Após derrotar um nível, você ganha moedas para gastar na loja."
+      "content": "Muito bem! Você ganhou <1>moedas</1> por passar de nível. Hora de gastá-las na <1>Loja</1>!"
     },
     "levelUpHands": {
-      "title": "Aprimore suas Mãos",
-      "content": "Você pode melhorar suas mãos. Quanto maior o nível das suas mãos de poker, mais pontos e multiplica elas marcam"
+      "title": "Melhorar Mãos",
+      "content": "Melhore suas mãos de pôquer para ganhar mais <1>pontos</1> e <1>multiplicadores</1>."
     },
     "buyPacks": {
       "title": "Comprar Pacotes",
-      "content": "Aqui você pode obter pacotes para impulsionar seu baralho. Esses pacotes oferecem a chance de obter cartas raras e especiais a um custo menor."
+      "content": "Obtenha <1>pacotes</1> para fortalecer seu baralho com cartas raras e especiais por um custo menor."
     },
     "buyCards": {
-      "title": "Comprar Cartas Tradicionais e Neon",
-      "content": "Aqui você pode comprar cartas tradicionais e neon para aprimorar seu baralho. As cartas neon marcam o dobro de pontos e +1 multi."
+      "title": "Comprar Cartas",
+      "content": "Compre cartas <1>Tradicionais</1> e <1>Neon</1> aqui. As cartas Neon dão o dobro de pontos e +1 de multiplicador!"
     },
     "modifiers": {
       "title": "Modificadores",
-      "content": "Modificadores são cartas que são adicionadas ao seu baralho e aplicam efeitos às suas cartas tradicionais, como adicionar mais pontos ou mudar o naipe"
+      "content": "</1>Modificadores</1> são adicionados ao seu baralho e aplicam efeitos às suas cartas, como adicionar pontos ou mudar naipes."
     },
     "specialCards": {
       "title": "Cartas Especiais",
-      "content": "Cartas especiais concedem poderes globais únicos e ficam ativas imediatamente. Elas podem mudar o rumo do jogo!"
+      "content": "</1>Cartas Especiais</1> concedem poderes globais únicos que são ativados imediatamente. Elas podem virar o jogo!"
     },
     "rerollStore": {
-      "title": "Repetir a Loja",
-      "content": "Não está encontrando o que precisa? Gaste algumas moedas para repetir a loja e veja um novo conjunto de cartas e mãos para aprimorar."
+      "title": "Atualizar a Loja",
+      "content": "Não encontrou o que precisa? Gaste <1>moedas</1> para atualizar a loja e ver um novo conjunto de itens."
     },
     "nextLevel": {
-      "title": "Avançar para o Próximo Nível",
-      "content": "Pronto para continuar? Clique aqui para avançar para o próximo nível e enfrentar novos desafios!"
+      "title": "Próximo Nível",
+      "content": "Pronto para o próximo desafio? Clique aqui para continuar!"
     }
   },
   "specialCardsTutorial": {
     "specialCards": {
       "title": "Cartas Especiais",
-      "content": "Cartas especiais ativam imediatamente após você comprá-las na loja. Elas aplicam seus efeitos após sua mão ser jogada."
+      "content": "As <1>Cartas Especiais</1> são ativadas logo após a compra e aplicam seus efeitos depois que você joga uma mão."
     },
     "discardingCards": {
-      "title": "Descartar cartas especiais",
-      "content": "Se você não quiser usar uma carta especial, pode descartá-la a qualquer momento clicando no botão de descartar que aparecerá sobre a carta.",
-      "content-mobile": "Se você não quiser usar uma carta especial, pode descartá-la a qualquer momento arrastando-a para o botão de descartar."
+      "title": "Descartar Cartas Especiais",
+      "content": "Não precisa de uma <1>Carta Especial</1>? Clique no ícone de descarte na carta para removê-la.",
+      "content-mobile": "Não precisa de uma <1>Carta Especial</1>? Arraste-a para o botão de descarte para removê-la."
     }
   },
   "modifiersTutorial": {
     "modifierCard": {
       "title": "Carta Modificadora",
-      "content": "Cartas modificadoras melhoram ou alteram uma carta específica. Arraste e solte um modificador em uma carta pré-selecionada para ativar seu efeito."
+      "content": "<1>Cartas Modificadoras</1> melhoram ou alteram outras cartas. Arraste um modificador para uma carta selecionada para aplicar seu efeito."
     },
     "discard": {
-      "title": "Descartar",
-      "content": "Clique no botão de descartar que aparecerá sobre a carta para descartá-la sem perder nenhuma chance de descarte.",
-      "content-mobile": "Arraste o modificador e solte-o sobre o botão de descartar para descartá-lo sem perder nenhuma chance de descarte."
+      "title": "Descartar Modificadores",
+      "content": "Clique no ícone de descarte no modificador para removê-lo. Isso não custará um descarte.",
+      "content-mobile": "Arraste o modificador para o botão de descarte para removê-lo. Isso não custará um descarte."
     }
   },
   "joyride": {

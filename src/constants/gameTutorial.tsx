@@ -1,6 +1,7 @@
 import { isMobile } from "react-device-detect";
 import i18n from "i18next";
 import { Step } from "react-joyride";
+import { Trans } from "react-i18next";
 
 const COMMON_SETTINGS: Partial<Step> = {
   disableBeacon: true,
@@ -74,7 +75,21 @@ const loadTutorialTranslations = async () => {
     {
       target: ".store-tutorial-step-1",
       title: i18n.t("gameTutorial.pointsTarget.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.pointsTarget.content", { ns: "tutorials" }),
+      content: (
+        <Trans i18nKey="gameTutorial.pointsTarget.content" ns="tutorials">
+          To beat a level, hit the target score
+          <span
+            style={{
+              // color: "#00ff99",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            target score
+          </span>
+          by playing poker hands.
+        </Trans>
+      ),
       ...COMMON_SETTINGS,
       placement: "auto",
     },

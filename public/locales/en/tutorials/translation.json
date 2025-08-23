@@ -6,104 +6,104 @@
     },
     "intro": {
       "title": "Welcome to Jokers of Neon",
-      "content": "This tutorial provides an overview of the game’s core mechanics."
+      "content": "Let's walk through the basics of the game."
     },
     "pointsTarget": {
-      "title": "How to complete a level?",
-      "content": "Each level sets a target score you must reach by playing poker hands."
+      "title": "Beating a Level",
+      "content": "To beat a level, hit the <1>target score</1> by playing poker hands."
     },
     "playableHand": {
-      "step-1": "You must use the cards in your hand to form a poker play.",
-      "step-2": "If the cards in your hand don’t form a poker hand, you can use a discard to get new ones. Let’s try that.",
-      "pair": "Great! we got a PAIR of 7's to play, let's do it.",
-      "secondPair": "Now, we got a PAIR of 5's to play, let's do it.",
-      "straight": "Look, we got a STRAIGHT to play now, let's do it",
-      "plays": "You can click here to view the possible poker hands you can form."
+      "step-1": "Use the cards in your <1>hand</1> to make the best poker play.",
+      "step-2": "No poker hand? Use a <1>discard</1> to get new cards. Let's try it.",
+      "pair": "Great! A <1>PAIR</1> of 7s. Let's play it!",
+      "secondPair": "Nice! We have a <1>PAIR</1> of 5s. Time to play.",
+      "straight": "Look, a <1>STRAIGHT</1>! Let's play that hand.",
+      "plays": "Click here to see all possible poker hands you can make."
     },
     "discardCards": {
       "title": "Discard",
-      "content": "Now click on the discard button to bring new cards to your hand."
+      "content": "Click the <1>discard button</1> to get new cards."
     },
     "playCards": {
       "title": "Play Cards",
-      "content": "Now, click on the button to play your preselected cards."
+      "content": "Hit the <1>play button</1> to use your selected cards."
     },
     "pointsMultiplier": {
-      "title": "Points and Multiplier",
-      "content": "Each poker hand has base points and a multiplier that will contribute to your final score."
+      "title": "Points & Multiplier",
+      "content": "Each poker hand has base <1>points</1> and a <1>multiplier</1> that boost your final score."
     },
     "score": {
-      "content": "Great job! Your last play hit the target score. Now, let's play for real. Good luck!"
+      "content": "Great job! Your last play hit the target score. Time to play for real. Good luck!"
     },
     "specialCards": {
       "title": "Special Cards",
-      "content": "Special cards are game changers, applying unique effects to the cards you play. You can purchase them in the store."
+      "content": "</1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <1>Store</1>."
     },
     "modifiers": {
       "title": "Modifier Cards",
-      "content": "Oh, you got a Suit modifier, if you apply it to the 10, you will get a ROYAL FLUSH, let's try it out.",
-      "drag": "Drag and drop the club suit modifier onto the 10, then click 'Next' to proceed."
+      "content": "You got a <1>Suit Modifier</1>! Apply it to the 10 to make a <1>ROYAL FLUSH</1>. Let's try it.",
+      "drag": "Drag the Club modifier onto the 10 card, then click 'Next'."
     },
     "power-ups": {
-      "title": "Power ups",
-      "content": "Power-ups grant extra points and boost your multi. Use them once, then buy more in the store.",
-      "select": "Select this power up"
+      "title": "Power-ups",
+      "content": "</1>Power-ups</1> give you extra points and multi. They are single-use, but you can buy more in the <1>Store</1>.",
+      "select": "Select this power-up."
     }
   },
   "storeTutorial": {
     "coins": {
       "title": "Coins",
-      "content": "Congratulations! After defeating a level, you earn coins to spend in the store."
+      "content": "Well done! You've earned <1>coins</1> for beating the level. Time to spend them in the <1>Store</1>."
     },
     "levelUpHands": {
-      "title": "Level Up Your Hands",
-      "content": "You can upgrade your hands. The higher the level of your poker hands, the more points and multi they score"
+      "title": "Level Up Hands",
+      "content": "Upgrade your poker hands to score more <1>points</1> and <1>multipliers</1>."
     },
     "buyPacks": {
       "title": "Buy Packs",
-      "content": "Here you can get packs to boost your deck. These packs offer a chance to obtain rare and special cards at a lower cost."
+      "content": "Get <1>packs</1> to boost your deck with rare and special cards at a lower cost."
     },
     "buyCards": {
-      "title": "Buy Traditional and Neon Cards",
-      "content": "Here you can buy traditional and neon cards to enhance your deck. Neon cards score double points and +1 multi."
+      "title": "Buy Cards",
+      "content": "Buy <1>Traditional</1> and <1>Neon</1> cards here. Neon cards score double points and +1 multi!"
     },
     "modifiers": {
       "title": "Modifiers",
-      "content": "Modifiers are cards that are added to your deck and apply effects to your traditional cards, like adding more points or changing the suit"
+      "content": "</1>Modifiers</1> are added to your deck and apply effects to your cards, like adding points or changing suits."
     },
     "specialCards": {
       "title": "Special Cards",
-      "content": "Special cards grant unique global powers and get activated immediately. These can turn the tide of the game!"
+      "content": "</1>Special Cards</1> grant unique global powers that activate immediately. They can turn the tide of the game!"
     },
     "rerollStore": {
       "title": "Reroll the Store",
-      "content": "Not finding what you need? Spend some coins to reroll the store and see a fresh set of cards and hands to upgrade."
+      "content": "Don't see what you need? Spend <1>coins</1> to reroll the store for a fresh set of items."
     },
     "nextLevel": {
-      "title": "Proceed to the Next Level",
-      "content": "Ready to continue? Click here to advance to the next level and face new challenges!"
+      "title": "Next Level",
+      "content": "Ready for the next challenge? Click here to continue!"
     }
   },
   "specialCardsTutorial": {
     "specialCards": {
       "title": "Special Cards",
-      "content": "Special cards activate immediately after you purchase them in the store. They apply their effects after your hand is played."
+      "content": "</1>Special Cards</1> activate right after you buy them and apply their effects after you play a hand."
     },
     "discardingCards": {
-      "title": "Discarding special cards",
-      "content": "If you don’t want to use a special card, you can discard it at any time by clicking the discard button that will pop up over the card.",
-      "content-mobile": "If you don’t want to use a special card, you can discard it at any time by dragging it to the discard button."
+      "title": "Discarding Special Cards",
+      "content": "Don't need a <1>Special Card</1>? Click the discard icon on the card to remove it.",
+      "content-mobile": "Don't need a <1>Special Card</1>? Drag it to the discard button to remove it."
     }
   },
   "modifiersTutorial": {
     "modifierCard": {
       "title": "Modifier Card",
-      "content": "Modifier cards enhance or alter a specific card. Drag and drop a modifier onto a preselected card to activate its effect."
+      "content": "<1>Modifier Cards</1> boost or change other cards. Drag a modifier onto a selected card to apply its effect."
     },
     "discard": {
-      "title": "Discard",
-      "content": "Click the discard button that will pop up over the card to discard it without losing any discard chances.",
-      "content-mobile": "Drag the modifier and drop it onto the discard button to discard it without losing any discard chances."
+      "title": "Discard Modifiers",
+      "content": "Click the discard icon on the modifier to remove it. This won't cost you a discard.",
+      "content-mobile": "Drag the modifier to the discard button to remove it. This won't cost you a discard."
     }
   },
   "joyride": {
