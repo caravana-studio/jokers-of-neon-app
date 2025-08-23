@@ -45,6 +45,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
         profilePictureId={profilePictureId}
         onClick={() => setProfilePickerVisible(true)}
         editMode={profilePickerVisible}
+        border={profilePickerVisible}
         hover={{
           border: `1px solid rgba(255, 255, 255, 0.6)`,
           boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,

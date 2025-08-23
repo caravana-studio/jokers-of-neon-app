@@ -38,6 +38,7 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
       justifyContent={"center"}
       alignItems={"center"}
       _hover={hover}
+      opacity={editMode ? 0.7 : 1}
     >
       {editMode && <FontAwesomeIcon icon={faPencil} size="xl" />}
     </Flex>
