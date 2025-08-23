@@ -1,12 +1,15 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Collapse, Flex, Heading, Text } from "@chakra-ui/react";
 import { ProfileStat } from "./ProfileStat";
 import { ProgressBar } from "../CompactRoundData/ProgressBar";
 import { VIOLET } from "../../theme/colors";
 import { useTranslation } from "react-i18next";
+import { ProfilePicture } from "./ProfilePicture";
+import { ProfilePicturePicker } from "./ProfilePicturePicker";
+import { useState } from "react";
 
 export interface ProfileStatsProps {
   profilePictureUrl?: string;
-  username: string;
+  username: string | null;
   level: number;
   streak: number;
   games: number;
@@ -26,6 +29,8 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
   levelXp,
 }) => {
   const { t } = useTranslation("game");
+  const [profilePickerVisible, setProfilePickerVisible] = useState(false);
+  const [profilePictureId, setProfilePictureId] = useState<number | string>(7);
 
   return (
     <Flex
@@ -36,12 +41,17 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <Flex
-        w={"140px"}
-        height={"140px"}
-        rounded={"full"}
-        backgroundColor={"gray"}
-        backgroundImage={{ profilePictureUrl }}
+      <ProfilePicture
+        profilePictureId={profilePictureId}
+        onClick={() => setProfilePickerVisible(true)}
+        editMode={profilePickerVisible}
+        border={profilePickerVisible}
+        hover={{
+          border: `1px solid rgba(255, 255, 255, 0.6)`,
+          boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,
+          transform: "scale(1.05)",
+          transition: "all 0.2s ease-in-out",
+        }}
       />
       <Heading fontSize={"sm"}>{username}</Heading>
       <Flex
@@ -54,6 +64,16 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       >
         {t("game.profile-menu.level")} {level}
       </Flex>
+      <Collapse
+        in={profilePickerVisible}
+        animateOpacity
+        style={{ padding: 12 }}
+      >
+        <ProfilePicturePicker
+          onClose={() => setProfilePickerVisible(false)}
+          onSelect={(id) => setProfilePictureId(id)}
+        />
+      </Collapse>
       <Flex
         gap={4}
         alignItems={"center"}

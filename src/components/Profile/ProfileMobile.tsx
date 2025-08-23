@@ -4,14 +4,14 @@ import { UserBadges } from "./UserBadges";
 import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
 import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
 import { ControllerIcon } from "../../icons/ControllerIcon";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { profileMock } from "../../utils/mocks/profileMocks";
 import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
+import { DelayedLoading } from "../DelayedLoading";
+import { useUsername } from "../../dojo/utils/useUsername";
 
 export const ProfileMobile = () => {
-  const username = profileMock.username;
+  const username = useUsername();
   const level = profileMock.level;
   const streak = profileMock.streak;
   const games = profileMock.games;
@@ -26,7 +26,7 @@ export const ProfileMobile = () => {
   const { setup } = useDojo();
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <Flex
         flexDirection={"column"}
@@ -34,48 +34,49 @@ export const ProfileMobile = () => {
         w={{ base: "100%", sm: "70%" }}
         mx={"auto"}
         height={"100%"}
-        p={8}
+        py={8}
         justifyContent={"space-evenly"}
       >
-        <ProfileStats
-          username={username}
-          level={level}
-          streak={streak}
-          games={games}
-          victories={victories}
-          currentXp={currentXp}
-          levelXp={levelXp}
-        />
+        <Flex
+          flexDirection={"column"}
+          py={16}
+          px={8}
+          height={"auto"}
+          overflowY={"auto"}
+          overflowX={"hidden"}
+        >
+          <ProfileStats
+            username={username}
+            level={level}
+            streak={streak}
+            games={games}
+            victories={victories}
+            currentXp={currentXp}
+            levelXp={levelXp}
+          />
 
-        <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />
+          <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />
 
-        <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
-          {!setup.useBurnerAcc && (
-            <>
-              <Divider borderColor="white" borderWidth="1px" my={2} />
-              <Flex justifyContent={"space-between"}>
-                <LogoutMenuBtn width={btnWidth} label={true} />
-                <FontAwesomeIcon icon={faArrowRight} />
-              </Flex>
-            </>
-          )}
+          <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
+            {!setup.useBurnerAcc && (
+              <>
+                <Divider borderColor="white" borderWidth="1px" my={2} />
+                <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
+              </>
+            )}
 
-          <Divider borderColor="white" borderWidth="1px" my={2} />
-          <Flex justifyContent={"space-between"}>
-            <DeleteAccBtn width={btnWidth} label={true} />
-            <FontAwesomeIcon icon={faArrowRight} />
+            <Divider borderColor="white" borderWidth="1px" my={2} />
+            <DeleteAccBtn width={btnWidth} label={true} arrowRight />
+
+            {!setup.useBurnerAcc && (
+              <>
+                <Divider borderColor="white" borderWidth="1px" my={2} />
+                <ControllerIcon width={btnWidth} label={true} arrowRight />
+              </>
+            )}
           </Flex>
-          {!setup.useBurnerAcc && (
-            <>
-              <Divider borderColor="white" borderWidth="1px" my={2} />
-              <Flex justifyContent={"space-between"}>
-                <ControllerIcon width={btnWidth} label={true} />
-                <FontAwesomeIcon icon={faArrowRight} />
-              </Flex>
-            </>
-          )}
         </Flex>
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

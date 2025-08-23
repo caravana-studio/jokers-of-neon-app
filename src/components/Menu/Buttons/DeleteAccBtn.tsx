@@ -5,9 +5,11 @@ import { MenuBtn } from "./MenuBtn";
 export const DeleteAccBtn = ({
   width,
   label,
+  arrowRight,
 }: {
   width: string;
   label?: boolean;
+  arrowRight?: boolean;
 }) => {
   const { t } = useTranslation("game");
 
@@ -17,7 +19,10 @@ export const DeleteAccBtn = ({
       icon={Icons.TUTORIAL}
       description={t("game.game-menu.delete-acc-btn")}
       label={label ? t("game.game-menu.delete-acc-btn") : undefined}
-      onClick={() => {}}
+      onClick={() =>
+        window.open("https://jokersofneon.com/delete-account", "_blank")
+      }
+      arrowRight={arrowRight}
     />
   );
 };

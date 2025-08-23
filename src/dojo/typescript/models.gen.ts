@@ -709,6 +709,7 @@ export interface DetailEarnedEvent {
 	discard_left_cash: number;
 	rage_card_defeated: number;
 	rage_card_defeated_cash: number;
+	rerolls: number;
 	total: number;
 }
 
@@ -723,6 +724,7 @@ export interface DetailEarnedEventValue {
 	discard_left_cash: number;
 	rage_card_defeated: number;
 	rage_card_defeated_cash: number;
+	rerolls: number;
 	total: number;
 }
 
@@ -1731,6 +1733,7 @@ export const schema: SchemaType = {
 			discard_left_cash: 0,
 			rage_card_defeated: 0,
 			rage_card_defeated_cash: 0,
+			rerolls: 0,
 			total: 0,
 		},
 		DetailEarnedEventValue: {
@@ -1743,6 +1746,7 @@ export const schema: SchemaType = {
 			discard_left_cash: 0,
 			rage_card_defeated: 0,
 			rage_card_defeated_cash: 0,
+			rerolls: 0,
 			total: 0,
 		},
 		GameEvent: {

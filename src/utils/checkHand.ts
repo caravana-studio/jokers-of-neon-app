@@ -1,3 +1,4 @@
+import { specialCardIds } from "../constants/specialCardIds";
 import { CARDS_SUIT_DATA } from "../data/traditionalCards";
 import { Cards } from "../enums/cards";
 import { ModifiersId } from "../enums/modifiersId";
@@ -11,9 +12,9 @@ export const checkHand = (
   specialCards: Card[],
   preSelectedModifiers: { [key: number]: number[] }
 ): Plays => {
-  const specialAllCardsToHearts = specialCards.some((s) => s.card_id === 314);
-  const easyFlush = specialCards.some((s) => s.card_id === 309);
-  const easyStraight = specialCards.some((s) => s.card_id === 308);
+  const specialAllCardsToHearts = specialCards.some((s) => s.card_id === specialCardIds.ALL_TO_HEARTS);
+  const easyFlush = specialCards.some((s) => s.card_id === specialCardIds.EASY_FLUSH);
+  const easyStraight = specialCards.some((s) => s.card_id === specialCardIds.EASY_STRAIGHT);
 
   const getNewSuit = (modifierCardId?: number) => {
     switch (modifierCardId) {

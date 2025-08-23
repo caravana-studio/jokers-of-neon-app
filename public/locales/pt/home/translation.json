@@ -21,6 +21,7 @@
     }
   },
   "play": "Novo jogo",
+  "my-games": "Meus jogos",
   "tournament": {
     "table-head": {
       "prize-leaderboard-head": "Prêmio",
@@ -30,5 +31,19 @@
       "days-countdown-tournament": "dias",
       "label-countdown-tournament": "para o torneio terminar"
     }
+  },
+  "menu": {
+    "home": "Início",
+    "collection": "Minha Coleção",
+    "games": "Meus Jogos",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "map": "Mapa",
+    "deck": "Deck",
+    "plays": "Jogadas",
+    "more": "Mais",
+    "round": "Rodada",
+    "rage": "Rodada de raiva",
+    "shop": "Loja"
   }
 }

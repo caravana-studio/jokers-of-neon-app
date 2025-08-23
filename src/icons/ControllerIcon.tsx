@@ -10,9 +10,11 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 export const ControllerIcon = ({
   width,
   label,
+  arrowRight,
 }: {
   width: string;
   label?: boolean;
+  arrowRight?: boolean;
 }) => {
   const { t } = useTranslation("game");
   const { connector } = useAccount();
@@ -28,6 +30,7 @@ export const ControllerIcon = ({
       label={label ? "Controller" : undefined}
       width={width}
       onClick={() => connectControllerCommand(connector)}
+      arrowRight={arrowRight}
     />
   );
 };

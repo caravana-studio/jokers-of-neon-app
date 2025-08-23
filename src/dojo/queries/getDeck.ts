@@ -13,7 +13,7 @@ export const getDeck = async (
   gameId: number
 ): Promise<DeckCard[]> => {
   try {
-    let deck_cards: any = await client.game_system.getDeckCards(gameId);
+    let deck_cards: any = await client.game_views.getDeckCards(gameId);
 
     return deck_cards.map((card: DojoDeckCard) => {
       return {

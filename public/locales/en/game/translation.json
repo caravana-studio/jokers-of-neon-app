@@ -94,8 +94,8 @@
       "docs-btn": "Card list",
       "leaderboard-btn": "Leaderboard",
       "map-btn": "Map",
-      "back": "Leave game",
       "delete-acc-btn": "Delete account",
+      "back": "Return to Home",
       "pages": {
         "gameover": "Game Over",
         "open-loot-box": "Open Loot Box",
@@ -129,7 +129,9 @@
       "next-level": "Next lvl",
       "my-xp": "My XP",
       "my-badges": "My badges",
-      "coming-soon": "Coming soon"
+      "coming-soon": "Coming soon",
+      "select-profile-picture": "Select profile picture",
+      "connect": "Connect"
     },
     "plays": {
       "title": "Available plays",

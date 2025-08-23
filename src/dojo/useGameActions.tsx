@@ -327,7 +327,7 @@ export const useGameActions = () => {
 
     try {
       showTransactionToast();
-      const response = await client.action_system.play(
+      const response = await client.play_system.play(
         account,
         gameId,
         cards,
