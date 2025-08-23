@@ -130,7 +130,9 @@
       "next-level": "Siguiente nivel",
       "my-xp": "Mi XP",
       "my-badges": "Mis Insignias",
-      "coming-soon": "Muy pronto"
+      "coming-soon": "Muy pronto",
+      "select-profile-picture": "Seleccionar foto de perfil",
+      "connect": "Conectar"
     },
     "plays": {
       "title": "Jugadas disponibles",

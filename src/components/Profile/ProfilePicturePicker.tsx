@@ -5,6 +5,7 @@ import { BLUE_LIGHT } from "../../theme/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ProfilePicturePickerProps {
   onClose?: () => void;
@@ -24,6 +25,8 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
     transition: "all 0.2s ease-in-out",
     cursor: "pointer",
   };
+
+  const { t } = useTranslation("game");
 
   return (
     <Box
@@ -68,7 +71,7 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
           pb={2}
           variant="italic"
         >
-          SELECT PROFILE PICTURE
+          {t("game.profile-menu.select-profile-picture")}
         </Heading>
 
         <Flex
@@ -103,8 +106,12 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
             alignItems={"center"}
             onClick={() => onSelect?.("")}
           >
-            <Text fontSize="xs" letterSpacing="wide">
-              CONNECT
+            <Text
+              fontSize="xs"
+              letterSpacing="wide"
+              textTransform={"uppercase"}
+            >
+              {t("game.profile-menu.connect")}
             </Text>
             <Box backgroundColor={"black"} p={1} rounded={"sm"}>
               <FontAwesomeIcon icon={faXTwitter} style={{ color: "white" }} />

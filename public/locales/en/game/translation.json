@@ -129,7 +129,9 @@
       "next-level": "Next lvl",
       "my-xp": "My XP",
       "my-badges": "My badges",
-      "coming-soon": "Coming soon"
+      "coming-soon": "Coming soon",
+      "select-profile-picture": "Select profile picture",
+      "connect": "Connect"
     },
     "plays": {
       "title": "Available plays",
