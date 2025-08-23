@@ -95,7 +95,21 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.step-1", { ns: "tutorials" }),
+      content: (
+        <Trans i18nKey="gameTutorial.playableHand.step-1" ns="tutorials">
+          To beat a level, hit the target score
+          <span
+            style={{
+              // color: "#00ff99",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            target score
+          </span>
+          by playing poker hands.
+        </Trans>
+      ),
       ...COMMON_SETTINGS,
     },
     {
@@ -106,7 +120,22 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      content: i18n.t("gameTutorial.playableHand.step-2", { ns: "tutorials" }),
+      content: (
+        <Trans i18nKey="gameTutorial.playableHand.step-2" ns="tutorials">
+          To beat a level, hit the target score
+          <span
+            style={{
+              // color: "#00ff99",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            target score
+          </span>
+          by playing poker hands.
+        </Trans>
+      ),
+
       ...COMMON_SETTINGS,
       placement: "right",
     },
@@ -174,7 +203,21 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.pair", { ns: "tutorials" }),
+      content: (
+        <Trans i18nKey="gameTutorial.playableHand.pair" ns="tutorials">
+          To beat a level, hit the target score
+          <span
+            style={{
+              // color: "#00ff99",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            target score
+          </span>
+          by playing poker hands.
+        </Trans>
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
@@ -264,9 +307,22 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.secondPair", {
-        ns: "tutorials",
-      }),
+      content: (
+        <Trans i18nKey="gameTutorial.playableHand.secondPair" ns="tutorials">
+          To beat a level, hit the target score
+          <span
+            style={{
+              // color: "#00ff99",
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            target score
+          </span>
+          by playing poker hands.
+        </Trans>
+      ),
+
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
