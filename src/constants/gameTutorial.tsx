@@ -112,7 +112,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-0",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -140,7 +139,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-1",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -168,7 +166,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.discardCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "right",
@@ -184,7 +181,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-2",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -212,7 +208,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-3",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -254,7 +249,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "left",
@@ -279,7 +273,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-0",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -307,7 +300,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-1",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -378,7 +370,6 @@ const loadTutorialTranslations = async () => {
     // play
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "left",
@@ -403,7 +394,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-2",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -431,7 +421,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-3",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -459,7 +448,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -487,7 +475,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-5",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -515,7 +502,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-6",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -572,7 +558,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "left",
@@ -613,14 +598,12 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.discardCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "right",
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "left",
