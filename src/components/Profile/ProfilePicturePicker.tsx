@@ -4,10 +4,26 @@ import { ProfilePicture } from "./ProfilePicture";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { useMemo } from "react";
 
-export const ProfilePicturePicker = () => {
-  const ids = [1, 2, 3, 4, 5, 6, 7];
+interface ProfilePicturePickerProps {
+  onClose?: () => void;
+  onSelect?: (id: number | string) => void;
+}
+
+export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
+  onClose,
+  onSelect,
+}) => {
+  const ids = useMemo(() => [1, 2, 3, 4, 5, 6, 7], []);
   const iconsSize = "96px";
+  const hoverStyle = {
+    border: `1px solid rgba(255, 255, 255, 0.6)`,
+    boxShadow: `0px 0px 14px 1px ${BLUE_LIGHT}`,
+    transform: "scale(1.05)",
+    transition: "all 0.2s ease-in-out",
+    cursor: "pointer",
+  };
 
   return (
     <Box
@@ -22,7 +38,6 @@ export const ProfilePicturePicker = () => {
         py={4}
         px={4}
         border="1px solid"
-        borderColor="cyan.700"
         sx={{
           border: `1px solid rgba(255, 255, 255, 0.6)`,
           boxShadow: `0px 0px 14px 1px rgba(255, 255, 255, 0.6)`,
@@ -40,6 +55,7 @@ export const ProfilePicturePicker = () => {
           color="white"
           variant="ghost"
           _hover={{ color: "white" }}
+          onClick={onClose}
         />
 
         <Heading
@@ -62,6 +78,7 @@ export const ProfilePicturePicker = () => {
           height={"40vh"}
           overflowY={"auto"}
           overflowX={"hidden"}
+          paddingY={4}
         >
           {ids.map((id) => (
             <ProfilePicture
@@ -69,6 +86,8 @@ export const ProfilePicturePicker = () => {
               profilePictureId={id}
               border
               size={iconsSize}
+              onClick={() => onSelect?.(id)}
+              hover={hoverStyle}
             />
           ))}
           <Flex
@@ -79,9 +98,10 @@ export const ProfilePicturePicker = () => {
             borderColor="white"
             flexDir="column"
             color="white"
-            _hover={{ borderColor: BLUE_LIGHT }}
+            _hover={hoverStyle}
             justifyContent={"center"}
             alignItems={"center"}
+            onClick={() => onSelect?.("")}
           >
             <Text fontSize="xs" letterSpacing="wide">
               CONNECT
