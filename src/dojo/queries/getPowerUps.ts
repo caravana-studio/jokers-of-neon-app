@@ -5,7 +5,7 @@ export const getPowerUps = async (
   gameId: number
 ): Promise<any> => {
   try {
-    const tx_result: BigInt[] = await client.game_system.getPowerUps(gameId);
+    const tx_result: BigInt[] = await client.game_views.getPowerUps(gameId);
     const powerUps = tx_result.map((powerUpId: BigInt, index: number) => {
       return getPowerUp(Number(powerUpId), index, gameId);
     });

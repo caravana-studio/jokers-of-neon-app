@@ -33,7 +33,7 @@ const getCard = (txCard: any) => {
   return {
     price: parseInt(txCard.cost),
     isModifier: txCard.card_id >= 600 && txCard.card_id < 700,
-    isSpecial: txCard.card_id >= 300 && txCard.card_id < 400,
+    isSpecial: txCard.card_id >= 10000 && txCard.card_id < 20000,
     id: idx?.toString() ?? "",
     idx,
     card_id,
@@ -90,7 +90,7 @@ const getPowerUp = (txPowerUp: any) => {
 export const getShopItems = async (client: any, gameId: number) => {
   if (gameId != 0) {
     try {
-      let tx_result = await client.shop_system.getShopItems(gameId);
+      let tx_result = await client.shop_views.getShopItems(gameId);
       console.log(tx_result);
       const modifiersAndCommonCards = tx_result[CARDS_IDX].map(
         (txCard: any) => {

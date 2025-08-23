@@ -95,6 +95,7 @@
       "leaderboard-btn": "Tabla de posiciones",
       "map-btn": "Mapa",
       "delete-acc-btn": "Eliminar cuenta",
+      "back": "Volver al inicio",
       "pages": {
         "gameover": "Fin del juego",
         "open-loot-box": "Abrir caja",

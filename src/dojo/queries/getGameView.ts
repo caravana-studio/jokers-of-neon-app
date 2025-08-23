@@ -91,7 +91,7 @@ export const getGameView = async (
   gameId: number
 ): Promise<GameView> => {
   try {
-    let tx_result: any = await client.game_system.getGameData(gameId);
+    let tx_result: any = await client.game_views.getGameData(gameId);
 
     console.log("game data", tx_result);
     return {

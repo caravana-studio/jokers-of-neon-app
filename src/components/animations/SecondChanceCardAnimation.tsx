@@ -19,5 +19,5 @@ export const SecondChanceCardAnimation = () => {
     </Flex>
   );
 
-  return <SpecialCardAnimation specialId={"323"} animation={phoenixSpine} />;
+  return <SpecialCardAnimation specialId={"10023"} animation={phoenixSpine} />;
 };
