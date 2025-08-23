@@ -207,10 +207,7 @@ export const GameContent = () => {
           hideCloseButton
         />
 
-        <Box
-          sx={{ width: "100%", height: "100%" }}
-          // className="game-tutorial-intro"
-        >
+        <Box sx={{ width: "100%", height: "100%" }}>
           <CachedImage
             src={`/borders/top${isRageRound ? "-rage" : ""}.png`}
             height="8%"
