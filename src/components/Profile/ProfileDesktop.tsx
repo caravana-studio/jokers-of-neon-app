@@ -37,15 +37,14 @@ export const ProfileDesktop = ({ data }: { data: ProfileData }) => {
     <DelayedLoading ms={100}>
       <Flex
         width={"100%"}
-        height={"100%"}
-        flexDirection={"row"}
-        justifyContent={"space-around"}
+        flexDirection={"column"}
+        justifyContent={"center"}
         alignItems={"center"}
-        gap={8}
         p={16}
+        overflowY={"scroll"}
       >
         <Flex
-          width={"40%"}
+          width={"50%"}
           flexDirection={"row"}
           gap={4}
           justifyContent={"center"}
@@ -64,6 +63,7 @@ export const ProfileDesktop = ({ data }: { data: ProfileData }) => {
 
         <Flex
           flexDirection={"row"}
+          width={"50%"}
           gap={4}
           justifyContent={"center"}
           alignItems={"center"}
