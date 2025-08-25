@@ -96,6 +96,7 @@ export interface DetailEarned {
   discard_left_cash: number;
   rage_card_defeated: number;
   rage_card_defeated_cash: number;
+  rerolls: number;
   total: number;
 }
 

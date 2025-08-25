@@ -55,7 +55,6 @@ type WalletProviderProps = {
 export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const { connect, connectors } = useConnect();
   const { lastGameId, isLoading } = useGetLastGameId();
-  console.log("last game id", lastGameId);
   const {
     account: controllerAccount,
     isConnected: isControllerConnected,
@@ -75,12 +74,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
-
-  console.log("burner account", burnerAccount);
-  console.log("is burner deploying", isDeploying);
-  console.log("controller account", controllerAccount);
-  console.log("is controller connected", isControllerConnected);
-  console.log("is controller connecting", isControllerConnecting);
 
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("selecting");
@@ -102,9 +95,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const connectWallet = async () => {
     try {
-      console.log("Attempting to connect wallet...");
       await connect({ connector: connectors[0] });
-      console.log("Wallet connected successfully.");
     } catch (error) {
       console.error("Failed to connect wallet:", error);
     }
@@ -132,11 +123,8 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   ]);
 
   useEffect(() => {
-    console.log("account type", accountType, "final account", finalAccount);
     if (accountType && !finalAccount) {
-      console.log("setting final account");
       if (accountType === "burner") {
-        console.log("setting burner account");
         setFinalAccount(burnerAccount);
       } else {
         connectWallet();
@@ -157,7 +145,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ): void => {
     if (accountType === "controller" && finalAccount) {
-      console.log("Already connected with controller.");
       if (controller) {
         controller.username()?.then((username) => {
           if (username) {
@@ -171,8 +158,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       return;
     }
 
-    console.log("Switching to controller requested...");
-
     if (onSuccess) {
       onSuccessCallback.current = onSuccess;
     }
@@ -182,8 +167,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
       connectWallet();
     }
   };
-
-  console.log("account type", accountType);
 
   if (accountType === null) {
     return (

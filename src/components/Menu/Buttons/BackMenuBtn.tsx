@@ -22,7 +22,7 @@ export const BackMenuBtn = ({
   return (
     <MenuBtn
       width={width}
-      icon={Icons.BACK}
+      icon={Icons.HOME}
       label={label ? t("game.game-menu.back") : undefined}
       description={t("game.game-menu.back")}
       onClick={() => {

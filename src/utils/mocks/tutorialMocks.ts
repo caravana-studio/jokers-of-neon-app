@@ -57,27 +57,27 @@ export const EVENT_FLUSH = {
     },
     {
       hand: [{ idx: H10.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: C10.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CJ.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CQ.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
     {
       hand: [{ idx: CA.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
   ],
@@ -104,7 +104,7 @@ export const EVENT_PAIR = {
     },
     {
       hand: [{ idx: C7.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
+      specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
   ],

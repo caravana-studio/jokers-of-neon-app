@@ -5,7 +5,7 @@ export const getSpecialCardsView = async (
   gameId: number
 ): Promise<Card[]> => {
   try {
-    let tx_result: any = await client.game_system.getSpecialCards(gameId);
+    let tx_result: any = await client.game_views.getSpecialCards(gameId);
 
     console.log("sepcial cards view", tx_result);
     return getSpecialCards(tx_result);

@@ -42,6 +42,10 @@ type CurrentHandStore = {
 
 const MAX_PRESELECTED_CARDS = 5;
 
+const filterInvalidCards = (cards: Card[]) => {
+  return cards.filter((card) => card.card_id !== 9999);
+};
+
 export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   hand: [],
   preSelectedCards: [],
@@ -60,14 +64,14 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
     const { sortBy } = get();
     const hand = await getHandCards(client, gameId, sortBy);
     set({
-      hand,
+      hand: filterInvalidCards(hand),
     });
     set({ maxPreSelectedCards: MAX_PRESELECTED_CARDS });
   },
 
   replaceCards: (cards: Card[]) => {
     const { sortBy } = get();
-    set({ hand: sortCards(cards, sortBy) });
+    set({ hand: sortCards(filterInvalidCards(cards), sortBy) });
   },
 
   toggleSortBy: () => {
