@@ -6,9 +6,8 @@ import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
-  const inTutorial = isTutorial();
   const { level, round, targetScore: gameTargetScore } = useGameStore();
-  const targetScore = inTutorial ? 300 : gameTargetScore ?? 0;
+  const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (

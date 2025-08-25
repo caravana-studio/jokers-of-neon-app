@@ -33,12 +33,23 @@ import { TopSection } from "./TopSection.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame } =
-    useGameContext();
+  const { executeCreateGame, resetLevel } = useGameContext();
 
-  const { isRageRound, state, gameLoading, gameError: error } = useGameStore();
-  const { preSelectCard, unPreSelectCard, preSelectedCards, hand, addModifier } =
-    useCurrentHandStore();
+  const {
+    isRageRound,
+    state,
+    gameLoading,
+    gameError: error,
+    id: gameId,
+  } = useGameStore();
+  const {
+    preSelectCard,
+    unPreSelectCard,
+    preSelectedCards,
+    preSelectedModifiers,
+    hand,
+    addModifier,
+  } = useCurrentHandStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -79,6 +90,12 @@ export const GameContent = () => {
     }
   }, [stepIndex]);
 
+  useEffect(() => {
+    if (stepIndex === 31 && Object.keys(preSelectedModifiers).length === 0) {
+      setStepIndex(30);
+    }
+  }, [stepIndex, preSelectedModifiers]);
+
   const handleJoyrideCallbackFactory = (
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
@@ -105,8 +122,11 @@ export const GameContent = () => {
             return navigate("/store");
           case GameStateEnum.Map:
             return navigate("/map");
-          default:
-            return navigate("/demo");
+          default: {
+            resetLevel();
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
+          }
         }
       }
     };

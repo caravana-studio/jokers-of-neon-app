@@ -38,7 +38,7 @@ import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, resetLevel } = useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
@@ -47,6 +47,7 @@ export const MobileGameContent = () => {
     preSelectedCards,
     hand,
     addModifier,
+    preSelectedModifiers,
   } = useCurrentHandStore();
 
   const {
@@ -54,6 +55,7 @@ export const MobileGameContent = () => {
     maxPowerUpSlots,
     gameLoading,
     gameError: error,
+    id: gameId,
   } = useGameStore();
 
   const sensors = useSensors(
@@ -96,6 +98,12 @@ export const MobileGameContent = () => {
     }
   }, [stepIndex]);
 
+  useEffect(() => {
+    if (stepIndex === 31 && Object.keys(preSelectedModifiers).length === 0) {
+      setStepIndex(30);
+    }
+  }, [stepIndex, preSelectedModifiers]);
+
   const handleJoyrideCallbackFactory = (
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
@@ -127,8 +135,11 @@ export const MobileGameContent = () => {
             return navigate("/store");
           case GameStateEnum.Map:
             return navigate("/map");
-          default:
-            return navigate("/demo");
+          default: {
+            resetLevel();
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
+          }
         }
       }
     };
