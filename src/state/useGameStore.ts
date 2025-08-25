@@ -96,6 +96,7 @@ type GameStore = {
   removeSpecialSlot: () => void;
   setShopId: (shopId: number) => void;
   addRerolls: (rerolls: number) => void;
+  advanceLevel: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -429,6 +430,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addRerolls: (rerolls) => {
     set((state) => ({
       availableRerolls: state.availableRerolls + rerolls,
+    }));
+  },
+  advanceLevel: () => {
+    set((state) => ({
+      level: state.level + 1,
     }));
   },
 }));

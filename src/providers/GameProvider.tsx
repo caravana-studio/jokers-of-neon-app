@@ -95,7 +95,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     id: gameId,
     resetSpecials,
     setState,
-    addRerolls
+    addRerolls,
+    advanceLevel
   } = useGameStore();
 
   const {
@@ -335,6 +336,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
           if (response.levelPassed && response.detailEarned) {
+            response.levelPassed.level_passed > 0 && advanceLevel()
             addCash(response.detailEarned.total);
             response.detailEarned.rerolls && addRerolls(response.detailEarned.rerolls);
           }
