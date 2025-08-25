@@ -47,6 +47,7 @@ export const MobileGameContent = () => {
     preSelectedCards,
     hand,
     addModifier,
+    preSelectedModifiers,
   } = useCurrentHandStore();
 
   const {
@@ -95,6 +96,12 @@ export const MobileGameContent = () => {
       return () => clearTimeout(timeout);
     }
   }, [stepIndex]);
+
+  useEffect(() => {
+    if (stepIndex === 31 && Object.keys(preSelectedModifiers).length === 0) {
+      setStepIndex(30);
+    }
+  }, [stepIndex, preSelectedModifiers]);
 
   const handleJoyrideCallbackFactory = (
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>

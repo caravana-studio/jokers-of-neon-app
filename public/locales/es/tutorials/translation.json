@@ -17,7 +17,7 @@
       "step-2": "¿No tienes una mano de póker? Usa un <1>descarte</1> para obtener nuevas cartas. ¡Intentémoslo!",
       "pair": "¡Genial! Un <1>PAR</1> de 7. ¡A jugar!",
       "secondPair": "¡Bien! Tenemos un <1>PAR</1> de 5. Es hora de jugar.",
-      "straight": "¡Mira, una <1>ESCALERA</1>! Juguemos esa mano.",
+      "flush": "¡Al usar el <1>Modificador de Trébol</1> creamos <2>COLOR</2>! <3/> ¡Juguemos esa mano!",
       "plays": "Haz clic aquí para ver todas las manos de póker que puedes hacer."
     },
     "discardCards": {
@@ -41,7 +41,7 @@
     },
     "modifiers": {
       "title": "Cartas modificadoras",
-      "content": "¡Conseguiste un <1>modificador de palo</1>! Aplícalo al 10 para hacer una <1>ESCALERA REAL</1>. ¡Inténtalo!",
+      "content": "¡Conseguiste un <1>Modificador de Palo</1>! <3/> Las cartas modificadoras mejoran tus <3/> otras cartas con <2>efectos especiales</2>.",
       "drag": "Arrastra el modificador de trébol a la carta del 10 y luego haz clic en 'Siguiente'."
     },
     "power-ups": {

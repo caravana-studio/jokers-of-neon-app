@@ -17,7 +17,7 @@
       "step-2": "Nenhuma mão de pôquer? Use um <1>descarte</1> para conseguir novas cartas. Vamos tentar.",
       "pair": "Ótimo! Um <1>PAR</1> de 7. Vamos jogar!",
       "secondPair": "Boa! Temos um <1>PAR</1> de 5. Hora de jogar.",
-      "straight": "Olha, uma <1>SEQUÊNCIA</1>! Vamos jogar essa mão.",
+      "flush": "Usando o <1>Modificador de Paus</1> criamos um <2>FLUSH</2>! <3/> Vamos jogar.",
       "plays": "Clique aqui para ver todas as mãos de pôquer que você pode formar."
     },
     "discardCards": {
@@ -41,12 +41,12 @@
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "Você conseguiu um <1>Modificador de Naipe</1>! Aplique-o no 10 para fazer um <1>ROYAL FLUSH</1>. Vamos tentar.",
+      "content": "Você conseguiu um <1>Modificador de Naipe</1>! <3/> As cartas modificadoras aprimoram suas <3/> outras cartas com <2>efeitos especiais</2>.",
       "drag": "Arraste o modificador de Paus para a carta 10 e clique em 'Próximo'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "</1>Power-ups</1> dão pontos e multi extras. São de uso único, mas você pode comprar mais na <2>Loja</2>.",
+      "content": "<1>Power-ups</1> dão pontos e multi extras. São de uso único, mas você pode comprar mais na <2>Loja</2>.",
       "select": "Selecione este power-up."
     }
   },

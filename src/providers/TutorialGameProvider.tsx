@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import {
   acumSfx,
   discardSfx,
@@ -26,8 +25,6 @@ import {
 } from "../utils/mocks/tutorialMocks.ts";
 import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
 import { MultipliedClubs } from "../utils/mocks/specialCardMocks.ts";
-import { checkHand } from "../utils/checkHand.ts";
-import { Plays } from "../enums/plays.ts";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 

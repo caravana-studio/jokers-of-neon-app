@@ -1,9 +1,9 @@
 import { EventTypeEnum } from "../../dojo/typescript/custom";
 import {
+  C10,
   C7,
   CA,
   CJ,
-  CK,
   CQ,
   D2,
   D5,
@@ -16,13 +16,13 @@ import {
 } from "./cardMocks";
 import { ClubModifier } from "./modifierMocks";
 
-export const HAND_1 = [D2, H3, D5, H7, S9, CJ, CK, CA];
+export const HAND_1 = [D2, H3, D5, H7, S9, C10, CJ, CA];
 // discard D2 H3
-export const HAND_2 = [D5, S6, C7, H7, S9, CJ, CK, CA];
+export const HAND_2 = [D5, S6, C7, H7, S9, CJ, C10, CA];
 // play C7 H7
-export const HAND_3 = [H5, D5, S6, S9, CJ, CQ, CK, CA];
+export const HAND_3 = [H5, D5, S6, S9, CJ, CQ, C10, CA];
 // play play H5 D5
-export const HAND_4 = [S6, S9, H10, CJ, CQ, CK, CA, ClubModifier];
+export const HAND_4 = [S6, S9, H10, CJ, CQ, C10, CA, ClubModifier];
 
 export const EVENT_FLUSH = {
   play: {
@@ -32,6 +32,11 @@ export const EVENT_FLUSH = {
   cardPlayScoreEvents: [
     {
       hand: [{ idx: H10.idx, quantity: 10 }],
+      specials: [],
+      eventType: EventTypeEnum.Point,
+    },
+    {
+      hand: [{ idx: C10.idx, quantity: 10 }],
       specials: [],
       eventType: EventTypeEnum.Point,
     },
@@ -46,17 +51,17 @@ export const EVENT_FLUSH = {
       eventType: EventTypeEnum.Point,
     },
     {
-      hand: [{ idx: CK.idx, quantity: 10 }],
-      specials: [],
-      eventType: EventTypeEnum.Point,
-    },
-    {
       hand: [{ idx: CA.idx, quantity: 11 }],
       specials: [],
       eventType: EventTypeEnum.Point,
     },
     {
       hand: [{ idx: H10.idx, quantity: 2 }],
+      specials: [{ idx: 301, quantity: 2 }],
+      eventType: EventTypeEnum.Multi,
+    },
+    {
+      hand: [{ idx: C10.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },
@@ -71,11 +76,6 @@ export const EVENT_FLUSH = {
       eventType: EventTypeEnum.Multi,
     },
     {
-      hand: [{ idx: CK.idx, quantity: 2 }],
-      specials: [{ idx: 301, quantity: 2 }],
-      eventType: EventTypeEnum.Multi,
-    },
-    {
       hand: [{ idx: CA.idx, quantity: 2 }],
       specials: [{ idx: 301, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
@@ -83,7 +83,7 @@ export const EVENT_FLUSH = {
   ],
   gameOver: false,
   cards: [],
-  score: 5200,
+  score: 1615,
 };
 
 export const EVENT_PAIR = {

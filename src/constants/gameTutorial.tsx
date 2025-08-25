@@ -495,7 +495,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: NEON_GREEN,
+                  color: BLUE_LIGHT,
                   fontWeight: "bold",
                 }}
               />
@@ -580,11 +580,80 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       offset: isMobile ? 1000 : 10,
     },
+    // FLUSH W MODIFIER
+    {
+      target: ".hand-element-7",
+      title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.modifiers.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            3: <br />,
+          }}
+        />
+      ),
+      ...COMMON_SETTINGS,
+      placement: "auto",
+      disableScrollParentFix: true,
+      spotlightPadding: 0,
+      offset: 0,
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
+    },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.straight", {
-        ns: "tutorials",
-      }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.flush"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+            3: <br />,
+          }}
+        />
+      ),
+
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
@@ -712,25 +781,6 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       hideFooter: true,
       spotlightClicks: true,
-      spotlightPadding: 0,
-      offset: 0,
-      disableOverlay: isMobile ? true : false,
-      styles: !isMobile
-        ? {
-            options: {
-              arrowColor: "none",
-              width: "100%",
-            },
-          }
-        : {},
-    },
-    {
-      target: ".hand-element-7",
-      title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.modifiers.content", { ns: "tutorials" }),
-      ...COMMON_SETTINGS,
-      placement: "auto",
-      disableScrollParentFix: true,
       spotlightPadding: 0,
       offset: 0,
       disableOverlay: isMobile ? true : false,

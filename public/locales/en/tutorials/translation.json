@@ -17,7 +17,7 @@
       "step-2": "No poker hand? Use a <1>discard</1> to get new cards. Let's try it.",
       "pair": "Great! A <1>PAIR</1> of 7s. Let's play it!",
       "secondPair": "Nice! We have a <1>PAIR</1> of 5s. Time to play.",
-      "straight": "Look, a <1>STRAIGHT</1>! Let's play that hand.",
+      "flush": "Using the <1>Club Modifier</1> creates a <2>FLUSH</2>! <3/> Let's play it.",
       "plays": "Click here to see all possible poker hands you can make."
     },
     "discardCards": {
@@ -37,16 +37,16 @@
     },
     "specialCards": {
       "title": "Special Cards",
-      "content": "</1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <2>Store</2>."
+      "content": "<1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <2>Store</2>."
     },
     "modifiers": {
       "title": "Modifier Cards",
-      "content": "You got a <1>Suit Modifier</1>! Apply it to the 10 to make a <1>ROYAL FLUSH</1>. Let's try it.",
+      "content": "You got a <1>Suit Modifier</1>! <3/> Modifier cards enhance your  <3/> other cards with <2>special effects</2>.",
       "drag": "Drag the Club modifier onto the 10 card, then click 'Next'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "</1>Power-ups</1> give you extra points and multi. They are single-use, but you can buy more in the <2>Store</2>.",
+      "content": "<1>Power-ups</1> give you extra points and multi. They are single-use, but you can buy more in the <2>Store</2>.",
       "select": "Select this power-up."
     }
   },
