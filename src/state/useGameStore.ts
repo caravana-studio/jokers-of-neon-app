@@ -95,6 +95,7 @@ type GameStore = {
   addSpecialSlot: () => void;
   removeSpecialSlot: () => void;
   setShopId: (shopId: number) => void;
+  addRerolls: (rerolls: number) => void;
   advanceLevel: () => void;
 };
 
@@ -426,6 +427,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ shopId });
   },
 
+  addRerolls: (rerolls) => {
+    set((state) => ({
+      availableRerolls: state.availableRerolls + rerolls,
+    }));
+  },
   advanceLevel: () => {
     set((state) => ({
       level: state.level + 1,

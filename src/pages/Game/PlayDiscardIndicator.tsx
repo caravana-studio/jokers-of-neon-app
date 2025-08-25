@@ -28,6 +28,7 @@ interface PlayDiscardIndicatorsProps {
   type: "play" | "discard";
   total: number;
   active: number;
+  justifyContent?: string;
 }
 
 export const PlayDiscardIndicators = ({
@@ -35,10 +36,16 @@ export const PlayDiscardIndicators = ({
   type,
   total,
   active,
+  justifyContent,
 }: PlayDiscardIndicatorsProps) => {
   const color = type === "play" ? VIOLET : BLUE;
   return (
-    <Flex w="100%" justifyContent="space-around" alignItems="center" gap={{base: 2, sm: 4}}>
+    <Flex
+      w="100%"
+      justifyContent={justifyContent ?? "space-around"}
+      alignItems="center"
+      gap={{ base: 2, sm: 4 }}
+    >
       {Array.from({ length: total }).map((_, index) => (
         <PlayDiscardIndicator
           key={index}
