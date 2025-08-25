@@ -2,6 +2,7 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
@@ -11,9 +12,10 @@ import { PinkBox } from "./PinkBox.tsx";
 interface RewardItemProps {
   label: string;
   value: number;
+  reroll?: boolean;
 }
 
-const RewardItem = ({ label, value }: RewardItemProps) => {
+const RewardItem = ({ label, value, reroll = false }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
       <Flex
@@ -38,7 +40,11 @@ const RewardItem = ({ label, value }: RewardItemProps) => {
         }}
       >
         <Heading size="s">{label.toUpperCase()}</Heading>
-        <Heading size="s">{value}</Heading>
+        {reroll ? (
+          <RerollIndicators rerolls={value} justifyContent="flex-end" />
+        ) : (
+          <Heading size="s">{value}</Heading>
+        )}
       </Flex>
     </Box>
   );
@@ -103,10 +109,10 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
-      {rerolls > 0 && <RewardItem label={labels[4]} value={rerolls} />}
       {rage_card_defeated_cash > 0 && (
         <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
       )}
+      {rerolls > 0 && <RewardItem label={labels[4]} value={rerolls} reroll />}
 
       <Flex
         color={VIOLET_LIGHT}

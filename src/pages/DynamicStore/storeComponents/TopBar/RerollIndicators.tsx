@@ -4,10 +4,12 @@ import { useResponsiveValues } from "../../../../theme/responsiveSettings";
 
 interface PlayDiscardIndicatorsProps {
   rerolls: number;
+  justifyContent?: string;
 }
 
 export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
   rerolls,
+  justifyContent,
 }) => {
   const { isSmallScreen } = useResponsiveValues();
 
@@ -36,6 +38,7 @@ export const RerollIndicators: React.FC<PlayDiscardIndicatorsProps> = ({
         type={"play"}
         total={rerolls}
         active={rerolls}
+        justifyContent={justifyContent}
       />
     );
 };

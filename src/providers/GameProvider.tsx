@@ -2,10 +2,10 @@ import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
+  acumSfx,
   cashSfx,
   discardSfx,
   multiSfx,
-  acumSfx,
   negativeMultiSfx,
   pointsSfx,
 } from "../constants/sfx.ts";
@@ -96,6 +96,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     id: gameId,
     resetSpecials,
     setState,
+    addRerolls,
+    advanceLevel,
   } = useGameStore();
 
   const {
@@ -335,7 +337,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
           if (response.levelPassed && response.detailEarned) {
+            response.levelPassed.level_passed > 0 && advanceLevel();
             addCash(response.detailEarned.total);
+            response.detailEarned.rerolls &&
+              addRerolls(response.detailEarned.rerolls);
           }
         } else {
           setPreSelectionLocked(false);
