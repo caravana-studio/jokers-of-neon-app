@@ -5,8 +5,8 @@
       "select-mobile": "Toca o arrastra."
     },
     "intro": {
-      "title": "Te damos la bienvenida a Jokers of Neon",
-      "content": "Repasemos los conceptos básicos del juego."
+      "title": "Bienvenido a Jokers of Neon",
+      "content": "Repasemos los conceptos <1>básicos</1> del juego."
     },
     "pointsTarget": {
       "title": "Superar un nivel",
@@ -22,22 +22,22 @@
     },
     "discardCards": {
       "title": "Descartar",
-      "content": "Haz clic en el botón de <1>descartar</1> para recibir nuevas cartas."
+      "content": "Haz clic en el botón <1>descartar</1> para recibir nuevas cartas."
     },
     "playCards": {
       "title": "Jugar cartas",
-      "content": "Pulsa el botón de <1>jugar</1> para usar las cartas que seleccionaste."
+      "content": "Pulsa el botón <1>jugar</1> para usar las cartas que seleccionaste."
     },
     "pointsMultiplier": {
       "title": "Puntos y Multiplicador",
-      "content": "Cada mano de póker tiene <1>puntos</1> base y un <1>multiplicador</1> que aumentan tu puntuación final."
+      "content": "Cada mano de póker tiene <1>puntos</1> base y un <2>multiplicador</2> que aumentan tu puntuación final."
     },
     "score": {
-      "content": "¡Buen trabajo! Tu última jugada alcanzó la puntuación objetivo. Ahora, a jugar de verdad. ¡Buena suerte!"
+      "content": "¡Buen trabajo! Tu última jugada alcanzó la <1>puntuación objetivo</1>. Ahora, a jugar de verdad. <2>¡Buena suerte!</2>"
     },
     "specialCards": {
       "title": "Cartas especiales",
-      "content": "Las <1>cartas especiales</1> cambian el juego con efectos potentes. Puedes comprarlas en la <1>tienda</1>."
+      "content": "Las <1>cartas especiales</1> cambian el juego con efectos potentes. Puedes comprarlas en la <2>tienda</2>."
     },
     "modifiers": {
       "title": "Cartas modificadoras",
@@ -46,7 +46,7 @@
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "Los <1>Power-ups</1> te dan puntos y multiplicadores extra. Son de un solo uso, pero puedes comprar más en la <1>tienda</1>.",
+      "content": "Los <1>Power-ups</1> te dan puntos y multi extra. Son de un solo uso, pero puedes comprar más en la <2>tienda</2>.",
       "select": "Selecciona este power-up."
     }
   },

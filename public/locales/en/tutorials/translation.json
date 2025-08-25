@@ -6,7 +6,7 @@
     },
     "intro": {
       "title": "Welcome to Jokers of Neon",
-      "content": "Let's walk through the basics of the game."
+      "content": "Let's walk through the <1>basics</1> of the game."
     },
     "pointsTarget": {
       "title": "Beating a Level",
@@ -30,14 +30,14 @@
     },
     "pointsMultiplier": {
       "title": "Points & Multiplier",
-      "content": "Each poker hand has base <1>points</1> and a <1>multiplier</1> that boost your final score."
+      "content": "Each poker hand has base <1>points</1> and a <2>multiplier</2> that boost your final score."
     },
     "score": {
-      "content": "Great job! Your last play hit the target score. Time to play for real. Good luck!"
+      "content": "Great job! Your last play hit the <1>target score</1>. Time to play for real. <2>Good luck!</2>"
     },
     "specialCards": {
       "title": "Special Cards",
-      "content": "</1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <1>Store</1>."
+      "content": "</1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <2>Store</2>."
     },
     "modifiers": {
       "title": "Modifier Cards",
@@ -46,7 +46,7 @@
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "</1>Power-ups</1> give you extra points and multi. They are single-use, but you can buy more in the <1>Store</1>.",
+      "content": "</1>Power-ups</1> give you extra points and multi. They are single-use, but you can buy more in the <2>Store</2>.",
       "select": "Select this power-up."
     }
   },

@@ -6,7 +6,7 @@
     },
     "intro": {
       "title": "Boas-vindas ao Jokers of Neon",
-      "content": "Vamos ver o básico do jogo."
+      "content": "Vamos ver o <1>básico</1> do jogo."
     },
     "pointsTarget": {
       "title": "Passando de Nível",
@@ -30,14 +30,14 @@
     },
     "pointsMultiplier": {
       "title": "Pontos e Multiplicador",
-      "content": "Cada mão de pôquer tem <1>pontos</1> base e um <1>multiplicador</1> que aumentam sua pontuação final."
+      "content": "Cada mão de pôquer tem <1>pontos</1> base e um <2>multiplicador</2> que aumentam sua pontuação final."
     },
     "score": {
-      "content": "Bom trabalho! Sua última jogada atingiu a meta de pontos. Agora é pra valer. Boa sorte!"
+      "content": "Bom trabalho! Sua última jogada atingiu a <1>meta de pontos</1>. Agora é pra valer. <2>Boa sorte!</2>"
     },
     "specialCards": {
       "title": "Cartas Especiais",
-      "content": "As <1>Cartas Especiais</1> mudam o jogo com efeitos poderosos. Você pode comprá-las na <1>Loja</1>."
+      "content": "As <1>Cartas Especiais</1> mudam o jogo com efeitos poderosos. Você pode comprá-las na <2>Loja</2>."
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
@@ -46,7 +46,7 @@
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "</1>Power-ups</1> dão pontos e multiplicadores extras. São de uso único, mas você pode comprar mais na <1>Loja</1>.",
+      "content": "</1>Power-ups</1> dão pontos e multi extras. São de uso único, mas você pode comprar mais na <2>Loja</2>.",
       "select": "Selecione este power-up."
     }
   },

@@ -2,6 +2,12 @@ import { isMobile } from "react-device-detect";
 import i18n from "i18next";
 import { Step } from "react-joyride";
 import { Trans } from "react-i18next";
+import {
+  BLUE_LIGHT,
+  NEON_GREEN,
+  VIOLET_LIGHT,
+  HEARTS,
+} from "../theme/colors.tsx";
 
 const COMMON_SETTINGS: Partial<Step> = {
   disableBeacon: true,
@@ -61,7 +67,22 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-intro",
       title: i18n.t("gameTutorial.intro.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.intro.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.intro.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "center",
       spotlightPadding: 0,
@@ -76,19 +97,20 @@ const loadTutorialTranslations = async () => {
       target: ".store-tutorial-step-1",
       title: i18n.t("gameTutorial.pointsTarget.title", { ns: "tutorials" }),
       content: (
-        <Trans i18nKey="gameTutorial.pointsTarget.content" ns="tutorials">
-          To beat a level, hit the target score
-          <span
-            style={{
-              // color: "#00ff99",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            target score
-          </span>
-          by playing poker hands.
-        </Trans>
+        <Trans
+          i18nKey="gameTutorial.pointsTarget.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: HEARTS,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
       ),
       ...COMMON_SETTINGS,
       placement: "auto",
@@ -96,19 +118,20 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-2",
       content: (
-        <Trans i18nKey="gameTutorial.playableHand.step-1" ns="tutorials">
-          To beat a level, hit the target score
-          <span
-            style={{
-              // color: "#00ff99",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            target score
-          </span>
-          by playing poker hands.
-        </Trans>
+        <Trans
+          i18nKey="gameTutorial.playableHand.step-1"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: HEARTS,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
       ),
       ...COMMON_SETTINGS,
     },
@@ -121,21 +144,21 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-3",
       content: (
-        <Trans i18nKey="gameTutorial.playableHand.step-2" ns="tutorials">
-          To beat a level, hit the target score
-          <span
-            style={{
-              // color: "#00ff99",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            target score
-          </span>
-          by playing poker hands.
-        </Trans>
+        <Trans
+          i18nKey="gameTutorial.playableHand.step-2"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
       ),
-
       ...COMMON_SETTINGS,
       placement: "right",
     },
@@ -195,7 +218,23 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      content: i18n.t("gameTutorial.discardCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.discardCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
       spotlightClicks: true,
@@ -204,19 +243,20 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-2",
       content: (
-        <Trans i18nKey="gameTutorial.playableHand.pair" ns="tutorials">
-          To beat a level, hit the target score
-          <span
-            style={{
-              // color: "#00ff99",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            target score
-          </span>
-          by playing poker hands.
-        </Trans>
+        <Trans
+          i18nKey="gameTutorial.playableHand.pair"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
       ),
       ...COMMON_SETTINGS,
       placement: "right",
@@ -279,20 +319,82 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-6",
       title: i18n.t("gameTutorial.pointsMultiplier.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.pointsMultiplier.content", {
-        ns: "tutorials",
-      }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.pointsMultiplier.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
     {
       target: ".special-cards-step-3",
       title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.specialCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.specialCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
     {
       target: ".game-tutorial-step-4",
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -308,21 +410,21 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-2",
       content: (
-        <Trans i18nKey="gameTutorial.playableHand.secondPair" ns="tutorials">
-          To beat a level, hit the target score
-          <span
-            style={{
-              // color: "#00ff99",
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            target score
-          </span>
-          by playing poker hands.
-        </Trans>
+        <Trans
+          i18nKey="gameTutorial.playableHand.secondPair"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
       ),
-
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
@@ -385,7 +487,30 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-power-up",
       title: i18n.t("gameTutorial.power-ups.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.power-ups.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.power-ups.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "auto",
     },
@@ -426,7 +551,23 @@ const loadTutorialTranslations = async () => {
     // play
     {
       target: ".game-tutorial-step-4",
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -614,7 +755,23 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-4",
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -629,7 +786,31 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-7",
-      content: i18n.t("gameTutorial.score.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.score.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: HEARTS,
+                  fontWeight: "bold",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
   ]);
