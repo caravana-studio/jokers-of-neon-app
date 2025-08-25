@@ -1,5 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 import { RemoveScroll } from "react-remove-scroll";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +8,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
+import { ConfirmationModal } from "../components/ConfirmationModal";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
@@ -18,10 +20,30 @@ export const Home = () => {
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
 
+  const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
+
   const handleCreateGame = async () => {
     prepareNewGame();
     executeCreateGame();
     navigate("/entering-tournament");
+  };
+
+  const handlePlayClick = () => {
+    if (games && games.length > 0) {
+      navigate("/my-games");
+    } else {
+      setTutorialModalOpen(true);
+    }
+  };
+
+  const handleConfirmTutorial = () => {
+    navigate("/tutorial");
+    setTutorialModalOpen(false);
+  };
+
+  const handleDeclineTutorial = () => {
+    handleCreateGame();
+    setTutorialModalOpen(false);
   };
 
   return (
@@ -79,13 +101,11 @@ export const Home = () => {
                 {t("home.btn.leaderboard-btn")}
               </Button>
               <Button
-                onClick={() => {
-                  games.length > 0 ? navigate("/my-games") : handleCreateGame();
-                }}
+                onClick={handlePlayClick}
                 w="300px"
                 variant="secondarySolid"
               >
-                {games.length > 0 ? t("my-games") : t("play")}
+                {games && games.length > 0 ? t("my-games") : t("play")}
               </Button>
             </Flex>
           )}
@@ -97,16 +117,23 @@ export const Home = () => {
               onClick: () => navigate("/leaderboard"),
             }}
             secondButton={{
-              label: games.length > 0 ? t("my-games") : t("play"),
-              onClick: () => {
-                games.length > 0 ? navigate("/my-games") : handleCreateGame();
-              },
+              label: games && games.length > 0 ? t("my-games") : t("play"),
+              onClick: handlePlayClick,
             }}
           />
         ) : (
           <Flex h="50px" />
         )}
       </Flex>
+
+      {isTutorialModalOpen && (
+        <ConfirmationModal
+          close={handleDeclineTutorial}
+          title={t("tutorialModal.title")}
+          description={t("tutorialModal.description")}
+          onConfirm={handleConfirmTutorial}
+        />
+      )}
     </DelayedLoading>
   );
 };
