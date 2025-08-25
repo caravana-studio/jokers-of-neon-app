@@ -158,22 +158,36 @@ export const MyGames = () => {
               onClick: () => {
                 handleCreateGame();
               },
-              variant: "secondarySolid",
+              variant: "solid",
               label: t("start-game"),
+            }}
+            secondButton={{
+              onClick: () => {
+                navigate("/tutorial");
+              },
+              variant: "secondarySolid",
+              label: t("tuto"),
             }}
           />
         ) : (
           <Flex
             justifyContent="center"
             width={{ base: "90%", sm: "600px" }}
+            gap={{ base: "0", sm: "5rem" }}
             pt={{ base: 10, sm: 14 }}
           >
+            <Button onClick={handleCreateGame} width="280px" variant="solid">
+              {t("start-game")}
+            </Button>
+
             <Button
-              onClick={handleCreateGame}
+              onClick={() => {
+                navigate("/tutorial");
+              }}
               width="280px"
               variant="secondarySolid"
             >
-              {t("start-game")}
+              {t("tuto")}
             </Button>
           </Flex>
         )}

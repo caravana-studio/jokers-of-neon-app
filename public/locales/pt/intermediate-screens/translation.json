@@ -9,6 +9,7 @@
     "show-finished-games": "Mostrar jogos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
+    "tuto": "Tutorial",
     "surrender": {
       "action": "Desistir",
       "confirmation-modal": {

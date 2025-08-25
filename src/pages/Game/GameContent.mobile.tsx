@@ -55,6 +55,7 @@ export const MobileGameContent = () => {
     maxPowerUpSlots,
     gameLoading,
     gameError: error,
+    id: gameId,
   } = useGameStore();
 
   const sensors = useSensors(
@@ -136,7 +137,8 @@ export const MobileGameContent = () => {
             return navigate("/map");
           default: {
             resetLevel();
-            return navigate("/demo");
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
           }
         }
       }

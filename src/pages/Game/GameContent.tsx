@@ -35,7 +35,13 @@ export const GameContent = () => {
   const inTutorial = isTutorial();
   const { executeCreateGame, resetLevel } = useGameContext();
 
-  const { isRageRound, state, gameLoading, gameError: error } = useGameStore();
+  const {
+    isRageRound,
+    state,
+    gameLoading,
+    gameError: error,
+    id: gameId,
+  } = useGameStore();
   const {
     preSelectCard,
     unPreSelectCard,
@@ -118,7 +124,8 @@ export const GameContent = () => {
             return navigate("/map");
           default: {
             resetLevel();
-            return navigate("/demo");
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
           }
         }
       }
