@@ -26,7 +26,9 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
     cursor: "pointer",
   };
 
-  const { t } = useTranslation("game");
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "profile-menu",
+  });
 
   return (
     <Box
@@ -71,7 +73,7 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
           pb={2}
           variant="italic"
         >
-          {t("game.profile-menu.select-profile-picture")}
+          {t("select-profile-picture")}
         </Heading>
 
         <Flex
@@ -111,7 +113,7 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
               letterSpacing="wide"
               textTransform={"uppercase"}
             >
-              {t("game.profile-menu.connect")}
+              {t("connect")}
             </Text>
             <Box backgroundColor={"black"} p={1} rounded={"sm"}>
               <FontAwesomeIcon icon={faXTwitter} style={{ color: "white" }} />

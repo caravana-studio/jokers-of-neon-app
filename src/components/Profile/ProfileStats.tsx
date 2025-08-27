@@ -8,7 +8,7 @@ import { ProfilePicturePicker } from "./ProfilePicturePicker";
 import { useState } from "react";
 
 export interface ProfileStatsProps {
-  profilePictureUrl?: string;
+  profilePicture: string | number;
   username: string | null;
   level: number;
   streak: number;
@@ -19,7 +19,7 @@ export interface ProfileStatsProps {
 }
 
 export const ProfileStats: React.FC<ProfileStatsProps> = ({
-  profilePictureUrl,
+  profilePicture,
   username,
   level,
   streak,
@@ -28,9 +28,14 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
   currentXp,
   levelXp,
 }) => {
-  const { t } = useTranslation("game");
   const [profilePickerVisible, setProfilePickerVisible] = useState(false);
-  const [profilePictureId, setProfilePictureId] = useState<number | string>(7);
+  const [profilePictureId, setProfilePictureId] = useState<number | string>(
+    profilePicture
+  );
+
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "profile-menu",
+  });
 
   return (
     <Flex
@@ -62,7 +67,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
         mb={2}
         fontSize={"xs"}
       >
-        {t("game.profile-menu.level")} {level}
+        {t("level")} {level}
       </Flex>
       <Collapse
         in={profilePickerVisible}
@@ -80,16 +85,9 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
         justifyContent={"center"}
         width={"100%"}
       >
-        <ProfileStat
-          title={t("game.profile-menu.streaks")}
-          value={streak}
-          suffix={t("game.profile-menu.days")}
-        />
-        <ProfileStat title={t("game.profile-menu.games")} value={games} />
-        <ProfileStat
-          title={t("game.profile-menu.victories")}
-          value={victories}
-        />
+        <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} />
+        <ProfileStat title={t("games")} value={games} />
+        <ProfileStat title={t("victories")} value={victories} />
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">
@@ -100,7 +98,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               fontWeight="500"
               width={"auto"}
             >
-              {t("game.profile-menu.my-xp")}
+              {t("my-xp")}
             </Text>
             <Heading
               textAlign="right"
@@ -122,7 +120,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               fontWeight="500"
               width={"auto"}
             >
-              {t("game.profile-menu.next-level")}
+              {t("next-level")}
             </Text>
             <Heading
               width={"auto"}

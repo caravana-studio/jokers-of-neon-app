@@ -99,6 +99,21 @@
     "tap-open": "Toque para abrir"
   },
   "common": {
-    "go-back-btn": "Voltar"
+    "go-back-btn": "Voltar",
+    "login": "Login"
+  },
+  "profile-menu": {
+    "level": "Nível",
+    "streaks": "Sequências",
+    "days": "Dias",
+    "games": "Jogos",
+    "victories": "Vitórias",
+    "next-level": "Próx. nível",
+    "my-xp": "Meu XP",
+    "my-badges": "Minhas medalhas",
+    "coming-soon": "Em breve",
+    "select-profile-picture": "Selecionar foto de perfil",
+    "connect": "Conectar",
+    "no-profile": "Faça login para ver seu perfil"
   }
 }

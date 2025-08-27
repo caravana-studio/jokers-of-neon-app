@@ -100,6 +100,21 @@
     "tap-open": "Tap to open"
   },
   "common": {
-    "go-back-btn": "Go back"
+    "go-back-btn": "Go back",
+    "login": "Login"
+  },
+  "profile-menu": {
+    "level": "Level",
+    "streaks": "Streaks",
+    "days": "Days",
+    "games": "Games",
+    "victories": "Victories",
+    "next-level": "Next lvl",
+    "my-xp": "My XP",
+    "my-badges": "My badges",
+    "coming-soon": "Coming soon",
+    "select-profile-picture": "Select profile picture",
+    "connect": "Connect",
+    "no-profile": "Please login to see your profile"
   }
 }

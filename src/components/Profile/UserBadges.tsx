@@ -11,7 +11,9 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
   currentBadges,
   totalBadges,
 }) => {
-  const { t } = useTranslation("game");
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "profile-menu",
+  });
 
   return (
     <Flex
@@ -22,7 +24,7 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
       justifyContent={"center"}
     >
       <Heading py={1} fontSize="xs" mr={0.5} mt={-1} variant="italic">
-        {t("game.profile-menu.my-badges")}{" "}
+        {t("my-badges")}{" "}
         <Text as="span" ml={1}>
           ({currentBadges}/{totalBadges})
         </Text>
@@ -48,7 +50,7 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
           transform={"translate(-50%, -50%)"}
           variant={"italic"}
         >
-          {t("game.profile-menu.coming-soon")}
+          {t("coming-soon")}
         </Heading>
       </Flex>
     </Flex>

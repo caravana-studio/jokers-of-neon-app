@@ -120,19 +120,6 @@
       },
       "my-games": "Meus jogos"
     },
-    "profile-menu": {
-        "level": "Nível",
-        "streaks": "Sequências",
-        "days": "Dias",
-        "games": "Jogos",
-        "victories": "Vitórias",
-        "next-level": "Próx. nível",
-        "my-xp": "Meu XP",
-        "my-badges": "Minhas medalhas",
-        "coming-soon": "Em breve",
-        "select-profile-picture": "Selecionar foto de perfil",
-        "connect": "Conectar"
-      },
     "plays": {
       "title": "Jogadas disponíveis",
       "go-back-btn": "Voltar ao jogo",

@@ -28,6 +28,7 @@ export const ProfileDesktop = ({ data }: { data: ProfileData }) => {
     levelXp,
     currentBadges,
     totalBadges,
+    profilePicture,
   } = data;
 
   const btnWidth = "18px";
@@ -58,6 +59,7 @@ export const ProfileDesktop = ({ data }: { data: ProfileData }) => {
             victories={victories}
             currentXp={currentXp}
             levelXp={levelXp}
+            profilePicture={profilePicture}
           />
         </Flex>
 

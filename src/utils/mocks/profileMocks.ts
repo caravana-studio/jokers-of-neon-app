@@ -8,4 +8,5 @@ export const profileMock = {
     levelXp: 2000,
     currentBadges: 2,
     totalBadges: 3,
+    profilePicture: 7,
 }

@@ -8,4 +8,5 @@ interface ProfileData {
   levelXp: number;
   currentBadges: number;
   totalBadges: number;
+  profilePicture: string | number;
 }
