@@ -29,7 +29,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-import { ProfileMobile } from "./components/Profile/ProfileMobile";
+import { Profile } from "./components/Profile/Profile";
 
 // import TutorialGameProvider from "./providers/TutorialGameProvider";
 
@@ -75,7 +75,7 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <ProfileMobile />
+            <Profile />
           </AnimatedPage>
         }
       />

@@ -4,22 +4,22 @@ import { UserBadges } from "./UserBadges";
 import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
 import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
 import { ControllerIcon } from "../../icons/ControllerIcon";
-import { profileMock } from "../../utils/mocks/profileMocks";
 import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
 import { DelayedLoading } from "../DelayedLoading";
-import { useUsername } from "../../dojo/utils/useUsername";
 
-export const ProfileMobile = () => {
-  const username = useUsername();
-  const level = profileMock.level;
-  const streak = profileMock.streak;
-  const games = profileMock.games;
-  const victories = profileMock.victories;
-  const currentXp = profileMock.currentXp;
-  const levelXp = profileMock.levelXp;
-  const currentBadges = profileMock.currentBadges;
-  const totalBadges = profileMock.totalBadges;
+export const ProfileMobile = ({ data }: { data: ProfileData }) => {
+  const {
+    username,
+    level,
+    streak,
+    games,
+    victories,
+    currentXp,
+    levelXp,
+    currentBadges,
+    totalBadges,
+  } = data;
 
   const btnWidth = "18px";
 
