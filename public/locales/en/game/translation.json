@@ -94,6 +94,7 @@
       "docs-btn": "Card list",
       "leaderboard-btn": "Leaderboard",
       "map-btn": "Map",
+      "delete-acc-btn": "Delete account",
       "back": "Return to Home",
       "pages": {
         "gameover": "Game Over",
@@ -119,6 +120,7 @@
       },
       "my-games": "My games"
     },
+    
     "plays": {
       "title": "Available plays",
       "go-back-btn": "Go back to game",
