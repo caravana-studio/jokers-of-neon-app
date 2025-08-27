@@ -37,9 +37,9 @@ export const UserBadges: React.FC<UserBadgesProps> = ({
         alignItems={"center"}
       >
         <Flex gap={4} justifyContent={"center"} alignItems={"center"}>
-          <UserBadge />
-          <UserBadge />
-          <UserBadge />
+          {Array.from({ length: totalBadges }, (_, index) => (
+            <UserBadge key={index} />
+          ))}
         </Flex>
         <Heading
           position={"absolute"}

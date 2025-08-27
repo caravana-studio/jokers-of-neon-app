@@ -7,8 +7,9 @@ import { ControllerIcon } from "../../icons/ControllerIcon";
 import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
 import { DelayedLoading } from "../DelayedLoading";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
-export const ProfileMobile = ({ data }: { data: ProfileData }) => {
+export const ProfileContent = ({ data }: { data: ProfileData }) => {
   const {
     username,
     level,
@@ -23,8 +24,8 @@ export const ProfileMobile = ({ data }: { data: ProfileData }) => {
   } = data;
 
   const btnWidth = "18px";
-
   const { setup } = useDojo();
+  const { isSmallScreen } = useResponsiveValues();
 
   return (
     <DelayedLoading ms={100}>
@@ -32,7 +33,7 @@ export const ProfileMobile = ({ data }: { data: ProfileData }) => {
       <Flex
         flexDirection={"column"}
         gap={1}
-        w={{ base: "100%", sm: "70%" }}
+        w={{ base: "100%", sm: "70%", md: "50%" }}
         mx={"auto"}
         height={"100%"}
         py={8}
@@ -41,7 +42,7 @@ export const ProfileMobile = ({ data }: { data: ProfileData }) => {
         <Flex
           flexDirection={"column"}
           py={16}
-          px={8}
+          px={isSmallScreen ? 8 : 16}
           height={"auto"}
           overflowY={"auto"}
           overflowX={"hidden"}
@@ -62,17 +63,23 @@ export const ProfileMobile = ({ data }: { data: ProfileData }) => {
           <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
             {!setup.useBurnerAcc && (
               <>
-                <Divider borderColor="white" borderWidth="1px" my={2} />
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
                 <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
               </>
             )}
 
-            <Divider borderColor="white" borderWidth="1px" my={2} />
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
             <DeleteAccBtn width={btnWidth} label={true} arrowRight />
 
             {!setup.useBurnerAcc && (
               <>
-                <Divider borderColor="white" borderWidth="1px" my={2} />
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
                 <ControllerIcon width={btnWidth} label={true} arrowRight />
               </>
             )}

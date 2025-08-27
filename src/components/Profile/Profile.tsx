@@ -1,16 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { profileMock } from "../../utils/mocks/profileMocks";
-import { ProfileDesktop } from "./ProfileDesktop";
-import { ProfileMobile } from "./ProfileMobile";
 import { Icons } from "../../constants/icons";
 import { useTranslation } from "react-i18next";
+import { ProfileContent } from "./ProfileContent";
 
 export const Profile = () => {
-  const { isSmallScreen } = useResponsiveValues();
-
   const profileData: ProfileData = {
     username: useUsername() ?? profileMock.username,
     level: profileMock.level,
@@ -37,12 +33,6 @@ export const Profile = () => {
     keyPrefix: "common",
   });
 
-  // return isSmallScreen ? (
-  //   <ProfileMobile data={profileData} />
-  // ) : (
-  //   <ProfileDesktop data={profileData} />
-  // );
-
   return useBurnerAcc ? (
     <Flex
       w="100%"
@@ -63,6 +53,6 @@ export const Profile = () => {
       </Button>
     </Flex>
   ) : (
-    <ProfileMobile data={profileData} />
+    <ProfileContent data={profileData} />
   );
 };
