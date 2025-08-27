@@ -10,10 +10,9 @@ export const getUserSpecialCards = async (
     let tx_result: any =
       await client.nft_special_cards_views.getUserSpecialCards(userAddress);
 
-    console.log("user special cards", tx_result);
     return fillCollections(transformTxResultToCollection(tx_result));
   } catch (e) {
     console.error("error getting game view", e);
-    return [];
+    return fillCollections([]);
   }
 };

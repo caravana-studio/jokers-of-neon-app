@@ -24,9 +24,10 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
   collection: Collection;
+  hideHighlight?: boolean;
 };
 
-const CollectionGrid: React.FC<Props> = ({ collection }) => {
+const CollectionGrid: React.FC<Props> = ({ collection, hideHighlight = false }) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-collection.collections",
   });
@@ -52,7 +53,7 @@ const CollectionGrid: React.FC<Props> = ({ collection }) => {
   const cardWith = CARD_WIDTH * (customCardScale ?? 1);
   return (
     <Box px={6} w="100%">
-      {highlightedCard && (
+      {highlightedCard && !hideHighlight && (
         <MobileCardHighlight
           card={highlightedCard as Card}
           showExtraInfo
