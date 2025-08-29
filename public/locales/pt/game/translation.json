@@ -103,13 +103,13 @@
         "rage-round": "Rodada Rage",
         "round": "Rodada",
         "map": "Mapa",
-        "my-games": "Meus jogos",
+        "my-games": "Jogos",
         "profile": "Perfil",
         "settings": "Configuração",
-        "my-collection": "Minha coleção",
+        "my-collection": "Coleção",
         "home": "Início",
         "docs": "Lista de cartas",
-        "deck": "Minha baralha",
+        "deck": "Baralha",
         "rewards": "Recompensas",
         "manage": "Gerenciar itens",
         "preview": "Visualizar item",
@@ -117,7 +117,7 @@
         "loading-game": "Carregando jogo",
         "plays": "Jogadas disponíveis"
       },
-      "my-games": "Meus jogos"
+      "my-games": "Jogos"
     },
     "plays": {
       "title": "Jogadas disponíveis",
@@ -129,8 +129,8 @@
       }
     },
     "deck": {
-      "tooltip": "Ver meu baralho",
-      "title": "Meu baralho",
+      "tooltip": "Ver baralho",
+      "title": "Baralho",
       "burn-title": "Selecione uma carta para queimar",
       "filter-title": "Filtrar por",
       "suit": {

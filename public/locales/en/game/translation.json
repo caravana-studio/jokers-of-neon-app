@@ -103,13 +103,13 @@
         "rage-round": "Rage Round",
         "round": "Round",
         "map": "Map",
-        "my-games": "My games",
+        "my-games": "Games",
         "profile": "Profile",
         "settings": "Settings",
-        "my-collection": "My collection",
+        "my-collection": "Collection",
         "home": "Home",
         "docs": "Card list",
-        "deck": "My deck",
+        "deck": "Deck",
         "rewards": "Rewards",
         "manage": "Manage items",
         "preview": "Preview item",
@@ -117,7 +117,7 @@
         "loading-game": "Loading game",
         "plays": "Available plays"
       },
-      "my-games": "My games"
+      "my-games": "Games"
     },
     "plays": {
       "title": "Available plays",
@@ -129,8 +129,8 @@
       }
     },
     "deck": {
-      "tooltip": "See my deck",
-      "title": "My deck",
+      "tooltip": "See deck",
+      "title": "Deck",
       "burn-title": "Select a card to burn",
       "filter-title": "Filter by",
       "suit": {

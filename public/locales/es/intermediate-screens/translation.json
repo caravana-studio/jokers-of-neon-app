@@ -3,7 +3,7 @@
     "level": "NIVEL"
   },
   "my-games": {
-    "title": "Mis juegos",
+    "title": "Juegos",
     "go-back": "Volver",
     "start-game": "Iniciar nuevo juego",
     "show-finished-games": "Mostrar juegos terminados",
@@ -34,7 +34,7 @@
     "skip": "Saltar",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
-      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la tabla de posiciones!",
+      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la clasificación!",
       "gameOver-top5-msj": "¡Buen trabajo! ¡Estás en el top 5! ¡Sigue así!"
     },
     "btn": {
@@ -102,7 +102,7 @@
     "go-back-btn": "Atrás"
   },
   "my-collection": {
-    "title": "Mi colección",
+    "title": "Colección",
     "no-collection": "Por favor, inicia sesión para ver tu colección",
     "login": "Iniciar sesión",
     "collections": {

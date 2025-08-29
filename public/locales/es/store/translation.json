@@ -24,7 +24,7 @@
         "level-game": "Sube de nivel tu juego",
         "specials": "Cartas especiales",
         "improve-plays": "Mejora tus manos de póker",
-        "my-special-cards": "Mis especiales",
+        "my-special-cards": "Cartas speciales",
         "loot-boxes": "Cajas",
         "power-ups": "Power-ups"
       }
@@ -49,7 +49,7 @@
       "traditional": "Cartas tradicionales y de neón",
       "modifiers": "Cartas modificadoras",
       "special": "Cartas especiales",
-      "my-special-cards": "Mis especiales",
+      "my-special-cards": "Cartas especiales",
       "packs": "Paquetes",
       "powerups": "Power-ups"
     },
@@ -100,7 +100,7 @@
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
-      "special-cards-btn": "Ver mis cartas especiales actuales",
+      "special-cards-btn": "Ver cartas especiales actuales",
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",
