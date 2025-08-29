@@ -2,7 +2,7 @@
   "home": {
     "slogan": "BUILD YOUR DECK, RULE THE GAME",
     "btn": {
-      "leaderboard-btn": "See leaderboard",
+      "leaderboard-btn": "Leaderboard",
       "playDemo-btn": "Play",
       "start": "Start"
     },
@@ -21,7 +21,7 @@
     }
   },
   "play": "New game",
-  "my-games": "My games",
+  "my-games": "Games",
   "tournament": {
     "table-head": {
       "prize-leaderboard-head": "Prize",
@@ -34,8 +34,8 @@
   },
   "menu": {
     "home": "Home",
-    "collection": "My Collection",
-    "games": "My Games",
+    "collection": "Collection",
+    "games": "Games",
     "profile": "Profile",
     "settings": "Settings",
     "map": "Map",
