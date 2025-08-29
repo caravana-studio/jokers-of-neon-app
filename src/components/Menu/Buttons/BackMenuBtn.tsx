@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { MenuBtn } from "./MenuBtn";
-import { Icons } from "../../../constants/icons";
 import { useNavigate } from "react-router-dom";
-import { useDojo } from "../../../dojo/DojoContext";
+import { Icons } from "../../../constants/icons";
+import { MenuBtn } from "./MenuBtn";
 
 export const BackMenuBtn = ({
   width,
@@ -15,9 +14,6 @@ export const BackMenuBtn = ({
 }) => {
   const { t } = useTranslation("game");
   const navigate = useNavigate();
-  const { setup } = useDojo();
-
-  if (setup.useBurnerAcc) return null;
 
   return (
     <MenuBtn

@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
+import { matchPath } from "react-router-dom";
 import { needsPadding } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
@@ -28,7 +29,7 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={needsPadding ? "30px" : "0px"}
       >
-        {(mainMenuUrls.includes(window.location.pathname)
+        {(mainMenuUrls.some(url => matchPath({ path: url, end: true }, window.location.pathname))
           ? mainMenuItems
           : inGameMenuItems
         ).map((item) => (

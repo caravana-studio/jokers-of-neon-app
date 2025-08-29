@@ -12,6 +12,7 @@ export const mainMenuUrls = [
   "/profile",
   "/settings",
   "/leaderboard",
+  "/gameover/:gameId",
 ];
 
 export const gameUrls = [
