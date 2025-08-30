@@ -1,10 +1,9 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { Component, Metadata, Schema } from "@dojoengine/recs";
-import { setEntities, syncEntities } from "@dojoengine/state";
+import { setEntities } from "@dojoengine/state";
 import * as torii from "@dojoengine/torii-client";
-import { Account, ArraySignatureType } from "starknet";
-import { GAME_ID } from "../constants/localStorage";
+import { Account, ArraySignatureType, RpcProvider } from "starknet";
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { setupWorld } from "./typescript/contracts.gen";
@@ -12,7 +11,6 @@ import { defineContractComponents } from "./typescript/defineContractComponents"
 import { world } from "./world";
 
 import type { Message, ToriiClient } from "@dojoengine/torii-client";
-import { KeysClause } from "@dojoengine/sdk";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 const DOJO_NAMESPACE =
@@ -61,8 +59,7 @@ const getEntities = async <S extends Schema>(
 };
 
 export async function setup({ ...config }: DojoConfig) {
-
-  console.log('DOJO_NAMESPACE', DOJO_NAMESPACE)
+  console.log("DOJO_NAMESPACE", DOJO_NAMESPACE);
   // torii client
   const toriiClient = await new torii.ToriiClient({
     toriiUrl: config.toriiUrl,
@@ -89,7 +86,7 @@ export async function setup({ ...config }: DojoConfig) {
     componentNames.push(name);
   });
 
-/*   async function syncEntitiesForGameID() {
+  /*   async function syncEntitiesForGameID() {
     let gameID = localStorage.getItem(GAME_ID) || undefined;
     const canLoadEntities = !hiddenRoutes.includes(window.location.pathname);
     const parsedGameID = Number(gameID) || 0;
@@ -156,13 +153,11 @@ export async function setup({ ...config }: DojoConfig) {
 
   // create burner manager
   const burnerManager = new BurnerManager({
-    masterAccount: new Account(
-      {
-        nodeUrl: config.rpcUrl,
-      },
-      config.masterAddress,
-      config.masterPrivateKey
-    ),
+    masterAccount: new Account({
+      provider: new RpcProvider({ nodeUrl: config.rpcUrl }),
+      address: config.masterAddress,
+      signer: config.masterPrivateKey,
+    }),
     accountClassHash: config.accountClassHash,
     rpcProvider: dojoProvider.provider as any,
     feeTokenAddress: config.feeTokenAddress,
@@ -174,7 +169,7 @@ export async function setup({ ...config }: DojoConfig) {
       await burnerManager.create();
     }
   } catch (e) {
-    console.log('error initializing burnerManager');
+    console.log("error initializing burnerManager");
     console.error(e);
   }
 
