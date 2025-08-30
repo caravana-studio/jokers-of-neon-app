@@ -28,6 +28,7 @@ import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { isNative } from "./utils/capacitorUtils.ts";
+import { setupCapacitorLocalStorage } from "./utils/capacitorLocalStorage.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -53,6 +54,8 @@ const progressBarRef = createRef<LoadingScreenHandle>();
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
+
+  await setupCapacitorLocalStorage();
   const root = ReactDOM.createRoot(rootElement);
 
   const hasSeenPresentation =
