@@ -100,5 +100,14 @@
   },
   "common": {
     "go-back-btn": "Atrás"
+  },
+  "my-collection": {
+    "title": "Mi colección",
+    "no-collection": "Por favor, inicia sesión para ver tu colección",
+    "login": "Iniciar sesión",
+    "collections": {
+      "sx": "Temporada {{season}}",
+      "c99": "Colección exclusiva GG - v1"
+    }
   }
 }
