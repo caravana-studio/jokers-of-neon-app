@@ -58,7 +58,7 @@ const useMasterAccount = (rpcProvider: RpcProvider) => {
   const masterAddress = import.meta.env.VITE_MASTER_ADDRESS;
   const privateKey = import.meta.env.VITE_MASTER_PRIVATE_KEY;
   return useMemo(
-    () => new Account(rpcProvider, masterAddress, privateKey),
+    () => new Account({provider: rpcProvider, address: masterAddress, signer: privateKey}),
     [rpcProvider, masterAddress, privateKey]
   );
 };
