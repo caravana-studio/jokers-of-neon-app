@@ -75,7 +75,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -104,7 +104,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: HEARTS,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -125,7 +125,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: HEARTS,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -250,7 +250,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: BLUE_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -358,7 +358,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: NEON_GREEN,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -366,7 +366,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -417,7 +417,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: BLUE_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -495,7 +495,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: BLUE_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -503,7 +503,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -592,7 +592,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: NEON_GREEN,
+                  color: "#fffff",
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
@@ -601,7 +601,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
@@ -636,7 +636,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: NEON_GREEN,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -644,7 +644,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -844,7 +844,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: HEARTS,
+                  color: "#fffff",
                   fontWeight: "bold",
                 }}
               />
@@ -852,7 +852,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: BLUE_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
