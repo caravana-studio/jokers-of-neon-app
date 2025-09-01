@@ -11,6 +11,7 @@
     }
   },
   "game": {
+    "tutorial": "Tutorial",
     "compact-round-data": {
       "my-score": "My score",
       "target": "Target",

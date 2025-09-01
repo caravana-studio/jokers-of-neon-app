@@ -131,6 +131,8 @@ export const Home = () => {
           close={handleDeclineTutorial}
           title={t("tutorialModal.title")}
           description={t("tutorialModal.description")}
+          confirmText={t("tutorialModal.confirm-text")}
+          cancelText={t("tutorialModal.cancel-text")}
           onConfirm={handleConfirmTutorial}
         />
       )}

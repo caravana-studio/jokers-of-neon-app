@@ -20,6 +20,8 @@ interface ConfirmationModalProps {
   description: string;
   onConfirm: () => void;
   isOpen?: boolean;
+  confirmText?: string;
+  cancelText?: string;
 }
 
 export const ConfirmationModal = ({
@@ -28,6 +30,8 @@ export const ConfirmationModal = ({
   description,
   onConfirm,
   isOpen = true,
+  confirmText,
+  cancelText,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
   return (
@@ -47,7 +51,7 @@ export const ConfirmationModal = ({
         </ModalBody>
         <ModalFooter>
           <Button variant="defaultOutline" size="sm" onClick={close}>
-            {t("confirmation-modal.close")}
+            {cancelText ?? t("confirmation-modal.close")}
           </Button>
           <Button
             variant="secondarySolid"
@@ -56,7 +60,7 @@ export const ConfirmationModal = ({
             onClick={onConfirm}
             ml={3}
           >
-            {t("confirmation-modal.confirm")}
+            {confirmText ?? t("confirmation-modal.confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>

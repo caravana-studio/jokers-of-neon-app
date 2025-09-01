@@ -48,6 +48,8 @@
   },
   "tutorialModal": {
     "title": "¿Primera vez jugando?",
-    "description": "Te recomendamos un tutorial rápido para aprender lo básico. ¿Te gustaría empezar ahora?"
+    "description": "Te recomendamos un tutorial rápido para aprender lo básico. ¿Te gustaría empezar ahora?",
+    "confirm-text": "Jugar Tutorial",
+    "cancel-text": "Saltar"
   }
 }

@@ -156,17 +156,17 @@ export const MyGames = () => {
           <MobileBottomBar
             firstButton={{
               onClick: () => {
-                handleCreateGame();
-              },
-              variant: "solid",
-              label: t("start-game"),
-            }}
-            secondButton={{
-              onClick: () => {
                 navigate("/tutorial");
               },
               variant: "secondarySolid",
               label: t("tuto"),
+            }}
+            secondButton={{
+              onClick: () => {
+                handleCreateGame();
+              },
+              variant: "solid",
+              label: t("start-game"),
             }}
           />
         ) : (
@@ -176,10 +176,6 @@ export const MyGames = () => {
             gap={{ base: "0", sm: "5rem" }}
             pt={{ base: 10, sm: 14 }}
           >
-            <Button onClick={handleCreateGame} width="280px" variant="solid">
-              {t("start-game")}
-            </Button>
-
             <Button
               onClick={() => {
                 navigate("/tutorial");
@@ -188,6 +184,9 @@ export const MyGames = () => {
               variant="secondarySolid"
             >
               {t("tuto")}
+            </Button>
+            <Button onClick={handleCreateGame} width="280px" variant="solid">
+              {t("start-game")}
             </Button>
           </Flex>
         )}
