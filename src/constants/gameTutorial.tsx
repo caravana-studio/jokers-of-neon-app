@@ -77,6 +77,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -106,6 +107,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -127,6 +129,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -153,6 +156,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: BLUE_LIGHT,
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -252,6 +256,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -360,6 +365,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -368,6 +374,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -419,6 +426,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -497,6 +505,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -505,6 +514,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -638,6 +648,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -646,6 +657,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
@@ -846,6 +858,7 @@ const loadTutorialTranslations = async () => {
                 style={{
                   color: "#fffff",
                   fontWeight: "bold",
+                  textTransform: "uppercase",
                 }}
               />
             ),
