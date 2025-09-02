@@ -71,7 +71,7 @@ export const GameContent = () => {
   }, []);
 
   const stepData = [
-    { step: 14, delay: 2700 },
+    { step: 13, delay: 2700 },
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];

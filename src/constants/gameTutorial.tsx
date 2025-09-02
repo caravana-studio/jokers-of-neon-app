@@ -353,37 +353,6 @@ const loadTutorialTranslations = async () => {
       ...COMMON_SETTINGS,
     },
     {
-      target: ".special-cards-step-3",
-      title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
-      content: (
-        <Trans
-          i18nKey="gameTutorial.specialCards.content"
-          ns="tutorials"
-          components={{
-            1: (
-              <span
-                style={{
-                  color: "#fffff",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              />
-            ),
-            2: (
-              <span
-                style={{
-                  color: "#fffff",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              />
-            ),
-          }}
-        />
-      ),
-      ...COMMON_SETTINGS,
-    },
-    {
       target: ".game-tutorial-step-4",
       content: (
         <Trans
@@ -490,6 +459,37 @@ const loadTutorialTranslations = async () => {
             },
           }
         : {},
+    },
+    {
+      target: ".special-cards-step-3",
+      title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.specialCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
+      ...COMMON_SETTINGS,
     },
     // power ups
     {
