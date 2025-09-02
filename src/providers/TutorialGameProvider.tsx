@@ -39,6 +39,13 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { setPlayIsNeon, setPreSelectionLocked } = useCurrentHandStore();
   const {
+    fetchGameStoreForTutorial,
+    discard: stateDiscard,
+    setPoints,
+    setMulti,
+    addPoints,
+  } = useGameStore();
+  const {
     setRoundRewards,
     showSpecials,
     resetPowerUps,
@@ -65,38 +72,14 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       preSelectedModifiers: {},
       preSelectionLocked: false,
     });
-    useGameStore.setState({
-      powerUps: [m5, p25],
-      specialCards: [MultipliedClubs],
-      remainingDiscards: 1,
-      remainingPlays: 3,
-      gameLoading: false,
-      preSelectedPowerUps: [],
-      targetScore: 500,
-      currentScore: 0,
-      totalScore: 0,
-    });
+
+    fetchGameStoreForTutorial();
 
     if (client) {
       getPlayerPokerHands(client, gameID).then((plays: any) => {
         if (plays) useGameStore.setState({ plays });
       });
     }
-
-    return () => {
-      useCurrentHandStore.setState({
-        hand: [],
-        preSelectedCards: [],
-        preSelectedModifiers: {},
-      });
-      useGameStore.setState({
-        powerUps: [],
-        specialCards: [],
-        remainingDiscards: 0,
-        remainingPlays: 0,
-        gameLoading: true,
-      });
-    };
   }, [client, gameID]);
 
   const resetLevel = () => {
@@ -109,14 +92,21 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const discard = () => {
-    const { remainingDiscards } = useGameStore.getState();
-    if (remainingDiscards > 0) {
+    stateDiscard();
+    discardSound();
+
+    setTimeout(() => {
       discardSound();
+      setDiscardAnimation(true);
+    }, 200);
+
+    setTimeout(() => {
+      setPreSelectionLocked(false);
+      setAnimatedCard(undefined);
+      setDiscardAnimation(false);
       useCurrentHandStore.getState().replaceCards(HAND_2);
-      useGameStore.setState({ remainingDiscards: remainingDiscards - 1 });
       useCurrentHandStore.getState().clearPreSelection();
-      useGameStore.getState().unPreSelectAllPowerUps();
-    }
+    }, 200 + 300);
   };
 
   const play = () => {
@@ -137,9 +127,9 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       acumSound,
       negativeMultiSound: emptyFn,
       cashSound: emptyFn,
-      setPoints: useGameStore.getState().setPoints,
-      setMulti: useGameStore.getState().setMulti,
-      addPoints: useGameStore.getState().addPoints,
+      setPoints: setPoints,
+      setMulti: setMulti,
+      addPoints: addPoints,
       addMulti: useGameStore.getState().addMulti,
       setCurrentScore: useGameStore.getState().setCurrentScore,
       addCash: emptyFn,
