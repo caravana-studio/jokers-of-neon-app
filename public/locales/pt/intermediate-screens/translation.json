@@ -3,7 +3,7 @@
     "level": "NÍVEL"
   },
   "my-games": {
-    "title": "Meus jogos",
+    "title": "Jogos",
     "go-back": "Voltar",
     "start-game": "Iniciar novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
@@ -102,7 +102,7 @@
     "go-back-btn": "Voltar"
   },
   "my-collection": {
-    "title": "Minha Coleção",
+    "title": "Coleção",
     "no-collection": "Por favor, inicie sessão para ver sua coleção",
     "login": "Iniciar sessão",
     "collections": {
