@@ -48,6 +48,8 @@ export interface IGameContext {
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
   initiateTransferFlow: () => void;
+  stepIndex?: number;
+  setStepIndex?: (index: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;

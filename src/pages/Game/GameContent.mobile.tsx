@@ -38,7 +38,8 @@ import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame, resetLevel } = useGameContext();
+  const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
+    useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
@@ -47,7 +48,6 @@ export const MobileGameContent = () => {
     preSelectedCards,
     hand,
     addModifier,
-    preSelectedModifiers,
   } = useCurrentHandStore();
 
   const {
@@ -66,7 +66,6 @@ export const MobileGameContent = () => {
     })
   );
   const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
@@ -90,19 +89,13 @@ export const MobileGameContent = () => {
       setRun(false);
       const timeout = setTimeout(() => {
         setAutoStep(true);
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         setRun(true);
       }, stepInfo.delay);
 
       return () => clearTimeout(timeout);
     }
   }, [stepIndex]);
-
-  useEffect(() => {
-    if (stepIndex === 31 && Object.keys(preSelectedModifiers).length === 0) {
-      setStepIndex(30);
-    }
-  }, [stepIndex, preSelectedModifiers]);
 
   const handleJoyrideCallbackFactory = (
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
@@ -111,7 +104,7 @@ export const MobileGameContent = () => {
       const { type } = data;
 
       if (type === "error:target_not_found") {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         return;
       }
 
@@ -121,7 +114,7 @@ export const MobileGameContent = () => {
         !buttonClicked &&
         !autoStep
       ) {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
       }
 
       setCardClicked(false);
@@ -162,7 +155,7 @@ export const MobileGameContent = () => {
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
       setCardClicked(true);
-      setStepIndex(stepIndex + 1);
+      setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -269,7 +262,7 @@ export const MobileGameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />
@@ -294,7 +287,7 @@ export const MobileGameContent = () => {
                 onTutorialCardClick={() => {
                   if (run) {
                     setCardClicked(true);
-                    setStepIndex(stepIndex + 1);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
                   }
                 }}
               />
@@ -306,7 +299,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />
@@ -317,7 +310,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />

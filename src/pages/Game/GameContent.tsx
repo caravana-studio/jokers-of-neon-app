@@ -33,7 +33,8 @@ import { TopSection } from "./TopSection.tsx";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame, resetLevel } = useGameContext();
+  const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
+    useGameContext();
 
   const {
     isRageRound,
@@ -46,7 +47,6 @@ export const GameContent = () => {
     preSelectCard,
     unPreSelectCard,
     preSelectedCards,
-    preSelectedModifiers,
     hand,
     addModifier,
   } = useCurrentHandStore();
@@ -60,7 +60,6 @@ export const GameContent = () => {
   );
 
   const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
@@ -83,18 +82,12 @@ export const GameContent = () => {
     if (stepInfo) {
       const timeout = setTimeout(() => {
         setAutoStep(true);
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
       }, stepInfo.delay);
 
       return () => clearTimeout(timeout);
     }
   }, [stepIndex]);
-
-  useEffect(() => {
-    if (stepIndex === 31 && Object.keys(preSelectedModifiers).length === 0) {
-      setStepIndex(30);
-    }
-  }, [stepIndex, preSelectedModifiers]);
 
   const handleJoyrideCallbackFactory = (
     setRunCallback: React.Dispatch<React.SetStateAction<boolean>>
@@ -108,7 +101,7 @@ export const GameContent = () => {
         !buttonClicked &&
         !autoStep
       ) {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.(stepIndex ?? 0 + 1);
       }
 
       setCardClicked(false);
@@ -149,7 +142,7 @@ export const GameContent = () => {
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCardId))
     ) {
       setCardClicked(true);
-      setStepIndex(stepIndex + 1);
+      setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -233,7 +226,7 @@ export const GameContent = () => {
                 onTutorialCardClick={() => {
                   if (run) {
                     setButtonClicked(true);
-                    setStepIndex(stepIndex + 1);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
                   }
                 }}
               />
@@ -259,7 +252,7 @@ export const GameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />
@@ -278,7 +271,7 @@ export const GameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setCardClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />

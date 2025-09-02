@@ -23,10 +23,9 @@ import {
   EVENT_PAIR_POWER_UPS,
   EVENT_FLUSH,
 } from "../utils/mocks/tutorialMocks.ts";
-import { m5, p25 } from "../utils/mocks/powerUpMocks.ts";
-import { MultipliedClubs } from "../utils/mocks/specialCardMocks.ts";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { H10 } from "../utils/mocks/cardMocks.ts";
 
 export const TutorialGameContext =
   createContext<IGameContext>(gameProviderDefaults);
@@ -36,8 +35,14 @@ const TUTORIAL_EVENTS = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
 
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [indexEvent, setIndexEvent] = useState(0);
+  const [step, setStep] = useState(0);
 
-  const { setPlayIsNeon, setPreSelectionLocked } = useCurrentHandStore();
+  const {
+    setPlayIsNeon,
+    setPreSelectionLocked,
+    preSelectedModifiers,
+    preSelectedCards,
+  } = useCurrentHandStore();
   const {
     fetchGameStoreForTutorial,
     discard: stateDiscard,
@@ -164,6 +169,21 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  /* 
+  Check to verify that in the step 31 the user has to select the H10 
+  and the m5 power-up to complete the tutorial.
+  */
+  useEffect(() => {
+    if (
+      step === 31 &&
+      (Object.keys(preSelectedModifiers).length === 0 ||
+        !Object.keys(preSelectedModifiers).includes(H10.idx.toString()))
+    ) {
+      setStep(30);
+    }
+    H10.id;
+  }, [step, preSelectedModifiers]);
+
   const contextValue: IGameContext = {
     ...gameProviderDefaults,
     play,
@@ -173,6 +193,8 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
       useGameStore.getState().unPreSelectAllPowerUps();
     },
     resetLevel,
+    stepIndex: step,
+    setStepIndex: () => setStep((s) => s + 1),
   };
 
   return (
