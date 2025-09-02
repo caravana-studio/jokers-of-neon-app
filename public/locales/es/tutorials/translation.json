@@ -13,7 +13,7 @@
       "content": "Para superar un nivel, alcanza la <1>puntuación objetivo</1> jugando manos de póker."
     },
     "playableHand": {
-      "step-1": "Usa las cartas de tu <1>mano</1> para hacer la mejor jugada de póker.",
+      "step-1": "Usa las cartas de tu <1>mano</1> para jugar manos de póker.",
       "step-2": "¿No tienes una mano de póker? Usa un <1>descarte</1> para obtener nuevas cartas. ¡Intentémoslo!",
       "pair": "¡Genial! Un <1>PAR</1> de 7. ¡A jugar!",
       "secondPair": "¡Bien! Tenemos un <1>PAR</1> de 5. Es hora de jugar.",
@@ -41,12 +41,12 @@
     },
     "modifiers": {
       "title": "Cartas modificadoras",
-      "content": "¡Conseguiste un <1>Modificador de Palo</1>! <3/> Las cartas modificadoras mejoran tus <3/> otras cartas con <2>efectos especiales</2>.",
+      "content": "Las cartas modificadoras pueden cambiar tus otras cartas. <1/> En este caso, cambiará el palo de la carta modificada a Tréboles.",
       "drag": "Arrastra el modificador de trébol a la carta del 10 y luego haz clic en 'Siguiente'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "Los <1>Power-ups</1> te dan puntos y multi extra. Son de un solo uso, pero puedes comprar más en la <2>tienda</2>.",
+      "content": "Los <1>Power-ups</1> te dan <2>puntos</2> y <3>multi</3> extra. Son de un solo uso, pero puedes comprar más en la tienda.",
       "select": "Selecciona este power-up."
     }
   },

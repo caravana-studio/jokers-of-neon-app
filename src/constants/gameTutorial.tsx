@@ -512,7 +512,16 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: "#fffff",
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            3: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
@@ -599,25 +608,7 @@ const loadTutorialTranslations = async () => {
           i18nKey="gameTutorial.modifiers.content"
           ns="tutorials"
           components={{
-            1: (
-              <span
-                style={{
-                  color: "#fffff",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              />
-            ),
-            2: (
-              <span
-                style={{
-                  color: "#fffff",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              />
-            ),
-            3: <br />,
+            1: <br />,
           }}
         />
       ),

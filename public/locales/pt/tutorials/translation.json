@@ -13,7 +13,7 @@
       "content": "Para passar de nível, atinja a <1>pontuação alvo</1> jogando mãos de pôquer."
     },
     "playableHand": {
-      "step-1": "Use as cartas da sua <1>mão</1> para fazer a melhor jogada de pôquer.",
+      "step-1": "Use as cartas da sua <1>mão</1> para jogar mãos de pôquer.",
       "step-2": "Nenhuma mão de pôquer? Use um <1>descarte</1> para conseguir novas cartas. Vamos tentar.",
       "pair": "Ótimo! Um <1>PAR</1> de 7. Vamos jogar!",
       "secondPair": "Boa! Temos um <1>PAR</1> de 5. Hora de jogar.",
@@ -41,12 +41,12 @@
     },
     "modifiers": {
       "title": "Cartas Modificadoras",
-      "content": "Você conseguiu um <1>Modificador de Naipe</1>! <3/> As cartas modificadoras aprimoram suas <3/> outras cartas com <2>efeitos especiais</2>.",
+      "content": "As cartas modificadoras podem alterar suas outras cartas. <1/> Neste caso, ela mudará o naipe da carta modificada para Paus.",
       "drag": "Arraste o modificador de Paus para a carta 10 e clique em 'Próximo'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "<1>Power-ups</1> dão pontos e multi extras. São de uso único, mas você pode comprar mais na <2>Loja</2>.",
+      "content": "<1>Power-ups</1> dão <2>pontos</2> e <3>multi</3> extras. São de uso único, mas você pode comprar mais na Loja.",
       "select": "Selecione este power-up."
     }
   },
