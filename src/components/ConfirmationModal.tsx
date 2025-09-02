@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface ConfirmationModalProps {
   close: () => void;
@@ -34,23 +35,30 @@ export const ConfirmationModal = ({
   cancelText,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
+
+  const { isSmallScreen } = useResponsiveValues();
   return (
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
-      <ModalContent>
+      <ModalContent p={3}>
         <ModalHeader>
           <Heading size="m" variant="neonWhite">
             {title}
           </Heading>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton sx={{ m: 5 }} />
         <ModalBody>
           <Flex gap={4} flexDirection="column">
             <Text size="md">{description}</Text>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button variant="defaultOutline" size="sm" onClick={close}>
+          <Button
+            variant="defaultOutline"
+            size="sm"
+            w={isSmallScreen ? "50%" : "auto"}
+            onClick={close}
+          >
             {cancelText ?? t("confirmation-modal.close")}
           </Button>
           <Button
@@ -58,7 +66,8 @@ export const ConfirmationModal = ({
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             size="sm"
             onClick={onConfirm}
-            ml={3}
+            ml={5}
+            w={isSmallScreen ? "50%" : "auto"}
           >
             {confirmText ?? t("confirmation-modal.confirm")}
           </Button>

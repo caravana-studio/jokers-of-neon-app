@@ -3,7 +3,7 @@
     "level": "LEVEL"
   },
   "my-games": {
-    "title": "My Games",
+    "title": "Games",
     "go-back": "Go back",
     "start-game": "Start new game",
     "show-finished-games": "Show finished games",
@@ -104,7 +104,7 @@
     "go-back-btn": "Go back"
   },
   "my-collection": {
-    "title": "My Collection",
+    "title": "Collection",
     "no-collection": "Please login to see your collection",
     "login": "Login",
     "collections": {
