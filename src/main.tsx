@@ -55,7 +55,10 @@ async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
 
+  console.log('pre-setup');
+
   await setupCapacitorLocalStorage();
+  console.log('post-setup');
   const root = ReactDOM.createRoot(rootElement);
 
   const hasSeenPresentation =
