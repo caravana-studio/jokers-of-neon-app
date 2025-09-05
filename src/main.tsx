@@ -39,6 +39,7 @@ const I18N_NAMESPACES = [
   "plays",
   "achievements",
   "map",
+  "docs",
 ];
 
 const loadingSteps: LoadingProgress[] = [
@@ -120,7 +121,7 @@ async function init() {
     progressBarRef.current?.nextStep();
   });
 
-  const imagesPromise = isNative 
+  const imagesPromise = isNative
     ? Promise.resolve().then(() => {
         progressBarRef.current?.nextStep();
       })
