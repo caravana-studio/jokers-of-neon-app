@@ -22,12 +22,10 @@ export const PreselectedCardsSection = ({
   isTutorialRunning = false,
   onTutorialCardClick,
 }: PreselectedCardsProps) => {
-  const {
-    discardAnimation,
-    playAnimation,
-  } = useAnimationStore();
+  const { discardAnimation, playAnimation } = useAnimationStore();
 
-  const { preSelectedCards, togglePreselected, hand, getModifiers } = useCurrentHandStore();
+  const { preSelectedCards, togglePreselected, hand, getModifiers } =
+    useCurrentHandStore();
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });

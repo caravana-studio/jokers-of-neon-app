@@ -33,6 +33,7 @@ export const ContextMenuItem = ({
       }}
       to={url}
       aria-disabled={disabled}
+      className={"game-tutorial-step-btn-" + nameKey}
       tabIndex={disabled ? -1 : 0}
       onClick={
         disabled || onClick
@@ -65,7 +66,7 @@ export const ContextMenuItem = ({
           backgroundColor={active ? "rgba(255,255,255,0.15)" : "none"}
         >
           <IconComponent icon={icon} width={iconSize} height={iconSize} />
-          {(isSmallScreen && nameKey) && <Text fontSize={9}>{t(nameKey)}</Text>}
+          {isSmallScreen && nameKey && <Text fontSize={9}>{t(nameKey)}</Text>}
         </Flex>
       </Flex>
     </Link>

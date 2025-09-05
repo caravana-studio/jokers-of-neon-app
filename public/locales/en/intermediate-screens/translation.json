@@ -9,7 +9,8 @@
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
-    "surrender": { 
+    "tuto": "Tutorial",
+    "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
         "title": "Surrender",

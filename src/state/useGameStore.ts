@@ -16,6 +16,8 @@ import { ModCardsConfig } from "../types/ModConfig";
 import { PowerUp } from "../types/Powerup/PowerUp";
 import { RoundRewards } from "../types/RoundRewards";
 import { getRageNodeData } from "../utils/getRageNodeData";
+import { m5, p25 } from "../utils/mocks/powerUpMocks";
+import { MultipliedClubs } from "../utils/mocks/specialCardMocks";
 
 type GameStore = {
   id: number;
@@ -97,6 +99,7 @@ type GameStore = {
   setShopId: (shopId: number) => void;
   addRerolls: (rerolls: number) => void;
   advanceLevel: () => void;
+  fetchGameStoreForTutorial: () => void;
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
@@ -436,5 +439,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       level: state.level + 1,
     }));
+  },
+  fetchGameStoreForTutorial: () => {
+    {
+      set({
+        powerUps: [m5, p25],
+        specialCards: [MultipliedClubs],
+        remainingDiscards: 1,
+        remainingPlays: 3,
+        gameLoading: false,
+        preSelectedPowerUps: [],
+        targetScore: 500,
+        currentScore: 0,
+        totalScore: 0,
+      });
+    }
   },
 }));

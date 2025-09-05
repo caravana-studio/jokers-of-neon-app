@@ -28,6 +28,7 @@ import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
+import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
@@ -36,7 +37,7 @@ interface HandSectionProps {
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
   useGameContext();
 
-  const { changeModifierCard, remainingPlaysTutorial } = useGameContext();
+  const { changeModifierCard, stepIndex } = useGameContext();
 
   const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
     useCurrentHandStore();
@@ -49,9 +50,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
 
   const [discarding, setDiscarding] = useState(false);
 
-  const handsLeft = !isTutorial()
-    ? remainingPlays
-    : remainingPlaysTutorial ?? 0;
+  const handsLeft = remainingPlays;
 
   const { activeNode } = useDndContext();
 
@@ -76,6 +75,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
 
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
+  const isTutorialRunning = isTutorial();
 
   return (
     <>
@@ -114,10 +114,38 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           >
             {hand.map((card, index) => {
               const isPreselected = cardIsPreselected(card.idx);
+              const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
+              const targetSelector = currentStepConfig?.target;
+              const cardClassName = "hand-element-" + index;
+              const isActiveTutorialStep =
+                targetSelector === `.${cardClassName}`;
+
+              const isAnyHandCardTargeted = targetSelector
+                .toString()
+                .startsWith(".hand-element-");
+
+              const isClickDisabled =
+                isTutorialRunning &&
+                isAnyHandCardTargeted &&
+                !isActiveTutorialStep;
+
+              const activeStyle = isActiveTutorialStep
+                ? {
+                    transform: "translateY(-20px)",
+                    transition: "transform 0.3s ease-in-out",
+                    zIndex: 999,
+                  }
+                : {
+                    transition: "transform 0.3s ease-in-out",
+                  };
+
               return (
                 <GridItem
                   key={card.idx + "-" + index}
-                  sx={{ pointerEvents: isPreselected ? "none" : "auto" }}
+                  sx={{
+                    pointerEvents: isPreselected ? "none" : "auto",
+                    ...activeStyle,
+                  }}
                   w="100%"
                   onContextMenu={(e) => {
                     e.stopPropagation();
@@ -128,7 +156,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                   className={
                     card.isModifier
                       ? "tutorial-modifiers-step-2"
-                      : "hand-element-" + index
+                      : cardClassName
                   }
                   onMouseEnter={() =>
                     !isSmallScreen && setHoveredCard(card.idx)
@@ -196,6 +224,8 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                             : "pointer"
                         }
                         onClick={() => {
+                          if (isClickDisabled) return;
+
                           if (onTutorialCardClick) onTutorialCardClick();
                           if (!card.isModifier) {
                             const preselected = togglePreselected(card.idx);
@@ -208,6 +238,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                         }}
                         className={"hand-element-" + index}
                         onHold={() => {
+                          if (isClickDisabled) return;
                           isSmallScreen && highlightCard(card);
                         }}
                       />

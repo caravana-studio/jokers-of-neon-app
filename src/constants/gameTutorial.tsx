@@ -1,6 +1,13 @@
 import { isMobile } from "react-device-detect";
 import i18n from "i18next";
 import { Step } from "react-joyride";
+import { Trans } from "react-i18next";
+import {
+  BLUE_LIGHT,
+  NEON_GREEN,
+  VIOLET_LIGHT,
+  HEARTS,
+} from "../theme/colors.tsx";
 
 const COMMON_SETTINGS: Partial<Step> = {
   disableBeacon: true,
@@ -60,10 +67,27 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-intro",
       title: i18n.t("gameTutorial.intro.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.intro.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.intro.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
-      placement: isMobile ? "center" : "bottom",
-      offset: isMobile ? 0 : -100,
+      placement: "center",
+      spotlightPadding: 0,
+      offset: 0,
       styles: {
         options: {
           arrowColor: "none",
@@ -73,13 +97,45 @@ const loadTutorialTranslations = async () => {
     {
       target: ".store-tutorial-step-1",
       title: i18n.t("gameTutorial.pointsTarget.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.pointsTarget.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.pointsTarget.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "auto",
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.step-1", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.step-1"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
     {
@@ -90,13 +146,28 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      content: i18n.t("gameTutorial.playableHand.step-2", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.step-2"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
     },
     {
       target: ".hand-element-0",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -124,7 +195,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-1",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -152,8 +222,23 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.discardCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.discardCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: BLUE_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
       spotlightClicks: true,
@@ -161,14 +246,29 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.pair", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.pair"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
     },
     {
       target: ".hand-element-2",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -196,7 +296,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-3",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -225,21 +324,53 @@ const loadTutorialTranslations = async () => {
     {
       target: ".game-tutorial-step-6",
       title: i18n.t("gameTutorial.pointsMultiplier.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.pointsMultiplier.content", {
-        ns: "tutorials",
-      }),
-      ...COMMON_SETTINGS,
-    },
-    {
-      target: ".special-cards-step-3",
-      title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.specialCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.pointsMultiplier.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -254,16 +385,29 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.secondPair", {
-        ns: "tutorials",
-      }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.secondPair"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
     },
     {
       target: ".hand-element-0",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -291,7 +435,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-1",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -317,11 +460,76 @@ const loadTutorialTranslations = async () => {
           }
         : {},
     },
+    {
+      target: ".special-cards-step-3",
+      title: i18n.t("gameTutorial.specialCards.title", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.specialCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
+      ...COMMON_SETTINGS,
+    },
     // power ups
     {
       target: ".game-tutorial-power-up",
       title: i18n.t("gameTutorial.power-ups.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.power-ups.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.power-ups.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: NEON_GREEN,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            3: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "auto",
     },
@@ -362,8 +570,23 @@ const loadTutorialTranslations = async () => {
     // play
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -376,18 +599,70 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       offset: isMobile ? 1000 : 10,
     },
+    // FLUSH W MODIFIER
+    {
+      target: ".hand-element-7",
+      title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.modifiers.content"
+          ns="tutorials"
+          components={{
+            1: <br />,
+          }}
+        />
+      ),
+      ...COMMON_SETTINGS,
+      placement: "auto",
+      disableScrollParentFix: true,
+      spotlightPadding: 0,
+      offset: 0,
+      disableOverlay: isMobile ? true : false,
+      styles: !isMobile
+        ? {
+            options: {
+              arrowColor: "none",
+              width: "100%",
+            },
+          }
+        : {},
+    },
     {
       target: ".game-tutorial-step-2",
-      content: i18n.t("gameTutorial.playableHand.straight", {
-        ns: "tutorials",
-      }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playableHand.flush"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            3: <br />,
+          }}
+        />
+      ),
+
       ...COMMON_SETTINGS,
       placement: "right",
       hideCloseButton: true,
     },
     {
       target: ".hand-element-2",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -415,7 +690,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-3",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -443,7 +717,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -471,7 +744,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-5",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -499,7 +771,6 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".hand-element-6",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t(
         isMobile
           ? "gameTutorial.action.select-mobile"
@@ -526,25 +797,6 @@ const loadTutorialTranslations = async () => {
         : {},
     },
     {
-      target: ".hand-element-7",
-      title: i18n.t("gameTutorial.modifiers.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.modifiers.content", { ns: "tutorials" }),
-      ...COMMON_SETTINGS,
-      placement: "auto",
-      disableScrollParentFix: true,
-      spotlightPadding: 0,
-      offset: 0,
-      disableOverlay: isMobile ? true : false,
-      styles: !isMobile
-        ? {
-            options: {
-              arrowColor: "none",
-              width: "100%",
-            },
-          }
-        : {},
-    },
-    {
       target: ".game-tutorial-intro",
       content: i18n.t("gameTutorial.modifiers.drag", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
@@ -556,8 +808,23 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
-      content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.playCards.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "left",
       spotlightClicks: true,
@@ -572,7 +839,32 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-7",
-      content: i18n.t("gameTutorial.score.content", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.score.content"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
     },
   ]);
@@ -597,14 +889,12 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-step-3",
-      title: i18n.t("gameTutorial.discardCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.discardCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "right",
     },
     {
       target: ".game-tutorial-step-4",
-      title: i18n.t("gameTutorial.playCards.title", { ns: "tutorials" }),
       content: i18n.t("gameTutorial.playCards.content", { ns: "tutorials" }),
       ...COMMON_SETTINGS,
       placement: "left",

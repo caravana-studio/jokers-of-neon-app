@@ -38,7 +38,8 @@ import { MobileTopSection } from "./TopSection.mobile.tsx";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
-  const { executeCreateGame } = useGameContext();
+  const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
+    useGameContext();
 
   const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
@@ -54,6 +55,7 @@ export const MobileGameContent = () => {
     maxPowerUpSlots,
     gameLoading,
     gameError: error,
+    id: gameId,
   } = useGameStore();
 
   const sensors = useSensors(
@@ -64,7 +66,6 @@ export const MobileGameContent = () => {
     })
   );
   const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
@@ -76,7 +77,7 @@ export const MobileGameContent = () => {
   }, []);
 
   const stepData = [
-    { step: 14, delay: 2700 },
+    { step: 13, delay: 2700 },
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];
@@ -88,7 +89,7 @@ export const MobileGameContent = () => {
       setRun(false);
       const timeout = setTimeout(() => {
         setAutoStep(true);
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         setRun(true);
       }, stepInfo.delay);
 
@@ -103,7 +104,7 @@ export const MobileGameContent = () => {
       const { type } = data;
 
       if (type === "error:target_not_found") {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         return;
       }
 
@@ -113,7 +114,7 @@ export const MobileGameContent = () => {
         !buttonClicked &&
         !autoStep
       ) {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
       }
 
       setCardClicked(false);
@@ -127,8 +128,11 @@ export const MobileGameContent = () => {
             return navigate("/store");
           case GameStateEnum.Map:
             return navigate("/map");
-          default:
-            return navigate("/demo");
+          default: {
+            resetLevel();
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
+          }
         }
       }
     };
@@ -151,7 +155,7 @@ export const MobileGameContent = () => {
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
       setCardClicked(true);
-      setStepIndex(stepIndex + 1);
+      setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -258,7 +262,7 @@ export const MobileGameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />
@@ -283,7 +287,7 @@ export const MobileGameContent = () => {
                 onTutorialCardClick={() => {
                   if (run) {
                     setCardClicked(true);
-                    setStepIndex(stepIndex + 1);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
                   }
                 }}
               />
@@ -295,7 +299,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />
@@ -306,7 +310,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />

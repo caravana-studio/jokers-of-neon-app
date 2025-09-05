@@ -21,6 +21,8 @@ interface ConfirmationModalProps {
   description: string;
   onConfirm: () => void;
   isOpen?: boolean;
+  confirmText?: string;
+  cancelText?: string;
 }
 
 export const ConfirmationModal = ({
@@ -29,6 +31,8 @@ export const ConfirmationModal = ({
   description,
   onConfirm,
   isOpen = true,
+  confirmText,
+  cancelText,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
 
@@ -49,8 +53,13 @@ export const ConfirmationModal = ({
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button variant="defaultOutline" size="sm" w={isSmallScreen ? "50%" : "auto"} onClick={close}>
-            {t("confirmation-modal.close")}
+          <Button
+            variant="defaultOutline"
+            size="sm"
+            w={isSmallScreen ? "50%" : "auto"}
+            onClick={close}
+          >
+            {cancelText ?? t("confirmation-modal.close")}
           </Button>
           <Button
             variant="secondarySolid"
@@ -60,7 +69,7 @@ export const ConfirmationModal = ({
             ml={5}
             w={isSmallScreen ? "50%" : "auto"}
           >
-            {t("confirmation-modal.confirm")}
+            {confirmText ?? t("confirmation-modal.confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>
