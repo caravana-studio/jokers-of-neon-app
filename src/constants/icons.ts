@@ -1,6 +1,9 @@
 import HeartIcon from "../assets/heart.png";
 import SpadeIcon from "../assets/spade.png";
 import DiamondIcon from "../assets/diamond.png";
+import CheckIcon from "../assets/check.svg?component";
+import UnCheckIcon from "../assets/unchecked.svg?component";
+import ClockIcon from "../assets/clock.svg?component";
 import ClubIcon from "../assets/club.png";
 import ModifierIcon from "../assets/modifier.svg?component";
 import NeonIcon from "../assets/neon.svg?component";
@@ -59,7 +62,10 @@ export const Icons = {
   BACK: BackIcon,
   DECK: DeckIcon,
   LIST: ListIcon,
-  MORE: MoreIcon
+  MORE: MoreIcon,
+  CHECK: CheckIcon,
+  UNCHECK: UnCheckIcon,
+  CLOCK: ClockIcon
 } as const;
 
 export type IconType = keyof typeof Icons;
