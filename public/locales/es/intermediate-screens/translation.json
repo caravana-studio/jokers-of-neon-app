@@ -21,11 +21,11 @@
     "points-lbl": "Puntos",
     "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",
     "create-game": {
-      "stage-1": "Buscando torneo {{tournamentId}}",
-      "stage-2": "Registrando usuario {{username}}",
-      "stage-3": "Transfiriendo token de juego a tu cuenta",
-      "stage-4": "Mezclando cartas",
-      "stage-5": "Comenzando el juego"
+      "stage-1": "Preparando el escenario",
+      "stage-2": "Trayendo una silla para {{username}}",
+      "stage-3": "Preparando las tiendas",
+      "stage-4": "Barajando las cartas",
+      "stage-5": "La partida está a punto de comenzar..."
     }
   },
   "game-over": {
@@ -89,7 +89,7 @@
   },
   "power-ups": {
     "title": "Power-ups",
-     "confirmation-modal": {
+    "confirmation-modal": {
       "title": "Vender power-up",
       "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
