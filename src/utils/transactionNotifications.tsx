@@ -106,6 +106,23 @@ export const showAchievementToast = (achievementNames: string[]): void => {
   const leftPosition = isMobile ? "8px" : "26px";
   const marginTop = isMobile ? 80 : 60;
 
+  const getAchievementToastOptions = (needsPadding: boolean): ExternalToast => {
+    const baseStyle = {
+      position: needsPadding
+        ? "absolute"
+        : ((isMobile ? "top-left" : "bottom-left") as any),
+      left: leftPosition,
+      margin: 0,
+      ...(needsPadding ? { top: "50px" } : { offset: "0px" }),
+    };
+
+    return {
+      position: basePosition,
+      style: baseStyle,
+      duration: 7000,
+    };
+  };
+
   achievementNames.forEach((achievementName, index) => {
     setTimeout(() => {
       toast.custom(
@@ -149,16 +166,7 @@ export const showAchievementToast = (achievementNames: string[]): void => {
             </Box>
           </Box>
         ),
-        {
-          position: basePosition,
-          style: {
-            position: "absolute",
-            left: leftPosition,
-            margin: 0,
-            top: needsPadding ? "50px" : "0px",
-          },
-          duration: 7000,
-        }
+        getAchievementToastOptions(needsPadding)
       );
     }, index * 200);
   });

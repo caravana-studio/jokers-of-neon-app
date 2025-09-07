@@ -3,7 +3,7 @@
     "level": "NÍVEL"
   },
   "my-games": {
-    "title": "Meus jogos",
+    "title": "Jogos",
     "go-back": "Voltar",
     "start-game": "Iniciar novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
@@ -115,5 +115,14 @@
     "select-profile-picture": "Selecionar foto de perfil",
     "connect": "Conectar",
     "no-profile": "Faça login para ver seu perfil"
+  },
+  "my-collection": {
+    "title": "Coleção",
+    "no-collection": "Por favor, inicie sessão para ver sua coleção",
+    "login": "Iniciar sessão",
+    "collections": {
+      "sx": "Temporada {{season}}",
+      "c99": "Coleção exclusiva GG - v1"
+    }
   }
 }
