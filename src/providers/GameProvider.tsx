@@ -96,7 +96,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetSpecials,
     setState,
     addRerolls,
-    advanceLevel
+    advanceLevel,
   } = useGameStore();
 
   const {
@@ -256,9 +256,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
                 setPreSelectionLocked(false);
                 setRoundRewards(undefined);
-                setState(GameStateEnum.NotSet)
-
-                console.log('navigating demo')
+                setState(GameStateEnum.NotSet);
                 navigate("/demo");
               } else {
                 setGameError(true);
@@ -336,9 +334,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           fetchDeck(client, gameId, getCardData);
           refetchSpecialCardsData(modId, gameId);
           if (response.levelPassed && response.detailEarned) {
-            response.levelPassed.level_passed > 0 && advanceLevel()
+            response.levelPassed.level_passed > 0 && advanceLevel();
             addCash(response.detailEarned.total);
-            response.detailEarned.rerolls && addRerolls(response.detailEarned.rerolls);
+            response.detailEarned.rerolls &&
+              addRerolls(response.detailEarned.rerolls);
           }
         } else {
           setPreSelectionLocked(false);
@@ -540,17 +539,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-/*   const refetchAll = async () => {
-    await refetchCurrentHandStore(client, gameId);
-    await refetchGameStore(client, gameId);
-    syncMaxPreSelectedCards(rageCards);
-  };
-
   useEffect(() => {
-    if (client && gameId) {
-      refetchAll();
-    }
-  }, [gameId]); */
+    syncMaxPreSelectedCards(rageCards);
+  }, [rageCards]);
+
 
   const actions = {
     play: onPlayClick,
