@@ -115,8 +115,7 @@
     "coming-soon": "Coming soon",
     "select-profile-picture": "Select profile picture",
     "connect": "Connect",
-    "no-profile": "Please login to see your profile",
-    "go-back-btn": "Go back"
+    "no-profile": "Please login to see your profile"
   },
   "my-collection": {
     "title": "Collection",
