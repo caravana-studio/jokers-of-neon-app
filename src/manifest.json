@@ -3740,6 +3740,266 @@
       "systems": ["process", "upgrade"]
     },
     {
+      "address": "0x1b536a838cd3afc6021ced7b3470f1f720ba1631fa24e9533200d380fbbb609",
+      "class_hash": "0x1b00dcdf080006cd9cf7bb84beb3af1b1db567a1783e44c3262142e0b922fb1",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "daily_missions_system__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "daily_missions_system__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IDailyMissionsSystemImpl",
+          "interface_name": "jokers_of_neon_core::systems::daily_missions_system::IDailyMissionsSystem"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_core::models::daily_missions::DailyMissionTracker",
+          "members": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "day",
+              "type": "core::integer::u64"
+            },
+            {
+              "name": "mission_id",
+              "type": "core::felt252"
+            },
+            {
+              "name": "completed",
+              "type": "core::bool"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::daily_missions_system::IDailyMissionsSystem",
+          "items": [
+            {
+              "type": "function",
+              "name": "generate_daily_missions",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_daily_missions_for_day",
+              "inputs": [
+                {
+                  "name": "day",
+                  "type": "core::integer::u64"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::felt252, core::felt252, core::felt252)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_daily_mission_trackers_for_player",
+              "inputs": [
+                {
+                  "name": "player",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Array::<jokers_of_neon_core::models::daily_missions::DailyMissionTracker>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::daily_missions_system::daily_missions_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-daily_missions_system",
+      "selector": "0x156eeb853e4394f56b8042873481ea1614c697db1e95a75dde9bb75750b441e",
+      "systems": ["generate_daily_missions", "upgrade"]
+    },
+    {
       "address": "0x37348f5d4b309d47c064b26f933004d5957d10273f6c164bfba15ae8b272849",
       "class_hash": "0x204d9298ba20fd573e2e991c692f5bc4ee4d456c81dd2f4662df85342c23ef2",
       "abi": [
@@ -7291,8 +7551,8 @@
       "systems": ["process", "upgrade"]
     },
     {
-      "address": "0x5a5420393f2f2531983771d8e0a20a0e3211fd5602207a7bc81e8a85363d4a",
-      "class_hash": "0x2ce01c2d783e863a5c48f7de0c830175d06b00a010fb03923408b43b1e8b017",
+      "address": "0x255cac052724abf827d71d370fa1e92463846b9bedfeb3942e55c1a6b24280a",
+      "class_hash": "0x123918a7ff19da21b4943a38163ceaefdecda2fb448e3e0c925732b19a3f184",
       "abi": [
         {
           "type": "impl",
@@ -8522,6 +8782,327 @@
       "systems": ["register_address_nft", "upgrade"]
     },
     {
+      "address": "0x3aa87fade4c5862638657a36f4edcf241b65664bbccd3e128ebcafee2d83de5",
+      "class_hash": "0x583257e9afbc9d1ab571240137e3d02ef5ffcfe75d8801056d329979c450de6",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "nft_special_cards_views__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "nft_special_cards_views__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "NFTViewsImpl",
+          "interface_name": "jokers_of_neon_core::systems::views::nft_special_card_views::INFTSpecialCard"
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::array::Span::<core::integer::u32>>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::array::Span::<core::integer::u32>>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::external::nft::CardStats",
+          "members": [
+            {
+              "name": "token_id",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "marketable",
+              "type": "core::bool"
+            },
+            {
+              "name": "special_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "category_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "tier",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "count",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "skin_id",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "skin_rarity",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "quality",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<jokers_of_neon_lib::models::external::nft::CardStats>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<jokers_of_neon_lib::models::external::nft::CardStats>"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::views::nft_special_card_views::INFTSpecialCard",
+          "items": [
+            {
+              "type": "function",
+              "name": "get_user_special_cards_by_category",
+              "inputs": [
+                {
+                  "name": "user_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<core::array::Span::<core::integer::u32>>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_user_special_cards",
+              "inputs": [
+                {
+                  "name": "user_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::array::Span::<jokers_of_neon_lib::models::external::nft::CardStats>"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::views::nft_special_card_views::nft_special_cards_views::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-nft_special_cards_views",
+      "selector": "0x2bfacc60ffaa722ee8f22a5daaa3792b376ec865f0f3788d674c62093f2e247",
+      "systems": ["upgrade"]
+    },
+    {
       "address": "0x5df91dda2d5e380410db40e9646363280758cc7d78670f6544c82a0250fd0f5",
       "class_hash": "0x2859e8981998d62978449728f59a784e12b6814ce907e27287f6be5cb3bde30",
       "abi": [
@@ -9411,8 +9992,8 @@
       "systems": ["process", "upgrade"]
     },
     {
-      "address": "0x39ebbb23717360b1db0506bc9cdf8a92deb51a416a902ce5eddb07f705004b2",
-      "class_hash": "0x6539cb7f918bd189adde3159801e70c20e8a53548642f1de691051e482e434a",
+      "address": "0x4567bec1909d16f862226c5ea7049cee2679e2193e777566e60bb8d954e21a0",
+      "class_hash": "0x21e9ffcb7d1baf41e08adcdeecaeb64b75a99e02e0fec971694eb3a2317d115",
       "abi": [
         {
           "type": "impl",
@@ -10790,8 +11371,659 @@
       "systems": ["process", "upgrade"]
     },
     {
-      "address": "0x2dc96ec3a5cd0e1dc267f5d6407e1b17a3657839aa4e6aa82114a1de25010e6",
-      "class_hash": "0x2a0928fac80cded95c344bc56f481218307eff61f4fbc4c3f1306a196f3e0f5",
+      "address": "0x29e79778cf4d971504d5c97eeac7014dcdaeec2d6fa0c231f2e115fea84d0dd",
+      "class_hash": "0x558111752d167db35a9d3f02384d541cd67b4df93cf4e6e59883278e679931b",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "profile_manager__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "profile_manager__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ProfileManagerImpl",
+          "interface_name": "jokers_of_neon_core::systems::profile_manager::IProfileManager"
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::profile_manager::IProfileManager",
+          "items": [
+            {
+              "type": "function",
+              "name": "register_address_profile",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_address_profile",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::profile_manager::profile_manager::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-profile_manager",
+      "selector": "0xff757c52fd893945138810b0829bbddbbd2f159ca36e45c3797441e5310482",
+      "systems": ["register_address_profile", "upgrade"]
+    },
+    {
+      "address": "0x4650dd4137268f6fbb2c6c9173e2f03fba71c51edeb13b25aeb4756086adf56",
+      "class_hash": "0x54e4d0a044e6acbdb08624af387c0aab59ab8d51a68e7f471340e644cfc6657",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "profile_system__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "profile_system__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "ProfileImpl",
+          "interface_name": "jokers_of_neon_core::systems::profile_system::IProfile"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::external::profile::PlayerStats",
+          "members": [
+            {
+              "name": "address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "games_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "games_won",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "high_card_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "pair_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "two_pair_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "three_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "four_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "five_of_a_kind_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "full_house_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "straight_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "straight_flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "royal_flush_played",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "loot_boxes_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "cards_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "specials_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "specials_sold",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "power_ups_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "level_ups_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "modifiers_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "rerolls_purchased",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "burn_purchased",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u32>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "jokers_of_neon_lib::models::external::profile::Profile",
+          "members": [
+            {
+              "name": "address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "username",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "xp",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "level",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "available_games",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "max_available_games",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "daily_streak",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "banned",
+              "type": "core::bool"
+            },
+            {
+              "name": "badges_ids",
+              "type": "core::array::Span::<core::integer::u32>"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::profile_system::IProfile",
+          "items": [
+            {
+              "type": "function",
+              "name": "create_profile",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "username",
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_xp",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "season_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "xp",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_stats",
+              "inputs": [
+                {
+                  "name": "player_stats",
+                  "type": "jokers_of_neon_lib::models::external::profile::PlayerStats"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_profile",
+              "inputs": [
+                {
+                  "name": "player_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::external::profile::Profile"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_player_stats",
+              "inputs": [
+                {
+                  "name": "player_address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "jokers_of_neon_lib::models::external::profile::PlayerStats"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::profile_system::profile_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-profile_system",
+      "selector": "0x7202c83bbb2be555d6fd3d357050c8564a2f775500938972d30d07c301b16fa",
+      "systems": ["create_profile", "add_xp", "add_stats", "upgrade"]
+    },
+    {
+      "address": "0x2bdf407ff1e7073e2e5c08f1b3bf656d4335f92ec1982523915f7f5f03b806b",
+      "class_hash": "0x302b1a1dd8f043f492e95eecbd04ea12eccef7a0285d8ba36a18cc8606e974c",
       "abi": [
         {
           "type": "impl",
@@ -12707,6 +13939,449 @@
       "tag": "jokers_of_neon_core-silence",
       "selector": "0x438292d2301679f7389600affe3f6da35d7a90a8281a7cf14ea8abb1e238306",
       "systems": ["process", "upgrade"]
+    },
+    {
+      "address": "0x4da17155f0284ef16fe94ec6e4fbd7fa4c3a71fd832291e8e2a58b1dff11a0c",
+      "class_hash": "0x81385d481222926d192e925aad7b0910316b464acf5f3175e3f06a40fa38c4",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "xp_manager__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "xp_manager__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "XPManagerImpl",
+          "interface_name": "jokers_of_neon_core::systems::xp_manager::IXPManager"
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::xp_manager::IXPManager",
+          "items": [
+            {
+              "type": "function",
+              "name": "register_address_xp",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_address_xp",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::xp_manager::xp_manager::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-xp_manager",
+      "selector": "0x3848c1cf9f9eb0a136b2d1b047d58dbf2a859bd1598675c262e2e54b0b43c13",
+      "systems": ["register_address_xp", "upgrade"]
+    },
+    {
+      "address": "0x5b576ef2c7da3a45418ee875fce788b7d5cd5731f0ffb81517ec6eb91613e6f",
+      "class_hash": "0x15f3056a939c29ef645985244faa63bf39fb9d1a699d582b20d62d782a10be4",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "xp_system__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "xp_system__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "XPImpl",
+          "interface_name": "jokers_of_neon_core::systems::xp_system::IXP"
+        },
+        {
+          "type": "enum",
+          "name": "jokers_of_neon_core::systems::xp_system::MissionDifficulty",
+          "variants": [
+            {
+              "name": "Easy",
+              "type": "()"
+            },
+            {
+              "name": "Medium",
+              "type": "()"
+            },
+            {
+              "name": "Hard",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "jokers_of_neon_core::systems::xp_system::IXP",
+          "items": [
+            {
+              "type": "function",
+              "name": "add_daily_mission_xp",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "mission_type",
+                  "type": "jokers_of_neon_core::systems::xp_system::MissionDifficulty"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_level_completion_xp",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "level",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "view"
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "jokers_of_neon_core::systems::xp_system::xp_system::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "jokers_of_neon_core-xp_system",
+      "selector": "0x4cef42a35696b09d27bc577aca72b465c84620d2bee23c320a5f5cc7be5c3c7",
+      "systems": ["add_daily_mission_xp", "add_level_completion_xp", "upgrade"]
     }
   ],
   "libraries": [],
@@ -12752,6 +14427,18 @@
       "class_hash": "0x716b3416a6831c4a100f24aad0b432f566765c88790753d093c38cfa997eebb",
       "tag": "jokers_of_neon_core-CurrentSpecialCards",
       "selector": "0x35678cb58474d5ff5990c93776654873a59fc016ebcebc3298a72536efffe26"
+    },
+    {
+      "members": [],
+      "class_hash": "0x5531f80d210a3d1b908bb1c05704066d6a85ffa8afc1acd398aa852885dcf2f",
+      "tag": "jokers_of_neon_core-DailyMissionTracker",
+      "selector": "0x4a73b194af0f90cb0a57d9ad6056897df33b44c6797d8df30fdbee1287ec3"
+    },
+    {
+      "members": [],
+      "class_hash": "0x2b6e9d2d265b0a31aaac9bd77122ff89033c239f2aefb94b46a92e9f7c159bc",
+      "tag": "jokers_of_neon_core-DailyMissionsForDay",
+      "selector": "0x389a0029c9474ec3a82cb6a2c069ce8b87430df641fe5b94affe394eac11143"
     },
     {
       "members": [],
@@ -12869,6 +14556,12 @@
     },
     {
       "members": [],
+      "class_hash": "0x4110b822ad3ce2eeb8741e866e0b37be194c38a5f3323788882948b257f0bbe",
+      "tag": "jokers_of_neon_core-ProfileManager",
+      "selector": "0x7894ef24e2bc97b4d1c633ca90326f5dd0c604cc926e9fd0795dfaeffb1dfec"
+    },
+    {
+      "members": [],
       "class_hash": "0x1438e0bc41e55626521f2a6a95680bdc54c6483aa014c69aad1fa1099a3d70c",
       "tag": "jokers_of_neon_core-PurchaseTracker",
       "selector": "0x2c1b2a1c84a968e8ce35c0a24216833d33c0ed5e1306b42d78e35b4d61e0bd1"
@@ -12956,6 +14649,12 @@
       "class_hash": "0x4d5056448296e4ed8435c9d0288c05bfd77f13e250c27e655e216278c680a8c",
       "tag": "jokers_of_neon_core-TraveledNodes",
       "selector": "0x636d25a8f53c22d7ac1a099a1a1088f77656a7fa265a397a87f66f6d351c957"
+    },
+    {
+      "members": [],
+      "class_hash": "0x758fc3a87ee7447814e4a4a0911ca82dfade5fe2c5cb1f5d8255e6c7a7f9a02",
+      "tag": "jokers_of_neon_core-XPManager",
+      "selector": "0x360f7d15f79801410add23147e307580082edcdf539ffd2e9006af39b44fdfd"
     }
   ],
   "events": [
@@ -13060,6 +14759,12 @@
       "class_hash": "0x4bc03c2872147988feb87930555c775443f0ee27574a07379435eacf6e70fa8",
       "tag": "jokers_of_neon_core-CurrentHandEvent",
       "selector": "0x1aefec97e2ad20e102d9bd5b9f76ad665e0896c612ce856a9f157ffeb3e6b1f"
+    },
+    {
+      "members": [],
+      "class_hash": "0x798ef37d53a06b5b46f0d1d48f39ff5e82cc8ed04aca40cee5825bfc579f965",
+      "tag": "jokers_of_neon_core-DailyMissionCompletedEvent",
+      "selector": "0x6223018c77e50e185cc64982d08ee9e47e8100be8220582f99ed1a2c18702aa"
     },
     {
       "members": [],

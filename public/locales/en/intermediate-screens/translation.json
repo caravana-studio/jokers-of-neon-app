@@ -22,11 +22,11 @@
     "points-lbl": "points",
     "no-games": "You don't have any games. Start a new one!",
     "create-game": {
-      "stage-1": "Finding tournament {{tournamentId}}",
-      "stage-2": "Registering user {{username}}",
-      "stage-3": "Minting game token to your account",
+      "stage-1": "Setting up the stage",
+      "stage-2": "Pulling up a chair for {{username}}",
+      "stage-3": "Preparing shops",
       "stage-4": "Shuffling cards",
-      "stage-5": "Game starting"
+      "stage-5": "The game is about to begin..."
     }
   },
   "game-over": {

@@ -260,8 +260,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
                 setPreSelectionLocked(false);
                 setRoundRewards(undefined);
                 setState(GameStateEnum.NotSet);
-
-                console.log("navigating demo");
                 navigate("/demo");
               } else {
                 setGameError(true);
@@ -544,17 +542,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     refetchSpecialCardsData(modId, gameId);
   }, []);
 
-  /*   const refetchAll = async () => {
-    await refetchCurrentHandStore(client, gameId);
-    await refetchGameStore(client, gameId);
-    syncMaxPreSelectedCards(rageCards);
-  };
-
   useEffect(() => {
-    if (client && gameId) {
-      refetchAll();
-    }
-  }, [gameId]); */
+    syncMaxPreSelectedCards(rageCards);
+  }, [rageCards]);
 
   const actions = {
     play: onPlayClick,
