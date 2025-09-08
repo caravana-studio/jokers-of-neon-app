@@ -22,10 +22,12 @@ import {
   EVENT_PAIR,
   EVENT_PAIR_POWER_UPS,
   EVENT_FLUSH,
+  MOCKED_PLAYS,
 } from "../utils/mocks/tutorialMocks.ts";
 import { useAnimationStore } from "../state/useAnimationStore.ts";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { H10 } from "../utils/mocks/cardMocks.ts";
+import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 
 export const TutorialGameContext =
   createContext<IGameContext>(gameProviderDefaults);
@@ -79,12 +81,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     fetchGameStoreForTutorial();
-
-    if (client) {
-      getPlayerPokerHands(client, gameID).then((plays: any) => {
-        if (plays) useGameStore.setState({ plays });
-      });
-    }
+    useGameStore.setState({ plays: MOCKED_PLAYS as LevelPokerHand[] });
   }, [client, gameID]);
 
   const resetLevel = () => {

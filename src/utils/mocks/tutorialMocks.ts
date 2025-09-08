@@ -88,6 +88,86 @@ export const EVENT_FLUSH = {
   score: 1615,
 };
 
+export const MOCKED_PLAYS = [
+  {
+    game_id: "25",
+    poker_hand: "RoyalFlush",
+    level: 1,
+    multi: 9,
+    points: 120,
+  },
+  {
+    game_id: "25",
+    poker_hand: "StraightFlush",
+    level: 1,
+    multi: 8,
+    points: 100,
+  },
+  {
+    game_id: "25",
+    poker_hand: "FiveOfAKind",
+    level: 1,
+    multi: 8,
+    points: 80,
+  },
+  {
+    game_id: "25",
+    poker_hand: "FourOfAKind",
+    level: 1,
+    multi: 7,
+    points: 60,
+  },
+  {
+    game_id: "25",
+    poker_hand: "FullHouse",
+    level: 1,
+    multi: 4,
+    points: 40,
+  },
+  {
+    game_id: "25",
+    poker_hand: "Straight",
+    level: 1,
+    multi: 4,
+    points: 30,
+  },
+  {
+    game_id: "25",
+    poker_hand: "Flush",
+    level: 1,
+    multi: 4,
+    points: 35,
+  },
+  {
+    game_id: "25",
+    poker_hand: "ThreeOfAKind",
+    level: 1,
+    multi: 3,
+    points: 30,
+  },
+  {
+    game_id: "25",
+    poker_hand: "TwoPair",
+    level: 1,
+    multi: 3,
+    points: 20,
+  },
+  {
+    game_id: "25",
+    poker_hand: "OnePair",
+    level: 1,
+    multi: 2,
+    points: 10,
+  },
+  {
+    game_id: "25",
+    poker_hand: "HighCard",
+    level: 1,
+    multi: 1,
+    points: 5,
+  },
+];
+
 export const EVENT_PAIR = {
   play: {
     multi: 1,
