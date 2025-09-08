@@ -39,13 +39,15 @@ const I18N_NAMESPACES = [
   "plays",
   "achievements",
   "map",
+  "docs",
 ];
 
 const loadingSteps: LoadingProgress[] = [
-  { text: "Setting up game", showAt: 0 },
-  { text: "Loading translations", showAt: 1 },
-  { text: "Preloading assets", showAt: 2 },
-  { text: "Loading game", showAt: 4 },
+  { text: "Setting the stage", showAt: 0 },
+  { text: "Turning on the neon lights", showAt: 1 },
+  { text: "Gathering all the jokers", showAt: 2 },
+  { text: "Loading the leaderboard", showAt: 3 },
+  { text: "Almost ready, let's play!", showAt: 4 },
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
@@ -120,7 +122,7 @@ async function init() {
     progressBarRef.current?.nextStep();
   });
 
-  const imagesPromise = isNative 
+  const imagesPromise = isNative
     ? Promise.resolve().then(() => {
         progressBarRef.current?.nextStep();
       })
