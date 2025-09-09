@@ -15,6 +15,7 @@ interface DeckPageContentProps {
   state: {
     inStore: boolean;
     burn: boolean;
+    map: boolean;
   };
 }
 
@@ -64,6 +65,7 @@ export const DeckPageContent = ({ state }: DeckPageContentProps) => {
         inStore={state.inStore}
         burn={state.burn}
         onCardSelect={handleCardSelect}
+        inMap={state.map}
       />
       <Flex gap={6}>
         {backToGameButton}

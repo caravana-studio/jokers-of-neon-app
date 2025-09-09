@@ -12,9 +12,10 @@ interface DeckProps {
   inStore?: boolean;
   burn?: boolean;
   onCardSelect?: (card: Card) => void;
+  inMap?: boolean;
 }
 
-export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
+export const Deck = ({ inStore, burn, onCardSelect, inMap }: DeckProps) => {
   const { t } = useTranslation("game", { keyPrefix: "game.deck" });
   const deck = useDeckStore();
   const { filterButtonsState } = useDeckFilters();
@@ -69,7 +70,7 @@ export const Deck = ({ inStore, burn, onCardSelect }: DeckProps) => {
         <Box w="100%" height={"100%"}>
           <DeckCardsGrid
             cards={fullDeck}
-            usedCards={!inStore ? usedCards : []}
+            usedCards={inStore || inMap ? [] : usedCards}
             filters={{
               isNeon: filterButtonsState.isNeon,
               isModifier: filterButtonsState.isModifier,

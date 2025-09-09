@@ -16,6 +16,7 @@ interface DeckPageContentMobileProps {
   state: {
     inStore: boolean;
     burn: boolean;
+    map: boolean;
   };
 }
 
@@ -77,6 +78,7 @@ export const DeckPageContentMobile = ({
               inStore={state.inStore}
               burn={state.burn}
               onCardSelect={handleCardSelect}
+              inMap={state.map}
             />
           </Flex>
           <Flex
@@ -94,6 +96,7 @@ export const DeckPageContentMobile = ({
           inStore={state.inStore}
           burn={state.burn}
           onCardSelect={handleCardSelect}
+          inMap={state.map}
         />
       )}
       <MobileBottomBar
