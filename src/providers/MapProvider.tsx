@@ -80,7 +80,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     getMap(client, id).then((dataNodes) => {
       const transformedNodes = dataNodes.map((node, index) => {
         const isFirstNode = index === 0;
-        const shouldBeFinalRage = isFirstNode && (level) >= 2;
+        const shouldBeFinalRage = isFirstNode && level >= 2;
 
         const nodeType = shouldBeFinalRage
           ? NodeType.RAGE
