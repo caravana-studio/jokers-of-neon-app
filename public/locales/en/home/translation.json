@@ -45,5 +45,11 @@
     "round": "Round",
     "rage": "Rage round",
     "shop": "Shop"
+  },
+  "tutorialModal": {
+    "title": "First time playing?",
+    "description": "We recommend a quick tutorial to learn the basics. Would you like to start it now?",
+    "confirm-text": "Play Tutorial",
+    "cancel-text": "Skip"
   }
 }

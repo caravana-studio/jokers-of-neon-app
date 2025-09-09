@@ -6,10 +6,10 @@ import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
-  const inTutorial = isTutorial();
   const { level, round, targetScore: gameTargetScore } = useGameStore();
-  const targetScore = inTutorial ? 300 : gameTargetScore ?? 0;
+  const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
+  const inTutorial = isTutorial();
 
   return (
     <Box className="store-tutorial-step-1">
@@ -19,9 +19,17 @@ export const LevelPoints = () => {
             {t("game.round-points.round")}
           </Heading>
           <Heading size={{ base: "s", md: "m" }} sx={{ color: "white" }}>
-            {t("game.round-points.level", { level: level })}
-            <span style={{ marginLeft: "10px", marginRight: "10px" }}>|</span>
-            {round}
+            {inTutorial ? (
+              t("game.tutorial").toUpperCase()
+            ) : (
+              <>
+                {t("game.round-points.level", { level: level })}
+                <span style={{ marginLeft: "10px", marginRight: "10px" }}>
+                  |
+                </span>
+                {round}
+              </>
+            )}
           </Heading>
         </PointBox>
         <PointBox type="points">
@@ -41,9 +49,8 @@ export const LevelPoints = () => {
 };
 
 export const MobileLevelPoints = () => {
-  const inTutorial = isTutorial();
   const { round, targetScore: gameTargetScore } = useGameStore();
-  const targetScore = inTutorial ? 300 : gameTargetScore ?? 0;
+  const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
 
   return (

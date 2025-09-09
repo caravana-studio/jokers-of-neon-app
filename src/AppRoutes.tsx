@@ -29,7 +29,8 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-// import TutorialGameProvider from "./providers/TutorialGameProvider";
+import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -161,7 +162,7 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-      {/*       <Route
+      <Route
         path="/tutorial"
         element={
           <TutorialGameProvider>
@@ -170,7 +171,7 @@ export const AppRoutes = () => {
             </AnimatedPage>
           </TutorialGameProvider>
         }
-      /> */}
+      />
       <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"

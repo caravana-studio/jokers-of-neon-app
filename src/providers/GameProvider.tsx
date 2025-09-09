@@ -1,6 +1,5 @@
 import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AccountInterface } from "starknet";
 import { SKIP_IN_GAME_TUTORIAL } from "../constants/localStorage";
 import {
   acumSfx,
@@ -29,6 +28,8 @@ import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardData } from "./CardDataProvider.tsx";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
+import { AccountInterface } from "starknet";
+import { TutorialGameContext } from "./TutorialGameProvider.tsx";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number, username?: string) => void;
@@ -47,6 +48,8 @@ export interface IGameContext {
   prepareNewGame: () => void;
   surrenderGame: (gameId: number) => void;
   initiateTransferFlow: () => void;
+  stepIndex?: number;
+  setStepIndex?: (index: number) => void;
 }
 
 const stringTournamentId = import.meta.env.VITE_TOURNAMENT_ID;
@@ -57,7 +60,7 @@ const GameContext = createContext<IGameContext>(gameProviderDefaults);
 export const useGameContext = () => {
   const location = useLocation();
   const inTutorial = location.pathname === "/tutorial";
-  const context = /* inTutorial ? mockTutorialGameContext : */ GameContext;
+  const context = inTutorial ? TutorialGameContext : GameContext;
   return useContext(context);
 };
 
@@ -542,7 +545,6 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     syncMaxPreSelectedCards(rageCards);
   }, [rageCards]);
-
 
   const actions = {
     play: onPlayClick,
