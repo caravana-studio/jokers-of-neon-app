@@ -1,6 +1,7 @@
 import { Box, Flex, SystemStyleObject, Tooltip } from "@chakra-ui/react";
+import { useState } from "react";
 import { getPowerUpData } from "../data/powerups";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { BACKGROUND_BLUE, GREY_LINE } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { PowerUp } from "../types/Powerup/PowerUp";
@@ -8,10 +9,8 @@ import { colorizeText } from "../utils/getTooltip";
 import { AnimatedPowerUp } from "./AnimatedPowerUp";
 import CachedImage from "./CachedImage";
 import { PriceBox } from "./PriceBox";
-import { FadingParticleAnimation } from "./animations/FadingParticlesAnimation";
 import { PurchasedLbl } from "./PurchasedLbl";
 import { HighlightAnimation } from "./animations/HighlightAnimation";
-import { useState } from "react";
 
 interface PowerUpProps {
   powerUp: PowerUp | null;
@@ -20,6 +19,7 @@ interface PowerUpProps {
   inStore?: boolean;
   containerSx?: SystemStyleObject;
   isActive?: boolean;
+  hideTooltip?: boolean;
 }
 export const PowerUpComponent = ({
   powerUp,
@@ -28,8 +28,9 @@ export const PowerUpComponent = ({
   width,
   containerSx,
   isActive,
+  hideTooltip = false,
 }: PowerUpProps) => {
-  const { powerUpIsPreselected } = useGameContext();
+  const { powerUpIsPreselected } = useGameStore();
   const calculatedIsActive =
     isActive ?? (powerUp && powerUpIsPreselected(powerUp.idx));
   const price = inStore && powerUp?.cost;
@@ -44,70 +45,67 @@ export const PowerUpComponent = ({
 
   const [startParticles, setStartParticles] = useState(false);
 
-  return powerUp ? (
-    <FadingParticleAnimation
-      width={isSmallScreen ? 120 : 190}
-      height={isSmallScreen ? 35 : 70}
-      spriteSrc={powerupStyle?.vfx ?? ""}
-      particleSize={5}
-      amount={isSmallScreen ? 300 : 500}
-      delayRange={3}
-      minHeight={5}
-      backward
-      active={(calculatedIsActive ?? false) && startParticles}
-      spreadOffset={0.3}
+  const powerUpContent = powerUp ? (
+    <Flex
+      justifyContent="center"
+      position="relative"
+      width={`${width}px`}
+      borderRadius={"22%"}
+      background={"black"}
+      transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
+      transition="all 0.2s ease-in-out"
+      cursor={purchased ? "not-allowed" : "pointer"}
+      opacity={purchased ? 0.3 : 1}
+      onClick={onClick}
     >
-      <AnimatedPowerUp idx={powerUp.idx}>
-        <Tooltip label={description && colorizeText(description)}>
-          <Flex
-            justifyContent="center"
-            position="relative"
-            width={`${width}px`}
-            borderRadius={"22%"}
-            background={"black"}
-            transform={calculatedIsActive ? "scale(1.1)" : "scale(1)"}
-            transition="all 0.2s ease-in-out"
-            cursor={purchased ? "not-allowed" : "pointer"}
-            opacity={purchased ? 0.3 : 1}
-            onClick={onClick}
-          >
-            {price && (
-              <PriceBox
-                price={Number(price)}
-                purchased={Boolean(purchased)}
-                isPowerUp={!inStore}
-                fontSize={isSmallScreen ? 12 : 16}
-                discountFontSize={isSmallScreen ? 10 : 12}
-                discountPrice={Number(discount_cost)}
-              />
-            )}
-            <PurchasedLbl
-              purchased={purchased ?? false}
-              topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
-              fontSize={isSmallScreen ? 6 : 11 * cardScale}
-            />
-            <HighlightAnimation
-              start={calculatedIsActive}
-              onAnimationComplete={() => {
-                setStartParticles(true);
-              }}
-              shadowColor={powerupStyle?.shadowColor}
-              shadowLightColor={powerupStyle?.shadowLightColor}
-              borderRadius={`${isSmallScreen ? "10px" : "14px"}`}
-            >
-              <CachedImage
-                opacity={inStore || calculatedIsActive ? 1 : 0.6}
-                borderRadius={"18%"}
-                cursor="pointer"
-                height={`${100}%`}
-                width={`${100}%`}
-                src={powerUp.img}
-              />
-            </HighlightAnimation>
-          </Flex>
-        </Tooltip>
-      </AnimatedPowerUp>
-    </FadingParticleAnimation>
+      {price && (
+        <PriceBox
+          price={Number(price)}
+          purchased={Boolean(purchased)}
+          isPowerUp={!inStore}
+          fontSize={isSmallScreen ? 12 : 16}
+          discountFontSize={isSmallScreen ? 10 : 12}
+          discountPrice={Number(discount_cost)}
+        />
+      )}
+      <PurchasedLbl
+        purchased={purchased ?? false}
+        topOffset={`${isSmallScreen ? width / 3 - 10 : width / 3 - 15}px`}
+        fontSize={isSmallScreen ? 6 : 11 * cardScale}
+      />
+      <HighlightAnimation
+        start={calculatedIsActive}
+        onAnimationComplete={() => {
+          setStartParticles(true);
+        }}
+        shadowColor={powerupStyle?.shadowColor}
+        shadowLightColor={powerupStyle?.shadowLightColor}
+        borderRadius={`${isSmallScreen ? "10px" : "14px"}`}
+      >
+        <CachedImage
+          opacity={inStore || calculatedIsActive ? 1 : 0.6}
+          borderRadius={"18%"}
+          cursor="pointer"
+          height={`${100}%`}
+          width={`${100}%`}
+          src={powerUp.img}
+        />
+      </HighlightAnimation>
+    </Flex>
+  ) : null;
+
+  return powerUp ? (
+    <AnimatedPowerUp idx={powerUp.idx}>
+      <>
+        {hideTooltip ? (
+          powerUpContent
+        ) : (
+          <Tooltip label={description && colorizeText(description)}>
+            {powerUpContent}
+          </Tooltip>
+        )}
+      </>
+    </AnimatedPowerUp>
   ) : (
     <EmptyPowerUp width={width} containerSx={containerSx} />
   );
@@ -121,7 +119,7 @@ const EmptyPowerUp = ({
   containerSx?: SystemStyleObject;
 }) => {
   const { isSmallScreen } = useResponsiveValues();
-  const { isRageRound, isClassic } = useGameContext();
+  const { isRageRound, isClassic } = useGameStore();
   return (
     <Box
       height={`${isSmallScreen ? width / 1.8 : width / 1.9}px`}

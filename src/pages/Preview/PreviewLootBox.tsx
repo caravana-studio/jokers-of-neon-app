@@ -3,16 +3,17 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo.tsx";
 import { LootBox, LootBoxRef } from "../../components/LootBox.tsx";
 import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { PriceBox } from "../../components/PriceBox.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useRedirectByGameState } from "../../hooks/useRedirectByGameState.ts";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
-import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { colorizeText } from "../../utils/getTooltip.tsx";
 import { MobileCoins } from "../store/Coins.tsx";
@@ -28,14 +29,12 @@ export const PreviewLootBox = () => {
     return <p>Card not found.</p>;
   }
 
-  const game = useGame();
-  const { locked } = useStore();
+  const { locked } = useShopStore();
   const { getLootBoxData } = useCardData();
 
-  const cash = game?.cash ?? 0;
+  const { cash, setState, removeCash } = useGameStore();
   const { name, description, details } = getLootBoxData(card.card_id ?? 0);
   const lootBoxRef = useRef<LootBoxRef>(null);
-  useRedirectByGameState();
 
   const notEnoughCash =
     !card.price ||
@@ -45,6 +44,7 @@ export const PreviewLootBox = () => {
     navigate("/open-loot-box", {
       state: { pack: pack },
     });
+    setState(GameStateEnum.Lootbox);
   };
   const buyButton = (
     <Button
@@ -82,86 +82,88 @@ export const PreviewLootBox = () => {
 
   return isSmallScreen ? (
     <>
-      <MobileDecoration />
-      <Flex
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        pt={4}
-        w="100%"
-        h="100%"
-        textAlign="center"
-      >
-        <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
-          <MobileCoins />
-        </Flex>
+      <DelayedLoading>
+        <MobileDecoration />
         <Flex
-          gap={1}
-          flexDir="column"
-          w="100%"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            zIndex: 1,
-          }}
-        >
-          <Box>
-            <Heading
-              fontWeight={500}
-              size="l"
-              letterSpacing={1.3}
-              textTransform="unset"
-            >
-              {name}
-            </Heading>
-          </Box>
-          <Text textAlign="center" size="xl" fontSize={"15px"} width={"90%"}>
-            {colorizeText(description)}
-          </Text>
-          {details && (
-            <Flex zIndex={2} mt={2} gap={2}>
-              <LootBoxRateInfo name={name} details={details} />
-            </Flex>
-          )}
-        </Flex>
-        <Flex
-          justifyContent={"center"}
-          alignItems={"center"}
-          alignSelf={"center"}
-          flexGrow={1}
           flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+          pt={4}
+          w="100%"
+          h="100%"
+          textAlign="center"
         >
-          <Flex w="100%" h="100%">
-            {spineAnim}
+          <Flex justifyContent="flex-end" mr={3} w="100%" zIndex={2}>
+            <MobileCoins />
           </Flex>
-          <Flex mt={-6}>
-            <PriceBox
-              absolutePosition={false}
-              price={card.price ?? 0}
-              discountPrice={card.discount_cost}
-              purchased={false}
-              fontSize={18}
-              discountFontSize={12}
-            />
+          <Flex
+            gap={1}
+            flexDir="column"
+            w="100%"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              zIndex: 1,
+            }}
+          >
+            <Box>
+              <Heading
+                fontWeight={500}
+                size="l"
+                letterSpacing={1.3}
+                textTransform="unset"
+              >
+                {name}
+              </Heading>
+            </Box>
+            <Text textAlign="center" size="xl" fontSize={"15px"} width={"90%"}>
+              {colorizeText(description)}
+            </Text>
+            {details && (
+              <Flex zIndex={2} mt={2} gap={2}>
+                <LootBoxRateInfo name={name} details={details} />
+              </Flex>
+            )}
           </Flex>
-        </Flex>
+          <Flex
+            justifyContent={"center"}
+            alignItems={"center"}
+            alignSelf={"center"}
+            flexGrow={1}
+            minH={0}
+            flexDirection="column"
+          >
+            <Flex flexGrow={1} flexShrink={1} minH={0} minW={0}>
+              {spineAnim}
+            </Flex>
+            <Flex transform="translateY(-40px)">
+              <PriceBox
+                absolutePosition={false}
+                price={card.price ?? 0}
+                discountPrice={pack.discount_cost}
+                purchased={false}
+                fontSize={18}
+                discountFontSize={12}
+              />
+            </Flex>
+          </Flex>
 
-        <MobileBottomBar
-          hideDeckButton
-          firstButton={{
-            onClick: () => {
-              navigate("/redirect/store");
-            },
-            label: t("labels.close").toUpperCase(),
-          }}
-          secondButton={{
-            onClick: onBuyClick,
-            label: t("labels.buy"),
-            disabled: notEnoughCash || locked,
-            disabledText: t("tooltip.no-coins"),
-          }}
-        />
-      </Flex>
+          <MobileBottomBar
+            firstButton={{
+              onClick: () => {
+                navigate("/store");
+              },
+              label: t("labels.close").toUpperCase(),
+            }}
+            secondButton={{
+              onClick: onBuyClick,
+              label: t("labels.buy"),
+              disabled: notEnoughCash || locked,
+              disabledText: t("tooltip.no-coins"),
+            }}
+          />
+        </Flex>
+      </DelayedLoading>
     </>
   ) : (
     <StorePreviewComponent

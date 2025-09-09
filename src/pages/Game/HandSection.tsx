@@ -17,37 +17,40 @@ import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
 import { HAND_SECTION_ID } from "../../constants/general";
+import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useRound } from "../../dojo/queries/useRound";
-import { useCardHighlight } from "../../providers/CardHighlightProvider";
+import { useAudio } from "../../hooks/useAudio";
 import { useGameContext } from "../../providers/GameProvider";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider";
+import { useSettings } from "../../providers/SettingsProvider";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
+import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
 }
 
 export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
-  const {
-    hand,
-    preSelectedCards,
-    togglePreselected,
-    changeModifierCard,
-    preSelectedModifiers,
-    roundRewards,
-    remainingPlaysTutorial,
-  } = useGameContext();
+  useGameContext();
 
-  const { highlightCard } = useCardHighlight();
+  const { changeModifierCard, stepIndex } = useGameContext();
+
+  const { hand, preSelectedCards, togglePreselected, preSelectedModifiers } =
+    useCurrentHandStore();
+  const { sfxVolume } = useSettings();
+
+  const { remainingPlays, roundRewards } = useGameStore();
+  const { play: preselectCardSound } = useAudio(preselectedCardSfx, sfxVolume);
+
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const [discarding, setDiscarding] = useState(false);
 
-  const round = useRound();
-  const handsLeft = !isTutorial()
-    ? round?.remaining_plays ?? 0
-    : remainingPlaysTutorial ?? 0;
+  const handsLeft = remainingPlays;
 
   const { activeNode } = useDndContext();
 
@@ -72,6 +75,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
 
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
+  const isTutorialRunning = isTutorial();
 
   return (
     <>
@@ -110,10 +114,38 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
           >
             {hand.map((card, index) => {
               const isPreselected = cardIsPreselected(card.idx);
+              const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
+              const targetSelector = currentStepConfig?.target;
+              const cardClassName = "hand-element-" + index;
+              const isActiveTutorialStep =
+                targetSelector === `.${cardClassName}`;
+
+              const isAnyHandCardTargeted = targetSelector
+                .toString()
+                .startsWith(".hand-element-");
+
+              const isClickDisabled =
+                isTutorialRunning &&
+                isAnyHandCardTargeted &&
+                !isActiveTutorialStep;
+
+              const activeStyle = isActiveTutorialStep
+                ? {
+                    transform: "translateY(-20px)",
+                    transition: "transform 0.3s ease-in-out",
+                    zIndex: 999,
+                  }
+                : {
+                    transition: "transform 0.3s ease-in-out",
+                  };
+
               return (
                 <GridItem
                   key={card.idx + "-" + index}
-                  sx={{ pointerEvents: isPreselected ? "none" : "auto" }}
+                  sx={{
+                    pointerEvents: isPreselected ? "none" : "auto",
+                    ...activeStyle,
+                  }}
                   w="100%"
                   onContextMenu={(e) => {
                     e.stopPropagation();
@@ -124,7 +156,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                   className={
                     card.isModifier
                       ? "tutorial-modifiers-step-2"
-                      : "hand-element-" + index
+                      : cardClassName
                   }
                   onMouseEnter={() =>
                     !isSmallScreen && setHoveredCard(card.idx)
@@ -192,15 +224,21 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                             : "pointer"
                         }
                         onClick={() => {
+                          if (isClickDisabled) return;
+
                           if (onTutorialCardClick) onTutorialCardClick();
                           if (!card.isModifier) {
-                            togglePreselected(card.idx);
+                            const preselected = togglePreselected(card.idx);
+                            if (preselected) {
+                              preselectCardSound();
+                            }
                           } else {
                             highlightCard(card);
                           }
                         }}
                         className={"hand-element-" + index}
                         onHold={() => {
+                          if (isClickDisabled) return;
                           isSmallScreen && highlightCard(card);
                         }}
                       />

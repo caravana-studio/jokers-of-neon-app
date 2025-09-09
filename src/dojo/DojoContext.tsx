@@ -1,34 +1,44 @@
-import ControllerConnector from "@cartridge/connector/controller";
-import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
-import { useAccount, useConnect } from "@starknet-react/core";
 import {
-  ReactNode,
   createContext,
   useContext,
   useEffect,
   useMemo,
-  useState,
+  ReactNode,
 } from "react";
 import { Account, AccountInterface, RpcProvider } from "starknet";
-import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
-import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
+import { BurnerProvider, useBurnerManager } from "@dojoengine/create-burner";
+
 import { useAccountStore } from "./accountStore";
 import { SetupResult } from "./setup";
+import { controller } from "./controller/controller";
+import { useWallet } from "./WalletContext";
+import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 
 interface DojoAccount {
   create: () => void;
   list: () => any[];
   get: (id: string) => any;
   select: (id: string) => void;
-  account: Account; // | AccountInterface;
+  account: Account | AccountInterface;
   isDeploying: boolean;
   clear: () => void;
   accountDisplay: string;
 }
 
+interface SwitchSuccessPayload {
+  username: string;
+  account: AccountInterface;
+}
+
 interface DojoContextType extends SetupResult {
   masterAccount: Account | AccountInterface;
   account: DojoAccount;
+  useBurnerAcc: boolean;
+  switchToController: (
+    onSuccess?: (payload: SwitchSuccessPayload) => void
+  ) => void;
+  logout: () => void;
+  accountType: "burner" | "controller" | null;
 }
 
 export interface DojoResult {
@@ -44,24 +54,11 @@ export function displayAddress(string: string) {
 
 export const DojoContext = createContext<DojoContextType | null>(null);
 
-/* const requiredEnvs = ["VITE_MASTER_ADDRESS", "VITE_MASTER_PRIVATE_KEY", "VITE_PUBLIC_ACCOUNT_CLASS_HASH"];
-
-for (const env of requiredEnvs) {
-  if (!import.meta.env[env]) {
-    throw new Error(`Environment variable ${env} is not set!`);
-  }
-} */
-
-type DojoProviderProps = {
-  children: ReactNode;
-  value: SetupResult;
-};
-
 const useMasterAccount = (rpcProvider: RpcProvider) => {
   const masterAddress = import.meta.env.VITE_MASTER_ADDRESS;
   const privateKey = import.meta.env.VITE_MASTER_PRIVATE_KEY;
   return useMemo(
-    () => new Account(rpcProvider, masterAddress, privateKey),
+    () => new Account({provider: rpcProvider, address: masterAddress, signer: privateKey}),
     [rpcProvider, masterAddress, privateKey]
   );
 };
@@ -76,24 +73,9 @@ const useRpcProvider = () => {
   );
 };
 
-const useControllerAccount = () => {
-  const { account, connector, isConnected } = useAccount();
-
-  useEffect(() => {
-    if (account) {
-      useAccountStore.getState().setAccount(account);
-    }
-  }, [account, isConnected]);
-
-  useEffect(() => {
-    if (connector) {
-      useAccountStore
-        .getState()
-        .setConnector(connector as unknown as ControllerConnector);
-    }
-  }, [connector, isConnected]);
-
-  return account;
+type DojoProviderProps = {
+  children: ReactNode;
+  value: SetupResult;
 };
 
 export const DojoProvider = ({ children, value }: DojoProviderProps) => {
@@ -102,7 +84,6 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
 
   const rpcProvider = useRpcProvider();
   const masterAccount = useMasterAccount(rpcProvider);
-  const controllerAccount = useControllerAccount();
 
   return (
     <BurnerProvider
@@ -117,11 +98,7 @@ export const DojoProvider = ({ children, value }: DojoProviderProps) => {
           "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       }}
     >
-      <DojoContextProvider
-        value={value}
-        masterAccount={masterAccount}
-        controllerAccount={controllerAccount!}
-      >
+      <DojoContextProvider value={value} masterAccount={masterAccount}>
         {children}
       </DojoContextProvider>
     </BurnerProvider>
@@ -140,123 +117,90 @@ export const useDojo = (): DojoResult => {
   };
 };
 
+type DojoContextProviderProps = Omit<DojoProviderProps, "controllerAccount"> & {
+  masterAccount: Account;
+};
+
 const DojoContextProvider = ({
   children,
   value,
   masterAccount,
-  controllerAccount,
-}: DojoProviderProps & {
-  masterAccount: Account;
-  controllerAccount: AccountInterface | null;
-}) => {
-  const currentValue = useContext(DojoContext);
-  if (currentValue) throw new Error("DojoProvider can only be used once");
-
+}: DojoContextProviderProps) => {
   const {
-    create,
-    list,
-    get,
-    account: burnerAccount,
-    select,
-    isDeploying,
-    clear,
-  } = useBurnerManager({
+    finalAccount,
+    accountType,
+    switchToController,
+    isLoadingWallet,
+    controllerAccount,
+    burnerAccount,
+    isControllerConnected,
+    onSuccessCallback,
+    logout,
+  } = useWallet();
+
+  const { create, list, get, select, isDeploying, clear } = useBurnerManager({
     burnerManager: value.burnerManager,
   });
 
-  const { connect, connectors } = useConnect();
-  const { isConnected, isConnecting } = useAccount();
-
-  const [accountsInitialized, setAccountsInitialized] = useState(false);
-
-  const connectWallet = async () => {
-    try {
-      console.log("Attempting to connect wallet...");
-      await connect({ connector: connectors[0] });
-      console.log("Wallet connected successfully.");
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-    }
-  };
-
-  // Determine which account to use based on environment
-  const isDev = import.meta.env.VITE_DEV === "true";
-  const accountToUse = isDev ? burnerAccount : controllerAccount;
-
   useEffect(() => {
-    if (isDev) {
-      if (burnerAccount) {
-        console.log("Setting account from burner hook:", burnerAccount);
-        useAccountStore.getState().setAccount(burnerAccount);
-        setAccountsInitialized(true);
-      } else {
-        console.log("Burner account is null in development.");
+    if (
+      accountType === "controller" &&
+      isControllerConnected &&
+      controllerAccount
+    ) {
+      console.log(
+        "Controller is connected. Finalizing state in DojoContext..."
+      );
+      useAccountStore.getState().setAccount(controllerAccount);
+      if (controller) {
+        controller.username()?.then((newUsername) => {
+          if (newUsername && onSuccessCallback.current) {
+            console.log(
+              `Executing success callback with username: ${newUsername}`
+            );
+            onSuccessCallback.current({
+              username: newUsername,
+              account: controllerAccount,
+            });
+            onSuccessCallback.current = null;
+          }
+        });
       }
-    } else {
-      if (controllerAccount) {
-        console.log(
-          "Setting account from controllerAccount:",
-          controllerAccount
-        );
-        useAccountStore.getState().setAccount(controllerAccount);
-        setAccountsInitialized(true);
-      } else {
-        console.log(
-          "ControllerAccount is null in production or not connected."
-        );
-        setAccountsInitialized(true);
-      }
+    } else if (accountType === "burner" && burnerAccount) {
+      console.log("Burner is ready. Finalizing state in DojoContext...");
+      useAccountStore.getState().setAccount(burnerAccount);
     }
-  }, [isDev, controllerAccount, burnerAccount]);
+  }, [
+    accountType,
+    isControllerConnected,
+    controllerAccount,
+    burnerAccount,
+    onSuccessCallback,
+  ]);
 
-  if (!accountsInitialized) {
+  if (!finalAccount) {
     return <LoadingScreen />;
   }
 
-  // Handle Loading Screen
-  if (isDev) {
-    if (!burnerAccount) {
-      return <LoadingScreen />;
-    }
-  } else {
-    if (isConnecting) {
-      return <LoadingScreen />;
-    }
-    if (!isConnected && !isConnecting && !controllerAccount) {
-      return (
-        <PreThemeLoadingPage>
-          <img width="60%" src="logos/logo.png" alt="logo" />
-          {!isConnected && (
-            <button style={{ color: "white" }} className="login-button" onClick={connectWallet}>
-              LOGIN
-            </button>
-          )}
-        </PreThemeLoadingPage>
-      );
-    }
-
-    if (!controllerAccount && isConnected) {
-      // Connected but controllerAccount is not set yet
-      return <LoadingScreen />;
-    }
-  }
-
-  // Once account is set, render the children
   return (
     <DojoContext.Provider
       value={{
         ...value,
         masterAccount,
+        useBurnerAcc: accountType === "burner",
+        switchToController: switchToController,
+        logout: logout,
+        accountType: accountType,
         account: {
           create,
           list,
           get,
           select,
           clear,
-          account: accountToUse as Account, // | AccountInterface,
+          account: finalAccount as Account,
           isDeploying,
           accountDisplay: displayAddress(
-            (accountToUse as Account | AccountInterface)?.address || ""
+            (finalAccount as Account | AccountInterface)?.address || ""
           ),
         },
       }}

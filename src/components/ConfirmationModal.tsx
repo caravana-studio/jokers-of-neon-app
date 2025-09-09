@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { NEON_PINK } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface ConfirmationModalProps {
   close: () => void;
@@ -20,6 +21,8 @@ interface ConfirmationModalProps {
   description: string;
   onConfirm: () => void;
   isOpen?: boolean;
+  confirmText?: string;
+  cancelText?: string;
 }
 
 export const ConfirmationModal = ({
@@ -28,35 +31,45 @@ export const ConfirmationModal = ({
   description,
   onConfirm,
   isOpen = true,
+  confirmText,
+  cancelText,
 }: ConfirmationModalProps) => {
   const { t } = useTranslation(["game"]);
+
+  const { isSmallScreen } = useResponsiveValues();
   return (
     <Modal isOpen={isOpen} onClose={close}>
-      <ModalOverlay />
-      <ModalContent>
+      <ModalOverlay bg="rgba(0, 0, 0, 0.6)" />
+      <ModalContent p={3}>
         <ModalHeader>
           <Heading size="m" variant="neonWhite">
             {title}
           </Heading>
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton sx={{ m: 5 }} />
         <ModalBody>
           <Flex gap={4} flexDirection="column">
             <Text size="md">{description}</Text>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button variant="defaultOutline" size="sm" onClick={close}>
-            {t("confirmation-modal.close")}
+          <Button
+            variant="defaultOutline"
+            size="sm"
+            w={isSmallScreen ? "50%" : "auto"}
+            onClick={close}
+          >
+            {cancelText ?? t("confirmation-modal.close")}
           </Button>
           <Button
             variant="secondarySolid"
             boxShadow={`0px 0px 10px 6px ${NEON_PINK}`}
             size="sm"
             onClick={onConfirm}
-            ml={3}
+            ml={5}
+            w={isSmallScreen ? "50%" : "auto"}
           >
-            {t("confirmation-modal.confirm")}
+            {confirmText ?? t("confirmation-modal.confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -16,6 +16,7 @@ export interface PlayEvents {
   cardPlayScoreEvents?: CardPlayEvent[];
   specialCardPlayScoreEvents?: CardPlayEvent[];
   cardActivateEvent?: CardActivateEvent;
+  acumulativeEvents?: CardPlayEvent[];
 }
 
 export interface CardPlayEvent {
@@ -31,7 +32,9 @@ export interface CardPlayEventValue {
 
 export interface LevelPassedEvent {
   level: number;
-  score: number;
+  player_score: number;
+  round: number;
+  level_passed: number;
 }
 
 export interface LevelEvent {
@@ -93,6 +96,7 @@ export interface DetailEarned {
   discard_left_cash: number;
   rage_card_defeated: number;
   rage_card_defeated_cash: number;
+  rerolls: number;
   total: number;
 }
 

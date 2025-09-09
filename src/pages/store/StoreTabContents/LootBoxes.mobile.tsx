@@ -2,18 +2,19 @@ import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LootBoxRateInfo } from "../../../components/Info/LootBoxRateInfo";
+import { LootBox, LootBoxRef } from "../../../components/LootBox";
 import { PriceBox } from "../../../components/PriceBox";
-import { useGame } from "../../../dojo/queries/useGame";
 import { BlisterPackItem } from "../../../dojo/typescript/models.gen";
 import { useCardData } from "../../../providers/CardDataProvider";
 import { usePageTransitions } from "../../../providers/PageTransitionsProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
+import { useShopStore } from "../../../state/useShopStore";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { LootBox, LootBoxRef } from "../../../components/LootBox";
 
 export const LootBoxesMobile = () => {
-  const { packs } = useStore();
+  const { packs } = useShopStore();
 
   return (
     <Flex
@@ -36,11 +37,11 @@ export const LootBoxesMobile = () => {
 };
 
 const PackView = ({ pack }: { pack: BlisterPackItem }) => {
-  const { buyPack, locked, setLockRedirection } = useStore();
+  const { buyPack } = useStore();
+  const { locked } = useShopStore();
   const [buyDisabled, setBuyDisabled] = useState(false);
   const [isAnimationRunning, setIsAnimationRunning] = useState(false);
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash } = useGameStore();
   const { neonGreen } = theme.colors;
   const { t } = useTranslation(["store"]);
 
@@ -78,9 +79,7 @@ const PackView = ({ pack }: { pack: BlisterPackItem }) => {
       lootBoxRef.current?.openBox();
       buyPack(pack)
         .then((response) => {
-          if (response) {
-            setLockRedirection(true);
-          } else {
+          if (!response) {
             setBuyDisabled(false);
             setIsAnimationRunning(false);
           }

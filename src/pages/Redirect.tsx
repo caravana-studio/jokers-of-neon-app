@@ -1,53 +1,38 @@
-import {
-  NavigateOptions,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { PositionedDiscordLink } from "../components/DiscordLink";
 import { Loading } from "../components/Loading";
-import { useGame } from "../dojo/queries/useGame";
-import { useEffect } from "react";
-import { redirectConfig, stateToPageMap } from "../constants/redirectConfig";
+import { stateToPageMap } from "../constants/redirectConfig";
+import { GameStateEnum } from "../dojo/typescript/custom";
+import { useDojo } from "../dojo/useDojo";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
+import { useGameStore } from "../state/useGameStore";
 
 export const Redirect = () => {
-  const game = useGame();
-  const state = game?.state;
+  const { state, refetchGameStore, id: gameId } = useGameStore();
   const navigate = useNavigate();
-  const { page, gameId } = useParams();
-  const location = useLocation();
-  const lastTabIndex = location.state?.lastTabIndex ?? 0;
+  const { refetchCurrentHandStore } = useCurrentHandStore();
+
+  console.log("state", state);
+  const {
+    setup: { client },
+  } = useDojo();
 
   useEffect(() => {
-    if (!game || !page || !game.state) return;
+    const desiredPath =
+      stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
+  
+    console.log("desiredPath", desiredPath);
+  
+    navigate(desiredPath);
+  }, [])
 
-    const navOptions: NavigateOptions = {
-      state: { lastTabIndex },
-      replace: false,
-    };
-    let desiredPath: any;
-
-    if (page === "state") {
-      desiredPath = stateToPageMap[state as keyof typeof stateToPageMap] ?? "/";
-      navOptions.replace = true;
-    } else desiredPath = `/${page}`;
-
-    if (gameId) desiredPath += `/${gameId}`;
-
-    // redirectTo === desiredPath && match game state
-    const matchedRule = redirectConfig.find(({ redirectTo, gameState }) => {
-      const resolvedPath =
-        typeof redirectTo === "function"
-          ? redirectTo({ gameId: gameId })
-          : redirectTo;
-
-      return resolvedPath === desiredPath && gameState === game.state;
-    });
-
-    if (matchedRule) {
-      navigate(desiredPath, navOptions);
+  useEffect(() => {
+    if (!state || state === GameStateEnum.NotSet) {
+      refetchGameStore(client, gameId);
+      // refetchCurrentHandStore(client, gameId);
     }
-  }, [game, page, location.state, navigate]);
+  }, [state]);
 
   return (
     <>

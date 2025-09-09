@@ -2,8 +2,6 @@ import { EventTypeEnum } from "../../dojo/typescript/custom";
 import { Suits } from "../../enums/suits";
 import { Card } from "../../types/Card";
 import { PlayEvents } from "../../types/ScoreData";
-import { changeCardNeon } from "../cardTransformation/changeCardNeon";
-import { changeCardSuit } from "../cardTransformation/changeCardSuit";
 import { eventTypeToSuit } from "./eventTypeToSuit";
 
 interface AnimatePlayConfig {
@@ -14,31 +12,33 @@ interface AnimatePlayConfig {
   setAnimatedPowerUp: (powerUp: any) => void;
   pointsSound: () => void;
   multiSound: () => void;
+  acumSound: () => void;
   negativeMultiSound: () => void;
   cashSound: () => void;
-  setPoints: (points: number | ((prev: number) => number)) => void;
-  setMulti: (multi: number | ((prev: number) => number)) => void;
-  setHand: (hand: Card[] | ((prev: Card[]) => Card[])) => void;
+  setPoints: (points: number) => void;
+  setMulti: (multi: number) => void;
+  addPoints: (points: number) => void;
+  addMulti: (multi: number) => void;
+  changeCardsSuit: (cardIndexes: number[], suit: Suits) => void;
+  changeCardsNeon: (cardIndexes: number[]) => void;
   setPlayAnimation: (playing: boolean) => void;
   setPreSelectionLocked: (locked: boolean) => void;
-  setLockedScore: (score: number | undefined) => void;
-  setLockedPlayerScore: (playerScore: number | undefined) => void;
-  setLockedSpecialCards: (cards: Card[]) => void;
-  setLockedCash: (cash: number | undefined) => void;
   clearPreSelection: () => void;
-  removePowerUp: (idx: number) => void;
-  preselectedPowerUps: number[];
+  refetchPowerUps: () => void;
+  preSelectedPowerUps: number[];
   navigate: (path: string) => void;
   gameId: number;
-  setLockRedirection: (locked: boolean) => void;
   setRoundRewards: (rewards: any) => void;
   replaceCards: (cards: Card[]) => void;
-  handsLeft: number;
+  remainingPlays: number;
   setAnimateSecondChanceCard: (animate: boolean) => void;
   setCardTransformationLock: (locked: boolean) => void;
-  setIsRageRound: (isRageRound: boolean) => void;
   specialCards: Card[];
   setAnimateSpecialCardDefault: (animateSpecialCardDefault: any) => void;
+  addCash: (cash: number) => void;
+  setCurrentScore: (score: number) => void;
+  resetRage: () => void;
+  unPreSelectAllPowerUps: () => void;
 }
 
 export const animatePlay = (config: AnimatePlayConfig) => {
@@ -50,31 +50,32 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     setAnimatedPowerUp,
     pointsSound,
     multiSound,
+    acumSound,
     negativeMultiSound,
     cashSound,
     setPoints,
     setMulti,
-    setHand,
+    changeCardsNeon,
+    changeCardsSuit,
     setPlayAnimation,
     setPreSelectionLocked,
-    setLockedScore,
-    setLockedPlayerScore,
-    setLockedSpecialCards,
-    setLockedCash,
     clearPreSelection,
-    removePowerUp,
-    preselectedPowerUps,
+    refetchPowerUps,
     navigate,
     gameId,
-    setLockRedirection,
     setRoundRewards,
     replaceCards,
-    handsLeft,
+    remainingPlays,
     setAnimateSecondChanceCard,
     setCardTransformationLock,
-    setIsRageRound,
     specialCards,
     setAnimateSpecialCardDefault,
+    addCash,
+    setCurrentScore,
+    addMulti,
+    addPoints,
+    resetRage,
+    unPreSelectAllPowerUps,
   } = config;
 
   if (!playEvents) return;
@@ -98,7 +99,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
     specialCardPlayScore: calculateDuration(
       playEvents.specialCardPlayScoreEvents
     ),
+    accumDuration: playEvents.acumulativeEvents? playEvents.acumulativeEvents.length * 500 : 0,
   };
+
+  const playDuration = 500;
 
   const ALL_CARDS_DURATION = Object.values(durations).reduce(
     (a, b) => a + b,
@@ -142,20 +146,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
               idx: handIndexes,
               animationIndex: 200 + index,
             });
-            setHand((prev) => {
-              const updatedHand = prev?.map((card) =>
-                handIndexes.includes(card.idx)
-                  ? {
-                      ...card,
-                      card_id: changeCardNeon(card.card_id!),
-                      img: `${changeCardNeon(card.card_id!)}.png`,
-                      isNeon: true,
-                    }
-                  : card
-              );
-              resolve();
-              return updatedHand;
-            });
+            changeCardsNeon(handIndexes);
           } else {
             setAnimatedCard({
               suit,
@@ -164,20 +155,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
               animationIndex: 200 + index,
             });
             suit &&
-              setHand((prev) => {
-                const updatedHand = prev?.map((card) =>
-                  handIndexes.includes(card.idx) && card.suit !== Suits.WILDCARD
-                    ? {
-                        ...card,
-                        card_id: changeCardSuit(card.card_id!, suit),
-                        img: `${changeCardSuit(card.card_id!, suit)}.png`,
-                        suit,
-                      }
-                    : card
-                );
-                resolve();
-                return updatedHand;
-              });
+              changeCardsSuit(handIndexes, suit);
           }
         }, playAnimationDuration * index);
       });
@@ -201,7 +179,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             points: quantity,
             animationIndex: 300 + index,
           });
-          setPoints((prev) => prev + quantity);
+          addPoints(quantity);
         } else if (isMulti) {
           multiSound();
           setAnimatedCard({
@@ -210,9 +188,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
             multi: quantity,
             animationIndex: 300 + index,
           });
-          setMulti((prev) => prev + quantity);
+          addMulti(quantity);
         } else if (isCash) {
           cashSound();
+          addCash(quantity);
           setAnimatedCard({
             special_idx,
             idx: [],
@@ -243,7 +222,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
                 points: quantity,
                 animationIndex: 400 + index,
               });
-              setPoints((prev) => prev + quantity);
+              addPoints(quantity);
             } else if (isMulti) {
               quantity > 0 ? multiSound() : negativeMultiSound();
               setAnimatedCard({
@@ -252,9 +231,10 @@ export const animatePlay = (config: AnimatePlayConfig) => {
                 multi: quantity,
                 animationIndex: 400 + index,
               });
-              setMulti((prev) => prev + quantity);
+              addMulti(quantity);
             } else if (isCash) {
               cashSound();
+              addCash(quantity);
               setAnimatedCard({
                 special_idx,
                 idx: [idx],
@@ -288,13 +268,46 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
         if (points) {
           pointsSound();
-          setPoints((prev) => prev + points);
+          addPoints(points);
         }
 
         if (multi) {
           multiSound();
-          setMulti((prev) => prev + multi);
+          addMulti(multi);
         }
+      }, playAnimationDuration * index);
+    });
+  };
+
+  const handleAccumulativeCards = () => {
+    playEvents.acumulativeEvents?.forEach((event, index) => {
+      const isPoints = event.eventType === EventTypeEnum.AcumPoint;
+      const isMulti = event.eventType === EventTypeEnum.AcumMulti;
+      const special_idx = event.specials[0]?.idx;
+      const quantity = event.specials[0]?.quantity ?? 0;
+
+      setTimeout(() => {
+        if (isPoints) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            points: quantity,
+            isAccumulative: true,
+            animationIndex: 700 + index,
+          });
+          addPoints(quantity);
+        } else if (isMulti) {
+          acumSound();
+          setAnimatedCard({
+            special_idx,
+            idx: [],
+            multi: quantity,
+            isAccumulative: true,
+            animationIndex: 800 + index,
+          });
+          addMulti(quantity);
+        } 
       }, playAnimationDuration * index);
     });
   };
@@ -302,37 +315,35 @@ export const animatePlay = (config: AnimatePlayConfig) => {
   const handleGameEnd = () => {
     if (playEvents.cardActivateEvent) {
       const specialCardInHand =
-        specialCards[playEvents.cardActivateEvent.special_id];
-      if (specialCardInHand.card_id == 323) {
-        setAnimateSecondChanceCard(true);
-      } else {
-        setAnimateSpecialCardDefault({
-          specialId: specialCardInHand.card_id,
-          bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
-          animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
-        });
+        specialCards.find(card =>  card.card_id == playEvents.cardActivateEvent?.special_id);
+      if (specialCardInHand) {
+        if (specialCardInHand?.card_id == 10023) {
+          setAnimateSecondChanceCard(true);
+        } else {
+          setAnimateSpecialCardDefault({
+            specialId: specialCardInHand.card_id,
+            bgPath: `Cards/3d/${specialCardInHand.card_id}-l0.png`,
+              animatedImgPath: `Cards/3d/${specialCardInHand.card_id}-l1.png`,
+          });
+        }
       }
     } else if (playEvents.gameOver) {
       setTimeout(() => {
         navigate(`/gameover/${gameId}`);
-        setLockRedirection(false);
       }, 1000);
     } else if (playEvents.levelPassed && playEvents.detailEarned) {
-      const { level } = playEvents.levelPassed;
+      resetRage();
       setTimeout(() => {
         setRoundRewards({
           ...playEvents.detailEarned!,
-          roundNumber: level,
+          roundNumber: playEvents.levelPassed?.round,
         });
-        setIsRageRound(false);
         navigate("/rewards");
       }, 1000);
       setPreSelectionLocked(true);
     } else {
-      setLockedCash(undefined);
       playEvents.cards && replaceCards(playEvents.cards);
       setRoundRewards(undefined);
-      setLockRedirection(false);
     }
   };
 
@@ -372,22 +383,30 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   setTimeout(() => {
     setPlayAnimation(true);
-  }, ALL_CARDS_DURATION);
+    setAnimatedCard(undefined);
+  }, ALL_CARDS_DURATION - durations.accumDuration);
+
+  setTimeout(
+    () => handleAccumulativeCards(),
+    ALL_CARDS_DURATION - durations.accumDuration + (durations.accumDuration > 0 ? playDuration : 0)
+  );
 
   setTimeout(() => {
     // Reset state
-    setAnimatedCard(undefined);
     setAnimatedPowerUp(undefined);
-    setLockedScore(undefined);
-    setLockedPlayerScore(undefined);
+    unPreSelectAllPowerUps();
+    refetchPowerUps();
+
     setPlayAnimation(false);
-    preselectedPowerUps.forEach((idx) => removePowerUp(idx));
     clearPreSelection();
-    handsLeft > 0 && setPreSelectionLocked(false);
+    remainingPlays > 0 && setPreSelectionLocked(false);
     setPlayIsNeon(false);
-    setLockedSpecialCards([]);
+
+    setCurrentScore(playEvents.score);
 
     handleGameEnd();
     setCardTransformationLock(false);
-  }, ALL_CARDS_DURATION + 500);
+
+  }, ALL_CARDS_DURATION + playDuration);
+
 };

@@ -5,12 +5,15 @@ import EmojiNode from "./nodes/EmojiNode";
 import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { useBackToGameButton } from "../../components/useBackToGameButton";
+import { GameStateEnum } from "../../dojo/typescript/custom";
+import { useDojo } from "../../dojo/useDojo";
 import { useShopActions } from "../../dojo/useShopActions";
-import { useGameContext } from "../../providers/GameProvider";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useMap } from "../../providers/MapProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { MobileCoins } from "../store/Coins";
 import { NodeDetailsMobileButton } from "./NodeDetailsMobileButton";
@@ -18,9 +21,6 @@ import RageNode from "./nodes/RageNode";
 import RoundNode from "./nodes/RoundNode";
 import RewardNode from "./nodes/StoreNode";
 import { NodeType } from "./types";
-import { useBackToGameButton } from "../../components/useBackToGameButton";
-import { useGame } from "../../dojo/queries/useGame";
-import { GameStateEnum } from "../../dojo/typescript/custom";
 
 export const Map = () => {
   const { t } = useTranslation("map");
@@ -34,12 +34,15 @@ export const Map = () => {
     reachableNodes,
   } = useMap();
 
+  const {
+    setup: { client },
+  } = useDojo();
+
   const { isSmallScreen } = useResponsiveValues();
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
-  const navigate = useNavigate();
+  const { state, id: gameId, setShopId, refetchGameStore } = useGameStore();
+  const navigate = useCustomNavigate();
   const { backToGameButtonProps, backToGameButton } = useBackToGameButton();
-  const game = useGame();
 
   useEffect(() => {
     if (layoutReady && nodes.length > 0) {
@@ -62,19 +65,25 @@ export const Map = () => {
     selectedNodeData?.id?.toString() ?? ""
   );
 
+  const refetchAndNavigate = async (state: GameStateEnum) => {
+    await refetchGameStore(client, gameId);
+    navigate(state);
+  };
+
   const handleGoClick = () => {
     selectedNodeData &&
       advanceNode(gameId, selectedNodeData.id).then((response) => {
         if (response) {
           switch (selectedNodeData?.nodeType) {
             case NodeType.RAGE:
-              navigate("/redirect/demo");
+              refetchAndNavigate(GameStateEnum.Rage);
               break;
             case NodeType.ROUND:
-              navigate("/redirect/demo");
+              refetchAndNavigate(GameStateEnum.Round);
               break;
             case NodeType.STORE:
-              navigate("/redirect/store");
+              navigate(GameStateEnum.Store);
+              selectedNodeData.shopId && setShopId(selectedNodeData.shopId);
               break;
             default:
               break;
@@ -129,22 +138,16 @@ export const Map = () => {
         {isSmallScreen ? (
           <MobileBottomBar
             firstButton={
-              isReachable
+              isReachable && state === GameStateEnum.Map
                 ? {
                     onClick: handleGoClick,
                     label: t("go"),
                   }
                 : undefined
             }
-            secondButton={
-              game?.state !== GameStateEnum.Map
-                ? backToGameButtonProps
-                : undefined
-            }
-            hideDeckButton
           />
         ) : (
-          game?.state !== GameStateEnum.Map && (
+          state !== GameStateEnum.Map && (
             <Flex margin={"0 auto"}>{backToGameButton}</Flex>
           )
         )}

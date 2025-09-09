@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { LOGGED_USER } from "../../constants/localStorage";
 import { controller } from "../controller/controller";
-
-const isDev = import.meta.env.VITE_DEV === "true";
+import { useDojo } from "../DojoContext";
 
 export const useUsername = () => {
   const [username, setUsername] = useState<string | null>(null);
+  const { setup } = useDojo();
+  const isUsingBurner = setup?.useBurnerAcc;
 
   useEffect(() => {
-    if (!isDev && controller) {
+    if (!isUsingBurner && controller) {
       controller.username()?.then((username) => {
         setUsername(username);
       });
     }
-  }, [controller, isDev]);
+  }, [controller, setup?.useBurnerAcc, setup.accountType]);
 
-  return isDev ? window.localStorage.getItem(LOGGED_USER) : username;
+  return isUsingBurner ? window.localStorage.getItem(LOGGED_USER) : username;
 };

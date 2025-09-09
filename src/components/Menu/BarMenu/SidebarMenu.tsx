@@ -1,30 +1,28 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Divider, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Icons } from "../../../constants/icons";
-import { ControllerIcon } from "../../../icons/ControllerIcon";
-import { AnimatedText } from "../../AnimatedText";
-import CachedImage from "../../CachedImage";
-import { DiscordLink } from "../../DiscordLink";
-import { MenuBtn } from "../Buttons/MenuBtn";
-import { MapMenuBtn } from "../Buttons/MapMenuBtn";
-import { LeaderboardMenuBtn } from "../Buttons/LeaderboardMenuBtn";
-import { DocsMenuBtn } from "../Buttons/DocsMenuBtn";
-import { SettingsMenuBtn } from "../Buttons/SettingsMenuBtn";
-import { MyGamesMenuBtn } from "../Buttons/MyGamesMenuBtn";
-import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
-import { TutorialBtn } from "../Buttons/TutorialBtn";
-import { useFeatureFlagEnabled } from "../../../featureManagement/useFeatureFlagEnabled";
+import { matchPath, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
+import { AnimatedText } from "../../AnimatedText";
+import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
+import { ContextMenuItem } from "../ContextMenuItem";
+import { mainMenuUrls, useContextMenuItems } from "../useContextMenuItems";
 
 export const SidebarMenu = () => {
   const navigate = useNavigate();
   const page = useCurrentPageInfo();
-  const hideTutorialFF = useFeatureFlagEnabled("global", "hideTutorial");
 
   const iconWidth = "20px";
 
   const [animatedText, setAnimatedText] = useState(page?.name ?? "");
+
+  const { mainMenuItems, inGameMenuItems, extraMenuItems } =
+    useContextMenuItems({
+      onMoreClick: undefined,
+    });
+
+  const inGame = !mainMenuUrls.some((url) =>
+    matchPath({ path: url, end: true }, window.location.pathname)
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,8 +32,7 @@ export const SidebarMenu = () => {
 
   return (
     <Flex
-      width={12}
-      p={1}
+      width="48px"
       py={12}
       height="100%"
       flexDirection={"column"}
@@ -49,18 +46,23 @@ export const SidebarMenu = () => {
     >
       <Flex
         flexDirection={"column"}
-        gap={4}
+        gap={0}
         justifyContent={"center"}
         alignItems={"center"}
+        w="100%"
       >
-        <ControllerIcon width={iconWidth} />
-        <MapMenuBtn width={iconWidth} />
-        <LeaderboardMenuBtn width={iconWidth} />
-        <DocsMenuBtn width={iconWidth} />
-        <MyGamesMenuBtn width={iconWidth} />
-        <SettingsMenuBtn width={iconWidth} />
-        <DiscordLink width={iconWidth} />
-        {!hideTutorialFF && <TutorialBtn width={iconWidth} />}
+        {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => (
+          <ContextMenuItem {...item} />
+        ))}
+
+        {inGame && (
+          <>
+            <Divider my={3} />
+            {extraMenuItems.map((item) => (
+              <ContextMenuItem {...item} />
+            ))}
+          </>
+        )}
       </Flex>
       <Flex
         gap={4}
@@ -71,7 +73,7 @@ export const SidebarMenu = () => {
       >
         <Flex
           flexDirection={"column"}
-          py={8}
+          pt={8}
           justifyContent={"center"}
           alignItems={"center"}
           onClick={() => page?.url && navigate(page.url)}
@@ -82,7 +84,6 @@ export const SidebarMenu = () => {
             <Heading
               variant="italic"
               as="div"
-              mb={4}
               size={"sm"}
               textTransform={"uppercase"}
               flex={1}
@@ -95,12 +96,12 @@ export const SidebarMenu = () => {
               {animatedText}
             </Heading>
           </AnimatedText>
-          <MenuBtn
+          {/*           <MenuBtn
             icon={page?.icon ?? Icons.CIRCLE}
             description={""}
             width={iconWidth}
-          />
-          <Flex
+          /> */}
+          {/*           <Flex
             sx={{
               w: "80px",
               transform: "rotate(-90deg)",
@@ -108,7 +109,7 @@ export const SidebarMenu = () => {
             }}
           >
             <CachedImage src="/logos/jn.png" height="15px" />
-          </Flex>
+          </Flex> */}
         </Flex>
         <LogoutMenuListBtn width={iconWidth} />
       </Flex>

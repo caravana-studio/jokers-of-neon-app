@@ -4,215 +4,215 @@
   "traditionalCards": {
     "0": {
       "name": "2 of Clubs",
-      "description": "Scores +2 points"
+      "description": "Scores ^blue(+2 points)^"
     },
     "1": {
       "name": "3 of Clubs",
-      "description": "Scores +3 points"
+      "description": "Scores ^blue(+3 points)^"
     },
     "2": {
       "name": "4 of Clubs",
-      "description": "Scores +4 points"
+      "description": "Scores ^blue(+4 points)^"
     },
     "3": {
       "name": "5 of Clubs",
-      "description": "Scores +5 points"
+      "description": "Scores ^blue(+5 points)^"
     },
     "4": {
       "name": "6 of Clubs",
-      "description": "Scores +6 points"
+      "description": "Scores ^blue(+6 points)^"
     },
     "5": {
       "name": "7 of Clubs",
-      "description": "Scores +7 points"
+      "description": "Scores ^blue(+7 points)^"
     },
     "6": {
       "name": "8 of Clubs",
-      "description": "Scores +8 points"
+      "description": "Scores ^blue(+8 points)^"
     },
     "7": {
       "name": "9 of Clubs",
-      "description": "Scores +9 points"
+      "description": "Scores ^blue(+9 points)^"
     },
     "8": {
       "name": "10 of Clubs",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "9": {
       "name": "Jack of Clubs",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "10": {
       "name": "Queen of Clubs",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "11": {
       "name": "King of Clubs",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "12": {
       "name": "Ace of Clubs",
-      "description": "Scores +11 points"
+      "description": "Scores ^blue(+11 points)^"
     },
     "13": {
       "name": "2 of Diamonds",
-      "description": "Scores +2 points"
+      "description": "Scores ^blue(+2 points)^"
     },
     "14": {
       "name": "3 of Diamonds",
-      "description": "Scores +3 points"
+      "description": "Scores ^blue(+3 points)^"
     },
     "15": {
       "name": "4 of Diamonds",
-      "description": "Scores +4 points"
+      "description": "Scores ^blue(+4 points)^"
     },
     "16": {
       "name": "5 of Diamonds",
-      "description": "Scores +5 points"
+      "description": "Scores ^blue(+5 points)^"
     },
     "17": {
       "name": "6 of Diamonds",
-      "description": "Scores +6 points"
+      "description": "Scores ^blue(+6 points)^"
     },
     "18": {
       "name": "7 of Diamonds",
-      "description": "Scores +7 points"
+      "description": "Scores ^blue(+7 points)^"
     },
     "19": {
       "name": "8 of Diamonds",
-      "description": "Scores +8 points"
+      "description": "Scores ^blue(+8 points)^"
     },
     "20": {
       "name": "9 of Diamonds",
-      "description": "Scores +9 points"
+      "description": "Scores ^blue(+9 points)^"
     },
     "21": {
       "name": "10 of Diamonds",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "22": {
       "name": "Jack of Diamonds",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "23": {
       "name": "Queen of Diamonds",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "24": {
       "name": "King of Diamonds",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "25": {
       "name": "Ace of Diamonds",
-      "description": "Scores +11 points"
+      "description": "Scores ^blue(+11 points)^"
     },
     "26": {
       "name": "2 of Hearts",
-      "description": "Scores +2 points"
+      "description": "Scores ^blue(+2 points)^"
     },
     "27": {
       "name": "3 of Hearts",
-      "description": "Scores +3 points"
+      "description": "Scores ^blue(+3 points)^"
     },
     "28": {
       "name": "4 of Hearts",
-      "description": "Scores +4 points"
+      "description": "Scores ^blue(+4 points)^"
     },
     "29": {
       "name": "5 of Hearts",
-      "description": "Scores +5 points"
+      "description": "Scores ^blue(+5 points)^"
     },
     "30": {
       "name": "6 of Hearts",
-      "description": "Scores +6 points"
+      "description": "Scores ^blue(+6 points)^"
     },
     "31": {
       "name": "7 of Hearts",
-      "description": "Scores +7 points"
+      "description": "Scores ^blue(+7 points)^"
     },
     "32": {
       "name": "8 of Hearts",
-      "description": "Scores +8 points"
+      "description": "Scores ^blue(+8 points)^"
     },
     "33": {
       "name": "9 of Hearts",
-      "description": "Scores +9 points"
+      "description": "Scores ^blue(+9 points)^"
     },
     "34": {
       "name": "10 of Hearts",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "35": {
       "name": "Jack of Hearts",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "36": {
       "name": "Queen of Hearts",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "37": {
       "name": "King of Hearts",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "38": {
       "name": "Ace of Hearts",
-      "description": "Scores +11 points"
+      "description": "Scores ^blue(+11 points)^"
     },
     "39": {
       "name": "2 of Spades",
-      "description": "Scores +2 points"
+      "description": "Scores ^blue(+2 points)^"
     },
     "40": {
       "name": "3 of Spades",
-      "description": "Scores +3 points"
+      "description": "Scores ^blue(+3 points)^"
     },
     "41": {
       "name": "4 of Spades",
-      "description": "Scores +4 points"
+      "description": "Scores ^blue(+4 points)^"
     },
     "42": {
       "name": "5 of Spades",
-      "description": "Scores +5 points"
+      "description": "Scores ^blue(+5 points)^"
     },
     "43": {
       "name": "6 of Spades",
-      "description": "Scores +6 points"
+      "description": "Scores ^blue(+6 points)^"
     },
     "44": {
       "name": "7 of Spades",
-      "description": "Scores +7 points"
+      "description": "Scores ^blue(+7 points)^"
     },
     "45": {
       "name": "8 of Spades",
-      "description": "Scores +8 points"
+      "description": "Scores ^blue(+8 points)^"
     },
     "46": {
       "name": "9 of Spades",
-      "description": "Scores +9 points"
+      "description": "Scores ^blue(+9 points)^"
     },
     "47": {
       "name": "10 of Spades",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "48": {
       "name": "Jack of Spades",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "49": {
       "name": "Queen of Spades",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "50": {
       "name": "King of Spades",
-      "description": "Scores +10 points"
+      "description": "Scores  ^blue(+10 points)^"
     },
     "51": {
       "name": "Ace of Spades",
-      "description": "Scores +11 points"
+      "description": "Scores ^blue(+11 points)^"
     },
     "52": {
       "name": "Joker",
-      "description": "Wildcard that substitutes any traditional card. +100 points and +1 multi"
+      "description": "Wildcard that substitutes any traditional card. ^blue(+100 points)^ and ^violet(+1 multi)^"
     },
     "53": {
       "name": "Wilcard",
@@ -222,215 +222,215 @@
   "neonCards": {
     "200": {
       "name": "2 of neon Clubs",
-      "description": "Scores +4 points and +1 multi"
+      "description": "Scores ^blue(+4 points)^ and ^violet(+1 multi)^"
     },
     "201": {
       "name": "3 of neon Clubs",
-      "description": "Scores +6 points and +1 multi"
+      "description": "Scores ^blue(+6 points)^ and ^violet(+1 multi)^"
     },
     "202": {
       "name": "4 of neon Clubs",
-      "description": "Scores +8 points and +1 multi"
+      "description": "Scores ^blue(+8 points)^ and ^violet(+1 multi)^"
     },
     "203": {
       "name": "5 of neon Clubs",
-      "description": "Scores +10 points and +1 multi"
+      "description": "Scores ^blue(+10 points)^ and ^violet(+1 multi)^"
     },
     "204": {
       "name": "6 of neon Clubs",
-      "description": "Scores +12 points and +1 multi"
+      "description": "Scores ^blue(+12 points)^ and ^violet(+1 multi)^"
     },
     "205": {
       "name": "7 of neon Clubs",
-      "description": "Scores +14 points and +1 multi"
+      "description": "Scores ^blue(+14 points)^ and ^violet(+1 multi)^"
     },
     "206": {
       "name": "8 of neon Clubs",
-      "description": "Scores +16 points and +1 multi"
+      "description": "Scores ^blue(+16 points)^ and ^violet(+1 multi)^"
     },
     "207": {
       "name": "9 of neon Clubs",
-      "description": "Scores +18 points and +1 multi"
+      "description": "Scores ^blue(+18 points)^ and ^violet(+1 multi)^"
     },
     "208": {
       "name": "10 of neon Clubs",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "209": {
       "name": "Jack of neon Clubs",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "210": {
       "name": "Queen of neon Clubs",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "211": {
       "name": "King of neon Clubs",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "212": {
       "name": "Ace of neon Clubs",
-      "description": "Scores +22 points and +1 multi"
+      "description": "Scores ^blue(+22 points)^ and ^violet(+1 multi)^"
     },
     "213": {
       "name": "2 of neon Diamonds",
-      "description": "Scores +4 points and +1 multi"
+      "description": "Scores ^blue(+4 points)^ and ^violet(+1 multi)^"
     },
     "214": {
       "name": "3 of neon Diamonds",
-      "description": "Scores +6 points and +1 multi"
+      "description": "Scores ^blue(+6 points)^ and ^violet(+1 multi)^"
     },
     "215": {
       "name": "4 of neon Diamonds",
-      "description": "Scores +8 points and +1 multi"
+      "description": "Scores ^blue(+8 points)^ and ^violet(+1 multi)^"
     },
     "216": {
       "name": "5 of neon Diamonds",
-      "description": "Scores +10 points and +1 multi"
+      "description": "Scores  ^blue(+10 points)^ and ^violet(+1 multi)^"
     },
     "217": {
       "name": "6 of neon Diamonds",
-      "description": "Scores +12 points and +1 multi"
+      "description": "Scores ^blue(+12 points)^ and ^violet(+1 multi)^"
     },
     "218": {
       "name": "7 of neon Diamonds",
-      "description": "Scores +14 points and +1 multi"
+      "description": "Scores ^blue(+14 points)^ and ^violet(+1 multi)^"
     },
     "219": {
       "name": "8 of neon Diamonds",
-      "description": "Scores +16 points and +1 multi"
+      "description": "Scores ^blue(+16 points)^ and ^violet(+1 multi)^"
     },
     "220": {
       "name": "9 of neon Diamonds",
-      "description": "Scores +18 points and +1 multi"
+      "description": "Scores ^blue(+18 points)^ and ^violet(+1 multi)^"
     },
     "221": {
       "name": "10 of neon Diamonds",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "222": {
       "name": "Jack of neon Diamonds",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "223": {
       "name": "Queen of neon Diamonds",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "224": {
       "name": "King of neon Diamonds",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "225": {
       "name": "Ace of neon Diamonds",
-      "description": "Scores +22 points and +1 multi"
+      "description": "Scores ^blue(+22 points)^ and ^violet(+1 multi)^"
     },
     "226": {
       "name": "2 of neon Hearts",
-      "description": "Scores +4 points and +1 multi"
+      "description": "Scores ^blue(+4 points)^ and ^violet(+1 multi)^"
     },
     "227": {
       "name": "3 of neon Hearts",
-      "description": "Scores +6 points and +1 multi"
+      "description": "Scores ^blue(+6 points)^ and ^violet(+1 multi)^"
     },
     "228": {
       "name": "4 of neon Hearts",
-      "description": "Scores +8 points and +1 multi"
+      "description": "Scores ^blue(+8 points)^ and ^violet(+1 multi)^"
     },
     "229": {
       "name": "5 of neon Hearts",
-      "description": "Scores +10 points and +1 multi"
+      "description": "Scores  ^blue(+10 points)^ and ^violet(+1 multi)^"
     },
     "230": {
       "name": "6 of neon Hearts",
-      "description": "Scores +12 points and +1 multi"
+      "description": "Scores ^blue(+12 points)^ and ^violet(+1 multi)^"
     },
     "231": {
       "name": "7 of neon Hearts",
-      "description": "Scores +14 points and +1 multi"
+      "description": "Scores ^blue(+14 points)^ and ^violet(+1 multi)^"
     },
     "232": {
       "name": "8 of neon Hearts",
-      "description": "Scores +16 points and +1 multi"
+      "description": "Scores ^blue(+16 points)^ and ^violet(+1 multi)^"
     },
     "233": {
       "name": "9 of neon Hearts",
-      "description": "Scores +18 points and +1 multi"
+      "description": "Scores ^blue(+18 points)^ and ^violet(+1 multi)^"
     },
     "234": {
       "name": "10 of neon Hearts",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "235": {
       "name": "Jack of neon Hearts",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "236": {
       "name": "Queen of neon Hearts",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "237": {
       "name": "King of neon Hearts",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "238": {
       "name": "Ace of neon Hearts",
-      "description": "Scores +22 points and +1 multi"
+      "description": "Scores ^blue(+22 points)^ and ^violet(+1 multi)^"
     },
     "239": {
       "name": "2 of neon Spades",
-      "description": "Scores +4 points and +1 multi"
+      "description": "Scores ^blue(+4 points)^ and ^violet(+1 multi)^"
     },
     "240": {
       "name": "3 of neon Spades",
-      "description": "Scores +6 points and +1 multi"
+      "description": "Scores ^blue(+6 points)^ and ^violet(+1 multi)^"
     },
     "241": {
       "name": "4 of neon Spades",
-      "description": "Scores +8 points and +1 multi"
+      "description": "Scores ^blue(+8 points)^ and ^violet(+1 multi)^"
     },
     "242": {
       "name": "5 of neon Spades",
-      "description": "Scores +10 points and +1 multi"
+      "description": "Scores  ^blue(+10 points)^ and ^violet(+1 multi)^"
     },
     "243": {
       "name": "6 of neon Spades",
-      "description": "Scores +12 points and +1 multi"
+      "description": "Scores ^blue(+12 points)^ and ^violet(+1 multi)^"
     },
     "244": {
       "name": "7 of neon Spades",
-      "description": "Scores +14 points and +1 multi"
+      "description": "Scores ^blue(+14 points)^ and ^violet(+1 multi)^"
     },
     "245": {
       "name": "8 of neon Spades",
-      "description": "Scores +16 points and +1 multi"
+      "description": "Scores ^blue(+16 points)^ and ^violet(+1 multi)^"
     },
     "246": {
       "name": "9 of neon Spades",
-      "description": "Scores +18 points and +1 multi"
+      "description": "Scores ^blue(+18 points)^ and ^violet(+1 multi)^"
     },
     "247": {
       "name": "10 of neon Spades",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "248": {
       "name": "Jack of neon Spades",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "249": {
       "name": "Queen of neon Spades",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "250": {
       "name": "King of neon Spades",
-      "description": "Scores +20 points and +1 multi"
+      "description": "Scores ^blue(+20 points)^ and ^violet(+1 multi)^"
     },
     "251": {
       "name": "Ace of neon Spades",
-      "description": "Scores +22 points and +1 multi"
+      "description": "Scores ^blue(+22 points)^ and ^violet(+1 multi)^"
     },
     "252": {
       "name": "Joker of Neon",
-      "description": "Substitutes any traditional card. +200 points and +2 multi"
+      "description": "Substitutes any traditional card. ^blue(+200 points)^ and ^violet(+2 multi)^"
     },
     "253": {
       "name": "Wildcard of Neon",
@@ -464,427 +464,427 @@
     }
   },
   "specials": {
-    "300": {
+    "10000": {
       "name": "Multiplied Hearts",
-      "description": "Adds +2 multi for every played Heart suited card"
+      "description": "Adds ^violet(+2 multi)^ for every played Heart suited card"
     },
-    "301": {
+    "10001": {
       "name": "Multiplied Clubs",
-      "description": "Adds +2 multi for every played Clubs suited card"
+      "description": "Adds ^violet(+2 multi)^ for every played Clubs suited card"
     },
-    "302": {
+    "10002": {
       "name": "Multiplied Diamonds",
-      "description": "Adds +2 multi for every played Diamonds suited card"
+      "description": "Adds ^violet(+2 multi)^ for every played Diamonds suited card"
     },
-    "303": {
+    "10003": {
       "name": "Multiplied Spades",
-      "description": "Adds +2 multi for every played Spades suited card"
+      "description": "Adds ^violet(+2 multi)^ for every played Spades suited card"
     },
-    "304": {
+    "10004": {
       "name": "Pair Booster",
       "description": "Level up PAIR hand by 4 levels"
     },
-    "305": {
+    "10005": {
       "name": "Two Pair Booster",
       "description": "Level up TWO PAIR hand by 4 levels"
     },
-    "306": {
+    "10006": {
       "name": "Straight Booster",
       "description": "Level up STRAIGHT hand by 4 levels"
     },
-    "307": {
+    "10007": {
       "name": "Flush Booster",
       "description": "Level up FLUSH hand by 4 levels"
     },
-    "308": {
+    "10008": {
       "name": "Easy Straight",
       "description": "Straight hand can be done with 4 cards"
     },
-    "309": {
+    "10009": {
       "name": "Easy Flush",
       "description": "Flush hand can be done with 4 cards"
     },
-    "310": {
+    "10010": {
       "name": "Joker Booster",
       "description": "All played Jokers scores double points and double multi"
     },
-    "311": {
+    "10011": {
       "name": "Power-up Booster",
       "description": "All played Power-ups scores double points and double multi"
     },
-    "312": {
+    "10012": {
       "name": "Figures Booster",
-      "description": "All played FIGURES cards scores +50 points"
+      "description": "All played FIGURES cards scores ^blue(+50 points)^"
     },
-    "313": {
+    "10013": {
       "name": "Multiplied Aces",
-      "description": "Adds +5 multi for every played Ace card"
+      "description": "Adds ^violet(+5 multi)^ for every played Ace card"
     },
-    "314": {
+    "10014": {
       "name": "Love is in the air",
       "description": "All played cards are considered Heart suited"
     },
-    "315": {
+    "10015": {
       "name": "The hand thief",
       "description": "Adds +1 hands and +1 discards to the round"
     },
-    "316": {
+    "10016": {
       "name": "Extra help",
       "description": "Increase hand size by 2"
     },
-    "317": {
+    "10017": {
       "name": "Lucky 7",
-      "description": "All 7s scores +77 points"
+      "description": "All 7s scores ^blue(+77 points)^"
     },
-    "318": {
+    "10018": {
       "name": "Neon bonus",
-      "description": "All Neon cards scores +20 points. Neon plays are leveled up by 2 extra levels."
+      "description": "All Neon cards scores ^blue(+20 points)^. Neon plays are leveled up by 2 extra levels."
     },
-    "319": {
+    "10019": {
       "name": "Deadline",
       "description": "When playing your last hand, increase the play level 10 times"
     },
-    "320": {
+    "10020": {
       "name": "Initial advantage",
-      "description": "The first played hand scores +100 points and +10 multi"
+      "description": "The first played hand scores ^blue(+100 points)^ and ^violet(+10 multi)^"
     },
-    "321": {
+    "10021": {
       "name": "Lucky hand",
-      "description": "Adds +50 cash for every Diamond suited card played"
+      "description": "Adds ^yellow(+50 cash)^ for every Diamond suited card played"
     },
-    "322": {
+    "10022": {
       "name": "Discard mastery",
-      "description": "Adds +10 multi if you have no discards left"
+      "description": "Adds ^violet(+10 multi)^ if you have no discards left"
     },
-    "323": {
+    "10023": {
       "name": "Second chance",
       "description": "When you lose, this card gets destroyed but you can continue playing"
     },
-    "324": {
+    "10024": {
       "name": "Guardian's shield",
       "description": "Blocks all rage cards for 1 level. Gets destroyed afterwards"
     },
-    "325": {
+    "10025": {
       "name": "Neon synergy",
       "description": "If more than 50% of the played cards are neon, all the other cards get converted to neon"
     },
-    "326": {
+    "10026": {
       "name": "Neon Doctrine",
       "description": "Convert two played cards into neon cards."
     },
-    "327": {
+    "10027": {
       "name": "Blackjack",
-      "description": "Hit exactly 21 points with your played cards to gain +21 multi."
+      "description": "Hit exactly ^blue(21 points)^ with your played cards to gain ^violet(+21 multi)^."
     },
-    "328": {
+    "10028": {
       "name": "Efficient Play",
-      "description": "Earn +10 multi and +50 points when playing 3 or fewer cards."
+      "description": "Earn ^violet(+10 multi)^ and ^blue(+50 points)^ when playing 3 or fewer cards."
     },
-    "329": {
+    "10029": {
       "name": "Special Sacrifice",
-      "description": "Gain +1 multi (stacking) for every special card sold. Currently +{{multi}} multi."
+      "description": "Gain ^violet(+1 multi)^ (stacking) for every special card sold. Currently ^violet(+{{multi}} multi)^."
     },
-    "330": {
+    "10030": {
       "name": "Rage Breaker",
-      "description": "Gain +2 multi (stacking) for each Rage defeated. Currently +{{multi}} multi."
+      "description": "Gain ^violet(+2 multi)^ (stacking) for each Rage defeated. Currently ^violet(+{{multi}} multi)^."
     },
-    "331": {
+    "10031": {
       "name": "Shortcut",
       "description": "Reduces the points needed to beat the level by 20%"
     },
-    "332": {
+    "10032": {
       "name": "Lucky Payday",
-      "description": "Get extra 500 cash for every Joker in hand at the end of the round"
+      "description": "Get extra ^yellow(+500 cash)^ for every Joker in hand at the end of the round"
     },
-    "333": {
+    "10033": {
       "name": "Mirror effect",
       "description": "Repeats the effect of the special card in the left"
     },
-    "334": {
+    "10034": {
       "name": "Loot boxes on sale",
       "description": "Loot boxes have 30% discount"
     },
-    "335": {
+    "10035": {
       "name": "Bonus Picks",
       "description": "2 extra special card options in the store"
     },
-    "336": {
+    "10036": {
       "name": "Joker's drop",
-      "description": "Get 500 cash every time you discard a Joker"
+      "description": "Get ^yellow(+500 cash)^ every time you discard a Joker"
     },
-    "337": {
+    "10037": {
       "name": "Extra drops",
       "description": "Adds 2 discards"
     },
-    "338": {
+    "10038": {
       "name": "Extra draws",
       "description": "Adds 2 plays"
     },
-    "339": {
+    "10039": {
       "name": "Scaling factor",
       "description": "Upgrade all your hands by 2 levels"
     },
-    "340": {
+    "10040": {
       "name": "Wild deuces",
       "description": "All 2s are considered wildcards"
     },
-    "341": {
+    "10041": {
       "name": "Undying Draw",
       "description": "First discarded hand gets leveled up"
     },
-    "342": {
+    "10042": {
       "name": "Shielded Start",
       "description": "Protects your first played hand from all negative effects"
     },
-    "343": {
+    "10043": {
       "name": "Full House Booster",
       "description": "Level up Full house hand by 4 levels"
     },
-    "344": {
+    "10044": {
       "name": "Three of a Kind Booster",
       "description": "Level up Three of a Kind hand by 4 levels"
     },
-    "345": {
+    "10045": {
       "name": "Four of a Kind Booster",
       "description": "Level up Four of a Kind hand by 4 levels"
     },
-    "346": {
+    "10046": {
       "name": "Five of a Kind Booster",
       "description": "Level up Five of a Kind hand by 4 levels"
     },
-    "347": {
+    "10047": {
       "name": "Dice of Hearts",
-      "description": "Rolls a number between -2 and 6 to add to the multi for each played Hearts suited card."
+      "description": "Rolls a number between ^violet(-2)^ and ^violet(6)^ to add to the ^violet(multi)^ for each played Hearts suited card."
     },
-    "348": {
+    "10048": {
       "name": "Dice of Clubs",
-      "description": "Rolls a number between -2 and 6 to add to the multi for each played Clubs suited card."
+      "description": "Rolls a number between ^violet(-2)^ and ^violet(6)^ to add to the ^violet(multi)^ for each played Clubs suited card."
     },
-    "349": {
+    "10049": {
       "name": "Dice of Diamonds",
-      "description": "Rolls a number between -2 and 6 to add to the multi for each played Diamonds suited card."
+      "description": "Rolls a number between ^violet(-2)^ and ^violet(6)^ to add to the ^violet(multi)^ for each played Diamonds suited card."
     },
-    "350": {
+    "10050": {
       "name": "Dice of Spades",
-      "description": "Rolls a number between -2 and 6 to add to the multi for each played Spades suited card."
+      "description": "Rolls a number between ^violet(-2)^ and ^violet(6)^ to add to the ^violet(multi)^ for each played Spades suited card."
     },
-    "351": {
+    "10051": {
       "name": "Special Multiplier",
-      "description": "Gain +3 multi for each active special card"
+      "description": "Gain ^violet(+3 multi)^ for each active special card"
     },
-    "352": {
+    "10052": {
       "name": "Deck Collector",
-      "description": "Earn +1 points for every card in your deck."
+      "description": "Earn ^blue(+1 points)^ for every card in your deck."
     },
-    "353": {
+    "10053": {
       "name": "Fury Reset",
       "description": "Allows rerolling Rage cards once per round. Costs 500 per Rage card in the round."
     },
-    "354": {
+    "10054": {
       "name": "Skip Bonus",
-      "description": "Gain +25 points (stacking) for each loot box skipped (opened without selecting a card). Currently +{{points}} points."
+      "description": "Gain  ^blue(+25 points)^ (stacking) for each loot box skipped (opened without selecting a card). Currently  ^blue(+{{points}} points)^."
     },
-    "355": {
+    "10055": {
       "name": "Burning Rewards",
-      "description": "Gain +15 points (stacking) for each card burned from your deck. Currently +{{points}} points."
+      "description": "Gain ^blue(+15 points)^ (stacking) for each card burned from your deck. Currently  ^blue(+{{points}} points)^."
     },
-    "356": {
+    "10056": {
       "name": "Slot Saver",
-      "description": "Earn +100 points for each unlocked but empty card slot."
+      "description": "Earn ^blue(+100 points)^ for each unlocked but empty card slot."
     },
-    "357": {
+    "10057": {
       "name": "High Rollers",
-      "description": "1 in 2 chances to gain +1 multi (stacking) for each High Card played. Currently +{{multi}} multi."
+      "description": "Each High Card played has a 50% chance to gain ^violet(+1 multi)^ (stacking). Currently ^violet(+{{multi}} multi)^."
     },
-    "358": {
+    "10058": {
       "name": "Suit Roulette",
-      "description": "Gain +5 multi for every card matching a randomly chosen suit. The suit changes each round."
+      "description": "Gain ^violet(+5 multi)^ for every card matching a randomly chosen suit. The suit changes each round."
     },
-    "359": {
+    "10059": {
       "name": "Club Keeper",
-      "description": "Earn +10 points for each Club card in your deck."
+      "description": "Earn  ^blue(+10 points)^ for each Club card in your deck."
     },
-    "360": {
+    "10060": {
       "name": "Spade Trio",
-      "description": "If your hand contains at least 3 Spade cards, gain +100 points and +3 multi."
+      "description": "If your hand contains at least 3 Spade cards, gain ^blue(+100 points)^ and ^violet(+3 multi)^."
     },
-    "361": {
+    "10061": {
       "name": "Twos Matter",
-      "description": "Gain +30 points for every 2 held in your hand."
+      "description": "Gain ^blue(+30 points)^ for every 2 held in your hand."
     },
-    "362": {
+    "10062": {
       "name": "Hand of modifiers",
-      "description": "Gain +5 multi for each modifier card held in your hand."
+      "description": "Gain ^violet(+5 multi)^ for each modifier card held in your hand."
     },
-    "363": {
+    "10063": {
       "name": "Pyromaniac",
       "description": "50% discount on burn cards."
     },
-    "364": {
+    "10064": {
       "name": "Quad Multiplier",
-      "description": "+4 multi for every 4 card held in your hand."
+      "description": "^violet(+4 multi)^ for every 4 card held in your hand."
     },
-    "365": {
+    "10065": {
       "name": "Jackpot",
-      "description": "Gain +30 points for every Jack held in your hand."
+      "description": "Gain ^blue(+30 points)^ for every Jack held in your hand."
     },
-    "366": {
+    "10066": {
       "name": "Cash loop",
       "description": "Earn +50% rewards after each level."
     },
-    "367": {
+    "10067": {
       "name": "Specials Hunter",
       "description": "Double the probability on finding A and S specials cards on the store."
     },
-    "368": {
+    "10068": {
       "name": "King's Faith",
-      "description": "Each King played has 1 in 2 chances of giving 100 cash. Every King held in hand has 1 in 4 chances of scoring 100 points."
+      "description": "Each King played has a 50% of chance to grant ^yellow(+100 cash)^. Each King held in hand has a 25% chance to score ^blue(+100 points)^."
     },
-    "369": {
+    "10069": {
       "name": "Arithmomania",
-      "description": "If the sum of the cards you played is even, gain +7 multi. If it's odd, gain +100 points."
+      "description": "If the sum of the cards you played is even, gain ^violet(+7 multi)^. If it's odd, gain ^blue(+100 points)^."
     },
-    "370": {
+    "10070": {
       "name": "Black and Red",
-      "description": "Heart and Diamond suited cards add double points. Club and Spade suited cards add +1 multi."
+      "description": "Heart and Diamond suited cards add double points. Club and Spade suited cards add ^violet(+1 multi)^."
     },
-    "371": {
+    "10071": {
       "name": "Worthless Jokers",
-      "description": "Jokers score 0 points and multi. Every other card scores +1 multi."
+      "description": "Jokers score ^blue(0 points)^ and ^violet(0 multi)^. Every other card scores ^violet(+1 multi)^."
     },
-    "372": {
+    "10072": {
       "name": "Rising Ladder",
-      "description": "Gain +10 cumulative points for every straight played. Currently at +{{points}} points."
+      "description": "Gain ^blue(+10)^ cumulative ^blue(points)^ for every straight played. Currently at ^blue(+{{points}} points)^."
     },
-    "373": {
+    "10073": {
       "name": "Relativity",
       "description": "Converts any straight into a 10-Ace straight (the higher possible straight)."
     },
-    "374": {
+    "10074": {
       "name": "Wildcard Booster",
-      "description": "Each Wildcard grants +100 points."
+      "description": "Each Wildcard grants ^blue(+100 points)^."
     },
-    "379": {
+    "10079": {
       "name": "Rainbow",
-      "description": "Gain +200 points and +5 multi if your play includes all four suits."
+      "description": "Gain ^blue(+200 points)^ and ^violet(+5 multi)^ if your play includes all four suits."
     },
-    "380": {
+    "10080": {
       "name": "Queens Fortune",
-      "description": "Scoring queens have 1 in 2 chance of giving +150 cash."
+      "description": "Each Queen that scores has a 50% chance to grant ^yellow(+150 cash)^."
     }
   },
   "power-ups": {
     "800": {
       "name": "+25 Points",
-      "description": "Scores +25 additional points"
+      "description": "Scores ^blue(+25)^ additional ^blue(points)^ "
     },
     "801": {
-      "name": "+50 Points",
-      "description": "Scores +50 additional points"
+      "name": "50 Points",
+      "description": "Scores ^blue(+50)^ additional ^blue(points)^"
     },
     "802": {
       "name": "+75 Points",
-      "description": "Scores +75 additional points"
+      "description": "Scores ^blue(+75)^ additional ^blue(points)^"
     },
     "803": {
       "name": "+100 Points",
-      "description": "Scores +100 additional points"
+      "description": "Scores ^blue(+100)^ additional ^blue(points)^"
     },
     "804": {
       "name": "+3 multi",
-      "description": "Adds +3 to the multi"
+      "description": "Adds ^violet(+3)^ to the ^violet(multi)^"
     },
     "805": {
       "name": "+5 multi",
-      "description": "Adds +5 to the multi"
+      "description": "Adds ^violet(+5)^ to the ^violet(multi)^"
     },
     "806": {
       "name": "+7 multi",
-      "description": "Adds +7 to the multi"
+      "description": "Adds ^violet(+7)^ to the ^violet(multi)^"
     },
     "807": {
-      "name": "+10 multi",
-      "description": "Adds +10 to the multi"
+      "name": "10 multi",
+      "description": "Adds ^violet(+10)^ to the ^violet(multi)^"
     }
   },
   "rageCards": {
-    "401": {
+    "20001": {
       "name": "Broken Hearts",
       "description": "Heart suited cards will not score during this level"
     },
-    "402": {
+    "20002": {
       "name": "Broken Clubs",
       "description": "Club suited cards will not score during this level"
     },
-    "403": {
+    "20003": {
       "name": "Broken Diamonds",
       "description": "Diamond suited cards will not score during this level"
     },
-    "404": {
+    "20004": {
       "name": "Broken Spades",
       "description": "Spade suited cards will not score during this level"
     },
-    "405": {
+    "20005": {
       "name": "Broken Jokers",
       "description": "Jokers will not score during this level"
     },
-    "406": {
+    "20006": {
       "name": "Diminished Hold",
       "description": "Your hand will be reduced by 2 cards during this level"
     },
-    "407": {
+    "20007": {
       "name": "Zero Waste",
       "description": "You have no discards during this level"
     },
-    "408": {
+    "20008": {
       "name": "Unexpected Sacrifice",
       "description": "One of your special cards got sacrificed"
     },
-    "409": {
+    "20009": {
       "name": "Strategic Quartet",
       "description": "You can only play up to 4 cards during this level"
     },
-    "410": {
+    "20010": {
       "name": "Dynamic Tactics",
       "description": "The same hand cannot be played twice"
     },
-    "411": {
+    "20011": {
       "name": "Balanced Trade-off",
       "description": "A poker play is worth double, another half"
     },
-    "412": {
+    "20012": {
       "name": "Broken Figures",
       "description": "Figures (Jack, Queen and King) will not score during this level"
     },
-    "413": {
+    "20013": {
       "name": "Broken Modifiers",
       "description": "Modifiers will not work during this level"
     },
-    "414": {
+    "20014": {
       "name": "Last Words",
       "description": "Silence the most repeated card in the deck"
     },
-    "415": {
+    "20015": {
       "name": "Greedy Trap",
       "description": "Deduct 200 for each hand played and 100 for each discard"
     },
-    "416": {
+    "20016": {
       "name": "The Hand Leech",
       "description": "2 hands less to play"
     },
-    "417": {
+    "20017": {
       "name": "Spider’s Snare",
       "description": "Special cards have no effect on the first hand played"
     },
-    "418": {
+    "20018": {
       "name": "Perpetual Curse",
       "description": "Silence a random card in each hand played"
     },
-    "420": {
+    "20020": {
       "name": "Double Trouble",
       "description": "You have to make double points in this round"
     },
-    "421": {
+    "20021": {
       "name": "Betraying the Weak",
       "description": "Cards with a value of 5 or less will not score during this level"
     }
@@ -928,7 +928,7 @@
     "8": {
       "name": "The Lovers loot box",
       "description": "All hearts suited cards, can contain special cards and modifiers.",
-      "details": "55% chance of getting a traditional Heart card\n20% chance of getting Ace of Hearts\n10% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
+      "details": "55% chance of getting a traditional Heart card\n30% chance of getting Neon Heart card\n10% chance of getting Heart Suit modifier\n5% chance of getting 'All cards to heart' special\nLoot box size 5"
     },
     "9": {
       "name": "Special Bet loot box",

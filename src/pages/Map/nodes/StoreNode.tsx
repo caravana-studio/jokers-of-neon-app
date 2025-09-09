@@ -1,13 +1,12 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Handle, Position } from "reactflow";
 import CachedImage from "../../../components/CachedImage";
-import { useGame } from "../../../dojo/queries/useGame";
 import { GameStateEnum } from "../../../dojo/typescript/custom";
 import { useShopActions } from "../../../dojo/useShopActions";
-import { useGameContext } from "../../../providers/GameProvider";
+import { useCustomNavigate } from "../../../hooks/useCustomNavigate";
 import { useMap } from "../../../providers/MapProvider";
+import { useGameStore } from "../../../state/useGameStore";
 import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
@@ -18,11 +17,11 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
     case 1:
       return { traditionals: 5, modifiers: 3 };
     case 2:
-      return { specials: 3, powerups: 2 };
+      return { specials: 2, powerups: 2 };
     case 3:
       return { specials: 3, lootboxes: 2 };
     case 4:
-      return { levelups: 3, specials: 3 };
+      return { levelups: 3, specials: 2 };
     case 5:
       return { modifiers: 4, lootboxes: 2 };
     case 6:
@@ -35,30 +34,25 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
 const StoreNode = ({ data }: any) => {
   const { t } = useTranslation("store", { keyPrefix: "config" });
   const { advanceNode } = useShopActions();
-  const { gameId } = useGameContext();
-  const navigate = useNavigate();
+  const { id: gameId } = useGameStore();
+  const navigate = useCustomNavigate();
 
   const { reachableNodes, setSelectedNodeData, selectedNodeData } = useMap();
   const { isSmallScreen } = useResponsiveValues();
 
-  const game = useGame();
+  const { state, setShopId } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
 
-  const title = t(`${data.shopId}.name`)
+  const title = t(`${data.shopId}.name`);
   const content = t(
     `${data.shopId}.content`,
     getStoreItemsBasedOnShopId(data.shopId)
-  )
+  );
   return (
     <Tooltip
-      label={
-        <TooltipContent
-          title={title}
-          content={content}
-        />
-      }
+      label={<TooltipContent title={title} content={content} />}
       boxShadow={"0px 0px 15px 0px #fff, 0px 0px 5px 0px #fff inset"}
       w="1100px"
       placement="right"
@@ -105,14 +99,19 @@ const StoreNode = ({ data }: any) => {
               title: title,
               content: content,
               nodeType: NodeType.STORE,
+              shopId: data.shopId,
             });
 
           if (data.current && !stateInMap) {
-            navigate("/redirect/store");
+            navigate(GameStateEnum.Store);
           } else if (stateInMap && reachable && !isSmallScreen) {
+            console.log("gameId", gameId);
+            console.log("data.id", data.id);
             advanceNode(gameId, data.id).then((response) => {
+              console.log("response", response);
               if (response) {
-                navigate("/redirect/store");
+                setShopId(data.shopId);
+                navigate(GameStateEnum.Store);
               }
             });
           }

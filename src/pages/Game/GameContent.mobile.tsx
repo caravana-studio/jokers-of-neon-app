@@ -23,9 +23,11 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
-import { useCardHighlight } from "../../providers/CardHighlightProvider.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCardHighlight } from "../../providers/HighlightProvider/CardHighlightProvider.tsx";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
@@ -33,24 +35,28 @@ import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
+  const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
+    useGameContext();
+
+  const { highlightedItem: highlightedCard } = useCardHighlight();
   const {
-    hand,
-    preSelectedCards,
-    gameLoading,
-    error,
-    executeCreateGame,
-    addModifier,
     preSelectCard,
     unPreSelectCard,
-    isRageRound,
-    maxPowerUpSlots,
-  } = useGameContext();
+    preSelectedCards,
+    hand,
+    addModifier,
+  } = useCurrentHandStore();
 
-  const { highlightedCard } = useCardHighlight();
+  const {
+    state,
+    maxPowerUpSlots,
+    gameLoading,
+    gameError: error,
+    id: gameId,
+  } = useGameStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -60,7 +66,6 @@ export const MobileGameContent = () => {
     })
   );
   const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
@@ -72,7 +77,7 @@ export const MobileGameContent = () => {
   }, []);
 
   const stepData = [
-    { step: 14, delay: 2700 },
+    { step: 13, delay: 2700 },
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];
@@ -84,7 +89,7 @@ export const MobileGameContent = () => {
       setRun(false);
       const timeout = setTimeout(() => {
         setAutoStep(true);
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         setRun(true);
       }, stepInfo.delay);
 
@@ -99,7 +104,7 @@ export const MobileGameContent = () => {
       const { type } = data;
 
       if (type === "error:target_not_found") {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
         return;
       }
 
@@ -109,7 +114,7 @@ export const MobileGameContent = () => {
         !buttonClicked &&
         !autoStep
       ) {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
       }
 
       setCardClicked(false);
@@ -118,14 +123,15 @@ export const MobileGameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        if (game) {
-          switch (game.state) {
-            case GameStateEnum.Store:
-              return navigate("/store");
-            case GameStateEnum.Map:
-              return navigate("/map");
-            default:
-              return navigate("/demo");
+        switch (state) {
+          case GameStateEnum.Store:
+            return navigate("/store");
+          case GameStateEnum.Map:
+            return navigate("/map");
+          default: {
+            resetLevel();
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
           }
         }
       }
@@ -149,14 +155,12 @@ export const MobileGameContent = () => {
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCard))
     ) {
       setCardClicked(true);
-      setStepIndex(stepIndex + 1);
+      setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
     }
   };
-
-  const game = useGame();
 
   if (error) {
     return (
@@ -258,7 +262,7 @@ export const MobileGameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />
@@ -283,7 +287,7 @@ export const MobileGameContent = () => {
                 onTutorialCardClick={() => {
                   if (run) {
                     setCardClicked(true);
-                    setStepIndex(stepIndex + 1);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
                   }
                 }}
               />
@@ -295,7 +299,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />
@@ -306,7 +310,7 @@ export const MobileGameContent = () => {
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
-                      setStepIndex(stepIndex + 1);
+                      setStepIndex?.((stepIndex ?? 0) + 1);
                     }
                   }}
                 />

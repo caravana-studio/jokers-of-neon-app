@@ -8,20 +8,21 @@ import {
 } from "react";
 import { Edge, Node, useReactFlow } from "reactflow";
 import { getMap } from "../dojo/queries/getMap";
-import { useGame } from "../dojo/queries/useGame";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useDojo } from "../dojo/useDojo";
 import { getLayoutedElements } from "../pages/Map/layout";
 import { NodeData, NodeType } from "../pages/Map/types";
+import { useGameStore } from "../state/useGameStore";
 import { BLUE } from "../theme/colors";
-import { getRageNodeData } from "../utils/getRageNodeData";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { getRageNodeData } from "../utils/getRageNodeData";
 
 export interface SelectedNodeData {
   id: number;
   title: string;
   content?: string;
   nodeType: NodeType;
+  shopId?: number;
 }
 
 interface MapContextType {
@@ -50,6 +51,7 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     SelectedNodeData | undefined
   >();
 
+  console.log(nodes);
   const { isSmallScreen } = useResponsiveValues();
 
   const currentNode = useMemo(
@@ -71,29 +73,38 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
   const reactFlowInstance = useReactFlow();
 
-  const game = useGame();
+  const { state, level, id } = useGameStore();
 
-  const stateInMap = game?.state === GameStateEnum.Map;
+  const stateInMap = state === GameStateEnum.Map;
 
   useEffect(() => {
-    getMap(client, game?.id ?? 1, game?.level ?? 1).then((dataNodes) => {
-      const transformedNodes = dataNodes.map((node) => ({
-        id: node.id.toString(),
-        type: node.nodeType ?? NodeType.NONE,
-        position: { x: 0, y: 0 },
-        data: {
-          visited: node.visited,
-          id: node.id,
-          current: node.current,
-          shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
-          round: node.nodeType === NodeType.ROUND ? node.data : undefined,
-          last: node.last,
-          rageData:
-            node.nodeType === NodeType.RAGE
-              ? getRageNodeData(node.data)
-              : undefined,
-        },
-      }));
+    getMap(client, id).then((dataNodes) => {
+      const transformedNodes = dataNodes.map((node, index) => {
+        const isFirstNode = index === 0;
+        const shouldBeFinalRage = isFirstNode && level >= 2;
+
+        const nodeType = shouldBeFinalRage
+          ? NodeType.RAGE
+          : node.nodeType ?? NodeType.NONE;
+
+        return {
+          id: node.id.toString(),
+          type: nodeType,
+          position: { x: 0, y: 0 },
+          data: {
+            visited: node.visited,
+            id: node.id,
+            current: node.current,
+            shopId: node.nodeType === NodeType.STORE ? node.data : undefined,
+            round: node.nodeType === NodeType.ROUND ? node.data : undefined,
+            last: shouldBeFinalRage ? true : node.last,
+            rageData:
+              nodeType === NodeType.RAGE
+                ? getRageNodeData(node.data)
+                : undefined,
+          },
+        };
+      });
 
       const calculatedEdges = calculateEdges(dataNodes);
 

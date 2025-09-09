@@ -1,9 +1,9 @@
 {
-  "gg-banner": {
-    "title": "Evento GG activo",
-    "description": "Haz clic <0>aquí</0> para unirte al torneo GG y ganar recompensas exclusivas!"
+  "confirm-modal": {
+    "title": "¿Salir del juego?",
+    "description": "No perderás tu progreso."
   },
-  "controller": "Cuenta de controller",
+  "controller": "Cuenta de controlador",
   "error": {
     "labels": {
       "error-msj": "Error al crear un juego",
@@ -11,8 +11,9 @@
     }
   },
   "game": {
+    "tutorial": "Tutorial",
     "compact-round-data": {
-      "my-score": "Puntaje",
+      "my-score": "Puntuación",
       "target": "Objetivo",
       "level-round": "N{{level}} Ronda {{round}}"
     },
@@ -20,7 +21,7 @@
       "Common": "Tradicional",
       "Modifier": "Modificadora",
       "Special": "Especial",
-      "Rage": "Rage",
+      "Rage": "Furia",
       "Neon": "Neón",
       "Pack": "Paquete",
       "Joker": "Comodín"
@@ -39,19 +40,19 @@
       "target-score": "Puntos",
       "score": "Suma {{score}} para superar la ronda {{round}}"
     },
-    "score": "Puntaje:",
-    "score-total": "Puntaje total",
+    "score": "Puntuación:",
+    "score-total": "Puntuación total",
     "multi-points": {
       "points": "Puntos",
-      "multi": "Multi"
+      "multi": "Multiplicador"
     },
     "special-cards": {
-      "locked-slot": "Este espacio esta bloqueado. Puedes desbloquearlo en la tienda.",
+      "locked-slot": "Este espacio está bloqueado. Puedes desbloquearlo en la tienda.",
       "special-cards-label": "Cartas especiales",
       "remove-special-cards-label": "Vender",
       "confirmation-modal": {
         "title": "Vender carta especial",
-        "description": "¿Estás seguro de que quieres Vender esta carta especial por ¢{{price}}? No hay forma de deshacer esta acción."
+        "description": "¿Estás seguro de que quieres vender esta carta especial por ¢{{price}}? No hay forma de deshacer esta acción."
       }
     },
     "hand-section": {
@@ -74,13 +75,13 @@
         "left": "{{discards}} restantes"
       },
       "play-btn-lbl": {
-        "play": "jugar mano",
-        "play-mobile": "jugar",
+        "play": "Jugar mano",
+        "play-mobile": "Jugar",
         "left": "{{handsLeft}} restantes"
       },
       "current-play-lbl": {
         "default": "Selecciona cartas para jugar",
-        "current-play": "Jugada Actual:",
+        "current-play": "Jugada actual:",
         "neon-play": "NEÓN"
       }
     },
@@ -92,17 +93,32 @@
       "logout-btn": "Cerrar sesión",
       "settings-btn": "Configuración",
       "docs-btn": "Lista de cartas",
-      "leaderboard-btn": "Tabla de posiciones",
+      "leaderboard-btn": "Clasificación",
       "map-btn": "Mapa",
+      "back": "Volver al inicio",
       "pages": {
         "gameover": "Fin del juego",
         "open-loot-box": "Abrir caja",
         "store": "Tienda - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
-        "rage-round": "Ronda Rage",
-        "round": "Ronda"
+        "rage-round": "Ronda de Furia",
+        "round": "Ronda",
+        "map": "Mapa",
+        "my-games": "Juegos",
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "my-collection": "Colección",
+        "home": "Inicio",
+        "docs": "Lista de cartas",
+        "deck": "Mazo",
+        "rewards": "Recompensas",
+        "manage": "Gestionar items",
+        "preview": "Vista previa del item",
+        "loot-box": "Caja",
+        "loading-game": "Cargando juego",
+        "plays": "Jugadas disponibles"
       },
-      "my-games": "Mis juegos"
+      "my-games": "Juegos"
     },
     "plays": {
       "title": "Jugadas disponibles",
@@ -110,12 +126,12 @@
       "table": {
         "level-head": "Nivel",
         "hand-head": "Mano",
-        "points-multi-head": "Puntos/Multi"
+        "points-multi-head": "Puntos/Multiplicador"
       }
     },
     "deck": {
       "tooltip": "Ver mazo",
-      "title": "Mi mazo",
+      "title": "Mazo",
       "burn-title": "Selecciona una carta para quemar",
       "filter-title": "Filtrar por",
       "suit": {
@@ -125,7 +141,7 @@
         "diamond": "Diamantes",
         "neon": "Neón",
         "modifier": "Modificadoras",
-        "joker": "Jokers",
+        "joker": "Comodines",
         "figures": "Figuras",
         "aces": "Ases"
       },
@@ -150,9 +166,9 @@
   "settings-modal": {
     "title": "Configuración",
     "language": "Idioma",
-    "sfx-volume": "Volumen de Efectos de Sonido",
-    "music-volume": "Volumen de la Música",
-    "anim-speed": "Velocidad de Animación",
+    "sfx-volume": "Volumen de efectos de sonido",
+    "music-volume": "Volumen de la música",
+    "anim-speed": "Velocidad de animación",
     "speed": {
       "normal": "Normal",
       "fast": "Rápido",
@@ -171,10 +187,10 @@
     }
   },
   "rage-cards": {
-    "no-cards": "En los rondas de rage, verás las cartas de rage aquí"
+    "no-cards": "En las rondas de furia, verás las cartas de furia aquí"
   },
   "specials-box": {
     "specials-tooltip": "Cartas especiales",
-    "rage-tooltip": "Cartas rage"
+    "rage-tooltip": "Cartas de furia"
   }
 }

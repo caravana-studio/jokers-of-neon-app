@@ -2,30 +2,35 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
+import { GameStoreLoader } from "./components/GameStoreLoader";
+import { ShopStoreLoader } from "./components/ShopStoreLoader";
+import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
 import { GamePage } from "./pages/Game/GamePage";
-import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
-import { GameOver } from "./pages/GameOver";
+import { GameOver } from "./pages/GameOver/GameOver";
 import { Home } from "./pages/Home";
 import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
+import { MapPage } from "./pages/Map/MapPage";
+import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
+import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
+import { ProfilePage } from "./pages/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
-import { SelectMod } from "./pages/SelectMod";
-import { CardHighlightProvider } from "./providers/CardHighlightProvider";
+import { SettingsPage } from "./pages/SettingsPage";
+import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
+import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
-import { MapPage } from "./pages/Map/MapPage";
-import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
-import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
-import { BudokanEndpoint } from "./pages/BudokanEndpoint";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -41,19 +46,53 @@ export const AppRoutes = () => {
           </AnimatedPage>
         }
       />
-      <Route
+      {/*       <Route
         path="/mods"
         element={
           <AnimatedPage>
             <SelectMod />
           </AnimatedPage>
         }
-      />
+      /> */}
       <Route
         path="/login"
         element={
           <AnimatedPage>
             <Login />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/my-collection"
+        element={
+          <AnimatedPage>
+            <CardHighlightProvider>
+              <MyCollectionPage />
+            </CardHighlightProvider>
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <AnimatedPage>
+            <ProfilePage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/settings-game"
+        element={
+          <AnimatedPage>
+            <SettingsPage />
           </AnimatedPage>
         }
       />
@@ -69,7 +108,9 @@ export const AppRoutes = () => {
         path="/demo"
         element={
           <AnimatedPage>
-            <GamePage />
+            <GameStoreLoader>
+              <GamePage />
+            </GameStoreLoader>
           </AnimatedPage>
         }
       />
@@ -93,7 +134,9 @@ export const AppRoutes = () => {
         path="/rewards"
         element={
           <AnimatedPage>
-            <RewardsPage />
+            <GameStoreLoader>
+              <RewardsPage />
+            </GameStoreLoader>
           </AnimatedPage>
         }
       />
@@ -110,12 +153,15 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <AnimatedPage>
-              <DynamicStorePage />
+              <GameStoreLoader>
+                <ShopStoreLoader>
+                  <DynamicStorePage />
+                </ShopStoreLoader>
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
       />
-
       <Route
         path="/tutorial"
         element={
@@ -126,14 +172,17 @@ export const AppRoutes = () => {
           </TutorialGameProvider>
         }
       />
-
-      <Route path="/redirect/:page" element={<Redirect />} />
+      <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"
         element={
           <StoreProvider>
             <AnimatedPage>
-              <PreviewPage />
+              <GameStoreLoader>
+                <GameStoreLoader>
+                  <PreviewPage />
+                </GameStoreLoader>
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
@@ -143,7 +192,9 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <AnimatedPage>
-              <OpenLootBox />
+              <GameStoreLoader>
+                <OpenLootBox />
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
@@ -153,7 +204,9 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <AnimatedPage>
-              <OpenLootBoxCardSelection />
+              <GameStoreLoader>
+                <OpenLootBoxCardSelection />
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
@@ -172,7 +225,9 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <AnimatedPage>
-              <DeckPage />
+              <GameStoreLoader>
+                <DeckPage />
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
@@ -182,7 +237,9 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <AnimatedPage>
-              <MapPage />
+              <GameStoreLoader>
+                <MapPage />
+              </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
         }
@@ -192,7 +249,9 @@ export const AppRoutes = () => {
         element={
           <CardHighlightProvider>
             <AnimatedPage>
-              <DocsPage lastIndexTab={0} />
+              <GameStoreLoader>
+                <DocsPage lastIndexTab={0} />
+              </GameStoreLoader>
             </AnimatedPage>
           </CardHighlightProvider>
         }
@@ -202,9 +261,15 @@ export const AppRoutes = () => {
         element={
           <StoreProvider>
             <CardHighlightProvider>
-              <AnimatedPage>
-                <ManagePage />
-              </AnimatedPage>
+              <PowerupHighlightProvider>
+                <AnimatedPage>
+                  <GameStoreLoader>
+                    <GameStoreLoader>
+                      <ManagePage />
+                    </GameStoreLoader>
+                  </GameStoreLoader>
+                </AnimatedPage>
+              </PowerupHighlightProvider>
             </CardHighlightProvider>
           </StoreProvider>
         }

@@ -22,27 +22,34 @@ import {
   HAND_SECTION_ID,
   PRESELECTED_CARD_SECTION_ID,
 } from "../../constants/general.ts";
-import { useGame } from "../../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
+  const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
+    useGameContext();
+
   const {
-    hand,
-    preSelectedCards,
+    isRageRound,
+    state,
     gameLoading,
-    error,
-    executeCreateGame,
-    addModifier,
+    gameError: error,
+    id: gameId,
+  } = useGameStore();
+  const {
     preSelectCard,
     unPreSelectCard,
-  } = useGameContext();
-  const { isRageRound } = useGameContext();
+    preSelectedCards,
+    hand,
+    addModifier,
+  } = useCurrentHandStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -53,7 +60,6 @@ export const GameContent = () => {
   );
 
   const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
   const [cardClicked, setCardClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [autoStep, setAutoStep] = useState(false);
@@ -65,7 +71,7 @@ export const GameContent = () => {
   }, []);
 
   const stepData = [
-    { step: 14, delay: 2700 },
+    { step: 13, delay: 2700 },
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];
@@ -76,7 +82,7 @@ export const GameContent = () => {
     if (stepInfo) {
       const timeout = setTimeout(() => {
         setAutoStep(true);
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.((stepIndex ?? 0) + 1);
       }, stepInfo.delay);
 
       return () => clearTimeout(timeout);
@@ -95,7 +101,7 @@ export const GameContent = () => {
         !buttonClicked &&
         !autoStep
       ) {
-        setStepIndex(stepIndex + 1);
+        setStepIndex?.(stepIndex ?? 0 + 1);
       }
 
       setCardClicked(false);
@@ -104,14 +110,15 @@ export const GameContent = () => {
 
       if (type === "tour:end") {
         setRunCallback(false);
-        if (game) {
-          switch (game.state) {
-            case GameStateEnum.Store:
-              return navigate("/store");
-            case GameStateEnum.Map:
-              return navigate("/map");
-            default:
-              return navigate("/demo");
+        switch (state) {
+          case GameStateEnum.Store:
+            return navigate("/store");
+          case GameStateEnum.Map:
+            return navigate("/map");
+          default: {
+            resetLevel();
+            if (!gameId || gameId === 0) return navigate("/my-games");
+            else return navigate("/demo");
           }
         }
       }
@@ -119,8 +126,6 @@ export const GameContent = () => {
   };
 
   const handleJoyrideCallback = handleJoyrideCallbackFactory(setRun);
-
-  const game = useGame();
 
   const handleDragEnd = (event: DragEndEvent) => {
     const draggedCard = Number(event.active?.id);
@@ -137,7 +142,7 @@ export const GameContent = () => {
       (event.over?.id === PRESELECTED_CARD_SECTION_ID || !isNaN(modifiedCardId))
     ) {
       setCardClicked(true);
-      setStepIndex(stepIndex + 1);
+      setStepIndex?.((stepIndex ?? 0) + 1);
       preSelectCard(draggedCard);
     } else if (event.over?.id === HAND_SECTION_ID) {
       unPreSelectCard(draggedCard);
@@ -170,7 +175,7 @@ export const GameContent = () => {
     );
   }
 
-  if (gameLoading || (!game && !isTutorial)) {
+  if (gameLoading || !isTutorial) {
     return <Loading />;
   }
 
@@ -178,6 +183,7 @@ export const GameContent = () => {
     <Box
       sx={{
         height: "100%",
+        width: "100%",
       }}
     >
       <Box
@@ -220,7 +226,7 @@ export const GameContent = () => {
                 onTutorialCardClick={() => {
                   if (run) {
                     setButtonClicked(true);
-                    setStepIndex(stepIndex + 1);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
                   }
                 }}
               />
@@ -246,7 +252,7 @@ export const GameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />
@@ -265,7 +271,7 @@ export const GameContent = () => {
                     onTutorialCardClick={() => {
                       if (run) {
                         setCardClicked(true);
-                        setStepIndex(stepIndex + 1);
+                        setStepIndex?.((stepIndex ?? 0) + 1);
                       }
                     }}
                   />

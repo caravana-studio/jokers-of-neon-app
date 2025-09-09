@@ -1,7 +1,9 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useRound } from "../dojo/queries/useRound.tsx";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
+import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
@@ -10,9 +12,10 @@ import { PinkBox } from "./PinkBox.tsx";
 interface RewardItemProps {
   label: string;
   value: number;
+  reroll?: boolean;
 }
 
-const RewardItem = ({ label, value }: RewardItemProps) => {
+const RewardItem = ({ label, value, reroll = false }: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
       <Flex
@@ -37,7 +40,11 @@ const RewardItem = ({ label, value }: RewardItemProps) => {
         }}
       >
         <Heading size="s">{label.toUpperCase()}</Heading>
-        <Heading size="s">{value}</Heading>
+        {reroll ? (
+          <RerollIndicators rerolls={value} justifyContent="flex-end" />
+        ) : (
+          <Heading size="s">{value}</Heading>
+        )}
       </Flex>
     </Box>
   );
@@ -60,6 +67,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     discard_left_cash,
     rage_card_defeated,
     rage_card_defeated_cash,
+    rerolls,
     total,
   } = roundRewards;
 
@@ -74,32 +82,37 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
     t("discards-left", { discards: discard_left }),
   ];
 
+  if (rerolls) {
+    labels.push(t("rerolls", { rerolls: rerolls }));
+  }
+
   if (rage_card_defeated && rage_card_defeated_cash) {
     labels.push(t("rage", { cards: rage_card_defeated }));
   }
 
-  const navigate = useNavigate();
-  const round = useRound();
+  const navigate = useCustomNavigate();
+  const { currentScore } = useGameStore();
 
   return (
     <PinkBox
       title={`${t("title", { round: roundNumber })}`}
       button={t("continue-btn")}
       onClick={() => {
-        navigate("/redirect/map");
+        navigate(GameStateEnum.Map);
       }}
     >
       <Heading color="lightViolet" size="s">
         {" "}
-        {t("final-score", { score: round?.current_score })}{" "}
+        {t("final-score", { score: currentScore })}{" "}
       </Heading>
 
       <RewardItem label={labels[0]} value={round_defeat} />
       <RewardItem label={labels[2]} value={hands_left_cash} />
       <RewardItem label={labels[3]} value={discard_left_cash} />
       {rage_card_defeated_cash > 0 && (
-        <RewardItem label={labels[4]} value={rage_card_defeated_cash} />
+        <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
       )}
+      {rerolls > 0 && <RewardItem label={labels[4]} value={rerolls} reroll />}
 
       <Flex
         color={VIOLET_LIGHT}

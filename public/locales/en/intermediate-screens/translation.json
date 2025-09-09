@@ -3,12 +3,13 @@
     "level": "LEVEL"
   },
   "my-games": {
-    "title": "My Games",
+    "title": "Games",
     "go-back": "Go back",
     "start-game": "Start new game",
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
+    "tuto": "Tutorial",
     "surrender": {
       "action": "Surrender",
       "confirmation-modal": {
@@ -22,14 +23,17 @@
     "points-lbl": "points",
     "no-games": "You don't have any games. Start a new one!",
     "create-game": {
-      "stage-1": "Finding tournament {{tournamentId}}",
-      "stage-2": "Registering user {{username}}",
-      "stage-3": "Minting game token to your account",
+      "stage-1": "Setting up the stage",
+      "stage-2": "Pulling up a chair for {{username}}",
+      "stage-3": "Preparing shops",
       "stage-4": "Shuffling cards",
-      "stage-5": "Game starting"
+      "stage-5": "The game is about to begin..."
     }
   },
   "game-over": {
+    "current-position": "You are in position number {{position}}, do you want to keep it?",
+    "login": "Login",
+    "skip": "Skip",
     "gameOver-msj": "GAME OVER",
     "table": {
       "gameOver-leader-msj": "Congratulations! You're the top player on the leaderboard!",
@@ -64,6 +68,7 @@
       "discards-left": "{{discards}} Discards left",
       "hands-left": "{{hands}} Hands left",
       "rage": "{{cards}} Rage cards defeated",
+      "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
       "continue-btn": "continue"
@@ -86,7 +91,11 @@
     "community-mods": "Community mods"
   },
   "power-ups": {
-    "title": "Power-ups"
+    "title": "Power-ups",
+    "confirmation-modal": {
+      "title": "Sell powerup",
+      "description": "Are you sure you want to sell this Power-up for ¢{{price}}? There is no way to undo this action."
+    }
   },
   "open-lootbox": {
     "click-open": "Click to open",
@@ -94,5 +103,14 @@
   },
   "common": {
     "go-back-btn": "Go back"
+  },
+  "my-collection": {
+    "title": "Collection",
+    "no-collection": "Please login to see your collection",
+    "login": "Login",
+    "collections": {
+      "sx": "Season {{season}}",
+      "c99": "GG Exclusive Collection - v1"
+    }
   }
 }

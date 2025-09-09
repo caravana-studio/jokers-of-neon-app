@@ -12,6 +12,9 @@ import { DurationSwitcher } from "./DurationSwitcher.tsx";
 import { LootBoxRateInfo } from "./Info/LootBoxRateInfo.tsx";
 import { BarButtonProps } from "./MobileBottomBar.tsx";
 import { ReactNode } from "react";
+import { colorizeText } from "../utils/getTooltip.tsx";
+import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 
 const SIZE_MULTIPLIER = isMobile ? 1.3 : 2;
 const { white, neonGreen } = theme.colors;
@@ -57,7 +60,7 @@ export const StorePreviewComponent = ({
   duration,
   onDurationChange,
 }: IStorePreviewComponentDesktop) => {
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
   const { t } = useTranslation(["store"]);
 
   return (
@@ -174,8 +177,8 @@ export const StorePreviewComponent = ({
                 >
                   {t("store.preview-card.title.description")}
                 </Text>
-                <Text color={neonGreen} fontSize={{ base: "md", sm: "xl" }}>
-                  {description}
+                <Text fontSize={{ base: "md", sm: "xl" }}>
+                  {colorizeText(description)}
                 </Text>
                 {extraDescription && (
                   <Text
@@ -286,7 +289,7 @@ export const StorePreviewComponent = ({
             {buyButton}
             <Button
               variant="outlineSecondaryGlow"
-              onClick={() => navigate("/store")}
+              onClick={() => navigate(GameStateEnum.Store)}
               height={{ base: "40px", sm: "100%" }}
               width={{ base: "50%", sm: "unset" }}
             >

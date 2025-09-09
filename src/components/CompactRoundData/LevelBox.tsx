@@ -1,16 +1,16 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGame } from "../../dojo/queries/useGame";
 import { useGameContext } from "../../providers/GameProvider";
+import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
+import { isTutorial } from "../../utils/isTutorial";
 
 export const LevelBox = () => {
-  const { t } = useTranslation("game", {
-    keyPrefix: "game.compact-round-data",
-  });
-  const game = useGame();
-  const { isRageRound, nodeRound } = useGameContext();
-  const level = game?.level ?? 0;
+  const { t } = useTranslation("game");
+  const { isRageRound, nodeRound } = useGameStore();
+  const { level } = useGameStore();
+  const inTutorial = isTutorial();
+
   return (
     <Center>
       <Box
@@ -19,7 +19,12 @@ export const LevelBox = () => {
         borderRadius="11px"
         mb={0.5}
       >
-        <Box backgroundColor={isRageRound ? "black" : "backgroundBlue"} borderRadius="9px" px={5} py={0.25}>
+        <Box
+          backgroundColor={isRageRound ? "black" : "backgroundBlue"}
+          borderRadius="9px"
+          px={5}
+          py={0.25}
+        >
           <Heading
             fontSize="11px"
             textTransform="uppercase"
@@ -27,7 +32,12 @@ export const LevelBox = () => {
             color="white"
             fontWeight="bold"
           >
-            {t("level-round", { level: level, round: nodeRound })}
+            {inTutorial
+              ? t("game.tutorial").toUpperCase()
+              : t("game.compact-round-data.level-round", {
+                  level: level,
+                  round: nodeRound,
+                })}
           </Heading>
         </Box>
       </Box>

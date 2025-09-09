@@ -1,16 +1,14 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { BackgroundDecoration } from "../components/Background";
 import CountdownTimer from "../components/CountdownTimer";
+import { DelayedLoading } from "../components/DelayedLoading";
+import { GoBackButton } from "../components/GoBackButton";
 import { Leaderboard } from "../components/Leaderboard";
+import { MobileDecoration } from "../components/MobileDecoration";
 import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { MobileBottomBar } from "../components/MobileBottomBar";
-import { GoBackButton } from "../components/GoBackButton";
 
 export const LeaderBoardPage = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
 
@@ -20,11 +18,12 @@ export const LeaderBoardPage = () => {
   );
 
   return (
-    <BackgroundDecoration contentHeight={"85%"}>
+    <DelayedLoading ms={100}>
+      <MobileDecoration />
       <Flex
         height="100%"
         width="100%"
-        justifyContent="space-between"
+        justifyContent="center"
         flexDirection="column"
         alignItems="center"
         gap={4}
@@ -45,13 +44,7 @@ export const LeaderBoardPage = () => {
           <Leaderboard />
           {!isSmallScreen && <GoBackButton mt={8} width={"100%"} />}
         </Box>
-        {isSmallScreen && (
-          <MobileBottomBar
-            hideDeckButton
-            secondButtonReactNode={<GoBackButton />}
-          />
-        )}
       </Flex>
-    </BackgroundDecoration>
+    </DelayedLoading>
   );
 };

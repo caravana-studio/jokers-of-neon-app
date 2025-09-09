@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useStore } from "../../../providers/StoreProvider";
+import { useShopStore } from "../../../state/useShopStore";
 import { StoreCardsRow } from "../StoreCardsRow";
 
 export const StoreCards = () => {
-  const { commonCards, modifierCards, specialCards } = useStore();
+  const { commonCards, modifierCards, specialCards } = useShopStore();
   const { t } = useTranslation(["store"]);
   return (
     <Flex

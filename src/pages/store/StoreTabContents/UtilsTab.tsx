@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DefaultInfo } from "../../../components/Info/DefaultInfo";
 import { PowerUpComponent } from "../../../components/PowerUpComponent";
-import { useGame } from "../../../dojo/queries/useGame";
-import { useGameContext } from "../../../providers/GameProvider";
 import { useStore } from "../../../providers/StoreProvider";
+import { useGameStore } from "../../../state/useGameStore";
+import { useShopStore } from "../../../state/useShopStore";
 import { GREY_LINE } from "../../../theme/colors";
 import theme from "../../../theme/theme";
-import { BurnComponent } from "../../DynamicStore/storeComponents/ BurnComponent";
+import { BurnComponent } from "../../DynamicStore/storeComponents/BurnComponent";
 import { SpecialSlotItem } from "../SpecialSlotItem";
 import LevelUpTable from "../StoreElements/LevelUpTable";
 
@@ -17,16 +17,15 @@ export const UtilsTab = () => {
   const { neonGreen } = theme.colors;
   const navigate = useNavigate();
 
-  const { specialSlotItem, burnItem, powerUps, buySpecialSlot } = useStore();
-  const { maxSpecialCards } = useGameContext();
+  const { buySpecialSlot } = useStore();
+  const { specialSlotItem, burnItem, powerUps } = useShopStore();
 
-  const game = useGame();
-  const cash = game?.cash ?? 0;
+  const { cash, specialSlots, maxSpecialCards } = useGameStore();
 
-  const visible = (game?.special_slots ?? 1) < maxSpecialCards;
+  const visible = specialSlots < maxSpecialCards;
 
   const notEnoughCashSlot =
-    !specialSlotItem.cost ||
+    !specialSlotItem?.cost ||
     (specialSlotItem?.discount_cost
       ? cash < Number(specialSlotItem?.discount_cost ?? 0)
       : cash < Number(specialSlotItem.cost));
@@ -34,7 +33,7 @@ export const UtilsTab = () => {
   const effectiveCost: number =
     burnItem?.discount_cost && burnItem.discount_cost !== 0
       ? Number(burnItem.discount_cost)
-      : Number(burnItem.cost);
+      : Number(burnItem?.cost);
 
   const notEnoughCashBurn = cash < effectiveCost;
 
@@ -58,11 +57,14 @@ export const UtilsTab = () => {
     buySpecialSlot();
   }, notEnoughCashSlot);
 
-  const buyBurnButton = createBuyButton(() => {
-    if (!burnItem.purchased) {
-      navigate("/deck", { state: { burn: true } });
-    }
-  }, notEnoughCashBurn || burnItem.purchased);
+  const buyBurnButton = createBuyButton(
+    () => {
+      if (!burnItem?.purchased) {
+        navigate("/deck", { state: { burn: true } });
+      }
+    },
+    notEnoughCashBurn || (burnItem?.purchased ?? false)
+  );
 
   const tooltipSlotButton = notEnoughCashSlot ? (
     <Text mt={1}>{t("store.preview-card.tooltip.no-coins")}</Text>

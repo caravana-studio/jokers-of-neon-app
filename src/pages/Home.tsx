@@ -1,63 +1,66 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useConnect } from "@starknet-react/core";
-import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import AudioPlayer from "../components/AudioPlayer";
-import { PositionedDiscordLink } from "../components/DiscordLink";
-import LanguageSwitcher from "../components/LanguageSwitcher";
-import { PoweredBy } from "../components/PoweredBy";
-import { useDojo } from "../dojo/useDojo";
+import { useState } from "react";
 
 import { RemoveScroll } from "react-remove-scroll";
+import { useNavigate } from "react-router-dom";
+import { DelayedLoading } from "../components/DelayedLoading";
+import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { CLASSIC_MOD_ID } from "../constants/general";
-import { useFeatureFlagEnabled } from "../featureManagement/useFeatureFlagEnabled";
+import { ConfirmationModal } from "../components/ConfirmationModal";
 import { useGameContext } from "../providers/GameProvider";
+import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { GGBanner } from "../components/GGBanner";
-
-const isDev = import.meta.env.VITE_DEV === "true";
 
 export const Home = () => {
-  const [playButtonClicked, setPlayButtonClicked] = useState(false);
-  const { connect, connectors } = useConnect();
-  const { account } = useDojo();
-
-  const navigate = useNavigate();
   const { t } = useTranslation(["home"]);
-  const { setModId } = useGameContext();
   const { isSmallScreen } = useResponsiveValues();
+  const navigate = useNavigate();
+  const { prepareNewGame, executeCreateGame } = useGameContext();
+  const { data: games } = useGetMyGames();
 
-  useEffect(() => {
-    setModId(CLASSIC_MOD_ID);
-  }, []);
+  const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
 
-  const enableMods = useFeatureFlagEnabled("global", "showMods");
+  const handleCreateGame = async () => {
+    prepareNewGame();
+    executeCreateGame();
+    navigate("/entering-tournament");
+  };
 
-  useEffect(() => {
-    if (account?.account && playButtonClicked) {
-      navigate(enableMods ? "/mods" : "/my-games");
+  const handlePlayClick = () => {
+    if (games && games.length > 0) {
+      navigate("/my-games");
+    } else {
+      setTutorialModalOpen(true);
     }
-  }, [account, playButtonClicked]);
+  };
+
+  const handleConfirmTutorial = () => {
+    navigate("/tutorial");
+    setTutorialModalOpen(false);
+  };
+
+  const handleDeclineTutorial = () => {
+    handleCreateGame();
+    setTutorialModalOpen(false);
+  };
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
       <RemoveScroll>
         <></>
       </RemoveScroll>
-      <AudioPlayer />
-      <LanguageSwitcher />
       <Flex
         height="100%"
-        justifyContent="center"
+        width={"100%"}
+        justifyContent="space-between"
         flexDirection="column"
         alignItems="center"
         gap={4}
       >
+        <Flex h="90px" />
         <Flex
           flexDirection="column"
           alignItems="center"
@@ -75,10 +78,11 @@ export const Home = () => {
 
           <Flex
             w={"100%"}
+            h={"100%"}
             justifyContent="center"
             minH={isSmallScreen ? "unset" : "40vh"}
             flexGrow={1}
-            maxWidth={isMobile ? "70%" : "50%"}
+            maxWidth={isSmallScreen ? "70%" : "50%"}
           >
             <Flex h={"100%"} w="100%" justifyContent={"center"} pl={2}>
               <SpineAnimation
@@ -86,36 +90,52 @@ export const Home = () => {
                 atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
                 initialAnimation={"animation"}
                 loopAnimation={"animation"}
-                scale={2.8}
+                scale={2.4}
                 yOffset={-800}
               />
             </Flex>
           </Flex>
-
-          <Flex
-            gap={{ base: 4, sm: 6 }}
-            flexWrap={{ base: "wrap", sm: "nowrap" }}
-          >
-            <Button
-              variant="secondarySolid"
-              onClick={() => {
-                if (isDev) {
-                  navigate(enableMods ? "/mods" : "/login");
-                } else {
-                  setPlayButtonClicked(true);
-                  connect({ connector: connectors[0] });
-                }
-              }}
-              minW={["150px", "300px"]}
-            >
-              {t("home.btn.start")}
-            </Button>
-          </Flex>
+          {!isSmallScreen && (
+            <Flex gap={8}>
+              <Button onClick={() => navigate("/leaderboard")} w="300px">
+                {t("home.btn.leaderboard-btn")}
+              </Button>
+              <Button
+                onClick={handlePlayClick}
+                w="300px"
+                variant="secondarySolid"
+              >
+                {games && games.length > 0 ? t("my-games") : t("play")}
+              </Button>
+            </Flex>
+          )}
         </Flex>
-        <PoweredBy />
-        <GGBanner />
+        {isSmallScreen ? (
+          <MobileBottomBar
+            firstButton={{
+              label: t("leaderboard.title"),
+              onClick: () => navigate("/leaderboard"),
+            }}
+            secondButton={{
+              label: games && games.length > 0 ? t("my-games") : t("play"),
+              onClick: handlePlayClick,
+            }}
+          />
+        ) : (
+          <Flex h="50px" />
+        )}
       </Flex>
-      <PositionedDiscordLink />
-    </>
+
+      {isTutorialModalOpen && (
+        <ConfirmationModal
+          close={handleDeclineTutorial}
+          title={t("tutorialModal.title")}
+          description={t("tutorialModal.description")}
+          confirmText={t("tutorialModal.confirm-text")}
+          cancelText={t("tutorialModal.cancel-text")}
+          onConfirm={handleConfirmTutorial}
+        />
+      )}
+    </DelayedLoading>
   );
 };

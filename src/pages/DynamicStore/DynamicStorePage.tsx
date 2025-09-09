@@ -7,11 +7,14 @@ import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { PositionedGameDeck } from "../../components/PositionedGameDeck";
 import { PriceBox } from "../../components/PriceBox";
-import { useGame } from "../../dojo/queries/useGame";
+import { GameStateEnum } from "../../dojo/typescript/custom";
 import { useShopActions } from "../../dojo/useShopActions";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate";
 import { useRedirectByGameState } from "../../hooks/useRedirectByGameState";
 import { useGameContext } from "../../providers/GameProvider";
 import { useStore } from "../../providers/StoreProvider";
+import { useGameStore } from "../../state/useGameStore";
+import { useShopStore } from "../../state/useShopStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
@@ -37,8 +40,9 @@ export const SHOP_ID_MAP = {
 export const DynamicStorePage = () => {
   const { t } = useTranslation("store", { keyPrefix: "store.dynamic" });
 
-  const { shopId, setLoading, specialSlotItem } = useStore();
-
+  const { setLoading } = useStore();
+  const { specialSlotItem } = useShopStore();
+  const { shopId } = useGameStore();
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );
@@ -48,9 +52,10 @@ export const DynamicStorePage = () => {
   const distribution =
     store?.distribution[isSmallScreen ? "mobile" : "desktop"];
   const navigate = useNavigate();
-  const { onShopSkip, gameId, maxSpecialCards } = useGameContext();
-  const game = useGame();
-  const slotsLen = game?.special_slots;
+  const customNavigate = useCustomNavigate();
+  const { onShopSkip } = useGameContext();
+  const { specialSlots, maxSpecialCards, id: gameId } = useGameStore();
+  const slotsLen = specialSlots;
 
   const { skipShop } = useShopActions();
 
@@ -63,7 +68,7 @@ export const DynamicStorePage = () => {
     onShopSkip();
     skipShop(gameId).then((response): void => {
       if (response.success) {
-        navigate("/redirect/map");
+        customNavigate(GameStateEnum.Map);
       } else {
         setLoading(false);
       }

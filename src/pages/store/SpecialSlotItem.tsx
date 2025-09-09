@@ -1,14 +1,13 @@
-import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
+import { Flex, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage";
 import { PriceBox } from "../../components/PriceBox";
-import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
-import { useGame } from "../../dojo/queries/useGame";
-import { useGameContext } from "../../providers/GameProvider";
-import { useStore } from "../../providers/StoreProvider";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { PurchasedLbl } from "../../components/PurchasedLbl";
+import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
+import { useGameStore } from "../../state/useGameStore";
+import { useShopStore } from "../../state/useShopStore";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface ISpecialSlotItem {}
 
@@ -16,12 +15,11 @@ export const SpecialSlotItem = ({}: ISpecialSlotItem) => {
   const { cardScale, isSmallScreen } = useResponsiveValues();
   const { t } = useTranslation("store", { keyPrefix: "store.special-slot" });
   const navigate = useNavigate();
-  const { maxSpecialCards } = useGameContext();
 
-  const { specialSlotItem } = useStore();
+  const { specialSlotItem } = useShopStore();
 
-  const game = useGame();
-  const visible = (game?.special_slots ?? 1) < maxSpecialCards;
+  const { specialSlots, maxSpecialCards } = useGameStore();
+  const visible = specialSlots < maxSpecialCards;
 
   const price = specialSlotItem?.cost;
   const purchased = false;

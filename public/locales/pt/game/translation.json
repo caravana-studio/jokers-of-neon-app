@@ -1,7 +1,7 @@
 {
-  "gg-banner": {
-    "title": "Evento GG ativo",
-    "description": "Clique <0>aqui</0> para participar do torneio GG e ganhe recompensas exclusivas!"
+  "confirm-modal": {
+    "title": "Sair do jogo?",
+    "description": "Você não perderá seu progresso."
   },
   "controller": "Conta de controller",
   "error": {
@@ -11,6 +11,7 @@
     }
   },
   "game": {
+    "tutorial": "Tutorial",
     "compact-round-data": {
       "my-score": "Pontuação",
       "target": "Objetivo",
@@ -94,15 +95,30 @@
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
+      "back": "Voltar ao jogo",
       "pages": {
         "gameover": "Fim do jogo",
         "open-loot-box": "Abrir caixa",
         "store": "Loja - {{shopName}}",
         "demo": "{{roundType}} {{level}}",
         "rage-round": "Rodada Rage",
-        "round": "Rodada"
+        "round": "Rodada",
+        "map": "Mapa",
+        "my-games": "Jogos",
+        "profile": "Perfil",
+        "settings": "Configuração",
+        "my-collection": "Coleção",
+        "home": "Início",
+        "docs": "Lista de cartas",
+        "deck": "Baralha",
+        "rewards": "Recompensas",
+        "manage": "Gerenciar itens",
+        "preview": "Visualizar item",
+        "loot-box": "Caixa",
+        "loading-game": "Carregando jogo",
+        "plays": "Jogadas disponíveis"
       },
-      "my-games": "Meus jogos"
+      "my-games": "Jogos"
     },
     "plays": {
       "title": "Jogadas disponíveis",
@@ -114,8 +130,8 @@
       }
     },
     "deck": {
-      "tooltip": "Ver meu baralho",
-      "title": "Meu baralho completo",
+      "tooltip": "Ver baralho",
+      "title": "Baralho",
       "burn-title": "Selecione uma carta para queimar",
       "filter-title": "Filtrar por",
       "suit": {

@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { LAST_PAGE } from "../constants/localStorage";
-import { useGameContext } from "../providers/GameProvider";
-import { useStore } from "../providers/StoreProvider";
 import { getPageConfig, PageInfo } from "../constants/pageConfig";
+import { useGameContext } from "../providers/GameProvider";
 import { useMap } from "../providers/MapProvider";
+import { useStore } from "../providers/StoreProvider";
+import { useGameStore } from "../state/useGameStore";
 
 export const useCurrentPageInfo = (): PageInfo | null => {
   const location = useLocation();
-  const { isRageRound, nodeRound } = useGameContext();
+  const { isRageRound, nodeRound, shopId } = useGameStore();
   const { currentNode } = useMap();
-  const { shopId } = useStore();
   const { t: tGame } = useTranslation(["game"], { keyPrefix: "game" });
   const { t: tShop } = useTranslation(["store"]);
 
@@ -40,7 +40,7 @@ export const useCurrentPageInfo = (): PageInfo | null => {
       setCurrentPage(pageInfo);
       localStorage.setItem(LAST_PAGE, JSON.stringify(pageInfo));
     }
-  }, [location.pathname, nodeRound, pageInfo?.name, pageInfo?.icon]);
+  }, [location.pathname, nodeRound, pageInfo?.name, pageInfo?.icon, shopId]);
 
   return currentPage;
 };

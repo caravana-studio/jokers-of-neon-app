@@ -29,6 +29,7 @@ interface IAnimatedCard {
   animationIndex: number;
   cash?: number;
   isNeon?: boolean;
+  isAccumulative?: boolean;
 }
 
 interface IAnimatedPowerUp {

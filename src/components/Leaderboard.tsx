@@ -33,15 +33,28 @@ const CURRENT_LEADER_STYLES = {
 interface LeaderboardProps {
   lines?: number;
   gameId?: number;
+  filterLoggedInPlayers?: boolean;
 }
-export const Leaderboard = ({ gameId, lines = 11 }: LeaderboardProps) => {
+export const Leaderboard = ({
+  gameId,
+  lines = 11,
+  filterLoggedInPlayers,
+}: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId);
-  const leaderboard = fullLeaderboard?.slice(0, lines);
+  const guestNamePattern = /^joker_guest_\d+$/;
 
-  const actualPlayer = fullLeaderboard?.find(
+  const filteredLeaderboard = filterLoggedInPlayers
+    ? fullLeaderboard?.filter(
+        (player) => !guestNamePattern.test(player.player_name)
+      )
+    : fullLeaderboard;
+
+  const actualPlayer = filteredLeaderboard?.find(
     (player) => signedHexToNumber(player.id.toString()) === gameId
   );
+
+  const leaderboard = filteredLeaderboard?.slice(0, lines);
 
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
     (leader) => signedHexToNumber(leader.id.toString()) === gameId

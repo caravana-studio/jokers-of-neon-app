@@ -1,16 +1,16 @@
 import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps";
-import { useCardHighlight } from "../providers/CardHighlightProvider";
-import { useGameContext } from "../providers/GameProvider";
+import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { CardImage3D } from "./CardImage3D";
+import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider";
 
 export const RageCards = () => {
   const { t } = useTranslation("game", { keyPrefix: "rage-cards" });
-  const { rageCards } = useGameContext();
+  const { rageCards } = useGameStore();
   const { isSmallScreen, cardScale } = useResponsiveValues();
-  const { highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard } = useCardHighlight();
 
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;

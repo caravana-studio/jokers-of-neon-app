@@ -1,9 +1,8 @@
 import { Box, Button, ButtonProps, Flex, Text } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
-import { GameMenuBtn } from "./Menu/GameMenu/GameMenuBtn";
-import React from "react";
 
 export interface BarButtonProps extends ButtonProps {
   onClick: () => void;
@@ -20,7 +19,6 @@ interface MobileBottomBarProps {
   firstButtonReactNode?: ReactNode;
   secondButtonReactNode?: ReactNode;
   setRun?: (run: boolean) => void;
-  hideDeckButton?: boolean;
   navigateState?: {};
 }
 
@@ -57,10 +55,10 @@ export const MobileBottomBar = ({
   secondButton,
   secondButtonReactNode,
   setRun,
-  hideDeckButton,
   navigateState,
 }: MobileBottomBarProps) => {
   const navigate = useNavigate();
+  const { isSmallScreen } = useResponsiveValues();
 
   const uniqueFirstButton = firstButton ?? firstButtonReactNode;
   const uniqueSecondButton = secondButton ?? secondButtonReactNode;
@@ -82,21 +80,13 @@ export const MobileBottomBar = ({
       mx={4}
       mb={8}
       mt={3}
-      justifyContent={"space-between"}
+      justifyContent={isSmallScreen ? "space-between" : "center "}
+      gap={isSmallScreen ? 0 : 8}
       alignItems={"center"}
       zIndex={1000}
     >
-      <GameMenuBtn
-        showTutorial={
-          setRun
-            ? () => {
-                setRun(true);
-              }
-            : () => {
-                navigate("/tutorial");
-              }
-        }
-      />
+      <Box w="30px" />
+
       {uniqueButton ? (
         <Box w="40%">
           {React.isValidElement(uniqueButton) ? (
@@ -116,29 +106,16 @@ export const MobileBottomBar = ({
           </Box>
           <Box w="30%">
             {secondButton ? (
-              <BarButton {...secondButton} variant="secondarySolid" />
+              <BarButton  variant="secondarySolid" {...secondButton} />
             ) : (
               secondButtonReactNode
             )}
           </Box>
         </>
       )}
-      <Flex
-        height={["30px", "45px"]}
-        justifyContent="center"
-        alignItems="center"
-        width={["30px", "45px"]}
-        border={hideDeckButton ? "none" : "1px solid white"}
-        borderRadius={["8px", "14px"]}
-        className="game-tutorial-step-9"
-        onClick={() => !hideDeckButton && navigate("/deck", navigateState)}
-      >
-        {hideDeckButton ? (
-          <></>
-        ) : (
-          <CachedImage height="15px" src="deck-icon.png" alt="deck-icon" />
-        )}
-      </Flex>
+      {isSmallScreen && (
+        <Box w="30px" />
+      )}
     </Flex>
   );
 };

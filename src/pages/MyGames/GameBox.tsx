@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
-import { GameStateEnum } from "../../dojo/typescript/custom.ts";
-import { useDojo } from "../../dojo/useDojo.tsx";
-import { useGameContext } from "../../providers/GameProvider.tsx";
-import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { GameSummary } from "./MyGames.tsx";
 import { ConfirmationModal } from "../../components/ConfirmationModal.tsx";
+import { stateToPageMap } from "../../constants/redirectConfig.ts";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
+import { useGameContext } from "../../providers/GameProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
+import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { formatNumber } from "../../utils/formatNumber.ts";
+import { GameSummary } from "./MyGames.tsx";
 import { getNode } from "../../dojo/queries/getNode.ts";
+import { useDojo } from "../../dojo/useDojo.tsx";
 
 export const GameBox = ({
   game,
@@ -25,10 +27,7 @@ export const GameBox = ({
 
   const {
     setup: { client },
-    syncCall,
   } = useDojo();
-  const { executeCreateGame, setGameId, prepareNewGame, surrenderGame } =
-    useGameContext();
 
   const [nodeRound, setNodeRound] = useState<number>(0);
 
@@ -37,6 +36,9 @@ export const GameBox = ({
       setNodeRound(data);
     });
   }, []);
+
+  const { executeCreateGame, prepareNewGame, surrenderGame } = useGameContext();
+  const { setGameId } = useGameStore();
 
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,8 +52,7 @@ export const GameBox = ({
       executeCreateGame(game.id);
     } else {
       setGameId(game.id);
-      await syncCall();
-      navigate(`/redirect/state`);
+      navigate(stateToPageMap[game.status as GameStateEnum]);
     }
   };
 

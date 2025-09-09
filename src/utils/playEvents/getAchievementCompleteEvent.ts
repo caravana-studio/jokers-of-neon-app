@@ -5,7 +5,7 @@ import { AchievementCompleted } from "../../types/ScoreData";
 import { getEventKey } from "../getEventKey";
 
 const ACHIEVEMENT_COMPLETE_EVENT_KEY = getEventKey(
-  DojoEvents.ACHIEVEMENT_COMPLETE
+  DojoEvents.DAILY_MISSION_COMPLETE
 );
 
 export const getAchievementCompleteEvent = (

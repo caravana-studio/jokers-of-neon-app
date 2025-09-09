@@ -5,26 +5,29 @@ import { Toaster } from "sonner";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
 
+import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import i18n from "i18next";
+import { createRef } from "react";
 import { I18nextProvider } from "react-i18next";
 import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
+import { WalletProvider } from "./dojo/WalletContext.tsx";
+import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx";
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
-import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
-import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
-import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import customTheme from "./theme/theme";
 import {
   LoadingProgress,
   LoadingScreenHandle,
 } from "./types/LoadingProgress.ts";
-import { createRef } from "react";
+import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
+import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
+import { isNative } from "./utils/capacitorUtils.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -36,13 +39,15 @@ const I18N_NAMESPACES = [
   "plays",
   "achievements",
   "map",
+  "docs",
 ];
 
 const loadingSteps: LoadingProgress[] = [
-  { text: "Setting up game", showAt: 0 },
-  { text: "Loading translations", showAt: 1 },
-  { text: "Preloading assets", showAt: 2 },
-  { text: "Loading game", showAt: 4 },
+  { text: "Setting the stage", showAt: 0 },
+  { text: "Turning on the neon lights", showAt: 1 },
+  { text: "Gathering all the jokers", showAt: 2 },
+  { text: "Loading the leaderboard", showAt: 3 },
+  { text: "Almost ready, let's play!", showAt: 4 },
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
@@ -66,16 +71,20 @@ async function init() {
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
-          <DojoProvider value={setupResult}>
-            <BrowserRouter>
-              <QueryClientProvider client={queryClient}>
-                <Toaster />
-                <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                  <App />
-                </I18nextProvider>
-              </QueryClientProvider>
-            </BrowserRouter>
-          </DojoProvider>
+          <QueryClientProvider client={queryClient}>
+            <FeatureFlagProvider>
+              <WalletProvider value={setupResult}>
+                <DojoProvider value={setupResult}>
+                  <BrowserRouter>
+                    <Toaster />
+                    <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+                      <App />
+                    </I18nextProvider>
+                  </BrowserRouter>
+                </DojoProvider>
+              </WalletProvider>
+            </FeatureFlagProvider>
+          </QueryClientProvider>
         </StarknetProvider>
       </FadeInOut>
     );
@@ -113,13 +122,17 @@ async function init() {
     progressBarRef.current?.nextStep();
   });
 
-  const imagesPromise = Promise.all([
-    preloadImages(),
-    preloadSpineAnimations(),
-    preloadVideos(),
-  ]).then(() => {
-    progressBarRef.current?.nextStep();
-  });
+  const imagesPromise = isNative
+    ? Promise.resolve().then(() => {
+        progressBarRef.current?.nextStep();
+      })
+    : Promise.all([
+        preloadImages(),
+        preloadSpineAnimations(),
+        preloadVideos(),
+      ]).then(() => {
+        progressBarRef.current?.nextStep();
+      });
 
   try {
     const setupPromise = setup(dojoConfig).then((result) => {

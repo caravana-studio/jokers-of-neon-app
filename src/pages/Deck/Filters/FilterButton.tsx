@@ -1,9 +1,9 @@
-import { Card } from "../../../types/Card";
-import { useDeck } from "../../../dojo/queries/useDeck";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { IconType, Icons } from "../../../constants/icons";
 import { isMobile } from "react-device-detect";
 import { IconComponent } from "../../../components/IconComponent";
+import { IconType, Icons } from "../../../constants/icons";
+import { useDeckStore } from "../../../state/useDeckStore";
+import { Card } from "../../../types/Card";
 
 interface FilterButtonProps {
   label: string;
@@ -22,7 +22,7 @@ export const FilterButton = ({
   inStore = false,
   icon,
 }: FilterButtonProps) => {
-  const deck = useDeck();
+  const deck = useDeckStore();
   const deckLength = deck?.fullDeckCards.filter(filterFn)?.length ?? 0;
   const usedCardsLength = inStore
     ? 0

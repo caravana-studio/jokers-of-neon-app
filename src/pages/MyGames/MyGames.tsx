@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AudioPlayer from "../../components/AudioPlayer.tsx";
-import LanguageSwitcher from "../../components/LanguageSwitcher.tsx";
+import { DelayedLoading } from "../../components/DelayedLoading.tsx";
 import { Loading } from "../../components/Loading.tsx";
+import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 import { MobileDecoration } from "../../components/MobileDecoration.tsx";
 import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGetMyGames } from "../../queries/useGetMyGames.ts";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
-import { GoBackButton } from "../../components/GoBackButton.tsx";
-import { MobileBottomBar } from "../../components/MobileBottomBar.tsx";
 
 export interface GameSummary {
   id: number;
@@ -44,6 +44,9 @@ export const MyGames = () => {
     return localStorage.getItem("GAME_ID") === null;
   });
 
+  const { resetLevel } = useGameContext();
+  const { removeGameId } = useGameStore();
+
   const filteredGames = games.filter((game) => {
     const notSurrendered = !surrenderedIds.includes(game.id);
     const shouldShow = showFinishedGames
@@ -65,6 +68,8 @@ export const MyGames = () => {
 
   useEffect(() => {
     refetch();
+    resetLevel();
+    removeGameId();
   }, []);
 
   const handleCreateGame = async () => {
@@ -74,10 +79,8 @@ export const MyGames = () => {
   };
 
   return (
-    <>
+    <DelayedLoading ms={100}>
       <MobileDecoration />
-      <LanguageSwitcher />
-      {!isSmallScreen && <AudioPlayer />}
       <Flex
         direction="column"
         justifyContent={isSmallScreen ? "space-between" : "center"}
@@ -94,7 +97,7 @@ export const MyGames = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Heading mb={8} zIndex={2} variant="italic" size={"lg"}>
+          <Heading mb={8} zIndex={2} variant="italic" size={"md"}>
             {t("title")}
           </Heading>
           <Box
@@ -152,40 +155,43 @@ export const MyGames = () => {
 
         {isSmallScreen ? (
           <MobileBottomBar
-            hideDeckButton
             firstButton={{
+              onClick: () => {
+                navigate("/tutorial");
+              },
+              variant: "secondarySolid",
+              label: t("tuto"),
+            }}
+            secondButton={{
               onClick: () => {
                 handleCreateGame();
               },
-              variant: "secondarySolid",
+              variant: "solid",
               label: t("start-game"),
             }}
-            secondButtonReactNode={
-              <GoBackButton
-                visibility={isBackDisabled ? "hidden" : "visible"}
-              />
-            }
           />
         ) : (
           <Flex
-            justifyContent="space-between"
+            justifyContent="center"
             width={{ base: "90%", sm: "600px" }}
+            gap={{ base: "0", sm: "5rem" }}
             pt={{ base: 10, sm: 14 }}
           >
-            <GoBackButton
-              width="46%"
-              visibility={isBackDisabled ? "hidden" : "visible"}
-            />
             <Button
-              onClick={handleCreateGame}
-              width="46%"
+              onClick={() => {
+                navigate("/tutorial");
+              }}
+              width="280px"
               variant="secondarySolid"
             >
+              {t("tuto")}
+            </Button>
+            <Button onClick={handleCreateGame} width="280px" variant="solid">
               {t("start-game")}
             </Button>
           </Flex>
         )}
       </Flex>
-    </>
+    </DelayedLoading>
   );
 };

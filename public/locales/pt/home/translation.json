@@ -2,7 +2,7 @@
   "home": {
     "slogan": "CONSTRUA SEU DECK, DOMINE O JOGO",
     "btn": {
-      "leaderboard-btn": "Ver classificação",
+      "leaderboard-btn": "Classificação",
       "playDemo-btn": "Jogar",
       "start": "Começar"
     },
@@ -17,10 +17,11 @@
       "position-leaderboard-head": "Posição",
       "username-leaderboard-head": "Nome de usuário",
       "score-leaderboard-head": "Pontuação",
-      "level-leaderboard-head": "Nível",
-      "round-leaderboard-head": "Rodada"
+      "level-leaderboard-head": "Nível"
     }
   },
+  "play": "Novo jogo",
+  "my-games": "Jogos",
   "tournament": {
     "table-head": {
       "prize-leaderboard-head": "Prêmio",
@@ -30,5 +31,25 @@
       "days-countdown-tournament": "dias",
       "label-countdown-tournament": "para o torneio terminar"
     }
+  },
+  "menu": {
+    "home": "Início",
+    "collection": "Coleção",
+    "games": "Jogos",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "map": "Mapa",
+    "deck": "Deck",
+    "plays": "Jogadas",
+    "more": "Mais",
+    "round": "Rodada",
+    "rage": "Rodada de raiva",
+    "shop": "Loja"
+  },
+  "tutorialModal": {
+    "title": "Primeira vez jogando?",
+    "description": "Recomendamos um tutorial rápido para aprender o básico. Gostaria de começar agora?",
+    "confirm-text": "Jogar Tutorial",
+    "cancel-text": "Pular"
   }
 }

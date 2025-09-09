@@ -1,34 +1,55 @@
 {
   "home": {
-    "slogan": "CONSTRUYE TU MAZO, DOMINA EL JUEGO",
+    "slogan": "BUILD YOUR DECK, RULE THE GAME",
     "btn": {
-      "leaderboard-btn": "Ver leaderboard",
-      "playDemo-btn": "Jugar",
-      "start": "Comenzar"
+      "leaderboard-btn": "Leaderboard",
+      "playDemo-btn": "Play",
+      "start": "Start"
     },
-    "join-discord": "¡Únete a nuestro Discord!"
+    "join-discord": "Join our Discord!"
   },
   "leaderboard": {
-    "title": "Tabla de posiciones",
+    "title": "Leaderboard",
     "btn": {
-      "returnLeaderboard-btn": "Volver"
+      "returnLeaderboard-btn": "Go back"
     },
     "table-head": {
-      "position-leaderboard-head": "Puesto",
-      "username-leaderboard-head": "Nombre",
-      "score-leaderboard-head": "Puntos",
-      "level-leaderboard-head": "Nivel",
-      "round-leaderboard-head": "Ronda"
+      "position-leaderboard-head": "Position",
+      "username-leaderboard-head": "Username",
+      "score-leaderboard-head": "Score",
+      "level-leaderboard-head": "Level"
     }
   },
+  "play": "New game",
+  "my-games": "Games",
   "tournament": {
     "table-head": {
-      "prize-leaderboard-head": "Premio",
-      "tournament-tooltip": "Los premios serán distribuidos a los mejores 10 jugadores al final del torneo"
+      "prize-leaderboard-head": "Prize",
+      "tournament-tooltip": "Prizes will be distributed to the top 10 players at the end of the tournament"
     },
     "labels": {
-      "days-countdown-tournament": "días",
-      "label-countdown-tournament": "para la finalización del torneo"
+      "days-countdown-tournament": "days",
+      "label-countdown-tournament": "for the tournament to finish"
     }
+  },
+  "menu": {
+    "home": "Home",
+    "collection": "Collection",
+    "games": "Games",
+    "profile": "Profile",
+    "settings": "Settings",
+    "map": "Map",
+    "deck": "Deck",
+    "plays": "Plays",
+    "more": "More",
+    "round": "Round",
+    "rage": "Rage round",
+    "shop": "Shop"
+  },
+  "tutorialModal": {
+    "title": "¿Primera vez jugando?",
+    "description": "Te recomendamos un tutorial rápido para aprender lo básico. ¿Te gustaría empezar ahora?",
+    "confirm-text": "Jugar Tutorial",
+    "cancel-text": "Saltar"
   }
 }

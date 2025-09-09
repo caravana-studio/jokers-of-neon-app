@@ -6,104 +6,104 @@
     },
     "intro": {
       "title": "Bienvenido a Jokers of Neon",
-      "content": "Este tutorial ofrece una visión general de las mecánicas principales del juego."
+      "content": "Repasemos los conceptos <1>básicos</1> del juego."
     },
     "pointsTarget": {
-      "title": "¿Cómo completar un nivel?",
-      "content": "Cada nivel establece una cantidad de puntos que debes alcanzar jugando manos de póker."
+      "title": "Superar un nivel",
+      "content": "Para superar un nivel, alcanza la <1>puntuación objetivo</1> jugando manos de póker."
     },
     "playableHand": {
-      "step-1": "Debes utilizar estas cartas para formar una mano de póker.",
-      "step-2": "Si las cartas de tu mano no forman una mano de póker, puedes usar un descarte para obtener nuevas cartas. Vamos a intentarlo.",
-      "pair": "¡Genial! Tenemos un PAR de 7 para jugar, ¡hagámoslo!",
-      "secondPair": "Ahora tenemos un PAR de 5's para jugar, ¡hagámoslo!",
-      "straight": "Mira, ahora tenemos una ESCALERA para jugar, ¡hagámoslo!",
-      "plays": "Puedes hacer clic aquí para ver las posibles manos de póker que puedes formar."
+      "step-1": "Usa las cartas de tu <1>mano</1> para jugar manos de póker.",
+      "step-2": "¿No tienes una mano de póker? Usa un <1>descarte</1> para obtener nuevas cartas. ¡Intentémoslo!",
+      "pair": "¡Genial! Un <1>PAR</1> de 7. ¡A jugar!",
+      "secondPair": "¡Bien! Tenemos un <1>PAR</1> de 5. Es hora de jugar.",
+      "flush": "¡Al usar el <1>Modificador de Trébol</1> creamos <2>COLOR</2>! <3/> ¡Juguemos esa mano!",
+      "plays": "Haz clic aquí para ver todas las manos de póker que puedes hacer."
     },
     "discardCards": {
-      "title": "Descartando",
-      "content": "Ahora haz clic en el botón de descarte para obtener nuevas cartas en tu mano."
+      "title": "Descartar",
+      "content": "Haz clic en el botón <1>descartar</1> para recibir nuevas cartas."
     },
     "playCards": {
       "title": "Jugar cartas",
-      "content": "Ahora, haz clic en el botón para jugar tus cartas preseleccionadas."
+      "content": "Pulsa el botón <1>jugar</1> para usar las cartas que seleccionaste."
     },
     "pointsMultiplier": {
-      "title": "Puntos y multiplicador",
-      "content": "Cada mano de póker tiene puntos base y multiplicador que contribuirán a tu puntuación final."
+      "title": "Puntos y Multiplicador",
+      "content": "Cada mano de póker tiene <1>puntos</1> base y un <2>multiplicador</2> que aumentan tu puntuación final."
     },
     "score": {
-      "content": "¡Buen trabajo! Tu última jugada alcanzó la puntuación objetivo. Ahora, vamos a jugar de verdad. ¡Buena suerte!"
+      "content": "¡Buen trabajo! Tu última jugada alcanzó la <1>puntuación objetivo</1>. Ahora, a jugar de verdad. <2>¡Buena suerte!</2>"
     },
     "specialCards": {
-      "title": "Cartas Especiales",
-      "content": "Las cartas especiales son un cambio radical, ya que aplican efectos únicos a las cartas que juegas. Puedes comprarlas en la tienda."
+      "title": "Cartas especiales",
+      "content": "Las <1>cartas especiales</1> cambian el juego con efectos potentes. Puedes comprarlas en la <2>tienda</2>."
     },
     "modifiers": {
-      "title": "Cartas Modificadoras",
-      "content": "Oh, obtuviste un modificador de palo. Si lo aplicas al 10, obtendrás una ESCALERA REAL DE COLOR. ¡Vamos a intentarlo!",
-      "drag": "Arrastra y suelta el modificador de palo de trébol sobre el 10, luego haz clic en 'Siguiente' para continuar."
+      "title": "Cartas modificadoras",
+      "content": "Las cartas modificadoras pueden cambiar tus otras cartas. <1/> En este caso, cambiará el palo de la carta modificada a Tréboles.",
+      "drag": "Arrastra el modificador de trébol a la carta del 10 y luego haz clic en 'Siguiente'."
     },
     "power-ups": {
       "title": "Power-ups",
-      "content": "Los power-ups otorgan puntos extra y aumentan tu multipli. Úsalos una vez y luego compra más en la tienda.",
-      "select": "Selecciona este power-up"
+      "content": "Los <1>Power-ups</1> te dan <2>puntos</2> y <3>multi</3> extra. Son de un solo uso, pero puedes comprar más en la tienda.",
+      "select": "Selecciona este power-up."
     }
   },
   "storeTutorial": {
     "coins": {
       "title": "Monedas",
-      "content": "¡Felicidades! Después de derrotar un nivel, ganas monedas para gastar en la tienda."
+      "content": "¡Bien hecho! Ganaste <1>monedas</1> por superar el nivel. ¡Hora de gastarlas en la <1>tienda</1>!"
     },
     "levelUpHands": {
-      "title": "Mejora tus manos",
-      "content": "Puedes mejorar tus manos. Cuanto mayor sea el nivel de tus manos de póker, más puntos y multiplicadores obtendrán"
+      "title": "Subir de nivel las manos",
+      "content": "Mejora tus manos de póker para conseguir más <1>puntos</1> y <1>multiplicadores</1>."
     },
     "buyPacks": {
       "title": "Comprar paquetes",
-      "content": "Aquí puedes obtener paquetes para mejorar tu mazo. Estos paquetes ofrecen la posibilidad de obtener cartas raras y especiales a un costo menor."
+      "content": "Consigue <1>paquetes</1> para mejorar tu mazo con cartas raras y especiales a un menor costo."
     },
     "buyCards": {
-      "title": "Comprar cartas tradicionales y de neón",
-      "content": "Aquí puedes comprar cartas tradicionales y de neón para mejorar tu mazo. Las cartas de neón otorgan el doble de puntos y +1 multiplicador."
+      "title": "Comprar cartas",
+      "content": "Compra cartas <1>tradicionales</1> y de <1>neón</1> aquí. ¡Las de neón dan el doble de puntos y +1 de multiplicador!"
     },
     "modifiers": {
       "title": "Modificadores",
-      "content": "Los modificadores son cartas que se agregan a tu mazo y aplican efectos a tus cartas tradicionales, como agregar más puntos o cambiar el palo"
+      "content": "Los <1>modificadores</1> se añaden a tu mazo y aplican efectos a tus cartas, como añadir puntos o cambiar de palo."
     },
     "specialCards": {
       "title": "Cartas especiales",
-      "content": "Las cartas especiales otorgan poderes globales únicos y se activan inmediatamente. ¡Pueden cambiar el rumbo del juego!"
+      "content": "Las <1>cartas especiales</1> otorgan poderes globales únicos que se activan al instante. ¡Pueden cambiar el rumbo de la partida!"
     },
     "rerollStore": {
       "title": "Actualizar la tienda",
-      "content": "¿No encuentras lo que necesitas? Gasta algunas monedas para actualiza la tienda y ver un nuevo conjunto de cartas y manos para mejorar."
+      "content": "¿No ves lo que necesitas? Gasta <1>monedas</1> para actualizar la tienda y ver nuevos artículos."
     },
     "nextLevel": {
-      "title": "Avanzar al siguiente nivel",
-      "content": "¿Listo para continuar? Haz clic aquí para avanzar al siguiente nivel y enfrentar nuevos desafíos."
+      "title": "Siguiente nivel",
+      "content": "¿Listo para el próximo desafío? ¡Haz clic aquí para continuar!"
     }
   },
   "specialCardsTutorial": {
     "specialCards": {
       "title": "Cartas especiales",
-      "content": "Las cartas especiales se activan inmediatamente después de comprarlas en la tienda. Aplican sus efectos después de jugar tu mano."
+      "content": "Las <1>cartas especiales</1> se activan justo después de comprarlas y aplican sus efectos después de que juegues una mano."
     },
     "discardingCards": {
-      "title": "Descartar",
-      "content": "Si no deseas usar una carta especial, puedes descartarla en cualquier momento haciendo clic en el botón de descarte que aparecerá sobre la carta.",
-      "content-mobile": "Si no deseas usar una carta especial, puedes descartarla en cualquier momento arrastrándola hacia el botón de descarte."
+      "title": "Descartar cartas especiales",
+      "content": "¿No necesitas una <1>carta especial</1>? Haz clic en el ícono de descarte de la carta para eliminarla.",
+      "content-mobile": "¿No necesitas una <1>carta especial</1>? Arrástrala al botón de descarte para eliminarla."
     }
   },
   "modifiersTutorial": {
     "modifierCard": {
       "title": "Carta modificadora",
-      "content": "Las cartas modificadoras mejoran o alteran una carta específica. Arrastra y suelta un modificador sobre una carta preseleccionada para activar su efecto."
+      "content": "Las <1>cartas modificadoras</1> mejoran o cambian otras cartas. Arrastra un modificador a una carta seleccionada para aplicar su efecto."
     },
     "discard": {
-      "title": "Descartar",
-      "content": "Haz clic en el botón de descarte que aparecerá sobre la carta para descartarla sin perder oportunidades de descarte.",
-      "content-mobile": "Arrastra el modificador y suéltalo en el botón de descarte para descartarlo sin perder oportunidades de descarte."
+      "title": "Descartar modificadores",
+      "content": "Haz clic en el ícono de descarte del modificador para eliminarlo. No te costará un descarte.",
+      "content-mobile": "Arrastra el modificador al botón de descarte para eliminarlo. No te costará un descarte."
     }
   },
   "joyride": {

@@ -7,7 +7,6 @@ import { AnimatePresence } from "framer-motion";
 import { AppRoutes } from "./AppRoutes";
 import { Background } from "./components/Background";
 import { Layout } from "./components/Layout";
-import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider";
 import { AudioPlayerProvider } from "./providers/AudioPlayerProvider";
 import { CardAnimationsProvider } from "./providers/CardAnimationsProvider";
 import { CardDataProvider } from "./providers/CardDataProvider";
@@ -25,30 +24,29 @@ function App() {
     <SettingsProvider>
       <ZoomPrevention>
         <ChakraBaseProvider theme={theme}>
-          <FeatureFlagProvider>
-            <CardAnimationsProvider>
-              <CardDataProvider>
-                <GameProvider>
-                  <PageTransitionsProvider>
-                    <InformationPopUpProvider>
-                      <AudioPlayerProvider
-                        baseSongPath={"/music/new-track.mp3"}
-                        rageSongPath={"/music/rage_soundtrack.mp3"}
-                      >
-                        <Background>
-                          <Layout>
-                            <AnimatePresence mode="wait">
-                              <AppRoutes />
-                            </AnimatePresence>
-                          </Layout>
-                        </Background>
-                      </AudioPlayerProvider>
-                    </InformationPopUpProvider>
-                  </PageTransitionsProvider>
-                </GameProvider>
-              </CardDataProvider>
-            </CardAnimationsProvider>
-          </FeatureFlagProvider>
+          <CardAnimationsProvider>
+            <CardDataProvider>
+              <GameProvider>
+                <PageTransitionsProvider>
+                  <InformationPopUpProvider>
+                    <AudioPlayerProvider
+                      introSongPath={"/music/intro-track.mp3"}
+                      baseSongPath={"/music/game-track.mp3"}
+                      rageSongPath={"/music/rage_soundtrack.mp3"}
+                    >
+                      <Background>
+                        <Layout>
+                          <AnimatePresence mode="wait">
+                            <AppRoutes />
+                          </AnimatePresence>
+                        </Layout>
+                      </Background>
+                    </AudioPlayerProvider>
+                  </InformationPopUpProvider>
+                </PageTransitionsProvider>
+              </GameProvider>
+            </CardDataProvider>
+          </CardAnimationsProvider>
           <Analytics />
           <SpeedInsights />
         </ChakraBaseProvider>

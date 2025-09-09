@@ -2,7 +2,7 @@
   "home": {
     "slogan": "BUILD YOUR DECK, RULE THE GAME",
     "btn": {
-      "leaderboard-btn": "See leaderboard",
+      "leaderboard-btn": "Leaderboard",
       "playDemo-btn": "Play",
       "start": "Start"
     },
@@ -17,10 +17,11 @@
       "position-leaderboard-head": "Position",
       "username-leaderboard-head": "Username",
       "score-leaderboard-head": "Score",
-      "level-leaderboard-head": "Level",
-      "round-leaderboard-head": "Round"
+      "level-leaderboard-head": "Level"
     }
   },
+  "play": "New game",
+  "my-games": "Games",
   "tournament": {
     "table-head": {
       "prize-leaderboard-head": "Prize",
@@ -30,5 +31,25 @@
       "days-countdown-tournament": "days",
       "label-countdown-tournament": "for the tournament to finish"
     }
+  },
+  "menu": {
+    "home": "Home",
+    "collection": "Collection",
+    "games": "Games",
+    "profile": "Profile",
+    "settings": "Settings",
+    "map": "Map",
+    "deck": "Deck",
+    "plays": "Plays",
+    "more": "More",
+    "round": "Round",
+    "rage": "Rage round",
+    "shop": "Shop"
+  },
+  "tutorialModal": {
+    "title": "First time playing?",
+    "description": "We recommend a quick tutorial to learn the basics. Would you like to start it now?",
+    "confirm-text": "Play Tutorial",
+    "cancel-text": "Skip"
   }
 }

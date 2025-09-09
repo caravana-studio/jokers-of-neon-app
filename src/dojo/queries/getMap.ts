@@ -44,12 +44,10 @@ const getNodeType = (nodeType: NodeTypeCairo) => {
 export const getMap = async (
   client: any,
   gameId: number,
-  level: number
 ): Promise<NodeData[]> => {
   try {
     let tx_result: MapTxResult = await client.map_system.getLevelMap(
       gameId,
-      level
     );
 
     console.log("map", tx_result);

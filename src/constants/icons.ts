@@ -1,6 +1,9 @@
 import HeartIcon from "../assets/heart.png";
 import SpadeIcon from "../assets/spade.png";
 import DiamondIcon from "../assets/diamond.png";
+import CheckIcon from "../assets/check.svg?component";
+import UnCheckIcon from "../assets/unchecked.svg?component";
+import ClockIcon from "../assets/clock.svg?component";
 import ClubIcon from "../assets/club.png";
 import ModifierIcon from "../assets/modifier.svg?component";
 import NeonIcon from "../assets/neon.svg?component";
@@ -22,6 +25,12 @@ import MapSimpleIcon from "../assets/MenuIcons/map-simple.png";
 import StoreIcon from "../assets/MenuIcons/shop.png";
 import RoundIcon from "../assets/MenuIcons/round.png";
 import RageIcon from "../assets/MenuIcons/rage.png";
+import HomeIcon from "../assets/MenuIcons/home.png";
+import ProfileIcon from "../assets/MenuIcons/profile.png";
+import BackIcon from "../assets/MenuIcons/back.png";
+import DeckIcon from "../assets/MenuIcons/deck.png";
+import ListIcon from "../assets/MenuIcons/list.png";
+import MoreIcon from "../assets/MenuIcons/more.png";
 
 export const Icons = {
   HEART: HeartIcon,
@@ -48,6 +57,15 @@ export const Icons = {
   ROUND: RoundIcon,
   RAGE: RageIcon,
   GAMEOVER: GameoverIcon,
+  HOME: HomeIcon,
+  PROFILE: ProfileIcon,
+  BACK: BackIcon,
+  DECK: DeckIcon,
+  LIST: ListIcon,
+  MORE: MoreIcon,
+  CHECK: CheckIcon,
+  UNCHECK: UnCheckIcon,
+  CLOCK: ClockIcon
 } as const;
 
 export type IconType = keyof typeof Icons;

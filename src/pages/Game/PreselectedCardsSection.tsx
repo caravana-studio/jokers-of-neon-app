@@ -10,6 +10,8 @@ import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { Card } from "../../types/Card";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { PlayButton } from "./PlayButton.tsx";
+import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
+import { useAnimationStore } from "../../state/useAnimationStore.ts";
 
 interface PreselectedCardsProps {
   isTutorialRunning?: boolean;
@@ -20,15 +22,10 @@ export const PreselectedCardsSection = ({
   isTutorialRunning = false,
   onTutorialCardClick,
 }: PreselectedCardsProps) => {
-  const {
-    preSelectedCards,
-    hand,
-    getModifiers,
-    togglePreselected,
-    discardAnimation,
-    playAnimation,
-  } = useGameContext();
+  const { discardAnimation, playAnimation } = useAnimationStore();
 
+  const { preSelectedCards, togglePreselected, hand, getModifiers } =
+    useCurrentHandStore();
   const { setNodeRef } = useDroppable({
     id: PRESELECTED_CARD_SECTION_ID,
   });

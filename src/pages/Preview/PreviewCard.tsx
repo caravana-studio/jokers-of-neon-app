@@ -1,20 +1,23 @@
 import { Button, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { CardImage3D } from "../../components/CardImage3D.tsx";
 import { StorePreviewCardComponentMobile } from "../../components/StorePreviewCardComponent.mobile.tsx";
 import { StorePreviewComponent } from "../../components/StorePreviewComponent.tsx";
-import { useGame } from "../../dojo/queries/useGame.tsx";
+import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { Duration } from "../../enums/duration.ts";
+import { useCustomNavigate } from "../../hooks/useCustomNavigate.tsx";
 import { useCardData } from "../../providers/CardDataProvider.tsx";
 import { useStore } from "../../providers/StoreProvider.tsx";
+import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { getTemporalCardText } from "../../utils/getTemporalCardText.ts";
+import { useShopStore } from "../../state/useShopStore.ts";
 
 const PreviewCard = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
+  const navigate = useCustomNavigate();
 
   const { card } = state || {};
 
@@ -24,22 +27,19 @@ const PreviewCard = () => {
   });
 
   const { isSmallScreen } = useResponsiveValues();
-  const game = useGame();
   const [duration, setDuration] = useState(Duration.PERMANENT);
 
   if (!card) {
     return <p>Card not found.</p>;
   }
 
-  const { buyCard, buySpecialCardItem, locked, setLockRedirection } =
-    useStore();
+  const { buyCard, buySpecialCardItem } = useStore();
+  const { locked } = useShopStore();
 
   const { getCardData } = useCardData();
 
-  const cash = game?.cash ?? 0;
+  const { cash, specialSlots, specialCards } = useGameStore();
   const { name, description } = getCardData(card.card_id ?? 0);
-  const specialMaxLength = game?.special_slots ?? 0;
-  const specialLength = game?.current_specials_len ?? 0;
 
   const notEnoughCash =
     (duration === Duration.PERMANENT &&
@@ -54,17 +54,14 @@ const PreviewCard = () => {
           : cash < card.temporary_price)));
 
   const noSpaceForSpecialCards =
-    card.isSpecial && specialLength >= specialMaxLength;
+    card.isSpecial && specialCards.length >= specialSlots;
 
   const onBuyClick = () => {
+    navigate(GameStateEnum.Store);
     if (card.isSpecial) {
-      buySpecialCardItem(card, duration === Duration.TEMPORAL).then(() =>
-        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
-      );
+      buySpecialCardItem(card, duration === Duration.TEMPORAL);
     } else {
-      buyCard(card).then(() =>
-        navigate("/redirect/store", { state: { lastTabIndex: 0 } })
-      );
+      buyCard(card);
     }
   };
 

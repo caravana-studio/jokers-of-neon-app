@@ -7,6 +7,11 @@ export enum EventTypeEnum {
 	Neon,
 	Spade,
 	Heart,
+	Joker,
+	Wild,
+	AcumCash,
+	AcumPoint,
+	AcumMulti,
   }
 
 export enum GameStateEnum {
@@ -19,4 +24,5 @@ export enum GameStateEnum {
 	Lootbox = "Lootbox",
 	GameOver = "GameOver",
 	NotStarted = "NotStarted",
+	NotSet = "NotSet",
 }
