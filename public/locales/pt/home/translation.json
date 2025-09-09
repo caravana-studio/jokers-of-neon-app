@@ -17,7 +17,8 @@
       "position-leaderboard-head": "Posição",
       "username-leaderboard-head": "Nome de usuário",
       "score-leaderboard-head": "Pontuação",
-      "level-leaderboard-head": "Nível"
+      "level-leaderboard-head": "Nível",
+      "round-leaderboard-head": "Rodada"
     }
   },
   "play": "Novo jogo",

@@ -51,7 +51,6 @@ export const MapProvider = ({ children }: MapProviderProps) => {
     SelectedNodeData | undefined
   >();
 
-  console.log(nodes);
   const { isSmallScreen } = useResponsiveValues();
 
   const currentNode = useMemo(
