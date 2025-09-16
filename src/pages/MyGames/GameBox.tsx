@@ -85,10 +85,11 @@ export const GameBox = ({
         flex={1}
         justifyContent="space-between"
         alignItems="center"
+        w="100%"
         px={isSmallScreen ? 1 : 3}
       >
         {/* Game ID Section */}
-        <Flex alignItems="center" gap={1.5}>
+        <Flex alignItems="center" gap={1.5} w={isSmallScreen ? "25%" : "15%"}>
           <CachedImage
             src="/logos/jn.png"
             height={isSmallScreen ? "13px" : "25px"}
@@ -104,7 +105,13 @@ export const GameBox = ({
         </Flex>
 
         {/* Game Info Section */}
-        <Flex flexDirection="column" mt={1} pr={2}>
+        <Flex
+          flexDirection="column"
+          mt={1}
+          alignItems="flex-start"
+          pl={isSmallScreen ? 0 : 10}
+          w={isSmallScreen ? "40%" : "25%"}
+        >
           {game.level && (
             <Flex gap={3}>
               <Flex gap={1}>
@@ -131,7 +138,7 @@ export const GameBox = ({
 
         {/* Points Section - Desktop Only */}
         {!isSmallScreen && (
-          <Flex>
+          <Flex flex={1} justifyContent="center">
             {game.points !== undefined && (
               <Flex gap={1}>
                 <Text fontSize="lg" color="lightViolet">
