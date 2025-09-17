@@ -11,7 +11,9 @@ export const useUsername = () => {
   useEffect(() => {
     if (!isUsingBurner && controller) {
       controller.username()?.then((username) => {
-        setUsername(username);
+        if (username) {
+          setUsername(username);
+        }
       });
     }
   }, [controller, setup?.useBurnerAcc, setup.accountType]);
