@@ -22,7 +22,6 @@ import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
-import { ProfilePage } from "./pages/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -30,8 +29,8 @@ import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlig
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import { Profile } from "./components/Profile/Profile";
-
-// import TutorialGameProvider from "./providers/TutorialGameProvider";
+import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -163,7 +162,7 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-      {/*       <Route
+      <Route
         path="/tutorial"
         element={
           <TutorialGameProvider>
@@ -172,7 +171,7 @@ export const AppRoutes = () => {
             </AnimatedPage>
           </TutorialGameProvider>
         }
-      /> */}
+      />
       <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"

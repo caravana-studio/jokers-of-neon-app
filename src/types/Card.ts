@@ -1,4 +1,5 @@
 import { Cards } from "../enums/cards";
+import { CardTypes } from "../enums/cardTypes";
 import { Suits } from "../enums/suits";
 import { Effect } from "./Effect";
 
@@ -25,6 +26,7 @@ export interface Card {
   temporary_discount_cost?: number;
   temporary_price?: number;
   selling_price?: number;
+  type?: CardTypes;
 }
 
 export interface StaticEffectCard extends Effect {

@@ -4,6 +4,7 @@ import { shortenHex } from "@dojoengine/utils";
 import { MouseEventHandler } from "react";
 import { isMobile } from "react-device-detect";
 import { ExternalToast, toast } from "sonner";
+import { DAILY_MISSIONS, XP_PER_DIFFICULTY } from "../data/dailyMissions.ts";
 import i18n from "../i18n.ts";
 import {
   ERROR_TOAST,
@@ -11,6 +12,7 @@ import {
   SUCCESS_TOAST,
   VIOLET_LIGHT,
 } from "../theme/colors.tsx";
+import { DailyMissionDifficulty } from "../types/DailyMissions.ts";
 import { needsPadding } from "./capacitorUtils.ts";
 import { getEnvString } from "./getEnvValue.ts";
 
@@ -101,7 +103,7 @@ export const showTransactionToast = (
   );
 };
 
-export const showAchievementToast = (achievementNames: string[]): void => {
+export const showAchievementToast = (achievementIds: string[]): void => {
   const basePosition = isMobile ? "top-left" : "bottom-left";
   const leftPosition = isMobile ? "8px" : "26px";
   const marginTop = isMobile ? 80 : 60;
@@ -123,7 +125,10 @@ export const showAchievementToast = (achievementNames: string[]): void => {
     };
   };
 
-  achievementNames.forEach((achievementName, index) => {
+  achievementIds.forEach((achievementId, index) => {
+    const difficulty =
+      DAILY_MISSIONS[achievementId] ?? DailyMissionDifficulty.EASY;
+    const xp = XP_PER_DIFFICULTY[difficulty];
     setTimeout(() => {
       toast.custom(
         (t) => (
@@ -158,10 +163,10 @@ export const showAchievementToast = (achievementNames: string[]): void => {
                 fontFamily="Sonara"
                 textTransform="uppercase"
               >
-                {i18n.t(`title`, { ns: "achievements" })}
+                {i18n.t(`title`, { ns: "achievements" })} +{xp}XP
               </Text>
               <Text fontSize={isMobile ? "12px" : "14px"} fontWeight="semibold">
-                {achievementName}
+                {i18n.t(`data.${achievementId}`, { ns: "achievements" })}
               </Text>
             </Box>
           </Box>
