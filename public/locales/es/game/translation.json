@@ -11,6 +11,7 @@
     }
   },
   "game": {
+    "tutorial": "Tutorial",
     "compact-round-data": {
       "my-score": "Puntuación",
       "target": "Objetivo",
@@ -92,7 +93,7 @@
       "logout-btn": "Cerrar sesión",
       "settings-btn": "Configuración",
       "docs-btn": "Lista de cartas",
-      "leaderboard-btn": "Tabla de posiciones",
+      "leaderboard-btn": "Clasificación",
       "map-btn": "Mapa",
       "back": "Volver al inicio",
       "pages": {
@@ -103,13 +104,13 @@
         "rage-round": "Ronda de Furia",
         "round": "Ronda",
         "map": "Mapa",
-        "my-games": "Mis juegos",
+        "my-games": "Juegos",
         "profile": "Perfil",
         "settings": "Configuración",
-        "my-collection": "Mi colección",
+        "my-collection": "Colección",
         "home": "Inicio",
         "docs": "Lista de cartas",
-        "deck": "Mi mazo",
+        "deck": "Mazo",
         "rewards": "Recompensas",
         "manage": "Gestionar items",
         "preview": "Vista previa del item",
@@ -117,7 +118,7 @@
         "loading-game": "Cargando juego",
         "plays": "Jugadas disponibles"
       },
-      "my-games": "Mis juegos"
+      "my-games": "Juegos"
     },
     "plays": {
       "title": "Jugadas disponibles",
@@ -130,7 +131,7 @@
     },
     "deck": {
       "tooltip": "Ver mazo",
-      "title": "Mi mazo",
+      "title": "Mazo",
       "burn-title": "Selecciona una carta para quemar",
       "filter-title": "Filtrar por",
       "suit": {

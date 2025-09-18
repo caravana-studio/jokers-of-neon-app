@@ -116,13 +116,14 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
       preSelectionLocked,
       cardIsPreselected,
       unPreSelectCard,
+      maxPreSelectedCards,
       preSelectCard,
     } = get();
     if (!preSelectionLocked) {
       if (cardIsPreselected(cardIndex)) {
         unPreSelectCard(cardIndex);
         return true;
-      } else if (preSelectedCards.length < MAX_PRESELECTED_CARDS) {
+      } else if (preSelectedCards.length < maxPreSelectedCards) {
         preSelectCard(cardIndex);
         return true;
       }

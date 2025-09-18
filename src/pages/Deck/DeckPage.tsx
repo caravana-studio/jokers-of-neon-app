@@ -14,15 +14,16 @@ export const DeckPage = () => {
   const { state } = useGameStore();
   const inStore = state == GameStateEnum.Store;
   const burn = location.state?.burn ?? false;
+  const map = state == GameStateEnum.Map;
 
   return (
     <DelayedLoading ms={1000}>
       <DeckFilterProvider>
         <>
           {isSmallScreen ? (
-            <DeckPageContentMobile state={{ inStore, burn }} />
+            <DeckPageContentMobile state={{ inStore, burn, map }} />
           ) : (
-            <DeckPageContent state={{ inStore, burn }} />
+            <DeckPageContent state={{ inStore, burn, map }} />
           )}
         </>
       </DeckFilterProvider>

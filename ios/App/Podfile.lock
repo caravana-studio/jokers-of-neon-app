@@ -1,10 +1,6 @@
 PODS:
   - Capacitor (7.4.2):
     - CapacitorCordova
-  - CapacitorAppLauncher (7.0.2):
-    - Capacitor
-  - CapacitorBrowser (7.0.2):
-    - Capacitor
   - CapacitorCordova (7.4.2)
 
 DEPENDENCIES:
@@ -25,8 +21,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Capacitor: 156d98aba46ec01dde72c4bbb92fa626837cad29
-  CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
-  CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
   CapacitorCordova: 5e58d04631bc5094894ac106e2bf1da18a9e6151
 
 PODFILE CHECKSUM: d8d308bfae2435738171bd6eb738f2cf73bb478a

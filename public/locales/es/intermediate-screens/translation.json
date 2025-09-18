@@ -3,12 +3,13 @@
     "level": "NIVEL"
   },
   "my-games": {
-    "title": "Mis juegos",
+    "title": "Juegos",
     "go-back": "Volver",
     "start-game": "Iniciar nuevo juego",
     "show-finished-games": "Mostrar juegos terminados",
     "continue-btn": "Continuar",
     "start-btn": "Iniciar",
+    "tuto": "Tutorial",
     "surrender": {
       "action": "Rendirse",
       "confirmation-modal": {
@@ -21,11 +22,11 @@
     "points-lbl": "Puntos",
     "no-games": "No tienes ningún juego. ¡Inicia uno nuevo!",
     "create-game": {
-      "stage-1": "Buscando torneo {{tournamentId}}",
-      "stage-2": "Registrando usuario {{username}}",
-      "stage-3": "Transfiriendo token de juego a tu cuenta",
-      "stage-4": "Mezclando cartas",
-      "stage-5": "Comenzando el juego"
+      "stage-1": "Preparando el escenario",
+      "stage-2": "Trayendo una silla para {{username}}",
+      "stage-3": "Preparando las tiendas",
+      "stage-4": "Barajando las cartas",
+      "stage-5": "La partida está a punto de comenzar..."
     }
   },
   "game-over": {
@@ -34,7 +35,7 @@
     "skip": "Saltar",
     "gameOver-msj": "FIN DEL JUEGO",
     "table": {
-      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la tabla de posiciones!",
+      "gameOver-leader-msj": "¡Felicitaciones! ¡Eres el mejor jugador en la clasificación!",
       "gameOver-top5-msj": "¡Buen trabajo! ¡Estás en el top 5! ¡Sigue así!"
     },
     "btn": {
@@ -89,7 +90,7 @@
   },
   "power-ups": {
     "title": "Power-ups",
-     "confirmation-modal": {
+    "confirmation-modal": {
       "title": "Vender power-up",
       "description": "¿Estás seguro de que quieres vender este power-up a cambio de ¢{{price}}? No hay forma de deshacer esta acción."
     }
@@ -100,5 +101,14 @@
   },
   "common": {
     "go-back-btn": "Atrás"
+  },
+  "my-collection": {
+    "title": "Colección",
+    "no-collection": "Por favor, inicia sesión para ver tu colección",
+    "login": "Iniciar sesión",
+    "collections": {
+      "sx": "Temporada {{season}}",
+      "c99": "Colección exclusiva GG - v1"
+    }
   }
 }

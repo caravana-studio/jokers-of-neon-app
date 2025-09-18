@@ -15,7 +15,7 @@ import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { MapPage } from "./pages/Map/MapPage";
-import { MyCollectionPage } from "./pages/MyCollectionPage";
+import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
@@ -29,7 +29,8 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
-// import TutorialGameProvider from "./providers/TutorialGameProvider";
+import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -65,7 +66,9 @@ export const AppRoutes = () => {
         path="/my-collection"
         element={
           <AnimatedPage>
-            <MyCollectionPage />
+            <CardHighlightProvider>
+              <MyCollectionPage />
+            </CardHighlightProvider>
           </AnimatedPage>
         }
       />
@@ -159,7 +162,7 @@ export const AppRoutes = () => {
           </StoreProvider>
         }
       />
-      {/*       <Route
+      <Route
         path="/tutorial"
         element={
           <TutorialGameProvider>
@@ -168,7 +171,7 @@ export const AppRoutes = () => {
             </AnimatedPage>
           </TutorialGameProvider>
         }
-      /> */}
+      />
       <Route path="/redirect" element={<Redirect />} />
       <Route
         path="/preview/:type"
@@ -246,7 +249,9 @@ export const AppRoutes = () => {
         element={
           <CardHighlightProvider>
             <AnimatedPage>
-              <DocsPage lastIndexTab={0} />
+              <GameStoreLoader>
+                <DocsPage lastIndexTab={0} />
+              </GameStoreLoader>
             </AnimatedPage>
           </CardHighlightProvider>
         }

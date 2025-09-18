@@ -1,6 +1,6 @@
 import { Divider, Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { matchPath, useNavigate } from "react-router-dom";
 import { useCurrentPageInfo } from "../../../hooks/useCurrentPageInfo";
 import { AnimatedText } from "../../AnimatedText";
 import { LogoutMenuListBtn } from "../Buttons/Logout/LogoutMenuListBtn";
@@ -19,6 +19,10 @@ export const SidebarMenu = () => {
     useContextMenuItems({
       onMoreClick: undefined,
     });
+
+  const inGame = !mainMenuUrls.some((url) =>
+    matchPath({ path: url, end: true }, window.location.pathname)
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,14 +51,11 @@ export const SidebarMenu = () => {
         alignItems={"center"}
         w="100%"
       >
-        {(mainMenuUrls.includes(window.location.pathname)
-          ? mainMenuItems
-          : inGameMenuItems
-        ).map((item) => (
+        {(!inGame ? mainMenuItems : inGameMenuItems).map((item) => (
           <ContextMenuItem {...item} />
         ))}
 
-        {!mainMenuUrls.includes(window.location.pathname) && (
+        {inGame && (
           <>
             <Divider my={3} />
             {extraMenuItems.map((item) => (

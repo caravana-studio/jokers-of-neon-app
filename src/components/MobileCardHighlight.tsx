@@ -23,6 +23,7 @@ interface MobileCardHighlightProps {
   customBtn?: ReactNode;
   showExtraInfo?: boolean;
   isPack?: boolean;
+  hidePrice?: boolean;
 }
 
 export const MobileCardHighlight = ({
@@ -31,6 +32,7 @@ export const MobileCardHighlight = ({
   showExtraInfo = false,
   isPack = false,
   customBtn,
+  hidePrice = false,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
@@ -178,7 +180,7 @@ export const MobileCardHighlight = ({
             </Text>
           )}
           {isPack && <LootBoxRateInfo name={name} details={details} />}
-          {price &&
+          {(price && !hidePrice) &&
             (temporaryPrice ? (
               <DurationSwitcher
                 flexDir="column"

@@ -3,12 +3,13 @@
     "level": "NÍVEL"
   },
   "my-games": {
-    "title": "Meus jogos",
+    "title": "Jogos",
     "go-back": "Voltar",
     "start-game": "Iniciar novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
+    "tuto": "Tutorial",
     "surrender": {
       "action": "Desistir",
       "confirmation-modal": {
@@ -21,11 +22,11 @@
     "points-lbl": "pontos",
     "no-games": "Você não tem nenhum jogo. Comece um novo!",
     "create-game": {
-      "stage-1": "Procurando torneio {{tournamentId}}",
-      "stage-2": "Registrando usuário {{username}}",
-      "stage-3": "Transferindo token de jogo para sua conta",
-      "stage-4": "Misturando cartas",
-      "stage-5": "Jogo começando"
+      "stage-1": "Montando o palco",
+      "stage-2": "Puxando uma cadeira para {{username}}",
+      "stage-3": "Preparando as lojas",
+      "stage-4": "Embaralhando as cartas",
+      "stage-5": "O jogo está prestes a começar..."
     }
   },
   "game-over": {
@@ -100,5 +101,14 @@
   },
   "common": {
     "go-back-btn": "Voltar"
+  },
+  "my-collection": {
+    "title": "Coleção",
+    "no-collection": "Por favor, inicie sessão para ver sua coleção",
+    "login": "Iniciar sessão",
+    "collections": {
+      "sx": "Temporada {{season}}",
+      "c99": "Coleção exclusiva GG - v1"
+    }
   }
 }
