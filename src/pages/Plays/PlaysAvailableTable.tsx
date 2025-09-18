@@ -10,7 +10,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -25,14 +25,26 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 import { Card } from "../../types/Card";
 import { LevelPokerHand } from "../../types/LevelPokerHand";
+import { getPlayerPokerHandTracker } from "../../dojo/getPlayerPokerHandTracker";
 
 const { blueLight, blue, violet } = theme.colors;
 
+type PlayWithCount = LevelPokerHand & {
+  count: bigint;
+};
 
+const pascalToSnake = (str: string) => {
+  if (!str) return "";
+  return str
+    .replace(/([A-Z])/g, "_$1")
+    .toLowerCase()
+    .substring(1);
+};
 
-export const PlaysAvailableTable= () => {
+export const PlaysAvailableTable = () => {
   const { id: gameId } = useGameStore();
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+  const [playsTracker, setPlaysTracker] = useState<PlayWithCount[]>([]);
   const [playsExampleIndex, setPlaysExampleIndex] = useState(0);
   const { t } = useTranslation(["game"]);
 
@@ -48,6 +60,27 @@ export const PlaysAvailableTable= () => {
       setPlays(plays);
     });
   }
+
+  useEffect(() => {
+    if (!plays) {
+      console.error("Failed to fetch plays or tracker data.");
+      return;
+    }
+
+    getPlayerPokerHandTracker(client, gameId).then((playsTracker: any) => {
+      const mergedData = plays.map((play) => {
+        const trackerKey = pascalToSnake(play.poker_hand as string);
+        const count =
+          playsTracker[trackerKey as keyof typeof playsTracker] ?? 0n;
+
+        return {
+          ...play,
+          count: typeof count === "bigint" ? count : BigInt(count),
+        };
+      });
+      setPlaysTracker(mergedData);
+    });
+  }, [plays]);
 
   const { isSmallScreen, cardScale } = useResponsiveValues();
 
@@ -87,7 +120,7 @@ export const PlaysAvailableTable= () => {
                 >
                   <Tr>
                     <Td
-                      colSpan={3}
+                      colSpan={4}
                       sx={{
                         position: "sticky",
                         top: "0px",
@@ -110,7 +143,7 @@ export const PlaysAvailableTable= () => {
                   </Tr>
                   <Tr>
                     <Td
-                      colSpan={3}
+                      colSpan={4}
                       sx={{ position: "sticky", backgroundColor: "black" }}
                     >
                       <Box
@@ -126,7 +159,6 @@ export const PlaysAvailableTable= () => {
                       >
                         <Flex
                           wrap={"nowrap"}
-                          width={"fit-content"}
                           justifyContent={"center"}
                           alignItems={"center"}
                           gap={isSmallScreen ? 0 : 4}
@@ -156,14 +188,17 @@ export const PlaysAvailableTable= () => {
                     </Td>
                   </Tr>
                   <Tr>
-                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
+                    <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
                       {t("game.plays.table.level-head").toUpperCase()}
                     </Td>
-                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
+                    <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
                       {t("game.plays.table.hand-head").toUpperCase()}
                     </Td>
-                    <Td fontSize={isSmallScreen ? 12 : 17} textAlign={"center"}>
+                    <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
                       {t("game.plays.table.points-multi-head").toUpperCase()}
+                    </Td>
+                    <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
+                      {t("game.plays.table.played").toUpperCase()}
                     </Td>
                   </Tr>
                 </Thead>
@@ -176,7 +211,6 @@ export const PlaysAvailableTable= () => {
                       const opacitySx = {
                         opacity: 1,
                       };
-
                       const levelTd = (
                         <Td
                           sx={opacitySx}
@@ -209,7 +243,7 @@ export const PlaysAvailableTable= () => {
                             <Box
                               backgroundColor={`${blue}`}
                               borderRadius={4}
-                              width={isSmallScreen ? "40px" : "60px"}
+                              width={isSmallScreen ? "35px" : "60px"}
                               mr={1}
                               boxShadow={`0px 0px 10px 6px ${blue}`}
                               fontWeight={"400"}
@@ -222,7 +256,7 @@ export const PlaysAvailableTable= () => {
                             <Box
                               backgroundColor={"neonPink"}
                               borderRadius={4}
-                              width={isSmallScreen ? "40px" : "60px"}
+                              width={isSmallScreen ? "35px" : "60px"}
                               ml={1}
                               boxShadow={`0px 0px 10px 6px ${violet}`}
                               fontWeight={"400"}
@@ -230,6 +264,18 @@ export const PlaysAvailableTable= () => {
                               {play.multi.toString()}
                             </Box>
                           </Box>
+                        </Td>
+                      );
+
+                      const handsPlayedTd = (
+                        <Td
+                          sx={opacitySx}
+                          textAlign={"center"}
+                          textColor={textColor}
+                          fontSize={isSmallScreen ? 9 : 13}
+                        >
+                          {playsTracker.length > 0 &&
+                            playsTracker[index].count.toString()}
                         </Td>
                       );
 
@@ -251,6 +297,7 @@ export const PlaysAvailableTable= () => {
                           }
 
                           {pointsMultiTd}
+                          {handsPlayedTd}
                         </Tr>
                       );
                     })}
