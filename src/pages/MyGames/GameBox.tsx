@@ -1,5 +1,5 @@
 import { Button, Flex, Spinner, Text, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
@@ -11,6 +11,8 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { formatNumber } from "../../utils/formatNumber.ts";
 import { GameSummary } from "./MyGames.tsx";
+import { getNode } from "../../dojo/queries/getNode.ts";
+import { useDojo } from "../../dojo/useDojo.tsx";
 
 export const GameBox = ({
   game,
@@ -23,8 +25,21 @@ export const GameBox = ({
     keyPrefix: "my-games",
   });
 
+  const {
+    setup: { client },
+  } = useDojo();
+
+  const [nodeRound, setNodeRound] = useState<number>(0);
+
+  useEffect(() => {
+    getNode(client, game?.id ?? 0, game.currentNodeId ?? 0).then((data) => {
+      setNodeRound(data);
+    });
+  }, []);
+
   const { executeCreateGame, prepareNewGame, surrenderGame } = useGameContext();
   const { setGameId } = useGameStore();
+
   const { isSmallScreen } = useResponsiveValues();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -70,10 +85,11 @@ export const GameBox = ({
         flex={1}
         justifyContent="space-between"
         alignItems="center"
+        w="100%"
         px={isSmallScreen ? 1 : 3}
       >
         {/* Game ID Section */}
-        <Flex alignItems="center" gap={1.5}>
+        <Flex alignItems="center" gap={1.5} w={isSmallScreen ? "25%" : "15%"}>
           <CachedImage
             src="/logos/jn.png"
             height={isSmallScreen ? "13px" : "25px"}
@@ -89,11 +105,23 @@ export const GameBox = ({
         </Flex>
 
         {/* Game Info Section */}
-        <Flex flexDirection="column" mt={1} pr={2}>
+        <Flex
+          flexDirection="column"
+          mt={1}
+          alignItems="flex-start"
+          pl={isSmallScreen ? 0 : 10}
+          w={isSmallScreen ? "40%" : "25%"}
+        >
           {game.level && (
-            <Flex gap={1}>
-              <Text>{t("level-lbl")}:</Text>
-              <Text color="lightViolet">{game.level}</Text>
+            <Flex gap={3}>
+              <Flex gap={1}>
+                <Text>{t("level-lbl")}:</Text>
+                <Text color="lightViolet">{game.level}</Text>
+              </Flex>
+              <Flex gap={1}>
+                <Text>{t("round-lbl")}:</Text>
+                <Text color="lightViolet">{nodeRound}</Text>
+              </Flex>
             </Flex>
           )}
           <Flex gap={1}>
@@ -110,7 +138,7 @@ export const GameBox = ({
 
         {/* Points Section - Desktop Only */}
         {!isSmallScreen && (
-          <Flex>
+          <Flex flex={1} justifyContent="center">
             {game.points !== undefined && (
               <Flex gap={1}>
                 <Text fontSize="lg" color="lightViolet">

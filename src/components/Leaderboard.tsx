@@ -107,6 +107,11 @@ export const Leaderboard = ({
                     "leaderboard.table-head.level-leaderboard-head"
                   ).toUpperCase()}
                 </Td>
+                <Td>
+                  {t(
+                    "leaderboard.table-head.round-leaderboard-head"
+                  ).toUpperCase()}
+                </Td>
 
                 {tournamentEnabled && (
                   <Td>
@@ -155,6 +160,13 @@ export const Leaderboard = ({
                         <RollingNumber n={leader.level} />
                       ) : (
                         leader.level
+                      )}
+                    </Td>
+                    <Td>
+                      {gameId === leader.id ? (
+                        <RollingNumber n={leader.round} />
+                      ) : (
+                        leader.round
                       )}
                     </Td>
                     {tournamentEnabled && (

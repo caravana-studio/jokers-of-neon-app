@@ -17,7 +17,8 @@
       "position-leaderboard-head": "Position",
       "username-leaderboard-head": "Username",
       "score-leaderboard-head": "Score",
-      "level-leaderboard-head": "Level"
+      "level-leaderboard-head": "Level",
+      "round-leaderboard-head": "Ronda"
     }
   },
   "play": "New game",
