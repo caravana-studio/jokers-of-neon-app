@@ -11,12 +11,8 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const ProfileContent = ({ data }: { data: ProfileData }) => {
   const {
-    username,
-    level,
-    streak,
-    games,
-    victories,
-    currentXp,
+    playerStats,
+    profile,
     levelXp,
     currentBadges,
     totalBadges,
@@ -48,12 +44,12 @@ export const ProfileContent = ({ data }: { data: ProfileData }) => {
           overflowX={"hidden"}
         >
           <ProfileStats
-            username={username}
-            level={level}
-            streak={streak}
-            games={games}
-            victories={victories}
-            currentXp={currentXp}
+            username={profile.username}
+            level={profile.level}
+            streak={profile.streak}
+            games={playerStats.games}
+            victories={playerStats.victories}
+            currentXp={profile.currentXp}
             levelXp={levelXp}
             profilePicture={profilePicture}
           />

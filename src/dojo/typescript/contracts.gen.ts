@@ -1242,6 +1242,61 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_profile_system_createProfile_calldata = (address: string, username: string): DojoCall => {
+		return {
+			contractName: "profile_system",
+			entrypoint: "create_profile",
+			calldata: [address, username],
+		};
+	};
+
+	const profile_system_createProfile = async (snAccount: Account | AccountInterface, address: string, username: string) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_profile_system_createProfile_calldata(address, username),
+				DOJO_NAMESPACE,
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_profile_system_getProfile_calldata = (playerAddress: string): DojoCall => {
+		return {
+			contractName: "profile_system",
+			entrypoint: "get_profile",
+			calldata: [playerAddress],
+		};
+	};
+
+	const profile_system_getProfile = async (playerAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_profile_system_getProfile_calldata(playerAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_profile_system_getPlayerStats_calldata = (playerAddress: string): DojoCall => {
+		return {
+			contractName: "profile_system",
+			entrypoint: "get_player_stats",
+			calldata: [playerAddress],
+		};
+	};
+
+	const profile_system_getPlayerStats = async (playerAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_profile_system_getPlayerStats_calldata(playerAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1397,6 +1452,14 @@ export function setupWorld(provider: DojoProvider) {
 		daily_missions_system: {
 			getDailyMissionTrackersForPlayer: daily_missions_system_getDailyMissionTrackersForPlayer,
 			buildGetDailyMissionTrackersForPlayerCalldata: build_daily_missions_system_getDailyMissionTrackersForPlayer_calldata,
+		},
+		profile_system: {
+			createProfile: profile_system_createProfile,
+			buildCreateProfileCalldata: build_profile_system_createProfile_calldata,
+			getPlayerStats: profile_system_getPlayerStats,
+			buildGetPlayerStatsCalldata: build_profile_system_getPlayerStats_calldata,
+			getProfile: profile_system_getProfile,
+			buildGetProfileCalldata: build_profile_system_getProfile_calldata,
 		},
 	};
 }

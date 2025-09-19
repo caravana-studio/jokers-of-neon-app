@@ -1,12 +1,20 @@
 interface ProfileData {
-  username: string;
-  level: number;
-  streak: number;
-  games: number;
-  victories: number;
-  currentXp: number;
   levelXp: number;
   currentBadges: number;
   totalBadges: number;
   profilePicture: string | number;
+  profile: Profile;
+  playerStats: PlayerStats;
+}
+
+interface Profile {
+  username: string,
+  currentXp: number;
+  level: number;
+  streak: number;
+}
+
+interface PlayerStats {
+  games: number;
+  victories: number;
 }
