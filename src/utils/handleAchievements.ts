@@ -11,11 +11,11 @@ export const handleAchievements = async (
 
   if (achievementEvent && achievementEvent.length > 0) {
     achievementSound();
-    const achievementNames = achievementEvent.map((achievement) =>
-      i18n.t(`data.${achievement.achievementId}`, { ns: "achievements" })
+    const achievementIds = achievementEvent.map((achievement) =>
+      achievement.achievementId
     );
 
-    showAchievementToast(achievementNames);
+    showAchievementToast(achievementIds);
 
     // ONLY FOR GG CAMPAIGN
     //await handleAchievementPush(achievementEvent, achievementSound);

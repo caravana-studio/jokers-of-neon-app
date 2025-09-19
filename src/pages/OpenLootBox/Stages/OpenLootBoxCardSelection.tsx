@@ -22,6 +22,8 @@ import { useLootBoxStore } from "../../../state/useLootBoxStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { FlipCardGrid } from "../FlipCardGrid";
 import { ManageSpecialCardsButton } from "../ManageSpecialCardsButton";
+import { CardTypes } from "../../../enums/cardTypes";
+import { useCardData } from "../../../providers/CardDataProvider";
 
 export const OpenLootBoxCardSelection = () => {
   const {
@@ -40,18 +42,20 @@ export const OpenLootBoxCardSelection = () => {
     selectAll,
     selectNone,
   } = useLootBoxStore();
-
+  const { getCardData } = useCardData();
   const {
     id: gameId,
     specialSlots,
     specialCards: currentSpecialCards,
   } = useGameStore();
-  const specialCardsToKeep = cardsToKeep.filter((c) => c.isSpecial).length;
+  const specialCardsToKeep = cardsToKeep.filter(
+    (c) => c.type === CardTypes.SPECIAL
+  ).length;
   const maxSpecialCards = specialSlots ?? 0;
   const currentSpecialCardsLength = currentSpecialCards?.length ?? 0;
 
   useEffect(() => {
-    fetchLootBoxResult(client, gameId);
+    fetchLootBoxResult(client, gameId, getCardData);
   }, []);
   const { selectCardsFromPack } = useStore();
   const { showErrorToast } = useCustomToast();
@@ -76,7 +80,9 @@ export const OpenLootBoxCardSelection = () => {
   const { flippedStates, animationRunning, skipFlipping } =
     useCardsFlipAnimation(cards.length, 1000);
 
-  const specialCardCount = cards.filter((card) => card.isSpecial).length;
+  const specialCardCount = cards.filter(
+    (card) => card.type === CardTypes.SPECIAL
+  ).length;
 
   const { t } = useTranslation(["store"]);
   const { isSmallScreen } = useResponsiveValues();

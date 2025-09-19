@@ -6,7 +6,7 @@ type LootBoxStore = {
   result: Card[];
   cardsToKeep: Card[];
 
-  fetchLootBoxResult: (client: any, gameId: number) => Promise<void>;
+  fetchLootBoxResult: (client: any, gameId: number, getCardData: (cardId: number) => any) => Promise<void>;
   toggleCard: (card: Card) => void;
   reset: () => void;
   selectAll: () => void;
@@ -17,8 +17,16 @@ export const useLootBoxStore = create<LootBoxStore>((set, get) => ({
   result: [],
   cardsToKeep: [],
 
-  fetchLootBoxResult: async (client, gameId) => {
-    const result = await getLootBoxResult(client, gameId);
+  fetchLootBoxResult: async (client, gameId, getCardData) => {
+    const rawResult = await getLootBoxResult(client, gameId);
+    const result = rawResult.map((card: any) => {
+    const { type } = getCardData(card.card_id); 
+    return {
+      ...card,
+      type, 
+    };
+  });
+
     set({ result, cardsToKeep: result });
   },
 

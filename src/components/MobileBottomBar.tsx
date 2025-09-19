@@ -106,7 +106,7 @@ export const MobileBottomBar = ({
           </Box>
           <Box w="30%">
             {secondButton ? (
-              <BarButton {...secondButton} variant="secondarySolid" />
+              <BarButton  variant="secondarySolid" {...secondButton} />
             ) : (
               secondButtonReactNode
             )}

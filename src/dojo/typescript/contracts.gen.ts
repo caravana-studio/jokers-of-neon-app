@@ -835,7 +835,7 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount as any,
 				build_shop_system_sellPowerUp_calldata(gameId, powerUpIndex),
-				"jokers_of_neon_core",
+				DOJO_NAMESPACE,
 			);
 		} catch (error) {
 			console.error(error);
@@ -1191,6 +1191,57 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_nft_special_cards_views_getUserSpecialCards_calldata = (userAddress: string): DojoCall => {
+		return {
+			contractName: "nft_special_cards_views",
+			entrypoint: "get_user_special_cards",
+			calldata: [userAddress],
+		};
+	};
+
+	const nft_special_cards_views_getUserSpecialCards = async (userAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCards_calldata(userAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata = (userAddress: string): DojoCall => {
+		return {
+			contractName: "nft_special_cards_views",
+			entrypoint: "get_user_special_cards_by_category",
+			calldata: [userAddress],
+		};
+	};
+
+	const nft_special_cards_views_getUserSpecialCardsByCategory = async (userAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata(userAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_daily_missions_system_getDailyMissionTrackersForPlayer_calldata = (player: string): DojoCall => {
+		return {
+			contractName: "daily_missions_system",
+			entrypoint: "get_daily_mission_trackers_for_player",
+			calldata: [player],
+		};
+	};
+
+	const daily_missions_system_getDailyMissionTrackersForPlayer = async (player: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_daily_missions_system_getDailyMissionTrackersForPlayer_calldata(player));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1318,6 +1369,12 @@ export function setupWorld(provider: DojoProvider) {
 			registerManagers: mod_manager_registrator_registerManagers,
 			buildRegisterManagersCalldata: build_mod_manager_registrator_registerManagers_calldata,
 		},
+		nft_special_cards_views: {
+			getUserSpecialCards: nft_special_cards_views_getUserSpecialCards,
+			buildGetUserSpecialCardsCalldata: build_nft_special_cards_views_getUserSpecialCards_calldata,
+			getUserSpecialCardsByCategory: nft_special_cards_views_getUserSpecialCardsByCategory,
+			buildGetUserSpecialCardsByCategoryCalldata: build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata,
+		},
 		game_views: {
 			getDeckCards: game_views_getDeckCards,
 			buildGetDeckCardsCalldata: build_game_views_getDeckCards_calldata,
@@ -1336,6 +1393,10 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetCardsInDeckCalldata: build_shop_views_getCardsInDeck_calldata,
 			getLootBoxResult: shop_views_getLootBoxResult,
 			buildGetLootBoxResultCalldata: build_shop_views_getLootBoxResult_calldata,
+		},
+		daily_missions_system: {
+			getDailyMissionTrackersForPlayer: daily_missions_system_getDailyMissionTrackersForPlayer,
+			buildGetDailyMissionTrackersForPlayerCalldata: build_daily_missions_system_getDailyMissionTrackersForPlayer_calldata,
 		},
 	};
 }
