@@ -85,9 +85,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     | "burner"
     | "controller"
     | null;
+
+  console.log("lsAccountType: ", lsAccountType);
   const [accountType, setAccountType] = useState<
     "burner" | "controller" | null
-  >(lsAccountType);
+  >(null);
+
+  console.log("accountType: ", accountType);
 
   const onSuccessCallback = useRef<
     ((payload: SwitchSuccessPayload) => void) | null
@@ -95,6 +99,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
 
   const connectWallet = async () => {
     try {
+      console.log('connecting wallet with connector: ', connectors[0]);
       await connect({ connector: connectors[0] });
     } catch (error) {
       console.error("Failed to connect wallet:", error);
@@ -177,11 +182,15 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
             style={{ color: "white" }}
             className="login-button"
             onClick={() => {
+              console.log("connecting controller");
               setConnectionStatus("connecting_controller");
+              console.log("isControllerConnected", isControllerConnected);
+              console.log("isControllerConnecting", isControllerConnecting);
               if (
                 isControllerConnected === false &&
                 isControllerConnecting === false
               ) {
+                console.log("calling connectWallet");
                 connectWallet();
               }
             }}

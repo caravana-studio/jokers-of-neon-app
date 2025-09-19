@@ -91,6 +91,7 @@ export const getGameView = async (
   gameId: number
 ): Promise<GameView> => {
   try {
+    console.log('getting game view for game id', gameId);
     let tx_result: any = await client.game_views.getGameData(gameId);
 
     console.log("game data", tx_result);
@@ -124,6 +125,7 @@ export const getGameView = async (
     };
   } catch (e) {
     console.error("error getting game view", e);
+    console.error('string error', (e as any).toString());
     return DEFAULT_GAME_VIEW;
   }
 };

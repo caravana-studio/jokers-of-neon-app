@@ -228,7 +228,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     providedGameId?: number,
     usernameParameter?: string
   ) => {
+    console.log('usernameParameter', usernameParameter);
     const username = usernameParameter || usernameLS;
+    console.log('username', username);
     setGameError(false);
     resetLevel();
     setGameLoading(true);
