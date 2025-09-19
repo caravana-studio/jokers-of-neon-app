@@ -27,7 +27,7 @@ export const Profile = () => {
   });
 
   useEffect(() => {
-    if (client && account && loggedInUser) {
+    if (client && account && loggedInUser && !loading) {
       fetchProfileData(
         client,
         account.account.address,
@@ -35,7 +35,7 @@ export const Profile = () => {
         loggedInUser
       );
     }
-  }, [client, account, loggedInUser]);
+  }, [client, account, loggedInUser, profileData?.profile.username]);
 
   // return useBurnerAcc ? (
   //   <Flex
