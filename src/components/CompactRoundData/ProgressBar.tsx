@@ -3,8 +3,12 @@ import { BLUE_LIGHT } from "../../theme/colors";
 
 interface IProgressBarProps {
   progress: number;
+  color?: string;
 }
-export const ProgressBar = ({ progress }: IProgressBarProps) => {
+export const ProgressBar = ({
+  progress,
+  color = BLUE_LIGHT,
+}: IProgressBarProps) => {
   return (
     <Box mt={1.5} position="relative" w="100%">
       <Box
@@ -17,8 +21,8 @@ export const ProgressBar = ({ progress }: IProgressBarProps) => {
 
       <Box
         h="100%"
-        bg={BLUE_LIGHT}
-        boxShadow={progress && `0px 0px 6px 3px ${BLUE_LIGHT}`}
+        bg={color}
+        boxShadow={progress && `0px 0px 6px 3px ${color}`}
         width={`${progress > 100 ? 100 : progress}%`}
         borderRadius="full"
         position="absolute"

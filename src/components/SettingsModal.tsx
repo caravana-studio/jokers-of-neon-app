@@ -18,12 +18,9 @@ import { NEON_PINK } from "../theme/colors";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import CachedImage from "./CachedImage";
 import { SettingsContent } from "./SettingsContent";
+import { ModalProps } from "../types/Modals";
 
-interface SettingsModalProps {
-  close?: () => void;
-}
-
-export const SettingsModal = ({ close }: SettingsModalProps) => {
+export const SettingsModal = ({ close }: ModalProps) => {
   const { isSmallScreen } = useResponsiveValues();
   const { id } = useGameStore();
 

@@ -95,6 +95,7 @@
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Classificação",
       "map-btn": "Mapa",
+      "delete-acc-btn": "Excluir conta",
       "back": "Voltar ao jogo",
       "pages": {
         "gameover": "Fim do jogo",
