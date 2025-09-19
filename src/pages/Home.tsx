@@ -1,14 +1,14 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { RemoveScroll } from "react-remove-scroll";
 import { useNavigate } from "react-router-dom";
+import { ConfirmationModal } from "../components/ConfirmationModal";
 import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileBottomBar } from "../components/MobileBottomBar";
 import { MobileDecoration } from "../components/MobileDecoration";
 import SpineAnimation from "../components/SpineAnimation";
-import { ConfirmationModal } from "../components/ConfirmationModal";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetMyGames } from "../queries/useGetMyGames";
 import { useResponsiveValues } from "../theme/responsiveSettings";
