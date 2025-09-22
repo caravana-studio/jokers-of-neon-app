@@ -1,19 +1,22 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { RemoveScroll } from "react-remove-scroll";
 import { useNavigate } from "react-router-dom";
-import { ConfirmationModal } from "../components/ConfirmationModal";
-import { DelayedLoading } from "../components/DelayedLoading";
-import { MobileBottomBar } from "../components/MobileBottomBar";
-import { MobileDecoration } from "../components/MobileDecoration";
-import SpineAnimation from "../components/SpineAnimation";
-import { useGameContext } from "../providers/GameProvider";
-import { useGetMyGames } from "../queries/useGetMyGames";
-import { useResponsiveValues } from "../theme/responsiveSettings";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
+import { MobileDecoration } from "../../components/MobileDecoration";
+import { ProfileTile } from "../../components/ProfileTile";
+import SpineAnimation from "../../components/SpineAnimation";
+import { useGameContext } from "../../providers/GameProvider";
+import { useGetMyGames } from "../../queries/useGetMyGames";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { ComingSeasonBanner } from "./banners/ComingSeasonBanner";
+import { DailyMissionsBanner } from "./banners/DailyMissionsBanner";
 
-export const Home = () => {
+export const NewHome = () => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
@@ -60,43 +63,52 @@ export const Home = () => {
         alignItems="center"
         gap={4}
       >
-        <Flex h="90px" />
         <Flex
           flexDirection="column"
           alignItems="center"
           gap={{ base: 6, sm: 8, md: 6 }}
           w={"100%"}
           zIndex={1}
+          mt={4}
         >
-          <Heading
-            size="xl"
-            color="white"
-            fontSize={{ base: 10, sm: 20, md: 25, lg: 30 }}
-          >
-            {t("home.slogan")}
-          </Heading>
-
           <Flex
             w={"100%"}
             h={"100%"}
             justifyContent="center"
             minH={isSmallScreen ? "unset" : "40vh"}
             flexGrow={1}
-            maxWidth={isSmallScreen ? "70%" : "50%"}
+            flexDir="column"
+            px={isSmallScreen ? 2 : 8}
+            gap={3}
           >
-            <Flex h={"100%"} w="100%" justifyContent={"center"} pl={2}>
-              <SpineAnimation
-                jsonUrl={`/spine-animations/logo/JokerLogo.json`}
-                atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
-                initialAnimation={"animation"}
-                loopAnimation={"animation"}
-                scale={2.4}
-                yOffset={-800}
-              />
+            <Flex h={isSmallScreen ? "120px" : "250px"} w="100%" justifyContent={"space-between"}>
+              <Flex w={isSmallScreen ? "240px" : "500px"} justifyContent={"flex-start"} alignItems="start">
+                <SpineAnimation
+                  jsonUrl={`/spine-animations/logo/JokerLogo.json`}
+                  atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
+                  initialAnimation={"animation"}
+                  loopAnimation={"animation"}
+                  scale={2.5}
+                  yOffset={-800}
+                />
+              </Flex>
+              <Flex
+                w={isSmallScreen ? "90px" : "200px"}
+                justifyContent={"flex-end"}
+                mr={isSmallScreen ? 2 : 8}
+                mt={isSmallScreen ? 2 : 8}
+                alignItems="start"
+              >
+                <ProfileTile />
+              </Flex>
+            </Flex>
+            <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3}>
+              <DailyMissionsBanner />
+              <ComingSeasonBanner />
             </Flex>
           </Flex>
           {!isSmallScreen && (
-            <Flex gap={8}>
+            <Flex gap={8} position="absolute" bottom={'90px'}>
               <Button onClick={() => navigate("/leaderboard")} w="300px">
                 {t("home.btn.leaderboard-btn")}
               </Button>
