@@ -45,6 +45,25 @@ export const getPlayerStats = async (
   }
 };
 
+export const getProfileLevelConfigByAddress = async (
+  client: any,
+  userAddress: string
+): Promise<number | null> => {
+  try {
+    let tx_result: any =
+      await client.profile_system.getProfileLevelConfigByAddress(
+        userAddress
+      );
+    
+    return Number(tx_result.required_xp);
+    
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+
 export const createProfile = async (
   client: any,
   snAccount: Account | AccountInterface, address: string,

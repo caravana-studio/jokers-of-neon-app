@@ -1297,6 +1297,23 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_profile_system_getProfileLevelConfigByAddress_calldata = (playerAddress: string): DojoCall => {
+		return {
+			contractName: "profile_system",
+			entrypoint: "get_profile_level_config_by_address",
+			calldata: [playerAddress],
+		};
+	};
+
+	const profile_system_getProfileLevelConfigByAddress = async (playerAddress: string) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_profile_system_getProfileLevelConfigByAddress_calldata(playerAddress));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	return {
 		map_system: {
 			advanceNode: map_system_advanceNode,
@@ -1460,6 +1477,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildGetPlayerStatsCalldata: build_profile_system_getPlayerStats_calldata,
 			getProfile: profile_system_getProfile,
 			buildGetProfileCalldata: build_profile_system_getProfile_calldata,
+			getProfileLevelConfigByAddress: profile_system_getProfileLevelConfigByAddress,
+			buildGetProfileLevelConfigByAddressCalldata: build_profile_system_getProfileLevelConfigByAddress_calldata,
 		},
 	};
 }

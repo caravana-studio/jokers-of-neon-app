@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getProfile, getPlayerStats, createProfile } from "../dojo/queries/getProfile";
+import { getProfile, getPlayerStats, createProfile, getProfileLevelConfigByAddress } from "../dojo/queries/getProfile";
 import type { Account, AccountInterface } from "starknet";
 
 type ProfileStore = {
@@ -38,8 +38,10 @@ export const useProfileStore = create<ProfileStore>((set) => ({
         return;
       }
 
+      const levelXp = await getProfileLevelConfigByAddress(client, userAddress);
+
       const profileData: ProfileData = {
-        levelXp: profile.currentXp,
+        levelXp: levelXp ?? profile.currentXp,
         currentBadges: 0,
         totalBadges: 0,
         profilePicture: 1,
