@@ -21,6 +21,7 @@ export interface GameSummary {
   status: string;
   points?: number;
   currentNodeId?: number;
+  round?: number;
 }
 
 export const MyGames = () => {

@@ -11,8 +11,6 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { formatNumber } from "../../utils/formatNumber.ts";
 import { GameSummary } from "./MyGames.tsx";
-import { getNode } from "../../dojo/queries/getNode.ts";
-import { useDojo } from "../../dojo/useDojo.tsx";
 
 export const GameBox = ({
   game,
@@ -24,18 +22,6 @@ export const GameBox = ({
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
-
-  const {
-    setup: { client },
-  } = useDojo();
-
-  const [nodeRound, setNodeRound] = useState<number>(0);
-
-  useEffect(() => {
-    getNode(client, game?.id ?? 0, game.currentNodeId ?? 0).then((data) => {
-      setNodeRound(data);
-    });
-  }, []);
 
   const { executeCreateGame, prepareNewGame, surrenderGame } = useGameContext();
   const { setGameId } = useGameStore();
@@ -120,7 +106,7 @@ export const GameBox = ({
               </Flex>
               <Flex gap={1}>
                 <Text>{t("round-lbl")}:</Text>
-                <Text color="lightViolet">{nodeRound}</Text>
+                <Text color="lightViolet">{game.round}</Text>
               </Flex>
             </Flex>
           )}

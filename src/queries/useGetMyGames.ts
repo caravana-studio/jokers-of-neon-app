@@ -51,6 +51,7 @@ const COMBINED_QUERY = gql`
          mod_id
          state
          current_node_id
+         round
        }
      }
    }
@@ -75,6 +76,7 @@ interface GameDataNode {
   mod_id: string;
   state?: string;
   current_node_id?: number;
+  round?: number;
 }
 
 interface CombinedQueryResponse {
@@ -142,6 +144,7 @@ export const useGetMyGames = () => {
           : GameStateEnum.NotStarted,
         points: matchingGame.player_score,
         currentNodeId: matchingGame.current_node_id,
+        round: matchingGame.round,
       };
     }
 
