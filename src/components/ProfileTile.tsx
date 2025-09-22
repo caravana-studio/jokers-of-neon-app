@@ -4,12 +4,14 @@ import { Icons } from "../constants/icons";
 import { BLUE } from "../theme/colors";
 import CachedImage from "./CachedImage";
 import { IconComponent } from "./IconComponent";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
-const PROFILE_IMG_SIZE = 85;
-const ICON_SIZE = "18px";
 
 export const ProfileTile = () => {
   const navigate = useNavigate();
+  const { isSmallScreen } = useResponsiveValues();
+  const PROFILE_IMG_SIZE = isSmallScreen ? 70 : 150;
+  const ICON_SIZE = isSmallScreen ? "18px" : "30px";
   return (
     <Flex position="relative">
       <Flex
@@ -59,17 +61,17 @@ export const ProfileTile = () => {
         <Flex
           backgroundColor="black"
           py={0.5}
-          width="85px"
+          width={`${PROFILE_IMG_SIZE + 15}px`}
           borderRadius="full"
           border={`1px solid ${BLUE}`}
           justifyContent="center"
         >
-          <Heading fontSize={9} textAlign="center">
+          <Heading fontSize={isSmallScreen ? 9 : 12} textAlign="center">
             LEVEL <span style={{ fontFamily: "Sonara" }}>3</span>
           </Heading>
         </Flex>
         <Flex width="75px" justifyContent={"flex-end"}>
-          <CachedImage width="50px" src="/borders/profile-level.png" />
+          <CachedImage width={isSmallScreen ? "50px" : "70px"} src="/borders/profile-level.png" />
         </Flex>
       </Flex>
     </Flex>
