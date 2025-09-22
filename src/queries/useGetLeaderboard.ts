@@ -29,6 +29,7 @@ export const LEADERBOARD_QUERY = gql`
           player_name
           id
           current_node_id
+          round
         }
       }
     }
@@ -42,6 +43,7 @@ interface GameEdge {
     player_name: string;
     id: number;
     current_node_id: number;
+    round: number;
   };
 }
 
@@ -81,20 +83,12 @@ const fetchGraphQLData = async (
     edges
       .filter((edge) => edge.node.player_score > 0)
       .map(async (edge) => {
-        const round = await getNode(
-          client,
-          edge.node.id,
-          edge.node.current_node_id ?? 0
-        );
-
-        console.log(edge.node);
-        console.log(round);
         return {
           id: edge.node.id,
           player_name: decodeString(edge.node.player_name ?? ""),
           player_score: edge.node.player_score,
           level: edge.node.level,
-          round: round,
+          round: edge.node.round,
         };
       })
   );
