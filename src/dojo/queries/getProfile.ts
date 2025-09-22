@@ -16,6 +16,7 @@ export const getProfile = async (
         currentXp: Number(tx_result.xp),
         level: Number(tx_result.level),
         streak: Number(tx_result.daily_streak),
+        avatarId: Number(tx_result.avatar_id),
     };
     
   } catch (e) {
@@ -67,13 +68,15 @@ export const getProfileLevelConfigByAddress = async (
 export const createProfile = async (
   client: any,
   snAccount: Account | AccountInterface, address: string,
-  username: string
+  username: string,
+  avatarId: number
 ): Promise<void> => {
   try {
       await client.profile_system.createProfile(
         snAccount,
         address,
-        username
+        username,
+        avatarId
       );
         
   } catch (e) {

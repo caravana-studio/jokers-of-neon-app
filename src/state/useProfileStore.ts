@@ -27,24 +27,22 @@ export const useProfileStore = create<ProfileStore>((set) => ({
       let profile = await getProfile(client, userAddress);
 
       if (profile && profile.username === "" && snAccount && username) {
-        await createProfile(client, snAccount, userAddress, username);
+        await createProfile(client, snAccount, userAddress, username, 1);
         profile = await getProfile(client, userAddress); 
       }
 
       const playerStats = await getPlayerStats(client, userAddress);
+      const levelXp = await getProfileLevelConfigByAddress(client, userAddress);
 
       if (!profile || !playerStats) {
         set({ profileData: null, loading: false });
         return;
       }
 
-      const levelXp = await getProfileLevelConfigByAddress(client, userAddress);
-
       const profileData: ProfileData = {
         levelXp: levelXp ?? profile.currentXp,
         currentBadges: 0,
         totalBadges: 0,
-        profilePicture: 1,
         profile,
         playerStats,
       };

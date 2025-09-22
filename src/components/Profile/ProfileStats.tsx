@@ -108,7 +108,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               variant="italic"
               width={"auto"}
             >
-              {levelXp}
+              {currentXp}
             </Heading>
           </Box>
 
@@ -129,7 +129,7 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
               mt={-1}
               variant="italic"
             >
-              {currentXp}
+              {levelXp}
             </Heading>
           </Box>
         </Flex>

@@ -2,7 +2,6 @@ interface ProfileData {
   levelXp: number;
   currentBadges: number;
   totalBadges: number;
-  profilePicture: string | number;
   profile: Profile;
   playerStats: PlayerStats;
 }
@@ -12,6 +11,7 @@ interface Profile {
   currentXp: number;
   level: number;
   streak: number;
+  avatarId: number;
 }
 
 interface PlayerStats {

@@ -10,14 +10,7 @@ import { DelayedLoading } from "../DelayedLoading";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 export const ProfileContent = ({ data }: { data: ProfileData }) => {
-  const {
-    playerStats,
-    profile,
-    levelXp,
-    currentBadges,
-    totalBadges,
-    profilePicture,
-  } = data;
+  const { playerStats, profile, levelXp, currentBadges, totalBadges } = data;
 
   const btnWidth = "18px";
   const { setup } = useDojo();
@@ -51,7 +44,7 @@ export const ProfileContent = ({ data }: { data: ProfileData }) => {
             victories={playerStats.victories}
             currentXp={profile.currentXp}
             levelXp={levelXp}
-            profilePicture={profilePicture}
+            profilePicture={profile.avatarId}
           />
 
           <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />

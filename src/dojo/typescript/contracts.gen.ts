@@ -1242,20 +1242,20 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_profile_system_createProfile_calldata = (address: string, username: string): DojoCall => {
+	const build_profile_system_createProfile_calldata = (address: string, username: string, avatarId: BigNumberish): DojoCall => {
 		return {
 			contractName: "profile_system",
 			entrypoint: "create_profile",
-			calldata: [address, username],
+			calldata: [address, username, avatarId],
 		};
 	};
 
-	const profile_system_createProfile = async (snAccount: Account | AccountInterface, address: string, username: string) => {
+	const profile_system_createProfile = async (snAccount: Account | AccountInterface, address: string, username: string, avatarId: BigNumberish) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_profile_system_createProfile_calldata(address, username),
-				DOJO_NAMESPACE,
+				build_profile_system_createProfile_calldata(address, username, avatarId),
+				"jokers_of_neon_core",
 			);
 		} catch (error) {
 			console.error(error);
