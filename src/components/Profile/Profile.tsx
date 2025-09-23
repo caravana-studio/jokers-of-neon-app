@@ -37,29 +37,26 @@ export const Profile = () => {
     }
   }, [client, account, loggedInUser, profileData?.profile.username]);
 
-  // return useBurnerAcc ? (
-  //   <Flex
-  //     w="100%"
-  //     h="100%"
-  //     flexDir="column"
-  //     gap={5}
-  //     justifyContent="center"
-  //     alignItems="center"
-  //   >
-  //     <Text size="lg">{t("no-profile")}</Text>
-  //     <Button size={["md", "sm"]} onClick={() => switchToController()}>
-  //       {tCommon("login")}
-  //       <img
-  //         src={Icons.CARTRIDGE}
-  //         width={"16px"}
-  //         style={{ marginLeft: "8px" }}
-  //       />
-  //     </Button>
-  //   </Flex>
-  // ) : (
-  //   <ProfileContent data={profileData} />
-  // );
-  return profileData !== null ? (
+  return useBurnerAcc ? (
+    <Flex
+      w="100%"
+      h="100%"
+      flexDir="column"
+      gap={5}
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Text size="lg">{t("no-profile")}</Text>
+      <Button size={["md", "sm"]} onClick={() => switchToController()}>
+        {tCommon("login")}
+        <img
+          src={Icons.CARTRIDGE}
+          width={"16px"}
+          style={{ marginLeft: "8px" }}
+        />
+      </Button>
+    </Flex>
+  ) : profileData !== null ? (
     <ProfileContent data={profileData} />
   ) : (
     <Loading />
