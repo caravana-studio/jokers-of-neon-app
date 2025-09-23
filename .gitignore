@@ -425,5 +425,5 @@ yarn-error.log*
 .env.prod
 
 # capacitor
-/android
-/ios
+android/my-release-key.keystore
+android/app/my-release-key.keystore
