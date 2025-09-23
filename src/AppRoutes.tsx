@@ -31,6 +31,7 @@ import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupH
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
+import { NewHome } from "./pages/NewHome/NewHome";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -42,7 +43,7 @@ export const AppRoutes = () => {
         path="/"
         element={
           <AnimatedPage>
-            <Home />
+            <NewHome />
           </AnimatedPage>
         }
       />
