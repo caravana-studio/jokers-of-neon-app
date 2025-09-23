@@ -18,7 +18,12 @@ export interface ProfileStatsProps {
   levelXp: number;
 }
 
-export const ProfileStats: React.FC<ProfileStatsProps> = ({
+export const ProfileStats: React.FC<
+  ProfileStatsProps & {
+    onUpdateAvatar?: (avatarId: number) => void;
+  }
+> = ({
+  onUpdateAvatar,
   profilePicture,
   username,
   level,
@@ -80,7 +85,10 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
       >
         <ProfilePicturePicker
           onClose={() => setProfilePickerVisible(false)}
-          onSelect={(id) => setProfilePictureId(id)}
+          onSelect={(id) => {
+            setProfilePictureId(id);
+            onUpdateAvatar?.(Number(id));
+          }}
         />
       </Collapse>
       <Flex

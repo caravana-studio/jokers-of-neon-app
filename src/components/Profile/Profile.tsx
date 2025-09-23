@@ -16,7 +16,8 @@ export const Profile = () => {
 
   const loggedInUser = useUsername();
 
-  const { profileData, fetchProfileData, loading } = useProfileStore();
+  const { profileData, fetchProfileData, loading, updateAvatar } =
+    useProfileStore();
 
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "profile-menu",
@@ -57,7 +58,7 @@ export const Profile = () => {
       </Button>
     </Flex>
   ) : profileData !== null ? (
-    <ProfileContent data={profileData} />
+    <ProfileContent data={profileData} onUpdateAvatar={updateAvatar} />
   ) : (
     <Loading />
   );

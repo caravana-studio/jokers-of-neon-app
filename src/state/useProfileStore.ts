@@ -2,9 +2,10 @@ import { create } from "zustand";
 import { getProfile, getPlayerStats, createProfile, getProfileLevelConfigByAddress } from "../dojo/queries/getProfile";
 import type { Account, AccountInterface } from "starknet";
 
-type ProfileStore = {
+export type ProfileStore = {
   profileData: ProfileData | null;
   loading: boolean;
+  
 
   fetchProfileData: (
     client: any,
@@ -13,10 +14,18 @@ type ProfileStore = {
     username?: string
   ) => Promise<void>;
 
+  updateAvatar: (
+    client: any,
+    snAccount: Account | AccountInterface,
+    address: string,
+    avatarId: number
+  ) => Promise<void>;
+
+
   reset: () => void;
 };
 
-export const useProfileStore = create<ProfileStore>((set) => ({
+export const useProfileStore = create<ProfileStore>((set, get) => ({
   profileData: null,
   loading: false,
 
@@ -51,6 +60,24 @@ export const useProfileStore = create<ProfileStore>((set) => ({
     } catch (e) {
       console.log("Error fetching profile data", e);
       set({ profileData: null, loading: false });
+    }
+  },
+
+  updateAvatar: async (client, snAccount, address, avatarId) => {
+    try {
+      await client.profile_system.updateAvatar(snAccount, address, avatarId);
+
+      const current = get().profileData;
+      if (current) {
+        set({
+          profileData: {
+            ...current,
+            profile: { ...current.profile, avatarId },
+          },
+        });
+      }
+    } catch (e) {
+      console.log("Error updating avatar", e);
     }
   },
 

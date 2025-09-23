@@ -8,8 +8,15 @@ import { MobileDecoration } from "../MobileDecoration";
 import { useDojo } from "../../dojo/DojoContext";
 import { DelayedLoading } from "../DelayedLoading";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { ProfileStore } from "../../state/useProfileStore";
 
-export const ProfileContent = ({ data }: { data: ProfileData }) => {
+export const ProfileContent = ({
+  data,
+  onUpdateAvatar,
+}: {
+  data: ProfileData;
+  onUpdateAvatar: ProfileStore["updateAvatar"];
+}) => {
   const { playerStats, profile, levelXp, currentBadges, totalBadges } = data;
 
   const btnWidth = "18px";
@@ -45,6 +52,14 @@ export const ProfileContent = ({ data }: { data: ProfileData }) => {
             currentXp={profile.currentXp}
             levelXp={levelXp}
             profilePicture={profile.avatarId}
+            onUpdateAvatar={(avatarId) =>
+              onUpdateAvatar(
+                setup.client,
+                setup.account.account,
+                setup.account.account.address,
+                avatarId
+              )
+            }
           />
 
           <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />

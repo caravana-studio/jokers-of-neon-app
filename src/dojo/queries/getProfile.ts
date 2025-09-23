@@ -83,3 +83,20 @@ export const createProfile = async (
     console.log(e);
   }
 };
+
+export const updateAvatar = async (
+  client: any,
+  snAccount: Account | AccountInterface, address: string,
+  avatarId: number
+): Promise<void> => {
+  try {
+      await client.profile_system.updateAvatar(
+        snAccount,
+        address,
+        avatarId
+      );
+        
+  } catch (e) {
+    console.log(e);
+  }
+};
