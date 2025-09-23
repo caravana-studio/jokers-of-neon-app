@@ -5,7 +5,7 @@ import { VIOLET } from "../../theme/colors";
 import { useTranslation } from "react-i18next";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfilePicturePicker } from "./ProfilePicturePicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface ProfileStatsProps {
   profilePicture: string | number;
@@ -32,6 +32,10 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({
   const [profilePictureId, setProfilePictureId] = useState<number | string>(
     profilePicture
   );
+
+  useEffect(() => {
+    setProfilePictureId(profilePicture);
+  }, [profilePicture]);
 
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "profile-menu",
