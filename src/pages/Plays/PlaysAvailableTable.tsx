@@ -197,9 +197,14 @@ export const PlaysAvailableTable = () => {
                     <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
                       {t("game.plays.table.points-multi-head").toUpperCase()}
                     </Td>
-                    <Td fontSize={isSmallScreen ? 10 : 15} textAlign={"center"}>
-                      {t("game.plays.table.played").toUpperCase()}
-                    </Td>
+                    {playsTracker.length > 0 && (
+                      <Td
+                        fontSize={isSmallScreen ? 10 : 15}
+                        textAlign={"center"}
+                      >
+                        {t("game.plays.table.played").toUpperCase()}
+                      </Td>
+                    )}
                   </Tr>
                 </Thead>
 
@@ -297,7 +302,7 @@ export const PlaysAvailableTable = () => {
                           }
 
                           {pointsMultiTd}
-                          {handsPlayedTd}
+                          {playsTracker && handsPlayedTd}
                         </Tr>
                       );
                     })}
