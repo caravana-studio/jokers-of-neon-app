@@ -85,16 +85,16 @@ export const MobileGameContent = () => {
 
   const stepData = [
     { step: 13, delay: 2700 },
-    { step: 22, delay: 4200 },
-    { step: 32, delay: 7500 },
+    { step: 25, delay: 4200 },
+    { step: 35, delay: 7500 },
   ];
 
   const btnHighlight = [
     { step: 4, type: HighlightedType.Discard },
     { step: 7, type: HighlightedType.Discard },
     { step: 12, type: HighlightedType.Play },
-    { step: 21, type: HighlightedType.Play },
-    { step: 31, type: HighlightedType.Play },
+    { step: 24, type: HighlightedType.Play },
+    { step: 34, type: HighlightedType.Play },
   ];
 
   useEffect(() => {
@@ -225,7 +225,16 @@ export const MobileGameContent = () => {
       className="game-tutorial-intro"
     >
       {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard} confirmationBtn />
+        <MobileCardHighlight
+          card={highlightedCard}
+          confirmationBtn
+          onTutorialCardClick={() => {
+            if (run) {
+              setButtonClicked(true);
+              setStepIndex?.((stepIndex ?? 0) + 1);
+            }
+          }}
+        />
       )}
       <MobileDecoration />
       <Box
@@ -280,7 +289,14 @@ export const MobileGameContent = () => {
               mt={3}
               sx={{ height: "245px", width: "100%" }}
             >
-              <MobileTopSection />
+              <MobileTopSection
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setButtonClicked(true);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
+                  }
+                }}
+              />
               {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
                 <Flex mt={2} w="100%" justifyContent="center">
                   <PowerUps

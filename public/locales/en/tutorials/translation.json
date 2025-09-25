@@ -37,7 +37,10 @@
     },
     "specialCards": {
       "title": "Special Cards",
-      "content": "<1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <2>Store</2>."
+      "content": "<1>Special Cards</1> are game-changers with powerful effects. You can buy them in the <2>Store</2>.",
+      "details": "Click the special card to reveal its power.",
+      "club-special": "This card adds <1>+2 Multi</1> for every <2>Club</2> card you play.",
+      "close": "Click again to close the details."
     },
     "modifiers": {
       "title": "Modifier Cards",

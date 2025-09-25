@@ -1,5 +1,5 @@
 import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CARD_HEIGHT, CARD_WIDTH } from "../constants/visualProps.ts";
 import { useGameContext } from "../providers/GameProvider.tsx";
@@ -14,7 +14,13 @@ import { UnlockedSlot } from "./UnlockedSlot.tsx";
 import { AnimatedParticleCard } from "./AnimatedParticleCard.tsx";
 import { useCardHighlight } from "../providers/HighlightProvider/CardHighlightProvider.tsx";
 
-export const SpecialCardsRow = () => {
+interface SpecialCardsRowProps {
+  onTutorialCardClick?: () => void;
+}
+
+export const SpecialCardsRow = ({
+  onTutorialCardClick,
+}: SpecialCardsRowProps) => {
   const { sellSpecialCard } = useGameContext();
   const {
     isRageRound,
@@ -22,7 +28,7 @@ export const SpecialCardsRow = () => {
     specialCards: cards,
     maxSpecialCards,
   } = useGameStore();
-  
+
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [cardToDiscardIdx, setCardToDiscardIdx] = useState<number | null>(null);
@@ -31,8 +37,11 @@ export const SpecialCardsRow = () => {
     useResponsiveValues();
   const cardWidth = CARD_WIDTH * cardScale;
   const cardHeight = CARD_HEIGHT * cardScale;
+  const [awaitingTutorialAdvanceFor, setAwaitingTutorialAdvanceFor] = useState<
+    number | null
+  >(null);
 
-  const { highlightItem: highlightCard } = useCardHighlight();
+  const { highlightItem: highlightCard, highlightedItem } = useCardHighlight();
 
   const { specialSlots } = useGameStore();
 
@@ -54,6 +63,16 @@ export const SpecialCardsRow = () => {
     }
   };
 
+  useEffect(() => {
+    if (
+      awaitingTutorialAdvanceFor !== null &&
+      highlightedItem?.idx === awaitingTutorialAdvanceFor
+    ) {
+      onTutorialCardClick?.();
+      setAwaitingTutorialAdvanceFor(null);
+    }
+  }, [highlightedItem, awaitingTutorialAdvanceFor, onTutorialCardClick]);
+
   const slotWidth = (visibleCards > 6 ? 88 : 92) / visibleCards;
 
   return (
@@ -74,7 +93,6 @@ export const SpecialCardsRow = () => {
         {cards.map((card) => {
           return (
             <Flex
-              className="special-cards-step-1"
               key={card.idx}
               justifyContent="flex-start"
               width={`${slotWidth}%`}
@@ -134,7 +152,11 @@ export const SpecialCardsRow = () => {
                     width={`${cardWidth}px`}
                     onClick={() => {
                       isSmallScreen && highlightCard(card);
+                      if (onTutorialCardClick) {
+                        setAwaitingTutorialAdvanceFor(card.idx);
+                      }
                     }}
+                    className="special-cards-step-1"
                   >
                     <CardImage3D card={card} height={`${cardHeight}px`} small />
                   </Box>

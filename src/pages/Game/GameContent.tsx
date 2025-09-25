@@ -73,16 +73,19 @@ export const GameContent = () => {
 
   const stepData = [
     { step: 13, delay: 2700 },
-    { step: 22, delay: 4200 },
-    { step: 32, delay: 7500 },
+    { step: 18, delay: 0 },
+    { step: 19, delay: 0 },
+    { step: 20, delay: 0 },
+    { step: 25, delay: 4200 },
+    { step: 35, delay: 7500 },
   ];
 
   const btnHighlight = [
     { step: 4 },
     { step: 7 },
     { step: 12 },
-    { step: 21 },
-    { step: 31 },
+    { step: 24 },
+    { step: 34 },
   ];
 
   useEffect(() => {

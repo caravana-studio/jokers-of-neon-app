@@ -151,6 +151,7 @@ const ConditionalTilt = ({
     <>{children}</>
   ) : (
     <Tilt
+      className="special-cards-step-highlight"
       {...TILT_OPTIONS}
       style={{
         transformStyle: "preserve-3d",

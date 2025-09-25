@@ -172,7 +172,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   */
   useEffect(() => {
     if (
-      step === 31 &&
+      step === 34 &&
       (Object.keys(preSelectedModifiers).length === 0 ||
         !Object.keys(preSelectedModifiers).includes(H10.idx.toString()))
     ) {

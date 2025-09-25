@@ -37,7 +37,10 @@
     },
     "specialCards": {
       "title": "Cartas Especiais",
-      "content": "As <1>Cartas Especiais</1> mudam o jogo com efeitos poderosos. Você pode comprá-las na <2>Loja</2>."
+      "content": "As <1>Cartas Especiais</1> mudam o jogo com efeitos poderosos. Você pode comprá-las na <2>Loja</2>.",
+      "details": "Clique na carta especial para revelar seu poder.",
+      "club-special": "Esta carta adiciona <1>+2 de Multi</1> por cada carta de <2>Paus</2> que você jogar.",
+      "close": "Clique novamente para fechar os detalhes."
     },
     "modifiers": {
       "title": "Cartas Modificadoras",

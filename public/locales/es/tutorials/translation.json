@@ -37,7 +37,10 @@
     },
     "specialCards": {
       "title": "Cartas especiales",
-      "content": "Las <1>cartas especiales</1> cambian el juego con efectos potentes. Puedes comprarlas en la <2>tienda</2>."
+      "content": "Las <1>cartas especiales</1> cambian el juego con efectos potentes. Puedes comprarlas en la <2>tienda</2>.",
+      "details": "Haz clic en la carta especial para revelar su poder.",
+      "club-special": "Esta carta añade <1>+2 de Multi</1> por cada carta de <2>Tréboles</2> que juegues.",
+      "close": "Haz clic de nuevo para cerrar los detalles."
     },
     "modifiers": {
       "title": "Cartas modificadoras",
