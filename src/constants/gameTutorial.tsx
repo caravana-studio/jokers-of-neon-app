@@ -514,7 +514,7 @@ const loadTutorialTranslations = async () => {
             1: (
               <span
                 style={{
-                  color: "#fffff",
+                  color: VIOLET_LIGHT,
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
@@ -523,7 +523,7 @@ const loadTutorialTranslations = async () => {
             2: (
               <span
                 style={{
-                  color: VIOLET_LIGHT,
+                  color: "#fffff",
                   fontWeight: "bold",
                   textTransform: "uppercase",
                 }}
