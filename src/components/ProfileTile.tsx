@@ -37,23 +37,6 @@ export const ProfileTile = () => {
   return (
     <Flex position="relative">
       <Flex
-        position="absolute"
-        borderRadius="full"
-        right={-0.5}
-        top={-1}
-        p={1.5}
-        bg={BLUE}
-        boxShadow={`0 0 15px 2px ${BLUE}`}
-        onClick={() => navigate("/settings")}
-        cursor="pointer"
-      >
-        <IconComponent
-          icon={Icons.SETTINGS}
-          width={ICON_SIZE}
-          height={ICON_SIZE}
-        />
-      </Flex>
-      <Flex
         p="3px"
         border={`1px solid ${BLUE}`}
         borderRadius="full"
