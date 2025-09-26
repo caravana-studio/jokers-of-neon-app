@@ -16,9 +16,13 @@ import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
 import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
+import { useDeepLinkHandler } from "./hooks/useDeepLinkHandler";
+import { controller } from "./dojo/controller/controller";
+import SessionConnector from "@cartridge/connector/session";
 
 function App() {
   const theme = extendTheme(customTheme);
+  useDeepLinkHandler(controller as SessionConnector);
 
   return (
     <SettingsProvider>

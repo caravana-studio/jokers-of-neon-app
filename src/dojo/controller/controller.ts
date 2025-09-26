@@ -50,6 +50,8 @@ if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
   controllerOptions.slot = CHAIN;
 }
 
+console.log(RPC_URL);
+
 export const controller =
   !isDev &&
   (!isNative
@@ -58,6 +60,5 @@ export const controller =
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
-        redirectUrl:
-          typeof window !== "undefined" ? window.location.origin : "",
+        redirectUrl: "com.jokersofneon.play://callback",
       }));
