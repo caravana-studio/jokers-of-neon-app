@@ -1,5 +1,5 @@
 import ControllerConnector from "@cartridge/connector/controller";
-import SessionConnector from "@cartridge/connector/session";
+import SessionConnectorWrapper from "./connectorWrapper";
 import { constants, shortString } from "starknet";
 import { policies } from "./policies";
 import { isNative } from "../../utils/capacitorUtils";
@@ -54,10 +54,9 @@ export const controller =
   !isDev &&
   (!isNative
     ? new ControllerConnector(controllerOptions)
-    : new SessionConnector({
+    : new SessionConnectorWrapper({
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
-        redirectUrl:
-          typeof window !== "undefined" ? window.location.origin : "",
+        redirectUrl: "https://www.wikipedia.org",
       }));
