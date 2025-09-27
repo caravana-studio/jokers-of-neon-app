@@ -1,47 +1,46 @@
 PODS:
-  - Capacitor (7.4.2):
+  - Capacitor (7.4.3):
     - CapacitorCordova
+  - CapacitorApp (7.1.0):
+    - Capacitor
   - CapacitorAppLauncher (7.0.2):
     - Capacitor
   - CapacitorBrowser (7.0.2):
     - Capacitor
-  - CapacitorCordova (7.4.2)
-  - CapacitorInappbrowser (2.5.0):
-    - Capacitor
-    - OSInAppBrowserLib (~> 2.2.1)
-  - OSInAppBrowserLib (2.2.1)
+  - CapacitorCordova (7.4.3)
+  - CordovaPlugins (7.4.3):
+    - CapacitorCordova
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
-  - "CapacitorInappbrowser (from `../../node_modules/@capacitor/inappbrowser`)"
-
-SPEC REPOS:
-  trunk:
-    - OSInAppBrowserLib
+  - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 EXTERNAL SOURCES:
   Capacitor:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
   CapacitorAppLauncher:
     :path: "../../node_modules/@capacitor/app-launcher"
   CapacitorBrowser:
     :path: "../../node_modules/@capacitor/browser"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
-  CapacitorInappbrowser:
-    :path: "../../node_modules/@capacitor/inappbrowser"
+  CordovaPlugins:
+    :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 9d9e481b79ffaeacaf7a85d6a11adec32bd33b59
-  CapacitorAppLauncher: b70f649f609bab6412eccdd413bd7f0dd42df4a9
-  CapacitorBrowser: 22541e48442de44dc629c214388290d6eecc6ae9
-  CapacitorCordova: 5e58d04631bc5094894ac106e2bf1da18a9e6151
-  CapacitorInappbrowser: 7aeffa02075b6da460a84e59a8f69f748411ad7f
-  OSInAppBrowserLib: 65563bae1c068972f1848a403dacbea2860ac88e
+  Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
+  CapacitorApp: 846d4b4a1dbb19dd1e9029c08ba6f028aa7be862
+  CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
+  CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
+  CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CordovaPlugins: 64931e3435a866da9d124e6242a9361b484e9b05
 
-PODFILE CHECKSUM: a75aae7a1d9a43210dac8934f397c70b22d853d9
+PODFILE CHECKSUM: 9814e836f7b3f08fcf78f644c0a9af269a85eb1a
 
 COCOAPODS: 1.16.2
