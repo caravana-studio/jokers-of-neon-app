@@ -58,5 +58,5 @@ export const controller =
         policies,
         rpc: RPC_URL,
         chainId: defaultChainId,
-        redirectUrl: "https://www.jokersofneon.com/open",
+        redirectUrl: "https://jokersofneon.com/open",
       }));
