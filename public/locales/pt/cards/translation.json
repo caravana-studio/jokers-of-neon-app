@@ -335,6 +335,18 @@
     "10080": {
       "name": "Fortuna da Rainha",
       "description": "Cada rainha jogada tem 50% de chances de conceder ^yellow(+150 moedas)^."
+    },
+    "10081": {
+      "name": "Reembolso Afortunado",
+      "description": "50% de chance de ganhar ^yellow(+150 moedas)^ ao jogar ou descartar uma carta."
+    },
+    "10082": {
+      "name": "Multiplicador Ressonante",
+      "description": "Para cada carta com valor menor que 5, ganhe ^violet(um multiplicador igual ao seu valor)^."
+    },
+    "10083": {
+      "name": "Redenção do Pântano",
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta."
     }
   },
   "power-ups": {
