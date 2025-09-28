@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>webcredentials:cartridge.gg</string>
+		<string>applinks:jokersofneon.com</string>
 	</array>
 </dict>
 </plist>
