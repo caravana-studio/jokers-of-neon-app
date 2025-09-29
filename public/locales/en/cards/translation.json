@@ -887,6 +887,14 @@
     "20021": {
       "name": "Betraying the Weak",
       "description": "Cards with a value of 5 or less will not score during this level"
+    },
+    "20022": {
+      "name": "Locked Plays",
+      "description": "You can't play the same hand twice in this round"
+    },
+    "20023": {
+      "name": "Punched Ticket",
+      "description": "You can only play one hand type in this round"
     }
   },
   "lootBoxes": {

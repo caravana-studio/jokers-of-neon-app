@@ -887,6 +887,14 @@
     "20021": {
       "name": "Traindo os Fracos",
       "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
+    },
+    "20022": {
+      "name": "Jogadas Bloqueadas",
+      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
+    },
+    "20023": {
+      "name": "Bilhete Carimbado",
+      "description": "Você só pode jogar um tipo de mão nesta rodada"
     }
   },
   "lootBoxes": {
