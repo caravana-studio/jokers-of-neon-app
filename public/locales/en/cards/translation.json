@@ -771,6 +771,18 @@
     "10080": {
       "name": "Queens Fortune",
       "description": "Each Queen that scores has a 50% chance to grant ^yellow(+150 cash)^."
+    },
+     "19901": {
+      "name": "Lucky Cashback",
+      "description": "50% chance to gain ^yellow(+150 cash)^ when player use a play or discard."
+    },
+    "19902": {
+      "name": "Resonant Multiplier",
+      "description": "For every card with a value under 5, gain ^violet(multi equal to its value)^."
+    },
+    "19903": {
+      "name": "Swamp Redemption",
+      "description": "Gains between ^blue(+1)^ and ^blue(+5 points)^ (cumulative) each time you discard."
     }
   },
   "power-ups": {

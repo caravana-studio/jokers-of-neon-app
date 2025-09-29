@@ -335,6 +335,18 @@
     "10080": {
       "name": "Fortuna de la Reina",
       "description": "Cada reina jugada tiene 50% de probabilidad de ganar ^yellow(+150 monedas)^."
+    },
+    "19901": {
+      "name": "Reembolso Afortunado",
+      "description": "50% de probabilidad de obtener ^yellow(+150 monedas)^ al jugar o descartar una carta."
+    },
+    "19902": {
+      "name": "Multiplicador Resonante",
+      "description": "Por cada carta con un valor menor a 5, obtén un ^violet(multiplicador igual a su valor)^."
+    },
+    "19903": {
+      "name": "Redención del Pantano",
+      "description": "Ganas entre ^blue(+1)^ y ^blue(+5 puntos)^ (acumulativos) cada vez que descartas."
     }
   },
   "power-ups": {
