@@ -126,7 +126,8 @@
       "table": {
         "level-head": "Nivel",
         "hand-head": "Mano",
-        "points-multi-head": "Puntos/Multiplicador"
+        "points-multi-head": "Puntos/Multi",
+        "played": "Jugadas"
       }
     },
     "deck": {
