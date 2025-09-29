@@ -1,4 +1,5 @@
 import { App } from "@capacitor/app";
+import { Browser } from "@capacitor/browser";
 import SessionConnector from "@cartridge/connector/session";
 
 class SessionConnectorWrapper extends SessionConnector {
@@ -28,6 +29,17 @@ class SessionConnectorWrapper extends SessionConnector {
     });
 
     App.addListener("pause", () => {});
+
+    App.addListener("appUrlOpen", ({ url }) => {
+      if (
+        url.startsWith("jokers://open") ||
+        url.startsWith("https://jokersofneon.com/open")
+      ) {
+        try {
+          Browser.close();
+        } catch {}
+      }
+    });
   }
 
   private async handleConnect() {
