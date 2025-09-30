@@ -96,6 +96,7 @@ export const showTransactionToast = (
       backgroundColor={LOADING_TOAST}
       status="loading"
       description={description}
+        onClickFn={() => transaction_hash && openTx(transaction_hash)}
     />,
     {
       ...TOAST_COMMON_OPTIONS,
