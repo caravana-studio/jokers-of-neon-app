@@ -65,6 +65,7 @@ export const GameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const [highlighted, setHighlighted] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -74,6 +75,14 @@ export const GameContent = () => {
     { step: 13, delay: 2700 },
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
+  ];
+
+  const btnHighlight = [
+    { step: 4 },
+    { step: 7 },
+    { step: 12 },
+    { step: 21 },
+    { step: 31 },
   ];
 
   useEffect(() => {
@@ -107,6 +116,13 @@ export const GameContent = () => {
       setCardClicked(false);
       setButtonClicked(false);
       setAutoStep(false);
+
+      const stepInfo = btnHighlight.find((data) => data.step === stepIndex);
+      if (stepInfo) {
+        setHighlighted(true);
+      } else {
+        setHighlighted(false);
+      }
 
       if (type === "tour:end") {
         setRunCallback(false);
@@ -248,7 +264,8 @@ export const GameContent = () => {
                   }}
                 >
                   <PreselectedCardsSection
-                    isTutorialRunning={run}
+                    inTutorial={run}
+                    highlightBtns={highlighted}
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);
