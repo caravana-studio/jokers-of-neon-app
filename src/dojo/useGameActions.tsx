@@ -56,6 +56,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -101,6 +102,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -143,6 +145,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       if (tx.isSuccess()) {
@@ -174,6 +177,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       if (tx.isSuccess()) {
@@ -209,6 +213,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -238,6 +243,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -274,6 +280,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -301,6 +308,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       const success = updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -340,6 +348,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
@@ -373,6 +382,7 @@ export const useGameActions = () => {
 
       const tx = await account.waitForTransaction(transaction_hash, {
         retryInterval: 100,
+        successStates: ["PRE_CONFIRMED", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1"],
       });
 
       updateTransactionToast(transaction_hash, tx.isSuccess());
