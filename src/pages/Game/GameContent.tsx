@@ -66,6 +66,7 @@ export const GameContent = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
   const [highlighted, setHighlighted] = useState(false);
+  const [canClickPowerUp, setCanClickPowerUp] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -84,6 +85,8 @@ export const GameContent = () => {
     { step: 21 },
     { step: 31 },
   ];
+
+  const powerUpClick = [{ step: 19 }, { step: 20 }];
 
   useEffect(() => {
     const stepInfo = stepData.find((data) => data.step === stepIndex);
@@ -122,6 +125,13 @@ export const GameContent = () => {
         setHighlighted(true);
       } else {
         setHighlighted(false);
+      }
+
+      const powerUpStep = powerUpClick.find((data) => data.step === stepIndex);
+      if (powerUpStep) {
+        setCanClickPowerUp(true);
+      } else {
+        setCanClickPowerUp(false);
       }
 
       if (type === "tour:end") {

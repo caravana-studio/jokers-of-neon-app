@@ -78,6 +78,7 @@ export const MobileGameContent = () => {
   const navigate = useNavigate();
   const [highlightedPlay, setHighlightedPlay] = useState(false);
   const [highlightedDiscard, setHighlightedDiscard] = useState(false);
+  const [canClickPowerUp, setCanClickPowerUp] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -96,6 +97,8 @@ export const MobileGameContent = () => {
     { step: 21, type: HighlightedType.Play },
     { step: 31, type: HighlightedType.Play },
   ];
+
+  const powerUpClick = [{ step: 19 }, { step: 20 }];
 
   useEffect(() => {
     const stepInfo = stepData.find((data) => data.step === stepIndex);
@@ -144,6 +147,13 @@ export const MobileGameContent = () => {
       } else {
         setHighlightedDiscard(false);
         setHighlightedPlay(false);
+      }
+
+      const powerUpStep = powerUpClick.find((data) => data.step === stepIndex);
+      if (powerUpStep) {
+        setCanClickPowerUp(true);
+      } else {
+        setCanClickPowerUp(false);
       }
 
       if (type === "tour:end") {
@@ -285,7 +295,7 @@ export const MobileGameContent = () => {
                 <Flex mt={2} w="100%" justifyContent="center">
                   <PowerUps
                     onTutorialCardClick={() => {
-                      if (run) {
+                      if (run && canClickPowerUp) {
                         setButtonClicked(true);
                         setStepIndex?.((stepIndex ?? 0) + 1);
                       }
