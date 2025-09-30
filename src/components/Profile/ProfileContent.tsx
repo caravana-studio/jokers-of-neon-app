@@ -37,7 +37,6 @@ export const ProfileContent = ({
       >
         <Flex
           flexDirection={"column"}
-          py={16}
           px={isSmallScreen ? 8 : 16}
           height={"auto"}
           overflowY={"auto"}
@@ -62,7 +61,7 @@ export const ProfileContent = ({
             }
           />
 
-          <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} />
+          {/* <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} /> */}
 
           <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
             {!setup.useBurnerAcc && (

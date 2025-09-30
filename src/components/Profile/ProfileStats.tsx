@@ -95,11 +95,11 @@ export const ProfileStats: React.FC<
         gap={4}
         alignItems={"center"}
         justifyContent={"center"}
-        width={"100%"}
+        width={"80px"}
       >
-        <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} />
+        {/* <ProfileStat title={t("streaks")} value={streak} suffix={t("days")} /> */}
         <ProfileStat title={t("games")} value={games} />
-        <ProfileStat title={t("victories")} value={victories} />
+        {/* <ProfileStat title={t("victories")} value={victories} /> */}
       </Flex>
       <Box my={2} borderRadius="md" width="100%" maxW="600px">
         <Flex justify="space-between" gap={1} align="center">

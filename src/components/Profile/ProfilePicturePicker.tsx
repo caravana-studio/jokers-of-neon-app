@@ -1,11 +1,9 @@
 import { CloseIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { ProfilePicture } from "./ProfilePicture";
-import { BLUE_LIGHT } from "../../theme/colors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { Box, Flex, Heading, IconButton } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { BLUE_LIGHT } from "../../theme/colors";
+import { ProfilePicture } from "./ProfilePicture";
 
 interface ProfilePicturePickerProps {
   onClose?: () => void;
@@ -95,7 +93,7 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
               hover={hoverStyle}
             />
           ))}
-          <Flex
+{/*           <Flex
             rounded="full"
             w={iconsSize}
             h={iconsSize}
@@ -118,7 +116,7 @@ export const ProfilePicturePicker: React.FC<ProfilePicturePickerProps> = ({
             <Box backgroundColor={"black"} p={1} rounded={"sm"}>
               <FontAwesomeIcon icon={faXTwitter} style={{ color: "white" }} />
             </Box>
-          </Flex>
+          </Flex> */}
         </Flex>
       </Box>
     </Box>

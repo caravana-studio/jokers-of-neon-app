@@ -23,6 +23,7 @@ export const ProfileStat: React.FC<ProfileStatProps> = ({
       alignItems={"center"}
       flexGrow={1}
       flex={1}
+      width={"50px"}
     >
       <Heading fontSize={"10px"}>{title}</Heading>
       <Heading fontSize={"10px"}>
