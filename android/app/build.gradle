@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+def KS_FILE  = System.getenv("MYAPP_UPLOAD_STORE_FILE")     ?: project.findProperty("MYAPP_UPLOAD_STORE_FILE")
+def KS_PASS  = System.getenv("MYAPP_UPLOAD_STORE_PASSWORD") ?: project.findProperty("MYAPP_UPLOAD_STORE_PASSWORD")
+def KEY_ALIAS= System.getenv("MYAPP_UPLOAD_KEY_ALIAS")      ?: project.findProperty("MYAPP_UPLOAD_KEY_ALIAS")
+def KEY_PASS = System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")   ?: project.findProperty("MYAPP_UPLOAD_KEY_PASSWORD")
+
+
 android {
     namespace "com.jokersofneon.play"
     compileSdk rootProject.ext.compileSdkVersion
@@ -7,8 +13,8 @@ android {
         applicationId "com.jokersofneon.play"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 5
+        versionName "2.7.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,12 +22,17 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
     signingConfigs {
         release {
-            storeFile file(System.getenv("MYAPP_UPLOAD_STORE_FILE"))
-            storePassword System.getenv("MYAPP_UPLOAD_STORE_PASSWORD")
-            keyAlias System.getenv("MYAPP_UPLOAD_KEY_ALIAS")
-            keyPassword System.getenv("MYAPP_UPLOAD_KEY_PASSWORD")
+            if (KS_FILE && KS_PASS && KEY_ALIAS && KEY_PASS) {
+                storeFile file(KS_FILE)
+                storePassword KS_PASS
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASS
+            } else {
+                println("WARN: Release signing won't work: missing credentials.")
+            }
         }
     }
     buildTypes {
