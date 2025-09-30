@@ -2,7 +2,13 @@ import { Flex } from "@chakra-ui/react";
 import CompactRoundData from "../../components/CompactRoundData/CompactRoundData.tsx";
 import { SpecialCards } from "../../components/SpecialCards.tsx";
 
-export const MobileTopSection = () => {
+interface TopSectionMobileProps {
+  onTutorialCardClick?: () => void;
+}
+
+export const MobileTopSection = ({
+  onTutorialCardClick,
+}: TopSectionMobileProps) => {
   return (
     <>
       <CompactRoundData />
@@ -12,7 +18,7 @@ export const MobileTopSection = () => {
         mx={2}
         justifyContent="center"
       >
-        <SpecialCards />
+        <SpecialCards onTutorialCardClick={onTutorialCardClick} />
       </Flex>
     </>
   );

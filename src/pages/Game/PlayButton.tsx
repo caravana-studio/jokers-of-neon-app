@@ -7,11 +7,13 @@ import { isTutorial } from "../../utils/isTutorial";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface PlayButtonProps {
+  inTutorial?: boolean;
   highlight?: boolean;
   onTutorialCardClick?: () => void;
 }
 
 export const PlayButton = ({
+  inTutorial = false,
   highlight = false,
   onTutorialCardClick,
 }: PlayButtonProps) => {
@@ -19,17 +21,17 @@ export const PlayButton = ({
 
   const { preSelectedCards, preSelectionLocked } = useCurrentHandStore();
 
-  const {totalPlays, remainingPlays } = useGameStore();
+  const { totalPlays, remainingPlays } = useGameStore();
   const handsLeft = !isTutorial()
     ? remainingPlays
     : remainingPlaysTutorial ?? 0;
 
-  const cantPlay =
-    !highlight &&
-    (preSelectionLocked ||
+  const cantPlay = inTutorial
+    ? !highlight
+    : preSelectionLocked ||
       preSelectedCards?.length === 0 ||
       !handsLeft ||
-      handsLeft === 0);
+      handsLeft === 0;
   const { t } = useTranslation(["game"]);
 
   return (

@@ -6,11 +6,13 @@ import { useGameStore } from "../../state/useGameStore";
 import { PlayDiscardIndicators } from "./PlayDiscardIndicator";
 
 interface DiscardButtonProps {
+  inTutorial?: boolean;
   highlight?: boolean;
   onTutorialCardClick?: () => void;
 }
 
 export const DiscardButton = ({
+  inTutorial = false,
   highlight = false,
   onTutorialCardClick,
 }: DiscardButtonProps) => {
@@ -19,12 +21,12 @@ export const DiscardButton = ({
 
   const { totalDiscards, remainingDiscards } = useGameStore();
 
-  const cantDiscard =
-    !highlight &&
-    (preSelectionLocked ||
+  const cantDiscard = inTutorial
+    ? !highlight
+    : preSelectionLocked ||
       preSelectedCards?.length === 0 ||
       !remainingDiscards ||
-      remainingDiscards === 0);
+      remainingDiscards === 0;
 
   const { t } = useTranslation(["game"]);
 

@@ -36,6 +36,11 @@ import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
 
+enum HighlightedType {
+  Play,
+  Discard,
+}
+
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
   const { executeCreateGame, resetLevel, stepIndex, setStepIndex } =
@@ -71,6 +76,8 @@ export const MobileGameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
+  const [highlightedPlay, setHighlightedPlay] = useState(false);
+  const [highlightedDiscard, setHighlightedDiscard] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -78,8 +85,16 @@ export const MobileGameContent = () => {
 
   const stepData = [
     { step: 13, delay: 2700 },
-    { step: 22, delay: 4200 },
-    { step: 32, delay: 7500 },
+    { step: 25, delay: 4200 },
+    { step: 35, delay: 7500 },
+  ];
+
+  const btnHighlight = [
+    { step: 4, type: HighlightedType.Discard },
+    { step: 7, type: HighlightedType.Discard },
+    { step: 12, type: HighlightedType.Play },
+    { step: 24, type: HighlightedType.Play },
+    { step: 34, type: HighlightedType.Play },
   ];
 
   useEffect(() => {
@@ -120,6 +135,16 @@ export const MobileGameContent = () => {
       setCardClicked(false);
       setButtonClicked(false);
       setAutoStep(false);
+
+      const stepInfo = btnHighlight.find((data) => data.step === stepIndex);
+      if (stepInfo) {
+        if (stepInfo.type === HighlightedType.Discard)
+          setHighlightedDiscard(true);
+        else setHighlightedPlay(true);
+      } else {
+        setHighlightedDiscard(false);
+        setHighlightedPlay(false);
+      }
 
       if (type === "tour:end") {
         setRunCallback(false);
@@ -200,7 +225,16 @@ export const MobileGameContent = () => {
       className="game-tutorial-intro"
     >
       {highlightedCard && (
-        <MobileCardHighlight card={highlightedCard} confirmationBtn />
+        <MobileCardHighlight
+          card={highlightedCard}
+          confirmationBtn
+          onTutorialCardClick={() => {
+            if (run) {
+              setButtonClicked(true);
+              setStepIndex?.((stepIndex ?? 0) + 1);
+            }
+          }}
+        />
       )}
       <MobileDecoration />
       <Box
@@ -255,7 +289,14 @@ export const MobileGameContent = () => {
               mt={3}
               sx={{ height: "245px", width: "100%" }}
             >
-              <MobileTopSection />
+              <MobileTopSection
+                onTutorialCardClick={() => {
+                  if (run) {
+                    setButtonClicked(true);
+                    setStepIndex?.((stepIndex ?? 0) + 1);
+                  }
+                }}
+              />
               {(maxPowerUpSlots === undefined || maxPowerUpSlots > 0) && (
                 <Flex mt={2} w="100%" justifyContent="center">
                   <PowerUps
@@ -295,7 +336,8 @@ export const MobileGameContent = () => {
             <MobileBottomBar
               firstButtonReactNode={
                 <DiscardButton
-                  highlight={run}
+                  inTutorial={run}
+                  highlight={highlightedDiscard}
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
@@ -306,7 +348,8 @@ export const MobileGameContent = () => {
               }
               secondButtonReactNode={
                 <PlayButton
-                  highlight={run}
+                  inTutorial={run}
+                  highlight={highlightedPlay}
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);

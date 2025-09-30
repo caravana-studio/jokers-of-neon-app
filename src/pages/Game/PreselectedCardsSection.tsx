@@ -14,12 +14,14 @@ import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useAnimationStore } from "../../state/useAnimationStore.ts";
 
 interface PreselectedCardsProps {
-  isTutorialRunning?: boolean;
+  inTutorial?: boolean;
+  highlightBtns?: boolean;
   onTutorialCardClick?: () => void;
 }
 
 export const PreselectedCardsSection = ({
-  isTutorialRunning = false,
+  inTutorial = false,
+  highlightBtns = false,
   onTutorialCardClick,
 }: PreselectedCardsProps) => {
   const { discardAnimation, playAnimation } = useAnimationStore();
@@ -51,7 +53,8 @@ export const PreselectedCardsSection = ({
       >
         <Box className="game-tutorial-step-3" width="200px">
           <DiscardButton
-            highlight={isTutorialRunning}
+            inTutorial={inTutorial}
+            highlight={highlightBtns}
             onTutorialCardClick={onTutorialCardClick}
           />
         </Box>
@@ -105,7 +108,8 @@ export const PreselectedCardsSection = ({
         </Box>
         <Box className="game-tutorial-step-4" width="200px">
           <PlayButton
-            highlight={isTutorialRunning}
+            inTutorial={inTutorial}
+            highlight={highlightBtns}
             onTutorialCardClick={onTutorialCardClick}
           />
         </Box>

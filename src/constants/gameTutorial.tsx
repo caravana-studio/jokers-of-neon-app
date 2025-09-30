@@ -491,6 +491,58 @@ const loadTutorialTranslations = async () => {
       ),
       ...COMMON_SETTINGS,
     },
+    {
+      target: isMobile ? ".special-cards-step-1" : ".nullElement",
+      content: i18n.t("gameTutorial.specialCards.details", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      disableScrollParentFix: true,
+      hideFooter: true,
+      spotlightClicks: true,
+      spotlightPadding: 0,
+      offset: 0,
+      disableOverlay: isMobile ? true : false,
+    },
+    {
+      target: isMobile ? ".special-cards-step-highlight" : ".nullElement",
+      content: (
+        <Trans
+          i18nKey="gameTutorial.specialCards.club-special"
+          ns="tutorials"
+          components={{
+            1: (
+              <span
+                style={{
+                  color: VIOLET_LIGHT,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            2: (
+              <span
+                style={{
+                  color: "#fffff",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
+      ...COMMON_SETTINGS,
+    },
+    {
+      target: isMobile ? ".special-cards-step-highlight" : ".nullElement",
+      content: i18n.t("gameTutorial.specialCards.close", {
+        ns: "tutorials",
+      }),
+      ...COMMON_SETTINGS,
+      spotlightClicks: true,
+      hideFooter: true,
+    },
     // power ups
     {
       target: ".game-tutorial-power-up",
@@ -544,11 +596,6 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
     },
     {
       target: ".game-tutorial-power-up-1",
@@ -561,11 +608,6 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
     },
     // play
     {
@@ -617,7 +659,7 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       spotlightPadding: 0,
       offset: 0,
-      disableOverlay: isMobile ? true : false,
+      spotlightClicks: false,
       styles: !isMobile
         ? {
             options: {

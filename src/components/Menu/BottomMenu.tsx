@@ -5,12 +5,14 @@ import { needsPadding } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
 import { mainMenuUrls, useContextMenuItems } from "./useContextMenuItems";
+import { isTutorial } from "../../utils/isTutorial";
 
 export const BottomMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mainMenuItems, inGameMenuItems } = useContextMenuItems({
     onMoreClick: () => setIsMenuOpen(true),
   });
+  const inTutorial = isTutorial();
 
   return (
     <>
@@ -29,11 +31,13 @@ export const BottomMenu = () => {
         position="absolute"
         bottom={needsPadding ? "30px" : "0px"}
       >
-        {(mainMenuUrls.some(url => matchPath({ path: url, end: true }, window.location.pathname))
+        {(mainMenuUrls.some((url) =>
+          matchPath({ path: url, end: true }, window.location.pathname)
+        )
           ? mainMenuItems
           : inGameMenuItems
         ).map((item) => (
-          <ContextMenuItem {...item} nameKey={item.key} />
+          <ContextMenuItem {...item} nameKey={item.key} disabled={inTutorial} />
         ))}
       </Flex>
 

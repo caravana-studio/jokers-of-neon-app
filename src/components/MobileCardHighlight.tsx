@@ -24,6 +24,7 @@ interface MobileCardHighlightProps {
   showExtraInfo?: boolean;
   isPack?: boolean;
   hidePrice?: boolean;
+  onTutorialCardClick?: () => void;
 }
 
 export const MobileCardHighlight = ({
@@ -33,6 +34,7 @@ export const MobileCardHighlight = ({
   isPack = false,
   customBtn,
   hidePrice = false,
+  onTutorialCardClick,
 }: MobileCardHighlightProps) => {
   const { onClose } = useCardHighlight();
 
@@ -125,6 +127,7 @@ export const MobileCardHighlight = ({
       gap={temporaryPrice ? 4 : 6}
       onClick={() => {
         onClose();
+        onTutorialCardClick?.();
       }}
     >
       {confirmationModalOpen && (
@@ -180,7 +183,8 @@ export const MobileCardHighlight = ({
             </Text>
           )}
           {isPack && <LootBoxRateInfo name={name} details={details} />}
-          {(price && !hidePrice) &&
+          {price &&
+            !hidePrice &&
             (temporaryPrice ? (
               <DurationSwitcher
                 flexDir="column"
