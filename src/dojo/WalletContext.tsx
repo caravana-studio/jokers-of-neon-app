@@ -171,8 +171,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  console.log("chain: ", CHAIN);
-
   if (accountType === null) {
     return (
       <PreThemeLoadingPage>
@@ -207,7 +205,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               />
             </div>
           </button>
-          {CHAIN !== "MAINNET" && CHAIN !== "SEPOLIA" && (
+          {CHAIN !== "mainnet" && CHAIN !== "sepolia" && (
             <button
               style={{ color: "white" }}
               className="login-button secondary"
