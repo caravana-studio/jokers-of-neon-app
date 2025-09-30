@@ -10,7 +10,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
   const [videoSrc1, setVideoSrc1] = useState<string | null>(null);
   const [videoSrc2, setVideoSrc2] = useState<string | null>(null);
   const [isFading, setIsFading] = useState(false);
-  const [activeVideo, setActiveVideo] = useState<1 | 2>(1); // Track which video is active
+  const [activeVideo, setActiveVideo] = useState<1 | 2>(1);
 
   const videoRef1 = useRef<HTMLVideoElement | null>(null);
   const videoRef2 = useRef<HTMLVideoElement | null>(null);
@@ -28,7 +28,7 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
       const cachedVideo = await getVideoFromCache(videoSources[type]);
       const newVideoSrc = cachedVideo || videoSources[type];
 
-      setIsFading(true); // Start fade transition
+      setIsFading(true);
 
       setTimeout(() => {
         if (activeVideo === 1) {
@@ -38,13 +38,28 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
           setVideoSrc1(newVideoSrc);
           setActiveVideo(1);
         }
-
-        setTimeout(() => setIsFading(false), 800); // End fade transition after 500ms
-      }, 100); // Delay before starting transition
+        setTimeout(() => setIsFading(false), 800);
+      }, 100);
     };
 
     loadVideo();
   }, [type]);
+
+  // useEffect to programmatically play the videos
+  useEffect(() => {
+    const playVideo = (videoRef: React.RefObject<HTMLVideoElement>) => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    if (activeVideo === 1 && videoRef1.current?.src) {
+      playVideo(videoRef1);
+    }
+    if (activeVideo === 2 && videoRef2.current?.src) {
+      playVideo(videoRef2);
+    }
+  }, [videoSrc1, videoSrc2, activeVideo]);
 
   return (
     <div
@@ -75,30 +90,28 @@ const BackgroundVideo = ({ type }: BackgroundVideoProps) => {
           height: "100%",
           objectFit: "cover",
           transition: "opacity 1s ease-in-out",
-          opacity: activeVideo === 1 ? 1 : isFading ? 0 : 0, // Fade out if inactive
+          opacity: activeVideo === 1 && !isFading ? 1 : 0,
         }}
       />
-      {videoSrc2 && (
-        <video
-          ref={videoRef2}
-          src={videoSrc2}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            pointerEvents: "none",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            transition: "opacity 1s ease-in-out",
-            opacity: activeVideo === 2 ? 1 : isFading ? 0 : 0, // Fade out if inactive
-          }}
-        />
-      )}
+      <video
+        ref={videoRef2}
+        src={videoSrc2 || ""}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          pointerEvents: "none",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "opacity 1s ease-in-out",
+          opacity: activeVideo === 2 && !isFading ? 1 : 0,
+        }}
+      />
     </div>
   );
 };
