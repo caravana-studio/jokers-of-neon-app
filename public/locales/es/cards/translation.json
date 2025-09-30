@@ -899,6 +899,14 @@
     "20021": {
       "name": "Traicionando a los Débiles",
       "description": "Las cartas con valor menor o igual a 5 no puntuaran durante este nivel"
+    },
+    "20022": {
+      "name": "Jugadas Bloqueadas",
+      "description": "No puedes jugar la misma mano dos veces en esta ronda"
+    },
+    "20023": {
+      "name": "Boleto Marcado",
+      "description": "Solo puedes jugar un tipo de mano en esta ronda"
     }
   },
   "lootBoxes": {
