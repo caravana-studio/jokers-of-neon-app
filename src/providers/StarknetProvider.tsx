@@ -16,8 +16,10 @@ function rpc() {
   };
 }
 
-const slot: Chain = {
-  id: num.toBigInt(getSlotChainId(import.meta.env.VITE_SLOT_INSTANCE)),
+const SLOT_INSTANCE = import.meta.env.VITE_SLOT_INSTANCE
+
+const slot: Chain = SLOT_INSTANCE && {
+  id: num.toBigInt(getSlotChainId(SLOT_INSTANCE)),
   name: "Jokers of Neon",
   network: "jokers-of-neon",
   rpcUrls: {
@@ -46,7 +48,7 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <StarknetConfig
-      chains={[slot, mainnet, sepolia]}
+      chains={SLOT_INSTANCE ? [slot, mainnet, sepolia] : [mainnet, sepolia]}
       provider={provider}
       connectors={[controller as unknown as Connector]}
       explorer={voyager}
