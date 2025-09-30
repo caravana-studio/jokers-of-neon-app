@@ -1479,8 +1479,8 @@
   },
   "contracts": [
     {
-      "address": "0x6a4625ae087042c18e7133f8b566c37761db1d2f48e6fa59ce09ac50388dec2",
-      "class_hash": "0x7af5a124a4fd9ba0b2fe25c702c395321cb3c6c08fc5ddbf9c0f201a3132d11",
+      "address": "0x1aecc6021ed3eebf5f63bb6accb4b59f00d23afc427984e0f44e13e1c193839",
+      "class_hash": "0x3a57b41027b5cfffc32ff2c7ba905194ee96f78af91dca8c23819daff59b6fa",
       "abi": [
         {
           "type": "impl",
@@ -1695,8 +1695,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-action_system",
-      "selector": "0x9d1c5f106ad7a21183f73caa635f78dc4b6d7afe8c47ad590cf7ce430e582c",
+      "tag": "jokers_of_neon_core-action_system",
+      "selector": "0x7818a1d55aa438edfc913a34975c6fdf37d2b250f797fb51ba10872bea762f2",
       "systems": [
         "discard",
         "change_modifier_card",
@@ -1704,7 +1704,7 @@
       ]
     },
     {
-      "address": "0x1dd58a48f3edd807fbc70e85e9d183f2f8c5a34bff79d6926a95807f6bd090b",
+      "address": "0x645e114c5379994d8b18025fb64ef4d55ff50dc08b46dec27013c611c6e211d",
       "class_hash": "0x661317aa81acdb9524d326ac7c65f20c0c55b40410ab1e7c333056ba004e786",
       "abi": [
         {
@@ -2112,15 +2112,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-calculate_hand_system",
-      "selector": "0x3d5ec0c1279f150553e1b0331ca4a84d50fcd5eb0104c791e802ab2a9642683",
+      "tag": "jokers_of_neon_core-calculate_hand_system",
+      "selector": "0x5307c3761a682f72c51464d564aee350472ec731896ff3813ce61c5a9ba01b1",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x68a362f6dd6a05827103832b5fa9e29e63e028141916cbb07a09d010b0d3156",
-      "class_hash": "0x5056925111414a167140b84f79ed7d547ce70be3c0c8433e69f341f40ce60d9",
+      "address": "0x197016b60d1a5cf2393ce471783e745244d6ba1564c8933857435dbf7ee6dc4",
+      "class_hash": "0x15c6cedb8d19a33808da3bca418ea273d782b9698bd9f8f13372de9d6d9f1ff",
       "abi": [
         {
           "type": "impl",
@@ -3011,16 +3011,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-condition",
-      "selector": "0x46c3ce9e7bfea54511bb8b98ca7ccc86cd15a154959b8219ca72a916e841db5",
+      "tag": "jokers_of_neon_core-condition",
+      "selector": "0x15416aacbbba42e17bdd71f984126502020576c75ffd3b6e7e58e5aff602039",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x70bee9140eb4ab2a6ad4de9207bf0d709a167ee3ed887aaf950fd1f2eeb0a7f",
-      "class_hash": "0x3738f9cf58c46081b53b39d6672c79144e1435a85084596b5119d2fd7d81441",
+      "address": "0x29cea791f5061ff48a964da9137dd0ff42eccd0dcc03b9de5bec3b46b77b9e3",
+      "class_hash": "0x6d9a5f7abd19e43d5b6a5061bfe6f21c85da455cb12c03b43c15f729ca8e92b",
       "abi": [
         {
           "type": "impl",
@@ -3911,16 +3911,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-converter",
-      "selector": "0x1a09704d6a0f2f5af348a3d7c11be1a02d3d0ac304f47e01a53d8b263eca61f",
+      "tag": "jokers_of_neon_core-converter",
+      "selector": "0x511cda0ff878c3ddac5076352f886ce0c271551d4c60df58449b306a6372f2d",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x4eed34b168cc7b18183121227eea4f822b5fe54928ccbc397211abf9402b28d",
-      "class_hash": "0x65231e35421b55be24f7cf3aeace4836a68ac7ef33d7d37c39d1f21789397a5",
+      "address": "0x15105e6418ed9fd6697e7008c8c7337d6e00dd1af8d5cd217a2d2d2092c8853",
+      "class_hash": "0x4f9b2b7b92e94677a8b7b18b3ea60cf321b367f327727b74676bcf4ba83213f",
       "abi": [
         {
           "type": "impl",
@@ -4174,16 +4174,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-daily_missions_system",
-      "selector": "0x3e8e58da90ca24409dd7dd8cfe1ddf19dd9466c49db6ba440e2252d9bef30d8",
+      "tag": "jokers_of_neon_core-daily_missions_system",
+      "selector": "0x156eeb853e4394f56b8042873481ea1614c697db1e95a75dde9bb75750b441e",
       "systems": [
         "generate_daily_missions",
         "upgrade"
       ]
     },
     {
-      "address": "0x2358dac0ae4fe8ff7ec16963fd99c9f445eff7f0e66cb1ceb7c6fb34473be67",
-      "class_hash": "0xa315fc840a4a89e743b2793d65a1bbdde7259d5ba6eb354232f2bed3877018",
+      "address": "0x351541c4f766d2c6d9f919ac0afa1b5d158424de77da8a4acaa5e5a6acf3a15",
+      "class_hash": "0x41c1ae4053a4ac13e46dbd794351cd38eabd6ac4010c5a4ff36b69aabe3430e",
       "abi": [
         {
           "type": "impl",
@@ -5257,8 +5257,8 @@
       "init_calldata": [
         "0x6677fe62ee39c7b07401f754138502bab7fac99d2d3c5d37df7d1c6fab10819"
       ],
-      "tag": "jon_core_tournaments-game_system",
-      "selector": "0x6e9bac24878c9a75fe04a40caf4897e9b135ef826ab2cd679659500df18cfe2",
+      "tag": "jokers_of_neon_core-game_system",
+      "selector": "0x102c03c5c4e784fdf2f7007866d5fe26033d7c371533dbaa7b1375dd616093d",
       "systems": [
         "dojo_init",
         "start_game",
@@ -5277,8 +5277,8 @@
       ]
     },
     {
-      "address": "0x3deb869cd95517b332f1664dcb11a12b1049289a5265174a0b2a22f23b25edf",
-      "class_hash": "0x7bcc85360204f943b8607c8ccf9a7b5629f3175d876329cbe3e0543f7b0fcf3",
+      "address": "0x266492a0e2d2fb6752161fb1a2dc96189d913a1822405ff5e380fc0f14ae3e7",
+      "class_hash": "0x73da013d425ab7c1e2dd9544384b0b8000862ed286e0881e7da6682fe9b718f",
       "abi": [
         {
           "type": "impl",
@@ -5757,14 +5757,14 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-game_views",
-      "selector": "0x4d21db23c4f573eb2103cff3d8a016512535240f27623cac04ab9281b373c20",
+      "tag": "jokers_of_neon_core-game_views",
+      "selector": "0x76d5d3b88a6df58809f5adc13d97b6f04db21a0ddf1f68119a24d588ff3e77b",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x443f386486d002436e608a90b6fbfe7fd8d6ff21d07123ae909474b056e8070",
+      "address": "0x11f6b63e581fe54f47e8f14e8b6bad302f4409f86802393e659449c747e30bc",
       "class_hash": "0x7437d0f2c0ff7593718605c98900697c3415fecb2bd09a5897701473a4b1b32",
       "abi": [
         {
@@ -5960,15 +5960,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-gg_sync_system",
-      "selector": "0x62d47f60745e3022afca13aa2314d22e9fe52a48886fe563a0fb6e5b182d9f9",
+      "tag": "jokers_of_neon_core-gg_sync_system",
+      "selector": "0x563c73afe3167a1cf88d0cdc5c69a8d22fa0768571904df6ea91c0e90ce7dd5",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x5222adf472fc39d2551de6bc582148d7b818e82be5ce3eb4fc1f9ad6d2b7ec3",
-      "class_hash": "0x332b4dc53c06612e461d7a33f646d80519799fb28ffa0e54c43eac10a0bf79",
+      "address": "0x460c5ff664d66440efbe0176cde6a299cf3942d5fd588474d29aaba120c1e49",
+      "class_hash": "0x3e282458db2a8fd5d1e0d9aed4da98682e2d5c831fd778ca37e4ee7e04b88a4",
       "abi": [
         {
           "type": "impl",
@@ -6859,16 +6859,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-hand",
-      "selector": "0x69dbd1dba3b953cb4c4f8e0b50f74d906b7ddd7077c444f49759a834339a37",
+      "tag": "jokers_of_neon_core-hand",
+      "selector": "0x4b4475220e19cb7dfa836b5ae98ce5ccb25d651e80b2c702fa0a49d753254f5",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x23b139d8a69584c149f03ed119ef82e6daf3a104caaed0ce914a37defca31c5",
-      "class_hash": "0x30f9d873658dfc2d240873c8d87c89282936a7f6a55c18b8512250f6d0434db",
+      "address": "0x11c4671fb014c2df7e5698905615a1b5395ea4fff864d767f6a828980953052",
+      "class_hash": "0x7e84d722c037d25e7a754fa701705e1621ad9acbe73f29c08cc350f10ef4ff7",
       "abi": [
         {
           "type": "impl",
@@ -7759,16 +7759,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-lose",
-      "selector": "0x5bb1b5dc327a02a268f7908801c214cd6148eda0d2d226721b9dec9ac34c66a",
+      "tag": "jokers_of_neon_core-lose",
+      "selector": "0x559597ad20cdaaffb0302dac4783fe95420e83e9e3ec99bfbcd4975f23dd35c",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0xe17df46269c7fd43631831c10d916083ece480bcd27d72ed01efccdb63e35",
-      "class_hash": "0x51bef2cea4c64dd7b68440cb6c089ab8bc0dcd170eef82152de9b97fdd39c6",
+      "address": "0x632a99ab180056f9424b6966f6c1ccc743afa6b0c414f0540fc4b01a0e98a91",
+      "class_hash": "0x5ef68645fef00cba594ddb0464a3f1e277e3bf0e9aa22917653ae8b240889a6",
       "abi": [
         {
           "type": "impl",
@@ -8241,8 +8241,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-map_system",
-      "selector": "0x6bd9e97a831754a4b096de2b74ba2ddd2e6162906515a658aa38f822d8f65c1",
+      "tag": "jokers_of_neon_core-map_system",
+      "selector": "0x71f0e07009ce93b04a0eacd60f84a5157e9c87953b46a14467df64cee04e4bf",
       "systems": [
         "create_map_level",
         "advance_node",
@@ -8250,8 +8250,8 @@
       ]
     },
     {
-      "address": "0x3069cb57f14062fdd1ef439d5fbd8278d477c13efd18436b10d7033ec4479fc",
-      "class_hash": "0x7ee0c7821c287d50f0600594cd9831a918d80229b4e1715b500495186e9cf4f",
+      "address": "0x389620ae6a23b5d3f7f81f5ca57f8ebf02cda94b4c66cbd6ad78d677626d041",
+      "class_hash": "0x48096d685a7fa9b5f7a64bef99193ca7aedcfbf684df2f82bd389f8a76e9ee",
       "abi": [
         {
           "type": "impl",
@@ -8461,16 +8461,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-mod_manager_registrator",
-      "selector": "0x29564836bcf9e63bb0d9e87a7c0b19d1e2d8b5310b90d365f4c274f85f1f9f0",
+      "tag": "jokers_of_neon_core-mod_manager_registrator",
+      "selector": "0x35dc115221c595aae7133e2906beda16eeae471719d28d07fa516e50f33eebe",
       "systems": [
         "register_managers",
         "upgrade"
       ]
     },
     {
-      "address": "0x6a29f97d20633ea1bcb86ebd385eab4f97bd3a006e7ab2117557e369a9d0dd9",
-      "class_hash": "0x4f7fac690e6489259990201c421f520855e1aa6c6e533394115e43e85e9f0e8",
+      "address": "0x20f642e92d7104a2c19139d877a8e835f60935c5e49600dada10196617447cb",
+      "class_hash": "0x7d5dc59204419965418d96d7267e1a89caa2075ce7a3db32ad609e70f2c298b",
       "abi": [
         {
           "type": "impl",
@@ -8800,15 +8800,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-mods_info_system",
-      "selector": "0x7d3c04bd526bcaef379d16c43179a9bb6ee580f0d413ed3f9f80d7ff0b118b0",
+      "tag": "jokers_of_neon_core-mods_info_system",
+      "selector": "0x49501e11d21a12c5803e098cfd1a2eed9799540d9e069dac3a244e8e6df0de",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x30390ddbb097b7ba394a97872b5f8d8acf22946562719a7ee682e5416f6175d",
-      "class_hash": "0x1004dff72718aff5abf8c749f6d73027310a7484e7e6d4a4f3ef05820472f53",
+      "address": "0x7ec4ede88cf90caf938549a785e648b91443476df263c7a2aa9d7f27a3727b2",
+      "class_hash": "0x499627dd18cb495535d7048c723f8a47e532878782eda9b042ee3b7d3e08ad5",
       "abi": [
         {
           "type": "impl",
@@ -9010,16 +9010,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-nft_manager",
-      "selector": "0x28f617f6c598afd460098fad274547d09f4edbf247693c7f81d4506dc3c3eb6",
+      "tag": "jokers_of_neon_core-nft_manager",
+      "selector": "0x3e7d29a5fff630a02d8909ebe6bcff99fcfa50b229001fe705503a74575af67",
       "systems": [
         "register_address_nft",
         "upgrade"
       ]
     },
     {
-      "address": "0x2e02f6a62fa8987d9574284800cdf20bf56ebd3a57585db7a8f9194a0bdbec1",
-      "class_hash": "0xc2c63f69a9251cf0254e779e2fa7b9c18c93fa73588cd1f3c1fd1fd50f2f6",
+      "address": "0x56cc0aa668706d0bb712353c823476a4131c944921ac06d48b5576c753d3ed9",
+      "class_hash": "0x49b398a21896c9b16a2d4b3bc6cafbc14898c1ff77540558c850ef5bc1722d2",
       "abi": [
         {
           "type": "impl",
@@ -9334,15 +9334,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-nft_special_cards_views",
-      "selector": "0x503cc6bf245c3f3e937d6a11372d5d4b5e596a40a8a6bfa6c7e65eb39b7538b",
+      "tag": "jokers_of_neon_core-nft_special_cards_views",
+      "selector": "0x2bfacc60ffaa722ee8f22a5daaa3792b376ec865f0f3788d674c62093f2e247",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0xec6fa4fc0f243bdee6e14dd35416e4ebdb7e323f076a5b2232f60576b4a9b8",
-      "class_hash": "0x6a115f20b7d7cd30180fcdb75d9ffa119689316cd817e72f61f70fda4a1a11b",
+      "address": "0x4326446ce7db0e5472b4c407ee6610430d759b536767c8ee59cb0522ff72f67",
+      "class_hash": "0x51e34d5dabcbf4401610976cbe0a2d484980d600c64d38f823ea221b106e8cb",
       "abi": [
         {
           "type": "impl",
@@ -10233,16 +10233,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-play",
-      "selector": "0x27367ed5ddbfb9c4c635f14292b9b501b1f24e98e48affe784580022965cd6c",
+      "tag": "jokers_of_neon_core-play",
+      "selector": "0xd32f342becd02bf227e9bb53fe041550078bcfbde674fae689949c351fa3be",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x6e098ce0716806b844ef74a0ebf17a1136c6a576c224e61a609e5da8da743b",
-      "class_hash": "0x89c3cc64d53664f1b51d3ebbc2c342c336e228b5430428a9d4a99b0feab3fd",
+      "address": "0x7fe3c63e7e1cd324fdc83c53e6d2e94aa5b3cb391744f81a5020a08b7b81f1a",
+      "class_hash": "0x67c6475582dabf13a8d49448608600660fc438c4e8f89605da8e38f3cc2afa8",
       "abi": [
         {
           "type": "impl",
@@ -10445,16 +10445,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-play_system",
-      "selector": "0x6093e71bed920062b1fa4efb648c6df09f9293610119128bede9c7c7eafc4de",
+      "tag": "jokers_of_neon_core-play_system",
+      "selector": "0xe9b7c6dea9cc75259c88fa913fc033e0a7c5945c64b850cd2b6950e36cb008",
       "systems": [
         "play",
         "upgrade"
       ]
     },
     {
-      "address": "0x7f4349de93cedc1baea5a497b71ce3cd7838041a2b7a471a222f34a2868e01e",
-      "class_hash": "0x36c6bd9e3da3fb43d0d101c5282311680072970786866c881c60bd276c618b4",
+      "address": "0x218d3d2ee3edebff9aa81433ceb0ec5ac49aa46c67e0a5626a1e15daf56fa40",
+      "class_hash": "0x42bdb4202b461749fc86b9a7d65c2d9a7794266036320df72617531a20500c1",
       "abi": [
         {
           "type": "impl",
@@ -10799,15 +10799,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-poker_hand_system",
-      "selector": "0x64da2f1cd4a11d639bdc8873918a57ce5235c0468f71ca2aeb185d1ea74819",
+      "tag": "jokers_of_neon_core-poker_hand_system",
+      "selector": "0x123bcd8c0fe47fdb578a63f6f56f43a8e917c7a2df94b19d59da961a41354c3",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x788b6bdc42ca671ce5292e9562033f1249cec1a62a6dd19c06af5b432863490",
-      "class_hash": "0x26cc47cb856c062b62d2ae9010807e68c0ac3bfaaf299c57309d0cbfc7e3911",
+      "address": "0x3f8f484838df0d51a313c4132ab386d06a1a7c45b1306c6d63ab02a80470013",
+      "class_hash": "0x6aa1758971331b2a7c29183444761f6708c500c9dcb2b2cbe1eeed805ae54c6",
       "abi": [
         {
           "type": "impl",
@@ -11698,16 +11698,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-power_up",
-      "selector": "0x5a37c4e40891170d9ca89f22b9d2012fe017359732ebb4c01cd753f01876b10",
+      "tag": "jokers_of_neon_core-power_up",
+      "selector": "0xd2147549599d06376b543fa4510d79c3318b1b1d8929c8ae63c0187fcdf499",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x31ec5b7a4d6f5e5f85877290f285fafbaa2e737cd5524f20a5ee7c51df7fdfd",
-      "class_hash": "0x73b69aeee5ceac2badcf35dc4d9f5d481337a8f81b49e57511e1eba44fe40b7",
+      "address": "0x1e4ade1547bf0bcce3a40a04b02efc41e2ceea6a8ab4bda006d52ad12f21add",
+      "class_hash": "0x763d27cab64bd5b54bebbc07f616dc7267fa0c3e302f5169e5a36e549bac49b",
       "abi": [
         {
           "type": "impl",
@@ -11909,16 +11909,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-profile_manager",
-      "selector": "0x32e554c2048f1d57db51083790ac5e1e15293b7bd4258d0d5dbaedfef2c5e16",
+      "tag": "jokers_of_neon_core-profile_manager",
+      "selector": "0xff757c52fd893945138810b0829bbddbbd2f159ca36e45c3797441e5310482",
       "systems": [
         "register_address_profile",
         "upgrade"
       ]
     },
     {
-      "address": "0x89b95595f138f4e16df960cf2a98e313c1533598a29a86a05b15ac13a11e0",
-      "class_hash": "0x62bbeb137f8e4a98fc33e26719c991427fc69f9e81e6c9e233c7a8aac8bc74a",
+      "address": "0x26cca36587d87c7e5faf274cce59d8480ca6bc1f7b045f529f1c93d242c37c8",
+      "class_hash": "0x1b19cd42434c6b6476ee129d25db0d092a484a020b37eb9842180acd5ce9789",
       "abi": [
         {
           "type": "impl",
@@ -12413,8 +12413,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-profile_system",
-      "selector": "0x260b528fcaece3ddd1869a6529ab1e90ae846866ce8e7c3bdf210fb6944bfc",
+      "tag": "jokers_of_neon_core-profile_system",
+      "selector": "0x7202c83bbb2be555d6fd3d357050c8564a2f775500938972d30d07c301b16fa",
       "systems": [
         "create_profile",
         "add_xp",
@@ -12424,8 +12424,8 @@
       ]
     },
     {
-      "address": "0x34ed8092f4011c2c94961fa14ab301c0ccb4bd98bbc5ec2f39d8563bdedffd6",
-      "class_hash": "0x69d07dfa3f491b2b63398d1198076e1a5453e891e6e9fa4339fba52708d47ab",
+      "address": "0x2e07f22a2c60c0e600a8c3bb649e5123b31a51aab07bd908e87031b15b4ce6f",
+      "class_hash": "0x74899268c6c05688bd3a6ad6911bea8dc50e2bf2198b92dee34fe1a81d760e",
       "abi": [
         {
           "type": "impl",
@@ -12824,8 +12824,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-shop_system",
-      "selector": "0x4c8d9572aaf657d9d9fc5fc347b4180fd48177af7ce457e75e8586c06eb1c63",
+      "tag": "jokers_of_neon_core-shop_system",
+      "selector": "0x566e6f8c02e3fb42edc0ebbd5ec94a99e5ed8f43e5f614c342316c5b74e3770",
       "systems": [
         "burn_card",
         "select_cards_from_loot_box",
@@ -12843,8 +12843,8 @@
       ]
     },
     {
-      "address": "0x2b40c6dafa3f29c8f2c4ba8822f9222983c2ae23660b07b9b861e88ef0ea62d",
-      "class_hash": "0x3804dd9919a8572ef3a981ff30aaf0ec9892ce178b26be438245df3dcf8b7a6",
+      "address": "0x6f5ab2362481f2e056839b9ef7badbf3c9f28b005cf4f6e24d4457428492965",
+      "class_hash": "0x7dbc20301c8e1a41dea08842b4c63c95f42ee36617ff08413a9bee792d630cb",
       "abi": [
         {
           "type": "impl",
@@ -13449,15 +13449,15 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-shop_views",
-      "selector": "0x2b540a26d9e2677905f1153cc5cd7e19baaa23921ed2266c39eaff089fe660f",
+      "tag": "jokers_of_neon_core-shop_views",
+      "selector": "0x6f9cf00df698dd210696bf65cc7d70f7f55a4b4ff12e2e4880bc194e658ee22",
       "systems": [
         "upgrade"
       ]
     },
     {
-      "address": "0x3097d44f20823d97a6975d396b51ef005ef3ce369c97e613713bcdd2de495a",
-      "class_hash": "0x402c808d09deff6a64c5a0bb09f40078501e77bccbf87de404d66a373a4c153",
+      "address": "0x15336eb12115a862f09d2689e1a0fec8cc95f20ecbe7aee4d998f414410980b",
+      "class_hash": "0x4fa35204d98c7e7677f89004ba8dddcc96f95d1c926d933d1dcd66d5ee43660",
       "abi": [
         {
           "type": "impl",
@@ -14348,16 +14348,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-silence",
-      "selector": "0x5a81dfce60646951e7390ce34bd339c12e196f92575636cc265868af1bc6ba3",
+      "tag": "jokers_of_neon_core-silence",
+      "selector": "0x438292d2301679f7389600affe3f6da35d7a90a8281a7cf14ea8abb1e238306",
       "systems": [
         "process",
         "upgrade"
       ]
     },
     {
-      "address": "0x20c52577fe23017b17709479e2800bfadceb6b39acf54f98ab59a3cf024aae7",
-      "class_hash": "0x32f3e28f912721b6e8aee48d10e953d929fb15956e58d569e614625ac780308",
+      "address": "0xf1b9f5ebd22b25e243e349a22849232c12aab2f03035085492d521c0d5017d",
+      "class_hash": "0xc45b277427d580ea730c55f94163559ca464ac92f36f1cc66733921a202e1",
       "abi": [
         {
           "type": "impl",
@@ -14559,16 +14559,16 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-xp_manager",
-      "selector": "0x2cbd20aa746cdffa9baebf286465b7a805d2e297d7001bbea6a1768df679828",
+      "tag": "jokers_of_neon_core-xp_manager",
+      "selector": "0x3848c1cf9f9eb0a136b2d1b047d58dbf2a859bd1598675c262e2e54b0b43c13",
       "systems": [
         "register_address_xp",
         "upgrade"
       ]
     },
     {
-      "address": "0x1363b839721a361cbbcb67dd72dde74d50a8aed78cce7a058ae32e26171c97c",
-      "class_hash": "0x5694d0bc6af3d391c9875eef24066a1c942b8b6d37ac5a06636d77da88f6314",
+      "address": "0x428e11b0a986262c187a1f44a67b44135ab424184f9d2efb51377e654fbd343",
+      "class_hash": "0x4025f11586813cdfebe03eaee6cae1992400fe43f592a989db94fc9019daa2b",
       "abi": [
         {
           "type": "impl",
@@ -14797,8 +14797,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "jon_core_tournaments-xp_system",
-      "selector": "0x1b90a053699a33485de107d2e49ed67b64e488f8dea5fa69e32c487eb5942e",
+      "tag": "jokers_of_neon_core-xp_system",
+      "selector": "0x4cef42a35696b09d27bc577aca72b465c84620d2bee23c320a5f5cc7be5c3c7",
       "systems": [
         "add_daily_mission_xp",
         "add_level_completion_xp",
@@ -14811,466 +14811,466 @@
     {
       "members": [],
       "class_hash": "0x4745793c66f329ea16b1f7ca0882db79b27ed593bde92b65c4e09e0814dde11",
-      "tag": "jon_core_tournaments-AchievementsTracker",
-      "selector": "0x729dfbc1b9bf0b8cebd7d23607aea7f49ad3a3897ea7ab735e69f46ce089f51"
+      "tag": "jokers_of_neon_core-AchievementsTracker",
+      "selector": "0x1126c16327cc9549ca0ed49bc7dfadda5a1a3c12d3fc2529b0e690b91dcfcd5"
     },
     {
       "members": [],
       "class_hash": "0x11df579c323e81168b25c8c646b95e4c22b5c4d47af85ed94005dada1f4fe49",
-      "tag": "jon_core_tournaments-BlisterPackItem",
-      "selector": "0x7e3ea4d156f2be643e932b723070666c2a380936ebcb3adc5cb99b5265fca32"
+      "tag": "jokers_of_neon_core-BlisterPackItem",
+      "selector": "0xd4cb1577d65a00a09ff54b2cceaa026ca30020a3719cfe51a24eeec16bc0df"
     },
     {
       "members": [],
       "class_hash": "0x57d0a669d81483825f7fe92f83d57c435e8b31ed60b7576d057c30ae13cdc28",
-      "tag": "jon_core_tournaments-BlisterPackResult",
-      "selector": "0x79f090fff024aff6a81b4c3e48335d79a7c4a8a78c70dba0879ee8449e08e5a"
+      "tag": "jokers_of_neon_core-BlisterPackResult",
+      "selector": "0x6ada0ccff04f86a10688d1f95236b41c81c27fe471af845f8ea3d77e855f349"
     },
     {
       "members": [],
       "class_hash": "0x3dd643151e2e40c081c1c1a46b08951bd3c2acee92a1b2ecd867efd0c527429",
-      "tag": "jon_core_tournaments-BurnItem",
-      "selector": "0x64f50909ec5142ad007741bef347d3f60b01f36f16f45da44d7be20a846c815"
+      "tag": "jokers_of_neon_core-BurnItem",
+      "selector": "0x32a47a62b665552278df4b4f0815f4c896480f9c2b3e36fcb820666385e26"
     },
     {
       "members": [],
       "class_hash": "0x693648a7491b5232901867dbedc5c1b67a3ba495b5f23378835d28fcc9f1abb",
-      "tag": "jon_core_tournaments-CardItem",
-      "selector": "0x230a05ca70a40558f75524a9ddd04aeb591c74ea7e7de3f257cb6ff96cc5926"
+      "tag": "jokers_of_neon_core-CardItem",
+      "selector": "0x393deeb6cf29a0990d94e174f2f673d979f1fc60e516add1e9e27405dec9f7d"
     },
     {
       "members": [],
       "class_hash": "0x68ee9e366d5a7c75f61bd8958e7b502f7b63188e0606ee6243b8a33744d88a2",
-      "tag": "jon_core_tournaments-CurrentHand",
-      "selector": "0x3e478b2b903e2f7fa9f2c8207b9ffa7f6b25ae18f230c000ef101e415a1d6b3"
+      "tag": "jokers_of_neon_core-CurrentHand",
+      "selector": "0x59c81aefa73878b98ec052c79f971d12fc4576e40e10fbe1157cd451b523bb9"
     },
     {
       "members": [],
       "class_hash": "0x75dc69aae696e9790986bfcbc6b44b6866b2dad63b7e5ea10413956cbb3b71d",
-      "tag": "jon_core_tournaments-CurrentSpecialCards",
-      "selector": "0x74c7c9cb5b47fed5f799c4d9d71ba01c6dd8681556cadc1c0831f8822a58e08"
+      "tag": "jokers_of_neon_core-CurrentSpecialCards",
+      "selector": "0x35678cb58474d5ff5990c93776654873a59fc016ebcebc3298a72536efffe26"
     },
     {
       "members": [],
       "class_hash": "0x5b66cfdcba3e747378ac02bb79817471bb6fbe7492234a401f9398c21a8b0be",
-      "tag": "jon_core_tournaments-DailyMissionTracker",
-      "selector": "0x4229bbfad6f3a8913062292038196a5c4ba48a73775b8ebe6385eb0a0de24ce"
+      "tag": "jokers_of_neon_core-DailyMissionTracker",
+      "selector": "0x4a73b194af0f90cb0a57d9ad6056897df33b44c6797d8df30fdbee1287ec3"
     },
     {
       "members": [],
       "class_hash": "0x7d6adf6e5e63f9e09e04c0150d996de94b870bbc017d7313e5c486191aabc7c",
-      "tag": "jon_core_tournaments-DailyMissionsForDay",
-      "selector": "0x7bb661f23faaa5a83cee2fc11cd7f958f1de0832031828a671f7679644c3c42"
+      "tag": "jokers_of_neon_core-DailyMissionsForDay",
+      "selector": "0x389a0029c9474ec3a82cb6a2c069ce8b87430df641fe5b94affe394eac11143"
     },
     {
       "members": [],
       "class_hash": "0x163ab7a2b5dfae1f69b37122d02f608009ba1006ca80825751ef27390ccaa3f",
-      "tag": "jon_core_tournaments-DeckCard",
-      "selector": "0xb89ac4caf9795da33fb58dcd33bfbe479c43ab688e319b47a6771dc0dd5d99"
+      "tag": "jokers_of_neon_core-DeckCard",
+      "selector": "0x74f6c6197d0f960ad97ee174d7f977adce2895d38b5e333d5847da9fb5b718e"
     },
     {
       "members": [],
       "class_hash": "0x78f0e368dd55dfeb2ba373b6e68739e9c0b4e61c74867e9122faf553c6a5fea",
-      "tag": "jon_core_tournaments-Game",
-      "selector": "0x21d206c6fcc63b82141cc22f48254d19fa26dc7948f3b134c86adb969c17eb4"
+      "tag": "jokers_of_neon_core-Game",
+      "selector": "0x471153aaeb9b649e2e3a7709bcbe22e2f1c574e092379a6c5938fefe4f1f305"
     },
     {
       "members": [],
       "class_hash": "0x265d58b8a64169ace38dbf6077955071b773473f6edb1c7571eb8c434464223",
-      "tag": "jon_core_tournaments-GameCounter",
-      "selector": "0x70215cc4fd83a074af13f66eed5cc50344586368a688c7959973d71936b93b9"
+      "tag": "jokers_of_neon_core-GameCounter",
+      "selector": "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac"
     },
     {
       "members": [],
       "class_hash": "0x4cae2b3880e2a7e1f84dc7710b73d346dfeb30bf71b5abcbcd62914da55a003",
-      "tag": "jon_core_tournaments-GameDeck",
-      "selector": "0xee398cba4d8023788db98d1703ec5136dc58fbb564031c1a22a5c5ae4b76d"
+      "tag": "jokers_of_neon_core-GameDeck",
+      "selector": "0x2c1b73ae8f28acd04972288fd7fef20b6685b2be7a5b2b548c49b5a6a43df83"
     },
     {
       "members": [],
       "class_hash": "0x61170df5e4de45c13c4777cc34d2d4b2517459cba69a1d29b8126c8d1c9486a",
-      "tag": "jon_core_tournaments-GameMetadata",
-      "selector": "0x15d533fe7ec843be1873eebe82a4e21a661d6af853d054a91c0f1c54960207b"
+      "tag": "jokers_of_neon_core-GameMetadata",
+      "selector": "0x58e710954210ad8f1e5d03efa29b89e64e5183d8c1d1c8e65d527047956b4f3"
     },
     {
       "members": [],
       "class_hash": "0xac9ac09067a55e2e7ea131fc10a4a636dbfbe9fa3bdc134f437757f95cdabe",
-      "tag": "jon_core_tournaments-GameMod",
-      "selector": "0x4037d9ff1957e1893a7d0624c8b24728161cead8ac048117e8917939a54bc57"
+      "tag": "jokers_of_neon_core-GameMod",
+      "selector": "0x5c7b887fa45302df96e079961ee49b0b992e84cba2e10278d81a581b508d7c9"
     },
     {
       "members": [],
       "class_hash": "0x5293a65fc9fcde617231743dfafdc0076b631666eabbe8462ce609b1e0a7d32",
-      "tag": "jon_core_tournaments-GameModMap",
-      "selector": "0xd8483a5e90e6ee169510bcd6e69a5a27db3364b522040b078b0079a04537de"
+      "tag": "jokers_of_neon_core-GameModMap",
+      "selector": "0x75c528aa5260dbdf02acfa9d216ab5a8927eb0c8332c55343ceafde9197c779"
     },
     {
       "members": [],
       "class_hash": "0x49c36596117e123700bde6064333a3811bc71a638c18169ec5f8f7f89343cc5",
-      "tag": "jon_core_tournaments-GamePowerUp",
-      "selector": "0x1adbc2c94d8d54e8af82ab1a84a7e3c3c681e18771b931d46f248550af51092"
+      "tag": "jokers_of_neon_core-GamePowerUp",
+      "selector": "0x1fd2d30f1e5ab1dfc1b982bc9c6b9de97e6c39f846abdf833fad756d1692949"
     },
     {
       "members": [],
       "class_hash": "0x7478742dc39e0189a2b8bb28a33dcbadeb8a0aa2a5361849cd5e1e335c4d6a5",
-      "tag": "jon_core_tournaments-GameTracker",
-      "selector": "0x4b5dce84f483f8eac84c4d3311cfb4bd3484a28cc3f906a3253b8f32892a16a"
+      "tag": "jokers_of_neon_core-GameTracker",
+      "selector": "0x79881852a68773df960ad77f943df621daa2dd5b5d6e7ed6674d2218adf3d74"
     },
     {
       "members": [],
       "class_hash": "0x4890da6bd44b4bdc52f7cf61c829cfc011cef7bd8640bc870ced541cb2f6ff6",
-      "tag": "jon_core_tournaments-LevelMap",
-      "selector": "0x746d9f73430be069fa24944e6208acfc0db7de01384e6ad155fad003f6386f0"
+      "tag": "jokers_of_neon_core-LevelMap",
+      "selector": "0x53fa22025b6c88c7aa8386b1f8d044c0ef54fc319fb748b518eada4b4b49016"
     },
     {
       "members": [],
       "class_hash": "0x5d31b2dcac3f5c1801af8384280536de7bc51838f75f1ce92b24a67722ddee8",
-      "tag": "jon_core_tournaments-ModConfig",
-      "selector": "0x7c630a2f83d695487720a19c329de7b7abd4fae7801bea9780d4c02505e2484"
+      "tag": "jokers_of_neon_core-ModConfig",
+      "selector": "0x21afac236d4cc991cdb932d942d61f396d50d8cbf8d2b5dd8c6a3929321d40d"
     },
     {
       "members": [],
       "class_hash": "0x418cf23c1cf000dbb047e82b18f87efd639995c3a158d9ab06a022a3a41f431",
-      "tag": "jon_core_tournaments-ModManagerRegistrator",
-      "selector": "0x7f012f3ad40fa8f2eec6208620a4356e95cc76da1bd51bbaea1ecb0ad3e3d08"
+      "tag": "jokers_of_neon_core-ModManagerRegistrator",
+      "selector": "0x31811c7e34ff975352a7f672a94553d0d4f5a483abfbb3e0ce7fec64fb6d574"
     },
     {
       "members": [],
       "class_hash": "0x2d34aa0c3891cd5edd03f5df0658978b96e1dea31c426bb6fe335054db24827",
-      "tag": "jon_core_tournaments-ModTracker",
-      "selector": "0x3d25cc150046411ac97806705e218c8928910fb65522cd6282a0bcabc6c5f9"
+      "tag": "jokers_of_neon_core-ModTracker",
+      "selector": "0x742369ffdbc5634bfce0a000def0dfc00eb4c0da119e30cb6ec01aa8587e2fa"
     },
     {
       "members": [],
       "class_hash": "0x77505664cb7b937977d277b99fa5003ad2f09616dbbd5ef3ca35e4a39135b67",
-      "tag": "jon_core_tournaments-NFTManager",
-      "selector": "0x28b6e06185d0444431a337e6861a2bec59f02f2d827c0b756be90a78e8c6ee8"
+      "tag": "jokers_of_neon_core-NFTManager",
+      "selector": "0x5d16d84c446d3351d3b6dd439cbc7b36435f288e444503eaa85dc74ee0a3960"
     },
     {
       "members": [],
       "class_hash": "0x461a1b6d3423e791cc56e18600ef9b1065aeea5cdda0881926aa29550b8a272",
-      "tag": "jon_core_tournaments-Node",
-      "selector": "0x12ba2a782b5182327fbc1f24bcc2430177e93275f5a3e6065607da4c0ada8a4"
+      "tag": "jokers_of_neon_core-Node",
+      "selector": "0x7172de7f6c370d7590c97f7237f7c066deee99bf3ebf5cc51d0d25d51a88968"
     },
     {
       "members": [],
       "class_hash": "0x33218642275cff095922bbbb52f77154ef1e718180f09107abd492c69859134",
-      "tag": "jon_core_tournaments-NodeChilds",
-      "selector": "0x499367253cdeae8c2f57847f8d7f9e9b14a5bafdcac02b8e6d4a571cba75de3"
+      "tag": "jokers_of_neon_core-NodeChilds",
+      "selector": "0x6a84bf9d3f9b3d37cac542f8aa47bca9020f08c4bddb88f18da7bd828722e8b"
     },
     {
       "members": [],
       "class_hash": "0x38f67f76243623971effd8aa31e224261878a72769f7a1d8299681017800a19",
-      "tag": "jon_core_tournaments-PlayValues",
-      "selector": "0x6e24f28d5d90afed7c2dd0bd90936be0094612a7e5b5b3700777f78801d13c2"
+      "tag": "jokers_of_neon_core-PlayValues",
+      "selector": "0x278bb4602b49cf5bbe66082ee78efba0a60db56f3395661a9dd37658a28ae87"
     },
     {
       "members": [],
       "class_hash": "0x8176e3103071e559bab4ec62ce4391f1b8b62b8670975bfb5abcaf91265f9b",
-      "tag": "jon_core_tournaments-PlayerLevelPokerHand",
-      "selector": "0x4fb98b1bf24bd9afbe02a89a9077822a257c295bc96e564f907909a247831f"
+      "tag": "jokers_of_neon_core-PlayerLevelPokerHand",
+      "selector": "0x2a50fcb041e683428ffafceb4a9086c7bbd7308aab00f7271539d22fa572137"
     },
     {
       "members": [],
       "class_hash": "0x669a83385e376e80bc6d5049038bcbb2de038ff01cf3023608b5e3aa9b3d2cc",
-      "tag": "jon_core_tournaments-PokerHandItem",
-      "selector": "0x620230216557b28e2fb6cbe2d0ad98a4002a682c52d14aa6fb19df706db81eb"
+      "tag": "jokers_of_neon_core-PokerHandItem",
+      "selector": "0x4bdccd8cf4b5600728b179de510c434c506189a7c10700646b75b319f815080"
     },
     {
       "members": [],
       "class_hash": "0x11fa981d07c510288ab58ac1ac6e982fc8929d121f5a5e137f74efbe59d623a",
-      "tag": "jon_core_tournaments-PokerHandTracker",
-      "selector": "0x27c275117c42e7dc5a6d98f20dc0803290bab648e29bb51979562b5ea0cbe47"
+      "tag": "jokers_of_neon_core-PokerHandTracker",
+      "selector": "0x1b7dd37b0c5527db904bbf23c7293010bba00a2752174f888210ed07910a3a4"
     },
     {
       "members": [],
       "class_hash": "0x591fffb4618369434d854ab646314dc9ea23b7ad066e8ea07596a9429e51a19",
-      "tag": "jon_core_tournaments-PowerUpItem",
-      "selector": "0x3041f735ae01eb06ec3dd5af1de9d56982c4e88975ef9fe83b892ca73f838b5"
+      "tag": "jokers_of_neon_core-PowerUpItem",
+      "selector": "0x308e2250542d99be4c7b27d447d43cebefb8b631dc885d04e49da211fb1ad93"
     },
     {
       "members": [],
       "class_hash": "0x5810b873dfc2e7db535937a8b5df6c53694274839b73d1976a0017acca85940",
-      "tag": "jon_core_tournaments-ProfileManager",
-      "selector": "0x1df75bdb7ff4170bb5fb84702aa4a15e7c7707a68920a25ac8cbc2332ef8b91"
+      "tag": "jokers_of_neon_core-ProfileManager",
+      "selector": "0x7894ef24e2bc97b4d1c633ca90326f5dd0c604cc926e9fd0795dfaeffb1dfec"
     },
     {
       "members": [],
       "class_hash": "0x3450f588a134e799dd80a2a8df53c896519dc6870394dc949f7886e1ec86ce5",
-      "tag": "jon_core_tournaments-PurchaseTracker",
-      "selector": "0x2447bd59e1846b501e92fd92750f941ef15380e8c6fc974b8b6592948cac527"
+      "tag": "jokers_of_neon_core-PurchaseTracker",
+      "selector": "0x2c1b2a1c84a968e8ce35c0a24216833d33c0ed5e1306b42d78e35b4d61e0bd1"
     },
     {
       "members": [],
       "class_hash": "0x73c8c45543dabb9266b834820ed1b86f4bd1c5aa443077cbb9c65e91daa4a39",
-      "tag": "jon_core_tournaments-RageData",
-      "selector": "0x16925db7ac17ea3392d1615bf405397e473b8079eee9d53e6f12ef918c54c31"
+      "tag": "jokers_of_neon_core-RageData",
+      "selector": "0x52e8137cf57d4b31a60ba6c88e9682d17cd11ebb62aa1fced2a79af13dca77c"
     },
     {
       "members": [],
       "class_hash": "0x40f1dc50a5688e9ad9876610ab5e2d2484d6b2ac6d98be7a8fc4db3474f92e0",
-      "tag": "jon_core_tournaments-RageRound",
-      "selector": "0x206bc837ea19dcb056a58d396f2d91628af4e243509fe5a0e1019a22cb70a4c"
+      "tag": "jokers_of_neon_core-RageRound",
+      "selector": "0x4723571958b65882fb531406dc20f4d7b764b7743ac2423139db1080ba50363"
     },
     {
       "members": [],
       "class_hash": "0x1a5cce9b2a0965ebe2d5768f0c25abed76ffa299cc8304f049a38030fe6c8d9",
-      "tag": "jon_core_tournaments-Random",
-      "selector": "0x5845e9be60e31b3aaef53e22f8e611d2e8c77b70faee0287714175b668ee01b"
+      "tag": "jokers_of_neon_core-Random",
+      "selector": "0x480299186e97becb1f98a79d28ab73e33bc582e7530ede49d82b72f89ac3e55"
     },
     {
       "members": [],
       "class_hash": "0xd9388594482605763d36e3b3b23dcda8a54b7a1c2acc0853d3c683a6dd0d8",
-      "tag": "jon_core_tournaments-Round",
-      "selector": "0x5a39fbc627041f1c80352a86e91fc51a32fd5b4421010068a63450460ffc51c"
+      "tag": "jokers_of_neon_core-Round",
+      "selector": "0x1304ad1ae17e8b0f85d8510d686cf5dbea793768859012000ab2cbd7552405e"
     },
     {
       "members": [],
       "class_hash": "0x9506e618c2f9ee744123f9690596dfc19b1b9a2142c08a3b08654879609793",
-      "tag": "jon_core_tournaments-Score",
-      "selector": "0x3b31f69cdbf9137873519d99ba20eba63e27109afd47536d6be063e9645ec1"
+      "tag": "jokers_of_neon_core-Score",
+      "selector": "0x3536b119404f02a98df720d4149509478a4398c388dfdba609b90c0c1ec81c0"
     },
     {
       "members": [],
       "class_hash": "0x7799d456baaac935aaa0e1725a16c658ca32d4b0a7362ccaadb05f40c26e60",
-      "tag": "jon_core_tournaments-Settings",
-      "selector": "0x794b5bbe58b45dafc789f6db999d1c1fb9aac21bceace177d8cc9d36e22944e"
+      "tag": "jokers_of_neon_core-Settings",
+      "selector": "0xf61253af50d739a3cab4db17572e7644de23cd7874b50eea5faa3583dfaae7"
     },
     {
       "members": [],
       "class_hash": "0x74e6fa73460131518419ed70d581189644ebdf3420e5fcd103989cd8b40a476",
-      "tag": "jon_core_tournaments-SettingsCounter",
-      "selector": "0x6a3c45cc364becf04f273816fb98e6aafae74d10abd926a782289f90103378b"
+      "tag": "jokers_of_neon_core-SettingsCounter",
+      "selector": "0x44af94546ddad37d15ef1ae9e39709641dfbfbdaa1bb1d7f0d18d79bcefe41f"
     },
     {
       "members": [],
       "class_hash": "0x496b7d0b2b9bef7e4dcbdd6b16f70374a9517ecd38f4b9928c8eb3ad03910a5",
-      "tag": "jon_core_tournaments-SettingsDetails",
-      "selector": "0x5748264ec907caccfd235fe71da082b87df38336be092ab5fb1cbba02f7a775"
+      "tag": "jokers_of_neon_core-SettingsDetails",
+      "selector": "0x9c9f202feab79207692d97d3ea4802b871140b1243946be1532e2f99309311"
     },
     {
       "members": [],
       "class_hash": "0x49c895149f930421364da44450e1fb4367fcf4c9e0afd8cf36c425313a7035a",
-      "tag": "jon_core_tournaments-SlotSpecialCardsItem",
-      "selector": "0x44999bc79a8307c9bddb9d1f630b3f40ab082465012111752e591cd68eb3719"
+      "tag": "jokers_of_neon_core-SlotSpecialCardsItem",
+      "selector": "0x53e54eda0d708016b4afcef37fb3cab30f906c72811206bac13f3fba44272da"
     },
     {
       "members": [],
       "class_hash": "0x1765e2c1fa87e2f18737b0f62cd87dc39d80d1115dbb9f0b6c9db4bbda54bf",
-      "tag": "jon_core_tournaments-SpecialCardItem",
-      "selector": "0x1130e4ecdd5ab267c0afe4e3c1a897acfb7d72d327d476acde08640da40417"
+      "tag": "jokers_of_neon_core-SpecialCardItem",
+      "selector": "0x2e73669fae30dd461e660b72505362249845a358a473242d16f580eba6a9571"
     },
     {
       "members": [],
       "class_hash": "0x6d62f22d17c3c9edfb69cfd1a084452e2b93ed8f8ae573f15ccdb2a4b188623",
-      "tag": "jon_core_tournaments-SpecialData",
-      "selector": "0x2f54dd4f94a41f51677e8a9ab5532865ebf3ee139ec20f4a100925c858d67bc"
+      "tag": "jokers_of_neon_core-SpecialData",
+      "selector": "0x883c5361a9cb8a078a21b56fd5ec503405cf9a1eb1a414ed2398f25060cfba"
     },
     {
       "members": [],
       "class_hash": "0x223ad2b992b52efe3bd39d60163009a96c7fa7fcf5e91fb2cd7b881c13b8b5f",
-      "tag": "jon_core_tournaments-StageTracker",
-      "selector": "0x8d93621f5163b10af48d8b60f5291c4c44723983109eb61438e6acfae7a383"
+      "tag": "jokers_of_neon_core-StageTracker",
+      "selector": "0x389c47e25bc27e8d7d18c91304689e4858742e056263b2451cdc5e8f817522a"
     },
     {
       "members": [],
       "class_hash": "0x3d6295d4fc18be2424cb37af7b25898e7f5f85fa7d36f2146262c54bf8328c6",
-      "tag": "jon_core_tournaments-TokenMetadata",
-      "selector": "0x20e9595483748f8d9296a5532becdd67fc343cdf86576bee949bc765dbffe6b"
+      "tag": "jokers_of_neon_core-TokenMetadata",
+      "selector": "0x300539e1179459930e9bec66b2a57c0ed7e3f383c9c9b65199a95b1d7f88f96"
     },
     {
       "members": [],
       "class_hash": "0x1eb2413e36b90ae768e4d891ce160b824d4129f9e68886dfef3a2f504857f63",
-      "tag": "jon_core_tournaments-TraveledNodes",
-      "selector": "0x49eb711d24b2aa6bcf169365ff938f8b0343f4d15c81e1a33f2f395751e5987"
+      "tag": "jokers_of_neon_core-TraveledNodes",
+      "selector": "0x636d25a8f53c22d7ac1a099a1a1088f77656a7fa265a397a87f66f6d351c957"
     },
     {
       "members": [],
       "class_hash": "0x4714dd17301d97521b26b19f54276efab8a4ba4ff851c3b240ec9e5782411bd",
-      "tag": "jon_core_tournaments-XPManager",
-      "selector": "0x70552e6c3a6aead85cf5bd3d81dd232d6418c1f9e46eace848d4e278a2ab6ce"
+      "tag": "jokers_of_neon_core-XPManager",
+      "selector": "0x360f7d15f79801410add23147e307580082edcdf539ffd2e9006af39b44fdfd"
     }
   ],
   "events": [
     {
       "members": [],
       "class_hash": "0x112d7c4efe6df80c2360a68efbcc2a5057bab8618124f4ce8175190e80b97e4",
-      "tag": "jon_core_tournaments-AchievementCompletedEvent",
-      "selector": "0x23a42dd4b049c95f5699049b376aeb109b61f9c85ea143a477d6a73c2a2b6b7"
+      "tag": "jokers_of_neon_core-AchievementCompletedEvent",
+      "selector": "0x2f32278c48ba859150a441098c61524f72ebb8ee80dbb52ff57725b3b2f7822"
     },
     {
       "members": [],
       "class_hash": "0x29472451257b777c0513ebf000118bed996d042584881be769c66ad0be4a144",
-      "tag": "jon_core_tournaments-BuyBlisterPackEvent",
-      "selector": "0x247ce877ae3e494fe155f8840c221a346536b9dac76d7ab0c6f676176a32e9"
+      "tag": "jokers_of_neon_core-BuyBlisterPackEvent",
+      "selector": "0x15406147b7c9c63d166d74e7fef8cf15d76b8ce3c2932aa68cb3e7ff39b4a86"
     },
     {
       "members": [],
       "class_hash": "0x2c48bf1645b6cbd5ad20395fd7c07f99e812e348bf94512064f9038c5485e2b",
-      "tag": "jon_core_tournaments-BuyBlisterPackResultEvent",
-      "selector": "0x333fed5ebcdbc144cd5e7bf6c51a68984bfe5f90f237bd9dc5bbfb6b32d7ac3"
+      "tag": "jokers_of_neon_core-BuyBlisterPackResultEvent",
+      "selector": "0x781fbdb61895006e9ff848393f7f91574530791ac7bfc7e5f9ecb6403284397"
     },
     {
       "members": [],
       "class_hash": "0x56bacd151b132f42ada7f9b5bdaeb6d5cfdf2e3cf45429dad41e6144b703a9a",
-      "tag": "jon_core_tournaments-BuyBurnEvent",
-      "selector": "0x39936268b9cdefa5dc71cdf46b9e41b201d26d22b24fab8c79d47e3087f7fb0"
+      "tag": "jokers_of_neon_core-BuyBurnEvent",
+      "selector": "0xe44b5c6bba3aeb3f25e2f9bc7c69eb75c57b426147fb7407bf56d4b766ec5f"
     },
     {
       "members": [],
       "class_hash": "0x23a65d1df0461291f28d36731ca225e46cf62eab1c22426f909be02a7ad3078",
-      "tag": "jon_core_tournaments-BuyLevelUpPokerHandEvent",
-      "selector": "0x18d1cb9af6b799ae03924aa03d2567b52d6b3cee656c3eb2a4aef0faa9a13d8"
+      "tag": "jokers_of_neon_core-BuyLevelUpPokerHandEvent",
+      "selector": "0x4d681fbd92a3e10682880b8cb9e8d24119d8b20063751b758de026d877fc9c0"
     },
     {
       "members": [],
       "class_hash": "0x10a2c073337d5bf656efdaa1c346bdae66b2919b8457b501f13060156ad0ce2",
-      "tag": "jon_core_tournaments-BuyModifierCardEvent",
-      "selector": "0x89073ff2ae4790c9ab3d6783dd171d5d39fe3423248844dc56c8daaa2b4aed"
+      "tag": "jokers_of_neon_core-BuyModifierCardEvent",
+      "selector": "0x5057ecd9e19aaf166f2829b7a5b028781d67dbc14a023f54255c40ecfd38705"
     },
     {
       "members": [],
       "class_hash": "0xbe53214a0cfb1cd7888092ace5f528abc5d518cdf8a50f88066c622606386a",
-      "tag": "jon_core_tournaments-BuyPowerUpEvent",
-      "selector": "0x260799157b50a7de62dcb17aaef715e2d8c1b084421a7971946ec52b48ee689"
+      "tag": "jokers_of_neon_core-BuyPowerUpEvent",
+      "selector": "0x7c0101a475b46dbcfd18641cd60b66e2bc2fbf1487b83a104ef59e81222e524"
     },
     {
       "members": [],
       "class_hash": "0x6e41661b7825a23bc55507927f3264c5fd2b39b7426c168a8f0761e505f2076",
-      "tag": "jon_core_tournaments-BuyRerollEvent",
-      "selector": "0x166bce0c69168cba3129e852486ec786e311d51f4d913b38cd00fc4f6737e6f"
+      "tag": "jokers_of_neon_core-BuyRerollEvent",
+      "selector": "0x179f94faf9c5bf00869e21809f7941e1f091ff16abccfc1c60573531517778"
     },
     {
       "members": [],
       "class_hash": "0x532de02b6efd82fc3f9a5fcd9d229c0324e44e9c0767793a110d8cbb8ec7fb4",
-      "tag": "jon_core_tournaments-BuySlotSpecialCardEvent",
-      "selector": "0x6faa6e1bfb86dd5521d93b69342050e8b65d53cfc9ec5cbf87d3da403512f40"
+      "tag": "jokers_of_neon_core-BuySlotSpecialCardEvent",
+      "selector": "0x5cc2d5b426078c4a7444f0be4f31636b5c7cb54993a74f41a5152fec4969e13"
     },
     {
       "members": [],
       "class_hash": "0x2bcc8b2876714f7b4898cfebf01d5f72914c380d3cf2bbad68074bc91b96566",
-      "tag": "jon_core_tournaments-BuySpecialCardEvent",
-      "selector": "0x1427771bd20c4263a6f60819981d46c6e05852a98600c3cde713e09d1a7546b"
+      "tag": "jokers_of_neon_core-BuySpecialCardEvent",
+      "selector": "0x3f0fe1d0237425c8c4db2bcdff6f6e13a5893448b2aca1150abfd3eac281caf"
     },
     {
       "members": [],
       "class_hash": "0x446f8312e5858e853d12a2e8d8e73b715c853381047669b339cecb57e91dcd0",
-      "tag": "jon_core_tournaments-BuySpecialCardsSoldEvent",
-      "selector": "0x7c26862123a0a61b8f6404c1b5035a60c7a40644cb1c825386e002b35ea385b"
+      "tag": "jokers_of_neon_core-BuySpecialCardsSoldEvent",
+      "selector": "0x7eaa7f81746f5cdf27276d4123a3681b4a32b990c5b2cbd518c64b93213f62a"
     },
     {
       "members": [],
       "class_hash": "0x76897c371ddef306357b1c69badfd6c51131a17302e3be2efe14ba681b8d232",
-      "tag": "jon_core_tournaments-BuyTraditionalCardEvent",
-      "selector": "0x37aae4652f30ef0aa41f086500ee123af4fe75e62942b67e363b628ac721646"
+      "tag": "jokers_of_neon_core-BuyTraditionalCardEvent",
+      "selector": "0x38f4ef86da0252c24efc1bbc2b8beaa22a259a9daff6dc8a958b8d1128b8f45"
     },
     {
       "members": [],
       "class_hash": "0x6d58c5268bca5ec87cafebde22d6679dc914141a69ae8ee6faccee1cde7b01a",
-      "tag": "jon_core_tournaments-CardActivateEvent",
-      "selector": "0x8d34650e41b3cef2bff07077ffd885f5e60b96c98636f695ce8c62249760b"
+      "tag": "jokers_of_neon_core-CardActivateEvent",
+      "selector": "0x3762d25725f2e231d84f75bb926426fc7d531512a21559f357c184f9487c5b4"
     },
     {
       "members": [],
       "class_hash": "0x2a1f95f25317837cfbe5135a57a13cab7dc714a21a5525f73463706201b187b",
-      "tag": "jon_core_tournaments-CardPlayEvent",
-      "selector": "0x2acebc14e85780d53240f38cd30b71d3ad1894511ed7317aa94d4ae925d038"
+      "tag": "jokers_of_neon_core-CardPlayEvent",
+      "selector": "0x7c0be4b31d3ebfb1687ab83341e208e0f176a0d6d45d317699a8b77e5753cdf"
     },
     {
       "members": [],
       "class_hash": "0xb3041f6bb0991cba6e00423c2233ae38d2f897bf2accddbc9c4071bad67372",
-      "tag": "jon_core_tournaments-CardScoreEvent",
-      "selector": "0x3da736b38a031b4c44ab65023795bc9fc24f95965f2577acdf999d5ff0a766"
+      "tag": "jokers_of_neon_core-CardScoreEvent",
+      "selector": "0x4b21cf1c12ff74439ef8f5df2a87e4ed4c3b8ffc693d077dd8ce2069d94a9d6"
     },
     {
       "members": [],
       "class_hash": "0x288846a45ff1972fdf336299f3243753106f13ed4077700c50103808ddfa158",
-      "tag": "jon_core_tournaments-CreateGameEvent",
-      "selector": "0x5a4b7b6c7eb423765704c1afb26a2a508857041cd561922475d21a388a873c7"
+      "tag": "jokers_of_neon_core-CreateGameEvent",
+      "selector": "0x77d482c020a1da5919739f7c6f654fc5ff9cec3b1ba15ceb3bb79e5fc64022"
     },
     {
       "members": [],
       "class_hash": "0x78067598bc9714ce27f708ea70e8f697a54918b0a288818df51b70c943c1227",
-      "tag": "jon_core_tournaments-CurrentHandEvent",
-      "selector": "0x56a18ffc2a4561ea89c1ce7e77202023b32b77992f30ce80027f77bde18ef9"
+      "tag": "jokers_of_neon_core-CurrentHandEvent",
+      "selector": "0x1aefec97e2ad20e102d9bd5b9f76ad665e0896c612ce856a9f157ffeb3e6b1f"
     },
     {
       "members": [],
       "class_hash": "0x6fb6398f3c1a822c486907f7559dcf8f4b964b84fab03295c9747a82b51262",
-      "tag": "jon_core_tournaments-DailyMissionCompletedEvent",
-      "selector": "0x1193a9397b41a34750f8655ef6bb377ac81a4f98d302e437d530b8de9cee0e3"
+      "tag": "jokers_of_neon_core-DailyMissionCompletedEvent",
+      "selector": "0x6223018c77e50e185cc64982d08ee9e47e8100be8220582f99ed1a2c18702aa"
     },
     {
       "members": [],
       "class_hash": "0x185bff0a55fd4e093f69719a2355e5f6339502081baf47ff6d9e3ef72136e33",
-      "tag": "jon_core_tournaments-DetailEarnedEvent",
-      "selector": "0x2e441fbf7e4d313df456bb1a55872c66f9066c6dcad11ea3127b502e92474eb"
+      "tag": "jokers_of_neon_core-DetailEarnedEvent",
+      "selector": "0x19b2d7a7521745b98fb7f302823ffdf3bf8006634aa73105f7a51b8da5f8de7"
     },
     {
       "members": [],
       "class_hash": "0x2b1e310091557176bab994e1ae582da4c849870c260e58f177317bc59a5981a",
-      "tag": "jon_core_tournaments-GameEvent",
-      "selector": "0x7b8aa61c223c5392a9feb95d29f0a5b57e2c2eebf9a91f4d93fcfd5a1992cc5"
+      "tag": "jokers_of_neon_core-GameEvent",
+      "selector": "0x5d20b0691dde4d2b3ffbf0e1115fed0be5b8027884883f2740c6cb4cd362848"
     },
     {
       "members": [],
       "class_hash": "0x29342eb13cb7056d2a4ade5cb855dc0db2409375fb4a299ff30858975ed9554",
-      "tag": "jon_core_tournaments-GamePowerUpEvent",
-      "selector": "0x6b01789727a3929badfeb476fc45fd30810edf1ad96a99ea307933be6bb04ba"
+      "tag": "jokers_of_neon_core-GamePowerUpEvent",
+      "selector": "0x3a8d4d88197b260ebdfbbbb3de2b8ab5e900209bcd208195fb85b9f8ebac613"
     },
     {
       "members": [],
       "class_hash": "0x2558abb3f9dc31336eaab35aecd833ff05d306541ab1b9452ec5bcfb665efd9",
-      "tag": "jon_core_tournaments-ModifierCardSuitEvent",
-      "selector": "0x7eb9677c8a9b55f58bb2aaa0e96319bc432fc70d45dc5ec243ec9a60fca8766"
+      "tag": "jokers_of_neon_core-ModifierCardSuitEvent",
+      "selector": "0x381a432f0d2cea123727d94fe0fe65effb10f30ac10d318680f8ef6798f8511"
     },
     {
       "members": [],
       "class_hash": "0x4260cc0343c823f76328c3d430ed28b8f394e803a97b44d0f5d0898211d7527",
-      "tag": "jon_core_tournaments-ModifierNeonCardEvent",
-      "selector": "0x493c06b0ea5e9b9ef4fd92c24eeedac8e0bb0a1603fc450bb96b48209aaee9a"
+      "tag": "jokers_of_neon_core-ModifierNeonCardEvent",
+      "selector": "0x346856b0f2407ee20028b5643c5e82fb915afc7a0203baecd49a7be26d1282e"
     },
     {
       "members": [],
       "class_hash": "0x5568d12a60d4224d8a053d5e339839f61dfae1da6d3c2f481d1c5796fd7f9ba",
-      "tag": "jon_core_tournaments-ModifierWildCardEvent",
-      "selector": "0x118f5b8097de034d5c9227f1c4cb6e40b56cfc3a44b86191e6448426f1f3b0"
+      "tag": "jokers_of_neon_core-ModifierWildCardEvent",
+      "selector": "0x60a40f7c5f1166c5feed3e803e5a9a4e797c4d578e49c3a678b99db593736e0"
     },
     {
       "members": [],
       "class_hash": "0x47e919d1d5696b206376f3768c94f9f6424f0c8566b65c940e39ae5231bc0ee",
-      "tag": "jon_core_tournaments-PlayGameOverEvent",
-      "selector": "0x6e616a849d5fc88b276df400656fc17511e316b473f6e4c40a0a209aa14ec4e"
+      "tag": "jokers_of_neon_core-PlayGameOverEvent",
+      "selector": "0x4216912970d6c7b879503e7b69c1dc578d3b86e35bb3edcdd9e477a5ac9e702"
     },
     {
       "members": [],
       "class_hash": "0x3d83dcb9dc4c6fd6bb3e4608507c7ff57242b7e78143b0c9fda73e113b3e52d",
-      "tag": "jon_core_tournaments-PlayWinGameEvent",
-      "selector": "0x55383a86834f9a4468ac41145c879807f47ca187db3e689dc9c9f4173730241"
+      "tag": "jokers_of_neon_core-PlayWinGameEvent",
+      "selector": "0xd119c9da5a2d4aa2e71dad4aa1c378e5a8ccf7bb8c3396adf285c6c26c6b8"
     },
     {
       "members": [],
       "class_hash": "0x65570bb6e60d981ec5a278ed4358d80c641fcd8e39f1af8c9215016b25cee35",
-      "tag": "jon_core_tournaments-PowerUpEvent",
-      "selector": "0x280bcc99d3345d7c2a6c36f85c528ccaf55642da31b058a945a20a1cbeeb03c"
+      "tag": "jokers_of_neon_core-PowerUpEvent",
+      "selector": "0x3551c718911060f276085413594f2122e26a67599c3c225a16bb9de3b9fabf5"
     },
     {
       "members": [],
       "class_hash": "0x2ae4593bc53656ab5d242c5c1b096c78ab313fc713aaa26acf831d6e9cc24a1",
-      "tag": "jon_core_tournaments-RoundScoreEvent",
-      "selector": "0x6ad88ba20df40b473b048951e0532f558773d905db9778fcdd8a35a96d6710a"
+      "tag": "jokers_of_neon_core-RoundScoreEvent",
+      "selector": "0x58ddb180a3356ec8a3ba8b8d3a27ea4542efacfa37647bbea9e097f9e4b8672"
     },
     {
       "members": [],
       "class_hash": "0x21c8f9729d91b7e385218f5d396e084137b13144227b2b53060ee7c3c72e24a",
-      "tag": "jon_core_tournaments-TrophyCreation",
-      "selector": "0x6c625580abc7b1f20bd48c950aa5ed00b351d7a50250396433510061d7580f9"
+      "tag": "jokers_of_neon_core-TrophyCreation",
+      "selector": "0x755abea9e75fbf35fbb4f1be02da784239e268a1a2358c9de58c7f8b06b93ce"
     },
     {
       "members": [],
       "class_hash": "0x10a76e791a65a86a40e9b10d175104e370746e6ad2c57a658d17468a73f403d",
-      "tag": "jon_core_tournaments-TrophyProgression",
-      "selector": "0x6adbdc17c9257833eaad94b1b8ff2bbd546744312382893acb7a8a7e1393c1a"
+      "tag": "jokers_of_neon_core-TrophyProgression",
+      "selector": "0x2d10f9dfe06f43a2b98a82e6c7e32124dfe847eae9b4677b5b9836efd52d928"
     }
   ],
   "external_contracts": []
