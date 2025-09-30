@@ -95,6 +95,7 @@
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Clasificación",
       "map-btn": "Mapa",
+      "delete-acc-btn": "Eliminar cuenta",
       "back": "Volver al inicio",
       "pages": {
         "gameover": "Fin del juego",
@@ -118,8 +119,10 @@
         "loading-game": "Cargando juego",
         "plays": "Jugadas disponibles"
       },
+
       "my-games": "Juegos"
     },
+    
     "plays": {
       "title": "Jugadas disponibles",
       "go-back-btn": "Volver al juego",

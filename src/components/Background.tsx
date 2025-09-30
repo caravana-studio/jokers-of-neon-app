@@ -80,6 +80,9 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   map: {
     bg: BackgroundType.Map,
   },
+  profile: {
+    bg: BackgroundType.Game,
+  },
 };
 
 export const Background = ({ children }: PropsWithChildren) => {

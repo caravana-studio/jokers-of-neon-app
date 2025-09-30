@@ -7,9 +7,11 @@ import { useDojo } from "../../../../dojo/DojoContext";
 export const LogoutMenuBtn = ({
   width,
   label,
+  arrowRight,
 }: {
   width: string;
   label?: boolean;
+  arrowRight?: boolean;
 }) => {
   const { t } = useTranslation("game");
   const { handleLogout } = useLogout();
@@ -24,6 +26,7 @@ export const LogoutMenuBtn = ({
       description={t("game.game-menu.logout-btn")}
       onClick={handleLogout}
       label={label ? t("game.game-menu.logout-btn") : undefined}
+      arrowRight={arrowRight}
     />
   );
 };
