@@ -6,7 +6,11 @@
       "playDemo-btn": "Jogar",
       "start": "Começar"
     },
-    "join-discord": "Junte-se ao nosso Discord!"
+    "join-discord": "Junte-se ao nosso Discord!",
+    "leaderboard-banner": {
+      "title": "Torneio ativo",
+      "button": "Classificação completa"
+    }
   },
   "leaderboard": {
     "title": "Classificação",
