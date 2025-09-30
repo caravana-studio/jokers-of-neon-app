@@ -37,16 +37,16 @@ export const LeaderboardBanner = () => {
     >
       <CachedImage
         position="absolute"
-        bottom="-30px"
-        height={isSmallScreen ? "170px" : "250px"}
+        bottom={isSmallScreen ? "-30px" : "-60px"}
+        height={isSmallScreen ? "170px" : "350px"}
         src="/leaderboard/podium.png"
       />
       {leaders[0] && (
         <Text
           position="absolute"
-          left="68px"
-          top="7px"
-          width="70px"
+          left={isSmallScreen ? "68px" : "125px"}
+          top={isSmallScreen ? "7px" : "35px"}
+          width={isSmallScreen ? "70px" : "140px"}
           textAlign="center"
           lineHeight={0.9}
         >
@@ -56,31 +56,31 @@ export const LeaderboardBanner = () => {
       {leaders[1] && (
         <Text
           position="absolute"
-          left="10px"
-          top="44px"
-          width="70px"
+          left={isSmallScreen ? "10px" : "8px"}
+          top={isSmallScreen ? "44px" : "112px"}
+          width={isSmallScreen ? "70px" : "140px"}
           textAlign="center"
           lineHeight={0.9}
         >
           {leaders[1]}
         </Text>
       )}
-      {leaders[2] && (
+      {leaders[1] && (
         <Text
           position="absolute"
-          left="125px"
-          top="63px"
-          width="70px"
+          left={isSmallScreen ? "125px" : "245px"}
+          top={isSmallScreen ? "63px" : "160px"}
+          width={isSmallScreen ? "70px" : "140px"}
           textAlign="center"
           lineHeight={0.9}
         >
-          {leaders[2]}
+          {leaders[1]}
         </Text>
       )}
       <Flex w="100%" h="100%" flexDir="column" justifyContent="space-between">
         <Flex flexDir="column">
           <Heading
-            fontSize={isSmallScreen ? "xs" : "md"}
+            fontSize={isSmallScreen ? "xs" : "lg"}
             mb={1}
             variant="italic"
             textAlign="right"
@@ -93,8 +93,8 @@ export const LeaderboardBanner = () => {
         </Flex>
         <Flex justifyContent={"flex-end"}>
           <Button
-            size="sm"
-            height="20px"
+            size={isSmallScreen ? "sm" : "md"}
+            height={isSmallScreen ? "20px" : "unset"}
             variant="secondarySolid"
             onClick={() => navigate("/leaderboard")}
           >
@@ -102,7 +102,7 @@ export const LeaderboardBanner = () => {
             <FontAwesomeIcon
               style={{ marginLeft: "5px", marginTop: "2px" }}
               color="white"
-              fontSize={7}
+              fontSize={isSmallScreen ? 7 : 15}
               icon={faArrowRight}
             />
           </Button>
