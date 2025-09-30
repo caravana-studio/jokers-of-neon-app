@@ -1,5 +1,7 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
+import { useDojo } from "../dojo/useDojo";
+import { getNode } from "../dojo/queries/getNode";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
 import { useGameStore } from "../state/useGameStore";
@@ -26,6 +28,8 @@ export const LEADERBOARD_QUERY = gql`
           level
           player_name
           id
+          current_node_id
+          round
         }
       }
     }
@@ -38,6 +42,8 @@ interface GameEdge {
     level: number;
     player_name: string;
     id: number;
+    current_node_id: number;
+    round: number;
   };
 }
 
@@ -59,68 +65,70 @@ const getPrize = (position: number): number => {
   }
 };
 
-export const CURRENT_LEADER_NAME_KEY = "current_leader_name";
-
 const fetchGraphQLData = async (
-  modId: string
-): Promise<LeaderboardResponse> => {
-  console.log("modId", modId);
-  console.log("modId eb", encodeString(modId));
-  return await graphQLClient.request(LEADERBOARD_QUERY, {
-    modId: encodeString(modId),
-  });
-};
-
-export const useGetLeaderboard = (gameId?: number) => {
-  const { modId } = useGameStore();
-  const queryResponse = useQuery<LeaderboardResponse>(
-    [LEADERBOARD_QUERY_KEY, modId, gameId],
-    () => fetchGraphQLData(modId)
+  modId: string,
+  client: any,
+  gameId?: number
+) => {
+  const rawData: LeaderboardResponse = await graphQLClient.request(
+    LEADERBOARD_QUERY,
+    {
+      modId: encodeString(modId),
+    }
   );
 
-  const { data } = queryResponse;
+  const edges = rawData?.[QUERY_FIELD_NAME]?.edges ?? [];
+
+  const processedEntries = await Promise.all(
+    edges
+      .filter((edge) => edge.node.player_score > 0)
+      .map(async (edge) => {
+        return {
+          id: edge.node.id,
+          player_name: decodeString(edge.node.player_name ?? ""),
+          player_score: edge.node.player_score,
+          level: edge.node.level,
+          round: edge.node.round,
+        };
+      })
+  );
 
   const leaderboardMap = new Map<
     string,
-    { id: number; player_name: string; player_score: number; level: number }
+    {
+      id: number;
+      player_name: string;
+      player_score: number;
+      level: number;
+      round: number;
+    }
   >();
+
   let currentGameEntry: {
     id: number;
     player_name: string;
     player_score: number;
     level: number;
+    round: number;
   } | null = null;
 
-  data?.[QUERY_FIELD_NAME]?.edges
-    ?.filter((edge) => edge.node.player_score > 0)
-    .forEach((edge) => {
-      const decodedName = decodeString(edge.node.player_name ?? "");
-      const playerId = signedHexToNumber(edge.node.id.toString());
+  processedEntries.forEach((entry) => {
+    const playerId = signedHexToNumber(entry.id.toString());
 
-      const entry = {
-        id: edge.node.id,
-        player_name: decodedName,
-        player_score: edge.node.player_score,
-        level: edge.node.level,
-      };
+    if (playerId === gameId) {
+      currentGameEntry = entry;
+    }
 
-      if (playerId === gameId) {
-        currentGameEntry = entry;
-      }
-
-      if (!leaderboardMap.has(decodedName)) {
-        leaderboardMap.set(decodedName, entry);
-      } else {
-        const existing = leaderboardMap.get(decodedName)!;
-        if (
-          entry.level > existing.level ||
-          (entry.level === existing.level &&
-            entry.player_score > existing.player_score)
-        ) {
-          leaderboardMap.set(decodedName, entry);
-        }
-      }
-    });
+    const existing = leaderboardMap.get(entry.player_name);
+    if (
+      !existing ||
+      entry.level > existing.level ||
+      (entry.level === existing.level &&
+        entry.player_score > existing.player_score)
+    ) {
+      leaderboardMap.set(entry.player_name, entry);
+    }
+  });
 
   const leaderboardArray = Array.from(leaderboardMap.values());
 
@@ -138,14 +146,29 @@ export const useGetLeaderboard = (gameId?: number) => {
     return b.player_score - a.player_score;
   });
 
-  const leaderboard = sortedLeaderboard.map((leader, index) => ({
+  return sortedLeaderboard.map((leader, index) => ({
     ...leader,
     position: index + 1,
     prize: getPrize(index + 1),
   }));
+};
+
+export const useGetLeaderboard = (gameId?: number) => {
+  const { modId } = useGameStore();
+  const {
+    setup: { client },
+  } = useDojo();
+
+  const queryResponse = useQuery(
+    [LEADERBOARD_QUERY_KEY, modId, gameId],
+    () => fetchGraphQLData(modId, client, gameId),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return {
     ...queryResponse,
-    data: leaderboard,
+    data: queryResponse.data ?? [],
   };
 };

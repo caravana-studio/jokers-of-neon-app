@@ -335,6 +335,18 @@
     "10080": {
       "name": "Fortuna da Rainha",
       "description": "Cada rainha jogada tem 50% de chances de conceder ^yellow(+150 moedas)^."
+    },
+    "19901": {
+      "name": "Reembolso Afortunado",
+      "description": "50% de chance de ganhar ^yellow(+150 moedas)^ ao jogar ou descartar uma carta."
+    },
+    "19902": {
+      "name": "Multiplicador Ressonante",
+      "description": "Para cada carta com valor menor que 5, ganhe ^violet(um multiplicador igual ao seu valor)^."
+    },
+    "19903": {
+      "name": "Redenção do Pântano",
+      "description": "Ganha entre ^blue(+1)^ e ^blue(+5 pontos)^ (acumulativos) cada vez que descarta."
     }
   },
   "power-ups": {
@@ -887,6 +899,14 @@
     "20021": {
       "name": "Traindo os Fracos",
       "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
+    },
+    "20022": {
+      "name": "Jogadas Bloqueadas",
+      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
+    },
+    "20023": {
+      "name": "Bilhete Carimbado",
+      "description": "Você só pode jogar um tipo de mão nesta rodada"
     }
   },
   "lootBoxes": {

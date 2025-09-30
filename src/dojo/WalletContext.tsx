@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { isMobile } from "react-device-detect";
 import { Account, AccountInterface } from "starknet";
 import { Icons } from "../constants/icons";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
@@ -17,6 +18,8 @@ import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
+
+const CHAIN = import.meta.env.VITE_CHAIN;
 
 type ConnectionStatus =
   | "selecting"
@@ -171,7 +174,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   if (accountType === null) {
     return (
       <PreThemeLoadingPage>
-        <img width="60%" src="logos/logo.png" alt="logo" />
+        <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
             style={{ color: "white" }}
@@ -197,26 +200,28 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               <div>LOGIN </div>
               <img
                 src={Icons.CARTRIDGE}
-                width={"24px"}
+                width={isMobile ? "16px" : "22px"}
                 style={{ marginLeft: "8px" }}
               />
             </div>
           </button>
-          <button
-            style={{ color: "white" }}
-            className="login-button secondary"
-            disabled={isLoading}
-            onClick={() => {
-              setConnectionStatus("connecting_burner");
-              const username = `joker_guest_${lastGameId + 1}`;
-              console.log("setting username: ", username);
+          {CHAIN !== "mainnet" && CHAIN !== "sepolia" && (
+            <button
+              style={{ color: "white" }}
+              className="login-button secondary"
+              disabled={isLoading}
+              onClick={() => {
+                setConnectionStatus("connecting_burner");
+                const username = `joker_guest_${lastGameId + 1}`;
+                console.log("setting username: ", username);
 
-              localStorage.removeItem(GAME_ID);
-              localStorage.setItem(LOGGED_USER, username);
-            }}
-          >
-            PLAY AS GUEST
-          </button>
+                localStorage.removeItem(GAME_ID);
+                localStorage.setItem(LOGGED_USER, username);
+              }}
+            >
+              PLAY AS GUEST
+            </button>
+          )}
         </Flex>
       </PreThemeLoadingPage>
     );
