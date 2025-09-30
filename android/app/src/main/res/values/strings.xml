@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">jokers-of-neon</string>
-    <string name="title_activity_main">jokers-of-neon</string>
+    <string name="app_name">Jokers of Neon - Pre Launch</string>
+    <string name="title_activity_main">Jokers of Neon - Pre Launch</string>
     <string name="package_name">com.jokersofneon.play</string>
     <string name="custom_url_scheme">com.jokersofneon.play</string>
 </resources>
