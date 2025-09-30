@@ -6,7 +6,7 @@ import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
-  const { level, round, targetScore: gameTargetScore } = useGameStore();
+  const { level, targetScore: gameTargetScore, nodeRound } = useGameStore();
   const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
   const inTutorial = isTutorial();
@@ -27,7 +27,7 @@ export const LevelPoints = () => {
                 <span style={{ marginLeft: "10px", marginRight: "10px" }}>
                   |
                 </span>
-                {round}
+                {nodeRound}
               </>
             )}
           </Heading>
@@ -42,14 +42,14 @@ export const LevelPoints = () => {
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
-        {t("game.round-points.score", { score: targetScore, round })}
+        {t("game.round-points.score", { score: targetScore, round: nodeRound })}
       </Text>
     </Box>
   );
 };
 
 export const MobileLevelPoints = () => {
-  const { round, targetScore: gameTargetScore } = useGameStore();
+  const { nodeRound, targetScore: gameTargetScore } = useGameStore();
   const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
 
@@ -62,13 +62,13 @@ export const MobileLevelPoints = () => {
         height={10}
         alignItems="center"
       >
-        <Heading fontSize={21}>{round}</Heading>
+        <Heading fontSize={21}>{nodeRound}</Heading>
       </Flex>
       <Flex flexDirection="column" gap={1} justifyContent={"center"}>
         <Text size="m" lineHeight={1} mt={2}>
           {t("game.round-points.score", {
             score: targetScore,
-            round,
+            nodeRound,
           })}
         </Text>
         <Score />

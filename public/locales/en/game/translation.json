@@ -128,7 +128,8 @@
       "table": {
         "level-head": "Level",
         "hand-head": "Hand",
-        "points-multi-head": "Points/Multi"
+        "points-multi-head": "Points/Multi",
+        "played": "Played"
       }
     },
     "deck": {

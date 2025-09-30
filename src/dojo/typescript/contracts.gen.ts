@@ -477,6 +477,24 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_poker_hand_system_getPlayerPokerHandsTracker_calldata = (gameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "poker_hand_system",
+			entrypoint: "get_player_poker_hands_tracker",
+			calldata: [gameId],
+		};
+	};
+
+	const poker_hand_system_getPlayerPokerHandsTracker = async (gameId: BigNumberish) => {
+		try {
+			return await provider.call(DOJO_NAMESPACE, build_poker_hand_system_getPlayerPokerHandsTracker_calldata(gameId));
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+
 	const build_mods_info_system_getRageCardsIds_calldata = (modId: BigNumberish): DojoCall => {
 		return {
 			contractName: "mods_info_system",
@@ -1455,6 +1473,8 @@ export function setupWorld(provider: DojoProvider) {
 		poker_hand_system: {
 			getPlayerPokerHands: poker_hand_system_getPlayerPokerHands,
 			buildGetPlayerPokerHandsCalldata: build_poker_hand_system_getPlayerPokerHands_calldata,
+			getPlayerPokerHandsTracker: poker_hand_system_getPlayerPokerHandsTracker,
+			buildGetPlayerPokerHandsTrackerCalldata: build_poker_hand_system_getPlayerPokerHandsTracker_calldata,
 		},
 		mod_manager_registrator: {
 			getRegisteredManagers: mod_manager_registrator_getRegisteredManagers,

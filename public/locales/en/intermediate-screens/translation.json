@@ -18,6 +18,7 @@
       }
     },
     "level-lbl": "Level",
+    "round-lbl": "Round",
     "status-lbl": "Status",
     "points-lbl": "points",
     "no-games": "You don't have any games. Start a new one!",
