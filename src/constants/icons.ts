@@ -15,6 +15,7 @@ import CircleIcon from "../assets/MenuIcons/circle.png";
 import DocsIcon from "../assets/MenuIcons/docs.png";
 import MapIcon from "../assets/MenuIcons/map.png";
 import PodiumIcon from "../assets/MenuIcons/podium.png";
+import LeaderboardIcon from "../assets/MenuIcons/leaderboard.png";
 import SettingsIcon from "../assets/MenuIcons/settings.png";
 import CartridgeIcon from "../assets/MenuIcons/cartridge.png";
 import LogoutIcon from "../assets/MenuIcons/logout.png";
@@ -65,7 +66,8 @@ export const Icons = {
   MORE: MoreIcon,
   CHECK: CheckIcon,
   UNCHECK: UnCheckIcon,
-  CLOCK: ClockIcon
+  CLOCK: ClockIcon,
+  LEADERBOARD: LeaderboardIcon,
 } as const;
 
 export type IconType = keyof typeof Icons;
