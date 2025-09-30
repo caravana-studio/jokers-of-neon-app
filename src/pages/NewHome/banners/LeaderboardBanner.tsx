@@ -65,7 +65,7 @@ export const LeaderboardBanner = () => {
           {leaders[1]}
         </Text>
       )}
-      {leaders[1] && (
+      {leaders[2] && (
         <Text
           position="absolute"
           left={isSmallScreen ? "125px" : "245px"}
@@ -74,7 +74,7 @@ export const LeaderboardBanner = () => {
           textAlign="center"
           lineHeight={0.9}
         >
-          {leaders[1]}
+          {leaders[2]}
         </Text>
       )}
       <Flex w="100%" h="100%" flexDir="column" justifyContent="space-between">
