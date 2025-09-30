@@ -6,7 +6,11 @@
       "playDemo-btn": "Play",
       "start": "Start"
     },
-    "join-discord": "Join our Discord!"
+    "join-discord": "Join our Discord!",
+    "leaderboard-banner": {
+      "title": "Tournament active",
+      "button": "Full leaderboard"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",

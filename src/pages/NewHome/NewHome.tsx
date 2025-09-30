@@ -15,6 +15,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { ComingSeasonBanner } from "./banners/ComingSeasonBanner";
 import { DailyMissionsBanner } from "./banners/DailyMissionsBanner";
+import { LeaderboardBanner } from "./banners/LeaderboardBanner";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -52,9 +53,9 @@ export const NewHome = () => {
   return (
     <DelayedLoading ms={100}>
       <MobileDecoration />
-      <RemoveScroll>
+{/*       <RemoveScroll>
         <></>
-      </RemoveScroll>
+      </RemoveScroll> */}
       <Flex
         height="100%"
         width={"100%"}
@@ -103,6 +104,7 @@ export const NewHome = () => {
               </Flex>
             </Flex>
             <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3}>
+              <LeaderboardBanner />
               <DailyMissionsBanner />
               <ComingSeasonBanner />
             </Flex>
