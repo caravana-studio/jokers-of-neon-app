@@ -104,176 +104,176 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
         alignItems={"end"}
       >
         <HandSectionContainer>
-          <SimpleGrid
-            opacity={!roundRewards && handsLeft > 0 ? 1 : 0.3}
-            minWidth={`${cardWidth * 4}px`}
-            maxWidth={`${cardWidth * 6.5}px`}
-            columns={hand.length}
-            position="relative"
-            w={isSmallScreen ? "92%" : "unset"}
-          >
-            {hand.map((card, index) => {
-              const isPreselected = cardIsPreselected(card.idx);
-              const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
-              const targetSelector = currentStepConfig?.target;
-              const cardClassName = "hand-element-" + index;
-              const isActiveTutorialStep =
-                targetSelector === `.${cardClassName}`;
+          {handsLeft === 0 ? (
+            <Heading
+              ml={{ base: "0", md: "100px" }}
+              size={{ base: "sm", md: "md" }}
+              variant="italic"
+              textAlign="center"
+              bottom={{ base: "140px", md: "100px" }}
+              w="100%"
+            >
+              {t("game.hand-section.no-cards-label")}
+            </Heading>
+          ) : (
+            <SimpleGrid
+              opacity={!roundRewards && handsLeft > 0 ? 1 : 0.3}
+              minWidth={`${cardWidth * 4}px`}
+              maxWidth={`${cardWidth * 6.5}px`}
+              columns={hand.length}
+              position="relative"
+              w={isSmallScreen ? "92%" : "unset"}
+            >
+              {hand.map((card, index) => {
+                const isPreselected = cardIsPreselected(card.idx);
+                const currentStepConfig = TUTORIAL_STEPS[stepIndex ?? 0];
+                const targetSelector = currentStepConfig?.target;
+                const cardClassName = "hand-element-" + index;
+                const isActiveTutorialStep =
+                  targetSelector === `.${cardClassName}`;
 
-              const isAnyHandCardTargeted = targetSelector
-                .toString()
-                .startsWith(".hand-element-");
+                const isAnyHandCardTargeted = targetSelector
+                  .toString()
+                  .startsWith(".hand-element-");
 
-              const isClickDisabled =
-                isTutorialRunning &&
-                isAnyHandCardTargeted &&
-                !isActiveTutorialStep;
+                const isClickDisabled =
+                  isTutorialRunning &&
+                  isAnyHandCardTargeted &&
+                  !isActiveTutorialStep;
 
-              const activeStyle = isActiveTutorialStep
-                ? {
-                    transform: "translateY(-20px)",
-                    transition: "transform 0.3s ease-in-out",
-                    zIndex: 999,
-                  }
-                : {
-                    transition: "transform 0.3s ease-in-out",
-                  };
+                const activeStyle = isActiveTutorialStep
+                  ? {
+                      transform: "translateY(-20px)",
+                      transition: "transform 0.3s ease-in-out",
+                      zIndex: 999,
+                    }
+                  : {
+                      transition: "transform 0.3s ease-in-out",
+                    };
 
-              return (
-                <GridItem
-                  key={card.idx + "-" + index}
-                  sx={{
-                    pointerEvents: isPreselected ? "none" : "auto",
-                    ...activeStyle,
-                  }}
-                  w="100%"
-                  onContextMenu={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setMenuIdx(card.idx);
-                    onOpen();
-                  }}
-                  className={
-                    card.isModifier
-                      ? "tutorial-modifiers-step-2"
-                      : cardClassName
-                  }
-                  onMouseEnter={() =>
-                    !isSmallScreen && setHoveredCard(card.idx)
-                  }
-                  onMouseLeave={() => {
-                    setHoveredCard(null);
-                    setHoveredButton(null);
-                  }}
-                  position="relative"
-                >
-                  {card.isModifier && !isPreselected && (
-                    <Flex
-                      position={"absolute"}
-                      zIndex={7}
-                      bottom={"5px"}
-                      left={"5px"}
-                      borderRadius={"10px"}
-                      background={"violet"}
-                      sx={{
-                        zIndex: 20,
-                      }}
-                    >
-                      {hoveredCard === card.idx && (
-                        <Button
-                          height={8}
-                          fontSize="8px"
-                          px={"16px"}
-                          borderRadius={"10px"}
-                          size={isSmallScreen ? "xs" : "md"}
-                          variant={"discardSecondarySolid"}
-                          onMouseEnter={() => setHoveredButton(card.idx)}
-                          display="flex"
-                          gap={4}
-                          isDisabled={discarding}
-                          onClick={(e) => {
-                            setDiscarding(true);
-                            e.stopPropagation();
-                            setHoveredButton(null);
-                            changeModifierCard(card.idx).then((_) => {
-                              setDiscarding(false);
-                            });
-                            onClose();
-                          }}
-                        >
-                          <Text fontSize="10px">X</Text>
-                          {hoveredButton === card.idx && (
-                            <Text fontSize="10px">
-                              {t("game.hand-section.modifier-change")}
-                            </Text>
-                          )}
-                        </Button>
-                      )}
-                    </Flex>
-                  )}
-                  {!isPreselected && (
-                    <AnimatedCard idx={card.idx} discarded={card.discarded}>
-                      <TiltCard
-                        card={card}
-                        scale={cardScale}
-                        cursor={
-                          card.isModifier
-                            ? activeNode
-                              ? "grabbing"
-                              : "grab"
-                            : "pointer"
-                        }
-                        onClick={() => {
-                          if (isClickDisabled) return;
-
-                          if (onTutorialCardClick) onTutorialCardClick();
-                          if (!card.isModifier) {
-                            const preselected = togglePreselected(card.idx);
-                            if (preselected) {
-                              preselectCardSound();
-                            }
-                          } else {
-                            highlightCard(card);
+                return (
+                  <GridItem
+                    key={card.idx + "-" + index}
+                    sx={{
+                      pointerEvents: isPreselected ? "none" : "auto",
+                      ...activeStyle,
+                    }}
+                    w="100%"
+                    onContextMenu={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setMenuIdx(card.idx);
+                      onOpen();
+                    }}
+                    className={
+                      card.isModifier
+                        ? "tutorial-modifiers-step-2"
+                        : cardClassName
+                    }
+                    onMouseEnter={() =>
+                      !isSmallScreen && setHoveredCard(card.idx)
+                    }
+                    onMouseLeave={() => {
+                      setHoveredCard(null);
+                      setHoveredButton(null);
+                    }}
+                    position="relative"
+                  >
+                    {card.isModifier && !isPreselected && (
+                      <Flex
+                        position={"absolute"}
+                        zIndex={7}
+                        bottom={"5px"}
+                        left={"5px"}
+                        borderRadius={"10px"}
+                        background={"violet"}
+                        sx={{
+                          zIndex: 20,
+                        }}
+                      >
+                        {hoveredCard === card.idx && (
+                          <Button
+                            height={8}
+                            fontSize="8px"
+                            px={"16px"}
+                            borderRadius={"10px"}
+                            size={isSmallScreen ? "xs" : "md"}
+                            variant={"discardSecondarySolid"}
+                            onMouseEnter={() => setHoveredButton(card.idx)}
+                            display="flex"
+                            gap={4}
+                            isDisabled={discarding}
+                            onClick={(e) => {
+                              setDiscarding(true);
+                              e.stopPropagation();
+                              setHoveredButton(null);
+                              changeModifierCard(card.idx).then((_) => {
+                                setDiscarding(false);
+                              });
+                              onClose();
+                            }}
+                          >
+                            <Text fontSize="10px">X</Text>
+                            {hoveredButton === card.idx && (
+                              <Text fontSize="10px">
+                                {t("game.hand-section.modifier-change")}
+                              </Text>
+                            )}
+                          </Button>
+                        )}
+                      </Flex>
+                    )}
+                    {!isPreselected && (
+                      <AnimatedCard idx={card.idx} discarded={card.discarded}>
+                        <TiltCard
+                          card={card}
+                          scale={cardScale}
+                          cursor={
+                            card.isModifier
+                              ? activeNode
+                                ? "grabbing"
+                                : "grab"
+                              : "pointer"
                           }
-                        }}
-                        className={"hand-element-" + index}
-                        onHold={() => {
-                          if (isClickDisabled) return;
-                          isSmallScreen && highlightCard(card);
-                        }}
-                      />
-                    </AnimatedCard>
-                  )}
-                </GridItem>
-              );
-            })}
-            {!isSmallScreen && (
-              <Flex
-                bottom={"-35px"}
-                width="calc(100% + 30px)"
-                justifyContent={"flex-end"}
-                alignItems="flex-end"
-                position="absolute"
-              >
-                <ShowPlays />
-              </Flex>
-            )}
-          </SimpleGrid>
+                          onClick={() => {
+                            if (isClickDisabled) return;
+
+                            if (onTutorialCardClick) onTutorialCardClick();
+                            if (!card.isModifier) {
+                              const preselected = togglePreselected(card.idx);
+                              if (preselected) {
+                                preselectCardSound();
+                              }
+                            } else {
+                              highlightCard(card);
+                            }
+                          }}
+                          className={"hand-element-" + index}
+                          onHold={() => {
+                            if (isClickDisabled) return;
+                            isSmallScreen && highlightCard(card);
+                          }}
+                        />
+                      </AnimatedCard>
+                    )}
+                  </GridItem>
+                );
+              })}
+              {!isSmallScreen && (
+                <Flex
+                  bottom={"-35px"}
+                  width="calc(100% + 30px)"
+                  justifyContent={"flex-end"}
+                  alignItems="flex-end"
+                  position="absolute"
+                >
+                  <ShowPlays />
+                </Flex>
+              )}
+            </SimpleGrid>
+          )}
         </HandSectionContainer>
       </Box>
-      {handsLeft === 0 && (
-        <Heading
-          ml={{ base: "0", md: "100px" }}
-          size={{ base: "sm", md: "md" }}
-          variant="italic"
-          textAlign="center"
-          bottom={{ base: "140px", md: "100px" }}
-          w="70%"
-          sx={{ position: "fixed" }}
-        >
-          {t("game.hand-section.no-cards-label")}
-        </Heading>
-      )}
     </>
   );
 };
