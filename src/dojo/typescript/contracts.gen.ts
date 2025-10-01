@@ -59,7 +59,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_balanceOf = async (account: string) => {
 		try {
-			console.log("game_system_balanceOf");
+			console.log("[CALLING A VIEW] - game_system_balanceOf");
 			return await provider.call(DOJO_NAMESPACE, build_game_system_balanceOf_calldata(account));
 		} catch (error) {
 			console.error(error);
@@ -335,7 +335,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_gameCount = async () => {
 		try {
-			console.log("game_system_gameCount");
+			console.log("[CALLING A VIEW] - game_system_gameCount");
 			return await provider.call(DOJO_NAMESPACE, build_game_system_gameCount_calldata());
 		} catch (error) {
 			console.error(error);
@@ -353,7 +353,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_gameMetadata = async () => {
 		try {
-			console.log("game_system_gameMetadata");
+			console.log("[CALLING A VIEW] - game_system_gameMetadata");
 			return await provider.call(DOJO_NAMESPACE, build_game_system_gameMetadata_calldata());
 		} catch (error) {
 			console.error(error);
@@ -371,7 +371,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_getApproved = async (tokenId: BigNumberish) => {
 		try {
-			console.log("game_system_getApproved");
+			console.log("[CALLING A VIEW] - game_system_getApproved");
 			return await provider.call(DOJO_NAMESPACE, build_game_system_getApproved_calldata(tokenId));
 		} catch (error) {
 			console.error(error);
@@ -389,7 +389,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mods_info_system_getCumulativeInfo = async (modId: BigNumberish, gameId: BigNumberish, specialCardId: BigNumberish) => {
 		try {
-			console.log("mods_info_system_getCumulativeInfo");
+			console.log("[CALLING A VIEW] - mods_info_system_getCumulativeInfo");
 			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getCumulativeInfo_calldata(modId, gameId, specialCardId));
 		} catch (error) {
 			console.error(error);
@@ -407,7 +407,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mods_info_system_getGameConfig = async (modId: BigNumberish) => {
 		try {
-			console.log("mods_info_system_getGameConfig");
+			console.log("[CALLING A VIEW] - mods_info_system_getGameConfig");
 			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getGameConfig_calldata(modId));
 		} catch (error) {
 			console.error(error);
@@ -425,7 +425,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mods_info_system_getGameMods = async () => {
 		try {
-			console.log("mods_info_system_getGameMods");
+			console.log("[CALLING A VIEW] - mods_info_system_getGameMods");
 			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getGameMods_calldata());
 		} catch (error) {
 			console.error(error);
@@ -443,7 +443,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const map_system_getLevelMap = async (gameId: BigNumberish) => {
 		try {
-			console.log("map_system_getLevelMap");
+			console.log("[CALLING A VIEW] - map_system_getLevelMap");
 			return await provider.call(DOJO_NAMESPACE, build_map_system_getLevelMap_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -461,7 +461,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const map_system_getNode = async (gameId: BigNumberish, nodeId: BigNumberish) => {
 		try {
-			console.log("map_system_getNode");
+			console.log("[CALLING A VIEW] - map_system_getNode");
 			return await provider.call(DOJO_NAMESPACE, build_map_system_getNode_calldata(gameId, nodeId));
 		} catch (error) {
 			console.error(error);
@@ -479,7 +479,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const poker_hand_system_getPlayerPokerHands = async (gameId: BigNumberish) => {
 		try {
-			console.log("poker_hand_system_getPlayerPokerHands");
+			console.log("[CALLING A VIEW] - poker_hand_system_getPlayerPokerHands");
 			return await provider.call(DOJO_NAMESPACE, build_poker_hand_system_getPlayerPokerHands_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -497,7 +497,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const poker_hand_system_getPlayerPokerHandsTracker = async (gameId: BigNumberish) => {
 		try {
-			console.log("poker_hand_system_getPlayerPokerHandsTracker");
+			console.log("[CALLING A VIEW] - poker_hand_system_getPlayerPokerHandsTracker");
 			return await provider.call(DOJO_NAMESPACE, build_poker_hand_system_getPlayerPokerHandsTracker_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -516,7 +516,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mods_info_system_getRageCardsIds = async (modId: BigNumberish) => {
 		try {
-			console.log("mods_info_system_getRageCardsIds");
+			console.log("[CALLING A VIEW] - mods_info_system_getRageCardsIds");
 			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getRageCardsIds_calldata(modId));
 		} catch (error) {
 			console.error(error);
@@ -534,7 +534,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mod_manager_registrator_getRegisteredManagers = async () => {
 		try {
-			console.log("mod_manager_registrator_getRegisteredManagers");
+			console.log("[CALLING A VIEW] - mod_manager_registrator_getRegisteredManagers");
 			return await provider.call(DOJO_NAMESPACE, build_mod_manager_registrator_getRegisteredManagers_calldata());
 		} catch (error) {
 			console.error(error);
@@ -552,7 +552,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_views_getShopItems = async (gameId: BigNumberish) => {
 		try {
-			console.log("shop_views_getShopItems");
+			console.log("[CALLING A VIEW] - shop_views_getShopItems");
 			return await provider.call(DOJO_NAMESPACE, build_shop_views_getShopItems_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -570,7 +570,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const mods_info_system_getSpecialCardsIds = async (modId: BigNumberish) => {
 		try {
-			console.log("mods_info_system_getSpecialCardsIds");
+			console.log("[CALLING A VIEW] - mods_info_system_getSpecialCardsIds");
 			return await provider.call(DOJO_NAMESPACE, build_mods_info_system_getSpecialCardsIds_calldata(modId));
 		} catch (error) {
 			console.error(error);
@@ -588,7 +588,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_system_isApprovedForAll = async (owner: string, operator: string) => {
 		try {
-			console.log("game_system_isApprovedForAll");
+			console.log("[CALLING A VIEW] - game_system_isApprovedForAll");
 			return await provider.call(DOJO_NAMESPACE, build_game_system_isApprovedForAll_calldata(owner, operator));
 		} catch (error) {
 			console.error(error);
@@ -1116,7 +1116,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_views_getDeckCards = async (gameId: BigNumberish) => {
 		try {
-			console.log("game_views_getDeckCards");
+			console.log("[CALLING A VIEW] - game_views_getDeckCards");
 			return await provider.call(DOJO_NAMESPACE, build_game_views_getDeckCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1134,7 +1134,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_views_getGameData = async (gameId: BigNumberish) => {
 		try {
-			console.log("game_views_getGameData");
+			console.log("[CALLING A VIEW] - game_views_getGameData");
 			return await provider.call(DOJO_NAMESPACE, build_game_views_getGameData_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1152,7 +1152,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_views_getHandCards = async (gameId: BigNumberish) => {
 		try {
-			console.log("game_views_getHandCards");
+			console.log("[CALLING A VIEW] - game_views_getHandCards");
 			return await provider.call(DOJO_NAMESPACE, build_game_views_getHandCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1170,7 +1170,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_views_getSpecialCards = async (gameId: BigNumberish) => {
 		try {
-			console.log("game_views_getSpecialCards");
+			console.log("[CALLING A VIEW] - game_views_getSpecialCards");
 			return await provider.call(DOJO_NAMESPACE, build_game_views_getSpecialCards_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1188,7 +1188,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const game_views_getPowerUps = async (gameId: BigNumberish) => {
 		try {
-			console.log("game_views_getPowerUps");
+			console.log("[CALLING A VIEW] - game_views_getPowerUps");
 			return await provider.call(DOJO_NAMESPACE, build_game_views_getPowerUps_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1206,7 +1206,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_views_getCardsInDeck = async (gameId: BigNumberish) => {
 		try {
-			console.log("shop_views_getCardsInDeck");
+			console.log("[CALLING A VIEW] - shop_views_getCardsInDeck");
 			return await provider.call(DOJO_NAMESPACE, build_shop_views_getCardsInDeck_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1224,7 +1224,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const shop_views_getLootBoxResult = async (gameId: BigNumberish) => {
 		try {
-			console.log("shop_views_getLootBoxResult");
+			console.log("[CALLING A VIEW] - shop_views_getLootBoxResult");
 			return await provider.call(DOJO_NAMESPACE, build_shop_views_getLootBoxResult_calldata(gameId));
 		} catch (error) {
 			console.error(error);
@@ -1242,7 +1242,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const nft_special_cards_views_getUserSpecialCards = async (userAddress: string) => {
 		try {
-			console.log("nft_special_cards_views_getUserSpecialCards");
+			console.log("[CALLING A VIEW] - nft_special_cards_views_getUserSpecialCards");
 			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCards_calldata(userAddress));
 		} catch (error) {
 			console.error(error);
@@ -1260,7 +1260,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const nft_special_cards_views_getUserSpecialCardsByCategory = async (userAddress: string) => {
 		try {
-			console.log("nft_special_cards_views_getUserSpecialCardsByCategory");
+			console.log("[CALLING A VIEW] - nft_special_cards_views_getUserSpecialCardsByCategory");
 			return await provider.call(DOJO_NAMESPACE, build_nft_special_cards_views_getUserSpecialCardsByCategory_calldata(userAddress));
 		} catch (error) {
 			console.error(error);
@@ -1278,7 +1278,7 @@ export function setupWorld(provider: DojoProvider) {
 
 	const daily_missions_system_getDailyMissionTrackersForPlayer = async (player: string) => {
 		try {
-			console.log("daily_missions_system_getDailyMissionTrackersForPlayer");
+			console.log("[CALLING A VIEW] - daily_missions_system_getDailyMissionTrackersForPlayer");
 			return await provider.call(DOJO_NAMESPACE, build_daily_missions_system_getDailyMissionTrackersForPlayer_calldata(player));
 		} catch (error) {
 			console.error(error);
