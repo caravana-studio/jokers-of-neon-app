@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { matchPath } from "react-router-dom";
-import { needsPadding } from "../../utils/capacitorUtils";
 import { ContextMenuItem } from "./ContextMenuItem";
 import { GameMenuContent } from "./GameMenu/GameMenuContent";
 import { mainMenuUrls, useContextMenuItems } from "./useContextMenuItems";
 import { isTutorial } from "../../utils/isTutorial";
+import { isNative } from "../../utils/capacitorUtils";
 
 export const BottomMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,7 +29,7 @@ export const BottomMenu = () => {
         alignItems="center"
         zIndex={1000}
         position="absolute"
-        bottom={needsPadding ? "30px" : "0px"}
+        bottom={isNative ? "30px" : "0px"}
       >
         {(mainMenuUrls.some((url) =>
           matchPath({ path: url, end: true }, window.location.pathname)

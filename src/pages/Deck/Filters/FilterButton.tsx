@@ -36,6 +36,7 @@ export const FilterButton = ({
     <Button
       size={"sm"}
       variant={isActive ? "outlineSecondaryGlowActive" : "outlineSecondaryGlow"}
+      _hover={isActive ? {} : {}}
       px={[2, 3]}
       borderRadius={"full"}
       h={["20px", "25px"]}
