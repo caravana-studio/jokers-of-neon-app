@@ -7,7 +7,6 @@ export const getSpecialCardsView = async (
   try {
     let tx_result: any = await client.game_views.getSpecialCards(gameId);
 
-    console.log("sepcial cards view", tx_result);
     return getSpecialCards(tx_result);
   } catch (e) {
     console.error("error getting specials view", e);
