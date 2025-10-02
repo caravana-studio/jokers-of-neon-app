@@ -11,11 +11,12 @@ export const getCardPlayEvents = (events: DojoEvent[]) => {
     .filter((event) => event.keys[1] === CARD_PLAY_EVENT_KEY)
     .flatMap((event) => {
       const eventType =
-        getNumberValueFromEvent(event, 5) ?? (0 as EventTypeEnum);
+      getNumberValueFromEvent(event, 5) ?? (0 as EventTypeEnum);
       const firstArrayLength = getNumberValueFromEvent(event, 6) ?? 0;
       const specials = getArrayValueFromEvent(event, 6);
       const handItems = getArrayValueFromEvent(event, firstArrayLength * 2 + 7);
-      
+
+      console.log("eventType: ", eventType, "specials: ", specials, "handItems: ", handItems);
       // Create separate events for each hand item
       return handItems.map(handItem => ({
         specials,

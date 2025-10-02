@@ -515,14 +515,11 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const checkOrCreateGame = async () => {
-    console.log("checking game exists", gameId);
-
     clearPreSelection();
     if (!gameId || gameId === 0 /* || !gameExists(Game, gameId, modId) */) {
       executeCreateGame();
     } else {
       setGameLoading(false);
-      console.log("Game found, no need to create a new one");
     }
   };
 

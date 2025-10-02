@@ -252,17 +252,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addCash: (cashToAdd: number) => {
     const { cash: currentCash } = get();
-    console.log("currentCash", currentCash);
-    console.log("cashToAdd", cashToAdd);
-    console.log("new cash", currentCash + cashToAdd);
     set({ cash: currentCash + cashToAdd });
   },
 
   removeCash: (cashToRemove: number) => {
     const { cash: currentCash } = get();
-    console.log("currentCash", currentCash);
-    console.log("cashToRemove", cashToRemove);
-    console.log("new cash", currentCash - cashToRemove);
     set({ cash: currentCash - cashToRemove });
   },
 

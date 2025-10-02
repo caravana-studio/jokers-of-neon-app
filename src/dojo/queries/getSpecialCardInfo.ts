@@ -15,22 +15,22 @@ export const getSpecialCardInfo = async (
   gameId: number,
   specialCardId: number
 ): Promise<SpecialCardInfo> => {
-  if (gameId != 0 && modId && specialCardId) {
-    try {
-      const tx_result = await client.mods_info_system.getCumulativeInfo(
-        modId,
-        gameId,
-        specialCardId
-      );
-      return {
-        points: parseInt(tx_result[POINTS_IDX]),
-        multi: parseInt(tx_result[MULTI_IDX]),
-        cash: parseInt(tx_result[CASH_IDX]),
-      };
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // if (gameId != 0 && modId && specialCardId) {
+  //   try {
+  //     const tx_result = await client.mods_info_system.getCumulativeInfo(
+  //       modId,
+  //       gameId,
+  //       specialCardId
+  //     );
+  //     return {
+  //       points: parseInt(tx_result[POINTS_IDX]),
+  //       multi: parseInt(tx_result[MULTI_IDX]),
+  //       cash: parseInt(tx_result[CASH_IDX]),
+  //     };
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
   return {
     points: 0,
     multi: 0,

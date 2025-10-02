@@ -24,6 +24,7 @@ const SECOND_CHANCE_EVENT_KEY = getEventKey(DojoEvents.SECOND_CHANCE);
 
 export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
   const cardPlayEvents = getCardPlayEvents(events);
+  console.log("[getPlayEvents] - cardPlayEvents: ", cardPlayEvents);
   const playEvents: PlayEvents = {
     play: getHandEvent(events),
     gameOver: !!events.find(
@@ -48,6 +49,5 @@ export const getPlayEvents = (events: DojoEvent[]): PlayEvents => {
       .filter(specialScoreEventFilter),
     cardActivateEvent: getCardActivateEvent(events),
   };
-
   return playEvents;
 };
