@@ -93,7 +93,6 @@ export const getGameView = async (
   try {
     let tx_result: any = await client.game_views.getGameData(gameId);
 
-    console.log("game data", tx_result);
     return {
       game: {
         id: gameId,

@@ -13,8 +13,8 @@ import {
   VIOLET_LIGHT,
 } from "../theme/colors.tsx";
 import { DailyMissionDifficulty } from "../types/DailyMissions.ts";
-import { needsPadding } from "./capacitorUtils.ts";
 import { getEnvString } from "./getEnvValue.ts";
+import { isNative, nativePaddingTop } from "./capacitorUtils.ts";
 
 const TOAST_COMMON_OPTIONS: ExternalToast = {
   id: "transaction",
@@ -30,7 +30,7 @@ const TOAST_COMMON_OPTIONS: ExternalToast = {
     right: "12px",
     left: "unset",
     width: "30px",
-    top: needsPadding ? "50px" : "0px",
+    top: nativePaddingTop,
   },
   duration: 1750,
 };
@@ -108,14 +108,14 @@ export const showAchievementToast = (achievementIds: string[]): void => {
   const leftPosition = isMobile ? "8px" : "26px";
   const marginTop = isMobile ? 80 : 60;
 
-  const getAchievementToastOptions = (needsPadding: boolean): ExternalToast => {
+  const getAchievementToastOptions = (): ExternalToast => {
     const baseStyle = {
-      position: needsPadding
+      position: isNative
         ? "absolute"
         : ((isMobile ? "top-left" : "bottom-left") as any),
       left: leftPosition,
       margin: 0,
-      ...(needsPadding ? { top: "50px" } : { offset: "0px" }),
+      ...(isNative ? { top: nativePaddingTop } : { offset: "0px" }),
     };
 
     return {
@@ -171,7 +171,7 @@ export const showAchievementToast = (achievementIds: string[]): void => {
             </Box>
           </Box>
         ),
-        getAchievementToastOptions(needsPadding)
+        getAchievementToastOptions()
       );
     }, index * 200);
   });

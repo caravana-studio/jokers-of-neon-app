@@ -6,6 +6,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
+import { isNativeAndroid } from "../utils/capacitorUtils";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -21,8 +22,6 @@ const getBackgroundColor = (type: string) => {
 const getBackgroundImage = (type: string) => {
   switch (type) {
     case "white":
-      return "none";
-    case "rage":
       return "none";
     default:
       return `url(/bg/${type}-bg.jpg)`;
@@ -77,6 +76,24 @@ const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
   home: {
     bg: BackgroundType.Home,
   },
+  "my-games": {
+    bg: BackgroundType.Home,
+  },
+  "entering-tournament": {
+    bg: BackgroundType.Home,
+  },
+  leaderboard: {
+    bg: BackgroundType.Home,
+  },
+  settings: {
+    bg: BackgroundType.Home,
+  },
+  deck: {
+    bg: BackgroundType.Home,
+  },
+  docs: {
+    bg: BackgroundType.Home,
+  },
   map: {
     bg: BackgroundType.Map,
   },
@@ -95,7 +112,10 @@ export const Background = ({ children }: PropsWithChildren) => {
   const location = useLocation();
   const pathname = location.pathname.split("/")?.[1];
   const page = pathname === "" ? "home" : pathname;
-  const type = bgConfig[page]?.bg;
+  const type =
+    isRageRound && bgConfig[page]?.bg === BackgroundType.Game
+      ? BackgroundType.Rage
+      : bgConfig[page]?.bg;
 
   const [src, setSrc] = useState("");
   const [videoType, setVideoType] = useState<BackgroundType>(
@@ -105,9 +125,7 @@ export const Background = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (type) {
       setSrc(`/bg/${type}-bg.jpg`);
-      setVideoType(
-        isRageRound && type === BackgroundType.Game ? BackgroundType.Rage : type
-      );
+      setVideoType(type);
     }
   }, [type, isRageRound]);
 
@@ -155,7 +173,7 @@ export const Background = ({ children }: PropsWithChildren) => {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {isClassic && <BackgroundVideo type={videoType} />}
+      {isClassic && !isNativeAndroid && <BackgroundVideo type={videoType} />}
 
       {children}
     </Box>

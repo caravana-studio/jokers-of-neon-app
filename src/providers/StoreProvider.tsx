@@ -150,15 +150,12 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
     setLocked(true);
     stateBuyCard(card);
     const cost = card?.discount_cost ? card.discount_cost : card?.price ?? 0;
-    console.log("removing cash", cost);
     removeCash(cost);
 
     const promise = dojoBuyCard(gameId, card.idx, getCardType(card))
       .then(async ({ success }) => {
-        console.log("then", success);
         if (!success) {
           stateRollbackBuyCard(card);
-          console.log("no success, adding cash", cost);
           addCash(cost);
         }
         fetchDeck(client, gameId, getCardData);
@@ -166,7 +163,6 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
       })
       .catch(() => {
         stateRollbackBuyCard(card);
-        console.log("catch, adding cash", cost);
         addCash(cost);
         return false;
       })

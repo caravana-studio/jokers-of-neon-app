@@ -544,11 +544,6 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
     },
     {
       target: ".game-tutorial-power-up-1",
@@ -561,11 +556,6 @@ const loadTutorialTranslations = async () => {
       hideFooter: true,
       spotlightClicks: true,
       spotlightPadding: 0,
-      styles: {
-        options: {
-          arrowColor: "none",
-        },
-      },
     },
     // play
     {
@@ -617,7 +607,7 @@ const loadTutorialTranslations = async () => {
       disableScrollParentFix: true,
       spotlightPadding: 0,
       offset: 0,
-      disableOverlay: isMobile ? true : false,
+      spotlightClicks: false,
       styles: !isMobile
         ? {
             options: {

@@ -17,7 +17,11 @@ export const getCardPlayEvents = (events: DojoEvent[]) => {
       const handItems = getArrayValueFromEvent(event, firstArrayLength * 2 + 7);
       
       // Create separate events for each hand item
-      return handItems.map(handItem => ({
+      return specials.length > 0 && handItems.length === 0 ? specials.map((specialItem) => ({
+        specials: [specialItem],
+        hand: [],
+        eventType,
+      })) : handItems.map((handItem) => ({
         specials,
         hand: [handItem],
         eventType,

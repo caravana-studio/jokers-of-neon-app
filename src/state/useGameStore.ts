@@ -103,7 +103,6 @@ type GameStore = {
 };
 
 const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
-  console.log("refetchint game store");
   const { round, game } = await getGameView(client, gameId);
   const specialCards = await getSpecialCardsView(client, gameId);
   const rageCards = getRageCards(round.rages);
@@ -194,7 +193,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopId: 0,
 
   refetchGameStore: async (client, gameId) => {
-    console.log("refetchingGameStore");
     await doRefetchGameStore(client, gameId, set);
   },
 
@@ -252,17 +250,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addCash: (cashToAdd: number) => {
     const { cash: currentCash } = get();
-    console.log("currentCash", currentCash);
-    console.log("cashToAdd", cashToAdd);
-    console.log("new cash", currentCash + cashToAdd);
     set({ cash: currentCash + cashToAdd });
   },
 
   removeCash: (cashToRemove: number) => {
     const { cash: currentCash } = get();
-    console.log("currentCash", currentCash);
-    console.log("cashToRemove", cashToRemove);
-    console.log("new cash", currentCash - cashToRemove);
     set({ cash: currentCash - cashToRemove });
   },
 

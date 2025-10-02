@@ -37,11 +37,9 @@ export const DocsPage: React.FC<DocsProps> = ({ lastIndexTab = 0 }) => {
       setIsLoading(false);
       setMyCollection([]);
     } else {
-      console.log("loggedInUser", loggedInUser);
       if (loggedInUser) {
         getUserSpecialCards(client, loggedInUser).then((collections) => {
           setIsLoading(false);
-          console.log("collections", collections);
           setMyCollection(collections);
         });
       }

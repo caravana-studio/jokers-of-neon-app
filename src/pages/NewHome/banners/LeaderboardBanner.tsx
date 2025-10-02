@@ -17,7 +17,6 @@ export const LeaderboardBanner = () => {
   const navigate = useNavigate();
   const { id: gameId } = useGameStore();
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
-  console.log("fullLeaderboard", fullLeaderboard);
 
   const leaders = fullLeaderboard
     ?.slice(0, 3)

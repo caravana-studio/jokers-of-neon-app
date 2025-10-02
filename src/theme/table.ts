@@ -109,6 +109,7 @@ const storeMobile = definePartsStyle({
       py: 2,
       px: 1,
       width: "auto",
+      height: "auto",
       textAlign: "center",
     },
   },
@@ -128,22 +129,21 @@ const deck = definePartsStyle({
   th: {
     fontFamily: "Orbitron",
     fontSize: ["7px", "7px", "sm", "md"],
-    verticalAlign: "bottom", 
+    verticalAlign: "bottom",
   },
   td: {
     fontFamily: "Orbitron",
-    fontSize: ["7px", "7px", "sm", "md"], 
+    fontSize: ["7px", "7px", "sm", "md"],
     p: 0,
     m: 0,
     verticalAlign: "bottom",
   },
   thead: {
     td: {
-      verticalAlign: "bottom", 
+      verticalAlign: "bottom",
     },
   },
 });
-
 
 export const tableTheme = defineMultiStyleConfig({
   baseStyle: baseStyle,
