@@ -24,7 +24,6 @@ export const CurrentPlay = () => {
 
   useEffect(() => {
     if (preSelectedCards.length > 0) {
-      console.log("preselectedCards", preSelectedCards);
       let play = checkHand(
         hand,
         preSelectedCards,
