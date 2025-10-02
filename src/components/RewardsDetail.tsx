@@ -8,6 +8,10 @@ import { VIOLET_LIGHT } from "../theme/colors";
 import { RoundRewards } from "../types/RoundRewards.ts";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
+import { VFX_SPARKLES } from "../constants/vfx.ts";
+import { StaggeredList } from "./animations/StaggeredList.tsx";
+import { useState } from "react";
+import { FireworkParticlesAnimation } from "./animations/FireworkParticlesAnimation.tsx";
 
 interface RewardItemProps {
   label: string;
@@ -92,43 +96,67 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
 
   const navigate = useCustomNavigate();
   const { currentScore } = useGameStore();
+  const [animationEnded, setAnimationEnded] = useState(false);
+  const [skip, setSkip] = useState(false);
 
   return (
-    <PinkBox
-      title={`${t("title", { round: roundNumber })}`}
-      button={t("continue-btn")}
-      onClick={() => {
-        navigate(GameStateEnum.Map);
-      }}
+    <Flex
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
+      w="100%"
+      maxW="550px"
+      onClick={() => setSkip(true)}
     >
-      <Heading color="lightViolet" size="s">
-        {" "}
-        {t("final-score", { score: currentScore })}{" "}
-      </Heading>
+      <FireworkParticlesAnimation spriteSrc={VFX_SPARKLES}>
+        <PinkBox
+          title={`${t("title", { round: roundNumber })}`}
+          button={t("continue-btn")}
+          onClick={() => {
+            navigate(GameStateEnum.Map);
+          }}
+          actionHidden={!animationEnded}
+        >
+          <Heading color="lightViolet" size="s">
+            {" "}
+            {t("final-score", { score: currentScore })}{" "}
+          </Heading>
 
-      <RewardItem label={labels[0]} value={round_defeat} />
-      <RewardItem label={labels[2]} value={hands_left_cash} />
-      <RewardItem label={labels[3]} value={discard_left_cash} />
-      {rage_card_defeated_cash > 0 && (
-        <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
-      )}
-      {rerolls > 0 && <RewardItem label={labels[4]} value={rerolls} reroll />}
+          <StaggeredList
+            stagger={0.5}
+            onEnd={() => setAnimationEnded(true)}
+            delayStart={1}
+            skip={skip}
+          >
+            <RewardItem label={labels[0]} value={round_defeat} />
+            <RewardItem label={labels[2]} value={hands_left_cash} />
+            <RewardItem label={labels[3]} value={discard_left_cash} />
+            {rage_card_defeated_cash > 0 && (
+              <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
+            )}
+            {rerolls > 0 && (
+              <RewardItem label={labels[4]} value={rerolls} reroll />
+            )}
 
-      <Flex
-        color={VIOLET_LIGHT}
-        pt={{ base: 4, sm: 8 }}
-        pb={4}
-        w="90%"
-        justifyContent="space-between"
-      >
-        <Heading color="lightViolet" variant="italic">
-          {t("total")}
-        </Heading>
-        <Heading color="lightViolet" variant="italic">
-          {total}
-          <CashSymbol />
-        </Heading>
-      </Flex>
-    </PinkBox>
+            <Flex
+              color={VIOLET_LIGHT}
+              pt={{ base: 4, sm: 8 }}
+              pb={4}
+              w="90%"
+              justifyContent="space-between"
+            >
+              <Heading color="lightViolet" variant="italic">
+                {t("total")}
+              </Heading>
+              <Heading color="lightViolet" variant="italic">
+                {total}
+                <CashSymbol />
+              </Heading>
+            </Flex>
+          </StaggeredList>
+        </PinkBox>
+      </FireworkParticlesAnimation>
+    </Flex>
   );
 };
