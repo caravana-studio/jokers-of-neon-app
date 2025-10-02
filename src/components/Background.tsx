@@ -6,7 +6,7 @@ import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
-import { isAndroid, isMobile } from "react-device-detect";
+import { isNativeAndroid } from "../utils/capacitorUtils";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -173,7 +173,7 @@ export const Background = ({ children }: PropsWithChildren) => {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {isClassic && !isAndroid && <BackgroundVideo type={videoType} />}
+      {isClassic && !isNativeAndroid && <BackgroundVideo type={videoType} />}
 
       {children}
     </Box>
