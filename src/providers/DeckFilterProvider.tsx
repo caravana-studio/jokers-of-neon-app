@@ -17,7 +17,6 @@ export const DeckFilterProvider = ({ children }: { children: ReactNode }) => {
   const [filterButtonsState, setFilters] =
     useState<DeckFiltersState>(defaultFilters);
 
-  // This new function contains all the logic for toggling filters.
   const updateFilters = (filterToToggle: Partial<DeckFiltersState>) => {
     setFilters((currentFilters) => {
       const [key, value] = Object.entries(filterToToggle)[0] as [
@@ -25,11 +24,9 @@ export const DeckFilterProvider = ({ children }: { children: ReactNode }) => {
         any,
       ];
 
-      // If the filter we're clicking is already the active one, turn it off.
       if (currentFilters[key] === value) {
-        return defaultFilters; // Reset all filters
+        return defaultFilters;
       } else {
-        // Otherwise, clear all other filters and set the new one.
         return { ...defaultFilters, ...filterToToggle };
       }
     });

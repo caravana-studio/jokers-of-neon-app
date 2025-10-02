@@ -23,17 +23,6 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   const noNeonCards = !deck?.fullDeckCards.some((card) => card.isNeon);
   const noModifierCards = !deck?.fullDeckCards.some((card) => card.isModifier);
 
-  // const handleFilterChange = (filter: Partial<typeof filterButtonsState>) => {
-  //   updateFilters({
-  //     suit: undefined,
-  //     isNeon: undefined,
-  //     isModifier: undefined,
-  //     isFigures: undefined,
-  //     isAces: undefined,
-  //     ...filter,
-  //   });
-  // };
-  console.log({ filterButtonsState });
   return (
     <Flex flexDirection={"column"} px={5}>
       <Flex
