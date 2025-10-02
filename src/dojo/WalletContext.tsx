@@ -13,7 +13,6 @@ import { isMobile } from "react-device-detect";
 import { Account, AccountInterface } from "starknet";
 import { Icons } from "../constants/icons";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { controller } from "./controller/controller";
@@ -171,7 +170,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  if (accountType === null) {
+  if (accountType === null || !finalAccount) {
     return (
       <PreThemeLoadingPage>
         <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
@@ -225,10 +224,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         </Flex>
       </PreThemeLoadingPage>
     );
-  } else if (!finalAccount && accountType !== null) {
-    return <LoadingScreen />;
   }
-
   const isLoadingWallet =
     (connectionStatus === "connecting_controller" &&
       (isControllerConnected === false || controllerAccount === undefined)) ||

@@ -59,4 +59,5 @@ export const controller =
         rpc: RPC_URL,
         chainId: defaultChainId,
         redirectUrl: "jokers://open",
+        disconnectRedirectUrl: "jokers://open",
       }));
