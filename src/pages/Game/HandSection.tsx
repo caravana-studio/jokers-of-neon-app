@@ -16,6 +16,7 @@ import { CardContainerWithBorder } from "../../components/CardContainerWithBorde
 import { ShowPlays } from "../../components/ShowPlays";
 import { SortBy } from "../../components/SortBy";
 import { TiltCard } from "../../components/TiltCard";
+import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 import { HAND_SECTION_ID } from "../../constants/general";
 import { preselectedCardSfx } from "../../constants/sfx";
 import { CARD_HEIGHT, CARD_WIDTH } from "../../constants/visualProps";
@@ -28,7 +29,6 @@ import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { isTutorial } from "../../utils/isTutorial";
 import { Coins } from "./Coins";
-import { TUTORIAL_STEPS } from "../../constants/gameTutorial";
 
 interface HandSectionProps {
   onTutorialCardClick?: () => void;
@@ -132,8 +132,7 @@ export const HandSection = ({ onTutorialCardClick }: HandSectionProps) => {
                 const isActiveTutorialStep =
                   targetSelector === `.${cardClassName}`;
 
-                const isAnyHandCardTargeted = targetSelector
-                  .toString()
+                const isAnyHandCardTargeted = targetSelector?.toString()
                   .startsWith(".hand-element-");
 
                 const isClickDisabled =
