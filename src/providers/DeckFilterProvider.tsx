@@ -14,13 +14,26 @@ export const DeckFilterContext = createContext<DeckFiltersContextType | null>(
 );
 
 export const DeckFilterProvider = ({ children }: { children: ReactNode }) => {
-  const [filterButtonsState, setFilterButtonsState] =
+  const [filterButtonsState, setFilters] =
     useState<DeckFiltersState>(defaultFilters);
 
-  const updateFilters = (newFilters: DeckFiltersState) => {
-    setFilterButtonsState(newFilters);
-  };
+  // This new function contains all the logic for toggling filters.
+  const updateFilters = (filterToToggle: Partial<DeckFiltersState>) => {
+    setFilters((currentFilters) => {
+      const [key, value] = Object.entries(filterToToggle)[0] as [
+        keyof DeckFiltersState,
+        any,
+      ];
 
+      // If the filter we're clicking is already the active one, turn it off.
+      if (currentFilters[key] === value) {
+        return defaultFilters; // Reset all filters
+      } else {
+        // Otherwise, clear all other filters and set the new one.
+        return { ...defaultFilters, ...filterToToggle };
+      }
+    });
+  };
   return (
     <DeckFilterContext.Provider value={{ filterButtonsState, updateFilters }}>
       {children}

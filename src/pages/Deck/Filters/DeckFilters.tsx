@@ -23,17 +23,17 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
   const noNeonCards = !deck?.fullDeckCards.some((card) => card.isNeon);
   const noModifierCards = !deck?.fullDeckCards.some((card) => card.isModifier);
 
-  const handleFilterChange = (filter: Partial<typeof filterButtonsState>) => {
-    updateFilters({
-      suit: undefined,
-      isNeon: undefined,
-      isModifier: undefined,
-      isFigures: undefined,
-      isAces: undefined,
-      ...filter,
-    });
-  };
-
+  // const handleFilterChange = (filter: Partial<typeof filterButtonsState>) => {
+  //   updateFilters({
+  //     suit: undefined,
+  //     isNeon: undefined,
+  //     isModifier: undefined,
+  //     isFigures: undefined,
+  //     isAces: undefined,
+  //     ...filter,
+  //   });
+  // };
+  console.log({ filterButtonsState });
   return (
     <Flex flexDirection={"column"} px={5}>
       <Flex
@@ -48,14 +48,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.club").toUpperCase()}
           icon="CLUB"
           isActive={filterButtonsState.suit === Suits.CLUBS}
-          onClick={() =>
-            handleFilterChange({
-              suit:
-                filterButtonsState.suit !== Suits.CLUBS
-                  ? Suits.CLUBS
-                  : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: Suits.CLUBS })}
           filterFn={filterBySuit(Suits.CLUBS)}
           inStore={inStore}
         />
@@ -63,14 +56,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.spade").toUpperCase()}
           icon="SPADE"
           isActive={filterButtonsState.suit === Suits.SPADES}
-          onClick={() =>
-            handleFilterChange({
-              suit:
-                filterButtonsState.suit !== Suits.SPADES
-                  ? Suits.SPADES
-                  : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: Suits.SPADES })}
           filterFn={filterBySuit(Suits.SPADES)}
           inStore={inStore}
         />
@@ -78,14 +64,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.heart").toUpperCase()}
           icon="HEART"
           isActive={filterButtonsState.suit === Suits.HEARTS}
-          onClick={() =>
-            handleFilterChange({
-              suit:
-                filterButtonsState.suit !== Suits.HEARTS
-                  ? Suits.HEARTS
-                  : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: Suits.HEARTS })}
           filterFn={filterBySuit(Suits.HEARTS)}
           inStore={inStore}
         />
@@ -93,14 +72,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.diamond").toUpperCase()}
           icon="DIAMOND"
           isActive={filterButtonsState.suit === Suits.DIAMONDS}
-          onClick={() =>
-            handleFilterChange({
-              suit:
-                filterButtonsState.suit !== Suits.DIAMONDS
-                  ? Suits.DIAMONDS
-                  : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: Suits.DIAMONDS })}
           filterFn={filterBySuit(Suits.DIAMONDS)}
           inStore={inStore}
         />
@@ -108,14 +80,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.joker").toUpperCase()}
           icon="JOKER"
           isActive={filterButtonsState.suit === Suits.JOKER}
-          onClick={() =>
-            handleFilterChange({
-              suit:
-                filterButtonsState.suit !== Suits.JOKER
-                  ? Suits.JOKER
-                  : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: Suits.JOKER })}
           filterFn={filterBySuit(Suits.JOKER)}
           inStore={inStore}
         />
@@ -123,11 +88,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.figures").toUpperCase()}
           icon="FIGURE"
           isActive={!!filterButtonsState.isFigures}
-          onClick={() =>
-            handleFilterChange({
-              isFigures: !filterButtonsState.isFigures ? true : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: undefined, isFigures: true })}
           filterFn={(card) =>
             card.card === Cards.JACK ||
             card.card === Cards.QUEEN ||
@@ -139,11 +100,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
           label={t("suit.aces").toUpperCase()}
           icon="AS"
           isActive={!!filterButtonsState.isAces}
-          onClick={() =>
-            handleFilterChange({
-              isAces: !filterButtonsState.isAces ? true : undefined,
-            })
-          }
+          onClick={() => updateFilters({ suit: undefined, isAces: true })}
           filterFn={(card) => card.card === Cards.ACE}
           inStore={inStore}
         />
@@ -152,11 +109,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
             label={t("suit.neon").toUpperCase()}
             icon="NEON"
             isActive={!!filterButtonsState.isNeon}
-            onClick={() =>
-              handleFilterChange({
-                isNeon: !filterButtonsState.isNeon ? true : undefined,
-              })
-            }
+            onClick={() => updateFilters({ suit: undefined, isNeon: true })}
             filterFn={(card) => !!card.isNeon}
             inStore={inStore}
           />
@@ -166,11 +119,7 @@ export const DeckFilters = ({ inStore = false }: DeckFiltersProps) => {
             label={t("suit.modifier").toUpperCase()}
             icon="MODIFIER"
             isActive={!!filterButtonsState.isModifier}
-            onClick={() =>
-              handleFilterChange({
-                isModifier: !filterButtonsState.isModifier ? true : undefined,
-              })
-            }
+            onClick={() => updateFilters({ suit: undefined, isModifier: true })}
             filterFn={(card) => !!card.isModifier}
             inStore={inStore}
           />
