@@ -9,7 +9,6 @@ interface FireworkParticlesAnimationProps {
   amount?: number;
   radius?: number;
   speed?: number;
-  fadeSpeed?: number;
   active?: boolean;
 }
 
@@ -20,7 +19,6 @@ export const FireworkParticlesAnimation = ({
   amount = 30,
   radius = 400,
   speed = 2,
-  fadeSpeed = 2,
   active = true,
 }: FireworkParticlesAnimationProps) => {
   if (!active) return <>{children}</>;
@@ -28,10 +26,10 @@ export const FireworkParticlesAnimation = ({
   return (
     <Flex
       position="relative"
-      w={"100%"}
-      h={"100%"}
-      justifyContent={"center"}
-      alignItems={"center"}
+      w="100%"
+      h="100%"
+      justifyContent="center"
+      alignItems="center"
     >
       <Box
         position="absolute"
@@ -43,12 +41,11 @@ export const FireworkParticlesAnimation = ({
         overflow="visible"
       >
         {[...Array(amount)].map((_, i) => {
-          const angle = (i / amount) * Math.PI * 2;
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
+          const angle = Math.random() * Math.PI * 2;
+          const x = Math.cos(angle) * (radius * (0.5 + Math.random() * 0.5));
+          const y = Math.sin(angle) * (radius * (0.5 + Math.random() * 0.5));
 
-          const randomX = x + (Math.random() - 0.5) * radius * 0.3;
-          const randomY = y + (Math.random() - 0.5) * radius * 0.3;
+          const duration = speed * (0.5 + Math.random());
 
           return (
             <motion.div
@@ -60,16 +57,15 @@ export const FireworkParticlesAnimation = ({
                 transform: "translate(-50%, -50%)",
               }}
               animate={{
-                x: [0, randomX],
-                y: [0, randomY],
+                x: [0, x],
+                y: [0, y],
                 opacity: [1, 0],
                 scale: [1, 0],
               }}
               transition={{
-                duration: speed,
+                duration,
                 ease: "easeOut",
                 repeat: Infinity,
-                repeatDelay: Math.random() * fadeSpeed + 0.5,
               }}
             >
               <Image
