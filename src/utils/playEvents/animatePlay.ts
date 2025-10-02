@@ -80,8 +80,6 @@ export const animatePlay = (config: AnimatePlayConfig) => {
 
   if (!playEvents) return;
 
-  console.log(playEvents);
-
   // Calculate durations more concisely
   const calculateDuration = (
     events?: any[],

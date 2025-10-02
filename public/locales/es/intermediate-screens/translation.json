@@ -101,7 +101,22 @@
     "tap-open": "Toca para abrir"
   },
   "common": {
-    "go-back-btn": "Atrás"
+    "go-back-btn": "Atrás",
+    "login": "Iniciar sesión"
+  },
+  "profile-menu": {
+      "level": "Nivel",
+      "streaks": "Rachas",
+      "days": "Días",
+      "games": "Juegos",
+      "victories": "Victorias",
+      "next-level": "Siguiente nivel",
+      "my-xp": "Mi XP",
+      "my-badges": "Mis Insignias",
+      "coming-soon": "Muy pronto",
+      "select-profile-picture": "Seleccionar foto de perfil",
+      "connect": "Conectar",
+      "no-profile": "Por favor, inicia sesión para ver tu perfil"
   },
   "my-collection": {
     "title": "Colección",

@@ -77,11 +77,16 @@ export function useContextMenuItems({ onMoreClick }: UseBottomMenuItemsProps) {
         active: url === "/",
         key: "home",
       },
-      {
+      /*       {
         icon: Icons.DOCS,
         url: "/my-collection",
         active: url === "/my-collection",
         key: "collection",
+      }, */ {
+        icon: Icons.LEADERBOARD,
+        url: "/leaderboard",
+        active: url === "/leaderboard",
+        key: "leaderboard",
       },
       {
         icon: Icons.JOKER,

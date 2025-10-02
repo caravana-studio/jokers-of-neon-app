@@ -59,8 +59,6 @@ export const useCurrentHandStore = create<CurrentHandStore>((set, get) => ({
   cardTransformationLock: false,
 
   refetchCurrentHandStore: async (client, gameId) => {
-    console.log("refetchint current hand store");
-
     const { sortBy } = get();
     const hand = await getHandCards(client, gameId, sortBy);
     set({

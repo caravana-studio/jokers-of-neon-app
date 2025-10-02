@@ -50,7 +50,6 @@ export const getMap = async (
       gameId,
     );
 
-    console.log("map", tx_result);
 
     const lastVisitedNode =
       tx_result.traveled_nodes[tx_result.traveled_nodes.length - 1];
@@ -70,7 +69,6 @@ export const getMap = async (
       };
     });
 
-    console.log("nodes", nodes);
     return nodes;
   } catch (e) {
     console.log(e);

@@ -1,12 +1,10 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { RemoveScroll } from "react-remove-scroll";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
-import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
@@ -15,6 +13,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { ComingSeasonBanner } from "./banners/ComingSeasonBanner";
 import { DailyMissionsBanner } from "./banners/DailyMissionsBanner";
+import { LeaderboardBanner } from "./banners/LeaderboardBanner";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -52,9 +51,9 @@ export const NewHome = () => {
   return (
     <DelayedLoading ms={100}>
       <MobileDecoration />
-      <RemoveScroll>
+      {/*       <RemoveScroll>
         <></>
-      </RemoveScroll>
+      </RemoveScroll> */}
       <Flex
         height="100%"
         width={"100%"}
@@ -81,8 +80,16 @@ export const NewHome = () => {
             px={isSmallScreen ? 2 : 8}
             gap={3}
           >
-            <Flex h={isSmallScreen ? "120px" : "250px"} w="100%" justifyContent={"space-between"}>
-              <Flex w={isSmallScreen ? "240px" : "500px"} justifyContent={"flex-start"} alignItems="start">
+            <Flex
+              h={isSmallScreen ? "120px" : "250px"}
+              w="100%"
+              justifyContent={"space-between"}
+            >
+              <Flex
+                w={isSmallScreen ? "240px" : "500px"}
+                justifyContent={"flex-start"}
+                alignItems="start"
+              >
                 <SpineAnimation
                   jsonUrl={`/spine-animations/logo/JokerLogo.json`}
                   atlasUrl={`/spine-animations/logo/JokerLogo.atlas`}
@@ -102,40 +109,17 @@ export const NewHome = () => {
                 <ProfileTile />
               </Flex>
             </Flex>
-            <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3}>
+            <Flex flexDir={"column"} gap={3} alignItems={"center"} w="100%">
+              <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3} w="100%">
+              <LeaderboardBanner />
               <DailyMissionsBanner />
+              </Flex>
               <ComingSeasonBanner />
             </Flex>
           </Flex>
-          {!isSmallScreen && (
-            <Flex gap={8} position="absolute" bottom={'90px'}>
-              <Button onClick={() => navigate("/leaderboard")} w="300px">
-                {t("home.btn.leaderboard-btn")}
-              </Button>
-              <Button
-                onClick={handlePlayClick}
-                w="300px"
-                variant="secondarySolid"
-              >
-                {games && games.length > 0 ? t("my-games") : t("play")}
-              </Button>
-            </Flex>
-          )}
         </Flex>
-        {isSmallScreen ? (
-          <MobileBottomBar
-            firstButton={{
-              label: t("leaderboard.title"),
-              onClick: () => navigate("/leaderboard"),
-            }}
-            secondButton={{
-              label: games && games.length > 0 ? t("my-games") : t("play"),
-              onClick: handlePlayClick,
-            }}
-          />
-        ) : (
-          <Flex h="50px" />
-        )}
+
+        <Flex h="50px" />
       </Flex>
 
       {isTutorialModalOpen && (

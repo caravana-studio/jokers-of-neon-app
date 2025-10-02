@@ -6,7 +6,11 @@
       "playDemo-btn": "Play",
       "start": "Start"
     },
-    "join-discord": "Join our Discord!"
+    "join-discord": "Join our Discord!",
+    "leaderboard-banner": {
+      "title": "Torneo activo",
+      "button": "Leaderboard completo"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -36,6 +40,7 @@
   "menu": {
     "home": "Home",
     "collection": "Collection",
+    "leaderboard": "Leaderboard",
     "games": "Games",
     "profile": "Profile",
     "settings": "Settings",
