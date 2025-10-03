@@ -5,7 +5,7 @@
   "my-games": {
     "title": "Juegos",
     "go-back": "Volver",
-    "start-game": "Iniciar nuevo juego",
+    "start-game": "Nuevo juego",
     "show-finished-games": "Mostrar juegos terminados",
     "continue-btn": "Continuar",
     "start-btn": "Iniciar",
@@ -65,9 +65,9 @@
       "title": "¡Ronda {{round}} superada!",
       "base": "Base",
       "level-bonus": "Bonus del nivel",
-      "discards-left": "{{discards}} descartes restantes",
-      "hands-left": "{{hands}} manos restantes",
-      "rage-cards": "{{cards}} cartas de furia vencidas",
+      "discards-left": "{{discards}} descartes",
+      "hands-left": "{{hands}} manos",
+      "rage": "{{cards}} cartas rage vencidas",
       "total": "Total",
       "final-score": "- Puntuación final: {{score}} -",
       "continue-btn": "Continuar"
@@ -105,18 +105,18 @@
     "login": "Iniciar sesión"
   },
   "profile-menu": {
-      "level": "Nivel",
-      "streaks": "Rachas",
-      "days": "Días",
-      "games": "Juegos",
-      "victories": "Victorias",
-      "next-level": "Siguiente nivel",
-      "my-xp": "Mi XP",
-      "my-badges": "Mis Insignias",
-      "coming-soon": "Muy pronto",
-      "select-profile-picture": "Seleccionar foto de perfil",
-      "connect": "Conectar",
-      "no-profile": "Por favor, inicia sesión para ver tu perfil"
+    "level": "Nivel",
+    "streaks": "Rachas",
+    "days": "Días",
+    "games": "Juegos",
+    "victories": "Victorias",
+    "next-level": "Siguiente nivel",
+    "my-xp": "Mi XP",
+    "my-badges": "Mis Insignias",
+    "coming-soon": "Muy pronto",
+    "select-profile-picture": "Seleccionar foto de perfil",
+    "connect": "Conectar",
+    "no-profile": "Por favor, inicia sesión para ver tu perfil"
   },
   "my-collection": {
     "title": "Colección",

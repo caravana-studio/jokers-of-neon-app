@@ -13,9 +13,9 @@
   },
   "store": {
     "dynamic": {
-      "manage-items": "Gestionar items",
+      "manage-items": "Items",
       "next": "Siguiente",
-      "unlock-slot": "Desbloquear espacio",
+      "unlock-slot": "Nuevo espacio",
       "titles": {
         "traditionals": "Cartas tradicionales y neón",
         "modifiers": "Cartas modificadoras",
@@ -62,7 +62,7 @@
       "level": "Nivel",
       "price": "Precio",
       "points-multi": "Puntos/multiplicador",
-      "level-up": "Subir nivel",
+      "level-up": "Subir",
       "purchased": "Comprado"
     },
     "preview-card": {
