@@ -6,9 +6,16 @@ interface PinkBoxProps extends PropsWithChildren {
   title: string;
   button?: string;
   onClick?: () => void;
+  actionHidden?: boolean;
 }
 
-export const PinkBox = ({ children, title, button, onClick }: PinkBoxProps) => {
+export const PinkBox = ({
+  children,
+  title,
+  button,
+  onClick,
+  actionHidden = false,
+}: PinkBoxProps) => {
   return (
     <Box
       display="flex"
@@ -31,21 +38,31 @@ export const PinkBox = ({ children, title, button, onClick }: PinkBoxProps) => {
         display="grid"
         justifyItems="center"
       >
-        <Heading size={{base: 'sm', sm:"l"}} variant="italic" color={VIOLET_LIGHT} mt={4}>
+        <Heading
+          size={{ base: "sm", sm: "l" }}
+          variant="italic"
+          color={VIOLET_LIGHT}
+          mt={4}
+        >
           {title}
         </Heading>
         {children}
       </Box>
-      {button && <Button
-        className="game-tutorial-step-4"
-        mt={14}
-        w="100%"
-        size="md"
-        variant="secondarySolid"
-        onClick={onClick}
-      >
-        {button}
-      </Button>}
+      {button && (
+        <Button
+          className="game-tutorial-step-4"
+          mt={14}
+          w="100%"
+          size="md"
+          variant="secondarySolid"
+          onClick={onClick}
+          opacity={actionHidden ? 0 : 1}
+          transition={"opacity 0.3s ease-in-out"}
+          pointerEvents={actionHidden ? "none" : "auto"}
+        >
+          {button}
+        </Button>
+      )}
     </Box>
   );
 };
