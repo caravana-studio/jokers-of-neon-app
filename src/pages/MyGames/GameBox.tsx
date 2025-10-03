@@ -117,7 +117,7 @@ export const GameBox = ({
           {isSmallScreen && game.points !== undefined && (
             <Flex gap={1}>
               <Text color="lightViolet">{formatNumber(game.points)}</Text>
-              <Text>points</Text>
+              <Text>{t("points-lbl")}</Text>
             </Flex>
           )}
         </Flex>
@@ -130,7 +130,7 @@ export const GameBox = ({
                 <Text fontSize="lg" color="lightViolet">
                   {game.points?.toLocaleString()}
                 </Text>
-                <Text fontSize="lg">points</Text>
+                <Text fontSize="lg">{t("points-lbl")}</Text>
               </Flex>
             )}
           </Flex>

@@ -10,7 +10,9 @@
     "leaderboard-banner": {
       "title": "Tournament active",
       "button": "Full leaderboard"
-    }
+    },
+    "level": "level",
+    "dailyMissions": "Daily Missions"
   },
   "leaderboard": {
     "title": "Leaderboard",
