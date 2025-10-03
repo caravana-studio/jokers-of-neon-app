@@ -68,7 +68,11 @@ class SessionConnectorWrapper extends SessionConnector {
           chainId: await this.chainId(),
         };
       }
-      if (!this.connectionPromise) {
+      if (
+        !this.connectionPromise ||
+        !this.connectionPromise.promise ||
+        Object.keys(this.connectionPromise.promise).length === 0
+      ) {
         this.connectionPromise = Promise.withResolvers();
         this.handleConnect();
       }

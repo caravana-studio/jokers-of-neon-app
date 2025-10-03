@@ -3,26 +3,28 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
+import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
 import { useGameContext } from "../../providers/GameProvider";
+import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { ComingSeasonBanner } from "./banners/ComingSeasonBanner";
-import { DailyMissionsBanner } from "./banners/DailyMissionsBanner";
-import { LeaderboardBanner } from "./banners/LeaderboardBanner";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
+  const { settings, loading } = useDistributionSettings();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
+
+  const banners = settings?.home?.banners || [];
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -111,10 +113,10 @@ export const NewHome = () => {
             </Flex>
             <Flex flexDir={"column"} gap={3} alignItems={"center"} w="100%">
               <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3} w="100%">
-              <LeaderboardBanner />
-              <DailyMissionsBanner />
+                {banners[0] && <BannerRenderer banner={banners[0]} />}
+                {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>
-              <ComingSeasonBanner />
+              {banners[2] && <BannerRenderer banner={banners[2]} />}
             </Flex>
           </Flex>
         </Flex>
