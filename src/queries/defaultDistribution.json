@@ -1,0 +1,22 @@
+{
+  "home": {
+    "banners": [
+      {
+        "id": "leaderboard",
+        "position": 1,
+        "type": "LEADERBOARD"
+      },
+      {
+        "id": "daily-missions",
+        "position": 2,
+        "type": "DAILY_MISSIONS"
+      },
+      {
+        "id": "s1-coming-soon",
+        "position": 3,
+        "type": "image",
+        "url": "https://jokersofneon.com/app/banners/s1-coming-soon.png"
+      }
+    ]
+  }
+}
