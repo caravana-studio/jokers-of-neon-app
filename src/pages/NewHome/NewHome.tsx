@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Preferences } from '@capacitor/preferences';
 import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
@@ -33,14 +34,17 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
 
   useEffect(() => {
-    if (isNative) {
-      fetchVersion().then((version) => {
+    if (!isNative) {
+      fetchVersion().then(async (version) => {
         setVersion(version);
-        if (
-          version !== APP_VERSION &&
-          window.localStorage.getItem(SKIPPED_VERSION) !== version
-        ) {
-          setVersionModalOpen(true);
+        try {
+          const res = await Preferences.get({ key: SKIPPED_VERSION });
+          const skipped = res.value;
+          if (version !== APP_VERSION && skipped !== version) {
+            setVersionModalOpen(true);
+          }
+        } catch (e) {
+          console.warn("Preferences.get failed for SKIPPED_VERSION", e);
         }
       });
     }
@@ -69,9 +73,15 @@ export const NewHome = () => {
     window.open(APP_URL, "_blank");
   };
 
-  const handleSkipVersion = () => {
+  const handleSkipVersion = async () => {
     setVersionModalOpen(false);
-    version && window.localStorage.setItem(SKIPPED_VERSION, version);
+    if (version) {
+      try {
+        await Preferences.set({ key: SKIPPED_VERSION, value: version });
+      } catch (e) {
+        // ignore preferences error; nothing we can do in UI
+      }
+    }
   };
 
   const handleDeclineTutorial = () => {
