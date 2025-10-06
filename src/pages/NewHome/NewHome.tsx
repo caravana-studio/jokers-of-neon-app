@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,14 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
+import { SKIPPED_VERSION } from "../../constants/localStorage";
+import { APP_VERSION } from "../../constants/version";
 import { useGameContext } from "../../providers/GameProvider";
+import { fetchVersion } from "../../queries/fetchVersion";
 import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { APP_URL, isNative } from "../../utils/capacitorUtils";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -23,8 +27,24 @@ export const NewHome = () => {
   const { data: games } = useGetMyGames();
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
+  const [isVersionModalOpen, setVersionModalOpen] = useState(false);
+  const [version, setVersion] = useState<string | null>(null);
 
   const banners = settings?.home?.banners || [];
+
+  useEffect(() => {
+    if (isNative) {
+      fetchVersion().then((version) => {
+        setVersion(version);
+        if (
+          version !== APP_VERSION &&
+          window.localStorage.getItem(SKIPPED_VERSION) !== version
+        ) {
+          setVersionModalOpen(true);
+        }
+      });
+    }
+  }, []);
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -43,6 +63,15 @@ export const NewHome = () => {
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
+  };
+
+  const handleConfirmUpdate = () => {
+    window.open(APP_URL, "_blank");
+  };
+
+  const handleSkipVersion = () => {
+    setVersionModalOpen(false);
+    version && window.localStorage.setItem(SKIPPED_VERSION, version);
   };
 
   const handleDeclineTutorial = () => {
@@ -132,6 +161,16 @@ export const NewHome = () => {
           confirmText={t("tutorialModal.confirm-text")}
           cancelText={t("tutorialModal.cancel-text")}
           onConfirm={handleConfirmTutorial}
+        />
+      )}
+      {isVersionModalOpen && (
+        <ConfirmationModal
+          close={handleSkipVersion}
+          title={t("versionModal.title")}
+          description={t("versionModal.description")}
+          confirmText={t("versionModal.confirm-text")}
+          cancelText={t("versionModal.cancel-text")}
+          onConfirm={handleConfirmUpdate}
         />
       )}
     </DelayedLoading>

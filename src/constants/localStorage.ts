@@ -19,3 +19,4 @@ export const SKIP_PRESENTATION = "hasSeenPresentation";
 export const STORE_LAST_TAB_INDEX = "STORE_LAST_TAB_INDEX";
 export const LAST_PAGE = "LAST_PAGE";
 export const ACCOUNT_TYPE = "ACCOUNT_TYPE";
+export const SKIPPED_VERSION = "SKIPPED_VERSION";

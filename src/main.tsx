@@ -11,6 +11,7 @@ import { createRef } from "react";
 import { I18nextProvider } from "react-i18next";
 import { FadeInOut } from "./components/animations/FadeInOut.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
+import { APP_VERSION } from "./constants/version";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import { WalletProvider } from "./dojo/WalletContext.tsx";
@@ -18,16 +19,19 @@ import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
+import { VersionMismatch } from "./pages/VersionMismatch.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
+import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
 import {
   LoadingProgress,
   LoadingScreenHandle,
 } from "./types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { isNative } from "./utils/capacitorUtils.ts";
+import { getMajor, getMinor } from "./utils/versionUtils.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -65,6 +69,20 @@ async function init() {
   let setCanFadeOut: (value: boolean) => void = () => {};
 
   const theme = extendTheme(customTheme);
+
+  fetchVersion().then((version) => {
+    // If the major or minor version is different, block the app
+    if (
+      isNative &&
+      (getMajor(version) !== getMajor(APP_VERSION) ||
+        getMinor(version) !== getMinor(APP_VERSION))
+    ) {
+      console.log("Version mismatch", version, APP_VERSION);
+      root.render(
+          <VersionMismatch />
+      );
+    }
+  });
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
