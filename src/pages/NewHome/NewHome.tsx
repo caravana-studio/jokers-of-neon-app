@@ -1,12 +1,13 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Preferences } from '@capacitor/preferences';
+import { Preferences } from "@capacitor/preferences";
 import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
@@ -155,12 +156,31 @@ export const NewHome = () => {
                 {banners[0] && <BannerRenderer banner={banners[0]} />}
                 {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>
-              {banners[2] && <BannerRenderer banner={banners[2]} />}
+              {banners[2] && isSmallScreen && (
+                <BannerRenderer banner={banners[2]} />
+              )}
             </Flex>
           </Flex>
         </Flex>
-
-        <Flex h="50px" />
+        {!isSmallScreen && (
+          <Flex position="absolute" bottom="90px">
+            <Button
+              onClick={handlePlayClick}
+              w="300px"
+              variant="secondarySolid"
+            >
+              {games && games.length > 0 ? t("my-games") : t("play")}
+            </Button>
+          </Flex>
+        )}
+        {isSmallScreen && (
+          <MobileBottomBar
+            firstButton={{
+              label: games && games.length > 0 ? t("my-games") : t("play"),
+              onClick: handlePlayClick,
+            }}
+          />
+        )}
       </Flex>
 
       {isTutorialModalOpen && (
