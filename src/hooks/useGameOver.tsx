@@ -1,12 +1,15 @@
+import { AppLauncher } from "@capacitor/app-launcher";
+import { Browser } from "@capacitor/browser";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { GAME_ID } from "../constants/localStorage";
 import { looseSfx } from "../constants/sfx";
-import { useAudio } from "./useAudio";
 import { useGameContext } from "../providers/GameProvider";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { signedHexToNumber } from "../utils/signedHexToNumber";
+import { useAudio } from "./useAudio";
+import { isNative } from "../utils/capacitorUtils";
 
 const GAME_URL = "https://jokersofneon.com";
 
@@ -45,8 +48,6 @@ export const useGameOver = () => {
     };
   }, [looseSound, stopLooseSound]);
 
-
-
   const onStartGameClick = () => {
     setIsLoading(true);
     localStorage.removeItem(GAME_ID);
@@ -54,12 +55,34 @@ export const useGameOver = () => {
     executeCreateGame();
   };
 
-  const onShareClick = () => {
-    window.open(
-      `https://twitter.com/intent/tweet?text=%F0%9F%83%8F%20I%20just%20finished%20a%20game%20in%20%40jokers_of_neon%20%E2%80%94%20check%20out%20my%20results%3A%0A%F0%9F%8F%85%20Rank%3A%20${actualPlayer?.position ?? 0}%0A%F0%9F%94%A5%20Level%3A%20${actualPlayer?.level ?? 0}%0A%0AJoin%20me%20and%20test%20the%20early%20access%20version%0A${GAME_URL}%2F%20%F0%9F%83%8F%E2%9C%A8
-`,
-      "_blank"
-    );
+  const onShareClick = async () => {
+    const message =
+      "🃏 I just finished a game in @jokers_of_neon — check out my results:\n" +
+      `🏅 Rank: ${actualPlayer?.position ?? 0}\n` +
+      `🔥 Level: ${actualPlayer?.level ?? 0}\n\n` +
+      "Join me and test the early access version";
+
+    const site = "https://jokersofneon.com/";
+
+    const u = new URL("https://twitter.com/intent/tweet");
+    u.searchParams.set("text", message);
+    u.searchParams.set("url", site);
+
+    try {
+      const native = `twitter://post?message=${encodeURIComponent(`${message}\n${site}`)}`;
+      const canOpen = await AppLauncher.canOpenUrl({ url: native });
+      if (!isNative) {
+        return window.open(u, "_blank");
+      } else if (canOpen.value) {
+        await AppLauncher.openUrl({ url: native });
+        return;
+      }
+    } catch {
+      // if it fails, continue to the next step
+    }
+
+    // 3) Fallback: open intent web in system browser
+    await Browser.open({ url: u.toString() });
   };
 
   return {
