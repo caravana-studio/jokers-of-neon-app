@@ -29,6 +29,7 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { logEvent } from "../../utils/analytics.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
@@ -157,6 +158,7 @@ export const MobileGameContent = () => {
       }
 
       if (type === "tour:end") {
+        logEvent("tutorial_finished");
         setRunCallback(false);
         switch (state) {
           case GameStateEnum.Store:
