@@ -18,6 +18,7 @@ import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { logEvent } from "../../utils/analytics";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -34,6 +35,7 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
 
   useEffect(() => {
+    logEvent( "open_home_page")
     if (isNative) {
       fetchVersion().then(async (version) => {
         setVersion(version);

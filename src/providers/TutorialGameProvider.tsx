@@ -6,28 +6,28 @@ import {
   pointsSfx,
   preselectedCardSfx,
 } from "../constants/sfx";
-import { getPlayerPokerHands } from "../dojo/getPlayerPokerHands";
+import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useDojo } from "../dojo/useDojo";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
 import { useAudio } from "../hooks/useAudio";
+import { useAnimationStore } from "../state/useAnimationStore.ts";
+import { useCurrentHandStore } from "../state/useCurrentHandStore";
+import { useGameStore } from "../state/useGameStore";
+import { LevelPokerHand } from "../types/LevelPokerHand.ts";
+import { logEvent } from "../utils/analytics.ts";
+import { H10 } from "../utils/mocks/cardMocks.ts";
+import {
+  EVENT_FLUSH,
+  EVENT_PAIR,
+  EVENT_PAIR_POWER_UPS,
+  HAND_1,
+  HAND_2,
+  MOCKED_PLAYS,
+} from "../utils/mocks/tutorialMocks.ts";
 import { animatePlay } from "../utils/playEvents/animatePlay.ts";
 import { useCardAnimations } from "./CardAnimationsProvider";
 import { IGameContext } from "./GameProvider";
 import { gameProviderDefaults } from "./gameProviderDefaults.ts";
-import { useCurrentHandStore } from "../state/useCurrentHandStore";
-import { useGameStore } from "../state/useGameStore";
-import {
-  HAND_1,
-  HAND_2,
-  EVENT_PAIR,
-  EVENT_PAIR_POWER_UPS,
-  EVENT_FLUSH,
-  MOCKED_PLAYS,
-} from "../utils/mocks/tutorialMocks.ts";
-import { useAnimationStore } from "../state/useAnimationStore.ts";
-import { GameStateEnum } from "../dojo/typescript/custom.ts";
-import { H10 } from "../utils/mocks/cardMocks.ts";
-import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 
 export const TutorialGameContext =
   createContext<IGameContext>(gameProviderDefaults);
@@ -38,6 +38,10 @@ const TUTORIAL_EVENTS = [EVENT_PAIR, EVENT_PAIR_POWER_UPS, EVENT_FLUSH];
 const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
   const [indexEvent, setIndexEvent] = useState(0);
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    logEvent("tutorial_step", { step })
+  }, [step])
 
   const {
     setPlayIsNeon,
