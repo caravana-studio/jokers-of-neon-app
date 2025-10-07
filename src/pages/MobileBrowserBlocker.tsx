@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { isMobile } from "react-device-detect";
-import { APP_URL } from "../utils/capacitorUtils";
+import { isAndroid, isMobile } from "react-device-detect";
 import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
+import { ANDROID_URL, IOS_URL } from "../utils/capacitorUtils";
 
 export const MobileBrowserBlocker = () => {
   return (
@@ -18,14 +18,17 @@ export const MobileBrowserBlocker = () => {
         MOBILE BROWSERS ARE NOT SUPPORTED <br /> Please download the app to
         continue
       </Text>
-      <Flex onClick={() => {
-            window.open(APP_URL, "_blank");
-          }}flexDirection={"row"} mt="20px">
+      <Flex
+        onClick={() => {
+          window.open(isAndroid ? ANDROID_URL : IOS_URL, "_blank");
+        }}
+        flexDirection={"row"}
+        mt="20px"
+      >
         <img
-          
-          src="/download/ios-black.svg"
-          width="150px"
-          alt="Download on the App Store"
+          src={`/download/${isAndroid ? "android" : "ios-black"}.svg`}
+          width="170px"
+          alt="Download"
         />
       </Flex>
     </PreThemeLoadingPage>
