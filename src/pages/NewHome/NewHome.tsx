@@ -34,7 +34,7 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
 
   useEffect(() => {
-    if (!isNative) {
+    if (isNative) {
       fetchVersion().then(async (version) => {
         setVersion(version);
         try {
