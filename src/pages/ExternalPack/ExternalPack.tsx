@@ -14,7 +14,9 @@ export const ExternalPack = () => {
 
   const [step, setStep] = useState(0);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const [computedWidth, setComputedWidth] = useState<number | undefined>(undefined);
+  const [computedWidth, setComputedWidth] = useState<number | undefined>(
+    undefined
+  );
 
   useLayoutEffect(() => {
     const calc = () => {
@@ -69,11 +71,20 @@ export const ExternalPack = () => {
           <Flex
             h="50vh"
             width={computedWidth ? `${computedWidth}px` : undefined}
-            transform={step === 0 ? "unset" : "translateY(40vh)"}
+            transform={step === 0 ? "unset" : step === 1 ? "translateY(40vh)" : "translateY(50vh)"}
             transition="all 2s ease"
+            opacity={step === 2 ? 0 : 1}
           >
-            <div ref={contentRef} style={{ display: "flex", alignItems: "stretch" }}>
-              <PackTear onOpened={() => alert("opened")} width={computedWidth ? computedWidth + 46 : 300} />
+            <div
+              ref={contentRef}
+              style={{ display: "flex", alignItems: "stretch" }}
+            >
+              <PackTear
+                onOpened={() => {
+                  setStep(2);
+                }}
+                width={computedWidth ? computedWidth + 46 : 300}
+              />
               <CachedImage
                 src="/packs/legendary.png"
                 h="100%"

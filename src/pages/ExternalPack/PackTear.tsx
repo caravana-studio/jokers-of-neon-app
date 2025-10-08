@@ -2,10 +2,10 @@ import { Flex } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
-  width?: number; // pack width in px
-  height?: number; // visible height (only the top area)
-  onOpened?: () => void; // callback when the pack opens
-  onFail?: () => void; // optional: callback when a stroke ends without opening
+  width?: number;         // pack width in px
+  height?: number;        // visible height (only the top area)
+  onOpened?: () => void;  // callback when the pack opens
+  onFail?: () => void;    // optional: callback when a stroke ends without opening
 };
 
 export default function PackTear({
@@ -17,11 +17,11 @@ export default function PackTear({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [opened, setOpened] = useState(false);
 
-  // “Bins” across the tear line to verify horizontal coverage
-  const BIN_COUNT = 24; // more bins = finer detection
+  // bins across the tear line to verify horizontal coverage
+  const BIN_COUNT = 24;        // more bins = finer detection
   const COVERAGE_TARGET = 0.8; // 80% of bins touched
   const TEAR_BAND_HEIGHT = 28; // vertical band where the stroke must pass
-  const LINE_THICKNESS = 3; // visual line thickness
+  const LINE_THICKNESS = 3;    // visual line thickness
 
   // internal state
   const stateRef = useRef({
@@ -33,17 +33,22 @@ export default function PackTear({
   });
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
-    // HiDPI support
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // perf hint (some browsers ignore it; it's harmless)
+    const ctx =
+      (canvas.getContext("2d", { desynchronized: true } as any) ||
+        canvas.getContext("2d"))!;
     const dpr = window.devicePixelRatio || 1;
     stateRef.current.dpr = dpr;
+
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    // Fully transparent background; we only draw the stroke
+    // fully transparent background; we only draw the stroke
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
@@ -52,7 +57,7 @@ export default function PackTear({
   }, [width, height]);
 
   const clearCanvas = () => {
-    const c = canvasRef.current!;
+    const c = canvasRef.current;
     if (!c) return;
     const ctx = c.getContext("2d")!;
     ctx.clearRect(0, 0, c.width, c.height);
@@ -64,18 +69,28 @@ export default function PackTear({
     clearCanvas();
   };
 
-  const xyFromEvent = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  const xyFromEvent = (target: HTMLCanvasElement, clientX: number, clientY: number) => {
+    const rect = target.getBoundingClientRect();
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  };
+
+  // helper: mark every bin crossed between two X positions
+  const addBinsCrossed = (x0: number, x1: number) => {
+    const binWidth = width / BIN_COUNT;
+    let a = Math.floor(Math.min(x0, x1) / binWidth);
+    let b = Math.floor(Math.max(x0, x1) / binWidth);
+    a = Math.max(0, a);
+    b = Math.min(BIN_COUNT - 1, b);
+    for (let i = a; i <= b; i++) stateRef.current.binsTouched.add(i);
   };
 
   const start = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (opened) return;
+    if (opened || !canvasRef.current) return;
     // single-stroke requirement: every new press starts from zero
     resetStroke();
 
     (e.target as Element).setPointerCapture(e.pointerId);
-    const { x, y } = xyFromEvent(e);
+    const { x, y } = xyFromEvent(canvasRef.current, e.clientX, e.clientY);
     const st = stateRef.current;
     st.drawing = true;
     st.lastX = x;
@@ -83,37 +98,43 @@ export default function PackTear({
   };
 
   const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const st = stateRef.current;
     if (!st.drawing || opened) return;
 
-    const { x, y } = xyFromEvent(e);
-    const ctx = canvasRef.current!.getContext("2d")!;
-
-    // draw stroke (visual feedback)
-    ctx.beginPath();
-    ctx.moveTo(st.lastX, st.lastY);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    st.lastX = x;
-    st.lastY = y;
-
-    // mark bins if within the tear band
+    const ctx = canvas.getContext("2d")!;
     const bandH = Math.min(TEAR_BAND_HEIGHT, height);
     const bandTop = (height - bandH) / 2;
     const bandBottom = bandTop + bandH;
 
-    if (y >= bandTop && y <= bandBottom) {
-      const binWidth = width / BIN_COUNT;
-      const idx = Math.min(
-        BIN_COUNT - 1,
-        Math.max(0, Math.floor(x / binWidth))
-      );
-      st.binsTouched.add(idx);
+    // use coalesced events to avoid gaps at high speed
+    const nativeEvt = e.nativeEvent as PointerEvent;
+    const coalesced = nativeEvt.getCoalescedEvents?.() ?? [nativeEvt];
 
-      const coverage = st.binsTouched.size / BIN_COUNT;
-      if (coverage >= COVERAGE_TARGET) {
-        openPack();
+    for (const pev of coalesced) {
+      const { x, y } = xyFromEvent(canvas, pev.clientX, pev.clientY);
+
+      // draw stroke (visual feedback)
+      ctx.beginPath();
+      ctx.moveTo(st.lastX, st.lastY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      // if the segment intersects the tear band, mark all crossed bins
+      // fast + simple check: consider the current point y
+      if (y >= bandTop && y <= bandBottom) {
+        addBinsCrossed(st.lastX, x);
+        const coverage = st.binsTouched.size / BIN_COUNT;
+        if (coverage >= COVERAGE_TARGET) {
+          openPack();
+          return; // stop processing more points after opening
+        }
       }
+
+      st.lastX = x;
+      st.lastY = y;
     }
   };
 
@@ -146,10 +167,11 @@ export default function PackTear({
         height,
         userSelect: "none",
         touchAction: "none", // prevent page scroll while drawing
-        // backgroundColor: "rgba(255,255,255,0.1)", // debug only
       }}
     >
-      <Flex mx="30px" backgroundColor="rgba(255,255,255,0.4)" width="100%" height="3px"></Flex>
+      {/* optional visual hint line; remove in production */}
+      <Flex mx="30px" backgroundColor="rgba(255,255,255,0.4)" width="100%" height="3px" />
+
       <canvas
         ref={canvasRef}
         onPointerDown={start}
@@ -159,8 +181,9 @@ export default function PackTear({
         onPointerLeave={end}
         style={{ position: "absolute", inset: 0 }}
       />
-      {/* Debug guide for the tear band:
-      <div style={{
+
+      {/* Debug guide for the tear band: */}
+{/*       <div style={{
         position:"absolute", left:0, right:0,
         top:(height - Math.min(TEAR_BAND_HEIGHT, height))/2,
         height:Math.min(TEAR_BAND_HEIGHT, height),
