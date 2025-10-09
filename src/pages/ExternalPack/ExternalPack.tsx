@@ -65,6 +65,8 @@ export const ExternalPack = () => {
           <Flex
             h={packHeight}
             width={`${packWidth}px`}
+            position="relative"
+            zIndex={5}
             transform={
               step === 0
                 ? "unset"
@@ -75,7 +77,6 @@ export const ExternalPack = () => {
                     : "translateY(50vh)"
             }
             transition="all 2s ease"
-            // opacity={step >= 3 ? 0 : 1}
           >
             <div
               style={{
@@ -100,39 +101,45 @@ export const ExternalPack = () => {
               )}
 
               {/* Step 2 → pack partido en dos con animación */}
-              {(step === 2 || step === 3) && (
+              {step >= 2 && (
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
                   src="/packs/legendary.png"
-                  onDone={() => setStep(3)}
+                  onDone={() => {
+                    setTimeout(() => {
+                      setStep(4);
+                    }, 1000);
+                    setStep(3);
+                  }}
+                  step={step}
                 />
               )}
             </div>
           </Flex>
-              <Flex
-                position={"absolute"}
-                transform={`translateY(${step >= 3 ? 0 : "60vh"})`}
-                transition="all 1s ease"
-                opacity={step >= 3 ? 1 : 0}
-                zIndex={2}
-              >
-                <Stack
-                  randomRotation={true}
-                  sensitivity={180}
-                  sendToBackOnClick={true}
-                  cardDimensions={{
-                    width: packWidth - 10,
-                    height: packWidth - 10,
-                  }}
-                  cardsData={[
-                    { id: 1, img: "/Cards/10020.png" },
-                    { id: 2, img: "/Cards/10021.png" },
-                    { id: 3, img: "/Cards/10022.png" },
-                    { id: 4, img: "/Cards/10023.png" },
-                  ]}
-                />
-              </Flex>
+          <Flex
+            position={"absolute"}
+            transform={`translateY(${step >= 3 ? 0 : "60vh"})`}
+            transition="all 1s ease"
+            opacity={step >= 3 ? 1 : 0}
+            zIndex={2}
+          >
+            <Stack
+              randomRotation={true}
+              sensitivity={180}
+              sendToBackOnClick={true}
+              cardDimensions={{
+                width: packWidth - 10,
+                height: packWidth - 10,
+              }}
+              cardsData={[
+                { id: 1, img: "/Cards/10020.png" },
+                { id: 2, img: "/Cards/10021.png" },
+                { id: 3, img: "/Cards/10022.png" },
+                { id: 4, img: "/Cards/10023.png" },
+              ]}
+            />
+          </Flex>
 
           {step === 0 && (
             <Button

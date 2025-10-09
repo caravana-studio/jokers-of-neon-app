@@ -140,6 +140,7 @@ export function SplitPackOnce({
   amplitudePx = 4, // más bajo = más natural
   frequency = 1.5, // 1–2 ondas
   samples = 28,    // puntos de la curva
+  step
 }: {
   src: string;
   onDone?: () => void;
@@ -150,6 +151,7 @@ export function SplitPackOnce({
   amplitudePx?: number;
   frequency?: number;
   samples?: number;
+    step: number;
 }) {
   const [run, setRun] = useState(false);
 
@@ -189,9 +191,10 @@ export function SplitPackOnce({
         }
         willChange="transform, clip-path"
         transform={run ? "translateY(-18px) rotate(-0.4deg)" : "translateY(0)"}
-        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1)`}
+        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease`}
         filter="drop-shadow(0 6px 8px rgba(0,0,0,0.55))"
-        zIndex={2}
+        zIndex={1}
+        opacity={step >=3 ? 0 : 1}
       >
         <CachedImage src={src} h="100%" w="100%" objectFit="contain" />
       </Box>
@@ -206,12 +209,13 @@ export function SplitPackOnce({
             : { clipPath: `inset(${cutRatio * 100}% 0 0 0)` }
         }
         willChange="transform, clip-path"
-        transform={run ? "translateY(12px)" : "translateY(0)"}
-        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1)`}
+        transform={run ? "translateY(90px)" : "translateY(0)"}
+        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1), opacity 1s ease`}
         filter="drop-shadow(0 10px 16px rgba(0,0,0,0.6))"
         zIndex={200}
+        opacity={step >=4 ? 0 : 1}
       >
-        <CachedImage src={src} h="100%" w="100%" objectFit="contain" />
+        <CachedImage src={src} h="100%" w="100%" objectFit="contain" zIndex={200} />
       </Box>
     </Box>
   );
