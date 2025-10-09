@@ -59,5 +59,11 @@
     "description": "Recomendamos um tutorial rápido para aprender o básico. Gostaria de começar agora?",
     "confirm-text": "Jogar Tutorial",
     "cancel-text": "Pular"
+  },
+  "versionModal": {
+    "title": "Nova versão disponível",
+    "description": "Você quer atualizar para a versão mais recente?",
+    "confirm-text": "Atualizar agora",
+    "cancel-text": "Pular versão"
   }
 }

@@ -18,6 +18,7 @@ import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
+import { logEvent } from "../utils/analytics";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -96,6 +97,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     ((payload: SwitchSuccessPayload) => void) | null
   >(null);
 
+  useEffect(() => {
+    logEvent( "open_wallet_page")
+  }, [])
+
   const connectWallet = async () => {
     try {
       await connect({ connector: connectors[0] });
@@ -147,6 +152,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const switchToController = (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ): void => {
+    logEvent( "switch_to_controller")
     if (accountType === "controller" && finalAccount) {
       if (controller) {
         controller.username()?.then((username) => {
@@ -180,6 +186,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
             style={{ color: "white" }}
             className="login-button"
             onClick={() => {
+              logEvent( "connect_controller_click")
               setConnectionStatus("connecting_controller");
               if (
                 isControllerConnected === false &&
@@ -211,6 +218,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               className="login-button secondary"
               disabled={isLoading}
               onClick={() => {
+                logEvent( "play_as_guest")
                 setConnectionStatus("connecting_burner");
                 const username = `joker_guest_${lastGameId + 1}`;
                 console.log("setting username: ", username);

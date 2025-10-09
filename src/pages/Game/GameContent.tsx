@@ -30,6 +30,7 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { logEvent } from "../../utils/analytics.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -135,6 +136,7 @@ export const GameContent = () => {
       }
 
       if (type === "tour:end") {
+        logEvent("tutorial_finished");
         setRunCallback(false);
         switch (state) {
           case GameStateEnum.Store:

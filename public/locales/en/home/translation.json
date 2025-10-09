@@ -59,5 +59,11 @@
     "description": "We recommend a quick tutorial to learn the basics. Would you like to start it now?",
     "confirm-text": "Play Tutorial",
     "cancel-text": "Skip"
+  },
+  "versionModal": {
+    "title": "New version available",
+    "description": "Do you want to update to the latest version?",
+    "confirm-text": "Update now",
+    "cancel-text": "Skip version"
   }
 }

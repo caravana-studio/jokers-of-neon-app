@@ -30,6 +30,7 @@ import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { AccountInterface } from "starknet";
 import { TutorialGameContext } from "./TutorialGameProvider.tsx";
+import { logEvent } from "../utils/analytics.ts";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number, username?: string) => void;
@@ -233,6 +234,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
+    logEvent("create_game")
     if (username) {
       try {
         if (!providedGameId) {

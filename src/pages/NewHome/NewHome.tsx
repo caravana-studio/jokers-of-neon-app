@@ -1,18 +1,25 @@
-import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Preferences } from "@capacitor/preferences";
 import { useNavigate } from "react-router-dom";
 import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
+import { SKIPPED_VERSION } from "../../constants/localStorage";
+import { APP_VERSION } from "../../constants/version";
 import { useGameContext } from "../../providers/GameProvider";
+import { fetchVersion } from "../../queries/fetchVersion";
 import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { logEvent } from "../../utils/analytics";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -23,8 +30,28 @@ export const NewHome = () => {
   const { data: games } = useGetMyGames();
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
+  const [isVersionModalOpen, setVersionModalOpen] = useState(false);
+  const [version, setVersion] = useState<string | null>(null);
 
   const banners = settings?.home?.banners || [];
+
+  useEffect(() => {
+    logEvent( "open_home_page")
+    if (isNative) {
+      fetchVersion().then(async (version) => {
+        setVersion(version);
+        try {
+          const res = await Preferences.get({ key: SKIPPED_VERSION });
+          const skipped = res.value;
+          if (version !== APP_VERSION && skipped !== version) {
+            setVersionModalOpen(true);
+          }
+        } catch (e) {
+          console.warn("Preferences.get failed for SKIPPED_VERSION", e);
+        }
+      });
+    }
+  }, []);
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -43,6 +70,21 @@ export const NewHome = () => {
   const handleConfirmTutorial = () => {
     navigate("/tutorial");
     setTutorialModalOpen(false);
+  };
+
+  const handleConfirmUpdate = () => {
+    window.open(APP_URL, "_blank");
+  };
+
+  const handleSkipVersion = async () => {
+    setVersionModalOpen(false);
+    if (version) {
+      try {
+        await Preferences.set({ key: SKIPPED_VERSION, value: version });
+      } catch (e) {
+        // ignore preferences error; nothing we can do in UI
+      }
+    }
   };
 
   const handleDeclineTutorial = () => {
@@ -116,12 +158,31 @@ export const NewHome = () => {
                 {banners[0] && <BannerRenderer banner={banners[0]} />}
                 {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>
-              {banners[2] && <BannerRenderer banner={banners[2]} />}
+              {banners[2] && isSmallScreen && (
+                <BannerRenderer banner={banners[2]} />
+              )}
             </Flex>
           </Flex>
         </Flex>
-
-        <Flex h="50px" />
+        {!isSmallScreen && (
+          <Flex position="absolute" bottom="90px">
+            <Button
+              onClick={handlePlayClick}
+              w="300px"
+              variant="secondarySolid"
+            >
+              {games && games.length > 0 ? t("my-games") : t("play")}
+            </Button>
+          </Flex>
+        )}
+        {isSmallScreen && (
+          <MobileBottomBar
+            firstButton={{
+              label: games && games.length > 0 ? t("my-games") : t("play"),
+              onClick: handlePlayClick,
+            }}
+          />
+        )}
       </Flex>
 
       {isTutorialModalOpen && (
@@ -132,6 +193,16 @@ export const NewHome = () => {
           confirmText={t("tutorialModal.confirm-text")}
           cancelText={t("tutorialModal.cancel-text")}
           onConfirm={handleConfirmTutorial}
+        />
+      )}
+      {isVersionModalOpen && (
+        <ConfirmationModal
+          close={handleSkipVersion}
+          title={t("versionModal.title")}
+          description={t("versionModal.description")}
+          confirmText={t("versionModal.confirm-text")}
+          cancelText={t("versionModal.cancel-text")}
+          onConfirm={handleConfirmUpdate}
         />
       )}
     </DelayedLoading>

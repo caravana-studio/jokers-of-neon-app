@@ -3,6 +3,13 @@
   <head>
     <script>
       (function () {
+        const domainsToOpenExternally = [
+          "https://apps.apple.com",
+          "https://play.google.com",
+          "https://x.com",
+          "https://twitter.com",
+        ]
+
         var isNative = !!(
           window.Capacitor &&
           window.Capacitor.isNativePlatform &&
@@ -19,13 +26,36 @@
         function openExternal(url) {
           try {
             var s = String(url || "");
-            // http(s) → Browser
+            // Prefer opening App Store links in the device's external browser
+            try {
+              // normalize protocol-relative URLs before matching
+              var ns = s;
+              if (ns.startsWith('//')) ns = 'https:' + ns;
+              var low = ns.toLowerCase();
+
+              for (var i = 0; i < domainsToOpenExternally.length; i++) {
+                var domain = String(domainsToOpenExternally[i] || '').toLowerCase();
+                if (!domain) continue;
+                if (low.indexOf(domain) === 0) {
+                  // open these domains in the device's external browser (prefer AppLauncher)
+                  if (AppLauncher && AppLauncher.openUrl) {
+                    return AppLauncher.openUrl({ url: ns });
+                  }
+                  if (Browser && Browser.open) return Browser.open({ url: ns });
+                  break;
+                }
+              }
+            } catch (eApp) {}
+
+            // http(s) → in-app Browser
             if (/^https?:\/\//i.test(s) || s.startsWith("//")) {
               if (s.startsWith("//")) s = "https:" + s;
               return Browser.open({ url: s });
             }
+
             // mailto:, tel:, whatsapp:, etc. → AppLauncher (if exists)
-            if (AppLauncher) return AppLauncher.openUrl({ url: s });
+            if (AppLauncher && AppLauncher.openUrl) return AppLauncher.openUrl({ url: s });
+
             // Fallback
             return Browser.open({ url: s });
           } catch (e) {
