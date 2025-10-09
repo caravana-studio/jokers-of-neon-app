@@ -107,10 +107,11 @@ export const ExternalPack = () => {
                   height={packHeight}
                   src="/packs/legendary.png"
                   onDone={() => {
-                    setTimeout(() => {
+                    setStep(3);
+                    const timer = setTimeout(() => {
                       setStep(4);
                     }, 1000);
-                    setStep(3);
+                    return () => clearTimeout(timer);
                   }}
                   step={step}
                 />
