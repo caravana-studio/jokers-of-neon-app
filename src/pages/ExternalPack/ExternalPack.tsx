@@ -1,11 +1,12 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
@@ -16,11 +17,14 @@ export const ExternalPack = () => {
 
   const [step, setStep] = useState(0);
 
-  const { isSmallScreen } = useResponsiveValues()
+  const { isSmallScreen } = useResponsiveValues();
 
-  const packWidth = useMemo(() => isSmallScreen ? 250 : 360, [isSmallScreen])
-  const extraPackWidth = packWidth + 50
-  const packHeight = useMemo(() => isSmallScreen ? 405 : 583, [isSmallScreen])
+  const packWidth = useMemo(() => (isSmallScreen ? 250 : 360), [isSmallScreen]);
+  const extraPackWidth = packWidth + 50;
+  const packHeight = useMemo(
+    () => (isSmallScreen ? 405 : 583),
+    [isSmallScreen]
+  );
 
   return (
     <DelayedLoading ms={100}>
@@ -35,7 +39,7 @@ export const ExternalPack = () => {
           height={"100%"}
           width={"100%"}
           transition="all 2s ease"
-          backgroundColor={step === 0 ? "transparent" : "rgba(0,0,0,0.6)"}
+          backgroundColor={step === 0 ? "transparent" : "rgba(0,0,0,0.7)"}
         >
           {step === 0 && (
             <>
@@ -71,8 +75,7 @@ export const ExternalPack = () => {
                     : "translateY(50vh)"
             }
             transition="all 2s ease"
-            // important: keep visible on step 2 so the split animation is seen
-            opacity={step >= 3 ? 0 : 1}
+            // opacity={step >= 3 ? 0 : 1}
           >
             <div
               style={{
@@ -94,19 +97,42 @@ export const ExternalPack = () => {
                     // boxShadow={"0 0 20px 0px white, inset 0 0 10px 0px white"}
                   />
                 </>
-              )} 
+              )}
 
               {/* Step 2 → pack partido en dos con animación */}
-              {step === 2 && (
+              {(step === 2 || step === 3) && (
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
                   src="/packs/legendary.png"
-                  onDone={() => {}/* setStep(3) */} // cuando termina la animación, continuás tu flujo
+                  onDone={() => setStep(3)}
                 />
-               )}
+              )}
             </div>
           </Flex>
+              <Flex
+                position={"absolute"}
+                transform={`translateY(${step >= 3 ? 0 : "60vh"})`}
+                transition="all 1s ease"
+                opacity={step >= 3 ? 1 : 0}
+                zIndex={2}
+              >
+                <Stack
+                  randomRotation={true}
+                  sensitivity={180}
+                  sendToBackOnClick={true}
+                  cardDimensions={{
+                    width: packWidth - 10,
+                    height: packWidth - 10,
+                  }}
+                  cardsData={[
+                    { id: 1, img: "/Cards/10020.png" },
+                    { id: 2, img: "/Cards/10021.png" },
+                    { id: 3, img: "/Cards/10022.png" },
+                    { id: 4, img: "/Cards/10023.png" },
+                  ]}
+                />
+              </Flex>
 
           {step === 0 && (
             <Button

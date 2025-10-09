@@ -209,7 +209,7 @@ export function SplitPackOnce({
         transform={run ? "translateY(12px)" : "translateY(0)"}
         transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1)`}
         filter="drop-shadow(0 10px 16px rgba(0,0,0,0.6))"
-        zIndex={1}
+        zIndex={200}
       >
         <CachedImage src={src} h="100%" w="100%" objectFit="contain" />
       </Box>
