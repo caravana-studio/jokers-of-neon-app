@@ -91,6 +91,7 @@ export const ExternalPack = () => {
                   <PackTear
                     onOpened={() => setStep(2)}
                     width={extraPackWidth}
+                    step={step}
                   />
                   <CachedImage
                     src="/packs/legendary.png"
@@ -131,7 +132,7 @@ export const ExternalPack = () => {
               sendToBackOnClick={true}
               cardDimensions={{
                 width: packWidth - 10,
-                height: packWidth - 10,
+                height: packHeight - 40,
               }}
               cardsData={[
                 { id: 1, img: "/Cards/10020.png" },

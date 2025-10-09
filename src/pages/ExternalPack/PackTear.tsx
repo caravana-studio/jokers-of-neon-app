@@ -2,10 +2,11 @@ import { Flex } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
-  width?: number;         // pack width in px
-  height?: number;        // visible height (only the top area)
-  onOpened?: () => void;  // callback when the pack opens
-  onFail?: () => void;    // optional: callback when a stroke ends without opening
+  width?: number; // pack width in px
+  height?: number; // visible height (only the top area)
+  onOpened?: () => void; // callback when the pack opens
+  onFail?: () => void; // optional: callback when a stroke ends without opening
+  step: number; // current step of the parent component
 };
 
 export default function PackTear({
@@ -13,15 +14,16 @@ export default function PackTear({
   height = 20,
   onOpened,
   onFail,
+  step,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [opened, setOpened] = useState(false);
 
   // bins across the tear line to verify horizontal coverage
-  const BIN_COUNT = 24;        // more bins = finer detection
+  const BIN_COUNT = 24; // more bins = finer detection
   const COVERAGE_TARGET = 0.8; // 80% of bins touched
   const TEAR_BAND_HEIGHT = 28; // vertical band where the stroke must pass
-  const LINE_THICKNESS = 3;    // visual line thickness
+  const LINE_THICKNESS = 3; // visual line thickness
 
   // internal state
   const stateRef = useRef({
@@ -37,9 +39,8 @@ export default function PackTear({
     if (!canvas) return;
 
     // perf hint (some browsers ignore it; it's harmless)
-    const ctx =
-      (canvas.getContext("2d", { desynchronized: true } as any) ||
-        canvas.getContext("2d"))!;
+    const ctx = (canvas.getContext("2d", { desynchronized: true } as any) ||
+      canvas.getContext("2d"))!;
     const dpr = window.devicePixelRatio || 1;
     stateRef.current.dpr = dpr;
 
@@ -69,7 +70,11 @@ export default function PackTear({
     clearCanvas();
   };
 
-  const xyFromEvent = (target: HTMLCanvasElement, clientX: number, clientY: number) => {
+  const xyFromEvent = (
+    target: HTMLCanvasElement,
+    clientX: number,
+    clientY: number
+  ) => {
     const rect = target.getBoundingClientRect();
     return { x: clientX - rect.left, y: clientY - rect.top };
   };
@@ -169,12 +174,18 @@ export default function PackTear({
         touchAction: "none", // prevent page scroll while drawing
       }}
     >
-      {/* optional visual hint line; remove in production */}
-      <Flex mx="30px" backgroundColor="rgba(255,255,255,0.4)" width="100%" height="3px" />
+      <Flex
+        mx="30px"
+        opacity={step === 1 ? 1 : 0}
+        transition="opacity 1s ease"
+        backgroundColor="rgba(255,255,255,0.4)"
+        width="100%"
+        height="3px"
+      />
 
       <canvas
         ref={canvasRef}
-        onPointerDown={start}
+        onPointerDown={step === 1 ? start : undefined}
         onPointerMove={move}
         onPointerUp={end}
         onPointerCancel={end}
@@ -183,7 +194,7 @@ export default function PackTear({
       />
 
       {/* Debug guide for the tear band: */}
-{/*       <div style={{
+      {/*       <div style={{
         position:"absolute", left:0, right:0,
         top:(height - Math.min(TEAR_BAND_HEIGHT, height))/2,
         height:Math.min(TEAR_BAND_HEIGHT, height),
