@@ -126,5 +126,9 @@
       "sx": "Temporada {{season}}",
       "c99": "Colección exclusiva GG - v1"
     }
+  },
+  "wallet-provider": {
+    "login": "INICIAR SESIÓN",
+    "guest": "INVITADO"
   }
 }
