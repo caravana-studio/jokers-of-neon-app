@@ -7,6 +7,7 @@ import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import PackTear from "./PackTear";
+import { SplitPackOnce } from "./SplitPackOnce";
 
 export const ExternalPack = () => {
   const { t } = useTranslation("intermediate-screens", {
@@ -124,72 +125,3 @@ export const ExternalPack = () => {
     </DelayedLoading>
   );
 };
-
-/**
- * Renders the same image twice and clips each half with CSS.
- * Then animates top half up and bottom half down.
- */
-function SplitPackOnce({
-  src,
-  onDone,
-  cutRatio = 0.07,
-  durationMs = 650,
-  width,
-  height
-}: {
-  src: string;
-  onDone?: () => void;
-  cutRatio?: number;
-  durationMs?: number;
-  width?: number;
-  height?: number;
-}) {
-  const [run, setRun] = useState(false);
-
-  useEffect(() => {
-    const rAF = requestAnimationFrame(() => setRun(true));
-    const id = setTimeout(() => onDone?.(), durationMs + 80);
-    return () => {
-      cancelAnimationFrame(rAF);
-      clearTimeout(id);
-    };
-  }, [durationMs, onDone]);
-
-  const cutPercent = Math.max(0, Math.min(100, cutRatio * 100));
-
-  return (
-    // <Box position="relative" w="100%" h="100%" pointerEvents="none">
-      <Flex flexDir="column" 
-        width={width} height={height}>
-
-      <Box
-        // position="absolute"
-        inset={0}
-        sx={{ clipPath: `inset(0 0 ${100 - cutPercent}% 0)` }}
-        willChange="transform, clip-path"
-        transform={run ? "translateY(-18px) rotate(-0.4deg)" : "translateY(0)"}
-        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1)`}
-        filter="drop-shadow(0 6px 8px rgba(0,0,0,0.55))"
-        zIndex={2}
-      >
-        <CachedImage src={src} h="100%" 
-        width={width} objectFit="contain" />
-      </Box>
-
-      <Box
-        position="absolute"
-        inset={0}
-        width={width}
-        sx={{ clipPath: `inset(${cutPercent}% 0 0 0)` }}
-        willChange="transform, clip-path"
-        transform={run ? "translateY(12px)" : "translateY(0)"}
-        transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1)`}
-        filter="drop-shadow(0 10px 16px rgba(0,0,0,0.6))"
-        zIndex={3}
-      >
-        <CachedImage src={src} h="100%" w="100%" objectFit="contain" />
-      </Box>
-      </Flex>
-    // </Box>
-  );
-}
