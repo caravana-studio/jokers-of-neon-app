@@ -1,12 +1,12 @@
 {
   "information": {
     "reroll": "Atualiza todos os itens disponíveis na loja atual.",
-    "specials": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 níveis.",
+    "specials": "As cartas especiais aplicam efeitos globais que podem impactar cartas específicas ou a mecânica do jogo. Existem dois tipos: Permanentes e Temporárias. As cartas temporárias são destruídas após 3 rodadas.",
     "modifiers": "As cartas modificadoras concedem efeitos únicos a cartas individuais, aprimorando suas habilidades.",
     "traditionals": "As cartas tradicionais são a base do jogo, usadas para formar mãos de pôquer e avançar pelos níveis. As cartas neon são uma variante aprimorada que oferecem o dobro de pontos e um multiplicador adicional de +1, tornando-as muito valiosas.",
     "power-ups": "Os power-ups são itens consumíveis que melhoram suas jogadas, aumentando pontos ou multiplicadores.",
     "permanent": "As cartas permanentes permanecem com você até que decida removê-las.",
-    "temporal": "As cartas temporárias são removidas automaticamente após 3 níveis.",
+    "temporal": "As cartas temporárias são removidas automaticamente após 3 rodadas.",
     "burn": "Remove uma carta do seu deck",
     "loot-boxes": "Obtenha recompensas aleatórias",
     "level-up-table": "Aprimore suas mãos de pôquer e avance no jogo."
@@ -90,7 +90,7 @@
         "traditional": "Tradicional",
         "temporary": "Temporário",
         "close": "Fechar",
-        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
+        "temporal": "Carta temporal. Será destruída após {{remaining}} rodadas.",
         "power-up": "Power-up"
       }
     },
@@ -105,7 +105,7 @@
       "confirmation-modal": {
         "head": "Nenhuma carta selecionada",
         "description": "Você não selecionou nenhuma carta. Tem certeza de que deseja continuar?",
-        "temporal": "Carta temporal. Será destruída após {{remaining}} níveis.",
+        "temporal": "Carta temporal. Será destruída após {{remaining}} rodadas.",
         "tooltip": {
           "no-space": "Você não tem slots disponíveis suficientes para outra carta especial. Compre um novo slot na loja ou remova uma para comprar esta carta",
           "no-coins": "Moedas insuficientes"

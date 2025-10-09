@@ -122,11 +122,11 @@
     },
     "10023": {
       "name": "Segunda oportunidad",
-      "description": "Esta carta permite seguir jugando aunque el nivel no se supere. Se destruye al perder"
+      "description": "Esta carta permite seguir jugando aunque la ronda no se supere. Se destruye al perder"
     },
     "10024": {
       "name": "Escudo del guardián",
-      "description": "Bloquea todas las cartas de rage por 1 nivel. Se destruye después"
+      "description": "Bloquea todas las cartas de rage por 1 ronda. Se destruye después"
     },
     "10025": {
       "name": "Sinergia de neón",
@@ -154,7 +154,7 @@
     },
     "10031": {
       "name": "Atajo",
-      "description": "Los puntos necesarios para superar el nivel se reducen en un 20%"
+      "description": "Los puntos necesarios para superar la ronda se reducen en un 20%"
     },
     "10032": {
       "name": "Día de suerte",
@@ -822,31 +822,31 @@
   "rageCards": {
     "20001": {
       "name": "Corazones Rotos",
-      "description": "Las cartas del palo de corazones no puntuarán durante este nivel"
+      "description": "Las cartas del palo de corazones no puntuarán durante esta ronda"
     },
     "20002": {
       "name": "Tréboles Rotos",
-      "description": "Las cartas del palo de tréboles no puntuarán durante este nivel"
+      "description": "Las cartas del palo de tréboles no puntuarán durante esta ronda"
     },
     "20003": {
       "name": "Diamantes Rotos",
-      "description": "Las cartas del palo de diamantes no puntuarán durante este nivel"
+      "description": "Las cartas del palo de diamantes no puntuarán durante esta ronda"
     },
     "20004": {
       "name": "Picas Rotas",
-      "description": "Las cartas del palo de picas no puntuarán durante este nivel"
+      "description": "Las cartas del palo de picas no puntuarán durante esta ronda"
     },
     "20005": {
       "name": "Jokers Rotos",
-      "description": "Los Jokers no puntuarán durante este nivel"
+      "description": "Los Jokers no puntuarán durante esta ronda"
     },
     "20006": {
       "name": "Mano Disminuida",
-      "description": "Tu mano tendrá 2 cartas menos durante este nivel"
+      "description": "Tu mano tendrá 2 cartas menos durante esta ronda"
     },
     "20007": {
       "name": "Cero Desperdicio",
-      "description": "No hay descartes durante este nivel"
+      "description": "No hay descartes durante esta ronda"
     },
     "20008": {
       "name": "Sacrificio Inesperado",
@@ -854,7 +854,7 @@
     },
     "20009": {
       "name": "Cuarteto Estratégico",
-      "description": "Solo puedes jugar hasta 4 cartas durante este nivel"
+      "description": "Solo puedes jugar hasta 4 cartas durante esta ronda"
     },
     "20010": {
       "name": "Tácticas Dinámicas",
@@ -866,11 +866,11 @@
     },
     "20012": {
       "name": "Figuras Rotas",
-      "description": "Las figuras (Jota, Reina y Rey) no puntuarán durante este nivel"
+      "description": "Las figuras (Jota, Reina y Rey) no puntuarán durante esta ronda"
     },
     "20013": {
       "name": "Modificadores Rotos",
-      "description": "Los modificadores no funcionarán durante este nivel"
+      "description": "Los modificadores no funcionarán durante esta ronda"
     },
     "20014": {
       "name": "Últimas Palabras",
@@ -898,7 +898,7 @@
     },
     "20021": {
       "name": "Traicionando a los Débiles",
-      "description": "Las cartas con valor menor o igual a 5 no puntuaran durante este nivel"
+      "description": "Las cartas con valor menor o igual a 5 no puntuaran durante esta ronda"
     },
     "20022": {
       "name": "Jugadas Bloqueadas",

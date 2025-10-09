@@ -1,12 +1,12 @@
 {
   "information": {
     "reroll": "Actualiza todos los objetos disponibles en la tienda.",
-    "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 niveles.",
+    "specials": "Las cartas especiales aplican efectos globales que pueden influir en cartas específicas o en la mecánica del juego. Hay dos tipos: Permanentes y Temporales. Las cartas temporales se destruyen después de 3 rondas.",
     "modifiers": "Las cartas modificadoras otorgan efectos únicos a cartas individuales, mejorando sus habilidades.",
     "traditionals": "Las cartas tradicionales son la base del juego, utilizadas para formar manos de póker y avanzar por los niveles. Las cartas neón son una variante mejorada que otorgan el doble de puntos y un multiplicador adicional de +1, haciéndolas muy valiosas.",
     "power-ups": "Los power-ups son objetos consumibles que mejoran tus jugadas al aumentar puntos o multiplicador.",
     "permanent": "Las cartas permanentes permanecen contigo hasta que decidas eliminarlas.",
-    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 niveles.",
+    "temporal": "Las cartas temporales se eliminan automáticamente después de 3 ronda.",
     "burn": "Elimina una carta de tu mazo",
     "loot-boxes": "Obtén recompensas aleatorias",
     "level-up-table": "Mejora tus manos de póker y progresa en el juego."
@@ -90,7 +90,7 @@
         "traditional": "Tradicional",
         "temporary": "Temporal",
         "close": "Cerrar",
-        "temporal": "Carta temporal. Se destruye después de {{remaining}} niveles.",
+        "temporal": "Carta temporal. Se destruye después de {{remaining}} rondas.",
         "power-up": "Power-up"
       }
     },
@@ -100,12 +100,12 @@
       "continue-btn": "Continuar",
       "cards-select-lbl": "Selecciona las cartas que deseas conservar",
       "select-all-lbl": "Seleccionar todo",
-      "special-cards-btn": "Ver cartas especiales actuales",
+      "special-cards-btn": "Ver items",
       "error-lbl": "No puedes continuar porque tienes más cartas especiales que el máximo permitido",
       "confirmation-modal": {
         "head": "No hay cartas seleccionadas",
         "description": "No has seleccionado ninguna carta. ¿Estás seguro de que quieres continuar?",
-        "temporal": "Carta temporal. Se destruye después de {{remaining}} niveles.",
+        "temporal": "Carta temporal. Se destruye después de {{remaining}} rondas.",
         "tooltip": {
           "no-space": "No tienes espacios disponibles para comprar esta carta especial. Compra un espacio en la tienda o remueve una de tus cartas especiales.",
           "no-coins": "Monedas insuficientes"
