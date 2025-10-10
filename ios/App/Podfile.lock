@@ -8,8 +8,20 @@ PODS:
   - CapacitorBrowser (7.0.2):
     - Capacitor
   - CapacitorCordova (7.4.3)
+  - CapacitorPreferences (7.0.2):
+    - Capacitor
   - CordovaPlugins (7.4.3):
     - CapacitorCordova
+  - FacebookSDK (11.2.1):
+    - FacebookSDK/AEMKit (= 11.2.1)
+    - FacebookSDK/Basics (= 11.2.1)
+    - FacebookSDK/CoreKit (= 11.2.1)
+    - FacebookSDK/LoginKit (= 11.2.1)
+    - FacebookSDK/ShareKit (= 11.2.1)
+    - FacebookSDK/TVOSKit (= 11.2.1)
+  - FacebookSDK/AEMKit (11.2.1):
+    - FacebookSDK/Basics
+  - FacebookSDK/Basics (11.2.1)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -17,7 +29,13 @@ DEPENDENCIES:
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
+  - FacebookSDK
+
+SPEC REPOS:
+  trunk:
+    - FacebookSDK
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -30,6 +48,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/browser"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
 
@@ -39,8 +59,10 @@ SPEC CHECKSUMS:
   CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
   CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CapacitorPreferences: b583b5deb74e564c35968189d25d32c0fd41200d
   CordovaPlugins: 64931e3435a866da9d124e6242a9361b484e9b05
+  FacebookSDK: b9c123df2ed622faadd8b546632ae8048d1f9b28
 
-PODFILE CHECKSUM: 9814e836f7b3f08fcf78f644c0a9af269a85eb1a
+PODFILE CHECKSUM: 385af806b1e26a530545b18acacb0ef5a0dd4b25
 
 COCOAPODS: 1.16.2
