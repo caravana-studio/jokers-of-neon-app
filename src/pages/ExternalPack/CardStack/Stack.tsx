@@ -1,10 +1,11 @@
-import React, { useState } from "react";
 import { motion, useMotionValue, useTransform } from "motion/react";
+import React, { useState } from "react";
 import "./Stack.css";
 
 // Types
 export type CardData = {
   id: number | string;
+  cardId: number;
   img: string;
   [key: string]: any;
 };
@@ -58,6 +59,7 @@ interface StackProps {
   cardsData: CardData[];
   animationConfig?: { stiffness: number; damping: number };
   sendToBackOnClick?: boolean;
+  onCardChange?: (cardId: number) => void;
 }
 
 export default function Stack({
@@ -67,6 +69,7 @@ export default function Stack({
   cardsData,
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
+  onCardChange,
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
 
@@ -77,6 +80,8 @@ export default function Stack({
       if (index === -1) return prev;
       const [card] = newCards.splice(index, 1);
       newCards.unshift(card);
+      onCardChange?.(newCards[newCards.length - 1].cardId);
+
       return newCards;
     });
   };
@@ -113,7 +118,7 @@ export default function Stack({
                 stiffness: animationConfig.stiffness,
                 damping: animationConfig.damping,
               }}
-/*               style={{
+              /*               style={{
                 width: cardDimensions.width,
                 height: cardDimensions.height,
               }} */

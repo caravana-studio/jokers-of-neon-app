@@ -1,21 +1,29 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GalaxyBackground} from "../../components/backgrounds/galaxy/GalaxyBackground";
+import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
+import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
+import { RARITY, RarityLabels } from "../../constants/rarity";
+import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { colorizeText } from "../../utils/getTooltip";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
-import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
+
+const CARD_IDS = [7, 53, 10022, 10023];
 
 export const ExternalPack = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "external-pack",
   });
+
+  const { t: tDocs } = useTranslation("docs");
+  const { getCardData } = useCardData();
 
   const [step, setStep] = useState(0);
 
@@ -28,9 +36,24 @@ export const ExternalPack = () => {
     [isSmallScreen]
   );
 
+  const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
+  const {
+    name,
+    description,
+    type,
+    animation,
+    price,
+    rarity,
+    temporaryPrice,
+    details,
+  } = getCardData(highlightedCard ?? 0);
+
   return (
     <DelayedLoading ms={100}>
-      <GalaxyBackground opacity={step >= 3 ? 1 : 0} intensity={GalaxyBackgroundIntensity.MEDIUM} />
+      <GalaxyBackground
+        opacity={step >= 3 ? 1 : 0}
+        intensity={GalaxyBackgroundIntensity.MEDIUM}
+      />
       <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
         <MobileDecoration />
         <Flex
@@ -62,6 +85,22 @@ export const ExternalPack = () => {
               </Flex>
               <LootBoxRateInfo name={"test"} details={"details"} />
             </>
+          )}
+
+          {step === 4 && (
+            <Flex flexDirection="column" textAlign="center" zIndex={10}>
+              <Heading
+                fontWeight={500}
+                size="l"
+                letterSpacing={1.3}
+                textTransform="unset"
+              >
+                {name}
+              </Heading>
+              <Text size="l" textTransform="lowercase" fontWeight={600}>
+                - {tDocs(`game.card-types.${type}`)} -
+              </Text>
+            </Flex>
           )}
 
           {step === 1 && (
@@ -156,12 +195,15 @@ export const ExternalPack = () => {
                 width: packWidth - 10,
                 height: packHeight - 40,
               }}
-              cardsData={[
-                { id: 1, img: "/Cards/10020.png" },
-                { id: 2, img: "/Cards/10021.png" },
-                { id: 3, img: "/Cards/10022.png" },
-                { id: 4, img: "/Cards/10023.png" },
-              ]}
+              cardsData={CARD_IDS.map((cid, index) => ({
+                id: index,
+                cardId: cid,
+                img: `/Cards/${cid}.png`,
+              })).reverse()}
+              onCardChange={(cardId) => {
+                console.log("cardId", cardId);
+                setHighlightedCard(cardId);
+              }}
             />
           </Flex>
 
@@ -176,6 +218,29 @@ export const ExternalPack = () => {
             >
               BUY · $9.99
             </Button>
+          )}
+          {step === 4 && (
+            <>
+              <Text
+                textAlign="center"
+                size="xl"
+                zIndex={10}
+                fontSize={"17px"}
+                width={"65%"}
+              >
+                {colorizeText(description)}
+              </Text>
+              {<Text
+                zIndex={10}
+                textAlign="center"
+                size="l"
+                fontSize={"14px"}
+                width={"65%"}
+                opacity={rarity ? 1 : 0}
+              >
+                {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
+              </Text>}
+            </>
           )}
         </Flex>
       </Flex>
