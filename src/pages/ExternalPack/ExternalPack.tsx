@@ -1,6 +1,7 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { GalaxyBackground} from "../../components/backgrounds/galaxy/GalaxyBackground";
 import CachedImage from "../../components/CachedImage";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
@@ -9,6 +10,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
+import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 
 export const ExternalPack = () => {
   const { t } = useTranslation("intermediate-screens", {
@@ -28,6 +30,7 @@ export const ExternalPack = () => {
 
   return (
     <DelayedLoading ms={100}>
+      <GalaxyBackground opacity={step >= 3 ? 1 : 0} intensity={GalaxyBackgroundIntensity.MEDIUM} />
       <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
         <MobileDecoration />
         <Flex
@@ -62,16 +65,16 @@ export const ExternalPack = () => {
           )}
 
           {step === 1 && (
-            <Flex 
-              transform="translateY(35vh)" 
-              opacity={0} 
+            <Flex
+              transform="translateY(35vh)"
+              opacity={0}
               transition="opacity 1s ease"
               sx={{
-                '@keyframes fadeIn': {
-                  '0%': { opacity: 0 },
-                  '100%': { opacity: 1 }
+                "@keyframes fadeIn": {
+                  "0%": { opacity: 0 },
+                  "100%": { opacity: 1 },
                 },
-                animation: 'fadeIn 1s ease 3s forwards'
+                animation: "fadeIn 1s ease 3s forwards",
               }}
             >
               <Text size="lg">Draw a line to open</Text>
@@ -137,6 +140,7 @@ export const ExternalPack = () => {
               )}
             </div>
           </Flex>
+
           <Flex
             position={"absolute"}
             transform={`translateY(${step >= 3 ? 0 : "60vh"})`}

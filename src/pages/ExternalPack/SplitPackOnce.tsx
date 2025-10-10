@@ -149,9 +149,9 @@ export function SplitPackOnce({
   durationMs = 650,
   width = 360,
   height = 583,
-  amplitudePx = 4, // más bajo = más natural
-  frequency = 1.5, // 1–2 ondas
-  samples = 28, // puntos de la curva
+  amplitudePx = 4,
+  frequency = 1.5,
+  samples = 28,
   step,
 }: {
   src: string;
@@ -186,7 +186,6 @@ export function SplitPackOnce({
 
   const supportsPath =
     typeof CSS !== "undefined" &&
-    // @ts-ignore
     CSS.supports?.("clip-path", 'path("M0,0 L10,0 L10,10 L0,10 Z")');
 
   return (
