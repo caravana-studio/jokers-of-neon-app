@@ -41,7 +41,7 @@ export default function PackTear({
 
     // perf hint (some browsers ignore it; it's harmless)
     const ctx = (canvas.getContext("2d", { desynchronized: true } as any) ||
-      canvas.getContext("2d"))!;
+      canvas.getContext("2d")) as CanvasRenderingContext2D;
     const dpr = window.devicePixelRatio || 1;
     stateRef.current.dpr = dpr;
 

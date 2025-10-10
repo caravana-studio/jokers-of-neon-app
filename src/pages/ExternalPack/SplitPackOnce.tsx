@@ -166,7 +166,6 @@ export function SplitPackOnce({
   step: number;
 }) {
   const [run, setRun] = useState(false);
-console.log('step', step);
   useEffect(() => {
     const rAF = requestAnimationFrame(() => setRun(true));
     const id = setTimeout(() => onDone?.(), durationMs + 80);
