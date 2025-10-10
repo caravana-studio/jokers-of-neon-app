@@ -61,6 +61,23 @@ export const ExternalPack = () => {
             </>
           )}
 
+          {step === 1 && (
+            <Flex 
+              transform="translateY(35vh)" 
+              opacity={0} 
+              transition="opacity 1s ease"
+              sx={{
+                '@keyframes fadeIn': {
+                  '0%': { opacity: 0 },
+                  '100%': { opacity: 1 }
+                },
+                animation: 'fadeIn 1s ease 3s forwards'
+              }}
+            >
+              <Text size="lg">Draw a line to open</Text>
+            </Flex>
+          )}
+
           {/* PACK AREA */}
           <Flex
             h={packHeight}
@@ -109,7 +126,7 @@ export const ExternalPack = () => {
                   src="/packs/legendary.png"
                   onDone={() => {
                     setStep(3);
-                    
+
                     const timer = setTimeout(() => {
                       setStep(4);
                     }, 1000);
