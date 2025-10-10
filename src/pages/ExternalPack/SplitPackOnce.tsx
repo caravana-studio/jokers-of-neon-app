@@ -18,7 +18,13 @@ const makeRand = (seed = 1337) => {
 };
 
 /** Catmull–Rom → Bézier control points */
-function catmullRomToBezier(p0: number[], p1: number[], p2: number[], p3: number[], t = 0.5) {
+function catmullRomToBezier(
+  p0: number[],
+  p1: number[],
+  p2: number[],
+  p3: number[],
+  t = 0.5
+) {
   const d1 = [(p2[0] - p0[0]) * t, (p2[1] - p0[1]) * t];
   const d2 = [(p3[0] - p1[0]) * t, (p3[1] - p1[1]) * t];
   const c1 = [p1[0] + d1[0] / 3, p1[1] + d1[1] / 3];
@@ -31,14 +37,14 @@ function useSmoothClipPaths({
   width,
   height,
   cutRatio,
-  amplitudePx = 5,  // how “tall” the waviness is
-  frequency = 1.6,  // how many waves across the width (1–3 looks natural)
-  samples = 28,     // number of points along the curve (20–40)
+  amplitudePx = 5, // how “tall” the waviness is
+  frequency = 1.6, // how many waves across the width (1–3 looks natural)
+  samples = 28, // number of points along the curve (20–40)
   seed = 42,
 }: {
   width: number;
   height: number;
-  cutRatio: number;   // 0..1 from top
+  cutRatio: number; // 0..1 from top
   amplitudePx?: number;
   frequency?: number;
   samples?: number;
@@ -88,7 +94,10 @@ function useSmoothClipPaths({
       ];
       let d = `M ${P[1][0].toFixed(2)} ${P[1][1].toFixed(2)}`;
       for (let i = 0; i < pts.length - 1; i++) {
-        const p0 = P[i], p1 = P[i + 1], p2 = P[i + 2], p3 = P[i + 3];
+        const p0 = P[i],
+          p1 = P[i + 1],
+          p2 = P[i + 2],
+          p3 = P[i + 3];
         const { c1, c2 } = catmullRomToBezier(p0, p1, p2, p3, 0.6);
         d += ` C ${c1[0].toFixed(2)} ${c1[1].toFixed(2)}, ${c2[0].toFixed(2)} ${c2[1].toFixed(2)}, ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`;
       }
@@ -101,7 +110,10 @@ function useSmoothClipPaths({
       const P = [R[0], ...R, R[R.length - 1]];
       let d = `M ${P[1][0].toFixed(2)} ${P[1][1].toFixed(2)}`;
       for (let i = 0; i < R.length - 1; i++) {
-        const p0 = P[i], p1 = P[i + 1], p2 = P[i + 2], p3 = P[i + 3];
+        const p0 = P[i],
+          p1 = P[i + 1],
+          p2 = P[i + 2],
+          p3 = P[i + 3];
         const { c1, c2 } = catmullRomToBezier(p0, p1, p2, p3, 0.6);
         d += ` C ${c1[0].toFixed(2)} ${c1[1].toFixed(2)}, ${c2[0].toFixed(2)} ${c2[1].toFixed(2)}, ${p2[0].toFixed(2)} ${p2[1].toFixed(2)}`;
       }
@@ -139,8 +151,8 @@ export function SplitPackOnce({
   height = 583,
   amplitudePx = 4, // más bajo = más natural
   frequency = 1.5, // 1–2 ondas
-  samples = 28,    // puntos de la curva
-  step
+  samples = 28, // puntos de la curva
+  step,
 }: {
   src: string;
   onDone?: () => void;
@@ -151,10 +163,10 @@ export function SplitPackOnce({
   amplitudePx?: number;
   frequency?: number;
   samples?: number;
-    step: number;
+  step: number;
 }) {
   const [run, setRun] = useState(false);
-
+console.log('step', step);
   useEffect(() => {
     const rAF = requestAnimationFrame(() => setRun(true));
     const id = setTimeout(() => onDone?.(), durationMs + 80);
@@ -162,7 +174,7 @@ export function SplitPackOnce({
       cancelAnimationFrame(rAF);
       clearTimeout(id);
     };
-  }, [durationMs, onDone]);
+  }, []);
 
   const { topPath, bottomPath } = useSmoothClipPaths({
     width,
@@ -194,7 +206,7 @@ export function SplitPackOnce({
         transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease`}
         filter="drop-shadow(0 6px 8px rgba(0,0,0,0.55))"
         zIndex={1}
-        opacity={step >=3 ? 0 : 1}
+        opacity={step >= 3 ? 0 : 1}
       >
         <CachedImage src={src} h="100%" w="100%" objectFit="contain" />
       </Box>
@@ -213,9 +225,15 @@ export function SplitPackOnce({
         transition={`transform ${durationMs}ms cubic-bezier(0.22,1,0.36,1), opacity 1s ease`}
         filter="drop-shadow(0 10px 16px rgba(0,0,0,0.6))"
         zIndex={200}
-        opacity={step >=4 ? 0 : 1}
+        opacity={step >= 4 ? 0 : 1}
       >
-        <CachedImage src={src} h="100%" w="100%" objectFit="contain" zIndex={200} />
+        <CachedImage
+          src={src}
+          h="100%"
+          w="100%"
+          objectFit="contain"
+          zIndex={200}
+        />
       </Box>
     </Box>
   );
