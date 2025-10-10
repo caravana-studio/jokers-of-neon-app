@@ -179,7 +179,8 @@ export default function PackTear({
       }}
     >
       <Flex
-        mx="30px"
+        ml="30px"
+        mr="25px"
         opacity={step === 1 ? 1 : 0}
         transition="all 1s ease"
         backgroundColor={isDrawing ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}
