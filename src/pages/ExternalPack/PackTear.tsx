@@ -18,6 +18,7 @@ export default function PackTear({
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [opened, setOpened] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   // bins across the tear line to verify horizontal coverage
   const BIN_COUNT = 24; // more bins = finer detection
@@ -94,6 +95,8 @@ export default function PackTear({
     // single-stroke requirement: every new press starts from zero
     resetStroke();
 
+    setIsDrawing(true);
+
     (e.target as Element).setPointerCapture(e.pointerId);
     const { x, y } = xyFromEvent(canvasRef.current, e.clientX, e.clientY);
     const st = stateRef.current;
@@ -149,6 +152,7 @@ export default function PackTear({
       // stroke ended without reaching target → reset (single-stroke requirement)
       onFail?.();
       resetStroke();
+      setIsDrawing(false);
     } else {
       st.drawing = false;
     }
@@ -177,10 +181,31 @@ export default function PackTear({
       <Flex
         mx="30px"
         opacity={step === 1 ? 1 : 0}
-        transition="opacity 1s ease"
-        backgroundColor="rgba(255,255,255,0.4)"
+        transition="all 1s ease"
+        backgroundColor={isDrawing ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}
         width="100%"
         height="3px"
+        position="relative"
+        overflow="hidden"
+        borderRadius="md"
+        _before={{
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: "-30%",
+          width: "50%",
+          height: "100%",
+          background: isDrawing ? '' : "linear-gradient(90deg, transparent, white, transparent)",
+          filter: "blur(1px)",
+          animation: "glowMove 2s linear infinite",
+          animationPlayState: isDrawing ? "paused" : "running",
+        }}
+        sx={{
+          "@keyframes glowMove": {
+            "0%": { left: "-30%" },
+            "100%": { left: "100%" },
+          },
+        }}
       />
 
       <canvas
