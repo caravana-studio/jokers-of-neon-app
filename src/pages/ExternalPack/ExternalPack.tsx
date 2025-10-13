@@ -8,6 +8,7 @@ import { DelayedLoading } from "../../components/DelayedLoading";
 import { LootBoxRateInfo } from "../../components/Info/LootBoxRateInfo";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { RARITY, RarityLabels } from "../../constants/rarity";
+import { CardTypes } from "../../enums/cardTypes";
 import { useCardData } from "../../providers/CardDataProvider";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { colorizeText } from "../../utils/getTooltip";
@@ -15,7 +16,38 @@ import Stack from "./CardStack/Stack";
 import PackTear from "./PackTear";
 import { SplitPackOnce } from "./SplitPackOnce";
 
-const CARD_IDS = [7, 53, 10022, 10023];
+const POSSIBLE_CARD_IDS = [
+  [7, 52, 10022, 10023],
+  [2, 8, 10001, 100025],
+  [3, 43, 52, 10040],
+  [4, 20, 28, 10011],
+];
+
+const CARD_IDS = POSSIBLE_CARD_IDS[Math.floor(Math.random() * POSSIBLE_CARD_IDS.length)];
+
+const getIntensity = (type: CardTypes, rarity: RARITY) => {
+  switch (type) {
+    case CardTypes.JOKER:
+      return GalaxyBackgroundIntensity.MEDIUM;
+    case CardTypes.NEON:
+      return GalaxyBackgroundIntensity.MEDIUM;
+    case CardTypes.SPECIAL:
+      switch (rarity) {
+        case RARITY.C:
+          return GalaxyBackgroundIntensity.LOW;
+        case RARITY.B:
+          return GalaxyBackgroundIntensity.MEDIUM;
+        case RARITY.A:
+          return GalaxyBackgroundIntensity.HIGH;
+        case RARITY.S:
+          return GalaxyBackgroundIntensity.MAX;
+        default:
+          return GalaxyBackgroundIntensity.MEDIUM;
+      }
+    default:
+      return GalaxyBackgroundIntensity.LOW;
+  }
+};
 
 export const ExternalPack = () => {
   const { t } = useTranslation("intermediate-screens", {
@@ -23,6 +55,7 @@ export const ExternalPack = () => {
   });
 
   const { t: tDocs } = useTranslation("docs");
+  const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
 
   const [step, setStep] = useState(0);
@@ -52,7 +85,7 @@ export const ExternalPack = () => {
     <DelayedLoading ms={100}>
       <GalaxyBackground
         opacity={step >= 3 ? 1 : 0}
-        intensity={GalaxyBackgroundIntensity.MEDIUM}
+        intensity={getIntensity(type ?? CardTypes.NONE, rarity ?? RARITY.C)}
       />
       <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
         <MobileDecoration />
@@ -88,7 +121,29 @@ export const ExternalPack = () => {
           )}
 
           {step === 4 && (
-            <Flex flexDirection="column" textAlign="center" zIndex={10}>
+            <Flex
+              key={`${name}-${type}`}
+              flexDirection="column"
+              textAlign="center"
+              zIndex={10}
+              height={"150px"}
+              justifyContent={"center"}
+              sx={{
+                animation: "0.3s ease-out slideIn",
+                "@keyframes slideIn": {
+                  from: {
+                    opacity: 0,
+                    transform: "translateX(-30px)",
+                  },
+                  to: {
+                    opacity: 1,
+                    transform: "translateX(0)",
+                  },
+                },
+                willChange: "transform",
+                backfaceVisibility: "hidden",
+              }}
+            >
               <Heading
                 fontWeight={500}
                 size="l"
@@ -98,7 +153,7 @@ export const ExternalPack = () => {
                 {name}
               </Heading>
               <Text size="l" textTransform="lowercase" fontWeight={600}>
-                - {tDocs(`game.card-types.${type}`)} -
+                - {tGame(`game.card-types.${type}`)} -
               </Text>
             </Flex>
           )}
@@ -186,6 +241,7 @@ export const ExternalPack = () => {
             transition="all 1s ease"
             opacity={step >= 3 ? 1 : 0}
             zIndex={2}
+            pointerEvents={step >= 3 ? "all" : "none"}
           >
             <Stack
               randomRotation={true}
@@ -220,7 +276,29 @@ export const ExternalPack = () => {
             </Button>
           )}
           {step === 4 && (
-            <>
+            <Flex
+              key={`${description}-${rarity}`}
+              flexDir="column"
+              alignItems={"center"}
+              height={"120px"}
+              pointerEvents="none"
+              zIndex={10}
+              sx={{
+                animation: "0.3s ease-out slideIn",
+                "@keyframes slideIn": {
+                  from: {
+                    opacity: 0,
+                    transform: "translateX(-30px)",
+                  },
+                  to: {
+                    opacity: 1,
+                    transform: "translateX(0)",
+                  },
+                },
+                willChange: "transform",
+                backfaceVisibility: "hidden",
+              }}
+            >
               <Text
                 textAlign="center"
                 size="xl"
@@ -230,17 +308,19 @@ export const ExternalPack = () => {
               >
                 {colorizeText(description)}
               </Text>
-              {<Text
-                zIndex={10}
-                textAlign="center"
-                size="l"
-                fontSize={"14px"}
-                width={"65%"}
-                opacity={rarity ? 1 : 0}
-              >
-                {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
-              </Text>}
-            </>
+              {
+                <Text
+                  zIndex={10}
+                  textAlign="center"
+                  size="l"
+                  fontSize={"14px"}
+                  width={"65%"}
+                  opacity={rarity ? 1 : 0}
+                >
+                  {tDocs(`rarity.${RarityLabels[rarity as RARITY]}`)}
+                </Text>
+              }
+            </Flex>
           )}
         </Flex>
       </Flex>
