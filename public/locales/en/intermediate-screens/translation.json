@@ -5,7 +5,7 @@
   "my-games": {
     "title": "Games",
     "go-back": "Go back",
-    "start-game": "Start new game",
+    "start-game": "New game",
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
@@ -67,7 +67,7 @@
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
       "hands-left": "{{hands}} Hands left",
-      "rage": "{{cards}} Rage cards defeated",
+      "rage": "{{cards}} Rage defeated",
       "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
@@ -127,5 +127,9 @@
       "sx": "Season {{season}}",
       "c99": "GG Exclusive Collection - v1"
     }
+  },
+  "wallet-provider": {
+    "login": "LOGIN",
+    "guest": "PLAY AS GUEST"
   }
 }

@@ -10,7 +10,9 @@
     "leaderboard-banner": {
       "title": "Torneio ativo",
       "button": "Classificação completa"
-    }
+    },
+    "level": "Nível",
+    "dailyMissions": "Missões Diárias"
   },
   "leaderboard": {
     "title": "Classificação",
