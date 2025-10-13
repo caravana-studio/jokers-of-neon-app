@@ -18,8 +18,9 @@ import { fetchVersion } from "../../queries/fetchVersion";
 import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { logEvent } from "../../utils/analytics";
+import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { getMinor } from "../../utils/versionUtils";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -36,14 +37,17 @@ export const NewHome = () => {
   const banners = settings?.home?.banners || [];
 
   useEffect(() => {
-    logEvent( "open_home_page")
+    logEvent("open_home_page");
     if (isNative) {
       fetchVersion().then(async (version) => {
         setVersion(version);
         try {
           const res = await Preferences.get({ key: SKIPPED_VERSION });
           const skipped = res.value;
-          if (version !== APP_VERSION && skipped !== version) {
+          if (
+            Number(getMinor(version)) > Number(getMinor(APP_VERSION)) &&
+            skipped !== version
+          ) {
             setVersionModalOpen(true);
           }
         } catch (e) {
