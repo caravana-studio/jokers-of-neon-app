@@ -8,6 +8,8 @@ PODS:
   - CapacitorBrowser (7.0.2):
     - Capacitor
   - CapacitorCordova (7.4.3)
+  - CapacitorHaptics (7.0.2):
+    - Capacitor
   - CapacitorPluginAppTrackingTransparency (2.0.5):
     - Capacitor
   - CapacitorPreferences (7.0.2):
@@ -35,6 +37,7 @@ DEPENDENCIES:
   - "CapacitorAppLauncher (from `../../node_modules/@capacitor/app-launcher`)"
   - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - CapacitorPluginAppTrackingTransparency (from `../../node_modules/capacitor-plugin-app-tracking-transparency`)
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
@@ -63,6 +66,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/browser"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorHaptics:
+    :path: "../../node_modules/@capacitor/haptics"
   CapacitorPluginAppTrackingTransparency:
     :path: "../../node_modules/capacitor-plugin-app-tracking-transparency"
   CapacitorPreferences:
@@ -76,6 +81,7 @@ SPEC CHECKSUMS:
   CapacitorAppLauncher: 96930b89740f1deabc737df750dbc3e9a0430f34
   CapacitorBrowser: 45c681e7abc3b4384e54eb52bafeef1347d98fa8
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CapacitorHaptics: 09d96bcb5a2b74ede8fd039b4cdf58fc43dcacf1
   CapacitorPluginAppTrackingTransparency: 2a2792623a5a72795f2e8f9ab3f1147573732fd8
   CapacitorPreferences: b583b5deb74e564c35968189d25d32c0fd41200d
   CordovaPlugins: 64931e3435a866da9d124e6242a9361b484e9b05
@@ -86,6 +92,6 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: f48c06446995cd209332831f692cea28b26e51da
   FBSDKShareKit: d3fef7f6690e173369134beb5f43983d7338e933
 
-PODFILE CHECKSUM: 719114ea14d31cc7fd29e1a8a04b566fdea3b709
+PODFILE CHECKSUM: 7e9699f28a39de07c2c8fe0f970032a25aa1f783
 
 COCOAPODS: 1.16.2
