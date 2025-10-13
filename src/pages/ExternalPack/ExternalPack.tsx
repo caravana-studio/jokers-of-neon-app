@@ -99,12 +99,16 @@ export const ExternalPack = () => {
       {allCardsSeen && (
         <Button
           position="absolute"
-          bottom={"30px"}
-          right={"15px"}
+          bottom={isSmallScreen ? "30px" : "80px"}
+          right={isSmallScreen ? "15px" : "30px"}
           onClick={() => navigate("/")}
           zIndex={20}
         >
-          <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
+          {isSmallScreen ? (
+            <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
+          ) : (
+            t("continue")
+          )}
         </Button>
       )}
       <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
@@ -146,8 +150,9 @@ export const ExternalPack = () => {
               flexDirection="column"
               textAlign="center"
               zIndex={10}
-              height={"150px"}
+              height={isSmallScreen ? "150px" : "250px"}
               justifyContent={"center"}
+              mt={isSmallScreen ? 0 : 14}
               sx={{
                 animation: "0.3s ease-out slideIn",
                 "@keyframes slideIn": {
@@ -277,7 +282,6 @@ export const ExternalPack = () => {
                 img: `/Cards/${cid}.png`,
               })).reverse()}
               onCardChange={(cardId) => {
-                console.log("cardId", cardId);
                 setHighlightedCard(cardId);
               }}
               onAllSeen={() => setAllCardsSeen(true)}
@@ -301,7 +305,8 @@ export const ExternalPack = () => {
               key={`${description}-${rarity}`}
               flexDir="column"
               alignItems={"center"}
-              height={"120px"}
+              height={isSmallScreen ? "120px" : "200px"}
+              mb={isSmallScreen ? 0 : 16}
               pointerEvents="none"
               zIndex={10}
               sx={{
