@@ -13,6 +13,7 @@ import { useGetLeaderboard } from "../queries/useGetLeaderboard";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 import { RollingNumber } from "./RollingNumber";
+import { useTournamentSettings } from "../queries/useTournamentSettings.ts";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -36,11 +37,15 @@ interface LeaderboardProps {
 export const Leaderboard = ({ gameId, lines = 11, filterLoggedInPlayers = true }: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
-  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId, filterLoggedInPlayers);
+  const { tournament } = useTournamentSettings();
+  const { startCountingAtGameId } = tournament || { startCountingAtGameId: 0 };
+  
+  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId, filterLoggedInPlayers, startCountingAtGameId);
 
   const actualPlayer = fullLeaderboard?.find(
     (player) => signedHexToNumber(player.id.toString()) === gameId
   );
+
 
   const leaderboard = fullLeaderboard?.slice(0, lines);
 

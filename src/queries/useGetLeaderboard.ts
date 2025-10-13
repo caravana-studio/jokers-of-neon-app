@@ -16,9 +16,9 @@ const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
 const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
 
 export const LEADERBOARD_QUERY = gql`
-  query ($modId: String!) {
+  query ($modId: String!, $startCountingAtGameId: String) {
     ${QUERY_FIELD_NAME}(
-      where: { mod_idEQ: $modId }
+      where: { mod_idEQ: $modId, idGT: $startCountingAtGameId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -69,12 +69,14 @@ const fetchGraphQLData = async (
   modId: string,
   client: any,
   filterLoggedInPlayers: boolean,
-  gameId?: number
+  gameId?: number,
+  startCountingAtGameId: number = 0
 ) => {
   const rawData: LeaderboardResponse = await graphQLClient.request(
     LEADERBOARD_QUERY,
     {
       modId: encodeString(modId),
+      startCountingAtGameId: startCountingAtGameId.toString(),
     }
   );
 
@@ -162,7 +164,8 @@ const fetchGraphQLData = async (
 
 export const useGetLeaderboard = (
   gameId?: number,
-  filterLoggedInPlayers = true
+  filterLoggedInPlayers = true,
+  startCountingAtGameId: number = 0
 ) => {
   const { modId } = useGameStore();
   const {
@@ -170,8 +173,8 @@ export const useGetLeaderboard = (
   } = useDojo();
 
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, modId, gameId],
-    () => fetchGraphQLData(modId, client, filterLoggedInPlayers, gameId),
+    [LEADERBOARD_QUERY_KEY, modId, gameId, startCountingAtGameId],
+    () => fetchGraphQLData(modId, client, filterLoggedInPlayers, gameId, startCountingAtGameId),
     {
       refetchOnWindowFocus: false,
     }
