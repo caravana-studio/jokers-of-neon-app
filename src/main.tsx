@@ -75,15 +75,12 @@ async function init() {
   const theme = extendTheme(customTheme);
 
   // Block mobile browsers
-  console.log("isMobileOnly", isMobileOnly);
-  console.log("isNative", isNative);
   if (
     isMobileOnly &&
     !isNative &&
     window.location.hostname !== "localhost" &&
     !BYPASS_MOBILE_BROWSER_RULE
   ) {
-    console.log("INNN");
     return root.render(<MobileBrowserBlocker />);
   }
 
