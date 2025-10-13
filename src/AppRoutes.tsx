@@ -28,6 +28,8 @@ import { PreviewPage } from "./pages/Preview/PreviewPage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TestPage } from "./pages/TestPage";
+import { VibrationPage } from "./pages/VibrationPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
@@ -60,6 +62,22 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <Login />
+          </AnimatedPage>
+        }
+      />
+      <Route
+        path="/test"
+        element={
+          <AnimatedPage>
+            <TestPage />
+          </AnimatedPage>
+        }
+      />{" "}
+      <Route
+        path="/vibration"
+        element={
+          <AnimatedPage>
+            <VibrationPage />
           </AnimatedPage>
         }
       />
