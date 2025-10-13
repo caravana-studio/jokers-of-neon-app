@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CachedImage from "../../../components/CachedImage";
 import { Clock } from "../../../components/Clock";
 import { useGetLeaderboard } from "../../../queries/useGetLeaderboard";
+import { useTournamentSettings } from "../../../queries/useTournamentSettings";
 import { useGameStore } from "../../../state/useGameStore";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 
@@ -17,6 +18,8 @@ export const LeaderboardBanner = () => {
   const navigate = useNavigate();
   const { id: gameId } = useGameStore();
   const { data: fullLeaderboard } = useGetLeaderboard(gameId);
+
+  const { tournament } = useTournamentSettings();
 
   const leaders = fullLeaderboard
     ?.slice(0, 3)
@@ -87,7 +90,7 @@ export const LeaderboardBanner = () => {
             {t("title")}
           </Heading>
           <Flex justifyContent={"flex-end"}>
-            <Clock date={new Date("2025-10-20T00:00:00")} />
+            {tournament?.endDate && <Clock date={tournament.endDate} />}
           </Flex>
         </Flex>
         <Flex justifyContent={"flex-end"}>

@@ -55,7 +55,7 @@ export const GameOverContent: React.FC<GameOverContentProps> = ({
         my={'15px'}
       >
         {isSmallScreen && <Box h="70px" />}
-        <Flex flexDirection="column" width={{ base: "80%", sm: "50%" }}>
+        <Flex flexDirection="column" alignItems={"center"} width={{ base: "80%", sm: "50%" }}>
           <Heading
             size={{ base: "sm", sm: "md" }}
             variant="italic"

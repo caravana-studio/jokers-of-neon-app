@@ -16,6 +16,9 @@
   },
   "leaderboard": {
     "title": "Leaderboard",
+    "tournament": "Tournament active",
+    "level": "Level ",
+    "round": "R ",
     "btn": {
       "returnLeaderboard-btn": "Go back"
     },
