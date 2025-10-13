@@ -60,6 +60,7 @@ interface StackProps {
   animationConfig?: { stiffness: number; damping: number };
   sendToBackOnClick?: boolean;
   onCardChange?: (cardId: number) => void;
+  onAllSeen?: () => void;
 }
 
 export default function Stack({
@@ -70,8 +71,10 @@ export default function Stack({
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
   onCardChange,
+  onAllSeen,
 }: StackProps) {
   const [cards, setCards] = useState<CardData[]>(cardsData);
+  const [seenCards, setSeenCards] = useState<Set<number | string>>(new Set());
 
   const sendToBack = (id: CardData["id"]) => {
     setCards((prev) => {
@@ -81,6 +84,19 @@ export default function Stack({
       const [card] = newCards.splice(index, 1);
       newCards.unshift(card);
       onCardChange?.(newCards[newCards.length - 1].cardId);
+
+      // Track seen cards
+      setSeenCards((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(id);
+        
+        // Check if all cards have been seen
+        if (newSet.size === cardsData.length && onAllSeen) {
+          onAllSeen();
+        }
+        
+        return newSet;
+      });
 
       return newCards;
     });

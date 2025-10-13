@@ -1,6 +1,9 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { GalaxyBackground } from "../../components/backgrounds/galaxy/GalaxyBackground";
 import { GalaxyBackgroundIntensity } from "../../components/backgrounds/galaxy/types";
 import CachedImage from "../../components/CachedImage";
@@ -23,7 +26,8 @@ const POSSIBLE_CARD_IDS = [
   [4, 20, 28, 10011],
 ];
 
-const CARD_IDS = POSSIBLE_CARD_IDS[Math.floor(Math.random() * POSSIBLE_CARD_IDS.length)];
+const CARD_IDS =
+  POSSIBLE_CARD_IDS[Math.floor(Math.random() * POSSIBLE_CARD_IDS.length)];
 
 const getIntensity = (type: CardTypes, rarity: RARITY) => {
   switch (type) {
@@ -58,6 +62,8 @@ export const ExternalPack = () => {
   const { t: tGame } = useTranslation("game");
   const { getCardData } = useCardData();
 
+  const [allCardsSeen, setAllCardsSeen] = useState(false);
+
   const [step, setStep] = useState(0);
 
   const { isSmallScreen } = useResponsiveValues();
@@ -81,12 +87,26 @@ export const ExternalPack = () => {
     details,
   } = getCardData(highlightedCard ?? 0);
 
+  const navigate = useNavigate();
+
   return (
     <DelayedLoading ms={100}>
       <GalaxyBackground
         opacity={step >= 3 ? 1 : 0}
         intensity={getIntensity(type ?? CardTypes.NONE, rarity ?? RARITY.C)}
       />
+
+      {allCardsSeen && (
+        <Button
+          position="absolute"
+          bottom={"30px"}
+          right={"15px"}
+          onClick={() => navigate("/")}
+          zIndex={20}
+        >
+          <FontAwesomeIcon color="white" fontSize={13} icon={faCaretRight} />
+        </Button>
+      )}
       <Flex flexDirection={"column"} width={"100%"} height={"100%"}>
         <MobileDecoration />
         <Flex
@@ -260,6 +280,7 @@ export const ExternalPack = () => {
                 console.log("cardId", cardId);
                 setHighlightedCard(cardId);
               }}
+              onAllSeen={() => setAllCardsSeen(true)}
             />
           </Flex>
 
