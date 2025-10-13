@@ -20,6 +20,10 @@ PODS:
     - FBAEMKit (= 18.0.1)
     - FBSDKCoreKit_Basics (= 18.0.1)
   - FBSDKCoreKit_Basics (18.0.1)
+  - FBSDKGamingServicesKit (18.0.1):
+    - FBSDKCoreKit (= 18.0.1)
+    - FBSDKCoreKit_Basics (= 18.0.1)
+    - FBSDKShareKit (= 18.0.1)
   - FBSDKLoginKit (18.0.1):
     - FBSDKCoreKit (= 18.0.1)
   - FBSDKShareKit (18.0.1):
@@ -35,6 +39,7 @@ DEPENDENCIES:
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - FBSDKCoreKit (~> 18.0)
+  - FBSDKGamingServicesKit (~> 18.0)
   - FBSDKLoginKit (~> 18.0)
   - FBSDKShareKit (~> 18.0)
 
@@ -43,6 +48,7 @@ SPEC REPOS:
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
     - FBSDKLoginKit
     - FBSDKShareKit
 
@@ -76,9 +82,10 @@ SPEC CHECKSUMS:
   FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00
   FBSDKCoreKit: 7f96852f2539bdb88ba8d47e5ab4ae70a6f8d691
   FBSDKCoreKit_Basics: 22d4c1a509ded4e45116f3bb167a14907550f62e
+  FBSDKGamingServicesKit: acde62310212678446f81b0a14da88231b918feb
   FBSDKLoginKit: f48c06446995cd209332831f692cea28b26e51da
   FBSDKShareKit: d3fef7f6690e173369134beb5f43983d7338e933
 
-PODFILE CHECKSUM: 70716a491d232a5c93ad4bbd42cee72e3d05cb25
+PODFILE CHECKSUM: 719114ea14d31cc7fd29e1a8a04b566fdea3b709
 
 COCOAPODS: 1.16.2

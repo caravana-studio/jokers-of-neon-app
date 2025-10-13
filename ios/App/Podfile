@@ -23,9 +23,10 @@ end
 target 'App' do
   capacitor_pods
   # Add your Pods here
-  pod 'FBSDKCoreKit', '~> 18.0'
-  pod 'FBSDKLoginKit', '~> 18.0'
-  pod 'FBSDKShareKit', '~> 18.0'
+  pod 'FBSDKCoreKit',            '~> 18.0'
+  pod 'FBSDKLoginKit',           '~> 18.0'
+  pod 'FBSDKShareKit',           '~> 18.0'
+  pod 'FBSDKGamingServicesKit',  '~> 18.0'
 end
 
 post_install do |installer|
