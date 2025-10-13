@@ -32,6 +32,7 @@ import { Profile } from "./components/Profile/Profile";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
 import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { NewHome } from "./pages/NewHome/NewHome";
+import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -145,7 +146,7 @@ export const AppRoutes = () => {
         path="/leaderboard"
         element={
           <AnimatedPage>
-            <LeaderBoardPage />
+            <NewLeaderboardPage />
           </AnimatedPage>
         }
       />

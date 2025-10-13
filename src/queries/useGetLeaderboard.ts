@@ -1,7 +1,6 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
 import { useDojo } from "../dojo/useDojo";
-import { getNode } from "../dojo/queries/getNode";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
 import { useGameStore } from "../state/useGameStore";
@@ -9,6 +8,7 @@ import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { snakeToCamel } from "../utils/snakeToCamel";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
+const guestNamePattern = /^joker_guest_\d+$/;
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -68,6 +68,7 @@ const getPrize = (position: number): number => {
 const fetchGraphQLData = async (
   modId: string,
   client: any,
+  filterLoggedInPlayers: boolean,
   gameId?: number
 ) => {
   const rawData: LeaderboardResponse = await graphQLClient.request(
@@ -146,14 +147,23 @@ const fetchGraphQLData = async (
     return b.player_score - a.player_score;
   });
 
-  return sortedLeaderboard.map((leader, index) => ({
+  const filteredLeaderboard = filterLoggedInPlayers
+    ? sortedLeaderboard?.filter(
+        (player) => !guestNamePattern.test(player.player_name)
+      )
+    : sortedLeaderboard;
+
+  return filteredLeaderboard.map((leader, index) => ({
     ...leader,
     position: index + 1,
     prize: getPrize(index + 1),
   }));
 };
 
-export const useGetLeaderboard = (gameId?: number) => {
+export const useGetLeaderboard = (
+  gameId?: number,
+  filterLoggedInPlayers = true
+) => {
   const { modId } = useGameStore();
   const {
     setup: { client },
@@ -161,7 +171,7 @@ export const useGetLeaderboard = (gameId?: number) => {
 
   const queryResponse = useQuery(
     [LEADERBOARD_QUERY_KEY, modId, gameId],
-    () => fetchGraphQLData(modId, client, gameId),
+    () => fetchGraphQLData(modId, client, filterLoggedInPlayers, gameId),
     {
       refetchOnWindowFocus: false,
     }
