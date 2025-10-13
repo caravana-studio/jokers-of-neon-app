@@ -80,7 +80,7 @@ async function init() {
   if (
     isMobileOnly &&
     !isNative &&
-    // window.location.hostname !== "localhost" &&
+    window.location.hostname !== "localhost" &&
     !BYPASS_MOBILE_BROWSER_RULE
   ) {
     console.log("INNN");

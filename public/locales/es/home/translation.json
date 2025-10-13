@@ -16,6 +16,9 @@
   },
   "leaderboard": {
     "title": "Clasificación",
+    "tournament": "Torneo activo",
+    "level": "Nivel ",
+    "round": "R ",
     "btn": {
       "returnLeaderboard-btn": "Volver"
     },
