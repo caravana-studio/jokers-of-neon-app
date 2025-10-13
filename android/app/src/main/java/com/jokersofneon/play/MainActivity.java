@@ -8,9 +8,8 @@ import com.facebook.appevents.AppEventsLogger;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
+        super.onCreate(savedInstanceState);
     }
 }
