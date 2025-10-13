@@ -11,6 +11,7 @@ export interface Banner {
   position: number;
   type: BannerType;
   url?: string;
+  navigateTo?: string;
 }
 
 interface DistributionSettings {
