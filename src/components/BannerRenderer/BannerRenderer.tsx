@@ -18,7 +18,7 @@ export const BannerRenderer: React.FC<BannerRendererProps> = ({ banner }) => {
         console.error('Image banner missing URL:', banner);
         return null;
       }
-      return <ImageBanner url={banner.url} />;
+      return <ImageBanner url={banner.url} navigateTo={banner.navigateTo} />;
     default:
       console.error('Unknown banner type:', banner);
       return null;
