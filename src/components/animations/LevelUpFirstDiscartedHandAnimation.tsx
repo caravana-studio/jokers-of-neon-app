@@ -12,9 +12,9 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { animated, config, useSpring } from "react-spring";
-import { PLAYS } from "../../constants/plays";
 import { useAnimationStore } from "../../state/useAnimationStore";
 
+import { PLAYS_DATA } from "../../constants/plays";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import theme from "../../theme/theme";
 
@@ -25,6 +25,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
   const { levelUpHand, setLevelUpHand } = useAnimationStore();
   const { isSmallScreen } = useResponsiveValues();
   const { blue, violet } = theme.colors;
+  const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
   const { t } = useTranslation("game", {
     keyPrefix: "animations.labels",
@@ -229,7 +230,7 @@ export const LevelUpFirstDiscartedHandAnimation = () => {
 
               <animated.div style={textSpring}>
                 <Text fontSize={{ base: "2rem", sm: "4rem" }}>
-                  {PLAYS[levelUpHand.hand]}
+                  {tPlays(`${PLAYS_DATA[levelUpHand?.hand]?.name}.name`)}
                 </Text>
               </animated.div>
 
