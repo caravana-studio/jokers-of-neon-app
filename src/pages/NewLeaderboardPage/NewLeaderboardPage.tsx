@@ -48,7 +48,7 @@ export const NewLeaderboardPage = () => {
         </Flex>
         <Flex flexDir="column" w="70%" h="100%" alignItems={"center"} mt={tournament?.isActive ? 4 : 8}>
           {tournament?.isActive && <Podium />}
-          <Leaderboard hidePodium={tournament?.isActive} lines={100} mb="100px" />
+          <Leaderboard hidePodium={tournament?.isActive} lines={100} mb={isSmallScreen ? "100px" : "200px"} />
         </Flex>
       </Flex>
     </DelayedLoading>
