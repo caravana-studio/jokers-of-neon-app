@@ -1,16 +1,17 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { PLAYS } from "../constants/plays";
+import { PLAYS_DATA } from "../constants/plays";
 import { Plays } from "../enums/plays";
 import { useCurrentHandStore } from "../state/useCurrentHandStore";
-import { checkHand } from "../utils/checkHand";
-import { useEffect } from "react";
 import { useGameStore } from "../state/useGameStore";
+import { checkHand } from "../utils/checkHand";
 
 export const CurrentPlay = () => {
   const { preSelectedPlay, setPreSelectedPlay, playIsNeon, preSelectedCards, hand, preSelectedModifiers } = useCurrentHandStore();
   const { setMulti, setPoints,  specialCards, resetMultiPoints, plays} = useGameStore()
   const { t } = useTranslation(["game"]);
+  const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
     const setMultiAndPoints = (play: Plays) => {
     const playerPokerHand = plays[play - 1];
@@ -49,7 +50,7 @@ export const CurrentPlay = () => {
       <Text size="l">
         {preSelectedPlay === Plays.NONE
           ? t("game.preselected-cards-section.current-play-lbl.default")
-          : `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${PLAYS[preSelectedPlay]}`}
+          : `${playIsNeon ? t("game.preselected-cards-section.current-play-lbl.neon-play") : ""} ${tPlays(`${PLAYS_DATA[preSelectedPlay]?.name}.name`)}`}
       </Text>
     </Flex>
   );
