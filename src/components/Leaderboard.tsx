@@ -9,11 +9,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
+import { useTournamentSettings } from "../queries/useTournamentSettings.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 import { RollingNumber } from "./RollingNumber";
-import { useTournamentSettings } from "../queries/useTournamentSettings.ts";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -33,21 +34,34 @@ interface LeaderboardProps {
   lines?: number;
   gameId?: number;
   filterLoggedInPlayers?: boolean;
+  hidePodium?: boolean;
+  mb?: string;
 }
-export const Leaderboard = ({ gameId, lines = 11, filterLoggedInPlayers = true }: LeaderboardProps) => {
+export const Leaderboard = ({
+  gameId,
+  lines = 11,
+  filterLoggedInPlayers = true,
+  hidePodium = false,
+  mb = "",
+}: LeaderboardProps) => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
   const { startCountingAtGameId } = tournament || { startCountingAtGameId: 0 };
-  
-  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(gameId, filterLoggedInPlayers, startCountingAtGameId);
+
+  const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
+    gameId,
+    filterLoggedInPlayers,
+    startCountingAtGameId
+  );
 
   const actualPlayer = fullLeaderboard?.find(
     (player) => signedHexToNumber(player.id.toString()) === gameId
   );
 
+  const username = useUsername();
 
-  const leaderboard = fullLeaderboard?.slice(0, lines);
+  const leaderboard = fullLeaderboard?.slice(hidePodium ? 3 : 0, lines);
 
   const currentPlayerIsInReducedLeaderboard = leaderboard?.some(
     (leader) => signedHexToNumber(leader.id.toString()) === gameId
@@ -55,16 +69,16 @@ export const Leaderboard = ({ gameId, lines = 11, filterLoggedInPlayers = true }
 
   return (
     <Box
-      w={isSmallScreen ? "90%" : "60%"}
+      w={isSmallScreen ? "100%" : "60%"}
       overflowY="auto"
       flexGrow={1}
-      mx={4}
-      my={isSmallScreen ? 8 : "70px"}
+      mt={isSmallScreen ? 2 : "20px"}
+      mb={isSmallScreen ? 8 : "70px"}
       px={[1, 2, 4, 8]}
     >
       {isLoading && <Spinner />}
       {leaderboard && (
-        <TableContainer overflowX="hidden" overflowY="auto">
+        <TableContainer overflowX="hidden" overflowY="auto" mb={mb}>
           <Table
             variant="leaderboard"
             sx={{
@@ -114,38 +128,43 @@ export const Leaderboard = ({ gameId, lines = 11, filterLoggedInPlayers = true }
                     : lines;
                   return index < limit;
                 })
-                .map((leader) => (
-                  <CustomTr
-                    key={leader.id}
-                    sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
-                  >
-                    <Td>#{leader.position}</Td>
-                    <Td>{leader.player_name}</Td>
-                    {/*                     <Td isNumeric>
+                .map((leader) => {
+                  const isCurrentPlayer = username === leader.player_name;
+                  return (
+                    <CustomTr
+                      key={leader.id}
+                      sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
+                    >
+                      <Td color={isCurrentPlayer ? "white !important" : ""}>
+                        #{leader.position}
+                      </Td>
+                      <Td color={isCurrentPlayer ? "white !important" : ""}>{leader.player_name}</Td>
+                      {/*                     <Td isNumeric>
                       {gameId === leader.id ? (
                         <RollingNumber n={leader.player_score} />
                       ) : (
                         leader.player_score
                       )}
                     </Td> */}
-                    <Td>
-                      {t("leaderboard.level")}
-                      {gameId === leader.id ? (
-                        <RollingNumber n={leader.level} />
-                      ) : (
-                        leader.level
-                      )}
-                    </Td>
-                    <Td>
-                      {t("leaderboard.round")}
-                      {gameId === leader.id ? (
-                        <RollingNumber n={leader.round} />
-                      ) : (
-                        leader.round
-                      )}
-                    </Td>
-                  </CustomTr>
-                ))}
+                      <Td color={isCurrentPlayer ? "white !important" : ""}>
+                        {t("leaderboard.level")}
+                        {gameId === leader.id ? (
+                          <RollingNumber n={leader.level} />
+                        ) : (
+                          leader.level
+                        )}
+                      </Td>
+                      <Td color={isCurrentPlayer ? "white !important" : ""}>
+                        {t("leaderboard.round")}
+                        {gameId === leader.id ? (
+                          <RollingNumber n={leader.round} />
+                        ) : (
+                          leader.round
+                        )}
+                      </Td>
+                    </CustomTr>
+                  );
+                })}
               {actualPlayer && !currentPlayerIsInReducedLeaderboard && (
                 <>
                   <Tr>

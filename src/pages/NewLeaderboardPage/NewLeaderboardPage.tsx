@@ -7,6 +7,7 @@ import { MobileDecoration } from "../../components/MobileDecoration";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { Podium } from "./Podium";
 
 export const NewLeaderboardPage = () => {
   const { tournament } = useTournamentSettings();
@@ -14,7 +15,7 @@ export const NewLeaderboardPage = () => {
   const { isSmallScreen } = useResponsiveValues();
   return (
     <DelayedLoading ms={200}>
-      <MobileDecoration />
+      <MobileDecoration fadeToBlack />
       <Flex
         w="100%"
         h="100%"
@@ -36,7 +37,7 @@ export const NewLeaderboardPage = () => {
             alignItems="center"
             px={4}
           >
-            <Heading variant="italic" fontSize={isSmallScreen ? "sm" : "md"}>
+            <Heading zIndex={10} variant="italic" fontSize={isSmallScreen ? "sm" : "md"}>
               {tournament?.isActive ? t("tournament") : t("title")}
             </Heading>
             {tournament?.endDate && tournament.isActive && (
@@ -45,7 +46,10 @@ export const NewLeaderboardPage = () => {
           </Flex>
           <Divider borderColor={BLUE} mt={3} />
         </Flex>
-        <Leaderboard lines={101} />
+        <Flex flexDir="column" w="70%" h="100%" alignItems={"center"} mt={tournament?.isActive ? 4 : 8}>
+          {tournament?.isActive && <Podium />}
+          <Leaderboard hidePodium={tournament?.isActive} lines={100} mb="100px" />
+        </Flex>
       </Flex>
     </DelayedLoading>
   );
