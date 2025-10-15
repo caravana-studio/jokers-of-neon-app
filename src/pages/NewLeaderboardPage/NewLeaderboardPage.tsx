@@ -37,18 +37,36 @@ export const NewLeaderboardPage = () => {
             alignItems="center"
             px={4}
           >
-            <Heading zIndex={10} variant="italic" fontSize={isSmallScreen ? "sm" : "md"}>
-              {tournament?.isActive ? t("tournament") : t("title")}
+            <Heading
+              zIndex={10}
+              variant="italic"
+              fontSize={isSmallScreen ? "sm" : "md"}
+            >
+              {tournament?.isActive
+                ? tournament.isFinished
+                  ? t("finished")
+                  : t("tournament")
+                : t("title")}
             </Heading>
-            {tournament?.endDate && tournament.isActive && (
-              <Clock date={tournament.endDate} />
-            )}
+            {tournament?.endDate &&
+              tournament.isActive &&
+              !tournament.isFinished && <Clock date={tournament.endDate} />}
           </Flex>
           <Divider borderColor={BLUE} mt={3} />
         </Flex>
-        <Flex flexDir="column" w="70%" h="100%" alignItems={"center"} mt={tournament?.isActive ? 4 : 8}>
+        <Flex
+          flexDir="column"
+          w="70%"
+          h="100%"
+          alignItems={"center"}
+          mt={tournament?.isActive ? 4 : 8}
+        >
           {tournament?.isActive && <Podium />}
-          <Leaderboard hidePodium={tournament?.isActive} lines={100} mb={isSmallScreen ? "100px" : "200px"} />
+          <Leaderboard
+            hidePodium={tournament?.isActive}
+            lines={100}
+            mb={isSmallScreen ? "100px" : "200px"}
+          />
         </Flex>
       </Flex>
     </DelayedLoading>

@@ -17,6 +17,7 @@
   "leaderboard": {
     "title": "Leaderboard",
     "tournament": "Tournament active",
+    "finished": "Tournament finished",
     "level": "Level ",
     "round": "R ",
     "btn": {

@@ -17,6 +17,7 @@
   "leaderboard": {
     "title": "Clasificación",
     "tournament": "Torneo activo",
+    "finished": "Torneo finalizado",
     "level": "Nivel ",
     "round": "R ",
     "btn": {

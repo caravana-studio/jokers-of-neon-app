@@ -2,6 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
 import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
+import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 
@@ -9,9 +10,18 @@ export const Podium = () => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { id: gameId } = useGameStore();
+  const { tournament } = useTournamentSettings();
+  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
+    startCountingAtGameId: 0,
+    stopCountingAtGameId: 1000000,
+  };
 
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
-
+  const { data: fullLeaderboard } = useGetLeaderboard(
+    gameId,
+    true,
+    startCountingAtGameId,
+    stopCountingAtGameId
+  );
   const leaders = fullLeaderboard?.slice(0, 3);
 
   return (

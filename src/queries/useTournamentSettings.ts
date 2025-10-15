@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 
 interface TournamentSettings {
   isActive: boolean;
+  isFinished: boolean;
   startDate?: Date;
   endDate?: Date;
   justFinished?: boolean;
   startCountingAtGameId: number;
+  stopCountingAtGameId: number;
 }
 
 const defaultTournamentSettings: TournamentSettings = {
   isActive: false,
+  isFinished: false,
   startCountingAtGameId: 0,
+  stopCountingAtGameId: 1000000,
 }
 
 const CURRENT_DATE = new Date();
@@ -32,10 +36,12 @@ export const useTournamentSettings = () => {
         const data = await response.json();
 
         setTournament({
-          isActive: data["start-date"] && new Date(data["start-date"]) < CURRENT_DATE,
-          startDate: data["start-date"] && new Date(data["start-date"]),
-          endDate: data["finsish-date"] && new Date(data["finsish-date"]),
+          isActive: data["isActive"] ?? (data["startDate"] && new Date(data["startDate"]) < CURRENT_DATE),
+          isFinished: data["finishDate"] && new Date(data["finishDate"]) < CURRENT_DATE,
+          startDate: data["startDate"] && new Date(data["startDate"]),
+          endDate: data["finishDate"] && new Date(data["finishDate"]),
           startCountingAtGameId: data["start-counting-at-game-id"] || 0,
+          stopCountingAtGameId: data["stop-counting-at-game-id"] || 1000000,
         });
         console.log("tournament settings:", data);
       } catch (err) {
