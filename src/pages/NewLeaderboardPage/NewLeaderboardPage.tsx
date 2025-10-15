@@ -1,4 +1,5 @@
 import { Divider, Flex, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -8,11 +9,14 @@ import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { Podium } from "./Podium";
+import { SeePrizesSwitcher } from "./SeePrizesSwitcher";
 
 export const NewLeaderboardPage = () => {
   const { tournament } = useTournamentSettings();
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
+  const [seePrizes, setSeePrizes] = useState(false);
+
   return (
     <DelayedLoading ms={200}>
       <MobileDecoration fadeToBlack />
@@ -51,6 +55,15 @@ export const NewLeaderboardPage = () => {
             {tournament?.endDate &&
               tournament.isActive &&
               !tournament.isFinished && <Clock date={tournament.endDate} />}
+            {tournament?.isActive && (
+              <Flex
+                position="absolute"
+                right={isSmallScreen ? 4 : 5}
+                top={isSmallScreen ? "65px" : "130px"}
+              >
+                <SeePrizesSwitcher onChange={(value) => setSeePrizes(value)} />
+              </Flex>
+            )}
           </Flex>
           <Divider borderColor={BLUE} mt={3} />
         </Flex>
@@ -61,11 +74,12 @@ export const NewLeaderboardPage = () => {
           alignItems={"center"}
           mt={tournament?.isActive ? 4 : 8}
         >
-          {tournament?.isActive && <Podium />}
+          {tournament?.isActive && <Podium seePrizes={seePrizes} />}
           <Leaderboard
             hidePodium={tournament?.isActive}
             lines={100}
             mb={isSmallScreen ? "100px" : "200px"}
+            seePrizes={seePrizes}
           />
         </Flex>
       </Flex>

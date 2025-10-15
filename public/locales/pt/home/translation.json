@@ -20,6 +20,16 @@
     "finished": "Torneio finalizado",
     "level": "Nível ",
     "round": "R ",
+    "see-prizes": "Ver prêmios",
+    "prizes": {
+      "basic": "{{count}} Básico",
+      "advanced": "{{count}} Avançado",
+      "epic": "{{count}} Épico",
+      "legendary": "{{count}} Lendário",
+      "collector": "{{count}} Colecionador",
+      "collectorXL": "{{count}} Colecionador XL",
+      "seasonPass": "Passe de Temporada"
+    },
     "btn": {
       "returnLeaderboard-btn": "Voltar"
     },

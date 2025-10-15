@@ -1,12 +1,16 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import CachedImage from "../../components/CachedImage";
+import { getPrizeText } from "../../components/Leaderboard";
 import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+interface PodiumProps {
+  seePrizes?: boolean;
+}
 
-export const Podium = () => {
+export const Podium = ({ seePrizes = false }: PodiumProps) => {
   const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { id: gameId } = useGameStore();
@@ -56,14 +60,29 @@ export const Podium = () => {
             gap={1}
             fontWeight="bold"
           >
-            <Text color="lightViolet">
-              {t("level")}
-              {leaders[0].level}
-            </Text>
-            <Text color="white">
-              {t("round")}
-              {leaders[0].round}
-            </Text>
+            {seePrizes ? (
+              <Text
+                textAlign="center"
+                fontSize={isSmallScreen ? 8 : 14}
+                overflowWrap="break-word"
+                wordBreak="normal"
+                whiteSpace="normal"
+                lineHeight="1.2"
+              >
+                {getPrizeText(t, tournament?.prizes[1])}
+              </Text>
+            ) : (
+              <>
+                <Text color="lightViolet">
+                  {t("level")}
+                  {leaders[0].level}
+                </Text>
+                <Text color="white">
+                  {t("round")}
+                  {leaders[0].round}
+                </Text>
+              </>
+            )}
           </Flex>
         </>
       )}
@@ -90,14 +109,29 @@ export const Podium = () => {
             gap={1}
             fontWeight="bold"
           >
-            <Text color="lightViolet">
-              {t("level")}
-              {leaders[1].level}
-            </Text>
-            <Text color="white">
-              {t("round")}
-              {leaders[1].round}
-            </Text>
+            {seePrizes ? (
+              <Text
+                textAlign="center"
+                fontSize={isSmallScreen ? 8 : 14}
+                overflowWrap="break-word"
+                wordBreak="normal"
+                whiteSpace="normal"
+                lineHeight="1.2"
+              >
+                {getPrizeText(t, tournament?.prizes[2])}
+              </Text>
+            ) : (
+              <>
+                <Text color="lightViolet">
+                  {t("level")}
+                  {leaders[1].level}
+                </Text>
+                <Text color="white">
+                  {t("round")}
+                  {leaders[1].round}
+                </Text>
+              </>
+            )}
           </Flex>
         </>
       )}
@@ -124,14 +158,29 @@ export const Podium = () => {
             gap={1}
             fontWeight="bold"
           >
-            <Text color="lightViolet">
-              {t("level")}
-              {leaders[2].level}
-            </Text>
-            <Text color="white">
-              {t("round")}
-              {leaders[2].round}
-            </Text>
+            {seePrizes ? (
+              <Text
+                textAlign="center"
+                fontSize={isSmallScreen ? 8 : 14}
+                overflowWrap="break-word"
+                wordBreak="normal"
+                whiteSpace="normal"
+                lineHeight="1.2"
+              >
+                {getPrizeText(t, tournament?.prizes[3])}
+              </Text>
+            ) : (
+              <>
+                <Text color="lightViolet">
+                  {t("level")}
+                  {leaders[2].level}
+                </Text>
+                <Text color="white">
+                  {t("round")}
+                  {leaders[2].round}
+                </Text>
+              </>
+            )}
           </Flex>
         </>
       )}

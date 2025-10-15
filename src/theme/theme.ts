@@ -21,6 +21,7 @@ import { inputTheme } from "./input";
 import { menuTheme } from "./menu.ts";
 import { modalTheme } from "./modal";
 import { tableTheme } from "./table";
+import { switchTheme } from "./switch";
 import { tabsTheme } from "./tabs.ts";
 import { textTheme } from "./text";
 import { tooltipTheme } from "./tooltip";
@@ -85,5 +86,6 @@ export default {
     Menu: menuTheme,
     Tabs: tabsTheme,
     Drawer: drawerTheme,
+    Switch: switchTheme,
   },
 };

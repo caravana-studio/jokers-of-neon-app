@@ -6,15 +6,20 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Tr,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
-import { useTournamentSettings } from "../queries/useTournamentSettings.ts";
+import {
+  Prize,
+  useTournamentSettings,
+} from "../queries/useTournamentSettings.ts";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 import { RollingNumber } from "./RollingNumber";
+import { TFunction } from "i18next";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -30,7 +35,48 @@ const CURRENT_LEADER_STYLES = {
   `,
 };
 
+export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
+    if (!prize) {
+      return "";
+    }
+    const prizeArray = [];
+    prize.packs.collectorXL &&
+      prizeArray.push(
+        t(`prizes.collectorXL`, {
+          count: prize.packs.collectorXL,
+        })
+      );
+    prize.packs.collector &&
+      prizeArray.push(
+        t(`prizes.collector`, {
+          count: prize.packs.collector,
+        })
+      );
+    prize.packs.epic &&
+      prizeArray.push(
+        t(`prizes.epic`, { count: prize.packs.epic })
+      );
+    prize.packs.legendary &&
+      prizeArray.push(
+        t(`prizes.legendary`, {
+          count: prize.packs.legendary,
+        })
+      );
+    prize.packs.advanced &&
+      prizeArray.push(
+        t(`prizes.advanced`, { count: prize.packs.advanced })
+      );
+    prize.packs.base &&
+      prizeArray.push(
+        t(`prizes.base`, { count: prize.packs.base })
+      );
+    prize.seasonPass && prizeArray.push(t(`prizes.seasonPass`));
+
+    return prizeArray.join(" + ");
+  };
+
 interface LeaderboardProps {
+  seePrizes?: boolean;
   lines?: number;
   gameId?: number;
   filterLoggedInPlayers?: boolean;
@@ -43,11 +89,15 @@ export const Leaderboard = ({
   filterLoggedInPlayers = true,
   hidePodium = false,
   mb = "",
+  seePrizes = false,
 }: LeaderboardProps) => {
-  const { t } = useTranslation(["home"]);
+  const { t } = useTranslation("home", { keyPrefix: "leaderboard" });
   const { isSmallScreen } = useResponsiveValues();
   const { tournament } = useTournamentSettings();
-  const { startCountingAtGameId, stopCountingAtGameId } = tournament || { startCountingAtGameId: 0, stopCountingAtGameId: 1000000 };
+  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
+    startCountingAtGameId: 0,
+    stopCountingAtGameId: 1000000,
+  };
 
   const { data: fullLeaderboard, isLoading } = useGetLeaderboard(
     gameId,
@@ -85,6 +135,7 @@ export const Leaderboard = ({
             sx={{
               borderCollapse: "separate",
               borderSpacing: "0 5px",
+              tableLayout: "fixed",
               "& td": {
                 border: "none",
                 padding: 0,
@@ -92,35 +143,6 @@ export const Leaderboard = ({
               },
             }}
           >
-            {/*             <Thead>
-              <Tr>
-                <Td>
-                  {t(
-                    "leaderboard.table-head.position-leaderboard-head"
-                  ).toUpperCase()}
-                </Td>
-                <Td>
-                  {t(
-                    "leaderboard.table-head.username-leaderboard-head"
-                  ).toUpperCase()}
-                </Td>
-                <Td>
-                  {t(
-                    "leaderboard.table-head.score-leaderboard-head"
-                  ).toUpperCase()}
-                </Td>
-                <Td>
-                  {t(
-                    "leaderboard.table-head.level-leaderboard-head"
-                  ).toUpperCase()}
-                </Td>
-                <Td>
-                  {t(
-                    "leaderboard.table-head.round-leaderboard-head"
-                  ).toUpperCase()}
-                </Td>
-              </Tr>
-            </Thead> */}
             <Tbody>
               {leaderboard
                 .filter((_, index) => {
@@ -139,30 +161,41 @@ export const Leaderboard = ({
                       <Td color={isCurrentPlayer ? "white !important" : ""}>
                         #{leader.position}
                       </Td>
-                      <Td color={isCurrentPlayer ? "white !important" : ""}>{leader.player_name}</Td>
-                      {/*                     <Td isNumeric>
-                      {gameId === leader.id ? (
-                        <RollingNumber n={leader.player_score} />
+                      <Td color={isCurrentPlayer ? "white !important" : ""}>
+                        {leader.player_name}
+                      </Td>
+                      {seePrizes ? (
+                        <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                          <Text
+                            fontSize={isSmallScreen ? 8: 14}
+                            overflowWrap="break-word"
+                            wordBreak="normal"
+                            whiteSpace="normal"
+                            lineHeight="1.2"
+                          >
+                            {getPrizeText(t, tournament?.prizes[leader.position])}
+                          </Text>
+                        </Td>
                       ) : (
-                        leader.player_score
+                        <>
+                          <Td color={isCurrentPlayer ? "white !important" : ""}>
+                            {t("level")}
+                            {gameId === leader.id ? (
+                              <RollingNumber n={leader.level} />
+                            ) : (
+                              leader.level
+                            )}
+                          </Td>
+                          <Td color={isCurrentPlayer ? "white !important" : ""}>
+                            {t("round")}
+                            {gameId === leader.id ? (
+                              <RollingNumber n={leader.round} />
+                            ) : (
+                              leader.round
+                            )}
+                          </Td>
+                        </>
                       )}
-                    </Td> */}
-                      <Td color={isCurrentPlayer ? "white !important" : ""}>
-                        {t("leaderboard.level")}
-                        {gameId === leader.id ? (
-                          <RollingNumber n={leader.level} />
-                        ) : (
-                          leader.level
-                        )}
-                      </Td>
-                      <Td color={isCurrentPlayer ? "white !important" : ""}>
-                        {t("leaderboard.round")}
-                        {gameId === leader.id ? (
-                          <RollingNumber n={leader.round} />
-                        ) : (
-                          leader.round
-                        )}
-                      </Td>
                     </CustomTr>
                   );
                 })}
@@ -181,11 +214,11 @@ export const Leaderboard = ({
                       <RollingNumber n={actualPlayer.player_score} />
                     </Td> */}
                     <Td>
-                      {t("leaderboard.level")}
+                      {t("level")}
                       <RollingNumber n={actualPlayer.level} />
                     </Td>
                     <Td>
-                      {t("leaderboard.round")}
+                      {t("round")}
                       <RollingNumber n={actualPlayer.round} />
                     </Td>
                   </Tr>
