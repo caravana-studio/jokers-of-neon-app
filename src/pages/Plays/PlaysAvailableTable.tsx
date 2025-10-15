@@ -15,10 +15,9 @@ import { useTranslation } from "react-i18next";
 import CustomScrollbar from "../../components/CustomScrollbar/CustomScrollbar";
 import { DelayedLoading } from "../../components/DelayedLoading";
 import { TiltCard } from "../../components/TiltCard";
-import { PLAYS, PLAYS_DATA } from "../../constants/plays";
+import { FILTERED_PLAYS_DATA } from "../../constants/plays";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands";
 import { useDojo } from "../../dojo/useDojo";
-import { parseHand } from "../../enums/hands";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
@@ -47,6 +46,7 @@ export const PlaysAvailableTable = () => {
   const [playsTracker, setPlaysTracker] = useState<PlayWithCount[]>([]);
   const [playsExampleIndex, setPlaysExampleIndex] = useState(0);
   const { t } = useTranslation(["game"]);
+  const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
   const {
     setup: {
@@ -140,7 +140,7 @@ export const PlaysAvailableTable = () => {
                             overflowWrap: "break-word",
                           }}
                         >
-                          {PLAYS_DATA[playsExampleIndex].description}
+                          {tPlays(`${FILTERED_PLAYS_DATA[playsExampleIndex].name}.description`)}
                         </Text>
                       </Td>
                     </Tr>
@@ -166,11 +166,11 @@ export const PlaysAvailableTable = () => {
                             alignItems={"center"}
                             gap={isSmallScreen ? 0 : 4}
                           >
-                            {PLAYS_DATA[playsExampleIndex].example.map(
+                            {FILTERED_PLAYS_DATA[playsExampleIndex]?.example.map(
                               (card: Card, index) => {
-                                const isImportant = PLAYS_DATA[
+                                const isImportant = FILTERED_PLAYS_DATA[
                                   playsExampleIndex
-                                ].importantCards.some(
+                                ]?.importantCards.some(
                                   (ic) => ic.card_id === card.card_id
                                 );
                                 return (
@@ -245,10 +245,7 @@ export const PlaysAvailableTable = () => {
                             textColor={textColor}
                             fontSize={isSmallScreen ? 9 : 13}
                           >
-                            {play.poker_hand &&
-                              PLAYS[
-                                parseHand(play.poker_hand.toString()).value
-                              ]}
+                            {tPlays(`${play.poker_hand}.name`)}
                           </Td>
                         );
                         const pointsMultiTd = (

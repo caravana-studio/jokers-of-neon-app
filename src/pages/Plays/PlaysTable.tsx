@@ -15,10 +15,8 @@ import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { PriceBox } from "../../components/PriceBox.tsx";
-import { PLAYS } from "../../constants/plays.ts";
 import { getPlayerPokerHands } from "../../dojo/getPlayerPokerHands.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
-import { parseHand } from "../../enums/hands.ts";
 import { useStore } from "../../providers/StoreProvider";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useShopStore } from "../../state/useShopStore.ts";
@@ -37,6 +35,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
   const { id: gameId } = useGameStore();
   const [isLoading, setIsLoading] = useState(true);
   const [plays, setPlays] = useState<LevelPokerHand[]>([]);
+  const { t: tPlays } = useTranslation("plays", { keyPrefix: "playsData" });
 
   const { cash } = useGameStore();
   const { t } = useTranslation(["store"]);
@@ -117,7 +116,6 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
               {!isLoading &&
                 filteredPlays.map((play, index) => {
                   const pokerHandString = play.poker_hand.toString();
-                  const pokerHandParsed = parseHand(pokerHandString);
 
                   const storePlay = pokerHandItems?.find(
                     (item) => item.poker_hand == pokerHandString
@@ -157,7 +155,7 @@ export const PlaysTable = ({ inStore = false }: PlaysTableProps) => {
                       width={"15%"}
                       lineHeight={1.5}
                     >
-                      {PLAYS[Number(pokerHandParsed.value)]}
+                      {tPlays(`${pokerHandString}.name`)}
                     </Td>
                   );
                   const pointsMultiTd = (
