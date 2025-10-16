@@ -41,6 +41,7 @@ export const Clock = ({ date }: ClockProps) => {
       pb={0.5}
       alignItems={"center"}
       justifyContent={"center"}
+      zIndex={10}
     >
       <IconComponent icon={Icons.CLOCK} width={"12px"} height={"12px"} />
       <Text mt={0.5}>{timeString}</Text>

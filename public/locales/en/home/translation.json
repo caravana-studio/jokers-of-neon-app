@@ -17,8 +17,19 @@
   "leaderboard": {
     "title": "Leaderboard",
     "tournament": "Tournament active",
+    "finished": "Tournament finished",
     "level": "Level ",
     "round": "R ",
+    "see-prizes": "See prizes",
+    "prizes": {
+      "basic": "{{count}} Basic",
+      "advanced": "{{count}} Advanced",
+      "epic": "{{count}} Epic",
+      "legendary": "{{count}} Legendary",
+      "collector": "{{count}} Collector",
+      "collectorXL": "{{count}} Collector XL",
+      "seasonPass": "Season Pass"
+    },
     "btn": {
       "returnLeaderboard-btn": "Go back"
     },
