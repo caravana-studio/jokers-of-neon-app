@@ -1,9 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { isAndroid, isMobile } from "react-device-detect";
-import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
 import { ANDROID_URL, IOS_URL } from "../utils/capacitorUtils";
+import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
 
 export const MobileBrowserBlocker = () => {
+  useEffect(() => {
+    window.open(isAndroid ? ANDROID_URL : IOS_URL, "_blank");
+  }, []);
   return (
     <PreThemeLoadingPage>
       <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
