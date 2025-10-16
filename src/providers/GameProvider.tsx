@@ -180,7 +180,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     resetSpecials();
-    refetchSpecialCardsData(modId, gameId);
+    refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
 
@@ -337,7 +337,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             unPreSelectAllPowerUps,
           });
           fetchDeck(client, gameId, getCardData);
-          refetchSpecialCardsData(modId, gameId);
+          refetchSpecialCardsData(modId, gameId, specialCards);
           if (response.levelPassed && response.detailEarned) {
             response.levelPassed.level_passed > 0 && advanceLevel();
             addCash(response.detailEarned.total);
@@ -427,7 +427,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setDiscardAnimation(false);
             replaceCards(response.cards);
             fetchDeck(client, gameId, getCardData);
-            refetchSpecialCardsData(modId, gameId);
+            refetchSpecialCardsData(modId, gameId, specialCards);
           }, ALL_CARDS_DURATION + 300);
         } else {
           rollbackDiscard();
@@ -541,7 +541,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [gameState]);
 
   useEffect(() => {
-    refetchSpecialCardsData(modId, gameId);
+    refetchSpecialCardsData(modId, gameId, specialCards);
   }, []);
 
   useEffect(() => {

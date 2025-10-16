@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BOXES_PRICE, BOXES_RARITY } from "../data/lootBoxes.ts";
 import { MODIFIERS_PRICE, MODIFIERS_RARITY } from "../data/modifiers.ts";
+import { RAGES_RARITY } from "../data/rageCards.ts";
 import {
   SPECIALS_CREATORS,
   SPECIALS_CUMULATIVE,
@@ -15,13 +16,17 @@ import {
 } from "../dojo/queries/getSpecialCardInfo.ts";
 import { useDojo } from "../dojo/useDojo.tsx";
 import { CardTypes } from "../enums/cardTypes.ts";
+import { Card } from "../types/Card.ts";
 import { CardData } from "../types/CardData.ts";
-import { RAGES_RARITY } from "../data/rageCards.ts";
 
 interface CardDataContextType {
   getCardData: (id: number) => CardData;
   getLootBoxData: (id: number) => CardData;
-  refetchSpecialCardsData: (modId: string, gameId: number) => {};
+  refetchSpecialCardsData: (
+    modId: string,
+    gameId: number,
+    specialCards: Card[]
+  ) => {};
 }
 
 const CardDataContext = createContext<CardDataContextType | undefined>(
@@ -132,16 +137,23 @@ export const CardDataProvider = ({ children }: CardDataProviderProps) => {
     }
   };
 
-  const refetchSpecialCardsData = async (modId: string, gameId: number) => {
+  const refetchSpecialCardsData = async (
+    modId: string,
+    gameId: number,
+    specialCards: Card[]
+  ) => {
     const record: Record<number, SpecialCardInfo> = {};
+    const mySpecialCardIds = specialCards.map((card) => card.card_id);
     SPECIALS_CUMULATIVE.forEach(async (specialId) => {
-      const cardInfo = await getSpecialCardInfo(
-        client,
-        modId,
-        gameId ?? 0,
-        specialId
-      );
-      record[specialId] = cardInfo;
+      if (mySpecialCardIds.includes(specialId)) {
+        const cardInfo = await getSpecialCardInfo(
+          client,
+          modId,
+          gameId ?? 0,
+          specialId
+        );
+        record[specialId] = cardInfo;
+      }
     });
     setCumulativeCardsData(record);
   };
