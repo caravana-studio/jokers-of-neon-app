@@ -132,6 +132,10 @@
   },
   "wallet-provider": {
     "login": "ENTRAR",
-    "guest": "CONVIDADO"
+    "guest": "CONVIDADO",
+    "terms": {
+      "agreement": "Ao continuar, você concorda com os",
+      "link": "Termos e Condições"
+    }
   }
 }

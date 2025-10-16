@@ -133,6 +133,10 @@
   },
   "wallet-provider": {
     "login": "LOGIN",
-    "guest": "PLAY AS GUEST"
+    "guest": "PLAY AS GUEST",
+    "terms": {
+      "agreement": "By continuing you are agreeing to Jokers of Neon's",
+      "link": "Terms and Conditions"
+    }
   }
 }
