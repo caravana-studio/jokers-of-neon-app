@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
@@ -10,14 +10,18 @@ import {
   useState,
 } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
+import { MobileDecoration } from "../components/MobileDecoration";
 import { Icons } from "../constants/icons";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
+import { logEvent } from "../utils/analytics";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -63,6 +67,9 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     isConnected: isControllerConnected,
     isConnecting: isControllerConnecting,
   } = useAccount();
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "wallet-provider",
+  });
 
   const { disconnect } = useDisconnect();
 
@@ -95,6 +102,10 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const onSuccessCallback = useRef<
     ((payload: SwitchSuccessPayload) => void) | null
   >(null);
+
+  useEffect(() => {
+    logEvent("open_wallet_page");
+  }, []);
 
   const connectWallet = async () => {
     try {
@@ -147,6 +158,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   const switchToController = (
     onSuccess?: (payload: SwitchSuccessPayload) => void
   ): void => {
+    logEvent("switch_to_controller");
     if (accountType === "controller" && finalAccount) {
       if (controller) {
         controller.username()?.then((username) => {
@@ -174,12 +186,14 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   if (accountType === null) {
     return (
       <PreThemeLoadingPage>
+        <MobileDecoration />
         <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
             style={{ color: "white" }}
             className="login-button"
             onClick={() => {
+              logEvent("connect_controller_click");
               setConnectionStatus("connecting_controller");
               if (
                 isControllerConnected === false &&
@@ -197,7 +211,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
                 flexGrow: 0,
               }}
             >
-              <div>LOGIN </div>
+              <div>{t("login")} </div>
               <img
                 src={Icons.CARTRIDGE}
                 width={isMobile ? "16px" : "22px"}
@@ -211,6 +225,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               className="login-button secondary"
               disabled={isLoading}
               onClick={() => {
+                logEvent("play_as_guest");
                 setConnectionStatus("connecting_burner");
                 const username = `joker_guest_${lastGameId + 1}`;
                 console.log("setting username: ", username);
@@ -219,9 +234,35 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
                 localStorage.setItem(LOGGED_USER, username);
               }}
             >
-              PLAY AS GUEST
+              {t("guest")}
             </button>
           )}
+        </Flex>
+        <LanguageSwitcher />
+        <Flex
+          position="absolute"
+          bottom={isMobile ? "20px" : "50px"}
+          width="100%"
+          justifyContent="center"
+        >
+          <Text
+            w="70%"
+            textAlign={"center"}
+            color="white"
+            letterSpacing={1}
+            mt={"20px"}
+            fontSize={isMobile ? 12 : 17}
+          >
+            {t("terms.agreement")}{" "}
+            <Link
+              href="https://jokersofneon.com/terms-and-conditions"
+              isExternal
+              color="white"
+              textDecoration="underline"
+            >
+              {t("terms.link")}
+            </Link>
+          </Text>
         </Flex>
       </PreThemeLoadingPage>
     );

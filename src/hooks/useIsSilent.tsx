@@ -7,15 +7,15 @@ import { Card } from "../types/Card";
 
 const getSilentTarget = (cardId: number) => {
   switch (cardId) {
-    case 401:
+    case 20001:
       return Suits.HEARTS;
-    case 402:
+    case 20002:
       return Suits.CLUBS;
-    case 403:
+    case 20003:
       return Suits.DIAMONDS;
-    case 404:
+    case 20004:
       return Suits.SPADES;
-    case 405:
+    case 20005:
       return Suits.JOKER;
     default:
       return "None";

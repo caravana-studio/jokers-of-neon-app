@@ -8,9 +8,37 @@ import { VIOLET_LIGHT } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { DailyMission } from "../../../types/DailyMissions";
 import { RegularBanner } from "./RegularBanner";
+import { useTranslation } from "react-i18next";
+
+const RESET_TIME = import.meta.env.VITE_RESET_TIME_UTC || "6";
+
+function getNextResetDate() {
+  const now = new Date();
+
+  const reset = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      Number(RESET_TIME),
+      0,
+      0,
+      0
+    )
+  );
+
+  if (now >= reset) {
+    reset.setUTCDate(reset.getUTCDate() + 1);
+  }
+
+  return reset;
+}
 
 export const DailyMissionsBanner = () => {
   const [dailyMissions, setDailyMissions] = useState<DailyMission[]>([]);
+  const { t } = useTranslation("home", {
+    keyPrefix: "home",
+  });
 
   const {
     setup: { client },
@@ -23,12 +51,10 @@ export const DailyMissionsBanner = () => {
         setDailyMissions(missions);
       });
   }, []);
-  const date = new Date();
-  date.setHours(date.getHours() + 10);
-  date.setMinutes(date.getMinutes() + 30);
+  const date = getNextResetDate();
 
   return (
-    <RegularBanner title="Daily Missions" date={date}>
+    <RegularBanner title={t("dailyMissions")} date={date}>
       {dailyMissions.map((mission) => (
         <MissionRow mission={mission} />
       ))}

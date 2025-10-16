@@ -6,10 +6,30 @@
       "playDemo-btn": "Jogar",
       "start": "Começar"
     },
-    "join-discord": "Junte-se ao nosso Discord!"
+    "join-discord": "Junte-se ao nosso Discord!",
+    "leaderboard-banner": {
+      "title": "Torneio ativo",
+      "button": "Classificação completa"
+    },
+    "level": "Nível",
+    "dailyMissions": "Missões Diárias"
   },
   "leaderboard": {
     "title": "Classificação",
+    "tournament": "Torneio ativo",
+    "finished": "Torneio finalizado",
+    "level": "Nível ",
+    "round": "R ",
+    "see-prizes": "Ver prêmios",
+    "prizes": {
+      "basic": "{{count}} Básico",
+      "advanced": "{{count}} Avançado",
+      "epic": "{{count}} Épico",
+      "legendary": "{{count}} Lendário",
+      "collector": "{{count}} Colecionador",
+      "collectorXL": "{{count}} Colecionador XL",
+      "seasonPass": "Passe de Temporada"
+    },
     "btn": {
       "returnLeaderboard-btn": "Voltar"
     },
@@ -36,6 +56,7 @@
   "menu": {
     "home": "Início",
     "collection": "Coleção",
+    "leaderboard": "Classificação",
     "games": "Jogos",
     "profile": "Perfil",
     "settings": "Configurações",
@@ -52,5 +73,11 @@
     "description": "Recomendamos um tutorial rápido para aprender o básico. Gostaria de começar agora?",
     "confirm-text": "Jogar Tutorial",
     "cancel-text": "Pular"
+  },
+  "versionModal": {
+    "title": "Nova versão disponível",
+    "description": "Você quer atualizar para a versão mais recente?",
+    "confirm-text": "Atualizar agora",
+    "cancel-text": "Pular versão"
   }
 }

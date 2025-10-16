@@ -30,6 +30,7 @@ import { isTutorial } from "../../utils/isTutorial.ts";
 import { HandSection } from "./HandSection.tsx";
 import { PreselectedCardsSection } from "./PreselectedCardsSection.tsx";
 import { TopSection } from "./TopSection.tsx";
+import { logEvent } from "../../utils/analytics.ts";
 
 export const GameContent = () => {
   const inTutorial = isTutorial();
@@ -65,6 +66,8 @@ export const GameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation(["game"]);
+  const [highlighted, setHighlighted] = useState(false);
+  const [canClickPowerUp, setCanClickPowerUp] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -75,6 +78,16 @@ export const GameContent = () => {
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];
+
+  const btnHighlight = [
+    { step: 4 },
+    { step: 7 },
+    { step: 12 },
+    { step: 21 },
+    { step: 31 },
+  ];
+
+  const powerUpClick = [{ step: 19 }, { step: 20 }];
 
   useEffect(() => {
     const stepInfo = stepData.find((data) => data.step === stepIndex);
@@ -108,7 +121,22 @@ export const GameContent = () => {
       setButtonClicked(false);
       setAutoStep(false);
 
+      const stepInfo = btnHighlight.find((data) => data.step === stepIndex);
+      if (stepInfo) {
+        setHighlighted(true);
+      } else {
+        setHighlighted(false);
+      }
+
+      const powerUpStep = powerUpClick.find((data) => data.step === stepIndex);
+      if (powerUpStep) {
+        setCanClickPowerUp(true);
+      } else {
+        setCanClickPowerUp(false);
+      }
+
       if (type === "tour:end") {
+        logEvent("tutorial_finished");
         setRunCallback(false);
         switch (state) {
           case GameStateEnum.Store:
@@ -248,7 +276,8 @@ export const GameContent = () => {
                   }}
                 >
                   <PreselectedCardsSection
-                    isTutorialRunning={run}
+                    inTutorial={run}
+                    highlightBtns={highlighted}
                     onTutorialCardClick={() => {
                       if (run) {
                         setButtonClicked(true);

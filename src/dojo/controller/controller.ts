@@ -1,8 +1,9 @@
 import ControllerConnector from "@cartridge/connector/controller";
+import { AuthOptions } from "@cartridge/controller";
 import SessionConnectorWrapper from "./connectorWrapper";
 import { constants, shortString } from "starknet";
 import { policies } from "./policies";
-import { isNative } from "../../utils/capacitorUtils";
+import { isNative, isNativeAndroid } from "../../utils/capacitorUtils";
 
 const CHAIN =
   import.meta.env.VITE_SLOT_INSTANCE ||
@@ -37,6 +38,8 @@ const isDev = import.meta.env.VITE_DEV === "true";
 
 const RPC_URL = import.meta.env.VITE_RPC_URL || "http://localhost:5050";
 
+const signupOptions: AuthOptions = isNativeAndroid ? ["google", "discord", "password"] : ["google", "discord", "webauthn", "password"]
+
 const controllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
@@ -44,6 +47,7 @@ const controllerOptions = {
   namespace: DOJO_NAMESPACE,
   policies,
   slot: undefined,
+  signupOptions
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
@@ -59,4 +63,6 @@ export const controller =
         rpc: RPC_URL,
         chainId: defaultChainId,
         redirectUrl: "jokers://open",
+        disconnectRedirectUrl: "jokers://open",
+        signupOptions
       }));

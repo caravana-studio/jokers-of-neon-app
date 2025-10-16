@@ -30,6 +30,7 @@ import { gameProviderDefaults } from "./gameProviderDefaults.ts";
 import { useSettings } from "./SettingsProvider.tsx";
 import { AccountInterface } from "starknet";
 import { TutorialGameContext } from "./TutorialGameProvider.tsx";
+import { logEvent } from "../utils/analytics.ts";
 
 export interface IGameContext {
   executeCreateGame: (gameId?: number, username?: string) => void;
@@ -179,7 +180,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     showSpecials();
     resetPowerUps();
     resetSpecials();
-    refetchSpecialCardsData(modId, gameId);
+    refetchSpecialCardsData(modId, gameId, specialCards);
     setState(GameStateEnum.NotSet);
   };
 
@@ -233,6 +234,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     resetLevel();
     setGameLoading(true);
     let gameId = providedGameId;
+    logEvent("create_game")
     if (username) {
       try {
         if (!providedGameId) {
@@ -335,7 +337,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             unPreSelectAllPowerUps,
           });
           fetchDeck(client, gameId, getCardData);
-          refetchSpecialCardsData(modId, gameId);
+          refetchSpecialCardsData(modId, gameId, specialCards);
           if (response.levelPassed && response.detailEarned) {
             response.levelPassed.level_passed > 0 && advanceLevel();
             addCash(response.detailEarned.total);
@@ -425,7 +427,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
             setDiscardAnimation(false);
             replaceCards(response.cards);
             fetchDeck(client, gameId, getCardData);
-            refetchSpecialCardsData(modId, gameId);
+            refetchSpecialCardsData(modId, gameId, specialCards);
           }, ALL_CARDS_DURATION + 300);
         } else {
           rollbackDiscard();
@@ -539,7 +541,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }, [gameState]);
 
   useEffect(() => {
-    refetchSpecialCardsData(modId, gameId);
+    refetchSpecialCardsData(modId, gameId, specialCards);
   }, []);
 
   useEffect(() => {

@@ -13,8 +13,8 @@ export const RollingNumber = ({ n, className = 'headline' }: RollingNumberProps)
     config: { mass: 1, tension: 26, friction: 10 },
   });
   return (
-    <Box sx={{ display: "inline-block" }}>
-      <animated.div className={className}>{number.to((n) => n.toFixed(0))}</animated.div>
+    <Box as="span" sx={{ display: "inline-block" }}>
+      <animated.span className={className}>{number.to((n) => n.toFixed(0))}</animated.span>
     </Box>
   );
 };

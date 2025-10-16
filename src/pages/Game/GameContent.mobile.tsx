@@ -29,12 +29,18 @@ import { useCardHighlight } from "../../providers/HighlightProvider/CardHighligh
 import { useCurrentHandStore } from "../../state/useCurrentHandStore.ts";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { isTutorial } from "../../utils/isTutorial.ts";
+import { logEvent } from "../../utils/analytics.ts";
 import { DiscardButton } from "./DiscardButton.tsx";
 import { HandSection } from "./HandSection.tsx";
 import { PlayButton } from "./PlayButton.tsx";
 import { PowerUps } from "./PowerUps.tsx";
 import { MobilePreselectedCardsSection } from "./PreselectedCardsSection.mobile.tsx";
 import { MobileTopSection } from "./TopSection.mobile.tsx";
+
+enum HighlightedType {
+  Play,
+  Discard,
+}
 
 export const MobileGameContent = () => {
   const inTutorial = isTutorial();
@@ -71,6 +77,9 @@ export const MobileGameContent = () => {
   const [autoStep, setAutoStep] = useState(false);
   const { t } = useTranslation(["game"]);
   const navigate = useNavigate();
+  const [highlightedPlay, setHighlightedPlay] = useState(false);
+  const [highlightedDiscard, setHighlightedDiscard] = useState(false);
+  const [canClickPowerUp, setCanClickPowerUp] = useState(false);
 
   useEffect(() => {
     setRun(inTutorial);
@@ -81,6 +90,16 @@ export const MobileGameContent = () => {
     { step: 22, delay: 4200 },
     { step: 32, delay: 7500 },
   ];
+
+  const btnHighlight = [
+    { step: 4, type: HighlightedType.Discard },
+    { step: 7, type: HighlightedType.Discard },
+    { step: 12, type: HighlightedType.Play },
+    { step: 21, type: HighlightedType.Play },
+    { step: 31, type: HighlightedType.Play },
+  ];
+
+  const powerUpClick = [{ step: 19 }, { step: 20 }];
 
   useEffect(() => {
     const stepInfo = stepData.find((data) => data.step === stepIndex);
@@ -121,7 +140,25 @@ export const MobileGameContent = () => {
       setButtonClicked(false);
       setAutoStep(false);
 
+      const stepInfo = btnHighlight.find((data) => data.step === stepIndex);
+      if (stepInfo) {
+        if (stepInfo.type === HighlightedType.Discard)
+          setHighlightedDiscard(true);
+        else setHighlightedPlay(true);
+      } else {
+        setHighlightedDiscard(false);
+        setHighlightedPlay(false);
+      }
+
+      const powerUpStep = powerUpClick.find((data) => data.step === stepIndex);
+      if (powerUpStep) {
+        setCanClickPowerUp(true);
+      } else {
+        setCanClickPowerUp(false);
+      }
+
       if (type === "tour:end") {
+        logEvent("tutorial_finished");
         setRunCallback(false);
         switch (state) {
           case GameStateEnum.Store:
@@ -260,7 +297,7 @@ export const MobileGameContent = () => {
                 <Flex mt={2} w="100%" justifyContent="center">
                   <PowerUps
                     onTutorialCardClick={() => {
-                      if (run) {
+                      if (run && canClickPowerUp) {
                         setButtonClicked(true);
                         setStepIndex?.((stepIndex ?? 0) + 1);
                       }
@@ -295,7 +332,8 @@ export const MobileGameContent = () => {
             <MobileBottomBar
               firstButtonReactNode={
                 <DiscardButton
-                  highlight={run}
+                  inTutorial={run}
+                  highlight={highlightedDiscard}
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);
@@ -306,7 +344,8 @@ export const MobileGameContent = () => {
               }
               secondButtonReactNode={
                 <PlayButton
-                  highlight={run}
+                  inTutorial={run}
+                  highlight={highlightedPlay}
                   onTutorialCardClick={() => {
                     if (run) {
                       setCardClicked(true);

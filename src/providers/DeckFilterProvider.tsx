@@ -14,13 +14,23 @@ export const DeckFilterContext = createContext<DeckFiltersContextType | null>(
 );
 
 export const DeckFilterProvider = ({ children }: { children: ReactNode }) => {
-  const [filterButtonsState, setFilterButtonsState] =
+  const [filterButtonsState, setFilters] =
     useState<DeckFiltersState>(defaultFilters);
 
-  const updateFilters = (newFilters: DeckFiltersState) => {
-    setFilterButtonsState(newFilters);
-  };
+  const updateFilters = (filterToToggle: Partial<DeckFiltersState>) => {
+    setFilters((currentFilters) => {
+      const [key, value] = Object.entries(filterToToggle)[0] as [
+        keyof DeckFiltersState,
+        any,
+      ];
 
+      if (currentFilters[key] === value) {
+        return defaultFilters;
+      } else {
+        return { ...defaultFilters, ...filterToToggle };
+      }
+    });
+  };
   return (
     <DeckFilterContext.Provider value={{ filterButtonsState, updateFilters }}>
       {children}

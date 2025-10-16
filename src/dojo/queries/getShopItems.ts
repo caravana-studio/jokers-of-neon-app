@@ -91,7 +91,6 @@ export const getShopItems = async (client: any, gameId: number) => {
   if (gameId != 0) {
     try {
       let tx_result = await client.shop_views.getShopItems(gameId);
-      console.log(tx_result);
       const modifiersAndCommonCards = tx_result[CARDS_IDX].map(
         (txCard: any) => {
           return getCard(txCard);

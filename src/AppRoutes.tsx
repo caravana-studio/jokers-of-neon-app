@@ -3,34 +3,37 @@ import "./App.scss";
 
 import { AnimatedPage } from "./components/AnimatedPage";
 import { GameStoreLoader } from "./components/GameStoreLoader";
+import { Profile } from "./components/Profile/Profile";
 import { ShopStoreLoader } from "./components/ShopStoreLoader";
 import { BudokanEndpoint } from "./pages/BudokanEndpoint";
 import { DeckPage } from "./pages/Deck/DeckPage";
 import { DocsPage } from "./pages/Docs/Docs";
 import { DynamicStorePage } from "./pages/DynamicStore/DynamicStorePage";
+import { ExternalPack } from "./pages/ExternalPack/ExternalPack";
 import { GamePage } from "./pages/Game/GamePage";
+import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 import { GameOver } from "./pages/GameOver/GameOver";
-import { Home } from "./pages/Home";
-import { LeaderBoardPage } from "./pages/LeaderboardPage";
 import { Login } from "./pages/Login";
 import { ManagePage } from "./pages/Manage/ManagePage";
 import { MapPage } from "./pages/Map/MapPage";
 import { MyCollectionPage } from "./pages/MyCollection/MyCollectionPage";
 import { EnteringTournament } from "./pages/MyGames/EnteringTournament";
 import { MyGames } from "./pages/MyGames/MyGames";
+import { NewHome } from "./pages/NewHome/NewHome";
+import { NewLeaderboardPage } from "./pages/NewLeaderboardPage/NewLeaderboardPage";
 import { OpenLootBox } from "./pages/OpenLootBox/Stages/OpenLootBox";
 import { OpenLootBoxCardSelection } from "./pages/OpenLootBox/Stages/OpenLootBoxCardSelection";
 import { PlaysLayout } from "./pages/Plays/PlaysLayout";
 import { PreviewPage } from "./pages/Preview/PreviewPage";
-import { ProfilePage } from "./pages/ProfilePage";
 import { Redirect } from "./pages/Redirect";
 import { RewardsPage } from "./pages/RewardsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TestPage } from "./pages/TestPage";
+import { VibrationPage } from "./pages/VibrationPage";
 import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlightProvider";
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
-import { GamePageTutorial } from "./pages/Game/GamePageTutorial";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -42,7 +45,7 @@ export const AppRoutes = () => {
         path="/"
         element={
           <AnimatedPage>
-            <Home />
+            <NewHome />
           </AnimatedPage>
         }
       />
@@ -63,6 +66,22 @@ export const AppRoutes = () => {
         }
       />
       <Route
+        path="/test"
+        element={
+          <AnimatedPage>
+            <TestPage />
+          </AnimatedPage>
+        }
+      />{" "}
+      <Route
+        path="/vibration"
+        element={
+          <AnimatedPage>
+            <VibrationPage />
+          </AnimatedPage>
+        }
+      />
+      <Route
         path="/my-collection"
         element={
           <AnimatedPage>
@@ -76,7 +95,7 @@ export const AppRoutes = () => {
         path="/profile"
         element={
           <AnimatedPage>
-            <ProfilePage />
+            <Profile />
           </AnimatedPage>
         }
       />
@@ -144,7 +163,7 @@ export const AppRoutes = () => {
         path="/leaderboard"
         element={
           <AnimatedPage>
-            <LeaderBoardPage />
+            <NewLeaderboardPage />
           </AnimatedPage>
         }
       />
@@ -197,6 +216,14 @@ export const AppRoutes = () => {
               </GameStoreLoader>
             </AnimatedPage>
           </StoreProvider>
+        }
+      />
+      <Route
+        path="/external-pack"
+        element={
+          <AnimatedPage>
+            <ExternalPack />
+          </AnimatedPage>
         }
       />
       <Route
