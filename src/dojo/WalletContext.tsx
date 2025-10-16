@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { useBurnerManager } from "@dojoengine/create-burner";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import {
@@ -10,16 +10,18 @@ import {
   useState,
 } from "react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
+import { MobileDecoration } from "../components/MobileDecoration";
 import { Icons } from "../constants/icons";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
+import { logEvent } from "../utils/analytics";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
-import { logEvent } from "../utils/analytics";
-import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -184,6 +186,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   if (accountType === null) {
     return (
       <PreThemeLoadingPage>
+        <MobileDecoration />
         <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
@@ -234,6 +237,32 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
               {t("guest")}
             </button>
           )}
+        </Flex>
+        <LanguageSwitcher />
+        <Flex
+          position="absolute"
+          bottom={isMobile ? "20px" : "50px"}
+          width="100%"
+          justifyContent="center"
+        >
+          <Text
+            w="70%"
+            textAlign={"center"}
+            color="white"
+            letterSpacing={1}
+            mt={"20px"}
+            fontSize={isMobile ? 12 : 17}
+          >
+            {t("terms.agreement")}{" "}
+            <Link
+              href="https://jokersofneon.com/terms-and-conditions"
+              isExternal
+              color="white"
+              textDecoration="underline"
+            >
+              {t("terms.link")}
+            </Link>
+          </Text>
         </Flex>
       </PreThemeLoadingPage>
     );
