@@ -183,7 +183,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  if (accountType === null) {
+  if (!finalAccount) {
     return (
       <PreThemeLoadingPage>
         <MobileDecoration />
@@ -266,8 +266,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         </Flex>
       </PreThemeLoadingPage>
     );
-  } else if (!finalAccount && accountType !== null) {
-    return <LoadingScreen />;
   }
 
   const isLoadingWallet =
