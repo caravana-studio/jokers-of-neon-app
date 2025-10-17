@@ -1,10 +1,11 @@
 import { App } from "@capacitor/app";
 import { Browser } from "@capacitor/browser";
 import SessionConnector from "@cartridge/connector/session";
+import type { WithResolvers } from "../../types/promise";
 
 class SessionConnectorWrapper extends SessionConnector {
   private connectionPromise:
-    | PromiseWithResolvers<{ account?: string; chaindId?: bigint }>
+    | WithResolvers<{ account?: string; chaindId?: bigint }>
     | undefined;
 
   constructor(options: any) {
