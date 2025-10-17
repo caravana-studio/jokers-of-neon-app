@@ -14,12 +14,22 @@ export const LeaderboardBanner = () => {
   const { t } = useTranslation("home", {
     keyPrefix: "home.leaderboard-banner",
   });
-  const { isSmallScreen } = useResponsiveValues();
   const navigate = useNavigate();
-  const { id: gameId } = useGameStore();
-  const { data: fullLeaderboard } = useGetLeaderboard(gameId);
 
+  const { isSmallScreen } = useResponsiveValues();
+  const { id: gameId } = useGameStore();
   const { tournament } = useTournamentSettings();
+  const { startCountingAtGameId, stopCountingAtGameId } = tournament || {
+    startCountingAtGameId: 0,
+    stopCountingAtGameId: 1000000,
+  };
+
+  const { data: fullLeaderboard } = useGetLeaderboard(
+    gameId,
+    true,
+    startCountingAtGameId,
+    stopCountingAtGameId
+  );
 
   const leaders = fullLeaderboard
     ?.slice(0, 3)
