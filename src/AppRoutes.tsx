@@ -34,6 +34,7 @@ import { CardHighlightProvider } from "./providers/HighlightProvider/CardHighlig
 import { PowerupHighlightProvider } from "./providers/HighlightProvider/PowerupHighlightProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 import TutorialGameProvider from "./providers/TutorialGameProvider";
+import { SeasonProgressionPage } from "./pages/SeasonProgression/SeasonProgressionPage";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -244,6 +245,14 @@ export const AppRoutes = () => {
         element={
           <AnimatedPage>
             <PlaysLayout />
+          </AnimatedPage>
+        }
+      />      
+      <Route
+        path="/season"
+        element={
+          <AnimatedPage>
+            <SeasonProgressionPage />
           </AnimatedPage>
         }
       />

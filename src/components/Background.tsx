@@ -4,9 +4,9 @@ import { useLocation } from "react-router-dom";
 import { useGameStore } from "../state/useGameStore";
 import { useResponsiveValues } from "../theme/responsiveSettings";
 import { getImageFromCache } from "../utils/cacheUtils";
+import { isNativeAndroid } from "../utils/capacitorUtils";
 import BackgroundVideo from "./BackgroundVideo";
 import CachedImage, { checkImageExists } from "./CachedImage";
-import { isNativeAndroid } from "../utils/capacitorUtils";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -40,6 +40,9 @@ export enum BackgroundType {
 }
 
 const bgConfig: Record<string, { bg: BackgroundType; decoration?: boolean }> = {
+  season: {
+    bg: BackgroundType.Game,
+  },
   mods: {
     bg: BackgroundType.Home,
   },
