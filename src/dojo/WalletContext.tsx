@@ -12,16 +12,16 @@ import {
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Account, AccountInterface } from "starknet";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { Icons } from "../constants/icons";
 import { ACCOUNT_TYPE, GAME_ID, LOGGED_USER } from "../constants/localStorage";
-import { LoadingScreen } from "../pages/LoadingScreen/LoadingScreen";
 import { PreThemeLoadingPage } from "../pages/PreThemeLoadingPage";
 import { useGetLastGameId } from "../queries/useGetLastGameId";
 import { logEvent } from "../utils/analytics";
+import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -183,10 +183,13 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
     }
   };
 
-  if (accountType === null) {
+  if (!finalAccount) {
     return (
       <PreThemeLoadingPage>
-        <MobileDecoration />
+        <MobileDecoration
+          top={nativePaddingTop}
+          bottom={isNative ? "30px" : "0px"}
+        />
         <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
         <Flex flexDirection={"row"} gap={"30px"}>
           <button
@@ -241,7 +244,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         <LanguageSwitcher />
         <Flex
           position="absolute"
-          bottom={isMobile ? "20px" : "50px"}
+          bottom={"50px"}
           width="100%"
           justifyContent="center"
         >
@@ -266,8 +269,6 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
         </Flex>
       </PreThemeLoadingPage>
     );
-  } else if (!finalAccount && accountType !== null) {
-    return <LoadingScreen />;
   }
 
   const isLoadingWallet =
