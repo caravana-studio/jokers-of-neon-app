@@ -24,7 +24,7 @@ const LanguageSwitcher = () => {
       zIndex={999}
       position="absolute"
       left={isMobile ? "15px" : "45px"}
-      top={isMobile ? "15px" : "40px"}
+      top={isMobile ? "50px" : "40px"}
     >
       <Menu>
         <MenuButton
