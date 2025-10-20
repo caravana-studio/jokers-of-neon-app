@@ -15,7 +15,7 @@ export const ImageBanner = ({ url, navigateTo }: ImageBannerProps) => {
       backgroundSize="cover"
       backgroundPosition="center"
       borderRadius={"15px"}
-      w={isSmallScreen ? "100%" : "700px"}
+      w={isSmallScreen ? "100%" : "1200px"}
       h={isSmallScreen ? "120px" : "250px"}
       onClick={() => {
         if (navigateTo) {
