@@ -901,12 +901,12 @@
       "description": "Cartas com valor menor ou igual a 5 não pontuarão durante esta rodada"
     },
     "20022": {
-      "name": "Jogadas Bloqueadas",
-      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
-    },
-    "20023": {
       "name": "Bilhete Carimbado",
       "description": "Você só pode jogar um tipo de mão nesta rodada"
+    },
+    "20023": {
+      "name": "Jogadas Bloqueadas",
+      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
     }
   },
   "lootBoxes": {
