@@ -20,7 +20,7 @@ import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
-import { getPatch } from "../../utils/versionUtils";
+import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -45,6 +45,8 @@ export const NewHome = () => {
           const res = await Preferences.get({ key: SKIPPED_VERSION });
           const skipped = res.value;
           if (
+            Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+            Number(getMinor(version)) === Number(getMinor(APP_VERSION)) &&
             Number(getPatch(version)) > Number(getPatch(APP_VERSION)) &&
             skipped !== version
           ) {
