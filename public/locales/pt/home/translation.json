@@ -20,6 +20,7 @@
     "finished": "Torneio finalizado",
     "level": "Nível ",
     "round": "R ",
+    "points": "Pontos",
     "see-prizes": "Ver prêmios",
     "prizes": {
       "basic": "{{count}} pack Básico",

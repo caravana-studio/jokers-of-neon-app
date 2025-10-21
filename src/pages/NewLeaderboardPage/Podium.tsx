@@ -5,7 +5,9 @@ import { getPrizeText } from "../../components/Leaderboard";
 import { useGetLeaderboard } from "../../queries/useGetLeaderboard";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
 import { useGameStore } from "../../state/useGameStore";
+import { VIOLET_LIGHT } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { formatNumber } from "../../utils/formatNumber";
 interface PodiumProps {
   seePrizes?: boolean;
 }
@@ -72,16 +74,25 @@ export const Podium = ({ seePrizes = false }: PodiumProps) => {
                 {getPrizeText(t, tournament?.prizes[1])}
               </Text>
             ) : (
-              <>
-                <Text color="lightViolet">
-                  {t("level")}
-                  {leaders[0].level}
+              <Flex
+                flexDir="column"
+                gap={isSmallScreen ? 0 : 1}
+                alignItems={"center"}
+              >
+                <Flex gap={2}>
+                  <Text color="lightViolet">
+                    {t("level")}
+                    {leaders[0].level}
+                  </Text>
+                  <Text color="white">
+                    {t("round")}
+                    {leaders[0].round}
+                  </Text>
+                </Flex>
+                <Text color={VIOLET_LIGHT}>
+                  {formatNumber(leaders[0].player_score)} {t("points")}
                 </Text>
-                <Text color="white">
-                  {t("round")}
-                  {leaders[0].round}
-                </Text>
-              </>
+              </Flex>
             )}
           </Flex>
         </>
@@ -121,16 +132,25 @@ export const Podium = ({ seePrizes = false }: PodiumProps) => {
                 {getPrizeText(t, tournament?.prizes[2])}
               </Text>
             ) : (
-              <>
-                <Text color="lightViolet">
-                  {t("level")}
-                  {leaders[1].level}
+              <Flex
+                flexDir="column"
+                gap={isSmallScreen ? 0 : 1}
+                alignItems={"center"}
+              >
+                <Flex gap={2}>
+                  <Text color="lightViolet">
+                    {t("level")}
+                    {leaders[1].level}
+                  </Text>
+                  <Text color="white">
+                    {t("round")}
+                    {leaders[1].round}
+                  </Text>
+                </Flex>
+                <Text color={VIOLET_LIGHT}>
+                  {formatNumber(leaders[1].player_score)} {t("points")}
                 </Text>
-                <Text color="white">
-                  {t("round")}
-                  {leaders[1].round}
-                </Text>
-              </>
+              </Flex>
             )}
           </Flex>
         </>
@@ -170,16 +190,25 @@ export const Podium = ({ seePrizes = false }: PodiumProps) => {
                 {getPrizeText(t, tournament?.prizes[3])}
               </Text>
             ) : (
-              <>
-                <Text color="lightViolet">
-                  {t("level")}
-                  {leaders[2].level}
+              <Flex
+                flexDir="column"
+                gap={isSmallScreen ? 0 : 1}
+                alignItems={"center"}
+              >
+                <Flex gap={2}>
+                  <Text color="lightViolet">
+                    {t("level")}
+                    {leaders[2].level}
+                  </Text>
+                  <Text color="white">
+                    {t("round")}
+                    {leaders[2].round}
+                  </Text>
+                </Flex>
+                <Text color={VIOLET_LIGHT}>
+                  {formatNumber(leaders[2].player_score)} {t("points")}
                 </Text>
-                <Text color="white">
-                  {t("round")}
-                  {leaders[2].round}
-                </Text>
-              </>
+              </Flex>
             )}
           </Flex>
         </>

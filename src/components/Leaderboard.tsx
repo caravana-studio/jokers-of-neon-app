@@ -9,6 +9,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
+import { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
 import { useGetLeaderboard } from "../queries/useGetLeaderboard";
@@ -16,10 +17,11 @@ import {
   Prize,
   useTournamentSettings,
 } from "../queries/useTournamentSettings.ts";
+import { VIOLET_LIGHT } from "../theme/colors.tsx";
 import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
+import { formatNumber } from "../utils/formatNumber.ts";
 import { signedHexToNumber } from "../utils/signedHexToNumber.ts";
 import { RollingNumber } from "./RollingNumber";
-import { TFunction } from "i18next";
 
 const CURRENT_LEADER_STYLES = {
   position: "relative",
@@ -36,44 +38,38 @@ const CURRENT_LEADER_STYLES = {
 };
 
 export const getPrizeText = (t: TFunction, prize: Prize | undefined) => {
-    if (!prize) {
-      return "";
-    }
-    const prizeArray = [];
-    prize.packs.collectorXL &&
-      prizeArray.push(
-        t(`prizes.collectorXL`, {
-          count: prize.packs.collectorXL,
-        })
-      );
-    prize.packs.collector &&
-      prizeArray.push(
-        t(`prizes.collector`, {
-          count: prize.packs.collector,
-        })
-      );
-    prize.packs.epic &&
-      prizeArray.push(
-        t(`prizes.epic`, { count: prize.packs.epic })
-      );
-    prize.packs.legendary &&
-      prizeArray.push(
-        t(`prizes.legendary`, {
-          count: prize.packs.legendary,
-        })
-      );
-    prize.packs.advanced &&
-      prizeArray.push(
-        t(`prizes.advanced`, { count: prize.packs.advanced })
-      );
-    prize.packs.base &&
-      prizeArray.push(
-        t(`prizes.base`, { count: prize.packs.base })
-      );
-    prize.seasonPass && prizeArray.push(t(`prizes.seasonPass`));
+  if (!prize) {
+    return "";
+  }
+  const prizeArray = [];
+  prize.packs.collectorXL &&
+    prizeArray.push(
+      t(`prizes.collectorXL`, {
+        count: prize.packs.collectorXL,
+      })
+    );
+  prize.packs.collector &&
+    prizeArray.push(
+      t(`prizes.collector`, {
+        count: prize.packs.collector,
+      })
+    );
+  prize.packs.epic &&
+    prizeArray.push(t(`prizes.epic`, { count: prize.packs.epic }));
+  prize.packs.legendary &&
+    prizeArray.push(
+      t(`prizes.legendary`, {
+        count: prize.packs.legendary,
+      })
+    );
+  prize.packs.advanced &&
+    prizeArray.push(t(`prizes.advanced`, { count: prize.packs.advanced }));
+  prize.packs.base &&
+    prizeArray.push(t(`prizes.base`, { count: prize.packs.base }));
+  prize.seasonPass && prizeArray.push(t(`prizes.seasonPass`));
 
-    return prizeArray.join(" + ");
-  };
+  return prizeArray.join(" + ");
+};
 
 interface LeaderboardProps {
   seePrizes?: boolean;
@@ -158,7 +154,10 @@ export const Leaderboard = ({
                       key={leader.id}
                       sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
                     >
-                      <Td w={isSmallScreen ? "50px" : "70px"} color={isCurrentPlayer ? "white !important" : ""}>
+                      <Td
+                        w={isSmallScreen ? "50px" : "70px"}
+                        color={isCurrentPlayer ? "white !important" : ""}
+                      >
                         #{leader.position}
                       </Td>
                       <Td color={isCurrentPlayer ? "white !important" : ""}>
@@ -167,34 +166,49 @@ export const Leaderboard = ({
                       {seePrizes ? (
                         <Td maxW="150px" p="12px 20px" whiteSpace="normal">
                           <Text
-                            fontSize={isSmallScreen ? 8: 14}
+                            fontSize={isSmallScreen ? 10 : 14}
                             overflowWrap="break-word"
                             wordBreak="normal"
                             whiteSpace="normal"
                             lineHeight="1.2"
                           >
-                            {getPrizeText(t, tournament?.prizes[leader.position])}
+                            {getPrizeText(
+                              t,
+                              tournament?.prizes[leader.position]
+                            )}
                           </Text>
                         </Td>
                       ) : (
-                        <>
-                          <Td w={isSmallScreen ? "50px" : "100px"} color={isCurrentPlayer ? "white !important" : ""}>
+                        <Td maxW="150px" p="12px 20px" whiteSpace="normal">
+                          <Text
+                            color={
+                              isCurrentPlayer
+                                ? "white !important"
+                                : VIOLET_LIGHT
+                            }
+                            fontSize={isSmallScreen ? 10 : 14}
+                            overflowWrap="break-word"
+                            wordBreak="normal"
+                            whiteSpace="normal"
+                            lineHeight="1.2"
+                          >
                             {t("level")}
                             {gameId === leader.id ? (
                               <RollingNumber n={leader.level} />
                             ) : (
                               leader.level
                             )}
-                          </Td>
-                          <Td w={isSmallScreen ? "50px" : "70px"} color={isCurrentPlayer ? "white !important" : ""}>
+                            {" - "}
                             {t("round")}
                             {gameId === leader.id ? (
                               <RollingNumber n={leader.round} />
                             ) : (
                               leader.round
                             )}
-                          </Td>
-                        </>
+                            <br />
+                            {formatNumber(leader.player_score)} {t("points")}
+                          </Text>
+                        </Td>
                       )}
                     </CustomTr>
                   );

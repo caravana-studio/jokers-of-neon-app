@@ -21,6 +21,7 @@
     "level": "Nivel ",
     "round": "R ",
     "see-prizes": "Ver premios",
+    "points": "Puntos",
     "prizes": {
       "basic": "{{count}} pack Básico",
       "advanced": "{{count}} pack Avanzado",

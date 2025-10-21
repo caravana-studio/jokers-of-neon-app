@@ -20,6 +20,7 @@
     "finished": "Tournament finished",
     "level": "Level ",
     "round": "R ",
+    "points": "Points",
     "see-prizes": "See prizes",
     "prizes": {
       "basic": "{{count}} Basic pack",
