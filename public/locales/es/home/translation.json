@@ -22,12 +22,12 @@
     "round": "R ",
     "see-prizes": "Ver premios",
     "prizes": {
-      "basic": "{{count}} Básico",
-      "advanced": "{{count}} Avanzado",
-      "epic": "{{count}} Épico",
-      "legendary": "{{count}} Legendario",
-      "collector": "{{count}} Coleccionista",
-      "collectorXL": "{{count}} Coleccionista XL",
+      "basic": "{{count}} pack Básico",
+      "advanced": "{{count}} pack Avanzado",
+      "epic": "{{count}} pack Épico",
+      "legendary": "{{count}} pack Legendario",
+      "collector": "{{count}} pack Coleccionista",
+      "collectorXL": "{{count}} pack Coleccionista XL",
       "seasonPass": "Pase de Temporada"
     },
     "btn": {

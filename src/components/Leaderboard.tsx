@@ -158,7 +158,7 @@ export const Leaderboard = ({
                       key={leader.id}
                       sx={gameId === leader.id ? CURRENT_LEADER_STYLES : {}}
                     >
-                      <Td color={isCurrentPlayer ? "white !important" : ""}>
+                      <Td w={isSmallScreen ? "50px" : "70px"} color={isCurrentPlayer ? "white !important" : ""}>
                         #{leader.position}
                       </Td>
                       <Td color={isCurrentPlayer ? "white !important" : ""}>
@@ -178,7 +178,7 @@ export const Leaderboard = ({
                         </Td>
                       ) : (
                         <>
-                          <Td color={isCurrentPlayer ? "white !important" : ""}>
+                          <Td w={isSmallScreen ? "50px" : "100px"} color={isCurrentPlayer ? "white !important" : ""}>
                             {t("level")}
                             {gameId === leader.id ? (
                               <RollingNumber n={leader.level} />
@@ -186,7 +186,7 @@ export const Leaderboard = ({
                               leader.level
                             )}
                           </Td>
-                          <Td color={isCurrentPlayer ? "white !important" : ""}>
+                          <Td w={isSmallScreen ? "50px" : "70px"} color={isCurrentPlayer ? "white !important" : ""}>
                             {t("round")}
                             {gameId === leader.id ? (
                               <RollingNumber n={leader.round} />
