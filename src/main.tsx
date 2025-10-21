@@ -11,6 +11,7 @@ import { createRef } from "react";
 import { isMobileOnly } from "react-device-detect";
 import { I18nextProvider } from "react-i18next";
 import { FadeInOut } from "./components/animations/FadeInOut.tsx";
+import { PositionedVersion } from "./components/version/PositionedVersion.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
 import { APP_VERSION } from "./constants/version";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
@@ -135,6 +136,7 @@ async function init() {
             }}
             canFadeOut={canFadeOut}
           />
+          <PositionedVersion />
         </ChakraBaseProvider>
       );
     };

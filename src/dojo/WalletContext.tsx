@@ -22,6 +22,7 @@ import { logEvent } from "../utils/analytics";
 import { isNative, nativePaddingTop } from "../utils/capacitorUtils";
 import { controller } from "./controller/controller";
 import { SetupResult } from "./setup";
+import { PositionedVersion } from "../components/version/PositionedVersion";
 
 const CHAIN = import.meta.env.VITE_CHAIN;
 
@@ -186,6 +187,7 @@ export const WalletProvider = ({ children, value }: WalletProviderProps) => {
   if (!finalAccount) {
     return (
       <PreThemeLoadingPage>
+        <PositionedVersion />
         <MobileDecoration
           top={nativePaddingTop}
           bottom={isNative ? "30px" : "0px"}

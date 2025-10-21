@@ -1,7 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
-import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
+import { PositionedVersion } from "../components/version/PositionedVersion";
 import { APP_URL } from "../utils/capacitorUtils";
+import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
 
 export const VersionMismatch = () => {
   return (
@@ -37,6 +38,7 @@ export const VersionMismatch = () => {
           </div>
         </button>
       </Flex>
+      <PositionedVersion />
     </PreThemeLoadingPage>
   );
 };

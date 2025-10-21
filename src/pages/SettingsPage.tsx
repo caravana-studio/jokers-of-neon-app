@@ -4,6 +4,7 @@ import { DelayedLoading } from "../components/DelayedLoading";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { SettingsContent } from "../components/SettingsContent";
 import { useResponsiveValues } from "../theme/responsiveSettings";
+import { PositionedVersion } from "../components/version/PositionedVersion";
 
 export const SettingsPage = () => {
   const { t } = useTranslation(["game"], { keyPrefix: "settings-modal" });
