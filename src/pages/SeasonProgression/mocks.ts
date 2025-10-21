@@ -6,7 +6,7 @@ export const STEPS: IStep[] = [
   {
     xp: 25,
     free: {
-      packs: [PackType.ADVANCED],
+      packs: [PackType.ADVANCED, PackType.BASIC],
       status: RewardStatus.CLAIMED
     },
     premium: {
@@ -17,8 +17,8 @@ export const STEPS: IStep[] = [
   {
     xp: 50,
     premium: {
-      packs: [PackType.LEGENDARY],
-      status: RewardStatus.MISSED
+      packs: [PackType.LEGENDARY, PackType.BASIC, PackType.COLLECTOR_XL],
+      status: RewardStatus.UNCLAIMED
     },
 
   },

@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { BLUE } from "../../theme/colors";
+import { StepReward } from "./StepReward";
 import { IStep } from "./types";
 
 export const STEP_HEIGHT = 130;
@@ -10,6 +11,9 @@ interface StepProps {
 
 export const Step = ({ step }: StepProps) => {
   return (
-    <Flex h={`${STEP_HEIGHT}px`} w="100%" borderBottom={`1px solid ${BLUE}`}></Flex>
+    <Flex h={`${STEP_HEIGHT}px`} w="100%" borderBottom={`1px solid ${BLUE}`}>
+      <StepReward reward={step.free} />
+      <StepReward reward={step.premium} />
+    </Flex>
   );
 };
