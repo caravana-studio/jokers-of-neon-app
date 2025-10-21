@@ -1,10 +1,10 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { DelayedLoading } from "../components/DelayedLoading";
+import { PositionedDiscordLink } from "../components/DiscordLink";
 import { MobileDecoration } from "../components/MobileDecoration";
 import { SettingsContent } from "../components/SettingsContent";
 import { useResponsiveValues } from "../theme/responsiveSettings";
-import { PositionedVersion } from "../components/version/PositionedVersion";
 
 export const SettingsPage = () => {
   const { t } = useTranslation(["game"], { keyPrefix: "settings-modal" });
@@ -12,6 +12,7 @@ export const SettingsPage = () => {
   const title = t("title");
   return (
     <DelayedLoading ms={0}>
+      <PositionedDiscordLink />
       <MobileDecoration />
       <Flex
         h="100%"

@@ -21,6 +21,7 @@ import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { logEvent } from "../../utils/analytics";
 import { APP_URL, isNative } from "../../utils/capacitorUtils";
 import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
@@ -100,6 +101,7 @@ export const NewHome = () => {
 
   return (
     <DelayedLoading ms={100}>
+      <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
         <></>

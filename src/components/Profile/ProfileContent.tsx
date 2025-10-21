@@ -7,6 +7,7 @@ import { useUsername } from "../../dojo/utils/useUsername";
 import { ProfileStore } from "../../state/useProfileStore";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { DelayedLoading } from "../DelayedLoading";
+import { PositionedDiscordLink } from "../DiscordLink";
 import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
 import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
 import { MenuBtn } from "../Menu/Buttons/MenuBtn";
@@ -30,6 +31,7 @@ export const ProfileContent = ({
 
   return (
     <DelayedLoading ms={100}>
+      <PositionedDiscordLink />
       <MobileDecoration />
       <Flex
         flexDirection={"column"}
