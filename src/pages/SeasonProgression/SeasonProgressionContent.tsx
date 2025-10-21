@@ -27,7 +27,7 @@ function calculateProgress(STEPS: IStep[], CURRENT_XP: number): number {
 
 export const SeasonProgressionContent = () => {
   return (
-    <Flex w="100%" marginTop="120px" position="relative" overflowY="auto">
+    <Flex w="100%" marginTop={`${STEP_HEIGHT}px`} position="relative" overflowY="auto">
       <Flex position="absolute" w="100%" flexDir={"column"}  pb="100px">
         {STEPS.map((step, index) => {
           return <Step key={index} step={step} />;

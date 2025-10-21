@@ -3,8 +3,9 @@ import { BLUE } from "../../theme/colors";
 import { StepIcons } from "./StepIcons";
 import { StepReward } from "./StepReward";
 import { IStep } from "./types";
+import { isMobile } from "react-device-detect";
 
-export const STEP_HEIGHT = 130;
+export const STEP_HEIGHT = isMobile ? 130 : 200;
 
 export interface StepProps {
   step: IStep;

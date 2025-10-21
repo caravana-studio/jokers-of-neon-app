@@ -4,6 +4,7 @@ import { RewardStatus } from "../../enums/rewardStatus";
 import { VIOLET } from "../../theme/colors";
 import { Packs } from "./Packs";
 import { IReward } from "./types";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
 
 interface StepRewardProps {
   reward?: IReward;
@@ -13,6 +14,7 @@ export const StepReward = ({ reward }: StepRewardProps) => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "season-progression",
   });
+  const { isSmallScreen } = useResponsiveValues();
   const pack = reward?.packs?.[0];
 
   return (
@@ -31,8 +33,8 @@ export const StepReward = ({ reward }: StepRewardProps) => {
             <Flex position={"absolute"} bottom={2} zIndex={4}>
               <Button
                 size="xs"
-                h={4}
-                fontSize={6}
+                h={isSmallScreen ? 4 : 8}
+                fontSize={isSmallScreen ? 6 : 10}
                 boxShadow={`0 0 5px 2px ${VIOLET}`}
                 variant="secondarySolid"
               >

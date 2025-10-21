@@ -5,6 +5,7 @@ import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
 import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
 import { useTranslation } from "react-i18next";
+import { STEP_HEIGHT } from "./Step";
 
 const SEASON_PASS_UNLOCKED = false;
 
@@ -19,7 +20,7 @@ export const SeasonProgressionHeader = () => {
       position="fixed"
       top={0}
       zIndex={1}
-      h={isSmallScreen ? "120px" : "200px"}
+      h={`${STEP_HEIGHT}px`}
       borderBottom={`1px solid ${BLUE}`}
       pt={isSmallScreen ? "25px" : "70px"}
       px={isSmallScreen ? "15px" : "30px"}
@@ -36,9 +37,16 @@ export const SeasonProgressionHeader = () => {
         justifyContent={"center"}
         alignItems="flex-end"
       >
-        <Flex position="absolute" w="190px" flexWrap={"wrap"} gap={1} top={0} left={0}>
+        <Flex
+          position="absolute"
+          w={isSmallScreen ? "190px" : "500px"}
+          flexWrap={"wrap"}
+          gap={1}
+          top={0}
+          left={0}
+        >
           <Heading
-            fontSize="sm"
+            fontSize={isSmallScreen ? "sm" : "lg"}
             variant="italic"
             textOverflow={"initial"}
             whiteSpace={"nowrap"}
@@ -50,7 +58,7 @@ export const SeasonProgressionHeader = () => {
             <Clock date={new Date()} />
           </Box>
         </Flex>
-        <Heading mb={3} fontWeight={100} fontSize={11}>
+        <Heading mb={3} fontWeight={100} fontSize={isSmallScreen ?11 : 18}>
           {t("free-rewards")}
         </Heading>
       </Flex>
@@ -60,9 +68,11 @@ export const SeasonProgressionHeader = () => {
         alignItems="flex-end"
         flexDir={"column"}
       >
-        {
-          SEASON_PASS_UNLOCKED ? <SeasonPassUnlocked /> : <SeasonPassBuyButton />
-        }
+        {SEASON_PASS_UNLOCKED ? (
+          <SeasonPassUnlocked />
+        ) : (
+          <SeasonPassBuyButton />
+        )}
       </Flex>
     </Flex>
   );
