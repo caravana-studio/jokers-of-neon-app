@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { VIOLET } from "../../theme/colors";
 import { STEP_HEIGHT } from "./Step";
 import { IStep } from "./types";
+import { useTranslation } from "react-i18next";
 
 interface IProgressBarProps {
   progress: number;
@@ -16,6 +17,9 @@ export const VerticalProgressBar = ({
   steps,
   currentXp,
 }: IProgressBarProps) => {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "season-progression",
+  });
   return (
     <Box position="relative" h="100%" py={1}>
       <Box
@@ -41,7 +45,9 @@ export const VerticalProgressBar = ({
         transition="height 1s ease"
       />
       <Flex flexDir="column" right={6} textAlign={"right"} position="absolute" top={`${progress - 20}px`}>
-        <Text lineHeight={1}fontSize={8}>MY XP</Text>
+        <Text lineHeight={1}fontSize={8}>
+          {t("my-xp")}
+        </Text>
         <Heading lineHeight={1.2} fontSize={15} variant="italic">{currentXp}</Heading>
       </Flex>
       {steps.map((step, index) => (

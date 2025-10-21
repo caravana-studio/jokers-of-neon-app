@@ -1,11 +1,18 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { Clock } from "../../components/Clock";
-import { BLUE, VIOLET_LIGHT } from "../../theme/colors";
+import { SeasonPassBuyButton } from "../../components/SeasonPass/SeasonPassBuyButton";
+import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { SeasonPass } from "../../components/SeasonPass";
+import { SeasonPassUnlocked } from "../../components/SeasonPass/SeasonPassUnlocked";
+import { useTranslation } from "react-i18next";
+
+const SEASON_PASS_UNLOCKED = false;
 
 export const SeasonProgressionHeader = () => {
   const { isSmallScreen } = useResponsiveValues();
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "season-progression",
+  });
   return (
     <Flex
       w="100%"
@@ -37,13 +44,15 @@ export const SeasonProgressionHeader = () => {
             whiteSpace={"nowrap"}
             wordBreak={"keep-all"}
           >
-            SEASON 1
+            {t("season", { season: 1 })}
           </Heading>
           <Box>
             <Clock date={new Date()} />
           </Box>
         </Flex>
-        <Heading mb={3} fontWeight={100} fontSize={11}>FREE REWARDS</Heading>
+        <Heading mb={3} fontWeight={100} fontSize={11}>
+          {t("free-rewards")}
+        </Heading>
       </Flex>
       <Flex
         w="50%"
@@ -51,24 +60,9 @@ export const SeasonProgressionHeader = () => {
         alignItems="flex-end"
         flexDir={"column"}
       >
-        <Flex flexDir="column" textAlign="center" w="90%">
-          <Heading size="xs">MORE REWARDS WITH</Heading>
-          <Heading fontSize="sm" color={VIOLET_LIGHT}>
-            SEASON PASS
-          </Heading>
-        </Flex>
-        <Flex mt={2} justifyContent="center" w="90%">
-          <Button w="130px" h="22px" justifyContent={"space-between"}>
-            <Flex w="60%">
-              <Text textAlign={"center"} w="100%">
-                BUY
-              </Text>
-            </Flex>
-            <Box justifyContent="flex-end">
-              <SeasonPass rotate="-20deg" />
-            </Box>
-          </Button>
-        </Flex>
+        {
+          SEASON_PASS_UNLOCKED ? <SeasonPassUnlocked /> : <SeasonPassBuyButton />
+        }
       </Flex>
     </Flex>
   );

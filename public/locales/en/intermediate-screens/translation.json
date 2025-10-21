@@ -1,4 +1,16 @@
 {
+  "season-pass": {
+    "more-rewards-with": "More rewards with",
+    "season-pass": "SEASON PASS",
+    "buy": "BUY",
+    "unlocked": "UNLOCKED"
+  },
+  "season-progression": {
+    "free-rewards": "FREE REWARDS",
+    "season": "SEASON {{season}}",
+    "my-xp": "My XP",
+    "claim": "CLAIM"
+  },
   "map": {
     "level": "LEVEL"
   },
