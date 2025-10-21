@@ -25,7 +25,7 @@ const getStoreItemsBasedOnShopId = (shopId: number) => {
     case 5:
       return { modifiers: 4, lootboxes: 2 };
     case 6:
-      return { lootboxes: 2, powerups: 2, levelups: 2 };
+      return { lootboxes: 2, powerups: 2, levelups: 3 };
     default:
       return { traditionals: 5, modifiers: 3 };
   }
