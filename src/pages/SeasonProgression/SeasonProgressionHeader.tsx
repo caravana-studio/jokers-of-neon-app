@@ -36,9 +36,9 @@ export const SeasonProgressionHeader = () => {
         justifyContent={"center"}
         alignItems="flex-end"
       >
-        <Flex position="absolute" w="250px" gap={3} top={0} left={0}>
+        <Flex position="absolute" w="190px" flexWrap={"wrap"} gap={1} top={0} left={0}>
           <Heading
-            size="sm"
+            fontSize="sm"
             variant="italic"
             textOverflow={"initial"}
             whiteSpace={"nowrap"}
@@ -46,7 +46,7 @@ export const SeasonProgressionHeader = () => {
           >
             {t("season", { season: 1 })}
           </Heading>
-          <Box>
+          <Box ml={1}>
             <Clock date={new Date()} />
           </Box>
         </Flex>
