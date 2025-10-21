@@ -26,7 +26,7 @@ export const MobileDecoration = ({
     black 0%, 
     black 40%, 
     transparent 100%);"
-          zIndex={1}
+          zIndex={5}
           pointerEvents="none"
         />
       )}
@@ -58,7 +58,7 @@ export const MobileDecoration = ({
         maxHeight="70px"
         position="fixed"
         bottom={bottom}
-        zIndex={2}
+        zIndex={6}
       />
     </>
   );

@@ -233,7 +233,7 @@ export const ExternalPack = () => {
                     step={step}
                   />
                   <CachedImage
-                    src="/packs/legendary.png"
+                    src="/packs/4.png"
                     h="100%"
                     // boxShadow={"0 0 20px 0px white, inset 0 0 10px 0px white"}
                   />
@@ -245,7 +245,7 @@ export const ExternalPack = () => {
                 <SplitPackOnce
                   width={packWidth}
                   height={packHeight}
-                  src="/packs/legendary.png"
+                  src="/packs/4.png"
                   onDone={() => {
                     setStep(3);
 
