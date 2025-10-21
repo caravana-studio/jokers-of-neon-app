@@ -11,6 +11,7 @@ import { BLUE, VIOLET } from "../../../theme/colors";
 import { useResponsiveValues } from "../../../theme/responsiveSettings";
 import { TooltipContent } from "../TooltipContent";
 import { NodeType } from "../types";
+import { useStore } from "../../../providers/StoreProvider";
 
 const getStoreItemsBasedOnShopId = (shopId: number) => {
   switch (shopId) {
@@ -41,6 +42,7 @@ const StoreNode = ({ data }: any) => {
   const { isSmallScreen } = useResponsiveValues();
 
   const { state, setShopId } = useGameStore();
+  const { refetch} = useStore()
 
   const stateInMap = state === GameStateEnum.Map;
   const reachable = reachableNodes.includes(data.id.toString()) && stateInMap;
@@ -108,6 +110,7 @@ const StoreNode = ({ data }: any) => {
             advanceNode(gameId, data.id).then((response) => {
               if (response) {
                 setShopId(data.shopId);
+                refetch()
                 navigate(GameStateEnum.Store);
               }
             });
