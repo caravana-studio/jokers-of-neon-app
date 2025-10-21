@@ -20,6 +20,7 @@ export const DEFAULT_GAME_VIEW: GameView = {
     available_rerolls: 0,
     seed: 0,
     state: GameStateEnum.NotStarted,
+    round: 0,
   },
   round: {
     game_id: 0,
@@ -49,6 +50,7 @@ export interface GameView {
     cash: number;
     available_rerolls: number;
     seed: number;
+    round: number;
   };
   round: Round;
 }
@@ -111,6 +113,7 @@ export const getGameView = async (
         available_rerolls: Number(tx_result["0"].available_rerolls),
         seed: Number(tx_result["0"].seed),
         state: getState(tx_result["0"]?.state?.variant),
+        round: Number(tx_result["0"]?.round),
       },
       round: {
         game_id: gameId,

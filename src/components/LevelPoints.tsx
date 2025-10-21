@@ -6,7 +6,7 @@ import { PointBox } from "./MultiPoints";
 import { Score } from "./Score";
 
 export const LevelPoints = () => {
-  const { level, targetScore: gameTargetScore, nodeRound } = useGameStore();
+  const { level, targetScore: gameTargetScore, round } = useGameStore();
   const targetScore = gameTargetScore ?? 0;
   const { t } = useTranslation(["game"]);
   const inTutorial = isTutorial();
@@ -23,11 +23,7 @@ export const LevelPoints = () => {
               t("game.tutorial").toUpperCase()
             ) : (
               <>
-                {t("game.round-points.level", { level: level })}
-                <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-                  |
-                </span>
-                {nodeRound}
+                {t("game.round-points.level", { level: level })}{" "} R{round}
               </>
             )}
           </Heading>
@@ -42,7 +38,7 @@ export const LevelPoints = () => {
         </PointBox>
       </Flex>
       <Text size="s" mt={{ base: 3, md: 5 }} textAlign="center">
-        {t("game.round-points.score", { score: targetScore, round: nodeRound })}
+        {t("game.round-points.score", { score: targetScore, round })}
       </Text>
     </Box>
   );
