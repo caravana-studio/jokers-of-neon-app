@@ -1,5 +1,5 @@
 import { Button, Flex, Spinner, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CachedImage from "../../components/CachedImage.tsx";
@@ -9,7 +9,6 @@ import { GameStateEnum } from "../../dojo/typescript/custom.ts";
 import { useGameContext } from "../../providers/GameProvider.tsx";
 import { useGameStore } from "../../state/useGameStore.ts";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
-import { formatNumber } from "../../utils/formatNumber.ts";
 import { GameSummary } from "./MyGames.tsx";
 
 export const GameBox = ({
@@ -60,7 +59,6 @@ export const GameBox = ({
       border="1px solid white"
       borderRadius="15px"
       color="white"
-      p={2}
       width="100%"
       height={isSmallScreen ? "60px" : "70px"}
       opacity={game.status === GameStateEnum.GameOver ? 0.6 : 1}
@@ -72,10 +70,15 @@ export const GameBox = ({
         justifyContent="space-between"
         alignItems="center"
         w="100%"
-        px={isSmallScreen ? 1 : 3}
+        gap={0.5}
       >
         {/* Game ID Section */}
-        <Flex alignItems="center" gap={1.5} w={isSmallScreen ? "25%" : "15%"}>
+        <Flex
+          pl={isSmallScreen ? 2 : 6}
+          alignItems="center"
+          gap={1.5}
+          w={isSmallScreen ? "100px" : "210px"}
+        >
           <CachedImage
             src="/logos/jn.png"
             height={isSmallScreen ? "13px" : "25px"}
@@ -96,16 +99,16 @@ export const GameBox = ({
           mt={1}
           alignItems="flex-start"
           pl={isSmallScreen ? 0 : 10}
-          w={isSmallScreen ? "40%" : "25%"}
+          w={isSmallScreen ? "60px" : "190px"}
         >
           {game.level && (
-            <Flex gap={3}>
-              <Flex gap={1}>
-                <Text>{t("level-lbl")}:</Text>
+            <Flex gap={2}>
+              <Flex gap={0.5}>
+                <Text>{t("level-lbl")}</Text>
                 <Text color="lightViolet">{game.level}</Text>
               </Flex>
-              <Flex gap={1}>
-                <Text>{t("round-lbl")}:</Text>
+              <Flex gap={0.5}>
+                <Text>{t("round-lbl")}</Text>
                 <Text color="lightViolet">{game.round}</Text>
               </Flex>
             </Flex>
@@ -114,37 +117,23 @@ export const GameBox = ({
             {!isSmallScreen && <Text>{t("status-lbl")}:</Text>}
             <Text color="lightViolet">{game.status}</Text>
           </Flex>
-          {isSmallScreen && game.points !== undefined && (
-            <Flex gap={1}>
-              <Text color="lightViolet">{formatNumber(game.points)}</Text>
-              <Text>{t("points-lbl")}</Text>
-            </Flex>
-          )}
         </Flex>
 
-        {/* Points Section - Desktop Only */}
-        {!isSmallScreen && (
-          <Flex flex={1} justifyContent="center">
-            {game.points !== undefined && (
-              <Flex gap={1}>
-                <Text fontSize="lg" color="lightViolet">
-                  {game.points?.toLocaleString()}
-                </Text>
-                <Text fontSize="lg">{t("points-lbl")}</Text>
-              </Flex>
-            )}
-          </Flex>
-        )}
-
         {/* Action Button Section */}
-        <Flex w={isSmallScreen ? "35%" : "25%"} justifyContent="flex-end">
+        <Flex>
           {game.status !== GameStateEnum.GameOver && (
-            <Flex gap={4} alignItems={"center"}>
-              <Spinner
-                size={{ base: "xs", sm: "sm" }}
-                visibility={isLoading ? "visible" : "hidden"}
-                px={2}
-              />
+            <Flex
+              gap={isSmallScreen ? 2 : 4}
+              alignItems={"center"}
+              pr={isSmallScreen ? 2 : 6}
+            >
+              {isLoading && (
+                <Spinner
+                  size={{ base: "xs", sm: "sm" }}
+                  visibility={isLoading ? "visible" : "hidden"}
+                  px={2}
+                />
+              )}
               {!isLoading && (
                 <>
                   <Button
@@ -165,8 +154,8 @@ export const GameBox = ({
                   <Tooltip label={t("surrender.action")}>
                     <Button
                       size="xs"
-                      width={"auto"}
-                      h={isSmallScreen ? "25px" : undefined}
+                      width={isSmallScreen ? "25px" : "32px"}
+                      h={isSmallScreen ? "25px" : "32px"}
                       variant="solid"
                       onClick={() => setIsModalOpened(true)}
                       disabled={isLoading}
