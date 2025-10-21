@@ -1,14 +1,13 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { useGameContext } from "../../providers/GameProvider";
 import { useGameStore } from "../../state/useGameStore";
 import { BLUE_LIGHT, VIOLET } from "../../theme/colors";
 import { isTutorial } from "../../utils/isTutorial";
 
 export const LevelBox = () => {
   const { t } = useTranslation("game");
-  const { isRageRound, nodeRound } = useGameStore();
-  const { level } = useGameStore();
+  const { isRageRound } = useGameStore();
+  const { level, round } = useGameStore();
   const inTutorial = isTutorial();
 
   return (
@@ -36,7 +35,7 @@ export const LevelBox = () => {
               ? t("game.tutorial").toUpperCase()
               : t("game.compact-round-data.level-round", {
                   level: level,
-                  round: nodeRound,
+                  round,
                 })}
           </Heading>
         </Box>

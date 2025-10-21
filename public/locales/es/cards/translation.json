@@ -901,11 +901,11 @@
       "description": "Las cartas con valor menor o igual a 5 no puntuaran durante esta ronda"
     },
     "20022": {
-      "name": "Boleto Marcado",
+      "name": "Jugadas Bloqueadas",
       "description": "Solo puedes jugar un tipo de mano en esta ronda"
     },
     "20023": {
-      "name": "Jugadas Bloqueadas",
+      "name": "Boleto Marcado",
       "description": "No puedes jugar la misma mano dos veces en esta ronda"
     }
   },

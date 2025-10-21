@@ -6,9 +6,11 @@ import { Icons } from "../constants/icons";
 import { MenuBtn } from "./Menu/Buttons/MenuBtn";
 
 export const PositionedDiscordLink = () => {
+    const { isSmallScreen } = useResponsiveValues();
+
   return (
     <LinkContainer>
-      <DiscordLink width="25px" />
+      <DiscordLink width={isSmallScreen ?"25px" : "40px"} />
     </LinkContainer>
   );
 };
@@ -56,8 +58,8 @@ const LinkContainer = ({ children }: PropsWithChildren) => {
     <Box
       zIndex={999}
       position="absolute"
-      right="20px"
-      bottom="15px"
+      right="30px"
+      bottom="70px"
       cursor="pointer"
     >
       {children}

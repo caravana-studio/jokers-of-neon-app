@@ -148,6 +148,9 @@ const fetchGraphQLData = async (
     if (a.level !== b.level) {
       return b.level - a.level;
     }
+    if (a.round !== b.round) {
+      return b.round - a.round;
+    }
     return b.player_score - a.player_score;
   });
 

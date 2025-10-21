@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock } from "../../components/Clock";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 import { Leaderboard } from "../../components/Leaderboard";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { useTournamentSettings } from "../../queries/useTournamentSettings";
@@ -19,6 +20,7 @@ export const NewLeaderboardPage = () => {
 
   return (
     <DelayedLoading ms={200}>
+      <PositionedDiscordLink />
       <MobileDecoration fadeToBlack />
       <Flex
         w="100%"
