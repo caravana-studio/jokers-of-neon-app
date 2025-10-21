@@ -901,11 +901,11 @@
       "description": "Cards with a value of 5 or less will not score during this round"
     },
     "20022": {
-      "name": "Punched Ticket",
+      "name": "Locked Plays",
       "description": "You can only play one hand type in this round"
     },
     "20023": {
-      "name": "Locked Plays",
+      "name": "Punched Ticket",
       "description": "You can't play the same hand twice in this round"
     }
   },
