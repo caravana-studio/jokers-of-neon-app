@@ -39,7 +39,7 @@ export const Packs = ({ reward }: PacksProps) => {
       }
       src={`/packs/${pack}.png`}
       h={`${STEP_HEIGHT * 0.78}px`}
-      opacity={reward.status === RewardStatus.UNCLAIMED ? 1 : 0.4}
+      
     />
   ));
 };
