@@ -15,7 +15,7 @@ import { useCurrentHandStore } from "../state/useCurrentHandStore";
 import { useGameStore } from "../state/useGameStore";
 import { LevelPokerHand } from "../types/LevelPokerHand.ts";
 import { logEvent } from "../utils/analytics.ts";
-import { H10 } from "../utils/mocks/cardMocks.ts";
+import { H10, H8 } from "../utils/mocks/cardMocks.ts";
 import {
   EVENT_FLUSH,
   EVENT_PAIR,
@@ -102,7 +102,6 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     discardSound();
 
     setTimeout(() => {
-      discardSound();
       setDiscardAnimation(true);
     }, 200);
 
@@ -178,7 +177,7 @@ const TutorialGameProvider = ({ children }: { children: React.ReactNode }) => {
     if (
       step === 31 &&
       (Object.keys(preSelectedModifiers).length === 0 ||
-        !Object.keys(preSelectedModifiers).includes(H10.idx.toString()))
+        !Object.keys(preSelectedModifiers).includes(H8.idx.toString()))
     ) {
       setStep(30);
     }
