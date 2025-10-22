@@ -90,10 +90,11 @@ async function init() {
     if (
       isNative &&
       (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
-        Number(getMinor(version)) > Number(getMinor(APP_VERSION)))
+        (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+          Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
     ) {
       console.log("Version mismatch", version, APP_VERSION);
-      root.render(<VersionMismatch />);
+      return root.render(<VersionMismatch />);
     }
   });
 
