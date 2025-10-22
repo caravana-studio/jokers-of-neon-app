@@ -25,6 +25,7 @@ interface IStoreContext {
   setLoading: (loading: boolean) => void;
   burnCard: (card: Card) => Promise<boolean>;
   buyPowerUp: (powerUp: PowerUp) => Promise<boolean>;
+  refetch: () => Promise<void>;
 }
 
 const StoreContext = createContext<IStoreContext>({
@@ -54,6 +55,7 @@ const StoreContext = createContext<IStoreContext>({
   buyPowerUp: (_) => {
     return new Promise((resolve) => resolve(false));
   },
+  refetch: () => new Promise((resolve) => resolve())
 });
 export const useStore = () => useContext(StoreContext);
 
@@ -401,6 +403,7 @@ export const StoreProvider = ({ children }: PropsWithChildren) => {
         setLoading,
         burnCard,
         buyPowerUp,
+        refetch: fetchShopItems
       }}
     >
       {children}

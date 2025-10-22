@@ -10,10 +10,27 @@
     "leaderboard-banner": {
       "title": "Torneio ativo",
       "button": "Classificação completa"
-    }
+    },
+    "level": "Nível",
+    "dailyMissions": "Missões Diárias"
   },
   "leaderboard": {
     "title": "Classificação",
+    "tournament": "Torneio ativo",
+    "finished": "Torneio finalizado",
+    "level": "Nível ",
+    "round": "R ",
+    "points": "Pontos",
+    "see-prizes": "Ver prêmios",
+    "prizes": {
+      "basic": "{{count}} pack Básico",
+      "advanced": "{{count}} pack Avançado",
+      "epic": "{{count}} pack Épico",
+      "legendary": "{{count}} pack Lendário",
+      "collector": "{{count}} pack Colecionador",
+      "collectorXL": "{{count}} pack Colecionador XL",
+      "seasonPass": "Passe de Temporada"
+    },
     "btn": {
       "returnLeaderboard-btn": "Voltar"
     },
@@ -57,5 +74,11 @@
     "description": "Recomendamos um tutorial rápido para aprender o básico. Gostaria de começar agora?",
     "confirm-text": "Jogar Tutorial",
     "cancel-text": "Pular"
+  },
+  "versionModal": {
+    "title": "Nova versão disponível",
+    "description": "Você quer atualizar para a versão mais recente?",
+    "confirm-text": "Atualizar agora",
+    "cancel-text": "Pular versão"
   }
 }

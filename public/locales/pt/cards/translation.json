@@ -126,7 +126,7 @@
     },
     "10024": {
       "name": "Escudo do guardião",
-      "description": "Bloqueia todas as cartas de rage por 1 nível. É destruído depois"
+      "description": "Bloqueia todas as cartas de rage por 1 rodada. É destruído depois"
     },
     "10025": {
       "name": "Sinergia de neon",
@@ -154,7 +154,7 @@
     },
     "10031": {
       "name": "Atalho",
-      "description": "Reduz os pontos necessários para vencer o nível em 20%"
+      "description": "Reduz os pontos necessários para vencer o rodada em 20%"
     },
     "10032": {
       "name": "Dia de Sorte",
@@ -822,31 +822,31 @@
   "rageCards": {
     "20001": {
       "name": "Corações Quebradas",
-      "description": "Cartas de naipe de coração não pontuarão durante este nível"
+      "description": "Cartas de naipe de coração não pontuarão durante esta rodada"
     },
     "20002": {
       "name": "Paus Quebradas",
-      "description": "Cartas de naipe de paus não pontuarão durante este nível"
+      "description": "Cartas de naipe de paus não pontuarão durante esta rodada"
     },
     "20003": {
       "name": "Ouros Quebradas",
-      "description": "Cartas de naipe de ouros não pontuarão durante este nível"
+      "description": "Cartas de naipe de ouros não pontuarão durante esta rodada"
     },
     "20004": {
       "name": "Espadas Quebradas",
-      "description": "Cartas de naipe de espadas não pontuarão durante este nível"
+      "description": "Cartas de naipe de espadas não pontuarão durante esta rodada"
     },
     "20005": {
       "name": "Coringas Quebradas",
-      "description": "Coringas não pontuarão durante este nível"
+      "description": "Coringas não pontuarão durante esta rodada"
     },
     "20006": {
       "name": "Apreensão Diminuída",
-      "description": "Sua mão será reduzida em 2 cartas durante este nível"
+      "description": "Sua mão será reduzida em 2 cartas durante esta rodada"
     },
     "20007": {
       "name": "Desperdício Zero",
-      "description": "Você não terá descartes durante este nível"
+      "description": "Você não terá descartes durante esta rodada"
     },
     "20008": {
       "name": "Sacrifício Inesperado",
@@ -854,7 +854,7 @@
     },
     "20009": {
       "name": "Quarteto Estratégico",
-      "description": "Você só pode jogar até 4 cartas durante este nível"
+      "description": "Você só pode jogar até 4 cartas durante esta rodada"
     },
     "20010": {
       "name": "Táticas Dinâmicas",
@@ -866,11 +866,11 @@
     },
     "20012": {
       "name": "Figuras Quebradas",
-      "description": "As figuras (Valete, Dama e Rei) não pontuarão durante este nível"
+      "description": "As figuras (Valete, Dama e Rei) não pontuarão durante esta rodada"
     },
     "20013": {
       "name": "Modificadores Quebrados",
-      "description": "Os modificadores não funcionarão durante este nível"
+      "description": "Os modificadores não funcionarão durante esta rodada"
     },
     "20014": {
       "name": "Últimas Palavras",
@@ -898,15 +898,15 @@
     },
     "20021": {
       "name": "Traindo os Fracos",
-      "description": "Cartas com valor menor ou igual a 5 não pontuarão durante este nível"
+      "description": "Cartas com valor menor ou igual a 5 não pontuarão durante esta rodada"
     },
     "20022": {
       "name": "Jogadas Bloqueadas",
-      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
+      "description": "Você só pode jogar um tipo de mão nesta rodada"
     },
     "20023": {
       "name": "Bilhete Carimbado",
-      "description": "Você só pode jogar um tipo de mão nesta rodada"
+      "description": "Você não pode jogar a mesma mão duas vezes nesta rodada"
     }
   },
   "lootBoxes": {

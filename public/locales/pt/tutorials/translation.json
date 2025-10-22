@@ -17,7 +17,7 @@
       "step-2": "Nenhuma mão de pôquer? Use um <1>descarte</1> para conseguir novas cartas. Vamos tentar.",
       "pair": "Ótimo! Um <1>PAR</1> de 7. Vamos jogar!",
       "secondPair": "Boa! Temos um <1>PAR</1> de 5. Hora de jogar.",
-      "flush": "Usando o <1>Modificador de Paus</1> criamos um <2>FLUSH</2>! <3/> Vamos jogar.",
+      "flush": "Usando o <5>Modificador de Paus</5> criamos um <2>FLUSH</2>! <3/> Vamos jogar.",
       "plays": "Clique aqui para ver todas as mãos de pôquer que você pode formar."
     },
     "discardCards": {
@@ -42,7 +42,7 @@
     "modifiers": {
       "title": "Cartas Modificadoras",
       "content": "As cartas modificadoras podem alterar suas outras cartas. <1/> Neste caso, ela mudará o naipe da carta modificada para Paus.",
-      "drag": "Arraste o modificador de Paus para a carta 10 e clique em 'Próximo'."
+      "drag": "Arraste o <5>modificador de Paus</5> para a carta <4>8 de Coração<4/> e clique em 'Próximo'."
     },
     "power-ups": {
       "title": "Power-ups",

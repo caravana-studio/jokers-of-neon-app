@@ -1,14 +1,18 @@
 import { Divider, Flex } from "@chakra-ui/react";
-import { ProfileStats } from "./ProfileStats";
-import { UserBadges } from "./UserBadges";
-import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
-import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
-import { ControllerIcon } from "../../icons/ControllerIcon";
-import { MobileDecoration } from "../MobileDecoration";
+import { useNavigate } from "react-router-dom";
+import { Icons } from "../../constants/icons";
+import { TESTERS } from "../../constants/testers";
 import { useDojo } from "../../dojo/DojoContext";
-import { DelayedLoading } from "../DelayedLoading";
-import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { useUsername } from "../../dojo/utils/useUsername";
 import { ProfileStore } from "../../state/useProfileStore";
+import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { DelayedLoading } from "../DelayedLoading";
+import { PositionedDiscordLink } from "../DiscordLink";
+import { DeleteAccBtn } from "../Menu/Buttons/DeleteAccBtn";
+import { LogoutMenuBtn } from "../Menu/Buttons/Logout/LogoutMenuBtn";
+import { MenuBtn } from "../Menu/Buttons/MenuBtn";
+import { MobileDecoration } from "../MobileDecoration";
+import { ProfileStats } from "./ProfileStats";
 
 export const ProfileContent = ({
   data,
@@ -22,9 +26,12 @@ export const ProfileContent = ({
   const btnWidth = "18px";
   const { setup } = useDojo();
   const { isSmallScreen } = useResponsiveValues();
+  const username = useUsername();
+  const navigate = useNavigate();
 
   return (
     <DelayedLoading ms={100}>
+      <PositionedDiscordLink />
       <MobileDecoration />
       <Flex
         flexDirection={"column"}
@@ -64,15 +71,21 @@ export const ProfileContent = ({
           {/* <UserBadges currentBadges={currentBadges} totalBadges={totalBadges} /> */}
 
           <Flex flexDirection={"column"} gap={2} w={"100%"} color={"white"}>
-            {!setup.useBurnerAcc && (
+            {username && TESTERS.includes(username) && (
               <>
                 {isSmallScreen && (
                   <Divider borderColor="white" borderWidth="1px" my={2} />
                 )}
-                <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
+                <MenuBtn
+                  icon={Icons.LIST}
+                  description={"Test new features"}
+                  label={"Test new features"}
+                  onClick={() => navigate("/test")}
+                  arrowRight
+                  width={btnWidth}
+                />
               </>
             )}
-
             {isSmallScreen && (
               <Divider borderColor="white" borderWidth="1px" my={2} />
             )}
@@ -83,9 +96,21 @@ export const ProfileContent = ({
                 {isSmallScreen && (
                   <Divider borderColor="white" borderWidth="1px" my={2} />
                 )}
-                <ControllerIcon width={btnWidth} label={true} arrowRight />
+                <LogoutMenuBtn width={btnWidth} label={true} arrowRight />
               </>
             )}
+            {isSmallScreen && (
+              <Divider borderColor="white" borderWidth="1px" my={2} />
+            )}
+            {/* 
+            {!setup.useBurnerAcc && (
+              <>
+                {isSmallScreen && (
+                  <Divider borderColor="white" borderWidth="1px" my={2} />
+                )}
+                <ControllerIcon width={btnWidth} label={true} arrowRight />
+              </>
+            )} */}
           </Flex>
         </Flex>
       </Flex>

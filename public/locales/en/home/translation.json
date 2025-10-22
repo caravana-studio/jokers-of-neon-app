@@ -10,10 +10,27 @@
     "leaderboard-banner": {
       "title": "Tournament active",
       "button": "Full leaderboard"
-    }
+    },
+    "level": "level",
+    "dailyMissions": "Daily Missions"
   },
   "leaderboard": {
     "title": "Leaderboard",
+    "tournament": "Tournament active",
+    "finished": "Tournament finished",
+    "level": "Level ",
+    "round": "R ",
+    "points": "Points",
+    "see-prizes": "See prizes",
+    "prizes": {
+      "basic": "{{count}} Basic pack",
+      "advanced": "{{count}} Advanced pack",
+      "epic": "{{count}} Epic pack",
+      "legendary": "{{count}} Legendary pack",
+      "collector": "{{count}} Collector pack",
+      "collectorXL": "{{count}} Collector XL pack",
+      "seasonPass": "Season Pass"
+    },
     "btn": {
       "returnLeaderboard-btn": "Go back"
     },
@@ -57,5 +74,11 @@
     "description": "We recommend a quick tutorial to learn the basics. Would you like to start it now?",
     "confirm-text": "Play Tutorial",
     "cancel-text": "Skip"
+  },
+  "versionModal": {
+    "title": "New version available",
+    "description": "Do you want to update to the latest version?",
+    "confirm-text": "Update now",
+    "cancel-text": "Skip version"
   }
 }

@@ -1,46 +1,46 @@
 {
     "playsData": {
-        "royalFlush": {
+        "RoyalFlush": {
           "name": "Royal flush",
           "description": "Highest straight flush"
         },
-        "straightFlush": {
+        "StraightFlush": {
           "name": "Straight flush",
           "description": "Straight of the same suit"
         },
-        "fiveOfAKind": {
+        "FiveOfAKind": {
           "name": "Five of a kind",
           "description": "Five cards of the same rank"
         },
-        "fourOfAKind": {
+        "FourOfAKind": {
           "name": "Four of a kind",
           "description": "Four cards of the same rank"
         },
-        "fullHouse": {
+        "FullHouse": {
           "name": "Full house",
           "description": "Three of a kind and a pair"
         },
-        "straight": {
+        "Straight": {
           "name": "Straight",
           "description": "Five consecutive cards"
         },
-        "flush": {
+        "Flush": {
           "name": "Flush",
           "description": "Five cards of the same suit"
         },
-        "threeOfAKind": {
+        "ThreeOfAKind": {
           "name": "Three of a kind",
           "description": "Three cards of the same rank"
         },
-        "twoPair": {
+        "TwoPair": {
           "name": "Two pair",
           "description": "Two pairs of cards of different rank"
         },
-        "pair": {
+        "OnePair": {
           "name": "Pair",
           "description": "Two cards of the same rank"
         },
-        "highCard": {
+        "HighCard": {
           "name": "High card",
           "description": "Cards that are not consecutive and of different suits"
         }

@@ -1,28 +1,64 @@
-import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Preferences } from "@capacitor/preferences";
 import { useNavigate } from "react-router-dom";
+import { BannerRenderer } from "../../components/BannerRenderer/BannerRenderer";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DelayedLoading } from "../../components/DelayedLoading";
+import { MobileBottomBar } from "../../components/MobileBottomBar";
 import { MobileDecoration } from "../../components/MobileDecoration";
 import { ProfileTile } from "../../components/ProfileTile";
 import SpineAnimation from "../../components/SpineAnimation";
+import { SKIPPED_VERSION } from "../../constants/localStorage";
+import { APP_VERSION } from "../../constants/version";
 import { useGameContext } from "../../providers/GameProvider";
+import { fetchVersion } from "../../queries/fetchVersion";
+import { useDistributionSettings } from "../../queries/useDistributionSettings";
 import { useGetMyGames } from "../../queries/useGetMyGames";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
-import { ComingSeasonBanner } from "./banners/ComingSeasonBanner";
-import { DailyMissionsBanner } from "./banners/DailyMissionsBanner";
-import { LeaderboardBanner } from "./banners/LeaderboardBanner";
+import { logEvent } from "../../utils/analytics";
+import { APP_URL, isNative } from "../../utils/capacitorUtils";
+import { getMajor, getMinor, getPatch } from "../../utils/versionUtils";
+import { PositionedDiscordLink } from "../../components/DiscordLink";
 
 export const NewHome = () => {
   const { t } = useTranslation(["home"]);
   const { isSmallScreen } = useResponsiveValues();
+  const { settings, loading } = useDistributionSettings();
   const navigate = useNavigate();
   const { prepareNewGame, executeCreateGame } = useGameContext();
   const { data: games } = useGetMyGames();
 
   const [isTutorialModalOpen, setTutorialModalOpen] = useState(false);
+  const [isVersionModalOpen, setVersionModalOpen] = useState(false);
+  const [version, setVersion] = useState<string | null>(null);
+
+  const banners = settings?.home?.banners || [];
+
+  useEffect(() => {
+    logEvent("open_home_page");
+    if (isNative) {
+      fetchVersion().then(async (version) => {
+        setVersion(version);
+        try {
+          const res = await Preferences.get({ key: SKIPPED_VERSION });
+          const skipped = res.value;
+          if (
+            Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+            Number(getMinor(version)) === Number(getMinor(APP_VERSION)) &&
+            Number(getPatch(version)) > Number(getPatch(APP_VERSION)) &&
+            skipped !== version
+          ) {
+            setVersionModalOpen(true);
+          }
+        } catch (e) {
+          console.warn("Preferences.get failed for SKIPPED_VERSION", e);
+        }
+      });
+    }
+  }, []);
 
   const handleCreateGame = async () => {
     prepareNewGame();
@@ -43,6 +79,21 @@ export const NewHome = () => {
     setTutorialModalOpen(false);
   };
 
+  const handleConfirmUpdate = () => {
+    window.open(APP_URL, "_blank");
+  };
+
+  const handleSkipVersion = async () => {
+    setVersionModalOpen(false);
+    if (version) {
+      try {
+        await Preferences.set({ key: SKIPPED_VERSION, value: version });
+      } catch (e) {
+        // ignore preferences error; nothing we can do in UI
+      }
+    }
+  };
+
   const handleDeclineTutorial = () => {
     handleCreateGame();
     setTutorialModalOpen(false);
@@ -50,6 +101,7 @@ export const NewHome = () => {
 
   return (
     <DelayedLoading ms={100}>
+      <PositionedDiscordLink />
       <MobileDecoration />
       {/*       <RemoveScroll>
         <></>
@@ -111,15 +163,34 @@ export const NewHome = () => {
             </Flex>
             <Flex flexDir={"column"} gap={3} alignItems={"center"} w="100%">
               <Flex flexDir={isSmallScreen ? "column" : "row"} gap={3} w="100%">
-              <LeaderboardBanner />
-              <DailyMissionsBanner />
+                {banners[0] && <BannerRenderer banner={banners[0]} />}
+                {banners[1] && <BannerRenderer banner={banners[1]} />}
               </Flex>
-              <ComingSeasonBanner />
+              {banners[2] && isSmallScreen && (
+                <BannerRenderer banner={banners[2]} />
+              )}
             </Flex>
           </Flex>
         </Flex>
-
-        <Flex h="50px" />
+        {!isSmallScreen && (
+          <Flex position="absolute" bottom="90px">
+            <Button
+              onClick={handlePlayClick}
+              w="300px"
+              variant="secondarySolid"
+            >
+              {games && games.length > 0 ? t("my-games") : t("play")}
+            </Button>
+          </Flex>
+        )}
+        {isSmallScreen && (
+          <MobileBottomBar
+            firstButton={{
+              label: games && games.length > 0 ? t("my-games") : t("play"),
+              onClick: handlePlayClick,
+            }}
+          />
+        )}
       </Flex>
 
       {isTutorialModalOpen && (
@@ -130,6 +201,16 @@ export const NewHome = () => {
           confirmText={t("tutorialModal.confirm-text")}
           cancelText={t("tutorialModal.cancel-text")}
           onConfirm={handleConfirmTutorial}
+        />
+      )}
+      {isVersionModalOpen && (
+        <ConfirmationModal
+          close={handleSkipVersion}
+          title={t("versionModal.title")}
+          description={t("versionModal.description")}
+          confirmText={t("versionModal.confirm-text")}
+          cancelText={t("versionModal.cancel-text")}
+          onConfirm={handleConfirmUpdate}
         />
       )}
     </DelayedLoading>

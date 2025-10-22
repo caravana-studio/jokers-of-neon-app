@@ -1,11 +1,26 @@
 {
+  "season-pass": {
+    "more-rewards-with": "More rewards with",
+    "season-pass": "SEASON PASS",
+    "buy": "BUY",
+    "unlocked": "UNLOCKED"
+  },
+  "season-progression": {
+    "free-rewards": "FREE REWARDS",
+    "season": "SEASON {{season}}",
+    "my-xp": "My XP",
+    "claim": "CLAIM"
+  },
   "map": {
     "level": "LEVEL"
+  },
+  "external-pack": {
+    "continue": "Continue"
   },
   "my-games": {
     "title": "Games",
     "go-back": "Go back",
-    "start-game": "Start new game",
+    "start-game": "New game",
     "show-finished-games": "Show finished games",
     "continue-btn": "continue",
     "start-btn": "start",
@@ -18,7 +33,7 @@
       }
     },
     "level-lbl": "Level",
-    "round-lbl": "Round",
+    "round-lbl": "R",
     "status-lbl": "Status",
     "points-lbl": "points",
     "no-games": "You don't have any games. Start a new one!",
@@ -67,7 +82,7 @@
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
       "hands-left": "{{hands}} Hands left",
-      "rage": "{{cards}} Rage cards defeated",
+      "rage": "{{cards}} Rage defeated",
       "rerolls": "rerolls",
       "total": "total",
       "final-score": "- Final score: {{score}} -",
@@ -126,6 +141,14 @@
     "collections": {
       "sx": "Season {{season}}",
       "c99": "GG Exclusive Collection - v1"
+    }
+  },
+  "wallet-provider": {
+    "login": "LOGIN",
+    "guest": "PLAY AS GUEST",
+    "terms": {
+      "agreement": "By continuing you are agreeing to Jokers of Neon's",
+      "link": "Terms and Conditions"
     }
   }
 }

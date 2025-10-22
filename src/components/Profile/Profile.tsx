@@ -1,12 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Icons } from "../../constants/icons";
 import { useDojo } from "../../dojo/useDojo";
 import { useUsername } from "../../dojo/utils/useUsername";
-import { Icons } from "../../constants/icons";
-import { useTranslation } from "react-i18next";
-import { ProfileContent } from "./ProfileContent";
 import { useProfileStore } from "../../state/useProfileStore";
-import { useEffect } from "react";
 import { Loading } from "../Loading";
+import { ProfileContent } from "./ProfileContent";
 
 export const Profile = () => {
   const {
@@ -48,7 +48,19 @@ export const Profile = () => {
       alignItems="center"
     >
       <Text size="lg">{t("no-profile")}</Text>
-      <Button size={["md", "sm"]} onClick={() => switchToController()}>
+      <Button
+        size={["md", "sm"]}
+        onClick={() =>
+          switchToController((newUsername) => {
+            fetchProfileData(
+              client,
+              newUsername.account.address,
+              newUsername.account,
+              newUsername.username
+            );
+          })
+        }
+      >
         {tCommon("login")}
         <img
           src={Icons.CARTRIDGE}

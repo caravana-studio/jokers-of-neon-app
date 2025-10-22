@@ -4,9 +4,13 @@ import CachedImage from "./CachedImage";
 
 interface MobileDecorationProps {
   fadeToBlack?: boolean;
+  top?: string | number;
+  bottom?: string | number;
 }
 
 export const MobileDecoration = ({
+  top = 1,
+  bottom = 1,
   fadeToBlack = false,
 }: MobileDecorationProps) => {
   const { isRageRound } = useGameStore();
@@ -22,7 +26,7 @@ export const MobileDecoration = ({
     black 0%, 
     black 40%, 
     transparent 100%);"
-          zIndex={1}
+          zIndex={5}
           pointerEvents="none"
         />
       )}
@@ -45,7 +49,7 @@ export const MobileDecoration = ({
         width="100%"
         maxHeight="70px"
         position="fixed"
-        top={1}
+        top={top}
         zIndex={2}
       />
       <CachedImage
@@ -53,8 +57,8 @@ export const MobileDecoration = ({
         width="100%"
         maxHeight="70px"
         position="fixed"
-        bottom={1}
-        zIndex={2}
+        bottom={bottom}
+        zIndex={6}
       />
     </>
   );

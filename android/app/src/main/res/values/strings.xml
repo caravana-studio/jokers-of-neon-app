@@ -4,4 +4,6 @@
     <string name="title_activity_main">Jokers of Neon</string>
     <string name="package_name">com.jokersofneon.play</string>
     <string name="custom_url_scheme">com.jokersofneon.play</string>
+    <string name="facebook_app_id">780184091515122</string>
+    <string name="facebook_client_token">42fbeb9d5dc59858d94488f2a6648c8a</string>
 </resources>

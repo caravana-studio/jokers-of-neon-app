@@ -136,7 +136,7 @@ const doRefetchGameStore = async (client: any, gameId: number, set: any) => {
     remainingDiscards: round.remaining_discards,
     cash: game.cash,
     level: game.level,
-    round: game.current_node_id,
+    round: game.round,
     targetScore: round.target_score,
     state: game.state,
     specialSlots: game.special_slots,

@@ -8,9 +8,12 @@ import App from "./App.tsx";
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import i18n from "i18next";
 import { createRef } from "react";
+import { isMobileOnly } from "react-device-detect";
 import { I18nextProvider } from "react-i18next";
 import { FadeInOut } from "./components/animations/FadeInOut.tsx";
+import { PositionedVersion } from "./components/version/PositionedVersion.tsx";
 import { SKIP_PRESENTATION } from "./constants/localStorage.ts";
+import { APP_VERSION } from "./constants/version";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import { WalletProvider } from "./dojo/WalletContext.tsx";
@@ -18,16 +21,20 @@ import { FeatureFlagProvider } from "./featureManagement/FeatureFlagProvider.tsx
 import localI18n from "./i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./pages/LoadingScreen/LoadingScreen.tsx";
+import { MobileBrowserBlocker } from "./pages/MobileBrowserBlocker.tsx";
+import { VersionMismatch } from "./pages/VersionMismatch.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
+import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
 import {
   LoadingProgress,
   LoadingScreenHandle,
 } from "./types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
+import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
 import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
-import { isNative } from "./utils/capacitorUtils.ts";
+import { getMajor, getMinor } from "./utils/versionUtils.ts";
 
 const I18N_NAMESPACES = [
   "game",
@@ -52,6 +59,8 @@ const loadingSteps: LoadingProgress[] = [
 
 const progressBarRef = createRef<LoadingScreenHandle>();
 
+const BYPASS_MOBILE_BROWSER_RULE = import.meta.env.BYPASS_MOBILE_BROWSER_RULE;
+
 async function init() {
   const rootElement = document.getElementById("root");
   if (!rootElement) throw new Error("React root not found");
@@ -65,6 +74,29 @@ async function init() {
   let setCanFadeOut: (value: boolean) => void = () => {};
 
   const theme = extendTheme(customTheme);
+
+  // Block mobile browsers
+  if (
+    isMobileOnly &&
+    !isNative &&
+    window.location.hostname !== "localhost" &&
+    !BYPASS_MOBILE_BROWSER_RULE
+  ) {
+    return root.render(<MobileBrowserBlocker />);
+  }
+
+  fetchVersion().then((version) => {
+    // If the major or minor version is different, block the app
+    if (
+      isNative &&
+      (Number(getMajor(version)) > Number(getMajor(APP_VERSION)) ||
+        (Number(getMajor(version)) === Number(getMajor(APP_VERSION)) &&
+          Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
+    ) {
+      console.log("Version mismatch", version, APP_VERSION);
+      return root.render(<VersionMismatch />);
+    }
+  });
 
   const renderApp = (setupResult: any) => {
     const queryClient = new QueryClient();
@@ -105,6 +137,7 @@ async function init() {
             }}
             canFadeOut={canFadeOut}
           />
+          <PositionedVersion />
         </ChakraBaseProvider>
       );
     };

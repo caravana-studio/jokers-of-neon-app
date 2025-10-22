@@ -1,7 +1,6 @@
 import { gql } from "graphql-tag";
 import { useQuery } from "react-query";
 import { useDojo } from "../dojo/useDojo";
-import { getNode } from "../dojo/queries/getNode";
 import { decodeString, encodeString } from "../dojo/utils/decodeString";
 import graphQLClient from "../graphQLClient";
 import { useGameStore } from "../state/useGameStore";
@@ -9,6 +8,7 @@ import { signedHexToNumber } from "../utils/signedHexToNumber";
 import { snakeToCamel } from "../utils/snakeToCamel";
 
 export const LEADERBOARD_QUERY_KEY = "leaderboard";
+const guestNamePattern = /^joker_guest_\d+$/;
 
 const DOJO_NAMESPACE =
   import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
@@ -16,9 +16,9 @@ const CAMEL_CASE_NAMESPACE = snakeToCamel(DOJO_NAMESPACE);
 const QUERY_FIELD_NAME = `${CAMEL_CASE_NAMESPACE}GameModels`;
 
 export const LEADERBOARD_QUERY = gql`
-  query ($modId: String!) {
+  query ($modId: String!, $startCountingAtGameId: String, $stopCountingAtGameId: String) {
     ${QUERY_FIELD_NAME}(
-      where: { mod_idEQ: $modId }
+      where: { mod_idEQ: $modId, idGT: $startCountingAtGameId, idLT: $stopCountingAtGameId }
       first: 10000
       order: { field: "LEVEL", direction: "DESC" }
     ) {
@@ -68,12 +68,17 @@ const getPrize = (position: number): number => {
 const fetchGraphQLData = async (
   modId: string,
   client: any,
-  gameId?: number
+  filterLoggedInPlayers: boolean,
+  gameId?: number,
+  startCountingAtGameId: number = 0,
+  stopCountingAtGameId: number = 1000000
 ) => {
   const rawData: LeaderboardResponse = await graphQLClient.request(
     LEADERBOARD_QUERY,
     {
       modId: encodeString(modId),
+      startCountingAtGameId: startCountingAtGameId.toString(),
+      stopCountingAtGameId: stopCountingAtGameId.toString(),
     }
   );
 
@@ -143,25 +148,39 @@ const fetchGraphQLData = async (
     if (a.level !== b.level) {
       return b.level - a.level;
     }
+    if (a.round !== b.round) {
+      return b.round - a.round;
+    }
     return b.player_score - a.player_score;
   });
 
-  return sortedLeaderboard.map((leader, index) => ({
+  const filteredLeaderboard = filterLoggedInPlayers
+    ? sortedLeaderboard?.filter(
+        (player) => !guestNamePattern.test(player.player_name)
+      )
+    : sortedLeaderboard;
+
+  return filteredLeaderboard.map((leader, index) => ({
     ...leader,
     position: index + 1,
     prize: getPrize(index + 1),
   }));
 };
 
-export const useGetLeaderboard = (gameId?: number) => {
+export const useGetLeaderboard = (
+  gameId?: number,
+  filterLoggedInPlayers = true,
+  startCountingAtGameId: number = 0,
+  stopCountingAtGameId: number = 1000000,
+) => {
   const { modId } = useGameStore();
   const {
     setup: { client },
   } = useDojo();
 
   const queryResponse = useQuery(
-    [LEADERBOARD_QUERY_KEY, modId, gameId],
-    () => fetchGraphQLData(modId, client, gameId),
+    [LEADERBOARD_QUERY_KEY, modId, gameId, startCountingAtGameId, stopCountingAtGameId],
+    () => fetchGraphQLData(modId, client, filterLoggedInPlayers, gameId, startCountingAtGameId, stopCountingAtGameId),
     {
       refetchOnWindowFocus: false,
     }

@@ -1,11 +1,26 @@
 {
+  "season-pass": {
+    "more-rewards-with": "Mais recompensas com",
+    "season-pass": "PASSO DE TEMPORADA",
+    "buy": "COMPRAR",
+    "unlocked": "DESBLOQUEADO"
+  },
+  "season-progression": {
+    "free-rewards": "RECOMPENSAS GRATIS",
+    "season": "TEMPORADA {{season}}",
+    "my-xp": "Mi XP",
+    "claim": "RECLAMAR"
+  },
   "map": {
     "level": "NÍVEL"
+  },
+  "external-pack": {
+    "continue": "Continuar"
   },
   "my-games": {
     "title": "Jogos",
     "go-back": "Voltar",
-    "start-game": "Iniciar novo jogo",
+    "start-game": "Novo jogo",
     "show-finished-games": "Mostrar jogos terminados",
     "continue-btn": "continuar",
     "start-btn": "iniciar",
@@ -18,7 +33,7 @@
       }
     },
     "level-lbl": "Nível",
-    "round-lbl": "Rodada",
+    "round-lbl": "R",
     "status-lbl": "Estado",
     "points-lbl": "pontos",
     "no-games": "Você não tem nenhum jogo. Comece um novo!",
@@ -65,9 +80,9 @@
       "title": "Rodada {{round}} completada!",
       "base": "base",
       "level-bonus": "Bônus de nível",
-      "discards-left": "{{discards}} Descartes restantes",
-      "hands-left": "{{hands}} Mãos restantes",
-      "rage-cards": "{{cards}} cartas Rage vencidas",
+      "discards-left": "{{discards}} Descartes",
+      "hands-left": "{{hands}} Mãos",
+      "rage": "{{cards}} Rage vencidas",
       "total": "total",
       "final-score": "- Pontuação final: {{score}} -",
       "continue-btn": "continuar"
@@ -125,6 +140,14 @@
     "collections": {
       "sx": "Temporada {{season}}",
       "c99": "Coleção exclusiva GG - v1"
+    }
+  },
+  "wallet-provider": {
+    "login": "ENTRAR",
+    "guest": "CONVIDADO",
+    "terms": {
+      "agreement": "Ao continuar, você concorda com os",
+      "link": "Termos e Condições"
     }
   }
 }

@@ -562,7 +562,7 @@
     },
     "10024": {
       "name": "Guardian's shield",
-      "description": "Blocks all rage cards for 1 level. Gets destroyed afterwards"
+      "description": "Blocks all rage cards for 1 round. Gets destroyed afterwards"
     },
     "10025": {
       "name": "Neon synergy",
@@ -590,7 +590,7 @@
     },
     "10031": {
       "name": "Shortcut",
-      "description": "Reduces the points needed to beat the level by 20%"
+      "description": "Reduces the points needed to beat the round by 20%"
     },
     "10032": {
       "name": "Lucky Payday",
@@ -772,7 +772,7 @@
       "name": "Queens Fortune",
       "description": "Each Queen that scores has a 50% chance to grant ^yellow(+150 cash)^."
     },
-     "19901": {
+    "19901": {
       "name": "Lucky Cashback",
       "description": "50% chance to gain ^yellow(+150 cash)^ when player use a play or discard."
     },
@@ -822,31 +822,31 @@
   "rageCards": {
     "20001": {
       "name": "Broken Hearts",
-      "description": "Heart suited cards will not score during this level"
+      "description": "Heart suited cards will not score during this round"
     },
     "20002": {
       "name": "Broken Clubs",
-      "description": "Club suited cards will not score during this level"
+      "description": "Club suited cards will not score during this round"
     },
     "20003": {
       "name": "Broken Diamonds",
-      "description": "Diamond suited cards will not score during this level"
+      "description": "Diamond suited cards will not score during this round"
     },
     "20004": {
       "name": "Broken Spades",
-      "description": "Spade suited cards will not score during this level"
+      "description": "Spade suited cards will not score during this round"
     },
     "20005": {
       "name": "Broken Jokers",
-      "description": "Jokers will not score during this level"
+      "description": "Jokers will not score during this round"
     },
     "20006": {
       "name": "Diminished Hold",
-      "description": "Your hand will be reduced by 2 cards during this level"
+      "description": "Your hand will be reduced by 2 cards during this round"
     },
     "20007": {
       "name": "Zero Waste",
-      "description": "You have no discards during this level"
+      "description": "You have no discards during this round"
     },
     "20008": {
       "name": "Unexpected Sacrifice",
@@ -854,7 +854,7 @@
     },
     "20009": {
       "name": "Strategic Quartet",
-      "description": "You can only play up to 4 cards during this level"
+      "description": "You can only play up to 4 cards during this round"
     },
     "20010": {
       "name": "Dynamic Tactics",
@@ -866,11 +866,11 @@
     },
     "20012": {
       "name": "Broken Figures",
-      "description": "Figures (Jack, Queen and King) will not score during this level"
+      "description": "Figures (Jack, Queen and King) will not score during this round"
     },
     "20013": {
       "name": "Broken Modifiers",
-      "description": "Modifiers will not work during this level"
+      "description": "Modifiers will not work during this round"
     },
     "20014": {
       "name": "Last Words",
@@ -898,15 +898,15 @@
     },
     "20021": {
       "name": "Betraying the Weak",
-      "description": "Cards with a value of 5 or less will not score during this level"
+      "description": "Cards with a value of 5 or less will not score during this round"
     },
     "20022": {
       "name": "Locked Plays",
-      "description": "You can't play the same hand twice in this round"
+      "description": "You can only play one hand type in this round"
     },
     "20023": {
       "name": "Punched Ticket",
-      "description": "You can only play one hand type in this round"
+      "description": "You can't play the same hand twice in this round"
     }
   },
   "lootBoxes": {

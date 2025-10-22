@@ -44,7 +44,7 @@
     "score-total": "Puntuación total",
     "multi-points": {
       "points": "Puntos",
-      "multi": "Multiplicador"
+      "multi": "Multi"
     },
     "special-cards": {
       "locked-slot": "Este espacio está bloqueado. Puedes desbloquearlo en la tienda.",
@@ -91,7 +91,7 @@
       "tutorial-btn": "Ver tutorial",
       "sound-btn": "Sonido",
       "logout-btn": "Cerrar sesión",
-      "settings-btn": "Configuración",
+      "settings-btn": "Ajustes",
       "docs-btn": "Lista de cartas",
       "leaderboard-btn": "Clasificación",
       "map-btn": "Mapa",
@@ -107,7 +107,7 @@
         "map": "Mapa",
         "my-games": "Juegos",
         "profile": "Perfil",
-        "settings": "Configuración",
+        "settings": "Ajustes",
         "my-collection": "Colección",
         "home": "Inicio",
         "docs": "Lista de cartas",
@@ -168,7 +168,7 @@
   },
   "points": "puntos",
   "settings-modal": {
-    "title": "Configuración",
+    "title": "Ajustes",
     "language": "Idioma",
     "sfx-volume": "Volumen de efectos de sonido",
     "music-volume": "Volumen de la música",

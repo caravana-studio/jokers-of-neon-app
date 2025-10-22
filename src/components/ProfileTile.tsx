@@ -9,8 +9,12 @@ import { useEffect } from "react";
 import { useProfileStore } from "../state/useProfileStore";
 import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
+import { useTranslation } from "react-i18next";
 
 export const ProfileTile = () => {
+  const { t } = useTranslation("home", {
+    keyPrefix: "home",
+  });
   const navigate = useNavigate();
   const { isSmallScreen } = useResponsiveValues();
   const PROFILE_IMG_SIZE = isSmallScreen ? 70 : 150;
@@ -72,7 +76,7 @@ export const ProfileTile = () => {
           justifyContent="center"
         >
           <Heading fontSize={isSmallScreen ? 9 : 12} textAlign="center">
-            LEVEL{" "}
+            {t("level")}{" "}
             <span style={{ fontFamily: "Sonara" }}>
               {profileData?.profile.level}
             </span>

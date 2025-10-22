@@ -25,6 +25,7 @@ import { useAudioPlayer } from "../providers/AudioPlayerProvider";
 import { useSettings } from "../providers/SettingsProvider";
 import { NEON_PINK } from "../theme/colors";
 import AudioPlayer from "./AudioPlayer";
+import { Version } from "./version/Version";
 
 export const SettingsContent = () => {
   const {
@@ -186,6 +187,7 @@ export const SettingsContent = () => {
           </MenuList>
         </Menu>
       </Flex>
+      <Version />
     </Flex>
   );
 };

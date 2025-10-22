@@ -9,22 +9,22 @@ import {
   D2,
   D5,
   D7,
-  H10,
+  H8,
   H3,
   H5,
   H7,
   S6,
-  S9,
+  S8,
 } from "./cardMocks";
 import { ClubModifier } from "./modifierMocks";
 
-export const HAND_1 = [D2, H3, C5, H7, S9, C10, CJ, CA];
+export const HAND_1 = [D2, H3, C5, H7, S8, C10, CJ, CA];
 // discard D2 H3
-export const HAND_2 = [C5, S6, D7, H7, S9, CJ, C10, CA];
+export const HAND_2 = [C5, S6, D7, H7, S8, CJ, C10, CA];
 // play C7 H7
-export const HAND_3 = [H5, C5, S6, S9, CJ, CQ, C10, CA];
+export const HAND_3 = [H5, C5, S6, S8, CJ, CQ, C10, CA];
 // play play H5 D5
-export const HAND_4 = [S6, S9, H10, CJ, CQ, C10, CA, ClubModifier];
+export const HAND_4 = [S6, S8, H8, CJ, CQ, C10, CA, ClubModifier];
 
 export const EVENT_FLUSH = {
   play: {
@@ -33,7 +33,7 @@ export const EVENT_FLUSH = {
   },
   cardPlayScoreEvents: [
     {
-      hand: [{ idx: H10.idx, quantity: 10 }],
+      hand: [{ idx: H8.idx, quantity: 8 }],
       specials: [],
       eventType: EventTypeEnum.Point,
     },
@@ -58,7 +58,7 @@ export const EVENT_FLUSH = {
       eventType: EventTypeEnum.Point,
     },
     {
-      hand: [{ idx: H10.idx, quantity: 2 }],
+      hand: [{ idx: H8.idx, quantity: 2 }],
       specials: [{ idx: 10001, quantity: 2 }],
       eventType: EventTypeEnum.Multi,
     },

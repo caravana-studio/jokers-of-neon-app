@@ -14,6 +14,7 @@ import { useGameStore } from "../../state/useGameStore.ts";
 import { VIOLET } from "../../theme/colors.tsx";
 import { useResponsiveValues } from "../../theme/responsiveSettings.tsx";
 import { GameBox } from "./GameBox.tsx";
+import { logEvent } from "../../utils/analytics.ts";
 
 export interface GameSummary {
   id: number;
@@ -28,6 +29,10 @@ export const MyGames = () => {
   const { t } = useTranslation("intermediate-screens", {
     keyPrefix: "my-games",
   });
+
+  useEffect(() => {
+    logEvent( "open_my_games_page")
+  }, [])
 
   const { data: games, isLoading, error, refetch } = useGetMyGames();
 

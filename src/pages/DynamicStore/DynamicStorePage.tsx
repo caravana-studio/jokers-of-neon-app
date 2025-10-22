@@ -1,4 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { DelayedLoading } from "../../components/DelayedLoading";
@@ -17,6 +18,7 @@ import { useGameStore } from "../../state/useGameStore";
 import { useShopStore } from "../../state/useShopStore";
 import { BLUE } from "../../theme/colors";
 import { useResponsiveValues } from "../../theme/responsiveSettings";
+import { logEvent } from "../../utils/analytics";
 import { useNextLevelButton } from "../store/StoreElements/useNextLevelButton";
 import { getComponent } from "./storeComponents/getComponent";
 import { StoreTopBar } from "./storeComponents/TopBar/StoreTopBar";
@@ -46,6 +48,10 @@ export const DynamicStorePage = () => {
   const store = storesConfig.find(
     (s) => s.id === SHOP_ID_MAP[shopId as keyof typeof SHOP_ID_MAP]
   );
+
+  useEffect(() => {
+    logEvent("open_dynamic_store_page", { shop_id: shopId });
+  }, [shopId]);
 
   const { isSmallScreen } = useResponsiveValues();
 
