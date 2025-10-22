@@ -17,7 +17,7 @@
       "step-2": "No poker hand? Use a <1>discard</1> to get new cards. Let's try it.",
       "pair": "Great! A <1>PAIR</1> of 7s. Let's play it!",
       "secondPair": "Nice! We have a <1>PAIR</1> of 5s. Time to play.",
-      "flush": "Using the <1>Club Modifier</1> creates a <2>FLUSH</2>! <3/> Let's play it.",
+      "flush": "Using the <5>Club Modifier</5> creates a <2>FLUSH</2>! <3/> Let's play it.",
       "plays": "Click here to see all possible poker hands you can make."
     },
     "discardCards": {
@@ -42,7 +42,7 @@
     "modifiers": {
       "title": "Modifier Cards",
       "content": "Modifier cards can change your other cards.<1/> In this case, it will change the modified card's suit to Clubs.",
-      "drag": "Drag the Club modifier onto the 10 card, then click 'Next'."
+      "drag": "Drag the <5>Club modifier</5> onto the <4>8 of Hearts</4> card, then click 'Next'."
     },
     "power-ups": {
       "title": "Power-ups",

@@ -1,12 +1,13 @@
-import { isMobile } from "react-device-detect";
 import i18n from "i18next";
-import { Step } from "react-joyride";
+import { isMobile } from "react-device-detect";
 import { Trans } from "react-i18next";
+import { Step } from "react-joyride";
 import {
   BLUE_LIGHT,
+  CLUBS,
+  HEARTS,
   NEON_GREEN,
   VIOLET_LIGHT,
-  HEARTS,
 } from "../theme/colors.tsx";
 
 const COMMON_SETTINGS: Partial<Step> = {
@@ -642,6 +643,15 @@ const loadTutorialTranslations = async () => {
                 }}
               />
             ),
+            5: (
+              <span
+                style={{
+                  color: CLUBS,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
             3: <br />,
           }}
         />
@@ -788,7 +798,32 @@ const loadTutorialTranslations = async () => {
     },
     {
       target: ".game-tutorial-intro",
-      content: i18n.t("gameTutorial.modifiers.drag", { ns: "tutorials" }),
+      content: (
+        <Trans
+          i18nKey="gameTutorial.modifiers.drag"
+          ns="tutorials"
+          components={{
+            4: (
+              <span
+                style={{
+                  color: HEARTS,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+            5: (
+              <span
+                style={{
+                  color: CLUBS,
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                }}
+              />
+            ),
+          }}
+        />
+      ),
       ...COMMON_SETTINGS,
       placement: "bottom",
       offset: isMobile ? 0 : -100,
