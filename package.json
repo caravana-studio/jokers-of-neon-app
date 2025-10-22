@@ -101,7 +101,6 @@
     "screenfull": "^6.0.2",
     "sonner": "^1.5.0",
     "starknet": "8.5.2",
-    "starknetkit": "^2.10.4",
     "styled-components": "^6.1.12",
     "vite-plugin-top-level-await": "^1.4.4",
     "vite-plugin-wasm": "^3.4.1",
