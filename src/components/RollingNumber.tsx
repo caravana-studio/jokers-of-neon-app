@@ -3,13 +3,14 @@ import { animated, useSpring } from "react-spring";
 interface RollingNumberProps {
   n: number;
   className?: string;
+  delay?: number;
 }
 
-export const RollingNumber = ({ n, className = 'headline' }: RollingNumberProps) => {
+export const RollingNumber = ({ n, className = 'headline', delay = 100 }: RollingNumberProps) => {
   const { number } = useSpring({
     from: { number: 0 },
     number: n,
-    delay: 100,
+    delay,
     config: { mass: 1, tension: 26, friction: 10 },
   });
   return (

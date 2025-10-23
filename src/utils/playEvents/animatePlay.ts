@@ -335,6 +335,7 @@ export const animatePlay = (config: AnimatePlayConfig) => {
         setRoundRewards({
           ...playEvents.detailEarned!,
           roundNumber: playEvents.levelPassed?.round,
+          level_passed: playEvents.levelPassed?.level_passed ? playEvents.levelPassed?.level : 0,
         });
         navigate("/rewards");
       }, 1000);

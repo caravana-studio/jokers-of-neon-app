@@ -78,6 +78,7 @@
   "rewards-details": {
     "labels": {
       "title": "¡Ronda {{round}} superada!",
+      "title-level": "Nivel {{level}} completado!",
       "base": "Base",
       "level-bonus": "Bonus del nivel",
       "discards-left": "{{discards}} descartes",

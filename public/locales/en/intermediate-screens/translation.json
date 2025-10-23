@@ -78,6 +78,7 @@
   "rewards-details": {
     "labels": {
       "title": "Round {{round}} completed!",
+      "title-level": "Level {{level}} completed!",
       "base": "base",
       "level-bonus": "Level bonus",
       "discards-left": "{{discards}} Discards left",
