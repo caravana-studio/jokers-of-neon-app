@@ -1,4 +1,26 @@
 {
+  "loading-screen": {
+    "error": "Error al cargar el juego",
+    "skip": "Saltar",
+    "steps": {
+      "1": "Preparando el escenario",
+      "2": "Encendiendo las luces de neón",
+      "3": "Recolectando todos los jokers",
+      "4": "Cargando el ranking",
+      "5": "Casi listo, vamos a jugar!"
+    },
+    "presents": "PRESENTA",
+    "powered-by": "Impulsado por"
+  },
+  "mobile-blocker": {
+    "mobile-browsers-are-not-supported": "LOS NAVEGADORES MÓVILES NO ESTÁN SOPORTADOS",
+    "please-download-the-app-to-continue": "Por favor, descargue la aplicación para continuar"
+  },
+  "version-mismatch": {
+    "new-version-available": "NUEVA VERSIÓN DISPONIBLE",
+    "please-update": "Por favor, actualice para continuar",
+    "update": "ACTUALIZAR"
+  },
   "season-pass": {
     "more-rewards-with": "Más recompensas con",
     "season-pass": "PASE DE TEMPORADA",

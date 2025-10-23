@@ -91,7 +91,7 @@ const OpeningScreenAnimation: React.FC<OpeningScreenAnimationProps> = ({
 
   return (
     <MotionBox
-      display="flex"
+      display={stage === "end" ? "none" : "flex"}
       alignItems="center"
       justifyContent="center"
       h="100%"

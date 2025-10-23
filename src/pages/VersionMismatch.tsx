@@ -1,10 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { PositionedVersion } from "../components/version/PositionedVersion";
 import { APP_URL } from "../utils/capacitorUtils";
 import { PreThemeLoadingPage } from "./PreThemeLoadingPage";
 
 export const VersionMismatch = () => {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "version-mismatch",
+  });
   return (
     <PreThemeLoadingPage>
       <img width={isMobile ? "90%" : "60%"} src="logos/logo.png" alt="logo" />
@@ -16,7 +20,8 @@ export const VersionMismatch = () => {
         w="80%"
         letterSpacing={1}
       >
-        NEW VERSION AVAILABLE <br /> Please update to continue
+        {t("new-version-available")} <br />
+        {t("please-update")}
       </Text>
       <Flex flexDirection={"row"} gap={"30px"}>
         <button
@@ -34,7 +39,7 @@ export const VersionMismatch = () => {
               flexGrow: 0,
             }}
           >
-            <div>UPDATE</div>
+            <div>{t("update")}</div>
           </div>
         </button>
       </Flex>

@@ -1,4 +1,26 @@
 {
+  "loading-screen": {
+    "error": "Error loading the game",
+    "skip": "Skip",
+    "steps": {
+      "1": "Setting the stage",
+      "2": "Turning on the neon lights",
+      "3": "Gathering all the jokers",
+      "4": "Loading the leaderboard",
+      "5": "Almost ready, let's play!"
+    },
+    "presents": "PRESENTS",
+    "powered-by": "Powered by"
+  },
+  "mobile-blocker": {
+    "mobile-browsers-are-not-supported": "MOBILE BROWSERS ARE NOT SUPPORTED",
+    "please-download-the-app-to-continue": "Please download the app to continue"
+  },
+  "version-mismatch": {
+    "new-version-available": "NEW VERSION AVAILABLE",
+    "please-update": "Please update to continue",
+    "update": "UPDATE"
+  },
   "season-pass": {
     "more-rewards-with": "More rewards with",
     "season-pass": "SEASON PASS",

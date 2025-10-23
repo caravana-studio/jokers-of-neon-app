@@ -6,27 +6,25 @@ import {
   useRef,
   useState,
 } from "react";
+import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { RemoveScroll } from "react-remove-scroll";
 import "../../App.scss";
 import { FadeInOut } from "../../components/animations/FadeInOut";
-import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
-import OpeningScreenAnimation from "./OpeningScreenAnimation";
-import { isMobile } from "react-device-detect";
-import {
-  LoadingProgress,
-  LoadingScreenHandle,
-} from "../../types/LoadingProgress";
 import {
   RealLoadingBar,
   RealLoadingBarRef,
 } from "../../components/LoadingProgressBar/RealLoadingBar";
+import { LoadingScreenHandle } from "../../types/LoadingProgress";
+import { PreThemeLoadingPage } from "../PreThemeLoadingPage";
+import OpeningScreenAnimation from "./OpeningScreenAnimation";
 
 interface LoadingScreenProps {
   error?: boolean;
   showPresentation?: boolean;
   onPresentationEnd?: () => void;
   canFadeOut?: boolean;
-  steps?: LoadingProgress[];
+  initial?: boolean;
 }
 
 export const LoadingScreen = forwardRef<
@@ -39,7 +37,7 @@ export const LoadingScreen = forwardRef<
       showPresentation = false,
       onPresentationEnd = () => {},
       canFadeOut = false,
-      steps = [],
+      initial = false,
     },
     ref
   ) => {
@@ -48,6 +46,20 @@ export const LoadingScreen = forwardRef<
     const [skipAnimation, setSkipAnimation] = useState(false);
 
     const progressBarRef = useRef<RealLoadingBarRef>(null);
+
+    const { t } = useTranslation("intermediate-screens", {
+      keyPrefix: "loading-screen",
+    });
+
+    const steps = initial
+      ? [
+          { text: t("steps.1"), showAt: 0 },
+          { text: t("steps.2"), showAt: 1 },
+          { text: t("steps.3"), showAt: 2 },
+          { text: t("steps.4"), showAt: 3 },
+          { text: t("steps.5"), showAt: 4 },
+        ]
+      : [];
 
     useImperativeHandle(ref, () => ({
       nextStep: () => progressBarRef.current?.nextStep(),
@@ -82,7 +94,7 @@ export const LoadingScreen = forwardRef<
         <FadeInOut isVisible={!isFadingOut} fadeOut fadeOutDelay={0.7}>
           <PreThemeLoadingPage>
             {error ? (
-              <div>error loading game</div>
+              <div>{t("error")}</div>
             ) : (
               <Flex
                 width={"80%"}
@@ -110,7 +122,7 @@ export const LoadingScreen = forwardRef<
                     right="20px"
                     variant={"ghost"}
                   >
-                    Skip
+                    {t("skip")}
                   </Button>
                 )}
               </Flex>

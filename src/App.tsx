@@ -1,4 +1,3 @@
-import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import "./App.scss";
 
 import { Analytics } from "@vercel/analytics/react";
@@ -16,12 +15,9 @@ import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
 import { PageTransitionsProvider } from "./providers/PageTransitionsProvider";
 import { SettingsProvider } from "./providers/SettingsProvider";
-import customTheme from "./theme/theme";
 import ZoomPrevention from "./utils/ZoomPrevention";
 
 function App() {
-  const theme = extendTheme(customTheme);
-
   useEffect(() => {
     const askForTracking = async () => {
       try {
@@ -43,33 +39,31 @@ function App() {
   return (
     <SettingsProvider>
       <ZoomPrevention>
-        <ChakraBaseProvider theme={theme}>
-          <CardAnimationsProvider>
-            <CardDataProvider>
-              <GameProvider>
-                <PageTransitionsProvider>
-                  <InformationPopUpProvider>
-                    <AudioPlayerProvider
-                      introSongPath={"/music/intro-track.mp3"}
-                      baseSongPath={"/music/game-track.mp3"}
-                      rageSongPath={"/music/rage_soundtrack.mp3"}
-                    >
-                      <Background>
-                        <Layout>
-                          <AnimatePresence mode="wait">
-                            <AppRoutes />
-                          </AnimatePresence>
-                        </Layout>
-                      </Background>
-                    </AudioPlayerProvider>
-                  </InformationPopUpProvider>
-                </PageTransitionsProvider>
-              </GameProvider>
-            </CardDataProvider>
-          </CardAnimationsProvider>
-          <Analytics />
-          <SpeedInsights />
-        </ChakraBaseProvider>
+        <CardAnimationsProvider>
+          <CardDataProvider>
+            <GameProvider>
+              <PageTransitionsProvider>
+                <InformationPopUpProvider>
+                  <AudioPlayerProvider
+                    introSongPath={"/music/intro-track.mp3"}
+                    baseSongPath={"/music/game-track.mp3"}
+                    rageSongPath={"/music/rage_soundtrack.mp3"}
+                  >
+                    <Background>
+                      <Layout>
+                        <AnimatePresence mode="wait">
+                          <AppRoutes />
+                        </AnimatePresence>
+                      </Layout>
+                    </Background>
+                  </AudioPlayerProvider>
+                </InformationPopUpProvider>
+              </PageTransitionsProvider>
+            </GameProvider>
+          </CardDataProvider>
+        </CardAnimationsProvider>
+        <Analytics />
+        <SpeedInsights />
       </ZoomPrevention>
     </SettingsProvider>
   );

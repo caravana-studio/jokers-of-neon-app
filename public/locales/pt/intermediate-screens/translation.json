@@ -1,4 +1,26 @@
 {
+  "loading-screen": {
+    "error": "Erro ao carregar o jogo",
+    "skip": "Pular",
+    "steps": {
+      "1": "Preparando o cenário",
+      "2": "Ativando as luzes de neônio",
+      "3": "Coletando todos os Jokers",
+      "4": "Carregando o ranking",
+      "5": "Quase pronto, vamos jogar!"
+    },
+    "presents": "APRESENTA",
+    "powered-by": "Impulsionado por"
+  },
+  "mobile-blocker": {
+    "mobile-browsers-are-not-supported": "NAVEGADORES MÓVILES NÃO SÃO SUPORTADOS",
+    "please-download-the-app-to-continue": "Por favor, baixe o aplicativo para continuar"
+  },
+  "version-mismatch": {
+    "new-version-available": "NOVA VERSÃO DISPONÍVEL",
+    "please-update": "Por favor, atualize para continuar",
+    "update": "ATUALIZAR"
+  },
   "season-pass": {
     "more-rewards-with": "Mais recompensas com",
     "season-pass": "PASSO DE TEMPORADA",

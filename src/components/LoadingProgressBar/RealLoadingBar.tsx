@@ -37,7 +37,7 @@ export const RealLoadingBar = forwardRef<
     steps.length > 0 ? ((currentStep + 1) / steps.length) * 100 : 100;
 
   const currentStageText =
-    steps.length > 0 ? steps[currentStep]?.text : "Loading...";
+    steps.length > 0 ? steps[currentStep]?.text : "Loading";
 
   if (!isOpen) return null;
 
