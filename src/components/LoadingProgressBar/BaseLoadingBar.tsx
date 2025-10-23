@@ -1,5 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { ProgressBar } from "../CompactRoundData/ProgressBar";
 
 export interface BaseLoadingBarProps {
@@ -24,15 +25,28 @@ export const BaseLoadingBar = ({
     <Flex
       p={6}
       w="100%"
-      h="150px"
+      h="250px"
       justifyContent="center"
+      alignItems="center"
       flexDirection="column"
-      gap={4}
+      gap={2}
     >
-      <Heading zIndex={2} size="sm" textAlign="center" variant="italic">
-        {currentStageText}
-        {dots}
-      </Heading>
+      <Flex
+        h="45px"
+        justifyContent={"center"}
+        alignContent={"flex-end"}
+        w="100%"
+      >
+        <Heading
+          zIndex={2}
+          fontSize={isMobile ? "sm" : "md"}
+          textAlign="center"
+          letterSpacing={1.2}
+        >
+          {currentStageText}
+          {dots}
+        </Heading>
+      </Flex>
       <ProgressBar progress={Math.round(progress)} />
     </Flex>
   );

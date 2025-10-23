@@ -26,10 +26,7 @@ import { VersionMismatch } from "./pages/VersionMismatch.tsx";
 import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { fetchVersion } from "./queries/fetchVersion.ts";
 import customTheme from "./theme/theme";
-import {
-  LoadingProgress,
-  LoadingScreenHandle,
-} from "./types/LoadingProgress.ts";
+import { LoadingScreenHandle } from "./types/LoadingProgress.ts";
 import { preloadImages, preloadVideos } from "./utils/cacheUtils.ts";
 import { isNative } from "./utils/capacitorUtils.ts";
 import { preloadSpineAnimations } from "./utils/preloadAnimations.ts";
@@ -47,14 +44,6 @@ const I18N_NAMESPACES = [
   "achievements",
   "map",
   "docs",
-];
-
-const loadingSteps: LoadingProgress[] = [
-  { text: "Setting the stage", showAt: 0 },
-  { text: "Turning on the neon lights", showAt: 1 },
-  { text: "Gathering all the jokers", showAt: 2 },
-  { text: "Loading the leaderboard", showAt: 3 },
-  { text: "Almost ready, let's play!", showAt: 4 },
 ];
 
 const progressBarRef = createRef<LoadingScreenHandle>();
@@ -82,7 +71,11 @@ async function init() {
     window.location.hostname !== "localhost" &&
     !BYPASS_MOBILE_BROWSER_RULE
   ) {
-    return root.render(<MobileBrowserBlocker />);
+    return root.render(
+      <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+        <MobileBrowserBlocker />
+      </I18nextProvider>
+    );
   }
 
   fetchVersion().then((version) => {
@@ -94,7 +87,11 @@ async function init() {
           Number(getMinor(version)) > Number(getMinor(APP_VERSION))))
     ) {
       console.log("Version mismatch", version, APP_VERSION);
-      return root.render(<VersionMismatch />);
+      return root.render(
+        <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+          <VersionMismatch />
+        </I18nextProvider>
+      );
     }
   });
 
@@ -103,20 +100,22 @@ async function init() {
     root.render(
       <FadeInOut isVisible fadeInDelay={shouldSkipPresentation ? 0.5 : 1.5}>
         <StarknetProvider>
-          <QueryClientProvider client={queryClient}>
-            <FeatureFlagProvider>
-              <WalletProvider value={setupResult}>
-                <DojoProvider value={setupResult}>
-                  <BrowserRouter>
-                    <Toaster />
-                    <I18nextProvider i18n={localI18n} defaultNS={undefined}>
-                      <App />
-                    </I18nextProvider>
-                  </BrowserRouter>
-                </DojoProvider>
-              </WalletProvider>
-            </FeatureFlagProvider>
-          </QueryClientProvider>
+          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+            <QueryClientProvider client={queryClient}>
+              <ChakraBaseProvider theme={theme}>
+                <FeatureFlagProvider>
+                  <WalletProvider value={setupResult}>
+                    <DojoProvider value={setupResult}>
+                      <BrowserRouter>
+                        <Toaster />
+                        <App />
+                      </BrowserRouter>
+                    </DojoProvider>
+                  </WalletProvider>
+                </FeatureFlagProvider>
+              </ChakraBaseProvider>
+            </QueryClientProvider>
+          </I18nextProvider>
         </StarknetProvider>
       </FadeInOut>
     );
@@ -126,18 +125,20 @@ async function init() {
     const updateLoadingScreen = (canFadeOut: boolean) => {
       root.render(
         <ChakraBaseProvider theme={theme}>
-          <LoadingScreen
-            steps={loadingSteps}
-            ref={progressBarRef}
-            showPresentation={!shouldSkipPresentation}
-            onPresentationEnd={() => {
-              window.localStorage.setItem(SKIP_PRESENTATION, "true");
-              progressBarRef.current?.nextStep();
-              resolve();
-            }}
-            canFadeOut={canFadeOut}
-          />
-          <PositionedVersion />
+          <I18nextProvider i18n={localI18n} defaultNS={undefined}>
+            <LoadingScreen
+              initial
+              ref={progressBarRef}
+              showPresentation={!shouldSkipPresentation}
+              onPresentationEnd={() => {
+                window.localStorage.setItem(SKIP_PRESENTATION, "true");
+                progressBarRef.current?.nextStep();
+                resolve();
+              }}
+              canFadeOut={canFadeOut}
+            />
+            <PositionedVersion />
+          </I18nextProvider>
         </ChakraBaseProvider>
       );
     };

@@ -70,11 +70,10 @@ const CircularToast = ({
     >
       {status === "loading" ? (
         <Spinner
-          boxSize={isMobile ? 10 : 20}
+          size="xs"
           thickness="2px"
           speed="0.65s"
           color="white"
-          size="xl"
         />
       ) : status === "success" ? (
         <CheckCircleIcon boxSize={isMobile ? "12px" : "20px"} color="white" />

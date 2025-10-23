@@ -1,5 +1,6 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { isMobile } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { FadeInOut } from "../../components/animations/FadeInOut";
 
 interface PoweredByPresentationProps {
@@ -16,6 +17,9 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
   visibleElements = { text: true, logo1: true, logo2: true, logo3: true },
   fadeInDelay = 0.5,
 }) => {
+  const { t } = useTranslation("intermediate-screens", {
+    keyPrefix: "loading-screen",
+  });
   const iconWidth = isMobile ? "10vw" : "5vw";
 
   return (
@@ -35,7 +39,7 @@ export const PoweredByPresentation: React.FC<PoweredByPresentationProps> = ({
           fontSize={isMobile ? "1.2rem" : "2.2rem"}
           mb={12}
         >
-          POWERED BY
+          {t("powered-by")}
         </Text>
       </FadeInOut>
       <Flex
