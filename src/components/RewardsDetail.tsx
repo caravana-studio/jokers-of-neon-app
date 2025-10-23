@@ -1,25 +1,37 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GameStateEnum } from "../dojo/typescript/custom.ts";
 import { useCustomNavigate } from "../hooks/useCustomNavigate.tsx";
 import { RerollIndicators } from "../pages/DynamicStore/storeComponents/TopBar/RerollIndicators.tsx";
 import { useGameStore } from "../state/useGameStore.ts";
 import { VIOLET_LIGHT } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings.tsx";
 import { RoundRewards } from "../types/RoundRewards.ts";
+import { StaggeredList } from "./animations/StaggeredList.tsx";
 import { CashSymbol } from "./CashSymbol.tsx";
 import { PinkBox } from "./PinkBox.tsx";
-import { VFX_SPARKLES } from "../constants/vfx.ts";
-import { StaggeredList } from "./animations/StaggeredList.tsx";
-import { useState } from "react";
-import { FireworkParticlesAnimation } from "./animations/FireworkParticlesAnimation.tsx";
+import { RollingNumber } from "./RollingNumber.tsx";
 
 interface RewardItemProps {
   label: string;
   value: number;
   reroll?: boolean;
+  rollingDelay?: number;
+  skip?: boolean;
 }
 
-const RewardItem = ({ label, value, reroll = false }: RewardItemProps) => {
+const DELAY_START = 1.25;
+const STAGGER = 0.5;
+
+const RewardItem = ({
+  label,
+  value,
+  reroll = false,
+  rollingDelay = 0,
+  skip = false,
+}: RewardItemProps) => {
   return (
     <Box color="white" px={[2, 4, 8]} w="100%">
       <Flex
@@ -47,7 +59,9 @@ const RewardItem = ({ label, value, reroll = false }: RewardItemProps) => {
         {reroll ? (
           <RerollIndicators rerolls={value} justifyContent="flex-end" />
         ) : (
-          <Heading size="s">{value}</Heading>
+          <Heading size="s">
+            {skip ? value : <RollingNumber n={value} delay={rollingDelay} />}
+          </Heading>
         )}
       </Flex>
     </Box>
@@ -64,7 +78,7 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   const {
     roundNumber,
     round_defeat,
-    level_bonus,
+    level_passed,
     hands_left,
     hands_left_cash,
     discard_left,
@@ -95,9 +109,35 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
   }
 
   const navigate = useCustomNavigate();
+  const { isSmallScreen } = useResponsiveValues();
   const { currentScore } = useGameStore();
   const [animationEnded, setAnimationEnded] = useState(false);
   const [skip, setSkip] = useState(false);
+
+  const title = (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+    >
+      <Heading
+        size={level_passed || !isSmallScreen ? "lg" : "sm"}
+        variant="italic"
+        textShadow={level_passed ? `0 0 8px ${VIOLET_LIGHT}` : "none"}
+        lineHeight={1.1}
+        color={VIOLET_LIGHT}
+        mt={isSmallScreen ? 2 : 6}
+        mb={1}
+      >
+        {level_passed
+          ? t("title-level", { level: level_passed })
+          : t("title", { round: roundNumber })}
+      </Heading>
+    </motion.div>
+  );
+
+  const rewardLines =
+    3 + (rage_card_defeated_cash > 0 ? 1 : 0) + (rerolls > 0 ? 1 : 0);
 
   return (
     <Flex
@@ -106,57 +146,88 @@ export const RewardsDetail = ({ roundRewards }: RewardsDetailProps) => {
       alignItems="center"
       textAlign="center"
       w="100%"
-      maxW="550px"
+      maxW="900px"
       onClick={() => setSkip(true)}
+      zIndex={10}
     >
-      <FireworkParticlesAnimation spriteSrc={VFX_SPARKLES}>
-        <PinkBox
-          title={`${t("title", { round: roundNumber })}`}
-          button={t("continue-btn")}
-          onClick={() => {
-            navigate(GameStateEnum.Map);
-          }}
-          actionHidden={!animationEnded}
+      <PinkBox
+        title={title}
+        button={t("continue-btn")}
+        onClick={() => {
+          navigate(GameStateEnum.Map);
+        }}
+        actionHidden={!animationEnded}
+        glowIntensity={level_passed ? 1 : 0}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75, duration: 0.5, ease: "easeOut" }}
         >
           <Heading color="lightViolet" size="s">
             {" "}
             {t("final-score", { score: currentScore })}{" "}
           </Heading>
+        </motion.div>
 
-          <StaggeredList
-            stagger={0.5}
-            onEnd={() => setAnimationEnded(true)}
-            delayStart={1}
-            skip={skip}
+        <StaggeredList
+          stagger={STAGGER}
+          onEnd={() => setAnimationEnded(true)}
+          delayStart={DELAY_START}
+          skip={skip}
+          w="100%"
+        >
+          <RewardItem
+           skip={skip}
+            label={labels[0]}
+            value={round_defeat}
+            rollingDelay={DELAY_START * 1000 + 500}
+          />
+          <RewardItem
+           skip={skip}
+            label={labels[2]}
+            value={hands_left_cash}
+            rollingDelay={(DELAY_START + STAGGER) * 1000}
+          />
+          <RewardItem
+           skip={skip}
+            label={labels[3]}
+            value={discard_left_cash}
+            rollingDelay={(DELAY_START + STAGGER) * 1000}
+          />
+          {rage_card_defeated_cash > 0 && (
+            <RewardItem
+             skip={skip}
+              label={labels[5]}
+              value={rage_card_defeated_cash}
+              rollingDelay={(DELAY_START + STAGGER) * 1000}
+            />
+          )}
+          {rerolls > 0 && (
+            <RewardItem skip={skip} label={labels[4]} value={rerolls} reroll />
+          )}
+
+          <Flex
+            color={VIOLET_LIGHT}
+            pt={{ base: 2, sm: 8 }}
+            pb={isSmallScreen ? 2 : 6}
+            px={isSmallScreen ? 2 : 8}
+            w="100%"
+            justifyContent="space-between"
           >
-            <RewardItem label={labels[0]} value={round_defeat} />
-            <RewardItem label={labels[2]} value={hands_left_cash} />
-            <RewardItem label={labels[3]} value={discard_left_cash} />
-            {rage_card_defeated_cash > 0 && (
-              <RewardItem label={labels[5]} value={rage_card_defeated_cash} />
-            )}
-            {rerolls > 0 && (
-              <RewardItem label={labels[4]} value={rerolls} reroll />
-            )}
-
-            <Flex
-              color={VIOLET_LIGHT}
-              pt={{ base: 4, sm: 8 }}
-              pb={4}
-              w="90%"
-              justifyContent="space-between"
-            >
-              <Heading color="lightViolet" variant="italic">
-                {t("total")}
-              </Heading>
-              <Heading color="lightViolet" variant="italic">
-                {total}
-                <CashSymbol />
-              </Heading>
-            </Flex>
-          </StaggeredList>
-        </PinkBox>
-      </FireworkParticlesAnimation>
+            <Heading color="lightViolet" variant="italic">
+              {t("total")}
+            </Heading>
+            <Heading color="lightViolet" variant="italic">
+              {skip ? total : <RollingNumber
+                delay={(DELAY_START + rewardLines * STAGGER) * 1000}
+                n={total}
+              />}
+              <CashSymbol />
+            </Heading>
+          </Flex>
+        </StaggeredList>
+      </PinkBox>
     </Flex>
   );
 };

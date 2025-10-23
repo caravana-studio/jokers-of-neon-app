@@ -102,6 +102,7 @@ export const RageRoundAnimation = () => {
           flexDirection="column"
           backdropFilter="blur(5px)"
           backgroundColor=" rgba(0, 0, 0, 0.5)"
+          px={4}
         >
           {phase === 1 && (
             <>
@@ -113,7 +114,7 @@ export const RageRoundAnimation = () => {
               <animated.div style={textSpring}>
                 {descriptions.map((description) => {
                   return (
-                    <Text key={description} size="xl">
+                    <Text key={description} size="xl" textAlign={"center"}>
                       {description}
                     </Text>
                   );

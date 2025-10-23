@@ -1,12 +1,15 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 import { VIOLET, VIOLET_LIGHT } from "../theme/colors";
+import { useResponsiveValues } from "../theme/responsiveSettings";
 
 interface PinkBoxProps extends PropsWithChildren {
-  title: string;
+  title: React.ReactNode;
   button?: string;
   onClick?: () => void;
   actionHidden?: boolean;
+  glowIntensity?: number;
 }
 
 export const PinkBox = ({
@@ -15,7 +18,10 @@ export const PinkBox = ({
   button,
   onClick,
   actionHidden = false,
+  glowIntensity = 0,
 }: PinkBoxProps) => {
+  const { isSmallScreen } = useResponsiveValues();
+
   return (
     <Box
       display="flex"
@@ -29,29 +35,21 @@ export const PinkBox = ({
         w="100%"
         px={[1, 2, 4]}
         py={2}
-        mt={8}
         border="2px solid #DAA1E8FF"
-        boxShadow={`0px 0px 20px 15px ${VIOLET}`}
+        boxShadow={glowIntensity > 0.5 ? `0px 0px 25px 17px ${VIOLET}` : `0px 0px 15px 7px ${VIOLET}`}
         filter="blur(0.5px)"
         backgroundColor="rgba(0, 0, 0, 1)"
         borderRadius="10px"
         display="grid"
         justifyItems="center"
       >
-        <Heading
-          size={{ base: "sm", sm: "l" }}
-          variant="italic"
-          color={VIOLET_LIGHT}
-          mt={4}
-        >
-          {title}
-        </Heading>
+{title}
         {children}
       </Box>
       {button && (
         <Button
           className="game-tutorial-step-4"
-          mt={14}
+          mt={isSmallScreen ? 10 : 14}
           w="100%"
           size="md"
           variant="secondarySolid"

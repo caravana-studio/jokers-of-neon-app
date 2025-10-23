@@ -204,6 +204,7 @@ export const BackgroundDecoration = ({
           maxHeight="70px"
           position="fixed"
           top={0}
+          zIndex={10}
         />
       )}
       {!hidelogo && (
@@ -223,7 +224,7 @@ export const BackgroundDecoration = ({
             width={"65%"}
             maxW={"300px"}
             ml={4}
-            zIndex={1}
+              zIndex={10}
           />
         </Box>
       )}
@@ -247,9 +248,11 @@ export const BackgroundDecoration = ({
             maxHeight="70px"
             position="fixed"
             bottom={0}
+          zIndex={10}
           />
 
           <Box
+              zIndex={10}
             sx={{
               position: "fixed",
               bottom: 16,
@@ -262,7 +265,7 @@ export const BackgroundDecoration = ({
               src="/logos/joker-logo.png"
               alt="/logos/joker-logo.png"
               maxW={"150px"}
-              zIndex={1}
+              zIndex={10}
             />
           </Box>
         </>
