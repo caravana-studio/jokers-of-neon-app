@@ -156,7 +156,7 @@ export const useGetMyGames = () => {
   });
 
   return {
-    data: gameSummaries,
+    data: gameSummaries.filter(game => game.status !== GameStateEnum.NotStarted),
     isLoading,
     error,
     refetch,
