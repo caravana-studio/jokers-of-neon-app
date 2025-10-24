@@ -1479,8 +1479,8 @@
   },
   "contracts": [
     {
-      "address": "0x1aecc6021ed3eebf5f63bb6accb4b59f00d23afc427984e0f44e13e1c193839",
-      "class_hash": "0x3a57b41027b5cfffc32ff2c7ba905194ee96f78af91dca8c23819daff59b6fa",
+      "address": "0x7222847c1a3e4844a3f42b15ca8a7cab53ab5a2cb2dd884a2827c5088e4def0",
+      "class_hash": "0x3435070826eb151ce6b4076d3cfd2995b373a4a41de0f048a7f6e775c9032d2",
       "abi": [
         {
           "type": "impl",
@@ -2119,8 +2119,8 @@
       ]
     },
     {
-      "address": "0x197016b60d1a5cf2393ce471783e745244d6ba1564c8933857435dbf7ee6dc4",
-      "class_hash": "0x15c6cedb8d19a33808da3bca418ea273d782b9698bd9f8f13372de9d6d9f1ff",
+      "address": "0x1093bef8c050d62da9945dfcbb62a295bb0c7c37bb0670b395ef4473a8b174e",
+      "class_hash": "0x8cd8beae7a4da2066a1443558bddcae6a52e6265c922f60aef8f19a570bb43",
       "abi": [
         {
           "type": "impl",
@@ -2432,6 +2432,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -2465,6 +2469,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -3019,8 +3027,8 @@
       ]
     },
     {
-      "address": "0x29cea791f5061ff48a964da9137dd0ff42eccd0dcc03b9de5bec3b46b77b9e3",
-      "class_hash": "0x6d9a5f7abd19e43d5b6a5061bfe6f21c85da455cb12c03b43c15f729ca8e92b",
+      "address": "0x5265a39392c87265ebb11c1aeea3e4caced089d46ba96c52ab103ed7fdc2c1c",
+      "class_hash": "0x55a568cc9a94fe31217d063e0f8bd8a1733b24e21e85baedcd836688f38f5d3",
       "abi": [
         {
           "type": "impl",
@@ -3332,6 +3340,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -3365,6 +3377,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -4182,8 +4198,8 @@
       ]
     },
     {
-      "address": "0x19767cbb6e81797799a9c953dfc48361143433a92ee9f2b459696004587fc2d",
-      "class_hash": "0x436821af68eda9ee2be8f0ef86f962cf69e34db7770cc2fdc4bb2eafa0548c9",
+      "address": "0x7c8ddd684eafc5eb06a7179768f9be3152d369522d325dd0dcffc2083591bcc",
+      "class_hash": "0x1c90866918f70ae87b06f23e470c2969cc156e21da2688778d39f061eb4bc9e",
       "abi": [
         {
           "type": "impl",
@@ -5967,8 +5983,8 @@
       ]
     },
     {
-      "address": "0x460c5ff664d66440efbe0176cde6a299cf3942d5fd588474d29aaba120c1e49",
-      "class_hash": "0x3e282458db2a8fd5d1e0d9aed4da98682e2d5c831fd778ca37e4ee7e04b88a4",
+      "address": "0x687152304ae49a3ef903b940fe46c078ed6592cae6f9b3a651c52b7ea7edfec",
+      "class_hash": "0x6f7d53d2f5381acfded3c686611e85abee41a55de83e87af18c53e9b5778a47",
       "abi": [
         {
           "type": "impl",
@@ -6280,6 +6296,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -6313,6 +6333,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -6867,8 +6891,8 @@
       ]
     },
     {
-      "address": "0x11c4671fb014c2df7e5698905615a1b5395ea4fff864d767f6a828980953052",
-      "class_hash": "0x7e84d722c037d25e7a754fa701705e1621ad9acbe73f29c08cc350f10ef4ff7",
+      "address": "0x73fee8949e35e5fbdc10f291da6ccca629d29bb7411da07d416b7f632cb1943",
+      "class_hash": "0x32e7880be3c53749d18fec36525e95707555edc0d35fbf5b8a703f9e1040c48",
       "abi": [
         {
           "type": "impl",
@@ -7180,6 +7204,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -7213,6 +7241,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -7767,8 +7799,8 @@
       ]
     },
     {
-      "address": "0x3f981f64e06c1b5723b6f5827005a76d67eaad0735dc1b19428528795135c4b",
-      "class_hash": "0x6f6080c196ae6b0e7ddc1b04b2f268e5a7ffabf520ee60b41a62e1a4402816e",
+      "address": "0x2add6d10abf4ae6ce4840ac462cf6745a9d0bde017fcd156b87268789cef638",
+      "class_hash": "0x2c0c310da16de744fc4748d62b72b390ed082d21b176c8b1b0a40857ac75964",
       "abi": [
         {
           "type": "impl",
@@ -8469,8 +8501,8 @@
       ]
     },
     {
-      "address": "0x20f642e92d7104a2c19139d877a8e835f60935c5e49600dada10196617447cb",
-      "class_hash": "0x7d5dc59204419965418d96d7267e1a89caa2075ce7a3db32ad609e70f2c298b",
+      "address": "0x136bc36c4ea30ddc5b03d38419f1e5c1f1292c3df1b938f8f4ba1b4aef02dd4",
+      "class_hash": "0x27892dbc5ad4220137d7da92934f3cb1a76902274e4312eb01fcf310b89a9e6",
       "abi": [
         {
           "type": "impl",
@@ -9341,8 +9373,8 @@
       ]
     },
     {
-      "address": "0x4326446ce7db0e5472b4c407ee6610430d759b536767c8ee59cb0522ff72f67",
-      "class_hash": "0x51e34d5dabcbf4401610976cbe0a2d484980d600c64d38f823ea221b106e8cb",
+      "address": "0x7fa10c3ca3cb4f65b0ea6d503b8f9c4d1bfe7b298ef1d7cccbadace2f8ab333",
+      "class_hash": "0x2410b679a8695a00e29952ce2ebb5e4772da2363621716df77504383c60d3f4",
       "abi": [
         {
           "type": "impl",
@@ -9654,6 +9686,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -9687,6 +9723,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -10241,8 +10281,8 @@
       ]
     },
     {
-      "address": "0x7fe3c63e7e1cd324fdc83c53e6d2e94aa5b3cb391744f81a5020a08b7b81f1a",
-      "class_hash": "0x67c6475582dabf13a8d49448608600660fc438c4e8f89605da8e38f3cc2afa8",
+      "address": "0x643ebed6518683534094c132386939d2eb2896361348f0a1e37199af4b2a93f",
+      "class_hash": "0x7ceb78f64bac1dfe7e20e767934a466c02dab1ef5f867b544e9a8e2ead7461d",
       "abi": [
         {
           "type": "impl",
@@ -10806,8 +10846,8 @@
       ]
     },
     {
-      "address": "0x3f8f484838df0d51a313c4132ab386d06a1a7c45b1306c6d63ab02a80470013",
-      "class_hash": "0x6aa1758971331b2a7c29183444761f6708c500c9dcb2b2cbe1eeed805ae54c6",
+      "address": "0x2c21629bd95a9cbe668c990a40798926d3b4e63a8c88128cd5ea8b051889bf5",
+      "class_hash": "0x6c79656099564e715f86ed7707d88fd2aa0447f938ef817b311a397d5587724",
       "abi": [
         {
           "type": "impl",
@@ -11119,6 +11159,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -11152,6 +11196,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {
@@ -12424,8 +12472,8 @@
       ]
     },
     {
-      "address": "0x2e07f22a2c60c0e600a8c3bb649e5123b31a51aab07bd908e87031b15b4ce6f",
-      "class_hash": "0x74899268c6c05688bd3a6ad6911bea8dc50e2bf2198b92dee34fe1a81d760e",
+      "address": "0x626a012bb7721bf1b860163af140fb60794175fde41e26d5a158101ce25dd24",
+      "class_hash": "0x2193245d0d37dcc1bcb60a081415878d72473bbcd2a2d12a2c251a2e35982a2",
       "abi": [
         {
           "type": "impl",
@@ -13456,8 +13504,8 @@
       ]
     },
     {
-      "address": "0x15336eb12115a862f09d2689e1a0fec8cc95f20ecbe7aee4d998f414410980b",
-      "class_hash": "0x4fa35204d98c7e7677f89004ba8dddcc96f95d1c926d933d1dcd66d5ee43660",
+      "address": "0x89047f31321abc8fe2b1f7bc92fa0cc4f9ffaeb99f22c7e119ef8a3e1fdacd",
+      "class_hash": "0x77e01b6cae39d0e009cc773f499758d32659c1e73b2a114d22e25a80f6fa3c4",
       "abi": [
         {
           "type": "impl",
@@ -13769,6 +13817,10 @@
               "type": "()"
             },
             {
+              "name": "DiscardCondition",
+              "type": "()"
+            },
+            {
               "name": "Round",
               "type": "()"
             },
@@ -13802,6 +13854,10 @@
             },
             {
               "name": "Info",
+              "type": "()"
+            },
+            {
+              "name": "Burn",
               "type": "()"
             },
             {

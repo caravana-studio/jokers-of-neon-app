@@ -136,22 +136,6 @@
       "name": "Doutrina de néon",
       "description": "Converta duas cartas jogadas em cartas de néon."
     },
-    "10027": {
-      "name": "Blackjack",
-      "description": "Atinge exatamente ^blue(21 pontos)^ com as cartas jogadas para ganhar ^violet(+21 multi)^."
-    },
-    "10028": {
-      "name": "Jogo Eficiente",
-      "description": "Ganhe ^violet(+10 multi)^ e ^blue(+50 pontos)^ ao jogar 3 ou menos cartas."
-    },
-    "10029": {
-      "name": "Sacrifício Especial",
-      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
-    },
-    "10030": {
-      "name": "Quebrador de Rage",
-      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
-    },
     "10031": {
       "name": "Atalho",
       "description": "Reduz os pontos necessários para vencer o rodada em 20%"
@@ -236,10 +220,6 @@
       "name": "Multiplicador Especial",
       "description": "Ganhe ^violet(+3 multi)^ para cada carta especial que possuir."
     },
-    "10052": {
-      "name": "Colecionador",
-      "description": "Ganhe ^blue(+1 pontos)^ para cada carta no seu baralho."
-    },
     "10053": {
       "name": "Reinício da Rage",
       "description": "Permite relançar cartas de Rage uma vez por rodada. Custa 500 por cada Rage na rodada."
@@ -248,21 +228,9 @@
       "name": "Bônus de Pular",
       "description": "Ganhe ^blue(+25 pontos)^ (acumulativos) para cada caixa de recompensa pulada (aberta sem selecionar uma carta). ^blue(Actualmente +{{points}} pontos)^."
     },
-    "10055": {
-      "name": "Recompensas em Chamas",
-      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
-    },
     "10056": {
       "name": "Guardião de Slot",
       "description": "Ganhe ^blue(+100 pontos)^ para cada Slot desbloqueado, mas vazio."
-    },
-    "10057": {
-      "name": "Apostadores de Alto Nível",
-      "description": "Cada Carta Alta jogada 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
-    },
-    "10058": {
-      "name": "Roleta de Naipes",
-      "description": "Ganhe ^violet(+5 multi)^ para cada carta que corresponda a um naipe aleatório. O naipe muda a cada rodada."
     },
     "10059": {
       "name": "Guardião dos Paus",
@@ -279,10 +247,6 @@
     "10062": {
       "name": "Mão de modificadores",
       "description": "Ganhe ^violet(+5 multi)^ para cada carta modificadora na sua mão."
-    },
-    "10063": {
-      "name": "Piromaníaco",
-      "description": "Obtenha 50% de desconto ao queimar cartas."
     },
     "10064": {
       "name": "Multiplicador de Quadrados",
@@ -336,8 +300,64 @@
       "name": "Fortuna da Rainha",
       "description": "Cada rainha jogada tem 50% de chances de conceder ^yellow(+150 moedas)^."
     },
+    "10101": {
+      "name": "Pôster Desbotado",
+      "description": "Começa com ^blue(+100 pontos)^, perde ^blue(10 pontos)^ por jogada até chegar em ^blue(10 pontos)^."
+    },
+    "10102": {
+      "name": "Domador da Sorte",
+      "description": "Troca um descarte por uma jogada."
+    },
+    "10103": {
+      "name": "Blackjack",
+      "description": "Se o valor total das cartas for menor que 21, ganhe ^blue(+21 pontos)^; se for exatamente 21, ganhe ^violet(+21 multi)^."
+    },
+    "10104": {
+      "name": "Malabarista de Pontos",
+      "description": "As cartas descartadas dão seu valor ^blue(×10 pontos)^."
+    },
+    "10105": {
+      "name": "Colecionador",
+      "description": "Ganhe ^blue(+1 pontos)^ para cada carta no seu baralho."
+    },
+    "10106": {
+      "name": "Círculo da Sorte",
+      "description": "Rola um número aleatório entre 0 e 36; se for par, o resultado é ^blue(pontos x2)^; se for ímpar, o resultado é ^yellow(moedas x2)^; se for 0, ganhe ^blue(+300 pontos)^."
+    },
+    "10107": {
+      "name": "Bênção de Héstia",
+      "description": "As cartas queimadas acumulam seus ^blue(pontos)^; se for um Joker, acumula ^violet(+1 multi)^."
+    },
+    "10108": {
+      "name": "Roleta de Naipes",
+      "description": "Escolha um naipe aleatório a cada jogada; ganha ^violet(+5 multi)^ para cada carta desse naipe jogada."
+    },
+    "10109": {
+      "name": "Joker Pendurado",
+      "description": "Se sua mão contiver um Joker, tem 25% de chance de acumular ^blue(+10 pontos)^."
+    },
+    "10110": {
+      "name": "Sacrifício Especial",
+      "description": "Ganhe ^violet(+1 multi)^ (acumulativo) para cada carta especial vendida. ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10111": {
+      "name": "High Roller",
+      "description": "Cada Carta Alta jogada tem 50% de chances de ganhar ^violet(+1 multi)^ (acumulativo). ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10112": {
+      "name": "Jogada Eficiente",
+      "description": "Ganhe ^violet(+10 multi)^ e ^blue(+50 pontos)^ ao jogar 3 ou menos cartas."
+    },
+    "10113": {
+      "name": "Quebrador de Rage",
+      "description": "Ganhe ^violet(+2 multi)^ (acumulativo) para cada Rage derrotada. ^violet(Actualmente +{{multi}} multi)^."
+    },
+    "10114": {
+      "name": "Recompensas em Chamas",
+      "description": "Ganhe ^blue(+15 pontos)^ (acumulativos) para cada carta queimar do seu baralho. ^blue(Actualmente +{{points}} pontos)^."
+    },
     "19901": {
-      "name": "Reembolso Afortunado",
+      "name": "Reembolso Sortudo",
       "description": "50% de chance de ganhar ^yellow(+150 moedas)^ ao jogar ou descartar uma carta."
     },
     "19902": {
